@@ -4,8 +4,8 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.ConstantSelector;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.common.function.Selectors;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
@@ -53,8 +53,8 @@ public class TimeEventFactory implements PlayerEventFactory, PlayerlessEventFact
     }
 
     private NullableEventAdapter createTimeEvent(final Instruction instruction) throws QuestException {
-        final Variable<TimeChange> timeVariable = instruction.parse(TimeParser.TIME).get();
-        final Optional<Variable<String>> worldVar = instruction.string().get("world");
+        final Argument<TimeChange> timeVariable = instruction.parse(TimeParser.TIME).get();
+        final Optional<Argument<String>> worldVar = instruction.string().get("world");
         final Selector<World> worldSelector = parseWorld(worldVar.isEmpty() ? null : worldVar.get().getValue(null));
         final boolean hourFormat = !instruction.hasArgument("ticks");
         return new NullableEventAdapter(new TimeEvent(timeVariable, worldSelector, hourFormat));

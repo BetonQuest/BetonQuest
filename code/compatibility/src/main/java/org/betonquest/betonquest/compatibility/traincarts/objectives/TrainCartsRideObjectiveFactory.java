@@ -2,8 +2,8 @@ package org.betonquest.betonquest.compatibility.traincarts.objectives;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 
 /**
@@ -19,8 +19,8 @@ public class TrainCartsRideObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<String> name = instruction.string().get("name", "");
-        final Variable<Number> targetAmount = instruction.number().atLeast(1).get("amount", 1);
+        final Argument<String> name = instruction.string().get("name", "");
+        final Argument<Number> targetAmount = instruction.number().atLeast(1).get("amount", 1);
         return new TrainCartsRideObjective(instruction, targetAmount, name);
     }
 }

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.brewery.event;
 
 import com.dre.brewery.recipe.BRecipe;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.compatibility.brewery.BreweryUtils;
@@ -19,17 +19,17 @@ public class TakeBrewEvent implements OnlineEvent {
     /**
      * The amount of brews to take.
      */
-    private final Variable<Number> countVar;
+    private final Argument<Number> countVar;
 
     /**
      * The name of the brew to take.
      */
-    private final Variable<String> nameVar;
+    private final Argument<String> nameVar;
 
     /**
      * Interpretation mode for brews.
      */
-    private final Variable<IdentifierType> mode;
+    private final Argument<IdentifierType> mode;
 
     /**
      * Create a new Take Brew Event.
@@ -38,7 +38,7 @@ public class TakeBrewEvent implements OnlineEvent {
      * @param nameVar  The name of the brew to take.
      * @param mode     the interpretation mode for brews.
      */
-    public TakeBrewEvent(final Variable<Number> countVar, final Variable<String> nameVar, final Variable<IdentifierType> mode) {
+    public TakeBrewEvent(final Argument<Number> countVar, final Argument<String> nameVar, final Argument<IdentifierType> mode) {
         this.countVar = countVar;
         this.nameVar = nameVar;
         this.mode = mode;

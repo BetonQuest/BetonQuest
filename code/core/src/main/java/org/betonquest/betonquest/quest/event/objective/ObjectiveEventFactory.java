@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.event.objective;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -70,7 +70,7 @@ public class ObjectiveEventFactory implements PlayerEventFactory, PlayerlessEven
 
     private NullableEventAdapter createObjectiveEvent(final Instruction instruction) throws QuestException {
         final String action = instruction.string().map(s -> s.toLowerCase(Locale.ROOT)).get().getValue(null);
-        final Variable<List<ObjectiveID>> objectives = instruction.parse(ObjectiveID::new).getList();
+        final Argument<List<ObjectiveID>> objectives = instruction.parse(ObjectiveID::new).getList();
         return new NullableEventAdapter(new ObjectiveEvent(betonQuest, loggerFactory.create(ObjectiveEvent.class),
                 questTypeApi, instruction.getPackage(), objectives, playerDataFactory, action));
     }

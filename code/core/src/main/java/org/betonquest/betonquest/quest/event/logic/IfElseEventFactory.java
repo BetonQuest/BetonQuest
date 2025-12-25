@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.event.logic;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.event.EventID;
@@ -47,12 +47,12 @@ public class IfElseEventFactory implements PlayerEventFactory, PlayerlessEventFa
     }
 
     private NullableEventAdapter createIfElseEvent(final Instruction instruction) throws QuestException {
-        final Variable<ConditionID> condition = instruction.parse(ConditionID::new).get();
-        final Variable<EventID> event = instruction.parse(EventID::new).get();
+        final Argument<ConditionID> condition = instruction.parse(ConditionID::new).get();
+        final Argument<EventID> event = instruction.parse(EventID::new).get();
         if (!ELSE_KEYWORD.equalsIgnoreCase(instruction.nextElement())) {
             throw new QuestException("Missing 'else' keyword");
         }
-        final Variable<EventID> elseEvent = instruction.parse(EventID::new).get();
+        final Argument<EventID> elseEvent = instruction.parse(EventID::new).get();
         return new NullableEventAdapter(new IfElseEvent(condition, event, elseEvent, questTypeApi));
     }
 }

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.hunger;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 
@@ -13,14 +13,14 @@ public class HungerCondition implements OnlineCondition {
     /**
      * The hunger level required to pass the condition.
      */
-    private final Variable<Number> hunger;
+    private final Argument<Number> hunger;
 
     /**
      * Create a new hunger condition.
      *
      * @param hunger the hunger level required to pass the condition
      */
-    public HungerCondition(final Variable<Number> hunger) {
+    public HungerCondition(final Argument<Number> hunger) {
         this.hunger = hunger;
     }
 

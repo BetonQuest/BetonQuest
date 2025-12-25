@@ -5,7 +5,7 @@ import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.classes.HeroClass;
 import com.herocraftonline.heroes.characters.classes.HeroClassManager;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
@@ -38,18 +38,18 @@ public class HeroesClassCondition implements OnlineCondition {
     /**
      * If the {@link HeroClass} should be the primary class.
      */
-    private final Variable<HeroesClassType> classType;
+    private final Argument<HeroesClassType> classType;
 
     /**
      * The class.
      */
-    private final Variable<String> heroClassVar;
+    private final Argument<String> heroClassVar;
 
     /**
      * The level of the class.
      */
     @Nullable
-    private final Variable<Number> levelVar;
+    private final Argument<Number> levelVar;
 
     /**
      * Create a new Heroes Class Condition.
@@ -61,8 +61,8 @@ public class HeroesClassCondition implements OnlineCondition {
      * @param levelVar         The optional level of the class.
      */
     public HeroesClassCondition(final CharacterManager characterManager, final HeroClassManager classManager,
-                                final Variable<HeroesClassType> classType, final Variable<String> heroClassVar,
-                                @Nullable final Variable<Number> levelVar) {
+                                final Argument<HeroesClassType> classType, final Argument<String> heroClassVar,
+                                @Nullable final Argument<Number> levelVar) {
         this.characterManager = characterManager;
         this.classManager = classManager;
         this.classType = classType;

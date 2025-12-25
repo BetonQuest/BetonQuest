@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.tag;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.database.TagData;
 import org.jetbrains.annotations.Nullable;
@@ -16,14 +16,14 @@ public class AddTagChanger implements TagChanger {
     /**
      * Tags to add to the player.
      */
-    private final Variable<List<String>> tags;
+    private final Argument<List<String>> tags;
 
     /**
      * Create the tag changer that adds tags.
      *
      * @param tags tags to add
      */
-    public AddTagChanger(final Variable<List<String>> tags) {
+    public AddTagChanger(final Argument<List<String>> tags) {
         this.tags = tags;
     }
 

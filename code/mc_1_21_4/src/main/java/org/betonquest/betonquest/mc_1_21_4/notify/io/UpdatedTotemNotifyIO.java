@@ -3,8 +3,8 @@ package org.betonquest.betonquest.mc_1_21_4.notify.io;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.variable.DefaultArgument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Variables;
@@ -32,13 +32,13 @@ public class UpdatedTotemNotifyIO extends NotifyIO {
      * It instructs the game client to display a different model or texture when the totem is shown.
      */
     @Nullable
-    private final Variable<NamespacedKey> variableItemModel;
+    private final Argument<NamespacedKey> variableItemModel;
 
     /**
      * The totems customModelData.
      * It instructs the game client to display a different model or texture when the totem is shown.
      */
-    private final Variable<Number> variableCustomModelData;
+    private final Argument<Number> variableCustomModelData;
 
     /**
      * Creates a new UpdatedTotemNotifyIO instance based on the user's instruction string.
@@ -50,7 +50,7 @@ public class UpdatedTotemNotifyIO extends NotifyIO {
      */
     public UpdatedTotemNotifyIO(final Variables variables, @Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
         super(variables, pack, data);
-        variableItemModel = data.containsKey("itemmodel") ? new DefaultVariable<>(variables, pack, data.getOrDefault("itemmodel", ""),
+        variableItemModel = data.containsKey("itemmodel") ? new DefaultArgument<>(variables, pack, data.getOrDefault("itemmodel", ""),
                 input -> Utils.getNN(NamespacedKey.fromString(input), "The item-model '" + input + "' could not be parsed!")) : null;
         variableCustomModelData = getNumberData("custommodeldata", 0);
     }

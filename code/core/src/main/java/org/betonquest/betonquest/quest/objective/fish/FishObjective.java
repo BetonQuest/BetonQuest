@@ -2,9 +2,9 @@ package org.betonquest.betonquest.quest.objective.fish;
 
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.Location;
@@ -25,19 +25,19 @@ public class FishObjective extends CountingObjective implements Listener {
     /**
      * Item to catch.
      */
-    private final Variable<ItemWrapper> item;
+    private final Argument<ItemWrapper> item;
 
     /**
      * Location where the fish should be caught.
      */
     @Nullable
-    private final Variable<Location> hookTargetLocation;
+    private final Argument<Location> hookTargetLocation;
 
     /**
      * Range around the location where the fish should be caught.
      */
     @Nullable
-    private final Variable<Number> rangeVar;
+    private final Argument<Number> rangeVar;
 
     /**
      * Constructor for the FishObjective.
@@ -49,9 +49,9 @@ public class FishObjective extends CountingObjective implements Listener {
      * @param rangeVar           the range around the location where the item should be fished
      * @throws QuestException if there is an error in the instruction
      */
-    public FishObjective(final Instruction instruction, final Variable<Number> targetAmount,
-                         final Variable<ItemWrapper> item, @Nullable final Variable<Location> hookTargetLocation,
-                         @Nullable final Variable<Number> rangeVar) throws QuestException {
+    public FishObjective(final Instruction instruction, final Argument<Number> targetAmount,
+                         final Argument<ItemWrapper> item, @Nullable final Argument<Location> hookTargetLocation,
+                         @Nullable final Argument<Number> rangeVar) throws QuestException {
         super(instruction, targetAmount, "fish_to_catch");
         this.item = item;
         this.hookTargetLocation = hookTargetLocation;

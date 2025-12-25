@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.npc.citizens.event.move;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.api.quest.npc.Npc;
@@ -23,7 +23,7 @@ public class CitizensStopEvent implements NullableEvent {
     /**
      * ID of the NPC to stop.
      */
-    private final Variable<NpcID> npcId;
+    private final Argument<NpcID> npcId;
 
     /**
      * Move Controller where to stop NPC movement.
@@ -37,7 +37,7 @@ public class CitizensStopEvent implements NullableEvent {
      * @param npcId                  the id of the NPC to stop
      * @param citizensMoveController the move controller where to stop NPC movement
      */
-    public CitizensStopEvent(final FeatureApi featureApi, final Variable<NpcID> npcId, final CitizensMoveController citizensMoveController) {
+    public CitizensStopEvent(final FeatureApi featureApi, final Argument<NpcID> npcId, final CitizensMoveController citizensMoveController) {
         this.featureApi = featureApi;
         this.npcId = npcId;
         this.citizensMoveController = citizensMoveController;

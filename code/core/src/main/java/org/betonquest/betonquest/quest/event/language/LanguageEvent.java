@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.language;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.data.PlayerDataStorage;
@@ -14,7 +14,7 @@ public class LanguageEvent implements PlayerEvent {
     /**
      * The language to set.
      */
-    private final Variable<String> language;
+    private final Argument<String> language;
 
     /**
      * Storage for player data.
@@ -27,7 +27,7 @@ public class LanguageEvent implements PlayerEvent {
      * @param language    the language to set
      * @param dataStorage the storage providing player data
      */
-    public LanguageEvent(final Variable<String> language, final PlayerDataStorage dataStorage) {
+    public LanguageEvent(final Argument<String> language, final PlayerDataStorage dataStorage) {
         this.language = language;
         this.dataStorage = dataStorage;
     }

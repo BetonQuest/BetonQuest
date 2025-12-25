@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.menu.betonquest;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.menu.MenuID;
@@ -17,14 +17,14 @@ public class MenuCondition implements OnlineCondition {
      * MenuID to check, null if any matches.
      */
     @Nullable
-    private final Variable<MenuID> menuID;
+    private final Argument<MenuID> menuID;
 
     /**
      * Create a new menu condition.
      *
      * @param menuID the menu id to check for or null if matches any
      */
-    public MenuCondition(@Nullable final Variable<MenuID> menuID) {
+    public MenuCondition(@Nullable final Argument<MenuID> menuID) {
         this.menuID = menuID;
     }
 

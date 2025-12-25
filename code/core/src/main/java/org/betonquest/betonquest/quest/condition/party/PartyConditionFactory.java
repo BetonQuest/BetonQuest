@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.condition.party;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
@@ -46,27 +46,27 @@ public class PartyConditionFactory implements PlayerConditionFactory, Playerless
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final String locationRaw = instruction.string().get("location", "%location%").getValue(null);
-        final Variable<Location> location = instruction.get(locationRaw, instruction.getParsers().location());
+        final Argument<Location> location = instruction.get(locationRaw, instruction.getParsers().location());
         return new NullableConditionAdapter(parse(instruction, location));
     }
 
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
-        final Variable<Location> location = instruction.location().get("location").orElse(null);
+        final Argument<Location> location = instruction.location().get("location").orElse(null);
         if (location == null) {
             return new ThrowExceptionPlayerlessCondition();
         }
         return new NullableConditionAdapter(parse(instruction, location));
     }
 
-    private PartyCondition parse(final Instruction instruction, final Variable<Location> location) throws QuestException {
-        final Variable<Number> range = instruction.number().get();
-        final Variable<List<ConditionID>> conditions = instruction.parse(ConditionID::new).getList();
-        final Variable<List<ConditionID>> everyone = instruction.parse(ConditionID::new)
+    private PartyCondition parse(final Instruction instruction, final Argument<Location> location) throws QuestException {
+        final Argument<Number> range = instruction.number().get();
+        final Argument<List<ConditionID>> conditions = instruction.parse(ConditionID::new).getList();
+        final Argument<List<ConditionID>> everyone = instruction.parse(ConditionID::new)
                 .getList("every", Collections.emptyList());
-        final Variable<List<ConditionID>> anyone = instruction.parse(ConditionID::new)
+        final Argument<List<ConditionID>> anyone = instruction.parse(ConditionID::new)
                 .getList("any", Collections.emptyList());
-        final Variable<Number> count = instruction.number().get("count").orElse(null);
+        final Argument<Number> count = instruction.number().get("count").orElse(null);
         return new PartyCondition(location, range, conditions, everyone, anyone, count, questTypeApi, profileProvider);
     }
 }

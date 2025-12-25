@@ -3,8 +3,8 @@ package org.betonquest.betonquest.quest.event.compass;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.feature.FeatureApi;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.instruction.variable.VariableList;
+import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.variable.DefaultListArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.data.PlayerDataStorage;
@@ -34,12 +34,12 @@ public class CompassEvent implements PlayerEvent {
     /**
      * The action to perform on the compass.
      */
-    private final Variable<CompassTargetAction> action;
+    private final Argument<CompassTargetAction> action;
 
     /**
      * The compass point to set.
      */
-    private final Variable<CompassID> compassId;
+    private final Argument<CompassID> compassId;
 
     /**
      * Create the compass event.
@@ -50,7 +50,7 @@ public class CompassEvent implements PlayerEvent {
      * @param compassId  the compass point
      */
     public CompassEvent(final FeatureApi featureApi, final PlayerDataStorage storage,
-                        final Variable<CompassTargetAction> action, final Variable<CompassID> compassId) {
+                        final Argument<CompassTargetAction> action, final Argument<CompassID> compassId) {
         this.featureApi = featureApi;
         this.dataStorage = storage;
         this.action = action;
@@ -61,8 +61,8 @@ public class CompassEvent implements PlayerEvent {
     public void execute(final Profile profile) throws QuestException {
         final CompassID compassId = this.compassId.getValue(profile);
         switch (action.getValue(profile)) {
-            case ADD -> changeTag(new AddTagChanger(new VariableList<>(compassId.getTag())), profile);
-            case DEL -> changeTag(new DeleteTagChanger(new VariableList<>(compassId.getTag())), profile);
+            case ADD -> changeTag(new AddTagChanger(new DefaultListArgument<>(compassId.getTag())), profile);
+            case DEL -> changeTag(new DeleteTagChanger(new DefaultListArgument<>(compassId.getTag())), profile);
             case SET -> {
                 final QuestCompass compass = featureApi.getCompasses().get(compassId);
                 if (compass == null) {

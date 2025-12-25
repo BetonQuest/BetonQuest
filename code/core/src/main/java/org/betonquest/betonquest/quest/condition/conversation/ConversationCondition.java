@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.conversation;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.ConversationApi;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.conversation.ConversationID;
@@ -20,7 +20,7 @@ public class ConversationCondition implements PlayerCondition {
     /**
      * The conversation to check.
      */
-    private final Variable<ConversationID> conversationID;
+    private final Argument<ConversationID> conversationID;
 
     /**
      * Creates a new ConversationCondition.
@@ -28,7 +28,7 @@ public class ConversationCondition implements PlayerCondition {
      * @param conversationApi the Conversation API
      * @param conversationID  the conversation to check
      */
-    public ConversationCondition(final ConversationApi conversationApi, final Variable<ConversationID> conversationID) {
+    public ConversationCondition(final ConversationApi conversationApi, final Argument<ConversationID> conversationID) {
         this.conversationApi = conversationApi;
         this.conversationID = conversationID;
     }

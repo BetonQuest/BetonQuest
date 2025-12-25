@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.event.run;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
@@ -32,7 +32,7 @@ public class RunIndependentEventFactory implements PlayerlessEventFactory {
 
     @Override
     public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
-        final Variable<List<EventID>> events = instruction.parse(EventID::new).getList("events", Collections.emptyList());
+        final Argument<List<EventID>> events = instruction.parse(EventID::new).getList("events", Collections.emptyList());
         return new RunIndependentEvent(questTypeApi, events);
     }
 }

@@ -4,8 +4,8 @@ import net.Indyuce.mmoitems.api.event.item.ApplyGemStoneEvent;
 import net.Indyuce.mmoitems.api.item.mmoitem.MMOItem;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.event.EventHandler;
@@ -19,17 +19,17 @@ public class MMOItemsApplyGemObjective extends Objective implements Listener {
     /**
      * The ID of the item to be upgraded.
      */
-    private final Variable<String> itemID;
+    private final Argument<String> itemID;
 
     /**
      * The type of the item to be upgraded.
      */
-    private final Variable<String> itemType;
+    private final Argument<String> itemType;
 
     /**
      * The ID of the gem to be applied.
      */
-    private final Variable<String> gemID;
+    private final Argument<String> gemID;
 
     /**
      * Constructor for the MMOItemsApplyGemObjective.
@@ -40,7 +40,7 @@ public class MMOItemsApplyGemObjective extends Objective implements Listener {
      * @param gemID       the ID of the gem to be applied
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public MMOItemsApplyGemObjective(final Instruction instruction, final Variable<String> itemID, final Variable<String> itemType, final Variable<String> gemID) throws QuestException {
+    public MMOItemsApplyGemObjective(final Instruction instruction, final Argument<String> itemID, final Argument<String> itemType, final Argument<String> gemID) throws QuestException {
         super(instruction);
         this.itemID = itemID;
         this.itemType = itemType;

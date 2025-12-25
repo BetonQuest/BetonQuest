@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.event.notify;
 
 import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
@@ -100,7 +100,7 @@ public class NotifyEventFactory implements PlayerEventFactory {
     }
 
     private Text getLanguages(final Instruction instruction, final String texts) throws QuestException {
-        final Map<String, Variable<String>> translations = new HashMap<>();
+        final Map<String, Argument<String>> translations = new HashMap<>();
         final Matcher languageMatcher = LANGUAGE_PATTERN.matcher(texts);
 
         while (languageMatcher.find()) {

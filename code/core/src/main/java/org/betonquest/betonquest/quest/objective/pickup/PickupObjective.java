@@ -2,9 +2,9 @@ package org.betonquest.betonquest.quest.objective.pickup;
 
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,7 +22,7 @@ public class PickupObjective extends CountingObjective implements Listener {
     /**
      * The target amount of items to be picked up.
      */
-    private final Variable<List<ItemWrapper>> pickupItems;
+    private final Argument<List<ItemWrapper>> pickupItems;
 
     /**
      * Constructor for the PickupObjective.
@@ -32,8 +32,8 @@ public class PickupObjective extends CountingObjective implements Listener {
      * @param pickupItems  the items to be picked up
      * @throws QuestException if there is an error in the instruction
      */
-    public PickupObjective(final Instruction instruction, final Variable<Number> targetAmount,
-                           final Variable<List<ItemWrapper>> pickupItems) throws QuestException {
+    public PickupObjective(final Instruction instruction, final Argument<Number> targetAmount,
+                           final Argument<List<ItemWrapper>> pickupItems) throws QuestException {
         super(instruction, targetAmount, "items_to_pickup");
         this.pickupItems = pickupItems;
     }

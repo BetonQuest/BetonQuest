@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.argument.parser.EnumParser;
-import org.betonquest.betonquest.api.instruction.variable.VariableList;
+import org.betonquest.betonquest.api.instruction.variable.DefaultListArgument;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
@@ -59,7 +59,7 @@ public abstract class BaseScheduleFactory<S extends Schedule> implements Schedul
                 .orElseThrow(() -> new QuestException("Missing events"));
         final List<EventID> events;
         try {
-            events = new VariableList<>(variables, pack, eventsString,
+            events = new DefaultListArgument<>(variables, pack, eventsString,
                     value -> new EventID(variables, packManager, pack, value)).getValue(null);
         } catch (final QuestException e) {
             throw new QuestException("Error while loading events: " + e.getMessage(), e);

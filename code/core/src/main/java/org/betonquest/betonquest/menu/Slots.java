@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.menu;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,7 +31,7 @@ public class Slots {
     /**
      * Items to set into the form.
      */
-    private final Variable<List<MenuItemID>> items;
+    private final Argument<List<MenuItemID>> items;
 
     /**
      * The slots form.
@@ -47,7 +47,7 @@ public class Slots {
      * @throws IllegalArgumentException when the slot form is invalid or a number cannot be parsed
      */
     @SuppressWarnings("PMD.CyclomaticComplexity")
-    public Slots(final RPGMenu rpgMenu, final String slots, final Variable<List<MenuItemID>> items) {
+    public Slots(final RPGMenu rpgMenu, final String slots, final Argument<List<MenuItemID>> items) {
         this.rpgMenu = rpgMenu;
         if (slots.matches("\\d+")) {
             this.type = Type.SINGLE;

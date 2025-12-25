@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.journal;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.feature.journal.Pointer;
@@ -22,7 +22,7 @@ public class AddEntryJournalChanger implements JournalChanger {
     /**
      * Entry to add to the journal.
      */
-    private final Variable<JournalEntryID> entryID;
+    private final Argument<JournalEntryID> entryID;
 
     /**
      * Create the entry-adding journal changer.
@@ -30,7 +30,7 @@ public class AddEntryJournalChanger implements JournalChanger {
      * @param instantSource source to get the journal entry date from
      * @param entryID       entry to add
      */
-    public AddEntryJournalChanger(final InstantSource instantSource, final Variable<JournalEntryID> entryID) {
+    public AddEntryJournalChanger(final InstantSource instantSource, final Argument<JournalEntryID> entryID) {
         this.instantSource = instantSource;
         this.entryID = entryID;
     }

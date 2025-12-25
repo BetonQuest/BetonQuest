@@ -6,8 +6,8 @@ import io.lumine.mythic.core.mobs.ActiveMob;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.Location;
@@ -38,38 +38,38 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
     /**
      * The identifiers of all mobs that this objective should count.
      */
-    private final Variable<List<String>> identifiers;
+    private final Argument<List<String>> identifiers;
 
     /**
      * Mode to choose the identifier from a mob.
      */
-    private final Variable<IdentifierMode> mode;
+    private final Argument<IdentifierMode> mode;
 
     /**
      * The minimal level the killed mob must have to count.
      */
-    private final Variable<Number> minMobLevel;
+    private final Argument<Number> minMobLevel;
 
     /**
      * The maximal level the killed mob must have to count.
      */
-    private final Variable<Number> maxMobLevel;
+    private final Argument<Number> maxMobLevel;
 
     /**
      * The radius in which any of the specified mobs dying will progress the objective for players.
      */
-    private final Variable<Number> deathRadiusAllPlayers;
+    private final Argument<Number> deathRadiusAllPlayers;
 
     /**
      * The radius in which any of the specified mobs dying without a killer will progress the objective for players.
      */
-    private final Variable<Number> neutralDeathRadiusAllPlayers;
+    private final Argument<Number> neutralDeathRadiusAllPlayers;
 
     /**
      * The text with which the mob must have been marked to count.
      */
     @Nullable
-    private final Variable<String> marked;
+    private final Argument<String> marked;
 
     /**
      * Creates a new MythicMobKillObjective.
@@ -86,10 +86,10 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
      * @throws QuestException if the instruction is invalid
      */
     public MythicMobKillObjective(
-            final Instruction instruction, final Variable<Number> targetAmount, final Variable<List<String>> identifiers,
-            final Variable<IdentifierMode> mode, final Variable<Number> minMobLevel, final Variable<Number> maxMobLevel,
-            final Variable<Number> deathRadiusAllPlayers, final Variable<Number> neutralDeathRadiusAllPlayers,
-            @Nullable final Variable<String> marked) throws QuestException {
+            final Instruction instruction, final Argument<Number> targetAmount, final Argument<List<String>> identifiers,
+            final Argument<IdentifierMode> mode, final Argument<Number> minMobLevel, final Argument<Number> maxMobLevel,
+            final Argument<Number> deathRadiusAllPlayers, final Argument<Number> neutralDeathRadiusAllPlayers,
+            @Nullable final Argument<String> marked) throws QuestException {
         super(instruction, targetAmount, "mobs_to_kill");
         this.identifiers = identifiers;
         this.mode = mode;

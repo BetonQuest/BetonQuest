@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.event.scoreboard;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.quest.event.point.PointType;
@@ -20,8 +20,8 @@ public class ScoreboardObjectiveEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> objective = instruction.string().get();
-        final Variable<Number> number = instruction.number().get();
+        final Argument<String> objective = instruction.string().get();
+        final Argument<Number> number = instruction.number().get();
         final PointType action = instruction.enumeration(PointType.class).get("action", PointType.ADD).getValue(null);
         return new ScoreboardObjectiveEvent(objective, number, action);
     }

@@ -2,9 +2,9 @@ package org.betonquest.betonquest.quest.objective.block;
 
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
@@ -25,7 +25,7 @@ public class BlockObjective extends CountingObjective implements Listener {
     /**
      * Block Selector parameter.
      */
-    private final Variable<BlockSelector> selector;
+    private final Argument<BlockSelector> selector;
 
     /**
      * Optional exactMatch parameter.
@@ -41,13 +41,13 @@ public class BlockObjective extends CountingObjective implements Listener {
      * Optional location parameter.
      */
     @Nullable
-    private final Variable<Location> location;
+    private final Argument<Location> location;
 
     /**
      * Optional region parameter. Used together with {@link #location} to form a cuboid region.
      */
     @Nullable
-    private final Variable<Location> region;
+    private final Argument<Location> region;
 
     /**
      * Optional ignorecancel parameter.
@@ -80,9 +80,9 @@ public class BlockObjective extends CountingObjective implements Listener {
      * @throws QuestException if there is an error in the instruction
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
-    public BlockObjective(final Instruction instruction, final Variable<Number> targetAmount,
-                          final Variable<BlockSelector> selector, final boolean exactMatch, final boolean noSafety,
-                          @Nullable final Variable<Location> location, @Nullable final Variable<Location> region,
+    public BlockObjective(final Instruction instruction, final Argument<Number> targetAmount,
+                          final Argument<BlockSelector> selector, final boolean exactMatch, final boolean noSafety,
+                          @Nullable final Argument<Location> location, @Nullable final Argument<Location> region,
                           final boolean ignoreCancel, final IngameNotificationSender blockBreakSender,
                           final IngameNotificationSender blockPlaceSender) throws QuestException {
         super(instruction, targetAmount, null);
@@ -157,7 +157,7 @@ public class BlockObjective extends CountingObjective implements Listener {
         return true;
     }
 
-    private boolean isInRange(final Location loc, final Profile profile, final Variable<Location> location, final Variable<Location> region) throws QuestException {
+    private boolean isInRange(final Location loc, final Profile profile, final Argument<Location> location, final Argument<Location> region) throws QuestException {
         final Location loc1 = location.getValue(profile);
         final Location loc2 = region.getValue(profile);
         return inBetween(loc1, loc2, loc);

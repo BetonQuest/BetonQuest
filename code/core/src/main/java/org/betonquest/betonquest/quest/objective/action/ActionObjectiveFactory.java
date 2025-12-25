@@ -2,9 +2,9 @@ package org.betonquest.betonquest.quest.objective.action;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.bukkit.Location;
 import org.bukkit.inventory.EquipmentSlot;
@@ -29,14 +29,14 @@ public class ActionObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Click> action = instruction.enumeration(Click.class).get();
-        final Variable<Optional<BlockSelector>> selector = instruction.blockSelector()
+        final Argument<Click> action = instruction.enumeration(Click.class).get();
+        final Argument<Optional<BlockSelector>> selector = instruction.blockSelector()
                 .prefilterOptional(ANY, null).get();
         final boolean exactMatch = instruction.hasArgument("exactMatch");
-        final Variable<Location> loc = instruction.location().get("loc").orElse(null);
-        final Variable<Number> range = instruction.number().get("range", 0);
+        final Argument<Location> loc = instruction.location().get("loc").orElse(null);
+        final Argument<Number> range = instruction.number().get("range", 0);
         final boolean cancel = instruction.hasArgument("cancel");
-        final Variable<Optional<EquipmentSlot>> hand = instruction.enumeration(EquipmentSlot.class)
+        final Argument<Optional<EquipmentSlot>> hand = instruction.enumeration(EquipmentSlot.class)
                 .validate(slot -> slot == EquipmentSlot.HAND || slot == EquipmentSlot.OFF_HAND, "Invalid hand value: '%s'")
                 .prefilterOptional(ANY, null)
                 .get("hand").orElse(null);

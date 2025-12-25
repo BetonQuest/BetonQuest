@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.objective.resourcepack;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.event.EventHandler;
@@ -18,7 +18,7 @@ public class ResourcepackObjective extends Objective implements Listener {
     /**
      * The target status for the received resource pack.
      */
-    private final Variable<PlayerResourcePackStatusEvent.Status> targetStatus;
+    private final Argument<PlayerResourcePackStatusEvent.Status> targetStatus;
 
     /**
      * Constructs a new ResourcepackObjective instance.
@@ -27,7 +27,7 @@ public class ResourcepackObjective extends Objective implements Listener {
      * @param targetStatus The target status for the received resource pack.
      * @throws QuestException if an error occurs while parsing the instruction.
      */
-    public ResourcepackObjective(final Instruction instruction, final Variable<PlayerResourcePackStatusEvent.Status> targetStatus) throws QuestException {
+    public ResourcepackObjective(final Instruction instruction, final Argument<PlayerResourcePackStatusEvent.Status> targetStatus) throws QuestException {
         super(instruction);
         this.targetStatus = targetStatus;
     }

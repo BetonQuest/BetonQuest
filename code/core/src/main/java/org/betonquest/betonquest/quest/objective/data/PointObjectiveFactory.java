@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.objective.data;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.quest.condition.number.Operation;
@@ -29,10 +29,10 @@ public class PointObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<String> category = instruction.packageIdentifier().get();
-        final Variable<Number> targetAmount = instruction.number().get();
-        final Variable<CountingMode> mode = instruction.enumeration(CountingMode.class).get("mode", CountingMode.TOTAL);
-        final Variable<Operation> operation = instruction.parse(Operation::fromSymbol).get("operation", Operation.GREATER_EQUAL);
+        final Argument<String> category = instruction.packageIdentifier().get();
+        final Argument<Number> targetAmount = instruction.number().get();
+        final Argument<CountingMode> mode = instruction.enumeration(CountingMode.class).get("mode", CountingMode.TOTAL);
+        final Argument<Operation> operation = instruction.parse(Operation::fromSymbol).get("operation", Operation.GREATER_EQUAL);
         return new PointObjective(instruction, playerDataStorage, category, targetAmount, mode, operation);
     }
 }

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.gamemode;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.bukkit.GameMode;
@@ -14,14 +14,14 @@ public class GameModeCondition implements OnlineCondition {
     /**
      * The game mode to check for.
      */
-    private final Variable<GameMode> gameMode;
+    private final Argument<GameMode> gameMode;
 
     /**
      * Creates a new game mode condition.
      *
      * @param gameMode The game mode to check for.
      */
-    public GameModeCondition(final Variable<GameMode> gameMode) {
+    public GameModeCondition(final Argument<GameMode> gameMode) {
         this.gameMode = gameMode;
     }
 

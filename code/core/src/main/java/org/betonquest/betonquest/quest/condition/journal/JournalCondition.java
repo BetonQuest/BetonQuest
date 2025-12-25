@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.journal;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.data.PlayerDataStorage;
@@ -21,7 +21,7 @@ public class JournalCondition implements OnlineCondition {
     /**
      * The target pointer to the journal to check for.
      */
-    private final Variable<JournalEntryID> targetPointer;
+    private final Argument<JournalEntryID> targetPointer;
 
     /**
      * Create a new journal condition.
@@ -29,7 +29,7 @@ public class JournalCondition implements OnlineCondition {
      * @param dataStorage   the storage providing player data
      * @param targetPointer the target pointer to the journal to check for
      */
-    public JournalCondition(final PlayerDataStorage dataStorage, final Variable<JournalEntryID> targetPointer) {
+    public JournalCondition(final PlayerDataStorage dataStorage, final Argument<JournalEntryID> targetPointer) {
         this.dataStorage = dataStorage;
         this.targetPointer = targetPointer;
     }

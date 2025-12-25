@@ -4,7 +4,7 @@ import com.nisovin.shopkeepers.api.ShopkeepersAPI;
 import com.nisovin.shopkeepers.api.shopkeeper.Shopkeeper;
 import com.nisovin.shopkeepers.api.shopkeeper.player.PlayerShopkeeper;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 
@@ -16,14 +16,14 @@ public class HavingShopCondition implements PlayerCondition {
     /**
      * Target shop amount.
      */
-    private final Variable<Number> amount;
+    private final Argument<Number> amount;
 
     /**
      * Create a new shop condition.
      *
      * @param amount the required shop amount
      */
-    public HavingShopCondition(final Variable<Number> amount) {
+    public HavingShopCondition(final Argument<Number> amount) {
         this.amount = amount;
     }
 

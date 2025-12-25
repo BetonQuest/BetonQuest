@@ -3,27 +3,27 @@ package org.betonquest.betonquest.api.instruction.variable;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.instruction.ValueChecker;
+import org.betonquest.betonquest.api.instruction.ValueParser;
+import org.betonquest.betonquest.api.instruction.ValueValidator;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A Variable that resolves into a list of {@link T}.
  *
  * @param <T> the variable type
  */
-public class VariableList<T> extends DefaultVariable<List<T>> {
+public class DefaultListArgument<T> extends DefaultArgument<List<T>> {
 
     /**
      * Creates a new VariableList.
      *
      * @param value the list of values
      */
-    public VariableList(final List<T> value) {
+    public DefaultListArgument(final List<T> value) {
         super(value);
     }
 
@@ -33,7 +33,7 @@ public class VariableList<T> extends DefaultVariable<List<T>> {
      * @param values the list of values
      */
     @SafeVarargs
-    public VariableList(final T... values) {
+    public DefaultListArgument(final T... values) {
         super(List.of(values));
     }
 
@@ -47,10 +47,9 @@ public class VariableList<T> extends DefaultVariable<List<T>> {
      * @param resolver  the resolver to convert the resolved variable to the given type
      * @throws QuestException if the variables could not be created or resolved to the given type
      */
-    public VariableList(final Variables variables, @Nullable final QuestPackage pack, final String input,
-                        final ValueParser<T> resolver) throws QuestException {
-        this(variables, pack, input, resolver, (value) -> {
-        });
+    public DefaultListArgument(final Variables variables, @Nullable final QuestPackage pack, final String input,
+                               final ValueParser<T> resolver) throws QuestException {
+        this(variables, pack, input, resolver, value -> true);
     }
 
     /**
@@ -64,8 +63,8 @@ public class VariableList<T> extends DefaultVariable<List<T>> {
      * @param valueChecker the checker to verify valid lists
      * @throws QuestException if the variables could not be created or resolved to the given type
      */
-    public VariableList(final Variables variables, @Nullable final QuestPackage pack, final String input,
-                        final ValueParser<T> resolver, final ValueChecker<List<T>> valueChecker) throws QuestException {
+    public DefaultListArgument(final Variables variables, @Nullable final QuestPackage pack, final String input,
+                               final ValueParser<T> resolver, final ValueValidator<List<T>> valueChecker) throws QuestException {
         this(variables, pack, input, new MarkedResolver<>(new ValueParser<>() {
             @Override
             public List<T> apply(final String value) throws QuestException {
@@ -73,7 +72,9 @@ public class VariableList<T> extends DefaultVariable<List<T>> {
                 for (final String part : StringUtils.split(value, ',')) {
                     list.add(resolver.apply(part));
                 }
-                valueChecker.check(list);
+                if (!valueChecker.validate(list)) {
+                    throw new QuestException("Invalid value: " + value);
+                }
                 return list;
             }
 
@@ -88,46 +89,28 @@ public class VariableList<T> extends DefaultVariable<List<T>> {
         }));
     }
 
-    private VariableList(final Variables variables, @Nullable final QuestPackage pack, final String input,
-                         final MarkedResolver<T> resolver) throws QuestException {
+    private DefaultListArgument(final Variables variables, @Nullable final QuestPackage pack, final String input,
+                                final MarkedResolver<T> resolver) throws QuestException {
         super(variables, pack, input, resolver);
         if (!resolver.called) {
             for (final String unresolved : StringUtils.split(input, ',')) {
-                new DefaultVariable<>(variables, pack, unresolved, resolver);
+                new DefaultArgument<>(variables, pack, unresolved, resolver);
             }
         }
     }
 
     /**
-     * {@link ValueChecker} for Lists that must not be empty.
+     * {@link ValueValidator} for Lists that must not be empty.
      *
      * @param <T> the type of the list
      * @return the value checker
      */
-    public static <T> ValueChecker<List<T>> notEmptyChecker() {
+    public static <T> ValueValidator<List<T>> notEmptyChecker() {
         return (value) -> {
             if (value.isEmpty()) {
                 throw new QuestException("List must not be empty");
             }
-        };
-    }
-
-    /**
-     * Checks if the resulting list does not have a duplicate key.
-     *
-     * @param <T> the key type to check for duplicates
-     * @param <U> the value type
-     * @return the value checker
-     */
-    public static <T, U> ValueChecker<List<Map.Entry<T, U>>> notDuplicateKeyChecker() {
-        return value -> {
-            final List<T> keys = new ArrayList<>();
-            for (final Map.Entry<T, U> entry : value) {
-                if (keys.contains(entry.getKey())) {
-                    throw new QuestException("List does not allow duplicate keys: " + entry.getKey());
-                }
-                keys.add(entry.getKey());
-            }
+            return true;
         };
     }
 

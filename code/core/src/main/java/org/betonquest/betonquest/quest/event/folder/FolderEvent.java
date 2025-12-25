@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.folder;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
@@ -58,29 +58,29 @@ public class FolderEvent implements NullableEvent {
      * The delay to apply before running the events.
      */
     @Nullable
-    private final Variable<Number> delay;
+    private final Argument<Number> delay;
 
     /**
      * The delay to apply between each event.
      */
     @Nullable
-    private final Variable<Number> period;
+    private final Argument<Number> period;
 
     /**
      * The number of events to run.
      */
     @Nullable
-    private final Variable<Number> random;
+    private final Argument<Number> random;
 
     /**
      * The events to run.
      */
-    private final Variable<List<EventID>> events;
+    private final Argument<List<EventID>> events;
 
     /**
      * The time unit to use for the delay and period.
      */
-    private final Variable<TimeUnit> timeUnit;
+    private final Argument<TimeUnit> timeUnit;
 
     /**
      * Whether the event should be canceled on logout.
@@ -90,7 +90,7 @@ public class FolderEvent implements NullableEvent {
     /**
      * Conditions to check if the event should be canceled.
      */
-    private final Variable<List<ConditionID>> cancelConditions;
+    private final Argument<List<ConditionID>> cancelConditions;
 
     /**
      * Create a folder event with the given parameters.
@@ -110,10 +110,10 @@ public class FolderEvent implements NullableEvent {
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public FolderEvent(final BetonQuest betonQuest, final BetonQuestLogger log, final PluginManager pluginManager,
-                       final Variable<List<EventID>> events, final QuestTypeApi questTypeApi, final Random randomGenerator,
-                       @Nullable final Variable<Number> delay, @Nullable final Variable<Number> period,
-                       @Nullable final Variable<Number> random, final Variable<TimeUnit> timeUnit, final boolean cancelOnLogout,
-                       final Variable<List<ConditionID>> cancelConditions) {
+                       final Argument<List<EventID>> events, final QuestTypeApi questTypeApi, final Random randomGenerator,
+                       @Nullable final Argument<Number> delay, @Nullable final Argument<Number> period,
+                       @Nullable final Argument<Number> random, final Argument<TimeUnit> timeUnit, final boolean cancelOnLogout,
+                       final Argument<List<ConditionID>> cancelConditions) {
         this.betonQuest = betonQuest;
         this.log = log;
         this.pluginManager = pluginManager;
@@ -250,6 +250,7 @@ public class FolderEvent implements NullableEvent {
      */
     @FunctionalInterface
     private interface FolderEventCanceler {
+
         /**
          * Whether the execution of the folder event should be cancelled.
          *
@@ -269,6 +270,7 @@ public class FolderEvent implements NullableEvent {
      * Registers the quit listener if the event should be cancelled on logout.
      */
     private static class QuitListener implements FolderEventCanceler, Listener {
+
         /**
          * Custom {@link BetonQuestLogger} instance for this class.
          */

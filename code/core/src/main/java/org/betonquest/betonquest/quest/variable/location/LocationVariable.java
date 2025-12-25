@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.variable.location;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.variable.online.OnlineVariable;
 
@@ -33,7 +33,7 @@ public class LocationVariable implements OnlineVariable {
     /**
      * The decimals of precision required, defaults to 0.
      */
-    private final Variable<Number> decimalPlaces;
+    private final Argument<Number> decimalPlaces;
 
     /**
      * Construct a new LocationVariable that allows for resolution of information about a Player's Location.
@@ -41,7 +41,7 @@ public class LocationVariable implements OnlineVariable {
      * @param mode          The mode of the location response required.
      * @param decimalPlaces The decimals of precision required, defaults to 0.
      */
-    public LocationVariable(final LocationFormationMode mode, final Variable<Number> decimalPlaces) {
+    public LocationVariable(final LocationFormationMode mode, final Argument<Number> decimalPlaces) {
         this.mode = mode;
         this.decimalPlaces = decimalPlaces;
     }

@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.spawn;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.bukkit.Location;
@@ -21,12 +21,12 @@ public class SpawnMobEvent implements NullableEvent {
     /**
      * The location to spawn the mob at.
      */
-    private final Variable<Location> variableLocation;
+    private final Argument<Location> variableLocation;
 
     /**
      * The type of mob to spawn.
      */
-    private final Variable<EntityType> type;
+    private final Argument<EntityType> type;
 
     /**
      * The equipment and drops of the mob.
@@ -36,19 +36,19 @@ public class SpawnMobEvent implements NullableEvent {
     /**
      * The amount of mobs to spawn.
      */
-    private final Variable<Number> amount;
+    private final Argument<Number> amount;
 
     /**
      * The name of the mob.
      */
     @Nullable
-    private final Variable<Component> name;
+    private final Argument<Component> name;
 
     /**
      * The marked variable.
      */
     @Nullable
-    private final Variable<String> marked;
+    private final Argument<String> marked;
 
     /**
      * Creates a new spawn mob event.
@@ -60,8 +60,8 @@ public class SpawnMobEvent implements NullableEvent {
      * @param name             the name of the mob
      * @param marked           the marked variable
      */
-    public SpawnMobEvent(final Variable<Location> variableLocation, final Variable<EntityType> type, final Equipment equipment,
-                         final Variable<Number> amount, @Nullable final Variable<Component> name, @Nullable final Variable<String> marked) {
+    public SpawnMobEvent(final Argument<Location> variableLocation, final Argument<EntityType> type, final Equipment equipment,
+                         final Argument<Number> amount, @Nullable final Argument<Component> name, @Nullable final Argument<String> marked) {
         this.variableLocation = variableLocation;
         this.type = type;
         this.equipment = equipment;

@@ -4,7 +4,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 
@@ -16,12 +16,12 @@ public class SetLevelEvent implements PlayerEvent {
     /**
      * Job to add experience to.
      */
-    private final Variable<Job> job;
+    private final Argument<Job> job;
 
     /**
      * Amount to remove.
      */
-    private final Variable<Number> nLevel;
+    private final Argument<Number> nLevel;
 
     /**
      * Create a new level delete event.
@@ -30,7 +30,7 @@ public class SetLevelEvent implements PlayerEvent {
      * @param job    the job to remove level from
      * @param amount the level amount
      */
-    public SetLevelEvent(final Variable<Job> job, final Variable<Number> amount) {
+    public SetLevelEvent(final Argument<Job> job, final Argument<Number> amount) {
         this.job = job;
         this.nLevel = amount;
     }

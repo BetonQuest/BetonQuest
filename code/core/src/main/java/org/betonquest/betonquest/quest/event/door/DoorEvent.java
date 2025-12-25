@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.door;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.bukkit.Location;
@@ -21,7 +21,7 @@ public class DoorEvent implements NullableEvent {
     /**
      * The {@link Openable}'s location.
      */
-    private final Variable<Location> location;
+    private final Argument<Location> location;
 
     /**
      * The action to do to the {@link Openable}.
@@ -34,7 +34,7 @@ public class DoorEvent implements NullableEvent {
      * @param location location to act on
      * @param action   action to do
      */
-    public DoorEvent(final Variable<Location> location, final Consumer<Openable> action) {
+    public DoorEvent(final Argument<Location> location, final Consumer<Openable> action) {
         this.location = location;
         this.action = action;
     }

@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.api.instruction.chain;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.jetbrains.annotations.Contract;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public interface ChainableInstruction extends InstructionChainParser {
      * @throws QuestException if an error occurs while parsing the variable
      */
     @Contract("!null -> new")
-    <T> Variable<T> getNext(InstructionArgumentParser<T> argument) throws QuestException;
+    <T> Argument<T> getNext(InstructionArgumentParser<T> argument) throws QuestException;
 
     /**
      * Find the next argument in the instruction without a key and interpret its value as a list.
@@ -33,7 +33,7 @@ public interface ChainableInstruction extends InstructionChainParser {
      * @throws QuestException if an error occurs while parsing the list
      */
     @Contract("!null -> new")
-    <T> Variable<List<T>> getNextList(InstructionArgumentParser<T> argument) throws QuestException;
+    <T> Argument<List<T>> getNextList(InstructionArgumentParser<T> argument) throws QuestException;
 
     /**
      * Find the optional argument in the instruction by its key.
@@ -45,7 +45,7 @@ public interface ChainableInstruction extends InstructionChainParser {
      * @throws QuestException if an error occurs while parsing the variable
      */
     @Contract("!null, !null -> new")
-    <T> Optional<Variable<T>> getOptional(String argumentKey, InstructionArgumentParser<T> argument) throws QuestException;
+    <T> Optional<Argument<T>> getOptional(String argumentKey, InstructionArgumentParser<T> argument) throws QuestException;
 
     /**
      * Find the optional argument in the instruction by its key.
@@ -58,7 +58,7 @@ public interface ChainableInstruction extends InstructionChainParser {
      * @throws QuestException if an error occurs while parsing the variable
      */
     @Contract("!null, !null, !null -> new")
-    <T> Variable<T> getOptional(String argumentKey, InstructionArgumentParser<T> argument, T defaultValue) throws QuestException;
+    <T> Argument<T> getOptional(String argumentKey, InstructionArgumentParser<T> argument, T defaultValue) throws QuestException;
 
     /**
      * Find the optional argument in the instruction by its key and interpret its value as a list.
@@ -70,7 +70,7 @@ public interface ChainableInstruction extends InstructionChainParser {
      * @throws QuestException if an error occurs while parsing the list
      */
     @Contract("!null, !null -> new")
-    <T> Optional<Variable<List<T>>> getOptionalList(String argumentKey, InstructionArgumentParser<T> argument) throws QuestException;
+    <T> Optional<Argument<List<T>>> getOptionalList(String argumentKey, InstructionArgumentParser<T> argument) throws QuestException;
 
     /**
      * Find the optional argument in the instruction by its key and interpret its value as a list.
@@ -83,5 +83,5 @@ public interface ChainableInstruction extends InstructionChainParser {
      * @throws QuestException if an error occurs while parsing the list
      */
     @Contract("!null, !null, !null -> new")
-    <T> Variable<List<T>> getOptionalList(String argumentKey, InstructionArgumentParser<T> argument, List<T> defaultList) throws QuestException;
+    <T> Argument<List<T>> getOptionalList(String argumentKey, InstructionArgumentParser<T> argument, List<T> defaultList) throws QuestException;
 }

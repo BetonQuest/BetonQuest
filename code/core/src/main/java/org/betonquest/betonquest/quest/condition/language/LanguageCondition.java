@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.language;
 
 import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.data.PlayerDataStorage;
@@ -27,7 +27,7 @@ public class LanguageCondition implements PlayerCondition {
     /**
      * Set of languages that the player must have selected for the condition to be true.
      */
-    private final Variable<List<String>> expectedLanguages;
+    private final Argument<List<String>> expectedLanguages;
 
     /**
      * Create a language condition.
@@ -37,7 +37,7 @@ public class LanguageCondition implements PlayerCondition {
      * @param expectedLanguages the languages that the player must have selected
      */
     public LanguageCondition(final PlayerDataStorage dataStorage, final LanguageProvider languageProvider,
-                             final Variable<List<String>> expectedLanguages) {
+                             final Argument<List<String>> expectedLanguages) {
         this.dataStorage = dataStorage;
         this.languageProvider = languageProvider;
         this.expectedLanguages = expectedLanguages;

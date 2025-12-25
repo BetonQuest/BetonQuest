@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.brewery.condition;
 import com.dre.brewery.BPlayer;
 import com.dre.brewery.api.BreweryApi;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 
@@ -15,14 +15,14 @@ public class DrunkCondition implements OnlineCondition {
     /**
      * The drunkenness level.
      */
-    private final Variable<Number> drunkVar;
+    private final Argument<Number> drunkVar;
 
     /**
      * Create a new Drunk Condition.
      *
      * @param drunkVar the drunkenness level.
      */
-    public DrunkCondition(final Variable<Number> drunkVar) {
+    public DrunkCondition(final Argument<Number> drunkVar) {
         this.drunkVar = drunkVar;
     }
 

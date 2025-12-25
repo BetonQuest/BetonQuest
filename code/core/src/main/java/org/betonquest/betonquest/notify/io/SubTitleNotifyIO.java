@@ -4,7 +4,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.notify.NotifyIO;
@@ -21,17 +21,17 @@ public class SubTitleNotifyIO extends NotifyIO {
     /**
      * Time in ticks the title fades in.
      */
-    private final Variable<Number> variableFadeIn;
+    private final Argument<Number> variableFadeIn;
 
     /**
      * Time in ticks the title stays.
      */
-    private final Variable<Number> variableStay;
+    private final Argument<Number> variableStay;
 
     /**
      * Time in ticks the title fades out.
      */
-    private final Variable<Number> variableFadeOut;
+    private final Argument<Number> variableFadeOut;
 
     /**
      * Create a new Sub Title Notify IO.

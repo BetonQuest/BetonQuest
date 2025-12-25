@@ -5,7 +5,7 @@ import io.lumine.mythic.bukkit.BukkitAdapter;
 import io.lumine.mythic.core.items.MythicItem;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.item.QuestItemWrapper;
@@ -23,7 +23,7 @@ import java.util.function.Predicate;
  * @param itemManager the manager instance to get items
  * @param itemName    the id to get
  */
-public record MythicItemWrapper(ItemManager itemManager, Variable<String> itemName) implements QuestItemWrapper {
+public record MythicItemWrapper(ItemManager itemManager, Argument<String> itemName) implements QuestItemWrapper {
 
     @Override
     public QuestItem getItem(@Nullable final Profile profile) throws QuestException {

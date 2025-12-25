@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.scoreboard;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.quest.event.point.PointType;
@@ -18,12 +18,12 @@ public class ScoreboardObjectiveEvent implements PlayerEvent {
     /**
      * The name of the objective.
      */
-    private final Variable<String> objective;
+    private final Argument<String> objective;
 
     /**
      * The number to modify the score by.
      */
-    private final Variable<Number> count;
+    private final Argument<Number> count;
 
     /**
      * The modification to apply to the score.
@@ -37,7 +37,7 @@ public class ScoreboardObjectiveEvent implements PlayerEvent {
      * @param count        the number to modify the score by
      * @param modification the modification to apply to the score
      */
-    public ScoreboardObjectiveEvent(final Variable<String> objective, final Variable<Number> count, final PointType modification) {
+    public ScoreboardObjectiveEvent(final Argument<String> objective, final Argument<Number> count, final PointType modification) {
         this.objective = objective;
         this.count = count;
         this.modification = modification;

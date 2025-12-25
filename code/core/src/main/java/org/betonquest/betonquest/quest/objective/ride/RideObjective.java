@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.objective.ride;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.entity.EntityType;
@@ -22,7 +22,7 @@ public class RideObjective extends Objective implements Listener {
     /**
      * The type of vehicle that is required or an empty optional if any vehicle is allowed.
      */
-    private final Variable<Optional<EntityType>> vehicle;
+    private final Argument<Optional<EntityType>> vehicle;
 
     /**
      * Constructor for the RideObjective.
@@ -31,7 +31,7 @@ public class RideObjective extends Objective implements Listener {
      * @param vehicle     the type of vehicle that is required, or null if any vehicle is allowed
      * @throws QuestException if there is an error in the instruction
      */
-    public RideObjective(final Instruction instruction, final Variable<Optional<EntityType>> vehicle) throws QuestException {
+    public RideObjective(final Instruction instruction, final Argument<Optional<EntityType>> vehicle) throws QuestException {
         super(instruction);
         this.vehicle = vehicle;
     }

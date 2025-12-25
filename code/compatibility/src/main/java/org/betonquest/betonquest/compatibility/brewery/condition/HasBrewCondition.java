@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.brewery.condition;
 
 import com.dre.brewery.recipe.BRecipe;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.compatibility.brewery.BreweryUtils;
@@ -18,17 +18,17 @@ public class HasBrewCondition implements OnlineCondition {
     /**
      * The amount of brews to check.
      */
-    private final Variable<Number> countVar;
+    private final Argument<Number> countVar;
 
     /**
      * The name of the brew to check.
      */
-    private final Variable<String> nameVar;
+    private final Argument<String> nameVar;
 
     /**
      * Interpretation mode for brews.
      */
-    private final Variable<IdentifierType> mode;
+    private final Argument<IdentifierType> mode;
 
     /**
      * Creates a new has Brew condition.
@@ -37,7 +37,7 @@ public class HasBrewCondition implements OnlineCondition {
      * @param nameVar  the name of the brew to check.
      * @param mode     the interpretation mode for brews.
      */
-    public HasBrewCondition(final Variable<Number> countVar, final Variable<String> nameVar, final Variable<IdentifierType> mode) {
+    public HasBrewCondition(final Argument<Number> countVar, final Argument<String> nameVar, final Argument<IdentifierType> mode) {
         this.countVar = countVar;
         this.nameVar = nameVar;
         this.mode = mode;

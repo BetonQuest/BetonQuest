@@ -4,7 +4,7 @@ import net.kyori.adventure.text.Component;
 import net.milkbowl.vault.economy.Economy;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
@@ -26,7 +26,7 @@ public class MoneyEvent implements PlayerEvent {
     /**
      * Amount to modify the balance.
      */
-    private final Variable<Number> amount;
+    private final Argument<Number> amount;
 
     /**
      * If the current balance should be multiplied with the amount.
@@ -54,7 +54,7 @@ public class MoneyEvent implements PlayerEvent {
      * @param givenSender the notification wrapper if the player should get a message when getting money
      * @param takenSender the notification wrapper if the player should get a message when loosing money
      */
-    public MoneyEvent(final Economy economy, final Variable<Number> amount, final boolean multi,
+    public MoneyEvent(final Economy economy, final Argument<Number> amount, final boolean multi,
                       @Nullable final IngameNotificationSender givenSender, @Nullable final IngameNotificationSender takenSender) {
         this.economy = economy;
         this.amount = amount;

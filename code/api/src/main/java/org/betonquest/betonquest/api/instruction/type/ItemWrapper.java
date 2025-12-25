@@ -2,7 +2,7 @@ package org.betonquest.betonquest.api.instruction.type;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.identifier.Identifier;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.inventory.ItemStack;
@@ -53,5 +53,5 @@ public interface ItemWrapper {
      *
      * @return the stores amount
      */
-    Variable<Number> getAmount();
+    Argument<Number> getAmount();
 }

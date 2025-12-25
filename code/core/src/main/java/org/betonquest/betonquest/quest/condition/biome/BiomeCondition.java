@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.biome;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.bukkit.block.Biome;
@@ -14,14 +14,14 @@ public class BiomeCondition implements OnlineCondition {
     /**
      * The biome to check for.
      */
-    private final Variable<Biome> biome;
+    private final Argument<Biome> biome;
 
     /**
      * Creates a new BiomeCondition.
      *
      * @param biome The biome to check for
      */
-    public BiomeCondition(final Variable<Biome> biome) {
+    public BiomeCondition(final Argument<Biome> biome) {
         this.biome = biome;
     }
 

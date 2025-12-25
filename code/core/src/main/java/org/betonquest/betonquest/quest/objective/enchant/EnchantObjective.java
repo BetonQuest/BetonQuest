@@ -2,9 +2,9 @@ package org.betonquest.betonquest.quest.objective.enchant;
 
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.enchantments.Enchantment;
@@ -24,12 +24,12 @@ public class EnchantObjective extends CountingObjective implements Listener {
     /**
      * The item to enchant.
      */
-    private final Variable<ItemWrapper> item;
+    private final Argument<ItemWrapper> item;
 
     /**
      * The desired enchantments.
      */
-    private final Variable<List<EnchantmentData>> desiredEnchantments;
+    private final Argument<List<EnchantmentData>> desiredEnchantments;
 
     /**
      * True if at least one enchantment is required, false if all enchantments are required.
@@ -46,8 +46,8 @@ public class EnchantObjective extends CountingObjective implements Listener {
      * @param requireOne          true if at least one enchantment is required, false if all enchantments are required
      * @throws QuestException if there is an error in the instruction
      */
-    public EnchantObjective(final Instruction instruction, final Variable<Number> targetAmount, final Variable<ItemWrapper> item,
-                            final Variable<List<EnchantmentData>> desiredEnchantments, final boolean requireOne) throws QuestException {
+    public EnchantObjective(final Instruction instruction, final Argument<Number> targetAmount, final Argument<ItemWrapper> item,
+                            final Argument<List<EnchantmentData>> desiredEnchantments, final boolean requireOne) throws QuestException {
         super(instruction, targetAmount, "items_to_enchant");
         this.item = item;
         this.desiredEnchantments = desiredEnchantments;

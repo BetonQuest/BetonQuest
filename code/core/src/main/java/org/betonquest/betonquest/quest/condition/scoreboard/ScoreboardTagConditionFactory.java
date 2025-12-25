@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.condition.scoreboard;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -30,7 +30,7 @@ public class ScoreboardTagConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> tag = instruction.string().get();
+        final Argument<String> tag = instruction.string().get();
         final BetonQuestLogger logger = loggerFactory.create(ScoreboardTagCondition.class);
         return new OnlineConditionAdapter(new ScoreboardTagCondition(tag), logger, instruction.getPackage());
     }

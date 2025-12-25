@@ -3,7 +3,7 @@ package org.betonquest.betonquest.text;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.api.text.TextParser;
@@ -25,7 +25,7 @@ public class ParsedText implements Text {
     /**
      * The text to use for each language.
      */
-    private final Map<String, Variable<String>> texts;
+    private final Map<String, Argument<String>> texts;
 
     /**
      * The data storage to use for getting the player's language.
@@ -46,7 +46,7 @@ public class ParsedText implements Text {
      * @param languageProvider the language provider to get the default language
      * @throws QuestException if an error occurs while constructing the text
      */
-    public ParsedText(final TextParser parser, final Map<String, Variable<String>> texts,
+    public ParsedText(final TextParser parser, final Map<String, Argument<String>> texts,
                       final PlayerDataStorage dataStorage, final LanguageProvider languageProvider) throws QuestException {
         this.parser = parser;
         this.texts = texts;
@@ -60,7 +60,7 @@ public class ParsedText implements Text {
     @Override
     public Component asComponent(@Nullable final Profile profile) throws QuestException {
         String language = null;
-        Variable<String> text = null;
+        Argument<String> text = null;
         if (profile != null) {
             language = dataStorage.get(profile).getLanguage().orElseGet(languageProvider::getDefaultLanguage);
             text = texts.get(language);

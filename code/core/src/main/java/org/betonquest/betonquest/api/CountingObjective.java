@@ -3,8 +3,8 @@ package org.betonquest.betonquest.api;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -40,7 +40,7 @@ public abstract class CountingObjective extends Objective {
     /**
      * The amount of units required for completion.
      */
-    private final Variable<Number> targetAmount;
+    private final Argument<Number> targetAmount;
 
     /**
      * Create a counting objective.
@@ -50,7 +50,7 @@ public abstract class CountingObjective extends Objective {
      * @param notifyMessageName the message name used for notifying by default
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public CountingObjective(final Instruction instruction, final Variable<Number> targetAmount,
+    public CountingObjective(final Instruction instruction, final Argument<Number> targetAmount,
                              @Nullable final String notifyMessageName) throws QuestException {
         this(instruction, COUNTING_FACTORY, targetAmount, notifyMessageName);
     }
@@ -65,7 +65,7 @@ public abstract class CountingObjective extends Objective {
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
     public CountingObjective(final Instruction instruction, final ObjectiveDataFactory templateFactory,
-                             final Variable<Number> targetAmount, @Nullable final String notifyMessageName)
+                             final Argument<Number> targetAmount, @Nullable final String notifyMessageName)
             throws QuestException {
         super(instruction, templateFactory);
         final BetonQuest instance = BetonQuest.getInstance();

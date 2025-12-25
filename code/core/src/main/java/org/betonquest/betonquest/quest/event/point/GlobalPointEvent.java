@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.point;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.database.GlobalData;
@@ -14,6 +14,7 @@ import java.util.Optional;
  * Modifies global Points.
  */
 public class GlobalPointEvent implements NullableEvent {
+
     /**
      * The global data.
      */
@@ -22,12 +23,12 @@ public class GlobalPointEvent implements NullableEvent {
     /**
      * The category name.
      */
-    private final Variable<String> category;
+    private final Argument<String> category;
 
     /**
      * The count.
      */
-    private final Variable<Number> count;
+    private final Argument<Number> count;
 
     /**
      * The point type, how the points should be modified.
@@ -42,7 +43,7 @@ public class GlobalPointEvent implements NullableEvent {
      * @param count      the count
      * @param pointType  the point type
      */
-    public GlobalPointEvent(final GlobalData globalData, final Variable<String> category, final Variable<Number> count, final PointType pointType) {
+    public GlobalPointEvent(final GlobalData globalData, final Argument<String> category, final Argument<Number> count, final PointType pointType) {
         this.globalData = globalData;
         this.category = category;
         this.count = count;

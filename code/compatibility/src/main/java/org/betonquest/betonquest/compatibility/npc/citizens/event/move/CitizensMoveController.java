@@ -8,7 +8,7 @@ import net.citizensnpcs.api.ai.event.NavigationStuckEvent;
 import net.citizensnpcs.api.event.SpawnReason;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
@@ -189,8 +189,8 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
      * @param failEvents         the events to execute when the NPC can't reach the last destination
      * @param blockConversations if the NPC will block conversation interaction while moving (includes wait time)
      */
-    public record MoveData(Variable<List<Location>> locations, Variable<Number> waitTicks,
-                           Variable<List<EventID>> doneEvents, Variable<List<EventID>> failEvents,
+    public record MoveData(Argument<List<Location>> locations, Argument<Number> waitTicks,
+                           Argument<List<EventID>> doneEvents, Argument<List<EventID>> failEvents,
                            boolean blockConversations) {
 
         /**

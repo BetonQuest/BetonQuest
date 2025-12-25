@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.chest;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.bukkit.Location;
@@ -17,14 +17,14 @@ public abstract class AbstractChestEvent implements NullableEvent {
     /**
      * The location of the chest.
      */
-    private final Variable<Location> variableLocation;
+    private final Argument<Location> variableLocation;
 
     /**
      * Creates a new chest clear event.
      *
      * @param variableLocation the location of the chest
      */
-    public AbstractChestEvent(final Variable<Location> variableLocation) {
+    public AbstractChestEvent(final Argument<Location> variableLocation) {
         this.variableLocation = variableLocation;
     }
 

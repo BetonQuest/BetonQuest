@@ -2,9 +2,9 @@ package org.betonquest.betonquest.quest.objective.step;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.Location;
@@ -28,7 +28,7 @@ public class StepObjective extends Objective implements Listener {
     /**
      * The location of the pressure plate.
      */
-    private final Variable<Location> loc;
+    private final Argument<Location> loc;
 
     /**
      * The selector for the pressure plate block.
@@ -43,7 +43,7 @@ public class StepObjective extends Objective implements Listener {
      * @param pressurePlateSelector the selector for the pressure plate block
      * @throws QuestException if there is an error in the instruction
      */
-    public StepObjective(final Instruction instruction, final Variable<Location> loc, final BlockSelector pressurePlateSelector) throws QuestException {
+    public StepObjective(final Instruction instruction, final Argument<Location> loc, final BlockSelector pressurePlateSelector) throws QuestException {
         super(instruction);
         this.loc = loc;
         this.pressurePlateSelector = pressurePlateSelector;

@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.event.drop;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
@@ -54,9 +54,9 @@ public class DropEventFactory implements PlayerEventFactory, PlayerlessEventFact
     }
 
     private NullableEventAdapter createDropEvent(final Instruction instruction) throws QuestException {
-        final Variable<List<ItemWrapper>> items = instruction.item().getList("items", Collections.emptyList());
+        final Argument<List<ItemWrapper>> items = instruction.item().getList("items", Collections.emptyList());
         final String locationPart = instruction.string().get("location", "%location%").getValue(null);
-        final Variable<Location> location = instruction.get(locationPart, instruction.getParsers().location());
+        final Argument<Location> location = instruction.get(locationPart, instruction.getParsers().location());
         return new NullableEventAdapter(new DropEvent(items, location));
     }
 }

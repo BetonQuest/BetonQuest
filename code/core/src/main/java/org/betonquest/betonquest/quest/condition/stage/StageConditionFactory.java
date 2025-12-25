@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.condition.stage;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
@@ -30,9 +30,9 @@ public class StageConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<ObjectiveID> objectiveID = instruction.parse(ObjectiveID::new).get();
-        final Variable<Operation> operation = instruction.parse(Operation::fromSymbol).get();
-        final Variable<String> targetStage = instruction.string().get();
+        final Argument<ObjectiveID> objectiveID = instruction.parse(ObjectiveID::new).get();
+        final Argument<Operation> operation = instruction.parse(Operation::fromSymbol).get();
+        final Argument<String> targetStage = instruction.string().get();
         return new StageCondition(questTypeApi, objectiveID, targetStage, operation);
     }
 }

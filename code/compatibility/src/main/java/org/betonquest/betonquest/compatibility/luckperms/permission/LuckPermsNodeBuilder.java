@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.luckperms.permission;
 import net.luckperms.api.context.MutableContextSet;
 import net.luckperms.api.node.Node;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 
 import java.util.ArrayList;
@@ -21,9 +21,9 @@ import java.util.concurrent.TimeUnit;
  * @param expiry      The expiry time for the permission.
  * @param timeUnit    The {@link TimeUnit} for the expiry time.
  */
-public record LuckPermsNodeBuilder(Variable<List<String>> permissions, Variable<String> value,
-                                   Variable<List<String>> contexts,
-                                   Variable<Number> expiry, Variable<TimeUnit> timeUnit) {
+public record LuckPermsNodeBuilder(Argument<List<String>> permissions, Argument<String> value,
+                                   Argument<List<String>> contexts,
+                                   Argument<Number> expiry, Argument<TimeUnit> timeUnit) {
 
     /**
      * Builds a list of {@link Node}s.
@@ -68,7 +68,7 @@ public record LuckPermsNodeBuilder(Variable<List<String>> permissions, Variable<
         return builder.toBuilder().context(contextSet).build();
     }
 
-    private MutableContextSet parseContextSet(final Variable<List<String>> contexts, final Profile profile) throws QuestException {
+    private MutableContextSet parseContextSet(final Argument<List<String>> contexts, final Profile profile) throws QuestException {
         final MutableContextSet contextSet = MutableContextSet.create();
         for (final String context : contexts.getValue(profile)) {
             final String[] split = context.split(";");

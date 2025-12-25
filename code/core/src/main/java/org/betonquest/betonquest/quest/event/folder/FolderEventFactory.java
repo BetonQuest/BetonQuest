@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.event.folder;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
@@ -72,13 +72,13 @@ public class FolderEventFactory implements PlayerEventFactory, PlayerlessEventFa
     }
 
     private NullableEventAdapter createFolderEvent(final Instruction instruction) throws QuestException {
-        final Variable<List<EventID>> events = instruction.parse(EventID::new).getList();
-        final Variable<Number> delay = instruction.number().get("delay").orElse(null);
-        final Variable<Number> period = instruction.number().get("period").orElse(null);
-        final Variable<Number> random = instruction.number().get("random").orElse(null);
-        final Variable<TimeUnit> timeUnit = instruction.parse(this::getTimeUnit).get("unit", TimeUnit.SECONDS);
+        final Argument<List<EventID>> events = instruction.parse(EventID::new).getList();
+        final Argument<Number> delay = instruction.number().get("delay").orElse(null);
+        final Argument<Number> period = instruction.number().get("period").orElse(null);
+        final Argument<Number> random = instruction.number().get("random").orElse(null);
+        final Argument<TimeUnit> timeUnit = instruction.parse(this::getTimeUnit).get("unit", TimeUnit.SECONDS);
         final boolean cancelOnLogout = instruction.hasArgument("cancelOnLogout");
-        final Variable<List<ConditionID>> cancelConditions = instruction.parse(ConditionID::new)
+        final Argument<List<ConditionID>> cancelConditions = instruction.parse(ConditionID::new)
                 .getList("cancelConditions", Collections.emptyList());
         return new NullableEventAdapter(new FolderEvent(betonQuest, loggerFactory.create(FolderEvent.class), pluginManager,
                 events,

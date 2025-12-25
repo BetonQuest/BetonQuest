@@ -2,8 +2,8 @@ package org.betonquest.betonquest.compatibility.mythicmobs.event;
 
 import io.lumine.mythic.api.mobs.MythicMob;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
@@ -61,22 +61,22 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.location().get();
-        final Variable<Map.Entry<MythicMob, Double>> mobLevel = instruction.parse(mythicMobParser).get();
-        final Variable<Number> amount = instruction.number().get();
+        final Argument<Location> loc = instruction.location().get();
+        final Argument<Map.Entry<MythicMob, Double>> mobLevel = instruction.parse(mythicMobParser).get();
+        final Argument<Number> amount = instruction.number().get();
         final MythicHider privateMob = instruction.hasArgument("private") ? mythicHider : null;
         final boolean targetPlayer = instruction.hasArgument("target");
-        final Variable<String> marked = instruction.packageIdentifier().get("marked").orElse(null);
+        final Argument<String> marked = instruction.packageIdentifier().get("marked").orElse(null);
         return new OnlineEventAdapter(new MythicSpawnMobEvent(plugin, loc, mobLevel, amount, privateMob, targetPlayer, marked),
                 loggerFactory.create(MythicSpawnMobEvent.class), instruction.getPackage());
     }
 
     @Override
     public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.location().get();
-        final Variable<Map.Entry<MythicMob, Double>> mobLevel = instruction.parse(mythicMobParser).get();
-        final Variable<Number> amount = instruction.number().get();
-        final Variable<String> marked = instruction.packageIdentifier().get("marked").orElse(null);
+        final Argument<Location> loc = instruction.location().get();
+        final Argument<Map.Entry<MythicMob, Double>> mobLevel = instruction.parse(mythicMobParser).get();
+        final Argument<Number> amount = instruction.number().get();
+        final Argument<String> marked = instruction.packageIdentifier().get("marked").orElse(null);
         return new MythicSpawnMobEvent(plugin, loc, mobLevel, amount, null, false, marked);
     }
 }

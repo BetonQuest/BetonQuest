@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.conversation;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.ConversationApi;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.conversation.Conversation;
@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
  * Condition to check if a player is in a conversation or, if specified, in the specified conversation.
  */
 public class InConversationCondition implements PlayerCondition {
+
     /**
      * Conversation API.
      */
@@ -22,7 +23,7 @@ public class InConversationCondition implements PlayerCondition {
      * Identifier of the conversation.
      */
     @Nullable
-    private final Variable<ConversationID> conversationID;
+    private final Argument<ConversationID> conversationID;
 
     /**
      * Constructor of the InConversationCondition.
@@ -30,7 +31,7 @@ public class InConversationCondition implements PlayerCondition {
      * @param conversationApi the Conversation API
      * @param conversationID  the conversation identifier
      */
-    public InConversationCondition(final ConversationApi conversationApi, @Nullable final Variable<ConversationID> conversationID) {
+    public InConversationCondition(final ConversationApi conversationApi, @Nullable final Argument<ConversationID> conversationID) {
         this.conversationApi = conversationApi;
         this.conversationID = conversationID;
     }

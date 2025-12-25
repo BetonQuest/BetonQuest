@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.condition.logik;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -43,7 +43,7 @@ public class AlternativeConditionFactory implements PlayerConditionFactory, Play
     }
 
     private AlternativeCondition parseAlternative(final Instruction instruction) throws QuestException {
-        final Variable<List<ConditionID>> conditionIDs = instruction.parse(ConditionID::new).getList();
+        final Argument<List<ConditionID>> conditionIDs = instruction.parse(ConditionID::new).getList();
         return new AlternativeCondition(questTypeApi, conditionIDs);
     }
 }

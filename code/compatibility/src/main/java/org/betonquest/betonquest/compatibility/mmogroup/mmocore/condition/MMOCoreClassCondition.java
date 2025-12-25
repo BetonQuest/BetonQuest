@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmocore.condition;
 
 import net.Indyuce.mmocore.api.player.PlayerData;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.jetbrains.annotations.Nullable;
@@ -20,7 +20,7 @@ public class MMOCoreClassCondition implements PlayerCondition {
     /**
      * Class to check.
      */
-    private final Variable<String> targetClassName;
+    private final Argument<String> targetClassName;
 
     /**
      * If the actual must be equal to the target level.
@@ -31,7 +31,7 @@ public class MMOCoreClassCondition implements PlayerCondition {
      * Required level.
      */
     @Nullable
-    private final Variable<Number> targetClassLevel;
+    private final Argument<Number> targetClassLevel;
 
     /**
      * Create a new class condition.
@@ -41,7 +41,7 @@ public class MMOCoreClassCondition implements PlayerCondition {
      * @param classLevel the required level
      * @param equal      whether the actual must be equal to the target level
      */
-    public MMOCoreClassCondition(final Variable<String> className, @Nullable final Variable<Number> classLevel, final boolean equal) {
+    public MMOCoreClassCondition(final Argument<String> className, @Nullable final Argument<Number> classLevel, final boolean equal) {
         this.targetClassName = className;
         this.targetClassLevel = classLevel;
         this.mustBeEqual = equal;

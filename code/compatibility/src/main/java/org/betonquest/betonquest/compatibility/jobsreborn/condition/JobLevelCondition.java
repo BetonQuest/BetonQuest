@@ -4,7 +4,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 
@@ -16,17 +16,17 @@ public class JobLevelCondition implements PlayerCondition {
     /**
      * Job to check.
      */
-    private final Variable<Job> job;
+    private final Argument<Job> job;
 
     /**
      * Minimum level in job.
      */
-    private final Variable<Number> nMinLevel;
+    private final Argument<Number> nMinLevel;
 
     /**
      * Maximum level in job.
      */
-    private final Variable<Number> nMaxLevel;
+    private final Argument<Number> nMaxLevel;
 
     /**
      * Create a new job level condition.
@@ -35,7 +35,7 @@ public class JobLevelCondition implements PlayerCondition {
      * @param nMinLevel the minimum required level in the job
      * @param nMaxLevel the maximum required level in the job
      */
-    public JobLevelCondition(final Variable<Job> job, final Variable<Number> nMinLevel, final Variable<Number> nMaxLevel) {
+    public JobLevelCondition(final Argument<Job> job, final Argument<Number> nMinLevel, final Argument<Number> nMaxLevel) {
         this.job = job;
         this.nMinLevel = nMinLevel;
         this.nMaxLevel = nMaxLevel;

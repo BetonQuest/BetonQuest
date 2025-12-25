@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.condition.weather;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
@@ -27,16 +27,16 @@ public class WeatherConditionFactory implements PlayerConditionFactory, Playerle
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Weather> weather = instruction.parse(Weather::parseWeather).get();
-        final Variable<String> locationWorld = instruction.string().get("world", "%location.world%");
-        final Variable<World> world = instruction.get(locationWorld.getValue(null), instruction.getParsers().world());
+        final Argument<Weather> weather = instruction.parse(Weather::parseWeather).get();
+        final Argument<String> locationWorld = instruction.string().get("world", "%location.world%");
+        final Argument<World> world = instruction.get(locationWorld.getValue(null), instruction.getParsers().world());
         return new NullableConditionAdapter(new WeatherCondition(weather, world));
     }
 
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
-        final Variable<Weather> weather = instruction.parse(Weather::parseWeather).get();
-        final Optional<Variable<World>> world = instruction.world().get("world");
+        final Argument<Weather> weather = instruction.parse(Weather::parseWeather).get();
+        final Optional<Argument<World>> world = instruction.world().get("world");
         return world.map(worldVariable -> (PlayerlessCondition) new NullableConditionAdapter(new WeatherCondition(weather, world.orElse(null))))
                 .orElse(new ThrowExceptionPlayerlessCondition());
     }

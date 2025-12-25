@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.holograms;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -43,7 +43,7 @@ public record HologramWrapper(BetonQuestLogger log, QuestTypeApi questTypeApi, P
                               int interval, List<BetonHologram> holograms, boolean staticContent,
                               List<ConditionID> conditionList,
                               List<AbstractLine> cleanedLines, QuestPackage questPackage,
-                              Variable<Number> varMaxRange) {
+                              Argument<Number> varMaxRange) {
 
     /**
      * Checks whether all conditions are met by a players and displays or hides the hologram.

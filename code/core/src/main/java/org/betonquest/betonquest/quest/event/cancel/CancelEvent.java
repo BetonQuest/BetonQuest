@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.cancel;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.id.QuestCancelerID;
@@ -20,7 +20,7 @@ public class CancelEvent implements OnlineEvent {
     /**
      * The canceler to use.
      */
-    private final Variable<QuestCancelerID> cancelerID;
+    private final Argument<QuestCancelerID> cancelerID;
 
     /**
      * Whether the canceler conditions should be ignored for canceling.
@@ -34,7 +34,7 @@ public class CancelEvent implements OnlineEvent {
      * @param cancelerID the canceler to use
      * @param bypass     whether the canceler conditions should be ignored for canceling
      */
-    public CancelEvent(final FeatureApi featureApi, final Variable<QuestCancelerID> cancelerID, final boolean bypass) {
+    public CancelEvent(final FeatureApi featureApi, final Argument<QuestCancelerID> cancelerID, final boolean bypass) {
         this.featureApi = featureApi;
         this.cancelerID = cancelerID;
         this.bypass = bypass;

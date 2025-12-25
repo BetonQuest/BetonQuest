@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.moon;
 
 import io.papermc.paper.world.MoonPhase;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.bukkit.World;
@@ -18,12 +18,12 @@ public class MoonPhaseCondition implements NullableCondition {
     /**
      * The world to check the moon phase in.
      */
-    private final Variable<World> variableWorld;
+    private final Argument<World> variableWorld;
 
     /**
      * The moon phases to check for.
      */
-    private final Variable<List<MoonPhase>> moonPhases;
+    private final Argument<List<MoonPhase>> moonPhases;
 
     /**
      * Checks if the moon phase in the given world matches one of the moon phases of this condition.
@@ -31,7 +31,7 @@ public class MoonPhaseCondition implements NullableCondition {
      * @param variableWorld the world to check the moon phase in
      * @param moonPhases    the moon phases to check for
      */
-    public MoonPhaseCondition(final Variable<World> variableWorld, final Variable<List<MoonPhase>> moonPhases) {
+    public MoonPhaseCondition(final Argument<World> variableWorld, final Argument<List<MoonPhase>> moonPhases) {
         this.variableWorld = variableWorld;
         this.moonPhases = moonPhases;
     }

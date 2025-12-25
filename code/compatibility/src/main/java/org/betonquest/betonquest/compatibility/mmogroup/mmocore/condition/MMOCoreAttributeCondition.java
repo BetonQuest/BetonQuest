@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmocore.condition;
 import net.Indyuce.mmocore.api.player.PlayerData;
 import net.Indyuce.mmocore.api.player.attribute.PlayerAttribute;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 
@@ -15,7 +15,7 @@ public class MMOCoreAttributeCondition implements PlayerCondition {
     /**
      * Attribute to check.
      */
-    private final Variable<PlayerAttribute> attribute;
+    private final Argument<PlayerAttribute> attribute;
 
     /**
      * If the actual must be equal to the target level.
@@ -25,7 +25,7 @@ public class MMOCoreAttributeCondition implements PlayerCondition {
     /**
      * Required level.
      */
-    private final Variable<Number> targetLevelVar;
+    private final Argument<Number> targetLevelVar;
 
     /**
      * Create a new attribute condition.
@@ -34,7 +34,7 @@ public class MMOCoreAttributeCondition implements PlayerCondition {
      * @param targetLevel the required level
      * @param equal       whether the actual must be equal to the target level
      */
-    public MMOCoreAttributeCondition(final Variable<PlayerAttribute> attribute, final Variable<Number> targetLevel, final boolean equal) {
+    public MMOCoreAttributeCondition(final Argument<PlayerAttribute> attribute, final Argument<Number> targetLevel, final boolean equal) {
         this.attribute = attribute;
         this.targetLevelVar = targetLevel;
         this.mustBeEqual = equal;

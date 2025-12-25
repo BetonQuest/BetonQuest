@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.time;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.Selector;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.bukkit.World;
@@ -21,7 +21,7 @@ public class TimeEvent implements NullableEvent {
     /**
      * The raw time value that will be applied.
      */
-    private final Variable<TimeChange> timeChange;
+    private final Argument<TimeChange> timeChange;
 
     /**
      * If the rawTime needs to be transformed into Minecraft format.
@@ -35,7 +35,7 @@ public class TimeEvent implements NullableEvent {
      * @param worldSelector to get the world that should be affected
      * @param hourFormat    if the time needs to be multiplied with 1000
      */
-    public TimeEvent(final Variable<TimeChange> timeChange, final Selector<World> worldSelector, final boolean hourFormat) {
+    public TimeEvent(final Argument<TimeChange> timeChange, final Selector<World> worldSelector, final boolean hourFormat) {
         this.timeChange = timeChange;
         this.worldSelector = worldSelector;
         this.hourFormat = hourFormat;

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.variable.name;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 
@@ -10,17 +10,18 @@ import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
  * argument, which will resolve it to the display name.
  */
 public class PlayerNameVariable implements PlayerVariable {
+
     /**
      * The type of the variable.
      */
-    private final Variable<PlayerNameType> type;
+    private final Argument<PlayerNameType> type;
 
     /**
      * Creates a new PlayerNameVariable from the given instruction.
      *
      * @param type the type to extract the variable value from the profile
      */
-    public PlayerNameVariable(final Variable<PlayerNameType> type) {
+    public PlayerNameVariable(final Argument<PlayerNameType> type) {
         this.type = type;
     }
 

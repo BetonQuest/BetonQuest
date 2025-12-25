@@ -2,9 +2,9 @@ package org.betonquest.betonquest.quest.objective.action;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.Location;
@@ -34,12 +34,12 @@ public class ActionObjective extends Objective implements Listener {
     /**
      * The action to check for.
      */
-    private final Variable<Click> action;
+    private final Argument<Click> action;
 
     /**
      * The selector to check for the block or an empty optional if any block is allowed.
      */
-    private final Variable<Optional<BlockSelector>> selector;
+    private final Argument<Optional<BlockSelector>> selector;
 
     /**
      * If the block should be checked for exact match.
@@ -50,12 +50,12 @@ public class ActionObjective extends Objective implements Listener {
      * The location where the player has to click.
      */
     @Nullable
-    private final Variable<Location> loc;
+    private final Argument<Location> loc;
 
     /**
      * The range of the location.
      */
-    private final Variable<Number> range;
+    private final Argument<Number> range;
 
     /**
      * If the event should be cancelled.
@@ -81,9 +81,9 @@ public class ActionObjective extends Objective implements Listener {
      * @param slot        the equipment slot to check for the action
      * @throws QuestException if an error occurs while creating the objective
      */
-    public ActionObjective(final Instruction instruction, final Variable<Click> action,
-                           final Variable<Optional<BlockSelector>> selector, final boolean exactMatch,
-                           @Nullable final Variable<Location> loc, final Variable<Number> range, final boolean cancel,
+    public ActionObjective(final Instruction instruction, final Argument<Click> action,
+                           final Argument<Optional<BlockSelector>> selector, final boolean exactMatch,
+                           @Nullable final Argument<Location> loc, final Argument<Number> range, final boolean cancel,
                            @Nullable final EquipmentSlot slot) throws QuestException {
         super(instruction);
         this.action = action;

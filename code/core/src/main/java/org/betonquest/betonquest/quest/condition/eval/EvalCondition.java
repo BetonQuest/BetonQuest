@@ -3,10 +3,10 @@ package org.betonquest.betonquest.quest.condition.eval;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Variables;
@@ -46,7 +46,7 @@ public class EvalCondition implements NullableCondition {
     /**
      * The evaluation input.
      */
-    private final Variable<String> evaluation;
+    private final Argument<String> evaluation;
 
     /**
      * Creates a new Eval condition.
@@ -58,7 +58,7 @@ public class EvalCondition implements NullableCondition {
      * @param evaluation            the evaluation input
      */
     public EvalCondition(final Variables variables, final QuestPackageManager packManager, final ConditionTypeRegistry conditionTypeRegistry,
-                         final QuestPackage pack, final Variable<String> evaluation) {
+                         final QuestPackage pack, final Argument<String> evaluation) {
         this.variables = variables;
         this.packManager = packManager;
         this.conditionTypeRegistry = conditionTypeRegistry;

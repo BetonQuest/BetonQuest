@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.random;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.jetbrains.annotations.Nullable;
@@ -17,7 +17,7 @@ public class RandomCondition implements NullableCondition {
     /**
      * The range of the random number to be true.
      */
-    private final Variable<RandomChance> randomChance;
+    private final Argument<RandomChance> randomChance;
 
     /**
      * The random number generator supplier.
@@ -30,7 +30,7 @@ public class RandomCondition implements NullableCondition {
      * @param randomSupplier the random number generator supplier
      * @param chance         the {@link RandomChance} to check the random condition
      */
-    public RandomCondition(final Supplier<Random> randomSupplier, final Variable<RandomChance> chance) {
+    public RandomCondition(final Supplier<Random> randomSupplier, final Argument<RandomChance> chance) {
         this.randomChance = chance;
         this.random = randomSupplier;
     }

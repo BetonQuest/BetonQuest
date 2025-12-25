@@ -3,8 +3,8 @@ package org.betonquest.betonquest.quest.objective.kill;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.bukkit.event.EventHandler;
@@ -23,12 +23,12 @@ public class KillPlayerObjective extends CountingObjective implements Listener {
      * The name of the victim to kill.
      */
     @Nullable
-    private final Variable<String> name;
+    private final Argument<String> name;
 
     /**
      * The conditions of the victim that must be met for the objective to count.
      */
-    private final Variable<List<ConditionID>> required;
+    private final Argument<List<ConditionID>> required;
 
     /**
      * Constructor for the KillPlayerObjective.
@@ -39,8 +39,8 @@ public class KillPlayerObjective extends CountingObjective implements Listener {
      * @param required     the conditions of the victim that must be met for the objective to count
      * @throws QuestException if there is an error in the instruction
      */
-    public KillPlayerObjective(final Instruction instruction, final Variable<Number> targetAmount,
-                               @Nullable final Variable<String> name, final Variable<List<ConditionID>> required) throws QuestException {
+    public KillPlayerObjective(final Instruction instruction, final Argument<Number> targetAmount,
+                               @Nullable final Argument<String> name, final Argument<List<ConditionID>> required) throws QuestException {
         super(instruction, targetAmount, "players_to_kill");
         this.name = name;
         this.required = required;

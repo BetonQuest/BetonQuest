@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.condition.number;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
@@ -31,9 +31,9 @@ public class NumberCompareConditionFactory implements PlayerConditionFactory, Pl
     }
 
     private NumberCompareCondition parse(final Instruction instruction) throws QuestException {
-        final Variable<Number> first = instruction.number().get();
+        final Argument<Number> first = instruction.number().get();
         final Operation operation = instruction.parse(Operation::fromSymbol).get().getValue(null);
-        final Variable<Number> second = instruction.number().get();
+        final Argument<Number> second = instruction.number().get();
         return new NumberCompareCondition(first, second, operation);
     }
 }

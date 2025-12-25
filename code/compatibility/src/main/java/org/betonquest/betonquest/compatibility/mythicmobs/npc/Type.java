@@ -4,8 +4,8 @@ import io.lumine.mythic.api.mobs.MythicMob;
 import io.lumine.mythic.core.mobs.ActiveMob;
 import io.lumine.mythic.core.mobs.MobExecutor;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
@@ -27,7 +27,7 @@ public enum Type {
         @Override
         protected NpcWrapper<ActiveMob> parse(final Instruction instruction, final MythicHider mythicHider,
                                               final MobExecutor mobExecutor) throws QuestException {
-            final Variable<MythicMob> mythicMobVariable = instruction.parse(string -> {
+            final Argument<MythicMob> mythicMobVariable = instruction.parse(string -> {
                 final Optional<MythicMob> mythicMob = mobExecutor.getMythicMob(string);
                 if (mythicMob.isPresent()) {
                     return mythicMob.get();
@@ -104,7 +104,7 @@ public enum Type {
      * @param mythicHider the hider for mobs
      * @param mobExecutor the instance to get the mob from
      */
-    private record UUIDWrapper(Variable<UUID> uuid, MythicHider mythicHider,
+    private record UUIDWrapper(Argument<UUID> uuid, MythicHider mythicHider,
                                MobExecutor mobExecutor) implements NpcWrapper<ActiveMob> {
 
         @Override
@@ -125,7 +125,7 @@ public enum Type {
      * @param mythicHider the hider for mobs
      * @param mobExecutor the instance to get the mob from
      */
-    private record TypeWrapper(Variable<MythicMob> type, MythicHider mythicHider,
+    private record TypeWrapper(Argument<MythicMob> type, MythicHider mythicHider,
                                MobExecutor mobExecutor) implements NpcWrapper<ActiveMob> {
 
         @Override
@@ -150,7 +150,7 @@ public enum Type {
      * @param mythicHider the hider for mobs
      * @param mobExecutor the instance to get the mob from
      */
-    private record FactionWrapper(Variable<String> faction, MythicHider mythicHider,
+    private record FactionWrapper(Argument<String> faction, MythicHider mythicHider,
                                   MobExecutor mobExecutor) implements NpcWrapper<ActiveMob> {
 
         @Override

@@ -8,10 +8,10 @@ import org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable.Unmodifia
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.ConversationApi;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.instruction.variable.VariableList;
+import org.betonquest.betonquest.api.instruction.variable.DefaultListArgument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
@@ -271,8 +271,8 @@ public class ConversationData {
     private List<String> loadStartingOptions(final ConfigurationSection convSection) throws QuestException {
         final List<String> startingOptions;
         try {
-            startingOptions = new VariableList<>(variables, getPack(), convSection.getString("first", ""),
-                    new StringParser(), VariableList.notEmptyChecker()).getValue(null);
+            startingOptions = new DefaultListArgument<>(variables, getPack(), convSection.getString("first", ""),
+                    new StringParser(), DefaultListArgument.notEmptyChecker()).getValue(null);
         } catch (final QuestException e) {
             throw new QuestException("Could not load starting options: " + e.getMessage(), e);
         }
@@ -544,9 +544,9 @@ public class ConversationData {
      * @param interceptorDelay The delay before the interceptor is ended after the conversation ends.
      * @param invincible       If true, the player will not be able to damage or be damaged by entities in conversation.
      */
-    public record PublicData(ConversationID conversationID, Text quester, Variable<Boolean> blockMovement,
-                             Variable<List<EventID>> finalEvents, Variable<ConversationIOFactory> convIO,
-                             Variable<InterceptorFactory> interceptor, Variable<Number> interceptorDelay,
+    public record PublicData(ConversationID conversationID, Text quester, Argument<Boolean> blockMovement,
+                             Argument<List<EventID>> finalEvents, Argument<ConversationIOFactory> convIO,
+                             Argument<InterceptorFactory> interceptor, Argument<Number> interceptorDelay,
                              boolean invincible) {
 
         /**
@@ -659,7 +659,7 @@ public class ConversationData {
 
         private <T> List<T> resolve(final ConfigurationSection conv, final String identifier,
                                     final InstructionArgumentParser<T> resolver) throws QuestException {
-            return new VariableList<>(variables, getPack(), conv.getString(identifier, ""),
+            return new DefaultListArgument<>(variables, getPack(), conv.getString(identifier, ""),
                     value -> resolver.apply(variables, packManager, getPack(), value)).getValue(null);
         }
 

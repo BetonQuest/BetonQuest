@@ -2,8 +2,8 @@ package org.betonquest.betonquest.compatibility.npc.citizens.event.move;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
@@ -49,7 +49,7 @@ public class CitizensStopEventFactory implements PlayerlessEventFactory, PlayerE
     }
 
     private NullableEventAdapter createCitizensStopEvent(final Instruction instruction) throws QuestException {
-        final Variable<NpcID> npcId = instruction.parse(CitizensArgument.CITIZENS_ID).get();
+        final Argument<NpcID> npcId = instruction.parse(CitizensArgument.CITIZENS_ID).get();
         return new NullableEventAdapter(new CitizensStopEvent(featureApi, npcId, citizensMoveController));
     }
 }

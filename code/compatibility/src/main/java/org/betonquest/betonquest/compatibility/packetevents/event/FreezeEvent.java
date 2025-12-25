@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.packetevents.event;
 
 import com.github.retrooper.packetevents.PacketEventsAPI;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.compatibility.packetevents.passenger.FakeArmorStandPassenger;
@@ -28,7 +28,7 @@ public class FreezeEvent implements OnlineEvent {
     /**
      * Freeze duration.
      */
-    private final Variable<Number> ticksVar;
+    private final Argument<Number> ticksVar;
 
     /**
      * Create a new event that freezes a player.
@@ -37,7 +37,7 @@ public class FreezeEvent implements OnlineEvent {
      * @param packetEventsAPI the PacketEvents API instance
      * @param ticks           the freeze duration
      */
-    public FreezeEvent(final Plugin plugin, final PacketEventsAPI<?> packetEventsAPI, final Variable<Number> ticks) {
+    public FreezeEvent(final Plugin plugin, final PacketEventsAPI<?> packetEventsAPI, final Argument<Number> ticks) {
         this.plugin = plugin;
         this.packetEventsAPI = packetEventsAPI;
         ticksVar = ticks;

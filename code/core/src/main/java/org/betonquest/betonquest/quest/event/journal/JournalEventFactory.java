@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.event.journal;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -98,14 +98,14 @@ public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventF
     }
 
     private JournalEvent createJournalDeleteEvent(final Instruction instruction) throws QuestException {
-        final Variable<JournalEntryID> entryID = instruction.get(instruction.getPart(2), JournalEntryID::new);
+        final Argument<JournalEntryID> entryID = instruction.get(instruction.getPart(2), JournalEntryID::new);
         final JournalChanger journalChanger = new RemoveEntryJournalChanger(entryID);
         final NotificationSender notificationSender = new NoNotificationSender();
         return new JournalEvent(dataStorage, journalChanger, notificationSender);
     }
 
     private JournalEvent createJournalAddEvent(final Instruction instruction) throws QuestException {
-        final Variable<JournalEntryID> entryID = instruction.get(instruction.getPart(2), JournalEntryID::new);
+        final Argument<JournalEntryID> entryID = instruction.get(instruction.getPart(2), JournalEntryID::new);
         final JournalChanger journalChanger = new AddEntryJournalChanger(instantSource, entryID);
         final NotificationSender notificationSender = new IngameNotificationSender(loggerFactory.create(JournalEvent.class),
                 pluginMessage, instruction.getPackage(), instruction.getID().getFull(), NotificationLevel.INFO, "new_journal_entry");
@@ -119,7 +119,7 @@ public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventF
     }
 
     private PlayerlessEvent createStaticJournalDeleteEvent(final Instruction instruction) throws QuestException {
-        final Variable<JournalEntryID> entryID = instruction.get(instruction.getPart(2), JournalEntryID::new);
+        final Argument<JournalEntryID> entryID = instruction.get(instruction.getPart(2), JournalEntryID::new);
         return new DeleteJournalPlayerlessEvent(dataStorage, saver, profileProvider, entryID);
     }
 }

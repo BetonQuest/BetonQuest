@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.objective.chestput;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
@@ -44,7 +44,7 @@ public class ChestPutObjective extends Objective implements Listener {
     /**
      * Location of the chest.
      */
-    private final Variable<Location> loc;
+    private final Argument<Location> loc;
 
     /**
      * Sender to notify the player if the chest is occupied.
@@ -70,7 +70,7 @@ public class ChestPutObjective extends Objective implements Listener {
      */
     public ChestPutObjective(final Instruction instruction,
                              final NullableCondition chestItemCondition, @Nullable final ChestTakeEvent chestTakeEvent,
-                             final Variable<Location> loc, final IngameNotificationSender occupiedSender,
+                             final Argument<Location> loc, final IngameNotificationSender occupiedSender,
                              final boolean multipleAccess) throws QuestException {
         super(instruction);
         this.chestItemCondition = chestItemCondition;

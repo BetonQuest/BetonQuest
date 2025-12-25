@@ -6,8 +6,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
@@ -43,7 +43,7 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
     /**
      * The name of the train, maybe empty.
      */
-    private final Variable<String> name;
+    private final Argument<String> name;
 
     /**
      * Creates a new {@link TrainCartsRideObjective} from the given instruction.
@@ -53,8 +53,8 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
      * @param name         the name of the train, maybe empty
      * @throws QuestException if the instruction is invalid
      */
-    public TrainCartsRideObjective(final Instruction instruction, final Variable<Number> targetAmount,
-                                   final Variable<String> name) throws QuestException {
+    public TrainCartsRideObjective(final Instruction instruction, final Argument<Number> targetAmount,
+                                   final Argument<String> name) throws QuestException {
         super(instruction, targetAmount, null);
         this.name = name;
         this.startTimes = new HashMap<>();

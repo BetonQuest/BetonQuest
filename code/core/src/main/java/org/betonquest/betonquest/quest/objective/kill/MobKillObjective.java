@@ -4,8 +4,8 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.MobKillNotifier.MobKilledEvent;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
@@ -26,19 +26,19 @@ public class MobKillObjective extends CountingObjective implements Listener {
     /**
      * The entity types that should be killed.
      */
-    private final Variable<List<EntityType>> entities;
+    private final Argument<List<EntityType>> entities;
 
     /**
      * The optional name of the mob.
      */
     @Nullable
-    protected Variable<String> name;
+    protected Argument<String> name;
 
     /**
      * The optional marker for the mobs to identify them.
      */
     @Nullable
-    protected Variable<String> marked;
+    protected Argument<String> marked;
 
     /**
      * Constructor for the MobKillObjective.
@@ -50,9 +50,9 @@ public class MobKillObjective extends CountingObjective implements Listener {
      * @param marked       the optional marker for the mobs to identify them
      * @throws QuestException if there is an error in the instruction
      */
-    public MobKillObjective(final Instruction instruction, final Variable<Number> targetAmount,
-                            final Variable<List<EntityType>> entities, @Nullable final Variable<String> name,
-                            @Nullable final Variable<String> marked) throws QuestException {
+    public MobKillObjective(final Instruction instruction, final Argument<Number> targetAmount,
+                            final Argument<List<EntityType>> entities, @Nullable final Argument<String> name,
+                            @Nullable final Argument<String> marked) throws QuestException {
         super(instruction, targetAmount, "mobs_to_kill");
         this.entities = entities;
         this.name = name;

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.entity;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.util.EntityUtils;
@@ -22,29 +22,29 @@ public class RemoveEntityEvent implements NullableEvent {
     /**
      * The type of the mob.
      */
-    private final Variable<List<EntityType>> types;
+    private final Argument<List<EntityType>> types;
 
     /**
      * The location of the mob.
      */
-    private final Variable<Location> loc;
+    private final Argument<Location> loc;
 
     /**
      * The radius around the location.
      */
-    private final Variable<Number> range;
+    private final Argument<Number> range;
 
     /**
      * The name of the mob.
      */
     @Nullable
-    private final Variable<Component> name;
+    private final Argument<Component> name;
 
     /**
      * The mark of the mob.
      */
     @Nullable
-    private final Variable<String> marked;
+    private final Argument<String> marked;
 
     /**
      * Whether to kill the mob.
@@ -61,8 +61,8 @@ public class RemoveEntityEvent implements NullableEvent {
      * @param marked   the mark of the entity
      * @param kill     whether to kill the entities
      */
-    public RemoveEntityEvent(final Variable<List<EntityType>> types, final Variable<Location> location, final Variable<Number> radius,
-                             @Nullable final Variable<Component> name, @Nullable final Variable<String> marked, final boolean kill) {
+    public RemoveEntityEvent(final Argument<List<EntityType>> types, final Argument<Location> location, final Argument<Number> radius,
+                             @Nullable final Argument<Component> name, @Nullable final Argument<String> marked, final boolean kill) {
         this.types = types;
         this.loc = location;
         this.range = radius;

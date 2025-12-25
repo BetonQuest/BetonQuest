@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.variable.condition;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
@@ -37,7 +37,7 @@ public class ConditionVariableFactory implements PlayerVariableFactory {
 
     @Override
     public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<ConditionID> conditionId = instruction.parse(ConditionID::new).get();
+        final Argument<ConditionID> conditionId = instruction.parse(ConditionID::new).get();
         final boolean papiMode = instruction.hasArgument("papiMode");
         return new ConditionVariable(pluginMessage, conditionId, papiMode, questTypeApi);
     }

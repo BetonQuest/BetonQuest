@@ -5,8 +5,8 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.QuestListException;
 import org.betonquest.betonquest.api.common.function.QuestBiPredicate;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
@@ -29,12 +29,12 @@ public class NpcRangeObjective extends Objective {
     /**
      * Stores the relevant Npc Ids to get their locations.
      */
-    private final Variable<List<NpcID>> npcIds;
+    private final Argument<List<NpcID>> npcIds;
 
     /**
      * Maximal distance between player and NPC.
      */
-    private final Variable<Number> radius;
+    private final Argument<Number> radius;
 
     /**
      * Checks if the condition based on the {@link Trigger} is not met.
@@ -60,8 +60,8 @@ public class NpcRangeObjective extends Objective {
      * @param trigger     the trigger type for the objective
      * @throws QuestException if the instruction is invalid
      */
-    public NpcRangeObjective(final Instruction instruction, final Variable<List<NpcID>> npcIds, final Variable<Number> radius,
-                             final Variable<Trigger> trigger) throws QuestException {
+    public NpcRangeObjective(final Instruction instruction, final Argument<List<NpcID>> npcIds, final Argument<Number> radius,
+                             final Argument<Trigger> trigger) throws QuestException {
         super(instruction);
         this.npcIds = npcIds;
         this.radius = radius;
@@ -71,7 +71,7 @@ public class NpcRangeObjective extends Objective {
                 () -> qeHandler.handle(this::loop), 0, 20);
     }
 
-    private QuestBiPredicate<Profile, Boolean> getStuff(final Variable<Trigger> trigger) {
+    private QuestBiPredicate<Profile, Boolean> getStuff(final Argument<Trigger> trigger) {
         return (profile, inside) -> {
             final UUID uuid = profile.getPlayerUUID();
             return switch (trigger.getValue(profile)) {

@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.condition.moon;
 
 import io.papermc.paper.world.MoonPhase;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
@@ -27,19 +27,19 @@ public class MoonPhaseConditionFactory implements PlayerConditionFactory, Player
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<List<MoonPhase>> moonPhases = instruction.enumeration(MoonPhase.class).getList();
+        final Argument<List<MoonPhase>> moonPhases = instruction.enumeration(MoonPhase.class).getList();
         final String worldRaw = instruction.string().get("world", "%location.world%").getValue(null);
-        final Variable<World> world = instruction.get(worldRaw, instruction.getParsers().world());
+        final Argument<World> world = instruction.get(worldRaw, instruction.getParsers().world());
         return new NullableConditionAdapter(new MoonPhaseCondition(world, moonPhases));
     }
 
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
-        final Variable<World> world = instruction.world().get("world").orElse(null);
+        final Argument<World> world = instruction.world().get("world").orElse(null);
         if (world == null) {
             return new ThrowExceptionPlayerlessCondition();
         }
-        final Variable<List<MoonPhase>> moonPhases = instruction.enumeration(MoonPhase.class).getList();
+        final Argument<List<MoonPhase>> moonPhases = instruction.enumeration(MoonPhase.class).getList();
         return new NullableConditionAdapter(new MoonPhaseCondition(world, moonPhases));
     }
 }

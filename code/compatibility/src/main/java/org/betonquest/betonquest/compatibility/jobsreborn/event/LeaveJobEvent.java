@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.jobsreborn.event;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.Job;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 
@@ -15,14 +15,14 @@ public class LeaveJobEvent implements PlayerEvent {
     /**
      * Job to join.
      */
-    private final Variable<Job> job;
+    private final Argument<Job> job;
 
     /**
      * Create a new job join event.
      *
      * @param job the job to check
      */
-    public LeaveJobEvent(final Variable<Job> job) {
+    public LeaveJobEvent(final Argument<Job> job) {
         this.job = job;
     }
 

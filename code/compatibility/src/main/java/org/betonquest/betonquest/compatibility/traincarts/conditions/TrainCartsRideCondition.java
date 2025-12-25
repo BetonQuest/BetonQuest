@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.traincarts.conditions;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
@@ -15,14 +15,14 @@ public class TrainCartsRideCondition implements OnlineCondition {
     /**
      * The name of the train.
      */
-    private final Variable<String> trainName;
+    private final Argument<String> trainName;
 
     /**
      * Create the TrainCarts ride condition.
      *
      * @param trainName the name of the train
      */
-    public TrainCartsRideCondition(final Variable<String> trainName) {
+    public TrainCartsRideCondition(final Argument<String> trainName) {
         this.trainName = trainName;
     }
 

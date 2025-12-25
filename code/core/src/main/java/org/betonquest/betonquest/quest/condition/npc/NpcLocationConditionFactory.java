@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.condition.npc;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
@@ -42,9 +42,9 @@ public class NpcLocationConditionFactory implements PlayerConditionFactory, Play
     }
 
     private NullableConditionAdapter parseNpcLocationCondition(final Instruction instruction) throws QuestException {
-        final Variable<NpcID> npcId = instruction.parse(NpcID::new).get();
-        final Variable<Location> location = instruction.location().get();
-        final Variable<Number> radius = instruction.number().get();
+        final Argument<NpcID> npcId = instruction.parse(NpcID::new).get();
+        final Argument<Location> location = instruction.location().get();
+        final Argument<Number> radius = instruction.number().get();
         return new NullableConditionAdapter(new NpcLocationCondition(featureApi, npcId, location, radius));
     }
 }

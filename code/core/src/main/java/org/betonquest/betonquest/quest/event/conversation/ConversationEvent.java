@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.conversation;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.ConversationApi;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.conversation.ConversationID;
@@ -21,7 +21,7 @@ public class ConversationEvent implements OnlineEvent {
     /**
      * The conversation to start.
      */
-    private final Variable<Pair<ConversationID, String>> conversation;
+    private final Argument<Pair<ConversationID, String>> conversation;
 
     /**
      * Creates a new ConversationEvent.
@@ -29,7 +29,7 @@ public class ConversationEvent implements OnlineEvent {
      * @param conversationApi the Conversation API
      * @param conversation    the conversation and option to start as a pair
      */
-    public ConversationEvent(final ConversationApi conversationApi, final Variable<Pair<ConversationID, String>> conversation) {
+    public ConversationEvent(final ConversationApi conversationApi, final Argument<Pair<ConversationID, String>> conversation) {
         this.conversationApi = conversationApi;
         this.conversation = conversation;
     }

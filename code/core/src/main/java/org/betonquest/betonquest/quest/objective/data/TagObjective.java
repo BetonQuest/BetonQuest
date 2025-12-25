@@ -4,8 +4,8 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerTagAddEvent;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.betonquest.betonquest.data.PlayerDataStorage;
@@ -25,7 +25,7 @@ public class TagObjective extends Objective implements Listener {
     /**
      * Tag to get.
      */
-    private final Variable<String> tag;
+    private final Argument<String> tag;
 
     /**
      * Creates a new tag objective.
@@ -35,7 +35,7 @@ public class TagObjective extends Objective implements Listener {
      * @param tag               the tag to get
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public TagObjective(final Instruction instruction, final PlayerDataStorage playerDataStorage, final Variable<String> tag) throws QuestException {
+    public TagObjective(final Instruction instruction, final PlayerDataStorage playerDataStorage, final Argument<String> tag) throws QuestException {
         super(instruction);
         this.playerDataStorage = playerDataStorage;
         this.tag = tag;

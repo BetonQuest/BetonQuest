@@ -4,8 +4,8 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.EventID;
@@ -31,12 +31,12 @@ public class TimerObjective extends CountingObjective implements Listener, Runna
     /**
      * An optional DisplayName for the objective.
      */
-    private final Variable<String> name;
+    private final Argument<String> name;
 
     /**
      * Events to run before the objective is actually removed.
      */
-    private final Variable<List<EventID>> doneEvents;
+    private final Argument<List<EventID>> doneEvents;
 
     /**
      * The resolved interval in seconds.
@@ -59,8 +59,8 @@ public class TimerObjective extends CountingObjective implements Listener, Runna
      * @param doneEvents   events to run before the objective is actually removed.
      * @throws QuestException if an error occurs while creating the objective.
      */
-    public TimerObjective(final Instruction instruction, final Variable<Number> targetAmount, final QuestTypeApi questTypeApi, final Variable<String> name,
-                          final Variable<Number> interval, final Variable<List<EventID>> doneEvents) throws QuestException {
+    public TimerObjective(final Instruction instruction, final Argument<Number> targetAmount, final QuestTypeApi questTypeApi, final Argument<String> name,
+                          final Argument<Number> interval, final Argument<List<EventID>> doneEvents) throws QuestException {
         super(instruction, targetAmount, null);
         this.questTypeApi = questTypeApi;
         this.name = name;

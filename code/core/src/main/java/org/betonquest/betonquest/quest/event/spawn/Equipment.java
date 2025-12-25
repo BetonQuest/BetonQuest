@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.event.spawn;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Mob;
@@ -25,10 +25,10 @@ import java.util.List;
  * @param offHand    the off-hand item to equip the mob with
  * @param drops      the items to drop when the mob dies
  */
-public record Equipment(@Nullable Variable<ItemWrapper> helmet, @Nullable Variable<ItemWrapper> chestplate,
-                        @Nullable Variable<ItemWrapper> leggings, @Nullable Variable<ItemWrapper> boots,
-                        @Nullable Variable<ItemWrapper> mainHand, @Nullable Variable<ItemWrapper> offHand,
-                        Variable<List<ItemWrapper>> drops) {
+public record Equipment(@Nullable Argument<ItemWrapper> helmet, @Nullable Argument<ItemWrapper> chestplate,
+                        @Nullable Argument<ItemWrapper> leggings, @Nullable Argument<ItemWrapper> boots,
+                        @Nullable Argument<ItemWrapper> mainHand, @Nullable Argument<ItemWrapper> offHand,
+                        Argument<List<ItemWrapper>> drops) {
 
     /**
      * Adds the drops to the mob.
@@ -71,7 +71,7 @@ public record Equipment(@Nullable Variable<ItemWrapper> helmet, @Nullable Variab
     }
 
     @Nullable
-    private ItemStack generate(@Nullable final Profile profile, @Nullable final Variable<ItemWrapper> item) throws QuestException {
+    private ItemStack generate(@Nullable final Profile profile, @Nullable final Argument<ItemWrapper> item) throws QuestException {
         return item == null ? null : item.getValue(profile).getItem(profile).generate(1);
     }
 }

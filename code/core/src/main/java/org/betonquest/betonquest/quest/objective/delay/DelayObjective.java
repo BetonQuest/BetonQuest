@@ -6,9 +6,9 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
@@ -42,7 +42,7 @@ public class DelayObjective extends Objective {
     /**
      * The delay time in seconds, minutes, or ticks.
      */
-    private final Variable<Number> delay;
+    private final Argument<Number> delay;
 
     /**
      * The runnable task that checks the delay.
@@ -57,8 +57,8 @@ public class DelayObjective extends Objective {
      * @param delay       the delay time in seconds, minutes, or ticks
      * @throws QuestException if there is an error in the instruction
      */
-    public DelayObjective(final Instruction instruction, final Variable<Number> interval,
-                          final Variable<Number> delay) throws QuestException {
+    public DelayObjective(final Instruction instruction, final Argument<Number> interval,
+                          final Argument<Number> delay) throws QuestException {
         super(instruction, DELAY_FACTORY);
         this.delay = delay;
         this.runnable = new BukkitRunnable() {

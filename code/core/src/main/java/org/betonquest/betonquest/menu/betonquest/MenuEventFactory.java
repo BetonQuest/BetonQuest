@@ -2,8 +2,8 @@ package org.betonquest.betonquest.menu.betonquest;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestConsumer;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -44,7 +44,7 @@ public class MenuEventFactory implements PlayerEventFactory {
         final Operation operation = instruction.enumeration(Operation.class).get().getValue(null);
         final QuestConsumer<OnlineProfile> action = switch (operation) {
             case OPEN -> {
-                final Variable<MenuID> menuID = instruction.parse(
+                final Argument<MenuID> menuID = instruction.parse(
                         (variables, packManager, pack, string)
                                 -> new MenuID(packManager, pack, string)).get();
                 yield profile -> rpgMenu.openMenu(profile, menuID.getValue(profile));

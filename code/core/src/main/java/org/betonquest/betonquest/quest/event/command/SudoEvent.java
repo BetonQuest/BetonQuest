@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.command;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.bukkit.entity.Player;
@@ -16,14 +16,14 @@ public class SudoEvent implements OnlineEvent {
     /**
      * The commands to run.
      */
-    private final List<Variable<String>> commands;
+    private final List<Argument<String>> commands;
 
     /**
      * Creates a new SudoEvent.
      *
      * @param commands the commands to run
      */
-    public SudoEvent(final List<Variable<String>> commands) {
+    public SudoEvent(final List<Argument<String>> commands) {
         this.commands = commands;
     }
 
@@ -32,7 +32,7 @@ public class SudoEvent implements OnlineEvent {
     public void execute(final OnlineProfile profile) throws QuestException {
         final Player player = profile.getPlayer();
         try {
-            for (final Variable<String> command : commands) {
+            for (final Argument<String> command : commands) {
                 player.performCommand(command.getValue(profile));
             }
         } catch (final RuntimeException exception) {

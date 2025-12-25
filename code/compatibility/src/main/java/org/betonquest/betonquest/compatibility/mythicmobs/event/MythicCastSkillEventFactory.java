@@ -2,8 +2,8 @@ package org.betonquest.betonquest.compatibility.mythicmobs.event;
 
 import io.lumine.mythic.bukkit.BukkitAPIHelper;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -38,7 +38,7 @@ public class MythicCastSkillEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> skillName = instruction.string().get();
+        final Argument<String> skillName = instruction.string().get();
         final BetonQuestLogger log = loggerFactory.create(MythicCastSkillEvent.class);
         return new OnlineEventAdapter(
                 new MythicCastSkillEvent(log, instruction.getPackage(), apiHelper, skillName),

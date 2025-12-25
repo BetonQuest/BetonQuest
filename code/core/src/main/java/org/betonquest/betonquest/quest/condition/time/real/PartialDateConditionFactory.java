@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.condition.time.real;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 
@@ -21,17 +21,17 @@ public class PartialDateConditionFactory implements PlayerlessConditionFactory {
 
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
-        final Variable<List<TimeInterval>> dayVar = instruction.string()
+        final Argument<List<TimeInterval>> dayVar = instruction.string()
                 .map(val -> TimeInterval.parseFromString(val, PartialDate.DAY))
                 .get("day").orElse(null);
         final List<TimeInterval> dayOfMonth = dayVar == null ? null : dayVar.getValue(null);
 
-        final Variable<List<TimeInterval>> monthVar = instruction.string()
+        final Argument<List<TimeInterval>> monthVar = instruction.string()
                 .map(val -> TimeInterval.parseFromString(val, PartialDate.MONTH))
                 .get("month").orElse(null);
         final List<TimeInterval> month = monthVar == null ? null : monthVar.getValue(null);
 
-        final Variable<List<TimeInterval>> yearVar = instruction.string()
+        final Argument<List<TimeInterval>> yearVar = instruction.string()
                 .map(val -> TimeInterval.parseFromString(val, PartialDate.YEAR))
                 .get("year").orElse(null);
         final List<TimeInterval> year = yearVar == null ? null : yearVar.getValue(null);

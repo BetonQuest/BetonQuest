@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.condition.chest;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.bukkit.Location;
@@ -21,12 +21,12 @@ public class ChestItemCondition implements NullableCondition {
     /**
      * Items that should be in the chest.
      */
-    private final Variable<List<ItemWrapper>> items;
+    private final Argument<List<ItemWrapper>> items;
 
     /**
      * Location of the chest.
      */
-    private final Variable<Location> loc;
+    private final Argument<Location> loc;
 
     /**
      * Constructor of the ChestItemCondition.
@@ -34,7 +34,7 @@ public class ChestItemCondition implements NullableCondition {
      * @param items items that should be in the chest
      * @param loc   location of the chest
      */
-    public ChestItemCondition(final Variable<Location> loc, final Variable<List<ItemWrapper>> items) {
+    public ChestItemCondition(final Argument<Location> loc, final Argument<List<ItemWrapper>> items) {
         this.items = items;
         this.loc = loc;
     }

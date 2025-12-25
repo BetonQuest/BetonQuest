@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.variable.npc;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariable;
 import org.betonquest.betonquest.quest.variable.location.LocationFormationMode;
 import org.jetbrains.annotations.Nullable;
 
-import static org.betonquest.betonquest.quest.variable.npc.Argument.LOCATION;
+import static org.betonquest.betonquest.quest.variable.npc.NPCArgument.LOCATION;
 
 /**
  * Provides information about a npc.
@@ -25,12 +25,12 @@ public class NpcVariable implements NullableVariable {
     /**
      * Id of the npc.
      */
-    private final Variable<NpcID> npcID;
+    private final Argument<NpcID> npcID;
 
     /**
      * The type of information to retrieve for the NPC: name, full_name, or location.
      */
-    private final Argument key;
+    private final NPCArgument key;
 
     /**
      * The location formation mode to use for location resolution.
@@ -53,7 +53,7 @@ public class NpcVariable implements NullableVariable {
      * @param decimalPlaces the number of decimal places to use for location resolution
      * @throws IllegalArgumentException when location argument is given without location variable
      */
-    public NpcVariable(final FeatureApi featureApi, final Variable<NpcID> npcID, final Argument key,
+    public NpcVariable(final FeatureApi featureApi, final Argument<NpcID> npcID, final NPCArgument key,
                        @Nullable final LocationFormationMode formationMode, final int decimalPlaces) {
         this.featureApi = featureApi;
         this.npcID = npcID;

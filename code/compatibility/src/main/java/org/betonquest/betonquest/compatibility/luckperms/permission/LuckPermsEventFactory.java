@@ -3,8 +3,8 @@ package org.betonquest.betonquest.compatibility.luckperms.permission;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.data.NodeMap;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 
@@ -47,11 +47,11 @@ public class LuckPermsEventFactory implements PlayerEventFactory {
     }
 
     private LuckPermsNodeBuilder getNodeBuilder(final Instruction instruction) throws QuestException {
-        final Variable<List<String>> permissions = instruction.string().getList("permission", Collections.emptyList());
-        final Variable<List<String>> contexts = instruction.string().getList("context", Collections.emptyList());
-        final Variable<String> value = instruction.string().get("value", "");
-        final Variable<Number> expiry = instruction.number().atLeast(0).get("expiry", 0);
-        final Variable<TimeUnit> timeUnit = instruction.enumeration(TimeUnit.class).get("unit", TimeUnit.DAYS);
+        final Argument<List<String>> permissions = instruction.string().getList("permission", Collections.emptyList());
+        final Argument<List<String>> contexts = instruction.string().getList("context", Collections.emptyList());
+        final Argument<String> value = instruction.string().get("value", "");
+        final Argument<Number> expiry = instruction.number().atLeast(0).get("expiry", 0);
+        final Argument<TimeUnit> timeUnit = instruction.enumeration(TimeUnit.class).get("unit", TimeUnit.DAYS);
         return new LuckPermsNodeBuilder(permissions, value, contexts, expiry, timeUnit);
     }
 }

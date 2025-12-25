@@ -5,7 +5,7 @@ import io.lumine.mythic.api.mobs.MythicMob;
 import io.lumine.mythic.bukkit.BukkitAdapter;
 import io.lumine.mythic.core.mobs.ActiveMob;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
@@ -34,17 +34,17 @@ public class MythicSpawnMobEvent implements OnlineEvent, PlayerlessEvent {
     /**
      * The location where the mob should be spawned.
      */
-    private final Variable<Location> loc;
+    private final Argument<Location> loc;
 
     /**
      * The name and level of the MythicMob to spawn.
      */
-    private final Variable<Map.Entry<MythicMob, Double>> mobLevel;
+    private final Argument<Map.Entry<MythicMob, Double>> mobLevel;
 
     /**
      * The amount of mobs to spawn.
      */
-    private final Variable<Number> amount;
+    private final Argument<Number> amount;
 
     /**
      * Whether the mob should be private (invisible to other players).
@@ -61,7 +61,7 @@ public class MythicSpawnMobEvent implements OnlineEvent, PlayerlessEvent {
      * An optional variable containing a string to mark the mob with.
      */
     @Nullable
-    private final Variable<String> marked;
+    private final Argument<String> marked;
 
     /**
      * Key to mark mobs.
@@ -79,8 +79,8 @@ public class MythicSpawnMobEvent implements OnlineEvent, PlayerlessEvent {
      * @param targetPlayer whether the mob should target the player who triggered the event
      * @param marked       an optional variable containing a string to mark the mob with
      */
-    public MythicSpawnMobEvent(final Plugin plugin, final Variable<Location> loc, final Variable<Map.Entry<MythicMob, Double>> mobLevel,
-                               final Variable<Number> amount, @Nullable final MythicHider mythicHider, final boolean targetPlayer, @Nullable final Variable<String> marked) {
+    public MythicSpawnMobEvent(final Plugin plugin, final Argument<Location> loc, final Argument<Map.Entry<MythicMob, Double>> mobLevel,
+                               final Argument<Number> amount, @Nullable final MythicHider mythicHider, final boolean targetPlayer, @Nullable final Argument<String> marked) {
         this.plugin = plugin;
         this.loc = loc;
         this.mobLevel = mobLevel;

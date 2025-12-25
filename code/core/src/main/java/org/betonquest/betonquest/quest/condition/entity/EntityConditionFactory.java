@@ -2,11 +2,11 @@ package org.betonquest.betonquest.quest.condition.entity;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.EnumParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
@@ -40,12 +40,12 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
     }
 
     private EntityCondition parseEntityCondition(final Instruction instruction) throws QuestException {
-        final Variable<List<Map.Entry<EntityType, Integer>>> entityAmounts =
+        final Argument<List<Map.Entry<EntityType, Integer>>> entityAmounts =
                 instruction.parse(EntityAmount.ENTITY_AMOUNT).getList();
-        final Variable<Location> location = instruction.location().get();
-        final Variable<Number> range = instruction.number().get();
-        final Variable<Component> name = instruction.component().get("name").orElse(null);
-        final Variable<String> marked = instruction.packageIdentifier().get("marked").orElse(null);
+        final Argument<Location> location = instruction.location().get();
+        final Argument<Number> range = instruction.number().get();
+        final Argument<Component> name = instruction.component().get("name").orElse(null);
+        final Argument<String> marked = instruction.packageIdentifier().get("marked").orElse(null);
         return new EntityCondition(entityAmounts, location, range, name, marked);
     }
 

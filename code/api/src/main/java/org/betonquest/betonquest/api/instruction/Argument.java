@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api.instruction.variable;
+package org.betonquest.betonquest.api.instruction;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
  * @param <T> the type of the variable
  */
 @FunctionalInterface
-public interface Variable<T> {
+public interface Argument<T> {
 
     /**
      * Gets the value of the variable for a given profile or no profile.

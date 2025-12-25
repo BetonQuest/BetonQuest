@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.objective;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -20,7 +20,7 @@ public class ObjectiveCondition implements PlayerCondition {
     /**
      * The objective ID.
      */
-    private final Variable<ObjectiveID> objectiveId;
+    private final Argument<ObjectiveID> objectiveId;
 
     /**
      * Creates a new ObjectiveCondition.
@@ -28,7 +28,7 @@ public class ObjectiveCondition implements PlayerCondition {
      * @param questTypeApi the Quest Type API
      * @param objectiveId  the objective ID
      */
-    public ObjectiveCondition(final QuestTypeApi questTypeApi, final Variable<ObjectiveID> objectiveId) {
+    public ObjectiveCondition(final QuestTypeApi questTypeApi, final Argument<ObjectiveID> objectiveId) {
         this.questTypeApi = questTypeApi;
         this.objectiveId = objectiveId;
     }

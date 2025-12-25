@@ -6,12 +6,12 @@ import org.betonquest.betonquest.api.common.component.VariableComponent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.DefaultIdentifier;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.parser.IdentifierParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.ItemParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
-import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.instruction.variable.VariableList;
+import org.betonquest.betonquest.api.instruction.variable.DefaultArgument;
+import org.betonquest.betonquest.api.instruction.variable.DefaultListArgument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.Variables;
@@ -109,11 +109,11 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
     @Override
     protected HologramWrapper loadSection(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
         final String checkIntervalString = section.getString("check_interval", String.valueOf(defaultInterval));
-        final Variable<Number> checkInterval = new DefaultVariable<>(variables, pack, checkIntervalString, NumberParser.DEFAULT);
-        final Variable<Number> maxRange = new DefaultVariable<>(variables, pack, section.getString("max_range", "0"), NumberParser.DEFAULT);
+        final Argument<Number> checkInterval = new DefaultArgument<>(variables, pack, checkIntervalString, NumberParser.DEFAULT);
+        final Argument<Number> maxRange = new DefaultArgument<>(variables, pack, section.getString("max_range", "0"), NumberParser.DEFAULT);
 
         final List<String> lines = section.getStringList("lines");
-        final List<ConditionID> conditions = new VariableList<>(variables, pack, section.getString("conditions", ""),
+        final List<ConditionID> conditions = new DefaultListArgument<>(variables, pack, section.getString("conditions", ""),
                 value -> new ConditionID(variables, packManager, pack, value)).getValue(null);
 
         final List<AbstractLine> cleanedLines = new ArrayList<>();

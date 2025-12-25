@@ -3,8 +3,8 @@ package org.betonquest.betonquest.compatibility.traincarts.objectives;
 import com.bergerkiller.bukkit.tc.events.seat.MemberSeatExitEvent;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
@@ -20,7 +20,7 @@ public class TrainCartsExitObjective extends Objective implements Listener {
     /**
      * The name of the train, maybe empty.
      */
-    private final Variable<String> name;
+    private final Argument<String> name;
 
     /**
      * The constructor takes an Instruction object as a parameter and throws an QuestException.
@@ -29,7 +29,7 @@ public class TrainCartsExitObjective extends Objective implements Listener {
      * @param name        the name of the train, maybe empty
      * @throws QuestException if there is an error while parsing the instruction
      */
-    public TrainCartsExitObjective(final Instruction instruction, final Variable<String> name) throws QuestException {
+    public TrainCartsExitObjective(final Instruction instruction, final Argument<String> name) throws QuestException {
         super(instruction);
         this.name = name;
     }

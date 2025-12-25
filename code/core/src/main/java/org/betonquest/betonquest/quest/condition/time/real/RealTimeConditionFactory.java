@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.condition.time.real;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.quest.condition.time.TimeFrame;
@@ -20,7 +20,7 @@ public class RealTimeConditionFactory implements PlayerlessConditionFactory {
 
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
-        final Variable<TimeFrame> timeFrame = instruction.parse(TimeFrame::parse).get();
+        final Argument<TimeFrame> timeFrame = instruction.parse(TimeFrame::parse).get();
         return new RealTimeCondition(timeFrame);
     }
 }

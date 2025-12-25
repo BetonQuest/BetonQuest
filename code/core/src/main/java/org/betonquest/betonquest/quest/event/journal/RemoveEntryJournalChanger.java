@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.journal;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.id.JournalEntryID;
@@ -14,14 +14,14 @@ public class RemoveEntryJournalChanger implements JournalChanger {
     /**
      * Entry to remove from the journal.
      */
-    private final Variable<JournalEntryID> entryID;
+    private final Argument<JournalEntryID> entryID;
 
     /**
      * Create the entry-removing journal changer.
      *
      * @param entryID entry to remove
      */
-    public RemoveEntryJournalChanger(final Variable<JournalEntryID> entryID) {
+    public RemoveEntryJournalChanger(final Argument<JournalEntryID> entryID) {
         this.entryID = entryID;
     }
 

@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.variable.npc;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.quest.variable.PlayerlessVariableFactory;
 import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariable;
 import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariableAdapter;
 import org.betonquest.betonquest.quest.variable.location.LocationFormationMode;
+import org.betonquest.betonquest.quest.variable.location.LocationVariable;
 import org.betonquest.betonquest.quest.variable.name.QuesterVariable;
 
 /**
@@ -26,7 +27,7 @@ import org.betonquest.betonquest.quest.variable.name.QuesterVariable;
  * * location - Return npc location, defaults to ulfLong<br>
  * Modes: refer to LocationVariable documentation for details.<br>
  *
- * @see org.betonquest.betonquest.quest.variable.location.LocationVariable
+ * @see LocationVariable
  */
 public class NpcVariableFactory implements PlayerVariableFactory, PlayerlessVariableFactory {
 
@@ -64,11 +65,11 @@ public class NpcVariableFactory implements PlayerVariableFactory, PlayerlessVari
                 return questerVariable.getValue(profile);
             };
         }
-        final Variable<NpcID> npcID = instruction.parse(NpcID::new).get();
-        final Argument key = instruction.enumeration(Argument.class).get().getValue(null);
+        final Argument<NpcID> npcID = instruction.parse(NpcID::new).get();
+        final NPCArgument key = instruction.enumeration(NPCArgument.class).get().getValue(null);
         LocationFormationMode locationFormationMode = null;
         int decimalPlaces = 0;
-        if (key == Argument.LOCATION) {
+        if (key == NPCArgument.LOCATION) {
             if (instruction.hasNext()) {
                 locationFormationMode = LocationFormationMode.getMode(instruction.nextElement());
             } else {

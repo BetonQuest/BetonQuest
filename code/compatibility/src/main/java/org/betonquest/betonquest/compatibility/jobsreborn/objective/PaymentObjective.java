@@ -6,9 +6,9 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
@@ -33,7 +33,7 @@ public class PaymentObjective extends Objective implements Listener {
     /**
      * The target amount of money to be received.
      */
-    private final Variable<Number> targetAmount;
+    private final Argument<Number> targetAmount;
 
     /**
      * The {@link IngameNotificationSender} to send notifications.
@@ -48,7 +48,7 @@ public class PaymentObjective extends Objective implements Listener {
      * @param paymentSender the {@link IngameNotificationSender} to send notifications
      * @throws QuestException if the instruction is invalid
      */
-    public PaymentObjective(final Instruction instruction, final Variable<Number> targetAmount, final IngameNotificationSender paymentSender) throws QuestException {
+    public PaymentObjective(final Instruction instruction, final Argument<Number> targetAmount, final IngameNotificationSender paymentSender) throws QuestException {
         super(instruction, PAYMENT_FACTORY);
         this.targetAmount = targetAmount;
         this.paymentSender = paymentSender;

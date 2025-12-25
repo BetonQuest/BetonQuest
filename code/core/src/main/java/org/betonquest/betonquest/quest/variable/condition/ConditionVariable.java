@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.variable.condition;
 
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
@@ -13,6 +13,7 @@ import org.betonquest.betonquest.config.PluginMessage;
  * Get the "fulfillment" status of a quest condition.
  */
 public class ConditionVariable implements PlayerVariable {
+
     /**
      * The {@link PluginMessage} instance.
      */
@@ -21,7 +22,7 @@ public class ConditionVariable implements PlayerVariable {
     /**
      * Condition to check.
      */
-    private final Variable<ConditionID> conditionId;
+    private final Argument<ConditionID> conditionId;
 
     /**
      * If variable should be in PAPI style.
@@ -41,7 +42,7 @@ public class ConditionVariable implements PlayerVariable {
      * @param papiMode      if the return value should be in PAPI mode as defined in the documentation
      * @param questTypeApi  the Quest Type API
      */
-    public ConditionVariable(final PluginMessage pluginMessage, final Variable<ConditionID> conditionId, final boolean papiMode, final QuestTypeApi questTypeApi) {
+    public ConditionVariable(final PluginMessage pluginMessage, final Argument<ConditionID> conditionId, final boolean papiMode, final QuestTypeApi questTypeApi) {
         this.pluginMessage = pluginMessage;
         this.conditionId = conditionId;
         this.papiMode = papiMode;

@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.condition.ride;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -38,7 +38,7 @@ public class RideConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Optional<EntityType>> vehicle = instruction.enumeration(EntityType.class)
+        final Argument<Optional<EntityType>> vehicle = instruction.enumeration(EntityType.class)
                 .prefilterOptional(ANY_ENTITY, null).get();
         final BetonQuestLogger logger = loggerFactory.create(RideCondition.class);
         return new OnlineConditionAdapter(new RideCondition(vehicle), logger, instruction.getPackage());

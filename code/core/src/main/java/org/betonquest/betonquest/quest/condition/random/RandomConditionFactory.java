@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.condition.random;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
@@ -33,7 +33,7 @@ public class RandomConditionFactory implements PlayerConditionFactory, Playerles
     }
 
     private RandomCondition parse(final Instruction instruction) throws QuestException {
-        final Variable<RandomChance> randomChanceVariable = instruction.parse(RandomChanceParser.CHANCE).get();
+        final Argument<RandomChance> randomChanceVariable = instruction.parse(RandomChanceParser.CHANCE).get();
         return new RandomCondition(ThreadLocalRandom::current, randomChanceVariable);
     }
 }

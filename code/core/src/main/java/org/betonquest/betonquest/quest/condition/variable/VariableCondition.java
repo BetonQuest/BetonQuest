@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.variable;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
@@ -22,12 +22,12 @@ public class VariableCondition implements NullableCondition {
     /**
      * The variable to compare with the regex.
      */
-    private final Variable<String> variable;
+    private final Argument<String> variable;
 
     /**
      * The regex the variable must match.
      */
-    private final Variable<String> regex;
+    private final Argument<String> regex;
 
     /**
      * The address of the variable for logging.
@@ -48,7 +48,7 @@ public class VariableCondition implements NullableCondition {
      * @param variableAddress the address of the variable for logging
      * @param forceSync       whether to force synchronization with the main server thread
      */
-    public VariableCondition(final BetonQuestLogger log, final Variable<String> variable, final Variable<String> regex,
+    public VariableCondition(final BetonQuestLogger log, final Argument<String> variable, final Argument<String> regex,
                              final String variableAddress, final boolean forceSync) {
         this.log = log;
         this.variable = variable;

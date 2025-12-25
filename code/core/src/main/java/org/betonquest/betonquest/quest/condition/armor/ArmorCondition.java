@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.condition.armor;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.bukkit.inventory.ItemStack;
@@ -15,14 +15,14 @@ public class ArmorCondition implements OnlineCondition {
     /**
      * Armor to check.
      */
-    private final Variable<ItemWrapper> armorItem;
+    private final Argument<ItemWrapper> armorItem;
 
     /**
      * Creates a new ArmorCondition.
      *
      * @param armorItem the armor item
      */
-    public ArmorCondition(final Variable<ItemWrapper> armorItem) {
+    public ArmorCondition(final Argument<ItemWrapper> armorItem) {
         this.armorItem = armorItem;
     }
 

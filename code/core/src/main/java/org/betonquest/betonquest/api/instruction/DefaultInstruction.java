@@ -16,10 +16,8 @@ import org.betonquest.betonquest.api.instruction.tokenizer.Tokenizer;
 import org.betonquest.betonquest.api.instruction.tokenizer.TokenizerException;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
-import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
-import org.betonquest.betonquest.api.instruction.variable.ValueParser;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.instruction.variable.VariableList;
+import org.betonquest.betonquest.api.instruction.variable.DefaultArgument;
+import org.betonquest.betonquest.api.instruction.variable.DefaultListArgument;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.lib.instruction.chain.DefaultDecoratableChainRetriever;
 import org.betonquest.betonquest.lib.instruction.chain.DefaultNumberChainRetriever;
@@ -223,63 +221,63 @@ public class DefaultInstruction implements Instruction {
     }
 
     @Override
-    public <T> Variable<T> get(final String raw, final InstructionArgumentParser<T> parser) throws QuestException {
-        return new DefaultVariable<>(variables, pack, raw, value -> parser.apply(variables, packManager, pack, value));
+    public <T> Argument<T> get(final String raw, final InstructionArgumentParser<T> parser) throws QuestException {
+        return new DefaultArgument<>(variables, pack, raw, value -> parser.apply(variables, packManager, pack, value));
     }
 
     @Override
-    public <T> Variable<T> getNext(final InstructionArgumentParser<T> argument) throws QuestException {
-        return new DefaultVariable<>(variables, pack, nextElement(),
+    public <T> Argument<T> getNext(final InstructionArgumentParser<T> argument) throws QuestException {
+        return new DefaultArgument<>(variables, pack, nextElement(),
                 value -> argument.apply(variables, packManager, pack, value));
     }
 
     @Override
-    public <T> Variable<List<T>> getNextList(final InstructionArgumentParser<T> argument) throws QuestException {
-        return new VariableList<>(variables, pack, nextElement(),
+    public <T> Argument<List<T>> getNextList(final InstructionArgumentParser<T> argument) throws QuestException {
+        return new DefaultListArgument<>(variables, pack, nextElement(),
                 value -> argument.apply(variables, packManager, pack, value));
     }
 
     @Override
-    public <T> Optional<Variable<T>> getOptional(final String argumentKey, final InstructionArgumentParser<T> argument) throws QuestException {
+    public <T> Optional<Argument<T>> getOptional(final String argumentKey, final InstructionArgumentParser<T> argument) throws QuestException {
         final String argumentValue = getValue(argumentKey);
         if (argumentValue == null) {
             return Optional.empty();
         } else {
             final ValueParser<T> valueParser = value -> argument.apply(variables, packManager, pack, value);
-            return Optional.of(new DefaultVariable<>(variables, pack, argumentValue, valueParser));
+            return Optional.of(new DefaultArgument<>(variables, pack, argumentValue, valueParser));
         }
     }
 
     @Override
-    public <T> Variable<T> getOptional(final String argumentKey, final InstructionArgumentParser<T> argument, final T defaultValue) throws QuestException {
+    public <T> Argument<T> getOptional(final String argumentKey, final InstructionArgumentParser<T> argument, final T defaultValue) throws QuestException {
         final String argumentValue = getValue(argumentKey);
         if (argumentValue == null) {
-            return new DefaultVariable<>(defaultValue);
+            return new DefaultArgument<>(defaultValue);
         } else {
             final ValueParser<T> valueParser = value -> argument.apply(variables, packManager, pack, value);
-            return new DefaultVariable<>(variables, pack, argumentValue, valueParser);
+            return new DefaultArgument<>(variables, pack, argumentValue, valueParser);
         }
     }
 
     @Override
-    public <T> Optional<Variable<List<T>>> getOptionalList(final String argumentKey, final InstructionArgumentParser<T> argument) throws QuestException {
+    public <T> Optional<Argument<List<T>>> getOptionalList(final String argumentKey, final InstructionArgumentParser<T> argument) throws QuestException {
         final String argumentValue = getValue(argumentKey);
         if (argumentValue == null) {
             return Optional.empty();
         } else {
             final ValueParser<T> valueParser = value -> argument.apply(variables, packManager, pack, value);
-            return Optional.of(new VariableList<>(variables, pack, argumentValue, valueParser));
+            return Optional.of(new DefaultListArgument<>(variables, pack, argumentValue, valueParser));
         }
     }
 
     @Override
-    public <T> Variable<List<T>> getOptionalList(final String argumentKey, final InstructionArgumentParser<T> argument, final List<T> defaultList) throws QuestException {
+    public <T> Argument<List<T>> getOptionalList(final String argumentKey, final InstructionArgumentParser<T> argument, final List<T> defaultList) throws QuestException {
         final String argumentValue = getValue(argumentKey);
         if (argumentValue == null) {
-            return new VariableList<>(defaultList);
+            return new DefaultListArgument<>(defaultList);
         } else {
             final ValueParser<T> valueParser = value -> argument.apply(variables, packManager, pack, value);
-            return new VariableList<>(variables, pack, argumentValue, valueParser);
+            return new DefaultListArgument<>(variables, pack, argumentValue, valueParser);
         }
     }
 

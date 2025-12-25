@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.scoreboard;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.bukkit.Bukkit;
@@ -16,12 +16,12 @@ public class ScoreboardObjectiveCondition implements PlayerCondition {
     /**
      * The objective to check.
      */
-    private final Variable<String> objective;
+    private final Argument<String> objective;
 
     /**
      * The count to check.
      */
-    private final Variable<Number> count;
+    private final Argument<Number> count;
 
     /**
      * Checks the amount of points on scoreboard objectives.
@@ -29,7 +29,7 @@ public class ScoreboardObjectiveCondition implements PlayerCondition {
      * @param objective the objective to check
      * @param count     the count to check
      */
-    public ScoreboardObjectiveCondition(final Variable<String> objective, final Variable<Number> count) {
+    public ScoreboardObjectiveCondition(final Argument<String> objective, final Argument<Number> count) {
         this.objective = objective;
         this.count = count;
     }

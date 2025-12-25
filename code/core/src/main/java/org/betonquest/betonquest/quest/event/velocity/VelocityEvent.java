@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.velocity;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.bukkit.entity.Player;
@@ -15,17 +15,17 @@ public class VelocityEvent implements OnlineEvent {
     /**
      * The vector of the direction and speed.
      */
-    private final Variable<Vector> vector;
+    private final Argument<Vector> vector;
 
     /**
      * Sets in which direction the vector is directed.
      */
-    private final Variable<VectorDirection> direction;
+    private final Argument<VectorDirection> direction;
 
     /**
      * Sets how the vector should get merged with the player-velocity.
      */
-    private final Variable<VectorModification> modification;
+    private final Argument<VectorModification> modification;
 
     /**
      * Create a velocity event with the given parameters.
@@ -34,8 +34,8 @@ public class VelocityEvent implements OnlineEvent {
      * @param direction    direction in which the vector is directed
      * @param modification modification how the vector should get merged with the player-velocity
      */
-    public VelocityEvent(final Variable<Vector> vector, final Variable<VectorDirection> direction,
-                         final Variable<VectorModification> modification) {
+    public VelocityEvent(final Argument<Vector> vector, final Argument<VectorDirection> direction,
+                         final Argument<VectorModification> modification) {
         this.vector = vector;
         this.direction = direction;
         this.modification = modification;
