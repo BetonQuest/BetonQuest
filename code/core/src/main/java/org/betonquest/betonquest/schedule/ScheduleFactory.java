@@ -12,6 +12,7 @@ import org.bukkit.configuration.ConfigurationSection;
  */
 @FunctionalInterface
 public interface ScheduleFactory<S extends Schedule> {
+
     /**
      * Create the Schedule from a section.
      *

@@ -9,6 +9,7 @@ import org.bukkit.event.HandlerList;
  * Fired when the compass calls the setCompassTarget method.
  */
 public class QuestCompassTargetChangeEvent extends ProfileEvent implements Cancellable {
+
     /**
      * A list of all handlers for this event.
      */

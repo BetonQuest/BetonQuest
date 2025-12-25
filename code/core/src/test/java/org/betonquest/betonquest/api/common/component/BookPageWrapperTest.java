@@ -16,6 +16,7 @@ import java.util.stream.Stream;
  * Tests for the {@link BookPageWrapper}.
  */
 class BookPageWrapperTest extends ComponentFixture {
+
     private static Stream<Arguments> pagesToWrap() {
         return Stream.of(
                 Arguments.of("<green>Active Quest: <green>Flint <dark_blue>wants you to visit the Farm located at 191, 23, -167!",

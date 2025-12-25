@@ -249,6 +249,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
      * Handles additional potion effects.
      */
     private static class CustomEffectHandler {
+
         /**
          * The expected argument count of the formatted effect.
          */

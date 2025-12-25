@@ -19,6 +19,7 @@ import java.util.zip.ZipOutputStream;
  * Gives the possibility to zip files or folders to a target file.
  */
 public final class Zipper {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */

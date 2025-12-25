@@ -76,6 +76,7 @@ public enum Operation {
      */
     @FunctionalInterface
     private interface Compare {
+
         /**
          * Compares two numbers with an operand.
          *

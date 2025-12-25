@@ -11,4 +11,5 @@ import org.jetbrains.annotations.Nullable;
  */
 public record ResolvedOption(ConversationData conversationData, ConversationData.OptionType type,
                              @Nullable String name) {
+
 }

@@ -18,6 +18,7 @@ import java.util.UUID;
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public class SilentCommandSender implements CommandSender {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */

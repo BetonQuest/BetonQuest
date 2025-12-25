@@ -7,6 +7,7 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDi
  * A PacketWrapperFunction implementation for handling WrapperPlayServerDisguisedChat packets.
  */
 public class FunctionWrapperPlayServerDisguisedChat implements PacketWrapperFunction<WrapperPlayServerDisguisedChat> {
+
     /**
      * Constructs a FunctionWrapperPlayServerDisguisedChat instance.
      */

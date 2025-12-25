@@ -13,8 +13,10 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 class ComponentPatternSplitterTest extends ComponentFixture {
+
     @Nested
     class split {
+
         private static Stream<Arguments> stringsToSplit() {
             return Stream.of(
                     Arguments.of("(?= )", "test", List.of("test")),
@@ -38,6 +40,7 @@ class ComponentPatternSplitterTest extends ComponentFixture {
 
     @Nested
     class split_space {
+
         private static Stream<Arguments> stringsToWrap() {
             return Stream.of(
                     Arguments.of("<red>Multi<yellow> color</yellow>",
@@ -73,6 +76,7 @@ class ComponentPatternSplitterTest extends ComponentFixture {
 
     @Nested
     class split_new_line {
+
         private static Stream<Arguments> stringsToWrap() {
             return Stream.of(
                     Arguments.of("<red>Multi color <yellow>text<br> to</yellow> assertWrap",

@@ -40,9 +40,8 @@ public class DeleteEffectEventFactory implements PlayerEventFactory {
                 final PotionEffectType effect = PotionEffectType.getByName(type);
                 if (effect == null) {
                     throw new QuestException("Unknown effect type: " + type);
-                } else {
-                    return effect;
                 }
+                return effect;
             }).getList();
         } else {
             effects = new DefaultListArgument<>(Collections.emptyList());

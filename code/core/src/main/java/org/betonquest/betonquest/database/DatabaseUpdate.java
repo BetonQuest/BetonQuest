@@ -8,6 +8,7 @@ import java.sql.SQLException;
  */
 @FunctionalInterface
 public interface DatabaseUpdate {
+
     /**
      * Executes the update.
      *

@@ -68,11 +68,12 @@ public final class HandlerUtil {
      * @throws QuestException if {@code part} can't be parsed or is negative
      */
     public static Map.Entry<Number, Integer> getNumberValue(final String part, final String messagePart) throws QuestException {
-        final Number number;
         final String whatEver = "?";
         if (whatEver.equals(part)) {
             return Map.entry(Number.WHATEVER, 1);
-        } else if (part.endsWith("-")) {
+        }
+        final Number number;
+        if (part.endsWith("-")) {
             number = Number.LESS;
         } else if (part.endsWith("+")) {
             number = Number.MORE;

@@ -92,9 +92,8 @@ public class Slots {
                 try {
                     if (contained[slot]) {
                         throw new QuestException("Slots '" + s + "': slot " + slot + " was already specified");
-                    } else {
-                        contained[slot] = true;
                     }
+                    contained[slot] = true;
                 } catch (final IndexOutOfBoundsException e) {
                     throw new QuestException("Slots '" + s + "': slot " + slot + " exceeds inventory size", e);
                 }

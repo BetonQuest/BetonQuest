@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
  * Handles interaction with Conversations.
  */
 public interface ConversationApi {
+
     /**
      * Gets stored Conversation Data.
      *

@@ -8,6 +8,7 @@ import org.bukkit.event.HandlerList;
  * Called whenever a menu is closed.
  */
 public class MenuCloseEvent extends MenuEvent {
+
     /**
      * A list of all handlers for this event.
      */

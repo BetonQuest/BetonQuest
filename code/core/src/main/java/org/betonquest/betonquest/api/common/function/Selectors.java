@@ -11,6 +11,7 @@ import java.util.function.Function;
  * Static helpers for working with {@link Selector}s.
  */
 public final class Selectors {
+
     private Selectors() {
     }
 

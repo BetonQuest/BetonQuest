@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
  * ID of a Menu item.
  */
 public class MenuItemID extends SectionIdentifier {
+
     /**
      * Create a new Menu Item ID.
      *

@@ -14,6 +14,7 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(MockitoExtension.class)
 class StaticTagEventTest {
+
     @Test
     void testStaticTagEvent(
             @Mock final TagData data,

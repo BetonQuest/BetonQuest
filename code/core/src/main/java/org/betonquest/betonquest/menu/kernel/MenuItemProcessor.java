@@ -110,9 +110,8 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
                         getEvents("click.shiftRight"),
                         getEvents("click.middleMouse")
                 );
-            } else {
-                return new MenuItem.ClickEvents(getEvents("click"));
             }
+            return new MenuItem.ClickEvents(getEvents("click"));
         }
 
         private Argument<List<EventID>> getEvents(final String key) throws QuestException {

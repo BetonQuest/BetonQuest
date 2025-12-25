@@ -15,6 +15,7 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith({MockitoExtension.class, BetonQuestLoggerService.class})
 class NoActionJournalChangerTest {
+
     @Test
     void testChangeJournalDoesNothing(@Mock final Journal journal) {
         final NoActionJournalChanger changer = new NoActionJournalChanger();

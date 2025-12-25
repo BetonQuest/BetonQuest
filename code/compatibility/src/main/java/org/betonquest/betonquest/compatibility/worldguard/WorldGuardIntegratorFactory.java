@@ -7,6 +7,7 @@ import org.betonquest.betonquest.compatibility.IntegratorFactory;
  * Factory for creating {@link WorldGuardIntegrator} instances.
  */
 public class WorldGuardIntegratorFactory implements IntegratorFactory {
+
     /**
      * Creates a new instance of the factory.
      */

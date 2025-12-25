@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.QuestException;
  */
 @FunctionalInterface
 public interface QuestSupplier<T> {
+
     /**
      * Gets a result.
      *

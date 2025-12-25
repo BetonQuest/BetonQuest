@@ -8,6 +8,7 @@ import org.bukkit.event.HandlerList;
  * Fired when the quest data updates.
  */
 public class QuestDataUpdateEvent extends ProfileEvent {
+
     /**
      * A list of all handlers for this event.
      */

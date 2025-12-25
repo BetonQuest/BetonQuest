@@ -5,6 +5,7 @@ package org.betonquest.betonquest.compatibility;
  */
 @FunctionalInterface
 public interface IntegratorFactory {
+
     /**
      * Creates a new {@link Integrator} instance.
      *

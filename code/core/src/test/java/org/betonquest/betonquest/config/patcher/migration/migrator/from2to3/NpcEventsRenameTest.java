@@ -11,6 +11,7 @@ import java.io.IOException;
  * Test for renaming npc events.
  */
 class NpcEventsRenameTest extends QuestFixture {
+
     @Test
     void migrate() throws InvalidConfigurationException, IOException {
         original.loadFromString("""

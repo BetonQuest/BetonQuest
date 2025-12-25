@@ -224,9 +224,8 @@ public class FolderEvent implements NullableEvent {
     private FolderEventCanceler createFolderEventCanceler(@Nullable final Profile profile) {
         if (cancelOnLogout && profile != null) {
             return new QuitListener(betonQuest, log, pluginManager, profile);
-        } else {
-            return () -> false;
         }
+        return () -> false;
     }
 
     private void callSameSyncAsyncContext(final BukkitRunnable runnable, final long delay, final long period) {

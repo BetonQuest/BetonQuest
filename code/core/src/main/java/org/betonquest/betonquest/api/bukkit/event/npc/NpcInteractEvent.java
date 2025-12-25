@@ -15,6 +15,7 @@ import java.util.Set;
  */
 @SuppressWarnings("PMD.DataClass")
 public class NpcInteractEvent extends ProfileEvent implements Cancellable {
+
     /**
      * Static HandlerList to register listeners on the event.
      */

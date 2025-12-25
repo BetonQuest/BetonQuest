@@ -7,6 +7,7 @@ import org.betonquest.betonquest.feature.journal.Journal;
  * A journal changer that will not change anything.
  */
 public class NoActionJournalChanger implements JournalChanger {
+
     /**
      * Create the no action journal changer.
      */

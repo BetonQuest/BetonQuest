@@ -19,6 +19,7 @@ import java.util.Map;
  * Default implementation of {@link PatchTransformerRegistry} containing all transformers of BetonQuest.
  */
 public class DefaultPatchTransformerRegistry implements PatchTransformerRegistry {
+
     /**
      * A map of transformers to use for patching and their names.
      */

@@ -23,6 +23,7 @@ import static org.mockito.Mockito.*;
  */
 @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
 class TransformerIntegrationTest extends TransformersFixture {
+
     private String patch;
 
     @AfterEach
@@ -42,6 +43,7 @@ class TransformerIntegrationTest extends TransformersFixture {
     @Nested
     @SuppressWarnings("PMD.ShortClassName")
     class Type {
+
         @Test
         void flawless_String_to_Boolean() throws InvalidConfigurationException, IOException {
             patch = """
@@ -126,6 +128,7 @@ class TransformerIntegrationTest extends TransformersFixture {
     @Nested
     @SuppressWarnings("PMD.ShortClassName")
     class Set {
+
         @Test
         void flawless() throws InvalidConfigurationException, IOException {
             patch = """
@@ -141,6 +144,7 @@ class TransformerIntegrationTest extends TransformersFixture {
 
     @Nested
     class KeyRename {
+
         @Test
         void flawless() throws InvalidConfigurationException, IOException {
             patch = """
@@ -180,6 +184,7 @@ class TransformerIntegrationTest extends TransformersFixture {
 
     @Nested
     class Remove {
+
         @Test
         void flawless() throws InvalidConfigurationException, IOException {
             patch = """
@@ -203,6 +208,7 @@ class TransformerIntegrationTest extends TransformersFixture {
 
     @Nested
     class ListEntryRemove {
+
         @Test
         void flawless() throws InvalidConfigurationException, IOException {
             patch = """
@@ -242,6 +248,7 @@ class TransformerIntegrationTest extends TransformersFixture {
 
     @Nested
     class ListEntryRename {
+
         @Test
         void flawless() throws InvalidConfigurationException, IOException {
             patch = """
@@ -284,6 +291,7 @@ class TransformerIntegrationTest extends TransformersFixture {
 
     @Nested
     class ListEntryAdd {
+
         @Test
         void flawless_add_default() throws InvalidConfigurationException, IOException {
             patch = """
@@ -363,6 +371,7 @@ class TransformerIntegrationTest extends TransformersFixture {
 
     @Nested
     class ValueRename {
+
         @Test
         void flawless() throws InvalidConfigurationException, IOException {
             patch = """

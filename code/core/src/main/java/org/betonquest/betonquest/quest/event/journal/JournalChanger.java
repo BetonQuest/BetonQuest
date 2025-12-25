@@ -9,6 +9,7 @@ import org.betonquest.betonquest.feature.journal.Journal;
  */
 @FunctionalInterface
 public interface JournalChanger {
+
     /**
      * Apply the change to a journal.
      *

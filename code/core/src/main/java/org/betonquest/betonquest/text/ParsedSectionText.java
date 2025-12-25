@@ -45,18 +45,19 @@ public class ParsedSectionText extends ParsedText {
         final StringParser stringParser = new StringParser();
         if (section.isConfigurationSection(path)) {
             return parseSection(variables, pack, section, path, stringParser);
-        } else if (section.isList(path)) {
+        }
+        if (section.isList(path)) {
             return Map.of(languageProvider.getDefaultLanguage(), new DefaultArgument<>(variables, pack,
                     String.join("\n", section.getStringList(path)), stringParser));
-        } else if (section.isString(path)) {
+        }
+        if (section.isString(path)) {
             final String raw = section.getString(path);
             if (raw == null) {
                 throw new QuestException("No string value for '" + path + "'!");
             }
             return Map.of(languageProvider.getDefaultLanguage(), new DefaultArgument<>(variables, pack, raw, stringParser));
-        } else {
-            throw new QuestException("The '" + path + "' is missing!");
         }
+        throw new QuestException("The '" + path + "' is missing!");
     }
 
     private static Map<String, Argument<String>> parseSection(final Variables variables, final QuestPackage pack,

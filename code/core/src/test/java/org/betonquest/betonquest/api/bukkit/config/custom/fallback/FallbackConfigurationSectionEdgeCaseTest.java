@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Tag("ConfigurationSection")
 @SuppressWarnings("PMD.JUnit5TestShouldBePackagePrivate")
 public class FallbackConfigurationSectionEdgeCaseTest {
+
     @Test
     void testInvalidConstructor() {
         final Configuration original = new MemoryConfiguration();

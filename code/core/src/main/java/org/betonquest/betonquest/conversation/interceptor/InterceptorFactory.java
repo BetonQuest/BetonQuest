@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
  */
 @FunctionalInterface
 public interface InterceptorFactory {
+
     /**
      * Creates a new {@link Interceptor}.
      *

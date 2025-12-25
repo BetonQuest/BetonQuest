@@ -8,6 +8,7 @@ import java.util.logging.LogRecord;
  * This filter will also allow subclasses of the filtered type.
  */
 public class LogRecordTypeFilter implements Filter {
+
     /**
      * The required type.
      */

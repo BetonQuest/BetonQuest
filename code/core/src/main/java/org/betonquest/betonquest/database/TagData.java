@@ -6,6 +6,7 @@ import java.util.Set;
  * Provides the ability to have tags.
  */
 public interface TagData {
+
     /**
      * Provide set of all defined tags.
      *

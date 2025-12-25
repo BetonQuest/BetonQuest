@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
  * Notification sender that sends ingame chat notifications to the player if they are online.
  */
 public class IngameNotificationSender implements NotificationSender {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */

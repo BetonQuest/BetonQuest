@@ -43,9 +43,8 @@ public class FabledClassCondition implements PlayerCondition {
         final PlayerData data = Fabled.getData(profile.getPlayer());
         if (exact) {
             return data.isExactClass(Fabled.getClass(className));
-        } else {
-            return data.isClass(Fabled.getClass(className));
         }
+        return data.isClass(Fabled.getClass(className));
     }
 
     @Override

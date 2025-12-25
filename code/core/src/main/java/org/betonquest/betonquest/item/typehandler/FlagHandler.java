@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
  * Handles metadata about item flags.
  */
 public class FlagHandler implements ItemMetaHandler<ItemMeta> {
+
     /**
      * Set of ItemFlags on the ItemStack.
      */

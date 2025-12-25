@@ -9,6 +9,7 @@ import org.betonquest.betonquest.conversation.Conversation;
  * Cancels the conversation.
  */
 public class CancelConversationEvent implements OnlineEvent {
+
     /**
      * Conversation API.
      */

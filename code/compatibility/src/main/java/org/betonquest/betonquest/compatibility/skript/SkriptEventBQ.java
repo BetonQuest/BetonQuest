@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
  * Skript event, which listens to custom event fired by BetonQuest's event.
  */
 public class SkriptEventBQ extends SkriptEvent {
+
     /**
      * The literal that contains the identifier of the BetonQuest event.
      */

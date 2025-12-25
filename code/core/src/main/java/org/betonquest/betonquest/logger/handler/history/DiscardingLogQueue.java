@@ -7,6 +7,7 @@ import java.util.logging.LogRecord;
  * LogRecord Queue that discards any pushed element. It is a Null Pattern implementation.
  */
 public class DiscardingLogQueue implements LogRecordQueue {
+
     /**
      * Create a discarding LogRecord queue.
      */

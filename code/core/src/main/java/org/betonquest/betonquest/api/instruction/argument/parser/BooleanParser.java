@@ -28,10 +28,10 @@ public class BooleanParser implements SimpleArgumentParser<Boolean> {
     public Boolean apply(final String value) throws QuestException {
         if (TRUE.equalsIgnoreCase(value)) {
             return true;
-        } else if (FALSE.equalsIgnoreCase(value)) {
-            return false;
-        } else {
-            throw new QuestException("Could not parse value to boolean: " + value);
         }
+        if (FALSE.equalsIgnoreCase(value)) {
+            return false;
+        }
+        throw new QuestException("Could not parse value to boolean: " + value);
     }
 }

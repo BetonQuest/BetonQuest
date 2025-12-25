@@ -11,6 +11,7 @@ import java.util.function.Function;
  */
 @FunctionalInterface
 public interface QuestMigration {
+
     /**
      * Migrates the configs.
      *

@@ -64,9 +64,8 @@ public abstract class DefaultIdentifier implements Identifier {
                 throw new QuestException("ID '%s' has no identifier after the package name!".formatted(rawIdentifier));
             }
             return new RawIdentifier(pack, identifier);
-        } else {
-            return new RawIdentifier(null, rawIdentifier.replace("\\" + SEPARATOR, SEPARATOR));
         }
+        return new RawIdentifier(null, rawIdentifier.replace("\\" + SEPARATOR, SEPARATOR));
     }
 
     private QuestPackage parsePackageFromIdentifier(final QuestPackageManager packManager,

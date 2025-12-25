@@ -9,6 +9,7 @@ import java.io.Serial;
  * This exception represents an invalid sub configuration in a {@link MultiConfiguration}.
  */
 public class InvalidSubConfigurationException extends InvalidConfigurationException {
+
     @Serial
     private static final long serialVersionUID = 8273686920162391985L;
 

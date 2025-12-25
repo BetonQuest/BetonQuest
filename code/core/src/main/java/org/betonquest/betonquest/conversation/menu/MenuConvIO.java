@@ -320,10 +320,9 @@ public class MenuConvIO extends ChatConvIO {
         final Player player = onlineProfile.getPlayer();
         if (selectionCooldowns.contains(player)) {
             return true;
-        } else {
-            selectionCooldowns.add(player);
-            Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> selectionCooldowns.remove(player), settings.rateLimit());
         }
+        selectionCooldowns.add(player);
+        Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> selectionCooldowns.remove(player), settings.rateLimit());
         return false;
     }
 

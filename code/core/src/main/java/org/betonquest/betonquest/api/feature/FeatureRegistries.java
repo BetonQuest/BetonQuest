@@ -15,6 +15,7 @@ import org.betonquest.betonquest.schedule.EventScheduling;
  * They are used to add new implementations and access them.
  */
 public interface FeatureRegistries {
+
     /**
      * Gets the registry for conversation IOs.
      *

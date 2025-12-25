@@ -290,7 +290,8 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
                         + locationToShortReadable(event.getNavigator().getTargetAsLocation()) + "'. "
                         + "The configured stuck action from Citizens will now be called, BetonQuest will try to continue navigation.");
                 return;
-            } else if (event instanceof final NavigationCancelEvent cancelEvent && cancelEvent.getCancelReason() != CancelReason.STUCK) {
+            }
+            if (event instanceof final NavigationCancelEvent cancelEvent && cancelEvent.getCancelReason() != CancelReason.STUCK) {
                 log.warn("The NPC '" + npc.getId() + "' navigation was cancelled at '"
                         + locationToShortReadable(npc.getStoredLocation()) + "' to '" + "'. "
                         + "Reason: " + cancelEvent.getCancelReason());

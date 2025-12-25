@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Tag("ConfigurationSection")
 @SuppressWarnings({"PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.JUnit5TestShouldBePackagePrivate"})
 public class FallbackConfigurationEmptyOriginalTest extends FallbackConfigurationTest {
+
     @Override
     public Configuration getConfig() throws InvalidConfigurationException {
         fallback = getDefaultConfig();

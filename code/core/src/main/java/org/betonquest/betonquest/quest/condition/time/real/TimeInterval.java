@@ -11,6 +11,7 @@ import java.util.Objects;
  * The time interval used to evaluate the {@link PartialDateCondition}.
  */
 public class TimeInterval {
+
     /**
      * Begin of the interval.
      */

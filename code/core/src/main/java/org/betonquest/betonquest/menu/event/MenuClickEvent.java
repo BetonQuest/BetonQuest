@@ -12,6 +12,7 @@ import org.bukkit.event.inventory.ClickType;
  */
 @SuppressWarnings("PMD.DataClass")
 public class MenuClickEvent extends MenuEvent implements Cancellable {
+
     /**
      * A list of all handlers for this event.
      */

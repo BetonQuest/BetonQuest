@@ -65,11 +65,11 @@ public abstract class AbstractPointVariableFactory<T> {
     private PointCalculationType getType(final String type) throws QuestException {
         if ("amount".equalsIgnoreCase(type)) {
             return PointCalculationType.AMOUNT;
-        } else if (type.toLowerCase(Locale.ROOT).startsWith("left:")) {
-            return PointCalculationType.LEFT;
-        } else {
-            throw new QuestException(String.format("Unknown variable type: '%s'",
-                    type));
         }
+        if (type.toLowerCase(Locale.ROOT).startsWith("left:")) {
+            return PointCalculationType.LEFT;
+        }
+        throw new QuestException(String.format("Unknown variable type: '%s'",
+                type));
     }
 }

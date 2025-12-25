@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @ExtendWith(MockitoExtension.class)
 public class QuestFixture {
+
     protected final YamlConfiguration original = new YamlConfiguration();
 
     protected final YamlConfiguration expected = new YamlConfiguration();

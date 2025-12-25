@@ -9,6 +9,7 @@ import java.util.Arrays;
  * if they are not.
  */
 public interface Saver {
+
     /**
      * Adds new record to the queue, where it will be saved to the database.
      *
@@ -28,6 +29,7 @@ public interface Saver {
      * @param args list of Strings which will be saved to the database
      */
     record Record(UpdateType type, String... args) {
+
         /**
          * Creates new Record, which can be saved to the database using
          * {@code Saver.add()}.

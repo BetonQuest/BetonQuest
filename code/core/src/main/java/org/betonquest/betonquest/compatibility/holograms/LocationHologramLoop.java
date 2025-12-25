@@ -58,9 +58,8 @@ public class LocationHologramLoop extends HologramLoop implements StartTask {
         final String rawLocation = section.getString("location");
         if (rawLocation == null) {
             throw new QuestException("Location is not specified");
-        } else {
-            return new DefaultArgument<>(variables, pack, rawLocation, new LocationParser(Bukkit.getServer())).getValue(null);
         }
+        return new DefaultArgument<>(variables, pack, rawLocation, new LocationParser(Bukkit.getServer())).getValue(null);
     }
 
     @Override

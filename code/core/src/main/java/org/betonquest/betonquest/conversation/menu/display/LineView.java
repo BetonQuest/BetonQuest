@@ -13,13 +13,14 @@ import java.util.function.Supplier;
  * This interface allows for different types of line views, enabling flexibility in how lines are displayed.
  */
 public interface LineView {
+
     /**
      * Returns the lines of this view.
      *
      * @return a new modifiable list of lines
      */
     @Contract(pure = true)
-    List<Line> getLines();
+    List<Line> lines();
 
     /**
      * Returns the size of this view, i.e., the number of lines it contains.
@@ -32,6 +33,7 @@ public interface LineView {
      * An empty line view that contains no lines.
      */
     class Empty implements LineView {
+
         /**
          * The empty default constructor.
          */
@@ -39,7 +41,7 @@ public interface LineView {
         }
 
         @Override
-        public List<Line> getLines() {
+        public List<Line> lines() {
             return new ArrayList<>();
         }
 
@@ -52,12 +54,10 @@ public interface LineView {
     /**
      * A holder view that holds a list of lines.
      * This view is used to group lines together, allowing for easy management and display.
+     *
+     * @param lines The lines to hold in this view.
      */
-    class Holder implements LineView {
-        /**
-         * The lines to hold in this view.
-         */
-        private final List<Line> lines;
+    record Holder(List<Line> lines) implements LineView {
 
         /**
          * Creates a new holder view with the given lines.
@@ -65,7 +65,7 @@ public interface LineView {
          * @param lines the lines to hold
          */
         public Holder(final Line... lines) {
-            this.lines = List.of(lines);
+            this(List.of(lines));
         }
 
         /**
@@ -73,12 +73,11 @@ public interface LineView {
          *
          * @param lines the lines to hold
          */
-        public Holder(final List<Line> lines) {
-            this.lines = lines;
+        public Holder {
         }
 
         @Override
-        public List<Line> getLines() {
+        public List<Line> lines() {
             return new ArrayList<>(lines);
         }
 
@@ -92,6 +91,7 @@ public interface LineView {
      * A filler view that fills a line view to a certain height.
      */
     class Filler implements LineView {
+
         /**
          * An empty line that can be used to fill the view.
          */
@@ -119,8 +119,8 @@ public interface LineView {
         }
 
         @Override
-        public List<Line> getLines() {
-            final List<Line> lines = lineView.getLines();
+        public List<Line> lines() {
+            final List<Line> lines = lineView.lines();
             if (lines.size() >= height) {
                 return lines;
             }
@@ -142,6 +142,7 @@ public interface LineView {
      * A combiner view that combines multiple line views into a single view.
      */
     class Combiner implements LineView {
+
         /**
          * The line views to combine into a single view.
          */
@@ -157,10 +158,10 @@ public interface LineView {
         }
 
         @Override
-        public List<Line> getLines() {
+        public List<Line> lines() {
             final List<Line> combinedLines = new ArrayList<>();
             for (final LineView view : views) {
-                combinedLines.addAll(view.getLines());
+                combinedLines.addAll(view.lines());
             }
             return combinedLines;
         }
@@ -176,6 +177,7 @@ public interface LineView {
      * It shows a fixed number of lines, with the ability to scroll up and down.
      */
     class Excerpt implements LineView {
+
         /**
          * The max height of lines to display.
          */
@@ -219,8 +221,8 @@ public interface LineView {
         }
 
         @Override
-        public List<Line> getLines() {
-            final List<Line> rawLines = lineView.getLines();
+        public List<Line> lines() {
+            final List<Line> rawLines = lineView.lines();
             if (rawLines.size() <= height) {
                 return rawLines;
             }

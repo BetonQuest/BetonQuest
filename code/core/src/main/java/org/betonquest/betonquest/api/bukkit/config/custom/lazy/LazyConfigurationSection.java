@@ -16,6 +16,7 @@ import java.util.Map;
  * A write operation will create the child section if it does not exist.
  */
 public class LazyConfigurationSection extends HandleModificationConfigurationSection {
+
     /**
      * Creates a new handler instance.
      *
@@ -74,6 +75,7 @@ public class LazyConfigurationSection extends HandleModificationConfigurationSec
      * where every read operation does not create the child section.
      */
     public static class LazyMemoryConfigurationSection extends MemorySection {
+
         /**
          * Creates a new MemorySection.
          *

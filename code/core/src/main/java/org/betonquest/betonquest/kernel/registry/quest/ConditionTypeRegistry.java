@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public class ConditionTypeRegistry extends QuestTypeRegistry<PlayerCondition, PlayerlessCondition, ConditionAdapter>
         implements ConditionRegistry {
+
     /**
      * Create a new condition type registry.
      *

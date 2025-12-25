@@ -13,6 +13,7 @@ import java.util.Optional;
  * FancyNpcs Compatibility Adapter for general BetonQuest NPC behaviour.
  */
 public class FancyAdapter implements org.betonquest.betonquest.api.quest.npc.Npc<Npc> {
+
     /**
      * The FancyNpcs NPC instance.
      */

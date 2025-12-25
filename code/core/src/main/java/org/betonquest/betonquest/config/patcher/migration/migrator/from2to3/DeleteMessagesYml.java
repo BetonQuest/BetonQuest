@@ -11,6 +11,7 @@ import java.nio.file.Paths;
  * Handles the migration of the messages.yml file.
  */
 public class DeleteMessagesYml implements Migration {
+
     /**
      * The messages.yml file path.
      */

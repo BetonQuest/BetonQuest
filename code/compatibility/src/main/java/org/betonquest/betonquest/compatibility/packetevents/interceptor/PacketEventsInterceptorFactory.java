@@ -10,6 +10,7 @@ import org.betonquest.betonquest.conversation.interceptor.InterceptorFactory;
  * A factory for creating PacketEventsInterceptor instances.
  */
 public class PacketEventsInterceptorFactory implements InterceptorFactory {
+
     /**
      * The PacketEvents API instance.
      */

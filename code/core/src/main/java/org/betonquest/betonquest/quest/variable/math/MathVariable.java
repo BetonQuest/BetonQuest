@@ -12,6 +12,7 @@ import java.util.Locale;
  * This variable evaluates the given calculation and returns the result.
  */
 public class MathVariable implements NullableVariable {
+
     /**
      * The full calculation token.
      */

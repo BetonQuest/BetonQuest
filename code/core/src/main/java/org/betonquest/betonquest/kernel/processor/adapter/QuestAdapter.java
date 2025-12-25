@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
  * @param <L> the playerless variant
  */
 public class QuestAdapter<P, L> {
+
     /**
      * Package where the types are from.
      */

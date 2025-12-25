@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
  */
 @FunctionalInterface
 public interface Selector<T> {
+
     /**
      * Gets the target that should be used for the given profile.
      *

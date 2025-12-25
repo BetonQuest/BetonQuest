@@ -7,4 +7,5 @@ package org.betonquest.betonquest.compatibility.holograms.lines;
  * @param count      Value for point.
  */
 public record TopXLine(String playerName, long count) {
+
 }

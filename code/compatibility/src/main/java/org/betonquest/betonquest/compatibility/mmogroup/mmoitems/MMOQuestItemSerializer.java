@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
  * Serializes MMOItems to its type and id.
  */
 public class MMOQuestItemSerializer implements QuestItemSerializer {
+
     /**
      * The empty default constructor.
      */

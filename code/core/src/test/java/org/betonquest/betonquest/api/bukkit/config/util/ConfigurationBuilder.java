@@ -21,6 +21,7 @@ import static org.mockito.Mockito.*;
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public class ConfigurationBuilder {
+
     /**
      * The {@link Configuration} that is being built.
      */

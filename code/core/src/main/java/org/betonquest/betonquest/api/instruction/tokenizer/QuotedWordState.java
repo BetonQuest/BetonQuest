@@ -5,6 +5,7 @@ package org.betonquest.betonquest.api.instruction.tokenizer;
  * A double quote at the end of the string is required.
  */
 public class QuotedWordState implements TokenizerState {
+
     /**
      * Create the quoted word collection state.
      */

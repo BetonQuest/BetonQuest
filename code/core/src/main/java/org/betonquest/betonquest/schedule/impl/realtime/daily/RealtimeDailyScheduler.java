@@ -23,6 +23,7 @@ import java.util.function.Supplier;
  */
 @SuppressWarnings("PMD.DoNotUseThreads")
 public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDailySchedule, Instant> {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -173,5 +174,6 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
      * @param runTime  the time when the missed run should have taken place.
      */
     private record MissedRun(RealtimeDailySchedule schedule, Instant runTime) {
+
     }
 }

@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public class HolographicDisplaysHologram implements BetonHologram {
+
     /**
      * The hologram object from HolographicDisplays.
      */

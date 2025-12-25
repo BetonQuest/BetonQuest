@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
  * This is typically used for formatting book pages in a way that respects both the width and height constraints.
  */
 public class BookPageWrapper extends FixedComponentLineWrapper {
+
     /**
      * The pattern used to identify new pages in the component text.
      */

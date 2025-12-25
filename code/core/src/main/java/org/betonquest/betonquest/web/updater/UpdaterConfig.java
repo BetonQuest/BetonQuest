@@ -12,6 +12,7 @@ import java.util.Locale;
  */
 @SuppressWarnings("PMD.DataClass")
 public class UpdaterConfig {
+
     /**
      * The string prefix of the path to the settings in the given {@link ConfigurationSection}.
      */

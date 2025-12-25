@@ -23,6 +23,7 @@ import java.util.Set;
  * This is an implementation of {@link Quest}, that gets and applies templates.
  */
 public class QuestTemplate extends Quest {
+
     /**
      * A list of all templates that are applied to this {@link QuestTemplate}.
      */

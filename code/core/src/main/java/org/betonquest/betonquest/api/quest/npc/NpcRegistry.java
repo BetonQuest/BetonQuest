@@ -10,6 +10,7 @@ import java.util.Set;
  * Stores the npc factories and identifier.
  */
 public interface NpcRegistry extends FeatureTypeRegistry<NpcWrapper<?>> {
+
     /**
      * Registers a reverse-identifier to allow matching npcs to their in BQ used IDs.
      *

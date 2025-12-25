@@ -62,6 +62,7 @@ public enum PointType {
      */
     @FunctionalInterface
     private interface Calculator {
+
         /**
          * Calculates the new value.
          *

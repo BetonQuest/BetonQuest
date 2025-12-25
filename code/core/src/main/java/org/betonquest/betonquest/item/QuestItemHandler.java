@@ -42,6 +42,7 @@ import java.util.ListIterator;
  */
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.CyclomaticComplexity", "PMD.CouplingBetweenObjects", "PMD.GodClass"})
 public class QuestItemHandler implements Listener {
+
     /**
      * The config provider.
      */

@@ -403,27 +403,26 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final String last = args[args.length - 1];
         if (last == null || !last.contains(Identifier.SEPARATOR)) {
             return completePackage();
-        } else {
-            final String pack = last.substring(0, last.indexOf(Identifier.SEPARATOR));
-            final QuestPackage configPack = instance.getQuestPackageManager().getPackages().get(pack);
-            if (configPack == null) {
-                return Optional.of(new ArrayList<>());
-            }
-            if (type == null) {
-                final List<String> completions = new ArrayList<>();
-                completions.add(pack + Identifier.SEPARATOR);
-                return Optional.of(completions);
-            }
-            final ConfigurationSection configuration = configPack.getConfig()
-                    .getConfigurationSection(type.name().toLowerCase(Locale.ROOT));
+        }
+        final String pack = last.substring(0, last.indexOf(Identifier.SEPARATOR));
+        final QuestPackage configPack = instance.getQuestPackageManager().getPackages().get(pack);
+        if (configPack == null) {
+            return Optional.of(new ArrayList<>());
+        }
+        if (type == null) {
             final List<String> completions = new ArrayList<>();
-            if (configuration != null) {
-                for (final String key : configuration.getKeys(false)) {
-                    completions.add(pack + Identifier.SEPARATOR + key);
-                }
-            }
+            completions.add(pack + Identifier.SEPARATOR);
             return Optional.of(completions);
         }
+        final ConfigurationSection configuration = configPack.getConfig()
+                .getConfigurationSection(type.name().toLowerCase(Locale.ROOT));
+        final List<String> completions = new ArrayList<>();
+        if (configuration != null) {
+            for (final String key : configuration.getKeys(false)) {
+                completions.add(pack + Identifier.SEPARATOR + key);
+            }
+        }
+        return Optional.of(completions);
     }
 
     /**
@@ -519,10 +518,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         if (profile.getOnlineProfile().isPresent()) {
             return dataStorage.get(profile);
-        } else {
-            log.debug("Profile is offline, loading his data");
-            return playerDataFactory.createPlayerData(profile);
         }
+        log.debug("Profile is offline, loading his data");
+        return playerDataFactory.createPlayerData(profile);
     }
 
     /**
@@ -1857,24 +1855,23 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             final String last = args[args.length - 1];
             if (last == null || !last.contains(Identifier.SEPARATOR)) {
                 return completePackage();
-            } else {
-                final String pack = last.substring(0, last.indexOf(Identifier.SEPARATOR));
-                final QuestPackage configPack = instance.getQuestPackageManager().getPackages().get(pack);
-                if (configPack == null) {
-                    return Optional.of(Collections.emptyList());
-                }
-                final ConfigurationSection configuration = configPack.getConfig().getConfigurationSection("objectives");
-                final List<String> completions = new ArrayList<>();
-                if (configuration != null) {
-                    for (final String key : configuration.getKeys(false)) {
-                        final String rawObjectiveInstruction = configuration.getString(key);
-                        if (rawObjectiveInstruction != null && rawObjectiveInstruction.stripIndent().startsWith("variable")) {
-                            completions.add(pack + Identifier.SEPARATOR + key);
-                        }
+            }
+            final String pack = last.substring(0, last.indexOf(Identifier.SEPARATOR));
+            final QuestPackage configPack = instance.getQuestPackageManager().getPackages().get(pack);
+            if (configPack == null) {
+                return Optional.of(Collections.emptyList());
+            }
+            final ConfigurationSection configuration = configPack.getConfig().getConfigurationSection("objectives");
+            final List<String> completions = new ArrayList<>();
+            if (configuration != null) {
+                for (final String key : configuration.getKeys(false)) {
+                    final String rawObjectiveInstruction = configuration.getString(key);
+                    if (rawObjectiveInstruction != null && rawObjectiveInstruction.stripIndent().startsWith("variable")) {
+                        completions.add(pack + Identifier.SEPARATOR + key);
                     }
                 }
-                return Optional.of(completions);
             }
+            return Optional.of(completions);
         }
         if (args.length == 4) {
             return Optional.of(Arrays.asList("list", "set", "del"));
@@ -1922,9 +1919,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private <T> Predicate<T> createListFilter(final String[] args, final int filterIndex, final Function<T, String> getId) {
         if (args.length > filterIndex) {
             return createCaseInsensitivePrefixPredicate(args[filterIndex], getId);
-        } else {
-            return pointer -> true;
         }
+        return pointer -> true;
     }
 
     private <T> Predicate<T> createCaseInsensitivePrefixPredicate(final String prefix, final Function<T, String> getId) {

@@ -29,6 +29,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
 class PatcherTest {
+
     private static DefaultPatchTransformerRegistry registry;
 
     private FileConfigAccessor config;

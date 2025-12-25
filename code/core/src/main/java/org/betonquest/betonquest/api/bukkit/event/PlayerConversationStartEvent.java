@@ -9,6 +9,7 @@ import org.bukkit.event.HandlerList;
  * Fires when profile starts a conversation.
  */
 public class PlayerConversationStartEvent extends ProfileEvent implements Cancellable {
+
     /**
      * A list of all handlers for this event.
      */

@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
  * Factory for creating {@link BetonQuestLogger} instances.
  */
 public class DefaultBetonQuestLoggerFactory implements BetonQuestLoggerFactory {
+
     /**
      * Creates a new instance.
      */

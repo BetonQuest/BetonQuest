@@ -28,6 +28,7 @@ import java.util.UUID;
  * Class representing a menu which is currently displayed to a player.
  */
 public class OpenedMenu implements Listener {
+
     /**
      * Hashmap containing all currently opened menus.
      */

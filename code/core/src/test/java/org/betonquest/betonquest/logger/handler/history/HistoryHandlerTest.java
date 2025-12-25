@@ -24,6 +24,7 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(MockitoExtension.class)
 class HistoryHandlerTest {
+
     /**
      * The logging enabled config value updater.
      */

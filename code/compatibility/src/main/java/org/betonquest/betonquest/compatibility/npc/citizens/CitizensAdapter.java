@@ -19,6 +19,7 @@ import java.util.Optional;
  * Citizens Compatibility Adapter for BetonQuest Npcs.
  */
 public class CitizensAdapter implements Npc<NPC> {
+
     /**
      * The plugin instance.
      */

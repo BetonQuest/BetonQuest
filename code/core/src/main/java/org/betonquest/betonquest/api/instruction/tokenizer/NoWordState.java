@@ -5,6 +5,7 @@ package org.betonquest.betonquest.api.instruction.tokenizer;
  * double quotes start quoted strings and everything else starts unquoted strings,
  */
 public class NoWordState implements TokenizerState {
+
     /**
      * Create the in between words state.
      */

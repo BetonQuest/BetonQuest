@@ -10,6 +10,7 @@ import java.util.List;
  * Checks if the current date matches one of the given dates.
  */
 public class PartialDateCondition implements PlayerlessCondition {
+
     /**
      * Days to match or null if not relevant.
      */

@@ -25,6 +25,7 @@ import java.util.function.Supplier;
  */
 @SuppressWarnings("PMD.DoNotUseThreads")
 public abstract class ExecutorServiceScheduler<S extends Schedule, T> extends Scheduler<S, T> {
+
     /**
      * Maximum time that the scheduler will wait on shutdown/reload for currently executing schedules.
      */

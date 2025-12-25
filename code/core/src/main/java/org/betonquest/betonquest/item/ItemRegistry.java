@@ -9,6 +9,7 @@ import java.util.Set;
  * Stores the item factories and serializer.
  */
 public interface ItemRegistry extends FeatureTypeRegistry<QuestItemWrapper> {
+
     /**
      * Registers a {@link QuestItemSerializer} to allow parsing an ItemStack to instruction string.
      *

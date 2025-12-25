@@ -27,6 +27,7 @@ import java.util.function.Function;
 @SuppressWarnings({"PMD.GodClass", "PMD.CyclomaticComplexity", "PMD.ExcessivePublicCount", "PMD.TooManyMethods",
         "PMD.CouplingBetweenObjects"})
 public class FallbackConfigurationSection implements ConfigurationSection {
+
     /**
      * Manager holing the original and the fallback {@link ConfigurationSection} instances.
      */
@@ -129,10 +130,9 @@ public class FallbackConfigurationSection implements ConfigurationSection {
         if (value instanceof ConfigurationSection) {
             if (isSet(key)) {
                 return getFallbackConfigurationSection(key);
-            } else {
-                final ConfigurationSection defaultSection = getDefaultSection();
-                return defaultSection == null ? null : defaultSection.getConfigurationSection(key);
             }
+            final ConfigurationSection defaultSection = getDefaultSection();
+            return defaultSection == null ? null : defaultSection.getConfigurationSection(key);
         }
         return value;
     }
@@ -645,6 +645,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
      * returning the value. If the parent is unset, the instances will not be updated.
      */
     protected class ConfigManager {
+
         /**
          * Name of the current {@link ConfigurationSection}.
          */

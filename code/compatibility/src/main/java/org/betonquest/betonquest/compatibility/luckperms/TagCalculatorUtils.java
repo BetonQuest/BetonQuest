@@ -12,6 +12,7 @@ import java.util.Set;
  * contexts.
  */
 public final class TagCalculatorUtils {
+
     /**
      * The BetonQuest tag.
      */

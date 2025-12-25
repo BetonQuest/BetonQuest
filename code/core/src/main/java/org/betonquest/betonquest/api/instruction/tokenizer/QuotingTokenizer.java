@@ -7,6 +7,7 @@ import java.util.List;
  * Instruction string tokenizer that splits on spaces but honors quoting and escaping.
  */
 public class QuotingTokenizer implements Tokenizer {
+
     /**
      * Character that is used to quote words.
      */

@@ -23,6 +23,7 @@ import java.util.Map;
  * This is a basic implementation for managing a quest's files.
  */
 public class Quest {
+
     /**
      * The merged {@link MultiConfiguration} that represents this {@link Quest}.
      */

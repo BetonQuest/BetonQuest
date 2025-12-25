@@ -91,9 +91,8 @@ public class TimerObjective extends CountingObjective implements Listener, Runna
         final String lowerName = name.toLowerCase(Locale.ROOT);
         if ("name".equals(lowerName)) {
             return this.name.getValue(profile);
-        } else {
-            return super.getProperty(name, profile);
         }
+        return super.getProperty(name, profile);
     }
 
     /**

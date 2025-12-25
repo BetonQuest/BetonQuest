@@ -13,6 +13,7 @@ import java.util.List;
  * A version which can also place it inside a Quest.
  */
 public class SettableVersion extends Version {
+
     /**
      * Creates a new Version.
      *

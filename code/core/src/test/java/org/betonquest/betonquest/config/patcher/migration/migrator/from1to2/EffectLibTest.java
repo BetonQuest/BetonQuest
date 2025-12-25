@@ -11,6 +11,7 @@ import java.io.IOException;
  * Test for 'npc_effects' section migration.
  */
 class EffectLibTest extends QuestFixture {
+
     @Test
     void migrate() throws IOException, InvalidConfigurationException {
         original.loadFromString("""

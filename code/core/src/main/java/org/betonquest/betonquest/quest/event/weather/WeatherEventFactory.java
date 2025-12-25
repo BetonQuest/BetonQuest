@@ -65,9 +65,8 @@ public class WeatherEventFactory implements PlayerEventFactory, PlayerlessEventF
     public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
         if (requiresPlayer(instruction)) {
             return new DoNothingPlayerlessEvent();
-        } else {
-            return parseWeatherEvent(instruction);
         }
+        return parseWeatherEvent(instruction);
     }
 
     private boolean requiresPlayer(final Instruction instruction) throws QuestException {
@@ -85,9 +84,8 @@ public class WeatherEventFactory implements PlayerEventFactory, PlayerlessEventF
     private Selector<World> parseWorld(@Nullable final String worldName) {
         if (worldName == null) {
             return Selectors.fromPlayer(Player::getWorld);
-        } else {
-            final World world = server.getWorld(worldName);
-            return new ConstantSelector<>(world);
         }
+        final World world = server.getWorld(worldName);
+        return new ConstantSelector<>(world);
     }
 }

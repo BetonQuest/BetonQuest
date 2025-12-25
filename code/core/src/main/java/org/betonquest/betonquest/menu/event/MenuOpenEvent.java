@@ -9,6 +9,7 @@ import org.bukkit.event.HandlerList;
  * Called whenever a menu is opened.
  */
 public class MenuOpenEvent extends MenuEvent implements Cancellable {
+
     /**
      * A list of all handlers for this event.
      */

@@ -29,6 +29,7 @@ import static org.mockito.Mockito.*;
 @SuppressWarnings({"PMD.DoNotUseThreads", "PMD.CloseResource"})
 @ExtendWith(MockitoExtension.class)
 class RealtimeDailySchedulerTest {
+
     /**
      * Mocked schedule id.
      */

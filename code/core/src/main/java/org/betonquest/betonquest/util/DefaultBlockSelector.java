@@ -115,9 +115,8 @@ public class DefaultBlockSelector implements BlockSelector {
     public BlockData getBlockData() {
         if (states.isEmpty()) {
             return Bukkit.createBlockData(getRandomMaterial());
-        } else {
-            return Bukkit.createBlockData(getRandomMaterial(), getStateAsString());
         }
+        return Bukkit.createBlockData(getRandomMaterial(), getStateAsString());
     }
 
     @Override

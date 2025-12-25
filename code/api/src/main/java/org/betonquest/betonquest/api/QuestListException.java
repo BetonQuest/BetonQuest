@@ -9,6 +9,7 @@ import java.util.Map;
  * This exception is thrown when a list of exceptions occurred.
  */
 public class QuestListException extends QuestException {
+
     /**
      * Serial version UID.
      */

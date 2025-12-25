@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
  * {@link org.bukkit.event.inventory.CraftItemEvent}.
  */
 public class ItemStackCraftedEvent extends ProfileEvent {
+
     /**
      * Static HandlerList to register listeners on the event.
      */

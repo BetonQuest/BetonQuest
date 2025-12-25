@@ -13,6 +13,7 @@ import org.betonquest.betonquest.conversation.ConversationIOFactory;
  * SlowTellraw conversation output.
  */
 public class SlowTellrawConvIOFactory implements ConversationIOFactory {
+
     /**
      * The font registry to use in APIs that work with {@link net.kyori.adventure.text.Component}.
      */

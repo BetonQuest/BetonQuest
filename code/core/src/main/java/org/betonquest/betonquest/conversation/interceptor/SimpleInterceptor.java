@@ -18,6 +18,7 @@ import java.util.List;
  * An interceptor which uses the {@link AsyncPlayerChatEvent}.
  */
 public class SimpleInterceptor implements Interceptor, Listener {
+
     /**
      * Player to 'intercept' messages.
      */

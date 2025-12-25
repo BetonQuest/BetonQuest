@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Tag("ConfigurationSection")
 @SuppressWarnings("PMD.UnitTestAssertionsShouldIncludeMessage")
 class MultiSectionConfigurationKeyConflictExceptionTest {
+
     /**
      * Config with key3 as value.
      */

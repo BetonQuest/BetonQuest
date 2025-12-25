@@ -7,6 +7,7 @@ import org.betonquest.betonquest.config.quest.Quest;
  * Changes the %player% to empty string.
  */
 public class HeadOwnerMigrator implements QuestMigration {
+
     /**
      * Create a new HeadOwner Migrator.
      */

@@ -12,34 +12,27 @@ import java.util.function.Supplier;
 @SuppressWarnings("PMD.ShortClassName")
 @FunctionalInterface
 public interface Line {
+
     /**
      * Gets the line to be displayed.
      *
      * @return the Component represented by this line
      */
-    Component getLine();
+    Component line();
 
     /**
      * A fixed line that does not change.
+     *
+     * @param line The line to be displayed.
      */
-    class Fixed implements Line {
-        /**
-         * The line to be displayed.
-         */
-        private final Component line;
+    record Fixed(Component line) implements Line {
 
         /**
          * Creates a new fixed line.
          *
          * @param line the Component to be displayed as a fixed line
          */
-        public Fixed(final Component line) {
-            this.line = line;
-        }
-
-        @Override
-        public Component getLine() {
-            return line;
+        public Fixed {
         }
     }
 
@@ -47,6 +40,7 @@ public interface Line {
      * A swappable line that can change the content based on a condition.
      */
     class Swappable implements Line {
+
         /**
          * The line to be displayed when the condition is met.
          */
@@ -76,12 +70,11 @@ public interface Line {
         }
 
         @Override
-        public Component getLine() {
+        public Component line() {
             if (isSelected()) {
                 return selected;
-            } else {
-                return unselected;
             }
+            return unselected;
         }
 
         /**
@@ -100,6 +93,7 @@ public interface Line {
      * @param <T> the type of the identifier
      */
     class ToggleableIdentified<T> extends Swappable {
+
         /**
          * The identifier for this toggleable line.
          */

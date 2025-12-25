@@ -10,6 +10,7 @@ import java.util.Map;
  * This handler is called for all modification operations in a {@link Configuration}.
  */
 public interface ConfigurationModificationHandler extends ConfigurationSectionModificationHandler {
+
     /**
      * Handles the {@link Configuration#addDefault(String, Object)} method.
      *

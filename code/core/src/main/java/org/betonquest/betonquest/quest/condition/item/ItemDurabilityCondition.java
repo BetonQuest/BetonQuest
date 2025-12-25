@@ -56,9 +56,8 @@ public class ItemDurabilityCondition implements OnlineCondition {
         if (relative) {
             final double relativeValue = (double) actualDurability / maxDurability;
             return relativeValue >= requiredAmount;
-        } else {
-            return actualDurability >= requiredAmount;
         }
+        return actualDurability >= requiredAmount;
     }
 
     @Override

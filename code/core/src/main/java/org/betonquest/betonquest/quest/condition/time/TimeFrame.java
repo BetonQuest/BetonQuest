@@ -35,8 +35,7 @@ public record TimeFrame(Time startTime, Time endTime) {
     public boolean isTimeBetween(final Time now) {
         if (startTime.isBeforeOrSame(endTime)) {
             return now.isAfterOrSame(startTime) && now.isBeforeOrSame(endTime);
-        } else {
-            return now.isAfterOrSame(startTime) || now.isBeforeOrSame(endTime);
         }
+        return now.isAfterOrSame(startTime) || now.isBeforeOrSame(endTime);
     }
 }

@@ -41,6 +41,7 @@ public enum TimeUnit {
      */
     @FunctionalInterface
     private interface Calculator {
+
         /**
          * Applies a modification to the given time.
          *

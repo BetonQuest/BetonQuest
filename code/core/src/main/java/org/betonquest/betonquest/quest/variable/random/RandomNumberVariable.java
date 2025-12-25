@@ -72,9 +72,8 @@ public class RandomNumberVariable implements NullableVariable {
             if (fractional) {
                 final double value = random.nextDouble(lowValue, highValue);
                 return format != null ? format.format(value) : String.valueOf(value);
-            } else {
-                return String.valueOf(random.nextInt((int) lowValue, (int) highValue + 1));
             }
+            return String.valueOf(random.nextInt((int) lowValue, (int) highValue + 1));
         } catch (final IllegalArgumentException e) {
             throw new QuestException("Could not generate random number", e);
         }

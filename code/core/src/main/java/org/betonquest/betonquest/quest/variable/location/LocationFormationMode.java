@@ -141,17 +141,15 @@ public enum LocationFormationMode {
                     world,
                     formatter.format(yaw),
                     formatter.format(pitch));
-        } else {
-            return String.format(Locale.US, format, posX, posY, posZ, world, yaw, pitch);
         }
+        return String.format(Locale.US, format, posX, posY, posZ, world, yaw, pitch);
     }
 
     private static String buildPart(final int index, final int decimalPlaces) {
         if (decimalPlaces == 0) {
             return "%" + index + "$s";
-        } else {
-            return "%" + index + "$." + decimalPlaces + "f";
         }
+        return "%" + index + "$." + decimalPlaces + "f";
     }
 
     /**

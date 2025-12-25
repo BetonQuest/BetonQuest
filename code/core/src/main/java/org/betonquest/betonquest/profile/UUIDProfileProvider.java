@@ -16,6 +16,7 @@ import java.util.UUID;
  * Default implementation for {@link ProfileProvider}.
  */
 public class UUIDProfileProvider implements ProfileProvider {
+
     /**
      * The server instance used to get player from UUID.
      */

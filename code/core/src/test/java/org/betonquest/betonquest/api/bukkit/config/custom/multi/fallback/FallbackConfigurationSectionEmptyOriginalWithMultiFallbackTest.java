@@ -15,6 +15,7 @@ import java.util.List;
 @Tag("ConfigurationSection")
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public class FallbackConfigurationSectionEmptyOriginalWithMultiFallbackTest extends FallbackConfigurationSectionEmptyOriginalTest {
+
     @Override
     public ConfigurationSection getConfig() throws InvalidConfigurationException {
         fallback = getDefaultConfig();

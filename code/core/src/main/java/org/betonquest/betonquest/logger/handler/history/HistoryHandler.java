@@ -20,6 +20,7 @@ import java.util.logging.LogRecord;
  * It is automatically pushed if the filter returns true for any subsequent LogRecord.
  */
 public class HistoryHandler extends Handler implements LogPublishingController {
+
     /**
      * The message printed before the history is printed.
      */

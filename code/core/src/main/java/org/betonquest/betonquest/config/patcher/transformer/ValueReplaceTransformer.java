@@ -30,8 +30,7 @@ public class ValueReplaceTransformer implements PatchTransformer {
         final String replaced = value.replace(oldValue, newValue);
         if (replaced.equals(value)) {
             throw new PatchException("Value does not contain the old value '" + oldValue + "', skipping transformation.");
-        } else {
-            config.set(key, replaced);
         }
+        config.set(key, replaced);
     }
 }

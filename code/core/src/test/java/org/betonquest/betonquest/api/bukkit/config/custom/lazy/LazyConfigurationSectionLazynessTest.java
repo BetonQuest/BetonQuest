@@ -15,6 +15,7 @@ import static org.mockito.Mockito.*;
 @Tag("ConfigurationSection")
 @SuppressWarnings("PMD.UnitTestAssertionsShouldIncludeMessage")
 class LazyConfigurationSectionLazynessTest {
+
     private ConfigurationSection config;
 
     private ConfigurationSection lazy;

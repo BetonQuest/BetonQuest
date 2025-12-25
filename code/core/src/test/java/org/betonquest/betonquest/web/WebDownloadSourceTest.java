@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * This class tests the {@link WebDownloadSource}.
  */
 class WebDownloadSourceTest {
+
     /**
      * The {@link File} to the BetonQuest.jar in the resources.
      */

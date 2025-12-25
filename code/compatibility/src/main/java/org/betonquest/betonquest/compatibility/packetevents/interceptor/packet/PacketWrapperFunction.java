@@ -13,6 +13,7 @@ import java.util.Map;
  * @param <T> the type of PacketWrapper being handled
  */
 public interface PacketWrapperFunction<T extends PacketWrapper<?>> {
+
     /**
      * A map linking PacketTypes to their corresponding PacketWrapperFunction implementations.
      */

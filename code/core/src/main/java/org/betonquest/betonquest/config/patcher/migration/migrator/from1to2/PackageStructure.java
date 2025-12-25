@@ -16,6 +16,7 @@ import java.util.stream.Stream;
  * Handles the PackageStructure migration.
  */
 public class PackageStructure implements Migration {
+
     /**
      * The BetonQuest folder.
      */

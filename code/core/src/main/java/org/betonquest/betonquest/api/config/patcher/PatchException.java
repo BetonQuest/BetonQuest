@@ -6,6 +6,7 @@ import java.io.Serial;
  * Exception to be thrown when a patch fails.
  */
 public class PatchException extends Exception {
+
     /**
      * Serial version UID.
      */

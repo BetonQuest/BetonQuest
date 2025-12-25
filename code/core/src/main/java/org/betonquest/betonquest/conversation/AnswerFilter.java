@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit;
  */
 @SuppressWarnings({"PMD.ExcessiveParameterList", "PMD.TooManyMethods"})
 public class AnswerFilter implements Filter {
+
     /**
      * Constructs the /betonquestanswer filter.
      */

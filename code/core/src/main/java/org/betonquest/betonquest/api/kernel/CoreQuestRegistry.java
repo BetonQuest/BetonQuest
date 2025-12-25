@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
  * @param <S> the playerless variant of the type
  */
 public interface CoreQuestRegistry<P, S> {
+
     /**
      * Registers a type that does not support playerless execution with its name
      * and a player factory to create new player instances.

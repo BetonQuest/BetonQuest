@@ -20,6 +20,7 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith({MockitoExtension.class, BetonQuestLoggerService.class})
 class LazyHandlerTest {
+
     /**
      * Example record to use with tests.
      */

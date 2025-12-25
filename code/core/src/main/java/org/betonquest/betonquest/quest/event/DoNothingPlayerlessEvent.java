@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
  * or in the case that explicitly nothing should happen.
  */
 public class DoNothingPlayerlessEvent implements PlayerlessEvent {
+
     /**
      * Create a static event placeholder that doesn't do anything.
      */

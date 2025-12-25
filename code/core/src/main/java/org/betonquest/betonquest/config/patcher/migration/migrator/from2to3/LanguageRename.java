@@ -13,6 +13,7 @@ import java.util.Map;
  * Handles the migration of language keys.
  */
 public class LanguageRename implements QuestMigration {
+
     /**
      * Language keys to rename.
      */

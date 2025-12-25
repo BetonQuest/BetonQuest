@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Tag("ConfigurationSection")
 @SuppressWarnings({"PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.UnitTestContainsTooManyAsserts", "PMD.JUnit5TestShouldBePackagePrivate"})
 public class MultiSectionConfigurationModificationTest {
+
     /**
      * {@link MultiConfiguration} part 1.
      */

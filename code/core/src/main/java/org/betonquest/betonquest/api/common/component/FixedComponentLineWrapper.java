@@ -10,6 +10,7 @@ import java.util.function.Supplier;
  * A wrapper for Components that splits them into multiple lines based on a fixed width.
  */
 public class FixedComponentLineWrapper extends ComponentLineWrapper {
+
     /**
      * The width of the line in pixels.
      */

@@ -17,6 +17,7 @@ import java.util.SortedMap;
  * SQLite, etc.)
  */
 public abstract class Database {
+
     /**
      * The plugin instance, used for accessing plugin's data folder.
      */

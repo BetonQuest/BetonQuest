@@ -6,6 +6,7 @@ package org.betonquest.betonquest.conversation.menu.display;
  * while ensuring it stays within the defined range.
  */
 public class Cursor {
+
     /**
      * The minimum value of the cursor.
      */

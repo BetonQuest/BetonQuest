@@ -65,9 +65,8 @@ public class MenuBoundCommand extends SimpleCommand {
                 log.error(menu.getMenuID().getPackage(), "Could not open menu '" + menuID + "': " + e.getMessage(), e);
                 return false;
             }
-        } else {
-            sendMessage(sender, "no_permission");
-            return false;
         }
+        sendMessage(sender, "no_permission");
+        return false;
     }
 }

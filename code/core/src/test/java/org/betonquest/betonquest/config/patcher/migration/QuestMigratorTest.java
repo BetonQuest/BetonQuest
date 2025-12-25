@@ -17,6 +17,7 @@ import static org.mockito.Mockito.*;
  * Tests for Quest Migrations.
  */
 class QuestMigratorTest extends QuestFixture {
+
     /**
      * Version path.
      */

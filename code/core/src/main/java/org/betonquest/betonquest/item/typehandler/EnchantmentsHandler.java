@@ -102,9 +102,8 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
     public boolean check(final ItemMeta meta) {
         if (meta instanceof final EnchantmentStorageMeta enchantMeta) {
             return check(enchantMeta.getStoredEnchants());
-        } else {
-            return check(meta.getEnchants());
         }
+        return check(meta.getEnchants());
     }
 
     private void set(final String enchants) throws QuestException {
@@ -156,6 +155,7 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
      * Checks a single Enchantments validity.
      */
     private static final class SingleEnchantmentHandler {
+
         /**
          * The expected argument count of the formatted enchantment.
          */

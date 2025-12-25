@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test {@link DoNothingPlayerlessEvent}.
  */
 class DoNothingPlayerlessEventTest {
+
     @Test
     void testExecuteDoesNothing() {
         final PlayerlessEvent event = new DoNothingPlayerlessEvent();

@@ -12,6 +12,7 @@ import java.util.Optional;
  */
 @SuppressWarnings("PMD.ShortClassName")
 public interface Npc<T> {
+
     /**
      * Gets the original object.
      *

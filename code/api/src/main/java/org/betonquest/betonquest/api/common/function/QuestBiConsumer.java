@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.QuestException;
  */
 @FunctionalInterface
 public interface QuestBiConsumer<T, U> {
+
     /**
      * Performs this operation on the given arguments.
      *

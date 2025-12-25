@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public class HeadHandler implements ItemMetaHandler<SkullMeta> {
+
     /**
      * Owner metadata about the Skull.
      */
@@ -132,9 +133,8 @@ public class HeadHandler implements ItemMetaHandler<SkullMeta> {
             final UUID playerUniqueId = playerProfile.getId();
             final String texture = encodeSkin(playerProfile);
             return checkOwner(ownerName) && checkPlayerId(playerUniqueId) && checkTexture(texture);
-        } else {
-            return checkOwner(ownerName);
         }
+        return checkOwner(ownerName);
     }
 
     @Override

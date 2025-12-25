@@ -27,6 +27,7 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(MockitoExtension.class)
 class RealtimeCronSchedulerTest {
+
     /**
      * Mocked schedule id.
      */

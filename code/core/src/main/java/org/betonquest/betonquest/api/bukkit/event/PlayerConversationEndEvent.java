@@ -8,6 +8,7 @@ import org.bukkit.event.HandlerList;
  * Fires when a profile ends a conversation.
  */
 public class PlayerConversationEndEvent extends ProfileEvent {
+
     /**
      * A list of all handlers for this event.
      */

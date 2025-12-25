@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * This class tests the {@link TempFileDownloadSource}.
  */
 class TempFileDownloadSourceTest {
+
     /**
      * The {@link File} to the BetonQuest.jar in the resources.
      */
