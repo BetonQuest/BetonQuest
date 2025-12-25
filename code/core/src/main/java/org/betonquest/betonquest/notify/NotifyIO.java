@@ -5,9 +5,9 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
-import org.betonquest.betonquest.api.instruction.variable.DefaultArgument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;

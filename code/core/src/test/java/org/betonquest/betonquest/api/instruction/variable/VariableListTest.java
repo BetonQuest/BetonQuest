@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.kernel.processor.adapter.VariableAdapter;
+import org.betonquest.betonquest.lib.instruction.argument.DefaultListArgument;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.bukkit.configuration.ConfigurationOptions;
 import org.junit.jupiter.api.BeforeEach;

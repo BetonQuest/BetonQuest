@@ -10,8 +10,6 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.parser.IdentifierParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.ItemParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
-import org.betonquest.betonquest.api.instruction.variable.DefaultArgument;
-import org.betonquest.betonquest.api.instruction.variable.DefaultListArgument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.Variables;
@@ -23,6 +21,8 @@ import org.betonquest.betonquest.compatibility.holograms.lines.TextLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TopLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TopXObject;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
+import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
+import org.betonquest.betonquest.lib.instruction.argument.DefaultListArgument;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 

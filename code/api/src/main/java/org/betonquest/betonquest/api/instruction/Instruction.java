@@ -1,12 +1,15 @@
 package org.betonquest.betonquest.api.instruction;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.common.function.QuestSupplier;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 import org.betonquest.betonquest.api.instruction.chain.ChainableInstruction;
+import org.betonquest.betonquest.api.instruction.chain.InstructionChainParser;
+import org.betonquest.betonquest.api.profile.Profile;
 
 /**
  * The Instruction. Primary object for input parsing.
@@ -42,6 +45,25 @@ public interface Instruction extends ChainableInstruction, InstructionParts {
     default <T> Argument<T> get(final String raw, final SimpleArgumentParser<T> parser) throws QuestException {
         return get(raw, (InstructionArgumentParser<T>) parser);
     }
+
+    /**
+     * Starts a new chain for the given argument to parse its value into an {@link Argument}.
+     *
+     * @param rawArgument the raw argument
+     * @return a new {@link InstructionChainParser} based on this instruction starting for the given argument
+     */
+    default InstructionChainParser chainForArgument(final String rawArgument) {
+        return chainForArgument(() -> rawArgument);
+    }
+
+    /**
+     * Starts a new chain for the given argument supplier to parse its value into an {@link Argument}.
+     * The parsing gets postponed until {@link Argument#getValue(Profile)} is called.
+     *
+     * @param rawArgumentSupplier the raw argument supplier
+     * @return a new {@link InstructionChainParser} based on this instruction starting for the given argument
+     */
+    InstructionChainParser chainForArgument(QuestSupplier<String> rawArgumentSupplier);
 
     /**
      * Get the source QuestPackage.

@@ -2,6 +2,7 @@ package org.betonquest.betonquest.api.instruction;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.common.function.QuestSupplier;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.Identifier;
@@ -10,15 +11,16 @@ import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 import org.betonquest.betonquest.api.instruction.chain.DecoratableChainRetriever;
+import org.betonquest.betonquest.api.instruction.chain.InstructionChainParser;
 import org.betonquest.betonquest.api.instruction.chain.NumberChainRetriever;
 import org.betonquest.betonquest.api.instruction.tokenizer.QuotingTokenizer;
 import org.betonquest.betonquest.api.instruction.tokenizer.Tokenizer;
 import org.betonquest.betonquest.api.instruction.tokenizer.TokenizerException;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
-import org.betonquest.betonquest.api.instruction.variable.DefaultArgument;
-import org.betonquest.betonquest.api.instruction.variable.DefaultListArgument;
 import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
+import org.betonquest.betonquest.lib.instruction.argument.DefaultListArgument;
 import org.betonquest.betonquest.lib.instruction.chain.DefaultDecoratableChainRetriever;
 import org.betonquest.betonquest.lib.instruction.chain.DefaultNumberChainRetriever;
 import org.bukkit.Location;
@@ -224,6 +226,11 @@ public class DefaultInstruction implements Instruction {
     @Override
     public <T> Argument<T> get(final String raw, final InstructionArgumentParser<T> parser) throws QuestException {
         return new DefaultArgument<>(variables, pack, raw, value -> parser.apply(variables, packManager, pack, value));
+    }
+
+    @Override
+    public InstructionChainParser chainForArgument(final QuestSupplier<String> rawArgumentSupplier) {
+        return null;
     }
 
     @Override
