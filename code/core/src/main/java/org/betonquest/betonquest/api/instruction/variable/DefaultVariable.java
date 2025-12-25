@@ -3,6 +3,7 @@ package org.betonquest.betonquest.api.instruction.variable;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.ValueParser;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.jetbrains.annotations.Nullable;

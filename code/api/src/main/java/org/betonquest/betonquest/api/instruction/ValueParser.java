@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api.instruction.variable;
+package org.betonquest.betonquest.api.instruction;
 
 import org.betonquest.betonquest.api.common.function.QuestFunction;
 

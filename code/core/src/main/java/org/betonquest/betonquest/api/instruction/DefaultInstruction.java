@@ -17,7 +17,6 @@ import org.betonquest.betonquest.api.instruction.tokenizer.TokenizerException;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
-import org.betonquest.betonquest.api.instruction.variable.ValueParser;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.lib.instruction.chain.DefaultDecoratableChainRetriever;
