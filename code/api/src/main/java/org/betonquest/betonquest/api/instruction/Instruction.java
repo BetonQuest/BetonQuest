@@ -54,8 +54,8 @@ public interface Instruction extends ChainableInstruction, InstructionChainParse
      * @param rawValue the raw variable value to be parsed
      * @return a new {@link InstructionChainParser} starting an instruction chain
      */
-    default InstructionChainParser chainVariable(final String rawValue) {
-        return chainVariable(() -> rawValue);
+    default InstructionChainParser chainForArgument(final String rawValue) {
+        return chainForArgument(() -> rawValue);
     }
 
     /**
@@ -66,7 +66,7 @@ public interface Instruction extends ChainableInstruction, InstructionChainParse
      * @param rawValueSupplier the raw variable value supplier
      * @return a new {@link InstructionChainParser} starting an instruction chain
      */
-    InstructionChainParser chainVariable(QuestSupplier<String> rawValueSupplier);
+    InstructionChainParser chainForArgument(QuestSupplier<String> rawValueSupplier);
 
     /**
      * Get the source QuestPackage.

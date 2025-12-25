@@ -237,7 +237,7 @@ public class DefaultInstruction implements Instruction {
     }
 
     @Override
-    public InstructionChainParser chainVariable(final QuestSupplier<String> rawValueSupplier) {
+    public InstructionChainParser chainForArgument(final QuestSupplier<String> rawValueSupplier) {
         final DefaultChainableInstruction dummyInstruction = new DefaultChainableInstruction(variables, packManager, pack,
                 rawValueSupplier, v -> rawValueSupplier.get());
         return new DefaultInstructionChainParser(dummyInstruction, argumentParsers);
