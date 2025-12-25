@@ -2,6 +2,7 @@ package org.betonquest.betonquest.api.instruction;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.common.function.QuestSupplier;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.Identifier;
@@ -236,9 +237,9 @@ public class DefaultInstruction implements Instruction {
     }
 
     @Override
-    public InstructionChainParser chainVariable(final String rawInstructionValue) {
+    public InstructionChainParser chainVariable(final QuestSupplier<String> rawValueSupplier) {
         final DefaultChainableInstruction dummyInstruction = new DefaultChainableInstruction(variables, packManager, pack,
-                () -> rawInstructionValue, v -> rawInstructionValue);
+                rawValueSupplier, v -> rawValueSupplier.get());
         return new DefaultInstructionChainParser(dummyInstruction, argumentParsers);
     }
 

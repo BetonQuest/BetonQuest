@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.instruction;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.common.function.QuestSupplier;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
@@ -9,6 +10,7 @@ import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 import org.betonquest.betonquest.api.instruction.chain.ChainableInstruction;
 import org.betonquest.betonquest.api.instruction.chain.InstructionChainParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.profile.Profile;
 
 /**
  * The Instruction. Primary object for input parsing.
@@ -49,10 +51,22 @@ public interface Instruction extends ChainableInstruction, InstructionChainParse
      * Starts a new chain instruction to parse a variable from.
      * This may not be an instruction but just a part of it that represents the entire parsable content of a variable.
      *
-     * @param rawInstructionValue the raw variable value to be parsed
+     * @param rawValue the raw variable value to be parsed
      * @return a new {@link InstructionChainParser} starting an instruction chain
      */
-    InstructionChainParser chainVariable(String rawInstructionValue);
+    default InstructionChainParser chainVariable(final String rawValue) {
+        return chainVariable(() -> rawValue);
+    }
+
+    /**
+     * Starts a new chain instruction to parse a variable from.
+     * This may not be an instruction but just a part of it that represents the entire parsable content of a variable.
+     * The supplier will not be called until {@link Variable#getValue(Profile)} is called in the encapsuled value.
+     *
+     * @param rawValueSupplier the raw variable value supplier
+     * @return a new {@link InstructionChainParser} starting an instruction chain
+     */
+    InstructionChainParser chainVariable(QuestSupplier<String> rawValueSupplier);
 
     /**
      * Get the source QuestPackage.
