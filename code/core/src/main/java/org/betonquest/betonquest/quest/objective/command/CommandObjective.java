@@ -4,8 +4,8 @@ import org.apache.commons.lang3.Strings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.EventID;
@@ -24,7 +24,7 @@ public class CommandObjective extends Objective implements Listener {
     /**
      * Command that the player has to execute.
      */
-    private final Variable<String> command;
+    private final Argument<String> command;
 
     /**
      * Whether the command should ignore the capitalization.
@@ -44,7 +44,7 @@ public class CommandObjective extends Objective implements Listener {
     /**
      * Events to trigger if the command is not matched.
      */
-    private final Variable<List<EventID>> failEvents;
+    private final Argument<List<EventID>> failEvents;
 
     /**
      * Creates a new instance of the CommandObjective.
@@ -57,9 +57,9 @@ public class CommandObjective extends Objective implements Listener {
      * @param failEvents  events to trigger if the command is not matched
      * @throws QuestException if there is an error in the instruction
      */
-    public CommandObjective(final Instruction instruction, final Variable<String> command,
+    public CommandObjective(final Instruction instruction, final Argument<String> command,
                             final boolean ignoreCase, final boolean exact, final boolean cancel,
-                            final Variable<List<EventID>> failEvents) throws QuestException {
+                            final Argument<List<EventID>> failEvents) throws QuestException {
         super(instruction);
         this.command = command;
         this.ignoreCase = ignoreCase;

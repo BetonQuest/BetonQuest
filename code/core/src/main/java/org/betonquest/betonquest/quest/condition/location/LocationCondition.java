@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.location;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.bukkit.Location;
@@ -15,12 +15,12 @@ public class LocationCondition implements OnlineCondition {
     /**
      * The location.
      */
-    private final Variable<Location> loc;
+    private final Argument<Location> loc;
 
     /**
      * The range around the location.
      */
-    private final Variable<Number> range;
+    private final Argument<Number> range;
 
     /**
      * Creates a new location condition.
@@ -28,7 +28,7 @@ public class LocationCondition implements OnlineCondition {
      * @param loc   The location
      * @param range The range around the location
      */
-    public LocationCondition(final Variable<Location> loc, final Variable<Number> range) {
+    public LocationCondition(final Argument<Location> loc, final Argument<Number> range) {
         this.loc = loc;
         this.range = range;
     }

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.api.quest;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 public interface Variables {
 
     /**
-     * Generates a new instance of a {@link Variable} of type {@link String}. If a similar one was already
+     * Generates a new instance of a {@link Argument} of type {@link String}. If a similar one was already
      * created, it will return it instead of creating a new one.
      *
      * @param pack        package in which the variable is defined
@@ -20,7 +20,7 @@ public interface Variables {
      * @return the Variable instance
      * @throws QuestException when the variable parsing fails
      */
-    Variable<String> create(@Nullable QuestPackage pack, String instruction) throws QuestException;
+    Argument<String> create(@Nullable QuestPackage pack, String instruction) throws QuestException;
 
     /**
      * Resolves the variable for specified player. If the variable is not loaded, it will create it.

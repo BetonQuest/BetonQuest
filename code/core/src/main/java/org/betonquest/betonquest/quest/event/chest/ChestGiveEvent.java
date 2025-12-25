@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.event.chest;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
@@ -24,12 +24,12 @@ public class ChestGiveEvent implements NullableEvent {
     /**
      * The items to put in the blocks inventory.
      */
-    private final Variable<List<ItemWrapper>> questItems;
+    private final Argument<List<ItemWrapper>> questItems;
 
     /**
      * The location of the block.
      */
-    private final Variable<Location> location;
+    private final Argument<Location> location;
 
     /**
      * Create the chest give event.
@@ -37,7 +37,7 @@ public class ChestGiveEvent implements NullableEvent {
      * @param questItems the items to put in the blocks inventory
      * @param location   the location of the block
      */
-    public ChestGiveEvent(final Variable<Location> location, final Variable<List<ItemWrapper>> questItems) {
+    public ChestGiveEvent(final Argument<Location> location, final Argument<List<ItemWrapper>> questItems) {
         this.questItems = questItems;
         this.location = location;
     }

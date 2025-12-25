@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.event.logic;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -43,7 +43,7 @@ public class FirstEventFactory implements PlayerEventFactory, PlayerlessEventFac
     }
 
     private NullableEventAdapter createFirstEvent(final Instruction instruction) throws QuestException {
-        final Variable<List<EventID>> list = instruction.parse(EventID::new).getList();
+        final Argument<List<EventID>> list = instruction.parse(EventID::new).getList();
         return new NullableEventAdapter(new FirstEvent(list, questTypeApi));
     }
 }

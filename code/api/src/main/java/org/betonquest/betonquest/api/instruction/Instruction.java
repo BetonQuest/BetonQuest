@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 import org.betonquest.betonquest.api.instruction.chain.ChainableInstruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 
 /**
  * The Instruction. Primary object for input parsing.
@@ -26,7 +25,7 @@ public interface Instruction extends ChainableInstruction, InstructionParts {
      * @deprecated legacy implementation that shall only exist until the last remaining classes using it are reworked.
      */
     @Deprecated
-    <T> Variable<T> get(String raw, InstructionArgumentParser<T> parser) throws QuestException;
+    <T> Argument<T> get(String raw, InstructionArgumentParser<T> parser) throws QuestException;
 
     /**
      * Legacy implementation.
@@ -40,7 +39,7 @@ public interface Instruction extends ChainableInstruction, InstructionParts {
      * @deprecated legacy implementation that shall only exist until the last remaining classes using it are reworked.
      */
     @Deprecated
-    default <T> Variable<T> get(final String raw, final SimpleArgumentParser<T> parser) throws QuestException {
+    default <T> Argument<T> get(final String raw, final SimpleArgumentParser<T> parser) throws QuestException {
         return get(raw, (InstructionArgumentParser<T>) parser);
     }
 

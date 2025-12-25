@@ -2,8 +2,8 @@ package org.betonquest.betonquest.compatibility.packetevents.event;
 
 import com.github.retrooper.packetevents.PacketEventsAPI;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -46,7 +46,7 @@ public class FreezeEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> ticks = instruction.number().atLeast(1).get();
+        final Argument<Number> ticks = instruction.number().atLeast(1).get();
         final BetonQuestLogger log = loggerFactory.create(FreezeEvent.class);
         return new OnlineEventAdapter(new FreezeEvent(plugin, packetEventsAPI, ticks), log, instruction.getPackage());
     }

@@ -5,8 +5,8 @@ import net.citizensnpcs.api.npc.NPCRegistry;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.MobKillNotifier.MobKilledEvent;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.bukkit.event.EventHandler;
@@ -25,7 +25,7 @@ public class NPCKillObjective extends CountingObjective implements Listener {
     /**
      * Tests if the id matches the NPC.
      */
-    private final Variable<NpcID> npcID;
+    private final Argument<NpcID> npcID;
 
     /**
      * Create a new Citizens NPC kill objective.
@@ -36,8 +36,8 @@ public class NPCKillObjective extends CountingObjective implements Listener {
      * @param npcID        the npc id
      * @throws QuestException when the instruction cannot be parsed or is invalid
      */
-    public NPCKillObjective(final Instruction instruction, final NPCRegistry registry, final Variable<Number> targetAmount,
-                            final Variable<NpcID> npcID) throws QuestException {
+    public NPCKillObjective(final Instruction instruction, final NPCRegistry registry, final Argument<Number> targetAmount,
+                            final Argument<NpcID> npcID) throws QuestException {
         super(instruction, targetAmount, "mobs_to_kill");
         this.registry = registry;
         this.npcID = npcID;

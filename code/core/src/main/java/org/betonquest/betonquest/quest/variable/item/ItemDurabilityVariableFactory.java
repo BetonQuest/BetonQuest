@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.variable.item;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 import org.betonquest.betonquest.api.quest.variable.online.OnlineVariableAdapter;
@@ -31,9 +31,9 @@ public class ItemDurabilityVariableFactory implements PlayerVariableFactory {
 
     @Override
     public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<EquipmentSlot> slot = instruction.enumeration(EquipmentSlot.class).get();
+        final Argument<EquipmentSlot> slot = instruction.enumeration(EquipmentSlot.class).get();
         final boolean relative = instruction.hasArgument("relative");
-        final Variable<Number> digitsAfter = instruction.number().get(DIGITS_KEY, DEFAULT_DIGITS);
+        final Argument<Number> digitsAfter = instruction.number().get(DIGITS_KEY, DEFAULT_DIGITS);
         final boolean inPercent = instruction.hasArgument("percent");
         return new OnlineVariableAdapter(new ItemDurabilityVariable(slot, relative, digitsAfter, inPercent));
     }

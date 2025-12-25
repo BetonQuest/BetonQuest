@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.compatibility.traincarts.objectives;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
@@ -16,14 +16,14 @@ import org.bukkit.event.Listener;
 public class TrainCartsLocationObjective extends AbstractLocationObjective implements Listener {
 
     /**
-     * The {@link Variable} that stores the location the player has to be inside.
+     * The {@link Argument} that stores the location the player has to be inside.
      */
-    private final Variable<Location> loc;
+    private final Argument<Location> loc;
 
     /**
      * The range around the location.
      */
-    private final Variable<Number> range;
+    private final Argument<Number> range;
 
     /**
      * Creates a new {@link TrainCartsLocationObjective}.
@@ -33,7 +33,7 @@ public class TrainCartsLocationObjective extends AbstractLocationObjective imple
      * @param range       the range around the location
      * @throws QuestException if there is an error while parsing the instruction
      */
-    public TrainCartsLocationObjective(final Instruction instruction, final Variable<Location> loc, final Variable<Number> range) throws QuestException {
+    public TrainCartsLocationObjective(final Instruction instruction, final Argument<Location> loc, final Argument<Number> range) throws QuestException {
         super(instruction);
         this.loc = loc;
         this.range = range;

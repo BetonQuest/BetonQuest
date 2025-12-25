@@ -4,8 +4,8 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.common.function.QuestRunnable;
 import org.betonquest.betonquest.api.common.function.QuestSupplier;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -72,12 +72,12 @@ public abstract class Objective {
     /**
      * Conditions to count progress.
      */
-    private final Variable<List<ConditionID>> conditions;
+    private final Argument<List<ConditionID>> conditions;
 
     /**
      * Events to fire on completion.
      */
-    private final Variable<List<EventID>> events;
+    private final Argument<List<EventID>> events;
 
     /**
      * If the objective should start again on completion.

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.party;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -21,36 +21,37 @@ import java.util.stream.Stream;
  * A condition that checks if a party meets certain conditions.
  */
 public class PartyCondition implements NullableCondition {
+
     /**
      * The location to check for party members.
      */
-    private final Variable<Location> location;
+    private final Argument<Location> location;
 
     /**
      * The range to check for party members.
      */
-    private final Variable<Number> range;
+    private final Argument<Number> range;
 
     /**
      * The conditions to check for to be a party member.
      */
-    private final Variable<List<ConditionID>> conditions;
+    private final Argument<List<ConditionID>> conditions;
 
     /**
      * The conditions that everyone in the party must meet.
      */
-    private final Variable<List<ConditionID>> everyone;
+    private final Argument<List<ConditionID>> everyone;
 
     /**
      * The conditions that at least one party member must meet.
      */
-    private final Variable<List<ConditionID>> anyone;
+    private final Argument<List<ConditionID>> anyone;
 
     /**
      * The minimum number of party members.
      */
     @Nullable
-    private final Variable<Number> count;
+    private final Argument<Number> count;
 
     /**
      * Quest Type API.
@@ -74,9 +75,9 @@ public class PartyCondition implements NullableCondition {
      * @param questTypeApi    the Quest Type API
      * @param profileProvider the profile provider instance
      */
-    public PartyCondition(final Variable<Location> location, final Variable<Number> range,
-                          final Variable<List<ConditionID>> conditions, final Variable<List<ConditionID>> everyone,
-                          final Variable<List<ConditionID>> anyone, @Nullable final Variable<Number> count,
+    public PartyCondition(final Argument<Location> location, final Argument<Number> range,
+                          final Argument<List<ConditionID>> conditions, final Argument<List<ConditionID>> everyone,
+                          final Argument<List<ConditionID>> anyone, @Nullable final Argument<Number> count,
                           final QuestTypeApi questTypeApi, final ProfileProvider profileProvider) {
         this.location = location;
         this.range = range;

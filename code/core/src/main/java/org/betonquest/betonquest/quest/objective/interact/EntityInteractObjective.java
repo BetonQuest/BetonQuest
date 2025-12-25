@@ -4,8 +4,8 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
 import org.bukkit.Location;
@@ -43,24 +43,24 @@ public class EntityInteractObjective extends CountingObjective implements Listen
      * The target location of the entity to interact with.
      */
     @Nullable
-    private final Variable<Location> loc;
+    private final Argument<Location> loc;
 
     /**
      * The range around the target location to look for the entity.
      */
-    private final Variable<Number> range;
+    private final Argument<Number> range;
 
     /**
      * The custom name of the entity to interact with.
      */
     @Nullable
-    private final Variable<Component> customName;
+    private final Argument<Component> customName;
 
     /**
      * The real name of the entity to interact with.
      */
     @Nullable
-    private final Variable<String> realName;
+    private final Argument<String> realName;
 
     /**
      * The equipment slot to interact with.
@@ -71,13 +71,13 @@ public class EntityInteractObjective extends CountingObjective implements Listen
     /**
      * The mob type to interact with.
      */
-    protected Variable<EntityType> mobType;
+    protected Argument<EntityType> mobType;
 
     /**
      * The variable identifier for the marked entities.
      */
     @Nullable
-    protected Variable<String> marked;
+    protected Argument<String> marked;
 
     /**
      * The interaction type (right, left, any).
@@ -106,12 +106,12 @@ public class EntityInteractObjective extends CountingObjective implements Listen
      * @throws QuestException if there is an error in the instruction
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
-    public EntityInteractObjective(final Instruction instruction, final Variable<Number> targetAmount,
-                                   @Nullable final Variable<Location> loc,
-                                   final Variable<Number> range, @Nullable final Variable<Component> customName,
-                                   @Nullable final Variable<String> realName, @Nullable final EquipmentSlot slot,
-                                   final Variable<EntityType> mobType, @Nullable final Variable<String> marked,
-                                   final Variable<Interaction> interaction, final boolean cancel) throws QuestException {
+    public EntityInteractObjective(final Instruction instruction, final Argument<Number> targetAmount,
+                                   @Nullable final Argument<Location> loc,
+                                   final Argument<Number> range, @Nullable final Argument<Component> customName,
+                                   @Nullable final Argument<String> realName, @Nullable final EquipmentSlot slot,
+                                   final Argument<EntityType> mobType, @Nullable final Argument<String> marked,
+                                   final Argument<Interaction> interaction, final boolean cancel) throws QuestException {
         super(instruction, ENTITY_INTERACT_FACTORY, targetAmount, "mobs_to_click");
         this.loc = loc;
         this.range = range;

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.logik;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
@@ -18,7 +18,7 @@ public class ConjunctionCondition implements NullableCondition {
     /**
      * All of specified conditions have to be true.
      */
-    private final Variable<List<ConditionID>> conditions;
+    private final Argument<List<ConditionID>> conditions;
 
     /**
      * Quest Type API.
@@ -31,7 +31,7 @@ public class ConjunctionCondition implements NullableCondition {
      * @param conditions   All of specified conditions have to be true.
      * @param questTypeApi the Quest Type API
      */
-    public ConjunctionCondition(final Variable<List<ConditionID>> conditions, final QuestTypeApi questTypeApi) {
+    public ConjunctionCondition(final Argument<List<ConditionID>> conditions, final QuestTypeApi questTypeApi) {
         this.conditions = conditions;
         this.questTypeApi = questTypeApi;
     }

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.experience;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 
@@ -18,7 +18,7 @@ public class ExperienceEvent implements OnlineEvent {
     /**
      * The amount of experience or level.
      */
-    private final Variable<Number> amount;
+    private final Argument<Number> amount;
 
     /**
      * Creates a new experience event.
@@ -26,7 +26,7 @@ public class ExperienceEvent implements OnlineEvent {
      * @param experienceModification the modification to apply
      * @param amount                 the amount of experience
      */
-    public ExperienceEvent(final ExperienceModification experienceModification, final Variable<Number> amount) {
+    public ExperienceEvent(final ExperienceModification experienceModification, final Argument<Number> amount) {
         this.experienceModification = experienceModification;
         this.amount = amount;
     }

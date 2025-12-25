@@ -4,8 +4,8 @@ import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -26,7 +26,7 @@ public class TakeEvent extends AbstractTakeEvent {
     /**
      * The items to be removed.
      */
-    private final Variable<List<ItemWrapper>> questItems;
+    private final Argument<List<ItemWrapper>> questItems;
 
     /**
      * A map to keep track of the needed deletions for each player.
@@ -40,7 +40,7 @@ public class TakeEvent extends AbstractTakeEvent {
      * @param checkOrder         the order in which the checks should be performed
      * @param notificationSender the notification sender to use
      */
-    public TakeEvent(final Variable<List<ItemWrapper>> questItems, final List<CheckType> checkOrder, final NotificationSender notificationSender) {
+    public TakeEvent(final Argument<List<ItemWrapper>> questItems, final List<CheckType> checkOrder, final NotificationSender notificationSender) {
         super(checkOrder, notificationSender);
         this.questItems = questItems;
     }

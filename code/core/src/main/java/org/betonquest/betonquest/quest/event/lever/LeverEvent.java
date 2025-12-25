@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.lever;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.bukkit.Location;
@@ -21,12 +21,12 @@ public class LeverEvent implements NullableEvent {
     /**
      * The type of state to set the lever to.
      */
-    private final Variable<StateType> stateType;
+    private final Argument<StateType> stateType;
 
     /**
      * The location of the lever.
      */
-    private final Variable<Location> location;
+    private final Argument<Location> location;
 
     /**
      * Create a new lever event.
@@ -34,7 +34,7 @@ public class LeverEvent implements NullableEvent {
      * @param stateType the type of state to set the lever to
      * @param location  the location of the lever
      */
-    public LeverEvent(final Variable<StateType> stateType, final Variable<Location> location) {
+    public LeverEvent(final Argument<StateType> stateType, final Argument<Location> location) {
         this.stateType = stateType;
         this.location = location;
     }

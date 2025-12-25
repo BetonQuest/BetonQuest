@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.objective.breed;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.bukkit.entity.EntityType;
 
@@ -20,8 +20,8 @@ public class BreedObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<EntityType> type = instruction.enumeration(EntityType.class).get();
-        final Variable<Number> targetAmount = instruction.number().atLeast(1).get();
+        final Argument<EntityType> type = instruction.enumeration(EntityType.class).get();
+        final Argument<Number> targetAmount = instruction.number().atLeast(1).get();
         return new BreedObjective(instruction, targetAmount, type);
     }
 }

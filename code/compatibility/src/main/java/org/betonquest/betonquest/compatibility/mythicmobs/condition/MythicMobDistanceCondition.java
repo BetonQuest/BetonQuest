@@ -4,7 +4,7 @@ import io.lumine.mythic.api.mobs.MythicMob;
 import io.lumine.mythic.core.mobs.ActiveMob;
 import io.lumine.mythic.core.mobs.MobExecutor;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.bukkit.entity.Player;
@@ -22,12 +22,12 @@ public class MythicMobDistanceCondition implements OnlineCondition {
     /**
      * The internal name of the MythicMob to check for.
      */
-    private final Variable<MythicMob> mobType;
+    private final Argument<MythicMob> mobType;
 
     /**
      * The distance within which the MythicMob should be checked.
      */
-    private final Variable<Number> distance;
+    private final Argument<Number> distance;
 
     /**
      * Constructs a new MythicMobDistanceCondition.
@@ -36,7 +36,7 @@ public class MythicMobDistanceCondition implements OnlineCondition {
      * @param mobType     the MythicMob to check for
      * @param distance    the distance within which the MythicMob should be checked
      */
-    public MythicMobDistanceCondition(final MobExecutor mobExecutor, final Variable<MythicMob> mobType, final Variable<Number> distance) {
+    public MythicMobDistanceCondition(final MobExecutor mobExecutor, final Argument<MythicMob> mobType, final Argument<Number> distance) {
         this.mobExecutor = mobExecutor;
         this.mobType = mobType;
         this.distance = distance;

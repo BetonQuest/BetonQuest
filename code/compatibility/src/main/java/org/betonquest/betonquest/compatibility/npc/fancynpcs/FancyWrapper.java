@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.npc.fancynpcs;
 import de.oliver.fancynpcs.api.Npc;
 import de.oliver.fancynpcs.api.NpcManager;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
 import org.jetbrains.annotations.Nullable;
@@ -21,7 +21,7 @@ public class FancyWrapper implements NpcWrapper<Npc> {
     /**
      * Npc identifier.
      */
-    private final Variable<String> npcId;
+    private final Argument<String> npcId;
 
     /**
      * If the identifier should be interpreted as name.
@@ -35,7 +35,7 @@ public class FancyWrapper implements NpcWrapper<Npc> {
      * @param npcId      the npc identifier
      * @param byName     whether to use the identifier as name or id
      */
-    public FancyWrapper(final NpcManager npcManager, final Variable<String> npcId, final boolean byName) {
+    public FancyWrapper(final NpcManager npcManager, final Argument<String> npcId, final boolean byName) {
         this.npcManager = npcManager;
         this.npcId = npcId;
         this.byName = byName;

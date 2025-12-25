@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.condition.armor;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -30,7 +30,7 @@ public class ArmorRatingConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> required = instruction.number().get();
+        final Argument<Number> required = instruction.number().get();
         final BetonQuestLogger log = loggerFactory.create(ArmorRatingCondition.class);
         return new OnlineConditionAdapter(new ArmorRatingCondition(required), log, instruction.getPackage());
     }

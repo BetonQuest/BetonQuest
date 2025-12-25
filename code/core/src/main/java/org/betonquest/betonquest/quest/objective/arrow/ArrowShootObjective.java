@@ -3,8 +3,8 @@ package org.betonquest.betonquest.quest.objective.arrow;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.Location;
@@ -24,12 +24,12 @@ public class ArrowShootObjective extends Objective implements Listener {
     /**
      * Location where the arrow should hit.
      */
-    private final Variable<Location> location;
+    private final Argument<Location> location;
 
     /**
      * Range around the location where the arrow should hit.
      */
-    private final Variable<Number> range;
+    private final Argument<Number> range;
 
     /**
      * Constructor for the ArrowShootObjective.
@@ -39,7 +39,7 @@ public class ArrowShootObjective extends Objective implements Listener {
      * @param range       the range around the location where the arrow should hit
      * @throws QuestException if there is an error in the instruction
      */
-    public ArrowShootObjective(final Instruction instruction, final Variable<Location> location, final Variable<Number> range) throws QuestException {
+    public ArrowShootObjective(final Instruction instruction, final Argument<Location> location, final Argument<Number> range) throws QuestException {
         super(instruction);
         this.location = location;
         this.range = range;

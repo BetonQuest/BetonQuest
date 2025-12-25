@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.height;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 
@@ -13,14 +13,14 @@ public class HeightCondition implements OnlineCondition {
     /**
      * The height to check for.
      */
-    private final Variable<Number> height;
+    private final Argument<Number> height;
 
     /**
      * Creates a new height condition.
      *
      * @param height the height to check for
      */
-    public HeightCondition(final Variable<Number> height) {
+    public HeightCondition(final Argument<Number> height) {
         this.height = height;
     }
 

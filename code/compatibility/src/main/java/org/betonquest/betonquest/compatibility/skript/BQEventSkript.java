@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.skript;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.ProfileEvent;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.bukkit.event.HandlerList;
@@ -15,14 +15,14 @@ public class BQEventSkript implements PlayerEvent {
     /**
      * Identifier for the event.
      */
-    private final Variable<String> identifier;
+    private final Argument<String> identifier;
 
     /**
      * Create a new Skript Event.
      *
      * @param identifier the identifier for the custom event
      */
-    public BQEventSkript(final Variable<String> identifier) {
+    public BQEventSkript(final Argument<String> identifier) {
         this.identifier = identifier;
     }
 

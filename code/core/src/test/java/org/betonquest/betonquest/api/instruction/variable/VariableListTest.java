@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.kernel.processor.adapter.VariableAdapter;
@@ -52,7 +53,7 @@ class VariableListTest {
         this.questPackage = pack;
     }
 
-    private Variable<List<EventID>> getVariableList(final String input) throws QuestException {
+    private Argument<List<EventID>> getVariableList(final String input) throws QuestException {
         return new VariableList<>(variables, questPackage, input, value -> new EventID(mock(Variables.class), mock(QuestPackageManager.class), questPackage, value));
     }
 
@@ -70,7 +71,7 @@ class VariableListTest {
 
     @Test
     void constructEmptyList() {
-        final Variable<List<EventID>> list = assertDoesNotThrow(() -> getVariableList(",,"),
+        final Argument<List<EventID>> list = assertDoesNotThrow(() -> getVariableList(",,"),
                 "Parsing an empty list should not fail");
         assertDoesNotThrow(() -> list.getValue(null),
                 "Empty list should not fail getting values");
@@ -93,7 +94,7 @@ class VariableListTest {
         final VariableAdapter variable = mock(VariableAdapter.class);
         when(variable.getValue(any())).thenReturn("b");
         when(variables.create(questPackage, "%bVar%")).thenReturn(variable);
-        final Variable<List<EventID>> list = assertDoesNotThrow(() -> getVariableList("a,%bVar%,c"),
+        final Argument<List<EventID>> list = assertDoesNotThrow(() -> getVariableList("a,%bVar%,c"),
                 "Validating existing variables should not fail");
         assertDoesNotThrow(() -> list.getValue(null), "Getting existing variable should not fail");
     }

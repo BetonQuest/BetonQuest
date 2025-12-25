@@ -3,7 +3,7 @@ package org.betonquest.betonquest.notify.io;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Variables;
@@ -28,7 +28,7 @@ public class TotemNotifyIO extends NotifyIO {
      * The totems customModelData.
      * It instructs the game client to display a different model or texture when the totem is shown.
      */
-    private final Variable<Number> variableCustomModelData;
+    private final Argument<Number> variableCustomModelData;
 
     /**
      * Creates a new TotemNotifyIO instance based on the user's instruction string.

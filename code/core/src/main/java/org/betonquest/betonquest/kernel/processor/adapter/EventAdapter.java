@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.kernel.processor.adapter;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.PrimaryThreadEnforceable;
@@ -38,7 +38,7 @@ public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> imp
     /**
      * Conditions that must be met to execute.
      */
-    private final Variable<List<ConditionID>> conditions;
+    private final Argument<List<ConditionID>> conditions;
 
     /**
      * Create a new Wrapper for variables with instruction.

@@ -3,10 +3,10 @@ package org.betonquest.betonquest.kernel.processor.feature;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.parser.LocationParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
 import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -95,7 +95,7 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerID, QuestCa
         final String rawItem = itemString == null ? pack.getConfig().getString("item.cancel_button") : itemString;
         final ItemID item = rawItem == null ? null : new ItemID(variables, packManager, pack, rawItem);
         final String rawLoc = section.getString("location");
-        final Variable<Location> location = rawLoc == null ? null : new DefaultVariable<>(variables, pack, rawLoc, new LocationParser(Bukkit.getServer()));
+        final Argument<Location> location = rawLoc == null ? null : new DefaultVariable<>(variables, pack, rawLoc, new LocationParser(Bukkit.getServer()));
         final StringParser stringParser = new StringParser();
         final QuestCanceler.CancelData cancelData = new QuestCanceler.CancelData(
                 new VariableList<>(variables, pack, section.getString("conditions", ""), value -> new ConditionID(variables, packManager, pack, value)),

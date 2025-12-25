@@ -5,7 +5,7 @@ import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestBiPredicate;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
@@ -37,19 +37,19 @@ public class WandCondition implements OnlineCondition {
     /**
      * Required spells on the wand.
      */
-    private final Variable<List<Map.Entry<String, Integer>>> spells;
+    private final Argument<List<Map.Entry<String, Integer>>> spells;
 
     /**
      * Wand name.
      */
     @Nullable
-    private final Variable<String> name;
+    private final Argument<String> name;
 
     /**
      * Required Wand amount.
      */
     @Nullable
-    private final Variable<Number> amount;
+    private final Argument<Number> amount;
 
     /**
      * Create a new Magic Wand Condition.
@@ -60,8 +60,8 @@ public class WandCondition implements OnlineCondition {
      * @param spells the required spells on the wand
      * @param amount optional required wand amount
      */
-    public WandCondition(final MagicAPI api, final Variable<CheckType> type, @Nullable final Variable<String> name,
-                         final Variable<List<Map.Entry<String, Integer>>> spells, @Nullable final Variable<Number> amount) {
+    public WandCondition(final MagicAPI api, final Argument<CheckType> type, @Nullable final Argument<String> name,
+                         final Argument<List<Map.Entry<String, Integer>>> spells, @Nullable final Argument<Number> amount) {
         this.api = api;
         this.name = name;
         this.spells = spells;
@@ -70,7 +70,7 @@ public class WandCondition implements OnlineCondition {
     }
 
     @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.SwitchDensity"})
-    private QuestBiPredicate<Player, Profile> getCheck(final Variable<CheckType> checkType) {
+    private QuestBiPredicate<Player, Profile> getCheck(final Argument<CheckType> checkType) {
         return (player, profile) -> switch (checkType.getValue(profile)) {
             case LOST -> {
                 for (final LostWand lost : api.getLostWands()) {

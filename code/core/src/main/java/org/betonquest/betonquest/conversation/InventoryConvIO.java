@@ -8,8 +8,8 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -78,7 +78,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
     @Nullable
     protected Component response;
 
-    protected Map<Integer, Pair<Component, Variable<ItemID>>> options = new HashMap<>();
+    protected Map<Integer, Pair<Component, Argument<ItemID>>> options = new HashMap<>();
 
     protected int playerOptionsCount;
 
@@ -165,7 +165,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         playerOptionsCount++;
         final String item = properties.getString("item");
         try {
-            final Variable<ItemID> variableItem = item == null ? null
+            final Argument<ItemID> variableItem = item == null ? null
                     : new DefaultVariable<>(betonQuest.getQuestTypeApi().variables(), conv.getPackage(), item,
                     (value) -> new ItemID(variables, packManager, conv.getPackage(), value));
             options.put(playerOptionsCount, Pair.of(colors.getOption().append(option), variableItem));
@@ -228,12 +228,12 @@ public class InventoryConvIO implements Listener, ConversationIO {
             // count option numbers, starting with 1
             next++;
             // break if all options are set
-            final Pair<Component, Variable<ItemID>> pair = options.get(next);
+            final Pair<Component, Argument<ItemID>> pair = options.get(next);
             if (pair == null) {
                 break;
             }
             final Component option = pair.getKey();
-            final Variable<ItemID> itemID = pair.getValue();
+            final Argument<ItemID> itemID = pair.getValue();
             ItemStack item;
             try {
                 item = itemID == null ? new ItemStack(Material.ENDER_PEARL)
@@ -337,7 +337,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
             final int col = slot % 9 - 2 + 1;
             // each row can have 7 options, add column number to get an option
             final int chosen = row * 7 + col;
-            final Pair<Component, Variable<ItemID>> pair = options.get(chosen);
+            final Pair<Component, Argument<ItemID>> pair = options.get(chosen);
             if (pair != null) {
                 final Component message = pair.getKey();
                 processingLastClick = true;

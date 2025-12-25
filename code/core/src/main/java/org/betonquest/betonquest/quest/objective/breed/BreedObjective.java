@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.objective.breed;
 
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -19,7 +19,7 @@ public class BreedObjective extends CountingObjective implements Listener {
     /**
      * The type of animal to breed.
      */
-    private final Variable<EntityType> type;
+    private final Argument<EntityType> type;
 
     /**
      * Constructor for the BreedObjective.
@@ -29,7 +29,7 @@ public class BreedObjective extends CountingObjective implements Listener {
      * @param type         the type of animal to breed
      * @throws QuestException if there is an error in the instruction
      */
-    public BreedObjective(final Instruction instruction, final Variable<Number> targetAmount, final Variable<EntityType> type) throws QuestException {
+    public BreedObjective(final Instruction instruction, final Argument<Number> targetAmount, final Argument<EntityType> type) throws QuestException {
         super(instruction, targetAmount, "animals_to_breed");
         this.type = type;
     }

@@ -2,8 +2,8 @@ package org.betonquest.betonquest.menu;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -45,7 +45,7 @@ public class Menu {
      * Item this menu is bound to or is empty if none is bound.
      */
     @Nullable
-    private final Variable<ItemWrapper> boundItem;
+    private final Argument<ItemWrapper> boundItem;
 
     /**
      * Creates a new Menu.
@@ -57,7 +57,7 @@ public class Menu {
      * @param boundItem    the optional bound Item
      */
     public Menu(final BetonQuestLogger log, final MenuID menuID, final QuestTypeApi questTypeApi,
-                final MenuData menuData, @Nullable final Variable<ItemWrapper> boundItem) {
+                final MenuData menuData, @Nullable final Argument<ItemWrapper> boundItem) {
         this.log = log;
         this.questTypeApi = questTypeApi;
         this.menuID = menuID;
@@ -104,7 +104,7 @@ public class Menu {
         executeEvents(data.closeEvents, profile, "close");
     }
 
-    private void executeEvents(final Variable<List<EventID>> events, final OnlineProfile profile, final String type) {
+    private void executeEvents(final Argument<List<EventID>> events, final OnlineProfile profile, final String type) {
         log.debug(menuID.getPackage(), "Menu " + menuID + ": Running " + type + " events");
         final List<EventID> resolved;
         try {
@@ -167,7 +167,7 @@ public class Menu {
      * @return the bound item, if any
      */
     @Nullable
-    public Variable<ItemWrapper> getBoundItem() {
+    public Argument<ItemWrapper> getBoundItem() {
         return boundItem;
     }
 
@@ -204,8 +204,8 @@ public class Menu {
      * @param closeEvents    Events which are fired when the menu is closed.
      */
     public record MenuData(Text title, int height, List<Slots> slots,
-                           Variable<List<ConditionID>> openConditions,
-                           Variable<List<EventID>> openEvents, Variable<List<EventID>> closeEvents) {
+                           Argument<List<ConditionID>> openConditions,
+                           Argument<List<EventID>> openEvents, Argument<List<EventID>> closeEvents) {
 
     }
 }

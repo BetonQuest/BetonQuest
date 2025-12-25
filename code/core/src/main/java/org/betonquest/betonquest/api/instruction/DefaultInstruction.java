@@ -18,7 +18,6 @@ import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
 import org.betonquest.betonquest.api.instruction.variable.ValueParser;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.lib.instruction.chain.DefaultDecoratableChainRetriever;
@@ -223,24 +222,24 @@ public class DefaultInstruction implements Instruction {
     }
 
     @Override
-    public <T> Variable<T> get(final String raw, final InstructionArgumentParser<T> parser) throws QuestException {
+    public <T> Argument<T> get(final String raw, final InstructionArgumentParser<T> parser) throws QuestException {
         return new DefaultVariable<>(variables, pack, raw, value -> parser.apply(variables, packManager, pack, value));
     }
 
     @Override
-    public <T> Variable<T> getNext(final InstructionArgumentParser<T> argument) throws QuestException {
+    public <T> Argument<T> getNext(final InstructionArgumentParser<T> argument) throws QuestException {
         return new DefaultVariable<>(variables, pack, nextElement(),
                 value -> argument.apply(variables, packManager, pack, value));
     }
 
     @Override
-    public <T> Variable<List<T>> getNextList(final InstructionArgumentParser<T> argument) throws QuestException {
+    public <T> Argument<List<T>> getNextList(final InstructionArgumentParser<T> argument) throws QuestException {
         return new VariableList<>(variables, pack, nextElement(),
                 value -> argument.apply(variables, packManager, pack, value));
     }
 
     @Override
-    public <T> Optional<Variable<T>> getOptional(final String argumentKey, final InstructionArgumentParser<T> argument) throws QuestException {
+    public <T> Optional<Argument<T>> getOptional(final String argumentKey, final InstructionArgumentParser<T> argument) throws QuestException {
         final String argumentValue = getValue(argumentKey);
         if (argumentValue == null) {
             return Optional.empty();
@@ -251,7 +250,7 @@ public class DefaultInstruction implements Instruction {
     }
 
     @Override
-    public <T> Variable<T> getOptional(final String argumentKey, final InstructionArgumentParser<T> argument, final T defaultValue) throws QuestException {
+    public <T> Argument<T> getOptional(final String argumentKey, final InstructionArgumentParser<T> argument, final T defaultValue) throws QuestException {
         final String argumentValue = getValue(argumentKey);
         if (argumentValue == null) {
             return new DefaultVariable<>(defaultValue);
@@ -262,7 +261,7 @@ public class DefaultInstruction implements Instruction {
     }
 
     @Override
-    public <T> Optional<Variable<List<T>>> getOptionalList(final String argumentKey, final InstructionArgumentParser<T> argument) throws QuestException {
+    public <T> Optional<Argument<List<T>>> getOptionalList(final String argumentKey, final InstructionArgumentParser<T> argument) throws QuestException {
         final String argumentValue = getValue(argumentKey);
         if (argumentValue == null) {
             return Optional.empty();
@@ -273,7 +272,7 @@ public class DefaultInstruction implements Instruction {
     }
 
     @Override
-    public <T> Variable<List<T>> getOptionalList(final String argumentKey, final InstructionArgumentParser<T> argument, final List<T> defaultList) throws QuestException {
+    public <T> Argument<List<T>> getOptionalList(final String argumentKey, final InstructionArgumentParser<T> argument, final List<T> defaultList) throws QuestException {
         final String argumentValue = getValue(argumentKey);
         if (argumentValue == null) {
             return new VariableList<>(defaultList);

@@ -8,9 +8,9 @@ import org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable.Unmodifia
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.ConversationApi;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -544,9 +544,9 @@ public class ConversationData {
      * @param interceptorDelay The delay before the interceptor is ended after the conversation ends.
      * @param invincible       If true, the player will not be able to damage or be damaged by entities in conversation.
      */
-    public record PublicData(ConversationID conversationID, Text quester, Variable<Boolean> blockMovement,
-                             Variable<List<EventID>> finalEvents, Variable<ConversationIOFactory> convIO,
-                             Variable<InterceptorFactory> interceptor, Variable<Number> interceptorDelay,
+    public record PublicData(ConversationID conversationID, Text quester, Argument<Boolean> blockMovement,
+                             Argument<List<EventID>> finalEvents, Argument<ConversationIOFactory> convIO,
+                             Argument<InterceptorFactory> interceptor, Argument<Number> interceptorDelay,
                              boolean invincible) {
 
         /**

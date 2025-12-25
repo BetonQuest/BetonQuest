@@ -2,8 +2,8 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmocore.condition;
 
 import net.Indyuce.mmocore.experience.Profession;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.MMOProfessionParser;
@@ -21,8 +21,8 @@ public class MMOCoreProfessionLevelConditionFactory implements PlayerConditionFa
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Profession> profession = instruction.parse(MMOProfessionParser.PROFESSION).get();
-        final Variable<Number> targetLevelVar = instruction.number().get();
+        final Argument<Profession> profession = instruction.parse(MMOProfessionParser.PROFESSION).get();
+        final Argument<Number> targetLevelVar = instruction.number().get();
         final boolean mustBeEqual = instruction.hasArgument("equal");
         return new MMOCoreProfessionLevelCondition(profession, targetLevelVar, mustBeEqual);
     }

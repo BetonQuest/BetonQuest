@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.objective.shear;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.bukkit.DyeColor;
 
@@ -20,9 +20,9 @@ public class ShearObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Number> targetAmount = instruction.number().atLeast(1).get();
-        final Variable<String> name = instruction.string().get("name").orElse(null);
-        final Variable<DyeColor> color = instruction.enumeration(DyeColor.class).get("color").orElse(null);
+        final Argument<Number> targetAmount = instruction.number().atLeast(1).get();
+        final Argument<String> name = instruction.string().get("name").orElse(null);
+        final Argument<DyeColor> color = instruction.enumeration(DyeColor.class).get("color").orElse(null);
         return new ShearObjective(instruction, targetAmount, name, color);
     }
 }

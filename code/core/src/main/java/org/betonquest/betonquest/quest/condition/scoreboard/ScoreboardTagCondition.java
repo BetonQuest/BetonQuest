@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.scoreboard;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 
@@ -13,14 +13,14 @@ public class ScoreboardTagCondition implements OnlineCondition {
     /**
      * The tag to check for.
      */
-    private final Variable<String> tag;
+    private final Argument<String> tag;
 
     /**
      * Constructor for the tag condition.
      *
      * @param tag the tag to check for
      */
-    public ScoreboardTagCondition(final Variable<String> tag) {
+    public ScoreboardTagCondition(final Argument<String> tag) {
         this.tag = tag;
     }
 

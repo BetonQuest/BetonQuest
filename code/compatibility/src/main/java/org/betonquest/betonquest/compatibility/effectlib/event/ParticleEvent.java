@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.effectlib.event;
 import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.util.DynamicLocation;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.bukkit.Location;
@@ -35,7 +35,7 @@ public class ParticleEvent implements OnlineEvent {
      * The particles' root location.
      */
     @Nullable
-    private final Variable<Location> loc;
+    private final Argument<Location> loc;
 
     /**
      * If the particle should be only visible for the player.
@@ -52,7 +52,7 @@ public class ParticleEvent implements OnlineEvent {
      * @param privateParticle if the particle should be only visible for the player
      */
     public ParticleEvent(final EffectManager manager, final String effectClass, final ConfigurationSection parameters,
-                         @Nullable final Variable<Location> loc, final boolean privateParticle) {
+                         @Nullable final Argument<Location> loc, final boolean privateParticle) {
         this.manager = manager;
         this.effectClass = effectClass;
         this.parameters = parameters;

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.tag;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.database.GlobalData;
 
@@ -18,7 +18,7 @@ public class GlobalTagCondition implements PlayerlessCondition {
     /**
      * The tag to check for.
      */
-    private final Variable<String> tag;
+    private final Argument<String> tag;
 
     /**
      * Constructor for the tag condition.
@@ -26,7 +26,7 @@ public class GlobalTagCondition implements PlayerlessCondition {
      * @param globalData the global data
      * @param tag        the tag to check for
      */
-    public GlobalTagCondition(final GlobalData globalData, final Variable<String> tag) {
+    public GlobalTagCondition(final GlobalData globalData, final Argument<String> tag) {
         this.globalData = globalData;
         this.tag = tag;
     }

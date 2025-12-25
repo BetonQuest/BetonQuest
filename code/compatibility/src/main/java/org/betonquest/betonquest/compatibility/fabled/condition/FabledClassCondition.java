@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.fabled.condition;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import studio.magemonkey.fabled.Fabled;
@@ -15,7 +15,7 @@ public class FabledClassCondition implements PlayerCondition {
     /**
      * The class name.
      */
-    private final Variable<String> classNameVar;
+    private final Argument<String> classNameVar;
 
     /**
      * If the class check should be exact.
@@ -28,7 +28,7 @@ public class FabledClassCondition implements PlayerCondition {
      * @param classNameVar the class name.
      * @param exact        if the class check should be exact.
      */
-    public FabledClassCondition(final Variable<String> classNameVar, final boolean exact) {
+    public FabledClassCondition(final Argument<String> classNameVar, final boolean exact) {
         this.classNameVar = classNameVar;
         this.exact = exact;
     }

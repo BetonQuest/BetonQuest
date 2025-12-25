@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.event.effect;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
@@ -35,8 +35,8 @@ public class EffectEventFactory implements PlayerEventFactory {
             throw new QuestException("Unknown effect type: " + instruction.current());
         }
         try {
-            final Variable<Number> duration = instruction.number().get();
-            final Variable<Number> level = instruction.number().get();
+            final Argument<Number> duration = instruction.number().get();
+            final Argument<Number> level = instruction.number().get();
             final boolean ambient = instruction.hasArgument("ambient");
             final boolean hidden = instruction.hasArgument("hidden");
             final boolean icon = !instruction.hasArgument("noicon");

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.permission;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 
@@ -13,14 +13,14 @@ public class PermissionCondition implements OnlineCondition {
     /**
      * The permission to check for.
      */
-    private final Variable<String> permission;
+    private final Argument<String> permission;
 
     /**
      * Creates a new permission condition.
      *
      * @param permission The permission to check for.
      */
-    public PermissionCondition(final Variable<String> permission) {
+    public PermissionCondition(final Argument<String> permission) {
         this.permission = permission;
     }
 

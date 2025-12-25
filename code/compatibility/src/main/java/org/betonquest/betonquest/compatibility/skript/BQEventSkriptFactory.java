@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.compatibility.skript;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 
@@ -19,7 +19,7 @@ public class BQEventSkriptFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> identifier = instruction.string().get();
+        final Argument<String> identifier = instruction.string().get();
         return new BQEventSkript(identifier);
     }
 }

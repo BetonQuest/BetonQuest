@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.event.variable;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
@@ -29,9 +29,9 @@ public class VariableEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<ObjectiveID> objectiveID = instruction.parse(ObjectiveID::new).get();
-        final Variable<String> key = instruction.string().get();
-        final Variable<String> value = instruction.string().get();
+        final Argument<ObjectiveID> objectiveID = instruction.parse(ObjectiveID::new).get();
+        final Argument<String> key = instruction.string().get();
+        final Argument<String> value = instruction.string().get();
         return new VariableEvent(questTypeApi, objectiveID, key, value);
     }
 }

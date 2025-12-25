@@ -4,8 +4,8 @@ import net.Indyuce.mmoitems.api.event.item.UpgradeItemEvent;
 import net.Indyuce.mmoitems.api.item.mmoitem.MMOItem;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.event.EventHandler;
@@ -19,12 +19,12 @@ public class MMOItemsUpgradeObjective extends Objective implements Listener {
     /**
      * The ID of the item to be upgraded.
      */
-    private final Variable<String> itemID;
+    private final Argument<String> itemID;
 
     /**
      * The type of the item to be upgraded.
      */
-    private final Variable<String> itemType;
+    private final Argument<String> itemType;
 
     /**
      * Constructor for the MMOItemsUpgradeObjective.
@@ -34,7 +34,7 @@ public class MMOItemsUpgradeObjective extends Objective implements Listener {
      * @param itemType    the type of the item to be upgraded
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public MMOItemsUpgradeObjective(final Instruction instruction, final Variable<String> itemID, final Variable<String> itemType) throws QuestException {
+    public MMOItemsUpgradeObjective(final Instruction instruction, final Argument<String> itemID, final Argument<String> itemType) throws QuestException {
         super(instruction);
         this.itemID = itemID;
         this.itemType = itemType;

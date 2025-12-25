@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.event.drop;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.bukkit.Location;
@@ -19,12 +19,12 @@ public class DropEvent implements NullableEvent {
     /**
      * Items to be dropped.
      */
-    private final Variable<List<ItemWrapper>> items;
+    private final Argument<List<ItemWrapper>> items;
 
     /**
      * Location to drop the items at.
      */
-    private final Variable<Location> location;
+    private final Argument<Location> location;
 
     /**
      * Creates an event that drops the given items at a location selected by the given selector.
@@ -32,7 +32,7 @@ public class DropEvent implements NullableEvent {
      * @param items    items to be dropped
      * @param location the location to drop the items at
      */
-    public DropEvent(final Variable<List<ItemWrapper>> items, final Variable<Location> location) {
+    public DropEvent(final Argument<List<ItemWrapper>> items, final Argument<Location> location) {
         this.items = items;
         this.location = location;
     }

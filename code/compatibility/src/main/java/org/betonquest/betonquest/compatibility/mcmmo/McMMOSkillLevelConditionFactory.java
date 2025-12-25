@@ -2,8 +2,8 @@ package org.betonquest.betonquest.compatibility.mcmmo;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -31,8 +31,8 @@ public class McMMOSkillLevelConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<PrimarySkillType> skillType = instruction.enumeration(PrimarySkillType.class).get();
-        final Variable<Number> level = instruction.number().get();
+        final Argument<PrimarySkillType> skillType = instruction.enumeration(PrimarySkillType.class).get();
+        final Argument<Number> level = instruction.number().get();
         final BetonQuestLogger log = loggerFactory.create(McMMOSkillLevelCondition.class);
         return new OnlineConditionAdapter(new McMMOSkillLevelCondition(skillType, level), log, instruction.getPackage());
     }

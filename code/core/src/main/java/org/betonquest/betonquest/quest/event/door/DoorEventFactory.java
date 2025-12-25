@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.event.door;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
@@ -34,7 +34,7 @@ public class DoorEventFactory implements PlayerEventFactory, PlayerlessEventFact
     }
 
     private NullableEventAdapter createDoorEvent(final Instruction instruction) throws QuestException {
-        final Variable<Location> location = instruction.location().get();
+        final Argument<Location> location = instruction.location().get();
         final String action = instruction.string().get().getValue(null);
         final DoorEvent doorEvent = switch (action.toLowerCase(Locale.ROOT)) {
             case "on" -> createOpenDoorEvent(location);
@@ -45,15 +45,15 @@ public class DoorEventFactory implements PlayerEventFactory, PlayerlessEventFact
         return new NullableEventAdapter(doorEvent);
     }
 
-    private DoorEvent createOpenDoorEvent(final Variable<Location> location) {
+    private DoorEvent createOpenDoorEvent(final Argument<Location> location) {
         return new DoorEvent(location, door -> door.setOpen(true));
     }
 
-    private DoorEvent createCloseDoorEvent(final Variable<Location> location) {
+    private DoorEvent createCloseDoorEvent(final Argument<Location> location) {
         return new DoorEvent(location, door -> door.setOpen(false));
     }
 
-    private DoorEvent createToggleDoorEvent(final Variable<Location> location) {
+    private DoorEvent createToggleDoorEvent(final Argument<Location> location) {
         return new DoorEvent(location, door -> door.setOpen(!door.isOpen()));
     }
 }

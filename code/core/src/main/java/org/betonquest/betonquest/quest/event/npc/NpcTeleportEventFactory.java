@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.event.npc;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
@@ -42,8 +42,8 @@ public class NpcTeleportEventFactory implements PlayerEventFactory, PlayerlessEv
     }
 
     private NullableEventAdapter createNpcTeleportEvent(final Instruction instruction) throws QuestException {
-        final Variable<NpcID> npcId = instruction.parse(NpcID::new).get();
-        final Variable<Location> location = instruction.location().get();
+        final Argument<NpcID> npcId = instruction.parse(NpcID::new).get();
+        final Argument<Location> location = instruction.location().get();
         final boolean spawn = instruction.hasArgument("spawn");
         return new NullableEventAdapter(new NpcTeleportEvent(featureApi, npcId, location, spawn));
     }

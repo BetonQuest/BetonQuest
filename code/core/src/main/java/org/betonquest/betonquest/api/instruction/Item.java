@@ -3,7 +3,6 @@ package org.betonquest.betonquest.api.instruction;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.id.ItemID;
@@ -29,7 +28,7 @@ public class Item implements ItemWrapper {
     /**
      * Size of the stack to create.
      */
-    private final Variable<Number> amount;
+    private final Argument<Number> amount;
 
     /**
      * Create a wrapper for Quest Item and target stack size.
@@ -38,7 +37,7 @@ public class Item implements ItemWrapper {
      * @param itemID     the QuestItemID to create
      * @param amount     the size to set the created ItemStack to
      */
-    public Item(final FeatureApi featureApi, final ItemID itemID, final Variable<Number> amount) {
+    public Item(final FeatureApi featureApi, final ItemID itemID, final Argument<Number> amount) {
         this.itemID = itemID;
         this.featureApi = featureApi;
         this.amount = amount;
@@ -65,7 +64,7 @@ public class Item implements ItemWrapper {
     }
 
     @Override
-    public Variable<Number> getAmount() {
+    public Argument<Number> getAmount() {
         return amount;
     }
 }

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.ride;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.bukkit.entity.Entity;
@@ -17,14 +17,14 @@ public class RideCondition implements OnlineCondition {
     /**
      * The entity type to match or an empty optional if any entity is allowed.
      */
-    private final Variable<Optional<EntityType>> vehicle;
+    private final Argument<Optional<EntityType>> vehicle;
 
     /**
      * Creates a new ride condition. If the entity type is null, any entity will match.
      *
      * @param vehicle the entity type to match
      */
-    public RideCondition(final Variable<Optional<EntityType>> vehicle) {
+    public RideCondition(final Argument<Optional<EntityType>> vehicle) {
         this.vehicle = vehicle;
     }
 

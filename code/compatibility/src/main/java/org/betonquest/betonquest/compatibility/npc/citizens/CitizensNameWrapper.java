@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.npc.citizens;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
  * Citizens wrapper to get a Npc.
  */
 public class CitizensNameWrapper implements NpcWrapper<NPC> {
+
     /**
      * The plugin instance.
      */
@@ -27,7 +28,7 @@ public class CitizensNameWrapper implements NpcWrapper<NPC> {
     /**
      * Name of the Npc.
      */
-    private final Variable<String> npcName;
+    private final Argument<String> npcName;
 
     /**
      * Create a new Citizens Npc Wrapper.
@@ -36,7 +37,7 @@ public class CitizensNameWrapper implements NpcWrapper<NPC> {
      * @param registry the registry of NPCs to use
      * @param npcName  the name of the Npc
      */
-    public CitizensNameWrapper(final Plugin plugin, final NPCRegistry registry, final Variable<String> npcName) {
+    public CitizensNameWrapper(final Plugin plugin, final NPCRegistry registry, final Argument<String> npcName) {
         this.plugin = plugin;
         this.registry = registry;
         this.npcName = npcName;

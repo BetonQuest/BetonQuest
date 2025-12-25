@@ -4,12 +4,12 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.ConversationApi;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.DecoratedArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.BooleanParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
 import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -128,11 +128,11 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
 
         final Text quester = textCreator.parseFromSection(pack, section, "quester");
         final CreationHelper helper = new CreationHelper(pack, section);
-        final Variable<Boolean> blockMovement = new DefaultVariable<>(variables, pack, section.getString("stop", "false"), new BooleanParser());
-        final Variable<ConversationIOFactory> convIO = helper.parseConvIO();
-        final Variable<InterceptorFactory> interceptor = helper.parseInterceptor();
-        final Variable<Number> interceptorDelay = helper.parseInterceptorDelay();
-        final Variable<List<EventID>> finalEvents = new VariableList<>(variables, pack, section.getString("final_events", ""), value -> new EventID(variables, packManager, pack, value));
+        final Argument<Boolean> blockMovement = new DefaultVariable<>(variables, pack, section.getString("stop", "false"), new BooleanParser());
+        final Argument<ConversationIOFactory> convIO = helper.parseConvIO();
+        final Argument<InterceptorFactory> interceptor = helper.parseInterceptor();
+        final Argument<Number> interceptorDelay = helper.parseInterceptorDelay();
+        final Argument<List<EventID>> finalEvents = new VariableList<>(variables, pack, section.getString("final_events", ""), value -> new EventID(variables, packManager, pack, value));
         final boolean invincible = plugin.getConfig().getBoolean("conversation.damage.invincible");
         final ConversationData.PublicData publicData = new ConversationData.PublicData(conversationID, quester, blockMovement, finalEvents, convIO, interceptor, interceptorDelay, invincible);
 
@@ -242,7 +242,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
             return plugin.getPluginConfig().getString(configPath, defaultConfig);
         }
 
-        private Variable<ConversationIOFactory> parseConvIO() throws QuestException {
+        private Argument<ConversationIOFactory> parseConvIO() throws QuestException {
             final String rawConvIOs = defaulting("conversationIO", "conversation.default_io", "menu,tellraw");
             return new DefaultVariable<>(variables, pack, rawConvIOs, value -> {
                 final List<String> ios = new VariableList<>(variables, pack, value, stringParser).getValue(null);
@@ -250,7 +250,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
             });
         }
 
-        private Variable<InterceptorFactory> parseInterceptor() throws QuestException {
+        private Argument<InterceptorFactory> parseInterceptor() throws QuestException {
             final String rawInterceptor = defaulting("interceptor", "conversation.interceptor.default", "simple");
             return new DefaultVariable<>(variables, pack, rawInterceptor, value -> {
                 final List<String> interceptors = new VariableList<>(variables, pack, value, stringParser).getValue(null);
@@ -258,7 +258,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
             });
         }
 
-        private Variable<Number> parseInterceptorDelay() throws QuestException {
+        private Argument<Number> parseInterceptorDelay() throws QuestException {
             final String rawInterceptorDelay = defaulting("interceptor_delay", "conversation.interceptor.delay", "50");
             return new DefaultVariable<>(variables, pack, rawInterceptorDelay, value -> numberParser.apply(variables, packManager, pack, value));
         }

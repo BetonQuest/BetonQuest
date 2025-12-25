@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.explosion;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.bukkit.Location;
@@ -15,22 +15,22 @@ public class ExplosionEvent implements NullableEvent {
     /**
      * The location of the explosion.
      */
-    private final Variable<Location> location;
+    private final Argument<Location> location;
 
     /**
      * The power of the explosion.
      */
-    private final Variable<Number> power;
+    private final Argument<Number> power;
 
     /**
      * Whether the explosion should set fire.
      */
-    private final Variable<Boolean> setsFire;
+    private final Argument<Boolean> setsFire;
 
     /**
      * Whether the explosion should break blocks.
      */
-    private final Variable<Boolean> breaksBlocks;
+    private final Argument<Boolean> breaksBlocks;
 
     /**
      * Creates a new explosion event.
@@ -40,7 +40,7 @@ public class ExplosionEvent implements NullableEvent {
      * @param setsFire     whether the explosion should set fire
      * @param breaksBlocks whether the explosion should break blocks
      */
-    public ExplosionEvent(final Variable<Location> location, final Variable<Number> power, final Variable<Boolean> setsFire, final Variable<Boolean> breaksBlocks) {
+    public ExplosionEvent(final Argument<Location> location, final Argument<Number> power, final Argument<Boolean> setsFire, final Argument<Boolean> breaksBlocks) {
         this.location = location;
         this.power = power;
         this.setsFire = setsFire;

@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.variable.name;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 
@@ -21,7 +21,7 @@ public class PlayerNameVariableFactory implements PlayerVariableFactory {
 
     @Override
     public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<PlayerNameType> type;
+        final Argument<PlayerNameType> type;
         if (instruction.hasNext()) {
             type = instruction.enumeration(PlayerNameType.class).get();
         } else {

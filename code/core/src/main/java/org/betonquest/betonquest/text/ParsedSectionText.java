@@ -3,9 +3,9 @@ package org.betonquest.betonquest.text;
 import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
 import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.data.PlayerDataStorage;
@@ -39,7 +39,7 @@ public class ParsedSectionText extends ParsedText {
         super(textParser, parse(variables, pack, section, path, languageProvider), playerDataStorage, languageProvider);
     }
 
-    private static Map<String, Variable<String>> parse(final Variables variables, final QuestPackage pack,
+    private static Map<String, Argument<String>> parse(final Variables variables, final QuestPackage pack,
                                                        final ConfigurationSection section, final String path,
                                                        final LanguageProvider languageProvider) throws QuestException {
         final StringParser stringParser = new StringParser();
@@ -59,14 +59,14 @@ public class ParsedSectionText extends ParsedText {
         }
     }
 
-    private static Map<String, Variable<String>> parseSection(final Variables variables, final QuestPackage pack,
+    private static Map<String, Argument<String>> parseSection(final Variables variables, final QuestPackage pack,
                                                               final ConfigurationSection textSection, final String path,
                                                               final StringParser stringParser) throws QuestException {
         final ConfigurationSection subSection = textSection.getConfigurationSection(path);
         if (subSection == null) {
             throw new QuestException("No configuration section for '" + path + "'!");
         }
-        final Map<String, Variable<String>> texts = new HashMap<>();
+        final Map<String, Argument<String>> texts = new HashMap<>();
         for (final String key : subSection.getKeys(false)) {
             if (subSection.isList(key)) {
                 texts.put(key, new DefaultVariable<>(variables, pack,

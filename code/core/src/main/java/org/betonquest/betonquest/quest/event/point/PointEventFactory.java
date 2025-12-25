@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.event.point;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
@@ -49,8 +49,8 @@ public class PointEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> category = instruction.packageIdentifier().get();
-        final Variable<Number> amount = instruction.number().get();
+        final Argument<String> category = instruction.packageIdentifier().get();
+        final Argument<Number> amount = instruction.number().get();
         final PointType type = instruction.enumeration(PointType.class).get("action", PointType.ADD).getValue(null);
 
         final NotificationSender pointSender;

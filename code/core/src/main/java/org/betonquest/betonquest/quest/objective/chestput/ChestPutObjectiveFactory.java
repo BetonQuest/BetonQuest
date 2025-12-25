@@ -2,9 +2,9 @@ package org.betonquest.betonquest.quest.objective.chestput;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
@@ -45,8 +45,8 @@ public class ChestPutObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.location().get();
-        final Variable<List<ItemWrapper>> items = instruction.item().getList();
+        final Argument<Location> loc = instruction.location().get();
+        final Argument<List<ItemWrapper>> items = instruction.item().getList();
         final boolean multipleAccess = instruction.bool().get("multipleaccess", false).getValue(null);
         final ChestItemCondition chestItemCondition = new ChestItemCondition(loc, items);
         final ChestTakeEvent chestTakeEvent = instruction.hasArgument("items-stay") ? null : new ChestTakeEvent(loc, items);

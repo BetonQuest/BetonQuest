@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.condition.point;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
@@ -40,8 +40,8 @@ public class GlobalPointConditionFactory implements PlayerConditionFactory, Play
     }
 
     private GlobalPointCondition parse(final Instruction instruction) throws QuestException {
-        final Variable<String> category = instruction.packageIdentifier().get();
-        final Variable<Number> count = instruction.number().get();
+        final Argument<String> category = instruction.packageIdentifier().get();
+        final Argument<Number> count = instruction.number().get();
         final boolean equal = instruction.hasArgument("equal");
         return new GlobalPointCondition(globalData, category, count, equal);
     }

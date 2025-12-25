@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.point;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
@@ -13,6 +13,7 @@ import org.betonquest.betonquest.database.UpdateType;
  * Deletes the points in the category from all online players and database entries.
  */
 public class DeletePointPlayerlessEvent implements PlayerlessEvent {
+
     /**
      * Storage for player data.
      */
@@ -31,7 +32,7 @@ public class DeletePointPlayerlessEvent implements PlayerlessEvent {
     /**
      * Point category to remove.
      */
-    private final Variable<String> category;
+    private final Argument<String> category;
 
     /**
      * Create a new Point remove event for every player, online and offline.
@@ -41,7 +42,7 @@ public class DeletePointPlayerlessEvent implements PlayerlessEvent {
      * @param profileProvider the profile provider instance
      * @param category        the category to remove
      */
-    public DeletePointPlayerlessEvent(final PlayerDataStorage dataStorage, final Saver saver, final ProfileProvider profileProvider, final Variable<String> category) {
+    public DeletePointPlayerlessEvent(final PlayerDataStorage dataStorage, final Saver saver, final ProfileProvider profileProvider, final Argument<String> category) {
         this.dataStorage = dataStorage;
         this.saver = saver;
         this.profileProvider = profileProvider;

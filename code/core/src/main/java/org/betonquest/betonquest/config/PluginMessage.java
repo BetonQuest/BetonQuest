@@ -10,9 +10,9 @@ import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
 import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Variables;
@@ -218,7 +218,7 @@ public class PluginMessage {
         final StringParser stringParser = new StringParser();
         for (final Map.Entry<String, Map<String, String>> entry : languageMessages.entrySet()) {
             final String key = entry.getKey();
-            final Map<String, Variable<String>> values = new HashMap<>();
+            final Map<String, Argument<String>> values = new HashMap<>();
             for (final Map.Entry<String, String> value : entry.getValue().entrySet()) {
                 values.put(value.getKey(), new DefaultVariable<>(variables, null, value.getValue(), stringParser));
             }

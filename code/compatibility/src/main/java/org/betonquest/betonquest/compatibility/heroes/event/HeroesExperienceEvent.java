@@ -4,7 +4,7 @@ import com.herocraftonline.heroes.characters.CharacterManager;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.classes.HeroClass;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.compatibility.heroes.HeroesClassType;
@@ -22,12 +22,12 @@ public class HeroesExperienceEvent implements OnlineEvent {
     /**
      * The {@link HeroesClassType} of the class to add experience to.
      */
-    private final Variable<HeroesClassType> classType;
+    private final Argument<HeroesClassType> classType;
 
     /**
      * The amount of experience to add.
      */
-    private final Variable<Number> amountVar;
+    private final Argument<Number> amountVar;
 
     /**
      * Create a new Heroes Experience Event.
@@ -37,7 +37,7 @@ public class HeroesExperienceEvent implements OnlineEvent {
      * @param amountVar        The amount of experience to add.
      */
     public HeroesExperienceEvent(final CharacterManager characterManager,
-                                 final Variable<HeroesClassType> classType, final Variable<Number> amountVar) {
+                                 final Argument<HeroesClassType> classType, final Argument<Number> amountVar) {
         this.characterManager = characterManager;
         this.classType = classType;
         this.amountVar = amountVar;

@@ -3,8 +3,8 @@ package org.betonquest.betonquest.quest.event.give;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
@@ -25,7 +25,7 @@ public class GiveEvent implements OnlineEvent {
     /**
      * The items to give.
      */
-    private final Variable<List<ItemWrapper>> questItems;
+    private final Argument<List<ItemWrapper>> questItems;
 
     /**
      * The notification sender to use when putting items into the player's inventory.
@@ -62,7 +62,7 @@ public class GiveEvent implements OnlineEvent {
      * @param backpack              whether to put the items to the player's backpack
      * @param dataStorage           the storage providing player backpack
      */
-    public GiveEvent(final Variable<List<ItemWrapper>> questItems, final NotificationSender itemsGivenSender,
+    public GiveEvent(final Argument<List<ItemWrapper>> questItems, final NotificationSender itemsGivenSender,
                      final NotificationSender itemsInBackpackSender, final NotificationSender itemsDroppedSender,
                      final boolean backpack, final PlayerDataStorage dataStorage) {
         this.questItems = questItems;

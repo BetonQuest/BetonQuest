@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.party;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
@@ -34,23 +34,23 @@ public class PartyEvent implements OnlineEvent {
     /**
      * The range of the party.
      */
-    private final Variable<Number> range;
+    private final Argument<Number> range;
 
     /**
      * The optional maximum amount of players affected by this party event.
      */
     @Nullable
-    private final Variable<Number> amount;
+    private final Argument<Number> amount;
 
     /**
      * The conditions that must be met by the party members.
      */
-    private final Variable<List<ConditionID>> conditions;
+    private final Argument<List<ConditionID>> conditions;
 
     /**
      * The events to fire.
      */
-    private final Variable<List<EventID>> events;
+    private final Argument<List<EventID>> events;
 
     /**
      * Creates a new PartyEvent instance.
@@ -63,8 +63,8 @@ public class PartyEvent implements OnlineEvent {
      * @param conditions      the conditions that must be met by the party members
      * @param events          the events to fire
      */
-    public PartyEvent(final QuestTypeApi questTypeApi, final ProfileProvider profileProvider, final Variable<Number> range,
-                      @Nullable final Variable<Number> amount, final Variable<List<ConditionID>> conditions, final Variable<List<EventID>> events) {
+    public PartyEvent(final QuestTypeApi questTypeApi, final ProfileProvider profileProvider, final Argument<Number> range,
+                      @Nullable final Argument<Number> amount, final Argument<List<ConditionID>> conditions, final Argument<List<EventID>> events) {
         this.questTypeApi = questTypeApi;
         this.profileProvider = profileProvider;
         this.range = range;

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.time.ingame;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.quest.condition.time.Time;
@@ -17,12 +17,12 @@ public class TimeCondition implements NullableCondition {
     /**
      * The time frame in which the time should be.
      */
-    private final Variable<TimeFrame> timeFrame;
+    private final Argument<TimeFrame> timeFrame;
 
     /**
      * The variable world.
      */
-    private final Variable<World> variableWorld;
+    private final Argument<World> variableWorld;
 
     /**
      * Creates a new TimeCondition.
@@ -30,7 +30,7 @@ public class TimeCondition implements NullableCondition {
      * @param timeFrame     the time frame
      * @param variableWorld the variable world
      */
-    public TimeCondition(final Variable<TimeFrame> timeFrame, final Variable<World> variableWorld) {
+    public TimeCondition(final Argument<TimeFrame> timeFrame, final Argument<World> variableWorld) {
         this.timeFrame = timeFrame;
         this.variableWorld = variableWorld;
     }

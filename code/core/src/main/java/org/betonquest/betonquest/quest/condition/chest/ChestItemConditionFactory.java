@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.condition.chest;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
@@ -35,8 +35,8 @@ public class ChestItemConditionFactory implements PlayerConditionFactory, Player
     }
 
     private ChestItemCondition parse(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.location().get();
-        final Variable<List<ItemWrapper>> items = instruction.item().getList();
+        final Argument<Location> loc = instruction.location().get();
+        final Argument<List<ItemWrapper>> items = instruction.item().getList();
         return new ChestItemCondition(loc, items);
     }
 }

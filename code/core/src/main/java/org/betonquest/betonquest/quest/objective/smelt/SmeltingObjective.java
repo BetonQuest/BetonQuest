@@ -2,9 +2,9 @@ package org.betonquest.betonquest.quest.objective.smelt;
 
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.util.InventoryUtils;
 import org.bukkit.entity.Player;
@@ -23,7 +23,7 @@ public class SmeltingObjective extends CountingObjective implements Listener {
     /**
      * The item to be smelted.
      */
-    private final Variable<ItemWrapper> item;
+    private final Argument<ItemWrapper> item;
 
     /**
      * Constructor for the SmeltingObjective.
@@ -33,7 +33,7 @@ public class SmeltingObjective extends CountingObjective implements Listener {
      * @param item         the item to be smelted
      * @throws QuestException if there is an error in the instruction
      */
-    public SmeltingObjective(final Instruction instruction, final Variable<Number> targetAmount, final Variable<ItemWrapper> item)
+    public SmeltingObjective(final Instruction instruction, final Argument<Number> targetAmount, final Argument<ItemWrapper> item)
             throws QuestException {
         super(instruction, targetAmount, "items_to_smelt");
         this.item = item;

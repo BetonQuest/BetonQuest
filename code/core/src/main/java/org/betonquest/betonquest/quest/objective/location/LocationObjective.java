@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.objective.location;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.Location;
@@ -20,12 +20,12 @@ public class LocationObjective extends AbstractLocationObjective {
     /**
      * The location to reach.
      */
-    private final Variable<Location> loc;
+    private final Argument<Location> loc;
 
     /**
      * The range around the location.
      */
-    private final Variable<Number> range;
+    private final Argument<Number> range;
 
     /**
      * The constructor takes an Instruction object as a parameter and throws an QuestException.
@@ -35,7 +35,7 @@ public class LocationObjective extends AbstractLocationObjective {
      * @param range       the VariableNumber object representing the range
      * @throws QuestException if there is an error while parsing the instruction
      */
-    public LocationObjective(final Instruction instruction, final Variable<Location> loc, final Variable<Number> range) throws QuestException {
+    public LocationObjective(final Instruction instruction, final Argument<Location> loc, final Argument<Number> range) throws QuestException {
         super(instruction);
         this.loc = loc;
         this.range = range;

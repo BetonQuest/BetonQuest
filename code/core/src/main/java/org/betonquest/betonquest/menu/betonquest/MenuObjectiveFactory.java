@@ -2,8 +2,8 @@ package org.betonquest.betonquest.menu.betonquest;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
@@ -38,7 +38,7 @@ public class MenuObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<MenuID> menuID = instruction.parse(
+        final Argument<MenuID> menuID = instruction.parse(
                 (variables, packManager, pack, string)
                         -> new MenuID(packManager, pack, string)).get();
         final BetonQuestLogger log = loggerFactory.create(MenuObjective.class);

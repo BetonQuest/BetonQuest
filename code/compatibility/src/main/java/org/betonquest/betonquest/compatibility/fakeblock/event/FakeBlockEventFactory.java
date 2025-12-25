@@ -3,9 +3,9 @@ package org.betonquest.betonquest.compatibility.fakeblock.event;
 import com.briarcraft.fakeblock.api.service.GroupService;
 import com.briarcraft.fakeblock.api.service.PlayerGroupService;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.ValueValidator;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -47,7 +47,7 @@ public class FakeBlockEventFactory implements PlayerEventFactory {
 
     private PlayerEvent getFakeBlockEvent(final Instruction instruction) throws QuestException {
         final String action = instruction.string().get().getValue(null);
-        final Variable<List<String>> groupNames = instruction.string()
+        final Argument<List<String>> groupNames = instruction.string()
                 .validate(checkForNotExistingGroups())
                 .getList();
         return switch (action.toLowerCase(Locale.ROOT)) {

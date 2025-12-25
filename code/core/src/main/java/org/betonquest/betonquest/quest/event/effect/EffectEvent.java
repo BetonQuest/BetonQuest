@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.effect;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.bukkit.potion.PotionEffect;
@@ -20,12 +20,12 @@ public class EffectEvent implements OnlineEvent {
     /**
      * The duration of the effect.
      */
-    private final Variable<Number> duration;
+    private final Argument<Number> duration;
 
     /**
      * The amplifier of the effect.
      */
-    private final Variable<Number> level;
+    private final Argument<Number> level;
 
     /**
      * Whether the effect is ambient.
@@ -52,7 +52,7 @@ public class EffectEvent implements OnlineEvent {
      * @param hidden   whether the effect is hidden
      * @param icon     whether the effect has an icon
      */
-    public EffectEvent(final PotionEffectType effect, final Variable<Number> duration, final Variable<Number> level, final boolean ambient, final boolean hidden, final boolean icon) {
+    public EffectEvent(final PotionEffectType effect, final Argument<Number> duration, final Argument<Number> level, final boolean ambient, final boolean hidden, final boolean icon) {
         this.effect = effect;
         this.duration = duration;
         this.level = level;

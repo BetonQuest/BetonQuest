@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.teleport;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.ConversationApi;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.conversation.Conversation;
@@ -21,7 +21,7 @@ public class TeleportEvent implements OnlineEvent {
     /**
      * Location to teleport to.
      */
-    private final Variable<Location> location;
+    private final Argument<Location> location;
 
     /**
      * Create a new teleport event that teleports the player to the given location.
@@ -29,7 +29,7 @@ public class TeleportEvent implements OnlineEvent {
      * @param conversationApi the Conversation API
      * @param location        location to teleport to
      */
-    public TeleportEvent(final ConversationApi conversationApi, final Variable<Location> location) {
+    public TeleportEvent(final ConversationApi conversationApi, final Argument<Location> location) {
         this.conversationApi = conversationApi;
         this.location = location;
     }

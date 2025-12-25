@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.chest;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.Location;
 import org.bukkit.inventory.InventoryHolder;
@@ -17,7 +17,7 @@ public class ChestClearEvent extends AbstractChestEvent {
      *
      * @param variableLocation the location of the chest
      */
-    public ChestClearEvent(final Variable<Location> variableLocation) {
+    public ChestClearEvent(final Argument<Location> variableLocation) {
         super(variableLocation);
     }
 

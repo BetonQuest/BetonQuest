@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.objective.shear;
 
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.DyeColor;
 import org.bukkit.entity.EntityType;
@@ -22,13 +22,13 @@ public class ShearObjective extends CountingObjective implements Listener {
      * The color of the sheep to shear.
      */
     @Nullable
-    private final Variable<DyeColor> color;
+    private final Argument<DyeColor> color;
 
     /**
      * The name of the sheep to shear.
      */
     @Nullable
-    private final Variable<String> name;
+    private final Argument<String> name;
 
     /**
      * Constructor for the ShearObjective.
@@ -39,8 +39,8 @@ public class ShearObjective extends CountingObjective implements Listener {
      * @param color        the color of the sheep to shear
      * @throws QuestException if there is an error in the instruction
      */
-    public ShearObjective(final Instruction instruction, final Variable<Number> targetAmount, @Nullable final Variable<String> name,
-                          @Nullable final Variable<DyeColor> color) throws QuestException {
+    public ShearObjective(final Instruction instruction, final Argument<Number> targetAmount, @Nullable final Argument<String> name,
+                          @Nullable final Argument<DyeColor> color) throws QuestException {
         super(instruction, targetAmount, "sheep_to_shear");
         this.name = name;
         this.color = color;

@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.event.compass;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.data.PlayerDataStorage;
@@ -37,8 +37,8 @@ public class CompassEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<CompassTargetAction> action = instruction.enumeration(CompassTargetAction.class).get();
-        final Variable<CompassID> compassId = instruction.parse(
+        final Argument<CompassTargetAction> action = instruction.enumeration(CompassTargetAction.class).get();
+        final Argument<CompassID> compassId = instruction.parse(
                 (variables, packManager, pack, string)
                         -> new CompassID(packManager, pack, string)).get();
         return new CompassEvent(featureApi, dataStorage, action, compassId);

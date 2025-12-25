@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.condition.conversation;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.ConversationApi;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.conversation.ConversationID;
@@ -29,7 +29,7 @@ public class InConversationConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<ConversationID> conversationID = instruction.parse(
+        final Argument<ConversationID> conversationID = instruction.parse(
                 (variables, packManager, pack, string)
                         -> new ConversationID(packManager, pack, string)).get();
         return new InConversationCondition(conversationApi, conversationID);

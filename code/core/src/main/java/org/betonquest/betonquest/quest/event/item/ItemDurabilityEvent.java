@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.item;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.quest.event.point.PointType;
@@ -26,17 +26,17 @@ public class ItemDurabilityEvent implements OnlineEvent {
     /**
      * The slot to target.
      */
-    private final Variable<EquipmentSlot> slot;
+    private final Argument<EquipmentSlot> slot;
 
     /**
      * The point type, how the durability should be modified.
      */
-    private final Variable<PointType> modification;
+    private final Argument<PointType> modification;
 
     /**
      * The amount of the modification.
      */
-    private final Variable<Number> amount;
+    private final Argument<Number> amount;
 
     /**
      * To ignore {@link ItemMeta#isUnbreakable()} and {@link Enchantment#DURABILITY}.
@@ -63,8 +63,8 @@ public class ItemDurabilityEvent implements OnlineEvent {
      * @param ignoreEvents      whether the bukkit events should be ignored or called
      * @param random            to use for the durability calculation
      */
-    public ItemDurabilityEvent(final Variable<EquipmentSlot> slot, final Variable<PointType> modification,
-                               final Variable<Number> amount, final boolean ignoreUnbreakable,
+    public ItemDurabilityEvent(final Argument<EquipmentSlot> slot, final Argument<PointType> modification,
+                               final Argument<Number> amount, final boolean ignoreUnbreakable,
                                final boolean ignoreEvents, final Random random) {
         this.slot = slot;
         this.modification = modification;

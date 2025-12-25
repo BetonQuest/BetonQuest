@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.logik;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
@@ -23,7 +23,7 @@ public class AlternativeCondition implements NullableCondition {
     /**
      * List of condition IDs.
      */
-    private final Variable<List<ConditionID>> conditionIDs;
+    private final Argument<List<ConditionID>> conditionIDs;
 
     /**
      * Create a new alternative condition.
@@ -31,7 +31,7 @@ public class AlternativeCondition implements NullableCondition {
      * @param questTypeApi the Quest Type API to check conditions
      * @param conditionIDs the condition IDs
      */
-    public AlternativeCondition(final QuestTypeApi questTypeApi, final Variable<List<ConditionID>> conditionIDs) {
+    public AlternativeCondition(final QuestTypeApi questTypeApi, final Argument<List<ConditionID>> conditionIDs) {
         this.questTypeApi = questTypeApi;
         this.conditionIDs = conditionIDs;
     }

@@ -2,8 +2,8 @@ package org.betonquest.betonquest.compatibility.effectlib.event;
 
 import de.slikey.effectlib.EffectManager;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
@@ -45,7 +45,7 @@ public class ParticleEventFactory implements PlayerEventFactory {
                 "Effect '" + string + "' does not exist!");
         final String rawEffectClass = Utils.getNN(parameters.getString("class"), "Effect '" + string + "' is incorrectly defined");
         final String effectClass = instruction.get(rawEffectClass, instruction.getParsers().string()).getValue(null);
-        final Variable<Location> loc = instruction.location().get("loc").orElse(null);
+        final Argument<Location> loc = instruction.location().get("loc").orElse(null);
         final boolean privateParticle = instruction.hasArgument("private");
         final ParticleEvent particleEvent = new ParticleEvent(manager, effectClass, parameters, loc, privateParticle);
         return new OnlineEventAdapter(particleEvent, loggerFactory.create(ParticleEvent.class), instruction.getPackage());

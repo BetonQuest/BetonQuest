@@ -4,7 +4,7 @@ import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
 import net.Indyuce.mmoitems.api.player.PlayerData;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.item.QuestItemWrapper;
@@ -24,12 +24,12 @@ public class MMOQuestItemWrapper implements QuestItemWrapper {
     /**
      * Item type variable.
      */
-    private final Variable<Type> itemType;
+    private final Argument<Type> itemType;
 
     /**
      * Item id variable.
      */
-    private final Variable<String> itemId;
+    private final Argument<String> itemId;
 
     /**
      * Creates a new MMO Item Wrapper.
@@ -38,7 +38,7 @@ public class MMOQuestItemWrapper implements QuestItemWrapper {
      * @param itemType  the item type
      * @param itemId    the item id
      */
-    public MMOQuestItemWrapper(final MMOItems mmoPlugin, final Variable<Type> itemType, final Variable<String> itemId) {
+    public MMOQuestItemWrapper(final MMOItems mmoPlugin, final Argument<Type> itemType, final Argument<String> itemId) {
         this.mmoPlugin = mmoPlugin;
         this.itemType = itemType;
         this.itemId = itemId;

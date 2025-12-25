@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.condition.variable;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -41,8 +41,8 @@ public class VariableConditionFactory implements PlayerConditionFactory, Playerl
     }
 
     private VariableCondition parse(final Instruction instruction) throws QuestException {
-        final Variable<String> variable = instruction.string().get();
-        final Variable<String> regex = instruction.string().get();
+        final Argument<String> variable = instruction.string().get();
+        final Argument<String> regex = instruction.string().get();
         final String variableAddress = instruction.getID().toString();
         final boolean forceSync = instruction.hasArgument("forceSync");
         final BetonQuestLogger log = loggerFactory.create(VariableCondition.class);

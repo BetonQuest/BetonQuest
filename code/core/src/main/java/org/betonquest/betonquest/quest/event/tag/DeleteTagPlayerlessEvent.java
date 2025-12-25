@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.tag;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
@@ -15,6 +15,7 @@ import java.util.List;
  * Event to delete tags from all players.
  */
 public class DeleteTagPlayerlessEvent implements PlayerlessEvent {
+
     /**
      * Storage for player data.
      */
@@ -33,7 +34,7 @@ public class DeleteTagPlayerlessEvent implements PlayerlessEvent {
     /**
      * The list of tags to delete.
      */
-    private final Variable<List<String>> tags;
+    private final Argument<List<String>> tags;
 
     /**
      * Create a new delete tag playerless event.
@@ -43,7 +44,7 @@ public class DeleteTagPlayerlessEvent implements PlayerlessEvent {
      * @param profileProvider the profile provider instance
      * @param tags            the list of tags to delete
      */
-    public DeleteTagPlayerlessEvent(final PlayerDataStorage dataStorage, final Saver saver, final ProfileProvider profileProvider, final Variable<List<String>> tags) {
+    public DeleteTagPlayerlessEvent(final PlayerDataStorage dataStorage, final Saver saver, final ProfileProvider profileProvider, final Argument<List<String>> tags) {
         this.dataStorage = dataStorage;
         this.saver = saver;
         this.profileProvider = profileProvider;

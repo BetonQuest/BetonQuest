@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.variable.item;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.variable.online.OnlineVariable;
 import org.bukkit.inventory.EquipmentSlot;
@@ -16,7 +16,7 @@ public class ItemDurabilityVariable implements OnlineVariable {
     /**
      * The slot of the item.
      */
-    private final Variable<EquipmentSlot> slot;
+    private final Argument<EquipmentSlot> slot;
 
     /**
      * If the durability should be displayed relative to maximum.
@@ -27,7 +27,7 @@ public class ItemDurabilityVariable implements OnlineVariable {
     /**
      * The amount of digits displayed after comma.
      */
-    private final Variable<Number> digitsAfter;
+    private final Argument<Number> digitsAfter;
 
     /**
      * If the output should be multiplied with 100 and with a '%' in the end.
@@ -42,7 +42,7 @@ public class ItemDurabilityVariable implements OnlineVariable {
      * @param digitsAfter the amount of digits displayed after comma
      * @param inPercent   if the output should be multiplied with 100 and with a '%' in the end
      */
-    public ItemDurabilityVariable(final Variable<EquipmentSlot> slot, final boolean relative, final Variable<Number> digitsAfter, final boolean inPercent) {
+    public ItemDurabilityVariable(final Argument<EquipmentSlot> slot, final boolean relative, final Argument<Number> digitsAfter, final boolean inPercent) {
         this.slot = slot;
         this.relative = relative;
         this.digitsAfter = digitsAfter;

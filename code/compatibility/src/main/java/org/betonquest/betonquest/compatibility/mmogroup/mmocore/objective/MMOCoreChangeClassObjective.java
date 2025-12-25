@@ -3,8 +3,8 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmocore.objective;
 import net.Indyuce.mmocore.api.event.PlayerChangeClassEvent;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.event.EventHandler;
@@ -20,7 +20,7 @@ public class MMOCoreChangeClassObjective extends Objective implements Listener {
      * The name of the class that the player needs to change to.
      */
     @Nullable
-    private final Variable<String> targetClassName;
+    private final Argument<String> targetClassName;
 
     /**
      * Constructor for the MMOCoreChangeClassObjective.
@@ -29,7 +29,7 @@ public class MMOCoreChangeClassObjective extends Objective implements Listener {
      * @param targetClassName the name of the class to be changed to
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public MMOCoreChangeClassObjective(final Instruction instruction, @Nullable final Variable<String> targetClassName) throws QuestException {
+    public MMOCoreChangeClassObjective(final Instruction instruction, @Nullable final Argument<String> targetClassName) throws QuestException {
         super(instruction);
         this.targetClassName = targetClassName;
     }

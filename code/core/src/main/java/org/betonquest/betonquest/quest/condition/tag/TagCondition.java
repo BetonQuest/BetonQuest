@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.tag;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.data.PlayerDataStorage;
@@ -14,7 +14,7 @@ public class TagCondition implements PlayerCondition {
     /**
      * The tag to check for.
      */
-    private final Variable<String> tag;
+    private final Argument<String> tag;
 
     /**
      * Storage for player data.
@@ -27,7 +27,7 @@ public class TagCondition implements PlayerCondition {
      * @param tag         the tag to check for
      * @param dataStorage the storage providing player data
      */
-    public TagCondition(final Variable<String> tag, final PlayerDataStorage dataStorage) {
+    public TagCondition(final Argument<String> tag, final PlayerDataStorage dataStorage) {
         this.tag = tag;
         this.dataStorage = dataStorage;
     }

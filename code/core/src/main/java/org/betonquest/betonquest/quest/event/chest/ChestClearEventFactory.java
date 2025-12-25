@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.event.chest;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
@@ -32,7 +32,7 @@ public class ChestClearEventFactory implements PlayerEventFactory, PlayerlessEve
     }
 
     private NullableEventAdapter createChestClearEvent(final Instruction instruction) throws QuestException {
-        final Variable<Location> variableLocation = instruction.location().get();
+        final Argument<Location> variableLocation = instruction.location().get();
         return new NullableEventAdapter(new ChestClearEvent(variableLocation));
     }
 }

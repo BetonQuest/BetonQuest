@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.weather;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.quest.event.weather.Weather;
@@ -16,12 +16,12 @@ public class WeatherCondition implements NullableCondition {
     /**
      * The weather to check for.
      */
-    private final Variable<Weather> weather;
+    private final Argument<Weather> weather;
 
     /**
      * The world to check the weather in.
      */
-    private final Variable<World> variableWorld;
+    private final Argument<World> variableWorld;
 
     /**
      * Checks if the weather in the given world matches the weather of this condition.
@@ -29,7 +29,7 @@ public class WeatherCondition implements NullableCondition {
      * @param weather the weather to check for
      * @param world   the world to check the weather in
      */
-    public WeatherCondition(final Variable<Weather> weather, final Variable<World> world) {
+    public WeatherCondition(final Argument<Weather> weather, final Argument<World> world) {
         this.weather = weather;
         this.variableWorld = world;
     }

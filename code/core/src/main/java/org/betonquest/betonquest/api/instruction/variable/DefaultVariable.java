@@ -2,6 +2,7 @@ package org.betonquest.betonquest.api.instruction.variable;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.jetbrains.annotations.Nullable;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
  *
  * @param <T> the type of the variable
  */
-public class DefaultVariable<T> implements Variable<T> {
+public class DefaultVariable<T> implements Argument<T> {
 
     /**
      * The pattern to match variables in a string marked with percent signs.<br>
@@ -30,7 +31,7 @@ public class DefaultVariable<T> implements Variable<T> {
     /**
      * Supplier of the variable value: a variable itself. Magic.
      */
-    private final Variable<T> value;
+    private final Argument<T> value;
 
     /**
      * Creates a constant variable.
@@ -52,7 +53,7 @@ public class DefaultVariable<T> implements Variable<T> {
      */
     public DefaultVariable(final Variables variables, @Nullable final QuestPackage pack, final String input,
                            final ValueParser<T> valueParser) throws QuestException {
-        final Map<String, Variable<String>> foundVariables = getVariables(variables, pack, input);
+        final Map<String, Argument<String>> foundVariables = getVariables(variables, pack, input);
         if (foundVariables.isEmpty()) {
             final T resolved = valueParser.apply(replaceEscapedPercent(input));
             value = profile -> valueParser.cloneValue(resolved);
@@ -61,14 +62,14 @@ public class DefaultVariable<T> implements Variable<T> {
         }
     }
 
-    private Map<String, Variable<String>> getVariables(final Variables variables,
+    private Map<String, Argument<String>> getVariables(final Variables variables,
                                                        @Nullable final QuestPackage pack,
                                                        final String input)
             throws QuestException {
-        final Map<String, Variable<String>> foundVariables = new HashMap<>();
+        final Map<String, Argument<String>> foundVariables = new HashMap<>();
         for (final String variable : resolveVariables(input)) {
             try {
-                final Variable<String> variableAdapter = variables.create(pack, replaceEscapedPercent(variable));
+                final Argument<String> variableAdapter = variables.create(pack, replaceEscapedPercent(variable));
                 foundVariables.put(variable, variableAdapter);
             } catch (final QuestException exception) {
                 throw new QuestException("Could not create variable '" + variable + "': "
@@ -84,13 +85,13 @@ public class DefaultVariable<T> implements Variable<T> {
                 .collect(Collectors.toSet());
     }
 
-    private String getString(final String input, final Map<String, Variable<String>> variables,
+    private String getString(final String input, final Map<String, Argument<String>> variables,
                              @Nullable final Profile profile) throws QuestException {
         final Matcher matcher = VARIABLE_PATTERN.matcher(input);
         final StringBuilder resolvedString = new StringBuilder();
         while (matcher.find()) {
             final String variable = matcher.group();
-            final Variable<String> resolvedVariable = variables.get(variable);
+            final Argument<String> resolvedVariable = variables.get(variable);
             if (resolvedVariable == null) {
                 throw new QuestException("Could not resolve variable '" + variable + "'");
             }

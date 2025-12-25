@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.command;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.command.SilentConsoleCommandSender;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.bukkit.Server;
@@ -31,7 +31,7 @@ public class CommandEvent implements NullableEvent {
     /**
      * The commands to run.
      */
-    private final List<Variable<String>> commands;
+    private final List<Argument<String>> commands;
 
     /**
      * Creates a new CommandEvent.
@@ -40,7 +40,7 @@ public class CommandEvent implements NullableEvent {
      * @param silentSender the command sender to run the commands as
      * @param server       the server to run the commands on
      */
-    public CommandEvent(final List<Variable<String>> commands, final CommandSender silentSender, final Server server) {
+    public CommandEvent(final List<Argument<String>> commands, final CommandSender silentSender, final Server server) {
         this.silentSender = silentSender;
         this.server = server;
         this.commands = commands;
@@ -50,7 +50,7 @@ public class CommandEvent implements NullableEvent {
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
         try {
-            for (final Variable<String> command : commands) {
+            for (final Argument<String> command : commands) {
                 server.dispatchCommand(silentSender, command.getValue(profile));
             }
         } catch (final RuntimeException exception) {

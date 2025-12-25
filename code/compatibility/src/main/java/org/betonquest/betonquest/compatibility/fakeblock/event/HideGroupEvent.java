@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.fakeblock.event;
 
 import com.briarcraft.fakeblock.api.service.PlayerGroupService;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -17,7 +17,7 @@ public class HideGroupEvent implements PlayerEvent {
     /**
      * The names of the groups that should be hidden for the player.
      */
-    private final Variable<List<String>> groupNames;
+    private final Argument<List<String>> groupNames;
 
     /**
      * PlayerGroupService to change group states for the player.
@@ -30,7 +30,7 @@ public class HideGroupEvent implements PlayerEvent {
      * @param groupNames         is a string list with group names that should be hidden for the player
      * @param playerGroupService the FakeBlock PlayerGroupService
      */
-    public HideGroupEvent(final Variable<List<String>> groupNames, final RegisteredServiceProvider<PlayerGroupService> playerGroupService) {
+    public HideGroupEvent(final Argument<List<String>> groupNames, final RegisteredServiceProvider<PlayerGroupService> playerGroupService) {
         this.groupNames = groupNames;
         this.playerGroupService = playerGroupService;
     }

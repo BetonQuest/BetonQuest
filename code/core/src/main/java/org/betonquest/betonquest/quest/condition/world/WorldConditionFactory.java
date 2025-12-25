@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.condition.world;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -31,7 +31,7 @@ public class WorldConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<World> world = instruction.world().get();
+        final Argument<World> world = instruction.world().get();
         final BetonQuestLogger logger = loggerFactory.create(WorldCondition.class);
         return new OnlineConditionAdapter(new WorldCondition(world), logger, instruction.getPackage());
     }

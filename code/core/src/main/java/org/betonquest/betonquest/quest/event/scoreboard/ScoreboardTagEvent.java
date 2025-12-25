@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.scoreboard;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 
@@ -13,12 +13,12 @@ public class ScoreboardTagEvent implements OnlineEvent {
     /**
      * The tag to add or remove.
      */
-    private final Variable<String> tag;
+    private final Argument<String> tag;
 
     /**
      * Whether to add or remove the tag.
      */
-    private final Variable<ScoreboardTagAction> action;
+    private final Argument<ScoreboardTagAction> action;
 
     /**
      * Create a new scoreboard tag event that adds or removes the given tag.
@@ -26,7 +26,7 @@ public class ScoreboardTagEvent implements OnlineEvent {
      * @param tag    the tag to add or remove
      * @param action whether to add or remove the tag
      */
-    public ScoreboardTagEvent(final Variable<String> tag, final Variable<ScoreboardTagAction> action) {
+    public ScoreboardTagEvent(final Argument<String> tag, final Argument<ScoreboardTagAction> action) {
         this.tag = tag;
         this.action = action;
     }

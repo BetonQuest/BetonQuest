@@ -2,8 +2,8 @@ package org.betonquest.betonquest.compatibility.worldguard.npc;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
@@ -41,8 +41,8 @@ public class NpcRegionConditionFactory implements PlayerConditionFactory, Player
     }
 
     private NullableConditionAdapter parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<NpcID> npcId = instruction.parse(NpcID::new).get();
-        final Variable<String> region = instruction.string().get();
+        final Argument<NpcID> npcId = instruction.parse(NpcID::new).get();
+        final Argument<String> region = instruction.string().get();
         return new NullableConditionAdapter(new NpcRegionCondition(featureApi, npcId, region));
     }
 }

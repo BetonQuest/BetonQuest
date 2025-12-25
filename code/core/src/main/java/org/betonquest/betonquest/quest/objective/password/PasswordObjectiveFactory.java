@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.objective.password;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 
@@ -27,10 +27,10 @@ public class PasswordObjectiveFactory implements ObjectiveFactory {
         final String pattern = instruction.string().get().getValue(null);
         final int regexFlags = instruction.hasArgument("ignoreCase") ? Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE : 0;
         final Pattern regex = Pattern.compile(pattern, regexFlags);
-        final Variable<String> prefixVar = instruction.string().get("prefix").orElse(null);
+        final Argument<String> prefixVar = instruction.string().get("prefix").orElse(null);
         final String prefix = prefixVar != null ? prefixVar.getValue(null) : null;
         final String passwordPrefix = prefix == null || prefix.isEmpty() ? prefix : prefix + ": ";
-        final Variable<List<EventID>> failEvents = instruction.parse(EventID::new).getList("fail", Collections.emptyList());
+        final Argument<List<EventID>> failEvents = instruction.parse(EventID::new).getList("fail", Collections.emptyList());
         return new PasswordObjective(instruction, regex, passwordPrefix, failEvents);
     }
 }

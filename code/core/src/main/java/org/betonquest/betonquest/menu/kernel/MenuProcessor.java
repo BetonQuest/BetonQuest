@@ -4,11 +4,11 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -87,7 +87,7 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
         final MenuCreationHelper helper = new MenuCreationHelper(pack, section);
         final Menu.MenuData menuData = helper.getMenuData();
         final MenuID menuID = getIdentifier(pack, section.getName());
-        final Variable<ItemWrapper> boundItem = section.isSet("bind")
+        final Argument<ItemWrapper> boundItem = section.isSet("bind")
                 ? new DefaultVariable<>(variables, pack, helper.getRequired("bind"),
                 value -> itemParser.apply(variables, packManager, pack, value))
                 : null;
@@ -140,9 +140,9 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
                 throw new QuestException("height is invalid!");
             }
             final Text title = textCreator.parseFromSection(pack, section, "title");
-            final Variable<List<ConditionID>> openConditions = getID("open_conditions", ConditionID::new);
-            final Variable<List<EventID>> openEvents = getID("open_events", EventID::new);
-            final Variable<List<EventID>> closeEvents = getID("close_events", EventID::new);
+            final Argument<List<ConditionID>> openConditions = getID("open_conditions", ConditionID::new);
+            final Argument<List<EventID>> openEvents = getID("open_events", EventID::new);
+            final Argument<List<EventID>> closeEvents = getID("close_events", EventID::new);
 
             final List<Slots> slots = loadSlots(height);
             return new Menu.MenuData(title, height, slots, openConditions, openEvents, closeEvents);
@@ -155,7 +155,7 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
             }
             final List<Slots> slots = new ArrayList<>();
             for (final String key : slotsSection.getKeys(false)) {
-                final Variable<List<MenuItemID>> itemsList = new VariableList<>(variables, pack,
+                final Argument<List<MenuItemID>> itemsList = new VariableList<>(variables, pack,
                         slotsSection.getString(key, ""), value -> new MenuItemID(packManager, pack, value));
                 try {
                     slots.add(new Slots(rpgMenu, key, itemsList));

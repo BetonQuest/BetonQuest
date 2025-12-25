@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.entity;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.util.EntityUtils;
@@ -22,29 +22,29 @@ public class EntityCondition implements NullableCondition {
     /**
      * The amount per entity.
      */
-    private final Variable<List<Map.Entry<EntityType, Integer>>> entityAmounts;
+    private final Argument<List<Map.Entry<EntityType, Integer>>> entityAmounts;
 
     /**
      * The location of the entity's.
      */
-    private final Variable<Location> loc;
+    private final Argument<Location> loc;
 
     /**
      * The range around the location to check for entities.
      */
-    private final Variable<Number> range;
+    private final Argument<Number> range;
 
     /**
      * The name of the entity to check for.
      */
     @Nullable
-    private final Variable<Component> name;
+    private final Argument<Component> name;
 
     /**
      * The marked entity to check for.
      */
     @Nullable
-    private final Variable<String> marked;
+    private final Argument<String> marked;
 
     /**
      * Create a new entity condition.
@@ -55,8 +55,8 @@ public class EntityCondition implements NullableCondition {
      * @param name          the name of the entity to check for
      * @param marked        the marked entity to check for
      */
-    public EntityCondition(final Variable<List<Map.Entry<EntityType, Integer>>> entityAmounts, final Variable<Location> loc,
-                           final Variable<Number> range, @Nullable final Variable<Component> name, @Nullable final Variable<String> marked) {
+    public EntityCondition(final Argument<List<Map.Entry<EntityType, Integer>>> entityAmounts, final Argument<Location> loc,
+                           final Argument<Number> range, @Nullable final Argument<Component> name, @Nullable final Argument<String> marked) {
         this.entityAmounts = entityAmounts;
         this.loc = loc;
         this.range = range;

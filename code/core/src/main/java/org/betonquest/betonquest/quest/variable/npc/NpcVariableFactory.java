@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.variable.npc;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
@@ -64,11 +64,11 @@ public class NpcVariableFactory implements PlayerVariableFactory, PlayerlessVari
                 return questerVariable.getValue(profile);
             };
         }
-        final Variable<NpcID> npcID = instruction.parse(NpcID::new).get();
-        final Argument key = instruction.enumeration(Argument.class).get().getValue(null);
+        final Argument<NpcID> npcID = instruction.parse(NpcID::new).get();
+        final org.betonquest.betonquest.quest.variable.npc.Argument key = instruction.enumeration(org.betonquest.betonquest.quest.variable.npc.Argument.class).get().getValue(null);
         LocationFormationMode locationFormationMode = null;
         int decimalPlaces = 0;
-        if (key == Argument.LOCATION) {
+        if (key == org.betonquest.betonquest.quest.variable.npc.Argument.LOCATION) {
             if (instruction.hasNext()) {
                 locationFormationMode = LocationFormationMode.getMode(instruction.nextElement());
             } else {

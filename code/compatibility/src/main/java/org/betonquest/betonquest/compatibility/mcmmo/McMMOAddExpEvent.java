@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.mcmmo;
 
 import com.gmail.nossr50.api.ExperienceAPI;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 
@@ -14,12 +14,12 @@ public class McMMOAddExpEvent implements OnlineEvent {
     /**
      * Name of skill to add xp to.
      */
-    private final Variable<String> skillType;
+    private final Argument<String> skillType;
 
     /**
      * Amount to add.
      */
-    private final Variable<Number> exp;
+    private final Argument<Number> exp;
 
     /**
      * Create a new add exp event.
@@ -27,7 +27,7 @@ public class McMMOAddExpEvent implements OnlineEvent {
      * @param skillType the type to add xp to
      * @param exp       the amount to add
      */
-    public McMMOAddExpEvent(final Variable<String> skillType, final Variable<Number> exp) {
+    public McMMOAddExpEvent(final Argument<String> skillType, final Argument<Number> exp) {
         this.skillType = skillType;
         this.exp = exp;
     }

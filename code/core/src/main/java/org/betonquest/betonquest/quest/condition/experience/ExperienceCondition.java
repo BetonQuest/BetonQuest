@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.experience;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 
@@ -14,14 +14,14 @@ public class ExperienceCondition implements OnlineCondition {
      * The experience level the player needs to get.
      * The decimal part of the number is a percentage of the next level.
      */
-    private final Variable<Number> amount;
+    private final Argument<Number> amount;
 
     /**
      * Creates a new experience condition.
      *
      * @param amount The experience level the player needs to get.
      */
-    public ExperienceCondition(final Variable<Number> amount) {
+    public ExperienceCondition(final Argument<Number> amount) {
         this.amount = amount;
     }
 

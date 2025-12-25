@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.objective.kill;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 
@@ -23,9 +23,9 @@ public class KillPlayerObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Number> targetAmount = instruction.number().atLeast(1).get();
-        final Variable<String> name = instruction.string().get("name").orElse(null);
-        final Variable<List<ConditionID>> required = instruction.parse(ConditionID::new)
+        final Argument<Number> targetAmount = instruction.number().atLeast(1).get();
+        final Argument<String> name = instruction.string().get("name").orElse(null);
+        final Argument<List<ConditionID>> required = instruction.parse(ConditionID::new)
                 .getList("required", Collections.emptyList());
         return new KillPlayerObjective(instruction, targetAmount, name, required);
     }

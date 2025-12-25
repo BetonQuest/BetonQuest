@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.event.explosion;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
@@ -32,10 +32,10 @@ public class ExplosionEventFactory implements PlayerEventFactory, PlayerlessEven
     }
 
     private NullableEventAdapter createExplosionEvent(final Instruction instruction) throws QuestException {
-        final Variable<Boolean> setsFire = instruction.parse("1"::equals).get();
-        final Variable<Boolean> breaksBlocks = instruction.parse("1"::equals).get();
-        final Variable<Number> power = instruction.number().get();
-        final Variable<Location> location = instruction.location().get();
+        final Argument<Boolean> setsFire = instruction.parse("1"::equals).get();
+        final Argument<Boolean> breaksBlocks = instruction.parse("1"::equals).get();
+        final Argument<Number> power = instruction.number().get();
+        final Argument<Location> location = instruction.location().get();
         return new NullableEventAdapter(new ExplosionEvent(location, power, setsFire, breaksBlocks));
     }
 }

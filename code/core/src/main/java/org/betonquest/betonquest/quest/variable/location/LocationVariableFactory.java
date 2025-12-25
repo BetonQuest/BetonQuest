@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.variable.location;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 import org.betonquest.betonquest.api.quest.variable.online.OnlineVariableAdapter;
@@ -28,7 +28,7 @@ public class LocationVariableFactory implements PlayerVariableFactory {
             mode = LocationFormationMode.ULF_LONG;
         }
 
-        final Variable<Number> decimalPlaces;
+        final Argument<Number> decimalPlaces;
         if (instruction.hasNext()) {
             decimalPlaces = instruction.number().get();
         } else {

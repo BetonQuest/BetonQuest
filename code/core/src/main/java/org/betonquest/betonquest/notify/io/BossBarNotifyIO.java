@@ -4,7 +4,7 @@ import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.notify.NotifyIO;
@@ -45,17 +45,17 @@ public class BossBarNotifyIO extends NotifyIO {
     /**
      * The variable for the progress of the boss bar.
      */
-    private final Variable<Number> variableProgress;
+    private final Argument<Number> variableProgress;
 
     /**
      * The variable for the time the boss bar should stay visible.
      */
-    private final Variable<Number> variableStay;
+    private final Argument<Number> variableStay;
 
     /**
      * The countdown variable for the boss bar.
      */
-    private final Variable<Number> variableCountdown;
+    private final Argument<Number> variableCountdown;
 
     /**
      * Create a new Boss Bar Notify IO.

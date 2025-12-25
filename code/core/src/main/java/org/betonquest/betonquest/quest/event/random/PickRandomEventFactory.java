@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.event.random;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -51,7 +51,7 @@ public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEve
     }
 
     private NullableEventAdapter createPickRandomEvent(final Instruction instruction) throws QuestException {
-        final Variable<List<RandomEvent>> events = instruction.parse(string -> {
+        final Argument<List<RandomEvent>> events = instruction.parse(string -> {
             final Matcher matcher = EVENT_WEIGHT.matcher(string);
             if (!matcher.matches()) {
                 throw new QuestException("Weight must be specified correctly: " + string);
@@ -63,7 +63,7 @@ public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEve
             final double weight = NumberParser.DEFAULT.apply(weightString).doubleValue();
             return new RandomEvent(eventID, weight);
         }).getList();
-        final Variable<Number> amount = instruction.number().get("amount").orElse(null);
+        final Argument<Number> amount = instruction.number().get("amount").orElse(null);
         return new NullableEventAdapter(new PickRandomEvent(events, amount, questTypeApi));
     }
 }

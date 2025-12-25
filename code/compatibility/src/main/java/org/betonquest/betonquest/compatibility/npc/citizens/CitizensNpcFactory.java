@@ -3,8 +3,8 @@ package org.betonquest.betonquest.compatibility.npc.citizens;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.npc.NpcFactory;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
 import org.bukkit.plugin.Plugin;
@@ -40,7 +40,7 @@ public class CitizensNpcFactory implements NpcFactory {
         if (instruction.hasArgument("byName")) {
             return new CitizensNameWrapper(plugin, registry, instruction.string().get());
         }
-        final Variable<Number> npcId = instruction.number().atLeast(0).get();
+        final Argument<Number> npcId = instruction.number().atLeast(0).get();
         return new CitizensWrapper(plugin, registry, npcId);
     }
 }

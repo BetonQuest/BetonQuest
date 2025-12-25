@@ -2,8 +2,8 @@ package org.betonquest.betonquest.compatibility.heroes.condition;
 
 import com.herocraftonline.heroes.characters.CharacterManager;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
@@ -37,8 +37,8 @@ public class HeroesAttributeConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> attributeVar = instruction.string().get();
-        final Variable<Number> levelVar = instruction.number().get();
+        final Argument<String> attributeVar = instruction.string().get();
+        final Argument<Number> levelVar = instruction.number().get();
         return new OnlineConditionAdapter(new HeroesAttributeCondition(characterManager, attributeVar, levelVar),
                 loggerFactory.create(HeroesAttributeCondition.class), instruction.getPackage());
     }

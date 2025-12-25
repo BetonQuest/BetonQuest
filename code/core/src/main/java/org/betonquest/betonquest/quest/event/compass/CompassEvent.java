@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.compass;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.feature.FeatureApi;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -34,12 +34,12 @@ public class CompassEvent implements PlayerEvent {
     /**
      * The action to perform on the compass.
      */
-    private final Variable<CompassTargetAction> action;
+    private final Argument<CompassTargetAction> action;
 
     /**
      * The compass point to set.
      */
-    private final Variable<CompassID> compassId;
+    private final Argument<CompassID> compassId;
 
     /**
      * Create the compass event.
@@ -50,7 +50,7 @@ public class CompassEvent implements PlayerEvent {
      * @param compassId  the compass point
      */
     public CompassEvent(final FeatureApi featureApi, final PlayerDataStorage storage,
-                        final Variable<CompassTargetAction> action, final Variable<CompassID> compassId) {
+                        final Argument<CompassTargetAction> action, final Argument<CompassID> compassId) {
         this.featureApi = featureApi;
         this.dataStorage = storage;
         this.action = action;

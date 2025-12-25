@@ -4,8 +4,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -39,7 +39,7 @@ public class MenuItem {
     /**
      * The betonquest quest item this item is based on.
      */
-    private final Variable<ItemWrapper> item;
+    private final Argument<ItemWrapper> item;
 
     /**
      * The ID of this item.
@@ -60,12 +60,12 @@ public class MenuItem {
     /**
      * Conditions that have to be matched to view the item.
      */
-    private final Variable<List<ConditionID>> conditions;
+    private final Argument<List<ConditionID>> conditions;
 
     /**
      * If the menu should be closed when the item is clicked.
      */
-    private final Variable<Boolean> close;
+    private final Argument<Boolean> close;
 
     /**
      * Creates a new Menu Item.
@@ -79,9 +79,9 @@ public class MenuItem {
      * @param conditions   the conditions required to show the item
      * @param close        if the item click closes
      */
-    public MenuItem(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final Variable<ItemWrapper> item, final MenuItemID itemId,
+    public MenuItem(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final Argument<ItemWrapper> item, final MenuItemID itemId,
                     @Nullable final Text descriptions, final ClickEvents clickEvents,
-                    final Variable<List<ConditionID>> conditions, final Variable<Boolean> close) {
+                    final Argument<List<ConditionID>> conditions, final Argument<Boolean> close) {
         this.log = log;
         this.questTypeApi = questTypeApi;
         this.item = item;
@@ -110,7 +110,7 @@ public class MenuItem {
         };
     }
 
-    private boolean executeEvents(final Variable<List<EventID>> events, final OnlineProfile profile) {
+    private boolean executeEvents(final Argument<List<EventID>> events, final OnlineProfile profile) {
         final List<EventID> resolved;
         try {
             resolved = events.getValue(profile);
@@ -199,16 +199,16 @@ public class MenuItem {
      * @param shiftRightClick  for the right click with shift
      * @param middleMouseClick for the middle mouse click
      */
-    public record ClickEvents(Variable<List<EventID>> leftClick, Variable<List<EventID>> shiftLeftClick,
-                              Variable<List<EventID>> rightClick, Variable<List<EventID>> shiftRightClick,
-                              Variable<List<EventID>> middleMouseClick) {
+    public record ClickEvents(Argument<List<EventID>> leftClick, Argument<List<EventID>> shiftLeftClick,
+                              Argument<List<EventID>> rightClick, Argument<List<EventID>> shiftRightClick,
+                              Argument<List<EventID>> middleMouseClick) {
 
         /**
          * Fills all click types with the same list.
          *
          * @param click the events to execute on any click
          */
-        public ClickEvents(final Variable<List<EventID>> click) {
+        public ClickEvents(final Argument<List<EventID>> click) {
             this(click, click, click, click, click);
         }
     }

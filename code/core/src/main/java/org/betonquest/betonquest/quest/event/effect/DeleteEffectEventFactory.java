@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.event.effect;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -34,7 +34,7 @@ public class DeleteEffectEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<List<PotionEffectType>> effects;
+        final Argument<List<PotionEffectType>> effects;
         if (!instruction.hasArgument("any") && instruction.size() > 1) {
             effects = instruction.parse(type -> {
                 final PotionEffectType effect = PotionEffectType.getByName(type);

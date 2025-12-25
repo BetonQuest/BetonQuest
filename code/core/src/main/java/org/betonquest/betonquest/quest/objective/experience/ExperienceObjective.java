@@ -5,8 +5,8 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
@@ -30,7 +30,7 @@ public class ExperienceObjective extends Objective implements Listener {
      * The experience level the player needs to get.
      * The decimal part of the number is a percentage of the next level.
      */
-    private final Variable<Number> amount;
+    private final Argument<Number> amount;
 
     /**
      * The notification to send when the player gains experience.
@@ -45,7 +45,7 @@ public class ExperienceObjective extends Objective implements Listener {
      * @param levelSender the notification to send when the player gains experience
      * @throws QuestException if there is an error in the instruction
      */
-    public ExperienceObjective(final Instruction instruction, final Variable<Number> amount, final IngameNotificationSender levelSender) throws QuestException {
+    public ExperienceObjective(final Instruction instruction, final Argument<Number> amount, final IngameNotificationSender levelSender) throws QuestException {
         super(instruction);
         this.amount = amount;
         this.levelSender = levelSender;

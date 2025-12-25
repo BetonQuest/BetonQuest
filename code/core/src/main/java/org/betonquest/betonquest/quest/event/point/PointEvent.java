@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.point;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.data.PlayerDataStorage;
@@ -23,12 +23,12 @@ public class PointEvent implements PlayerEvent {
     /**
      * The category name.
      */
-    private final Variable<String> category;
+    private final Argument<String> category;
 
     /**
      * The count.
      */
-    private final Variable<Number> count;
+    private final Argument<Number> count;
 
     /**
      * The point type, how the points should be modified.
@@ -49,7 +49,7 @@ public class PointEvent implements PlayerEvent {
      * @param pointType   the point type
      * @param dataStorage the storage providing player data
      */
-    public PointEvent(final NotificationSender pointSender, final Variable<String> category, final Variable<Number> count,
+    public PointEvent(final NotificationSender pointSender, final Argument<String> category, final Argument<Number> count,
                       final PointType pointType, final PlayerDataStorage dataStorage) {
         this.pointSender = pointSender;
         this.category = category;

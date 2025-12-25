@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.effect;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.bukkit.potion.PotionEffectType;
@@ -14,14 +14,14 @@ public class EffectCondition implements OnlineCondition {
     /**
      * The type of the potion effect.
      */
-    private final Variable<PotionEffectType> type;
+    private final Argument<PotionEffectType> type;
 
     /**
      * Create a new effect condition.
      *
      * @param type the type of the potion effect
      */
-    public EffectCondition(final Variable<PotionEffectType> type) {
+    public EffectCondition(final Argument<PotionEffectType> type) {
         this.type = type;
     }
 

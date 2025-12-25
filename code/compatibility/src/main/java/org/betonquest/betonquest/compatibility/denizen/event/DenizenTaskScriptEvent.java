@@ -5,7 +5,7 @@ import com.denizenscript.denizen.utilities.implementation.BukkitScriptEntryData;
 import com.denizenscript.denizencore.scripts.ScriptRegistry;
 import com.denizenscript.denizencore.scripts.containers.core.TaskScriptContainer;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 
@@ -17,14 +17,14 @@ public class DenizenTaskScriptEvent implements PlayerEvent {
     /**
      * The name of the script to run.
      */
-    private final Variable<String> nameVar;
+    private final Argument<String> nameVar;
 
     /**
      * Create a new Denizen Task Script Event.
      *
      * @param nameVar the name of the script to run.
      */
-    public DenizenTaskScriptEvent(final Variable<String> nameVar) {
+    public DenizenTaskScriptEvent(final Argument<String> nameVar) {
         this.nameVar = nameVar;
     }
 

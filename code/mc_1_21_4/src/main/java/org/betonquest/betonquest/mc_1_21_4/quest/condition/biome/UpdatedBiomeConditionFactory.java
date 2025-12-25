@@ -2,8 +2,8 @@ package org.betonquest.betonquest.mc_1_21_4.quest.condition.biome;
 
 import io.papermc.paper.registry.RegistryKey;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -39,7 +39,7 @@ public class UpdatedBiomeConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Biome> biomeVariable = instruction.parse(BIOME_PARSER).get();
+        final Argument<Biome> biomeVariable = instruction.parse(BIOME_PARSER).get();
         final BetonQuestLogger log = loggerFactory.create(BiomeCondition.class);
         return new OnlineConditionAdapter(new BiomeCondition(biomeVariable), log, instruction.getPackage());
     }

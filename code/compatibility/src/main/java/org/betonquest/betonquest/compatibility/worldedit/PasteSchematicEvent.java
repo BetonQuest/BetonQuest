@@ -13,7 +13,7 @@ import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.transform.AffineTransform;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.bukkit.Location;
@@ -31,12 +31,12 @@ public class PasteSchematicEvent implements NullableEvent {
     /**
      * Root location of placement.
      */
-    private final Variable<Location> loc;
+    private final Argument<Location> loc;
 
     /**
      * Rotation of placement.
      */
-    private final Variable<Number> rotation;
+    private final Argument<Number> rotation;
 
     /**
      * 'No Air' boolean for pasting.
@@ -46,7 +46,7 @@ public class PasteSchematicEvent implements NullableEvent {
     /**
      * Schematic file.
      */
-    private final Variable<File> file;
+    private final Argument<File> file;
 
     /**
      * Create a new paste schematic event.
@@ -56,7 +56,7 @@ public class PasteSchematicEvent implements NullableEvent {
      * @param noAir    the 'no air' paste argument
      * @param file     the schematic file
      */
-    public PasteSchematicEvent(final Variable<Location> loc, final Variable<Number> rotation, final boolean noAir, final Variable<File> file) {
+    public PasteSchematicEvent(final Argument<Location> loc, final Argument<Number> rotation, final boolean noAir, final Argument<File> file) {
         this.loc = loc;
         this.rotation = rotation;
         this.noAir = noAir;

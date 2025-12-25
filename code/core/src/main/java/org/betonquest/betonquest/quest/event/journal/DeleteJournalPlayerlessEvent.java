@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.journal;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
@@ -16,6 +16,7 @@ import org.betonquest.betonquest.id.JournalEntryID;
  * Deletes the journal entry from all online players and database entries.
  */
 public class DeleteJournalPlayerlessEvent implements PlayerlessEvent {
+
     /**
      * Storage for player data.
      */
@@ -34,7 +35,7 @@ public class DeleteJournalPlayerlessEvent implements PlayerlessEvent {
     /**
      * Point category to remove.
      */
-    private final Variable<JournalEntryID> entryID;
+    private final Argument<JournalEntryID> entryID;
 
     /**
      * Create a new Journal remove event for every player, online and offline.
@@ -45,7 +46,7 @@ public class DeleteJournalPlayerlessEvent implements PlayerlessEvent {
      * @param entryID         the entry to remove
      */
     public DeleteJournalPlayerlessEvent(final PlayerDataStorage dataStorage, final Saver saver, final ProfileProvider profileProvider,
-                                        final Variable<JournalEntryID> entryID) {
+                                        final Argument<JournalEntryID> entryID) {
         this.dataStorage = dataStorage;
         this.saver = saver;
         this.profileProvider = profileProvider;

@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.mythicmobs.event;
 import io.lumine.mythic.bukkit.BukkitAPIHelper;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
@@ -31,7 +31,7 @@ public class MythicCastSkillEvent implements OnlineEvent {
     /**
      * Name of the skill.
      */
-    private final Variable<String> skillName;
+    private final Argument<String> skillName;
 
     /**
      * Constructs a new MythicCastSkillEvent.
@@ -42,7 +42,7 @@ public class MythicCastSkillEvent implements OnlineEvent {
      * @param skillName the name of the skill
      */
     public MythicCastSkillEvent(final BetonQuestLogger log, final QuestPackage pack, final BukkitAPIHelper apiHelper,
-                                final Variable<String> skillName) {
+                                final Argument<String> skillName) {
         this.log = log;
         this.pack = pack;
         this.apiHelper = apiHelper;

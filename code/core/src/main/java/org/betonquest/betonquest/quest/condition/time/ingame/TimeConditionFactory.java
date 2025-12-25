@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.condition.time.ingame;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
@@ -25,21 +25,21 @@ public class TimeConditionFactory implements PlayerConditionFactory, PlayerlessC
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<TimeFrame> timeFrame = instruction.parse(TimeFrame::parse).get();
+        final Argument<TimeFrame> timeFrame = instruction.parse(TimeFrame::parse).get();
         final String worldRaw = instruction.string().get("world", "%location.world%").getValue(null);
-        final Variable<World> world = instruction.get(worldRaw, instruction.getParsers().world());
+        final Argument<World> world = instruction.get(worldRaw, instruction.getParsers().world());
         return new NullableConditionAdapter(new TimeCondition(timeFrame, world));
     }
 
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
-        final Variable<String> worldVar = instruction.string().get("world").orElse(null);
+        final Argument<String> worldVar = instruction.string().get("world").orElse(null);
         final String worldString = worldVar == null ? null : worldVar.getValue(null);
         if (worldString == null) {
             return new ThrowExceptionPlayerlessCondition();
         }
-        final Variable<TimeFrame> timeFrame = instruction.parse(TimeFrame::parse).get();
-        final Variable<World> world = instruction.get(worldString, instruction.getParsers().world());
+        final Argument<TimeFrame> timeFrame = instruction.parse(TimeFrame::parse).get();
+        final Argument<World> world = instruction.get(worldString, instruction.getParsers().world());
         return new NullableConditionAdapter(new TimeCondition(timeFrame, world));
     }
 }

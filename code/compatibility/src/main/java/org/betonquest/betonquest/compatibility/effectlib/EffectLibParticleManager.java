@@ -6,9 +6,9 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.identifier.DefaultIdentifier;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.LocationParser;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -110,9 +110,9 @@ public class EffectLibParticleManager extends SectionProcessor<EffectLibParticle
             throw new QuestException("Check interval must be bigger than 0.");
         }
 
-        final Variable<List<Location>> locations = load(pack, settings, "locations", new LocationParser(Bukkit.getServer()));
-        final Variable<List<NpcID>> npcs = load(pack, settings, "npcs", value -> new NpcID(variables, packManager, pack, value));
-        final Variable<List<ConditionID>> conditions = load(pack, settings, "conditions", value -> new ConditionID(variables, packManager, pack, value));
+        final Argument<List<Location>> locations = load(pack, settings, "locations", new LocationParser(Bukkit.getServer()));
+        final Argument<List<NpcID>> npcs = load(pack, settings, "npcs", value -> new NpcID(variables, packManager, pack, value));
+        final Argument<List<ConditionID>> conditions = load(pack, settings, "conditions", value -> new ConditionID(variables, packManager, pack, value));
 
         final EffectConfiguration effect = new EffectConfiguration(effectClass, locations, npcs, conditions, settings, conditionsCheckInterval);
         final EffectLibRunnable particleRunnable = new EffectLibRunnable(loggerFactory.create(EffectLibRunnable.class),
@@ -130,7 +130,7 @@ public class EffectLibParticleManager extends SectionProcessor<EffectLibParticle
         super.clear();
     }
 
-    private <T> Variable<List<T>> load(final QuestPackage pack, final ConfigurationSection settings,
+    private <T> Argument<List<T>> load(final QuestPackage pack, final ConfigurationSection settings,
                                        final String entryName, final SimpleArgumentParser<T> argument) throws QuestException {
         return new VariableList<>(variables, pack, settings.getString(entryName, ""), argument);
     }

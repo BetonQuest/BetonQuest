@@ -2,9 +2,9 @@ package org.betonquest.betonquest.quest.objective.tame;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.parser.EnumParser;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Tameable;
@@ -22,12 +22,12 @@ public class TameObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<EntityType> typeVariable = instruction.enumeration(EntityType.class)
+        final Argument<EntityType> typeVariable = instruction.enumeration(EntityType.class)
                 .validate(type -> type.getEntityClass() != null
                                 && Tameable.class.isAssignableFrom(type.getEntityClass()),
                         "Entity cannot be tamed: '%s'")
                 .get();
-        final Variable<Number> targetAmount = instruction.number().atLeast(1).get();
+        final Argument<Number> targetAmount = instruction.number().atLeast(1).get();
         return new TameObjective(instruction, targetAmount, typeVariable);
     }
 

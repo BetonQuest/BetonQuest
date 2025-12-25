@@ -6,8 +6,8 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.parser.IdentifierParser;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -162,7 +162,7 @@ public class QuestCanceler {
         notificationSender.sendNotification(onlineProfile, new VariableReplacement("name", questName));
     }
 
-    private void removeSimple(final Profile profile, final Variable<List<String>> toRemove, final String logIdentifier,
+    private void removeSimple(final Profile profile, final Argument<List<String>> toRemove, final String logIdentifier,
                               final Consumer<String> action) {
         try {
             for (final String entry : toRemove.getValue(profile)) {
@@ -267,10 +267,10 @@ public class QuestCanceler {
      * @param journal    the journal entries to remove
      * @param location   the location to teleport the player to
      */
-    public record CancelData(Variable<List<ConditionID>> conditions, Variable<List<EventID>> events,
-                             Variable<List<ObjectiveID>> objectives, Variable<List<String>> tags,
-                             Variable<List<String>> points, Variable<List<JournalEntryID>> journal,
-                             @Nullable Variable<Location> location) {
+    public record CancelData(Argument<List<ConditionID>> conditions, Argument<List<EventID>> events,
+                             Argument<List<ObjectiveID>> objectives, Argument<List<String>> tags,
+                             Argument<List<String>> points, Argument<List<JournalEntryID>> journal,
+                             @Nullable Argument<Location> location) {
 
     }
 }

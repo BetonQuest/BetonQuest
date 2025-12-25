@@ -3,7 +3,7 @@ package org.betonquest.betonquest.kernel.processor.feature;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.Variables;
@@ -47,7 +47,7 @@ public class JournalMainPageProcessor extends SectionProcessor<JournalMainPageID
         if (priority < 0) {
             throw new QuestException("Priority of journal main page needs to be at least 0!");
         }
-        final Variable<List<ConditionID>> conditions = new VariableList<>(variables, pack,
+        final Argument<List<ConditionID>> conditions = new VariableList<>(variables, pack,
                 section.getString("conditions", ""),
                 value -> new ConditionID(variables, packManager, pack, value));
         final Text text = textCreator.parseFromSection(pack, section, "text");

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.point;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.data.PlayerDataStorage;
@@ -21,12 +21,12 @@ public class PointCondition implements PlayerCondition {
     /**
      * The category of the points.
      */
-    private final Variable<String> category;
+    private final Argument<String> category;
 
     /**
      * The amount of points.
      */
-    private final Variable<Number> count;
+    private final Argument<Number> count;
 
     /**
      * Whether the points should be equal to the specified amount.
@@ -41,7 +41,7 @@ public class PointCondition implements PlayerCondition {
      * @param count       the amount of points
      * @param equal       whether the points should be equal to the specified amount
      */
-    public PointCondition(final PlayerDataStorage dataStorage, final Variable<String> category, final Variable<Number> count, final boolean equal) {
+    public PointCondition(final PlayerDataStorage dataStorage, final Argument<String> category, final Argument<Number> count, final boolean equal) {
         this.dataStorage = dataStorage;
         this.category = category;
         this.count = count;
