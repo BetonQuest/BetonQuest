@@ -19,7 +19,7 @@ such as `add someTag` in the `tag` event.
 
 If the instruction string contains an argument formatted as `arg:something` and you request the optional `arg`, 
 it will return `something`. If there is no optional argument by that name, 
-it will return an empty Optional for that variable. 
+it will return an empty Optional for that argument. 
 
 If an error occurs the `Instruction` object will automatically throw a `QuestException`.
 This may happen whenever there are no more arguments in the user's instruction or if the argument cannot 
@@ -28,15 +28,15 @@ be parsed into the requested type.
 ## Instruction Chain
 
 The instruction chain offers java stream-like methods to read, parse, convert and 
-ultimately retrieve a variable from an instruction. 
-It minimally consists of two steps: the argument parsing step and the variable retrieval step.
+ultimately retrieve a argument from an instruction. 
+It minimally consists of two steps: the argument parsing step and the argument retrieval step.
 
 To offer an overview before explaing all details, the following examples show excerpts from factories in BetonQuest:
 
 Compare [experience](../Documentation/Scripting/Building-Blocks/Conditions-List.md#experience-experience) condition.
 ```JAVA title="ExperienceConditionFactory.java"
 public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> amount = instruction.number().get();
+        final Argument<Number> amount = instruction.number().get();
         
         //creating the condition object and returning it...
 }
@@ -45,9 +45,9 @@ public PlayerCondition parsePlayer(final Instruction instruction) throws QuestEx
 Compare [itemdurability](../Documentation/Scripting/Building-Blocks/Events-List.md#item-durability-itemdurability) event.
 ```JAVA title="ItemDurabilityEventFactory.java"
 public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-    final Variable<EquipmentSlot> slot = instruction.enumeration(EquipmentSlot.class).get();
-    final Variable<PointType> operation = instruction.enumeration(PointType.class).get();
-    final Variable<Number> amount = instruction.number().get();
+    final Argument<EquipmentSlot> slot = instruction.enumeration(EquipmentSlot.class).get();
+    final Argument<PointType> operation = instruction.enumeration(PointType.class).get();
+    final Argument<Number> amount = instruction.number().get();
     final boolean ignoreUnbreakable = instruction.hasArgument("ignoreUnbreakable");
     final boolean ignoreEvents = instruction.hasArgument("ignoreEvents");
     
@@ -58,8 +58,8 @@ public PlayerEvent parsePlayer(final Instruction instruction) throws QuestExcept
 Compare [delay](../Documentation/Scripting/Building-Blocks/Objectives-List.md#wait-delay) objective.
 ```java title="DelayObjectiveFactory.java"
 public Objective parseInstruction(final Instruction instruction) throws QuestException {
-    final Variable<Number> delay = instruction.number().atLeast(0).get();
-    final Variable<Number> interval = instruction.number().atLeast(1).get("interval", 20 * 10);
+    final Argument<Number> delay = instruction.number().atLeast(0).get();
+    final Argument<Number> interval = instruction.number().atLeast(1).get("interval", 20 * 10);
     //creating objective object and returning it...
 }
 ```
@@ -68,35 +68,35 @@ public Objective parseInstruction(final Instruction instruction) throws QuestExc
 In the argument parsing step the method of converting a string into a java type is decided.
 The instruction chain may be accessed conveniently, starting directly from any `Instruction` instance.
 
-| Call | Description |
-| :--- | :---------- |
- | `.number()` | Default parser for `java.lang.Number` covering both integer and floating point values |
- | `.string()` | Default parser for `java.lang.String` |
- | `.bool()` | Default parser for `java.lang.Boolean` |
- | `.location()` | Default parser for `org.bukkit.Location` |
- | `.world()` | Default parser for `org.bukkit.World` |
- | `.item()` | Default parser for `org.betonquest.betonquest.api.instruction.type.ItemWrapper` representing items defined in BetonQuest |
- | `.blockSelector()` | Default parser for `org.betonquest.betonquest.api.instruction.type.BlockSelector` representing a matcher for a group of bukkit materials |
- | `.vector()` | Default parser for `org.bukkit.util.Vector` |
- | `.uuid()` | Default parser for `java.util.UUID` |
- | `.component()` | Default parser for `net.kyori.adventure.text.Component` |
- | `.packageIdentifier()` | Default parser for package identifiers producing a `java.lang.String`. This parser simply expands the existing string value to a full package identifier using the instruction's package if necessary. |
- | <nobr>`.enumeration(Enum<E>)`</nobr> | Default parser for an enum of the given type |
- | `.parse(Parser<P>)` | Using a custom parser matching the functional interfaces `InstructionArgumentParser` or `SimpleArgumentParser` |  
+| Call                                 | Description                                                                                                                                                                                            |
+|:-------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+ | `.number()`                          | Default parser for `java.lang.Number` covering both integer and floating point values                                                                                                                  |
+ | `.string()`                          | Default parser for `java.lang.String`                                                                                                                                                                  |
+ | `.bool()`                            | Default parser for `java.lang.Boolean`                                                                                                                                                                 |
+ | `.location()`                        | Default parser for `org.bukkit.Location`                                                                                                                                                               |
+ | `.world()`                           | Default parser for `org.bukkit.World`                                                                                                                                                                  |
+ | `.item()`                            | Default parser for `org.betonquest.betonquest.api.instruction.type.ItemWrapper` representing items defined in BetonQuest                                                                               |
+ | `.blockSelector()`                   | Default parser for `org.betonquest.betonquest.api.instruction.type.BlockSelector` representing a matcher for a group of bukkit materials                                                               |
+ | `.vector()`                          | Default parser for `org.bukkit.util.Vector`                                                                                                                                                            |
+ | `.uuid()`                            | Default parser for `java.util.UUID`                                                                                                                                                                    |
+ | `.component()`                       | Default parser for `net.kyori.adventure.text.Component`                                                                                                                                                |
+ | `.packageIdentifier()`               | Default parser for package identifiers producing a `java.lang.String`. This parser simply expands the existing string value to a full package identifier using the instruction's package if necessary. |
+ | <nobr>`.enumeration(Enum<E>)`</nobr> | Default parser for an enum of the given type                                                                                                                                                           |
+ | `.parse(Parser<P>)`                  | Using a custom parser matching the functional interfaces `InstructionArgumentParser` or `SimpleArgumentParser`                                                                                         |  
 
-### Variable Retrieval
-The variable retrieval step is required after the argument parsing and represents the wrapping into a `Variable<T>` 
+### Argument Retrieval
+The argument retrieval step is required after the argument parsing and represents the wrapping into a `Argument<T>` 
 instance to be carried on into events, conditions and objectives.
 To have valid calls the `Number` parser is used as an example, but naturally any parser will do.
 
-| Call | Type | Description |
-| :--- | :--: | :---------- |
-| `.get()` | `Variable<Number>` | Retrieves a variable of the next value in order from the instruction |
-| `.get("amount")` | `Optional<Variable<Number>>` | Retrieves an optional variable of the value with the key `amount` from the instruction |
-| `.get("amount", 10)` | `Variable<Number>` | Retrieves an optional variable of the value with the key `amount` from the instruction or gets a variable with default value |
-| `.getList()` | `Variable<List<Number>>` | Retrieves a variable of the next value in order from the instruction parsed as list |
-| `.getList("amounts")` | `Optional<Variable<List<Number>>>` | Retrieves an optional variable of the value with the key `amounts` from the instruction parsed as list |
-| <nobr>`.getList("amounts",`</nobr><br><nobr>`List.of(1,5,10))`</nobr> | `Variable<List<Number>>` | Retrieves an optional variable of the value with the key `amounts` from the instruction parsed as list or gets a variable with default list as value |
+| Call                                                                  |                Type                | Description                                                                                                                                           |
+|:----------------------------------------------------------------------|:----------------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `.get()`                                                              |         `Argument<Number>`         | Retrieves an argument of the next value in order from the instruction                                                                                 |
+| `.get("amount")`                                                      |    `Optional<Argument<Number>>`    | Retrieves an optional argument of the value with the key `amount` from the instruction                                                                |
+| `.get("amount", 10)`                                                  |         `Argument<Number>`         | Retrieves an optional argument of the value with the key `amount` from the instruction or gets an argument with default value                         |
+| `.getList()`                                                          |      `Argument<List<Number>>`      | Retrieves an argument of the next value in order from the instruction parsed as list                                                                  |
+| `.getList("amounts")`                                                 | `Optional<Argument<List<Number>>>` | Retrieves an optional argument of the value with the key `amounts` from the instruction parsed as list                                                |
+| <nobr>`.getList("amounts",`</nobr><br><nobr>`List.of(1,5,10))`</nobr> |      `Argument<List<Number>>`      | Retrieves an optional argument of the value with the key `amounts` from the instruction parsed as list or gets an argument with default list as value |
 
 ### Advanced Argument Parsing
 Parsers via the chain offer more functionality than just parsing a string into a specific type.
@@ -147,7 +147,7 @@ Examples:
         Another unknown value will cause it to throw an exception. 
 
 #### Map
-You can also modify the value or map it to a different type after parsing without reading it from the variable.
+You can also modify the value or map it to a different type after parsing without reading it from the argument.
 Use the `map(QuestionFunction<T,U>)` method to decorate the parser with such a mapping function.  
 Example:
 ??? example "Explicit Integer Value"
