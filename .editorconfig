@@ -36,3 +36,7 @@ indent_size = 4
 [/{lib,venv,.venv}/**]
 indent_style = unset
 indent_size = unset
+
+[*.md]
+# In markdown, two trailing spaces are a line break
+trim_trailing_whitespace = false
