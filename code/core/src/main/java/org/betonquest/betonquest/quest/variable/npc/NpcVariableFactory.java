@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.quest.variable.PlayerlessVariableFactory;
 import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariable;
 import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariableAdapter;
 import org.betonquest.betonquest.quest.variable.location.LocationFormationMode;
+import org.betonquest.betonquest.quest.variable.location.LocationVariable;
 import org.betonquest.betonquest.quest.variable.name.QuesterVariable;
 
 /**
@@ -26,7 +27,7 @@ import org.betonquest.betonquest.quest.variable.name.QuesterVariable;
  * * location - Return npc location, defaults to ulfLong<br>
  * Modes: refer to LocationVariable documentation for details.<br>
  *
- * @see org.betonquest.betonquest.quest.variable.location.LocationVariable
+ * @see LocationVariable
  */
 public class NpcVariableFactory implements PlayerVariableFactory, PlayerlessVariableFactory {
 
@@ -65,10 +66,10 @@ public class NpcVariableFactory implements PlayerVariableFactory, PlayerlessVari
             };
         }
         final Argument<NpcID> npcID = instruction.parse(NpcID::new).get();
-        final org.betonquest.betonquest.quest.variable.npc.Argument key = instruction.enumeration(org.betonquest.betonquest.quest.variable.npc.Argument.class).get().getValue(null);
+        final NPCArgument key = instruction.enumeration(NPCArgument.class).get().getValue(null);
         LocationFormationMode locationFormationMode = null;
         int decimalPlaces = 0;
-        if (key == org.betonquest.betonquest.quest.variable.npc.Argument.LOCATION) {
+        if (key == NPCArgument.LOCATION) {
             if (instruction.hasNext()) {
                 locationFormationMode = LocationFormationMode.getMode(instruction.nextElement());
             } else {

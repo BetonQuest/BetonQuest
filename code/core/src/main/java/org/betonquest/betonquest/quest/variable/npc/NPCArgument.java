@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * The type of information to retrieve for the NPC: name, full_name, or location.
  */
-public enum Argument {
+public enum NPCArgument {
     /**
      * Retrieve the name of the NPC.
      */
@@ -30,7 +30,7 @@ public enum Argument {
      */
     private final TriFunction<Npc<?>, LocationFormationMode, Integer, String> resolveFunction;
 
-    Argument(final TriFunction<Npc<?>, LocationFormationMode, Integer, String> resolveFunction) {
+    NPCArgument(final TriFunction<Npc<?>, LocationFormationMode, Integer, String> resolveFunction) {
         this.resolveFunction = resolveFunction;
     }
 
