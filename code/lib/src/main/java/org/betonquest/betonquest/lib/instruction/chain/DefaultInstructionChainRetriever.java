@@ -66,4 +66,9 @@ public class DefaultInstructionChainRetriever<T> implements InstructionChainRetr
     public Argument<List<T>> getList(final String argumentKey, final List<T> defaultValue) throws QuestException {
         return instruction.getOptionalList(argumentKey, argument, defaultValue);
     }
+
+    @Override
+    public Argument<Optional<T>> getFlag(final String argumentKey, final T presenceDefaultValue) throws QuestException {
+        return instruction.getFlag(argumentKey, argument, presenceDefaultValue);
+    }
 }
