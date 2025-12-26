@@ -98,6 +98,8 @@ To have valid calls the `Number` parser is used as an example, but naturally any
 | `.getList()`                                                          |      `Argument<List<Number>>`      | Retrieves an argument of the next value in order from the instruction parsed as list                                                                  |
 | `.getList("amounts")`                                                 | `Optional<Argument<List<Number>>>` | Retrieves an optional argument of the value with the key `amounts` from the instruction parsed as list                                                |
 | <nobr>`.getList("amounts",`</nobr><br><nobr>`List.of(1,5,10))`</nobr> |      `Argument<List<Number>>`      | Retrieves an optional argument of the value with the key `amounts` from the instruction parsed as list or gets an argument with default list as value |
+| `.getFlag("repeat", 10)`                                              |       `FlagArgument<Number>`       | Retrieves an optional flag argument of the value with the key `repeat` from the instruction using the default value for its undefined state           |
+
 
 ### Advanced Argument Parsing
 Parsers via the chain offer more functionality than just parsing a string into a specific type.
