@@ -32,8 +32,10 @@ public interface InstructionChainRetriever<T> {
      *
      * @return the argument
      * @throws QuestException if the list could not be resolved
+     * @deprecated replaced by {@link DecoratableChainRetriever#list()} to be used instead
      */
     @Contract("-> new")
+    @Deprecated
     Argument<List<T>> getList() throws QuestException;
 
     /**
@@ -65,8 +67,10 @@ public interface InstructionChainRetriever<T> {
      * @param argumentKey the argument key
      * @return an optional of the argument
      * @throws QuestException if the argument could not be resolved
+     * @deprecated replaced by {@link DecoratableChainRetriever#list()} to be used instead
      */
     @Contract("!null -> new")
+    @Deprecated
     Optional<Argument<List<T>>> getList(String argumentKey) throws QuestException;
 
     /**
@@ -76,8 +80,10 @@ public interface InstructionChainRetriever<T> {
      * @param defaultValue the default value to return if the argument is not present
      * @return the argument
      * @throws QuestException if the argument could not be resolved
+     * @deprecated replaced by {@link DecoratableChainRetriever#list()} to be used instead
      */
     @Contract("!null, !null -> new")
+    @Deprecated
     Argument<List<T>> getList(String argumentKey, List<T> defaultValue) throws QuestException;
 
     /**
