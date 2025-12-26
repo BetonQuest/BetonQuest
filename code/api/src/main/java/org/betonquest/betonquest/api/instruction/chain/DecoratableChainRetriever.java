@@ -75,7 +75,7 @@ public interface DecoratableChainRetriever<T> extends InstructionChainRetriever<
     /**
      * Apply a {@link ValueValidator} to the argument for early validation and improved error messages.
      * The error message will be used if the validator fails (returns false) and may contain a {@code %s} placeholder
-     * for the wrong value to be included using {@link String#format(String, Object...)}.
+     * for the invalidated value to be included using {@link String#format(String, Object...)}.
      *
      * @param validator    the validator to apply to the argument
      * @param errorMessage the error message to use if the validator fails
@@ -85,6 +85,35 @@ public interface DecoratableChainRetriever<T> extends InstructionChainRetriever<
      */
     @Contract(value = "!null, !null -> new", pure = true)
     DecoratableChainRetriever<T> validate(ValueValidator<T> validator, String errorMessage);
+
+    /**
+     * Inverse of {@link #validate(ValueValidator)}.
+     * The condition passed to {@link ValueValidator} determines an invalid case,
+     * the error will be thrown if the validator passes (returns true).
+     *
+     * @param validator the validator to apply to the argument
+     * @return the new validated {@link DecoratableChainRetriever}
+     */
+    @Contract(value = "!null -> new", pure = true)
+    default DecoratableChainRetriever<T> invalidate(final ValueValidator<T> validator) {
+        return validate(value -> !validator.validate(value));
+    }
+
+    /**
+     * Inverse of {@link #validate(ValueValidator, String)}.
+     * The condition passed to {@link ValueValidator} determines an invalid case,
+     * the error will be thrown if the validator passes (returns true) and
+     * its message may contain a {@code %s} placeholder for the invalidated value to be included
+     * using {@link String#format(String, Object...)}.
+     *
+     * @param validator    the validator to apply to the argument
+     * @param errorMessage the error message to use if the validator fails
+     * @return the new validated {@link DecoratableChainRetriever}
+     */
+    @Contract(value = "!null, !null -> new", pure = true)
+    default DecoratableChainRetriever<T> invalidate(final ValueValidator<T> validator, final String errorMessage) {
+        return validate(value -> !validator.validate(value), errorMessage);
+    }
 
     /**
      * Returns a new {@link DecoratableChainRetriever} that checks for the given expected string before

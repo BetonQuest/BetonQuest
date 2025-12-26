@@ -115,6 +115,7 @@ This method will throw a `QuestException` if the predicate does not match the ar
 It may be used to check if a value is within a certain range or if a value satisfies a certain condition 
 outside matching just the type.
 In the error message a single `%s` maybe used to inline the wrong value.  
+The `invalidate` counterparts handle the validation in the exact opposite way.
 Examples:
 ??? example "Even Number"
     The example below checks if the parsed number is even and throws an error if it is not.
@@ -127,6 +128,7 @@ Examples:
     ```JAVA title="non-empty string validate example"
     instruction.string().validate(s -> !s.isEmpty())
     instruction.string().validate(s -> !s.isEmpty(), "Empty strings are not permitted.")
+    instruction.string().invalidate(String::isEmpty)
     ```
 
 #### Prefilter
