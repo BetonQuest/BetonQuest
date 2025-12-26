@@ -3725,6 +3725,29 @@
       
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#collectors">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Collectors
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#validations">
     <span class="md-ellipsis">
 
@@ -4968,6 +4991,29 @@
       
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#collectors">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Collectors
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#validations">
     <span class="md-ellipsis">
 
@@ -5345,6 +5391,10 @@ To have valid calls the <code>Number</code> parser is used as an example, but na
 <h3 id="advanced-argument-parsing">Advanced Argument Parsing<a class="headerlink" href="#advanced-argument-parsing" title="Permanent link">🔗</a></h3>
 <p>Parsers via the chain offer more functionality than just parsing a string into a specific type.
 By chaining different kinds of operations, the outcome can be modified in certain ways.</p>
+<h4 id="collectors">Collectors<a class="headerlink" href="#collectors" title="Permanent link">🔗</a></h4>
+<p>You can interpret any argument's value as a list of comma-separated values and collect them into any type of <code>java.util.Collection</code>.<br />
+Use <code>collect(Collector&lt;T,?,R&gt;)</code> to handle the collection process in an identical manner as java streams.<br />
+The method <code>list()</code> offers a common overload to support <code>java.util.List</code>.</p>
 <h4 id="validations">Validations<a class="headerlink" href="#validations" title="Permanent link">🔗</a></h4>
 <p>You can validate an argument using the <code>validate(ValueValidator&lt;T&gt;)</code> or <code>validate(ValueValidator&lt;T&gt;, String)</code> method.
 This method will throw a <code>QuestException</code> if the predicate does not match the argument (aka returns <code>false</code>).
