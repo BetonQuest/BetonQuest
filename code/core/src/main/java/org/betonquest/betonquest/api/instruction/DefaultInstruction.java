@@ -32,6 +32,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -123,7 +124,7 @@ public class DefaultInstruction implements Instruction {
             throw new QuestException("Could not tokenize instruction '" + instruction + "': " + e.getMessage(), e);
         }
         this.chainableInstruction = new DefaultChainableInstruction(variables, packManager, pack,
-                this.instructionParts::nextElement, this::getValue);
+                this.instructionParts::nextElement, this::getValue, this::getFlag);
     }
 
     /**
@@ -141,7 +142,7 @@ public class DefaultInstruction implements Instruction {
         this.instructionParts = new InstructionPartsArray(instruction.instructionParts);
         this.argumentParsers = instruction.argumentParsers;
         this.chainableInstruction = new DefaultChainableInstruction(variables, packManager, pack,
-                this.instructionParts::nextElement, this::getValue);
+                this.instructionParts::nextElement, this::getValue, this::getFlag);
     }
 
     private static Identifier useFallbackIdIfNecessary(final QuestPackageManager packManager, final QuestPackage pack, @Nullable final Identifier identifier) {
@@ -218,6 +219,17 @@ public class DefaultInstruction implements Instruction {
                 .map(part -> part.substring(prefix.length() + 1)).orElse(null);
     }
 
+    private Map.Entry<FlagState, String> getFlag(final String prefix) {
+        return instructionParts.getParts().stream()
+                .filter(part -> part.toLowerCase(Locale.ROOT).startsWith(prefix.toLowerCase(Locale.ROOT) + ":")
+                        || part.equalsIgnoreCase(prefix))
+                .findFirst()
+                .map(part -> part.substring(prefix.length()))
+                .map(part -> part.startsWith(":") ? Map.entry(FlagState.DEFINED, part.substring(1))
+                        : Map.entry(FlagState.DEFINED, part))
+                .orElse(Map.entry(FlagState.ABSENT, ""));
+    }
+
     @Override
     public DefaultInstruction copy() {
         return copy(identifier);
@@ -236,23 +248,23 @@ public class DefaultInstruction implements Instruction {
     @Override
     public InstructionChainParser chainForArgument(final QuestSupplier<String> rawArgumentSupplier) {
         final ChainableInstruction instruction = new DefaultChainableInstruction(variables, packManager, pack,
-                rawArgumentSupplier, this::getValue);
+                rawArgumentSupplier, key -> rawArgumentSupplier.get(), key -> Map.entry(FlagState.DEFINED, key));
         return new DefaultInstructionChainParser(instruction, argumentParsers);
     }
 
     @Override
-    public <T> Argument<T> getNext(final InstructionArgumentParser<T> argument) throws QuestException {
-        return chainableInstruction.getNext(argument);
+    public <T> Argument<T> getNext(final InstructionArgumentParser<T> argumentParser) throws QuestException {
+        return chainableInstruction.getNext(argumentParser);
     }
 
     @Override
-    public <T> Argument<List<T>> getNextList(final InstructionArgumentParser<T> argument) throws QuestException {
-        return chainableInstruction.getNextList(argument);
+    public <T> Argument<List<T>> getNextList(final InstructionArgumentParser<T> argumentParser) throws QuestException {
+        return chainableInstruction.getNextList(argumentParser);
     }
 
     @Override
-    public <T> Optional<Argument<T>> getOptional(final String argumentKey, final InstructionArgumentParser<T> argument) throws QuestException {
-        return chainableInstruction.getOptional(argumentKey, argument);
+    public <T> Optional<Argument<T>> getOptional(final String argumentKey, final InstructionArgumentParser<T> argumentParser) throws QuestException {
+        return chainableInstruction.getOptional(argumentKey, argumentParser);
     }
 
     @Override
@@ -261,13 +273,18 @@ public class DefaultInstruction implements Instruction {
     }
 
     @Override
-    public <T> Optional<Argument<List<T>>> getOptionalList(final String argumentKey, final InstructionArgumentParser<T> argument) throws QuestException {
-        return chainableInstruction.getOptionalList(argumentKey, argument);
+    public <T> Optional<Argument<List<T>>> getOptionalList(final String argumentKey, final InstructionArgumentParser<T> argumentParser) throws QuestException {
+        return chainableInstruction.getOptionalList(argumentKey, argumentParser);
     }
 
     @Override
-    public <T> Argument<List<T>> getOptionalList(final String argumentKey, final InstructionArgumentParser<T> argument, final List<T> defaultList) throws QuestException {
-        return chainableInstruction.getOptionalList(argumentKey, argument, defaultList);
+    public <T> Argument<List<T>> getOptionalList(final String argumentKey, final InstructionArgumentParser<T> argumentParser, final List<T> defaultList) throws QuestException {
+        return chainableInstruction.getOptionalList(argumentKey, argumentParser, defaultList);
+    }
+
+    @Override
+    public <T> Argument<Optional<T>> getFlag(final String argumentKey, final InstructionArgumentParser<T> argumentParser, final T presenceDefault) throws QuestException {
+        return chainableInstruction.getFlag(argumentKey, argumentParser, presenceDefault);
     }
 
     @Override
