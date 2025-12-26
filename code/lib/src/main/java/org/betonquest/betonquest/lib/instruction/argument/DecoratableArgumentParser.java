@@ -8,11 +8,13 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.ValueValidator;
 import org.betonquest.betonquest.api.instruction.argument.DecoratedArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
+import org.betonquest.betonquest.api.instruction.argument.ListArgumentParser;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -39,6 +41,11 @@ public class DecoratableArgumentParser<T> implements DecoratedArgumentParser<T> 
     @Override
     public T apply(final Variables variables, final QuestPackageManager packManager, final QuestPackage pack, final String string) throws QuestException {
         return argumentParser.apply(variables, packManager, pack, string);
+    }
+
+    @Override
+    public ListArgumentParser<T> list() {
+        return new DefaultListArgumentParser<>(collect(Collectors.toList()));
     }
 
     @Override

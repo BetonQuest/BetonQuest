@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.quest.Variables;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -24,13 +23,11 @@ public interface DecoratedArgumentParser<T> extends InstructionArgumentParser<T>
      * Instead of reading the input as a single value, treat it as a list of inputs and parse them as a list.
      * Default implementation forwards to {@link #collect(Collector)} using {@link Collectors#toList()}.
      *
-     * @return the new list parser as {@link DecoratedArgumentParser}
+     * @return the new list parser as {@link ListArgumentParser}
      * @see #collect(Collector)
      */
     @Contract(value = "-> new", pure = true)
-    default DecoratedArgumentParser<List<T>> list() {
-        return collect(Collectors.toList());
-    }
+    ListArgumentParser<T> list();
 
     /**
      * Instead of reading a single value, parse the argument as a list of values
@@ -76,6 +73,35 @@ public interface DecoratedArgumentParser<T> extends InstructionArgumentParser<T>
      */
     @Contract(value = "_, _ -> new", pure = true)
     DecoratedArgumentParser<T> validate(ValueValidator<T> validator, String errorMessage);
+
+    /**
+     * Inverse of {@link #validate(ValueValidator)}.
+     * The condition passed to {@link ValueValidator} determines an invalid case,
+     * the error will be thrown if the validator passes (returns true).
+     *
+     * @param validator the validator to apply to the argument
+     * @return the new validated {@link DecoratedArgumentParser}
+     */
+    @Contract(value = "!null -> new", pure = true)
+    default DecoratedArgumentParser<T> invalidate(final ValueValidator<T> validator) {
+        return validate(value -> !validator.validate(value));
+    }
+
+    /**
+     * Inverse of {@link #validate(ValueValidator, String)}.
+     * The condition passed to {@link ValueValidator} determines an invalid case,
+     * the error will be thrown if the validator passes (returns true) and
+     * its message may contain a {@code %s} placeholder for the invalidated value to be included
+     * using {@link String#format(String, Object...)}.
+     *
+     * @param validator    the validator to apply to the argument
+     * @param errorMessage the error message to use if the validator fails
+     * @return the new validated {@link DecoratedArgumentParser}
+     */
+    @Contract(value = "!null, !null -> new", pure = true)
+    default DecoratedArgumentParser<T> invalidate(final ValueValidator<T> validator, final String errorMessage) {
+        return validate(value -> !validator.validate(value), errorMessage);
+    }
 
     /**
      * Returns a new {@link DecoratedArgumentParser} that checks for the given expected string before
