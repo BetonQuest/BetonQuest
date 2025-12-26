@@ -28,10 +28,10 @@ public class AuraSkillsExperienceEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Argument<String> nameVar = instruction.string().get();
-        final Argument<Number> amountVar = instruction.number().get();
+        final Argument<String> name = instruction.string().get();
+        final Argument<Number> amount = instruction.number().get();
         final boolean isLevel = instruction.hasArgument("level");
 
-        return new AuraSkillsExperienceEvent(auraSkillsApi, amountVar, nameVar, isLevel);
+        return new AuraSkillsExperienceEvent(auraSkillsApi, amount, name, isLevel);
     }
 }

@@ -37,8 +37,8 @@ public class HeroesSkillConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Argument<String> skillNameVar = instruction.string().get();
-        return new OnlineConditionAdapter(new HeroesSkillCondition(characterManager, skillNameVar),
+        final Argument<String> skillName = instruction.string().get();
+        return new OnlineConditionAdapter(new HeroesSkillCondition(characterManager, skillName),
                 loggerFactory.create(HeroesSkillCondition.class), instruction.getPackage());
     }
 }

@@ -21,24 +21,24 @@ public class HeroesAttributeCondition implements OnlineCondition {
     /**
      * The attribute name.
      */
-    private final Argument<String> attributeVar;
+    private final Argument<String> attribute;
 
     /**
      * The level.
      */
-    private final Argument<Number> levelVar;
+    private final Argument<Number> level;
 
     /**
      * Create a new Heroes Attribute Condition.
      *
      * @param characterManager The {@link CharacterManager} of the Heroes plugin.
-     * @param attributeVar     The attribute name.
-     * @param levelVar         The level.
+     * @param attribute        The attribute name.
+     * @param level            The level.
      */
-    public HeroesAttributeCondition(final CharacterManager characterManager, final Argument<String> attributeVar, final Argument<Number> levelVar) {
+    public HeroesAttributeCondition(final CharacterManager characterManager, final Argument<String> attribute, final Argument<Number> level) {
         this.characterManager = characterManager;
-        this.attributeVar = attributeVar;
-        this.levelVar = levelVar;
+        this.attribute = attribute;
+        this.level = level;
     }
 
     private AttributeType findAttribute(final String name) throws QuestException {
@@ -51,9 +51,9 @@ public class HeroesAttributeCondition implements OnlineCondition {
 
     @Override
     public boolean check(final OnlineProfile profile) throws QuestException {
-        final String name = attributeVar.getValue(profile);
+        final String name = attribute.getValue(profile);
         final Hero hero = characterManager.getHero(profile.getPlayer());
-        return hero.getAttributeValue(findAttribute(name)) >= levelVar.getValue(profile).intValue();
+        return hero.getAttributeValue(findAttribute(name)) >= level.getValue(profile).intValue();
     }
 
     @Override

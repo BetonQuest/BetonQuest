@@ -24,12 +24,12 @@ public class AuraSkillsLevelCondition implements PlayerCondition {
     /**
      * The target level.
      */
-    private final Argument<Number> targetLevelVar;
+    private final Argument<Number> targetLevel;
 
     /**
      * The {@link Skill} to check.
      */
-    private final Argument<String> nameVar;
+    private final Argument<String> name;
 
     /**
      * If the actual level must be equal to the target level.
@@ -39,16 +39,16 @@ public class AuraSkillsLevelCondition implements PlayerCondition {
     /**
      * Create a new AuraSkills Level Condition.
      *
-     * @param auraSkillsApi  the {@link AuraSkillsApi}.
-     * @param targetLevelVar the target level.
-     * @param nameVar        the {@link Skill} name to check.
-     * @param mustBeEqual    if {@code true} the actual level must be equal to the target level.
+     * @param auraSkillsApi the {@link AuraSkillsApi}.
+     * @param targetLevel   the target level.
+     * @param name          the {@link Skill} name to check.
+     * @param mustBeEqual   if {@code true} the actual level must be equal to the target level.
      */
-    public AuraSkillsLevelCondition(final AuraSkillsApi auraSkillsApi, final Argument<Number> targetLevelVar,
-                                    final Argument<String> nameVar, final FlagArgument<Boolean> mustBeEqual) {
+    public AuraSkillsLevelCondition(final AuraSkillsApi auraSkillsApi, final Argument<Number> targetLevel,
+                                    final Argument<String> name, final FlagArgument<Boolean> mustBeEqual) {
         this.auraSkillsApi = auraSkillsApi;
-        this.targetLevelVar = targetLevelVar;
-        this.nameVar = nameVar;
+        this.targetLevel = targetLevel;
+        this.name = name;
         this.mustBeEqual = mustBeEqual;
     }
 
@@ -59,10 +59,10 @@ public class AuraSkillsLevelCondition implements PlayerCondition {
             return false;
         }
 
-        final NamespacedId namespacedId = NamespacedId.fromDefault(nameVar.getValue(profile));
+        final NamespacedId namespacedId = NamespacedId.fromDefault(name.getValue(profile));
         final Skill skill = Utils.getNN(auraSkillsApi.getGlobalRegistry().getSkill(namespacedId), "Invalid skill name");
         final int actualLevel = user.getSkillLevel(skill);
-        final int targetLevel = targetLevelVar.getValue(profile).intValue();
+        final int targetLevel = this.targetLevel.getValue(profile).intValue();
 
         return mustBeEqual.getValue(profile).orElse(false) ? actualLevel == targetLevel : actualLevel >= targetLevel;
     }

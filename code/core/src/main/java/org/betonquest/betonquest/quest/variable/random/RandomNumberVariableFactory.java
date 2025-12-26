@@ -82,7 +82,7 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
     private Argument<Number> parseFirst(final Instruction instruction) throws QuestException {
         final String start = instruction.nextElement();
         if (start.startsWith("{")) {
-            return parseToVariable(start, instruction);
+            return parseToArgument(start, instruction);
         }
         if (start.contains("~")) {
             return instruction.chainForArgument(start.substring(0, start.indexOf('~'))).number().get();
@@ -94,7 +94,7 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
     private Argument<Number> parseSecond(final Instruction instruction) throws QuestException {
         final String start = instruction.current().substring(instruction.current().indexOf('~') + 1);
         if (start.startsWith("{")) {
-            return parseToVariable(start, instruction);
+            return parseToArgument(start, instruction);
         }
         return instruction.chainForArgument(instruction.hasNext() ? start + '.' + instruction.nextElement() : start).number().get();
     }
@@ -107,7 +107,7 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
      * @return a new Variable Number
      * @throws QuestException if the instruction ends before a variable is resolved
      */
-    private Argument<Number> parseToVariable(final String start, final Instruction instruction) throws QuestException {
+    private Argument<Number> parseToArgument(final String start, final Instruction instruction) throws QuestException {
         final StringBuilder builder = new StringBuilder("%");
         builder.append(start.substring(1)).append('.');
         while (true) {

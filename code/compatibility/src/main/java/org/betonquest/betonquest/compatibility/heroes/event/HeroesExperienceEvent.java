@@ -27,20 +27,20 @@ public class HeroesExperienceEvent implements OnlineEvent {
     /**
      * The amount of experience to add.
      */
-    private final Argument<Number> amountVar;
+    private final Argument<Number> amount;
 
     /**
      * Create a new Heroes Experience Event.
      *
      * @param characterManager The {@link CharacterManager} of the Heroes plugin.
      * @param classType        The {@link HeroesClassType} of the class to add experience to.
-     * @param amountVar        The amount of experience to add.
+     * @param amount           The amount of experience to add.
      */
     public HeroesExperienceEvent(final CharacterManager characterManager,
-                                 final Argument<HeroesClassType> classType, final Argument<Number> amountVar) {
+                                 final Argument<HeroesClassType> classType, final Argument<Number> amount) {
         this.characterManager = characterManager;
         this.classType = classType;
-        this.amountVar = amountVar;
+        this.amount = amount;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class HeroesExperienceEvent implements OnlineEvent {
         if (heroClass == null) {
             throw new QuestException("The specified player does not have a class of the type: " + (isPrimary ? "primary" : "secondary"));
         }
-        hero.addExp(amountVar.getValue(profile).intValue(), heroClass, hero.getPlayer().getLocation());
+        hero.addExp(amount.getValue(profile).intValue(), heroClass, hero.getPlayer().getLocation());
     }
 
     @Override

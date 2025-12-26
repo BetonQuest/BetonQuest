@@ -37,7 +37,7 @@ public class FishObjective extends CountingObjective implements Listener {
      * Range around the location where the fish should be caught.
      */
     @Nullable
-    private final Argument<Number> rangeVar;
+    private final Argument<Number> range;
 
     /**
      * Constructor for the FishObjective.
@@ -46,16 +46,16 @@ public class FishObjective extends CountingObjective implements Listener {
      * @param targetAmount       the target amount of fish to catch
      * @param item               the item to catch
      * @param hookTargetLocation the location where the fish should be caught
-     * @param rangeVar           the range around the location where the item should be fished
+     * @param range              the range around the location where the item should be fished
      * @throws QuestException if there is an error in the instruction
      */
     public FishObjective(final Instruction instruction, final Argument<Number> targetAmount,
                          final Argument<ItemWrapper> item, @Nullable final Argument<Location> hookTargetLocation,
-                         @Nullable final Argument<Number> rangeVar) throws QuestException {
+                         @Nullable final Argument<Number> range) throws QuestException {
         super(instruction, targetAmount, "fish_to_catch");
         this.item = item;
         this.hookTargetLocation = hookTargetLocation;
-        this.rangeVar = rangeVar;
+        this.range = range;
     }
 
     /**
@@ -85,12 +85,12 @@ public class FishObjective extends CountingObjective implements Listener {
     }
 
     private boolean isInvalidLocation(final PlayerFishEvent event, final Profile profile) throws QuestException {
-        if (hookTargetLocation == null || rangeVar == null) {
+        if (hookTargetLocation == null || range == null) {
             return false;
         }
 
         final Location targetLocation = hookTargetLocation.getValue(profile);
-        final double range = rangeVar.getValue(profile).doubleValue();
+        final double range = this.range.getValue(profile).doubleValue();
         final Location hookLocation = event.getHook().getLocation();
         return !hookLocation.getWorld().equals(targetLocation.getWorld()) || targetLocation.distanceSquared(hookLocation) > range * range;
     }

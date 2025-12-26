@@ -25,7 +25,7 @@ public class MMOCoreProfessionLevelCondition implements PlayerCondition {
     /**
      * Required level.
      */
-    private final Argument<Number> targetLevelVar;
+    private final Argument<Number> targetLevel;
 
     /**
      * Create a new attribute condition.
@@ -36,7 +36,7 @@ public class MMOCoreProfessionLevelCondition implements PlayerCondition {
      */
     public MMOCoreProfessionLevelCondition(final Argument<Profession> profession, final Argument<Number> targetLevel, final boolean equal) {
         this.profession = profession;
-        this.targetLevelVar = targetLevel;
+        this.targetLevel = targetLevel;
         this.mustBeEqual = equal;
     }
 
@@ -44,7 +44,7 @@ public class MMOCoreProfessionLevelCondition implements PlayerCondition {
     public boolean check(final Profile profile) throws QuestException {
         final PlayerData data = PlayerData.get(profile.getPlayerUUID());
         final int actualLevel = data.getCollectionSkills().getLevel(profession.getValue(profile));
-        final int targetLevel = targetLevelVar.getValue(profile).intValue();
+        final int targetLevel = this.targetLevel.getValue(profile).intValue();
 
         return mustBeEqual ? actualLevel == targetLevel : actualLevel >= targetLevel;
     }

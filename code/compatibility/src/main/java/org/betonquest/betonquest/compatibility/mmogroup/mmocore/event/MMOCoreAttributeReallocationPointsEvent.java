@@ -14,7 +14,7 @@ public class MMOCoreAttributeReallocationPointsEvent implements PlayerEvent {
     /**
      * Amount to grant.
      */
-    private final Argument<Number> amountVar;
+    private final Argument<Number> amount;
 
     /**
      * Create a new attribute reallocation point event.
@@ -22,13 +22,13 @@ public class MMOCoreAttributeReallocationPointsEvent implements PlayerEvent {
      * @param amount the amount to grant
      */
     public MMOCoreAttributeReallocationPointsEvent(final Argument<Number> amount) {
-        this.amountVar = amount;
+        this.amount = amount;
     }
 
     @Override
     public void execute(final Profile profile) throws QuestException {
         final PlayerData data = PlayerData.get(profile.getPlayerUUID());
-        final int amount = amountVar.getValue(profile).intValue();
+        final int amount = this.amount.getValue(profile).intValue();
         data.giveAttributeReallocationPoints(amount);
     }
 

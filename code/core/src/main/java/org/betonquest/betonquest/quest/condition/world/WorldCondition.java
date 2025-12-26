@@ -14,7 +14,7 @@ public class WorldCondition implements OnlineCondition {
     /**
      * The world to check.
      */
-    private final Argument<World> variableWorld;
+    private final Argument<World> world;
 
     /**
      * Create a new World condition.
@@ -22,12 +22,12 @@ public class WorldCondition implements OnlineCondition {
      * @param world the world to check
      */
     public WorldCondition(final Argument<World> world) {
-        this.variableWorld = world;
+        this.world = world;
     }
 
     @Override
     public boolean check(final OnlineProfile profile) throws QuestException {
-        final World world = variableWorld.getValue(profile);
+        final World world = this.world.getValue(profile);
         return profile.getPlayer().getWorld().equals(world);
     }
 

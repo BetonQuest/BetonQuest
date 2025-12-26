@@ -25,11 +25,11 @@ public class ChestTakeEvent extends AbstractChestEvent {
     /**
      * Creates a new ChestTakeEvent.
      *
-     * @param variableLocation The location of the chest.
-     * @param items            The items to take from the chest.
+     * @param location The location of the chest.
+     * @param items    The items to take from the chest.
      */
-    public ChestTakeEvent(final Argument<Location> variableLocation, final Argument<List<ItemWrapper>> items) {
-        super(variableLocation);
+    public ChestTakeEvent(final Argument<Location> location, final Argument<List<ItemWrapper>> items) {
+        super(location);
         this.items = items;
     }
 

@@ -17,20 +17,20 @@ public class DenizenTaskScriptEvent implements PlayerEvent {
     /**
      * The name of the script to run.
      */
-    private final Argument<String> nameVar;
+    private final Argument<String> name;
 
     /**
      * Create a new Denizen Task Script Event.
      *
-     * @param nameVar the name of the script to run.
+     * @param name the name of the script to run.
      */
-    public DenizenTaskScriptEvent(final Argument<String> nameVar) {
-        this.nameVar = nameVar;
+    public DenizenTaskScriptEvent(final Argument<String> name) {
+        this.name = name;
     }
 
     @Override
     public void execute(final Profile profile) throws QuestException {
-        final String name = nameVar.getValue(profile);
+        final String name = this.name.getValue(profile);
         final TaskScriptContainer script = ScriptRegistry.getScriptContainerAs(name, TaskScriptContainer.class);
         if (script == null) {
             throw new QuestException("Could not find '" + name + "' Denizen script");

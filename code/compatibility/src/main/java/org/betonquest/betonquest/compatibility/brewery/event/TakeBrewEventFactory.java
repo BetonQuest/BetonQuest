@@ -31,10 +31,10 @@ public class TakeBrewEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Argument<Number> countVar = instruction.number().atLeast(1).get();
-        final Argument<String> brewVar = instruction.string().get();
+        final Argument<Number> count = instruction.number().atLeast(1).get();
+        final Argument<String> brew = instruction.string().get();
         final Argument<IdentifierType> mode = instruction.enumeration(IdentifierType.class).get("mode", IdentifierType.NAME);
         final BetonQuestLogger logger = loggerFactory.create(TakeBrewEvent.class);
-        return new OnlineEventAdapter(new TakeBrewEvent(countVar, brewVar, mode), logger, instruction.getPackage());
+        return new OnlineEventAdapter(new TakeBrewEvent(count, brew, mode), logger, instruction.getPackage());
     }
 }

@@ -91,11 +91,11 @@ class DefaultListArgumentTest {
 
     @Test
     void getListWithBackedVariable() throws QuestException {
-        final Argument<String> variable = profile -> "b";
-        when(variables.create(questPackage, "%bVar%")).thenReturn(variable);
+        final Argument<String> argument = profile -> "b";
+        when(variables.create(questPackage, "%bVar%")).thenReturn(argument);
         final Argument<List<EventID>> list = assertDoesNotThrow(() -> getVariableList("a,%bVar%,c"),
-                "Validating existing variables should not fail");
-        assertDoesNotThrow(() -> list.getValue(null), "Getting existing variable should not fail");
+                "Validating existing placeholder should not fail");
+        assertDoesNotThrow(() -> list.getValue(null), "Getting existing placeholder should not fail");
     }
 
     @Test

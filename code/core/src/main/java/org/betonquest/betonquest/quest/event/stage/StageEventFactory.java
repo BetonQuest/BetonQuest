@@ -45,22 +45,22 @@ public class StageEventFactory implements PlayerEventFactory {
     }
 
     private PlayerEvent createSetEvent(final Instruction instruction, final Argument<ObjectiveID> objectiveID) throws QuestException {
-        final Argument<String> variableString = instruction.string().get();
-        return new StageEvent(profile -> getStageObjective(objectiveID.getValue(profile)).setStage(profile, variableString.getValue(profile)));
+        final Argument<String> stage = instruction.string().get();
+        return new StageEvent(profile -> getStageObjective(objectiveID.getValue(profile)).setStage(profile, stage.getValue(profile)));
     }
 
     private PlayerEvent createIncreaseEvent(final Instruction instruction, final Argument<ObjectiveID> objectiveID) throws QuestException {
-        final Argument<Number> amount = getVariableNumber(instruction);
+        final Argument<Number> amount = getNumberArgument(instruction);
         return new StageEvent(profile -> getStageObjective(objectiveID.getValue(profile)).increaseStage(profile, getAmount(profile, amount)));
     }
 
     private PlayerEvent createDecreaseEvent(final Instruction instruction, final Argument<ObjectiveID> objectiveID) throws QuestException {
-        final Argument<Number> amount = getVariableNumber(instruction);
+        final Argument<Number> amount = getNumberArgument(instruction);
         return new StageEvent(profile -> getStageObjective(objectiveID.getValue(profile)).decreaseStage(profile, getAmount(profile, amount)));
     }
 
     @Nullable
-    private Argument<Number> getVariableNumber(final Instruction instruction) throws QuestException {
+    private Argument<Number> getNumberArgument(final Instruction instruction) throws QuestException {
         if (instruction.hasNext()) {
             final String stringAmount = instruction.nextElement();
             if (!stringAmount.startsWith("conditions:")) {

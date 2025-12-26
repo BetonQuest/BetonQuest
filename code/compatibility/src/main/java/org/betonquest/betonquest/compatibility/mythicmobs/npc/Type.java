@@ -27,14 +27,14 @@ public enum Type {
         @Override
         protected NpcWrapper<ActiveMob> parse(final Instruction instruction, final MythicHider mythicHider,
                                               final MobExecutor mobExecutor) throws QuestException {
-            final Argument<MythicMob> mythicMobVariable = instruction.parse(string -> {
-                final Optional<MythicMob> mythicMob = mobExecutor.getMythicMob(string);
-                if (mythicMob.isPresent()) {
-                    return mythicMob.get();
+            final Argument<MythicMob> mythicMob = instruction.parse(string -> {
+                final Optional<MythicMob> mob = mobExecutor.getMythicMob(string);
+                if (mob.isPresent()) {
+                    return mob.get();
                 }
                 throw new QuestException("There exists no MythicMob type '" + string + "'");
             }).get();
-            return new TypeWrapper(mythicMobVariable, mythicHider, mobExecutor);
+            return new TypeWrapper(mythicMob, mythicHider, mobExecutor);
         }
 
         @Override

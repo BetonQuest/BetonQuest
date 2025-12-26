@@ -41,11 +41,11 @@ public class VariableConditionFactory implements PlayerConditionFactory, Playerl
     }
 
     private VariableCondition parse(final Instruction instruction) throws QuestException {
-        final Argument<String> variable = instruction.string().get();
+        final Argument<String> argument = instruction.string().get();
         final Argument<String> regex = instruction.string().get();
         final String variableAddress = instruction.getID().toString();
         final boolean forceSync = instruction.hasArgument("forceSync");
         final BetonQuestLogger log = loggerFactory.create(VariableCondition.class);
-        return new VariableCondition(log, variable, regex, variableAddress, forceSync);
+        return new VariableCondition(log, argument, regex, variableAddress, forceSync);
     }
 }

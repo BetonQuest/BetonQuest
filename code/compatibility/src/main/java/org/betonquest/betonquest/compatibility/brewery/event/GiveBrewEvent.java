@@ -21,17 +21,17 @@ public class GiveBrewEvent implements OnlineEvent {
     /**
      * The amount of brews to give.
      */
-    private final Argument<Number> amountVar;
+    private final Argument<Number> amount;
 
     /**
      * The quality of the brews.
      */
-    private final Argument<Number> qualityVar;
+    private final Argument<Number> quality;
 
     /**
      * The name of the brew to give.
      */
-    private final Argument<String> nameVar;
+    private final Argument<String> name;
 
     /**
      * Interpretation mode for brews.
@@ -41,27 +41,27 @@ public class GiveBrewEvent implements OnlineEvent {
     /**
      * Create a new Give Brew Event.
      *
-     * @param amountVar  the amount of brews to give.
-     * @param qualityVar the quality of the brews.
-     * @param nameVar    the name of the brew to give.
-     * @param mode       the interpretation mode for brews.
+     * @param amount  the amount of brews to give.
+     * @param quality the quality of the brews.
+     * @param name    the name of the brew to give.
+     * @param mode    the interpretation mode for brews.
      */
-    public GiveBrewEvent(final Argument<Number> amountVar, final Argument<Number> qualityVar, final Argument<String> nameVar, final Argument<IdentifierType> mode) {
-        this.amountVar = amountVar;
-        this.qualityVar = qualityVar;
-        this.nameVar = nameVar;
+    public GiveBrewEvent(final Argument<Number> amount, final Argument<Number> quality, final Argument<String> name, final Argument<IdentifierType> mode) {
+        this.amount = amount;
+        this.quality = quality;
+        this.name = name;
         this.mode = mode;
     }
 
     @Override
     public void execute(final OnlineProfile profile) throws QuestException {
         final Player player = profile.getPlayer();
-        final int quality = qualityVar.getValue(profile).intValue();
+        final int quality = this.quality.getValue(profile).intValue();
         BreweryUtils.validateQualityOrThrow(quality);
-        final String name = nameVar.getValue(profile);
+        final String name = this.name.getValue(profile);
         final BRecipe recipe = mode.getValue(profile).getRecipeOrThrow(name);
 
-        final int amount = amountVar.getValue(profile).intValue();
+        final int amount = this.amount.getValue(profile).intValue();
         final ItemStack[] brews = IntStream.range(0, amount)
                 .mapToObj(i -> recipe.create(quality))
                 .toArray(ItemStack[]::new);

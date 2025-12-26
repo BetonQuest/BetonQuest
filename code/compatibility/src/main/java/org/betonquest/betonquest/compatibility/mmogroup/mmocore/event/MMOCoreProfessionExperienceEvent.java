@@ -21,7 +21,7 @@ public class MMOCoreProfessionExperienceEvent implements PlayerEvent {
     /**
      * Amount to grant.
      */
-    private final Argument<Number> amountVar;
+    private final Argument<Number> amount;
 
     /**
      * If level should be added instead of experience.
@@ -37,14 +37,14 @@ public class MMOCoreProfessionExperienceEvent implements PlayerEvent {
      */
     public MMOCoreProfessionExperienceEvent(final Argument<Profession> profession, final Argument<Number> amount, final boolean isLevel) {
         this.profession = profession;
-        this.amountVar = amount;
+        this.amount = amount;
         this.isLevel = isLevel;
     }
 
     @Override
     public void execute(final Profile profile) throws QuestException {
         final Profession profession = this.profession.getValue(profile);
-        final int amount = amountVar.getValue(profile).intValue();
+        final int amount = this.amount.getValue(profile).intValue();
         final PlayerData mmoData = PlayerData.get(profile.getPlayerUUID());
 
         if (isLevel) {

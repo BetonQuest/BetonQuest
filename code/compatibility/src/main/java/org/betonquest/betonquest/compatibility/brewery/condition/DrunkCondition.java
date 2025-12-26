@@ -15,20 +15,20 @@ public class DrunkCondition implements OnlineCondition {
     /**
      * The drunkenness level.
      */
-    private final Argument<Number> drunkVar;
+    private final Argument<Number> drunk;
 
     /**
      * Create a new Drunk Condition.
      *
-     * @param drunkVar the drunkenness level.
+     * @param drunk the drunkenness level.
      */
-    public DrunkCondition(final Argument<Number> drunkVar) {
-        this.drunkVar = drunkVar;
+    public DrunkCondition(final Argument<Number> drunk) {
+        this.drunk = drunk;
     }
 
     @Override
     public boolean check(final OnlineProfile profile) throws QuestException {
-        final int drunkenness = drunkVar.getValue(profile).intValue();
+        final int drunkenness = drunk.getValue(profile).intValue();
         if (drunkenness < 0 || drunkenness > 100) {
             throw new QuestException("Drunkenness can only be between 0 and 100!");
         }

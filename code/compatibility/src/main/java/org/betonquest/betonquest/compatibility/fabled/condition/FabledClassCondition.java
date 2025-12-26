@@ -15,7 +15,7 @@ public class FabledClassCondition implements PlayerCondition {
     /**
      * The class name.
      */
-    private final Argument<String> classNameVar;
+    private final Argument<String> className;
 
     /**
      * If the class check should be exact.
@@ -25,17 +25,17 @@ public class FabledClassCondition implements PlayerCondition {
     /**
      * Create a new {@link FabledClassCondition}.
      *
-     * @param classNameVar the class name.
-     * @param exact        if the class check should be exact.
+     * @param className the class name.
+     * @param exact     if the class check should be exact.
      */
-    public FabledClassCondition(final Argument<String> classNameVar, final boolean exact) {
-        this.classNameVar = classNameVar;
+    public FabledClassCondition(final Argument<String> className, final boolean exact) {
+        this.className = className;
         this.exact = exact;
     }
 
     @Override
     public boolean check(final Profile profile) throws QuestException {
-        final String className = classNameVar.getValue(profile);
+        final String className = this.className.getValue(profile);
         if (!Fabled.isClassRegistered(className)) {
             throw new QuestException("Class '" + className + "' is not registered");
         }

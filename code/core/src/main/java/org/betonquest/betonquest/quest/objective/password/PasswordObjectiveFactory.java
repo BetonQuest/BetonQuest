@@ -27,9 +27,9 @@ public class PasswordObjectiveFactory implements ObjectiveFactory {
         final String pattern = instruction.string().get().getValue(null);
         final int regexFlags = instruction.hasArgument("ignoreCase") ? Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE : 0;
         final Pattern regex = Pattern.compile(pattern, regexFlags);
-        final Argument<String> prefixVar = instruction.string().get("prefix").orElse(null);
-        final String prefix = prefixVar != null ? prefixVar.getValue(null) : null;
-        final String passwordPrefix = prefix == null || prefix.isEmpty() ? prefix : prefix + ": ";
+        final Argument<String> prefix = instruction.string().get("prefix").orElse(null);
+        final String resolvedPrefix = prefix == null ? null : prefix.getValue(null);
+        final String passwordPrefix = resolvedPrefix == null || resolvedPrefix.isEmpty() ? resolvedPrefix : resolvedPrefix + ": ";
         final Argument<List<EventID>> failEvents = instruction.parse(EventID::new).getList("fail", Collections.emptyList());
         return new PasswordObjective(instruction, regex, passwordPrefix, failEvents);
     }

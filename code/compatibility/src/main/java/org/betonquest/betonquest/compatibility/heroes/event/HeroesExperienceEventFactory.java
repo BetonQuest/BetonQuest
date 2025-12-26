@@ -39,9 +39,9 @@ public class HeroesExperienceEventFactory implements PlayerEventFactory {
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<HeroesClassType> classType = instruction.enumeration(HeroesClassType.class).get();
-        final Argument<Number> amountVar = instruction.number().get();
+        final Argument<Number> amount = instruction.number().get();
 
-        return new OnlineEventAdapter(new HeroesExperienceEvent(characterManager, classType, amountVar),
+        return new OnlineEventAdapter(new HeroesExperienceEvent(characterManager, classType, amount),
                 loggerFactory.create(HeroesExperienceEvent.class), instruction.getPackage());
     }
 }

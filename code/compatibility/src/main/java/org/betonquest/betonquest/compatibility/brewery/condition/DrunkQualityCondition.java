@@ -16,20 +16,20 @@ public class DrunkQualityCondition implements OnlineCondition {
     /**
      * The drunkenness level.
      */
-    private final Argument<Number> qualityVar;
+    private final Argument<Number> quality;
 
     /**
      * Create a new Drunk Condition.
      *
-     * @param qualityVar the drunkenness level.
+     * @param quality the drunkenness level.
      */
-    public DrunkQualityCondition(final Argument<Number> qualityVar) {
-        this.qualityVar = qualityVar;
+    public DrunkQualityCondition(final Argument<Number> quality) {
+        this.quality = quality;
     }
 
     @Override
     public boolean check(final OnlineProfile profile) throws QuestException {
-        final int quality = qualityVar.getValue(profile).intValue();
+        final int quality = this.quality.getValue(profile).intValue();
         BreweryUtils.validateQualityOrThrow(quality);
 
         final BPlayer bPlayer = BreweryApi.getBPlayer(profile.getPlayer());

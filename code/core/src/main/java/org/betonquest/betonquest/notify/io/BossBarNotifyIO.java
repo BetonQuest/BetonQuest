@@ -45,17 +45,17 @@ public class BossBarNotifyIO extends NotifyIO {
     /**
      * The variable for the progress of the boss bar.
      */
-    private final Argument<Number> variableProgress;
+    private final Argument<Number> progress;
 
     /**
      * The variable for the time the boss bar should stay visible.
      */
-    private final Argument<Number> variableStay;
+    private final Argument<Number> stay;
 
     /**
      * The countdown variable for the boss bar.
      */
-    private final Argument<Number> variableCountdown;
+    private final Argument<Number> countdown;
 
     /**
      * Create a new Boss Bar Notify IO.
@@ -99,16 +99,16 @@ public class BossBarNotifyIO extends NotifyIO {
             throw new QuestException(String.format(CATCH_MESSAGE_TYPE, "BarStyle", upperCaseBarStyle), exception);
         }
 
-        variableProgress = getNumberData("progress", 1);
-        variableStay = getNumberData("stay", 70);
-        variableCountdown = getNumberData("countdown", 0);
+        progress = getNumberData("progress", 1);
+        stay = getNumberData("stay", 70);
+        countdown = getNumberData("countdown", 0);
     }
 
     @Override
     protected void notifyPlayer(final Component message, final OnlineProfile onlineProfile) throws QuestException {
-        final float progress = Math.max(0.0F, Math.min(1.0F, variableProgress.getValue(onlineProfile).floatValue()));
-        final int countdown = variableCountdown.getValue(onlineProfile).intValue();
-        final int stay = Math.max(0, variableStay.getValue(onlineProfile).intValue());
+        final float progress = Math.max(0.0F, Math.min(1.0F, this.progress.getValue(onlineProfile).floatValue()));
+        final int countdown = this.countdown.getValue(onlineProfile).intValue();
+        final int stay = Math.max(0, this.stay.getValue(onlineProfile).intValue());
 
         final BossBar bossBar = BossBar.bossBar(message, progress, color, style);
         for (final BossBar.Flag flag : flags) {

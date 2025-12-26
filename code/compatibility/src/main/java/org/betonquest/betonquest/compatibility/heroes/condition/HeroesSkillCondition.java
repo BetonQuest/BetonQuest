@@ -20,23 +20,23 @@ public class HeroesSkillCondition implements OnlineCondition {
     /**
      * The skill name.
      */
-    private final Argument<String> skillNameVar;
+    private final Argument<String> skillName;
 
     /**
      * Create a new Heroes Skill Condition.
      *
      * @param characterManager The {@link CharacterManager} of the Heroes plugin.
-     * @param skillNameVar     The skill name.
+     * @param skillName        The skill name.
      */
-    public HeroesSkillCondition(final CharacterManager characterManager, final Argument<String> skillNameVar) {
+    public HeroesSkillCondition(final CharacterManager characterManager, final Argument<String> skillName) {
         this.characterManager = characterManager;
-        this.skillNameVar = skillNameVar;
+        this.skillName = skillName;
     }
 
     @Override
     public boolean check(final OnlineProfile profile) throws QuestException {
         final Hero hero = characterManager.getHero(profile.getPlayer());
-        return hero != null && hero.canUseSkill(skillNameVar.getValue(profile));
+        return hero != null && hero.canUseSkill(skillName.getValue(profile));
     }
 
     @Override

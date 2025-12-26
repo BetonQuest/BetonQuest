@@ -19,7 +19,7 @@ public class DenizenTaskScriptEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Argument<String> nameVar = instruction.string().get();
-        return new DenizenTaskScriptEvent(nameVar);
+        final Argument<String> name = instruction.string().get();
+        return new DenizenTaskScriptEvent(name);
     }
 }

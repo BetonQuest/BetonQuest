@@ -34,18 +34,18 @@ public class ExperienceEventFactory implements PlayerEventFactory {
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<Number> amount = instruction.number().get();
         ExperienceModification experienceType = ExperienceModification.ADD_EXPERIENCE;
-        final Optional<Argument<String>> actionVariable = instruction.string().get("action");
-        String action = actionVariable.isPresent() ? actionVariable.get().getValue(null) : null;
+        final Optional<Argument<String>> action = instruction.string().get("action");
+        String targetAction = action.isPresent() ? action.get().getValue(null) : null;
         if (instruction.hasArgument("level")) {
             experienceType = ExperienceModification.ADD_LEVEL;
-        } else if (action != null) {
-            action = action.toUpperCase(Locale.ROOT);
+        } else if (targetAction != null) {
+            targetAction = targetAction.toUpperCase(Locale.ROOT);
 
-            final Optional<ExperienceModification> modification = ExperienceModification.getFromInstruction(action);
+            final Optional<ExperienceModification> modification = ExperienceModification.getFromInstruction(targetAction);
             if (modification.isPresent()) {
                 experienceType = modification.get();
             } else {
-                throw new QuestException(action + " is not a valid experience modification type.");
+                throw new QuestException(targetAction + " is not a valid experience modification type.");
             }
         }
         return new OnlineEventAdapter(new ExperienceEvent(experienceType, amount),
