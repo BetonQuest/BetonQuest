@@ -6,10 +6,10 @@ import org.betonquest.betonquest.api.instruction.argument.DecoratedArgumentParse
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.chain.ChainableInstruction;
 import org.betonquest.betonquest.api.instruction.chain.DecoratableChainRetriever;
+import org.betonquest.betonquest.api.instruction.chain.ListChainRetriever;
 import org.betonquest.betonquest.lib.instruction.argument.DecoratableArgumentParser;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collector;
 
@@ -36,8 +36,8 @@ public class DefaultDecoratableChainRetriever<T> extends DefaultInstructionChain
     }
 
     @Override
-    public DecoratableChainRetriever<List<T>> list() {
-        return new DefaultDecoratableChainRetriever<>(instruction, decoratable().list());
+    public ListChainRetriever<T> list() {
+        return new DefaultListChainRetriever<>(instruction, decoratable().list());
     }
 
     @Override

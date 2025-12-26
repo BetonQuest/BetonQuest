@@ -104,11 +104,6 @@ To have valid calls the `Number` parser is used as an example, but naturally any
 Parsers via the chain offer more functionality than just parsing a string into a specific type.
 By chaining different kinds of operations, the outcome can be modified in certain ways.
 
-#### Collectors
-You can interpret any argument's value as a list of comma-separated values and collect them into any type of `java.util.Collection`.  
-Use `collect(Collector<T,?,R>)` to handle the collection process in an identical manner as java streams.  
-The method `list()` offers a common overload to support `java.util.List`.
-
 #### Validations
 You can validate an argument using the `validate(ValueValidator<T>)` or `validate(ValueValidator<T>, String)` method.
 This method will throw a `QuestException` if the predicate does not match the argument (aka returns `false`).
@@ -167,6 +162,18 @@ Example:
     instruction.number().map(Number::intValue)
     instruction.parse(Integer::parseInt)
     ```
+
+#### Collectors
+You can interpret any argument's value as a list of comma-separated values and collect them into any type of `java.util.Collection`.  
+Use `collect(Collector<T,?,R>)` to handle the collection process identically as java streams.  
+The method `list()` offers a common overload to support `java.util.List`.
+
+#### Special Case: List
+The `instruction.list()` parser offers a more convenient way to create a list argument with additional parsing options.  
+The option `notEmpty()` will throw an error if the list is empty.  
+The option `distinct()` will check for duplicate values in the list and throw an error if any are found.
+Another implementation `distinct(Function<T,U>)` requires a `java.util.Function` to map the list elements to a unique key to
+ensure the uniqueness of the list elements.
 
 #### Special Case: Number
 The `instruction.number()` parser offers a more convenient way to create a number argument with range limits.

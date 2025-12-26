@@ -10,7 +10,6 @@ import org.betonquest.betonquest.api.quest.Variables;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -28,14 +27,12 @@ public interface DecoratableChainRetriever<T> extends InstructionChainRetriever<
      * Instead of reading a single value, parse the argument as a list of values.
      * Default implementation forwards to {@link #collect(Collector)} using {@link Collectors#toList()}.
      *
-     * @return the new {@link DecoratableChainRetriever} with the new list of type T
+     * @return the new {@link ListChainRetriever} with the new list of type T
      * @see #collect(Collector)
      * @see Collectors#toList()
      */
     @Contract(value = "-> new", pure = true)
-    default DecoratableChainRetriever<List<T>> list() {
-        return collect(Collectors.toList());
-    }
+    ListChainRetriever<T> list();
 
     /**
      * Instead of reading a single value, parse the argument as a list of values
