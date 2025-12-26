@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.instruction.chain.DecoratableChainRetriever
 import org.betonquest.betonquest.lib.instruction.argument.DecoratableArgumentParser;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -31,6 +32,11 @@ public class DefaultDecoratableChainRetriever<T> extends DefaultInstructionChain
 
     private DecoratedArgumentParser<T> decoratable() {
         return new DecoratableArgumentParser<>(argument);
+    }
+
+    @Override
+    public DecoratableChainRetriever<List<T>> list() {
+        return new DefaultDecoratableChainRetriever<>(instruction, decoratable().list());
     }
 
     @Override

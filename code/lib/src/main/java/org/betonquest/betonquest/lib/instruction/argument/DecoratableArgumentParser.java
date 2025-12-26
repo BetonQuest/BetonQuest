@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.lib.instruction.argument;
 
+import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
@@ -10,6 +11,9 @@ import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentPar
 import org.betonquest.betonquest.api.quest.Variables;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -39,6 +43,11 @@ public class DecoratableArgumentParser<T> implements DecoratedArgumentParser<T> 
     }
 
     @Override
+    public DecoratedArgumentParser<List<T>> list() {
+        return new DecoratableArgumentParser<>(this::parseList);
+    }
+
+    @Override
     public <U> DecoratedArgumentParser<U> map(final QuestFunction<T, U> mapper) {
         return new DecoratableArgumentParser<>((variables, packManager, pack, string)
                 -> mapper.apply(apply(variables, packManager, pack, string)));
@@ -65,6 +74,16 @@ public class DecoratableArgumentParser<T> implements DecoratedArgumentParser<T> 
     public DecoratedArgumentParser<Optional<T>> prefilterOptional(final String expected, @Nullable final T fixedValue) {
         return new DecoratableArgumentParser<>((variables, packManager, pack, string) ->
                 Optional.ofNullable(expected.equalsIgnoreCase(string) ? fixedValue : apply(variables, packManager, pack, string)));
+    }
+
+    private List<T> parseList(final Variables variables, final QuestPackageManager packManager, final QuestPackage pack, final String string) throws QuestException {
+        final List<T> list = new ArrayList<>();
+        final String[] elements = StringUtils.split(string, ",");
+        for (final String element : elements) {
+            final T apply = apply(variables, packManager, pack, element);
+            list.add(apply);
+        }
+        return Collections.unmodifiableList(list);
     }
 
     private T validateLocal(final ValueValidator<T> checker, final String errorMessage, final Variables variables, final QuestPackageManager packManager, final QuestPackage pack, final String string) throws QuestException {

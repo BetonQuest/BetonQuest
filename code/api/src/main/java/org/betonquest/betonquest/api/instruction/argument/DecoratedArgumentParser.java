@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.quest.Variables;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -16,6 +17,14 @@ import java.util.Optional;
  * @param <T> the type of the value
  */
 public interface DecoratedArgumentParser<T> extends InstructionArgumentParser<T> {
+
+    /**
+     * Instead of reading the input as a single value, treat it as a list of inputs and parse them as a list.
+     *
+     * @return the new list parser as {@link DecoratedArgumentParser}
+     */
+    @Contract(value = "-> new", pure = true)
+    DecoratedArgumentParser<List<T>> list();
 
     /**
      * Map the value of the argument <strong>after</strong> parsing the type.

@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.quest.Variables;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -20,6 +21,14 @@ import java.util.Optional;
  * @see InstructionChainRetriever
  */
 public interface DecoratableChainRetriever<T> extends InstructionChainRetriever<T> {
+
+    /**
+     * Instead of reading a single value, parse the argument as a list of values.
+     *
+     * @return the new {@link DecoratableChainRetriever} with the new list of type T
+     */
+    @Contract(value = "-> new", pure = true)
+    DecoratableChainRetriever<List<T>> list();
 
     /**
      * Map the value of the argument after parsing to another type.
