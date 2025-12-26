@@ -2,6 +2,7 @@ package org.betonquest.betonquest.lib.instruction.chain;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.chain.ChainableInstruction;
 import org.betonquest.betonquest.api.instruction.chain.InstructionChainRetriever;
@@ -65,5 +66,10 @@ public class DefaultInstructionChainRetriever<T> implements InstructionChainRetr
     @Override
     public Argument<List<T>> getList(final String argumentKey, final List<T> defaultValue) throws QuestException {
         return instruction.getOptionalList(argumentKey, argument, defaultValue);
+    }
+
+    @Override
+    public FlagArgument<T> getFlag(final String argumentKey, final T presenceDefaultValue) throws QuestException {
+        return instruction.getFlag(argumentKey, argument, presenceDefaultValue);
     }
 }
