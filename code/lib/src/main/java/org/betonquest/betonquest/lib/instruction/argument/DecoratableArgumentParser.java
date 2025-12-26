@@ -11,10 +11,9 @@ import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentPar
 import org.betonquest.betonquest.api.quest.Variables;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Stream;
 
 /**
  * A wrapper for {@link InstructionArgumentParser} to turn it into a {@link DecoratedArgumentParser}.
@@ -43,8 +42,9 @@ public class DecoratableArgumentParser<T> implements DecoratedArgumentParser<T> 
     }
 
     @Override
-    public DecoratedArgumentParser<List<T>> list() {
-        return new DecoratableArgumentParser<>(this::parseList);
+    public <R> DecoratedArgumentParser<R> collect(final Collector<T, ?, R> collector) {
+        return new DecoratableArgumentParser<>(((variables, packManager, pack, string) ->
+                parseCollect(variables, packManager, pack, string, collector)));
     }
 
     @Override
@@ -76,14 +76,14 @@ public class DecoratableArgumentParser<T> implements DecoratedArgumentParser<T> 
                 Optional.ofNullable(expected.equalsIgnoreCase(string) ? fixedValue : apply(variables, packManager, pack, string)));
     }
 
-    private List<T> parseList(final Variables variables, final QuestPackageManager packManager, final QuestPackage pack, final String string) throws QuestException {
-        final List<T> list = new ArrayList<>();
+    private <R, A> R parseCollect(final Variables variables, final QuestPackageManager packManager, final QuestPackage pack, final String string, final Collector<T, A, R> collector) throws QuestException {
         final String[] elements = StringUtils.split(string, ",");
+        final Stream.Builder<T> streamBuilder = Stream.builder();
         for (final String element : elements) {
-            final T apply = apply(variables, packManager, pack, element);
-            list.add(apply);
+            final T resolved = apply(variables, packManager, pack, element);
+            streamBuilder.add(resolved);
         }
-        return Collections.unmodifiableList(list);
+        return streamBuilder.build().collect(collector);
     }
 
     private T validateLocal(final ValueValidator<T> checker, final String errorMessage, final Variables variables, final QuestPackageManager packManager, final QuestPackage pack, final String string) throws QuestException {

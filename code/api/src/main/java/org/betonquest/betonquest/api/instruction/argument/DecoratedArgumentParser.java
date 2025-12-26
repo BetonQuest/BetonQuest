@@ -4,12 +4,15 @@ import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.ValueValidator;
+import org.betonquest.betonquest.api.instruction.chain.DecoratableChainRetriever;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * A decorated {@link InstructionArgumentParser} offering more methods to modify the result.
@@ -20,11 +23,27 @@ public interface DecoratedArgumentParser<T> extends InstructionArgumentParser<T>
 
     /**
      * Instead of reading the input as a single value, treat it as a list of inputs and parse them as a list.
+     * Default implementation forwards to {@link #collect(Collector)} using {@link Collectors#toList()}.
      *
      * @return the new list parser as {@link DecoratedArgumentParser}
+     * @see #collect(Collector)
      */
     @Contract(value = "-> new", pure = true)
-    DecoratedArgumentParser<List<T>> list();
+    default DecoratedArgumentParser<List<T>> list() {
+        return collect(Collectors.toList());
+    }
+
+    /**
+     * Instead of reading a single value, parse the argument as a list of values
+     * and collects them using the given collector.
+     *
+     * @param collector the collector to handle the list of values
+     * @param <R>       the collected result type
+     * @return @return the new {@link DecoratableChainRetriever} with the new collected type R
+     * @see Collectors
+     */
+    @Contract(value = "!null -> new", pure = true)
+    <R> DecoratedArgumentParser<R> collect(Collector<T, ?, R> collector);
 
     /**
      * Map the value of the argument <strong>after</strong> parsing the type.

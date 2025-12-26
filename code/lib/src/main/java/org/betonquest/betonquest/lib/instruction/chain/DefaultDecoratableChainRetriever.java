@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
 
 /**
  * Default implementation of {@link DecoratableChainRetriever}
@@ -37,6 +38,11 @@ public class DefaultDecoratableChainRetriever<T> extends DefaultInstructionChain
     @Override
     public DecoratableChainRetriever<List<T>> list() {
         return new DefaultDecoratableChainRetriever<>(instruction, decoratable().list());
+    }
+
+    @Override
+    public <R> DecoratableChainRetriever<R> collect(final Collector<T, ?, R> collector) {
+        return new DefaultDecoratableChainRetriever<>(instruction, decoratable().collect(collector));
     }
 
     @Override

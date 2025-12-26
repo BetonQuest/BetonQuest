@@ -12,6 +12,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * An extended {@link InstructionChainRetriever} offering additional methods
@@ -26,9 +28,24 @@ public interface DecoratableChainRetriever<T> extends InstructionChainRetriever<
      * Instead of reading a single value, parse the argument as a list of values.
      *
      * @return the new {@link DecoratableChainRetriever} with the new list of type T
+     * @see #collect(Collector)
+     * @see Collectors#toList()
      */
     @Contract(value = "-> new", pure = true)
-    DecoratableChainRetriever<List<T>> list();
+    default DecoratableChainRetriever<List<T>> list() {
+        return collect(Collectors.toList());
+    }
+
+    /**
+     * Instead of reading a single value, parse the argument as a list of values
+     * and collects them using the given collector.
+     *
+     * @param collector the collector to handle the list of values
+     * @param <R>       the collected result type
+     * @return @return the new {@link DecoratableChainRetriever} with the new collected type R
+     */
+    @Contract(value = "!null -> new", pure = true)
+    <R> DecoratableChainRetriever<R> collect(Collector<T, ?, R> collector);
 
     /**
      * Map the value of the argument after parsing to another type.
