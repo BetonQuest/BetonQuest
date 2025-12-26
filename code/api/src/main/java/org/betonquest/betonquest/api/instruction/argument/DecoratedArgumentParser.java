@@ -4,7 +4,6 @@ import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.ValueValidator;
-import org.betonquest.betonquest.api.instruction.chain.DecoratableChainRetriever;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
@@ -39,7 +38,7 @@ public interface DecoratedArgumentParser<T> extends InstructionArgumentParser<T>
      *
      * @param collector the collector to handle the list of values
      * @param <R>       the collected result type
-     * @return @return the new {@link DecoratableChainRetriever} with the new collected type R
+     * @return the new {@link DecoratedArgumentParser} with the new collected type R
      * @see Collectors
      */
     @Contract(value = "!null -> new", pure = true)

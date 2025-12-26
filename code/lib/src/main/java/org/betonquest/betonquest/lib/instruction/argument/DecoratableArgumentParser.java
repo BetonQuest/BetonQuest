@@ -43,8 +43,8 @@ public class DecoratableArgumentParser<T> implements DecoratedArgumentParser<T> 
 
     @Override
     public <R> DecoratedArgumentParser<R> collect(final Collector<T, ?, R> collector) {
-        return new DecoratableArgumentParser<>(((variables, packManager, pack, string) ->
-                parseCollect(variables, packManager, pack, string, collector)));
+        return new DecoratableArgumentParser<>((variables, packManager, pack, string) ->
+                parseCollect(variables, packManager, pack, string, collector));
     }
 
     @Override
@@ -76,7 +76,8 @@ public class DecoratableArgumentParser<T> implements DecoratedArgumentParser<T> 
                 Optional.ofNullable(expected.equalsIgnoreCase(string) ? fixedValue : apply(variables, packManager, pack, string)));
     }
 
-    private <R, A> R parseCollect(final Variables variables, final QuestPackageManager packManager, final QuestPackage pack, final String string, final Collector<T, A, R> collector) throws QuestException {
+    private <R, A> R parseCollect(final Variables variables, final QuestPackageManager packManager, final QuestPackage pack,
+                                  final String string, final Collector<T, A, R> collector) throws QuestException {
         final String[] elements = StringUtils.split(string, ",");
         final Stream.Builder<T> streamBuilder = Stream.builder();
         for (final String element : elements) {
@@ -86,7 +87,8 @@ public class DecoratableArgumentParser<T> implements DecoratedArgumentParser<T> 
         return streamBuilder.build().collect(collector);
     }
 
-    private T validateLocal(final ValueValidator<T> checker, final String errorMessage, final Variables variables, final QuestPackageManager packManager, final QuestPackage pack, final String string) throws QuestException {
+    private T validateLocal(final ValueValidator<T> checker, final String errorMessage, final Variables variables,
+                            final QuestPackageManager packManager, final QuestPackage pack, final String string) throws QuestException {
         final T value = apply(variables, packManager, pack, string);
         if (!checker.validate(value)) {
             throw new QuestException(errorMessage.formatted(string));

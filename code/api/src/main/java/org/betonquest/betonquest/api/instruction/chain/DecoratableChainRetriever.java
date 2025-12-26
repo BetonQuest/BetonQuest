@@ -26,6 +26,7 @@ public interface DecoratableChainRetriever<T> extends InstructionChainRetriever<
 
     /**
      * Instead of reading a single value, parse the argument as a list of values.
+     * Default implementation forwards to {@link #collect(Collector)} using {@link Collectors#toList()}.
      *
      * @return the new {@link DecoratableChainRetriever} with the new list of type T
      * @see #collect(Collector)
@@ -42,7 +43,7 @@ public interface DecoratableChainRetriever<T> extends InstructionChainRetriever<
      *
      * @param collector the collector to handle the list of values
      * @param <R>       the collected result type
-     * @return @return the new {@link DecoratableChainRetriever} with the new collected type R
+     * @return the new {@link DecoratableChainRetriever} with the new collected type R
      */
     @Contract(value = "!null -> new", pure = true)
     <R> DecoratableChainRetriever<R> collect(Collector<T, ?, R> collector);
