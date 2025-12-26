@@ -12,6 +12,8 @@ import org.betonquest.betonquest.quest.condition.ThrowExceptionPlayerlessConditi
 import org.betonquest.betonquest.quest.condition.time.TimeFrame;
 import org.bukkit.World;
 
+import java.util.Optional;
+
 /**
  * Factory to create test for time conditions from {@link Instruction}s.
  */
@@ -33,13 +35,11 @@ public class TimeConditionFactory implements PlayerConditionFactory, PlayerlessC
 
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
-        final Argument<String> worldVar = instruction.string().get("world").orElse(null);
-        final String worldString = worldVar == null ? null : worldVar.getValue(null);
-        if (worldString == null) {
+        final Optional<Argument<World>> world = instruction.world().get("world");
+        if (world.isEmpty()) {
             return new ThrowExceptionPlayerlessCondition();
         }
         final Argument<TimeFrame> timeFrame = instruction.parse(TimeFrame::parse).get();
-        final Argument<World> world = instruction.chainForArgument(worldString).world().get();
-        return new NullableConditionAdapter(new TimeCondition(timeFrame, world));
+        return new NullableConditionAdapter(new TimeCondition(timeFrame, world.get()));
     }
 }

@@ -21,7 +21,7 @@ public class SpawnMobEvent implements NullableEvent {
     /**
      * The location to spawn the mob at.
      */
-    private final Argument<Location> variableLocation;
+    private final Argument<Location> location;
 
     /**
      * The type of mob to spawn.
@@ -53,16 +53,16 @@ public class SpawnMobEvent implements NullableEvent {
     /**
      * Creates a new spawn mob event.
      *
-     * @param variableLocation the location to spawn the mob at
-     * @param type             the type of mob to spawn
-     * @param equipment        the equipment and drops of the mob
-     * @param amount           the amount of entities to spawn
-     * @param name             the name of the mob
-     * @param marked           the marked variable
+     * @param location  the location to spawn the mob at
+     * @param type      the type of mob to spawn
+     * @param equipment the equipment and drops of the mob
+     * @param amount    the amount of entities to spawn
+     * @param name      the name of the mob
+     * @param marked    the marked variable
      */
-    public SpawnMobEvent(final Argument<Location> variableLocation, final Argument<EntityType> type, final Equipment equipment,
+    public SpawnMobEvent(final Argument<Location> location, final Argument<EntityType> type, final Equipment equipment,
                          final Argument<Number> amount, @Nullable final Argument<Component> name, @Nullable final Argument<String> marked) {
-        this.variableLocation = variableLocation;
+        this.location = location;
         this.type = type;
         this.equipment = equipment;
         this.amount = amount;
@@ -72,7 +72,7 @@ public class SpawnMobEvent implements NullableEvent {
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
-        final Location location = variableLocation.getValue(profile);
+        final Location location = this.location.getValue(profile);
         final int numberOfMob = amount.getValue(profile).intValue();
         for (int i = 0; i < numberOfMob; i++) {
             final Mob mob = (Mob) location.getWorld().spawnEntity(location, type.getValue(profile));

@@ -24,10 +24,10 @@ import java.util.stream.Collectors;
 public class DefaultArgument<T> implements Argument<T> {
 
     /**
-     * The pattern to match variables in a string marked with percent signs.<br>
+     * The pattern to match placeholders in a string marked with percent signs.<br>
      * The percentage can be escaped with a backslash, and the backslash can be escaped with another backslash.
      */
-    private static final Pattern VARIABLE_PATTERN = Pattern.compile("(?<!\\\\)(?:\\\\\\\\)*(%((?:[^%\\\\]|\\\\.)*?)%)(?<!\\\\)(?:\\\\\\\\)*");
+    private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("(?<!\\\\)(?:\\\\\\\\)*(%((?:[^%\\\\]|\\\\.)*?)%)(?<!\\\\)(?:\\\\\\\\)*");
 
     /**
      * Supplier of the variable value: a variable itself. Magic.
@@ -54,49 +54,49 @@ public class DefaultArgument<T> implements Argument<T> {
      */
     public DefaultArgument(final Variables variables, @Nullable final QuestPackage pack, final String input,
                            final ValueParser<T> valueParser) throws QuestException {
-        final Map<String, Argument<String>> foundVariables = getVariables(variables, pack, input);
-        if (foundVariables.isEmpty()) {
+        final Map<String, Argument<String>> foundPlaceholders = getPlaceholders(variables, pack, input);
+        if (foundPlaceholders.isEmpty()) {
             final T resolved = valueParser.apply(replaceEscapedPercent(input));
             value = profile -> valueParser.cloneValue(resolved);
         } else {
-            value = profile -> valueParser.apply(replaceEscapedPercent(getString(input, foundVariables, profile)));
+            value = profile -> valueParser.apply(replaceEscapedPercent(getString(input, foundPlaceholders, profile)));
         }
     }
 
-    private Map<String, Argument<String>> getVariables(final Variables variables,
-                                                       @Nullable final QuestPackage pack,
-                                                       final String input)
+    private Map<String, Argument<String>> getPlaceholders(final Variables variables,
+                                                          @Nullable final QuestPackage pack,
+                                                          final String input)
             throws QuestException {
-        final Map<String, Argument<String>> foundVariables = new HashMap<>();
-        for (final String variable : resolveVariables(input)) {
+        final Map<String, Argument<String>> foundPlaceholders = new HashMap<>();
+        for (final String placeholder : resolvePlaceholders(input)) {
             try {
-                final Argument<String> variableAdapter = variables.create(pack, replaceEscapedPercent(variable));
-                foundVariables.put(variable, variableAdapter);
+                final Argument<String> placeholderArgument = variables.create(pack, replaceEscapedPercent(placeholder));
+                foundPlaceholders.put(placeholder, placeholderArgument);
             } catch (final QuestException exception) {
-                throw new QuestException("Could not create variable '" + variable + "': "
+                throw new QuestException("Could not create variable '" + placeholder + "': "
                         + exception.getMessage(), exception);
             }
         }
-        return foundVariables;
+        return foundPlaceholders;
     }
 
-    private Set<String> resolveVariables(final String input) {
-        return VARIABLE_PATTERN.matcher(input).results()
+    private Set<String> resolvePlaceholders(final String input) {
+        return PLACEHOLDER_PATTERN.matcher(input).results()
                 .map(MatchResult::group)
                 .collect(Collectors.toSet());
     }
 
-    private String getString(final String input, final Map<String, Argument<String>> variables,
+    private String getString(final String input, final Map<String, Argument<String>> foundPlaceholders,
                              @Nullable final Profile profile) throws QuestException {
-        final Matcher matcher = VARIABLE_PATTERN.matcher(input);
+        final Matcher matcher = PLACEHOLDER_PATTERN.matcher(input);
         final StringBuilder resolvedString = new StringBuilder();
         while (matcher.find()) {
-            final String variable = matcher.group();
-            final Argument<String> resolvedVariable = variables.get(variable);
-            if (resolvedVariable == null) {
-                throw new QuestException("Could not resolve variable '" + variable + "'");
+            final String placeholder = matcher.group();
+            final Argument<String> resolved = foundPlaceholders.get(placeholder);
+            if (resolved == null) {
+                throw new QuestException("Could not resolve variable '" + placeholder + "'");
             }
-            matcher.appendReplacement(resolvedString, Matcher.quoteReplacement(resolvedVariable.getValue(profile)));
+            matcher.appendReplacement(resolvedString, Matcher.quoteReplacement(resolved.getValue(profile)));
         }
         matcher.appendTail(resolvedString);
         return resolvedString.toString();

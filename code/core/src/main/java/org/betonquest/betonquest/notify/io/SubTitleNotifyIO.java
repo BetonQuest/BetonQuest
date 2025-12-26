@@ -21,17 +21,17 @@ public class SubTitleNotifyIO extends NotifyIO {
     /**
      * Time in ticks the title fades in.
      */
-    private final Argument<Number> variableFadeIn;
+    private final Argument<Number> fadeIn;
 
     /**
      * Time in ticks the title stays.
      */
-    private final Argument<Number> variableStay;
+    private final Argument<Number> stay;
 
     /**
      * Time in ticks the title fades out.
      */
-    private final Argument<Number> variableFadeOut;
+    private final Argument<Number> fadeOut;
 
     /**
      * Create a new Sub Title Notify IO.
@@ -44,16 +44,16 @@ public class SubTitleNotifyIO extends NotifyIO {
     public SubTitleNotifyIO(final Variables variables, @Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
         super(variables, pack, data);
 
-        variableFadeIn = getNumberData("fadein", 10);
-        variableStay = getNumberData("stay", 70);
-        variableFadeOut = getNumberData("fadeout", 20);
+        fadeIn = getNumberData("fadein", 10);
+        stay = getNumberData("stay", 70);
+        fadeOut = getNumberData("fadeout", 20);
     }
 
     @Override
     protected void notifyPlayer(final Component message, final OnlineProfile onlineProfile) throws QuestException {
-        final Duration fadeIn = Duration.ofMillis(variableFadeIn.getValue(onlineProfile).longValue() * 50L);
-        final Duration stay = Duration.ofMillis(variableStay.getValue(onlineProfile).longValue() * 50L);
-        final Duration fadeOut = Duration.ofMillis(variableFadeOut.getValue(onlineProfile).longValue() * 50L);
+        final Duration fadeIn = Duration.ofMillis(this.fadeIn.getValue(onlineProfile).longValue() * 50L);
+        final Duration stay = Duration.ofMillis(this.stay.getValue(onlineProfile).longValue() * 50L);
+        final Duration fadeOut = Duration.ofMillis(this.fadeOut.getValue(onlineProfile).longValue() * 50L);
 
         final Title title = Title.title(Component.empty(), message, Title.Times.times(fadeIn, stay, fadeOut));
         onlineProfile.getPlayer().showTitle(title);

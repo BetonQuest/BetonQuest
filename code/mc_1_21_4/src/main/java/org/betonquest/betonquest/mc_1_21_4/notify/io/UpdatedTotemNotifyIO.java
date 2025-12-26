@@ -32,13 +32,13 @@ public class UpdatedTotemNotifyIO extends NotifyIO {
      * It instructs the game client to display a different model or texture when the totem is shown.
      */
     @Nullable
-    private final Argument<NamespacedKey> variableItemModel;
+    private final Argument<NamespacedKey> itemModel;
 
     /**
      * The totems customModelData.
      * It instructs the game client to display a different model or texture when the totem is shown.
      */
-    private final Argument<Number> variableCustomModelData;
+    private final Argument<Number> customModelData;
 
     /**
      * Creates a new UpdatedTotemNotifyIO instance based on the user's instruction string.
@@ -50,9 +50,9 @@ public class UpdatedTotemNotifyIO extends NotifyIO {
      */
     public UpdatedTotemNotifyIO(final Variables variables, @Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
         super(variables, pack, data);
-        variableItemModel = data.containsKey("itemmodel") ? new DefaultArgument<>(variables, pack, data.getOrDefault("itemmodel", ""),
+        itemModel = data.containsKey("itemmodel") ? new DefaultArgument<>(variables, pack, data.getOrDefault("itemmodel", ""),
                 input -> Utils.getNN(NamespacedKey.fromString(input), "The item-model '" + input + "' could not be parsed!")) : null;
-        variableCustomModelData = getNumberData("custommodeldata", 0);
+        customModelData = getNumberData("custommodeldata", 0);
     }
 
     @Override
@@ -65,11 +65,11 @@ public class UpdatedTotemNotifyIO extends NotifyIO {
 
     private ItemStack buildFakeTotem(final Profile profile) throws QuestException {
         final ItemStack fakeTotem = new ItemStack(Material.TOTEM_OF_UNDYING);
-        if (variableItemModel != null) {
-            final NamespacedKey itemModel = variableItemModel.getValue(profile);
+        if (itemModel != null) {
+            final NamespacedKey itemModel = this.itemModel.getValue(profile);
             fakeTotem.editMeta(meta -> meta.setItemModel(itemModel));
         }
-        final int customModelData = variableCustomModelData.getValue(profile).intValue();
+        final int customModelData = this.customModelData.getValue(profile).intValue();
         fakeTotem.editMeta(meta -> meta.setCustomModelData(customModelData));
         return fakeTotem;
     }

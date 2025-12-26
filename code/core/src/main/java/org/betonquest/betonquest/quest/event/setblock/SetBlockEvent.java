@@ -21,7 +21,7 @@ public class SetBlockEvent implements NullableEvent {
     /**
      * The location.
      */
-    private final Argument<Location> variableLocation;
+    private final Argument<Location> location;
 
     /**
      * Whether to apply physics.
@@ -31,19 +31,19 @@ public class SetBlockEvent implements NullableEvent {
     /**
      * Creates a new set block event.
      *
-     * @param selector         the block selector
-     * @param variableLocation the location
-     * @param applyPhysics     whether to apply physics
+     * @param selector     the block selector
+     * @param location     the location
+     * @param applyPhysics whether to apply physics
      */
-    public SetBlockEvent(final Argument<BlockSelector> selector, final Argument<Location> variableLocation, final boolean applyPhysics) {
+    public SetBlockEvent(final Argument<BlockSelector> selector, final Argument<Location> location, final boolean applyPhysics) {
         this.selector = selector;
-        this.variableLocation = variableLocation;
+        this.location = location;
         this.applyPhysics = applyPhysics;
     }
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
-        final Location location = variableLocation.getValue(profile);
+        final Location location = this.location.getValue(profile);
         final BlockSelector blockSelector = selector.getValue(profile);
         blockSelector.setToBlock(location.getBlock(), applyPhysics);
     }

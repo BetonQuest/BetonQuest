@@ -43,13 +43,13 @@ public class HeroesClassCondition implements OnlineCondition {
     /**
      * The class.
      */
-    private final Argument<String> heroClassVar;
+    private final Argument<String> heroClass;
 
     /**
      * The level of the class.
      */
     @Nullable
-    private final Argument<Number> levelVar;
+    private final Argument<Number> level;
 
     /**
      * Create a new Heroes Class Condition.
@@ -57,17 +57,17 @@ public class HeroesClassCondition implements OnlineCondition {
      * @param characterManager The {@link CharacterManager} of the Heroes plugin.
      * @param classManager     The {@link HeroClassManager} of the Heroes plugin.
      * @param classType        The {@link HeroesClassType} of the class.
-     * @param heroClassVar     The name of the class.
-     * @param levelVar         The optional level of the class.
+     * @param heroClass        The name of the class.
+     * @param level            The optional level of the class.
      */
     public HeroesClassCondition(final CharacterManager characterManager, final HeroClassManager classManager,
-                                final Argument<HeroesClassType> classType, final Argument<String> heroClassVar,
-                                @Nullable final Argument<Number> levelVar) {
+                                final Argument<HeroesClassType> classType, final Argument<String> heroClass,
+                                @Nullable final Argument<Number> level) {
         this.characterManager = characterManager;
         this.classManager = classManager;
         this.classType = classType;
-        this.heroClassVar = heroClassVar;
-        this.levelVar = levelVar;
+        this.heroClass = heroClass;
+        this.level = level;
     }
 
     @Nullable
@@ -98,7 +98,7 @@ public class HeroesClassCondition implements OnlineCondition {
     @Override
     public boolean check(final OnlineProfile profile) throws QuestException {
         boolean any = false;
-        final String heroClassName = heroClassVar.getValue(profile);
+        final String heroClassName = heroClass.getValue(profile);
         final HeroClass heroClass = getHeroClass(heroClassName);
         if (heroClass == null) {
             any = true;
@@ -111,7 +111,7 @@ public class HeroesClassCondition implements OnlineCondition {
 
         final List<HeroClass> heroClasses = getHeroClasses(profile, hero);
 
-        final int playerLevel = levelVar == null ? -1 : levelVar.getValue(profile).intValue();
+        final int playerLevel = level == null ? -1 : level.getValue(profile).intValue();
         if (any) {
             return hero.getHeroLevel() >= playerLevel;
         }

@@ -163,12 +163,12 @@ public class InventoryConvIO implements Listener, ConversationIO {
     @Override
     public void addPlayerOption(final Component option, final ConfigurationSection properties) throws QuestException {
         playerOptionsCount++;
-        final String item = properties.getString("item");
+        final String rawItem = properties.getString("item");
         try {
-            final Argument<ItemID> variableItem = item == null ? null
-                    : new DefaultArgument<>(betonQuest.getQuestTypeApi().variables(), conv.getPackage(), item,
+            final Argument<ItemID> item = rawItem == null ? null
+                    : new DefaultArgument<>(betonQuest.getQuestTypeApi().variables(), conv.getPackage(), rawItem,
                     (value) -> new ItemID(variables, packManager, conv.getPackage(), value));
-            options.put(playerOptionsCount, Pair.of(colors.getOption().append(option), variableItem));
+            options.put(playerOptionsCount, Pair.of(colors.getOption().append(option), item));
         } catch (final QuestException e) {
             options.put(playerOptionsCount, Pair.of(colors.getOption().append(option), null));
             throw e;

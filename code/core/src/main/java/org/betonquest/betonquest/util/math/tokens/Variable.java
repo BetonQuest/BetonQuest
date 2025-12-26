@@ -18,24 +18,24 @@ public class Variable implements Token {
     /**
      * Underlying variable.
      */
-    private final DefaultArgument<Number> variableNumber;
+    private final DefaultArgument<Number> number;
 
     /**
      * Creates a new variable token from a variable number.
      *
-     * @param variableNumber underlying variable
+     * @param number underlying variable
      */
-    public Variable(final DefaultArgument<Number> variableNumber) {
-        this.variableNumber = variableNumber;
+    public Variable(final DefaultArgument<Number> number) {
+        this.number = number;
     }
 
     @Override
     public double resolve(@Nullable final Profile profile) throws QuestException {
-        return variableNumber.getValue(profile).doubleValue();
+        return number.getValue(profile).doubleValue();
     }
 
     @Override
     public String toString() {
-        return variableNumber.toString();
+        return number.toString();
     }
 }

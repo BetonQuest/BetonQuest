@@ -18,12 +18,12 @@ public class HasBrewCondition implements OnlineCondition {
     /**
      * The amount of brews to check.
      */
-    private final Argument<Number> countVar;
+    private final Argument<Number> count;
 
     /**
      * The name of the brew to check.
      */
-    private final Argument<String> nameVar;
+    private final Argument<String> name;
 
     /**
      * Interpretation mode for brews.
@@ -33,20 +33,20 @@ public class HasBrewCondition implements OnlineCondition {
     /**
      * Creates a new has Brew condition.
      *
-     * @param countVar the amount of brews to check.
-     * @param nameVar  the name of the brew to check.
-     * @param mode     the interpretation mode for brews.
+     * @param count the amount of brews to check.
+     * @param name  the name of the brew to check.
+     * @param mode  the interpretation mode for brews.
      */
-    public HasBrewCondition(final Argument<Number> countVar, final Argument<String> nameVar, final Argument<IdentifierType> mode) {
-        this.countVar = countVar;
-        this.nameVar = nameVar;
+    public HasBrewCondition(final Argument<Number> count, final Argument<String> name, final Argument<IdentifierType> mode) {
+        this.count = count;
+        this.name = name;
         this.mode = mode;
     }
 
     @Override
     public boolean check(final OnlineProfile profile) throws QuestException {
-        final int count = countVar.getValue(profile).intValue();
-        final String name = nameVar.getValue(profile);
+        final int count = this.count.getValue(profile).intValue();
+        final String name = this.name.getValue(profile);
         final BRecipe recipe = mode.getValue(profile).getRecipeOrThrow(name);
 
         final Player player = profile.getPlayer();

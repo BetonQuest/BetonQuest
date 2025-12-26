@@ -24,7 +24,7 @@ public class FishObjectiveFactory implements ObjectiveFactory {
         final Argument<ItemWrapper> item = instruction.item().get();
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get();
         final Argument<Location> hookTargetLocation = instruction.location().get("hookLocation").orElse(null);
-        final Argument<Number> rangeVar = instruction.number().get("range").orElse(null);
-        return new FishObjective(instruction, targetAmount, item, hookTargetLocation, rangeVar);
+        final Argument<Number> range = instruction.number().get("range").orElse(null);
+        return new FishObjective(instruction, targetAmount, item, hookTargetLocation, range);
     }
 }

@@ -30,8 +30,8 @@ public class DrunkConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Argument<Number> drunkVar = instruction.number().get();
+        final Argument<Number> drunk = instruction.number().get();
         final BetonQuestLogger logger = loggerFactory.create(DrunkCondition.class);
-        return new OnlineConditionAdapter(new DrunkCondition(drunkVar), logger, instruction.getPackage());
+        return new OnlineConditionAdapter(new DrunkCondition(drunk), logger, instruction.getPackage());
     }
 }

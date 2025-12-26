@@ -15,10 +15,10 @@ public class ChestClearEvent extends AbstractChestEvent {
     /**
      * Creates a new chest clear event.
      *
-     * @param variableLocation the location of the chest
+     * @param location the location of the chest
      */
-    public ChestClearEvent(final Argument<Location> variableLocation) {
-        super(variableLocation);
+    public ChestClearEvent(final Argument<Location> location) {
+        super(location);
     }
 
     @Override

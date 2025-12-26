@@ -14,7 +14,7 @@ public class MMOCoreSkillPointsEvent implements PlayerEvent {
     /**
      * Amount to grant.
      */
-    private final Argument<Number> amountVar;
+    private final Argument<Number> amount;
 
     /**
      * Create a new skill point add event.
@@ -22,13 +22,13 @@ public class MMOCoreSkillPointsEvent implements PlayerEvent {
      * @param amount the amount to grant
      */
     public MMOCoreSkillPointsEvent(final Argument<Number> amount) {
-        this.amountVar = amount;
+        this.amount = amount;
     }
 
     @Override
     public void execute(final Profile profile) throws QuestException {
         final PlayerData data = PlayerData.get(profile.getPlayerUUID());
-        final int amount = amountVar.getValue(profile).intValue();
+        final int amount = this.amount.getValue(profile).intValue();
         data.giveSkillPoints(amount);
     }
 

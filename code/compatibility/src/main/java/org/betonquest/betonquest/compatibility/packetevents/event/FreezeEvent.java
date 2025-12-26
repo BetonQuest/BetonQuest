@@ -28,7 +28,7 @@ public class FreezeEvent implements OnlineEvent {
     /**
      * Freeze duration.
      */
-    private final Argument<Number> ticksVar;
+    private final Argument<Number> ticks;
 
     /**
      * Create a new event that freezes a player.
@@ -40,12 +40,12 @@ public class FreezeEvent implements OnlineEvent {
     public FreezeEvent(final Plugin plugin, final PacketEventsAPI<?> packetEventsAPI, final Argument<Number> ticks) {
         this.plugin = plugin;
         this.packetEventsAPI = packetEventsAPI;
-        ticksVar = ticks;
+        this.ticks = ticks;
     }
 
     @Override
     public void execute(final OnlineProfile profile) throws QuestException {
-        final int ticks = ticksVar.getValue(profile).intValue();
+        final int ticks = this.ticks.getValue(profile).intValue();
         final Player player = profile.getPlayer();
 
         final FakeArmorStandPassenger armorStandPassenger = new FakeArmorStandPassenger(plugin, packetEventsAPI, player);

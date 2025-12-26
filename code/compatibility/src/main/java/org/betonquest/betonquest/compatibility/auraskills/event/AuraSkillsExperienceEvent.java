@@ -23,12 +23,12 @@ public class AuraSkillsExperienceEvent implements PlayerEvent {
     /**
      * The amount of experience to give.
      */
-    private final Argument<Number> amountVar;
+    private final Argument<Number> amount;
 
     /**
      * The Skill name to give experience in.
      */
-    private final Argument<String> nameVar;
+    private final Argument<String> name;
 
     /**
      * If the amount is a level and not experience.
@@ -39,15 +39,15 @@ public class AuraSkillsExperienceEvent implements PlayerEvent {
      * Create a new AuraSkills experience event.
      *
      * @param auraSkillsApi the {@link AuraSkillsApi}.
-     * @param amountVar     the amount of experience to give the player in the skill.
-     * @param nameVar       the {@link Skill} name to give experience in.
+     * @param amount        the amount of experience to give the player in the skill.
+     * @param name          the {@link Skill} name to give experience in.
      * @param isLevel       {@code true} if the amount is a level. Otherwise {@code false} if the amount is experience.
      */
-    public AuraSkillsExperienceEvent(final AuraSkillsApi auraSkillsApi, final Argument<Number> amountVar,
-                                     final Argument<String> nameVar, final boolean isLevel) {
+    public AuraSkillsExperienceEvent(final AuraSkillsApi auraSkillsApi, final Argument<Number> amount,
+                                     final Argument<String> name, final boolean isLevel) {
         this.auraSkillsApi = auraSkillsApi;
-        this.amountVar = amountVar;
-        this.nameVar = nameVar;
+        this.amount = amount;
+        this.name = name;
         this.isLevel = isLevel;
     }
 
@@ -58,9 +58,9 @@ public class AuraSkillsExperienceEvent implements PlayerEvent {
             return;
         }
 
-        final NamespacedId namespacedId = NamespacedId.fromDefault(nameVar.getValue(profile));
+        final NamespacedId namespacedId = NamespacedId.fromDefault(name.getValue(profile));
         final Skill skill = Utils.getNN(auraSkillsApi.getGlobalRegistry().getSkill(namespacedId), "Invalid skill name");
-        final int amount = amountVar.getValue(profile).intValue();
+        final int amount = this.amount.getValue(profile).intValue();
         if (!isLevel) {
             user.addSkillXpRaw(skill, amount);
             return;

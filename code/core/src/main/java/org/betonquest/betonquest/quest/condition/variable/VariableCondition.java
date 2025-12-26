@@ -20,9 +20,9 @@ public class VariableCondition implements NullableCondition {
     private final BetonQuestLogger log;
 
     /**
-     * The variable to compare with the regex.
+     * The argument to compare with the regex.
      */
-    private final Argument<String> variable;
+    private final Argument<String> argument;
 
     /**
      * The regex the variable must match.
@@ -43,15 +43,15 @@ public class VariableCondition implements NullableCondition {
      * Creates a new VariableCondition based on the given instruction.
      *
      * @param log             the logger
-     * @param variable        the variable to compare with the regex
+     * @param argument        the argument to compare with the regex
      * @param regex           the regex the variable must match
      * @param variableAddress the address of the variable for logging
      * @param forceSync       whether to force synchronization with the main server thread
      */
-    public VariableCondition(final BetonQuestLogger log, final Argument<String> variable, final Argument<String> regex,
+    public VariableCondition(final BetonQuestLogger log, final Argument<String> argument, final Argument<String> regex,
                              final String variableAddress, final boolean forceSync) {
         this.log = log;
-        this.variable = variable;
+        this.argument = argument;
         this.regex = regex;
         this.variableAddress = variableAddress;
         this.forceSync = forceSync;
@@ -59,7 +59,7 @@ public class VariableCondition implements NullableCondition {
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
-        final String resolvedVariable = variable.getValue(profile);
+        final String resolvedVariable = argument.getValue(profile);
         final String resolvedRegex = regex.getValue(profile);
         try {
             return resolvedVariable.matches(resolvedRegex);

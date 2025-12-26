@@ -52,11 +52,11 @@ public class TimeEventFactory implements PlayerEventFactory, PlayerlessEventFact
     }
 
     private NullableEventAdapter createTimeEvent(final Instruction instruction) throws QuestException {
-        final Argument<TimeChange> timeVariable = instruction.parse(TimeParser.TIME).get();
-        final Optional<Argument<String>> worldVar = instruction.string().get("world");
-        final Selector<World> worldSelector = parseWorld(worldVar.isEmpty() ? null : worldVar.get().getValue(null));
+        final Argument<TimeChange> time = instruction.parse(TimeParser.TIME).get();
+        final Optional<Argument<String>> world = instruction.string().get("world");
+        final Selector<World> worldSelector = parseWorld(world.isEmpty() ? null : world.get().getValue(null));
         final boolean hourFormat = !instruction.hasArgument("ticks");
-        return new NullableEventAdapter(new TimeEvent(timeVariable, worldSelector, hourFormat));
+        return new NullableEventAdapter(new TimeEvent(time, worldSelector, hourFormat));
     }
 
     private Selector<World> parseWorld(@Nullable final String worldName) {

@@ -95,7 +95,7 @@ class NotifySound {
             return;
         }
 
-        final Argument<Location> variableLocation = getVariableLocation(data);
+        final Argument<Location> location = getLocationArgument(data);
         final SoundCategory soundCategory = getSoundCategory(data);
         final Argument<Number> volume = notify.getNumberData(KEY_SOUND_VOLUME, 1);
         final Argument<Number> pitch = notify.getNumberData(KEY_SOUND_PITCH, 1);
@@ -118,37 +118,39 @@ class NotifySound {
             soundString = soundString.toLowerCase(Locale.ROOT);
         }
 
-        soundPlayer = getSoundPlayer(sound, soundString, variableLocation, playerOffset, playerOffsetDistance, soundCategory, volume, pitch);
+        soundPlayer = getSoundPlayer(sound, soundString, location, playerOffset, playerOffsetDistance, soundCategory, volume, pitch);
     }
 
     private QuestConsumer<OnlineProfile> getSoundPlayer(
-            @Nullable final Sound sound, final String soundString, @Nullable final Argument<Location> variableLocation,
+            @Nullable final Sound sound, final String soundString, @Nullable final Argument<Location> location,
             @Nullable final Argument<Vector> playerOffset, @Nullable final Float playerOffsetDistance,
-            final SoundCategory soundCategory, final Argument<Number> variableVolume, final Argument<Number> variablePitch) {
+            final SoundCategory soundCategory, final Argument<Number> volume, final Argument<Number> pitch) {
         return (onlineProfile) -> {
-            final Location finalLocation = getLocation(onlineProfile, variableLocation, playerOffset, playerOffsetDistance);
-            final float volume = variableVolume.getValue(onlineProfile).floatValue();
-            final float pitch = variablePitch.getValue(onlineProfile).floatValue();
+            final Location finalLocation = getLocation(onlineProfile, location, playerOffset, playerOffsetDistance);
+            final float resolvedVolume = volume.getValue(onlineProfile).floatValue();
+            final float resolvedPitch = pitch.getValue(onlineProfile).floatValue();
             final Player player = onlineProfile.getPlayer();
             if (sound == null) {
-                player.playSound(finalLocation, soundString, soundCategory, volume, pitch);
+                player.playSound(finalLocation, soundString, soundCategory, resolvedVolume, resolvedPitch);
             } else {
-                player.playSound(finalLocation, sound, soundCategory, volume, pitch);
+                player.playSound(finalLocation, sound, soundCategory, resolvedVolume, resolvedPitch);
             }
         };
     }
 
-    private Location getLocation(final OnlineProfile onlineProfile, @Nullable final Argument<Location> variableLocation, @Nullable final Argument<Vector> playerOffset, @Nullable final Float playerOffsetDistance) throws QuestException {
-        final Location location = variableLocation == null ? onlineProfile.getPlayer().getLocation() : variableLocation.getValue(onlineProfile);
+    private Location getLocation(final OnlineProfile onlineProfile, @Nullable final Argument<Location> location,
+                                 @Nullable final Argument<Vector> playerOffset,
+                                 @Nullable final Float playerOffsetDistance) throws QuestException {
+        final Location resolvedLocation = location == null ? onlineProfile.getPlayer().getLocation() : location.getValue(onlineProfile);
 
-        if (playerOffsetDistance != null && onlineProfile.getPlayer().getLocation().distance(location) > playerOffsetDistance) {
-            return getLocationRelativeDistance(location, onlineProfile.getPlayer(), playerOffsetDistance);
+        if (playerOffsetDistance != null && onlineProfile.getPlayer().getLocation().distance(resolvedLocation) > playerOffsetDistance) {
+            return getLocationRelativeDistance(resolvedLocation, onlineProfile.getPlayer(), playerOffsetDistance);
         }
         if (playerOffset != null) {
-            return getLocationRelativeVector(location, onlineProfile.getPlayer(), onlineProfile, playerOffset);
+            return getLocationRelativeVector(resolvedLocation, onlineProfile.getPlayer(), onlineProfile, playerOffset);
         }
 
-        return location;
+        return resolvedLocation;
     }
 
     private Location getLocationRelativeDistance(final Location location, final Player player, final Float playerOffsetDistance) {
@@ -181,7 +183,7 @@ class NotifySound {
     }
 
     @Nullable
-    private Argument<Location> getVariableLocation(final Map<String, String> data) throws QuestException {
+    private Argument<Location> getLocationArgument(final Map<String, String> data) throws QuestException {
         final String locationString = data.get(KEY_SOUND_LOCATION);
         return locationString == null ? null : new DefaultArgument<>(variables, pack, locationString, new LocationParser(Bukkit.getServer()));
     }

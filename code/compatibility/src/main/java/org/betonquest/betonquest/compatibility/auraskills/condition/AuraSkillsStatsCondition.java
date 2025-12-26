@@ -23,12 +23,12 @@ public class AuraSkillsStatsCondition implements PlayerCondition {
     /**
      * The target level.
      */
-    private final Argument<Number> targetLevelVar;
+    private final Argument<Number> targetLevel;
 
     /**
      * The {@link Stat} name to check.
      */
-    private final Argument<String> nameVar;
+    private final Argument<String> name;
 
     /**
      * If the actual level must be equal to the target level.
@@ -38,16 +38,16 @@ public class AuraSkillsStatsCondition implements PlayerCondition {
     /**
      * Create a new AuraSkills Stats Condition.
      *
-     * @param auraSkillsApi  the {@link AuraSkillsApi}.
-     * @param targetLevelVar the target level.
-     * @param nameVar        the {@link Stat} name to check.
-     * @param mustBeEqual    if the actual level must be equal to the target level.
+     * @param auraSkillsApi the {@link AuraSkillsApi}.
+     * @param targetLevel   the target level.
+     * @param name          the {@link Stat} name to check.
+     * @param mustBeEqual   if the actual level must be equal to the target level.
      */
-    public AuraSkillsStatsCondition(final AuraSkillsApi auraSkillsApi, final Argument<Number> targetLevelVar,
-                                    final Argument<String> nameVar, final boolean mustBeEqual) {
+    public AuraSkillsStatsCondition(final AuraSkillsApi auraSkillsApi, final Argument<Number> targetLevel,
+                                    final Argument<String> name, final boolean mustBeEqual) {
         this.auraSkillsApi = auraSkillsApi;
-        this.targetLevelVar = targetLevelVar;
-        this.nameVar = nameVar;
+        this.targetLevel = targetLevel;
+        this.name = name;
         this.mustBeEqual = mustBeEqual;
     }
 
@@ -58,10 +58,10 @@ public class AuraSkillsStatsCondition implements PlayerCondition {
             return false;
         }
 
-        final NamespacedId namespacedId = NamespacedId.fromDefault(nameVar.getValue(profile));
+        final NamespacedId namespacedId = NamespacedId.fromDefault(name.getValue(profile));
         final Stat stat = Utils.getNN(auraSkillsApi.getGlobalRegistry().getStat(namespacedId), "Invalid stat name");
         final double actualLevel = user.getStatLevel(stat);
-        final double targetLevel = targetLevelVar.getValue(profile).doubleValue();
+        final double targetLevel = this.targetLevel.getValue(profile).doubleValue();
 
         return mustBeEqual ? actualLevel == targetLevel : actualLevel >= targetLevel;
     }

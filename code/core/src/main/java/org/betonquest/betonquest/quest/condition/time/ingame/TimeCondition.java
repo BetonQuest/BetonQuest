@@ -22,22 +22,22 @@ public class TimeCondition implements NullableCondition {
     /**
      * The variable world.
      */
-    private final Argument<World> variableWorld;
+    private final Argument<World> world;
 
     /**
      * Creates a new TimeCondition.
      *
-     * @param timeFrame     the time frame
-     * @param variableWorld the variable world
+     * @param timeFrame the time frame
+     * @param world     the variable world
      */
-    public TimeCondition(final Argument<TimeFrame> timeFrame, final Argument<World> variableWorld) {
+    public TimeCondition(final Argument<TimeFrame> timeFrame, final Argument<World> world) {
         this.timeFrame = timeFrame;
-        this.variableWorld = variableWorld;
+        this.world = world;
     }
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
-        return timeFrame.getValue(profile).isTimeBetween(currentTime(variableWorld.getValue(profile)));
+        return timeFrame.getValue(profile).isTimeBetween(currentTime(world.getValue(profile)));
     }
 
     private Time currentTime(final World world) {

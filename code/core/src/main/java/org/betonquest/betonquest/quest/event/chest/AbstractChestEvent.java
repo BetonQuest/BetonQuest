@@ -17,15 +17,15 @@ public abstract class AbstractChestEvent implements NullableEvent {
     /**
      * The location of the chest.
      */
-    private final Argument<Location> variableLocation;
+    private final Argument<Location> location;
 
     /**
      * Creates a new chest clear event.
      *
-     * @param variableLocation the location of the chest
+     * @param location the location of the chest
      */
-    public AbstractChestEvent(final Argument<Location> variableLocation) {
-        this.variableLocation = variableLocation;
+    public AbstractChestEvent(final Argument<Location> location) {
+        this.location = location;
     }
 
     /**
@@ -36,7 +36,7 @@ public abstract class AbstractChestEvent implements NullableEvent {
      * @throws QuestException if there is no chest at the specified location
      */
     protected InventoryHolder getChest(@Nullable final Profile profile) throws QuestException {
-        final Block block = variableLocation.getValue(profile).getBlock();
+        final Block block = location.getValue(profile).getBlock();
         try {
             return (InventoryHolder) block.getState();
         } catch (final ClassCastException e) {

@@ -37,19 +37,19 @@ import java.util.List;
  * @param cleanedLines    List of validated lines. Used by {@link #updateContent()} to update content without
  *                        revalidating content and dealing with potential errors.
  * @param questPackage    {@link QuestPackage} in which the hologram is specified in.
- * @param varMaxRange     The maximum range in which the hologram is visible.
+ * @param maxRange        The maximum range in which the hologram is visible.
  */
 public record HologramWrapper(BetonQuestLogger log, QuestTypeApi questTypeApi, ProfileProvider profileProvider,
                               int interval, List<BetonHologram> holograms, boolean staticContent,
                               List<ConditionID> conditionList,
                               List<AbstractLine> cleanedLines, QuestPackage questPackage,
-                              Argument<Number> varMaxRange) {
+                              Argument<Number> maxRange) {
 
     /**
      * Checks whether all conditions are met by a players and displays or hides the hologram.
      */
     public void updateVisibility() {
-        final int maxRange = getMaxRangeFromVariable(null);
+        final int maxRange = getMaxRangeFromArgument(null);
         if (conditionList.isEmpty() && maxRange <= 0) {
             for (final BetonHologram hologram : holograms) {
                 hologram.showAll();
@@ -89,7 +89,7 @@ public record HologramWrapper(BetonQuestLogger log, QuestTypeApi questTypeApi, P
      * @return {@code true} if the player is out of range, {@code false} otherwise.
      */
     public boolean isPlayerOutOfRange(final OnlineProfile profile, final BetonHologram hologram) {
-        final int maxRange = getMaxRangeFromVariable(profile);
+        final int maxRange = getMaxRangeFromArgument(profile);
         if (maxRange > 0) {
             final Location playerLocation = profile.getPlayer().getLocation();
             final Location hologramLocation = hologram.getLocation();
@@ -145,10 +145,10 @@ public record HologramWrapper(BetonQuestLogger log, QuestTypeApi questTypeApi, P
         }
     }
 
-    private int getMaxRangeFromVariable(@Nullable final Profile profile) {
+    private int getMaxRangeFromArgument(@Nullable final Profile profile) {
         int maxRange;
         try {
-            maxRange = varMaxRange.getValue(profile).intValue();
+            maxRange = this.maxRange.getValue(profile).intValue();
         } catch (final QuestException e) {
             maxRange = 0;
             log.debug("Failed to parse max range from variable. Defaulting to 0.", e);

@@ -75,8 +75,8 @@ public class WeatherEventFactory implements PlayerEventFactory, PlayerlessEventF
 
     private NullableEventAdapter parseWeatherEvent(final Instruction instruction) throws QuestException {
         final Argument<Weather> weather = instruction.parse(Weather::parseWeather).get();
-        final Argument<String> worldVar = instruction.string().get("world").orElse(null);
-        final Selector<World> worldSelector = parseWorld(worldVar == null ? null : worldVar.getValue(null));
+        final Argument<String> world = instruction.string().get("world").orElse(null);
+        final Selector<World> worldSelector = parseWorld(world == null ? null : world.getValue(null));
         final Argument<Number> duration = instruction.number().get("duration", 0);
         return new NullableEventAdapter(new WeatherEvent(weather, worldSelector, duration));
     }
