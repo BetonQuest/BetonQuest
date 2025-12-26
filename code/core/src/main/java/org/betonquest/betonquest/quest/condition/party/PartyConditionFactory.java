@@ -61,11 +61,11 @@ public class PartyConditionFactory implements PlayerConditionFactory, Playerless
 
     private PartyCondition parse(final Instruction instruction, final Argument<Location> location) throws QuestException {
         final Argument<Number> range = instruction.number().get();
-        final Argument<List<ConditionID>> conditions = instruction.parse(ConditionID::new).getList();
+        final Argument<List<ConditionID>> conditions = instruction.parse(ConditionID::new).list().get();
         final Argument<List<ConditionID>> everyone = instruction.parse(ConditionID::new)
-                .getList("every", Collections.emptyList());
+                .list().get("every", Collections.emptyList());
         final Argument<List<ConditionID>> anyone = instruction.parse(ConditionID::new)
-                .getList("any", Collections.emptyList());
+                .list().get("any", Collections.emptyList());
         final Argument<Number> count = instruction.number().get("count").orElse(null);
         return new PartyCondition(location, range, conditions, everyone, anyone, count, questTypeApi, profileProvider);
     }

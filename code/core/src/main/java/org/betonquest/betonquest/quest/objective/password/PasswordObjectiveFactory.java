@@ -30,7 +30,7 @@ public class PasswordObjectiveFactory implements ObjectiveFactory {
         final Argument<String> prefix = instruction.string().get("prefix").orElse(null);
         final String resolvedPrefix = prefix == null ? null : prefix.getValue(null);
         final String passwordPrefix = resolvedPrefix == null || resolvedPrefix.isEmpty() ? resolvedPrefix : resolvedPrefix + ": ";
-        final Argument<List<EventID>> failEvents = instruction.parse(EventID::new).getList("fail", Collections.emptyList());
+        final Argument<List<EventID>> failEvents = instruction.parse(EventID::new).list().get("fail", Collections.emptyList());
         return new PasswordObjective(instruction, regex, passwordPrefix, failEvents);
     }
 }

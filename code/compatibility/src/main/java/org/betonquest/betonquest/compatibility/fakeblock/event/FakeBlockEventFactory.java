@@ -49,7 +49,7 @@ public class FakeBlockEventFactory implements PlayerEventFactory {
         final String action = instruction.string().get().getValue(null);
         final Argument<List<String>> groupNames = instruction.string()
                 .validate(checkForNotExistingGroups())
-                .getList();
+                .list().get();
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "hidegroup" -> new HideGroupEvent(groupNames, playerGroupService);
             case "showgroup" -> new ShowGroupEvent(groupNames, playerGroupService);

@@ -13,7 +13,6 @@ import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentPar
 import org.betonquest.betonquest.api.instruction.chain.ChainableInstruction;
 import org.betonquest.betonquest.api.quest.Variables;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -82,12 +81,6 @@ public class DefaultChainableInstruction implements ChainableInstruction {
     }
 
     @Override
-    public <T> Argument<List<T>> getNextList(final InstructionArgumentParser<T> argumentParser) throws QuestException {
-        return new DefaultListArgument<>(variables, pack, nextElementSupplier.get(),
-                value -> argumentParser.apply(variables, packManager, pack, value));
-    }
-
-    @Override
     public <T> Optional<Argument<T>> getOptional(final String argumentKey, final InstructionArgumentParser<T> argumentParser) throws QuestException {
         final String argumentValue = nextOptionalFunction.apply(argumentKey);
         if (argumentValue == null) {
@@ -105,26 +98,6 @@ public class DefaultChainableInstruction implements ChainableInstruction {
         }
         final ValueParser<T> valueParser = value -> argument.apply(variables, packManager, pack, value);
         return new DefaultArgument<>(variables, pack, argumentValue, valueParser);
-    }
-
-    @Override
-    public <T> Optional<Argument<List<T>>> getOptionalList(final String argumentKey, final InstructionArgumentParser<T> argumentParser) throws QuestException {
-        final String argumentValue = nextOptionalFunction.apply(argumentKey);
-        if (argumentValue == null) {
-            return Optional.empty();
-        }
-        final ValueParser<T> valueParser = value -> argumentParser.apply(variables, packManager, pack, value);
-        return Optional.of(new DefaultListArgument<>(variables, pack, argumentValue, valueParser));
-    }
-
-    @Override
-    public <T> Argument<List<T>> getOptionalList(final String argumentKey, final InstructionArgumentParser<T> argumentParser, final List<T> defaultList) throws QuestException {
-        final String argumentValue = nextOptionalFunction.apply(argumentKey);
-        if (argumentValue == null) {
-            return new DefaultListArgument<>(defaultList);
-        }
-        final ValueParser<T> valueParser = value -> argumentParser.apply(variables, packManager, pack, value);
-        return new DefaultListArgument<>(variables, pack, argumentValue, valueParser);
     }
 
     @Override

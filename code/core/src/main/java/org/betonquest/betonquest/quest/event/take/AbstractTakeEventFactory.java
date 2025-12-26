@@ -47,7 +47,7 @@ public abstract class AbstractTakeEventFactory implements PlayerEventFactory {
      * @throws QuestException if the check order is invalid
      */
     protected List<CheckType> getCheckOrder(final Instruction instruction) throws QuestException {
-        return instruction.enumeration(CheckType.class).getList("invOrder",
+        return instruction.enumeration(CheckType.class).list().get("invOrder",
                 List.of(CheckType.INVENTORY, CheckType.OFFHAND, CheckType.ARMOR, CheckType.BACKPACK)).getValue(null);
     }
 

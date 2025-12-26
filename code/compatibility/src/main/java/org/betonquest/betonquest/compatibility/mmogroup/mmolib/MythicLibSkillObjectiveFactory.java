@@ -26,7 +26,7 @@ public class MythicLibSkillObjectiveFactory implements ObjectiveFactory {
         final Argument<String> skillId = instruction.string().get();
         final List<TriggerType> triggerTypes = instruction
                 .parse(id -> TriggerType.valueOf(id.toUpperCase(Locale.ROOT)))
-                .getList().getValue(null);
+                .list().get().getValue(null);
         return new MythicLibSkillObjective(instruction, skillId, triggerTypes);
     }
 }

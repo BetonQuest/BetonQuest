@@ -62,7 +62,7 @@ public class GiveEventFactory implements PlayerEventFactory {
         final NotificationSender itemsDroppedSender = new IngameNotificationSender(log, pluginMessage, instruction.getPackage(), instruction.getID().getFull(), NotificationLevel.ERROR, "inventory_full_drop", "inventory_full");
 
         return new OnlineEventAdapter(new GiveEvent(
-                instruction.item().getList(),
+                instruction.item().list().get(),
                 itemsGivenSender,
                 itemsInBackpackSender,
                 itemsDroppedSender,

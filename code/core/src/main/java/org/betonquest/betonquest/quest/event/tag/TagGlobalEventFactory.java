@@ -34,7 +34,7 @@ public class TagGlobalEventFactory implements PlayerEventFactory, PlayerlessEven
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final String action = instruction.string().get().getValue(null);
-        final Argument<List<String>> tags = instruction.packageIdentifier().getList();
+        final Argument<List<String>> tags = instruction.packageIdentifier().list().get();
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "add" -> createAddTagEvent(tags);
             case "delete", "del" -> createDeleteTagEvent(tags);
@@ -45,7 +45,7 @@ public class TagGlobalEventFactory implements PlayerEventFactory, PlayerlessEven
     @Override
     public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
         final String action = instruction.string().get().getValue(null);
-        final Argument<List<String>> tags = instruction.packageIdentifier().getList();
+        final Argument<List<String>> tags = instruction.packageIdentifier().list().get();
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "add" -> createStaticAddTagEvent(tags);
             case "delete", "del" -> createStaticDeleteTagEvent(tags);

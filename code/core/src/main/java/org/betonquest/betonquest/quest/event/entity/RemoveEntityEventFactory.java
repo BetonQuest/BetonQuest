@@ -36,7 +36,7 @@ public class RemoveEntityEventFactory implements PlayerEventFactory, PlayerlessE
     }
 
     private NullableEventAdapter createRemoveEntityEvent(final Instruction instruction) throws QuestException {
-        final Argument<List<EntityType>> types = instruction.enumeration(EntityType.class).getList();
+        final Argument<List<EntityType>> types = instruction.enumeration(EntityType.class).list().get();
         final Argument<Location> loc = instruction.location().get();
         final Argument<Number> range = instruction.number().get();
         final boolean kill = instruction.hasArgument("kill");

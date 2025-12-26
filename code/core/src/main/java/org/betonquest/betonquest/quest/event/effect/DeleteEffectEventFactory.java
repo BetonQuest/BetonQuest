@@ -42,7 +42,7 @@ public class DeleteEffectEventFactory implements PlayerEventFactory {
                     throw new QuestException("Unknown effect type: " + type);
                 }
                 return effect;
-            }).getList();
+            }).list().get();
         } else {
             effects = new DefaultListArgument<>(Collections.emptyList());
         }

@@ -35,7 +35,7 @@ public class TimerObjectiveFactory implements ObjectiveFactory {
         final Argument<Number> targetAmount = instruction.number().get("amount", Integer.MAX_VALUE);
         final Argument<String> name = instruction.string().get("name", "");
         final Argument<Number> interval = instruction.number().get("interval", 1);
-        final Argument<List<EventID>> doneEvents = instruction.parse(EventID::new).getList("done", Collections.emptyList());
+        final Argument<List<EventID>> doneEvents = instruction.parse(EventID::new).list().get("done", Collections.emptyList());
         return new TimerObjective(instruction, targetAmount, questTypeApi, name, interval, doneEvents);
     }
 }

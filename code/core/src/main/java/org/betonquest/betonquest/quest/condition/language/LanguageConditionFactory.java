@@ -47,12 +47,10 @@ public class LanguageConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Argument<List<String>> languages = instruction.string().validate(language -> {
-            if (!pluginMessage.getLanguages().contains(language)) {
-                throw new QuestException("Language " + language + " does not exist.");
-            }
-            return true;
-        }).getList();
+        final Argument<List<String>> languages = instruction.string().validate(
+                        language -> pluginMessage.getLanguages().contains(language),
+                        "Language '%s' does not exist.")
+                .list().get();
         return new LanguageCondition(dataStorage, languageProvider, languages);
     }
 }

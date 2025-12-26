@@ -9,7 +9,7 @@ import java.util.Optional;
 
 /**
  * An extended {@link InstructionChainRetriever} offering additional methods
- * to modify the parsing process before retrieving the variable explicitly for the {@link Number} type.
+ * to modify the parsing process before retrieving the argument explicitly for the {@link Number} type.
  *
  * @see InstructionChainRetriever
  * @see DecoratableChainRetriever

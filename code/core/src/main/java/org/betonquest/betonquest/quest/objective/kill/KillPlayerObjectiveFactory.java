@@ -26,7 +26,7 @@ public class KillPlayerObjectiveFactory implements ObjectiveFactory {
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get();
         final Argument<String> name = instruction.string().get("name").orElse(null);
         final Argument<List<ConditionID>> required = instruction.parse(ConditionID::new)
-                .getList("required", Collections.emptyList());
+                .list().get("required", Collections.emptyList());
         return new KillPlayerObjective(instruction, targetAmount, name, required);
     }
 }

@@ -43,10 +43,10 @@ public class CitizensMoveEventFactory implements PlayerEventFactory {
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<NpcID> npcId = instruction.parse(CitizensArgument.CITIZENS_ID).get();
-        final Argument<List<Location>> locations = instruction.location().getList();
+        final Argument<List<Location>> locations = instruction.location().list().invalidate(List::isEmpty).get();
         final Argument<Number> waitTicks = instruction.number().get("wait", 0);
-        final Argument<List<EventID>> doneEvents = instruction.parse(EventID::new).getList("done", Collections.emptyList());
-        final Argument<List<EventID>> failEvents = instruction.parse(EventID::new).getList("fail", Collections.emptyList());
+        final Argument<List<EventID>> doneEvents = instruction.parse(EventID::new).list().get("done", Collections.emptyList());
+        final Argument<List<EventID>> failEvents = instruction.parse(EventID::new).list().get("fail", Collections.emptyList());
         final boolean blockConversations = instruction.hasArgument("block");
         final CitizensMoveController.MoveData moveAction = new CitizensMoveController.MoveData(locations, waitTicks,
                 doneEvents, failEvents, blockConversations);

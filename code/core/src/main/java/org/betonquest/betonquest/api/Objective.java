@@ -119,8 +119,8 @@ public abstract class Objective {
         this.profileProvider = BetonQuest.getInstance().getProfileProvider();
         this.dataMap = new ProfileKeyMap<>(profileProvider);
         persistent = instruction.hasArgument("persistent");
-        events = instruction.parse(EventID::new).getList("events", Collections.emptyList());
-        conditions = instruction.parse(ConditionID::new).getList("conditions", Collections.emptyList());
+        events = instruction.parse(EventID::new).list().get("events", Collections.emptyList());
+        conditions = instruction.parse(ConditionID::new).list().get("conditions", Collections.emptyList());
         final int customNotifyInterval = instruction.number().get("notify", 0).getValue(null).intValue();
         notify = customNotifyInterval > 0 || instruction.hasArgument("notify");
         notifyInterval = Math.max(1, customNotifyInterval);

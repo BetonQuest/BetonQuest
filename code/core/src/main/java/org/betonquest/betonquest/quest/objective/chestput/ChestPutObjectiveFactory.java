@@ -46,7 +46,7 @@ public class ChestPutObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<Location> loc = instruction.location().get();
-        final Argument<List<ItemWrapper>> items = instruction.item().getList();
+        final Argument<List<ItemWrapper>> items = instruction.item().list().get();
         final boolean multipleAccess = instruction.bool().get("multipleaccess", false).getValue(null);
         final ChestItemCondition chestItemCondition = new ChestItemCondition(loc, items);
         final ChestTakeEvent chestTakeEvent = instruction.hasArgument("items-stay") ? null : new ChestTakeEvent(loc, items);

@@ -41,7 +41,7 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
 
     private EntityCondition parseEntityCondition(final Instruction instruction) throws QuestException {
         final Argument<List<Map.Entry<EntityType, Integer>>> entityAmounts =
-                instruction.parse(EntityAmount.ENTITY_AMOUNT).getList();
+                instruction.parse(EntityAmount.ENTITY_AMOUNT).list().distinct(Map.Entry::getKey).get();
         final Argument<Location> location = instruction.location().get();
         final Argument<Number> range = instruction.number().get();
         final Argument<Component> name = instruction.component().get("name").orElse(null);

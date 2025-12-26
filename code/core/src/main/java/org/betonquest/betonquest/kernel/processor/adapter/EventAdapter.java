@@ -56,7 +56,7 @@ public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> imp
         this.log = log;
         this.questTypeApi = questTypeApi;
         this.instruction = instruction;
-        conditions = instruction.parse(ConditionID::new).getList("conditions", Collections.emptyList());
+        conditions = instruction.parse(ConditionID::new).list().get("conditions", Collections.emptyList());
     }
 
     /**
