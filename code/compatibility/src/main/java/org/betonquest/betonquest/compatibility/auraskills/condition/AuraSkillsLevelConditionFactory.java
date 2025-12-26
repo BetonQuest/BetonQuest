@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.auraskills.condition;
 import dev.aurelium.auraskills.api.AuraSkillsApi;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
@@ -30,7 +31,7 @@ public class AuraSkillsLevelConditionFactory implements PlayerConditionFactory {
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<String> nameVar = instruction.string().get();
         final Argument<Number> targetLevelVar = instruction.number().get();
-        final boolean mustBeEqual = instruction.hasArgument("equal");
+        final FlagArgument<Boolean> mustBeEqual = instruction.bool().getFlag("equal", false);
 
         return new AuraSkillsLevelCondition(auraSkillsApi, targetLevelVar, nameVar, mustBeEqual);
     }
