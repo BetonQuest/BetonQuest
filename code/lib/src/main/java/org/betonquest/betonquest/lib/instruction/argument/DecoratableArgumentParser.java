@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.instruction.argument.ListArgumentParser;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -45,7 +46,7 @@ public class DecoratableArgumentParser<T> implements DecoratedArgumentParser<T> 
 
     @Override
     public ListArgumentParser<T> list() {
-        return new DefaultListArgumentParser<>(collect(Collectors.toList()));
+        return new DefaultListArgumentParser<>(collect(Collectors.toCollection(ArrayList::new)));
     }
 
     @Override
