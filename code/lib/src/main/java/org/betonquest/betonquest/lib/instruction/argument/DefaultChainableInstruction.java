@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.common.function.QuestSupplier;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.FlagState;
 import org.betonquest.betonquest.api.instruction.ValueParser;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
@@ -127,12 +128,12 @@ public class DefaultChainableInstruction implements ChainableInstruction {
     }
 
     @Override
-    public <T> Argument<Optional<T>> getFlag(final String argumentKey, final InstructionArgumentParser<T> argumentParser, final T presenceDefault) throws QuestException {
+    public <T> FlagArgument<T> getFlag(final String argumentKey, final InstructionArgumentParser<T> argumentParser, final T presenceDefault) throws QuestException {
         final Map.Entry<FlagState, String> flag = nextFlagFunction.apply(argumentKey);
         return switch (flag.getKey()) {
-            case ABSENT -> new DefaultArgument<>(Optional.empty());
-            case UNDEFINED -> new DefaultArgument<>(Optional.ofNullable(presenceDefault));
-            case DEFINED -> new DefaultArgument<>(variables, pack, flag.getValue(),
+            case ABSENT -> new DefaultFlagArgument<>();
+            case UNDEFINED -> new DefaultFlagArgument<>(presenceDefault, FlagState.UNDEFINED);
+            case DEFINED -> new DefaultFlagArgument<>(variables, pack, flag.getValue(),
                     value -> Optional.of(argumentParser.apply(variables, packManager, pack, value)));
         };
     }

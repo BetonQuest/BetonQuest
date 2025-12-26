@@ -283,7 +283,7 @@ public class DefaultInstruction implements Instruction {
     }
 
     @Override
-    public <T> Argument<Optional<T>> getFlag(final String argumentKey, final InstructionArgumentParser<T> argumentParser, final T presenceDefault) throws QuestException {
+    public <T> FlagArgument<T> getFlag(final String argumentKey, final InstructionArgumentParser<T> argumentParser, final T presenceDefault) throws QuestException {
         return chainableInstruction.getFlag(argumentKey, argumentParser, presenceDefault);
     }
 

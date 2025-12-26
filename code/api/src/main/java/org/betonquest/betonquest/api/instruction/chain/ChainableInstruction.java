@@ -2,6 +2,7 @@ package org.betonquest.betonquest.api.instruction.chain;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.jetbrains.annotations.Contract;
 
@@ -105,5 +106,5 @@ public interface ChainableInstruction {
      * @return an optional of the flag argument
      * @throws QuestException if an error occurs while parsing
      */
-    <T> Argument<Optional<T>> getFlag(String argumentKey, InstructionArgumentParser<T> argumentParser, T presenceDefault) throws QuestException;
+    <T> FlagArgument<T> getFlag(String argumentKey, InstructionArgumentParser<T> argumentParser, T presenceDefault) throws QuestException;
 }
