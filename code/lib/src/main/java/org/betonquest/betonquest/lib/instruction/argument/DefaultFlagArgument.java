@@ -35,7 +35,6 @@ public class DefaultFlagArgument<T> extends DefaultArgument<Optional<T>> impleme
 
     /**
      * Constructor creating an {@link FlagState#ABSENT} flag argument.
-     *
      */
     public DefaultFlagArgument() {
         super(Optional.empty());
@@ -51,7 +50,7 @@ public class DefaultFlagArgument<T> extends DefaultArgument<Optional<T>> impleme
      * @param valueParser the parser
      * @throws QuestException if an error occurs on creation
      */
-    public DefaultFlagArgument(final Variables variables, final @Nullable QuestPackage pack, final String input,
+    public DefaultFlagArgument(final Variables variables, @Nullable final QuestPackage pack, final String input,
                                final ValueParser<Optional<T>> valueParser) throws QuestException {
         super(variables, pack, input, valueParser);
         this.state = FlagState.DEFINED;

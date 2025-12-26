@@ -226,7 +226,7 @@ public class DefaultInstruction implements Instruction {
                 .findFirst()
                 .map(part -> part.substring(prefix.length()))
                 .map(part -> part.startsWith(":") ? Map.entry(FlagState.DEFINED, part.substring(1))
-                        : Map.entry(FlagState.DEFINED, part))
+                        : Map.entry(FlagState.UNDEFINED, part))
                 .orElse(Map.entry(FlagState.ABSENT, ""));
     }
 

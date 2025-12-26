@@ -90,13 +90,19 @@ public interface ChainableInstruction {
      * Find the optional flag argument in the instruction by its key.
      * Flags have three states of existence:
      * <ul>
-     *     <li>Absence: The argument is not present in the instruction</li>
-     *     The resulting {@link Argument} will contain an empty optional.
-     *     {@link Optional#isEmpty()} will resolve to <code>true</code>.
-     *     <li>Undefined: The argument is present, but has no value defined</li>
-     *     The resulting {@link Argument} will contain the value defined in {@code presenceDefault}.
-     *     <li>Defined: The argument is present with a defined value</li>
-     *     The resulting {@link Argument} will contain the value parsed by {@code argumentParser}.
+     *     <li>
+     *         Absence: The argument is not present in the instruction.
+     *         <br>The resulting {@link Argument} will contain an empty optional.
+     *         <br>{@link Optional#isEmpty()} will resolve to <code>true</code>.
+     *     </li>
+     *     <li>
+     *         Undefined: The argument is present, but has no value defined.
+     *         <br>The resulting {@link Argument} will contain the value defined in {@code presenceDefault}.
+     *     </li>
+     *     <li>
+     *         Defined: The argument is present with a defined value.
+     *         <br>The resulting {@link Argument} will contain the value parsed by {@code argumentParser}.
+     *     </li>
      * </ul>
      *
      * @param argumentKey     the key of the argument
@@ -106,5 +112,6 @@ public interface ChainableInstruction {
      * @return an optional of the flag argument
      * @throws QuestException if an error occurs while parsing
      */
+    @Contract("!null, !null, !null -> new")
     <T> FlagArgument<T> getFlag(String argumentKey, InstructionArgumentParser<T> argumentParser, T presenceDefault) throws QuestException;
 }

@@ -16,7 +16,7 @@ public enum FlagState {
      */
     UNDEFINED,
     /**
-     * if the flag is defined meaning the flag is present and its value is defined.
+     * If the flag is defined meaning the flag is present and its value is defined.
      */
     DEFINED
 }
