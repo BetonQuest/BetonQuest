@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.lib.instruction.argument;
 
+import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
@@ -11,6 +12,8 @@ import org.betonquest.betonquest.api.quest.Variables;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Stream;
 
 /**
  * A wrapper for {@link InstructionArgumentParser} to turn it into a {@link DecoratedArgumentParser}.
@@ -36,6 +39,12 @@ public class DecoratableArgumentParser<T> implements DecoratedArgumentParser<T> 
     @Override
     public T apply(final Variables variables, final QuestPackageManager packManager, final QuestPackage pack, final String string) throws QuestException {
         return argumentParser.apply(variables, packManager, pack, string);
+    }
+
+    @Override
+    public <R> DecoratedArgumentParser<R> collect(final Collector<T, ?, R> collector) {
+        return new DecoratableArgumentParser<>((variables, packManager, pack, string) ->
+                parseCollect(variables, packManager, pack, string, collector));
     }
 
     @Override
@@ -67,7 +76,19 @@ public class DecoratableArgumentParser<T> implements DecoratedArgumentParser<T> 
                 Optional.ofNullable(expected.equalsIgnoreCase(string) ? fixedValue : apply(variables, packManager, pack, string)));
     }
 
-    private T validateLocal(final ValueValidator<T> checker, final String errorMessage, final Variables variables, final QuestPackageManager packManager, final QuestPackage pack, final String string) throws QuestException {
+    private <R, A> R parseCollect(final Variables variables, final QuestPackageManager packManager, final QuestPackage pack,
+                                  final String string, final Collector<T, A, R> collector) throws QuestException {
+        final String[] elements = StringUtils.split(string, ",");
+        final Stream.Builder<T> streamBuilder = Stream.builder();
+        for (final String element : elements) {
+            final T resolved = apply(variables, packManager, pack, element);
+            streamBuilder.add(resolved);
+        }
+        return streamBuilder.build().collect(collector);
+    }
+
+    private T validateLocal(final ValueValidator<T> checker, final String errorMessage, final Variables variables,
+                            final QuestPackageManager packManager, final QuestPackage pack, final String string) throws QuestException {
         final T value = apply(variables, packManager, pack, string);
         if (!checker.validate(value)) {
             throw new QuestException(errorMessage.formatted(string));

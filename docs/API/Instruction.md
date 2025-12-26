@@ -100,10 +100,14 @@ To have valid calls the `Number` parser is used as an example, but naturally any
 | <nobr>`.getList("amounts",`</nobr><br><nobr>`List.of(1,5,10))`</nobr> |      `Argument<List<Number>>`      | Retrieves an optional argument of the value with the key `amounts` from the instruction parsed as list or gets an argument with default list as value |
 | `.getFlag("repeat", 10)`                                              |       `FlagArgument<Number>`       | Retrieves an optional flag argument of the value with the key `repeat` from the instruction using the default value for its undefined state           |
 
-
 ### Advanced Argument Parsing
 Parsers via the chain offer more functionality than just parsing a string into a specific type.
 By chaining different kinds of operations, the outcome can be modified in certain ways.
+
+#### Collectors
+You can interpret any argument's value as a list of comma-separated values and collect them into any type of `java.util.Collection`.  
+Use `collect(Collector<T,?,R>)` to handle the collection process in an identical manner as java streams.  
+The method `list()` offers a common overload to support `java.util.List`.
 
 #### Validations
 You can validate an argument using the `validate(ValueValidator<T>)` or `validate(ValueValidator<T>, String)` method.
