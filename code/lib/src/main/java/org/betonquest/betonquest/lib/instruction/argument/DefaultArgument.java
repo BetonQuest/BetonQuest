@@ -56,8 +56,8 @@ public class DefaultArgument<T> implements Argument<T> {
                            final ValueParser<T> valueParser) throws QuestException {
         final Map<String, Argument<String>> foundPlaceholders = getPlaceholders(variables, pack, input);
         if (foundPlaceholders.isEmpty()) {
-            final T resolved = valueParser.apply(replaceEscapedPercent(input));
-            value = profile -> valueParser.cloneValue(resolved);
+            final String escapedInput = replaceEscapedPercent(input);
+            value = profile -> valueParser.apply(escapedInput);
         } else {
             value = profile -> valueParser.apply(replaceEscapedPercent(getString(input, foundPlaceholders, profile)));
         }
