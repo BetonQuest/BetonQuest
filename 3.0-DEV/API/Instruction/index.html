@@ -5401,6 +5401,7 @@ This method will throw a <code>QuestException</code> if the predicate does not m
 It may be used to check if a value is within a certain range or if a value satisfies a certain condition 
 outside matching just the type.
 In the error message a single <code>%s</code> maybe used to inline the wrong value.<br />
+The <code>invalidate</code> counterparts handle the validation in the exact opposite way.
 Examples:</p>
 <details class="example">
 <summary>Even Number</summary>
@@ -5414,6 +5415,7 @@ Examples:</p>
 <p>The example below checks if the parsed string is not empty and throws an error if it is empty.
 <div class="highlight"><span class="filename">non-empty string validate example</span><pre><span></span><code><span class="n">instruction</span><span class="p">.</span><span class="na">string</span><span class="p">().</span><span class="na">validate</span><span class="p">(</span><span class="n">s</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="o">!</span><span class="n">s</span><span class="p">.</span><span class="na">isEmpty</span><span class="p">())</span>
 <span class="n">instruction</span><span class="p">.</span><span class="na">string</span><span class="p">().</span><span class="na">validate</span><span class="p">(</span><span class="n">s</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="o">!</span><span class="n">s</span><span class="p">.</span><span class="na">isEmpty</span><span class="p">(),</span><span class="w"> </span><span class="s">&quot;Empty strings are not permitted.&quot;</span><span class="p">)</span>
+<span class="n">instruction</span><span class="p">.</span><span class="na">string</span><span class="p">().</span><span class="na">invalidate</span><span class="p">(</span><span class="n">String</span><span class="p">::</span><span class="n">isEmpty</span><span class="p">)</span>
 </code></pre></div></p>
 </details>
 <h4 id="prefilter">Prefilter<a class="headerlink" href="#prefilter" title="Permanent link">🔗</a></h4>
