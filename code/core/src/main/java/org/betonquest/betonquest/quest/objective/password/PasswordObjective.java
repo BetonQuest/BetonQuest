@@ -5,6 +5,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -30,7 +31,7 @@ public class PasswordObjective extends Objective implements Listener {
     /**
      * Regex pattern to match the password.
      */
-    private final Pattern regex;
+    private final FlagArgument<Pattern> regex;
 
     /**
      * Prefix to be shown to the player before the password.
@@ -52,7 +53,7 @@ public class PasswordObjective extends Objective implements Listener {
      * @param failEvents     the events to be triggered on failure
      * @throws QuestException if there is an error in the instruction
      */
-    public PasswordObjective(final Instruction instruction, final Pattern regex,
+    public PasswordObjective(final Instruction instruction, final FlagArgument<Pattern> regex,
                              @Nullable final String passwordPrefix, final Argument<List<EventID>> failEvents) throws QuestException {
         super(instruction);
         this.regex = regex;
@@ -107,7 +108,7 @@ public class PasswordObjective extends Objective implements Listener {
         }
         final String password = message.substring(prefix.length());
         if (checkConditions(onlineProfile)) {
-            if (regex.matcher(password).matches()) {
+            if (regex.getValue(onlineProfile).map(pattern -> pattern.matcher(password).matches()).orElse(false)) {
                 Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> completeObjective(onlineProfile));
                 return !fromCommand || !prefix.isEmpty();
             }

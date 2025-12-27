@@ -16,7 +16,7 @@ public interface ItemWrapper {
     /**
      * Generates the item stack.
      *
-     * @param profile the profile for variable resolving
+     * @param profile the profile for argument resolving
      * @return the generated bukkit item
      * @throws QuestException when the generation fails
      */

@@ -51,8 +51,8 @@ public class PartyEventFactory implements PlayerEventFactory {
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<Number> range = instruction.number().get();
         final Argument<Number> amount = instruction.number().get("amount").orElse(null);
-        final Argument<List<ConditionID>> conditions = instruction.parse(ConditionID::new).getList();
-        final Argument<List<EventID>> events = instruction.parse(EventID::new).getList();
+        final Argument<List<ConditionID>> conditions = instruction.parse(ConditionID::new).list().get();
+        final Argument<List<EventID>> events = instruction.parse(EventID::new).list().get();
         return new OnlineEventAdapter(
                 new PartyEvent(questTypeApi, profileProvider, range, amount, conditions, events),
                 loggerFactory.create(PartyEvent.class),

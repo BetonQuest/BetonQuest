@@ -241,11 +241,6 @@ public class DefaultInstruction implements Instruction {
     }
 
     @Override
-    public boolean hasArgument(final String argument) {
-        return instructionParts.getParts().stream().anyMatch(part -> part.equalsIgnoreCase(argument));
-    }
-
-    @Override
     public InstructionChainParser chainForArgument(final QuestSupplier<String> rawArgumentSupplier) {
         final ChainableInstruction instruction = new DefaultChainableInstruction(variables, packManager, pack,
                 rawArgumentSupplier, key -> rawArgumentSupplier.get(), key -> Map.entry(FlagState.DEFINED, key));
@@ -258,11 +253,6 @@ public class DefaultInstruction implements Instruction {
     }
 
     @Override
-    public <T> Argument<List<T>> getNextList(final InstructionArgumentParser<T> argumentParser) throws QuestException {
-        return chainableInstruction.getNextList(argumentParser);
-    }
-
-    @Override
     public <T> Optional<Argument<T>> getOptional(final String argumentKey, final InstructionArgumentParser<T> argumentParser) throws QuestException {
         return chainableInstruction.getOptional(argumentKey, argumentParser);
     }
@@ -270,16 +260,6 @@ public class DefaultInstruction implements Instruction {
     @Override
     public <T> Argument<T> getOptional(final String argumentKey, final InstructionArgumentParser<T> argument, final T defaultValue) throws QuestException {
         return chainableInstruction.getOptional(argumentKey, argument, defaultValue);
-    }
-
-    @Override
-    public <T> Optional<Argument<List<T>>> getOptionalList(final String argumentKey, final InstructionArgumentParser<T> argumentParser) throws QuestException {
-        return chainableInstruction.getOptionalList(argumentKey, argumentParser);
-    }
-
-    @Override
-    public <T> Argument<List<T>> getOptionalList(final String argumentKey, final InstructionArgumentParser<T> argumentParser, final List<T> defaultList) throws QuestException {
-        return chainableInstruction.getOptionalList(argumentKey, argumentParser, defaultList);
     }
 
     @Override

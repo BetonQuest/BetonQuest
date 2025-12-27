@@ -46,7 +46,7 @@ public class WandConditionFactory implements PlayerConditionFactory {
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<CheckType> type = instruction.enumeration(CheckType.class).get();
         final Argument<List<Map.Entry<String, Integer>>> spells =
-                instruction.parse(SpellParser.SPELL).getList("spells", Collections.emptyList());
+                instruction.parse(SpellParser.SPELL).list().get("spells", Collections.emptyList());
         final Argument<String> name = instruction.string().get("name").orElse(null);
         final Argument<Number> amount = instruction.number().get("amount").orElse(null);
 

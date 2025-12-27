@@ -68,7 +68,7 @@ public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEvent
         final Argument<ItemWrapper> boots = instruction.item().get("b").orElse(null);
         final Argument<ItemWrapper> mainHand = instruction.item().get("m").orElse(null);
         final Argument<ItemWrapper> offHand = instruction.item().get("o").orElse(null);
-        final Argument<List<ItemWrapper>> drops = instruction.item().getList("drops", Collections.emptyList());
+        final Argument<List<ItemWrapper>> drops = instruction.item().list().get("drops", Collections.emptyList());
         final Equipment equipment = new Equipment(helmet, chestplate, leggings, boots, mainHand, offHand, drops);
         final SpawnMobEvent event = new SpawnMobEvent(loc, type, equipment, amount, name, marked);
         return new NullableEventAdapter(event);

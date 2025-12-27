@@ -58,7 +58,9 @@ public class NPCKillObjective extends CountingObjective implements Listener {
         qeHandler.handle(() -> {
             final Instruction npcInstruction = npcID.getValue(profile).getInstruction();
             final String argument = npcInstruction.getPart(1);
-            if (npcInstruction.hasArgument("byName")) {
+            final boolean byName = npcInstruction.bool().getFlag("byName", false)
+                    .getValue(profile).orElse(false);
+            if (byName) {
                 final String resolvedName = npcInstruction.chainForArgument(argument).string().get().getValue(profile);
                 if (!resolvedName.equals(npc.getName())) {
                     return;

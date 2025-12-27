@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.event.item;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.quest.event.point.PointType;
@@ -41,12 +42,12 @@ public class ItemDurabilityEvent implements OnlineEvent {
     /**
      * To ignore {@link ItemMeta#isUnbreakable()} and {@link Enchantment#DURABILITY}.
      */
-    private final boolean ignoreUnbreakable;
+    private final FlagArgument<Boolean> ignoreUnbreakable;
 
     /**
      * To ignore bukkit event logic.
      */
-    private final boolean ignoreEvents;
+    private final FlagArgument<Boolean> ignoreEvents;
 
     /**
      * The random instance to use.
@@ -64,8 +65,8 @@ public class ItemDurabilityEvent implements OnlineEvent {
      * @param random            to use for the durability calculation
      */
     public ItemDurabilityEvent(final Argument<EquipmentSlot> slot, final Argument<PointType> modification,
-                               final Argument<Number> amount, final boolean ignoreUnbreakable,
-                               final boolean ignoreEvents, final Random random) {
+                               final Argument<Number> amount, final FlagArgument<Boolean> ignoreUnbreakable,
+                               final FlagArgument<Boolean> ignoreEvents, final Random random) {
         this.slot = slot;
         this.modification = modification;
         this.amount = amount;
@@ -82,22 +83,22 @@ public class ItemDurabilityEvent implements OnlineEvent {
         if (itemStack.getType().isAir() || !(itemStack.getItemMeta() instanceof final Damageable damageable)) {
             return;
         }
-        if (damageable.isUnbreakable() && !ignoreUnbreakable) {
+        if (damageable.isUnbreakable() && !ignoreUnbreakable.getValue(profile).orElse(false)) {
             return;
         }
         final PointType resolvedModification = modification.getValue(profile);
         final double value = amount.getValue(profile).doubleValue();
         if (value == 0) {
             if (resolvedModification == PointType.SET || resolvedModification == PointType.MULTIPLY) {
-                processBreak(player, itemStack, damageable);
+                processBreak(profile, player, itemStack, damageable);
             }
             return;
         }
-        processDamage(player, itemStack, damageable, value, resolvedModification);
+        processDamage(profile, player, itemStack, damageable, value, resolvedModification);
     }
 
-    private void processDamage(final Player player, final ItemStack itemStack, final Damageable damageable,
-                               final double value, final PointType resolvedModification) {
+    private void processDamage(final OnlineProfile profile, final Player player, final ItemStack itemStack, final Damageable damageable,
+                               final double value, final PointType resolvedModification) throws QuestException {
         final int maxDurability = itemStack.getType().getMaxDurability();
         final int oldDamage = damageable.getDamage();
         final int actualDurability = maxDurability - oldDamage;
@@ -109,9 +110,9 @@ public class ItemDurabilityEvent implements OnlineEvent {
         final int durabilityModifiedDamage;
         final boolean isArmor = isArmor(itemStack);
         if (damageDifference < 0) {
-            durabilityModifiedDamage = -getDurabilityModifiedDamage(damageable, -damageDifference, isArmor);
+            durabilityModifiedDamage = -getDurabilityModifiedDamage(profile, damageable, -damageDifference, isArmor);
         } else if (damageDifference > 0) {
-            durabilityModifiedDamage = getDurabilityModifiedDamage(damageable, damageDifference, isArmor);
+            durabilityModifiedDamage = getDurabilityModifiedDamage(profile, damageable, damageDifference, isArmor);
         } else {
             return;
         }
@@ -120,14 +121,15 @@ public class ItemDurabilityEvent implements OnlineEvent {
         damageable.setDamage(actualNewDamage);
 
         if (maxDurability - actualNewDamage <= 0) {
-            processBreak(player, itemStack, damageable);
+            processBreak(profile, player, itemStack, damageable);
         }
 
         itemStack.setItemMeta(damageable);
     }
 
-    private int getDurabilityModifiedDamage(final ItemMeta meta, final int damageDifference, final boolean isArmor) {
-        if (ignoreUnbreakable) {
+    private int getDurabilityModifiedDamage(final OnlineProfile profile, final ItemMeta meta, final int damageDifference,
+                                            final boolean isArmor) throws QuestException {
+        if (ignoreUnbreakable.getValue(profile).orElse(false)) {
             return damageDifference;
         }
         final int level = meta.getEnchantLevel(Enchantment.DURABILITY);
@@ -144,8 +146,8 @@ public class ItemDurabilityEvent implements OnlineEvent {
         return (int) random.ints(damageDifference).filter(random -> random >= chance).count();
     }
 
-    private void processBreak(final Player player, final ItemStack itemStack, final Damageable damageable) {
-        if (!ignoreEvents) {
+    private void processBreak(final OnlineProfile profile, final Player player, final ItemStack itemStack, final Damageable damageable) throws QuestException {
+        if (!ignoreEvents.getValue(profile).orElse(false)) {
             new PlayerItemBreakEvent(player, itemStack).callEvent();
         }
         itemStack.setAmount(itemStack.getAmount() - 1);

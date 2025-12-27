@@ -48,8 +48,8 @@ public PlayerEvent parsePlayer(final Instruction instruction) throws QuestExcept
     final Argument<EquipmentSlot> slot = instruction.enumeration(EquipmentSlot.class).get();
     final Argument<PointType> operation = instruction.enumeration(PointType.class).get();
     final Argument<Number> amount = instruction.number().get();
-    final boolean ignoreUnbreakable = instruction.hasArgument("ignoreUnbreakable");
-    final boolean ignoreEvents = instruction.hasArgument("ignoreEvents");
+    final FlagArgument<Boolean> ignoreUnbreakable = instruction.bool().getFlag("ignoreUnbreakable", false);
+    final FlagArgument<Boolean> ignoreEvents = instruction.bool().getFlag("ignoreEvents", false);
     
     //creating event object and returning it...
 }
@@ -95,9 +95,6 @@ To have valid calls the `Number` parser is used as an example, but naturally any
 | `.get()`                                                              |         `Argument<Number>`         | Retrieves an argument of the next value in order from the instruction                                                                                 |
 | `.get("amount")`                                                      |    `Optional<Argument<Number>>`    | Retrieves an optional argument of the value with the key `amount` from the instruction                                                                |
 | `.get("amount", 10)`                                                  |         `Argument<Number>`         | Retrieves an optional argument of the value with the key `amount` from the instruction or gets an argument with default value                         |
-| `.getList()`                                                          |      `Argument<List<Number>>`      | Retrieves an argument of the next value in order from the instruction parsed as list                                                                  |
-| `.getList("amounts")`                                                 | `Optional<Argument<List<Number>>>` | Retrieves an optional argument of the value with the key `amounts` from the instruction parsed as list                                                |
-| <nobr>`.getList("amounts",`</nobr><br><nobr>`List.of(1,5,10))`</nobr> |      `Argument<List<Number>>`      | Retrieves an optional argument of the value with the key `amounts` from the instruction parsed as list or gets an argument with default list as value |
 | `.getFlag("repeat", 10)`                                              |       `FlagArgument<Number>`       | Retrieves an optional flag argument of the value with the key `repeat` from the instruction using the default value for its undefined state           |
 
 ### Advanced Argument Parsing

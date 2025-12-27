@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.effectlib.event;
 import de.slikey.effectlib.EffectManager;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -46,7 +47,7 @@ public class ParticleEventFactory implements PlayerEventFactory {
         final String rawEffectClass = Utils.getNN(parameters.getString("class"), "Effect '" + string + "' is incorrectly defined");
         final String effectClass = instruction.chainForArgument(rawEffectClass).string().get().getValue(null);
         final Argument<Location> loc = instruction.location().get("loc").orElse(null);
-        final boolean privateParticle = instruction.hasArgument("private");
+        final FlagArgument<Boolean> privateParticle = instruction.bool().getFlag("private", false);
         final ParticleEvent particleEvent = new ParticleEvent(manager, effectClass, parameters, loc, privateParticle);
         return new OnlineEventAdapter(particleEvent, loggerFactory.create(ParticleEvent.class), instruction.getPackage());
     }

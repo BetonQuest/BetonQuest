@@ -47,8 +47,9 @@ public class LuckPermsEventFactory implements PlayerEventFactory {
     }
 
     private LuckPermsNodeBuilder getNodeBuilder(final Instruction instruction) throws QuestException {
-        final Argument<List<String>> permissions = instruction.string().getList("permission", Collections.emptyList());
-        final Argument<List<String>> contexts = instruction.string().getList("context", Collections.emptyList());
+        final Argument<List<String>> permissions = instruction.string().list()
+                .invalidate(List::isEmpty).get("permission", Collections.emptyList());
+        final Argument<List<String>> contexts = instruction.string().list().get("context", Collections.emptyList());
         final Argument<String> value = instruction.string().get("value", "");
         final Argument<Number> expiry = instruction.number().atLeast(0).get("expiry", 0);
         final Argument<TimeUnit> timeUnit = instruction.enumeration(TimeUnit.class).get("unit", TimeUnit.DAYS);

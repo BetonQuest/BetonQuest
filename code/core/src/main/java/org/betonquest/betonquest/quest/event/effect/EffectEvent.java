@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.event.effect;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.bukkit.potion.PotionEffect;
@@ -30,17 +31,17 @@ public class EffectEvent implements OnlineEvent {
     /**
      * Whether the effect is ambient.
      */
-    private final boolean ambient;
+    private final FlagArgument<Boolean> ambient;
 
     /**
      * Whether the effect is hidden.
      */
-    private final boolean hidden;
+    private final FlagArgument<Boolean> hidden;
 
     /**
-     * Whether the effect has an icon.
+     * Whether the effect has not an icon.
      */
-    private final boolean icon;
+    private final FlagArgument<Boolean> noicon;
 
     /**
      * Create a new effect event.
@@ -50,15 +51,16 @@ public class EffectEvent implements OnlineEvent {
      * @param level    the level of the effect
      * @param ambient  whether the effect is ambient
      * @param hidden   whether the effect is hidden
-     * @param icon     whether the effect has an icon
+     * @param noicon   whether the effect has an icon
      */
-    public EffectEvent(final PotionEffectType effect, final Argument<Number> duration, final Argument<Number> level, final boolean ambient, final boolean hidden, final boolean icon) {
+    public EffectEvent(final PotionEffectType effect, final Argument<Number> duration, final Argument<Number> level,
+                       final FlagArgument<Boolean> ambient, final FlagArgument<Boolean> hidden, final FlagArgument<Boolean> noicon) {
         this.effect = effect;
         this.duration = duration;
         this.level = level;
         this.ambient = ambient;
         this.hidden = hidden;
-        this.icon = icon;
+        this.noicon = noicon;
     }
 
     @Override
@@ -68,9 +70,9 @@ public class EffectEvent implements OnlineEvent {
                 effect,
                 durationInt == -1 ? -1 : durationInt * 20,
                 level.getValue(profile).intValue() - 1,
-                ambient,
-                !hidden,
-                icon
+                ambient.getValue(profile).orElse(false),
+                !hidden.getValue(profile).orElse(false),
+                !noicon.getValue(profile).orElse(false)
         ));
     }
 

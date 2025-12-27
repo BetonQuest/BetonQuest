@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.condition.point;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.database.GlobalData;
@@ -32,7 +33,7 @@ public class GlobalPointCondition implements NullableCondition {
     /**
      * Whether the points should be equal to the specified amount.
      */
-    private final boolean equal;
+    private final FlagArgument<Boolean> equal;
 
     /**
      * Constructor for the global point condition.
@@ -42,7 +43,7 @@ public class GlobalPointCondition implements NullableCondition {
      * @param count      the amount of points
      * @param equal      whether the points should be equal to the specified amount
      */
-    public GlobalPointCondition(final GlobalData globalData, final Argument<String> category, final Argument<Number> count, final boolean equal) {
+    public GlobalPointCondition(final GlobalData globalData, final Argument<String> category, final Argument<Number> count, final FlagArgument<Boolean> equal) {
         this.globalData = globalData;
         this.category = category;
         this.count = count;
@@ -57,6 +58,6 @@ public class GlobalPointCondition implements NullableCondition {
 
     private boolean checkPoints(final int point, @Nullable final Profile profile) throws QuestException {
         final int pCount = this.count.getValue(profile).intValue();
-        return equal ? point == pCount : point >= pCount;
+        return equal.getValue(profile).orElse(false) ? point == pCount : point >= pCount;
     }
 }

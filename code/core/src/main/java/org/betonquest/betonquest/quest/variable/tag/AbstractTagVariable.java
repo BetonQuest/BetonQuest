@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.variable.tag;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.argument.parser.IdentifierParser;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -36,7 +37,7 @@ public abstract class AbstractTagVariable<T> {
     /**
      * Whether to return true/false or the configured messages.
      */
-    protected final boolean papiMode;
+    protected final FlagArgument<Boolean> papiMode;
 
     /**
      * The {@link PluginMessage} instance.
@@ -52,7 +53,8 @@ public abstract class AbstractTagVariable<T> {
      * @param questPackage  the quest package to check for the tag
      * @param papiMode      whether to return true/false or the configured messages
      */
-    public AbstractTagVariable(final PluginMessage pluginMessage, final T data, final String tagName, final QuestPackage questPackage, final boolean papiMode) {
+    public AbstractTagVariable(final PluginMessage pluginMessage, final T data, final String tagName,
+                               final QuestPackage questPackage, final FlagArgument<Boolean> papiMode) {
         this.pluginMessage = pluginMessage;
         this.data = data;
         this.tagName = tagName;
@@ -69,6 +71,7 @@ public abstract class AbstractTagVariable<T> {
      * @throws QuestException if the papiMode is enabled and the message could not be resolved
      */
     public String getValueFor(@Nullable final Profile profile, final Set<String> tags) throws QuestException {
+        final boolean papiMode = this.papiMode.getValue(profile).orElse(false);
         if (tags.contains(IdentifierParser.INSTANCE.apply(questPackage, tagName))) {
             return papiMode ? LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage(profile, "condition_variable_met")) : "true";
         }

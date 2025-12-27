@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.event.npc;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.api.quest.npc.Npc;
@@ -33,7 +34,7 @@ public class NpcTeleportEvent implements NullableEvent {
     /**
      * Spawns the Npc if not already spawned.
      */
-    private final boolean spawn;
+    private final FlagArgument<Boolean> spawn;
 
     /**
      * Create a new Npc Teleport Event.
@@ -43,7 +44,8 @@ public class NpcTeleportEvent implements NullableEvent {
      * @param location   the location the Npc will be teleported to
      * @param spawn      if the npc should be spawned if not in the world
      */
-    public NpcTeleportEvent(final FeatureApi featureApi, final Argument<NpcID> npcId, final Argument<Location> location, final boolean spawn) {
+    public NpcTeleportEvent(final FeatureApi featureApi, final Argument<NpcID> npcId, final Argument<Location> location,
+                            final FlagArgument<Boolean> spawn) {
         this.featureApi = featureApi;
         this.npcId = npcId;
         this.location = location;
@@ -56,7 +58,7 @@ public class NpcTeleportEvent implements NullableEvent {
         final Npc<?> npc = featureApi.getNpc(npcId.getValue(profile), profile);
         if (npc.isSpawned()) {
             npc.teleport(loc);
-        } else if (spawn) {
+        } else if (spawn.getValue(profile).orElse(false)) {
             npc.spawn(loc);
         }
     }

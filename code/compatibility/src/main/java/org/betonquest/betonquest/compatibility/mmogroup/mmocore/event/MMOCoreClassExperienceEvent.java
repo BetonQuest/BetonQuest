@@ -4,6 +4,7 @@ import net.Indyuce.mmocore.api.player.PlayerData;
 import net.Indyuce.mmocore.experience.EXPSource;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 
@@ -20,17 +21,17 @@ public class MMOCoreClassExperienceEvent implements PlayerEvent {
     /**
      * If level should be added instead of experience.
      */
-    private final boolean isLevel;
+    private final FlagArgument<Boolean> level;
 
     /**
      * Create a new experience add event.
      *
-     * @param amount  the amount to grant
-     * @param isLevel whether to add level instead of experience
+     * @param amount the amount to grant
+     * @param level  whether to add level instead of experience
      */
-    public MMOCoreClassExperienceEvent(final Argument<Number> amount, final boolean isLevel) {
+    public MMOCoreClassExperienceEvent(final Argument<Number> amount, final FlagArgument<Boolean> level) {
         this.amount = amount;
-        this.isLevel = isLevel;
+        this.level = level;
     }
 
     @Override
@@ -38,7 +39,7 @@ public class MMOCoreClassExperienceEvent implements PlayerEvent {
         final int amount = this.amount.getValue(profile).intValue();
         final PlayerData mmoData = PlayerData.get(profile.getPlayerUUID());
 
-        if (isLevel) {
+        if (level.getValue(profile).orElse(false)) {
             mmoData.giveLevels(amount, EXPSource.QUEST);
         } else {
             mmoData.giveExperience(amount, EXPSource.QUEST);

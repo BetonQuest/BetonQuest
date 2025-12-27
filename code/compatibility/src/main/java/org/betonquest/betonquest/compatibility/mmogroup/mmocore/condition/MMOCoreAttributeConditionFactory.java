@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmocore.condition;
 import net.Indyuce.mmocore.api.player.attribute.PlayerAttribute;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
@@ -23,7 +24,7 @@ public class MMOCoreAttributeConditionFactory implements PlayerConditionFactory 
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<PlayerAttribute> attribute = instruction.parse(MMOAttributeParser.ATTRIBUTE).get();
         final Argument<Number> targetLevel = instruction.number().get();
-        final boolean mustBeEqual = instruction.hasArgument("equal");
+        final FlagArgument<Boolean> mustBeEqual = instruction.bool().getFlag("equal", false);
         return new MMOCoreAttributeCondition(attribute, targetLevel, mustBeEqual);
     }
 }

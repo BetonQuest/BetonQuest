@@ -4,6 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -30,7 +31,7 @@ public class DieObjective extends Objective implements Listener {
     /**
      * Whether the death should be canceled.
      */
-    private final boolean cancel;
+    private final FlagArgument<Boolean> cancel;
 
     /**
      * Location where the player should respawn.
@@ -46,7 +47,7 @@ public class DieObjective extends Objective implements Listener {
      * @param location    the location where the player should respawn
      * @throws QuestException if there is an error in the instruction
      */
-    public DieObjective(final Instruction instruction, final boolean cancel, @Nullable final Argument<Location> location) throws QuestException {
+    public DieObjective(final Instruction instruction, final FlagArgument<Boolean> cancel, @Nullable final Argument<Location> location) throws QuestException {
         super(instruction);
         this.cancel = cancel;
         this.location = location;
@@ -59,15 +60,20 @@ public class DieObjective extends Objective implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onDeath(final EntityDeathEvent event) {
-        if (cancel || location != null) {
+        if (location != null) {
             return;
         }
-        if (event.getEntity() instanceof final Player player) {
-            final OnlineProfile onlineProfile = profileProvider.getProfile(player);
-            if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
-                completeObjective(onlineProfile);
+        qeHandler.handle(() -> {
+            if (event.getEntity() instanceof final Player player) {
+                final OnlineProfile onlineProfile = profileProvider.getProfile(player);
+                if (cancel.getValue(onlineProfile).orElse(false)) {
+                    return;
+                }
+                if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
+                    completeObjective(onlineProfile);
+                }
             }
-        }
+        });
     }
 
     /**
@@ -77,16 +83,16 @@ public class DieObjective extends Objective implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onRespawn(final PlayerRespawnEvent event) {
-        if (cancel || location == null) {
-            return;
-        }
-        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
-        if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
-            qeHandler.handle(() -> {
+        qeHandler.handle(() -> {
+            final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
+            if (cancel.getValue(onlineProfile).orElse(false) || location == null) {
+                return;
+            }
+            if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
                 getLocation(onlineProfile).ifPresent(event::setRespawnLocation);
                 completeObjective(onlineProfile);
-            });
-        }
+            }
+        });
     }
 
     /**
@@ -96,21 +102,25 @@ public class DieObjective extends Objective implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onLastDamage(final EntityDamageEvent event) {
-        if (!cancel || !(event.getEntity() instanceof final Player player)) {
+        if (!(event.getEntity() instanceof final Player player)) {
             return;
         }
-        final OnlineProfile onlineProfile = profileProvider.getProfile(player);
-        if (containsPlayer(onlineProfile) && player.getHealth() - event.getFinalDamage() <= 0
-                && checkConditions(onlineProfile)) {
-            event.setCancelled(true);
-            player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
-            player.setFoodLevel(20);
-            player.setExhaustion(4);
-            player.setSaturation(20);
-            for (final PotionEffect effect : player.getActivePotionEffects()) {
-                player.removePotionEffect(effect.getType());
+        qeHandler.handle(() -> {
+            final OnlineProfile onlineProfile = profileProvider.getProfile(player);
+            if (!cancel.getValue(onlineProfile).orElse(false)) {
+                return;
             }
-            qeHandler.handle(() -> {
+            if (containsPlayer(onlineProfile) && player.getHealth() - event.getFinalDamage() <= 0
+                    && checkConditions(onlineProfile)) {
+                event.setCancelled(true);
+                player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+                player.setFoodLevel(20);
+                player.setExhaustion(4);
+                player.setSaturation(20);
+                for (final PotionEffect effect : player.getActivePotionEffects()) {
+                    player.removePotionEffect(effect.getType());
+                }
+
                 final Optional<Location> targetLocation = getLocation(onlineProfile);
                 new BukkitRunnable() {
                     @Override
@@ -120,8 +130,8 @@ public class DieObjective extends Objective implements Listener {
                     }
                 }.runTaskLater(BetonQuest.getInstance(), 1);
                 completeObjective(onlineProfile);
-            });
-        }
+            }
+        });
     }
 
     private Optional<Location> getLocation(final OnlineProfile onlineProfile) throws QuestException {

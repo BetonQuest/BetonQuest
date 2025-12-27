@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.mythicmobs.event;
 import io.lumine.mythic.api.mobs.MythicMob;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -16,6 +17,7 @@ import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Factory to create {@link MythicSpawnMobEvent}s from {@link Instruction}s.
@@ -64,8 +66,8 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
         final Argument<Location> loc = instruction.location().get();
         final Argument<Map.Entry<MythicMob, Double>> mobLevel = instruction.parse(mythicMobParser).get();
         final Argument<Number> amount = instruction.number().get();
-        final MythicHider privateMob = instruction.hasArgument("private") ? mythicHider : null;
-        final boolean targetPlayer = instruction.hasArgument("target");
+        final FlagArgument<MythicHider> privateMob = instruction.bool().map(val -> val ? mythicHider : null).getFlag("private", mythicHider);
+        final FlagArgument<Boolean> targetPlayer = instruction.bool().getFlag("target", false);
         final Argument<String> marked = instruction.packageIdentifier().get("marked").orElse(null);
         return new OnlineEventAdapter(new MythicSpawnMobEvent(plugin, loc, mobLevel, amount, privateMob, targetPlayer, marked),
                 loggerFactory.create(MythicSpawnMobEvent.class), instruction.getPackage());
@@ -77,6 +79,6 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
         final Argument<Map.Entry<MythicMob, Double>> mobLevel = instruction.parse(mythicMobParser).get();
         final Argument<Number> amount = instruction.number().get();
         final Argument<String> marked = instruction.packageIdentifier().get("marked").orElse(null);
-        return new MythicSpawnMobEvent(plugin, loc, mobLevel, amount, null, false, marked);
+        return new MythicSpawnMobEvent(plugin, loc, mobLevel, amount, profile -> Optional.empty(), profile -> Optional.empty(), marked);
     }
 }

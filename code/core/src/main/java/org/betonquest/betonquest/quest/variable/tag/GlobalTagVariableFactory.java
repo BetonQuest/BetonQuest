@@ -30,6 +30,7 @@ public class GlobalTagVariableFactory extends AbstractTagVariableFactory<GlobalD
 
     @Override
     public PlayerlessVariable parsePlayerless(final Instruction instruction) throws QuestException {
-        return new GlobalTagVariable(pluginMessage, dataHolder, instruction.nextElement(), instruction.getPackage(), instruction.hasArgument("papiMode"));
+        return new GlobalTagVariable(pluginMessage, dataHolder, instruction.nextElement(), instruction.getPackage(),
+                instruction.bool().getFlag("papiMode", false));
     }
 }

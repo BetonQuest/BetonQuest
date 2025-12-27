@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentPar
 import org.betonquest.betonquest.api.instruction.chain.ChainableInstruction;
 import org.betonquest.betonquest.api.instruction.chain.InstructionChainRetriever;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -44,11 +43,6 @@ public class DefaultInstructionChainRetriever<T> implements InstructionChainRetr
     }
 
     @Override
-    public Argument<List<T>> getList() throws QuestException {
-        return instruction.getNextList(argument);
-    }
-
-    @Override
     public Optional<Argument<T>> get(final String argumentKey) throws QuestException {
         return instruction.getOptional(argumentKey, argument);
     }
@@ -56,16 +50,6 @@ public class DefaultInstructionChainRetriever<T> implements InstructionChainRetr
     @Override
     public Argument<T> get(final String argumentKey, final T defaultValue) throws QuestException {
         return instruction.getOptional(argumentKey, argument, defaultValue);
-    }
-
-    @Override
-    public Optional<Argument<List<T>>> getList(final String argumentKey) throws QuestException {
-        return instruction.getOptionalList(argumentKey, argument);
-    }
-
-    @Override
-    public Argument<List<T>> getList(final String argumentKey, final List<T> defaultValue) throws QuestException {
-        return instruction.getOptionalList(argumentKey, argument, defaultValue);
     }
 
     @Override

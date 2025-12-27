@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.objective.location;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.Location;
@@ -36,12 +37,12 @@ public abstract class AbstractLocationObjective extends Objective implements Lis
     /**
      * Should entry be checked instead of being inside the location of not.
      */
-    private final boolean entry;
+    private final FlagArgument<Boolean> entry;
 
     /**
      * Should exit be checked instead of being inside the location of not.
      */
-    private final boolean exit;
+    private final FlagArgument<Boolean> exit;
 
     /**
      * A map of players and if they are inside the location.
@@ -57,8 +58,8 @@ public abstract class AbstractLocationObjective extends Objective implements Lis
      */
     public AbstractLocationObjective(final Instruction instruction) throws QuestException {
         super(instruction);
-        entry = instruction.hasArgument("entry");
-        exit = instruction.hasArgument("exit");
+        entry = instruction.bool().getFlag("entry", false);
+        exit = instruction.bool().getFlag("exit", false);
         playersInsideRegion = new HashMap<>();
     }
 
@@ -69,7 +70,7 @@ public abstract class AbstractLocationObjective extends Objective implements Lis
      */
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(final PlayerJoinEvent event) {
-        checkLocation(event.getPlayer(), event.getPlayer().getLocation());
+        qeHandler.handle(() -> checkLocation(event.getPlayer(), event.getPlayer().getLocation()));
     }
 
     /**
@@ -89,7 +90,7 @@ public abstract class AbstractLocationObjective extends Objective implements Lis
      */
     @EventHandler(ignoreCancelled = true)
     public void onPlayerDeath(final PlayerDeathEvent event) {
-        checkLocation(event.getEntity(), event.getEntity().getLocation());
+        qeHandler.handle(() -> checkLocation(event.getEntity(), event.getEntity().getLocation()));
     }
 
     /**
@@ -99,7 +100,7 @@ public abstract class AbstractLocationObjective extends Objective implements Lis
      */
     @EventHandler(ignoreCancelled = true)
     public void onPlayerRespawn(final PlayerRespawnEvent event) {
-        checkLocation(event.getPlayer(), event.getRespawnLocation());
+        qeHandler.handle(() -> checkLocation(event.getPlayer(), event.getRespawnLocation()));
     }
 
     /**
@@ -119,7 +120,7 @@ public abstract class AbstractLocationObjective extends Objective implements Lis
      */
     @EventHandler(ignoreCancelled = true)
     public void onPlayerMove(final PlayerMoveEvent event) {
-        checkLocation(event.getPlayer(), event.getTo());
+        qeHandler.handle(() -> checkLocation(event.getPlayer(), event.getTo()));
     }
 
     /**
@@ -132,19 +133,19 @@ public abstract class AbstractLocationObjective extends Objective implements Lis
         final List<Entity> passengers = event.getVehicle().getPassengers();
         for (final Entity passenger : passengers) {
             if (passenger instanceof final Player player) {
-                checkLocation(player, event.getTo());
+                qeHandler.handle(() -> checkLocation(player, event.getTo()));
             }
         }
     }
 
-    private void checkLocation(final Player player, final Location location) {
+    private void checkLocation(final Player player, final Location location) throws QuestException {
         final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         if (!containsPlayer(onlineProfile)) {
             return;
         }
 
         final boolean toInside = isInsideHandleException(location, onlineProfile);
-        if (!entry && !exit) {
+        if (!entry.getValue(onlineProfile).orElse(false) && !exit.getValue(onlineProfile).orElse(false)) {
             if (toInside && checkConditions(onlineProfile)) {
                 completeObjective(onlineProfile);
             }
@@ -163,10 +164,14 @@ public abstract class AbstractLocationObjective extends Objective implements Lis
         final boolean fromInside = playersInsideRegion.get(onlineProfile.getProfileUUID());
         playersInsideRegion.put(onlineProfile.getProfileUUID(), toInside);
 
-        if ((entry && toInside && !fromInside || exit && fromInside && !toInside) && checkConditions(onlineProfile)) {
-            completeObjective(onlineProfile);
-            playersInsideRegion.remove(onlineProfile.getProfileUUID());
-        }
+        qeHandler.handle(() -> {
+            if ((entry.getValue(onlineProfile).orElse(false)
+                    && toInside && !fromInside || exit.getValue(onlineProfile).orElse(false) && fromInside && !toInside)
+                    && checkConditions(onlineProfile)) {
+                completeObjective(onlineProfile);
+                playersInsideRegion.remove(onlineProfile.getProfileUUID());
+            }
+        });
     }
 
     private boolean isInsideHandleException(final Location location, final OnlineProfile onlineProfile) {

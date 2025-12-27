@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.event.effect;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -37,10 +38,10 @@ public class EffectEventFactory implements PlayerEventFactory {
         try {
             final Argument<Number> duration = instruction.number().get();
             final Argument<Number> level = instruction.number().get();
-            final boolean ambient = instruction.hasArgument("ambient");
-            final boolean hidden = instruction.hasArgument("hidden");
-            final boolean icon = !instruction.hasArgument("noicon");
-            return new OnlineEventAdapter(new EffectEvent(effect, duration, level, ambient, hidden, icon),
+            final FlagArgument<Boolean> ambient = instruction.bool().getFlag("ambient", false);
+            final FlagArgument<Boolean> hidden = instruction.bool().getFlag("hidden", false);
+            final FlagArgument<Boolean> noicon = instruction.bool().getFlag("noicon", false);
+            return new OnlineEventAdapter(new EffectEvent(effect, duration, level, ambient, hidden, noicon),
                     loggerFactory.create(EffectEvent.class), instruction.getPackage());
         } catch (final QuestException e) {
             throw new QuestException("Could not parse effect duration and amplifier", e);

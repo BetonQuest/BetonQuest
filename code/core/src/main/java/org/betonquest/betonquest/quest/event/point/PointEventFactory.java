@@ -54,7 +54,9 @@ public class PointEventFactory implements PlayerEventFactory {
         final PointType type = instruction.enumeration(PointType.class).get("action", PointType.ADD).getValue(null);
 
         final NotificationSender pointSender;
-        if (instruction.hasArgument("notify")) {
+        final boolean notify = instruction.bool().getFlag("notify", false)
+                .getValue(null).orElse(false);
+        if (notify) {
             pointSender = new IngameNotificationSender(loggerFactory.create(PointEvent.class), pluginMessage,
                     instruction.getPackage(), instruction.getID().getFull(), NotificationLevel.INFO, type.getNotifyCategory());
         } else {

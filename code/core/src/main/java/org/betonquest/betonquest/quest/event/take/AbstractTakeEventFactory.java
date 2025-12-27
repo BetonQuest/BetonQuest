@@ -47,7 +47,7 @@ public abstract class AbstractTakeEventFactory implements PlayerEventFactory {
      * @throws QuestException if the check order is invalid
      */
     protected List<CheckType> getCheckOrder(final Instruction instruction) throws QuestException {
-        return instruction.enumeration(CheckType.class).getList("invOrder",
+        return instruction.enumeration(CheckType.class).list().get("invOrder",
                 List.of(CheckType.INVENTORY, CheckType.OFFHAND, CheckType.ARMOR, CheckType.BACKPACK)).getValue(null);
     }
 
@@ -57,10 +57,12 @@ public abstract class AbstractTakeEventFactory implements PlayerEventFactory {
      * @param instruction the instruction to get the notification sender from
      * @param log         the logger to use
      * @return the notification sender
+     * @throws QuestException if the notification sender could not be created
      */
-    protected NotificationSender getNotificationSender(final Instruction instruction, final BetonQuestLogger log) {
-        return instruction.hasArgument("notify")
-                ? new IngameNotificationSender(log, pluginMessage, instruction.getPackage(),
+    protected NotificationSender getNotificationSender(final Instruction instruction, final BetonQuestLogger log) throws QuestException {
+        final boolean notify = instruction.bool().getFlag("notify", false)
+                .getValue(null).orElse(false);
+        return notify ? new IngameNotificationSender(log, pluginMessage, instruction.getPackage(),
                 instruction.getID().getFull(), NotificationLevel.INFO, "items_taken")
                 : new NoNotificationSender();
     }

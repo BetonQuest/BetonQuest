@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.objective.block;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -30,12 +31,12 @@ public class BlockObjective extends CountingObjective implements Listener {
     /**
      * Optional exactMatch parameter.
      */
-    private final boolean exactMatch;
+    private final FlagArgument<Boolean> exactMatch;
 
     /**
      * Optional noSafety parameter.
      */
-    private final boolean noSafety;
+    private final FlagArgument<Boolean> noSafety;
 
     /**
      * Optional location parameter.
@@ -52,7 +53,7 @@ public class BlockObjective extends CountingObjective implements Listener {
     /**
      * Optional ignorecancel parameter.
      */
-    private final boolean ignoreCancel;
+    private final FlagArgument<Boolean> ignoreCancel;
 
     /**
      * Notification sender for block break.
@@ -81,10 +82,10 @@ public class BlockObjective extends CountingObjective implements Listener {
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public BlockObjective(final Instruction instruction, final Argument<Number> targetAmount,
-                          final Argument<BlockSelector> selector, final boolean exactMatch, final boolean noSafety,
-                          @Nullable final Argument<Location> location, @Nullable final Argument<Location> region,
-                          final boolean ignoreCancel, final IngameNotificationSender blockBreakSender,
-                          final IngameNotificationSender blockPlaceSender) throws QuestException {
+                          final Argument<BlockSelector> selector, final FlagArgument<Boolean> exactMatch,
+                          final FlagArgument<Boolean> noSafety, @Nullable final Argument<Location> location,
+                          @Nullable final Argument<Location> region, final FlagArgument<Boolean> ignoreCancel,
+                          final IngameNotificationSender blockBreakSender, final IngameNotificationSender blockPlaceSender) throws QuestException {
         super(instruction, targetAmount, null);
         this.selector = selector;
         this.exactMatch = exactMatch;
@@ -103,17 +104,17 @@ public class BlockObjective extends CountingObjective implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockPlace(final BlockPlaceEvent event) {
-        if (event.isCancelled() && !ignoreCancel) {
-            return;
-        }
         qeHandler.handle(() -> {
             final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
+            if (event.isCancelled() && !ignoreCancel.getValue(onlineProfile).orElse(false)) {
+                return;
+            }
             final BlockSelector blockSelector = selector.getValue(onlineProfile);
             if (containsPlayer(onlineProfile)
-                    && blockSelector.match(event.getBlock(), exactMatch)
+                    && blockSelector.match(event.getBlock(), exactMatch.getValue(onlineProfile).orElse(false))
                     && checkConditions(onlineProfile)
                     && checkLocation(event.getBlock().getLocation(), onlineProfile)
-                    && (getCountingData(onlineProfile).getDirectionFactor() >= 0 || !noSafety)) {
+                    && (getCountingData(onlineProfile).getDirectionFactor() >= 0 || !noSafety.getValue(onlineProfile).orElse(false))) {
                 handleDataChange(onlineProfile, getCountingData(onlineProfile).add());
             }
         });
@@ -126,17 +127,17 @@ public class BlockObjective extends CountingObjective implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBreak(final BlockBreakEvent event) {
-        if (event.isCancelled() && !ignoreCancel) {
-            return;
-        }
         qeHandler.handle(() -> {
             final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
+            if (event.isCancelled() && !ignoreCancel.getValue(onlineProfile).orElse(false)) {
+                return;
+            }
             final BlockSelector blockSelector = selector.getValue(onlineProfile);
             if (containsPlayer(onlineProfile)
-                    && blockSelector.match(event.getBlock(), exactMatch)
+                    && blockSelector.match(event.getBlock(), exactMatch.getValue(onlineProfile).orElse(false))
                     && checkConditions(onlineProfile)
                     && checkLocation(event.getBlock().getLocation(), onlineProfile)
-                    && (getCountingData(onlineProfile).getDirectionFactor() <= 0 || !noSafety)) {
+                    && (getCountingData(onlineProfile).getDirectionFactor() <= 0 || !noSafety.getValue(onlineProfile).orElse(false))) {
                 handleDataChange(onlineProfile, getCountingData(onlineProfile).subtract());
             }
         });

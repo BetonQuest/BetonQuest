@@ -6,6 +6,7 @@ import dev.aurelium.auraskills.api.stat.Stat;
 import dev.aurelium.auraskills.api.user.SkillsUser;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.util.Utils;
@@ -33,7 +34,7 @@ public class AuraSkillsStatsCondition implements PlayerCondition {
     /**
      * If the actual level must be equal to the target level.
      */
-    private final boolean mustBeEqual;
+    private final FlagArgument<Boolean> mustBeEqual;
 
     /**
      * Create a new AuraSkills Stats Condition.
@@ -44,7 +45,7 @@ public class AuraSkillsStatsCondition implements PlayerCondition {
      * @param mustBeEqual   if the actual level must be equal to the target level.
      */
     public AuraSkillsStatsCondition(final AuraSkillsApi auraSkillsApi, final Argument<Number> targetLevel,
-                                    final Argument<String> name, final boolean mustBeEqual) {
+                                    final Argument<String> name, final FlagArgument<Boolean> mustBeEqual) {
         this.auraSkillsApi = auraSkillsApi;
         this.targetLevel = targetLevel;
         this.name = name;
@@ -63,7 +64,7 @@ public class AuraSkillsStatsCondition implements PlayerCondition {
         final double actualLevel = user.getStatLevel(stat);
         final double targetLevel = this.targetLevel.getValue(profile).doubleValue();
 
-        return mustBeEqual ? actualLevel == targetLevel : actualLevel >= targetLevel;
+        return mustBeEqual.getValue(profile).orElse(false) ? actualLevel == targetLevel : actualLevel >= targetLevel;
     }
 
     @Override

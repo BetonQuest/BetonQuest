@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -45,7 +46,7 @@ public class GiveEvent implements OnlineEvent {
     /**
      * Whether to put the items to the player's backpack.
      */
-    private final boolean backpack;
+    private final FlagArgument<Boolean> backpack;
 
     /**
      * Storage for player backpack.
@@ -64,7 +65,7 @@ public class GiveEvent implements OnlineEvent {
      */
     public GiveEvent(final Argument<List<ItemWrapper>> questItems, final NotificationSender itemsGivenSender,
                      final NotificationSender itemsInBackpackSender, final NotificationSender itemsDroppedSender,
-                     final boolean backpack, final PlayerDataStorage dataStorage) {
+                     final FlagArgument<Boolean> backpack, final PlayerDataStorage dataStorage) {
         this.questItems = questItems;
         this.itemsGivenSender = itemsGivenSender;
         this.itemsInBackpackSender = itemsInBackpackSender;
@@ -98,7 +99,7 @@ public class GiveEvent implements OnlineEvent {
             boolean fullInventory = false;
             ItemStack itemStack = itemStackTemplate.clone();
             itemStack.setAmount(stackSize);
-            if (!backpack) {
+            if (!backpack.getValue(profile).orElse(false)) {
                 final ItemStack leftItems = giveToInventory(player, itemStack);
                 if (leftItems == null) {
                     amount -= stackSize;

@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.event.lightning;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.bukkit.Location;
@@ -21,7 +22,7 @@ public class LightningEvent implements NullableEvent {
     /**
      * Whether the lightning should do damage.
      */
-    private final boolean noDamage;
+    private final FlagArgument<Boolean> noDamage;
 
     /**
      * Creates a new lightning event.
@@ -29,7 +30,7 @@ public class LightningEvent implements NullableEvent {
      * @param location the location to strike the lightning at
      * @param noDamage whether the lightning should do damage
      */
-    public LightningEvent(final Argument<Location> location, final boolean noDamage) {
+    public LightningEvent(final Argument<Location> location, final FlagArgument<Boolean> noDamage) {
         this.location = location;
         this.noDamage = noDamage;
     }
@@ -38,7 +39,7 @@ public class LightningEvent implements NullableEvent {
     public void execute(@Nullable final Profile profile) throws QuestException {
         final Location loc = location.getValue(profile);
         final World world = loc.getWorld();
-        if (noDamage) {
+        if (noDamage.getValue(profile).orElse(false)) {
             world.strikeLightningEffect(loc);
         } else {
             world.strikeLightning(loc);

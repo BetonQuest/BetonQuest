@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.condition.point;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.data.PlayerDataStorage;
@@ -31,7 +32,7 @@ public class PointCondition implements PlayerCondition {
     /**
      * Whether the points should be equal to the specified amount.
      */
-    private final boolean equal;
+    private final FlagArgument<Boolean> equal;
 
     /**
      * Constructor for the point condition.
@@ -41,7 +42,7 @@ public class PointCondition implements PlayerCondition {
      * @param count       the amount of points
      * @param equal       whether the points should be equal to the specified amount
      */
-    public PointCondition(final PlayerDataStorage dataStorage, final Argument<String> category, final Argument<Number> count, final boolean equal) {
+    public PointCondition(final PlayerDataStorage dataStorage, final Argument<String> category, final Argument<Number> count, final FlagArgument<Boolean> equal) {
         this.dataStorage = dataStorage;
         this.category = category;
         this.count = count;
@@ -56,6 +57,6 @@ public class PointCondition implements PlayerCondition {
 
     private boolean checkPoints(final int points, final Profile profile) throws QuestException {
         final int pCount = this.count.getValue(profile).intValue();
-        return equal ? points == pCount : points >= pCount;
+        return equal.getValue(profile).orElse(false) ? points == pCount : points >= pCount;
     }
 }

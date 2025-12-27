@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.variable.tag;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.GlobalData;
@@ -21,7 +22,8 @@ public class GlobalTagVariable extends AbstractTagVariable<GlobalData> implement
      * @param questPackage  the quest package to check for the tag
      * @param papiMode      whether to return true/false or the configured messages
      */
-    public GlobalTagVariable(final PluginMessage pluginMessage, final GlobalData data, final String tagName, final QuestPackage questPackage, final boolean papiMode) {
+    public GlobalTagVariable(final PluginMessage pluginMessage, final GlobalData data, final String tagName,
+                             final QuestPackage questPackage, final FlagArgument<Boolean> papiMode) {
         super(pluginMessage, data, tagName, questPackage, papiMode);
     }
 

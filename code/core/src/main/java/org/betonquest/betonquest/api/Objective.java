@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.common.function.QuestRunnable;
 import org.betonquest.betonquest.api.common.function.QuestSupplier;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -82,7 +83,7 @@ public abstract class Objective {
     /**
      * If the objective should start again on completion.
      */
-    private final boolean persistent;
+    private final FlagArgument<Boolean> persistent;
 
     /**
      * Instruction of this.
@@ -118,11 +119,12 @@ public abstract class Objective {
         this.instruction = instruction;
         this.profileProvider = BetonQuest.getInstance().getProfileProvider();
         this.dataMap = new ProfileKeyMap<>(profileProvider);
-        persistent = instruction.hasArgument("persistent");
-        events = instruction.parse(EventID::new).getList("events", Collections.emptyList());
-        conditions = instruction.parse(ConditionID::new).getList("conditions", Collections.emptyList());
+        persistent = instruction.bool().getFlag("persistent", false);
+        events = instruction.parse(EventID::new).list().get("events", Collections.emptyList());
+        conditions = instruction.parse(ConditionID::new).list().get("conditions", Collections.emptyList());
         final int customNotifyInterval = instruction.number().get("notify", 0).getValue(null).intValue();
-        notify = customNotifyInterval > 0 || instruction.hasArgument("notify");
+        notify = customNotifyInterval > 0 || instruction.bool().getFlag("notify", false)
+                .getValue(null).orElse(false);
         notifyInterval = Math.max(1, customNotifyInterval);
     }
 
@@ -184,16 +186,20 @@ public abstract class Objective {
         final PlayerData playerData = BetonQuest.getInstance().getPlayerDataStorage().get(profile);
         final ObjectiveID objectiveID = (ObjectiveID) instruction.getID();
         playerData.removeRawObjective(objectiveID);
-        if (persistent) {
-            try {
-                final String defaultDataInstruction = getDefaultDataInstruction(profile);
-                playerData.addRawObjective(objectiveID, defaultDataInstruction);
-                playerData.addObjToDB(objectiveID, defaultDataInstruction);
-                createObjectiveForPlayer(profile, defaultDataInstruction);
-            } catch (final QuestException e) {
-                log.warn(instruction.getPackage(), "Could not re-create persistent Objective for '" + instruction.getID()
-                        + "' for '" + profile + "' objective: The Objective Instruction could not be resolved: " + e.getMessage(), e);
+        try {
+            if (persistent.getValue(profile).orElse(false)) {
+                try {
+                    final String defaultDataInstruction = getDefaultDataInstruction(profile);
+                    playerData.addRawObjective(objectiveID, defaultDataInstruction);
+                    playerData.addObjToDB(objectiveID, defaultDataInstruction);
+                    createObjectiveForPlayer(profile, defaultDataInstruction);
+                } catch (final QuestException e) {
+                    log.warn(instruction.getPackage(), "Could not re-create persistent Objective for '" + instruction.getID()
+                            + "' for '" + profile + "' objective: The Objective Instruction could not be resolved: " + e.getMessage(), e);
+                }
             }
+        } catch (final QuestException e) {
+            log.error(instruction.getPackage(), "Could not get persistent flag for '" + instruction.getID() + "' for '" + profile + "' objective: " + e.getMessage(), e);
         }
         log.debug(instruction.getPackage(),
                 "Objective '" + instruction.getID() + "' has been completed for " + profile + ", firing events.");

@@ -22,7 +22,7 @@ public class PickupObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Argument<List<ItemWrapper>> pickupItems = instruction.item().getList();
+        final Argument<List<ItemWrapper>> pickupItems = instruction.item().list().get();
         final Argument<Number> targetAmount = instruction.number().get("amount", 1);
         return new PickupObjective(instruction, targetAmount, pickupItems);
     }

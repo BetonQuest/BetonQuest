@@ -27,7 +27,7 @@ public class MoonPhaseConditionFactory implements PlayerConditionFactory, Player
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Argument<List<MoonPhase>> moonPhases = instruction.enumeration(MoonPhase.class).getList();
+        final Argument<List<MoonPhase>> moonPhases = instruction.enumeration(MoonPhase.class).list().get();
         final String worldRaw = instruction.string().get("world", "%location.world%").getValue(null);
         final Argument<World> world = instruction.chainForArgument(worldRaw).world().get();
         return new NullableConditionAdapter(new MoonPhaseCondition(world, moonPhases));
@@ -39,7 +39,7 @@ public class MoonPhaseConditionFactory implements PlayerConditionFactory, Player
         if (world == null) {
             return new ThrowExceptionPlayerlessCondition();
         }
-        final Argument<List<MoonPhase>> moonPhases = instruction.enumeration(MoonPhase.class).getList();
+        final Argument<List<MoonPhase>> moonPhases = instruction.enumeration(MoonPhase.class).list().get();
         return new NullableConditionAdapter(new MoonPhaseCondition(world, moonPhases));
     }
 }

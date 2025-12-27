@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.quests;
 import me.pikamug.quests.Quests;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
@@ -29,7 +30,7 @@ public class QuestsEventFactory implements PlayerEventFactory {
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<String> name = instruction.string().get();
-        final boolean override = instruction.hasArgument("check-requirements");
+        final FlagArgument<Boolean> override = instruction.bool().getFlag("check-requirements", false);
         return new QuestsEvent(quests, name, override);
     }
 }

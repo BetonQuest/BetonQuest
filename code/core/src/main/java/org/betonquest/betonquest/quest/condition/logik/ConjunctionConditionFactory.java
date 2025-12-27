@@ -40,6 +40,6 @@ public class ConjunctionConditionFactory implements PlayerConditionFactory, Play
     }
 
     private ConjunctionCondition parse(final Instruction instruction) throws QuestException {
-        return new ConjunctionCondition(instruction.parse(ConditionID::new).getList(), questTypeApi);
+        return new ConjunctionCondition(instruction.parse(ConditionID::new).list().get(), questTypeApi);
     }
 }

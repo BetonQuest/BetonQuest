@@ -36,7 +36,7 @@ public class ChestGiveEventFactory implements PlayerEventFactory, PlayerlessEven
 
     private NullableEventAdapter createChestGiveEvent(final Instruction instruction) throws QuestException {
         final Argument<Location> location = instruction.location().get();
-        final Argument<List<ItemWrapper>> items = instruction.item().getList();
+        final Argument<List<ItemWrapper>> items = instruction.item().list().get();
         return new NullableEventAdapter(new ChestGiveEvent(location, items)
         );
     }

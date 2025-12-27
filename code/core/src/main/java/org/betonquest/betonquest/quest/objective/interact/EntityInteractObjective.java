@@ -5,6 +5,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
@@ -87,7 +88,7 @@ public class EntityInteractObjective extends CountingObjective implements Listen
     /**
      * Whether to cancel the interaction.
      */
-    protected boolean cancel;
+    protected FlagArgument<Boolean> cancel;
 
     /**
      * Creates a new instance of the EntityInteractObjective.
@@ -111,7 +112,7 @@ public class EntityInteractObjective extends CountingObjective implements Listen
                                    final Argument<Number> range, @Nullable final Argument<Component> customName,
                                    @Nullable final Argument<String> realName, @Nullable final EquipmentSlot slot,
                                    final Argument<EntityType> mobType, @Nullable final Argument<String> marked,
-                                   final Argument<Interaction> interaction, final boolean cancel) throws QuestException {
+                                   final Argument<Interaction> interaction, final FlagArgument<Boolean> cancel) throws QuestException {
         super(instruction, ENTITY_INTERACT_FACTORY, targetAmount, "mobs_to_click");
         this.loc = loc;
         this.range = range;
@@ -191,7 +192,8 @@ public class EntityInteractObjective extends CountingObjective implements Listen
         }
         qeHandler.handle(() -> {
             final boolean success = onInteract(player, event.getEntity());
-            if (success && cancel) {
+            final OnlineProfile profile = profileProvider.getProfile(player).getOnlineProfile().orElse(null);
+            if (success && cancel.getValue(profile).orElse(false)) {
                 event.setCancelled(true);
             }
         });
@@ -209,7 +211,8 @@ public class EntityInteractObjective extends CountingObjective implements Listen
         }
         qeHandler.handle(() -> {
             final boolean success = onInteract(event.getPlayer(), event.getRightClicked());
-            if (success && cancel) {
+            final OnlineProfile profile = profileProvider.getProfile(event.getPlayer()).getOnlineProfile().orElse(null);
+            if (success && cancel.getValue(profile).orElse(false)) {
                 event.setCancelled(true);
             }
         });

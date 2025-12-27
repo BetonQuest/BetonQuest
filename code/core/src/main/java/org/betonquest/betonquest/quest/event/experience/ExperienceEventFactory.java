@@ -36,7 +36,9 @@ public class ExperienceEventFactory implements PlayerEventFactory {
         ExperienceModification experienceType = ExperienceModification.ADD_EXPERIENCE;
         final Optional<Argument<String>> action = instruction.string().get("action");
         String targetAction = action.isPresent() ? action.get().getValue(null) : null;
-        if (instruction.hasArgument("level")) {
+        final boolean level = instruction.bool().getFlag("level", false)
+                .getValue(null).orElse(false);
+        if (level) {
             experienceType = ExperienceModification.ADD_LEVEL;
         } else if (targetAction != null) {
             targetAction = targetAction.toUpperCase(Locale.ROOT);

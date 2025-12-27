@@ -41,7 +41,7 @@ public class ItemConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Argument<List<ItemWrapper>> items = instruction.item().getList();
+        final Argument<List<ItemWrapper>> items = instruction.item().list().get();
         final BetonQuestLogger log = loggerFactory.create(ItemCondition.class);
         return new OnlineConditionAdapter(new ItemCondition(items, dataStorage), log, instruction.getPackage());
     }

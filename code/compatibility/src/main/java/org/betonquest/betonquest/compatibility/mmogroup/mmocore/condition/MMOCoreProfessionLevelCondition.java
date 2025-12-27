@@ -4,6 +4,7 @@ import net.Indyuce.mmocore.api.player.PlayerData;
 import net.Indyuce.mmocore.experience.Profession;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 
@@ -20,7 +21,7 @@ public class MMOCoreProfessionLevelCondition implements PlayerCondition {
     /**
      * If the actual must be equal to the target level.
      */
-    private final boolean mustBeEqual;
+    private final FlagArgument<Boolean> mustBeEqual;
 
     /**
      * Required level.
@@ -34,7 +35,7 @@ public class MMOCoreProfessionLevelCondition implements PlayerCondition {
      * @param targetLevel the required level
      * @param equal       whether the actual must be equal to the target level
      */
-    public MMOCoreProfessionLevelCondition(final Argument<Profession> profession, final Argument<Number> targetLevel, final boolean equal) {
+    public MMOCoreProfessionLevelCondition(final Argument<Profession> profession, final Argument<Number> targetLevel, final FlagArgument<Boolean> equal) {
         this.profession = profession;
         this.targetLevel = targetLevel;
         this.mustBeEqual = equal;
@@ -45,8 +46,7 @@ public class MMOCoreProfessionLevelCondition implements PlayerCondition {
         final PlayerData data = PlayerData.get(profile.getPlayerUUID());
         final int actualLevel = data.getCollectionSkills().getLevel(profession.getValue(profile));
         final int targetLevel = this.targetLevel.getValue(profile).intValue();
-
-        return mustBeEqual ? actualLevel == targetLevel : actualLevel >= targetLevel;
+        return mustBeEqual.getValue(profile).orElse(false) ? actualLevel == targetLevel : actualLevel >= targetLevel;
     }
 
     @Override

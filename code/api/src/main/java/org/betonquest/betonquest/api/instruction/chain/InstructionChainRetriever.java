@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.jetbrains.annotations.Contract;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -26,17 +25,6 @@ public interface InstructionChainRetriever<T> {
      */
     @Contract("-> new")
     Argument<T> get() throws QuestException;
-
-    /**
-     * Retrieves the argument for a list of the given type and the given settings in the chain.
-     *
-     * @return the argument
-     * @throws QuestException if the list could not be resolved
-     * @deprecated replaced by {@link DecoratableChainRetriever#list()} to be used instead
-     */
-    @Contract("-> new")
-    @Deprecated
-    Argument<List<T>> getList() throws QuestException;
 
     /**
      * Retrieves the {@link Argument} for the given type and the given settings in the chain.
@@ -60,31 +48,6 @@ public interface InstructionChainRetriever<T> {
      */
     @Contract("!null, !null -> new")
     Argument<T> get(String argumentKey, T defaultValue) throws QuestException;
-
-    /**
-     * Retrieves the {@link Argument} for a {@link List} of the given type {@link T} and the given settings in the chain.
-     *
-     * @param argumentKey the argument key
-     * @return an optional of the argument
-     * @throws QuestException if the argument could not be resolved
-     * @deprecated replaced by {@link DecoratableChainRetriever#list()} to be used instead
-     */
-    @Contract("!null -> new")
-    @Deprecated
-    Optional<Argument<List<T>>> getList(String argumentKey) throws QuestException;
-
-    /**
-     * Retrieves the {@link Argument} for a {@link List} of the given type {@link T} and the given settings in the chain.
-     *
-     * @param argumentKey  the argument key
-     * @param defaultValue the default value to return if the argument is not present
-     * @return the argument
-     * @throws QuestException if the argument could not be resolved
-     * @deprecated replaced by {@link DecoratableChainRetriever#list()} to be used instead
-     */
-    @Contract("!null, !null -> new")
-    @Deprecated
-    Argument<List<T>> getList(String argumentKey, List<T> defaultValue) throws QuestException;
 
     /**
      * Retrieves the {@link Argument} for the given type and interprets it as a flag.

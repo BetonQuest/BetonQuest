@@ -32,7 +32,7 @@ public class RunIndependentEventFactory implements PlayerlessEventFactory {
 
     @Override
     public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
-        final Argument<List<EventID>> events = instruction.parse(EventID::new).getList("events", Collections.emptyList());
+        final Argument<List<EventID>> events = instruction.parse(EventID::new).list().get("events", Collections.emptyList());
         return new RunIndependentEvent(questTypeApi, events);
     }
 }

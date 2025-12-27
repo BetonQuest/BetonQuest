@@ -35,14 +35,16 @@ public class DeleteEffectEventFactory implements PlayerEventFactory {
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<List<PotionEffectType>> effects;
-        if (!instruction.hasArgument("any") && instruction.size() > 1) {
+        final boolean any = instruction.bool().getFlag("any", false)
+                .getValue(null).orElse(false);
+        if (!any && instruction.size() > 1) {
             effects = instruction.parse(type -> {
                 final PotionEffectType effect = PotionEffectType.getByName(type);
                 if (effect == null) {
                     throw new QuestException("Unknown effect type: " + type);
                 }
                 return effect;
-            }).getList();
+            }).list().get();
         } else {
             effects = new DefaultListArgument<>(Collections.emptyList());
         }

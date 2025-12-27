@@ -47,14 +47,15 @@ public class DropEventFactory implements PlayerEventFactory, PlayerlessEventFact
 
     private PlayerlessEvent createStaticDropEvent(final Instruction instruction) throws QuestException {
         final NullableEventAdapter dropEvent = createDropEvent(instruction);
-        if (!instruction.hasArgument("location")) {
+        final boolean location = !instruction.bool().getFlag("location", false).getValue(null).orElse(false);
+        if (location) {
             return new OnlineProfileGroupPlayerlessEventAdapter(profileProvider::getOnlineProfiles, dropEvent);
         }
         return dropEvent;
     }
 
     private NullableEventAdapter createDropEvent(final Instruction instruction) throws QuestException {
-        final Argument<List<ItemWrapper>> items = instruction.item().getList("items", Collections.emptyList());
+        final Argument<List<ItemWrapper>> items = instruction.item().list().notEmpty().get("items", Collections.emptyList());
         final String locationPart = instruction.string().get("location", "%location%").getValue(null);
         final Argument<Location> location = instruction.chainForArgument(locationPart).location().get();
         return new NullableEventAdapter(new DropEvent(items, location));

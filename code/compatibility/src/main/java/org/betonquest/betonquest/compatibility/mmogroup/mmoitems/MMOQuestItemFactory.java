@@ -33,7 +33,9 @@ public class MMOQuestItemFactory implements TypeFactory<QuestItemWrapper> {
         final Argument<Type> itemType = instruction.parse(MMOItemsUtils::getMMOItemType).get();
         final Argument<String> itemId = instruction.string().get();
         final MMOQuestItemWrapper mmoQuestItemWrapper = new MMOQuestItemWrapper(mmoPlugin, itemType, itemId);
-        if (instruction.hasArgument("quest-item")) {
+        final boolean questItem = instruction.bool().getFlag("quest-item", false)
+                .getValue(null).orElse(false);
+        if (questItem) {
             return new QuestItemTagAdapterWrapper(mmoQuestItemWrapper);
         }
         return mmoQuestItemWrapper;

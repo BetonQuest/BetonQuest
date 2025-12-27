@@ -8,6 +8,7 @@ import java.util.Optional;
  * @param <T> the type of the argument
  * @see FlagState
  */
+@FunctionalInterface
 public interface FlagArgument<T> extends Argument<Optional<T>> {
 
     /**
@@ -15,5 +16,7 @@ public interface FlagArgument<T> extends Argument<Optional<T>> {
      *
      * @return the flag state
      */
-    FlagState getState();
+    default FlagState getState() {
+        return FlagState.ABSENT;
+    }
 }

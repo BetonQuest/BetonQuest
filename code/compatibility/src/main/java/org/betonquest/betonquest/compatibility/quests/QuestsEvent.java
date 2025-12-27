@@ -4,6 +4,7 @@ import me.pikamug.quests.Quests;
 import me.pikamug.quests.quests.Quest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 
@@ -25,7 +26,7 @@ public class QuestsEvent implements PlayerEvent {
     /**
      * If the quest start should be forced.
      */
-    private final boolean override;
+    private final FlagArgument<Boolean> override;
 
     /**
      * Create a new start quest event.
@@ -34,7 +35,7 @@ public class QuestsEvent implements PlayerEvent {
      * @param questName name of quest to start
      * @param override  whether to force quest start
      */
-    public QuestsEvent(final Quests quests, final Argument<String> questName, final boolean override) {
+    public QuestsEvent(final Quests quests, final Argument<String> questName, final FlagArgument<Boolean> override) {
         this.quests = quests;
         this.questName = questName;
         this.override = override;
@@ -53,7 +54,7 @@ public class QuestsEvent implements PlayerEvent {
         if (quest == null) {
             throw new QuestException("Quest '" + questName + "' is not defined");
         }
-        quests.getQuester(profile.getProfileUUID()).takeQuest(quest, override);
+        quests.getQuester(profile.getProfileUUID()).takeQuest(quest, override.getValue(profile).orElse(false));
     }
 
     @Override

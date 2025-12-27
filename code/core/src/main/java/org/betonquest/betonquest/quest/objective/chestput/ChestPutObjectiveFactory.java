@@ -46,10 +46,12 @@ public class ChestPutObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<Location> loc = instruction.location().get();
-        final Argument<List<ItemWrapper>> items = instruction.item().getList();
+        final Argument<List<ItemWrapper>> items = instruction.item().list().get();
         final boolean multipleAccess = instruction.bool().get("multipleaccess", false).getValue(null);
         final ChestItemCondition chestItemCondition = new ChestItemCondition(loc, items);
-        final ChestTakeEvent chestTakeEvent = instruction.hasArgument("items-stay") ? null : new ChestTakeEvent(loc, items);
+        final boolean itemsStay = instruction.bool().getFlag("items-stay", false)
+                .getValue(null).orElse(false);
+        final ChestTakeEvent chestTakeEvent = itemsStay ? null : new ChestTakeEvent(loc, items);
         final BetonQuestLogger log = loggerFactory.create(ChestPutObjective.class);
         final IngameNotificationSender occupiedSender = new IngameNotificationSender(log, pluginMessage, instruction.getPackage(),
                 instruction.getID().getFull(), NotificationLevel.INFO, "chest_occupied");

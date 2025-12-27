@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.common.function.ConstantSelector;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.common.function.Selectors;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
@@ -55,8 +56,8 @@ public class TimeEventFactory implements PlayerEventFactory, PlayerlessEventFact
         final Argument<TimeChange> time = instruction.parse(TimeParser.TIME).get();
         final Optional<Argument<String>> world = instruction.string().get("world");
         final Selector<World> worldSelector = parseWorld(world.isEmpty() ? null : world.get().getValue(null));
-        final boolean hourFormat = !instruction.hasArgument("ticks");
-        return new NullableEventAdapter(new TimeEvent(time, worldSelector, hourFormat));
+        final FlagArgument<Boolean> tickFormat = instruction.bool().getFlag("ticks", false);
+        return new NullableEventAdapter(new TimeEvent(time, worldSelector, tickFormat));
     }
 
     private Selector<World> parseWorld(@Nullable final String worldName) {
