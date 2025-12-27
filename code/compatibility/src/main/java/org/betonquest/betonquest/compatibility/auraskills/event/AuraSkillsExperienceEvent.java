@@ -34,7 +34,7 @@ public class AuraSkillsExperienceEvent implements PlayerEvent {
     /**
      * If the amount is a level and not experience.
      */
-    private final FlagArgument<Boolean> isLevel;
+    private final FlagArgument<Boolean> level;
 
     /**
      * Create a new AuraSkills experience event.
@@ -42,14 +42,14 @@ public class AuraSkillsExperienceEvent implements PlayerEvent {
      * @param auraSkillsApi the {@link AuraSkillsApi}.
      * @param amount        the amount of experience to give the player in the skill.
      * @param name          the {@link Skill} name to give experience in.
-     * @param isLevel       {@code true} if the amount is a level. Otherwise {@code false} if the amount is experience.
+     * @param level         {@code true} if the amount is a level. Otherwise {@code false} if the amount is experience.
      */
     public AuraSkillsExperienceEvent(final AuraSkillsApi auraSkillsApi, final Argument<Number> amount,
-                                     final Argument<String> name, final FlagArgument<Boolean> isLevel) {
+                                     final Argument<String> name, final FlagArgument<Boolean> level) {
         this.auraSkillsApi = auraSkillsApi;
         this.amount = amount;
         this.name = name;
-        this.isLevel = isLevel;
+        this.level = level;
     }
 
     @Override
@@ -62,7 +62,7 @@ public class AuraSkillsExperienceEvent implements PlayerEvent {
         final NamespacedId namespacedId = NamespacedId.fromDefault(name.getValue(profile));
         final Skill skill = Utils.getNN(auraSkillsApi.getGlobalRegistry().getSkill(namespacedId), "Invalid skill name");
         final int amount = this.amount.getValue(profile).intValue();
-        if (!isLevel.getValue(profile).orElse(false)) {
+        if (!level.getValue(profile).orElse(false)) {
             user.addSkillXpRaw(skill, amount);
             return;
         }

@@ -21,17 +21,17 @@ public class MMOCoreClassExperienceEvent implements PlayerEvent {
     /**
      * If level should be added instead of experience.
      */
-    private final FlagArgument<Boolean> isLevel;
+    private final FlagArgument<Boolean> level;
 
     /**
      * Create a new experience add event.
      *
-     * @param amount  the amount to grant
-     * @param isLevel whether to add level instead of experience
+     * @param amount the amount to grant
+     * @param level  whether to add level instead of experience
      */
-    public MMOCoreClassExperienceEvent(final Argument<Number> amount, final FlagArgument<Boolean> isLevel) {
+    public MMOCoreClassExperienceEvent(final Argument<Number> amount, final FlagArgument<Boolean> level) {
         this.amount = amount;
-        this.isLevel = isLevel;
+        this.level = level;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class MMOCoreClassExperienceEvent implements PlayerEvent {
         final int amount = this.amount.getValue(profile).intValue();
         final PlayerData mmoData = PlayerData.get(profile.getPlayerUUID());
 
-        if (isLevel.getValue(profile).orElse(false)) {
+        if (level.getValue(profile).orElse(false)) {
             mmoData.giveLevels(amount, EXPSource.QUEST);
         } else {
             mmoData.giveExperience(amount, EXPSource.QUEST);

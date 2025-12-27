@@ -27,8 +27,8 @@ public class PasswordObjectiveFactory implements ObjectiveFactory {
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final String pattern = instruction.string().get().getValue(null);
         final FlagArgument<Pattern> regex = instruction.bool()
-                .map(ignCase -> ignCase ?
-                        Pattern.compile(pattern, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE) : Pattern.compile(pattern))
+                .map(ignCase -> ignCase
+                        ? Pattern.compile(pattern, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE) : Pattern.compile(pattern))
                 .getFlag("ignoreCase", Pattern.compile(pattern));
         final Argument<String> prefix = instruction.string().get("prefix").orElse(null);
         final String resolvedPrefix = prefix == null ? null : prefix.getValue(null);

@@ -22,7 +22,7 @@ public class MMOCoreClassExperienceEventFactory implements PlayerEventFactory {
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
 
         final Argument<Number> amount = instruction.number().get();
-        final FlagArgument<Boolean> isLevel = instruction.bool().getFlag("level", false);
-        return new MMOCoreClassExperienceEvent(amount, isLevel);
+        final FlagArgument<Boolean> level = instruction.bool().getFlag("level", false);
+        return new MMOCoreClassExperienceEvent(amount, level);
     }
 }

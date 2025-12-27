@@ -27,19 +27,19 @@ public class MMOCoreProfessionExperienceEvent implements PlayerEvent {
     /**
      * If level should be added instead of experience.
      */
-    private final FlagArgument<Boolean> isLevel;
+    private final FlagArgument<Boolean> level;
 
     /**
      * Create a new class point add event.
      *
      * @param profession the profession to add experience to
      * @param amount     the amount to grant
-     * @param isLevel    whether to add level instead of experience
+     * @param level      whether to add level instead of experience
      */
-    public MMOCoreProfessionExperienceEvent(final Argument<Profession> profession, final Argument<Number> amount, final FlagArgument<Boolean> isLevel) {
+    public MMOCoreProfessionExperienceEvent(final Argument<Profession> profession, final Argument<Number> amount, final FlagArgument<Boolean> level) {
         this.profession = profession;
         this.amount = amount;
-        this.isLevel = isLevel;
+        this.level = level;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class MMOCoreProfessionExperienceEvent implements PlayerEvent {
         final int amount = this.amount.getValue(profile).intValue();
         final PlayerData mmoData = PlayerData.get(profile.getPlayerUUID());
 
-        if (isLevel.getValue(profile).orElse(false)) {
+        if (level.getValue(profile).orElse(false)) {
             mmoData.getCollectionSkills().giveLevels(profession, amount, EXPSource.QUEST);
         } else {
             mmoData.getCollectionSkills().giveExperience(profession, amount, EXPSource.QUEST);
