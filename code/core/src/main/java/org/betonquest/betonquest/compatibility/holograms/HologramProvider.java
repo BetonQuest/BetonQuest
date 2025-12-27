@@ -23,9 +23,9 @@ import java.util.regex.Pattern;
 public class HologramProvider implements Integrator {
 
     /**
-     * Pattern to match an instruction variable in string.
+     * Pattern to match a placeholder in a string.
      */
-    public static final Pattern VARIABLE_VALIDATOR = Pattern.compile("%[^ %\\s]+%");
+    public static final Pattern PLACEHOLDER_VALIDATOR = Pattern.compile("%[^ %\\s]+%");
 
     /**
      * The hooked integrator.
@@ -77,18 +77,18 @@ public class HologramProvider implements Integrator {
     }
 
     /**
-     * Parses a string containing an instruction variable and converts it to the appropriate format for the given
+     * Parses a string containing a placeholder and converts it to the appropriate format for the given
      * plugin implementation.
      *
-     * @param pack The quest pack where the variable resides.
-     * @param text The raw text.
-     * @return The parsed and formatted full string.
+     * @param pack the quest pack where the placeholder resides.
+     * @param text the raw text.
+     * @return the parsed and formatted full string.
      */
-    public String parseVariable(final QuestPackage pack, final String text) {
+    public String parsePlaceholder(final QuestPackage pack, final String text) {
         if (integrator == null) {
             throw new IllegalStateException("Integrator has not been initialized!");
         }
-        return integrator.parseVariable(pack, text);
+        return integrator.parsePlaceholder(pack, text);
     }
 
     @Override
@@ -97,10 +97,10 @@ public class HologramProvider implements Integrator {
         final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
         final TextParser textParser = plugin.getTextParser();
         this.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class),
-                api.getQuestTypeApi().variables(), api.getQuestPackageManager(), this, plugin, textParser);
+                api.getQuestTypeApi().placeholders(), api.getQuestPackageManager(), this, plugin, textParser);
         plugin.addProcessor(locationHologramLoop);
         this.npcHologramLoop = new NpcHologramLoop(loggerFactory, loggerFactory.create(NpcHologramLoop.class),
-                api.getQuestTypeApi().variables(), plugin.getQuestPackageManager(), plugin, this,
+                api.getQuestTypeApi().placeholders(), plugin.getQuestPackageManager(), plugin, this,
                 api.getFeatureApi(), api.getFeatureRegistries().npc(), textParser);
         plugin.addProcessor(npcHologramLoop);
         plugin.getServer().getPluginManager().registerEvents(new HologramListener(api.getProfileProvider()), plugin);

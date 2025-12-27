@@ -10,8 +10,8 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.api.text.TextParserRegistry;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -77,9 +77,9 @@ public class CoreFeatureFactories {
     private final QuestTypeApi questTypeApi;
 
     /**
-     * Variable processor to create and resolve variables.
+     * The {@link Placeholders} to create and resolve placeholders.
      */
-    private final Variables variables;
+    private final Placeholders placeholders;
 
     /**
      * Feature API.
@@ -118,7 +118,7 @@ public class CoreFeatureFactories {
      * @param packManager        the quest package manager to get quest packages from
      * @param lastExecutionCache the cache to catch up missed schedulers
      * @param questTypeApi       the class for executing events
-     * @param variables          the variable processor to create and resolve variables
+     * @param placeholders       the {@link Placeholders} to create and resolve placeholders
      * @param featureApi         the Feature API
      * @param config             the config
      * @param colors             the colors to use for the conversation
@@ -129,14 +129,14 @@ public class CoreFeatureFactories {
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public CoreFeatureFactories(final BetonQuestLoggerFactory loggerFactory, final QuestPackageManager packManager,
                                 final LastExecutionCache lastExecutionCache, final QuestTypeApi questTypeApi,
-                                final Variables variables, final FeatureApi featureApi,
+                                final Placeholders placeholders, final FeatureApi featureApi,
                                 final ConfigAccessor config, final ConversationColors colors,
                                 final TextParser textParser, final FontRegistry fontRegistry, final PluginMessage pluginMessage) {
         this.loggerFactory = loggerFactory;
         this.packManager = packManager;
         this.lastExecutionCache = lastExecutionCache;
         this.questTypeApi = questTypeApi;
-        this.variables = variables;
+        this.placeholders = placeholders;
         this.featureApi = featureApi;
         this.config = config;
         this.colors = colors;
@@ -155,8 +155,8 @@ public class CoreFeatureFactories {
         final ConversationIORegistry conversationIOTypes = registries.conversationIO();
         conversationIOTypes.register("simple", new SimpleConvIOFactory(colors));
         conversationIOTypes.register("tellraw", new TellrawConvIOFactory(colors));
-        conversationIOTypes.register("chest", new InventoryConvIOFactory(loggerFactory, variables, packManager, config, fontRegistry, colors, false));
-        conversationIOTypes.register("combined", new InventoryConvIOFactory(loggerFactory, variables, packManager, config, fontRegistry, colors, true));
+        conversationIOTypes.register("chest", new InventoryConvIOFactory(loggerFactory, placeholders, packManager, config, fontRegistry, colors, false));
+        conversationIOTypes.register("combined", new InventoryConvIOFactory(loggerFactory, placeholders, packManager, config, fontRegistry, colors, true));
         conversationIOTypes.register("slowtellraw", new SlowTellrawConvIOFactory(fontRegistry, colors));
 
         final InterceptorRegistry interceptorTypes = registries.interceptor();
@@ -165,27 +165,27 @@ public class CoreFeatureFactories {
 
         final ItemTypeRegistry itemTypes = registries.item();
         final BookPageWrapper bookPageWrapper = new BookPageWrapper(fontRegistry, 114, 14);
-        itemTypes.register("simple", new SimpleQuestItemFactory(variables, packManager, textParser, bookPageWrapper,
+        itemTypes.register("simple", new SimpleQuestItemFactory(placeholders, packManager, textParser, bookPageWrapper,
                 () -> config.getBoolean("item.quest.lore") ? pluginMessage : null));
         itemTypes.registerSerializer("simple", new SimpleQuestItemSerializer(textParser, bookPageWrapper));
 
         final Plugin plugin = BetonQuest.getInstance();
         final NotifyIORegistry notifyIOTypes = registries.notifyIO();
         notifyIOTypes.register("suppress", new SuppressNotifyIOFactory());
-        notifyIOTypes.register("chat", new ChatNotifyIOFactory(variables, featureApi.conversationApi()));
-        notifyIOTypes.register("advancement", new AdvancementNotifyIOFactory(variables, plugin));
-        notifyIOTypes.register("actionbar", new ActionBarNotifyIOFactory(variables));
-        notifyIOTypes.register("bossbar", new BossBarNotifyIOFactory(variables, plugin));
-        notifyIOTypes.register("title", new TitleNotifyIOFactory(variables));
-        notifyIOTypes.register("totem", new TotemNotifyIOFactory(variables));
-        notifyIOTypes.register("subtitle", new SubTitleNotifyIOFactory(variables));
-        notifyIOTypes.register("sound", new SoundIOFactory(variables));
+        notifyIOTypes.register("chat", new ChatNotifyIOFactory(placeholders, featureApi.conversationApi()));
+        notifyIOTypes.register("advancement", new AdvancementNotifyIOFactory(placeholders, plugin));
+        notifyIOTypes.register("actionbar", new ActionBarNotifyIOFactory(placeholders));
+        notifyIOTypes.register("bossbar", new BossBarNotifyIOFactory(placeholders, plugin));
+        notifyIOTypes.register("title", new TitleNotifyIOFactory(placeholders));
+        notifyIOTypes.register("totem", new TotemNotifyIOFactory(placeholders));
+        notifyIOTypes.register("subtitle", new SubTitleNotifyIOFactory(placeholders));
+        notifyIOTypes.register("sound", new SoundIOFactory(placeholders));
 
         final ScheduleRegistry eventSchedulingTypes = registries.eventScheduling();
-        eventSchedulingTypes.register("realtime-daily", new RealtimeDailyScheduleFactory(variables, packManager),
+        eventSchedulingTypes.register("realtime-daily", new RealtimeDailyScheduleFactory(placeholders, packManager),
                 new RealtimeDailyScheduler(loggerFactory.create(RealtimeDailyScheduler.class, "Schedules"), questTypeApi, lastExecutionCache)
         );
-        eventSchedulingTypes.register("realtime-cron", new RealtimeCronScheduleFactory(variables, packManager),
+        eventSchedulingTypes.register("realtime-cron", new RealtimeCronScheduleFactory(placeholders, packManager),
                 new RealtimeCronScheduler(loggerFactory.create(RealtimeCronScheduler.class, "Schedules"), questTypeApi, lastExecutionCache)
         );
 

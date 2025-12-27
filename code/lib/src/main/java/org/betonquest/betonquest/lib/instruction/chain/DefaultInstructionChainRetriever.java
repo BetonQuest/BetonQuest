@@ -12,12 +12,12 @@ import java.util.Optional;
 /**
  * A default implementation of {@link InstructionChainRetriever}.
  *
- * @param <T> the variable type
+ * @param <T> the type of the argument
  */
 public class DefaultInstructionChainRetriever<T> implements InstructionChainRetriever<T> {
 
     /**
-     * The instruction used to retrieve the variable.
+     * The instruction used to retrieve the argument.
      */
     protected final ChainableInstruction instruction;
 
@@ -29,7 +29,7 @@ public class DefaultInstructionChainRetriever<T> implements InstructionChainRetr
     /**
      * Creates a new instruction chain retriever.
      *
-     * @param instruction the instruction used to retrieve the variable
+     * @param instruction the instruction used to retrieve the argument
      * @param argument    the argument parser
      */
     public DefaultInstructionChainRetriever(final ChainableInstruction instruction, final InstructionArgumentParser<T> argument) {

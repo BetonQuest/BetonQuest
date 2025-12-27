@@ -2,7 +2,7 @@ package org.betonquest.betonquest.mc_1_21_4.notify.io;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.notify.NotifyIO;
 import org.betonquest.betonquest.notify.NotifyIOFactory;
 import org.betonquest.betonquest.notify.io.TotemNotifyIO;
@@ -16,21 +16,21 @@ import java.util.Map;
 public class UpdatedTotemNotifyIOFactory implements NotifyIOFactory {
 
     /**
-     * Variable processor to create and resolve variables.
+     * The {@link Placeholders} to create and resolve placeholders.
      */
-    private final Variables variables;
+    private final Placeholders placeholders;
 
     /**
      * Create a new Totem Notify IO factory.
      *
-     * @param variables the variable processor to create and resolve variables
+     * @param placeholders the {@link Placeholders} to create and resolve placeholders
      */
-    public UpdatedTotemNotifyIOFactory(final Variables variables) {
-        this.variables = variables;
+    public UpdatedTotemNotifyIOFactory(final Placeholders placeholders) {
+        this.placeholders = placeholders;
     }
 
     @Override
     public NotifyIO create(@Nullable final QuestPackage pack, final Map<String, String> categoryData) throws QuestException {
-        return new UpdatedTotemNotifyIO(variables, pack, categoryData);
+        return new UpdatedTotemNotifyIO(placeholders, pack, categoryData);
     }
 }

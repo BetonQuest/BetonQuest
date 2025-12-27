@@ -11,8 +11,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
@@ -109,7 +109,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
      * @param log             the custom logger for this class
      * @param loggerFactory   the logger factory used to create logger for the started conversations
      * @param packManager     the quest package manager to get quest packages from
-     * @param variables       the variable processor to handle variables in Npc conversations
+     * @param placeholders    the {@link Placeholders} to create and resolve placeholders
      * @param npcTypes        the available npc types
      * @param pluginMessage   the {@link PluginMessage} instance
      * @param plugin          the plugin to load config
@@ -119,16 +119,16 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public NpcProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
-                        final Variables variables, final QuestPackageManager packManager,
+                        final Placeholders placeholders, final QuestPackageManager packManager,
                         final NpcTypeRegistry npcTypes, final PluginMessage pluginMessage, final BetonQuest plugin,
                         final ProfileProvider profileProvider, final QuestTypeApi questTypeApi, final ConversationStarter convStarter) {
-        super(log, variables, packManager, npcTypes, "Npc", "npcs");
+        super(log, placeholders, packManager, npcTypes, "Npc", "npcs");
         this.loggerFactory = loggerFactory;
         this.pluginMessage = pluginMessage;
         this.convStarter = convStarter;
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(new NpcListener(), plugin);
-        this.npcHider = new NpcHider(loggerFactory.create(NpcHider.class), packManager, variables, this,
+        this.npcHider = new NpcHider(loggerFactory.create(NpcHider.class), packManager, placeholders, this,
                 questTypeApi, profileProvider, npcTypes);
         this.busySender = new IngameNotificationSender(log, pluginMessage, null, "NpcProcessor", NotificationLevel.ERROR, "busy");
     }
@@ -157,7 +157,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
                 log.warn(pack, NPC_SECTION + " value for key '" + key + "' (in " + packName + " package) is not a string");
             } else {
                 try {
-                    final NpcID npcID = new NpcID(variables, packManager, pack, key);
+                    final NpcID npcID = new NpcID(placeholders, packManager, pack, key);
                     final ConversationID conversationID = new ConversationID(packManager, pack, Objects.requireNonNull(section.getString(key)));
                     assignedConversations.put(npcID, conversationID);
                 } catch (final QuestException exception) {
@@ -179,7 +179,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
 
     @Override
     protected NpcID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new NpcID(variables, packManager, pack, identifier);
+        return new NpcID(placeholders, packManager, pack, identifier);
     }
 
     @Override

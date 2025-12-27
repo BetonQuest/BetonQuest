@@ -24,7 +24,7 @@ import java.util.List;
  * @param holograms       A list of actual hologram
  * @param interval        Interval in ticks that lie between updates to the visibility and content
  * @param staticContent   Indicates whether the displayed content of the hologram is changing after a while.
- *                        HolographicDisplays variables are not updated BetonQuest, it does not make a hologram flexible.
+ *                        HolographicDisplays placeholders are not updated BetonQuest, it does not make a hologram flexible.
  *                        However, content updates such as refreshing the top list do.
  *                        <p>
  *                        If <code>true</code>, {@link HologramWrapper#updateContent()} will end instantly to not cause
@@ -151,7 +151,7 @@ public record HologramWrapper(BetonQuestLogger log, QuestTypeApi questTypeApi, P
             maxRange = this.maxRange.getValue(profile).intValue();
         } catch (final QuestException e) {
             maxRange = 0;
-            log.debug("Failed to parse max range from variable. Defaulting to 0.", e);
+            log.debug("Failed to parse max range from placeholder. Defaulting to 0.", e);
         }
         return maxRange;
     }

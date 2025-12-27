@@ -39,7 +39,7 @@ public class EffectLibIntegrator implements Integrator {
 
         plugin.addProcessor(new EffectLibParticleManager(loggerFactory.create(EffectLibParticleManager.class), loggerFactory,
                 api.getQuestPackageManager(), api.getQuestTypeApi(), api.getFeatureApi(), api.getProfileProvider(),
-                api.getQuestTypeApi().variables(), manager, plugin));
+                api.getQuestTypeApi().placeholders(), manager, plugin));
     }
 
     @Override

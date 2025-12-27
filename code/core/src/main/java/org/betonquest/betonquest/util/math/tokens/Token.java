@@ -17,9 +17,9 @@ public interface Token {
      * Resolves the tokens expression and returns the result.
      *
      * @param profile the {@link Profile} of the player for which this token should be resolved,
-     *                required for parsing variables
+     *                required for parsing placeholders
      * @return the result
-     * @throws QuestException if the Token contained variables that could not be resolved
+     * @throws QuestException if the Token contained placeholders that could not be resolved
      */
     double resolve(@Nullable Profile profile) throws QuestException;
 }

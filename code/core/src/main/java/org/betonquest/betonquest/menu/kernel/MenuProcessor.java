@@ -88,13 +88,13 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
         final Menu.MenuData menuData = helper.getMenuData();
         final MenuID menuID = getIdentifier(pack, section.getName());
         final Argument<ItemWrapper> boundItem = section.isSet("bind")
-                ? new DefaultArgument<>(variables, pack, helper.getRequired("bind"),
-                value -> itemParser.apply(variables, packManager, pack, value))
+                ? new DefaultArgument<>(placeholders, pack, helper.getRequired("bind"),
+                value -> itemParser.apply(placeholders, packManager, pack, value))
                 : null;
         final BetonQuestLogger log = loggerFactory.create(Menu.class);
         final Menu menu = new Menu(log, menuID, questTypeApi, menuData, boundItem);
         if (section.isSet("command")) {
-            final String string = new DefaultArgument<>(variables, pack, helper.getRequired("command"),
+            final String string = new DefaultArgument<>(placeholders, pack, helper.getRequired("command"),
                     new StringParser()).getValue(null).trim();
             createBoundCommand(menu, string);
         }
@@ -134,7 +134,7 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
         }
 
         private Menu.MenuData getMenuData() throws QuestException {
-            final int height = new DefaultArgument<>(variables, pack, getRequired("height"), NumberParser.DEFAULT)
+            final int height = new DefaultArgument<>(placeholders, pack, getRequired("height"), NumberParser.DEFAULT)
                     .getValue(null).intValue();
             if (height < 1 || height > 6) {
                 throw new QuestException("height is invalid!");
@@ -155,7 +155,7 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
             }
             final List<Slots> slots = new ArrayList<>();
             for (final String key : slotsSection.getKeys(false)) {
-                final Argument<List<MenuItemID>> itemsList = new DefaultListArgument<>(variables, pack,
+                final Argument<List<MenuItemID>> itemsList = new DefaultListArgument<>(placeholders, pack,
                         slotsSection.getString(key, ""), value -> new MenuItemID(packManager, pack, value));
                 try {
                     slots.add(new Slots(rpgMenu, key, itemsList));

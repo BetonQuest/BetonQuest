@@ -45,7 +45,7 @@ public class MenuEventFactory implements PlayerEventFactory {
         final QuestConsumer<OnlineProfile> action = switch (operation) {
             case OPEN -> {
                 final Argument<MenuID> menuID = instruction.parse(
-                        (variables, packManager, pack, string)
+                        (placeholders, packManager, pack, string)
                                 -> new MenuID(packManager, pack, string)).get();
                 yield profile -> rpgMenu.openMenu(profile, menuID.getValue(profile));
             }

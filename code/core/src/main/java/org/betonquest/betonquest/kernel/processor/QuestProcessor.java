@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,9 +24,9 @@ public abstract class QuestProcessor<I extends Identifier, T> {
     protected final BetonQuestLogger log;
 
     /**
-     * Variable processor to create and resolve variables.
+     * The {@link Placeholders} to create and resolve placeholders.
      */
-    protected final Variables variables;
+    protected final Placeholders placeholders;
 
     /**
      * The quest package manager to get quest packages from.
@@ -51,16 +51,16 @@ public abstract class QuestProcessor<I extends Identifier, T> {
     /**
      * Create a new QuestProcessor to store and execute {@link T} logic.
      *
-     * @param log         the custom logger for this class
-     * @param variables   the variable processor to create and resolve variables
-     * @param packManager the quest package manager to get quest packages from
-     * @param readable    the type name used for logging, with the first letter in upper case
-     * @param internal    the section name and/or bstats topic identifier
+     * @param log          the custom logger for this class
+     * @param placeholders the {@link Placeholders} to create and resolve placeholders
+     * @param packManager  the quest package manager to get quest packages from
+     * @param readable     the type name used for logging, with the first letter in upper case
+     * @param internal     the section name and/or bstats topic identifier
      */
-    public QuestProcessor(final BetonQuestLogger log, final Variables variables, final QuestPackageManager packManager,
+    public QuestProcessor(final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager,
                           final String readable, final String internal) {
         this.log = log;
-        this.variables = variables;
+        this.placeholders = placeholders;
         this.packManager = packManager;
         this.values = new HashMap<>();
         this.readable = readable;

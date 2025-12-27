@@ -6,7 +6,7 @@ import com.cronutils.model.time.ExecutionTime;
 import com.cronutils.parser.CronParser;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.schedule.CronSchedule;
 import org.betonquest.betonquest.api.schedule.ScheduleID;
 import org.betonquest.betonquest.schedule.impl.BaseScheduleFactory;
@@ -21,11 +21,11 @@ public abstract class CronScheduleFactory extends BaseScheduleFactory<CronSchedu
     /**
      * Create a new Cron Schedule Factory to create parse common cron schedule data.
      *
-     * @param variables   the variable processor to create and resolve variables
-     * @param packManager the quest package manager to get quest packages from
+     * @param placeholders the {@link Placeholders} to create and resolve placeholders
+     * @param packManager  the quest package manager to get quest packages from
      */
-    public CronScheduleFactory(final Variables variables, final QuestPackageManager packManager) {
-        super(variables, packManager);
+    public CronScheduleFactory(final Placeholders placeholders, final QuestPackageManager packManager) {
+        super(placeholders, packManager);
     }
 
     @Override

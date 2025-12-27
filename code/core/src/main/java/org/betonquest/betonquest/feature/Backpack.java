@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
@@ -53,9 +53,9 @@ public class Backpack implements Listener {
     private final BetonQuestLogger log;
 
     /**
-     * Variable processor to create and resolve variables.
+     * The {@link Placeholders} to create and resolve placeholders.
      */
-    private final Variables variables;
+    private final Placeholders placeholders;
 
     /**
      * The quest package manager to get quest packages from.
@@ -91,14 +91,15 @@ public class Backpack implements Listener {
      * Creates new backpack GUI opened at given page type.
      *
      * @param config        the plugin configuration file
-     * @param variables     the variable processor to create and resolve variables
+     * @param placeholders  the {@link Placeholders} to create and resolve placeholders
      * @param pluginMessage the {@link PluginMessage} instance
      * @param onlineProfile the {@link OnlineProfile} of the player
      * @param type          type of the display
      */
-    public Backpack(final ConfigAccessor config, final Variables variables, final PluginMessage pluginMessage, final OnlineProfile onlineProfile, final DisplayType type) {
+    public Backpack(final ConfigAccessor config, final Placeholders placeholders, final PluginMessage pluginMessage,
+                    final OnlineProfile onlineProfile, final DisplayType type) {
         this.config = config;
-        this.variables = variables;
+        this.placeholders = placeholders;
         this.pluginMessage = pluginMessage;
         final BetonQuest instance = BetonQuest.getInstance();
         this.log = instance.getLoggerFactory().create(getClass());
@@ -116,12 +117,12 @@ public class Backpack implements Listener {
      * Creates new backpack GUI.
      *
      * @param config        the plugin configuration file
-     * @param variables     the variable processor to create and resolve variables
+     * @param placeholders  the {@link Placeholders} to create and resolve placeholders
      * @param pluginMessage the {@link PluginMessage} instance
      * @param onlineProfile the {@link OnlineProfile} of the player
      */
-    public Backpack(final ConfigAccessor config, final Variables variables, final PluginMessage pluginMessage, final OnlineProfile onlineProfile) {
-        this(config, variables, pluginMessage, onlineProfile, DisplayType.DEFAULT);
+    public Backpack(final ConfigAccessor config, final Placeholders placeholders, final PluginMessage pluginMessage, final OnlineProfile onlineProfile) {
+        this(config, placeholders, pluginMessage, onlineProfile, DisplayType.DEFAULT);
     }
 
     /**
@@ -327,7 +328,7 @@ public class Backpack implements Listener {
             if (buttonString != null && !buttonString.isEmpty()) {
                 present = true;
                 try {
-                    final ItemID itemId = new ItemID(variables, packManager, null, buttonString);
+                    final ItemID itemId = new ItemID(placeholders, packManager, null, buttonString);
                     stack = BetonQuest.getInstance().getFeatureApi().getItem(itemId, onlineProfile).generate(1);
                 } catch (final QuestException e) {
                     log.warn("Could not load " + button + " button: " + e.getMessage(), e);

@@ -7,8 +7,8 @@ import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.kernel.FeatureTypeRegistry;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.GlobalData;
@@ -16,7 +16,7 @@ import org.betonquest.betonquest.database.PlayerDataFactory;
 import org.betonquest.betonquest.kernel.registry.quest.BaseQuestTypeRegistries;
 import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
-import org.betonquest.betonquest.kernel.registry.quest.VariableTypeRegistry;
+import org.betonquest.betonquest.kernel.registry.quest.PlaceholderTypeRegistry;
 import org.betonquest.betonquest.quest.condition.advancement.AdvancementConditionFactory;
 import org.betonquest.betonquest.quest.condition.armor.ArmorConditionFactory;
 import org.betonquest.betonquest.quest.condition.armor.ArmorRatingConditionFactory;
@@ -169,31 +169,31 @@ import org.betonquest.betonquest.quest.objective.step.StepObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.tame.TameObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.timer.TimerObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.variable.VariableObjectiveFactory;
-import org.betonquest.betonquest.quest.variable.condition.ConditionVariableFactory;
-import org.betonquest.betonquest.quest.variable.constant.ConstantVariableFactory;
-import org.betonquest.betonquest.quest.variable.eval.EvalVariableFactory;
-import org.betonquest.betonquest.quest.variable.item.ItemDurabilityVariableFactory;
-import org.betonquest.betonquest.quest.variable.item.ItemVariableFactory;
-import org.betonquest.betonquest.quest.variable.location.LocationVariableFactory;
-import org.betonquest.betonquest.quest.variable.math.MathVariableFactory;
-import org.betonquest.betonquest.quest.variable.name.PlayerNameVariableFactory;
-import org.betonquest.betonquest.quest.variable.name.QuesterVariableFactory;
-import org.betonquest.betonquest.quest.variable.npc.NpcVariableFactory;
-import org.betonquest.betonquest.quest.variable.objective.ObjectivePropertyVariableFactory;
-import org.betonquest.betonquest.quest.variable.point.GlobalPointVariableFactory;
-import org.betonquest.betonquest.quest.variable.point.PointVariableFactory;
-import org.betonquest.betonquest.quest.variable.random.RandomNumberVariableFactory;
-import org.betonquest.betonquest.quest.variable.sync.SyncVariableFactory;
-import org.betonquest.betonquest.quest.variable.tag.GlobalTagVariableFactory;
-import org.betonquest.betonquest.quest.variable.tag.TagVariableFactory;
-import org.betonquest.betonquest.quest.variable.version.VersionVariableFactory;
+import org.betonquest.betonquest.quest.placeholder.condition.ConditionPlaceholderFactory;
+import org.betonquest.betonquest.quest.placeholder.constant.ConstantPlaceholderFactory;
+import org.betonquest.betonquest.quest.placeholder.eval.EvalPlaceholderFactory;
+import org.betonquest.betonquest.quest.placeholder.item.ItemDurabilityPlaceholderFactory;
+import org.betonquest.betonquest.quest.placeholder.item.ItemPlaceholderFactory;
+import org.betonquest.betonquest.quest.placeholder.location.LocationPlaceholderFactory;
+import org.betonquest.betonquest.quest.placeholder.math.MathPlaceholderFactory;
+import org.betonquest.betonquest.quest.placeholder.name.PlayerNamePlaceholderFactory;
+import org.betonquest.betonquest.quest.placeholder.name.QuesterPlaceholderFactory;
+import org.betonquest.betonquest.quest.placeholder.npc.NpcPlaceholderFactory;
+import org.betonquest.betonquest.quest.placeholder.objective.ObjectivePropertyPlaceholderFactory;
+import org.betonquest.betonquest.quest.placeholder.point.GlobalPointPlaceholderFactory;
+import org.betonquest.betonquest.quest.placeholder.point.PointPlaceholderFactory;
+import org.betonquest.betonquest.quest.placeholder.random.RandomNumberPlaceholderFactory;
+import org.betonquest.betonquest.quest.placeholder.sync.SyncPlaceholderFactory;
+import org.betonquest.betonquest.quest.placeholder.tag.GlobalTagPlaceholderFactory;
+import org.betonquest.betonquest.quest.placeholder.tag.TagPlaceholderFactory;
+import org.betonquest.betonquest.quest.placeholder.version.VersionPlaceholderFactory;
 import org.bukkit.Server;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.time.InstantSource;
 
 /**
- * Registers the Conditions, Events, Objectives and Variables that come with BetonQuest.
+ * Registers the Conditions, Events, Objectives and Placeholders that come with BetonQuest.
  */
 @SuppressWarnings({"PMD.NcssCount", "PMD.AvoidDuplicateLiterals"})
 public class CoreQuestTypes {
@@ -229,9 +229,9 @@ public class CoreQuestTypes {
     private final PluginMessage pluginMessage;
 
     /**
-     * Variable processor to create and resolve variables.
+     * The {@link Placeholders} to create and resolve placeholders.
      */
-    private final Variables variables;
+    private final Placeholders placeholders;
 
     /**
      * Storage for global data.
@@ -268,7 +268,7 @@ public class CoreQuestTypes {
      * @param questTypeApi      the Quest Type API
      * @param featureApi        the Feature API
      * @param pluginMessage     the plugin message instance
-     * @param variables         the variable processor to create and resolve variables
+     * @param placeholders      the {@link Placeholders} to create and resolve placeholders
      * @param globalData        the storage providing global data
      * @param dataStorage       the storage providing player data
      * @param profileProvider   the profile provider instance
@@ -279,7 +279,7 @@ public class CoreQuestTypes {
     public CoreQuestTypes(final BetonQuestLoggerFactory loggerFactory,
                           final Server server, final BukkitScheduler scheduler, final BetonQuest betonQuest,
                           final QuestTypeApi questTypeApi, final FeatureApi featureApi, final PluginMessage pluginMessage,
-                          final Variables variables, final GlobalData globalData,
+                          final Placeholders placeholders, final GlobalData globalData,
                           final PlayerDataStorage dataStorage, final ProfileProvider profileProvider,
                           final LanguageProvider languageProvider, final PlayerDataFactory playerDataFactory) {
         this.loggerFactory = loggerFactory;
@@ -288,7 +288,7 @@ public class CoreQuestTypes {
         this.questTypeApi = questTypeApi;
         this.featureApi = featureApi;
         this.pluginMessage = pluginMessage;
-        this.variables = variables;
+        this.placeholders = placeholders;
         this.globalData = globalData;
         this.dataStorage = dataStorage;
         this.profileProvider = profileProvider;
@@ -306,7 +306,7 @@ public class CoreQuestTypes {
         registerConditions(questTypeRegistries.condition());
         registerEvents(questTypeRegistries.event());
         registerObjectives(questTypeRegistries.objective());
-        registerVariables(questTypeRegistries.variable());
+        registerPlaceholders(questTypeRegistries.placeholder());
     }
 
     private void registerConditions(final ConditionTypeRegistry conditionTypes) {
@@ -315,14 +315,14 @@ public class CoreQuestTypes {
         conditionTypes.register("armor", new ArmorConditionFactory(loggerFactory));
         conditionTypes.register("biome", new BiomeConditionFactory(loggerFactory));
         conditionTypes.register("burning", new BurningConditionFactory(loggerFactory));
-        conditionTypes.registerCombined("check", new CheckConditionFactory(variables, betonQuest.getQuestPackageManager(), conditionTypes));
+        conditionTypes.registerCombined("check", new CheckConditionFactory(placeholders, betonQuest.getQuestPackageManager(), conditionTypes));
         conditionTypes.registerCombined("chestitem", new ChestItemConditionFactory());
         conditionTypes.register("conversation", new ConversationConditionFactory(featureApi.conversationApi()));
         conditionTypes.register("dayofweek", new DayOfWeekConditionFactory(loggerFactory.create(DayOfWeekConditionFactory.class)));
         conditionTypes.register("effect", new EffectConditionFactory(loggerFactory));
         conditionTypes.register("empty", new EmptySlotsConditionFactory(loggerFactory));
         conditionTypes.registerCombined("entities", new EntityConditionFactory());
-        conditionTypes.registerCombined("eval", new EvalConditionFactory(variables, betonQuest.getQuestPackageManager(), conditionTypes));
+        conditionTypes.registerCombined("eval", new EvalConditionFactory(placeholders, betonQuest.getQuestPackageManager(), conditionTypes));
         conditionTypes.register("experience", new ExperienceConditionFactory(loggerFactory));
         conditionTypes.register("facing", new FacingConditionFactory(loggerFactory));
         conditionTypes.register("fly", new FlyingConditionFactory(loggerFactory));
@@ -384,7 +384,7 @@ public class CoreQuestTypes {
         eventTypes.registerCombined("door", new DoorEventFactory());
         eventTypes.registerCombined("drop", new DropEventFactory(profileProvider));
         eventTypes.register("effect", new EffectEventFactory(loggerFactory));
-        eventTypes.registerCombined("eval", new EvalEventFactory(variables, betonQuest.getQuestPackageManager(), eventTypes));
+        eventTypes.registerCombined("eval", new EvalEventFactory(placeholders, betonQuest.getQuestPackageManager(), eventTypes));
         eventTypes.register("experience", new ExperienceEventFactory(loggerFactory));
         eventTypes.registerCombined("explosion", new ExplosionEventFactory());
         eventTypes.registerCombined("folder", new FolderEventFactory(betonQuest, loggerFactory, server.getPluginManager(), questTypeApi));
@@ -413,7 +413,7 @@ public class CoreQuestTypes {
         eventTypes.register("point", new PointEventFactory(loggerFactory, dataStorage,
                 pluginMessage));
         eventTypes.registerCombined("removeentity", new RemoveEntityEventFactory());
-        eventTypes.registerCombined("run", new RunEventFactory(variables, betonQuest.getQuestPackageManager(), eventTypes));
+        eventTypes.registerCombined("run", new RunEventFactory(placeholders, betonQuest.getQuestPackageManager(), eventTypes));
         eventTypes.register("runForAll", new RunForAllEventFactory(questTypeApi, profileProvider));
         eventTypes.register("runIndependent", new RunIndependentEventFactory(questTypeApi));
         eventTypes.registerCombined("setblock", new SetBlockEventFactory());
@@ -472,24 +472,24 @@ public class CoreQuestTypes {
         objectiveTypes.register("resourcepack", new ResourcepackObjectiveFactory());
     }
 
-    private void registerVariables(final VariableTypeRegistry variables) {
-        variables.register("condition", new ConditionVariableFactory(questTypeApi, pluginMessage));
-        variables.registerCombined("constant", new ConstantVariableFactory());
-        variables.registerCombined("eval", new EvalVariableFactory());
-        variables.register("globalpoint", new GlobalPointVariableFactory(globalData, loggerFactory.create(GlobalPointVariableFactory.class)));
-        variables.register("globaltag", new GlobalTagVariableFactory(globalData, pluginMessage));
-        variables.registerCombined("item", new ItemVariableFactory(betonQuest.getPlayerDataStorage()));
-        variables.register("itemdurability", new ItemDurabilityVariableFactory());
-        variables.register("location", new LocationVariableFactory());
-        variables.registerCombined("math", new MathVariableFactory(this.variables));
-        variables.registerCombined("npc", new NpcVariableFactory(featureApi));
-        variables.register("objective", new ObjectivePropertyVariableFactory(questTypeApi));
-        variables.register("point", new PointVariableFactory(dataStorage, loggerFactory.create(PointVariableFactory.class)));
-        variables.register("player", new PlayerNameVariableFactory());
-        variables.register("quester", new QuesterVariableFactory(featureApi.conversationApi()));
-        variables.registerCombined("randomnumber", new RandomNumberVariableFactory());
-        variables.registerCombined("sync", new SyncVariableFactory());
-        variables.register("tag", new TagVariableFactory(dataStorage, pluginMessage));
-        variables.register("version", new VersionVariableFactory(betonQuest));
+    private void registerPlaceholders(final PlaceholderTypeRegistry placeholderTypes) {
+        placeholderTypes.register("condition", new ConditionPlaceholderFactory(questTypeApi, pluginMessage));
+        placeholderTypes.registerCombined("constant", new ConstantPlaceholderFactory());
+        placeholderTypes.registerCombined("eval", new EvalPlaceholderFactory());
+        placeholderTypes.register("globalpoint", new GlobalPointPlaceholderFactory(globalData, loggerFactory.create(GlobalPointPlaceholderFactory.class)));
+        placeholderTypes.register("globaltag", new GlobalTagPlaceholderFactory(globalData, pluginMessage));
+        placeholderTypes.registerCombined("item", new ItemPlaceholderFactory(betonQuest.getPlayerDataStorage()));
+        placeholderTypes.register("itemdurability", new ItemDurabilityPlaceholderFactory());
+        placeholderTypes.register("location", new LocationPlaceholderFactory());
+        placeholderTypes.registerCombined("math", new MathPlaceholderFactory(this.placeholders));
+        placeholderTypes.registerCombined("npc", new NpcPlaceholderFactory(featureApi));
+        placeholderTypes.register("objective", new ObjectivePropertyPlaceholderFactory(questTypeApi));
+        placeholderTypes.register("point", new PointPlaceholderFactory(dataStorage, loggerFactory.create(PointPlaceholderFactory.class)));
+        placeholderTypes.register("player", new PlayerNamePlaceholderFactory());
+        placeholderTypes.register("quester", new QuesterPlaceholderFactory(featureApi.conversationApi()));
+        placeholderTypes.registerCombined("randomnumber", new RandomNumberPlaceholderFactory());
+        placeholderTypes.registerCombined("sync", new SyncPlaceholderFactory());
+        placeholderTypes.register("tag", new TagPlaceholderFactory(dataStorage, pluginMessage));
+        placeholderTypes.register("version", new VersionPlaceholderFactory(betonQuest));
     }
 }

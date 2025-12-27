@@ -41,7 +41,7 @@ public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> imp
     private final Argument<List<ConditionID>> conditions;
 
     /**
-     * Create a new Wrapper for variables with instruction.
+     * Create a new Wrapper for placeholders with instruction.
      *
      * @param log          the custom logger for this class
      * @param questTypeApi the QuestTypeApi

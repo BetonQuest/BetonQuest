@@ -4,7 +4,7 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
+import org.betonquest.betonquest.kernel.processor.quest.PlaceholderProcessor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -18,12 +18,12 @@ public class SuppressNotifyIO extends NotifyIO {
     /**
      * Create a new Suppress Notify IO.
      *
-     * @param pack the source pack to resolve variables
+     * @param pack the source pack to resolve placeholders
      * @param data the data to clear
      * @throws QuestException when data could not be parsed
      */
     public SuppressNotifyIO(@Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
-        super(VariableProcessor.EMPTY_VARIABLES, pack, new HashMap<>());
+        super(PlaceholderProcessor.EMPTY_PLACEHOLDER, pack, new HashMap<>());
         data.clear();
     }
 

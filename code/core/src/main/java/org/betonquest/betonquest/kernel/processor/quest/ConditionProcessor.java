@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
 import org.betonquest.betonquest.kernel.processor.adapter.ConditionAdapter;
@@ -43,23 +43,23 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
      * Create a new Condition Processor to store Conditions and checks them.
      *
      * @param log            the custom logger for this class
-     * @param variables      the variable processor to create and resolve variables
+     * @param placeholders   the {@link Placeholders} to create and resolve placeholders
      * @param packManager    the quest package manager to get quest packages from
      * @param conditionTypes the available condition types
      * @param scheduler      the bukkit scheduler to run sync tasks
      * @param plugin         the plugin instance
      */
-    public ConditionProcessor(final BetonQuestLogger log, final Variables variables, final QuestPackageManager packManager,
+    public ConditionProcessor(final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager,
                               final ConditionTypeRegistry conditionTypes, final BukkitScheduler scheduler,
                               final Plugin plugin) {
-        super(log, variables, packManager, conditionTypes, "Condition", "conditions");
+        super(log, placeholders, packManager, conditionTypes, "Condition", "conditions");
         this.scheduler = scheduler;
         this.plugin = plugin;
     }
 
     @Override
     protected ConditionID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new ConditionID(variables, packManager, pack, identifier);
+        return new ConditionID(placeholders, packManager, pack, identifier);
     }
 
     /**

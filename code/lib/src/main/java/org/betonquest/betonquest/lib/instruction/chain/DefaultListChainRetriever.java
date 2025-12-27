@@ -20,7 +20,7 @@ public class DefaultListChainRetriever<T> extends DefaultDecoratableChainRetriev
     /**
      * Creates a new instruction chain retriever.
      *
-     * @param instruction the instruction used to retrieve the variable
+     * @param instruction the instruction used to retrieve the argument
      * @param argument    the argument parser
      */
     public DefaultListChainRetriever(final ChainableInstruction instruction, final InstructionArgumentParser<List<T>> argument) {

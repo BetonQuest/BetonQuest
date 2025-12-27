@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -33,9 +33,9 @@ public class SkriptConditionBQ extends Condition {
     private final BetonQuest plugin;
 
     /**
-     * Variable processor to create and resolve variables.
+     * The {@link Placeholders} to create and resolve placeholders.
      */
-    private final Variables variables;
+    private final Placeholders placeholders;
 
     /**
      * The quest package manager to get quest packages from.
@@ -58,7 +58,7 @@ public class SkriptConditionBQ extends Condition {
     public SkriptConditionBQ() {
         super();
         this.plugin = BetonQuest.getInstance();
-        this.variables = plugin.getQuestTypeApi().variables();
+        this.placeholders = plugin.getQuestTypeApi().placeholders();
         this.log = plugin.getLoggerFactory().create(getClass());
         this.packManager = plugin.getQuestPackageManager();
     }
@@ -83,7 +83,7 @@ public class SkriptConditionBQ extends Condition {
         try {
             final ProfileProvider profileProvider = plugin.getProfileProvider();
             return plugin.getQuestTypeApi().condition(profileProvider.getProfile(player.getSingle(event)),
-                    new ConditionID(variables, packManager, null, conditionID));
+                    new ConditionID(placeholders, packManager, null, conditionID));
         } catch (final QuestException e) {
             log.warn("Error while checking Skript condition - could not load condition with ID '" + conditionID + "': " + e.getMessage(), e);
             return false;

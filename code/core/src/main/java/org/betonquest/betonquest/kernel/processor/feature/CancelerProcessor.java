@@ -8,8 +8,8 @@ import org.betonquest.betonquest.api.instruction.argument.parser.LocationParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
@@ -70,16 +70,16 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerID, QuestCa
      * @param loggerFactory     the logger factory to create new class specific logger
      * @param api               the BetonQuest API instance
      * @param pluginMessage     the {@link PluginMessage} instance
-     * @param variables         the variable processor to create and resolve variables
+     * @param placeholders      the {@link Placeholders} to create and resolve placeholders
      * @param textCreator       the text creator to parse text
      * @param questTypeApi      the Quest Type API
      * @param playerDataStorage the storage for player data
      */
     public CancelerProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                              final BetonQuestApi api, final PluginMessage pluginMessage,
-                             final Variables variables, final ParsedSectionTextCreator textCreator,
+                             final Placeholders placeholders, final ParsedSectionTextCreator textCreator,
                              final QuestTypeApi questTypeApi, final PlayerDataStorage playerDataStorage) {
-        super(log, variables, api.getQuestPackageManager(), "Quest Canceler", "cancel");
+        super(log, placeholders, api.getQuestPackageManager(), "Quest Canceler", "cancel");
         this.loggerFactory = loggerFactory;
         this.api = api;
         this.pluginMessage = pluginMessage;
@@ -93,17 +93,17 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerID, QuestCa
         final Text names = textCreator.parseFromSection(pack, section, "name");
         final String itemString = section.getString("item");
         final String rawItem = itemString == null ? pack.getConfig().getString("item.cancel_button") : itemString;
-        final ItemID item = rawItem == null ? null : new ItemID(variables, packManager, pack, rawItem);
+        final ItemID item = rawItem == null ? null : new ItemID(placeholders, packManager, pack, rawItem);
         final String rawLoc = section.getString("location");
-        final Argument<Location> location = rawLoc == null ? null : new DefaultArgument<>(variables, pack, rawLoc, new LocationParser(Bukkit.getServer()));
+        final Argument<Location> location = rawLoc == null ? null : new DefaultArgument<>(placeholders, pack, rawLoc, new LocationParser(Bukkit.getServer()));
         final StringParser stringParser = new StringParser();
         final QuestCanceler.CancelData cancelData = new QuestCanceler.CancelData(
-                new DefaultListArgument<>(variables, pack, section.getString("conditions", ""), value -> new ConditionID(variables, packManager, pack, value)),
-                new DefaultListArgument<>(variables, pack, section.getString("events", ""), value -> new EventID(variables, packManager, pack, value)),
-                new DefaultListArgument<>(variables, pack, section.getString("objectives", ""), value -> new ObjectiveID(variables, packManager, pack, value)),
-                new DefaultListArgument<>(variables, pack, section.getString("tags", ""), stringParser),
-                new DefaultListArgument<>(variables, pack, section.getString("points", ""), stringParser),
-                new DefaultListArgument<>(variables, pack, section.getString("journal", ""), value -> new JournalEntryID(variables, packManager, pack, value)),
+                new DefaultListArgument<>(placeholders, pack, section.getString("conditions", ""), value -> new ConditionID(placeholders, packManager, pack, value)),
+                new DefaultListArgument<>(placeholders, pack, section.getString("events", ""), value -> new EventID(placeholders, packManager, pack, value)),
+                new DefaultListArgument<>(placeholders, pack, section.getString("objectives", ""), value -> new ObjectiveID(placeholders, packManager, pack, value)),
+                new DefaultListArgument<>(placeholders, pack, section.getString("tags", ""), stringParser),
+                new DefaultListArgument<>(placeholders, pack, section.getString("points", ""), stringParser),
+                new DefaultListArgument<>(placeholders, pack, section.getString("journal", ""), value -> new JournalEntryID(placeholders, packManager, pack, value)),
                 location);
         final BetonQuestLogger logger = loggerFactory.create(QuestCanceler.class);
         return new QuestCanceler(logger, questTypeApi, playerDataStorage, getIdentifier(pack, section.getName()),
@@ -112,6 +112,6 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerID, QuestCa
 
     @Override
     protected QuestCancelerID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new QuestCancelerID(variables, packManager, pack, identifier);
+        return new QuestCancelerID(placeholders, packManager, pack, identifier);
     }
 }

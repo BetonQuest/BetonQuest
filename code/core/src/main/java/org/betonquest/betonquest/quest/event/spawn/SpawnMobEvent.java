@@ -45,7 +45,7 @@ public class SpawnMobEvent implements NullableEvent {
     private final Argument<Component> name;
 
     /**
-     * The marked variable.
+     * The marked flag.
      */
     @Nullable
     private final Argument<String> marked;
@@ -58,7 +58,7 @@ public class SpawnMobEvent implements NullableEvent {
      * @param equipment the equipment and drops of the mob
      * @param amount    the amount of entities to spawn
      * @param name      the name of the mob
-     * @param marked    the marked variable
+     * @param marked    the marked flag
      */
     public SpawnMobEvent(final Argument<Location> location, final Argument<EntityType> type, final Equipment equipment,
                          final Argument<Number> amount, @Nullable final Argument<Component> name, @Nullable final Argument<String> marked) {

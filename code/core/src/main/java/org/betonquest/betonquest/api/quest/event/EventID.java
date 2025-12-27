@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -15,14 +15,14 @@ public class EventID extends InstructionIdentifier {
     /**
      * Create a new Event ID.
      *
-     * @param variables   the variable processor to create and resolve variables
-     * @param packManager the quest package manager to get quest packages from
-     * @param pack        the package of the event
-     * @param identifier  the complete identifier of the event
+     * @param placeholders the {@link Placeholders} to create and resolve placeholders
+     * @param packManager  the quest package manager to get quest packages from
+     * @param pack         the package of the event
+     * @param identifier   the complete identifier of the event
      * @throws QuestException if there is no such event
      */
-    public EventID(final Variables variables, final QuestPackageManager packManager, @Nullable final QuestPackage pack,
+    public EventID(final Placeholders placeholders, final QuestPackageManager packManager, @Nullable final QuestPackage pack,
                    final String identifier) throws QuestException {
-        super(variables, packManager, pack, identifier, "events", "Event");
+        super(placeholders, packManager, pack, identifier, "events", "Event");
     }
 }

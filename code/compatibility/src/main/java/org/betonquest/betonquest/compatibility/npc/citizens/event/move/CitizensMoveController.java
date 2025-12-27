@@ -197,9 +197,9 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
         /**
          * Creates a new MoveData instance.
          *
-         * @param profile the profile to resolve the variables
+         * @param profile the profile to resolve the placeholders
          * @return the resolved move data
-         * @throws QuestException if there was an error resolving the variables
+         * @throws QuestException if there was an error resolving the placeholders
          */
         public ResolvedMoveData getResolvedMoveData(final Profile profile) throws QuestException {
             return new ResolvedMoveData(locations.getValue(profile), waitTicks.getValue(profile).longValue(),

@@ -13,7 +13,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -94,14 +94,14 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
      * @param textCreator         the text creator to parse text
      * @param convIORegistry      the registry for available ConversationIOs
      * @param interceptorRegistry the registry for available Interceptors
-     * @param variables           the variable processor to create and resolve variables
+     * @param placeholders        the {@link Placeholders} to create and resolve placeholders
      * @param pluginMessage       the plugin message instance to use for ingame notifications
      */
     public ConversationProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                                  final BetonQuest plugin, final ParsedSectionTextCreator textCreator,
                                  final ConversationIORegistry convIORegistry, final InterceptorRegistry interceptorRegistry,
-                                 final Variables variables, final PluginMessage pluginMessage) {
-        super(log, variables, plugin.getQuestPackageManager(), "Conversation", "conversations");
+                                 final Placeholders placeholders, final PluginMessage pluginMessage) {
+        super(log, placeholders, plugin.getQuestPackageManager(), "Conversation", "conversations");
         this.loggerFactory = loggerFactory;
         this.activeConversations = new ProfileKeyMap<>(plugin.getProfileProvider(), new ConcurrentHashMap<>());
         this.starter = new ConversationStarter(loggerFactory, loggerFactory.create(ConversationStarter.class),
@@ -128,16 +128,16 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
 
         final Text quester = textCreator.parseFromSection(pack, section, "quester");
         final CreationHelper helper = new CreationHelper(pack, section);
-        final Argument<Boolean> blockMovement = new DefaultArgument<>(variables, pack, section.getString("stop", "false"), new BooleanParser());
+        final Argument<Boolean> blockMovement = new DefaultArgument<>(placeholders, pack, section.getString("stop", "false"), new BooleanParser());
         final Argument<ConversationIOFactory> convIO = helper.parseConvIO();
         final Argument<InterceptorFactory> interceptor = helper.parseInterceptor();
         final Argument<Number> interceptorDelay = helper.parseInterceptorDelay();
-        final Argument<List<EventID>> finalEvents = new DefaultListArgument<>(variables, pack, section.getString("final_events", ""), value -> new EventID(variables, packManager, pack, value));
+        final Argument<List<EventID>> finalEvents = new DefaultListArgument<>(placeholders, pack, section.getString("final_events", ""), value -> new EventID(placeholders, packManager, pack, value));
         final boolean invincible = plugin.getConfig().getBoolean("conversation.damage.invincible");
         final ConversationData.PublicData publicData = new ConversationData.PublicData(conversationID, quester, blockMovement, finalEvents, convIO, interceptor, interceptorDelay, invincible);
 
         return new ConversationData(loggerFactory.create(ConversationData.class), packManager,
-                variables, plugin.getQuestTypeApi(), plugin.getFeatureApi().conversationApi(), textCreator, section, publicData);
+                placeholders, plugin.getQuestTypeApi(), plugin.getFeatureApi().conversationApi(), textCreator, section, publicData);
     }
 
     @Override
@@ -244,23 +244,23 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
 
         private Argument<ConversationIOFactory> parseConvIO() throws QuestException {
             final String rawConvIOs = defaulting("conversationIO", "conversation.default_io", "menu,tellraw");
-            return new DefaultArgument<>(variables, pack, rawConvIOs, value -> {
-                final List<String> ios = new DefaultListArgument<>(variables, pack, value, stringParser).getValue(null);
+            return new DefaultArgument<>(placeholders, pack, rawConvIOs, value -> {
+                final List<String> ios = new DefaultListArgument<>(placeholders, pack, value, stringParser).getValue(null);
                 return convIORegistry.getFactory(ios);
             });
         }
 
         private Argument<InterceptorFactory> parseInterceptor() throws QuestException {
             final String rawInterceptor = defaulting("interceptor", "conversation.interceptor.default", "simple");
-            return new DefaultArgument<>(variables, pack, rawInterceptor, value -> {
-                final List<String> interceptors = new DefaultListArgument<>(variables, pack, value, stringParser).getValue(null);
+            return new DefaultArgument<>(placeholders, pack, rawInterceptor, value -> {
+                final List<String> interceptors = new DefaultListArgument<>(placeholders, pack, value, stringParser).getValue(null);
                 return interceptorRegistry.getFactory(interceptors);
             });
         }
 
         private Argument<Number> parseInterceptorDelay() throws QuestException {
             final String rawInterceptorDelay = defaulting("interceptor_delay", "conversation.interceptor.delay", "50");
-            return new DefaultArgument<>(variables, pack, rawInterceptorDelay, value -> numberParser.apply(variables, packManager, pack, value));
+            return new DefaultArgument<>(placeholders, pack, rawInterceptorDelay, value -> numberParser.apply(placeholders, packManager, pack, value));
         }
     }
 }

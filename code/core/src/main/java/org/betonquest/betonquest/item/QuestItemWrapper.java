@@ -16,7 +16,7 @@ public interface QuestItemWrapper {
      *
      * @param profile the profile to resolve the item
      * @return the item ready to use
-     * @throws QuestException when the item (variables) could not be resolved
+     * @throws QuestException when the item (placeholders) could not be resolved
      */
     QuestItem getItem(@Nullable Profile profile) throws QuestException;
 }

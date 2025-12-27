@@ -5,21 +5,21 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.ValueParser;
 import org.betonquest.betonquest.api.instruction.ValueValidator;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A Variable that resolves into a list of {@link T}.
+ * A {@link DefaultArgument} that resolves to a list of {@link T}.
  *
- * @param <T> the variable type
+ * @param <T> the type of the list elements
  */
 public class DefaultListArgument<T> extends DefaultArgument<List<T>> {
 
     /**
-     * Creates a new VariableList.
+     * Creates a new {@link DefaultListArgument}.
      *
      * @param value the list of values
      */
@@ -28,7 +28,7 @@ public class DefaultListArgument<T> extends DefaultArgument<List<T>> {
     }
 
     /**
-     * Creates a new VariableList.
+     * Creates a new {@link DefaultListArgument}.
      *
      * @param values the list of values
      */
@@ -38,34 +38,34 @@ public class DefaultListArgument<T> extends DefaultArgument<List<T>> {
     }
 
     /**
-     * Resolves a string that may contain variables to a variable of the given type.
+     * Resolves a string that may contain placeholders to a {@link DefaultListArgument} of the given type.
      * Any constant part will be validated in construction.
      *
-     * @param variables the variable processor to create and resolve variables
-     * @param pack      the package in which the variable is used in
-     * @param input     the string that may contain variables
-     * @param resolver  the resolver to convert the resolved variable to the given type
-     * @throws QuestException if the variables could not be created or resolved to the given type
+     * @param placeholders the {@link Placeholders} to create and resolve placeholders
+     * @param pack         the package of the instruction in which the argument is used
+     * @param input        the string that may contain placeholders
+     * @param resolver     the resolver parsing a string to a value of type T
+     * @throws QuestException if the placeholders could not be created or resolved to the given type
      */
-    public DefaultListArgument(final Variables variables, @Nullable final QuestPackage pack, final String input,
+    public DefaultListArgument(final Placeholders placeholders, @Nullable final QuestPackage pack, final String input,
                                final ValueParser<T> resolver) throws QuestException {
-        this(variables, pack, input, resolver, value -> true);
+        this(placeholders, pack, input, resolver, value -> true);
     }
 
     /**
-     * Resolves a string that may contain variables to a variable of the given type.
+     * Resolves a string that may contain placeholders to a {@link DefaultListArgument} of the given type.
      * Any constant part will be validated in construction.
      *
-     * @param variables    the variable processor to create and resolve variables
-     * @param pack         the package in which the variable is used in
-     * @param input        the string that may contain variables
-     * @param resolver     the resolver to convert the resolved variable to the given type
+     * @param placeholders the {@link Placeholders} to create and resolve placeholders
+     * @param pack         the package of the instruction in which the argument is used
+     * @param input        the string that may contain placeholders
+     * @param resolver     the resolver parsing a string to a value of type T
      * @param valueChecker the checker to verify valid lists
-     * @throws QuestException if the variables could not be created or resolved to the given type
+     * @throws QuestException if the placeholders could not be created or resolved to the given type
      */
-    public DefaultListArgument(final Variables variables, @Nullable final QuestPackage pack, final String input,
+    public DefaultListArgument(final Placeholders placeholders, @Nullable final QuestPackage pack, final String input,
                                final ValueParser<T> resolver, final ValueValidator<List<T>> valueChecker) throws QuestException {
-        this(variables, pack, input, new MarkedResolver<>(new ValueParser<>() {
+        this(placeholders, pack, input, new MarkedResolver<>(new ValueParser<>() {
             @Override
             public List<T> apply(final String value) throws QuestException {
                 final List<T> list = new ArrayList<>();
@@ -89,12 +89,12 @@ public class DefaultListArgument<T> extends DefaultArgument<List<T>> {
         }));
     }
 
-    private DefaultListArgument(final Variables variables, @Nullable final QuestPackage pack, final String input,
+    private DefaultListArgument(final Placeholders placeholders, @Nullable final QuestPackage pack, final String input,
                                 final MarkedResolver<T> resolver) throws QuestException {
-        super(variables, pack, input, resolver);
+        super(placeholders, pack, input, resolver);
         if (!resolver.called) {
             for (final String unresolved : StringUtils.split(input, ',')) {
-                new DefaultArgument<>(variables, pack, unresolved, resolver);
+                new DefaultArgument<>(placeholders, pack, unresolved, resolver);
             }
         }
     }

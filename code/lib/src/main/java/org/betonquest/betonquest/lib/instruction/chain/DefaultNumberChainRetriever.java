@@ -16,7 +16,7 @@ public class DefaultNumberChainRetriever extends DefaultDecoratableChainRetrieve
     /**
      * Creates a new instruction chain retriever.
      *
-     * @param instruction the instruction used to retrieve the variable
+     * @param instruction the instruction used to retrieve the argument
      * @param argument    the argument parser
      */
     public DefaultNumberChainRetriever(final ChainableInstruction instruction, final InstructionArgumentParser<Number> argument) {

@@ -7,22 +7,22 @@ import org.betonquest.betonquest.config.quest.Quest;
 import java.util.List;
 
 /**
- * Handles the npc variable rename to quester migration.
+ * Handles the npc variable (now named Placeholders) rename to quester migration.
  */
 public class NpcRename implements QuestMigration {
 
     /**
-     * The old variable value.
+     * The old variable (now named Placeholders) value.
      */
     private static final String NPC = "%npc%";
 
     /**
-     * The new variable value.
+     * The new variable (now named Placeholders) value.
      */
     private static final String QUESTER = "%quester%";
 
     /**
-     * Creates a new npc to quester variable migrator.
+     * Creates a new npc to quester variable (now named Placeholders) migrator.
      */
     public NpcRename() {
     }
