@@ -67,12 +67,4 @@ public interface Instruction extends ChainableInstruction, InstructionChainParse
      * @return copy of this instruction with the new ID
      */
     Instruction copy(Identifier newID);
-
-    /**
-     * Checks if the instruction contains the argument.
-     *
-     * @param argument the argument to check
-     * @return if the instruction contains that argument, ignoring cases
-     */
-    boolean hasArgument(String argument);
 }

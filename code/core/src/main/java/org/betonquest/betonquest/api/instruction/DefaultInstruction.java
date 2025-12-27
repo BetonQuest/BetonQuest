@@ -241,11 +241,6 @@ public class DefaultInstruction implements Instruction {
     }
 
     @Override
-    public boolean hasArgument(final String argument) {
-        return instructionParts.getParts().stream().anyMatch(part -> part.equalsIgnoreCase(argument));
-    }
-
-    @Override
     public InstructionChainParser chainForArgument(final QuestSupplier<String> rawArgumentSupplier) {
         final ChainableInstruction instruction = new DefaultChainableInstruction(variables, packManager, pack,
                 rawArgumentSupplier, key -> rawArgumentSupplier.get(), key -> Map.entry(FlagState.DEFINED, key));
