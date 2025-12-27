@@ -399,14 +399,13 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         }
 
         compatibility = new Compatibility(loggerFactory.create(Compatibility.class), this, config, version);
-        getServer().getPluginManager().registerEvents(compatibility, this);
 
         registerCommands(receiverSelector, debugHistoryHandler, playerDataFactory);
 
         // schedule quest data loading on the first tick, so all other
         // plugins can register their types
         getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
-            compatibility.postHook();
+            compatibility.init();
             loadData();
             playerDataStorage.initProfiles(profileProvider.getOnlineProfiles(), getFeatureApi().conversationApi());
 
