@@ -35,6 +35,19 @@ You can add BetonQuest as a dependency using your build system. Here is the conf
 </dependency>
 ```
 
+## Accessing the Javadoc webpage 
+
+You can browse the Javadocs here:
+
+ - [API](https://repo.betonquest.org/javadoc/betonquest/org/betonquest/betonquest/api/${plugin.version}){:target="_blank"}
+ - [Lib](https://repo.betonquest.org/javadoc/betonquest/org/betonquest/betonquest/lib/${plugin.version}){:target="_blank"}
+
+??? info "Depending on implementation"
+    Code in other modules is not considered part of the API.  
+    You can still access and use it, but keep in mind that this code is not guaranteed to be stable at all.  
+    You can access it 
+    [here.](https://repo.betonquest.org/javadoc/betonquest/org/betonquest/betonquest/core/${plugin.version}){:target="_blank"}
+
 ## Ensuring that BetonQuest is loaded
 
 !!! warning "Plugin Load Order"
