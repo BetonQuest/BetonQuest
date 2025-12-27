@@ -3222,6 +3222,29 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#accessing-the-javadoc-webpage">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Accessing the Javadoc webpage
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#ensuring-that-betonquest-is-loaded">
     <span class="md-ellipsis">
 
@@ -4714,6 +4737,29 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#accessing-the-javadoc-webpage">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Accessing the Javadoc webpage
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#ensuring-that-betonquest-is-loaded">
     <span class="md-ellipsis">
 
@@ -4843,17 +4889,21 @@ This part of the API is only planned.</p>
 <p><strong>Do not use anything of this part of the API yet. It will change in the future.</strong></p>
 <p><h3><u>Unfinished</u> </h3>
 This part of the API is brand-new.
-It will be changed if there are any bugs, missing features or usability improvements.</p>
+It will be changed if there are any bugs, missing features or usability improvements.
+This part of the API <em>might</em> receive breaking changes within a minor version.</p>
 <p><strong>It is not recommended relying on this part of the API, it will most likely change.</strong></p>
 <p><h3><u>Draft</u></h3>
 Our own usage and testing has shown that this part of the API is complete and seems bug free.
 However, other plugins may have other use cases which are not covered by our testing.
 Therefore, please go ahead and use this API part. Let us know if there are missing features or bugs.
-This API part will be changed if there are more bugs, missing features or usability improvements.</p>
+This API part will be changed if there are more bugs, missing features or usability improvements.
+We will try to keep it compatible with previous versions if changes are needed.
+This part of the API <strong>won't</strong> receive breaking changes within a minor version.</p>
 <p><strong>Please use this part of the API and give us feedback!</strong></p>
 <p><h3><u>Stable</u></h3>
 Both our own and third party testing showed that this part of the API is complete.
-Only bugs and major conceptual problems would lead to more changes.</p>
+Only bugs and major conceptual problems would lead to more changes.
+This part of the API will only change over at least one major version and will likely carry deprecation as long as possible.</p>
 <p><strong>This part of the API should be safe to use. We try to keep it compatible with previous versions if changes are needed.</strong></p>
 </details>
 </div>
@@ -4871,6 +4921,19 @@ Only bugs and major conceptual problems would lead to more changes.</p>
 <span class="w">    </span><span class="nt">&lt;scope&gt;</span>provided<span class="nt">&lt;/scope&gt;</span>
 <span class="nt">&lt;/dependency&gt;</span>
 </code></pre></div>
+<h2 id="accessing-the-javadoc-webpage">Accessing the Javadoc webpage<a class="headerlink" href="#accessing-the-javadoc-webpage" title="Permanent link">🔗</a></h2>
+<p>You can browse the Javadocs here:</p>
+<ul>
+<li><a href="https://repo.betonquest.org/javadoc/betonquest/org/betonquest/betonquest/api/3.0.0-SNAPSHOT" target="_blank">API</a></li>
+<li><a href="https://repo.betonquest.org/javadoc/betonquest/org/betonquest/betonquest/lib/3.0.0-SNAPSHOT" target="_blank">Lib</a></li>
+</ul>
+<details class="info">
+<summary>Depending on implementation</summary>
+<p>Code in other modules is not considered part of the API.<br />
+You can still access and use it, but keep in mind that this code is not guaranteed to be stable at all.<br />
+You can access it 
+<a href="https://repo.betonquest.org/javadoc/betonquest/org/betonquest/betonquest/core/3.0.0-SNAPSHOT" target="_blank">here.</a></p>
+</details>
 <h2 id="ensuring-that-betonquest-is-loaded">Ensuring that BetonQuest is loaded<a class="headerlink" href="#ensuring-that-betonquest-is-loaded" title="Permanent link">🔗</a></h2>
 <div class="admonition warning">
 <p class="admonition-title">Plugin Load Order</p>
