@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.fabled.condition;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
@@ -20,7 +21,7 @@ public class FabledClassConditionFactory implements PlayerConditionFactory {
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<String> className = instruction.string().get();
-        final boolean exact = instruction.hasArgument("exact");
+        final FlagArgument<Boolean> exact = instruction.bool().getFlag("exact", false);
         return new FabledClassCondition(className, exact);
     }
 }

@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.condition.item;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.bukkit.inventory.EquipmentSlot;
@@ -26,7 +27,7 @@ public class ItemDurabilityCondition implements OnlineCondition {
     /**
      * If the durability should be handled as value from 0 to 1.
      */
-    private final boolean relative;
+    private final FlagArgument<Boolean> relative;
 
     /**
      * Creates an item durability condition.
@@ -35,7 +36,7 @@ public class ItemDurabilityCondition implements OnlineCondition {
      * @param amount   the durability needed
      * @param relative if the durability should be handled as value from 0 to 1
      */
-    public ItemDurabilityCondition(final Argument<EquipmentSlot> slot, final Argument<Number> amount, final boolean relative) {
+    public ItemDurabilityCondition(final Argument<EquipmentSlot> slot, final Argument<Number> amount, final FlagArgument<Boolean> relative) {
         this.slot = slot;
         this.amount = amount;
         this.relative = relative;
@@ -53,7 +54,7 @@ public class ItemDurabilityCondition implements OnlineCondition {
         }
         final int actualDurability = maxDurability - damageable.getDamage();
         final double requiredAmount = amount.getValue(profile).doubleValue();
-        if (relative) {
+        if (relative.getValue(profile).orElse(false)) {
             final double relativeValue = (double) actualDurability / maxDurability;
             return relativeValue >= requiredAmount;
         }

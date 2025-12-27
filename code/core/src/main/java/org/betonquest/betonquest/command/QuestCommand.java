@@ -457,7 +457,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                             "inventory_full_backpack", "inventory_full"),
                     new IngameNotificationSender(log, pluginMessage, itemID.getPackage(), itemID.getFull(), NotificationLevel.ERROR,
                             "inventory_full_drop", "inventory_full"),
-                    false, dataStorage);
+                    profile -> Optional.empty(), dataStorage);
             give.execute(profileProvider.getProfile((Player) sender));
         } catch (final QuestException e) {
             sendMessage(sender, "error",

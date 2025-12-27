@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.auraskills.event;
 import dev.aurelium.auraskills.api.AuraSkillsApi;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
@@ -30,8 +31,7 @@ public class AuraSkillsExperienceEventFactory implements PlayerEventFactory {
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<String> name = instruction.string().get();
         final Argument<Number> amount = instruction.number().get();
-        final boolean isLevel = instruction.hasArgument("level");
-
+        final FlagArgument<Boolean> isLevel = instruction.bool().getFlag("level", false);
         return new AuraSkillsExperienceEvent(auraSkillsApi, amount, name, isLevel);
     }
 }

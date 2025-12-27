@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.event.entity;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.util.EntityUtils;
@@ -49,7 +50,7 @@ public class RemoveEntityEvent implements NullableEvent {
     /**
      * Whether to kill the mob.
      */
-    private final boolean kill;
+    private final FlagArgument<Boolean> kill;
 
     /**
      * Creates a new KillMobEvent.
@@ -62,7 +63,7 @@ public class RemoveEntityEvent implements NullableEvent {
      * @param kill     whether to kill the entities
      */
     public RemoveEntityEvent(final Argument<List<EntityType>> types, final Argument<Location> location, final Argument<Number> radius,
-                             @Nullable final Argument<Component> name, @Nullable final Argument<String> marked, final boolean kill) {
+                             @Nullable final Argument<Component> name, @Nullable final Argument<String> marked, final FlagArgument<Boolean> kill) {
         this.types = types;
         this.loc = location;
         this.range = radius;
@@ -79,16 +80,19 @@ public class RemoveEntityEvent implements NullableEvent {
         final double resolvedRange = range.getValue(profile).doubleValue();
         final List<Entity> entities = EntityUtils.getSelectedEntity(location, name, resolvedMarked, resolvedRange);
         for (final EntityType type : types.getValue(profile)) {
-            entities.stream()
-                    .filter(entity -> entity.getType() == type)
-                    .forEach(entity -> {
-                                if (kill && entity instanceof final LivingEntity mob) {
-                                    mob.setHealth(0);
-                                } else {
-                                    entity.remove();
-                                }
-                            }
-                    );
+            removeEntities(profile, type, entities);
+        }
+    }
+
+    private void removeEntities(@Nullable final Profile profile, final EntityType type, final List<Entity> entities) throws QuestException {
+        for (final Entity entity : entities) {
+            if (entity.getType() == type) {
+                if (kill.getValue(profile).orElse(false) && entity instanceof final LivingEntity mob) {
+                    mob.setHealth(0);
+                } else {
+                    entity.remove();
+                }
+            }
         }
     }
 

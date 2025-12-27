@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.npc.citizens.event.move;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -47,7 +48,7 @@ public class CitizensMoveEventFactory implements PlayerEventFactory {
         final Argument<Number> waitTicks = instruction.number().get("wait", 0);
         final Argument<List<EventID>> doneEvents = instruction.parse(EventID::new).list().get("done", Collections.emptyList());
         final Argument<List<EventID>> failEvents = instruction.parse(EventID::new).list().get("fail", Collections.emptyList());
-        final boolean blockConversations = instruction.hasArgument("block");
+        final FlagArgument<Boolean> blockConversations = instruction.bool().getFlag("block", false);
         final CitizensMoveController.MoveData moveAction = new CitizensMoveController.MoveData(locations, waitTicks,
                 doneEvents, failEvents, blockConversations);
         return new CitizensMoveEvent(featureApi, npcId, citizensMoveController, moveAction);

@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.event.folder;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
@@ -85,7 +86,7 @@ public class FolderEvent implements NullableEvent {
     /**
      * Whether the event should be canceled on logout.
      */
-    private final boolean cancelOnLogout;
+    private final FlagArgument<Boolean> cancelOnLogout;
 
     /**
      * Conditions to check if the event should be canceled.
@@ -112,8 +113,8 @@ public class FolderEvent implements NullableEvent {
     public FolderEvent(final BetonQuest betonQuest, final BetonQuestLogger log, final PluginManager pluginManager,
                        final Argument<List<EventID>> events, final QuestTypeApi questTypeApi, final Random randomGenerator,
                        @Nullable final Argument<Number> delay, @Nullable final Argument<Number> period,
-                       @Nullable final Argument<Number> random, final Argument<TimeUnit> timeUnit, final boolean cancelOnLogout,
-                       final Argument<List<ConditionID>> cancelConditions) {
+                       @Nullable final Argument<Number> random, final Argument<TimeUnit> timeUnit,
+                       final FlagArgument<Boolean> cancelOnLogout, final Argument<List<ConditionID>> cancelConditions) {
         this.betonQuest = betonQuest;
         this.log = log;
         this.pluginManager = pluginManager;
@@ -162,7 +163,8 @@ public class FolderEvent implements NullableEvent {
         }
     }
 
-    private void handleDelayPeriod(@Nullable final Profile profile, final long delayTicks, final Deque<EventID> chosenList, final long periodTicks) {
+    private void handleDelayPeriod(@Nullable final Profile profile, final long delayTicks, final Deque<EventID> chosenList,
+                                   final long periodTicks) throws QuestException {
         if (delayTicks == 0 && !chosenList.isEmpty()) {
             final EventID event = chosenList.removeFirst();
             if (checkCancelConditions(profile)) {
@@ -187,7 +189,7 @@ public class FolderEvent implements NullableEvent {
         }
     }
 
-    private void handleDelayNoPeriod(@Nullable final Profile profile, final Deque<EventID> chosenList, final long delayTicks) {
+    private void handleDelayNoPeriod(@Nullable final Profile profile, final Deque<EventID> chosenList, final long delayTicks) throws QuestException {
         final FolderEventCanceler eventCanceler = createFolderEventCanceler(profile);
         callSameSyncAsyncContext(new BukkitRunnable() {
             @Override
@@ -221,8 +223,8 @@ public class FolderEvent implements NullableEvent {
         return chosenList;
     }
 
-    private FolderEventCanceler createFolderEventCanceler(@Nullable final Profile profile) {
-        if (cancelOnLogout && profile != null) {
+    private FolderEventCanceler createFolderEventCanceler(@Nullable final Profile profile) throws QuestException {
+        if (cancelOnLogout.getValue(null).orElse(false) && profile != null) {
             return new QuitListener(betonQuest, log, pluginManager, profile);
         }
         return () -> false;

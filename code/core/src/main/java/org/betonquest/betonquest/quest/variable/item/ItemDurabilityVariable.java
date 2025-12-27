@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.variable.item;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.variable.online.OnlineVariable;
 import org.bukkit.inventory.EquipmentSlot;
@@ -22,7 +23,7 @@ public class ItemDurabilityVariable implements OnlineVariable {
      * If the durability should be displayed relative to maximum.
      * Maximum is 1.
      */
-    private final boolean relative;
+    private final FlagArgument<Boolean> relative;
 
     /**
      * The amount of digits displayed after comma.
@@ -32,7 +33,7 @@ public class ItemDurabilityVariable implements OnlineVariable {
     /**
      * If the output should be multiplied with 100 and with a '%' in the end.
      */
-    private final boolean inPercent;
+    private final FlagArgument<Boolean> inPercent;
 
     /**
      * Creates a new item durability variable.
@@ -42,7 +43,8 @@ public class ItemDurabilityVariable implements OnlineVariable {
      * @param digitsAfter the amount of digits displayed after comma
      * @param inPercent   if the output should be multiplied with 100 and with a '%' in the end
      */
-    public ItemDurabilityVariable(final Argument<EquipmentSlot> slot, final boolean relative, final Argument<Number> digitsAfter, final boolean inPercent) {
+    public ItemDurabilityVariable(final Argument<EquipmentSlot> slot, final FlagArgument<Boolean> relative,
+                                  final Argument<Number> digitsAfter, final FlagArgument<Boolean> inPercent) {
         this.slot = slot;
         this.relative = relative;
         this.digitsAfter = digitsAfter;
@@ -57,10 +59,10 @@ public class ItemDurabilityVariable implements OnlineVariable {
             return String.valueOf(maxDurability);
         }
         final int durability = maxDurability - damageable.getDamage();
-        if (relative && maxDurability != 0) {
+        if (relative.getValue(profile).orElse(false) && maxDurability != 0) {
             String format = "%." + digitsAfter.getValue(profile).intValue() + 'f';
             double value = (double) durability / maxDurability;
-            if (inPercent) {
+            if (inPercent.getValue(profile).orElse(false)) {
                 format += "%%";
                 value *= 100;
             }

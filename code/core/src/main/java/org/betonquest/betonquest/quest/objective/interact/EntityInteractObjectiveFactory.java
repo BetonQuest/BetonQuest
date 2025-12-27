@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.bukkit.Location;
@@ -37,7 +38,7 @@ public class EntityInteractObjectiveFactory implements ObjectiveFactory {
         final Argument<Component> customName = instruction.component().get("name").orElse(null);
         final Argument<String> realName = instruction.string().get("realname").orElse(null);
         final Argument<String> marked = instruction.packageIdentifier().get("marked").orElse(null);
-        final boolean cancel = instruction.hasArgument("cancel");
+        final FlagArgument<Boolean> cancel = instruction.bool().getFlag("cancel", false);
         final Argument<Location> loc = instruction.location().get("loc").orElse(null);
         final Argument<Number> range = instruction.number().get("range", 1);
         final EquipmentSlot slot = getEquipmentSlot(instruction);

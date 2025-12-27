@@ -5,6 +5,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
@@ -31,7 +32,7 @@ public class MoneyEvent implements PlayerEvent {
     /**
      * If the current balance should be multiplied with the amount.
      */
-    private final boolean multi;
+    private final FlagArgument<Boolean> multi;
 
     /**
      * Notification wrapper if the player should get a message when getting money.
@@ -54,7 +55,7 @@ public class MoneyEvent implements PlayerEvent {
      * @param givenSender the notification wrapper if the player should get a message when getting money
      * @param takenSender the notification wrapper if the player should get a message when loosing money
      */
-    public MoneyEvent(final Economy economy, final Argument<Number> amount, final boolean multi,
+    public MoneyEvent(final Economy economy, final Argument<Number> amount, final FlagArgument<Boolean> multi,
                       @Nullable final IngameNotificationSender givenSender, @Nullable final IngameNotificationSender takenSender) {
         this.economy = economy;
         this.amount = amount;
@@ -68,7 +69,7 @@ public class MoneyEvent implements PlayerEvent {
         final OfflinePlayer player = profile.getPlayer();
         final double current = economy.getBalance(player);
         final double target;
-        if (multi) {
+        if (multi.getValue(profile).orElse(false)) {
             target = current * amount.getValue(profile).doubleValue();
         } else {
             target = current + amount.getValue(profile).doubleValue();

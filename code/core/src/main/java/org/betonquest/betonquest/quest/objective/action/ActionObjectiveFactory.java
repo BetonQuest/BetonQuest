@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.objective.action;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
@@ -32,10 +33,10 @@ public class ActionObjectiveFactory implements ObjectiveFactory {
         final Argument<Click> action = instruction.enumeration(Click.class).get();
         final Argument<Optional<BlockSelector>> selector = instruction.blockSelector()
                 .prefilterOptional(ANY, null).get();
-        final boolean exactMatch = instruction.hasArgument("exactMatch");
+        final FlagArgument<Boolean> exactMatch = instruction.bool().getFlag("exactMatch", false);
         final Argument<Location> loc = instruction.location().get("loc").orElse(null);
         final Argument<Number> range = instruction.number().get("range", 0);
-        final boolean cancel = instruction.hasArgument("cancel");
+        final FlagArgument<Boolean> cancel = instruction.bool().getFlag("cancel", false);
         final Argument<Optional<EquipmentSlot>> hand = instruction.enumeration(EquipmentSlot.class)
                 .validate(slot -> slot == EquipmentSlot.HAND || slot == EquipmentSlot.OFF_HAND, "Invalid hand value: '%s'")
                 .prefilterOptional(ANY, null)

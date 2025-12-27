@@ -14,6 +14,7 @@ import com.sk89q.worldedit.math.transform.AffineTransform;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.bukkit.Location;
@@ -41,7 +42,7 @@ public class PasteSchematicEvent implements NullableEvent {
     /**
      * 'No Air' boolean for pasting.
      */
-    private final boolean noAir;
+    private final FlagArgument<Boolean> noAir;
 
     /**
      * Schematic file.
@@ -56,7 +57,7 @@ public class PasteSchematicEvent implements NullableEvent {
      * @param noAir    the 'no air' paste argument
      * @param file     the schematic file
      */
-    public PasteSchematicEvent(final Argument<Location> loc, final Argument<Number> rotation, final boolean noAir, final Argument<File> file) {
+    public PasteSchematicEvent(final Argument<Location> loc, final Argument<Number> rotation, final FlagArgument<Boolean> noAir, final Argument<File> file) {
         this.loc = loc;
         this.rotation = rotation;
         this.noAir = noAir;
@@ -77,7 +78,7 @@ public class PasteSchematicEvent implements NullableEvent {
                 final Operation operation = clipboard
                         .createPaste(editSession)
                         .to(BukkitAdapter.asBlockVector(location))
-                        .ignoreAirBlocks(noAir)
+                        .ignoreAirBlocks(noAir.getValue(profile).orElse(false))
                         .build();
                 Operations.complete(operation);
             }

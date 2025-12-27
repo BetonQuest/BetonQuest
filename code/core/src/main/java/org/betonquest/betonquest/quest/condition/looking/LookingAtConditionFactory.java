@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.condition.looking;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -36,12 +37,12 @@ public class LookingAtConditionFactory implements PlayerConditionFactory {
         final Argument<Location> loc = instruction.location().get("loc").orElse(null);
         final Argument<BlockSelector> selector = instruction.blockSelector()
                 .get("type").orElse(null);
-        final boolean exactMatch = instruction.hasArgument("exactMatch");
+        final FlagArgument<Boolean> exactMatch = instruction.bool().getFlag("exactMatch", false);
         final BetonQuestLogger log = loggerFactory.create(LookingAtCondition.class);
         return new OnlineConditionAdapter(createCondition(loc, selector, exactMatch), log, instruction.getPackage());
     }
 
-    private LookingAtCondition createCondition(@Nullable final Argument<Location> loc, @Nullable final Argument<BlockSelector> selector, final boolean exactMatch) {
+    private LookingAtCondition createCondition(@Nullable final Argument<Location> loc, @Nullable final Argument<BlockSelector> selector, final FlagArgument<Boolean> exactMatch) {
         if (loc != null) {
             return new LookingAtCondition(loc);
         }

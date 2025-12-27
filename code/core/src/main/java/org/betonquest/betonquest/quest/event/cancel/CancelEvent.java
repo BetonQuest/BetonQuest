@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.event.cancel;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.id.QuestCancelerID;
@@ -25,7 +26,7 @@ public class CancelEvent implements OnlineEvent {
     /**
      * Whether the canceler conditions should be ignored for canceling.
      */
-    private final boolean bypass;
+    private final FlagArgument<Boolean> bypass;
 
     /**
      * Creates a new cancel event.
@@ -34,7 +35,7 @@ public class CancelEvent implements OnlineEvent {
      * @param cancelerID the canceler to use
      * @param bypass     whether the canceler conditions should be ignored for canceling
      */
-    public CancelEvent(final FeatureApi featureApi, final Argument<QuestCancelerID> cancelerID, final boolean bypass) {
+    public CancelEvent(final FeatureApi featureApi, final Argument<QuestCancelerID> cancelerID, final FlagArgument<Boolean> bypass) {
         this.featureApi = featureApi;
         this.cancelerID = cancelerID;
         this.bypass = bypass;
@@ -42,6 +43,6 @@ public class CancelEvent implements OnlineEvent {
 
     @Override
     public void execute(final OnlineProfile profile) throws QuestException {
-        featureApi.getCanceler(cancelerID.getValue(profile)).cancel(profile, bypass);
+        featureApi.getCanceler(cancelerID.getValue(profile)).cancel(profile, bypass.getValue(profile).orElse(false));
     }
 }

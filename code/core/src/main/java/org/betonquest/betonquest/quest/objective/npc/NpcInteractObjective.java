@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.npc.NpcInteractEvent;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
@@ -27,7 +28,7 @@ public class NpcInteractObjective extends Objective implements Listener {
     /**
      * Whether to cancel the interaction with the NPC.
      */
-    private final boolean cancel;
+    private final FlagArgument<Boolean> cancel;
 
     /**
      * The type of interaction with the NPC.
@@ -44,7 +45,7 @@ public class NpcInteractObjective extends Objective implements Listener {
      * @throws QuestException if the instruction is invalid
      */
     public NpcInteractObjective(final Instruction instruction, final Argument<NpcID> npcId,
-                                final boolean cancel, final Argument<Interaction> interactionType) throws QuestException {
+                                final FlagArgument<Boolean> cancel, final Argument<Interaction> interactionType) throws QuestException {
         super(instruction);
         this.npcId = npcId;
         this.cancel = cancel;
@@ -70,7 +71,7 @@ public class NpcInteractObjective extends Objective implements Listener {
 
             if (event.getNpcIdentifier().contains(npcId.getValue(profile))
                     && checkConditions(profile)) {
-                if (cancel) {
+                if (cancel.getValue(profile).orElse(false)) {
                     event.setCancelled(true);
                 }
                 completeObjective(profile);

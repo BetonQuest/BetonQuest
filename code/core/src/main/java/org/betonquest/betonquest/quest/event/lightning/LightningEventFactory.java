@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.event.lightning;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
@@ -33,7 +34,7 @@ public class LightningEventFactory implements PlayerEventFactory, PlayerlessEven
 
     private NullableEventAdapter createLightningEvent(final Instruction instruction) throws QuestException {
         final Argument<Location> location = instruction.location().get();
-        final boolean noDamage = instruction.hasArgument("noDamage");
+        final FlagArgument<Boolean> noDamage = instruction.bool().getFlag("noDamage", false);
         return new NullableEventAdapter(new LightningEvent(location, noDamage));
     }
 }

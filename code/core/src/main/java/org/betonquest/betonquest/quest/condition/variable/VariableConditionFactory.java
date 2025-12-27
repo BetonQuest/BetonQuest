@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.condition.variable;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -44,8 +45,8 @@ public class VariableConditionFactory implements PlayerConditionFactory, Playerl
         final Argument<String> argument = instruction.string().get();
         final Argument<String> regex = instruction.string().get();
         final String variableAddress = instruction.getID().toString();
-        final boolean forceSync = instruction.hasArgument("forceSync");
+        final FlagArgument<Boolean> forceSync = instruction.bool().getFlag("forceSync", false);
         final BetonQuestLogger log = loggerFactory.create(VariableCondition.class);
-        return new VariableCondition(log, argument, regex, variableAddress, forceSync);
+        return new VariableCondition(log, argument, regex, variableAddress, forceSync.getValue(null).orElse(false));
     }
 }

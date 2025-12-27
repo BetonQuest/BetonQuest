@@ -91,7 +91,14 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
 
     @Override
     protected void postCreation(final ObjectiveID identifier, final Objective value) {
-        if (identifier.getInstruction().hasArgument("global")) {
+        boolean global = false;
+        try {
+            global = identifier.getInstruction().bool().getFlag("global", false)
+                    .getValue(null).orElse(false);
+        } catch (final QuestException e) {
+            log.error("Error while loading global flag for objective " + identifier, e);
+        }
+        if (global) {
             globalObjectiveIds.add(identifier);
         }
         if (value instanceof Listener) {

@@ -82,11 +82,15 @@ public class DelayObjective extends Objective {
         }.runTaskTimer(BetonQuest.getInstance(), 0, interval.getValue(null).longValue());
     }
 
-    private double timeToMilliSeconds(final double time) {
-        if (instruction.hasArgument("ticks")) {
+    private double timeToMilliSeconds(final Profile profile, final double time) throws QuestException {
+        final boolean ticks = instruction.bool().getFlag("ticks", false)
+                .getValue(profile).orElse(false);
+        if (ticks) {
             return time * 50;
         }
-        if (instruction.hasArgument("seconds")) {
+        final boolean seconds = instruction.bool().getFlag("seconds", false)
+                .getValue(profile).orElse(false);
+        if (seconds) {
             return time * 1000;
         }
         return time * 1000 * 60;
@@ -100,7 +104,7 @@ public class DelayObjective extends Objective {
 
     @Override
     public String getDefaultDataInstruction(final Profile profile) throws QuestException {
-        final double millis = timeToMilliSeconds(delay.getValue(profile).doubleValue());
+        final double millis = timeToMilliSeconds(profile, delay.getValue(profile).doubleValue());
         return Double.toString(System.currentTimeMillis() + millis);
     }
 

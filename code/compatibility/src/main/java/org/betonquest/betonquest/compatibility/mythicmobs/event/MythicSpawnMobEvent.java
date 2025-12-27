@@ -6,6 +6,7 @@ import io.lumine.mythic.bukkit.BukkitAdapter;
 import io.lumine.mythic.core.mobs.ActiveMob;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
@@ -49,13 +50,12 @@ public class MythicSpawnMobEvent implements OnlineEvent, PlayerlessEvent {
     /**
      * Whether the mob should be private (invisible to other players).
      */
-    @Nullable
-    private final MythicHider mythicHider;
+    private final FlagArgument<MythicHider> mythicHider;
 
     /**
      * Whether the mob should target the player who triggered the event.
      */
-    private final boolean targetPlayer;
+    private final FlagArgument<Boolean> targetPlayer;
 
     /**
      * An optional variable containing a string to mark the mob with.
@@ -80,7 +80,7 @@ public class MythicSpawnMobEvent implements OnlineEvent, PlayerlessEvent {
      * @param marked       an optional variable containing a string to mark the mob with
      */
     public MythicSpawnMobEvent(final Plugin plugin, final Argument<Location> loc, final Argument<Map.Entry<MythicMob, Double>> mobLevel,
-                               final Argument<Number> amount, @Nullable final MythicHider mythicHider, final boolean targetPlayer, @Nullable final Argument<String> marked) {
+                               final Argument<Number> amount, final FlagArgument<MythicHider> mythicHider, final FlagArgument<Boolean> targetPlayer, @Nullable final Argument<String> marked) {
         this.plugin = plugin;
         this.loc = loc;
         this.mobLevel = mobLevel;
@@ -107,10 +107,9 @@ public class MythicSpawnMobEvent implements OnlineEvent, PlayerlessEvent {
             }
             final Entity entity = targetMob.getEntity().getBukkitEntity();
 
-            if (mythicHider != null) {
-                Bukkit.getScheduler().runTaskLater(plugin, () -> mythicHider.applyVisibilityPrivate(profile, entity), 20L);
-            }
-            if (targetPlayer) {
+            this.mythicHider.getValue(profile).ifPresent(mythicHider ->
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> mythicHider.applyVisibilityPrivate(profile, entity), 20L));
+            if (targetPlayer.getValue(profile).orElse(false)) {
                 Bukkit.getScheduler().runTaskLater(plugin, () -> targetMob.setTarget(BukkitAdapter.adapt(player)), 20L);
             }
             if (mark != null) {

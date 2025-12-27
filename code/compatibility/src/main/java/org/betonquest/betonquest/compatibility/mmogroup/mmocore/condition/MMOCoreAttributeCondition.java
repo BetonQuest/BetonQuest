@@ -4,6 +4,7 @@ import net.Indyuce.mmocore.api.player.PlayerData;
 import net.Indyuce.mmocore.api.player.attribute.PlayerAttribute;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 
@@ -20,7 +21,7 @@ public class MMOCoreAttributeCondition implements PlayerCondition {
     /**
      * If the actual must be equal to the target level.
      */
-    private final boolean mustBeEqual;
+    private final FlagArgument<Boolean> mustBeEqual;
 
     /**
      * Required level.
@@ -34,7 +35,7 @@ public class MMOCoreAttributeCondition implements PlayerCondition {
      * @param targetLevel the required level
      * @param equal       whether the actual must be equal to the target level
      */
-    public MMOCoreAttributeCondition(final Argument<PlayerAttribute> attribute, final Argument<Number> targetLevel, final boolean equal) {
+    public MMOCoreAttributeCondition(final Argument<PlayerAttribute> attribute, final Argument<Number> targetLevel, final FlagArgument<Boolean> equal) {
         this.attribute = attribute;
         this.targetLevel = targetLevel;
         this.mustBeEqual = equal;
@@ -45,7 +46,7 @@ public class MMOCoreAttributeCondition implements PlayerCondition {
         final int targetLevel = this.targetLevel.getValue(profile).intValue();
         final int actualLevel = PlayerData.get(profile.getPlayerUUID()).getAttributes().getAttribute(attribute.getValue(profile));
 
-        return mustBeEqual ? actualLevel == targetLevel : actualLevel >= targetLevel;
+        return mustBeEqual.getValue(profile).orElse(false) ? actualLevel == targetLevel : actualLevel >= targetLevel;
     }
 
     @Override

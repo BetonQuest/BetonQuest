@@ -4,6 +4,7 @@ import de.oliver.fancynpcs.api.Npc;
 import de.oliver.fancynpcs.api.NpcManager;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
 import org.jetbrains.annotations.Nullable;
@@ -26,7 +27,7 @@ public class FancyWrapper implements NpcWrapper<Npc> {
     /**
      * If the identifier should be interpreted as name.
      */
-    private final boolean byName;
+    private final FlagArgument<Boolean> byName;
 
     /**
      * Create a new FancyNpcs Npc Wrapper.
@@ -35,7 +36,7 @@ public class FancyWrapper implements NpcWrapper<Npc> {
      * @param npcId      the npc identifier
      * @param byName     whether to use the identifier as name or id
      */
-    public FancyWrapper(final NpcManager npcManager, final Argument<String> npcId, final boolean byName) {
+    public FancyWrapper(final NpcManager npcManager, final Argument<String> npcId, final FlagArgument<Boolean> byName) {
         this.npcManager = npcManager;
         this.npcId = npcId;
         this.byName = byName;
@@ -46,7 +47,7 @@ public class FancyWrapper implements NpcWrapper<Npc> {
     public org.betonquest.betonquest.api.quest.npc.Npc<Npc> getNpc(@Nullable final Profile profile) throws QuestException {
         Npc npc = null;
         final String npcId = this.npcId.getValue(profile);
-        if (byName) {
+        if (byName.getValue(profile).orElse(false)) {
             for (final Npc aNpc : npcManager.getAllNpcs()) {
                 if (npcId.equals(aNpc.getData().getName())) {
                     if (npc != null) {
@@ -59,7 +60,7 @@ public class FancyWrapper implements NpcWrapper<Npc> {
             npc = npcManager.getNpcById(npcId);
         }
         if (npc == null) {
-            throw new QuestException("Fancy Npc with " + (byName ? "name" : "id") + " " + npcId + " not found");
+            throw new QuestException("Fancy Npc with " + (byName.getValue(profile).orElse(false) ? "name" : "id") + " " + npcId + " not found");
         }
         return new FancyAdapter(npc);
     }

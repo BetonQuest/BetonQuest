@@ -4,6 +4,7 @@ import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.util.DynamicLocation;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.bukkit.Location;
@@ -40,7 +41,7 @@ public class ParticleEvent implements OnlineEvent {
     /**
      * If the particle should be only visible for the player.
      */
-    private final boolean privateParticle;
+    private final FlagArgument<Boolean> privateParticle;
 
     /**
      * Create a new EffectLib Particle event.
@@ -52,7 +53,7 @@ public class ParticleEvent implements OnlineEvent {
      * @param privateParticle if the particle should be only visible for the player
      */
     public ParticleEvent(final EffectManager manager, final String effectClass, final ConfigurationSection parameters,
-                         @Nullable final Argument<Location> loc, final boolean privateParticle) {
+                         @Nullable final Argument<Location> loc, final FlagArgument<Boolean> privateParticle) {
         this.manager = manager;
         this.effectClass = effectClass;
         this.parameters = parameters;
@@ -64,7 +65,7 @@ public class ParticleEvent implements OnlineEvent {
     public void execute(final OnlineProfile profile) throws QuestException {
         final Player player = profile.getPlayer();
         final Location location = (loc == null) ? player.getLocation() : loc.getValue(profile);
-        final Player targetPlayer = privateParticle ? player : null;
+        final Player targetPlayer = privateParticle.getValue(profile).orElse(false) ? player : null;
         manager.start(effectClass,
                 parameters,
                 new DynamicLocation(location, null),

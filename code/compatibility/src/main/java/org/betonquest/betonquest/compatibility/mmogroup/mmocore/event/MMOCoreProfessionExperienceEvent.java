@@ -5,6 +5,7 @@ import net.Indyuce.mmocore.experience.EXPSource;
 import net.Indyuce.mmocore.experience.Profession;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 
@@ -26,7 +27,7 @@ public class MMOCoreProfessionExperienceEvent implements PlayerEvent {
     /**
      * If level should be added instead of experience.
      */
-    private final boolean isLevel;
+    private final FlagArgument<Boolean> isLevel;
 
     /**
      * Create a new class point add event.
@@ -35,7 +36,7 @@ public class MMOCoreProfessionExperienceEvent implements PlayerEvent {
      * @param amount     the amount to grant
      * @param isLevel    whether to add level instead of experience
      */
-    public MMOCoreProfessionExperienceEvent(final Argument<Profession> profession, final Argument<Number> amount, final boolean isLevel) {
+    public MMOCoreProfessionExperienceEvent(final Argument<Profession> profession, final Argument<Number> amount, final FlagArgument<Boolean> isLevel) {
         this.profession = profession;
         this.amount = amount;
         this.isLevel = isLevel;
@@ -47,7 +48,7 @@ public class MMOCoreProfessionExperienceEvent implements PlayerEvent {
         final int amount = this.amount.getValue(profile).intValue();
         final PlayerData mmoData = PlayerData.get(profile.getPlayerUUID());
 
-        if (isLevel) {
+        if (isLevel.getValue(profile).orElse(false)) {
             mmoData.getCollectionSkills().giveLevels(profession, amount, EXPSource.QUEST);
         } else {
             mmoData.getCollectionSkills().giveExperience(profession, amount, EXPSource.QUEST);

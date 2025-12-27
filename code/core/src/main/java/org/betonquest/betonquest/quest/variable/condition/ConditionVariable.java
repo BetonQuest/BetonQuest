@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.variable.condition;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
@@ -27,7 +28,7 @@ public class ConditionVariable implements PlayerVariable {
     /**
      * If variable should be in PAPI style.
      */
-    private final boolean papiMode;
+    private final FlagArgument<Boolean> papiMode;
 
     /**
      * Quest Type API.
@@ -42,7 +43,8 @@ public class ConditionVariable implements PlayerVariable {
      * @param papiMode      if the return value should be in PAPI mode as defined in the documentation
      * @param questTypeApi  the Quest Type API
      */
-    public ConditionVariable(final PluginMessage pluginMessage, final Argument<ConditionID> conditionId, final boolean papiMode, final QuestTypeApi questTypeApi) {
+    public ConditionVariable(final PluginMessage pluginMessage, final Argument<ConditionID> conditionId,
+                             final FlagArgument<Boolean> papiMode, final QuestTypeApi questTypeApi) {
         this.pluginMessage = pluginMessage;
         this.conditionId = conditionId;
         this.papiMode = papiMode;
@@ -51,6 +53,7 @@ public class ConditionVariable implements PlayerVariable {
 
     @Override
     public String getValue(final Profile profile) throws QuestException {
+        final boolean papiMode = this.papiMode.getValue(profile).orElse(false);
         if (questTypeApi.condition(profile, conditionId.getValue(profile))) {
             return papiMode ? LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage(profile, "condition_variable_met")) : "true";
         }

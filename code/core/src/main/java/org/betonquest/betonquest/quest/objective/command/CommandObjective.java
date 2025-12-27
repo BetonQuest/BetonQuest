@@ -5,6 +5,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -29,17 +30,17 @@ public class CommandObjective extends Objective implements Listener {
     /**
      * Whether the command should ignore the capitalization.
      */
-    private final boolean ignoreCase;
+    private final FlagArgument<Boolean> ignoreCase;
 
     /**
      * Whether the command should be matched exactly or just the start.
      */
-    private final boolean exact;
+    private final FlagArgument<Boolean> exact;
 
     /**
      * Whether the command should be cancelled after matching.
      */
-    private final boolean cancel;
+    private final FlagArgument<Boolean> cancel;
 
     /**
      * Events to trigger if the command is not matched.
@@ -58,8 +59,8 @@ public class CommandObjective extends Objective implements Listener {
      * @throws QuestException if there is an error in the instruction
      */
     public CommandObjective(final Instruction instruction, final Argument<String> command,
-                            final boolean ignoreCase, final boolean exact, final boolean cancel,
-                            final Argument<List<EventID>> failEvents) throws QuestException {
+                            final FlagArgument<Boolean> ignoreCase, final FlagArgument<Boolean> exact,
+                            final FlagArgument<Boolean> cancel, final Argument<List<EventID>> failEvents) throws QuestException {
         super(instruction);
         this.command = command;
         this.ignoreCase = ignoreCase;
@@ -80,8 +81,8 @@ public class CommandObjective extends Objective implements Listener {
         if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
             qeHandler.handle(() -> {
                 final String replaceCommand = command.getValue(onlineProfile);
-                if (foundMatch(event.getMessage(), replaceCommand)) {
-                    if (cancel) {
+                if (foundMatch(onlineProfile, event.getMessage(), replaceCommand)) {
+                    if (cancel.getValue(onlineProfile).orElse(false)) {
                         event.setCancelled(true);
                     }
                     completeObjective(onlineProfile);
@@ -102,12 +103,12 @@ public class CommandObjective extends Objective implements Listener {
         return "";
     }
 
-    private boolean foundMatch(final String commandExecuted, final String commandRequired) {
-        if (exact) {
-            return ignoreCase ? Strings.CI.equals(commandExecuted, commandRequired)
+    private boolean foundMatch(final OnlineProfile onlineProfile, final String commandExecuted, final String commandRequired) throws QuestException {
+        if (exact.getValue(onlineProfile).orElse(false)) {
+            return ignoreCase.getValue(onlineProfile).orElse(false) ? Strings.CI.equals(commandExecuted, commandRequired)
                     : Strings.CS.equals(commandExecuted, commandRequired);
         }
-        return ignoreCase ? Strings.CI.startsWith(commandExecuted, commandRequired)
+        return ignoreCase.getValue(onlineProfile).orElse(false) ? Strings.CI.startsWith(commandExecuted, commandRequired)
                 : Strings.CS.startsWith(commandExecuted, commandRequired);
     }
 }

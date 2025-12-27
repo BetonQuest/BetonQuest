@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.variable.tag;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -22,7 +23,8 @@ public class TagVariable extends AbstractTagVariable<PlayerDataStorage> implemen
      * @param questPackage  the quest package
      * @param papiMode      whether PAPI mode is enabled
      */
-    public TagVariable(final PluginMessage pluginMessage, final PlayerDataStorage data, final String tagName, final QuestPackage questPackage, final boolean papiMode) {
+    public TagVariable(final PluginMessage pluginMessage, final PlayerDataStorage data, final String tagName,
+                       final QuestPackage questPackage, final FlagArgument<Boolean> papiMode) {
         super(pluginMessage, data, tagName, questPackage, papiMode);
     }
 

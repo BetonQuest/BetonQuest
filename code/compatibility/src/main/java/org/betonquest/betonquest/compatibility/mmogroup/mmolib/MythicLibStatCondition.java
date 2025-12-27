@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmolib;
 import io.lumine.mythic.lib.api.player.MMOPlayerData;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 
@@ -24,7 +25,7 @@ public class MythicLibStatCondition implements PlayerCondition {
     /**
      * Whether the actual level must be equal to the target level.
      */
-    private final boolean mustBeEqual;
+    private final FlagArgument<Boolean> mustBeEqual;
 
     /**
      * Create a new Stat Condition.
@@ -33,7 +34,7 @@ public class MythicLibStatCondition implements PlayerCondition {
      * @param targetLevel the required level
      * @param equal       whether the level should be equal
      */
-    public MythicLibStatCondition(final Argument<String> stat, final Argument<Number> targetLevel, final boolean equal) {
+    public MythicLibStatCondition(final Argument<String> stat, final Argument<Number> targetLevel, final FlagArgument<Boolean> equal) {
         this.statName = stat;
         this.targetLevel = targetLevel;
         this.mustBeEqual = equal;
@@ -44,7 +45,7 @@ public class MythicLibStatCondition implements PlayerCondition {
         final MMOPlayerData data = MMOPlayerData.get(profile.getPlayerUUID());
         final double requiredLevel = targetLevel.getValue(profile).doubleValue();
         final double actualLevel = data.getStatMap().getStat(statName.getValue(profile));
-        return mustBeEqual ? actualLevel == requiredLevel : actualLevel >= requiredLevel;
+        return mustBeEqual.getValue(profile).orElse(false) ? actualLevel == requiredLevel : actualLevel >= requiredLevel;
     }
 
     @Override

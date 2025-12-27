@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.worldedit;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
@@ -62,7 +63,7 @@ public class PasteSchematicEventFactory implements PlayerEventFactory, Playerles
             throw new QuestException("Schematic " + value + " does not exist (" + folder.toPath().resolve(value + ".schematic") + ")");
         }).get();
 
-        final boolean noAir = instruction.hasArgument("noair");
+        final FlagArgument<Boolean> noAir = instruction.bool().getFlag("noair", false);
         return new PasteSchematicEvent(loc, rotation, noAir, file);
     }
 }

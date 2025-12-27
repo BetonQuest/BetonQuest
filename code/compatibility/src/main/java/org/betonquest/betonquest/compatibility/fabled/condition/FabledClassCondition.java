@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.fabled.condition;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import studio.magemonkey.fabled.Fabled;
@@ -20,7 +21,7 @@ public class FabledClassCondition implements PlayerCondition {
     /**
      * If the class check should be exact.
      */
-    private final boolean exact;
+    private final FlagArgument<Boolean> exact;
 
     /**
      * Create a new {@link FabledClassCondition}.
@@ -28,7 +29,7 @@ public class FabledClassCondition implements PlayerCondition {
      * @param className the class name.
      * @param exact     if the class check should be exact.
      */
-    public FabledClassCondition(final Argument<String> className, final boolean exact) {
+    public FabledClassCondition(final Argument<String> className, final FlagArgument<Boolean> exact) {
         this.className = className;
         this.exact = exact;
     }
@@ -41,7 +42,7 @@ public class FabledClassCondition implements PlayerCondition {
         }
 
         final PlayerData data = Fabled.getData(profile.getPlayer());
-        if (exact) {
+        if (exact.getValue(profile).orElse(false)) {
             return data.isExactClass(Fabled.getClass(className));
         }
         return data.isClass(Fabled.getClass(className));

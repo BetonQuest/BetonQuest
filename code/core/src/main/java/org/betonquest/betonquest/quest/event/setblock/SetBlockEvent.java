@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.event.setblock;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
@@ -26,26 +27,26 @@ public class SetBlockEvent implements NullableEvent {
     /**
      * Whether to apply physics.
      */
-    private final boolean applyPhysics;
+    private final FlagArgument<Boolean> ignorePhysics;
 
     /**
      * Creates a new set block event.
      *
-     * @param selector     the block selector
-     * @param location     the location
-     * @param applyPhysics whether to apply physics
+     * @param selector      the block selector
+     * @param location      the location
+     * @param ignorePhysics whether to apply physics
      */
-    public SetBlockEvent(final Argument<BlockSelector> selector, final Argument<Location> location, final boolean applyPhysics) {
+    public SetBlockEvent(final Argument<BlockSelector> selector, final Argument<Location> location, final FlagArgument<Boolean> ignorePhysics) {
         this.selector = selector;
         this.location = location;
-        this.applyPhysics = applyPhysics;
+        this.ignorePhysics = ignorePhysics;
     }
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
         final Location location = this.location.getValue(profile);
         final BlockSelector blockSelector = selector.getValue(profile);
-        blockSelector.setToBlock(location.getBlock(), applyPhysics);
+        blockSelector.setToBlock(location.getBlock(), !ignorePhysics.getValue(profile).orElse(false));
     }
 
     @Override

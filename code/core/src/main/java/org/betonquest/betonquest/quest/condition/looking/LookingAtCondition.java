@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.condition.looking;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
@@ -9,6 +10,8 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 /**
  * Checks if a player is looking at a specific block.
@@ -30,7 +33,7 @@ public class LookingAtCondition implements OnlineCondition {
     /**
      * Whether the block must be an exact match.
      */
-    private final boolean exactMatch;
+    private final FlagArgument<Boolean> exactMatch;
 
     /**
      * Create a new looking at condition.
@@ -40,7 +43,7 @@ public class LookingAtCondition implements OnlineCondition {
     public LookingAtCondition(final Argument<Location> loc) {
         this.loc = loc;
         this.selector = null;
-        this.exactMatch = false;
+        this.exactMatch = profile -> Optional.empty();
     }
 
     /**
@@ -49,7 +52,7 @@ public class LookingAtCondition implements OnlineCondition {
      * @param selector   the block selector
      * @param exactMatch whether the block must be an exact match
      */
-    public LookingAtCondition(final Argument<BlockSelector> selector, final boolean exactMatch) {
+    public LookingAtCondition(final Argument<BlockSelector> selector, final FlagArgument<Boolean> exactMatch) {
         this.loc = null;
         this.selector = selector;
         this.exactMatch = exactMatch;
@@ -68,7 +71,7 @@ public class LookingAtCondition implements OnlineCondition {
                 return false;
             }
         }
-        return selector == null || selector.getValue(profile).match(lookingAt, exactMatch);
+        return selector == null || selector.getValue(profile).match(lookingAt, exactMatch.getValue(profile).orElse(false));
     }
 
     @Override

@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.condition.hand;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
@@ -20,7 +21,7 @@ public class HandCondition implements OnlineCondition {
     /**
      * Whether the item is in the offhand.
      */
-    private final boolean offhand;
+    private final FlagArgument<Boolean> offhand;
 
     /**
      * Creates a new hand condition.
@@ -28,7 +29,7 @@ public class HandCondition implements OnlineCondition {
      * @param item    the item to check for
      * @param offhand whether the item is in the offhand
      */
-    public HandCondition(final Argument<ItemWrapper> item, final boolean offhand) {
+    public HandCondition(final Argument<ItemWrapper> item, final FlagArgument<Boolean> offhand) {
         this.item = item;
         this.offhand = offhand;
     }
@@ -36,7 +37,7 @@ public class HandCondition implements OnlineCondition {
     @Override
     public boolean check(final OnlineProfile profile) throws QuestException {
         final PlayerInventory inv = profile.getPlayer().getInventory();
-        return item.getValue(profile).matches(offhand ? inv.getItemInOffHand() : inv.getItemInMainHand(), profile);
+        return item.getValue(profile).matches(offhand.getValue(profile).orElse(false) ? inv.getItemInOffHand() : inv.getItemInMainHand(), profile);
     }
 
     @Override

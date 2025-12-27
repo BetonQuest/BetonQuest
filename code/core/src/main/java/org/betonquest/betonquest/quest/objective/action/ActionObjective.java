@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.objective.action;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -44,7 +45,7 @@ public class ActionObjective extends Objective implements Listener {
     /**
      * If the block should be checked for exact match.
      */
-    private final boolean exactMatch;
+    private final FlagArgument<Boolean> exactMatch;
 
     /**
      * The location where the player has to click.
@@ -60,7 +61,7 @@ public class ActionObjective extends Objective implements Listener {
     /**
      * If the event should be cancelled.
      */
-    private final boolean cancel;
+    private final FlagArgument<Boolean> cancel;
 
     /**
      * The equipment slot to check for the action.
@@ -82,9 +83,9 @@ public class ActionObjective extends Objective implements Listener {
      * @throws QuestException if an error occurs while creating the objective
      */
     public ActionObjective(final Instruction instruction, final Argument<Click> action,
-                           final Argument<Optional<BlockSelector>> selector, final boolean exactMatch,
-                           @Nullable final Argument<Location> loc, final Argument<Number> range, final boolean cancel,
-                           @Nullable final EquipmentSlot slot) throws QuestException {
+                           final Argument<Optional<BlockSelector>> selector, final FlagArgument<Boolean> exactMatch,
+                           @Nullable final Argument<Location> loc, final Argument<Number> range,
+                           final FlagArgument<Boolean> cancel, @Nullable final EquipmentSlot slot) throws QuestException {
         super(instruction);
         this.action = action;
         this.selector = selector;
@@ -120,7 +121,7 @@ public class ActionObjective extends Objective implements Listener {
             }
 
             if (checkBlock(onlineProfile, clickedBlock, event.getBlockFace()) && checkConditions(onlineProfile)) {
-                if (cancel) {
+                if (cancel.getValue(onlineProfile).orElse(false)) {
                     event.setCancelled(true);
                 }
                 completeObjective(onlineProfile);
@@ -138,8 +139,8 @@ public class ActionObjective extends Objective implements Listener {
         }
         final BlockSelector selectorValue = blockSelector.get();
         return (selectorValue.match(Material.WATER) || selectorValue.match(Material.LAVA))
-                && selectorValue.match(clickedBlock.getRelative(blockFace), exactMatch)
-                || selectorValue.match(clickedBlock, exactMatch);
+                && selectorValue.match(clickedBlock.getRelative(blockFace), exactMatch.getValue(profile).orElse(false))
+                || selectorValue.match(clickedBlock, exactMatch.getValue(profile).orElse(false));
     }
 
     @Override

@@ -9,6 +9,7 @@ import net.citizensnpcs.api.event.SpawnReason;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
@@ -191,7 +192,7 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
      */
     public record MoveData(Argument<List<Location>> locations, Argument<Number> waitTicks,
                            Argument<List<EventID>> doneEvents, Argument<List<EventID>> failEvents,
-                           boolean blockConversations) {
+                           FlagArgument<Boolean> blockConversations) {
 
         /**
          * Creates a new MoveData instance.
@@ -202,7 +203,7 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
          */
         public ResolvedMoveData getResolvedMoveData(final Profile profile) throws QuestException {
             return new ResolvedMoveData(locations.getValue(profile), waitTicks.getValue(profile).longValue(),
-                    doneEvents.getValue(profile), failEvents.getValue(profile), blockConversations);
+                    doneEvents.getValue(profile), failEvents.getValue(profile), blockConversations.getValue(profile).orElse(false));
         }
     }
 
