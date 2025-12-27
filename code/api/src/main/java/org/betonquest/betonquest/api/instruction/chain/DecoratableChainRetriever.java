@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 /**
  * An extended {@link InstructionChainRetriever} offering additional methods
- * to modify the parsing process before retrieving the variable.
+ * to modify the parsing process before retrieving the argument.
  *
  * @param <T> the type of the argument
  * @see InstructionChainRetriever

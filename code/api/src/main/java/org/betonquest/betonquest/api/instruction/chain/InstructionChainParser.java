@@ -26,7 +26,7 @@ public interface InstructionChainParser {
      * Returns {@link DecoratableChainRetriever} for the given {@link InstructionArgumentParser} as parser.
      *
      * @param argument the argument parser to use
-     * @param <T>      the type of the variable
+     * @param <T>      the type of the argument
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
      */
     <T> DecoratableChainRetriever<T> parse(InstructionArgumentParser<T> argument);
@@ -36,7 +36,7 @@ public interface InstructionChainParser {
      * Forwards to {@link #parse(InstructionArgumentParser)} with the {@link SimpleArgumentParser} by default.
      *
      * @param argument the simplified argument parser to use
-     * @param <T>      the type of the variable
+     * @param <T>      the type of the argument
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
      */
     default <T> DecoratableChainRetriever<T> parse(final SimpleArgumentParser<T> argument) {

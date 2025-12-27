@@ -18,8 +18,8 @@ public interface ChainableInstruction {
      *
      * @param argumentParser the argument parser to use
      * @param <T>            the type of the argument
-     * @return the variable for the argument
-     * @throws QuestException if an error occurs while parsing the variable
+     * @return the {@link Argument} wrapping the argument
+     * @throws QuestException if an error occurs while parsing the argument
      */
     @Contract("!null -> new")
     <T> Argument<T> getNext(InstructionArgumentParser<T> argumentParser) throws QuestException;
@@ -30,8 +30,8 @@ public interface ChainableInstruction {
      * @param argumentKey    the key of the argument
      * @param argumentParser the argument parser to use
      * @param <T>            the type of the argument
-     * @return an optional of the variable for the argument
-     * @throws QuestException if an error occurs while parsing the variable
+     * @return an optional of the {@link Argument} wrapping the argument
+     * @throws QuestException if an error occurs while parsing the argument
      */
     @Contract("!null, !null -> new")
     <T> Optional<Argument<T>> getOptional(String argumentKey, InstructionArgumentParser<T> argumentParser) throws QuestException;
@@ -43,8 +43,8 @@ public interface ChainableInstruction {
      * @param defaultValue the default value to return if the argument is not present
      * @param argument     the argument parser to use
      * @param <T>          the type of the argument
-     * @return the variable for the argument
-     * @throws QuestException if an error occurs while parsing the variable
+     * @return the {@link Argument} wrapping the argument
+     * @throws QuestException if an error occurs while parsing the argument
      */
     @Contract("!null, !null, !null -> new")
     <T> Argument<T> getOptional(String argumentKey, InstructionArgumentParser<T> argument, T defaultValue) throws QuestException;
