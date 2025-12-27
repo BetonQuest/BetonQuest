@@ -5302,8 +5302,8 @@ It minimally consists of two steps: the argument parsing step and the argument r
 <span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Argument</span><span class="o">&lt;</span><span class="n">EquipmentSlot</span><span class="o">&gt;</span><span class="w"> </span><span class="n">slot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">enumeration</span><span class="p">(</span><span class="n">EquipmentSlot</span><span class="p">.</span><span class="na">class</span><span class="p">).</span><span class="na">get</span><span class="p">();</span>
 <span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Argument</span><span class="o">&lt;</span><span class="n">PointType</span><span class="o">&gt;</span><span class="w"> </span><span class="n">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">enumeration</span><span class="p">(</span><span class="n">PointType</span><span class="p">.</span><span class="na">class</span><span class="p">).</span><span class="na">get</span><span class="p">();</span>
 <span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Argument</span><span class="o">&lt;</span><span class="n">Number</span><span class="o">&gt;</span><span class="w"> </span><span class="n">amount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">number</span><span class="p">().</span><span class="na">get</span><span class="p">();</span>
-<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">ignoreUnbreakable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">hasArgument</span><span class="p">(</span><span class="s">&quot;ignoreUnbreakable&quot;</span><span class="p">);</span>
-<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">ignoreEvents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">hasArgument</span><span class="p">(</span><span class="s">&quot;ignoreEvents&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">FlagArgument</span><span class="o">&lt;</span><span class="n">Boolean</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ignoreUnbreakable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">bool</span><span class="p">().</span><span class="na">getFlag</span><span class="p">(</span><span class="s">&quot;ignoreUnbreakable&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">);</span>
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">FlagArgument</span><span class="o">&lt;</span><span class="n">Boolean</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ignoreEvents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">bool</span><span class="p">().</span><span class="na">getFlag</span><span class="p">(</span><span class="s">&quot;ignoreEvents&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">);</span>
 
 <span class="w">    </span><span class="c1">//creating event object and returning it...</span>
 <span class="p">}</span>
@@ -5411,21 +5411,6 @@ To have valid calls the <code>Number</code> parser is used as an example, but na
 <td style="text-align: left;"><code>.get("amount", 10)</code></td>
 <td style="text-align: center;"><code>Argument&lt;Number&gt;</code></td>
 <td style="text-align: left;">Retrieves an optional argument of the value with the key <code>amount</code> from the instruction or gets an argument with default value</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>.getList()</code></td>
-<td style="text-align: center;"><code>Argument&lt;List&lt;Number&gt;&gt;</code></td>
-<td style="text-align: left;">Retrieves an argument of the next value in order from the instruction parsed as list</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>.getList("amounts")</code></td>
-<td style="text-align: center;"><code>Optional&lt;Argument&lt;List&lt;Number&gt;&gt;&gt;</code></td>
-<td style="text-align: left;">Retrieves an optional argument of the value with the key <code>amounts</code> from the instruction parsed as list</td>
-</tr>
-<tr>
-<td style="text-align: left;"><nobr><code>.getList("amounts",</code></nobr><br><nobr><code>List.of(1,5,10))</code></nobr></td>
-<td style="text-align: center;"><code>Argument&lt;List&lt;Number&gt;&gt;</code></td>
-<td style="text-align: left;">Retrieves an optional argument of the value with the key <code>amounts</code> from the instruction parsed as list or gets an argument with default list as value</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>.getFlag("repeat", 10)</code></td>
