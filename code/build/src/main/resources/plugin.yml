@@ -44,12 +44,12 @@ commands:
     description: Adds journal to your inventory
     usage: /<command>
     permission: betonquest.journal
-    aliases: [ j, bj, bjournal, betonjournal, betonquestjournal ]
+    aliases: [ bj, bjournal, betonjournal, betonquestjournal ]
   backpack:
     description: Opens quest backpack
     usage: /<command>
     permission: betonquest.backpack
-    aliases: [ b, bb, bbackpack, betonbackpack, betonquestbackpack ]
+    aliases: [ bb, bbackpack, betonbackpack, betonquestbackpack ]
   compass:
     description: Opens the compass menu
     usage: /<command>
@@ -69,7 +69,7 @@ commands:
     description: General quest command
     usage: /<command>
     permission: betonquest.admin
-    aliases: [ q, bq, bquest, bquests, betonquests, quest, quests ]
+    aliases: [ bq, bquest, bquests, betonquests, quest, quests ]
   betonquestanswer:
     description: Selects an answer in a conversation
     usage: No manual usage
