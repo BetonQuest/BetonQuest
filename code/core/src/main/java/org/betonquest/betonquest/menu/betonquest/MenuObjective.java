@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.menu.betonquest;
 
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -18,7 +18,7 @@ import org.bukkit.event.Listener;
 /**
  * Completed if menu with given id is opened.
  */
-public class MenuObjective extends Objective implements Listener {
+public class MenuObjective extends DefaultObjective implements Listener {
 
     /**
      * The key for the menu property.

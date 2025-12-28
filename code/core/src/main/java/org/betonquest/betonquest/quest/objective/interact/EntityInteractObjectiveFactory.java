@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.objective.interact;
 
 import net.kyori.adventure.text.Component;
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
@@ -31,7 +31,7 @@ public class EntityInteractObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<Interaction> interaction = instruction.enumeration(Interaction.class).get();
         final Argument<EntityType> mobType = instruction.enumeration(EntityType.class).get();
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get();

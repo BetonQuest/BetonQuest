@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.objective.resourcepack;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -13,7 +13,7 @@ import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 /**
  * Represents an objective that is completed when the status of the received resource pack matches the target status.
  */
-public class ResourcepackObjective extends Objective implements Listener {
+public class ResourcepackObjective extends DefaultObjective implements Listener {
 
     /**
      * The target status for the received resource pack.

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.objective.npc;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.QuestListException;
 import org.betonquest.betonquest.api.common.function.QuestBiPredicate;
@@ -24,7 +24,7 @@ import java.util.UUID;
 /**
  * The player has to reach certain radius around a specified Npc.
  */
-public class NpcRangeObjective extends Objective {
+public class NpcRangeObjective extends DefaultObjective {
 
     /**
      * Stores the relevant Npc Ids to get their locations.

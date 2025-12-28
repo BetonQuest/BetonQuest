@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.objective.ride;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -17,7 +17,7 @@ import java.util.Optional;
 /**
  * Requires the player to ride a vehicle.
  */
-public class RideObjective extends Objective implements Listener {
+public class RideObjective extends DefaultObjective implements Listener {
 
     /**
      * The type of vehicle that is required or an empty optional if any vehicle is allowed.

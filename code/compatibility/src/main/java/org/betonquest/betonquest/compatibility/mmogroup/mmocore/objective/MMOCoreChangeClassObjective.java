@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmocore.objective;
 
 import net.Indyuce.mmocore.api.event.PlayerChangeClassEvent;
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * An objective that listens for the player changing their MMOCore class.
  */
-public class MMOCoreChangeClassObjective extends Objective implements Listener {
+public class MMOCoreChangeClassObjective extends DefaultObjective implements Listener {
 
     /**
      * The name of the class that the player needs to change to.

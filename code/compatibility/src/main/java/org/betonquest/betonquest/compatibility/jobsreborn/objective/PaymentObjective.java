@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.jobsreborn.objective;
 import com.gamingmesh.jobs.api.JobsPaymentEvent;
 import com.gamingmesh.jobs.container.CurrencyType;
 import net.kyori.adventure.text.Component;
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.instruction.Argument;
@@ -23,7 +23,7 @@ import java.util.Objects;
 /**
  * Objective that tracks the payment received by a player.
  */
-public class PaymentObjective extends Objective implements Listener {
+public class PaymentObjective extends DefaultObjective implements Listener {
 
     /**
      * The Factory for the Payment Data.

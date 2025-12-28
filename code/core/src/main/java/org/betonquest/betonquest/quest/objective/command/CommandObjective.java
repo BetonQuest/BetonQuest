@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.objective.command;
 
 import org.apache.commons.lang3.Strings;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Requires the player to execute a specific command.
  */
-public class CommandObjective extends Objective implements Listener {
+public class CommandObjective extends DefaultObjective implements Listener {
 
     /**
      * Command that the player has to execute.

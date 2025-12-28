@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.objective.tame;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -21,7 +21,7 @@ public class TameObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<EntityType> type = instruction.enumeration(EntityType.class)
                 .validate(entityType -> entityType.getEntityClass() != null
                                 && Tameable.class.isAssignableFrom(entityType.getEntityClass()),

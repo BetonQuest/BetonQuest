@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmocore.objective;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -18,7 +18,7 @@ public class MMOCoreProfessionObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<String> professionName = instruction.string().get();
         final Argument<Number> targetLevel = instruction.number().get();
         return new MMOCoreProfessionObjective(instruction, professionName, targetLevel);

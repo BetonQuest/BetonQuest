@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.objective.block;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
@@ -41,7 +41,7 @@ public class BlockObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<BlockSelector> selector = instruction.blockSelector().get();
         final FlagArgument<Boolean> exactMatch = instruction.bool().getFlag("exactMatch", false);
         final Argument<Number> targetAmount = instruction.number().get();

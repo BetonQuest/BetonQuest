@@ -27,7 +27,7 @@ import java.util.Map;
  * Superclass for all objectives. You need to extend it in order to create new custom objectives.
  */
 @SuppressWarnings("PMD.TooManyMethods")
-public abstract class Objective {
+public abstract class DefaultObjective {
 
     /**
      * The factory for the default Objective Data.
@@ -98,7 +98,7 @@ public abstract class Objective {
      * @param instruction Instruction object representing the objective
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public Objective(final Instruction instruction) throws QuestException {
+    public DefaultObjective(final Instruction instruction) throws QuestException {
         this(instruction, DATA_FACTORY);
     }
 
@@ -112,7 +112,7 @@ public abstract class Objective {
      * @param templateFactory the factory for the objective data object
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public Objective(final Instruction instruction, final ObjectiveDataFactory templateFactory) throws QuestException {
+    public DefaultObjective(final Instruction instruction, final ObjectiveDataFactory templateFactory) throws QuestException {
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         this.templateFactory = templateFactory;
         this.instruction = instruction;

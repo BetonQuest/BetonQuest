@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * An objective that is not completed by doing some action just once, but multiple times. It provides common properties
  * and a versatile data object to track the progress.
  */
-public abstract class CountingObjective extends Objective {
+public abstract class CountingObjective extends DefaultObjective {
 
     /**
      * The Factory for the Counting Data.

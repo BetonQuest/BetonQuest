@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.objective.npc;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.npc.NpcInteractEvent;
 import org.betonquest.betonquest.api.instruction.Argument;
@@ -18,7 +18,7 @@ import static org.betonquest.betonquest.quest.objective.interact.Interaction.ANY
 /**
  * An objective that requires the player to interact with a specific NPC.
  */
-public class NpcInteractObjective extends Objective implements Listener {
+public class NpcInteractObjective extends DefaultObjective implements Listener {
 
     /**
      * The ID of the NPC to interact with.

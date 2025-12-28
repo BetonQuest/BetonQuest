@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.kernel.processor.quest;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
@@ -26,7 +26,7 @@ import java.util.Set;
 /**
  * Stores Objectives and starts/stops/resumes them.
  */
-public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objective> {
+public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, DefaultObjective> {
 
     /**
      * Manager to register listener.
@@ -54,7 +54,7 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
      * @param plugin         the plugin instance to associate registered listener with
      */
     public ObjectiveProcessor(final BetonQuestLogger log, final Variables variables, final QuestPackageManager packManager,
-                              final FactoryTypeRegistry<Objective> objectiveTypes,
+                              final FactoryTypeRegistry<DefaultObjective> objectiveTypes,
                               final PluginManager pluginManager, final Plugin plugin) {
         super(log, variables, packManager, objectiveTypes, "Objective", "objectives");
         this.pluginManager = pluginManager;
@@ -75,7 +75,7 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
     @Override
     public void clear() {
         globalObjectiveIds.clear();
-        for (final Objective objective : values.values()) {
+        for (final DefaultObjective objective : values.values()) {
             objective.close();
             if (objective instanceof Listener) {
                 HandlerList.unregisterAll((Listener) objective);
@@ -90,7 +90,7 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
     }
 
     @Override
-    protected void postCreation(final ObjectiveID identifier, final Objective value) {
+    protected void postCreation(final ObjectiveID identifier, final DefaultObjective value) {
         boolean global = false;
         try {
             global = identifier.getInstruction().bool().getFlag("global", false)
@@ -113,7 +113,7 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
      * @param objectiveID ID of the objective
      */
     public void start(final Profile profile, final ObjectiveID objectiveID) {
-        final Objective objective = values.get(objectiveID);
+        final DefaultObjective objective = values.get(objectiveID);
         if (objective == null) {
             log.error("Tried to start objective '" + objectiveID + "' but it is not loaded! Check for errors on /bq reload!");
             return;
@@ -133,7 +133,7 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
      * @param instruction data instruction string
      */
     public void resume(final Profile profile, final ObjectiveID objectiveID, final String instruction) {
-        final Objective objective = values.get(objectiveID);
+        final DefaultObjective objective = values.get(objectiveID);
         if (objective == null) {
             log.warn(objectiveID.getPackage(), "Objective " + objectiveID + " does not exist");
             return;
@@ -151,9 +151,9 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
      * @param profile the {@link Profile} of the player
      * @return list of this player's active objectives
      */
-    public List<Objective> getActive(final Profile profile) {
-        final List<Objective> list = new ArrayList<>();
-        for (final Objective objective : values.values()) {
+    public List<DefaultObjective> getActive(final Profile profile) {
+        final List<DefaultObjective> list = new ArrayList<>();
+        for (final DefaultObjective objective : values.values()) {
             if (objective.containsPlayer(profile)) {
                 list.add(objective);
             }
@@ -168,7 +168,7 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
      * @param rename the name it should have now
      */
     public void renameObjective(final ObjectiveID name, final ObjectiveID rename) {
-        final Objective objective = values.remove(name);
+        final DefaultObjective objective = values.remove(name);
         values.put(rename, objective);
         if (objective != null) {
             objective.setLabel(rename);
@@ -184,7 +184,7 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
     public void startAll(final Profile profile, final PlayerDataStorage dataStorage) {
         final PlayerData data = dataStorage.get(profile);
         for (final ObjectiveID id : globalObjectiveIds) {
-            final Objective objective = values.get(id);
+            final DefaultObjective objective = values.get(id);
             final String tag = getTag(id);
             if (objective == null || data.hasTag(tag)) {
                 continue;

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.objective;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.Argument;
@@ -91,7 +91,7 @@ public class ObjectiveEvent implements NullableEvent {
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
         for (final ObjectiveID objectiveID : objectives.getValue(profile)) {
-            final Objective objective = questTypeApi.getObjective(objectiveID);
+            final DefaultObjective objective = questTypeApi.getObjective(objectiveID);
             if (profile == null) {
                 handleStatic(objectiveID, objective);
             } else if (profile.getOnlineProfile().isEmpty()) {
@@ -102,7 +102,7 @@ public class ObjectiveEvent implements NullableEvent {
         }
     }
 
-    private void handleStatic(final ObjectiveID objectiveID, final Objective objective) {
+    private void handleStatic(final ObjectiveID objectiveID, final DefaultObjective objective) {
         if ("delete".equals(action) || "remove".equals(action)) {
             final ProfileProvider profileProvider = betonQuest.getProfileProvider();
             profileProvider.getOnlineProfiles().forEach(onlineProfile -> cancelObjectiveForOnlinePlayer(onlineProfile, objectiveID, objective));
@@ -112,7 +112,7 @@ public class ObjectiveEvent implements NullableEvent {
         }
     }
 
-    private void handleForOnlinePlayer(final Profile profile, final ObjectiveID objectiveID, final Objective objective) {
+    private void handleForOnlinePlayer(final Profile profile, final ObjectiveID objectiveID, final DefaultObjective objective) {
         switch (action.toLowerCase(Locale.ROOT)) {
             case "start", "add" -> questTypeApi.newObjective(profile, objectiveID);
             case "complete", "finish" -> objective.completeObjective(profile);
@@ -132,7 +132,7 @@ public class ObjectiveEvent implements NullableEvent {
         });
     }
 
-    private void cancelObjectiveForOnlinePlayer(final Profile profile, final ObjectiveID objectiveID, final Objective objective) {
+    private void cancelObjectiveForOnlinePlayer(final Profile profile, final ObjectiveID objectiveID, final DefaultObjective objective) {
         objective.cancelObjectiveForPlayer(profile);
         betonQuest.getPlayerDataStorage().get(profile).removeRawObjective(objectiveID);
     }

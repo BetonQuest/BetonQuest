@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.objective.variable;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
  * Will not run any events, will not check any conditions.
  * The only way to remove it is using "objective cancel" event.
  */
-public class VariableObjective extends Objective {
+public class VariableObjective extends DefaultObjective {
 
     /**
      * The Factory for the Variable Data.

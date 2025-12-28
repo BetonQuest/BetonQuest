@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.compatibility.mythicmobs.objective;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -20,7 +20,7 @@ public class MythicMobKillObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<List<String>> names = instruction.string().list().get();
         final Argument<IdentifierMode> mode = instruction.enumeration(IdentifierMode.class).get("mode", IdentifierMode.INTERNAL_NAME);
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get("amount", 1);

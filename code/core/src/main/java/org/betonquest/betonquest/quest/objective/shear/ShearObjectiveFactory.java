@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.objective.shear;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -19,7 +19,7 @@ public class ShearObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get();
         final Argument<String> name = instruction.string().get("name").orElse(null);
         final Argument<DyeColor> color = instruction.enumeration(DyeColor.class).get("color").orElse(null);

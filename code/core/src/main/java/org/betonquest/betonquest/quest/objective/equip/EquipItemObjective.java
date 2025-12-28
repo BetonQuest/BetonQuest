@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.objective.equip;
 
 import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent;
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -14,7 +14,7 @@ import org.bukkit.event.Listener;
 /**
  * Requires the player to equip a specific item in a specific slot.
  */
-public class EquipItemObjective extends Objective implements Listener {
+public class EquipItemObjective extends DefaultObjective implements Listener {
 
     /**
      * The item that needs to be equipped.

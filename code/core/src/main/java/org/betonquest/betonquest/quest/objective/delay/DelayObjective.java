@@ -4,7 +4,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -32,7 +32,7 @@ import java.util.Objects;
  * Player has to wait specified amount of time. He may logout, the objective
  * will be completed as soon as the time is up and he logs in again.
  */
-public class DelayObjective extends Objective {
+public class DelayObjective extends DefaultObjective {
 
     /**
      * The Factory for the Delay Data.

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.objective.step;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -21,7 +21,7 @@ public class StepObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<Location> loc = instruction.location().get();
         final BlockSelector selector = new DefaultBlockSelector(".*_PRESSURE_PLATE");
         return new StepObjective(instruction, loc, selector);

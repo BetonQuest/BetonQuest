@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.npc.citizens.objective;
 
 import net.citizensnpcs.api.npc.NPCRegistry;
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -29,7 +29,7 @@ public class NPCKillObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<NpcID> npcID = instruction.parse(CitizensArgument.CITIZENS_ID).get();
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get("amount", 1);
         return new NPCKillObjective(instruction, registry, targetAmount, npcID);

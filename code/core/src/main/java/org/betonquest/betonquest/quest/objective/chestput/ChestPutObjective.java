@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.objective.chestput;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -28,7 +28,7 @@ import java.util.List;
  * Requires the player to put items in the chest. Items can optionally NOT
  * disappear once the chest is closed.
  */
-public class ChestPutObjective extends Objective implements Listener {
+public class ChestPutObjective extends DefaultObjective implements Listener {
 
     /**
      * Condition to check if the items are in the chest.

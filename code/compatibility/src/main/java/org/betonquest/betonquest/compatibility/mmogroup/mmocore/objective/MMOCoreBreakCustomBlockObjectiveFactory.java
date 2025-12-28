@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmocore.objective;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -18,7 +18,7 @@ public class MMOCoreBreakCustomBlockObjectiveFactory implements ObjectiveFactory
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<String> desiredBlockId = instruction.string().get("block").orElse(null);
         if (desiredBlockId == null) {
             throw new QuestException("Missing required argument: block");

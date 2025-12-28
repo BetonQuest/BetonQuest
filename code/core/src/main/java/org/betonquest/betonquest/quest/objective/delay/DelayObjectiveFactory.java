@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.objective.delay;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -18,7 +18,7 @@ public class DelayObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<Number> delay = instruction.number().atLeast(0).get();
         final Argument<Number> interval = instruction.number()
                 .atLeast(1).get("interval", 20 * 10);

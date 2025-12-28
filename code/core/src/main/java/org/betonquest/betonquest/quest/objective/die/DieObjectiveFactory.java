@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.objective.die;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
@@ -20,7 +20,7 @@ public class DieObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
         final FlagArgument<Boolean> cancel = instruction.bool().getFlag("cancel", false);
         final Argument<Location> location = instruction.location().get("respawn").orElse(null);
         return new DieObjective(instruction, cancel, location);

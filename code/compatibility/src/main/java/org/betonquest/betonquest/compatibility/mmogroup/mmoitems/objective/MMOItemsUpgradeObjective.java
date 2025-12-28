@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmoitems.objective;
 
 import net.Indyuce.mmoitems.api.event.item.UpgradeItemEvent;
 import net.Indyuce.mmoitems.api.item.mmoitem.MMOItem;
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -14,7 +14,7 @@ import org.bukkit.event.Listener;
 /**
  * An objective that listens for the player upgrading their MMOItems item.
  */
-public class MMOItemsUpgradeObjective extends Objective implements Listener {
+public class MMOItemsUpgradeObjective extends DefaultObjective implements Listener {
 
     /**
      * The ID of the item to be upgraded.

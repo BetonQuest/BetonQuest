@@ -7,7 +7,7 @@ import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.common.component.VariableComponent;
@@ -1093,7 +1093,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             if (isOnline) {
                 // if the player is online then just retrieve tags from his active objectives
                 objectives = instance.getQuestTypeApi().getPlayerObjectives(profile).stream()
-                        .map(Objective::getLabel);
+                        .map(DefaultObjective::getLabel);
             } else {
                 // if player is offline then convert his raw objective strings to tags
                 objectives = playerData.getRawObjectives().keySet().stream();
@@ -1112,7 +1112,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         // get the objective
         final ObjectiveID objectiveID;
-        final Objective objective;
+        final DefaultObjective objective;
         try {
             objectiveID = new ObjectiveID(variables, instance.getQuestPackageManager(), null, args[3]);
             objective = instance.getQuestTypeApi().getObjective(objectiveID);
@@ -1371,7 +1371,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "objectives", "objective", "o" -> {
                 updateType = UpdateType.REMOVE_ALL_OBJECTIVES;
                 final ObjectiveID objectiveID;
-                final Objective objective;
+                final DefaultObjective objective;
                 try {
                     objectiveID = new ObjectiveID(variables, instance.getQuestPackageManager(), null, name);
                     objective = instance.getQuestTypeApi().getObjective(objectiveID);
@@ -1746,7 +1746,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
         // get the objective
         final ObjectiveID objectiveID;
-        final Objective tmp;
+        final DefaultObjective tmp;
         try {
             objectiveID = new ObjectiveID(variables, instance.getQuestPackageManager(), null, args[2]);
             tmp = instance.getQuestTypeApi().getObjective(objectiveID);

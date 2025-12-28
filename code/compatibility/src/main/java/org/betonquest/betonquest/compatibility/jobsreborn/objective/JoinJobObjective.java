@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.jobsreborn.objective;
 
 import com.gamingmesh.jobs.api.JobsJoinEvent;
 import com.gamingmesh.jobs.container.Job;
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -14,7 +14,7 @@ import org.bukkit.event.Listener;
 /**
  * Objective that tracks the join of a player to a specific job.
  */
-public class JoinJobObjective extends Objective implements Listener {
+public class JoinJobObjective extends DefaultObjective implements Listener {
 
     /**
      * Job to join.

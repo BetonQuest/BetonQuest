@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.feature;
 
 import net.kyori.adventure.text.Component;
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
@@ -178,7 +178,7 @@ public class QuestCanceler {
         try {
             for (final ObjectiveID objectiveID : data.objectives.getValue(profile)) {
                 log.debug(objectiveID.getPackage(), "  Removing objective " + objectiveID);
-                final Objective objective = questTypeApi.getObjective(objectiveID);
+                final DefaultObjective objective = questTypeApi.getObjective(objectiveID);
                 objective.cancelObjectiveForPlayer(profile);
                 playerData.removeRawObjective(objectiveID);
             }

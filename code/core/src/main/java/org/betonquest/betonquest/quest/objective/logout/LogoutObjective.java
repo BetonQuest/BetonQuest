@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.objective.logout;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -13,7 +13,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 /**
  * Requires the player to leave the server.
  */
-public class LogoutObjective extends Objective implements Listener {
+public class LogoutObjective extends DefaultObjective implements Listener {
 
     /**
      * Constructor for the LogoutObjective.

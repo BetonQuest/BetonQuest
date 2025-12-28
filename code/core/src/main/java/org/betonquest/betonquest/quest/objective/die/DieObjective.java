@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.objective.die;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
@@ -26,7 +26,7 @@ import java.util.Optional;
 /**
  * Player needs to die. Death can be canceled, also respawn location can be set
  */
-public class DieObjective extends Objective implements Listener {
+public class DieObjective extends DefaultObjective implements Listener {
 
     /**
      * Whether the death should be canceled.

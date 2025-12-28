@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.objective.arrow;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -19,7 +19,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 /**
  * Requires the player to shoot a target with a bow.
  */
-public class ArrowShootObjective extends Objective implements Listener {
+public class ArrowShootObjective extends DefaultObjective implements Listener {
 
     /**
      * Location where the arrow should hit.

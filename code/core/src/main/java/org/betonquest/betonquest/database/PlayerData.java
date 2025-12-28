@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.database;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.PlayerTagAddEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerTagRemoveEvent;
@@ -369,7 +369,7 @@ public class PlayerData implements TagData, PointData {
      * @param objectiveID ID of the objective
      */
     public void addNewRawObjective(final ObjectiveID objectiveID) {
-        final Objective obj;
+        final DefaultObjective obj;
         try {
             obj = questTypeApi.getObjective(objectiveID);
         } catch (final QuestException e) {
@@ -561,7 +561,7 @@ public class PlayerData implements TagData, PointData {
      * Purges all profile's data from the database and from this object.
      */
     public void purgePlayer() {
-        for (final Objective obj : questTypeApi.getPlayerObjectives(profile)) {
+        for (final DefaultObjective obj : questTypeApi.getPlayerObjectives(profile)) {
             obj.cancelObjectiveForPlayer(profile);
         }
         // clear all lists

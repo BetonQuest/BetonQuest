@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.quest;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.kernel.FeatureTypeRegistry;
 import org.betonquest.betonquest.api.quest.condition.ConditionRegistry;
 import org.betonquest.betonquest.api.quest.event.EventRegistry;
@@ -32,7 +32,7 @@ public interface QuestTypeRegistries {
      *
      * @return the objective registry
      */
-    FeatureTypeRegistry<Objective> objective();
+    FeatureTypeRegistry<DefaultObjective> objective();
 
     /**
      * Gets the registry for variables.

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.objective.equip;
 
 import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent;
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -20,7 +20,7 @@ public class EquipItemObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<PlayerArmorChangeEvent.SlotType> slotType = instruction.enumeration(PlayerArmorChangeEvent.SlotType.class).get();
         final Argument<ItemWrapper> item = instruction.item().get();
         return new EquipItemObjective(instruction, item, slotType);

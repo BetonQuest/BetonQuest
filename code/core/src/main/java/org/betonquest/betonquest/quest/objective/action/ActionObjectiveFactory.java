@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.objective.action;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
@@ -29,7 +29,7 @@ public class ActionObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<Click> action = instruction.enumeration(Click.class).get();
         final Argument<Optional<BlockSelector>> selector = instruction.blockSelector()
                 .prefilterOptional(ANY, null).get();
