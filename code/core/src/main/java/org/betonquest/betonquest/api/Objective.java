@@ -2,12 +2,11 @@ package org.betonquest.betonquest.api;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
-import org.betonquest.betonquest.api.common.function.QuestRunnable;
-import org.betonquest.betonquest.api.common.function.QuestSupplier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.QuestExceptionHandler;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
@@ -53,7 +52,7 @@ public abstract class Objective {
     /**
      * Exception Handler to not spam the log.
      */
-    protected final QuestExceptionHandler qeHandler = new QuestExceptionHandler();
+    protected final QuestExceptionHandler qeHandler;
 
     /**
      * Contains all data objects of the profiles with this objective active.
@@ -117,6 +116,7 @@ public abstract class Objective {
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         this.templateFactory = templateFactory;
         this.instruction = instruction;
+        this.qeHandler = new QuestExceptionHandler(instruction.getPackage(), log, instruction.getID().getFull());
         this.profileProvider = BetonQuest.getInstance().getProfileProvider();
         this.dataMap = new ProfileKeyMap<>(profileProvider);
         persistent = instruction.bool().getFlag("persistent", false);
@@ -408,62 +408,6 @@ public abstract class Objective {
             stop(profile);
             BetonQuest.getInstance().getPlayerDataStorage().get(profile).addRawObjective((ObjectiveID) instruction.getID(),
                     entry.getValue().toString());
-        }
-    }
-
-    /**
-     * Can handle thrown {@link QuestException} and rate limits them so
-     * they don't spam console that hard.
-     */
-    protected class QuestExceptionHandler {
-
-        /**
-         * Interval in which errors are logged.
-         */
-        public static final int ERROR_RATE_LIMIT_MILLIS = 5000;
-
-        /**
-         * The last time when an error message was logged, in milliseconds.
-         */
-        public long last;
-
-        /**
-         * Empty default Constructor.
-         */
-        public QuestExceptionHandler() {
-        }
-
-        /**
-         * Runs a task and logs occurring quest exceptions with a rate limit.
-         *
-         * @param qeThrowing   a task that may throw a quest exception
-         * @param defaultValue the default value to return in case of an exception
-         * @param <T>          the type of the result
-         * @return the result of the task or the default value if an exception occurs
-         */
-        public <T> T handle(final QuestSupplier<T> qeThrowing, final T defaultValue) {
-            try {
-                return qeThrowing.get();
-            } catch (final QuestException e) {
-                if (System.currentTimeMillis() - last >= ERROR_RATE_LIMIT_MILLIS) {
-                    last = System.currentTimeMillis();
-                    log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
-                }
-                return defaultValue;
-            }
-        }
-
-        /**
-         * Runs a task and logs occurring quest exceptions with a rate limit.
-         *
-         * @param qeThrowing a task that may throw a quest exception
-         */
-        @SuppressWarnings("NullAway")
-        public void handle(final QuestRunnable qeThrowing) {
-            handle(() -> {
-                qeThrowing.run();
-                return null;
-            }, null);
         }
     }
 }
