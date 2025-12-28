@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.objective.consume;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -24,7 +24,7 @@ public class ConsumeObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<ItemWrapper> item = instruction.item().get();
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get(AMOUNT_ARGUMENT, 1);
         return new ConsumeObjective(instruction, targetAmount, item);

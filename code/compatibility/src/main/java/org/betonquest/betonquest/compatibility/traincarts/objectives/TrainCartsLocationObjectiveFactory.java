@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.compatibility.traincarts.objectives;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -19,7 +19,7 @@ public class TrainCartsLocationObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<Location> loc = instruction.location().get();
         final Argument<Number> range = instruction.number().atLeast(1).get("range", 1);
         return new TrainCartsLocationObjective(instruction, loc, range);

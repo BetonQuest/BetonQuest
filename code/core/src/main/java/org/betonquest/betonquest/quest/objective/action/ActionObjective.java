@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.objective.action;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
@@ -25,7 +25,7 @@ import java.util.Optional;
  * Player has to click on a block (or air). Left click, right click and any one of
  * them is supported.
  */
-public class ActionObjective extends Objective implements Listener {
+public class ActionObjective extends DefaultObjective implements Listener {
 
     /**
      * The key for the location property.

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.objective.data;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerUpdatePointEvent;
@@ -25,7 +25,7 @@ import java.util.Optional;
 /**
  * Player needs to get a certain amount of points.
  */
-public class PointObjective extends Objective implements Listener {
+public class PointObjective extends DefaultObjective implements Listener {
 
     /**
      * The Factory for the Point Data.

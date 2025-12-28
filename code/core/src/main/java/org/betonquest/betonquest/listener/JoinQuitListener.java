@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.listener;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.feature.ConversationApi;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -137,7 +137,7 @@ public class JoinQuitListener implements Listener {
     @EventHandler
     public void onPlayerQuit(final PlayerQuitEvent event) {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
-        for (final Objective objective : questTypeApi.getActive(onlineProfile)) {
+        for (final DefaultObjective objective : questTypeApi.getActive(onlineProfile)) {
             objective.pauseObjectiveForPlayer(onlineProfile);
         }
         playerDataStorage.remove(onlineProfile);

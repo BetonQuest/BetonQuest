@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmocore.objective;
 
 import net.Indyuce.mmocore.api.event.PlayerLevelUpEvent;
 import net.Indyuce.mmocore.experience.Profession;
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -14,7 +14,7 @@ import org.bukkit.event.Listener;
 /**
  * An objective that listens for the player leveling up in their MMOCore profession.
  */
-public class MMOCoreProfessionObjective extends Objective implements Listener {
+public class MMOCoreProfessionObjective extends DefaultObjective implements Listener {
 
     /**
      * The name of the profession that the player needs to level up.

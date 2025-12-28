@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.LanguageProvider;
-import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.kernel.FeatureTypeRegistry;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -432,7 +432,7 @@ public class CoreQuestTypes {
         eventTypes.registerCombined("weather", new WeatherEventFactory(loggerFactory, server));
     }
 
-    private void registerObjectives(final FeatureTypeRegistry<Objective> objectiveTypes) {
+    private void registerObjectives(final FeatureTypeRegistry<DefaultObjective> objectiveTypes) {
         objectiveTypes.register("action", new ActionObjectiveFactory());
         objectiveTypes.register("arrow", new ArrowShootObjectiveFactory());
         objectiveTypes.register("block", new BlockObjectiveFactory(loggerFactory, pluginMessage));

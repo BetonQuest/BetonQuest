@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.objective.command;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
@@ -23,7 +23,7 @@ public class CommandObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<String> command = instruction.string().get();
         final FlagArgument<Boolean> ignoreCase = instruction.bool().getFlag("ignoreCase", false);
         final FlagArgument<Boolean> exact = instruction.bool().getFlag("exact", false);

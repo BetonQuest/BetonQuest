@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.compatibility.worldguard;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -18,7 +18,7 @@ public class RegionObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<String> name = instruction.string().get();
         return new RegionObjective(instruction, name);
     }

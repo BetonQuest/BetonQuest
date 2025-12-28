@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.objective.pickup;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -21,7 +21,7 @@ public class PickupObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<List<ItemWrapper>> pickupItems = instruction.item().list().get();
         final Argument<Number> targetAmount = instruction.number().get("amount", 1);
         return new PickupObjective(instruction, targetAmount, pickupItems);

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.objective.brew;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -28,7 +28,7 @@ public class BrewObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<ItemWrapper> potion = instruction.item().get();
         final Argument<Number> targetAmount = instruction.number().atLeast(0).get();
         return new BrewObjective(instruction, targetAmount, profileProvider, potion);

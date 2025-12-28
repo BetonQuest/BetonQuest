@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.kernel.processor;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
@@ -153,12 +153,12 @@ public record CoreQuestRegistry(
     }
 
     @Override
-    public List<Objective> getPlayerObjectives(final Profile profile) {
+    public List<DefaultObjective> getPlayerObjectives(final Profile profile) {
         return objectives().getActive(profile);
     }
 
     @Override
-    public Objective getObjective(final ObjectiveID objectiveID) throws QuestException {
+    public DefaultObjective getObjective(final ObjectiveID objectiveID) throws QuestException {
         return objectives().get(objectiveID);
     }
 }

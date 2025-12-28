@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.jobsreborn.objective;
 
 import com.gamingmesh.jobs.container.Job;
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -20,7 +20,7 @@ public class LeaveJobObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<Job> job = instruction.parse(JobParser.JOB).get();
         return new LeaveJobObjective(instruction, job);
     }

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.objective.stage;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -18,7 +18,7 @@ import java.util.Locale;
  * The StageObjective is a special objective that can be used to create a stage system for a quest.
  */
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
-public class StageObjective extends Objective {
+public class StageObjective extends DefaultObjective {
 
     /**
      * The Factory for the Stage Data.

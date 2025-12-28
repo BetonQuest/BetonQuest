@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.objective.npc;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -21,7 +21,7 @@ public class NpcRangeObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<List<NpcID>> npcIds = instruction.parse(NpcID::new).list().get();
         final Argument<Trigger> trigger = instruction.enumeration(Trigger.class).get();
         final Argument<Number> radius = instruction.number().get();

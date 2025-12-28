@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.objective.location;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -32,7 +32,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * It listens for various player events such as join, quit, death, respawn, teleport, and movement
  * to check the player's location.
  */
-public abstract class AbstractLocationObjective extends Objective implements Listener {
+public abstract class AbstractLocationObjective extends DefaultObjective implements Listener {
 
     /**
      * Should entry be checked instead of being inside the location of not.

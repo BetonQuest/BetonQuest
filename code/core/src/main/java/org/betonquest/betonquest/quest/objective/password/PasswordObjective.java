@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.objective.password;
 
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 /**
  * Requires the player to type a password in chat.
  */
-public class PasswordObjective extends Objective implements Listener {
+public class PasswordObjective extends DefaultObjective implements Listener {
 
     /**
      * Regex pattern to match the password.

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.objective.login;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -13,7 +13,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 /**
  * Requires the player to join the server.
  */
-public class LoginObjective extends Objective implements Listener {
+public class LoginObjective extends DefaultObjective implements Listener {
 
     /**
      * Constructor for the LoginObjective.

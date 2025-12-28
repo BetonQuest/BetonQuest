@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.quest;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
@@ -94,7 +94,7 @@ public interface QuestTypeApi {
      * @param profile the {@link Profile} of the player
      * @return list of this player's active objectives
      */
-    List<Objective> getPlayerObjectives(Profile profile);
+    List<DefaultObjective> getPlayerObjectives(Profile profile);
 
     /**
      * Gets a stored Objective.
@@ -103,7 +103,7 @@ public interface QuestTypeApi {
      * @return the loaded Objective
      * @throws QuestException if no Objective is loaded for the ID
      */
-    Objective getObjective(ObjectiveID objectiveID) throws QuestException;
+    DefaultObjective getObjective(ObjectiveID objectiveID) throws QuestException;
 
     /**
      * Get the Api for Variable interaction.

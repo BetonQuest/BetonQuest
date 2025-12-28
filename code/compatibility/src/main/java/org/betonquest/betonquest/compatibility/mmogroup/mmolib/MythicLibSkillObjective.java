@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmolib;
 
 import io.lumine.mythic.lib.api.event.skill.SkillCastEvent;
 import io.lumine.mythic.lib.skill.trigger.TriggerType;
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * An objective that is completed when a player activates a MythicLib skill.
  */
-public class MythicLibSkillObjective extends Objective implements Listener {
+public class MythicLibSkillObjective extends DefaultObjective implements Listener {
 
     /**
      * The name of the skill to activate.

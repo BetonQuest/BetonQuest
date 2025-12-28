@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.objective.experience;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.instruction.Argument;
@@ -24,7 +24,7 @@ import java.util.Locale;
 /**
  * Player needs to get specified experience level or more.
  */
-public class ExperienceObjective extends Objective implements Listener {
+public class ExperienceObjective extends DefaultObjective implements Listener {
 
     /**
      * The experience level the player needs to get.

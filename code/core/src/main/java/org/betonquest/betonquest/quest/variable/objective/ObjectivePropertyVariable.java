@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.variable.objective;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
@@ -42,7 +42,7 @@ public class ObjectivePropertyVariable implements PlayerVariable {
 
     @Override
     public String getValue(final Profile profile) throws QuestException {
-        final Objective objective = questTypeApi.getObjective(objectiveID);
+        final DefaultObjective objective = questTypeApi.getObjective(objectiveID);
         if (objective.containsPlayer(profile)) {
             return objective.getProperty(propertyName, profile);
         }

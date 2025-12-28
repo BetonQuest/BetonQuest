@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.objective.step;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -18,7 +18,7 @@ import org.bukkit.inventory.EquipmentSlot;
 /**
  * The player must step on the pressure plate.
  */
-public class StepObjective extends Objective implements Listener {
+public class StepObjective extends DefaultObjective implements Listener {
 
     /**
      * The key for the location property.

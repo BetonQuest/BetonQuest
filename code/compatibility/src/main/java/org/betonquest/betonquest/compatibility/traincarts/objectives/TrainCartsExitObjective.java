@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.traincarts.objectives;
 
 import com.bergerkiller.bukkit.tc.events.seat.MemberSeatExitEvent;
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -13,9 +13,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 /**
- * This {@link Objective} is completed when a player exits a train.
+ * This {@link DefaultObjective} is completed when a player exits a train.
  */
-public class TrainCartsExitObjective extends Objective implements Listener {
+public class TrainCartsExitObjective extends DefaultObjective implements Listener {
 
     /**
      * The name of the train, maybe empty.

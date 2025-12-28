@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.jobsreborn.objective;
 
 import com.gamingmesh.jobs.api.JobsLevelUpEvent;
 import com.gamingmesh.jobs.container.Job;
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -14,7 +14,7 @@ import org.bukkit.event.Listener;
 /**
  * Objective that tracks the level up of a player in a specific job.
  */
-public class LevelUpObjective extends Objective implements Listener {
+public class LevelUpObjective extends DefaultObjective implements Listener {
 
     /**
      * Job to level up.

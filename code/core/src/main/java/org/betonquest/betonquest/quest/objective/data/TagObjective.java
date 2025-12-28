@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.objective.data;
 
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerTagAddEvent;
@@ -15,7 +15,7 @@ import org.bukkit.event.Listener;
 /**
  * Player needs to get a certain tag.
  */
-public class TagObjective extends Objective implements Listener {
+public class TagObjective extends DefaultObjective implements Listener {
 
     /**
      * Storage for player data.
