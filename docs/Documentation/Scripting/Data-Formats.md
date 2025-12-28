@@ -4,22 +4,19 @@ icon: material/cube
 
 ## :octicons-location-16: Unified location formating
 
-Whenever you want to define some location in your events, conditions, objectives or any other things, you will define it
+Whenever you want to define a location in your events, conditions, objectives or in any other place, you will define it
 with this specific format. The location consists of 2 things: base and vector. Only the base is always required.
 
 ### Base Location
-The base is a core location. There are two types: absolute coordinates and variables. Absolute coordinates are
-defined like `100;200;300;world`, where `100` is X coordinate, `200` is Y, `300` is Z and `world` is the name of the
-world. These can have decimal values. If you want you can also add two more numbers at the end, yaw and pitch 
-(these are controlling the rotation, for example in teleportation event, both are needed if you decide to add them;
-example: `0.5;64;0.5;world;90;-270`).
+Locations are defined in the format `x;y;z;world;yaw;pitch` for example `100;200;300;world`, where `100` is the x
+coordinate, `200` for y, `300` for z and `world` is the name of the world. All numbers may have decimal places.
+You can also omit the `yaw` and `pitch` values as they are optional.
+They define the rotation and if you want to set them you must provide them both.
+Yaw is the left-right rotation, pitch is the up-down rotation.
+A fully defined location may look like this: `100;200;300;world;90;-45`.
 
-### Variables as Base Location
-To use a variable as the location's base it must resolve to valid absolute coordinates. An example of such variable 
-is `%location%`, which shows player's exact location. Simply place it instead of coordinates. There is one rule though:
-you can't use variable base types in events running without players (for example static events or the ones run from
-folder event after the player left the server). BetonQuest won't be able to resolve the location variable without the
-player!
+Every single element may be a placeholder as well as the entire location itself.
+As an example you can use the [`%location%`](Building-Blocks/Placeholders-List.md#location-placeholder) placeholder to get a player's current location.
 
 ### Vectors
 The vector is a modification of the location. Vectors look like `->(10;2.5;-13)` and are added

@@ -2,10 +2,10 @@ holograms: |-
   !!! info "Required Dependency: Hologram Plugin"
       This feature can be activated by installing any of the following hologram plugins:
 
-      | Plugin               | Required Version | Additional Dependencies                                                            |
-      |----------------------|------------------|------------------------------------------------------------------------------------|
-      | DecentHolograms      | 2.7.5 or above   | [PlaceholderAPI](https://www.spigotmc.org/resources/6245/) for in-line variables.  |
-      | Holographic Displays | 3.0.0 or above   | None                                                                               |
+      | Plugin               | Required Version | Additional Dependencies                                                             |
+      |----------------------|------------------|-------------------------------------------------------------------------------------|
+      | DecentHolograms      | 2.7.5 or above   | [PlaceholderAPI](https://www.spigotmc.org/resources/6245/) for in-line placeholders.|
+      | Holographic Displays | 3.0.0 or above   | None                                                                                |
   
       If you have both plugins installed, you can use the [`hologram.default` option in the "_config.yml_"](/Documentation/Configuration/Plugin-Config.md/#hologram-hologram-settings) to set which plugin should be used.
       !!! bug ""

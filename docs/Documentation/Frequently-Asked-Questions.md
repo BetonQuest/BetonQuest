@@ -39,8 +39,8 @@ This is insanely common and can be overlooked!
 You have incorrect YAML syntax in your conversation file.
 Usually it's because you started a line with `!` or `&`, forgot colons or made some weird things with apostrophes.
 
-## How to get a formatted version of the BlockObjective's variables?
-The math variable is perfect for this.
+## How to get a formatted version of the BlockObjective's placeholders?
+The math placeholder is perfect for this.
 `/papi parse USER %betonquest_BlockVar:math.calc:|objective.test.left|%`
 
 ## How to display "1 / 10" in objective notify
@@ -53,7 +53,7 @@ The core ideas of that system are:
 * The objective instantly restarts after it is finished thanks to the `persistent` argument. 
   It will be deleted using the objective event once it's finished.
     
-* The systems logic is essentially just a point variable that is increased on each completion and a notify event being run.
+* The systems logic is essentially just a point placeholder that is increased on each completion and a notify event being run.
   That notify event displays the current objective progress.
 
 * The objective gets reset with an event that has a condition bound to it. That means that the event will only be run once
@@ -90,7 +90,7 @@ text: |
   format this using spaces.
 ```
 
-## How to deal with unresolvable variables that show "0"?
+## How to deal with unresolvable placeholders that show "0"?
 You can just add them together using `math.calc`.
 ```
 %math.calc:objective.PickWheat1.left+objective.PickWheat2.left+objective.PickWheat3.left+objective.PickWheat4.left'
@@ -196,9 +196,9 @@ player will receive it upon joining the server.
 # fish a salmon to progress the global quest
 gQuest: fish SALMON 1 events:gQuestProgress global persistent
 ```
-The objective would trigger a folder event that increases a `globalpoint` variable by one and tries to run the
-events that are fired upon completion. That globalpoint variable tracks the players combined progress.
-The "completion events" must be limited by a `globalpoint` condition that checks whether the `globalpoint` variable has
+The objective would trigger a folder event that increases a `globalpoint` counter by one and tries to run the
+events that are fired upon completion. That globalpoint counter tracks the players combined progress.
+The "completion events" must be limited by a `globalpoint` condition that checks whether the `globalpoint` counter has
 reached a certain value.
 
 === "events"
@@ -323,7 +323,7 @@ You can also add click events to display npc locations, add compass targets, dir
 Or you could define separate items for open and finished quests or even to show the progress. Just be a bit creative.
 
 ## Menus displaying players stats
-You may also use menus to display the stats of a player. Just use [variables](../Documentation/Scripting/Building-Blocks/Variables-List.md) in the text or for the amount of an item.
+You may also use menus to display the stats of a player. Just use [placeholders](Scripting/Building-Blocks/Placeholders-List.md) in the text or for the amount of an item.
 
-For example try displaying a players money using the variable from [Vault integration](http://dev.bukkit.org/bukkit-plugins/vault/)
+For example try displaying a players money using the placeholder from [Vault integration](http://dev.bukkit.org/bukkit-plugins/vault/)
 or use [PlaceholderAPI](../Documentation/Scripting/Building-Blocks/Integration-List.md#placeholderapi) to show placeholders from many other plugins.

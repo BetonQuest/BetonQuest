@@ -81,15 +81,16 @@ Shows the notification using a bossbar at the top of the players screen.
     <div style="text-align: center">
     ![bossbar image](../../../_media/content/Documentation/Notifications/bossbar.png)
     </div>
-| Option | Description |
-|--------|-------------|
-| barFlags | What [flags](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/boss/BarFlag.html) to add to the bossbar. `PLAY_BOSS_MUSIC` seems to be broken in either server or the game itself.
-| barColor | What [color](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/boss/BarColor.html) to draw the bar. |
-| progress | What progress to show in the bar. A floating point number between 0.0 (empty) and 1.0 (full). Supports variables. |
-| style | What bar [style](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/boss/BarStyle.html) to use. |
-| stay | How many ticks to keep the bar on screen. Defaults to 70. Supports variables. |
-| countdown | Animates the progress of the bar if set. The value determines how often the bar is updated. Formula: $TimeBetweenUpdates = \frac{stay}{countdown}$ |
-| [Sound](#sound) | Any option from the [SoundIO](#sound). |
+
+| Option          | Description                                                                                                                                                                          |
+|-----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| barFlags        | What [flags](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/boss/BarFlag.html) to add to the bossbar. `PLAY_BOSS_MUSIC` seems to be broken in either server or the game itself. |
+| barColor        | What [color](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/boss/BarColor.html) to draw the bar.                                                                                |
+| progress        | What progress to show in the bar. A floating point number between 0.0 (empty) and 1.0 (full).                                                                                        |
+| style           | What bar [style](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/boss/BarStyle.html) to use.                                                                                     |
+| stay            | How many ticks to keep the bar on screen. Defaults to 70.                                                                                                                            |
+| countdown       | Animates the progress of the bar if set. The value determines how often the bar is updated. Formula: $TimeBetweenUpdates = \frac{stay}{countdown}$                                   |
+| [Sound](#sound) | Any option from the [SoundIO](#sound).                                                                                                                                               |
 
 ### Title
 Shows the notification using a title.
@@ -146,7 +147,7 @@ Keep that in mind when creating sounds close to a player. They can move around t
 | soundcategory     | The [category](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/SoundCategory.html) in which the sound will be played.                                  |
 | soundvolume       | Minecraft's [special sound volume](https://minecraft.wiki/w/Commands/playsound#Arguments). Default: _1_                                                    |
 | soundpitch        | Pitch of the sound. Default: _1_ Min: _0_ Max: _2_                                                                                                         |
-| soundlocation     | Default: The player's location. A location using the BetonQuest [ULF](../../Scripting/Data-Formats.md#unified-location-formating). Can include variables.  |
+| soundlocation     | Default: The player's location. A location using the BetonQuest [ULF](../../Scripting/Data-Formats.md#unified-location-formating).                         |
 | soundplayeroffset | This option is special. See below.                                                                                                                         |
 
 <h4> soundplayeroffset </h4>

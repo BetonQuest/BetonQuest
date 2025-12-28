@@ -34,7 +34,7 @@ There are also plugins that hook into BetonQuest that require a clientside mod:
 ### Conditions
 
 #### Skill level: `auraskillslevel`
-Checks if the player has the specified skill level. The amount can be a variable or a number.
+Checks if the player has the specified skill level. The amount is a number.
 The player needs to be on that level or higher to meet the condition.
 You can disable this behaviour by adding the `equal` argument, then the player must match the specified level exactly.
 ```YAML linenums="1"
@@ -43,7 +43,7 @@ auraskillslevel farming 10 equal
 ```
 
 #### Stat level: `auraskillsstatslevel`
-Checks if the player has the specified stat level. The amount can be a variable or a number.
+Checks if the player has the specified stat level. The amount is a number.
 The player needs to be on that level or higher to meet the condition.
 You can disable this behaviour by adding the `equal` argument, then the player must match the specified level exactly.
 ```YAML linenums="1"
@@ -54,7 +54,7 @@ auraskillsstatslevel luck 10 equal
 ### Events
 
 ### Give Skill Xp : `auraskillsxp`
-Adds experience to the players skill. The amount can be a variable or a number.
+Adds experience to the players skill. The amount is a number.
 The `level` argument is optional and would convert the amount to levels instead of XP points.
 ```YAML linenums="1"
 auraskillsxp farming 5
@@ -169,7 +169,7 @@ The NPC Kill objective requires the player to kill a NPC.
 | _amount_  | amount:number | 1                      | The time the NPC needs to be killed.                                                                              |
 | _notify_  | notify        | Disabled               | Display a message to the player each time they kill a NPC. Optionally with the notification interval after colon. |
 
-<h5> Variable Properties </h5> 
+<h5> Placeholder Properties </h5> 
 
 | Name     | Example Output | Explanation                                                                               |
 |----------|----------------|-------------------------------------------------------------------------------------------|
@@ -654,7 +654,7 @@ itemSkill: "mmoskill DEEP_WOUND trigger:RIGHT_CLICK,LEFT_CLICK events:giveReward
 ### Events
 
 #### Give MMOCore class experience: `mmoclassexperience`
-Adds experience to the players class. The amount can be a variable or a number. The `level` argument
+Adds experience to the players class. The amount is a number. The `level` argument
 is optional and would convert the amount to levels instead of XP points.
 ```YAML linenums="1"
 mmoclassexperience 150
@@ -662,7 +662,7 @@ mmoclassexperience 1 level
 ```
 
 #### Give MMOCore profession experience: `mmoprofessionexperience`
-Adds experience in the specified player profession. The amount can be a variable or a number. The `level` argument
+Adds experience in the specified player profession. The amount is a number. The `level` argument
 is optional and would convert the amount to levels instead of XP points.
 ```YAML linenums="1"
 mmoprofessionexperience MINING 100
@@ -670,25 +670,25 @@ mmoprofessionexperience CUSTOM_PROFESSION_NAME 1 level
 ```
 
 #### Give class points: `mmocoreclasspoints`
-Gives the player class points. The amount can be a variable or a number.
+Gives the player class points. The amount is a number.
 ```YAML linenums="1"
 mmocoreclasspoints 1
 ```
 
 #### Give skill points: `mmocoreskillpoints`
-Gives the player skill points. The amount can be a variable or a number.
+Gives the player skill points. The amount is a number.
 ```YAML linenums="1"
 mmocoreskillpoints 10
 ```
 
 #### Give attribute points: `mmocoreattributepoints`
-Gives the player attribute points. The amount can be a variable or a number.
+Gives the player attribute points. The amount is a number.
 ```YAML linenums="1"
 mmocoreattributepoints 2
 ```
 
 #### Give attribute reallocation points: `mmocoreattributereallocationpoints`
-Gives the player attribute reallocation points. The amount can be a variable or a number.
+Gives the player attribute reallocation points. The amount is a number.
 ```YAML linenums="1"
 mmocoreattributereallocationpoints 1
 ```
@@ -771,7 +771,7 @@ Check whether the player is near a specific MythicMobs entity. The first argumen
 | _amount_   | Positive Number                                      | :octicons-x-circle-16: | Amount of mobs to spawn.                                                                                                                |
 | _target_   | Keyword                                              | False                  | Will make the mob target the player.                                                                                                    |
 | _private_  | Keyword                                              | Disabled               | Will hide the mob from all other players until restart. This does not hide particles or block sound from the mob. Also see notes below. |
-| _marked_   | marked:text                                          | None                   | Marks the mob, supporting variables. You can check for marked mobs in mmobkill objective.                                               |
+| _marked_   | marked:text                                          | None                   | Marks the mob. You can check for marked mobs in mmobkill objective.                                                                     |
 
 
 ```YAML title="Example"
@@ -822,26 +822,26 @@ see [Plugin Configuration](../../Configuration/Plugin-Config.md#conversation-con
 
 ## PlaceholderAPI[](https://www.spigotmc.org/resources/6245/)
 
-If you have this plugin, BetonQuest will add a `betonquest` placeholder to it and you will be able to use `ph` variable in your conversations.
+If you have this plugin, BetonQuest will add a `betonquest` placeholder to it. You will then be able to use `ph` placeholder.
 
 ### Placeholder: `betonquest`
 
-You can use all BetonQuest variables in any other plugin that supports PlaceholderAPI.
-You can even use BetonQuests conditions using the [condition variable](./Variables-List.md#condition-variable)!    
-This works using the `%betonquest_package:variable%` placeholder. The `package:` part is the name of a package.
-The `variable` part is just a [BetonQuest variable](./Variables-List.md) without percentage characters, like `point.beton.amount`.
+You can even use BetonQuests conditions using the [condition placeholder](Placeholders-List.md#condition-placeholder)!    
+You can use all BetonQuest placeholders in any other plugin that supports PlaceholderAPI.
+This works using the `%betonquest_package:placeholder%` placeholder. The `package:` part is the name of a package.
+The `placeholder` part is just a [BetonQuest placeholder](Placeholders-List.md) without percentage characters, like `point.beton.amount`.
 
 Testing your placeholder is easy using this command:    
-`/papi parse <PlayerName> %betonquest_<PackageName>:<VariableType>.<Property>%`
+`/papi parse <PlayerName> %betonquest_<PackageName>:<PlaceholderType>.<Property>%`
 ```YAML linenums="1"
 %betonquest_someGreatQuest:objective.killZombies.left%
 ```
 
-### Variable: `ph`
+### Placeholder: `ph`
 
 **persistent**, **static**
 
-You can also use placeholders from other plugins in BetonQuest. Simply insert a variable starting with `ph`, the second argument should be the placeholder without percentage characters.
+You can also use placeholders from other plugins in BetonQuest. Simply insert a placeholder starting with `ph`, the second argument should be the placeholder without percentage characters.
 
 !!! example
     ```YAML
@@ -1137,9 +1137,9 @@ events:
   leaveBandit: "permission remove group bandit"
 ```
 
-### Variables
+### Placeholders
 
-#### Vault Money Variable: `money`
+#### Vault Money Placeholder: `money`
 
 Use `%money.amount%` for showing the player's balance.
 Use `%money.left:500%` for showing the difference between the player's balance and the specified amount of money.

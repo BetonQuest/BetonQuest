@@ -29,10 +29,10 @@ These are general settings for customizing a menu.
 
 #### Required Settings
 
-| Setting Name | <div style="width:160px">Example</div> | Description                                                                                                                                                                                     |
-|:------------:|:---------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|   `title`    | `title: "&6&lQuests"`                  | Will be displayed in the top left corner of your menu. You can use [color codes](https://minecraft.wiki/w/Formatting_codes) to color the title. Variables and defining languages are supported. |
-|   `height`   | `height: 3`                            | How many lines of slots your menu will have. Minimum 1, Maximum 6.                                                                                                                              |
+| Setting Name | <div style="width:160px">Example</div> | Description                                                                                                                                                                                        |
+|:------------:|:---------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|   `title`    | `title: "&6&lQuests"`                  | Will be displayed in the top left corner of your menu. You can use [color codes](https://minecraft.wiki/w/Formatting_codes) to color the title. Placeholders and defining languages are supported. |
+|   `height`   | `height: 3`                            | How many lines of slots your menu will have. Minimum 1, Maximum 6.                                                                                                                                 |
 
 #### Optional Settings
 
@@ -70,14 +70,14 @@ The three basic optional settings.
 
 | <div style="width:90px">Name</div> |          Example          | Description                                                                                                                                          |
 |:----------------------------------:|:-------------------------:|------------------------------------------------------------------------------------------------------------------------------------------------------|
-|              `amount`              |       `amount: 30`        | The size of the stack that will be displayed in the menu. [Variables](../../Scripting/Building-Blocks/Variables-List.md) are supported.              |
+|              `amount`              |       `amount: 30`        | The size of the stack that will be displayed in the menu. [Placeholders](../../Scripting/Building-Blocks/Placeholders-List.md) are supported.        |
 |            `conditions`            | `conditions: "questDone"` | One or multiple conditions (separated by a `,`) which all have to be true to display the item.                                                       |
 |              `close`               |       `close: true`       | If set to `true` the menu will be closed after clicking the item. If this is not set the `default_close` value from the plugins config will be used. |
 
 ### The optional `text` setting
 By default, the name and description of the quest item is displayed when hovering over the item.
 You can overwrite this by using the `text` setting. If you only define one line, only the name will be overwritten.
-Both [color codes](https://minecraft.wiki/w/Formatting_codes) and [variables](../../Scripting/Building-Blocks/Variables-List.md) are supported and carried into the next line, if not overridden.
+Both [color codes](https://minecraft.wiki/w/Formatting_codes) and [placeholders](../../Scripting/Building-Blocks/Placeholders-List.md) are supported and carried into the next line, if not overridden.
 The text can be provided as a single string with newlines, a multi-line string, or a list of strings, see examples.
 
 === "List"

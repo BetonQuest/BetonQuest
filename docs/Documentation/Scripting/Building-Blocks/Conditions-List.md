@@ -131,7 +131,8 @@ with the name of the required entity. You can use `marked:` argument to check on
 
 ## Eval Condition: `eval`
 
-This condition allows you to resolve an expression containing variables, and the result will then be interpreted again as an condition.
+This condition allows you to resolve an expression containing placeholders, and the result will then be interpreted 
+again as a condition.
 
 ```YAML title="Example"
 events:
@@ -140,7 +141,8 @@ events:
 ```
 
 1. This could evaluate to `point ranking 5 equal` and will be true if the player has 5 points in the ranking category.
-   But the variable could also be empty, and it could be higher or equal to 5. This is not possible in a normal condition.
+   But the placeholder could also be empty, and it could be higher or equal to 5. This is not possible in a normal 
+   condition.
 
 ## Experience: `experience`
 
@@ -301,7 +303,7 @@ This condition is fulfilled as long as the player has one of the specified langu
 
 ## Location: `location`
 
-It returns true only when the player is closer to specified location than the specified distance. Just two mandatory attributes - location and radius around it (can be a variable).
+It returns true only when the player is closer to specified location than the specified distance. Just two mandatory attributes - location and radius around it.
 
 !!! example
     ```YAML
@@ -323,10 +325,10 @@ Checks if the player is looking at a block with the given location or material. 
 
 This condition checks the moon phase in the given world or the player's world.
     
-| Parameter   | Syntax                                                                                                    | Default Value          | Explanation                                               |
-|-------------|-----------------------------------------------------------------------------------------------------------|------------------------|-----------------------------------------------------------|
-| _MoonPhase_ | [Keyword](https://jd.papermc.io/paper/1.21.5/io/papermc/paper/world/MoonPhase.html#enum-constant-summary) | :octicons-x-circle-16: | The moon phase to check for. Can be a list and variables. |
-| _world_     | world:name                                                                                                | player location        | The world to check for the moon phase. Can be a variable. |
+| Parameter   | Syntax                                                                                                    | Default Value          | Explanation                            |
+|-------------|-----------------------------------------------------------------------------------------------------------|------------------------|----------------------------------------|
+| _MoonPhase_ | [Keyword](https://jd.papermc.io/paper/1.21.5/io/papermc/paper/world/MoonPhase.html#enum-constant-summary) | :octicons-x-circle-16: | A list of moon phase to check for.     |
+| _world_     | world:name                                                                                                | player location        | The world to check for the moon phase. |
 
 
 ```YAML title="Example"
@@ -342,7 +344,7 @@ This condition will check if a Npc is close to the player.
 | Parameter  | Syntax   | Default Value          | Explanation          |
 |------------|----------|------------------------|----------------------|
 | _Npc_      | Npc      | :octicons-x-circle-16: | The ID of the Npc    |
-| _Distance_ | Variable | :octicons-x-circle-16: | The maximum distance |
+| _Distance_ | Number   | :octicons-x-circle-16: | The maximum distance |
 
 ```YAML title="Example"
 canHearBandit: npcdistance bandit 22
@@ -572,7 +574,7 @@ There must be specific (Minecraft) time on the world for this condition to retur
 | Parameter  | Syntax            | Default Value          | Explanation                                                                                                  |
 |------------|-------------------|------------------------|--------------------------------------------------------------------------------------------------------------|
 | _Timespan_ | startTime-endTime | :octicons-x-circle-16: | Two points of time separated by dash in the 24-hour format (0 - 24). The minutes are optional (hh or hh:mm). |
-| _world_    | world:name        | player location        | The world to check for the time. Can be a variable.                                                          |
+| _world_    | world:name        | player location        | The world to check for the time.                                                                             |
 
 
 ```YAML title="Example"
@@ -586,27 +588,28 @@ exactAtTwelveAtPlayersHome: "time 12-12 world:%ph.player_home_world%"
 
 **static**
 
-This condition checks if a variable value matches given [regular expression](../Data-Formats.md#regex-regular-expressions)
+This condition checks if a placeholder value matches given [regular expression](../Data-Formats.
+md#regex-regular-expressions)
 
-| Parameter   | Syntax          | Default Value          | Explanation                                                                                                                                |
-|-------------|-----------------|------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|
-| _Variable_  | Any variable    | :octicons-x-circle-16: | The variable (surrounded by `%` characters).                                                                                               |
-| _Regex_     | A regex pattern | :octicons-x-circle-16: | The [regex](../Data-Formats.md#regex-regular-expressions) that the variables value must match. The regex can also be stored in a variable. |
-| _forceSync_ | Keyword         | False                  | Forces the variables to be resolved on the main thread. This may be required by some third party variables.                                |
+| Parameter     | Syntax          | Default Value          | Explanation                                                                                                                                     |
+|---------------|-----------------|------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+| _Placeholder_ | Any placeholder | :octicons-x-circle-16: | The placeholder (surrounded by `%` characters).                                                                                                 |
+| _Regex_       | A regex pattern | :octicons-x-circle-16: | The [regex](../Data-Formats.md#regex-regular-expressions) that the placeholder value must match. The regex can also be stored in a placeholder. |
+| _forceSync_   | Keyword         | False                  | Forces the placeholder to be resolved on the main thread. This may be required by some third party placeholder.                                 |
 
 
 ```YAML title="Example"
 anyNumber: "variable %objective.var.price% -?\\d+" #(1)!
 isPlayer: "variable %ph.parties_members_1% %player%" #(2)!
-denizenVariable: "variable %ph.denizen_<server.match_player[SomeName].has_flag[flag_name]>% true forceSync" #(3)!
-denizenVariableThis: "variable %ph.denizen_<player.has_flag[flag_name]>% true forceSync" #(4)!
+denizenPlaceholder: "variable %ph.denizen_<server.match_player[SomeName].has_flag[flag_name]>% true forceSync" #(3)!
+denizenPlaceholderThis: "variable %ph.denizen_<player.has_flag[flag_name]>% true forceSync" #(4)!
 ```
 
-1. Returns true if the variable `%objective.var.price%` contains any number.
-2. Returns true if the `parties_members_1` variable contains the player's name.
-3. Returns true if the `denizen_<server.match_player[SomeName].has_flag[flag_name]>` Denizen variable contains `true`.
-   This variable is resolved on the main thread. <p>The `someName` part can't be a variable!
-4. Works the same as the `denizenVariable` with the only difference it checks for the player the condition is executed with.
+1. Returns true if the placeholder `%objective.var.price%` contains any number.
+2. Returns true if the `parties_members_1` placeholder contains the player's name.
+3. Returns true if the `denizen_<server.match_player[SomeName].has_flag[flag_name]>` Denizen placeholder contains `true`.
+   This placeholder is resolved on the main thread. <p>The `someName` part can't be a placeholder!
+4. Works the same as the `denizenPlaceholder` with the only difference it checks for the player the condition is executed with.
 
 ## Weather: `weather`
 

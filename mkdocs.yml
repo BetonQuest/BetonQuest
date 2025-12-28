@@ -64,8 +64,8 @@ nav:
           - 'Events List': Documentation/Scripting/Building-Blocks/Events-List.md
           - 'Objectives List': Documentation/Scripting/Building-Blocks/Objectives-List.md
           - 'Conditions List': Documentation/Scripting/Building-Blocks/Conditions-List.md
+          - 'Placeholders List': Documentation/Scripting/Building-Blocks/Placeholders-List.md
           - 'Integration List': Documentation/Scripting/Building-Blocks/Integration-List.md
-          - 'Variables List': Documentation/Scripting/Building-Blocks/Variables-List.md
           - 'Additional Features':
               - 'Schedules': Documentation/Scripting/Schedules.md
               - 'Parties': Documentation/Scripting/Parties.md

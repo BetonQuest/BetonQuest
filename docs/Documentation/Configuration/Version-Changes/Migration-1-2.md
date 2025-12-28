@@ -22,7 +22,7 @@ QuestPackages folder to the new 2.0 syntax. This way the migration works for bot
 !!! Note
     - :sun: **Fully automated migration** – These steps are reliably migrated without issues in most cases.
       You usually don’t need to take any action. However, certain rarely used or non-standard formats (e.g., run 
-      events or math variables) may not migrate correctly if they deviate from the common structure.
+      events or math variables (now called placeholders)) may not migrate correctly if they deviate from the common structure.
     - :thunder_cloud_rain: **Manual migration required** – These steps are not migrated at all.
       Either the structure is too complex to detect automatically, or the new format requires additional information.
       You will need to fully rewrite or convert these steps yourself.

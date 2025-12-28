@@ -22,7 +22,7 @@ action right DOOR conditions:holding_key loc:100;200;300;world range:5
 action any any conditions:holding_magicWand events:fireSpell #Custom click listener for a wand
 ```
 
-<h5> Variable Properties </h5> 
+<h5> Placeholder Properties </h5> 
 
 The objective contains one property, `location`. It's a string formatted like `X: 100, Y: 200, Z:300`. It does not
 show the radius.
@@ -59,7 +59,7 @@ objectives:
   breakIron: "block IRON_ORE -16 noSafety notify events:dailyReward"
 ```
 
-<h5> Variable Properties </h5> 
+<h5> Placeholder Properties </h5> 
 
 Note that these follow the same rules as the amount argument, meaning that blocks to break are a negative number!
 
@@ -69,7 +69,7 @@ Note that these follow the same rules as the amount argument, meaning that block
 | _left_   | -4 / 4         | Shows the amount of blocks that still need to be broken / placed for the objective to be completed. |
 | _total_  | -10 / 10       | Shows the initial amount of blocks that needed to be broken / placed.                               |
 
-You can use these variables to always get positive values:
+You can use these placeholders to always get positive values:
 
 | Name              | Example Output | Explanation                                                                                                  |
 |-------------------|----------------|--------------------------------------------------------------------------------------------------------------|
@@ -122,7 +122,7 @@ objectives:
   eatSteak: "consume steak amount:4 events:health_boost"
 ```
 
-<h5> Variable Properties </h5> 
+<h5> Placeholder Properties </h5> 
 
 | Name     | Example Output | Explanation                                                                                 |
 |----------|----------------|---------------------------------------------------------------------------------------------|
@@ -161,7 +161,7 @@ kingSword: "enchant kingsSword damage_all:2,knockback:1 events:rewardKing"
 massProduction: "enchant ironSword sharpness amount:10 events:blacksmithLevel2Reward"
 ```
 
-<h5> Variable Properties </h5> 
+<h5> Placeholder Properties </h5> 
 
 | Name     | Example Output | Explanation                                                                                  |
 |----------|----------------|----------------------------------------------------------------------------------------------|
@@ -209,7 +209,7 @@ objectives:
 1. Runs the `resetDaily` event after 1440 minutes (24 hours).
 2. Runs the `failQuest` event after 1000 ticks (50 seconds) have passed. The objective checks every 5 ticks (250ms) if the time is up.
 
-<h5> Variable Properties </h5> 
+<h5> Placeholder Properties </h5> 
 
 | Name         | Example Output                        | Explanation                                                                                                                                                    |
 |--------------|---------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -256,7 +256,7 @@ objectives:
 1. Requires the player to catch 5 salmon. The player will get a notification for every caught fish.
 2. Requires the player to catch 5 cod. The rod's hook must be used in a 10 block radius around `x:123 y:456 z:789` in a world named `fishWorld`.
 
-<h5> Variable Properties </h5>
+<h5> Placeholder Properties </h5>
 
 | Name   | Example Output | Explanation                                                |
 |--------|----------------|------------------------------------------------------------|
@@ -286,7 +286,7 @@ The player must click on entities to complete this objective.
 interact right creeper 1 marked:sick conditions:syringeInHand cancel
 ```
 
-<h5> Variable Properties </h5>
+<h5> Placeholder Properties </h5>
 
 | Name   | Example Output | Explanation                                                |
 |--------|----------------|------------------------------------------------------------|
@@ -337,7 +337,7 @@ if the player just moves inside the location's range.
     location 100;200;300;world 5 conditions:started events:notifyWelcome,start
     location 100;200;300;world 5 exit conditions:started events:notifyBye
     ```
-<h5> Variable Properties </h5> 
+<h5> Placeholder Properties </h5> 
 
 | Name       | Example Output        | Explanation                              |
 |------------|-----------------------|------------------------------------------|
@@ -472,7 +472,7 @@ objectives:
   progressFive: point reputation 5 mode:relative
 ```
 
-<h5> Variable Properties </h5> 
+<h5> Placeholder Properties </h5> 
 
 | Name     | Example Output | Explanation                                              |
 |----------|----------------|----------------------------------------------------------|
@@ -484,13 +484,13 @@ objectives:
 The player must kill the specified amount of entities (living creatures).
 All entities work, make sure to use their [correct types](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html).
 
-| Parameter | Syntax                  | Default Value          | Explanation                                                                                                             |
-|-----------|-------------------------|------------------------|-------------------------------------------------------------------------------------------------------------------------|
-| _type_    | ENTITY_TYPE,ENTITY_TYPE | :octicons-x-circle-16: | A list of entities, e.g. `ZOMBIE,SKELETON`.                                                                             |
-| _amount_  | Positive Number         | :octicons-x-circle-16: | Amount of mobs to kill in total.                                                                                        |
-| _name_    | name:text               | Disabled               | Only count named mobs.                                                                                                  |
-| _marked_  | marked:keyword          | Disabled               | Only count marked mobs. See the [spawn event](Events-List.md#spawn-mob-spawn) for more information. Supports variables. |
-| _notify_  | notify:interval         | Disabled               | Display a message to the player each time they kill a mob. Optionally with the notification interval after colon.       |
+| Parameter | Syntax                  | Default Value          | Explanation                                                                                                       |
+|-----------|-------------------------|------------------------|-------------------------------------------------------------------------------------------------------------------|
+| _type_    | ENTITY_TYPE,ENTITY_TYPE | :octicons-x-circle-16: | A list of entities, e.g. `ZOMBIE,SKELETON`.                                                                       |
+| _amount_  | Positive Number         | :octicons-x-circle-16: | Amount of mobs to kill in total.                                                                                  |
+| _name_    | name:text               | Disabled               | Only count named mobs.                                                                                            |
+| _marked_  | marked:keyword          | Disabled               | Only count marked mobs. See the [spawn event](Events-List.md#spawn-mob-spawn) for more information.               |
+| _notify_  | notify:interval         | Disabled               | Display a message to the player each time they kill a mob. Optionally with the notification interval after colon. |
 
 ``` YAML title="Example"
 objectives:
@@ -504,7 +504,7 @@ objectives:
 3. The player must kill a zombie named "Uber Zombie".
 
 
-<h5> Variable Properties </h5> 
+<h5> Placeholder Properties </h5> 
 
 | Name     | Example Output | Explanation                                            |
 |----------|----------------|--------------------------------------------------------|
@@ -585,7 +585,7 @@ objectives:
   bakeCookies: "stage collectIngredients,cookCookies,deliverCookies preventCompletion"
 ```
 
-<h5> Variable Properties </h5> 
+<h5> Placeholder Properties </h5> 
 
 | Name       | Example Output     | Explanation                                                                    |
 |------------|--------------------|--------------------------------------------------------------------------------|
@@ -620,7 +620,7 @@ objectives:
   finish: tag finishedTag
 ```
 
-<h5> Variable Properties </h5>
+<h5> Placeholder Properties </h5>
 
 The property of the objective is the tag to receive.
 
@@ -727,7 +727,8 @@ This objective is different. You cannot complete it, it will also ignore defined
 While this objective is active though, everything the player types in chat (and matches a special pattern) will become a variable.
 The pattern is `key: value`. So if the player types `MyFirstVariable: Hello!`, it will create a variable called `MyFirstVariable`, which will resolve as a `Hello!` string.
 You can access them as objective properties. Let's say you defined this objective as `CustomVariable` in your _objectives.yml_ file.
-You can access the variable in any conversation, event or condition with `%objective.CustomVariable.MyFirstVariable%` - and in the case of this example, it will resolve to `Hello!`.
+You can access the placeholder everywhere with `%objective.CustomVariable.
+MyFirstVariable%` - and in the case of this example, it will resolve to `Hello!`.
 The player can type something else and the variable will change its value. Variables are per-player, so the value of one player's `MyFirstVariable`
 will be different from other players' `MyFirstVariable` values, depending on what they typed in chat. There is no limit to the amount of variables that can be created and assigned to players.
 To remove this objective, use `objective delete` event - there is no other way.

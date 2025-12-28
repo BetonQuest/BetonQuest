@@ -1,18 +1,18 @@
 ---
 icon: material/variable-box
 ---
-# Variables List
+# Placeholders List
 
-This page lists all the variables that are available in BetonQuest.
+This page lists all the placeholders that are available in BetonQuest.
 Some of them are only useful when exported for use in other plugins through the [support for PlaceHolderAPI](Integration-List.md#placeholderapi).
 
-Variables marked as **static** can be resolved without a player specified.
+Placeholders marked as **static** can be resolved without a player specified.
 
 ## BetonQuest Elements
 
-### Objective Property Variable
+### Objective Property Placeholder
 
-Using this variable you can display a property of an objective. The first argument is an ID of the objective as
+Using this placeholder you can display a property of an objective. The first argument is an ID of the objective as
 defined in the _objectives_ section (not the type). Make sure that the player has this objective active or it
 will be replaced with nothing (""). Second argument is the name of a property you want to display.
 All properties are described in "Objectives List" chapter.
@@ -21,12 +21,12 @@ All properties are described in "Objectives List" chapter.
 %objective.kill_zombies.left%
 ```
 
-### Condition Variable
+### Condition Placeholder
 
-You can expose BetonQuest's conditions to 3rd party plugins by using the `condition` variable together with the 
+You can expose BetonQuest's conditions to 3rd party plugins by using the `condition` placeholder together with the 
 [PAPI support](Integration-List.md#placeholderapi).
-The variable will return `true` or `false` by default. If you add `papiMode` to the instruction it will return `yes` or `no`.    
-You can translate the papiMode's result by changing the values of `condition_variable_met` `condition_variable_not_met` in 
+The placeholder will return `true` or `false` by default. If you add `papiMode` to the instruction it will return `yes` or `no`.    
+You can translate the papiMode's result by changing the values of `condition_placeholder_met` `condition_placeholder_not_met` in 
 the *messages.yml* config.
 
 ```
@@ -34,9 +34,9 @@ the *messages.yml* config.
 %condition.myCondition.papiMode%
 ``` 
 
-### Constant Variable
+### Constant Placeholder
 
-Constants are a bit different from other variables, as you can freely define the values of them.
+Constants are a bit different from other placeholders, as you can freely define the values of them.
 They are defined in the *constants* section like this:
 
 ```YAML
@@ -45,22 +45,22 @@ constants:
   village_name: Concrete
 ```
 
-To use a `constant` variable, you must use `%constant.constantName%`:
+To use a `constant` placeholder, you must use `%constant.constantName%`:
 
 ```
 %constant.village_location%
 %constant.village_name%
 ```
 
-If you want to parse a variable from a different package,
+If you want to parse a placeholder from a different package,
 follow the same syntax as you would [working across packages](https://betonquest.org/3.0-DEV/Documentation/Scripting/Packages-%26-Templates/#defining-features).
 The proper syntax is `%questPackage>constant.constantName%`.
 
 ## BetonQuest Data Types
 
-### Point Variable
+### Point Placeholder
 
-This variable displays the amount of points you have in some category or amount of points you need to have to reach a
+This placeholder displays the amount of points you have in some category or amount of points you need to have to reach a
 number. The first argument is the name of a category and the second argument is either `amount` or `left:x`, where `x` is a number.
 
 ```
@@ -68,11 +68,11 @@ number. The first argument is the name of a category and the second argument is 
 %point.reputation.left:15%
 ```
 
-### Global Point Variable
+### Global Point Placeholder
 
 **static**
 
-This variable displays the amount of global points in some category or the amount of points needed to reach a number.
+This placeholder displays the amount of global points in some category or the amount of points needed to reach a number.
 The first argument is the name of a category and the second argument is either `amount` or `left:x`, where `x` is a number.
 
 ```
@@ -80,11 +80,11 @@ The first argument is the name of a category and the second argument is either `
 %globalpoint.global_knownusers.left:100%
 ```
 
-### Tag Variable
+### Tag Placeholder
 
-This variable displays whether the player has a tag or not.
-The variable will return true or false by default. If you add papiMode to the instruction it will return yes or no.
-You can translate the papiMode's result by changing the values of `condition_variable_met` and `condition_variable_not_met`
+This placeholder displays whether the player has a tag or not.
+The placeholder will return true or false by default. If you add papiMode to the instruction it will return yes or no.
+You can translate the papiMode's result by changing the values of `condition_placeholder_met` and `condition_placeholder_not_met`
 in the messages.yml config.
 
 ```
@@ -92,13 +92,13 @@ in the messages.yml config.
 %tag.test.papiMode%
 ```
 
-### Global Tag Variable
+### Global Tag Placeholder
 
 **static**
 
-This variable displays whether a global tag is set or not.
-The variable will return true or false by default. If you add papiMode to the instruction it will return yes or no.
-You can translate the papiMode's result by changing the values of `condition_variable_met` and `condition_variable_not_met`
+This placeholder displays whether a global tag is set or not.
+The placeholder will return true or false by default. If you add papiMode to the instruction it will return yes or no.
+You can translate the papiMode's result by changing the values of `condition_placeholder_met` and `condition_placeholder_not_met`
 in the messages.yml config.
 
 ```
@@ -106,32 +106,32 @@ in the messages.yml config.
 %globaltag.test.papiMode%
 ```
 
-### Custom Text Variable
+### Custom Text Placeholder
 
-It is possible to save text per player. This works by using the [`variable`](Objectives-List.md#variable-variable)
- objective and the [`variable`](Events-List.md#variable-variable) event. 
+It is possible to save text per player. This works by using the [`placeholder`](Objectives-List.md#variable-variable)
+ objective and the [`placeholder`](Events-List.md#variable-variable) event. 
 
-## Other Variables
+## Other Placeholders
 
-### Eval Variable
+### Eval Placeholder
 
 **static**
 
-This variable allows you to resolve an expression containing variables,
-and the result will then be interpreted again as a variable.
+This placeholder allows you to resolve an expression containing placeholders,
+and the result will then be interpreted again as a placeholder.
 You need to escape the `%` inside eval with a backslash `\` to prevent it from being interpreted as a delimiter.
 You can nest multiple evals, but this leads you to an escape hell.
 If you do so, you need to add one escape level with each nesting level,
 this means normally you write `\%` and in the next level you need to write `\\\%`.
 
 ````
-%eval.player.\%objective.variableStore.displayType\%%
+%eval.player.\%objective.placeholderStore.displayType\%%
 %eval.player.\%eval.objective.\\\%objective.otherStore.targetStore\\\%.displayType\%%
 ````
 
-### Item Variable
+### Item Placeholder
 
-With this variable you can display different properties of a specific QuestItem.
+With this placeholder you can display different properties of a specific QuestItem.
 The first argument is the name of the item (as defined in the _items_ section).
 The `amount` argument displays the number of items in the players inventory and backpack,
 the `left:x` gives the difference to the `x` value (when the amount is higher than the value it will be negative).
@@ -146,9 +146,9 @@ Both `name` and `lore` supports the `raw` subargument to get the text without fo
 %item.epic_sword.lore:0.raw%
 ```
 
-### Item durability variable
+### Item durability placeholder
 
-With this variable you can display the durability of an item.
+With this placeholder you can display the durability of an item.
 The first argument is the slot.
 An optional argument is `relative` which will display the durability of the item relative to the maximum
 from 0 to 1, where 1 is the maximum. You can specify the amount of digits with the argument `digits:x`,
@@ -162,14 +162,14 @@ Additionally, you get the output in percent (inclusive the '%' symbol).
 %itemdurability.HEAD.relative.digits:5%
 ```
 
-### Location Variable
+### Location Placeholder
 
-This variable resolves to all aspects of the player's location. The x, y and z coordinates, the world name, the yaw and pitch (head rotation).
+This placeholder resolves to all aspects of the player's location. The x, y and z coordinates, the world name, the yaw and pitch (head rotation).
 There are also modes for the [Unified Location Formatting](../Data-Formats.md#unified-location-formating) (ULF from now on)
-which means that this variable can also be used in events, conditions etc.
-If you just specify `%location%` the variables will resolve to a ULF with yaw and pitch.
+which means that this placeholder can also be used in events, conditions etc.
+If you just specify `%location%` the placeholders will resolve to a ULF with yaw and pitch.
 You can add two options to that base, one will give back parts of the ULF and the other will set to how many decimal places 
-the variable will resolve. 
+the placeholder will resolve. 
 
 ```YAML
 %location%           # -> 325;121;814;myWorldName;12;6
@@ -188,22 +188,22 @@ the variable will resolve.
 ```
     
     
-### Math Variable
+### Math Placeholder
 
 **static**
 
-This variable allows you to perform a calculation based on other variables (for example point or objective variables)
-and resolves to the result of the specified calculation. The variable always starts with `math.calc:`, followed by the
+This placeholder allows you to perform a calculation based on other placeholders (for example point or objective placeholders)
+and resolves to the result of the specified calculation. The placeholder always starts with `math.calc:`, followed by the
 calculation which should be calculated. Supported operations are `+`, `-`, `*`, `/`, `^` and `%`. You can use `( )` and
 `[ ]` braces and also calculate absolute values with `| |`. But be careful, don't use absolute values in the command
 event as it splits the commands at every `|` and don't nest them without parenthesis (`|4*|3-5||` won't work, but
 `|4*(|3-5|)|` does). Additionally, you can use the round operator `~` to round everything left of it to the number of
 decimal digits given on the right. So `4+0.35~1` will produce `4.4` and `4.2~0` will produce `4`.
 
-To use variables in the calculation you have two options: First just write the variable, but  without `%` around them;
-In cases where this doesn't work, e.g. if the variable contains mathematical operators, you can surround it with curly
-braces `{ }`. Inside the curly braces you have to escape with `\`, so to have a `\` in your variable you need to write
-`\\`, to have a `}` inside your variable you need to write `\}`.
+To use placeholders in the calculation you have two options: First just write the placeholder, but  without `%` around them;
+In cases where this doesn't work, e.g. if the placeholder contains mathematical operators, you can surround it with curly
+braces `{ }`. Inside the curly braces you have to escape with `\`, so to have a `\` in your placeholder you need to write
+`\\`, to have a `}` inside your placeholder you need to write `\}`.
 
 When the calculation fails `0` will be returned and the reason logged.
 
@@ -219,11 +219,11 @@ When the calculation fails `0` will be returned and the reason logged.
 %math.calc:64\%32%
 ```
 
-### Npc Variable
+### Npc Placeholder
 
 **static**
 
-This variable resolves information about a Npc. 
+This placeholder resolves information about a Npc. 
 Specifying an argument determines the return: the Npc name, or full name (with formatting).
 
 Arguments:  
@@ -235,9 +235,9 @@ Arguments:
 %npc.bob.full_name%   # &eBob
 ```
 
-#### Npc Location Variable
+#### Npc Location Placeholder
 
-This variable resolves to all Npc location. For details see the [location variable](#location-variable).
+This placeholder resolves to all Npc location. For details see the [location placeholder](#location-placeholder).
 The general syntax is `%npc.<id>.location.<mode>.<precision>%`.
 
 ```YAML title="Example"
@@ -246,9 +246,9 @@ The general syntax is `%npc.<id>.location.<mode>.<precision>%`.
 %npc.mayor.location.ulfLong.5% # -> 325.54268;121.32186;814.45824;npcWorldName;12.0;6.0
 ```
 
-### Player Name Variable
+### Player Name Placeholder
 
-The variable `%player%` is the same as `%player.name%` and will display the name of the player.
+The placeholder `%player%` is the same as `%player.name%` and will display the name of the player.
 `%player.display%` will use the display name used in chat and `%player.uuid%` will display the UUID of the player.
 
 ```
@@ -260,23 +260,23 @@ The variable `%player%` is the same as `%player.name%` and will display the name
 
 ### Quester Name (Conversation)
 
-When the player is in a conversation, this variable will contain the quester's name in the player's quest language.
-If the player is not in a conversation, the variable is empty.
+When the player is in a conversation, this placeholder will contain the quester's name in the player's quest language.
+If the player is not in a conversation, the placeholder is empty.
 
 ```
 %quester%
 ```
 
-### Random Number Variable
+### Random Number Placeholder
 
 **static**
 
-This variable gives a random number from the first value to the second.
-The first argument is `whole` or `decimal`, the second and third arguments are numbers or variables,
+This placeholder gives a random number from the first value to the second.
+The first argument is `whole` or `decimal`, the second and third arguments are numbers or placeholders,
 separated by a `~`.
-Like the `math` variable you can round the decimal value by using
+Like the `math` placeholder you can round the decimal value by using
 instead of `decimal` the argument `decimal~x` where `x` is the maximal amount of decimal places. 
-Variables can be used with `{}` instead of `%%`.
+Placeholders can be used with `{}` instead of `%%`.
 Note that the first value is returned when it is higher than the second.
 
 ```
@@ -286,24 +286,24 @@ Note that the first value is returned when it is higher than the second.
 %randomnumber.decimal~1.0~{location.y}%
 ```
 
-### Forced Sync Variable
+### Forced Sync Placeholder
 
 **static**
 
-This variable forces an evaluation on the server's main thread.
-Its syntax is identical to the [eval variable](#eval-variable), but you should only use it if syncing is required.
+This placeholder forces an evaluation on the server's main thread.
+Its syntax is identical to the [eval placeholder](#eval-placeholder), but you should only use it if syncing is required.
 If you encapsule multiple evaluations with `sync`, all sub-evaluations will be executed on the server's main thread 
 and should be done with `eval` instead.
 ````
-%sync.player.\%objective.variableStore.displayType\%%
+%sync.player.\%objective.placeholderStore.displayType\%%
 %sync.player.\%eval.objective.\\\%objective.otherStore.targetStore\\\%.displayType\%%
 ````
 
-### Version Variable
+### Version Placeholder
 
 **static**
 
-This variable displays the version of the plugin. You can optionally add the name of the plugin as an argument to display version of another plugin.
+This placeholder displays the version of the plugin. You can optionally add the name of the plugin as an argument to display version of another plugin.
 
 ```
 %version.Citizens%

@@ -21,7 +21,7 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 !!! Note
     - :sun: **Fully automated migration** – These steps are reliably migrated without issues in most cases.
       You usually don’t need to take any action. However, certain rarely used or non-standard formats (e.g., run 
-      events or math variables) may not migrate correctly if they deviate from the common structure.
+      events or math variables (now called placeholders)) may not migrate correctly if they deviate from the common structure.
     - :white_sun_cloud: **Automated migration with known limitations** – These steps are generally migrated automatically,
       especially for straightforward cases. However, there are known edge cases that cannot be detected or handled 
       automatically. You should review these steps and be prepared to make manual adjustments where needed.
@@ -156,8 +156,8 @@ Starting conversations with Npc interaction is moved inside the `npc_conversatio
 Also, the `teleportnpc` event got renamed to `npcteleport`. That change is automated, when updating to version
 3.0.0-DEV-299 or newer.
 
-In addition, the `npc` variable to get the quester name of the current conversation got changed to `quester`.
-That change is automated.
+In addition, the `npc` variable (now called placeholders) to get the quester name of the current conversation got
+changed to `quester`. That change is automated.
 
 You can keep most of the syntax when you use the Citizens Npc id as their BetonQuest identifier,
 but changing the "name" makes the difference more clear.
@@ -357,8 +357,8 @@ and if you only want sounds and no message, you use `sound` instead of `suppress
     
     -------------
 
-    To allow a list of events also containing variables in any form, it is not possible anymore to use the percentage,
-    instead the tilde `~` is used to separate the chance from the event.
+    To allow a list of events also containing variables (now called placeholders) in any form, it is not possible
+    anymore to use the percentage, instead the tilde `~` is used to separate the chance from the event.
     
     <div class="grid" markdown>
     
@@ -501,7 +501,7 @@ and if you only want sounds and no message, you use `sound` instead of `suppress
     -------------
     
     "Global Variables" have been replaced by "Constants" to better reflect their purpose
-    and also to integrate them into the existing variable system.
+    and also to integrate them into the existing variable (now called placeholders) system.
     
     <div class="grid" markdown>
     
@@ -530,7 +530,8 @@ and if you only want sounds and no message, you use `sound` instead of `suppress
     
     -------------
     
-    To allow pre-parsing of `constant` variables in `simple` Quest Items the `owner:%player%` has been replaced with `owner:`.
+    To allow pre-parsing of `constant` variables (now called placeholders) in `simple` Quest Items the `owner:%player%`
+    has been replaced with `owner:`.
     
     <div class="grid" markdown>
     
@@ -606,7 +607,7 @@ The `mmoitemupgrade` and `mmoitemapplygem` objectives exist unchanged.
     
     -------------
     
-    To allow variables for the time unit in the `folder` event, the time unit now needs a key `unit`.
+    To allow variables (now called placeholders) for the time unit in the `folder` event, the time unit now needs a key `unit`.
     
     <div class="grid" markdown>
     
@@ -742,7 +743,7 @@ conversation:
 
 ### 3.0.0-DEV-394 - Cross packages are now referenced with `>` instead of `.` :thunder_cloud_rain:
 
-To fix some issues where it was not clear if a variable or a package is referenced as both use a dot `.` as separator,
+To fix some issues where it was not clear if a variable (now called placeholders) or a package is referenced as both use a dot `.` as separator,
 the cross package reference now uses a greater than `>` symbol.
 This migration is actually automated, but there are so many edge cases that it is likely that some things are not
 migrated correctly. Most cases should bring up a warning or error in the console, you can fix them manually.
@@ -776,11 +777,11 @@ That's how to do this in general, but there are a lot of edge cases, so please c
 Some well known edge cases are:
 
 - The `run` events is not migrated, as it is too complex
-- Variables are not migrated:
+- Variables (now called placeholders) are not migrated:
     - They used `.` as separator what means that they previously conflicted with cross package references so it can not be detected reliably.
-    - A special case for variables are some `ph` variables and the `math.calc` variable.
+    - A special case for variables (now called placeholders) are some `ph` variables and the `math.calc` variable.
       They can contain a `>` as cross package reference or for some other reason.
-      It is necessary to escape the `>` with a backslash `\>` inside those variables.
+      It is necessary to escape the `>` with a backslash `\>` inside those variables (now called placeholders).
 - Constants are not migrated, as we don't know in which context they are used.
 - Commands executed in other scripts are not migrated, as we don't have access to this content.
 
