@@ -49,9 +49,9 @@ public class MoneyEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final FlagArgument<Boolean> multi = instruction.bool().getFlag("multi", false);
+        final FlagArgument<Boolean> multi = instruction.bool().getFlag("multi", true);
         final Argument<Number> amount = instruction.number().get();
-        final FlagArgument<Boolean> notify = instruction.bool().getFlag("notify", false);
+        final FlagArgument<Boolean> notify = instruction.bool().getFlag("notify", true);
         final IngameNotificationSender givenSender;
         final IngameNotificationSender takenSender;
         if (notify.getValue(null).orElse(false)) {

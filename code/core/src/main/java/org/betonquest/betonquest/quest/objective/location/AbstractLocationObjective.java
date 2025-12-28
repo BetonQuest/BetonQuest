@@ -58,8 +58,8 @@ public abstract class AbstractLocationObjective extends DefaultObjective impleme
      */
     public AbstractLocationObjective(final Instruction instruction) throws QuestException {
         super(instruction);
-        entry = instruction.bool().getFlag("entry", false);
-        exit = instruction.bool().getFlag("exit", false);
+        entry = instruction.bool().getFlag("entry", true);
+        exit = instruction.bool().getFlag("exit", true);
         playersInsideRegion = new HashMap<>();
     }
 

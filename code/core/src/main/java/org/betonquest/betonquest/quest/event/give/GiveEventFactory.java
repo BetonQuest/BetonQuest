@@ -52,7 +52,7 @@ public class GiveEventFactory implements PlayerEventFactory {
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final BetonQuestLogger log = loggerFactory.create(GiveEvent.class);
         final NotificationSender itemsGivenSender;
-        final boolean notify = instruction.bool().getFlag("notify", false).getValue(null).orElse(false);
+        final boolean notify = instruction.bool().getFlag("notify", true).getValue(null).orElse(false);
         if (notify) {
             itemsGivenSender = new IngameNotificationSender(log, pluginMessage, instruction.getPackage(), instruction.getID().getFull(), NotificationLevel.INFO, "items_given");
         } else {
@@ -67,7 +67,7 @@ public class GiveEventFactory implements PlayerEventFactory {
                 itemsGivenSender,
                 itemsInBackpackSender,
                 itemsDroppedSender,
-                instruction.bool().getFlag("backpack", false),
+                instruction.bool().getFlag("backpack", true),
                 dataStorage
         ), log, instruction.getPackage());
     }

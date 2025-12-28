@@ -49,7 +49,7 @@ public class ChestPutObjectiveFactory implements ObjectiveFactory {
         final Argument<List<ItemWrapper>> items = instruction.item().list().get();
         final boolean multipleAccess = instruction.bool().get("multipleaccess", false).getValue(null);
         final ChestItemCondition chestItemCondition = new ChestItemCondition(loc, items);
-        final boolean itemsStay = instruction.bool().getFlag("items-stay", false)
+        final boolean itemsStay = instruction.bool().getFlag("items-stay", true)
                 .getValue(null).orElse(false);
         final ChestTakeEvent chestTakeEvent = itemsStay ? null : new ChestTakeEvent(loc, items);
         final BetonQuestLogger log = loggerFactory.create(ChestPutObjective.class);

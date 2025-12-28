@@ -34,7 +34,7 @@ public class ItemDurabilityConditionFactory implements PlayerConditionFactory {
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<EquipmentSlot> slot = instruction.enumeration(EquipmentSlot.class).get();
         final Argument<Number> amount = instruction.number().get();
-        final FlagArgument<Boolean> relative = instruction.bool().getFlag("relative", false);
+        final FlagArgument<Boolean> relative = instruction.bool().getFlag("relative", true);
         final BetonQuestLogger log = loggerFactory.create(ItemDurabilityCondition.class);
         return new OnlineConditionAdapter(new ItemDurabilityCondition(slot, amount, relative), log, instruction.getPackage());
     }

@@ -22,7 +22,7 @@ public class MMOCoreClassConditionFactory implements PlayerConditionFactory {
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<String> className = instruction.string().get();
         final Argument<Number> classLevel = instruction.hasNext() ? instruction.number().get() : null;
-        final FlagArgument<Boolean> equal = instruction.bool().getFlag("equal", false);
+        final FlagArgument<Boolean> equal = instruction.bool().getFlag("equal", true);
         return new MMOCoreClassCondition(className, classLevel, equal);
     }
 }

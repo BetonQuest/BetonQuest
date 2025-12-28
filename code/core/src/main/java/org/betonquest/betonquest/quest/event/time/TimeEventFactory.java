@@ -56,7 +56,7 @@ public class TimeEventFactory implements PlayerEventFactory, PlayerlessEventFact
         final Argument<TimeChange> time = instruction.parse(TimeParser.TIME).get();
         final Optional<Argument<String>> world = instruction.string().get("world");
         final Selector<World> worldSelector = parseWorld(world.isEmpty() ? null : world.get().getValue(null));
-        final FlagArgument<Boolean> tickFormat = instruction.bool().getFlag("ticks", false);
+        final FlagArgument<Boolean> tickFormat = instruction.bool().getFlag("ticks", true);
         return new NullableEventAdapter(new TimeEvent(time, worldSelector, tickFormat));
     }
 

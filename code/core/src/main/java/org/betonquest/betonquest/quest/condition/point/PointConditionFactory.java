@@ -31,7 +31,7 @@ public class PointConditionFactory implements PlayerConditionFactory {
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<String> category = instruction.packageIdentifier().get();
         final Argument<Number> count = instruction.number().get();
-        final FlagArgument<Boolean> equal = instruction.bool().getFlag("equal", false);
+        final FlagArgument<Boolean> equal = instruction.bool().getFlag("equal", true);
         return new PointCondition(dataStorage, category, count, equal);
     }
 }

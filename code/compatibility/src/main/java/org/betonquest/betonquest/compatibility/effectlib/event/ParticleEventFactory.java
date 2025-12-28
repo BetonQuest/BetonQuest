@@ -47,7 +47,7 @@ public class ParticleEventFactory implements PlayerEventFactory {
         final String rawEffectClass = Utils.getNN(parameters.getString("class"), "Effect '" + string + "' is incorrectly defined");
         final String effectClass = instruction.chainForArgument(rawEffectClass).string().get().getValue(null);
         final Argument<Location> loc = instruction.location().get("loc").orElse(null);
-        final FlagArgument<Boolean> privateParticle = instruction.bool().getFlag("private", false);
+        final FlagArgument<Boolean> privateParticle = instruction.bool().getFlag("private", true);
         final ParticleEvent particleEvent = new ParticleEvent(manager, effectClass, parameters, loc, privateParticle);
         return new OnlineEventAdapter(particleEvent, loggerFactory.create(ParticleEvent.class), instruction.getPackage());
     }

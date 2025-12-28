@@ -24,7 +24,7 @@ public class MMOCoreAttributeConditionFactory implements PlayerConditionFactory 
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<PlayerAttribute> attribute = instruction.parse(MMOAttributeParser.ATTRIBUTE).get();
         final Argument<Number> targetLevel = instruction.number().get();
-        final FlagArgument<Boolean> mustBeEqual = instruction.bool().getFlag("equal", false);
+        final FlagArgument<Boolean> mustBeEqual = instruction.bool().getFlag("equal", true);
         return new MMOCoreAttributeCondition(attribute, targetLevel, mustBeEqual);
     }
 }

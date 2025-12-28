@@ -67,7 +67,7 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
         final Argument<Map.Entry<MythicMob, Double>> mobLevel = instruction.parse(mythicMobParser).get();
         final Argument<Number> amount = instruction.number().get();
         final FlagArgument<MythicHider> privateMob = instruction.bool().map(val -> val ? mythicHider : null).getFlag("private", mythicHider);
-        final FlagArgument<Boolean> targetPlayer = instruction.bool().getFlag("target", false);
+        final FlagArgument<Boolean> targetPlayer = instruction.bool().getFlag("target", true);
         final Argument<String> marked = instruction.packageIdentifier().get("marked").orElse(null);
         return new OnlineEventAdapter(new MythicSpawnMobEvent(plugin, loc, mobLevel, amount, privateMob, targetPlayer, marked),
                 loggerFactory.create(MythicSpawnMobEvent.class), instruction.getPackage());

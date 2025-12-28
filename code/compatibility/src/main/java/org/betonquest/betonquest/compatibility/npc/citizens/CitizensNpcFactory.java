@@ -37,7 +37,7 @@ public class CitizensNpcFactory implements NpcFactory {
 
     @Override
     public NpcWrapper<NPC> parseInstruction(final Instruction instruction) throws QuestException {
-        final boolean byName = instruction.bool().getFlag("byName", false)
+        final boolean byName = instruction.bool().getFlag("byName", true)
                 .getValue(null).orElse(false);
         if (byName) {
             return new CitizensNameWrapper(plugin, registry, instruction.string().get());

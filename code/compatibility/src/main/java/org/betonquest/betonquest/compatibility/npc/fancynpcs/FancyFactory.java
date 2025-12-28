@@ -22,6 +22,6 @@ public class FancyFactory implements NpcFactory {
     @Override
     public NpcWrapper<Npc> parseInstruction(final Instruction instruction) throws QuestException {
         final NpcManager npcManager = FancyNpcsPlugin.get().getNpcManager();
-        return new FancyWrapper(npcManager, instruction.string().get(), instruction.bool().getFlag("byName", false));
+        return new FancyWrapper(npcManager, instruction.string().get(), instruction.bool().getFlag("byName", true));
     }
 }

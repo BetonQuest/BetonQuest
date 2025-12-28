@@ -78,7 +78,7 @@ public class FolderEventFactory implements PlayerEventFactory, PlayerlessEventFa
         final Argument<Number> period = instruction.number().get("period").orElse(null);
         final Argument<Number> random = instruction.number().get("random").orElse(null);
         final Argument<TimeUnit> timeUnit = instruction.parse(this::getTimeUnit).get("unit", TimeUnit.SECONDS);
-        final FlagArgument<Boolean> cancelOnLogout = instruction.bool().getFlag("cancelOnLogout", false);
+        final FlagArgument<Boolean> cancelOnLogout = instruction.bool().getFlag("cancelOnLogout", true);
         final Argument<List<ConditionID>> cancelConditions = instruction.parse(ConditionID::new)
                 .list().get("cancelConditions", Collections.emptyList());
         return new NullableEventAdapter(new FolderEvent(betonQuest, loggerFactory.create(FolderEvent.class), pluginManager,

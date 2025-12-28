@@ -93,7 +93,7 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Default
     protected void postCreation(final ObjectiveID identifier, final DefaultObjective value) {
         boolean global = false;
         try {
-            global = identifier.getInstruction().bool().getFlag("global", false)
+            global = identifier.getInstruction().bool().getFlag("global", true)
                     .getValue(null).orElse(false);
         } catch (final QuestException e) {
             log.error("Error while loading global flag for objective " + identifier, e);

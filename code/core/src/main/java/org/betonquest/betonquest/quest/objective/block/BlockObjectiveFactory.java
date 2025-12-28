@@ -43,12 +43,12 @@ public class BlockObjectiveFactory implements ObjectiveFactory {
     @Override
     public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<BlockSelector> selector = instruction.blockSelector().get();
-        final FlagArgument<Boolean> exactMatch = instruction.bool().getFlag("exactMatch", false);
+        final FlagArgument<Boolean> exactMatch = instruction.bool().getFlag("exactMatch", true);
         final Argument<Number> targetAmount = instruction.number().get();
-        final FlagArgument<Boolean> noSafety = instruction.bool().getFlag("noSafety", false);
+        final FlagArgument<Boolean> noSafety = instruction.bool().getFlag("noSafety", true);
         final Argument<Location> location = instruction.location().get("loc").orElse(null);
         final Argument<Location> region = instruction.location().get("region").orElse(null);
-        final FlagArgument<Boolean> ignoreCancel = instruction.bool().getFlag("ignorecancel", false);
+        final FlagArgument<Boolean> ignoreCancel = instruction.bool().getFlag("ignorecancel", true);
         final BetonQuestLogger log = loggerFactory.create(BlockObjective.class);
         final IngameNotificationSender blockBreakSender = new IngameNotificationSender(log, pluginMessage, instruction.getPackage(),
                 instruction.getID().getFull(), NotificationLevel.INFO, "blocks_to_break");

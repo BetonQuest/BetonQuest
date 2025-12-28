@@ -37,7 +37,7 @@ public class LookingAtConditionFactory implements PlayerConditionFactory {
         final Argument<Location> loc = instruction.location().get("loc").orElse(null);
         final Argument<BlockSelector> selector = instruction.blockSelector()
                 .get("type").orElse(null);
-        final FlagArgument<Boolean> exactMatch = instruction.bool().getFlag("exactMatch", false);
+        final FlagArgument<Boolean> exactMatch = instruction.bool().getFlag("exactMatch", true);
         final BetonQuestLogger log = loggerFactory.create(LookingAtCondition.class);
         return new OnlineConditionAdapter(createCondition(loc, selector, exactMatch), log, instruction.getPackage());
     }

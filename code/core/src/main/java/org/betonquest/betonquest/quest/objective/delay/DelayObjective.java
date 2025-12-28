@@ -83,12 +83,12 @@ public class DelayObjective extends DefaultObjective {
     }
 
     private double timeToMilliSeconds(final Profile profile, final double time) throws QuestException {
-        final boolean ticks = instruction.bool().getFlag("ticks", false)
+        final boolean ticks = instruction.bool().getFlag("ticks", true)
                 .getValue(profile).orElse(false);
         if (ticks) {
             return time * 50;
         }
-        final boolean seconds = instruction.bool().getFlag("seconds", false)
+        final boolean seconds = instruction.bool().getFlag("seconds", true)
                 .getValue(profile).orElse(false);
         if (seconds) {
             return time * 1000;
