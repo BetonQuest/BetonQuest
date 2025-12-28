@@ -36,7 +36,7 @@ public class SetBlockEventFactory implements PlayerEventFactory, PlayerlessEvent
     private NullableEventAdapter createSetBlockEvent(final Instruction instruction) throws QuestException {
         final Argument<BlockSelector> blockSelector = instruction.blockSelector().get();
         final Argument<Location> location = instruction.location().get();
-        final FlagArgument<Boolean> ignorePhysics = instruction.bool().getFlag("ignorePhysics", false);
+        final FlagArgument<Boolean> ignorePhysics = instruction.bool().getFlag("ignorePhysics", true);
         return new NullableEventAdapter(new SetBlockEvent(blockSelector, location, ignorePhysics));
     }
 }

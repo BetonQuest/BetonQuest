@@ -33,7 +33,7 @@ public class HandConditionFactory implements PlayerConditionFactory {
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<ItemWrapper> item = instruction.item().get();
-        final FlagArgument<Boolean> offhand = instruction.bool().getFlag("offhand", false);
+        final FlagArgument<Boolean> offhand = instruction.bool().getFlag("offhand", true);
         final BetonQuestLogger log = loggerFactory.create(HandCondition.class);
         return new OnlineConditionAdapter(new HandCondition(item, offhand), log, instruction.getPackage());
     }

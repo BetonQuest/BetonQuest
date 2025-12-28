@@ -31,6 +31,6 @@ public class TagVariableFactory extends AbstractTagVariableFactory<PlayerDataSto
     @Override
     public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
         return new TagVariable(pluginMessage, dataHolder, instruction.nextElement(), instruction.getPackage(),
-                instruction.bool().getFlag("papiMode", false));
+                instruction.bool().getFlag("papiMode", true));
     }
 }

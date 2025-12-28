@@ -119,13 +119,12 @@ public abstract class DefaultObjective {
         this.qeHandler = new QuestExceptionHandler(instruction.getPackage(), log, instruction.getID().getFull());
         this.profileProvider = BetonQuest.getInstance().getProfileProvider();
         this.dataMap = new ProfileKeyMap<>(profileProvider);
-        persistent = instruction.bool().getFlag("persistent", false);
+        persistent = instruction.bool().getFlag("persistent", true);
         events = instruction.parse(EventID::new).list().get("events", Collections.emptyList());
         conditions = instruction.parse(ConditionID::new).list().get("conditions", Collections.emptyList());
-        final int customNotifyInterval = instruction.number().get("notify", 0).getValue(null).intValue();
-        notify = customNotifyInterval > 0 || instruction.bool().getFlag("notify", false)
-                .getValue(null).orElse(false);
-        notifyInterval = Math.max(1, customNotifyInterval);
+        final FlagArgument<Number> notify = instruction.number().atLeast(0).getFlag("notify", 1);
+        this.notifyInterval = notify.getValue(null).orElse(0).intValue();
+        this.notify = notifyInterval > 0;
     }
 
     /**

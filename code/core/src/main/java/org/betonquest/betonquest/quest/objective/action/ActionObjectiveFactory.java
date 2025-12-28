@@ -33,10 +33,10 @@ public class ActionObjectiveFactory implements ObjectiveFactory {
         final Argument<Click> action = instruction.enumeration(Click.class).get();
         final Argument<Optional<BlockSelector>> selector = instruction.blockSelector()
                 .prefilterOptional(ANY, null).get();
-        final FlagArgument<Boolean> exactMatch = instruction.bool().getFlag("exactMatch", false);
+        final FlagArgument<Boolean> exactMatch = instruction.bool().getFlag("exactMatch", true);
         final Argument<Location> loc = instruction.location().get("loc").orElse(null);
         final Argument<Number> range = instruction.number().get("range", 0);
-        final FlagArgument<Boolean> cancel = instruction.bool().getFlag("cancel", false);
+        final FlagArgument<Boolean> cancel = instruction.bool().getFlag("cancel", true);
         final Argument<Optional<EquipmentSlot>> hand = instruction.enumeration(EquipmentSlot.class)
                 .validate(slot -> slot == EquipmentSlot.HAND || slot == EquipmentSlot.OFF_HAND, "Invalid hand value: '%s'")
                 .prefilterOptional(ANY, null)

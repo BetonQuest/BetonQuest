@@ -37,8 +37,8 @@ public class ItemDurabilityEventFactory implements PlayerEventFactory {
         final Argument<EquipmentSlot> slot = instruction.enumeration(EquipmentSlot.class).get();
         final Argument<PointType> operation = instruction.enumeration(PointType.class).get();
         final Argument<Number> amount = instruction.number().get();
-        final FlagArgument<Boolean> ignoreUnbreakable = instruction.bool().getFlag("ignoreUnbreakable", false);
-        final FlagArgument<Boolean> ignoreEvents = instruction.bool().getFlag("ignoreEvents", false);
+        final FlagArgument<Boolean> ignoreUnbreakable = instruction.bool().getFlag("ignoreUnbreakable", true);
+        final FlagArgument<Boolean> ignoreEvents = instruction.bool().getFlag("ignoreEvents", true);
         return new OnlineEventAdapter(new ItemDurabilityEvent(slot, operation, amount, ignoreUnbreakable, ignoreEvents, new Random()),
                 loggerFactory.create(ItemDurabilityEvent.class), instruction.getPackage());
     }

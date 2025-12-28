@@ -40,7 +40,7 @@ public class RemoveEntityEventFactory implements PlayerEventFactory, PlayerlessE
         final Argument<List<EntityType>> types = instruction.enumeration(EntityType.class).list().get();
         final Argument<Location> loc = instruction.location().get();
         final Argument<Number> range = instruction.number().get();
-        final FlagArgument<Boolean> kill = instruction.bool().getFlag("kill", false);
+        final FlagArgument<Boolean> kill = instruction.bool().getFlag("kill", true);
         final Argument<Component> name = instruction.component().get("name").orElse(null);
         final Argument<String> marked = instruction.packageIdentifier().get("marked").orElse(null);
         return new NullableEventAdapter(new RemoveEntityEvent(types, loc, range, name, marked, kill));

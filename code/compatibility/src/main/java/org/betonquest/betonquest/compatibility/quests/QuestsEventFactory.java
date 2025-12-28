@@ -30,7 +30,7 @@ public class QuestsEventFactory implements PlayerEventFactory {
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<String> name = instruction.string().get();
-        final FlagArgument<Boolean> override = instruction.bool().getFlag("check-requirements", false);
+        final FlagArgument<Boolean> override = instruction.bool().getFlag("check-requirements", true);
         return new QuestsEvent(quests, name, override);
     }
 }

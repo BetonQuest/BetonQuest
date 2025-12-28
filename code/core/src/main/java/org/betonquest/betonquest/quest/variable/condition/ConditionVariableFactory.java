@@ -39,7 +39,7 @@ public class ConditionVariableFactory implements PlayerVariableFactory {
     @Override
     public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<ConditionID> conditionId = instruction.parse(ConditionID::new).get();
-        final FlagArgument<Boolean> papiMode = instruction.bool().getFlag("papiMode", false);
+        final FlagArgument<Boolean> papiMode = instruction.bool().getFlag("papiMode", true);
         return new ConditionVariable(pluginMessage, conditionId, papiMode, questTypeApi);
     }
 }

@@ -38,7 +38,7 @@ public class EntityInteractObjectiveFactory implements ObjectiveFactory {
         final Argument<Component> customName = instruction.component().get("name").orElse(null);
         final Argument<String> realName = instruction.string().get("realname").orElse(null);
         final Argument<String> marked = instruction.packageIdentifier().get("marked").orElse(null);
-        final FlagArgument<Boolean> cancel = instruction.bool().getFlag("cancel", false);
+        final FlagArgument<Boolean> cancel = instruction.bool().getFlag("cancel", true);
         final Argument<Location> loc = instruction.location().get("loc").orElse(null);
         final Argument<Number> range = instruction.number().get("range", 1);
         final EquipmentSlot slot = getEquipmentSlot(instruction);

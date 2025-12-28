@@ -63,7 +63,7 @@ public class PasteSchematicEventFactory implements PlayerEventFactory, Playerles
             throw new QuestException("Schematic " + value + " does not exist (" + folder.toPath().resolve(value + ".schematic") + ")");
         }).get();
 
-        final FlagArgument<Boolean> noAir = instruction.bool().getFlag("noair", false);
+        final FlagArgument<Boolean> noAir = instruction.bool().getFlag("noair", true);
         return new PasteSchematicEvent(loc, rotation, noAir, file);
     }
 }

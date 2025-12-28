@@ -38,9 +38,9 @@ public class EffectEventFactory implements PlayerEventFactory {
         try {
             final Argument<Number> duration = instruction.number().get();
             final Argument<Number> level = instruction.number().get();
-            final FlagArgument<Boolean> ambient = instruction.bool().getFlag("ambient", false);
-            final FlagArgument<Boolean> hidden = instruction.bool().getFlag("hidden", false);
-            final FlagArgument<Boolean> noicon = instruction.bool().getFlag("noicon", false);
+            final FlagArgument<Boolean> ambient = instruction.bool().getFlag("ambient", true);
+            final FlagArgument<Boolean> hidden = instruction.bool().getFlag("hidden", true);
+            final FlagArgument<Boolean> noicon = instruction.bool().getFlag("noicon", true);
             return new OnlineEventAdapter(new EffectEvent(effect, duration, level, ambient, hidden, noicon),
                     loggerFactory.create(EffectEvent.class), instruction.getPackage());
         } catch (final QuestException e) {

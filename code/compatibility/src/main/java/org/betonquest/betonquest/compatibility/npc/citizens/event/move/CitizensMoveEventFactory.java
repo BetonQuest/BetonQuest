@@ -48,7 +48,7 @@ public class CitizensMoveEventFactory implements PlayerEventFactory {
         final Argument<Number> waitTicks = instruction.number().get("wait", 0);
         final Argument<List<EventID>> doneEvents = instruction.parse(EventID::new).list().get("done", Collections.emptyList());
         final Argument<List<EventID>> failEvents = instruction.parse(EventID::new).list().get("fail", Collections.emptyList());
-        final FlagArgument<Boolean> blockConversations = instruction.bool().getFlag("block", false);
+        final FlagArgument<Boolean> blockConversations = instruction.bool().getFlag("block", true);
         final CitizensMoveController.MoveData moveAction = new CitizensMoveController.MoveData(locations, waitTicks,
                 doneEvents, failEvents, blockConversations);
         return new CitizensMoveEvent(featureApi, npcId, citizensMoveController, moveAction);

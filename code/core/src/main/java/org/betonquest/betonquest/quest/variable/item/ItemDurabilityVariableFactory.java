@@ -33,9 +33,9 @@ public class ItemDurabilityVariableFactory implements PlayerVariableFactory {
     @Override
     public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<EquipmentSlot> slot = instruction.enumeration(EquipmentSlot.class).get();
-        final FlagArgument<Boolean> relative = instruction.bool().getFlag("relative", false);
+        final FlagArgument<Boolean> relative = instruction.bool().getFlag("relative", true);
         final Argument<Number> digitsAfter = instruction.number().get(DIGITS_KEY, DEFAULT_DIGITS);
-        final FlagArgument<Boolean> inPercent = instruction.bool().getFlag("percent", false);
+        final FlagArgument<Boolean> inPercent = instruction.bool().getFlag("percent", true);
         return new OnlineVariableAdapter(new ItemDurabilityVariable(slot, relative, digitsAfter, inPercent));
     }
 }

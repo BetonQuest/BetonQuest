@@ -60,7 +60,7 @@ public abstract class AbstractTakeEventFactory implements PlayerEventFactory {
      * @throws QuestException if the notification sender could not be created
      */
     protected NotificationSender getNotificationSender(final Instruction instruction, final BetonQuestLogger log) throws QuestException {
-        final boolean notify = instruction.bool().getFlag("notify", false)
+        final boolean notify = instruction.bool().getFlag("notify", true)
                 .getValue(null).orElse(false);
         return notify ? new IngameNotificationSender(log, pluginMessage, instruction.getPackage(),
                 instruction.getID().getFull(), NotificationLevel.INFO, "items_taken")

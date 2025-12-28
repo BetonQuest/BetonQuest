@@ -21,7 +21,7 @@ public class DieObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
-        final FlagArgument<Boolean> cancel = instruction.bool().getFlag("cancel", false);
+        final FlagArgument<Boolean> cancel = instruction.bool().getFlag("cancel", true);
         final Argument<Location> location = instruction.location().get("respawn").orElse(null);
         return new DieObjective(instruction, cancel, location);
     }

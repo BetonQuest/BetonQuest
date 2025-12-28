@@ -21,7 +21,7 @@ public class FabledClassConditionFactory implements PlayerConditionFactory {
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<String> className = instruction.string().get();
-        final FlagArgument<Boolean> exact = instruction.bool().getFlag("exact", false);
+        final FlagArgument<Boolean> exact = instruction.bool().getFlag("exact", true);
         return new FabledClassCondition(className, exact);
     }
 }

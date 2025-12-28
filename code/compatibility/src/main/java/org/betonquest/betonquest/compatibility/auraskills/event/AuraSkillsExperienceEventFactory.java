@@ -31,7 +31,7 @@ public class AuraSkillsExperienceEventFactory implements PlayerEventFactory {
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<String> name = instruction.string().get();
         final Argument<Number> amount = instruction.number().get();
-        final FlagArgument<Boolean> level = instruction.bool().getFlag("level", false);
+        final FlagArgument<Boolean> level = instruction.bool().getFlag("level", true);
         return new AuraSkillsExperienceEvent(auraSkillsApi, amount, name, level);
     }
 }

@@ -22,7 +22,7 @@ public class MythicLibStatConditionFactory implements PlayerConditionFactory {
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<String> statName = instruction.string().get();
         final Argument<Number> targetLevel = instruction.number().get();
-        final FlagArgument<Boolean> equal = instruction.bool().getFlag("equal", false);
+        final FlagArgument<Boolean> equal = instruction.bool().getFlag("equal", true);
         return new MythicLibStatCondition(statName, targetLevel, equal);
     }
 }

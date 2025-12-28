@@ -24,7 +24,7 @@ public class MMOCoreProfessionExperienceEventFactory implements PlayerEventFacto
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<Profession> profession = instruction.parse(MMOProfessionParser.PROFESSION).get();
         final Argument<Number> amount = instruction.number().get();
-        final FlagArgument<Boolean> level = instruction.bool().getFlag("level", false);
+        final FlagArgument<Boolean> level = instruction.bool().getFlag("level", true);
         return new MMOCoreProfessionExperienceEvent(profession, amount, level);
     }
 }

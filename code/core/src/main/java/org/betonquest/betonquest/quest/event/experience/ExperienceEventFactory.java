@@ -36,7 +36,7 @@ public class ExperienceEventFactory implements PlayerEventFactory {
         ExperienceModification experienceType = ExperienceModification.ADD_EXPERIENCE;
         final Optional<Argument<String>> action = instruction.string().get("action");
         String targetAction = action.isPresent() ? action.get().getValue(null) : null;
-        final boolean level = instruction.bool().getFlag("level", false)
+        final boolean level = instruction.bool().getFlag("level", true)
                 .getValue(null).orElse(false);
         if (level) {
             experienceType = ExperienceModification.ADD_LEVEL;

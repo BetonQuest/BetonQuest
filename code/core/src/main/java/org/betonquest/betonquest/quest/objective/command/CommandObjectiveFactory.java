@@ -25,9 +25,9 @@ public class CommandObjectiveFactory implements ObjectiveFactory {
     @Override
     public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<String> command = instruction.string().get();
-        final FlagArgument<Boolean> ignoreCase = instruction.bool().getFlag("ignoreCase", false);
-        final FlagArgument<Boolean> exact = instruction.bool().getFlag("exact", false);
-        final FlagArgument<Boolean> cancel = instruction.bool().getFlag("cancel", false);
+        final FlagArgument<Boolean> ignoreCase = instruction.bool().getFlag("ignoreCase", true);
+        final FlagArgument<Boolean> exact = instruction.bool().getFlag("exact", true);
+        final FlagArgument<Boolean> cancel = instruction.bool().getFlag("cancel", true);
         final Argument<List<EventID>> failEvents = instruction.parse(EventID::new)
                 .list().get("failEvents", Collections.emptyList());
         return new CommandObjective(instruction, command, ignoreCase, exact, cancel, failEvents);
