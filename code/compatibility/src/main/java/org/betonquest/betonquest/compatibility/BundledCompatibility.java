@@ -74,39 +74,39 @@ public class BundledCompatibility {
      */
     public void registerCompatiblePlugins() {
         final BetonQuestLoggerFactory loggerFactory = betonQuestApi.getLoggerFactory();
-        compatibility.register("MythicMobs", new MythicMobsIntegratorFactory());
-        compatibility.register("Citizens", new CitizensIntegratorFactory());
-        compatibility.register("Vault", new VaultIntegratorFactory());
-        compatibility.register("Skript", new SkriptIntegratorFactory());
-        compatibility.register("WorldGuard", new WorldGuardIntegratorFactory());
-        compatibility.register("WorldEdit", new WorldEditIntegratorFactory());
-        compatibility.register("FastAsyncWorldEdit", new WorldEditIntegratorFactory());
-        compatibility.register("mcMMO", new McMMOIntegratorFactory(plugin));
-        compatibility.register("MythicLib", new MythicLibIntegratorFactory());
-        compatibility.register("MMOCore", new MMOCoreIntegratorFactory());
-        compatibility.register("MMOItems", new MMOItemsIntegratorFactory(plugin));
-        compatibility.register("EffectLib", new EffectLibIntegratorFactory());
-        compatibility.register("Heroes", new HeroesIntegratorFactory(plugin));
-        compatibility.register("Magic", new MagicIntegratorFactory(plugin));
-        compatibility.register("Denizen", new DenizenIntegratorFactory());
-        compatibility.register("Fabled", new FabledIntegratorFactory(plugin));
-        compatibility.register("Quests", new QuestsIntegratorFactory());
-        compatibility.register("Shopkeepers", new ShopkeepersIntegratorFactory());
-        compatibility.register("PlaceholderAPI", new PlaceholderAPIIntegratorFactory(plugin.getDescription()));
-        compatibility.register("packetevents", new PacketEventsIntegratorFactory());
-        compatibility.register("Brewery", new BreweryIntegratorFactory());
-        compatibility.register("BreweryX", new BreweryIntegratorFactory());
-        compatibility.register("Jobs", new JobsRebornIntegratorFactory());
-        compatibility.register("LuckPerms", new LuckPermsIntegratorFactory());
-        compatibility.register("AuraSkills", new AuraSkillsIntegratorFactory());
-        compatibility.register("DecentHolograms", new DecentHologramsIntegratorFactory(loggerFactory,
+        compatibility.registerPlugin("MythicMobs", new MythicMobsIntegratorFactory());
+        compatibility.registerPlugin("Citizens", new CitizensIntegratorFactory());
+        compatibility.registerPlugin("Vault", new VaultIntegratorFactory());
+        compatibility.registerPlugin("Skript", new SkriptIntegratorFactory());
+        compatibility.registerPlugin("WorldGuard", new WorldGuardIntegratorFactory());
+        compatibility.registerPlugin("WorldEdit", new WorldEditIntegratorFactory());
+        compatibility.registerPlugin("FastAsyncWorldEdit", new WorldEditIntegratorFactory());
+        compatibility.registerPlugin("mcMMO", new McMMOIntegratorFactory(plugin));
+        compatibility.registerPlugin("MythicLib", new MythicLibIntegratorFactory());
+        compatibility.registerPlugin("MMOCore", new MMOCoreIntegratorFactory());
+        compatibility.registerPlugin("MMOItems", new MMOItemsIntegratorFactory(plugin));
+        compatibility.registerPlugin("EffectLib", new EffectLibIntegratorFactory());
+        compatibility.registerPlugin("Heroes", new HeroesIntegratorFactory(plugin));
+        compatibility.registerPlugin("Magic", new MagicIntegratorFactory(plugin));
+        compatibility.registerPlugin("Denizen", new DenizenIntegratorFactory());
+        compatibility.registerPlugin("Fabled", new FabledIntegratorFactory(plugin));
+        compatibility.registerPlugin("Quests", new QuestsIntegratorFactory());
+        compatibility.registerPlugin("Shopkeepers", new ShopkeepersIntegratorFactory());
+        compatibility.registerPlugin("PlaceholderAPI", new PlaceholderAPIIntegratorFactory(plugin.getDescription()));
+        compatibility.registerPlugin("packetevents", new PacketEventsIntegratorFactory());
+        compatibility.registerPlugin("Brewery", new BreweryIntegratorFactory());
+        compatibility.registerPlugin("BreweryX", new BreweryIntegratorFactory());
+        compatibility.registerPlugin("Jobs", new JobsRebornIntegratorFactory());
+        compatibility.registerPlugin("LuckPerms", new LuckPermsIntegratorFactory());
+        compatibility.registerPlugin("AuraSkills", new AuraSkillsIntegratorFactory());
+        compatibility.registerPlugin("DecentHolograms", new DecentHologramsIntegratorFactory(loggerFactory,
                 betonQuestApi.getQuestTypeApi().variables(), betonQuestApi.getQuestPackageManager()));
-        compatibility.register("HolographicDisplays", new HolographicDisplaysIntegratorFactory(loggerFactory,
+        compatibility.registerPlugin("HolographicDisplays", new HolographicDisplaysIntegratorFactory(loggerFactory,
                 betonQuestApi.getQuestPackageManager()));
-        compatibility.register("fake-block", new FakeBlockIntegratorFactory(plugin));
-        compatibility.register("RedisChat", new RedisChatIntegratorFactory());
-        compatibility.register("Train_Carts", new TrainCartsIntegratorFactory());
-        compatibility.register(FancyNpcsIntegrator.PREFIX, new FancyNpcsIntegratorFactory(plugin));
-        compatibility.register(ZNPCsPlusIntegrator.PREFIX, new ZNPCsPlusIntegratorFactory(plugin));
+        compatibility.registerPlugin("fake-block", new FakeBlockIntegratorFactory(plugin));
+        compatibility.registerPlugin("RedisChat", new RedisChatIntegratorFactory());
+        compatibility.registerPlugin("Train_Carts", new TrainCartsIntegratorFactory());
+        compatibility.registerPlugin(FancyNpcsIntegrator.PREFIX, new FancyNpcsIntegratorFactory(plugin));
+        compatibility.registerPlugin(ZNPCsPlusIntegrator.PREFIX, new ZNPCsPlusIntegratorFactory(plugin));
     }
 }

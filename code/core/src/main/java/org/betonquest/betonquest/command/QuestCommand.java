@@ -28,6 +28,8 @@ import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.compatibility.Compatibility;
+import org.betonquest.betonquest.compatibility.IntegrationData;
+import org.betonquest.betonquest.compatibility.IntegrationSource;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Backup;
@@ -64,7 +66,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.FileNotFoundException;
@@ -1513,7 +1514,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private void displayVersionInfo(final CommandSender sender, final String commandAlias) throws QuestException {
         final String updateCommand = "/" + commandAlias + " update";
 
-        final Component hooked = displayVersionInfoHooked();
+        final Component hooked = displayVersionInfoHooked(compatibility.getBetonQuestSource());
         final Component update = displayVersionInfoUpdate(instance.getUpdater());
         final Component copy = displayVersionInfoCopy(sender);
 
@@ -1530,19 +1531,18 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         sender.sendMessage(info);
     }
 
-    private Component displayVersionInfoHooked() throws QuestException {
+    private Component displayVersionInfoHooked(final IntegrationSource source) throws QuestException {
         final TextComponent.Builder hookedBuilder = Component.text();
-        for (final String plugin : compatibility.getHooked()) {
-            final Plugin plug = Bukkit.getPluginManager().getPlugin(plugin);
-            if (plug == null) {
+        for (final IntegrationData data : source.getDataList()) {
+            if (!data.isIntegrated()) {
                 continue;
             }
             if (!hookedBuilder.children().isEmpty()) {
                 hookedBuilder.append(Component.text(", "));
             }
             hookedBuilder.append(pluginMessage.getMessage(null, "command_version_output.hook",
-                    new VariableReplacement("plugin", Component.text(plugin)),
-                    new VariableReplacement("version", Component.text(plug.getDescription().getVersion()))));
+                    new VariableReplacement("plugin", Component.text(data.getName())),
+                    new VariableReplacement("version", Component.text(data.getVersion()))));
         }
         return hookedBuilder.build();
     }
