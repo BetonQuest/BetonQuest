@@ -27,7 +27,7 @@ import java.util.Map;
  * Superclass for all objectives. You need to extend it in order to create new custom objectives.
  */
 @SuppressWarnings("PMD.TooManyMethods")
-public abstract class DefaultObjective {
+public abstract class DefaultObjective implements PropertyHolder {
 
     /**
      * The factory for the default Objective Data.
@@ -156,22 +156,6 @@ public abstract class DefaultObjective {
      * @throws QuestException when values could not be resolved for the profile
      */
     public abstract String getDefaultDataInstruction(Profile profile) throws QuestException;
-
-    /**
-     * This method should return various properties of the objective, formatted
-     * as readable Strings. An example would be "5h 5min" for "time_left"
-     * keyword in "delay" objective or "12" for keyword "mobs_killed" in
-     * "mobkill" objective. The method is not abstract since not all objectives
-     * need to have properties, i.e. "die" objective. By default, it returns an
-     * empty string.
-     *
-     * @param name    the name of the property you need to return; you can parse it
-     *                to extract additional information
-     * @param profile the {@link Profile} for which the property is to be returned
-     * @return the property with given name
-     * @throws QuestException when the property cannot be resolved
-     */
-    public abstract String getProperty(String name, Profile profile) throws QuestException;
 
     /**
      * This method fires events for the objective and removes it from the profile's
