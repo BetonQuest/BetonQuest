@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.logger.QuestExceptionHandler;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
@@ -16,6 +15,7 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.betonquest.betonquest.database.PlayerData;
+import org.betonquest.betonquest.lib.logger.QuestExceptionHandler;
 import org.betonquest.betonquest.lib.profile.ProfileKeyMap;
 import org.jetbrains.annotations.Nullable;
 

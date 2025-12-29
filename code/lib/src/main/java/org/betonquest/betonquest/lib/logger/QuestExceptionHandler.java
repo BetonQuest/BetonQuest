@@ -1,8 +1,10 @@
-package org.betonquest.betonquest.api.logger;
+package org.betonquest.betonquest.lib.logger;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestRunnable;
 import org.betonquest.betonquest.api.common.function.QuestSupplier;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.LogSource;
 
 /**
  * Can handle thrown {@link QuestException} and rate limits them so
