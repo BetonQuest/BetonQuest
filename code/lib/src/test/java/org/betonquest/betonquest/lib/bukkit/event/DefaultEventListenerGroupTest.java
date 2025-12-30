@@ -27,20 +27,44 @@ import static org.mockito.Mockito.*;
  * Test {@link DefaultEventListenerGroup}.
  */
 @ExtendWith(MockitoExtension.class)
-public class DefaultEventListenerGroupTest {
+class DefaultEventListenerGroupTest {
 
+    /**
+     * A mocked logger.
+     */
     @Mock
     private BetonQuestLogger logger;
 
+    /**
+     * A mocked {@link DefaultEventListenerGroup} to spy on.
+     */
     private DefaultEventListenerGroup<PlayerJumpEvent> group;
 
-    private <T extends Event> ProxyListener<T> mockedListener(final Class<T> type, final EventPriority priority) throws QuestException {
+    /**
+     * Creates a mocked {@link ProxyListener} for the given type and priority.
+     * May fail if the {@link org.bukkit.event.HandlerList} could not be extracted from the event class.
+     *
+     * @param type     the event type
+     * @param priority the priority for the event listener
+     * @param <T>      the event type
+     * @return the mocked listener
+     * @throws QuestException if an error occurs while creating the listener
+     */
+    private <T extends Event> ProxyListener<T> mockedListener(final Class<T> type, final EventPriority priority)
+            throws QuestException {
         return spy(new DefaultProxyListener<>(type, new RegisteredListener(new Listener() {
         }, (l, e) -> {
         }, priority, mock(Plugin.class), false)));
     }
 
-    private void verifyRegistrationStates(final Map<EventPriority, ProxyListener<PlayerJumpEvent>> listeners, final Set<EventPriority> expectedRegistered) {
+    /**
+     * Verify states of registered listeners.
+     *
+     * @param listeners          the listeners to verify
+     * @param expectedRegistered the expected registered priorities to be registered
+     */
+    private void verifyRegistrationStates(final Map<EventPriority, ProxyListener<PlayerJumpEvent>> listeners,
+                                          final Set<EventPriority> expectedRegistered) {
         listeners.forEach((priority, listener) -> {
             if (expectedRegistered.contains(priority)) {
                 assertTrue(listener.isRegistered(), "Expected " + priority + " to be registered");
@@ -50,7 +74,15 @@ public class DefaultEventListenerGroupTest {
         });
     }
 
-    private void generateListeners(final Map<EventPriority, ProxyListener<PlayerJumpEvent>> listeners, final DefaultEventListenerGroup<PlayerJumpEvent> group) throws QuestException {
+    /**
+     * Generates listeners for the given group.
+     *
+     * @param listeners The map of listeners to fill.
+     * @param group     The group to generate listeners for and attach to
+     * @throws QuestException If an error occurs while creating the listeners.
+     */
+    private void generateListeners(final Map<EventPriority, ProxyListener<PlayerJumpEvent>> listeners,
+                                   final DefaultEventListenerGroup<PlayerJumpEvent> group) throws QuestException {
         for (final EventPriority priority : EventPriority.values()) {
             final ProxyListener<PlayerJumpEvent> listener = mockedListener(PlayerJumpEvent.class, priority);
             listeners.put(priority, listener);
@@ -58,31 +90,45 @@ public class DefaultEventListenerGroupTest {
         }
     }
 
+    /**
+     * Sets up the test.
+     */
     @BeforeEach
-    public void setup() {
+    void setup() {
         group = spy(new DefaultEventListenerGroup<>(logger, PlayerJumpEvent.class));
     }
 
+    /**
+     * Test {@link DefaultEventListenerGroup#bake(Plugin)}.
+     *
+     * @param plugin mocked plugin
+     * @throws QuestException if an error occurs while baking
+     */
     @Test
-    public void testBake(@Mock final Plugin plugin) throws QuestException {
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
+    void testBake(@Mock final Plugin plugin) throws QuestException {
         doReturn(mock(ProxyListener.class)).when(group).createListener(any(), any(), any());
         for (final EventPriority priority : EventPriority.values()) {
-            assertThrows(IllegalStateException.class, () -> group.getListener(priority));
+            assertThrows(IllegalStateException.class, () -> group.getListener(priority), "Listener should not be available yet");
         }
         group.bake(plugin);
         verify(group, times(EventPriority.values().length)).createListener(eq(plugin), eq(PlayerJumpEvent.class), any());
         for (final EventPriority priority : EventPriority.values()) {
-            assertDoesNotThrow(() -> group.getListener(priority));
+            assertDoesNotThrow(() -> group.getListener(priority), "Listener should be available now");
         }
     }
 
+    /**
+     * Test {@link DefaultEventListenerGroup#unsubscribe(EventPriority, EventServiceSubscriber)}.
+     */
     @Test
-    public void testUnsubscribe() {
-        assertDoesNotThrow(() -> group.bake(mock(Plugin.class)));
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
+    void testUnsubscribe() throws QuestException {
+        group.bake(mock(Plugin.class));
         final EventServiceSubscriber<PlayerJumpEvent> subscription = group.subscribe(EventPriority.NORMAL, false,
                 (event, priority) -> {
                 });
-        assertNotNull(subscription);
+        assertNotNull(subscription, "Subscription should not be null");
         group.unsubscribe(EventPriority.HIGH, subscription);
         verify(logger, times(1)).warn(anyString());
         group.unsubscribe(EventPriority.NORMAL, subscription);
@@ -91,32 +137,45 @@ public class DefaultEventListenerGroupTest {
         verify(logger, times(2)).warn(anyString());
     }
 
+    /**
+     * Test {@link DefaultEventListenerGroup#subscribe(EventPriority, boolean, EventServiceSubscriber)}
+     * and {@link DefaultEventListenerGroup#callEvent(Event, EventPriority)}.
+     * Also tests the ignoreCancelled flag.
+     */
     @Test
-    public void testSubscribeAndCall() {
-        assertDoesNotThrow(() -> group.bake(mock(Plugin.class)));
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
+    void testSubscribeAndCall() throws QuestException {
+        group.bake(mock(Plugin.class));
         final EventServiceSubscriber<PlayerJumpEvent> subscriber = (event, priority) -> {
             throw new QuestException(event.getEventName() + "/" + priority);
         };
         final EventServiceSubscriber<PlayerJumpEvent> resultSubscriber = group.subscribe(EventPriority.NORMAL, false, subscriber);
         final EventServiceSubscriber<PlayerJumpEvent> resultSubscriber2 = group.subscribe(EventPriority.HIGH, true, subscriber);
-        assertNotSame(resultSubscriber, resultSubscriber2);
+        assertNotSame(resultSubscriber, resultSubscriber2, "Subscribers should not be the same");
 
         final PlayerJumpEvent jumpEvent = mock(PlayerJumpEvent.class);
         final String eventName = "PlayerJumpEvent";
         when(jumpEvent.getEventName()).thenReturn(eventName);
-        assertThrows(QuestException.class, () -> group.callEvent(jumpEvent, EventPriority.NORMAL), eventName + "/" + EventPriority.NORMAL.name());
-        assertThrows(QuestException.class, () -> group.callEvent(jumpEvent, EventPriority.HIGH), eventName + "/" + EventPriority.HIGH.name());
         when(jumpEvent.isCancelled()).thenReturn(true);
-        assertThrows(QuestException.class, () -> group.callEvent(jumpEvent, EventPriority.NORMAL), eventName + "/" + EventPriority.NORMAL.name());
-        assertDoesNotThrow(() -> group.callEvent(jumpEvent, EventPriority.HIGH));
+        assertThrows(QuestException.class, () -> group.callEvent(jumpEvent, EventPriority.NORMAL),
+                "callEvent should throw when called");
+        assertDoesNotThrow(() -> group.callEvent(jumpEvent, EventPriority.HIGH),
+                "callEvent should not throw when called");
     }
 
+    /**
+     * Test {@link DefaultEventListenerGroup#require(EventPriority)}
+     * and {@link DefaultEventListenerGroup#disable(EventPriority)}.
+     *
+     * @throws QuestException if an error occurs while creating the listeners.
+     */
     @Test
-    public void testRequireAndDisabling() throws QuestException {
+    @SuppressWarnings({"PMD.LooseCoupling", "PMD.UnitTestContainsTooManyAsserts"})
+    void testRequireAndDisabling() throws QuestException {
         final Map<EventPriority, ProxyListener<PlayerJumpEvent>> listeners = new EnumMap<>(EventPriority.class);
         generateListeners(listeners, group);
 
-        assertDoesNotThrow(() -> group.bake(mock(Plugin.class)));
+        assertDoesNotThrow(() -> group.bake(mock(Plugin.class)), "Baking event listener group should not fail");
         verifyRegistrationStates(listeners, Set.of());
 
         group.require(EventPriority.LOWEST);
@@ -141,7 +200,7 @@ public class DefaultEventListenerGroupTest {
         listeners.values().forEach(listener -> verify(listener, times(1)).register());
 
         final EnumSet<EventPriority> toDisable = EnumSet.of(EventPriority.LOWEST, EventPriority.LOW, EventPriority.NORMAL, EventPriority.MONITOR);
-        final EnumSet<EventPriority> stillEnabled = EnumSet.complementOf(toDisable);
+        final Set<EventPriority> stillEnabled = EnumSet.complementOf(toDisable);
         toDisable.forEach(group::disable);
 
         verifyRegistrationStates(listeners, stillEnabled);
