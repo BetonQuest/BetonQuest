@@ -69,7 +69,7 @@ class DefaultEventListenerGroupTest {
 
     @Test
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    void testBake() throws QuestException {
+    void bake() throws QuestException {
         doReturn(mock(ProxyListener.class)).when(group).createListener(any(), any(), any());
         for (final EventPriority priority : EventPriority.values()) {
             assertThrows(IllegalStateException.class, () -> group.getListener(priority), "Listener should not be available yet");
@@ -82,20 +82,20 @@ class DefaultEventListenerGroupTest {
     }
 
     @Test
-    void noBakeSubscribe() {
+    void no_bake_subscribe() {
         assertThrows(IllegalStateException.class,
                 () -> group.subscribe(EventPriority.NORMAL, false, (event, priority) -> {
                 }), "Cannot subscribe to event before baking");
     }
 
     @Test
-    void noBakeRequire() {
+    void no_bake_require() {
         assertFalse(group.require(EventPriority.NORMAL), "Should not be able to require event before baking");
         verify(logger, times(1)).error(anyString());
     }
 
     @Test
-    void noBakeDisable() {
+    void no_bake_disable() {
         group.disable(EventPriority.NORMAL);
         verify(logger, times(1)).error(anyString());
     }
@@ -110,7 +110,7 @@ class DefaultEventListenerGroupTest {
 
         @Test
         @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-        void testUnsubscribe() {
+        void unsubscribe() {
             final EventServiceSubscriber<PlayerJumpEvent> subscription = group.subscribe(EventPriority.NORMAL, false,
                     (event, priority) -> {
                     });
@@ -124,7 +124,7 @@ class DefaultEventListenerGroupTest {
         }
 
         @Test
-        void testSubscribe() {
+        void subscribe() {
             final EventServiceSubscriber<PlayerJumpEvent> subscriber = (event, priority) -> {
                 throw new QuestException(event.getEventName() + "/" + priority);
             };
@@ -135,7 +135,7 @@ class DefaultEventListenerGroupTest {
         }
 
         @Test
-        void testCall() {
+        void call() {
             final EventServiceSubscriber<PlayerJumpEvent> subscriber = (event, priority) -> {
                 throw new QuestException("");
             };
@@ -147,7 +147,7 @@ class DefaultEventListenerGroupTest {
         }
 
         @Test
-        void testIgnoreCancelledFlag() {
+        void ignore_cancelled_flag() {
             final EventServiceSubscriber<PlayerJumpEvent> subscriber = (event, priority) -> {
                 throw new QuestException("");
             };
@@ -175,7 +175,7 @@ class DefaultEventListenerGroupTest {
 
             @Test
             @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-            void testRequire() {
+            void require_simple() {
                 verifyRegistrationStates(listeners, Set.of());
                 group.require(EventPriority.LOWEST);
                 verifyRegistrationStates(listeners, Set.of(EventPriority.LOWEST));
