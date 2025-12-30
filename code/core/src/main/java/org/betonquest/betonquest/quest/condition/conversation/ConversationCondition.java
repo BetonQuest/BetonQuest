@@ -13,7 +13,7 @@ import org.betonquest.betonquest.conversation.ConversationID;
 public class ConversationCondition implements PlayerCondition {
 
     /**
-     * Conversation API.
+     * The Conversation API.
      */
     private final ConversationApi conversationApi;
 

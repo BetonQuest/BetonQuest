@@ -54,7 +54,7 @@ public class PartyCondition implements NullableCondition {
     private final Argument<Number> count;
 
     /**
-     * Quest Type API.
+     * The Quest Type API.
      */
     private final QuestTypeApi questTypeApi;
 

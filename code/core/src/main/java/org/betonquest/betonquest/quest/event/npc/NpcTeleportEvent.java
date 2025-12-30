@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 public class NpcTeleportEvent implements NullableEvent {
 
     /**
-     * Quest Type API.
+     * The Feature API.
      */
     private final FeatureApi featureApi;
 
@@ -27,7 +27,7 @@ public class NpcTeleportEvent implements NullableEvent {
     private final Argument<NpcID> npcId;
 
     /**
-     * The location to teleport the Npc to.
+     * The location the Npc will be teleported to.
      */
     private final Argument<Location> location;
 
@@ -42,7 +42,7 @@ public class NpcTeleportEvent implements NullableEvent {
      * @param featureApi the Feature API
      * @param npcId      the npc id
      * @param location   the location the Npc will be teleported to
-     * @param spawn      if the npc should be spawned if not in the world
+     * @param spawn      spawns the Npc if not already spawned
      */
     public NpcTeleportEvent(final FeatureApi featureApi, final Argument<NpcID> npcId, final Argument<Location> location,
                             final FlagArgument<Boolean> spawn) {

@@ -14,12 +14,12 @@ import org.betonquest.betonquest.conversation.ConversationID;
 public class ConversationEvent implements OnlineEvent {
 
     /**
-     * Conversation API.
+     * The Conversation API.
      */
     private final ConversationApi conversationApi;
 
     /**
-     * The conversation to start.
+     * The conversation and option to start as a pair.
      */
     private final Argument<Pair<ConversationID, String>> conversation;
 

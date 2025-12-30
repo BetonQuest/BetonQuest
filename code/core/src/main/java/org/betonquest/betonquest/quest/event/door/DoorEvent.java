@@ -19,20 +19,20 @@ import java.util.function.Consumer;
 public class DoorEvent implements NullableEvent {
 
     /**
-     * The {@link Openable}'s location.
+     * The target location.
      */
     private final Argument<Location> location;
 
     /**
-     * The action to do to the {@link Openable}.
+     * The action to apply to the {@link Openable}.
      */
     private final Consumer<Openable> action;
 
     /**
      * Create the event to change the {@link Openable} at the given location with the given action.
      *
-     * @param location location to act on
-     * @param action   action to do
+     * @param location the target location
+     * @param action   the action to apply to the {@link Openable}
      */
     public DoorEvent(final Argument<Location> location, final Consumer<Openable> action) {
         this.location = location;

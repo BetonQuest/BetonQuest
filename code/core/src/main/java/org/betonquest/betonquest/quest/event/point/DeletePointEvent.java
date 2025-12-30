@@ -14,7 +14,7 @@ import java.util.function.Function;
 public class DeletePointEvent implements PlayerEvent {
 
     /**
-     * Function to get the player data for a profile.
+     * The source to get a profiles player data.
      */
     private final Function<Profile, PlayerData> playerDataSource;
 

@@ -49,7 +49,7 @@ public class GiveEvent implements OnlineEvent {
     private final FlagArgument<Boolean> backpack;
 
     /**
-     * Storage for player backpack.
+     * The storage providing player backpack.
      */
     private final PlayerDataStorage dataStorage;
 
@@ -57,9 +57,9 @@ public class GiveEvent implements OnlineEvent {
      * Create the give event.
      *
      * @param questItems            the items to give
-     * @param itemsGivenSender      the notification sender when giving items
-     * @param itemsInBackpackSender the notification sender when putting items into the backpack
-     * @param itemsDroppedSender    the notification sender when dropping items
+     * @param itemsGivenSender      the notification sender to use when putting items into the player's inventory
+     * @param itemsInBackpackSender the notification sender to use when putting items into the player's backpack
+     * @param itemsDroppedSender    the notification sender to use when dropping items at the player's location
      * @param backpack              whether to put the items to the player's backpack
      * @param dataStorage           the storage providing player backpack
      */

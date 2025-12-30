@@ -15,20 +15,20 @@ import java.time.InstantSource;
 public class AddEntryJournalChanger implements JournalChanger {
 
     /**
-     * Instant source for new journal entries.
+     * The source to get the journal entry date from.
      */
     private final InstantSource instantSource;
 
     /**
-     * Entry to add to the journal.
+     * The entry to add to the journal.
      */
     private final Argument<JournalEntryID> entryID;
 
     /**
      * Create the entry-adding journal changer.
      *
-     * @param instantSource source to get the journal entry date from
-     * @param entryID       entry to add
+     * @param instantSource the source to get the journal entry date from
+     * @param entryID       the entry to add to the journal
      */
     public AddEntryJournalChanger(final InstantSource instantSource, final Argument<JournalEntryID> entryID) {
         this.instantSource = instantSource;

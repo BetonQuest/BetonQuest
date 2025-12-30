@@ -23,7 +23,7 @@ public class NpcDistanceCondition implements OnlineCondition {
     private final FeatureApi featureApi;
 
     /**
-     * Id of the npc.
+     * The id of the npc.
      */
     private final Argument<NpcID> npcID;
 

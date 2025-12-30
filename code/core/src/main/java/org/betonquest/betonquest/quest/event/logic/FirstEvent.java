@@ -17,24 +17,24 @@ import java.util.List;
 public class FirstEvent implements NullableEvent {
 
     /**
-     * The events to run.
-     */
-    private final Argument<List<EventID>> events;
-
-    /**
-     * Quest Type API.
+     * The Quest Type API.
      */
     private final QuestTypeApi questTypeApi;
 
     /**
+     * The list of events to execute.
+     */
+    private final Argument<List<EventID>> events;
+
+    /**
      * Makes a new first event.
      *
-     * @param eventIDList  A list of events to execute in order.
      * @param questTypeApi the Quest Type API
+     * @param events       the list of events to execute
      */
-    public FirstEvent(final Argument<List<EventID>> eventIDList, final QuestTypeApi questTypeApi) {
-        events = eventIDList;
+    public FirstEvent(final QuestTypeApi questTypeApi, final Argument<List<EventID>> events) {
         this.questTypeApi = questTypeApi;
+        this.events = events;
     }
 
     @Override

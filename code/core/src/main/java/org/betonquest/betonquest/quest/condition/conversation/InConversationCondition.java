@@ -15,12 +15,12 @@ import org.jetbrains.annotations.Nullable;
 public class InConversationCondition implements PlayerCondition {
 
     /**
-     * Conversation API.
+     * The Conversation API.
      */
     private final ConversationApi conversationApi;
 
     /**
-     * Identifier of the conversation.
+     * The conversation identifier.
      */
     @Nullable
     private final Argument<ConversationID> conversationID;

@@ -11,14 +11,14 @@ import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 public class DamageEvent implements OnlineEvent {
 
     /**
-     * Amount of damage to inflict.
+     * The amount of damage to inflict.
      */
     private final Argument<Number> damage;
 
     /**
      * Create a damage event that inflicts the given amount of damage to the player.
      *
-     * @param damage damage to inflict
+     * @param damage the amount of damage to inflict
      */
     public DamageEvent(final Argument<Number> damage) {
         this.damage = damage;

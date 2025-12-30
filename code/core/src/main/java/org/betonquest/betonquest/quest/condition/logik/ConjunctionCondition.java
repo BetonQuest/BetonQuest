@@ -16,7 +16,7 @@ import java.util.List;
 public class ConjunctionCondition implements NullableCondition {
 
     /**
-     * All of specified conditions have to be true.
+     * The list of conditions that need to be true.
      */
     private final Argument<List<ConditionID>> conditions;
 
@@ -28,7 +28,7 @@ public class ConjunctionCondition implements NullableCondition {
     /**
      * Constructor for the {@link ConjunctionCondition} class.
      *
-     * @param conditions   All of specified conditions have to be true.
+     * @param conditions   the list of conditions that need to be true
      * @param questTypeApi the Quest Type API
      */
     public ConjunctionCondition(final Argument<List<ConditionID>> conditions, final QuestTypeApi questTypeApi) {

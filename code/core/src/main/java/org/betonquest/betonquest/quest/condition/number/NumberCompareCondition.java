@@ -12,12 +12,12 @@ import org.jetbrains.annotations.Nullable;
 public class NumberCompareCondition implements NullableCondition {
 
     /**
-     * The number on the left side.
+     * The first number.
      */
     private final Argument<Number> first;
 
     /**
-     * The number of the right side.
+     * The second number.
      */
     private final Argument<Number> second;
 
@@ -31,7 +31,7 @@ public class NumberCompareCondition implements NullableCondition {
      *
      * @param first     the first number
      * @param second    the second number
-     * @param operation the operation to use
+     * @param operation the compare operand between the numbers used for comparing
      */
     public NumberCompareCondition(final Argument<Number> first, final Argument<Number> second, final Operation operation) {
         this.first = first;

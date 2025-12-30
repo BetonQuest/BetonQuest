@@ -19,7 +19,7 @@ public class FacingCondition implements OnlineCondition {
     /**
      * Creates a new facing condition.
      *
-     * @param direction The direction the player should be facing
+     * @param direction the direction the player should be facing
      */
     public FacingCondition(final Argument<Direction> direction) {
         this.direction = direction;

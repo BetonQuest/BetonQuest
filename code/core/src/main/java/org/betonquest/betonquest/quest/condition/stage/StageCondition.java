@@ -15,7 +15,12 @@ import org.betonquest.betonquest.quest.objective.stage.StageObjective;
 public class StageCondition implements PlayerCondition {
 
     /**
-     * The stage objective.
+     * The Quest Type API.
+     */
+    private final QuestTypeApi questTypeApi;
+
+    /**
+     * The objective ID.
      */
     private final Argument<ObjectiveID> objectiveID;
 
@@ -30,17 +35,12 @@ public class StageCondition implements PlayerCondition {
     private final Argument<Operation> operation;
 
     /**
-     * Quest Type API.
-     */
-    private final QuestTypeApi questTypeApi;
-
-    /**
      * Creates the stage condition.
      *
      * @param questTypeApi the Quest Type API
      * @param objectiveID  the objective ID
      * @param targetStage  the target stage
-     * @param operation    the operation
+     * @param operation    the compare operand between the numbers used for comparing
      */
     public StageCondition(final QuestTypeApi questTypeApi, final Argument<ObjectiveID> objectiveID, final Argument<String> targetStage,
                           final Argument<Operation> operation) {

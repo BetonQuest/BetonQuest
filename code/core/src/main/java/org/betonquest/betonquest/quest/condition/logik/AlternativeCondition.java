@@ -21,7 +21,7 @@ public class AlternativeCondition implements NullableCondition {
     private final QuestTypeApi questTypeApi;
 
     /**
-     * List of condition IDs.
+     * The list condition IDs.
      */
     private final Argument<List<ConditionID>> conditionIDs;
 
@@ -29,7 +29,7 @@ public class AlternativeCondition implements NullableCondition {
      * Create a new alternative condition.
      *
      * @param questTypeApi the Quest Type API to check conditions
-     * @param conditionIDs the condition IDs
+     * @param conditionIDs the list condition IDs
      */
     public AlternativeCondition(final QuestTypeApi questTypeApi, final Argument<List<ConditionID>> conditionIDs) {
         this.questTypeApi = questTypeApi;

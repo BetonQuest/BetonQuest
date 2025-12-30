@@ -24,7 +24,7 @@ public class HungerEvent implements OnlineEvent {
     /**
      * Create the hunger event to set the given state.
      *
-     * @param hunger the hunger type
+     * @param hunger the hunger type, how the amount will be applied to the players hunger
      * @param amount the amount of hunger to apply
      */
     public HungerEvent(final Argument<Hunger> hunger, final Argument<Number> amount) {

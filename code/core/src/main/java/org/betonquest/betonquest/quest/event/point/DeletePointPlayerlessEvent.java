@@ -15,12 +15,12 @@ import org.betonquest.betonquest.database.UpdateType;
 public class DeletePointPlayerlessEvent implements PlayerlessEvent {
 
     /**
-     * Storage for player data.
+     * The storage providing player data.
      */
     private final PlayerDataStorage dataStorage;
 
     /**
-     * Database saver to use for writing offline player data.
+     * The database saver to use for writing offline player data.
      */
     private final Saver saver;
 
@@ -30,7 +30,7 @@ public class DeletePointPlayerlessEvent implements PlayerlessEvent {
     private final ProfileProvider profileProvider;
 
     /**
-     * Point category to remove.
+     * The point category to remove.
      */
     private final Argument<String> category;
 
@@ -38,9 +38,9 @@ public class DeletePointPlayerlessEvent implements PlayerlessEvent {
      * Create a new Point remove event for every player, online and offline.
      *
      * @param dataStorage     the storage providing player data
-     * @param saver           the saver to use
+     * @param saver           the database saver to use for writing offline player data
      * @param profileProvider the profile provider instance
-     * @param category        the category to remove
+     * @param category        the point category to remove
      */
     public DeletePointPlayerlessEvent(final PlayerDataStorage dataStorage, final Saver saver, final ProfileProvider profileProvider, final Argument<String> category) {
         this.dataStorage = dataStorage;

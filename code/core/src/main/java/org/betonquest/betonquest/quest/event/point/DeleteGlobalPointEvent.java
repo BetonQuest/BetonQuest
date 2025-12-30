@@ -13,14 +13,14 @@ import org.jetbrains.annotations.Nullable;
 public class DeleteGlobalPointEvent implements NullableEvent {
 
     /**
-     * The category to delete.
-     */
-    private final Argument<String> category;
-
-    /**
      * The global data.
      */
     private final GlobalData globalData;
+
+    /**
+     * The category to delete.
+     */
+    private final Argument<String> category;
 
     /**
      * Creates a new DeleteGlobalPointEvent.
@@ -29,8 +29,8 @@ public class DeleteGlobalPointEvent implements NullableEvent {
      * @param category   the category to delete
      */
     public DeleteGlobalPointEvent(final GlobalData globalData, final Argument<String> category) {
-        this.category = category;
         this.globalData = globalData;
+        this.category = category;
     }
 
     @Override

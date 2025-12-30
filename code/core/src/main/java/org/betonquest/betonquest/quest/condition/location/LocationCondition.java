@@ -25,8 +25,8 @@ public class LocationCondition implements OnlineCondition {
     /**
      * Creates a new location condition.
      *
-     * @param loc   The location
-     * @param range The range around the location
+     * @param loc   the location
+     * @param range the range around the location
      */
     public LocationCondition(final Argument<Location> loc, final Argument<Number> range) {
         this.loc = loc;

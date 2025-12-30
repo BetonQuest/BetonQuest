@@ -24,7 +24,7 @@ public class EffectEvent implements OnlineEvent {
     private final Argument<Number> duration;
 
     /**
-     * The amplifier of the effect.
+     * The level of the effect.
      */
     private final Argument<Number> level;
 
@@ -51,7 +51,7 @@ public class EffectEvent implements OnlineEvent {
      * @param level    the level of the effect
      * @param ambient  whether the effect is ambient
      * @param hidden   whether the effect is hidden
-     * @param noicon   whether the effect has an icon
+     * @param noicon   whether the effect has not an icon
      */
     public EffectEvent(final PotionEffectType effect, final Argument<Number> duration, final Argument<Number> level,
                        final FlagArgument<Boolean> ambient, final FlagArgument<Boolean> hidden, final FlagArgument<Boolean> noicon) {

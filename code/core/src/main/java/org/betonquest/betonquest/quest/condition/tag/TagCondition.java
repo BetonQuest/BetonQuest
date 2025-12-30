@@ -17,7 +17,7 @@ public class TagCondition implements PlayerCondition {
     private final Argument<String> tag;
 
     /**
-     * Storage for player data.
+     * The storage providing player data.
      */
     private final PlayerDataStorage dataStorage;
 

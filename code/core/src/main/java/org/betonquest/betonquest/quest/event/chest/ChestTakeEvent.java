@@ -25,8 +25,8 @@ public class ChestTakeEvent extends AbstractChestEvent {
     /**
      * Creates a new ChestTakeEvent.
      *
-     * @param location The location of the chest.
-     * @param items    The items to take from the chest.
+     * @param location the location of the chest
+     * @param items    the items to take from the chest
      */
     public ChestTakeEvent(final Argument<Location> location, final Argument<List<ItemWrapper>> items) {
         super(location);

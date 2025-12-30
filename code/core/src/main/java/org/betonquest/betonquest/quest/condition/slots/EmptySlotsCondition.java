@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 public class EmptySlotsCondition implements OnlineCondition {
 
     /**
-     * Number of required empty slots.
+     * The number of empty slots required.
      */
     private final Argument<Number> required;
 

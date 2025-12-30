@@ -21,12 +21,12 @@ import java.util.List;
 public class RemoveEntityEvent implements NullableEvent {
 
     /**
-     * The type of the mob.
+     * The types of the entities.
      */
     private final Argument<List<EntityType>> types;
 
     /**
-     * The location of the mob.
+     * The location where to remove the entities.
      */
     private final Argument<Location> loc;
 
@@ -36,19 +36,19 @@ public class RemoveEntityEvent implements NullableEvent {
     private final Argument<Number> range;
 
     /**
-     * The name of the mob.
+     * The name of the entity.
      */
     @Nullable
     private final Argument<Component> name;
 
     /**
-     * The mark of the mob.
+     * The mark of the entity.
      */
     @Nullable
     private final Argument<String> marked;
 
     /**
-     * Whether to kill the mob.
+     * Whether to kill the entities.
      */
     private final FlagArgument<Boolean> kill;
 

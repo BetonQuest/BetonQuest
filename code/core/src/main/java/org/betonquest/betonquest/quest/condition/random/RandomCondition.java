@@ -15,12 +15,12 @@ import java.util.function.Supplier;
 public class RandomCondition implements NullableCondition {
 
     /**
-     * The range of the random number to be true.
+     * The random number generator supplier.
      */
     private final Argument<RandomChance> randomChance;
 
     /**
-     * The random number generator supplier.
+     * The {@link RandomChance} to check the random condition.
      */
     private final Supplier<Random> random;
 

@@ -49,7 +49,7 @@ public class EntityCondition implements NullableCondition {
     /**
      * Create a new entity condition.
      *
-     * @param entityAmounts the entity amounts
+     * @param entityAmounts the amount per entity
      * @param loc           the location of the entity's
      * @param range         the range around the location to check for entities
      * @param name          the name of the entity to check for

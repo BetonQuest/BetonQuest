@@ -30,7 +30,7 @@ public class IfElseEvent implements NullableEvent {
     private final Argument<EventID> elseEvent;
 
     /**
-     * Quest Type API.
+     * The Quest Type API.
      */
     private final QuestTypeApi questTypeApi;
 

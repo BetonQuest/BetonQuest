@@ -19,7 +19,7 @@ public class BiomeCondition implements OnlineCondition {
     /**
      * Creates a new BiomeCondition.
      *
-     * @param biome The biome to check for
+     * @param biome the biome to check for
      */
     public BiomeCondition(final Argument<Biome> biome) {
         this.biome = biome;

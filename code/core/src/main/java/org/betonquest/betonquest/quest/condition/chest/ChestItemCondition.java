@@ -19,24 +19,24 @@ import java.util.List;
 public class ChestItemCondition implements NullableCondition {
 
     /**
-     * Items that should be in the chest.
-     */
-    private final Argument<List<ItemWrapper>> items;
-
-    /**
      * Location of the chest.
      */
     private final Argument<Location> loc;
 
     /**
+     * Items that should be in the chest.
+     */
+    private final Argument<List<ItemWrapper>> items;
+
+    /**
      * Constructor of the ChestItemCondition.
      *
-     * @param items items that should be in the chest
      * @param loc   location of the chest
+     * @param items items that should be in the chest
      */
     public ChestItemCondition(final Argument<Location> loc, final Argument<List<ItemWrapper>> items) {
-        this.items = items;
         this.loc = loc;
+        this.items = items;
     }
 
     @Override

@@ -22,7 +22,7 @@ public class DropEvent implements NullableEvent {
     private final Argument<List<ItemWrapper>> items;
 
     /**
-     * Location to drop the items at.
+     * The location to drop the items at.
      */
     private final Argument<Location> location;
 

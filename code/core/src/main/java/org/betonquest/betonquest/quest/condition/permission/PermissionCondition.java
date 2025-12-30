@@ -18,7 +18,7 @@ public class PermissionCondition implements OnlineCondition {
     /**
      * Creates a new permission condition.
      *
-     * @param permission The permission to check for.
+     * @param permission the permission to check for
      */
     public PermissionCondition(final Argument<String> permission) {
         this.permission = permission;

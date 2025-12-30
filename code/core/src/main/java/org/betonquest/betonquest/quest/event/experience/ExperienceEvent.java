@@ -24,7 +24,7 @@ public class ExperienceEvent implements OnlineEvent {
      * Creates a new experience event.
      *
      * @param experienceModification the modification to apply
-     * @param amount                 the amount of experience
+     * @param amount                 the amount of experience or level
      */
     public ExperienceEvent(final ExperienceModification experienceModification, final Argument<Number> amount) {
         this.experienceModification = experienceModification;

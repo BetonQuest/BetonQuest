@@ -13,31 +13,31 @@ import org.jetbrains.annotations.Nullable;
 public class LogEvent implements NullableEvent {
 
     /**
-     * Message to log.
-     */
-    private final Argument<String> message;
-
-    /**
-     * Logger to use.
+     * The logger used for logging messages.
      */
     private final BetonQuestLogger logger;
 
     /**
-     * Level to log the message at.
+     * The level to log the message at.
      */
     private final Argument<LogEventLevel> level;
 
     /**
+     * The message that should be printed to the server log.
+     */
+    private final Argument<String> message;
+
+    /**
      * Create a new {@link LogEvent}.
      *
-     * @param logger  logger used for logging messages.
-     * @param level   level to log the message at.
-     * @param message message that should be printed to the server log.
+     * @param logger  the logger used for logging messages
+     * @param level   the level to log the message at
+     * @param message the message that should be printed to the server log
      */
     public LogEvent(final BetonQuestLogger logger, final Argument<LogEventLevel> level, final Argument<String> message) {
         this.logger = logger;
-        this.message = message;
         this.level = level;
+        this.message = message;
     }
 
     @Override

@@ -14,7 +14,7 @@ import org.betonquest.betonquest.id.JournalEntryID;
 public class JournalCondition implements OnlineCondition {
 
     /**
-     * Storage for player data.
+     * The storage providing player data.
      */
     private final PlayerDataStorage dataStorage;
 

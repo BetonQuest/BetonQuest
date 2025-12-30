@@ -33,27 +33,27 @@ public class ObjectiveEvent implements NullableEvent {
     private final BetonQuestLogger log;
 
     /**
-     * The quest package.
-     */
-    private final QuestPackage questPackage;
-
-    /**
      * The BetonQuest instance.
      */
     private final BetonQuest betonQuest;
 
     /**
-     * All objectives affected by this event.
-     */
-    private final Argument<List<ObjectiveID>> objectives;
-
-    /**
-     * API for starting objectives.
+     * The quest type api instance.
      */
     private final QuestTypeApi questTypeApi;
 
     /**
-     * Factory to create new Player Data.
+     * The quest package.
+     */
+    private final QuestPackage questPackage;
+
+    /**
+     * The objectives to affect.
+     */
+    private final Argument<List<ObjectiveID>> objectives;
+
+    /**
+     * The factory to create player data.
      */
     private final PlayerDataFactory playerDataFactory;
 
@@ -65,22 +65,23 @@ public class ObjectiveEvent implements NullableEvent {
     /**
      * Creates a new ObjectiveEvent.
      *
-     * @param betonQuest        the BetonQuest instance
-     * @param questTypeApi      the class for starting objectives
      * @param log               the logger
-     * @param questPackage      the quest package of the instruction
+     * @param betonQuest        the BetonQuest instance
+     * @param questTypeApi      the quest type api instance
+     * @param questPackage      the quest package
      * @param objectives        the objectives to affect
      * @param playerDataFactory the factory to create player data
      * @param action            the action to do with the objectives
      * @throws QuestException if the action is invalid
      */
-    public ObjectiveEvent(final BetonQuest betonQuest, final BetonQuestLogger log, final QuestTypeApi questTypeApi,
-                          final QuestPackage questPackage, final Argument<List<ObjectiveID>> objectives, final PlayerDataFactory playerDataFactory, final String action) throws QuestException {
+    public ObjectiveEvent(final BetonQuestLogger log, final BetonQuest betonQuest, final QuestTypeApi questTypeApi,
+                          final QuestPackage questPackage, final Argument<List<ObjectiveID>> objectives,
+                          final PlayerDataFactory playerDataFactory, final String action) throws QuestException {
         this.log = log;
-        this.questPackage = questPackage;
         this.betonQuest = betonQuest;
-        this.objectives = objectives;
         this.questTypeApi = questTypeApi;
+        this.questPackage = questPackage;
+        this.objectives = objectives;
         this.playerDataFactory = playerDataFactory;
         if (!Arrays.asList("start", "add", "delete", "remove", "complete", "finish").contains(action)) {
             throw new QuestException("Invalid action: " + action);

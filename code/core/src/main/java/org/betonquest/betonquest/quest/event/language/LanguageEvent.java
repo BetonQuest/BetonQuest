@@ -17,7 +17,7 @@ public class LanguageEvent implements PlayerEvent {
     private final Argument<String> language;
 
     /**
-     * Storage for player data.
+     * The storage providing player data.
      */
     private final PlayerDataStorage dataStorage;
 

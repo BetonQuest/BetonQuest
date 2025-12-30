@@ -19,7 +19,7 @@ public class GameModeCondition implements OnlineCondition {
     /**
      * Creates a new game mode condition.
      *
-     * @param gameMode The game mode to check for.
+     * @param gameMode the game mode to check for
      */
     public GameModeCondition(final Argument<GameMode> gameMode) {
         this.gameMode = gameMode;

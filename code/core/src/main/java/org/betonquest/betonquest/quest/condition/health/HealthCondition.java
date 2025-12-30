@@ -18,7 +18,7 @@ public class HealthCondition implements OnlineCondition {
     /**
      * Creates a new health condition.
      *
-     * @param health The health value
+     * @param health the health value
      */
     public HealthCondition(final Argument<Number> health) {
         this.health = health;

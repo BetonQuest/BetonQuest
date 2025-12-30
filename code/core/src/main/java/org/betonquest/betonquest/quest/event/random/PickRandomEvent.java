@@ -27,7 +27,7 @@ public class PickRandomEvent implements NullableEvent {
     private final Argument<Number> amount;
 
     /**
-     * Quest Type API.
+     * The Quest Type API.
      */
     private final QuestTypeApi questTypeApi;
 

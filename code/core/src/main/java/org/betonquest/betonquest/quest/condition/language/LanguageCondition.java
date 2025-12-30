@@ -25,7 +25,7 @@ public class LanguageCondition implements PlayerCondition {
     private final LanguageProvider languageProvider;
 
     /**
-     * Set of languages that the player must have selected for the condition to be true.
+     * The set of languages that the player must have selected for the condition to be true.
      */
     private final Argument<List<String>> expectedLanguages;
 
@@ -34,7 +34,7 @@ public class LanguageCondition implements PlayerCondition {
      *
      * @param dataStorage       the stored for the required player data
      * @param languageProvider  the language provider to get the default language
-     * @param expectedLanguages the languages that the player must have selected
+     * @param expectedLanguages the set of languages that the player must have selected for the condition to be true
      */
     public LanguageCondition(final PlayerDataStorage dataStorage, final LanguageProvider languageProvider,
                              final Argument<List<String>> expectedLanguages) {

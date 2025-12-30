@@ -36,7 +36,7 @@ public class PointEvent implements PlayerEvent {
     private final PointType pointType;
 
     /**
-     * Storage for player data.
+     * The storage providing player data.
      */
     private final PlayerDataStorage dataStorage;
 
@@ -46,7 +46,7 @@ public class PointEvent implements PlayerEvent {
      * @param pointSender the notification sender to use
      * @param category    the category name
      * @param count       the count
-     * @param pointType   the point type
+     * @param pointType   the point type, how the points should be modified.
      * @param dataStorage the storage providing player data
      */
     public PointEvent(final NotificationSender pointSender, final Argument<String> category, final Argument<Number> count,

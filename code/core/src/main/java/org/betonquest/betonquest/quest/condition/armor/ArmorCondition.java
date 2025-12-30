@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 public class ArmorCondition implements OnlineCondition {
 
     /**
-     * Armor to check.
+     * The armor item.
      */
     private final Argument<ItemWrapper> armorItem;
 

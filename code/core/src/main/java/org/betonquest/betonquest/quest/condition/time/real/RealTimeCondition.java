@@ -21,7 +21,7 @@ public class RealTimeCondition implements PlayerlessCondition {
     /**
      * Creates a new RealTimeCondition.
      *
-     * @param timeFrame the time frame
+     * @param timeFrame the time frame in which the time should be
      */
     public RealTimeCondition(final Argument<TimeFrame> timeFrame) {
         this.timeFrame = timeFrame;

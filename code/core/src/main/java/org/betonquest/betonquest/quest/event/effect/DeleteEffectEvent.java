@@ -15,7 +15,7 @@ import java.util.List;
 public class DeleteEffectEvent implements OnlineEvent {
 
     /**
-     * The effects to delete.
+     * The effects to delete or an empty list to delete all effects.
      */
     private final Argument<List<PotionEffectType>> effects;
 

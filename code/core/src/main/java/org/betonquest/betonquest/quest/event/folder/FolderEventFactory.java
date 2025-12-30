@@ -82,8 +82,7 @@ public class FolderEventFactory implements PlayerEventFactory, PlayerlessEventFa
         final Argument<List<ConditionID>> cancelConditions = instruction.parse(ConditionID::new)
                 .list().get("cancelConditions", Collections.emptyList());
         return new NullableEventAdapter(new FolderEvent(betonQuest, loggerFactory.create(FolderEvent.class), pluginManager,
-                events,
-                questTypeApi, new Random(), delay, period, random, timeUnit, cancelOnLogout, cancelConditions));
+                questTypeApi, new Random(), events, delay, period, random, timeUnit, cancelOnLogout, cancelConditions));
     }
 
     private TimeUnit getTimeUnit(final String input) throws QuestException {

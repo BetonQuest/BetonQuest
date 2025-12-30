@@ -22,7 +22,7 @@ public class RideCondition implements OnlineCondition {
     /**
      * Creates a new ride condition. If the entity type is null, any entity will match.
      *
-     * @param vehicle the entity type to match
+     * @param vehicle the entity type to match or an empty optional if any entity is allowed
      */
     public RideCondition(final Argument<Optional<EntityType>> vehicle) {
         this.vehicle = vehicle;

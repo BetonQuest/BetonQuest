@@ -20,15 +20,15 @@ public class TimeCondition implements NullableCondition {
     private final Argument<TimeFrame> timeFrame;
 
     /**
-     * The variable world.
+     * The world.
      */
     private final Argument<World> world;
 
     /**
      * Creates a new TimeCondition.
      *
-     * @param timeFrame the time frame
-     * @param world     the variable world
+     * @param timeFrame the time frame in which the time should be
+     * @param world     the world
      */
     public TimeCondition(final Argument<TimeFrame> timeFrame, final Argument<World> world) {
         this.timeFrame = timeFrame;

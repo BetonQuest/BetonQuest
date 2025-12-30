@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.util.Utils;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
@@ -22,7 +21,7 @@ import java.util.stream.Collectors;
 public class PartyEvent implements OnlineEvent {
 
     /**
-     * Quest Type API.
+     * The Quest Type API.
      */
     private final QuestTypeApi questTypeApi;
 
@@ -37,9 +36,8 @@ public class PartyEvent implements OnlineEvent {
     private final Argument<Number> range;
 
     /**
-     * The optional maximum amount of players affected by this party event.
+     * The maximum amount of players affected by this party event or a negative value for no maximum.
      */
-    @Nullable
     private final Argument<Number> amount;
 
     /**
@@ -58,13 +56,13 @@ public class PartyEvent implements OnlineEvent {
      * @param questTypeApi    the Quest Type API
      * @param profileProvider the profile provider instance
      * @param range           the range of the party
-     * @param amount          the optional maximum amount of players affected by this party,
-     *                        null or negative values sets no maximum amount
+     * @param amount          the maximum amount of players affected by this party event or a negative value for no maximum
      * @param conditions      the conditions that must be met by the party members
      * @param events          the events to fire
      */
-    public PartyEvent(final QuestTypeApi questTypeApi, final ProfileProvider profileProvider, final Argument<Number> range,
-                      @Nullable final Argument<Number> amount, final Argument<List<ConditionID>> conditions, final Argument<List<EventID>> events) {
+    public PartyEvent(final QuestTypeApi questTypeApi, final ProfileProvider profileProvider,
+                      final Argument<Number> range, final Argument<Number> amount,
+                      final Argument<List<ConditionID>> conditions, final Argument<List<EventID>> events) {
         this.questTypeApi = questTypeApi;
         this.profileProvider = profileProvider;
         this.range = range;

@@ -40,29 +40,29 @@ public class ItemDurabilityEvent implements OnlineEvent {
     private final Argument<Number> amount;
 
     /**
-     * To ignore {@link ItemMeta#isUnbreakable()} and {@link Enchantment#DURABILITY}.
+     * Whether if the enchantment and tag should be ignored or respected.
      */
     private final FlagArgument<Boolean> ignoreUnbreakable;
 
     /**
-     * To ignore bukkit event logic.
+     * Whether the bukkit events should be ignored or called.
      */
     private final FlagArgument<Boolean> ignoreEvents;
 
     /**
-     * The random instance to use.
+     * The random instance to use for the durability calculation.
      */
     private final Random random;
 
     /**
      * Creates a new item durability event.
      *
-     * @param slot              of the item
-     * @param modification      on the durability
-     * @param amount            argument of the modification
+     * @param slot              the slot to target
+     * @param modification      the point type, how the durability should be modified
+     * @param amount            the amount of the modification
      * @param ignoreUnbreakable whether if the enchantment and tag should be ignored or respected
      * @param ignoreEvents      whether the bukkit events should be ignored or called
-     * @param random            to use for the durability calculation
+     * @param random            the random instance to use for the durability calculation
      */
     public ItemDurabilityEvent(final Argument<EquipmentSlot> slot, final Argument<PointType> modification,
                                final Argument<Number> amount, final FlagArgument<Boolean> ignoreUnbreakable,

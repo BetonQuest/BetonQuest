@@ -17,12 +17,12 @@ import org.jetbrains.annotations.Nullable;
 public class BlockCondition implements NullableCondition {
 
     /**
-     * Location to test for the block.
+     * The location to test for the block.
      */
     private final Argument<Location> loc;
 
     /**
-     * Selector to validate the block.
+     * The selector to validate the block.
      */
     private final Argument<BlockSelector> selector;
 

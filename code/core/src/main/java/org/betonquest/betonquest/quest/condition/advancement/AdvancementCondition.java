@@ -13,7 +13,7 @@ import org.bukkit.advancement.AdvancementProgress;
 public class AdvancementCondition implements OnlineCondition {
 
     /**
-     * Advancement which is required.
+     * The required advancement.
      */
     private final Argument<Advancement> advancement;
 

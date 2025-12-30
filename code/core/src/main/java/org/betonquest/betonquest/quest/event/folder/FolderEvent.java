@@ -46,14 +46,19 @@ public class FolderEvent implements NullableEvent {
     private final PluginManager pluginManager;
 
     /**
-     * Quest Type API.
+     * The Quest Type API.
      */
     private final QuestTypeApi questTypeApi;
 
     /**
-     * Random generator used to choose events to run.
+     * The random instance to use.
      */
     private final Random randomGenerator;
+
+    /**
+     * The events to run.
+     */
+    private final Argument<List<EventID>> events;
 
     /**
      * The delay to apply before running the events.
@@ -74,11 +79,6 @@ public class FolderEvent implements NullableEvent {
     private final Argument<Number> random;
 
     /**
-     * The events to run.
-     */
-    private final Argument<List<EventID>> events;
-
-    /**
      * The time unit to use for the delay and period.
      */
     private final Argument<TimeUnit> timeUnit;
@@ -97,21 +97,21 @@ public class FolderEvent implements NullableEvent {
      * Create a folder event with the given parameters.
      *
      * @param betonQuest       the BetonQuest instance
-     * @param log              custom logger for this class
+     * @param log              the custom logger for this class
      * @param pluginManager    the plugin manager to register the quit listener
-     * @param events           events to run
      * @param questTypeApi     the Quest Type API
      * @param randomGenerator  the random instance to use
-     * @param delay            delay to apply before running the events
-     * @param period           delay to apply between each event
-     * @param random           number of events to run
-     * @param timeUnit         time unit to use for the delay and period
+     * @param events           the events to run
+     * @param delay            the delay to apply before running the events
+     * @param period           the delay to apply between each event
+     * @param random           the number of events to run
+     * @param timeUnit         the time unit to use for the delay and period
      * @param cancelOnLogout   whether the event should be canceled on logout
      * @param cancelConditions conditions to check if the event should be canceled
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public FolderEvent(final BetonQuest betonQuest, final BetonQuestLogger log, final PluginManager pluginManager,
-                       final Argument<List<EventID>> events, final QuestTypeApi questTypeApi, final Random randomGenerator,
+                       final QuestTypeApi questTypeApi, final Random randomGenerator, final Argument<List<EventID>> events,
                        @Nullable final Argument<Number> delay, @Nullable final Argument<Number> period,
                        @Nullable final Argument<Number> random, final Argument<TimeUnit> timeUnit,
                        final FlagArgument<Boolean> cancelOnLogout, final Argument<List<ConditionID>> cancelConditions) {
@@ -120,10 +120,10 @@ public class FolderEvent implements NullableEvent {
         this.pluginManager = pluginManager;
         this.questTypeApi = questTypeApi;
         this.randomGenerator = randomGenerator;
+        this.events = events;
         this.delay = delay;
         this.period = period;
         this.random = random;
-        this.events = events;
         this.timeUnit = timeUnit;
         this.cancelOnLogout = cancelOnLogout;
         this.cancelConditions = cancelConditions;

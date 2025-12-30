@@ -12,14 +12,14 @@ import org.betonquest.betonquest.id.JournalEntryID;
 public class RemoveEntryJournalChanger implements JournalChanger {
 
     /**
-     * Entry to remove from the journal.
+     * The journal entry to remove.
      */
     private final Argument<JournalEntryID> entryID;
 
     /**
      * Create the entry-removing journal changer.
      *
-     * @param entryID entry to remove
+     * @param entryID the journal entry to remove
      */
     public RemoveEntryJournalChanger(final Argument<JournalEntryID> entryID) {
         this.entryID = entryID;

@@ -14,7 +14,7 @@ import org.betonquest.betonquest.id.QuestCancelerID;
 public class CancelEvent implements OnlineEvent {
 
     /**
-     * Feature API.
+     * The feature API.
      */
     private final FeatureApi featureApi;
 

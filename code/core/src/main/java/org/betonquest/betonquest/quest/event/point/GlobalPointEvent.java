@@ -41,7 +41,7 @@ public class GlobalPointEvent implements NullableEvent {
      * @param globalData the global data
      * @param category   the category name
      * @param count      the count
-     * @param pointType  the point type
+     * @param pointType  the point type, how the points should be modified
      */
     public GlobalPointEvent(final GlobalData globalData, final Argument<String> category, final Argument<Number> count, final PointType pointType) {
         this.globalData = globalData;

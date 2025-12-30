@@ -22,12 +22,12 @@ import org.bukkit.Location;
 public class CompassEvent implements PlayerEvent {
 
     /**
-     * Feature API.
+     * The Feature API.
      */
     private final FeatureApi featureApi;
 
     /**
-     * Storage to get the offline player data.
+     * The storage to get the offline player data.
      */
     private final PlayerDataStorage dataStorage;
 
@@ -46,8 +46,8 @@ public class CompassEvent implements PlayerEvent {
      *
      * @param featureApi the Feature API
      * @param storage    the storage to get the offline player data
-     * @param action     the action to perform
-     * @param compassId  the compass point
+     * @param action     the action to perform on the compass
+     * @param compassId  the compass point to set
      */
     public CompassEvent(final FeatureApi featureApi, final PlayerDataStorage storage,
                         final Argument<CompassTargetAction> action, final Argument<CompassID> compassId) {

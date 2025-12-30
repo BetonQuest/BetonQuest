@@ -15,7 +15,7 @@ import java.util.Optional;
 public class PointCondition implements PlayerCondition {
 
     /**
-     * Storage for player data.
+     * The storage providing player data.
      */
     private final PlayerDataStorage dataStorage;
 

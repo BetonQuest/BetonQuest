@@ -18,12 +18,12 @@ import org.betonquest.betonquest.id.JournalEntryID;
 public class DeleteJournalPlayerlessEvent implements PlayerlessEvent {
 
     /**
-     * Storage for player data.
+     * The storage providing player data.
      */
     private final PlayerDataStorage dataStorage;
 
     /**
-     * Database saver to use for writing offline player data.
+     * The database saver to use for writing offline player data.
      */
     private final Saver saver;
 
@@ -33,7 +33,7 @@ public class DeleteJournalPlayerlessEvent implements PlayerlessEvent {
     private final ProfileProvider profileProvider;
 
     /**
-     * Point category to remove.
+     * The journal entry to remove.
      */
     private final Argument<JournalEntryID> entryID;
 
@@ -41,9 +41,9 @@ public class DeleteJournalPlayerlessEvent implements PlayerlessEvent {
      * Create a new Journal remove event for every player, online and offline.
      *
      * @param dataStorage     the storage providing player data
-     * @param saver           the saver to use
+     * @param saver           the database saver to use for writing offline player data
      * @param profileProvider the profile provider instance
-     * @param entryID         the entry to remove
+     * @param entryID         the journal entry to remove
      */
     public DeleteJournalPlayerlessEvent(final PlayerDataStorage dataStorage, final Saver saver, final ProfileProvider profileProvider,
                                         final Argument<JournalEntryID> entryID) {

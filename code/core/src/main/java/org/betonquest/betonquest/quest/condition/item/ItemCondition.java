@@ -18,14 +18,14 @@ import java.util.stream.Stream;
 public class ItemCondition implements OnlineCondition {
 
     /**
-     * Storage for player data.
-     */
-    private final PlayerDataStorage dataStorage;
-
-    /**
      * The items to check for.
      */
     private final Argument<List<ItemWrapper>> items;
+
+    /**
+     * The storage providing player data.
+     */
+    private final PlayerDataStorage dataStorage;
 
     /**
      * Create a new item condition.

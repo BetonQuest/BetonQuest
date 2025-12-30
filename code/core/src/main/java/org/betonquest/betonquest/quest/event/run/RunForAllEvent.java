@@ -26,17 +26,17 @@ public class RunForAllEvent implements PlayerlessEvent {
     private final Supplier<? extends Iterable<? extends Profile>> profileCollectionSupplier;
 
     /**
-     * Quest Type API.
+     * The Quest Type API.
      */
     private final QuestTypeApi questTypeApi;
 
     /**
-     * List of Events to run.
+     * The list of events to run.
      */
     private final Argument<List<EventID>> events;
 
     /**
-     * List of conditions each profile must meet to run the events.
+     * The conditions each profile must meet to run the events.
      */
     private final Argument<List<ConditionID>> conditions;
 
@@ -45,7 +45,7 @@ public class RunForAllEvent implements PlayerlessEvent {
      *
      * @param profileCollectionSupplier the supplier for generating the profiles
      * @param questTypeApi              the Quest Type API
-     * @param events                    the events to run
+     * @param events                    the list of events to run
      * @param conditions                the conditions each profile must meet to run the events
      */
     public RunForAllEvent(final Supplier<? extends Iterable<? extends Profile>> profileCollectionSupplier,

@@ -11,14 +11,14 @@ import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 public class BurnEvent implements OnlineEvent {
 
     /**
-     * Duration of the burn effect.
+     * The duration of the burn effect.
      */
     private final Argument<Number> duration;
 
     /**
      * Create a burn event that sets the player on fire for the given duration.
      *
-     * @param duration duration of burn
+     * @param duration the duration of the burn effect
      */
     public BurnEvent(final Argument<Number> duration) {
         this.duration = duration;
