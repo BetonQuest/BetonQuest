@@ -92,7 +92,11 @@ public class DefaultEventListenerGroup<T extends Event> implements EventListener
 
     @Override
     public EventServiceSubscriber<T> subscribe(final EventPriority priority, final boolean ignoreCancelled, final EventServiceSubscriber<T> subscriber) {
-        final List<EventServiceSubscriber<T>> subscriberList = subscribers.computeIfAbsent(priority, p -> new ArrayList<>());
+        final List<EventServiceSubscriber<T>> subscriberList = subscribers.get(priority);
+        if (subscriberList == null) {
+            throw new IllegalStateException("Cannot subscribe to event %s and priority %s. No listener registered."
+                    .formatted(eventClass.getSimpleName(), priority.name()));
+        }
         if (ignoreCancelled) {
             final EventServiceSubscriber<T> decoratedSubscriber = (event, prio) -> {
                 if (event instanceof final Cancellable cancellable && cancellable.isCancelled()) {

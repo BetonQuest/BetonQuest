@@ -4,115 +4,119 @@ import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import org.betonquest.betonquest.api.QuestException;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.EventExecutor;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-/**
- * Test {@link DefaultProxyListener}.
- */
 @ExtendWith(MockitoExtension.class)
 class DefaultProxyListenerTest {
 
-    /**
-     * Create an empty listener.
-     *
-     * @return an empty listener
-     */
+    @Mock
+    private static Plugin plugin;
+
     private static Listener empty() {
         return new Listener() {
         };
     }
 
-    /**
-     * Create an event executor that calls the given consumer.
-     *
-     * @param consumer the consumer to call with an event
-     * @return the event executor
-     */
     private static EventExecutor executor(final Consumer<Event> consumer) {
         return (listener, event) -> consumer.accept(event);
     }
 
-    /**
-     * Create a registered listener with an empty listener and an empty event executor.
-     *
-     * @param plugin the plugin to register the listener with
-     * @return the registered listener
-     */
     private static RegisteredListener empty(final Plugin plugin) {
         return new RegisteredListener(empty(), executor(e -> {
         }), EventPriority.NORMAL, plugin, false);
     }
 
-    /**
-     * Test creating a proxy listener with a poor event.
-     *
-     * @param plugin a mocked plugin instance
-     */
     @Test
-    void testCreateProxyListenerWithPoorEvent(@Mock final Plugin plugin) {
+    void poor_event_test() {
         assertThrows(QuestException.class, () -> new DefaultProxyListener<>(Event.class, empty(plugin)),
                 "Creating a proxy listener with a poor event should fail");
     }
 
-    /**
-     * Test creating a proxy listener with a handler list extraction.
-     *
-     * @param plugin a mocked plugin instance
-     */
-    @Test
-    void testCreateProxyListenerWithHandlerListExtraction(@Mock final Plugin plugin) throws QuestException {
-        final DefaultProxyListener<PlayerJumpEvent> event = new DefaultProxyListener<>(PlayerJumpEvent.class, empty(plugin));
-        assertNotNull(event, "Event should not be null");
-        assertEquals(PlayerJumpEvent.class, event.getEventType(), "Event type should be PlayerJumpEvent");
-    }
+    @Nested
+    class with_listener {
 
-    /**
-     * Test creating a proxy listener with a handler list extraction.
-     *
-     * @param plugin a mocked plugin instance
-     */
-    @Test
-    void testCreateProxyListenerWithHandlerListExtraction2(@Mock final Plugin plugin) throws QuestException {
-        final DefaultProxyListener<PlayerJumpEvent> event = new DefaultProxyListener<>(PlayerJumpEvent.class, empty(plugin));
-        assertNotNull(event.handlerList, "Event's HandlerList should not be null");
-        assertEquals(PlayerJumpEvent.getHandlerList(), event.handlerList, "Event's HandlerList should be the same as PlayerJumpEvent's");
-    }
+        private static MockedStatic<PlayerJumpEvent> mockedStatic;
 
-    /**
-     * Test registering a proxy listener.
-     *
-     * @param plugin a mocked plugin instance
-     */
-    @Test
-    void testProxyListenerHandlerListRegistration(@Mock final Plugin plugin) throws QuestException {
-        final DefaultProxyListener<PlayerJumpEvent> event = new DefaultProxyListener<>(PlayerJumpEvent.class, empty(plugin));
-        assertFalse(event.isRegistered(), "Event should not be registered yet");
-        event.register();
-        assertTrue(event.isRegistered(), "Event should be registered");
-    }
+        private DefaultProxyListener<PlayerJumpEvent> proxyListener;
 
-    /**
-     * Test deregistering a proxy listener.
-     *
-     * @param plugin a mocked plugin instance
-     */
-    @Test
-    void testProxyListenerHandlerListDeregistration(@Mock final Plugin plugin) throws QuestException {
-        final DefaultProxyListener<PlayerJumpEvent> event = new DefaultProxyListener<>(PlayerJumpEvent.class, empty(plugin));
-        event.register();
-        assertTrue(event.isRegistered(), "Event should be registered");
-        event.unregister();
-        assertFalse(event.isRegistered(), "Event should not be registered anymore");
+        @BeforeAll
+        static void setupBeforeAll() {
+            mockedStatic = mockStatic(PlayerJumpEvent.class);
+        }
+
+        @AfterAll
+        static void teardown() {
+            mockedStatic.close();
+        }
+
+        @BeforeEach
+        void setup() throws QuestException {
+            mockedStatic.when(PlayerJumpEvent::getHandlerList).thenReturn(spy(new HandlerList()));
+            proxyListener = spy(new DefaultProxyListener<>(PlayerJumpEvent.class, empty(plugin)));
+        }
+
+        @Test
+        void event_class_extraction() throws QuestException {
+            assertNotNull(proxyListener, "Event should not be null");
+            assertEquals(PlayerJumpEvent.class, proxyListener.getEventType(), "Event type should be PlayerJumpEvent");
+        }
+
+        @Test
+        void handler_list_extraction() {
+            assertNotNull(proxyListener.handlerList, "Event's HandlerList should not be null");
+            assertEquals(PlayerJumpEvent.getHandlerList(), proxyListener.handlerList, "Event's HandlerList should be the same as PlayerJumpEvent's");
+        }
+
+        @Test
+        void handler_list_register_calls() {
+            verify(proxyListener.handlerList, never()).register(any());
+            verify(proxyListener.handlerList, never()).bake();
+            proxyListener.register();
+            verify(proxyListener.handlerList, times(1)).register(any());
+            verify(proxyListener.handlerList, times(1)).bake();
+        }
+
+        @Test
+        void handler_list_unregister_calls() {
+            proxyListener.register();
+            verify(proxyListener.handlerList, never()).unregister((RegisteredListener) any());
+            verify(proxyListener.handlerList, times(1)).bake();
+            proxyListener.unregister();
+            verify(proxyListener.handlerList, times(1)).unregister((RegisteredListener) any());
+            verify(proxyListener.handlerList, times(2)).bake();
+        }
+
+        @Test
+        void register() throws QuestException {
+            assertFalse(proxyListener.isRegistered(), "Event should not be registered yet");
+            proxyListener.register();
+            assertTrue(proxyListener.isRegistered(), "Event should be registered");
+        }
+
+        @Test
+        void unregister() throws QuestException {
+            proxyListener.register();
+            assertTrue(proxyListener.isRegistered(), "Event should be registered");
+            proxyListener.unregister();
+            assertFalse(proxyListener.isRegistered(), "Event should not be registered anymore");
+        }
     }
 }

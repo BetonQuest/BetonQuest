@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.RegisteredListener;
+import org.jetbrains.annotations.VisibleForTesting;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -18,7 +19,8 @@ public class DefaultProxyListener<T extends Event> implements ProxyListener<T> {
     /**
      * The handler list of the event.
      */
-    protected final HandlerList handlerList;
+    @VisibleForTesting
+    final HandlerList handlerList;
 
     /**
      * The event class type.
