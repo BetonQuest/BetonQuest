@@ -236,7 +236,7 @@ options by jumping (++space++ by default).
 
 @snippet:tutorials:download-solution@
     ```
-    /q download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Basics/Conversations/2-FullExample /tutorialQuest overwrite
+    /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Basics/Conversations/2-FullExample /tutorialQuest overwrite
     ```
 
 ## Summary

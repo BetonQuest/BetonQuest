@@ -101,7 +101,7 @@ public final class HandlerFactory {
         } catch (final IOException e) {
             throw new IOException("Could not create the FileHandler for the DebugLogger! "
                     + "It was not possible to create the '" + logFile.getName() + "'. Reason: " + e.getMessage() + "\n"
-                    + "This is not a critical error, the server can still run, but it is not possible to use the '/q debug true' command.", e);
+                    + "This is not a critical error, the server can still run, but it is not possible to use the '/bq debug true' command.", e);
         }
     }
 

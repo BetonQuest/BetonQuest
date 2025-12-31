@@ -23,7 +23,7 @@ to be aware of. Alternatively you can install updated manual by your self.
 Read the [updater](../Plugin-Config.md#updater-the-updater-settings) section to correctly set up the Auto-Updater.
 
 For a production/live system it is recommended to [disable automatic updates](#enable-or-disable-automatic-updates)
-and to check out the [CHANGELOG](../../CHANGELOG.md) before you execute `/q update` for manual updates.
+and to check out the [CHANGELOG](../../CHANGELOG.md) before you execute `/bq update` for manual updates.
 
 !!! warning "Updating BetonQuest"
     If you update BetonQuest from a previous Major version you should check what you need to update manually.
@@ -71,7 +71,7 @@ confirmation. Having automatic updates enabled is handy for `PATCH` and `MINOR` 
 Automatic updates for any `_DEV` version are dangerous as these can contain very severe bugs. Only use this for test
 servers.
 
-Disabling automatic updates still allows the use of `/q update`!
+Disabling automatic updates still allows the use of `/bq update`!
 
 ## Backups and Restoring
 ### Creating Backups

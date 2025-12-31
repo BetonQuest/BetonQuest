@@ -89,7 +89,7 @@ If there are no possible options for player or NPC (either from not meeting any 
 conversations ends. If the conversation ends unexpectedly, check the console - it could be an error in the configuration.
 
 This can and will be a little confusing, so you should name your options, conditions and events in a way which you will
-understand in the future. Don't worry though, if you make some mistake in configuration, the plugin will tell you this when running `/q reload`.
+understand in the future. Don't worry though, if you make some mistake in configuration, the plugin will tell you this when running `/bq reload`.
 
 
 ## Binding Conversations to NPCs
