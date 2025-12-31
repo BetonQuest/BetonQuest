@@ -63,7 +63,7 @@ The server must be restarted to unregister command tab completions.
 * `/cancelquest` - `bcq`, `bcq`, `bcancelquest`, `betoncancelquest`, `betonquestcancelquest`
 * `/questlang` - `ql`
 
-* `/betonquest` - `bquest`, `bquests`, `betonquests`, `quest`, `quests`
+* `/betonquest` - `bq`, `bquest`, `bquests`, `betonquests`, `quest`, `quests`
     * `version` - `v`, `ver`
     * `condition` - `c`, `conditions`
     * `event` - `e`, `events`
@@ -83,7 +83,7 @@ The server must be restarted to unregister command tab completions.
 ## Permissions
 
 * `betonquest.conversation` - allows talking with NPCs (default for players)
-* `betonquest.journal` - allows using /bjcommand (default for players)
+* `betonquest.journal` - allows using /bj command (default for players)
 * `betonquest.backpack` - allows using /backpack command (default for players)
 * `betonquest.compass` - allows using /compass command (default for players)
 * `betonquest.cancelquest` - allows using /cancelquest command (default for players)
