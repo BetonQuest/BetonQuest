@@ -48,27 +48,12 @@ In case you also forked the Quest-Tutorials repository, you should also add a re
 With that setup, you should always automatically be in the remote branch of Quest-Tutorials you are in BetonQuest.
 
 ## IntelliJ settings
-Formatting for .md (Markdown) files can break some features of
-[Material for MkDocs](https://squidfunk.github.io/mkdocs-material), so we disable it for these files.
-Go to `File/Settings/Editor/Code Style` then go to the `Formatter` tab and add `*.md` to the `Do not format:` field.
-
 In IntelliJ go to `File/Settings/Tools/Actions on Save` and check the following entries:
 
 - Reformat code - Whole file
 - Optimize imports
 - Rearrange code
 - Run code cleanup
-
-In `File/Settings/Editor/Code Style/Java` navigate to the `Imports` tab.
-You will now configure when to use star imports, in general we don't want them at all, but there are some exceptions.
-Set `Class count to use import with '*':` and `Names count to use static import with '*':` to `9999999`.
-And under `Packages to Use Import with '*'` configure the following:
-
-|           Static           |             Package              |         With Subpackages          |
-|:--------------------------:|:--------------------------------:|:---------------------------------:|
-| :material-checkbox-marked: |   org.mockito.ArgumentMatchers   | :material-checkbox-blank-outline: |
-| :material-checkbox-marked: | org.junit.jupiter.api.Assertions | :material-checkbox-blank-outline: |
-| :material-checkbox-marked: |       org.mockito.Mockito        | :material-checkbox-blank-outline: |
 
 Now we enable some automatic checks, when you commit things, that ensures everything is fine.
 In the `Commit` tab click on the :gear: icon near the `Amend` checkbox. Check the following entries under `Before Commit`:
@@ -116,6 +101,13 @@ change in the future. For now, you can use the Maven Daemon distribution with In
    location of the Maven Daemon distribution. For example `C:\maven\maven-mvnd-1.0.2-windows-amd64\mvn`.
 
 After this setup all the UI actions in IntelliJ will use the Maven Daemon distribution.
+
+### Maven Mirror in IntelliJ
+Some features of IntelliJ and integrated plugins ignore the project specific `.mvn/settings.xml` file. 
+Since all repositories are listed in our poms, it will work just fine, but configuring it will likely improve the
+project's integration into the IDE.
+To enable it, navigate to `File/Settings/Build, Execution, Deployment/Build Tools/Maven` and override the
+`User settings file` with the path to your project's `.mvn/settings.xml`.
 
 ## Building the Documentation
 Make sure [Python3](https://www.python.org/downloads/) is installed on your local system
