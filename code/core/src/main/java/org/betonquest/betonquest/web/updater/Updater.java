@@ -133,7 +133,7 @@ public class Updater {
         final String automatic = " automatically installed on the next restart!";
         final String automaticProgress = "it will be downloaded and" + automatic;
         final String automaticDone = "it was downloaded and will be " + automatic;
-        final String command = "it will be installed, if you execute '/q update'!";
+        final String command = "it will be installed, if you execute '/bq update'!";
 
         updateNotification = version + (automaticDownload ? automaticDone : command);
         return version + (automaticDownload ? automaticProgress : command);
@@ -245,7 +245,7 @@ public class Updater {
         if (searchUpdate()) {
             getUpdateNotification(config.isAutomatic());
             throw new QuestException("Update aborted! A newer version was found. New version '"
-                    + getUpdateVersion() + "'! You can execute '/q update' again to update.");
+                    + getUpdateVersion() + "'! You can execute '/bq update' again to update.");
         }
         if (latest.getValue() == null) {
             if (updateDownloader.alreadyDownloaded()) {

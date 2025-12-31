@@ -17,7 +17,7 @@ Only use the three digits(Major, Minor, Patch) to specify versions in files like
 by the build-pipeline.
 
 The officially distributed jar does not contain the version in its name due to limits with the server update mechanism.
-Therefore, it's named `BetonQuest.jar`. The version can only be seen ingame by using `/q version`.
+Therefore, it's named `BetonQuest.jar`. The version can only be seen ingame by using `/bq version`.
 
 ##Releasing
 

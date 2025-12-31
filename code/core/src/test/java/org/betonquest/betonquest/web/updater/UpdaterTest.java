@@ -48,7 +48,7 @@ class UpdaterTest {
             assertEquals("2.0.0-DEV-5", updater.getUpdateVersion(), "Expected versions do not match");
         }
 
-        verify(logger, times(1)).info("Found newer version '2.0.0-DEV-5', it will be installed, if you execute '/q update'!");
+        verify(logger, times(1)).info("Found newer version '2.0.0-DEV-5', it will be installed, if you execute '/bq update'!");
         verifyNoMoreInteractions(logger);
     }
 
@@ -111,7 +111,7 @@ class UpdaterTest {
             inOrder.verify(player, times(1)).sendMessage("§7[§8BetonQuest§7]§r §2...download finished. Restart the server to update the plugin.");
         }
 
-        verify(logger, times(1)).info("Found newer version '2.0.0-DEV-5', it will be installed, if you execute '/q update'!");
+        verify(logger, times(1)).info("Found newer version '2.0.0-DEV-5', it will be installed, if you execute '/bq update'!");
         verify(logger, times(1)).info("Started update to version '2.0.0-DEV-5'...");
         verify(logger, times(1)).info("...download finished. Restart the server to update the plugin.");
         verifyNoMoreInteractions(logger);
@@ -184,7 +184,7 @@ class UpdaterTest {
             verify(handler, times(1)).searchUpdate(any(), any(), any());
         }
 
-        verify(logger, times(1)).info("Found newer version '2.0.0-DEV-5', it will be installed, if you execute '/q update'!");
+        verify(logger, times(1)).info("Found newer version '2.0.0-DEV-5', it will be installed, if you execute '/bq update'!");
         verifyNoMoreInteractions(logger);
     }
 
@@ -246,8 +246,8 @@ class UpdaterTest {
             assertEquals("2.0.0-DEV-6", updater.getUpdateVersion(), "Expected versions do not match");
         }
 
-        verify(logger, times(1)).info("Found newer version '2.0.0-DEV-5', it will be installed, if you execute '/q update'!");
-        verify(logger, times(1)).info("Update aborted! A newer version was found. New version '2.0.0-DEV-6'! You can execute '/q update' again to update.");
+        verify(logger, times(1)).info("Found newer version '2.0.0-DEV-5', it will be installed, if you execute '/bq update'!");
+        verify(logger, times(1)).info("Update aborted! A newer version was found. New version '2.0.0-DEV-6'! You can execute '/bq update' again to update.");
         verify(logger, times(1)).debug(eq("Error while performing update!"), any(QuestException.class));
         verifyNoMoreInteractions(logger);
     }

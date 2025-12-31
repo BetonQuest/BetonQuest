@@ -41,7 +41,7 @@ The updater section controls the plugin's Auto-Updater.
   when a new version is available. They will only be notified once a day without a server restart.
 
 ## `downloader` - The downloader settings
-The command [`/q download`](./Commands-and-Permissions.md) can be used to download quest files from GitHub repositories.
+The command [`/bq download`](./Commands-and-Permissions.md) can be used to download quest files from GitHub repositories.
 This is mainly used by betonquest to download tutorial files.
 
 * `pull_request` - Define if pull requests are allowed to be downloaded.  
@@ -95,7 +95,7 @@ mysql:
 ### Migrating a database from SQLite to MySQL or back
 Follow these few steps to migrate your database easily:
 
-1. Create a backup with **/q backup** command.
+1. Create a backup with **/bq backup** command.
 2. Turn the server off.
 3. Navigate to `BetonQuest/Backups` and extract the file `database-backup.yml` from it.
 4. Place the `database-backup.yml` file inside the plugin's directory.

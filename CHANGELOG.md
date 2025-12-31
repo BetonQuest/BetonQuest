@@ -135,6 +135,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `display_missed` config option, as the `none` interceptor should be used instead
 - legacy multiply with `*` for points
 - dependency PaperLib since its discontinued
+- aliases `/q`, `/j` and `/b` to improve compatibility with other plugins by actively reducing conflicts on command names
 ### Fixed
 - Reloading plugin did not reload Menu config
 - potions generated not extended/upgraded since 2.2.1

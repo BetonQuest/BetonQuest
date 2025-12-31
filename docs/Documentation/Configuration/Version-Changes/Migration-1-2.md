@@ -270,7 +270,7 @@ If you used any of these elements you might have to adjust the configured values
 
 The `smelt` objective now requires a [quest item](../../Features/Items.md) instead of a BlockSelector.
 Therefore, you now need to define the item you want to smelt in the items section.
-It is recommended to use the `/q item packageName>ItemName` command to save the target item from in-game. This will save the
+It is recommended to use the `/bq item packageName>ItemName` command to save the target item from in-game. This will save the
 item you currently hold in your hand to the given package with the given name.
 After you did this, you need to replace the BlockSelector in the `smelt` objective with the item's name. 
 
@@ -510,7 +510,7 @@ npc_holograms:
         use the following command to run the event without a player:
          
         ```
-        /q event - <package>><event>
+        /bq event - <package>><event>
         ```
         The `-` is important, it means run independent :wink:.
 
