@@ -5762,7 +5762,7 @@ It is not possible to obtain the amount of experience points a player has, only 
 <h3 id="200-dev-538-smelt-objective">2.0.0-DEV-538 - Smelt Objective <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /><a class="headerlink" href="#200-dev-538-smelt-objective" title="Permanent link">🔗</a></h3>
 <p>The <code>smelt</code> objective now requires a <a href="../../../Features/Items/">quest item</a> instead of a BlockSelector.
 Therefore, you now need to define the item you want to smelt in the items section.
-It is recommended to use the <code>/q item packageName&gt;ItemName</code> command to save the target item from in-game. This will save the
+It is recommended to use the <code>/bq item packageName&gt;ItemName</code> command to save the target item from in-game. This will save the
 item you currently hold in your hand to the given package with the given name.
 After you did this, you need to replace the BlockSelector in the <code>smelt</code> objective with the item's name. </p>
 <h3 id="200-dev-539-npc-and-non-npc-holograms">2.0.0-DEV-539 - NPC and Non-NPC Holograms <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /><a class="headerlink" href="#200-dev-539-npc-and-non-npc-holograms" title="Permanent link">🔗</a></h3>
@@ -5967,7 +5967,7 @@ Just keep in mind you can only add player dependent conditions if the event is r
 <p class="admonition-title">Tip</p>
 <p>To check if your event still works inside a schedule or if it must be wrapped,
 use the following command to run the event without a player:</p>
-<p><div class="highlight"><pre><span></span><code>/q event - &lt;package&gt;&gt;&lt;event&gt;
+<p><div class="highlight"><pre><span></span><code>/bq event - &lt;package&gt;&gt;&lt;event&gt;
 </code></pre></div>
 The <code>-</code> is important, it means run independent <img alt="😉" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f609.svg" title=":wink:" />.</p>
 </div>

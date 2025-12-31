@@ -5792,35 +5792,35 @@ Arguments referring to a package are prefixed in the format <code>package&gt;</c
   <code>default</code> will use the language defined in the "<em>config.yml</em>" file.</p>
 </li>
 <li>
-<p><code>/q</code> - Lists all available admin commands.</p>
+<p><code>/bq</code> - Lists all available admin commands.</p>
 </li>
-<li><code>/q reload</code> - Reloads the plugin.</li>
-<li><code>/q version</code> - Displays the versions of BetonQuest, the server and all hooked plugins.</li>
-<li><code>/q update</code> - Updates the plugin to the newest version.</li>
-<li><code>/q debug [true/false/ingame/dump]</code> - Enable debug mode and write all down in a log file or disable the debug mode.</li>
-<li><code>/q backup</code> - Creates a backup of the configuration files and the database.</li>
+<li><code>/bq reload</code> - Reloads the plugin.</li>
+<li><code>/bq version</code> - Displays the versions of BetonQuest, the server and all hooked plugins.</li>
+<li><code>/bq update</code> - Updates the plugin to the newest version.</li>
+<li><code>/bq debug [true/false/ingame/dump]</code> - Enable debug mode and write all down in a log file or disable the debug mode.</li>
+<li><code>/bq backup</code> - Creates a backup of the configuration files and the database.</li>
 <li>
-<p><code>/q download &lt;gitHubNamespace&gt; &lt;ref&gt; &lt;type&gt; &lt;sourcePath&gt; [targetPath] [recursive] [overwrite]</code> - Download quests 
+<p><code>/bq download &lt;gitHubNamespace&gt; &lt;ref&gt; &lt;type&gt; &lt;sourcePath&gt; [targetPath] [recursive] [overwrite]</code> - Download quests 
   and templates from a GitHub repository.</p>
 </li>
 <li>
-<p><code>/q condition &lt;playerName&gt; &lt;condition(ID)&gt;</code> - Checks a condition for the player.</p>
+<p><code>/bq condition &lt;playerName&gt; &lt;condition(ID)&gt;</code> - Checks a condition for the player.</p>
 </li>
-<li><code>/q event &lt;playerName&gt; &lt;event(ID)&gt;</code> - Fires an event for the player.</li>
-<li><code>/q objective &lt;playerName&gt; &lt;list/add/del/complete&gt; &lt;objective(ID)/filter(ID)&gt;</code> - Manages player's objectives.</li>
-<li><code>/q tag &lt;playerName&gt; &lt;list/add/del&gt; &lt;tag(ID)/filter(ID)&gt;</code> - Manges player's tags.</li>
-<li><code>/q globaltag &lt;list/add/del/purge&gt; &lt;tag(ID)/filter(ID)&gt;</code> - Manges global tags.</li>
-<li><code>/q point &lt;playerName&gt; &lt;list/add/del&gt; &lt;category(ID)/filter(ID)&gt; &lt;amount&gt;</code> - Manges player's points.</li>
-<li><code>/q globalpoint &lt;list/add/del/purge&gt; &lt;category(ID)/filter(ID)&gt; &lt;amount&gt;</code> - Manges global points.</li>
-<li><code>/q journal &lt;playerName&gt; &lt;list/add/del&gt; &lt;pointer(ID)/filter(ID)&gt; &lt;date&gt;</code> - Manges player's journal entries.</li>
-<li><code>/q item &lt;item(ID)&gt; &lt;serializer&gt;</code> - Creates an item under the item(ID), based on the item you are holding.</li>
-<li><code>/q give &lt;item(ID)&gt;</code> - Gives you the item defined under the item(ID).</li>
-<li><code>/q variable &lt;playerName&gt; &lt;objective(ID)&gt; &lt;list/set/del&gt; [key/filter] [value]</code> - Manage variables stored in a 
+<li><code>/bq event &lt;playerName&gt; &lt;event(ID)&gt;</code> - Fires an event for the player.</li>
+<li><code>/bq objective &lt;playerName&gt; &lt;list/add/del/complete&gt; &lt;objective(ID)/filter(ID)&gt;</code> - Manages player's objectives.</li>
+<li><code>/bq tag &lt;playerName&gt; &lt;list/add/del&gt; &lt;tag(ID)/filter(ID)&gt;</code> - Manges player's tags.</li>
+<li><code>/bq globaltag &lt;list/add/del/purge&gt; &lt;tag(ID)/filter(ID)&gt;</code> - Manges global tags.</li>
+<li><code>/bq point &lt;playerName&gt; &lt;list/add/del&gt; &lt;category(ID)/filter(ID)&gt; &lt;amount&gt;</code> - Manges player's points.</li>
+<li><code>/bq globalpoint &lt;list/add/del/purge&gt; &lt;category(ID)/filter(ID)&gt; &lt;amount&gt;</code> - Manges global points.</li>
+<li><code>/bq journal &lt;playerName&gt; &lt;list/add/del&gt; &lt;pointer(ID)/filter(ID)&gt; &lt;date&gt;</code> - Manges player's journal entries.</li>
+<li><code>/bq item &lt;item(ID)&gt; &lt;serializer&gt;</code> - Creates an item under the item(ID), based on the item you are holding.</li>
+<li><code>/bq give &lt;item(ID)&gt;</code> - Gives you the item defined under the item(ID).</li>
+<li><code>/bq variable &lt;playerName&gt; &lt;objective(ID)&gt; &lt;list/set/del&gt; [key/filter] [value]</code> - Manage variables stored in a 
 <a href="../../Scripting/Building-Blocks/Objectives-List/#variable-variable"><code>variable</code></a> objective.</li>
-<li><code>/q purge &lt;playerName&gt;</code> - Deletes all player's data from the database.</li>
-<li><code>/q rename &lt;tag/point/globalpoint/objective/entry&gt; &lt;oldName(ID)&gt; &lt;newName(ID)&gt;</code> - Renames the specified thing in 
+<li><code>/bq purge &lt;playerName&gt;</code> - Deletes all player's data from the database.</li>
+<li><code>/bq rename &lt;tag/point/globalpoint/objective/entry&gt; &lt;oldName(ID)&gt; &lt;newName(ID)&gt;</code> - Renames the specified thing in 
   the database.</li>
-<li><code>/q delete &lt;tag/point/objective/entry&gt; &lt;name(ID)&gt;</code> - Deletes the specified thing from the database.</li>
+<li><code>/bq delete &lt;tag/point/objective/entry&gt; &lt;name(ID)&gt;</code> - Deletes the specified thing from the database.</li>
 <li><code>/rpgmenu list</code> - Lists all currently loaded menus and allows opening them just by clicking on them.</li>
 <li><code>/rpgmenu open &lt;menu(ID)&gt; [player]</code> - Opens a menu for you or another player.
   <a href="../../Features/Menus/Menu/#general-menu-settings">Open conditions</a> will be ignored when using this command.</li>
@@ -5843,7 +5843,7 @@ Have a look at the <a href="../../Features/Menus/Menu/#general-menu-settings">me
 <p><code>/questlang</code> - <code>ql</code></p>
 </li>
 <li>
-<p><code>/q</code> - <code>q</code>, <code>bq</code>, <code>bquest</code>, <code>bquests</code>, <code>betonquests</code>, <code>quest</code>, <code>quests</code></p>
+<p><code>/betonquest</code> - <code>bq</code>, <code>bquest</code>, <code>bquests</code>, <code>betonquests</code>, <code>quest</code>, <code>quests</code></p>
 <ul>
 <li><code>version</code> - <code>v</code>, <code>ver</code></li>
 <li><code>condition</code> - <code>c</code>, <code>conditions</code></li>
@@ -5866,32 +5866,32 @@ Have a look at the <a href="../../Features/Menus/Menu/#general-menu-settings">me
 <h2 id="permissions">Permissions<a class="headerlink" href="#permissions" title="Permanent link">🔗</a></h2>
 <ul>
 <li><code>betonquest.conversation</code> - allows talking with NPCs (default for players)</li>
-<li><code>betonquest.journal</code> - allows using /j command (default for players)</li>
+<li><code>betonquest.journal</code> - allows using /bj command (default for players)</li>
 <li><code>betonquest.backpack</code> - allows using /backpack command (default for players)</li>
 <li><code>betonquest.compass</code> - allows using /compass command (default for players)</li>
 <li><code>betonquest.cancelquest</code> - allows using /cancelquest command (default for players)</li>
 <li><code>betonquest.language</code> - allows changing the language (default for players)</li>
-<li><code>betonquest.admin</code> - allows using admin commands (/q, /rpgmenu ...)</li>
+<li><code>betonquest.admin</code> - allows using admin commands (/bq, /rpgmenu ...)</li>
 </ul>
 <h2 id="betonquest-administration-command-betonquest">BetonQuest administration command: <code>/betonquest</code><a class="headerlink" href="#betonquest-administration-command-betonquest" title="Permanent link">🔗</a></h2>
 <h3 id="reload-the-plugin-reload">Reload the plugin: <code>reload</code><a class="headerlink" href="#reload-the-plugin-reload" title="Permanent link">🔗</a></h3>
 <p>Reloading loads all data from configuration, but not everything is updated. Player's data isn't touched to avoid lags made by database saving.
 The database is also the same, you will have to reload/restart the whole server for the database to change.</p>
 <h3 id="update-the-plugin-update">Update the plugin: <code>update</code><a class="headerlink" href="#update-the-plugin-update" title="Permanent link">🔗</a></h3>
-<p>Update command ('<code>/q update</code>') will try to download the newest version of the plugin and save it to the update folder.
+<p>Update command ('<code>/bq update</code>') will try to download the newest version of the plugin and save it to the update folder.
 This folder is then handled by the server to update the plugin. If you accidentally use this command but do not wish to update the plugin,
 you should remove <code>BetonQuest.jar</code> file from the <code>plugins/update</code> folder before restarting the server.</p>
 <h3 id="debug-quests-and-betonquest-debug">Debug quests and BetonQuest: <code>debug</code><a class="headerlink" href="#debug-quests-and-betonquest-debug" title="Permanent link">🔗</a></h3>
-<p>The debug command ('<code>/q debug</code>') allows you to enable or disable the debug mode. If the debug mode is enabled after
-server startup ('<code>/q debug true</code>'), all log entries from the configured log history time frame are written to the
+<p>The debug command ('<code>/bq debug</code>') allows you to enable or disable the debug mode. If the debug mode is enabled after
+server startup ('<code>/bq debug true</code>'), all log entries from the configured log history time frame are written to the
 <code>/plugins/BetonQuest/logs/latest.log</code> file as history and writing will be continued until the debug mode is disabled
-using ('<code>/q debug false</code>'). The <code>latest.log</code> is renamed to the current date and time on server startup.
+using ('<code>/bq debug false</code>'). The <code>latest.log</code> is renamed to the current date and time on server startup.
 It's useful if you search for more information about an issue and can help developers to fix bugs.<br />
-With the dump command ('<code>/q debug dump</code>') you can write the history of the debug log to the file, without actually 
+With the dump command ('<code>/bq debug dump</code>') you can write the history of the debug log to the file, without actually 
 enabling the debug mode. This is useful if you want to share the log with developers without enabling the debug mode.</p>
-<p>The command ('<code>/q debug ingame</code>') allows you to manage your ingame debugging.
+<p>The command ('<code>/bq debug ingame</code>') allows you to manage your ingame debugging.
 The ingame debugging sends you live information about quests to your chat. Running the command without any argument
-shows your active filters. If you don't have any filters active you will see all console output from <code>/q reload</code>. If you
+shows your active filters. If you don't have any filters active you will see all console output from <code>/bq reload</code>. If you
 have filters active you only see information from the selected packages. Appending a package name activates the filter
 for that package. You can also use <code>*</code> / <code>MyFolder-*</code> instead of a package name to address all packages / all packages
 of a folder. Appending a level allows you to select which types of messages are displayed. The default level <code>error</code>
@@ -5899,12 +5899,12 @@ shows all <code>WARNINGS</code> and <code>ERRORS</code> from the log. If you wan
 Beware though, the debug level might be spammy.</p>
 <h3 id="create-a-backup-backup">Create a backup: <code>backup</code><a class="headerlink" href="#create-a-backup-backup" title="Permanent link">🔗</a></h3>
 <p>If you want to backup your configuration and database make sure that your server is empty 
-(this process requires all data to be saved to database -&gt; all players offline) and run '<code>/q backup</code>' command.
+(this process requires all data to be saved to database -&gt; all players offline) and run '<code>/bq backup</code>' command.
 You will get a zip file containing all your data, ready to be unzipped for restoring the plugin.</p>
 <h3 id="download-from-github-download">Download from GitHub: <code>download</code><a class="headerlink" href="#download-from-github-download" title="Permanent link">🔗</a></h3>
-<p>The download command (<code>/q download</code>) can be used to download tutorial quests &amp; quest templates from
+<p>The download command (<code>/bq download</code>) can be used to download tutorial quests &amp; quest templates from
 the <a href="https://github.com/BetonQuest/Quest-Tutorials">Quest-Tutorials</a> repository. For
-example <code>/q download BetonQuest/Quest-Tutorials refs/tags/v2.0.0 QuestPackages /default</code> will download the <code>default</code> tutorial quest and
+example <code>/bq download BetonQuest/Quest-Tutorials refs/tags/v2.0.0 QuestPackages /default</code> will download the <code>default</code> tutorial quest and
 place it in the same folder. The first argument (<code>gitHubNamespace</code>) is the GitHub repository in the format user/repo or
 organisation/repo. Before you can download from a repo you need to add the namespace to
 the <a href="../Plugin-Config/#downloader-the-downloader-settings"><code>repo_whitelist</code></a> in the BetonQuest config. This is a security measure that
@@ -5925,50 +5925,50 @@ will be skipped. The tag <code>overwrite</code> defines that already existing fi
 logged and the download is stopped.</p>
 <h3 id="interact-with-quest-primitives">Interact with quest primitives<a class="headerlink" href="#interact-with-quest-primitives" title="Permanent link">🔗</a></h3>
 <h4 id="check-conditions-condition">Check conditions: <code>condition</code><a class="headerlink" href="#check-conditions-condition" title="Permanent link">🔗</a></h4>
-<p>You can check for conditions for a given player with for example: '<code>/q condition Beton QuestPackage&gt;has_started</code>'.<br />
+<p>You can check for conditions for a given player with for example: '<code>/bq condition Beton QuestPackage&gt;has_started</code>'.<br />
 If you want to check a non player related condition replace the player's name with <code>-</code>.</p>
 <h4 id="run-events-event">Run events: <code>event</code><a class="headerlink" href="#run-events-event" title="Permanent link">🔗</a></h4>
-<p>You can run events for a given player with for example: '<code>/q event Beton QuestPackage&gt;give_emeralds</code>'.
+<p>You can run events for a given player with for example: '<code>/bq event Beton QuestPackage&gt;give_emeralds</code>'.
 If you want to run a non player related event replace the player's name with <code>-</code>.</p>
 <h4 id="manage-objectives-objective">Manage objectives: <code>objective</code><a class="headerlink" href="#manage-objectives-objective" title="Permanent link">🔗</a></h4>
-<p>You can manage objectives for a given player with for example: '<code>/q objective Beton list</code>'.
+<p>You can manage objectives for a given player with for example: '<code>/bq objective Beton list</code>'.
 This would list all active objectives for player Beton.
-You can also add or remove objectives with '<code>/q objective Beton add QuestPackage&gt;find_sword</code>' or
-'<code>/q objective Beton del QuestPackage&gt;find_sword</code>'.
-It is also possible to complete an objective with '<code>/q objective Beton complete QuestPackage&gt;find_sword</code>',
+You can also add or remove objectives with '<code>/bq objective Beton add QuestPackage&gt;find_sword</code>' or
+'<code>/bq objective Beton del QuestPackage&gt;find_sword</code>'.
+It is also possible to complete an objective with '<code>/bq objective Beton complete QuestPackage&gt;find_sword</code>',
 what would run all the events from the objective.</p>
 <h4 id="manage-tags-tag">Manage tags: <code>tag</code><a class="headerlink" href="#manage-tags-tag" title="Permanent link">🔗</a></h4>
-<p>You can manage tags for a given player with for example: '<code>/q tag Beton list</code>'.
+<p>You can manage tags for a given player with for example: '<code>/bq tag Beton list</code>'.
 This would list all tags for player Beton.
-You can also add or remove tags with '<code>/q tag Beton add QuestPackage&gt;test</code>' or '<code>/q tag Beton del QuestPackage&gt;test</code>'.</p>
+You can also add or remove tags with '<code>/bq tag Beton add QuestPackage&gt;test</code>' or '<code>/bq tag Beton del QuestPackage&gt;test</code>'.</p>
 <h4 id="manage-points-point">Manage points: <code>point</code><a class="headerlink" href="#manage-points-point" title="Permanent link">🔗</a></h4>
-<p>You can manage points for a given player with for example: '<code>/q point Beton list</code>'.
+<p>You can manage points for a given player with for example: '<code>/bq point Beton list</code>'.
 This would list all point categories for player Beton.
-You can also add or remove points with '<code>/q point Beton add QuestPackage&gt;reputation 20</code>' or
-'<code>/q point Beton add QuestPackage&gt;reputation -20</code>'.
-To delete a point category completely use '<code>/q point Beton del QuestPackage&gt;reputation</code>'.</p>
+You can also add or remove points with '<code>/bq point Beton add QuestPackage&gt;reputation 20</code>' or
+'<code>/bq point Beton add QuestPackage&gt;reputation -20</code>'.
+To delete a point category completely use '<code>/bq point Beton del QuestPackage&gt;reputation</code>'.</p>
 <h4 id="manage-the-journal-journal">Manage the journal: <code>journal</code><a class="headerlink" href="#manage-the-journal-journal" title="Permanent link">🔗</a></h4>
 <p>Journal subcommand works in the same way as those two above.
-Adding and removing looks like <code>/q journal Beton add QuestPackage&gt;wood_started</code> (or <code>del</code>), and you can also specify the date
+Adding and removing looks like <code>/bq journal Beton add QuestPackage&gt;wood_started</code> (or <code>del</code>), and you can also specify the date
 of entry when adding it, by appending date written like this: <code>23.04.2014_16:52</code> at the end of the command.
 Note that there is <code>_</code> character instead of space!</p>
 <h4 id="manage-items-item-and-give">Manage items: <code>item</code> and <code>give</code><a class="headerlink" href="#manage-items-item-and-give" title="Permanent link">🔗</a></h4>
-<p>If you need to create for example "Nettlebane" quest item, just hold it in your hand and type '<code>/q item QuestPackage&gt;nettlebane &lt;serializer&gt;</code>'.
+<p>If you need to create for example "Nettlebane" quest item, just hold it in your hand and type '<code>/bq item QuestPackage&gt;nettlebane &lt;serializer&gt;</code>'.
 It will copy the item you're holding into the "<em>items.yml</em>" file and save it there with the name you specified (in this case "nettlebane").
 The <em>serializer</em> defines the format in which the item is saved (and loaded).</p>
-<p>The '<code>/q give QuestPackage&gt;nettlebane</code>' command will simply give you specified item.</p>
+<p>The '<code>/bq give QuestPackage&gt;nettlebane</code>' command will simply give you specified item.</p>
 <h4 id="manage-variables-variable">Manage variables: <code>variable</code><a class="headerlink" href="#manage-variables-variable" title="Permanent link">🔗</a></h4>
 <p>This command relates to active <a href="../../Scripting/Building-Blocks/Objectives-List/#variable-variable">variable objectives</a>.
 You can list all <code>key-value</code> pairs with an optional objective filter.
 Further can such a value be set for a key with <code>set &lt;key&gt; &lt;value&gt;</code> or an existing pair removed by using <code>del &lt;key&gt;</code>.</p>
 <h3 id="purge-player-data-purge">Purge player data: <code>purge</code><a class="headerlink" href="#purge-player-data-purge" title="Permanent link">🔗</a></h3>
-<p>You can purge specific player with the '<code>/q purge Beton</code>' command, where Beton is the name of the player.
+<p>You can purge specific player with the '<code>/bq purge Beton</code>' command, where Beton is the name of the player.
 To purge the entire database at once simply change the prefix in "<em>config.yml</em>" or delete "<em>database.db</em>" file.</p>
 <h3 id="rename-a-quest-primitive-without-loosing-data-rename">Rename a quest-primitive without loosing data: <code>rename</code><a class="headerlink" href="#rename-a-quest-primitive-without-loosing-data-rename" title="Permanent link">🔗</a></h3>
-<p>Rename command ('<code>/q rename</code>') allows you to rename every tag, point, globalpoint, objective or journal entry in the database.
+<p>Rename command ('<code>/bq rename</code>') allows you to rename every tag, point, globalpoint, objective or journal entry in the database.
 In case of an objective it will also rename the objective in <em>objectives</em> section in the configuration file, so it continues to work correctly.</p>
 <h3 id="delete-data-from-the-database-delete">Delete data from the database: <code>delete</code><a class="headerlink" href="#delete-data-from-the-database-delete" title="Permanent link">🔗</a></h3>
-<p>Delete command ('<code>/q delete</code>') allows you to delete from the database every tag, point, objective or journal entry with specified name.</p>
+<p>Delete command ('<code>/bq delete</code>') allows you to delete from the database every tag, point, objective or journal entry with specified name.</p>
 
 
 
