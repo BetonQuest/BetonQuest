@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.VisibleForTesting;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,8 +46,9 @@ public class DefaultBukkitEventService implements BukkitEventService {
         this.logger = loggerFactory.create(plugin, "EventService");
     }
 
+    @VisibleForTesting
     @SuppressWarnings("unchecked")
-    private <T extends Event> Optional<EventListenerGroup<T>> require(final Class<T> event) {
+    <T extends Event> Optional<EventListenerGroup<T>> require(final Class<T> event) {
         if (!listeners.containsKey(event)) {
             final DefaultEventListenerGroup<T> group = new DefaultEventListenerGroup<>(this.logger, event);
             try {
@@ -62,13 +64,16 @@ public class DefaultBukkitEventService implements BukkitEventService {
 
     @Override
     public boolean require(final Class<? extends Event> event, final EventPriority priority) {
-        return require(event).map(group -> group.require(priority)).orElse(false);
+        return require(event)
+                .map(group -> group.require(priority))
+                .orElse(false);
     }
 
     @Override
     public <T extends Event> EventServiceSubscriber<T> subscribe(final Class<T> event, final EventPriority priority,
                                                                  final boolean ignoreCancelled, final EventServiceSubscriber<T> subscriber) throws QuestException {
-        return require(event).map(group -> group.subscribe(priority, ignoreCancelled, subscriber))
+        return require(event)
+                .map(group -> group.subscribe(priority, ignoreCancelled, subscriber))
                 .orElseThrow(() -> new QuestException("Could subscribe to event " + event.getSimpleName()));
     }
 

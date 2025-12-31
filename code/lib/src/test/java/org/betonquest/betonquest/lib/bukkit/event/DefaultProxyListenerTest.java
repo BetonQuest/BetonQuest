@@ -51,7 +51,7 @@ class DefaultProxyListenerTest {
     }
 
     @Nested
-    class with_listener {
+    class Listeners {
 
         private static MockedStatic<PlayerJumpEvent> mockedStatic;
 
@@ -86,19 +86,30 @@ class DefaultProxyListenerTest {
         }
 
         @Test
-        void handler_list_register_calls() {
+        void handler_list_register_calls_before() {
             verify(proxyListener.handlerList, never()).register(any());
             verify(proxyListener.handlerList, never()).bake();
+            proxyListener.register();
+        }
+
+        @Test
+        void handler_list_register_calls_after() {
             proxyListener.register();
             verify(proxyListener.handlerList, times(1)).register(any());
             verify(proxyListener.handlerList, times(1)).bake();
         }
 
         @Test
-        void handler_list_unregister_calls() {
+        void handler_list_unregister_calls_before() {
             proxyListener.register();
             verify(proxyListener.handlerList, never()).unregister((RegisteredListener) any());
             verify(proxyListener.handlerList, times(1)).bake();
+            proxyListener.unregister();
+        }
+
+        @Test
+        void handler_list_unregister_calls_after() {
+            proxyListener.register();
             proxyListener.unregister();
             verify(proxyListener.handlerList, times(1)).unregister((RegisteredListener) any());
             verify(proxyListener.handlerList, times(2)).bake();
