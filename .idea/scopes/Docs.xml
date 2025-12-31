@@ -1,3 +1,3 @@
 <component name="DependencyValidationManager">
-  <scope name="Docs" pattern="file:README.md||file:LICENSE||file:CHANGELOG.md||file:.github//*||file:docs//*||file:config/docs-requirements.txt||file:config/docs-requirements-insiders.txt||file:mkdocs.yml" />
+  <scope name="Docs" pattern="file:README.md||file:LICENSE||file:CHANGELOG.md||file:mkdocs.yml||file:docs//*" />
 </component>
