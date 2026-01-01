@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
  * A placeholder that always evaluates to the same constant value.
  */
 public class ConstantPlaceholder implements NullablePlaceholder {
+
     /**
      * The constant value.
      */

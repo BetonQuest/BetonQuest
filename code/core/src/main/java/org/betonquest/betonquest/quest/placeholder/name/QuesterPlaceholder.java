@@ -11,6 +11,7 @@ import org.betonquest.betonquest.conversation.Conversation;
  * This placeholder resolves into the name of the Npc in the conversation.
  */
 public class QuesterPlaceholder implements PlayerPlaceholder {
+
     /**
      * Conversation API.
      */

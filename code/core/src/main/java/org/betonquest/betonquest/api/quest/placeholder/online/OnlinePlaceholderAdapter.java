@@ -55,4 +55,9 @@ public final class OnlinePlaceholderAdapter implements PlayerPlaceholder {
         }
         return fallbackPlaceholder.getValue(profile);
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return onlinePlaceholder.isPrimaryThreadEnforced() || fallbackPlaceholder.isPrimaryThreadEnforced();
+    }
 }

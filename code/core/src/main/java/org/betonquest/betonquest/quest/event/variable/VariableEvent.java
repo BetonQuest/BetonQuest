@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.quest.objective.variable.VariableObjective;
 
 /**
- * Event that changes placeholders that is stored in variable objective.
+ * Event that changes values that are stored in the variable objectives.
  */
 public class VariableEvent implements PlayerEvent {
 

@@ -327,7 +327,7 @@ This condition checks the moon phase in the given world or the player's world.
     
 | Parameter   | Syntax                                                                                                    | Default Value          | Explanation                            |
 |-------------|-----------------------------------------------------------------------------------------------------------|------------------------|----------------------------------------|
-| _MoonPhase_ | [Keyword](https://jd.papermc.io/paper/1.21.5/io/papermc/paper/world/MoonPhase.html#enum-constant-summary) | :octicons-x-circle-16: | A list of moon phase to check for.     |
+| _MoonPhase_ | [Keyword](https://jd.papermc.io/paper/1.21.5/io/papermc/paper/world/MoonPhase.html#enum-constant-summary) | :octicons-x-circle-16: | A list of moon phases to check for.    |
 | _world_     | world:name                                                                                                | player location        | The world to check for the moon phase. |
 
 
@@ -588,8 +588,7 @@ exactAtTwelveAtPlayersHome: "time 12-12 world:%ph.player_home_world%"
 
 **static**
 
-This condition checks if a placeholder value matches given [regular expression](../Data-Formats.
-md#regex-regular-expressions)
+This condition checks if a placeholder value matches given [regular expression](../Data-Formats.md#regex-regular-expressions)
 
 | Parameter     | Syntax          | Default Value          | Explanation                                                                                                                                     |
 |---------------|-----------------|------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|

@@ -14,6 +14,7 @@ import org.betonquest.betonquest.config.PluginMessage;
  * Get the "fulfillment" status of a quest condition.
  */
 public class ConditionPlaceholder implements PlayerPlaceholder {
+
     /**
      * The {@link PluginMessage} instance.
      */
@@ -43,7 +44,7 @@ public class ConditionPlaceholder implements PlayerPlaceholder {
      * @param questTypeApi  the Quest Type API
      */
     public ConditionPlaceholder(final PluginMessage pluginMessage, final Argument<ConditionID> conditionId,
-                             final FlagArgument<Boolean> papiMode, final QuestTypeApi questTypeApi) {
+                                final FlagArgument<Boolean> papiMode, final QuestTypeApi questTypeApi) {
         this.pluginMessage = pluginMessage;
         this.conditionId = conditionId;
         this.papiMode = papiMode;

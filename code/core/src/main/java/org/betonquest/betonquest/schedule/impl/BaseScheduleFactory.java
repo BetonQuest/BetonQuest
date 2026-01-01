@@ -46,7 +46,7 @@ public abstract class BaseScheduleFactory<S extends Schedule> implements Schedul
     /**
      * Parses the common objects required to create a schedule.
      *
-     * @param pack        source pack for argument amd id resolving
+     * @param pack        source pack for argument and id resolving
      * @param instruction the section to load
      * @return the parsed objects
      * @throws QuestException when parts are missing or cannot be resolved

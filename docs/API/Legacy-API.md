@@ -23,7 +23,7 @@ The methods for using Conditions, Events and Objectives was moved into `BetonQue
 Hard coded get methods were removed in favor of a more dynamic approach. 
 Read how to use them in the [Instruction Arguments](Instruction.md#argument-parsing) section.
 
-### Placeholders getting
+### Getting Placeholders
 
 Creating and parsing placeholders is now done in the `PlaceholderProcessor`.
 It is accessed from the BetonQuest instance with `#getPlaceholderProcessor()`.

@@ -34,4 +34,9 @@ public final class NullablePlaceholderAdapter implements PlayerPlaceholder, Play
     public String getValue() throws QuestException {
         return placeholder.getValue(null);
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return placeholder.isPrimaryThreadEnforced();
+    }
 }

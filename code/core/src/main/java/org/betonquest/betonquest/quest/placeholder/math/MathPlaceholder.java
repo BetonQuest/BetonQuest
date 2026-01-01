@@ -12,6 +12,7 @@ import java.util.Locale;
  * This placeholder evaluates the given calculation and returns the result.
  */
 public class MathPlaceholder implements NullablePlaceholder {
+
     /**
      * The full calculation token.
      */

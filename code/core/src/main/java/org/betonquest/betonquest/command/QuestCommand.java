@@ -1798,7 +1798,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 // display variable objective keys and values
                 log.debug("Listing keys and values");
                 final Predicate<String> shouldDisplay = createListFilter(args, 4, Function.identity());
-                sendMessage(sender, "player_variable",
+                sendMessage(sender, "player_variables",
                         new VariableReplacement("objective", Component.text(variableObjective.getLabel())));
                 properties.entrySet().stream()
                         .filter(entry -> shouldDisplay.test(entry.getKey()))

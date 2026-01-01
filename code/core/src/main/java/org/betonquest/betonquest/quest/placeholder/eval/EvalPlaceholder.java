@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
  * A placeholder which evaluates to another placeholder.
  */
 public class EvalPlaceholder implements NullablePlaceholder {
+
     /**
      * The original instruction.
      */
