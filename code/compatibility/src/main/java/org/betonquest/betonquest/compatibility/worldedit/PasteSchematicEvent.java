@@ -40,7 +40,7 @@ public class PasteSchematicEvent implements NullableEvent {
     private final Argument<Number> rotation;
 
     /**
-     * 'No Air' boolean for pasting.
+     * The 'no air' paste option.
      */
     private final FlagArgument<Boolean> noAir;
 
@@ -54,7 +54,7 @@ public class PasteSchematicEvent implements NullableEvent {
      *
      * @param loc      the root location to place at
      * @param rotation the rotation
-     * @param noAir    the 'no air' paste argument
+     * @param noAir    the 'no air' paste option
      * @param file     the schematic file
      */
     public PasteSchematicEvent(final Argument<Location> loc, final Argument<Number> rotation, final FlagArgument<Boolean> noAir, final Argument<File> file) {

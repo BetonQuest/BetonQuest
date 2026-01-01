@@ -3,9 +3,9 @@ package org.betonquest.betonquest.util.math;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
-import org.betonquest.betonquest.quest.variable.math.MathVariable;
+import org.betonquest.betonquest.quest.placeholder.math.MathPlaceholder;
 import org.betonquest.betonquest.util.math.tokens.AbsoluteValue;
 import org.betonquest.betonquest.util.math.tokens.Negation;
 import org.betonquest.betonquest.util.math.tokens.Number;
@@ -19,7 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Helps the {@link MathVariable} with parsing mathematical expressions.
+ * Helps the {@link MathPlaceholder} with parsing mathematical expressions.
  *
  * @deprecated This should be replaced with a real expression parsing lib
  */
@@ -39,9 +39,9 @@ public class Tokenizer {
     private static final Pattern ESCAPE_REGEX = Pattern.compile("\\\\(.)");
 
     /**
-     * Variable processor to create and resolve variables.
+     * The {@link Placeholders} to create and resolve placeholders.
      */
-    private final Variables variables;
+    private final Placeholders placeholders;
 
     /**
      * Name of the package in which the tokenizer is operating.
@@ -51,11 +51,11 @@ public class Tokenizer {
     /**
      * Create a new Tokenizer in given package.
      *
-     * @param variables the variable processor to create and resolve variables
-     * @param pack      name of the package
+     * @param placeholders the {@link Placeholders} to create and resolve placeholders
+     * @param pack         name of the package
      */
-    public Tokenizer(final Variables variables, final QuestPackage pack) {
-        this.variables = variables;
+    public Tokenizer(final Placeholders placeholders, final QuestPackage pack) {
+        this.placeholders = placeholders;
         this.pack = pack;
     }
 
@@ -117,7 +117,7 @@ public class Tokenizer {
             final String variableName = ESCAPE_REGEX.matcher(rawVariableName).replaceAll("$1");
 
             try {
-                nextInLine = new Variable(new DefaultArgument<>(variables, pack, "%" + variableName + "%", NumberParser.DEFAULT));
+                nextInLine = new Variable(new DefaultArgument<>(placeholders, pack, "%" + variableName + "%", NumberParser.DEFAULT));
             } catch (final QuestException e) {
                 throw new QuestException("invalid calculation (" + e.getMessage() + ")", e);
             }
@@ -152,7 +152,7 @@ public class Tokenizer {
                 throw new QuestException("invalid calculation (operator missing first value)");
             }
             throw new QuestException("invalid calculation (doubled operators)");
-        } else { //tokenize variables
+        } else { //tokenize placeholders
             for (; index < val2.length(); index++) {
                 chr = val2.charAt(index);
                 if (Operator.isOperator(chr) || "{([|])}".contains(String.valueOf(chr))) {
@@ -160,7 +160,7 @@ public class Tokenizer {
                 }
             }
             try {
-                nextInLine = new Variable(new DefaultArgument<>(variables, pack, "%" + val2.substring(start, index--) + "%", NumberParser.DEFAULT));
+                nextInLine = new Variable(new DefaultArgument<>(placeholders, pack, "%" + val2.substring(start, index--) + "%", NumberParser.DEFAULT));
             } catch (final QuestException e) {
                 throw new QuestException("invalid calculation (" + e.getMessage() + ")", e);
             }

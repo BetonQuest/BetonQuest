@@ -24,7 +24,7 @@ public class CronScheduleBaseTest extends ScheduleBaseTest {
 
     @Override
     protected CronSchedule createSchedule() throws QuestException {
-        return new CronScheduleFactory(variables, packManager) {
+        return new CronScheduleFactory(placeholders, packManager) {
             @Override
             protected CronDefinition parseCronDefinition() {
                 return DEFAULT_CRON_DEFINITION;

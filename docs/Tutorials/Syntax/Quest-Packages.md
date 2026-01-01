@@ -58,7 +58,7 @@ Let's compare the structure of the basic tutorial to one of a realistic quest pa
         - :material-file: importantConditions.yml
         - :material-file: normalObjectives.yml (4)
         - :material-file: dungeonObjectives.yml
-        - :material-file: myVariablesFile.yml
+        - :material-file: myConstantsFile.yml
         - :material-folder-open: conversations (5)
              - :material-file: indiana.yml
              - :material-file: jones.yml
@@ -94,7 +94,7 @@ Then play around with this system to get a feel for it.
             - :material-file: myEventsList2.yml
             - :material-file: importantConditions.yml
             - :material-file: myAwesomeObjectives.yml
-            - :material-file: myVariablesFile.yml
+            - :material-file: myConstantsFile.yml
             - :material-folder-open: conversations
                 - :material-file: jones.yml
  

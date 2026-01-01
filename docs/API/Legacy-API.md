@@ -23,19 +23,19 @@ The methods for using Conditions, Events and Objectives was moved into `BetonQue
 Hard coded get methods were removed in favor of a more dynamic approach. 
 Read how to use them in the [Instruction Arguments](Instruction.md#argument-parsing) section.
 
-### Variable getting
+### Getting Placeholders
 
-Creating and parsing variables is now done in the `VariableProcessor`.
-It is accessed from the BetonQuest instance with `#getVariableProcessor()`.
+Creating and parsing placeholders is now done in the `PlaceholderProcessor`.
+It is accessed from the BetonQuest instance with `#getPlaceholderProcessor()`.
 
 ## Profiles
 Currently, profiles are in development. So at the moment you can use the `ProfileProvider` class to get a profile,
 which can be accessed by `BetonQuest.getInstance().getProfileProvider()`.
 
 ## Base concepts
-How to write and register new base concepts (events, conditions, objectives, variables) in BetonQuest.
+How to write and register new base concepts (events, conditions, objectives, placeholders) in BetonQuest.
 
-For Conditions, Events and Variables there is the [new API](./Quest/Writing-Implementations.
+For Conditions, Events and Placeholders there is the [new API](./Quest/Writing-Implementations.
 md#writing-new-quest-type-implementations) available.
 
 ### Writing objectives
@@ -60,7 +60,8 @@ It must return the default data instruction understandable by your parser.
 For example in `tame` objective it will return the amount of mobs to tame.
 If you don't use data objects, just return an empty string (not `null`, just `""`).
 
-In order for your objective to use the data object you have created you need to set the `template` variable to this object's class.
+In order for your objective to use the data object you have created you need to set the `template` field to this 
+object's class.
 If you're not defining the data object (because you don't need to handle the changing data), you should set the `template` simply to `ObjectiveData.class`.
 
 Every time your objective accepts the player's action (for example killing the right mob in MobKill objective)
@@ -73,8 +74,8 @@ If the objective is a listener it will automatically be registered from BetonQue
 Some objectives, like the `delay` objective, starts and cancels a runnable, instead of using listeners.
 Start it in the constructor and save it as field so you can cancel it in the `close()` method.
 
-If your objective has some properties (used in variables) you should override the `String getProperty(String property, String playerID)` method.
-At runtime, if anyone uses `%objective.yourObjective.theProperty%` variable,
+If your objective has some properties (used in placeholders) you should override the `String getProperty(String property, String playerID)` method.
+At runtime, if anyone uses `%objective.yourObjective.theProperty%` placeholder,
 BetonQuest will call that method with `theProperty` keyword as the first argument.
 Using it you should parse the data of the objective and return it as a String.
 If the supplied property name is incorrect or there was an error during getting the value,

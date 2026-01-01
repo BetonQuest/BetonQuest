@@ -35,7 +35,7 @@ public record Equipment(@Nullable Argument<ItemWrapper> helmet, @Nullable Argume
      *
      * @param mob     the mob to add the drops to
      * @param profile the profile to get the drop amounts from
-     * @throws QuestException if the variable could not be resolved
+     * @throws QuestException if the argument could not be resolved
      */
     public void addDrops(final Mob mob, @Nullable final Profile profile) throws QuestException {
         int dropIndex = 0;

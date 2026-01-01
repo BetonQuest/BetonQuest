@@ -73,10 +73,10 @@ public class IngameNotificationSender implements NotificationSender {
     }
 
     @Override
-    public void sendNotification(final Profile profile, final VariableReplacement... variables) {
+    public void sendNotification(final Profile profile, final VariableReplacement... replacements) {
         profile.getOnlineProfile().ifPresent(onlineProfile -> {
             try {
-                final Component message = pluginMessage.getMessage(profile, messageName, variables);
+                final Component message = pluginMessage.getMessage(profile, messageName, replacements);
                 Notify.get(questPackage, String.join(",", categories)).sendNotify(message, onlineProfile);
             } catch (final QuestException e) {
                 log.warn(questPackage, "The notify system was unable to send the notification message '" + messageName + "' in '" + fullId + "'. Error was: '" + e.getMessage() + "'", e);

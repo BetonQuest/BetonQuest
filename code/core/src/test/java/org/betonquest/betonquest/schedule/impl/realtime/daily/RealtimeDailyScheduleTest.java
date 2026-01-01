@@ -28,7 +28,7 @@ class RealtimeDailyScheduleTest extends ScheduleBaseTest {
 
     @Override
     protected RealtimeDailySchedule createSchedule() throws QuestException {
-        return new RealtimeDailyScheduleFactory(variables, packManager)
+        return new RealtimeDailyScheduleFactory(placeholders, packManager)
                 .createNewInstance(scheduleID, section);
     }
 

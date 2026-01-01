@@ -15,7 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Creates variables based on what player is typing, not just from event.
+ * Creates placeholders based on what player is typing, not just from event.
  */
 public class ChatVariableObjective extends VariableObjective implements Listener {
 

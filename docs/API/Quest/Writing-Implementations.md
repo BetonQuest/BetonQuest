@@ -14,7 +14,7 @@ The following concepts are defined as "Quest Types", as they build the core of B
 - `Condition`
 - `Event`
 - `Objective`
-- `Variable`
+- `Placeholder`
 
 The API is located in the `org.betonquest.betonquest.api.quest` package.
 From the list above the `Objective` is still part of the [LegacyAPI](../Legacy-API.md#writing-objectives).
@@ -69,7 +69,7 @@ created in the `parse` method with the `Online<Quest>Adapter`.
 You can also create a quest type that allows both a `Profile` and `null` as arguments using the `Nullable<Quest>`
 interface. The primary difference from the [Profile](#profile) variant is the nullability of the parameter.
 
-This is commonly used when the type does not require a profile but uses variables that accept a profile for resolution
+This is commonly used when the type does not require a profile but uses placeholders that accept a profile for resolution
 Typically, the `Instruction` is parsed in a method that creates the `Nullable<Type>`, which is then wrapped in the
 overridden methods with their `Nullable<Type>Adapter`.
 
@@ -97,7 +97,7 @@ The separation is as follows:
   - `Condition`
   - `Event`
   - `Objective`
-  - `Variable`
+  - `Placeholder`
 - **FeatureRegistries**, which cover more complex and varied creation patterns:
   - `ConversationIO`
   - `Interceptor`

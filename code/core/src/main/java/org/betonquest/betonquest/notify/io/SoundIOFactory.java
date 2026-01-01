@@ -2,7 +2,7 @@ package org.betonquest.betonquest.notify.io;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.notify.NotifyIO;
 import org.betonquest.betonquest.notify.NotifyIOFactory;
 import org.jetbrains.annotations.Nullable;
@@ -15,21 +15,21 @@ import java.util.Map;
 public class SoundIOFactory implements NotifyIOFactory {
 
     /**
-     * Variable processor to create and resolve variables.
+     * The {@link Placeholders} to create and resolve placeholders.
      */
-    private final Variables variables;
+    private final Placeholders placeholders;
 
     /**
      * Create a new Sound IO factory.
      *
-     * @param variables the variable processor to create and resolve variables
+     * @param placeholders the {@link Placeholders} to create and resolve placeholders
      */
-    public SoundIOFactory(final Variables variables) {
-        this.variables = variables;
+    public SoundIOFactory(final Placeholders placeholders) {
+        this.placeholders = placeholders;
     }
 
     @Override
     public NotifyIO create(@Nullable final QuestPackage pack, final Map<String, String> categoryData) throws QuestException {
-        return new SoundIO(variables, pack, categoryData);
+        return new SoundIO(placeholders, pack, categoryData);
     }
 }

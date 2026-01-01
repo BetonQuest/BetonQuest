@@ -72,7 +72,7 @@ public class MenuObjective extends DefaultObjective implements Listener {
                 return;
             }
         } catch (final QuestException e) {
-            log.debug(instruction.getPackage(), "Could not get menu variable value in '" + instruction.getID() + "' objective:"
+            log.debug(instruction.getPackage(), "Could not get menu placeholder value in '" + instruction.getID() + "' objective:"
                     + e.getMessage(), e);
             return;
         }

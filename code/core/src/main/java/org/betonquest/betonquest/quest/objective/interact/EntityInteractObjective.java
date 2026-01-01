@@ -75,7 +75,7 @@ public class EntityInteractObjective extends CountingObjective implements Listen
     protected Argument<EntityType> mobType;
 
     /**
-     * The variable identifier for the marked entities.
+     * The identifier for the marked entities.
      */
     @Nullable
     protected Argument<String> marked;
@@ -101,7 +101,7 @@ public class EntityInteractObjective extends CountingObjective implements Listen
      * @param realName     the real name of the entities
      * @param slot         the equipment slot to interact with
      * @param mobType      the type of the entities
-     * @param marked       the variable identifier for marked entities
+     * @param marked       the identifier for marked entities
      * @param interaction  the interaction type (right, left, any)
      * @param cancel       whether to cancel the interaction
      * @throws QuestException if there is an error in the instruction

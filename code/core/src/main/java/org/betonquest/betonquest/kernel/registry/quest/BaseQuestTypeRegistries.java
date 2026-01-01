@@ -9,16 +9,16 @@ import org.betonquest.betonquest.kernel.registry.FactoryTypeRegistry;
 /**
  * Registry for quest core elements.
  *
- * @param condition The Registry holding registered condition types.
- * @param event     The Registry holding registered event types.
- * @param objective The Registry holding registered objective types.
- * @param variable  The Registry holding registered variable types.
+ * @param condition   The Registry holding registered condition types.
+ * @param event       The Registry holding registered event types.
+ * @param objective   The Registry holding registered objective types.
+ * @param placeholder The Registry holding registered placeholder types.
  */
 public record BaseQuestTypeRegistries(
         ConditionTypeRegistry condition,
         EventTypeRegistry event,
         FactoryTypeRegistry<DefaultObjective> objective,
-        VariableTypeRegistry variable
+        PlaceholderTypeRegistry placeholder
 ) implements QuestTypeRegistries {
 
     /**
@@ -33,7 +33,7 @@ public record BaseQuestTypeRegistries(
                 new ConditionTypeRegistry(loggerFactory.create(ConditionTypeRegistry.class)),
                 new EventTypeRegistry(loggerFactory.create(EventTypeRegistry.class), loggerFactory, betonQuest),
                 new ObjectiveTypeRegistry(loggerFactory.create(ObjectiveTypeRegistry.class)),
-                new VariableTypeRegistry(loggerFactory.create(VariableTypeRegistry.class))
+                new PlaceholderTypeRegistry(loggerFactory.create(PlaceholderTypeRegistry.class))
         );
     }
 }

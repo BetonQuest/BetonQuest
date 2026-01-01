@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcConversation;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
@@ -43,7 +43,7 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
      * @param conv                 the conversation this IO is part of
      * @param onlineProfile        the online profile of the player participating in the conversation
      * @param log                  the custom logger for the conversation
-     * @param variables            the variable processor to create and resolve variables
+     * @param placeholders         the {@link Placeholders} to create and resolve placeholders
      * @param packManager          the quest package manager to get quest packages from
      * @param colors               the colors used in the conversation
      * @param showNumber           whether to show the number of the conversation
@@ -53,10 +53,10 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public CitizensInventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile, final BetonQuestLogger log,
-                                   final Variables variables, final QuestPackageManager packManager, final ConversationColors colors,
+                                   final Placeholders placeholders, final QuestPackageManager packManager, final ConversationColors colors,
                                    final boolean showNumber, final boolean showNPCText, final boolean printMessages,
                                    final FixedComponentLineWrapper componentLineWrapper) {
-        super(conv, onlineProfile, log, variables, packManager, colors, showNumber, showNPCText, printMessages, componentLineWrapper);
+        super(conv, onlineProfile, log, placeholders, packManager, colors, showNumber, showNPCText, printMessages, componentLineWrapper);
     }
 
     @Override
@@ -102,9 +102,9 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
         if (!matcher.find()) {
             throw new SkinFormatParseException("Could not find the skin URL in the skin JSON!");
         }
-        final String variable = matcher.group("url");
+        final String skinUrl = matcher.group("url");
         try {
-            return new URL(variable);
+            return new URL(skinUrl);
         } catch (final MalformedURLException e) {
             throw new SkinFormatParseException("Could not parse the skin URL!", e);
         }

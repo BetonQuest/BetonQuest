@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,9 +27,9 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
     private final ProfileProvider profileProvider;
 
     /**
-     * The variable processor to use for creating the placeholder variables.
+     * The {@link Placeholders} to create and resolve placeholders.
      */
-    private final Variables variables;
+    private final Placeholders placeholders;
 
     /**
      * The combined authors.
@@ -46,16 +46,16 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
      *
      * @param log             the custom logger for this class
      * @param profileProvider the profile provider instance
-     * @param variables       the variable processor to create and resolve variables
+     * @param placeholders    the {@link Placeholders} to create and resolve placeholders
      * @param authors         the combined author string
      * @param version         the version string
      */
-    public BetonQuestPlaceholder(final BetonQuestLogger log, final ProfileProvider profileProvider, final Variables variables,
+    public BetonQuestPlaceholder(final BetonQuestLogger log, final ProfileProvider profileProvider, final Placeholders placeholders,
                                  final String authors, final String version) {
         super();
         this.log = log;
         this.profileProvider = profileProvider;
-        this.variables = variables;
+        this.placeholders = placeholders;
         this.authors = authors;
         this.version = version;
     }
@@ -89,9 +89,9 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
     public String onPlaceholderRequest(@Nullable final Player player, final String identifier) {
         final Profile profile = player == null ? null : profileProvider.getProfile(player);
         try {
-            return variables.getValue(identifier, profile);
+            return placeholders.getValue(identifier, profile);
         } catch (final QuestException e) {
-            log.warn("Could not parse through PAPI requested variable: " + identifier, e);
+            log.warn("Could not parse through PAPI requested placeholder: " + identifier, e);
             return "";
         }
     }

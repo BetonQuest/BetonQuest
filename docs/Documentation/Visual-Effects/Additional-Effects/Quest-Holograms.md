@@ -63,17 +63,17 @@ colorfulHonorRank:
 !!! warning "Gradients"
     Placeholders remain unresolved if formatting such as `gradient` or `rainbow` is used.
 
-Each BetonQuest variable can be displayed on a hologram in a text line.
-If you wish to refer to a variable that is *not* in the same package as the hologram, then you
-must specify a [package](../../Scripting/Packages-&-Templates.md) before the `variable`.
+Each BetonQuest placeholder can be displayed on a hologram in a text line.
+If you wish to refer to a placeholder that is *not* in the same package as the hologram, then you
+must specify a [package](../../Scripting/Packages-&-Templates.md) before the `placeholder`.
 
 !!! warning "Potential lags"
-    The HolographicDisplays documentations warns against using too many individual hologram variables since they are rendered
-    for each player individually. If you are using HolographicDisplays, to save resources, it is recommended to minimise the use of non-static variables.
+    The HolographicDisplays documentations warns against using too many individual hologram placeholders since they are rendered
+    for each player individually. If you are using HolographicDisplays, to save resources, it is recommended to minimise the use of non-static placeholders.
 
 The hologram's conditions are checked every 10 seconds, meaning a hologram will respond to a condition being met or un-met
 every 10 seconds. If you want to make it faster, decrease `hologram.update_interval` option in "_config.yml_" file and set it to a
 number of ticks you want to pass between updates (one second is 20 ticks). Don't set it to 0 or negative numbers, it will result in an error.
 
 Keep in mind that each hologram plugin also updates its holograms on a timer individually,
-meaning that hologram variables will refresh at a much quicker rate than the above.
+meaning that hologram placeholders will refresh at a much quicker rate than the above.

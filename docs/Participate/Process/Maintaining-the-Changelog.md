@@ -63,7 +63,7 @@ Here is a breakdown of what belongs in each section:
   
     ```MD
     Fixes:
-      - event `notify` did not resolve variables correctly
+      - event `notify` did not resolve placeholders correctly
       - Citizens event `movenpc` is now more robust combined with other events like `stopnpc` and `teleportnpc`
         - you may need to reduce the distance beetween waypoints
     ```

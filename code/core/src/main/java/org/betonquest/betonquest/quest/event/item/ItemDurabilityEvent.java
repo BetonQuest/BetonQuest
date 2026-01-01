@@ -59,7 +59,7 @@ public class ItemDurabilityEvent implements OnlineEvent {
      *
      * @param slot              of the item
      * @param modification      on the durability
-     * @param amount            argument of the modification
+     * @param amount            the amount of the modification
      * @param ignoreUnbreakable whether if the enchantment and tag should be ignored or respected
      * @param ignoreEvents      whether the bukkit events should be ignored or called
      * @param random            to use for the durability calculation

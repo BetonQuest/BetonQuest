@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 
@@ -38,15 +38,15 @@ public class ItemParser implements InstructionArgumentParser<ItemWrapper> {
     }
 
     @Override
-    public ItemWrapper apply(final Variables variables, final QuestPackageManager packManager, final QuestPackage pack, final String string) throws QuestException {
+    public ItemWrapper apply(final Placeholders placeholders, final QuestPackageManager packManager, final QuestPackage pack, final String string) throws QuestException {
         final ItemID item;
         final Argument<Number> number;
         if (string.contains(":")) {
             final String[] parts = string.split(":", 2);
-            item = new ItemID(variables, packManager, pack, parts[0]);
+            item = new ItemID(placeholders, packManager, pack, parts[0]);
             number = new DefaultArgument<>(NumberParser.DEFAULT.apply(parts[1]));
         } else {
-            item = new ItemID(variables, packManager, pack, string);
+            item = new ItemID(placeholders, packManager, pack, string);
             number = new DefaultArgument<>(1);
         }
         return new Item(featureApi, item, number);

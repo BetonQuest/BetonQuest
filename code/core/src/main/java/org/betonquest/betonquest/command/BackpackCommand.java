@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.feature.Backpack;
 import org.bukkit.command.Command;
@@ -29,9 +29,9 @@ public class BackpackCommand implements CommandExecutor {
     private final ConfigAccessor config;
 
     /**
-     * Variable processor to create and resolve variables.
+     * The {@link Placeholders} to create and resolve placeholders.
      */
-    private final Variables variables;
+    private final Placeholders placeholders;
 
     /**
      * The {@link PluginMessage} instance.
@@ -48,14 +48,15 @@ public class BackpackCommand implements CommandExecutor {
      *
      * @param log             the logger that will be used for logging
      * @param config          the plugin configuration file
-     * @param variables       the variable processor to create and resolve variabless
+     * @param placeholders    the {@link Placeholders} to create and resolve placeholders
      * @param pluginMessage   the {@link PluginMessage} instance
      * @param profileProvider the profile provider instance
      */
-    public BackpackCommand(final BetonQuestLogger log, final ConfigAccessor config, final Variables variables, final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
+    public BackpackCommand(final BetonQuestLogger log, final ConfigAccessor config, final Placeholders placeholders,
+                           final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
         this.log = log;
         this.config = config;
-        this.variables = variables;
+        this.placeholders = placeholders;
         this.pluginMessage = pluginMessage;
         this.profileProvider = profileProvider;
     }
@@ -67,7 +68,7 @@ public class BackpackCommand implements CommandExecutor {
             if (sender instanceof Player) {
                 final OnlineProfile onlineProfile = profileProvider.getProfile((Player) sender);
                 log.debug("Executing /backpack command for " + onlineProfile);
-                new Backpack(config, variables, pluginMessage, onlineProfile);
+                new Backpack(config, placeholders, pluginMessage, onlineProfile);
             }
             return true;
         }

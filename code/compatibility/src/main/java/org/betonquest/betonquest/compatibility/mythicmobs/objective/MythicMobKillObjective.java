@@ -112,7 +112,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
      * Registers a listener for the MythicMobDeathEvent and handles all incoming ones.
      *
      * @param event the MythicMobDeathEvent
-     * @throws QuestException if a variable could not be resolved
+     * @throws QuestException if an argument could not be resolved
      */
     @EventHandler(ignoreCancelled = true)
     public void onKill(final MythicMobDeathEvent event) throws QuestException {

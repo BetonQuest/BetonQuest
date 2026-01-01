@@ -10,7 +10,7 @@ import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.vault.condition.MoneyConditionFactory;
 import org.betonquest.betonquest.compatibility.vault.event.MoneyEventFactory;
 import org.betonquest.betonquest.compatibility.vault.event.PermissionEventFactory;
-import org.betonquest.betonquest.compatibility.vault.variable.MoneyVariableFactory;
+import org.betonquest.betonquest.compatibility.vault.placeholder.MoneyPlaceholderFactory;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicesManager;
@@ -47,7 +47,7 @@ public class VaultIntegrator implements Integrator {
             registries.event().register("money", new MoneyEventFactory(economy, api.getLoggerFactory(),
                     plugin.getPluginMessage()));
             registries.condition().register("money", new MoneyConditionFactory(economy));
-            registries.variable().register("money", new MoneyVariableFactory(economy));
+            registries.placeholder().register("money", new MoneyPlaceholderFactory(economy));
         }
 
         final RegisteredServiceProvider<Permission> permissionProvider = servicesManager.getRegistration(Permission.class);

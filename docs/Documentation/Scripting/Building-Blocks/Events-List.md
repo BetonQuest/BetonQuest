@@ -6,9 +6,9 @@ toc_depth: 2
 
 ## Burn: `burn`
 
-| Parameter  | Syntax            | Default Value               | Explanation                                                        |
-|------------|-------------------|-----------------------------|--------------------------------------------------------------------|
-| _duration_ | `duration:number` | :octicons-x-circle-16:      | The duration the player will burn (in seconds). Can be a variable. |
+| Parameter  | Syntax            | Default Value          | Explanation                                     |
+|------------|-------------------|------------------------|-------------------------------------------------|
+| _duration_ | `duration:number` | :octicons-x-circle-16: | The duration the player will burn (in seconds). |
 
 ```YAML title="Example"
 events:
@@ -31,7 +31,7 @@ events:
 ## Chat player message `chat`
 
 This event will send the given message as the player. Therefore, it will look like as if the player did send the message. 
-The instruction string is the command, without leading slash. You can only use `%player%` as a variable in this event.
+The instruction string is the command, without leading slash. You can only use `%player%` as a placeholder in this event.
 Additional messages can be defined by separating them with `|` character. If you want to use a `|` character in the message use `\|`.
 
 If a plugin does not work with the sudo / command event you need to use this event.
@@ -108,8 +108,9 @@ compass:
 **persistent**, **static**
 
 Runs specified command from the console. The instruction string is the command, without leading slash.
-You can use variables here, but variables other than `%player%` won't resolve if the event is fired from delayed `folder`
-and the player is offline now. You can define additional commands by separating them with `|` character.
+You can use placeholders here, but placeholders other than `%player%` won't resolve if the event is fired from 
+delayed `folder` and the player is offline now.
+You can define additional commands by separating them with `|` character.
 If you want to use a `|` character in the command use `\|`.
 
 Looking for [run command as player](#sudo-sudo)?
@@ -190,7 +191,7 @@ If no location is given then the items will be dropped for **every** player at t
 ```YAML
 drop items:magical_sword location:200;17;300;world
 drop items:loot_rare,loot_common:3
-drop items:myItem location:%objective.MyQuestVariables.DropLocation%
+drop items:myItem location:%objective.MyQuestPlaceholder.DropLocation%
 ```
 
 ## Remove Potion Effect: `deleffect`
@@ -216,7 +217,8 @@ Adds a specified potion effect to player. First argument is potion type. You can
 
 ## Eval Event: `eval`
 
-This event allows you to resolve an expression containing variables, and the result will then be interpreted again as an event.
+This event allows you to resolve an expression containing placeholders, and the result will then be interpreted 
+again as an event.
 
 ```YAML title="Example"
 events:
@@ -225,7 +227,7 @@ events:
 ```
 
 1. This could evaluate to `point ranking 5 action:add notify` and will add 5 points to the ranking category and notify the player.
-   But the variable could also be empty and add 5 points without notifying the player. This is not possible in a normal event.
+   But the placeholder could also be empty and add 5 points without notifying the player. This is not possible in a normal event.
 
 ## Give experience: `experience`
 
@@ -491,8 +493,9 @@ events:
 
 **persistent**, **static**  
 
-Prints a provided message to the server log. Any variables used in the message will be resolved. 
-Note that when used in static context (by schedules) replacing player dependent variables won't work as the event is player independent.
+Prints a provided message to the server log. Any placeholders used in the message will be resolved. 
+Note that when used in static context (by schedules) replacing player dependent placeholders won't work as the event 
+is player independent.
 
 | Parameter | Syntax           | Default Value | Explanation                                                                                                                               |
 |-----------|------------------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------|
@@ -544,7 +547,7 @@ events:
 ## OPsudo: `opsudo`
 
 This event is similar to the `sudo` event, the only difference is that it will fire a command as the player with temporary OP permissions. 
-Additional commands can be defined by separating them with `|` character. If you want to use a `|` character in the message use `\|`. Variables are supported.
+Additional commands can be defined by separating them with `|` character. If you want to use a `|` character in the message use `\|`.
 
 Looking for [run as normal player](#sudo-sudo)?
 Looking for [console commands](#command-command)?
@@ -611,14 +614,14 @@ Removes or kill all entities (mobs) of given type at the location. Here you can 
 
 Can only effect loaded entities!
 
-| Parameter   | Syntax                                                                       | Default Value          | Explanation                                                                                                                                 |
-|-------------|------------------------------------------------------------------------------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
-| _entity(s)_ | `entity,entity`                                                              | :octicons-x-circle-16: | Required. List of entity's (separated by `,`).                                                                                              |
-| _location_  | [Unified Location Formatting](../Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | Required. The center location of the target entity's.                                                                                       |
-| _radius_    | Number                                                                       | :octicons-x-circle-16: | Required. The radius around the location. Can be a variable.                                                                                |
-| _name_      | `name:name`                                                                  | :octicons-x-circle-16: | Name of the entity.                                                                                                                         |
-| _marked_    | `marked:mark`                                                                | :octicons-x-circle-16: | Mark of the entity (from the [spawn event](../../Scripting/Building-Blocks/Events-List.md#spawn-mob-spawn) for example). Can be a variable. |
-| _kill_      | `kill`                                                                       | :octicons-x-circle-16: | Whether to remove or actually kill the entity (if possible).                                                                                |
+| Parameter   | Syntax                                                                       | Default Value          | Explanation                                                                                                              |
+|-------------|------------------------------------------------------------------------------|------------------------|--------------------------------------------------------------------------------------------------------------------------|
+| _entity(s)_ | `entity,entity`                                                              | :octicons-x-circle-16: | Required. List of entity's (separated by `,`).                                                                           |
+| _location_  | [Unified Location Formatting](../Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | Required. The center location of the target entity's.                                                                    |
+| _radius_    | Number                                                                       | :octicons-x-circle-16: | Required. The radius around the location.                                                                                |
+| _name_      | `name:name`                                                                  | :octicons-x-circle-16: | Name of the entity.                                                                                                      |
+| _marked_    | `marked:mark`                                                                | :octicons-x-circle-16: | Mark of the entity (from the [spawn event](../../Scripting/Building-Blocks/Events-List.md#spawn-mob-spawn) for example). |
+| _kill_      | `kill`                                                                       | :octicons-x-circle-16: | Whether to remove or actually kill the entity (if possible).                                                             |
 
 ```YAML title="Example"
 killArenaMobs: "removeentity ZOMBIE 100;200;300;world 10 name:Monster kill"
@@ -767,9 +770,16 @@ events:
 
 **persistent**, **static**
 
-Spawns specified amount of mobs of given type at the location. First argument is a location. Next is [type of the mob](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html). The last, third argument is integer for amount of mobs to be spawned. You can also specify `name:` argument, followed by the name of the mob. You can also mark the spawned mob with a keyword using `marked:` argument supporting variables. It won't show anywhere, and you can check for only marked mobs in `mobkill` objective.
+Spawns specified amount of mobs of given type at the location. First argument is a location.
+Next is [type of the mob](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html).
+The last, third argument is integer for amount of mobs to be spawned. You can also specify `name:` argument, followed
+by the name of the mob. You can also mark the spawned mob with a keyword using `marked:` argument.
+It won't show anywhere, and you can check for only marked mobs in `mobkill` objective.
 
-You can specify armor which the mob will wear and items it will hold with `h:` (helmet), `c:` (chestplate), `l:` (leggings), `b:` (boots), `m:` (main hand) and `o:` (off hand) optional arguments. These take a single item without amount, as defined in the _items_ section. You can also add a list of drops with `drops:` argument, followed by a list of items with amounts after colons, separated by commas.
+You can specify armor which the mob will wear and items it will hold with
+`h:` (helmet), `c:` (chestplate), `l:` (leggings), `b:` (boots), `m:` (main hand) and `o:` (off hand) optional arguments.
+These take a single item without amount, as defined in the _items_ section. You can also add a list of drops with
+`drops:` argument, followed by a list of items with amounts after colons, separated by commas.
 
 !!! example
     ```YAML
@@ -784,7 +794,7 @@ You can specify armor which the mob will wear and items it will hold with `h:` (
 ## Sudo: `sudo`
 
 This event is similar to `command` event, the only difference is that it will fire a command as the player (often referred to as player commands).
-Additional commands can be defined by separating them with `|` character. If you want to use a `|` character in the message use `\|`. Variables are supported.
+Additional commands can be defined by separating them with `|` character. If you want to use a `|` character in the message use `\|`.
 
 Looking for [run as op](#opsudo-opsudo)?
 Looking for [console commands](#command-command)?
@@ -872,7 +882,7 @@ events:
 
 This event has only one purpose: Change values that are stored in `variable` objective variables. The first argument is
 the ID of the `variable` objective. The second argument is the name of the variable to set. The third argument is the
-value to set. Both the name and value can use `%...%` variables. To delete a variable you can use `""`.
+value to set. Both the name and value can use `%...%` placeholders. To delete a variable you can use `""`.
 To store more complex values you can use [quoting](../Quoting-&-YAML.md#quoting).
 Refer to the [`variable` objective](Objectives-List.md#variable-variable) documentation for more information about storing variables.
 This event will do nothing if the player does not already have a `variable` objective assigned to them.
@@ -888,7 +898,7 @@ This event will do nothing if the player does not already have a `variable` obje
 
 | Parameter      | Syntax                          | Default Value          | Explanation                                                                                                                                                                                                                                                                                                               |
 |----------------|---------------------------------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| _vector_       | `vector:(x;y;z)`                | :octicons-x-circle-16: | The values of the vector, which are decimal numbers, can be interpreted as absolute numbers like the coordinate or as relative directions. For more understanding the relative direction is similar to `^ ^ ^` in minecraft or in other words `(sideways;upwards;forwards)`. Can be a variable.                           |
+| _vector_       | `vector:(x;y;z)`                | :octicons-x-circle-16: | The values of the vector, which are decimal numbers, can be interpreted as absolute numbers like the coordinate or as relative directions. For more understanding the relative direction is similar to `^ ^ ^` in minecraft or in other words `(sideways;upwards;forwards)`.                                              |
 | _direction_    | `direction:directionType`       | `absolute`             | There are 3 types how the vector can get applied to the player:<br> `absolute` won't change the vector at all.<br> `relative` will redirect the vector to the view of the player.<br> `relative_y` is a mix between absolute and relative. It will still direct to the view but only horizontally, so y will be absolute. |
 | _modification_ | `modification:modificationType` | `set`                  | Possible modifications are `set` and `add`. The modification type determines how the vector should be merged with the player's velocity. The player's velocity is the external force applied on the player.                                                                                                               |
 
@@ -898,7 +908,7 @@ This event will do nothing if the player does not already have a `variable` obje
 events:
   jumppad: "velocity vector:(2;0.8;4)"
   dash: "velocity vector:(0;0.1;1.3) direction:relative_y"
-  variable_dash: "velocity vector:%objective.customVariable.dashLength% direction:relative_y"
+  individual_dash: "velocity vector:%objective.customPlaceholder.dashLength% direction:relative_y"
   fly: "velocity vector:(0;0.1;2) direction:relative modification:add"
   
 ```
@@ -912,11 +922,11 @@ Sets the weather in the world the player is currently in. The argument is `sun` 
 `storm` for storm with rain, lightning and thunder.
 Durations less than 1 is equal to no duration.
 
-| Parameter  | Syntax            | Default Value               | Explanation                                                                                                   |
-|------------|-------------------|-----------------------------|---------------------------------------------------------------------------------------------------------------|
-| _type_     | Keyword           | :octicons-x-circle-16:      | The type of weather to set. Either `sun`, `rain` or `storm`.                                                  |
-| _duration_ | `duration:number` | Minecraft decides randomly. | The duration the weather will last (in seconds). Can be a variable.<br> Is handled from minecraft afterwards. |
-| _world_    | `world:worldName` | The player's current world. | The world to change the weather in.                                                                           |
+| Parameter  | Syntax            | Default Value               | Explanation                                                                                 |
+|------------|-------------------|-----------------------------|---------------------------------------------------------------------------------------------|
+| _type_     | Keyword           | :octicons-x-circle-16:      | The type of weather to set. Either `sun`, `rain` or `storm`.                                |
+| _duration_ | `duration:number` | Minecraft decides randomly. | The duration the weather will last (in seconds). <br> Is handled from minecraft afterwards. |
+| _world_    | `world:worldName` | The player's current world. | The world to change the weather in.                                                         |
 
 ```YAML title="Example"
 events:

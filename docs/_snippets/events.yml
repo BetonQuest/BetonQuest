@@ -20,7 +20,7 @@ notify: |-
   You can send notifications using the `notify` event. This is how to use it:
 
   !!! warning
-      All colons (`:`) in the message part of the notification need to be escaped, including those inside variables.
+      All colons (`:`) in the message part of the notification need to be escaped, including those inside placeholders.
       One backslash (`\`) is required when using no quoting at all (`...`) or single quotes
       (`'...'`). Two backslashes are required (`\\`) when using double quotes (`"..."`).  
       You also need to escape the backslash itself, if you use double quotes for some things like `\n`.
@@ -34,7 +34,7 @@ notify: |-
 
   | Parameter                  | Syntax                | Default Value          | Explanation                                                                                                                      |
   |----------------------------|-----------------------|------------------------|----------------------------------------------------------------------------------------------------------------------------------|
-  | _message_                  | Any text with spaces! | :octicons-x-circle-16: | The message that will be displayed. Supports variables and translations. *Must be first*                                         |
+  | _message_                  | Any text with spaces! | :octicons-x-circle-16: | The message that will be displayed. Supports translations. *Must be first*                                       |
   | _category_                 | `category:info`       | None                   | Will load all settings from that Notification Category. Can be a comma-separated list. The first existent category will be used. |
   | _io_                       | `io:bossbar`          | io:chat                | Any NotifyIO Overrides the "category". settings.                                                                                 |
   | _any io specific settings_ | `setting:value`       | None                   | Some notifyIO's provide specific settings. Can be used multiple times. Overrides the "category" settings.                        |
@@ -84,7 +84,7 @@ notify: |-
   **persistent**, **static**
   
   You can broadcast notifications to all players on the server using the `notifyall` event. It works just like the notify event.
-  Variables are resolved for each online player, not for the player the event is executed for.
+  Placeholders are resolved for each online player, not for the player the event is executed for.
 
   ```YAML title="Example"
   events:

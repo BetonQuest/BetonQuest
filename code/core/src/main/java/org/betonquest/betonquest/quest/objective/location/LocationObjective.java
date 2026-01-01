@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.Location;
 
 /**
- * Player has to reach certain radius around the specified location.
+ * Player has to reach a certain radius around the specified location.
  */
 public class LocationObjective extends AbstractLocationObjective {
 
@@ -28,11 +28,11 @@ public class LocationObjective extends AbstractLocationObjective {
     private final Argument<Number> range;
 
     /**
-     * The constructor takes an Instruction object as a parameter and throws an QuestException.
+     * The constructor takes an Instruction object as a parameter and throws a QuestException.
      *
      * @param instruction the Instruction object to be used in the constructor
-     * @param loc         the VariableLocation object representing the location
-     * @param range       the VariableNumber object representing the range
+     * @param loc         the target location
+     * @param range       the radius defining the area surrounding the target location
      * @throws QuestException if there is an error while parsing the instruction
      */
     public LocationObjective(final Instruction instruction, final Argument<Location> loc, final Argument<Number> range) throws QuestException {

@@ -67,7 +67,7 @@ This feature can also be used to disable built-in notifications:
 Just set `io:` to [`suppress`](./Notification-IO's-&-Categories.md#suppress) for any notification that you want to remove.
 
 
-###Objective notifications
+### Objective notifications
 Some objectives have a `notify` argument that can be added to their instruction.
 If you do so, the objective will send a notification to the player if they progress in the objective.
 You can also add an interval (`notify:5`) - in this case the player will get a notification every 5 steps
@@ -75,7 +75,7 @@ towards the completion of the objective.
 
 !!! inline end
     `@[legacy]` is a [text formatter](../../Features/Text-Formatting.md).
-    `{amount}` is just an internal variable that will be replaced with a number based on the
+    `{amount}` is just an internal placeholder that will be replaced with a number based on the
     player's progression.
 ```YAML title="Built-in Notification Example"
 blocks_to_break: '@[legacy]&2{amount} blocks left to break'

@@ -59,7 +59,7 @@ public abstract class RPGMenuProcessor<I extends Identifier, T> extends SectionP
                             final String internal, final BetonQuestLoggerFactory loggerFactory,
                             final ParsedSectionTextCreator textCreator,
                             final QuestTypeApi questTypeApi, final FeatureApi featureApi) {
-        super(log, questTypeApi.variables(), packManager, readable, internal);
+        super(log, questTypeApi.placeholders(), packManager, readable, internal);
         this.loggerFactory = loggerFactory;
         this.textCreator = textCreator;
         this.questTypeApi = questTypeApi;
@@ -118,8 +118,8 @@ public abstract class RPGMenuProcessor<I extends Identifier, T> extends SectionP
          */
         protected <U extends Identifier> DefaultListArgument<U> getID(final String path, final InstructionArgumentParser<U> argument)
                 throws QuestException {
-            return new DefaultListArgument<>(variables, pack, section.getString(path, ""),
-                    value -> argument.apply(variables, packManager, pack, value));
+            return new DefaultListArgument<>(placeholders, pack, section.getString(path, ""),
+                    value -> argument.apply(placeholders, packManager, pack, value));
         }
     }
 }

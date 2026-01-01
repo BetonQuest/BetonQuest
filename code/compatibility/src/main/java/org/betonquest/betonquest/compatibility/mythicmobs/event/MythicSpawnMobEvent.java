@@ -58,7 +58,7 @@ public class MythicSpawnMobEvent implements OnlineEvent, PlayerlessEvent {
     private final FlagArgument<Boolean> targetPlayer;
 
     /**
-     * An optional variable containing a string to mark the mob with.
+     * The optional identifier for the marked mob.
      */
     @Nullable
     private final Argument<String> marked;
@@ -77,10 +77,11 @@ public class MythicSpawnMobEvent implements OnlineEvent, PlayerlessEvent {
      * @param amount       the amount of mobs to spawn
      * @param mythicHider  the mythic hider, if the mob should be private (invisible to other players), or null
      * @param targetPlayer whether the mob should target the player who triggered the event
-     * @param marked       an optional variable containing a string to mark the mob with
+     * @param marked       the optional identifier for the marked mob
      */
     public MythicSpawnMobEvent(final Plugin plugin, final Argument<Location> loc, final Argument<Map.Entry<MythicMob, Double>> mobLevel,
-                               final Argument<Number> amount, final FlagArgument<MythicHider> mythicHider, final FlagArgument<Boolean> targetPlayer, @Nullable final Argument<String> marked) {
+                               final Argument<Number> amount, final FlagArgument<MythicHider> mythicHider,
+                               final FlagArgument<Boolean> targetPlayer, @Nullable final Argument<String> marked) {
         this.plugin = plugin;
         this.loc = loc;
         this.mobLevel = mobLevel;

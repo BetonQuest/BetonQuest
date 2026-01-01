@@ -11,12 +11,13 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.variable.VariableID;
+import org.betonquest.betonquest.api.quest.Placeholders;
+import org.betonquest.betonquest.api.quest.placeholder.PlaceholderID;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.betonquest.betonquest.compatibility.holograms.HologramIntegrator;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
+import org.betonquest.betonquest.kernel.processor.quest.PlaceholderProcessor;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
@@ -43,9 +44,9 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
     private final QuestPackageManager packManager;
 
     /**
-     * Variable processor to create and resolve variables.
+     * {@link Placeholders} to create and resolve placeholders.
      */
-    private final VariableProcessor variableProcessor;
+    private final PlaceholderProcessor placeholderProcessor;
 
     /**
      * Creates a new HolographicDisplaysIntegrator for HolographicDisplays.
@@ -58,7 +59,7 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
         this.plugin = BetonQuest.getInstance();
         this.log = log;
         this.packManager = packManager;
-        this.variableProcessor = BetonQuest.getInstance().getVariableProcessor();
+        this.placeholderProcessor = BetonQuest.getInstance().getPlaceholderProcessor();
     }
 
     @Override
@@ -74,25 +75,31 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
         final HolographicDisplaysAPI holoApi = HolographicDisplaysAPI.get(plugin);
         final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
         holoApi.registerIndividualPlaceholder("bq", new HologramPlaceholder(
-                loggerFactory.create(HologramPlaceholder.class), variableProcessor, api.getProfileProvider()));
+                loggerFactory.create(HologramPlaceholder.class), placeholderProcessor, api.getProfileProvider()));
         holoApi.registerGlobalPlaceholder("bqg", new HologramGlobalPlaceholder(
-                loggerFactory.create(HologramGlobalPlaceholder.class), variableProcessor));
+                loggerFactory.create(HologramGlobalPlaceholder.class), placeholderProcessor));
     }
 
+    /**
+     * Parses a package-specific BetonQuest placeholder and converts it to the HolographicDisplays API specific
+     * placeholder format.
+     *
+     * @param pack the quest pack where the placeholder resides
+     * @param text the raw text
+     * @return the parsed and formatted full string
+     */
     @Override
-    public String parseVariable(final QuestPackage pack, final String text) {
-        /* We must convert a normal BetonQuest variable with package to
-           "{bq:pack:objective.kills.left}" which is parsed by HolographicDisplays as a custom API placeholder. */
-        final Matcher matcher = HologramProvider.VARIABLE_VALIDATOR.matcher(text);
+    public String parsePlaceholder(final QuestPackage pack, final String text) {
+        final Matcher matcher = HologramProvider.PLACEHOLDER_VALIDATOR.matcher(text);
         return matcher.replaceAll(match -> {
             final String group = match.group();
             try {
-                final VariableID variable = new VariableID(variableProcessor, packManager, pack, group);
-                final Instruction instruction = variable.getInstruction();
-                final String prefix = variableProcessor.get(variable).allowsPlayerless() ? "{bqg:" : "{bq:";
-                return prefix + variable.getPackage().getQuestPath() + ":" + instruction + "}";
+                final PlaceholderID placeholderID = new PlaceholderID(placeholderProcessor, packManager, pack, group);
+                final Instruction instruction = placeholderID.getInstruction();
+                final String prefix = placeholderProcessor.get(placeholderID).allowsPlayerless() ? "{bqg:" : "{bq:";
+                return prefix + placeholderID.getPackage().getQuestPath() + ":" + instruction + "}";
             } catch (final QuestException exception) {
-                log.warn("Could not create variable '" + group + "' variable: " + exception.getMessage(), exception);
+                log.warn("Could not create placeholder '" + group + "': " + exception.getMessage(), exception);
             }
             return group;
         });

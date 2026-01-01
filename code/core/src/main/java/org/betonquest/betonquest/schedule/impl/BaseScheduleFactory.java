@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.argument.parser.EnumParser;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.api.schedule.Schedule;
@@ -23,9 +23,9 @@ import java.util.Optional;
 public abstract class BaseScheduleFactory<S extends Schedule> implements ScheduleFactory<S> {
 
     /**
-     * Variable processor to create and resolve variables.
+     * The {@link Placeholders} to create and resolve placeholders.
      */
-    private final Variables variables;
+    private final Placeholders placeholders;
 
     /**
      * Quest package manager to get quest packages from.
@@ -35,18 +35,18 @@ public abstract class BaseScheduleFactory<S extends Schedule> implements Schedul
     /**
      * Create a new Base Schedule Factory to create parse common schedule data.
      *
-     * @param variables   the variable processor to create and resolve variables
-     * @param packManager the quest package manager to get quest packages from
+     * @param placeholders the {@link Placeholders} to create and resolve placeholders
+     * @param packManager  the quest package manager to get quest packages from
      */
-    public BaseScheduleFactory(final Variables variables, final QuestPackageManager packManager) {
-        this.variables = variables;
+    public BaseScheduleFactory(final Placeholders placeholders, final QuestPackageManager packManager) {
+        this.placeholders = placeholders;
         this.packManager = packManager;
     }
 
     /**
      * Parses the common objects required to create a schedule.
      *
-     * @param pack        source pack for variable and id resolving
+     * @param pack        source pack for argument and id resolving
      * @param instruction the section to load
      * @return the parsed objects
      * @throws QuestException when parts are missing or cannot be resolved
@@ -59,8 +59,8 @@ public abstract class BaseScheduleFactory<S extends Schedule> implements Schedul
                 .orElseThrow(() -> new QuestException("Missing events"));
         final List<EventID> events;
         try {
-            events = new DefaultListArgument<>(variables, pack, eventsString,
-                    value -> new EventID(variables, packManager, pack, value)).getValue(null);
+            events = new DefaultListArgument<>(placeholders, pack, eventsString,
+                    value -> new EventID(placeholders, packManager, pack, value)).getValue(null);
         } catch (final QuestException e) {
             throw new QuestException("Error while loading events: " + e.getMessage(), e);
         }

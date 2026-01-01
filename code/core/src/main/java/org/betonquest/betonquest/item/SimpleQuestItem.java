@@ -28,12 +28,12 @@ public class SimpleQuestItem implements QuestItem {
     private final BlockSelector selector;
 
     /**
-     * Providing display name for variables.
+     * Providing display name for placeholders.
      */
     private final NameHandler name;
 
     /**
-     * Providing lore lines for variables.
+     * Providing lore lines for placeholders.
      */
     private final LoreHandler lore;
 
@@ -47,8 +47,8 @@ public class SimpleQuestItem implements QuestItem {
      *
      * @param selector the base Material Selector for the ItemStack generation
      * @param handlers the populated handlers defining the QuestItem, including name and lore
-     * @param name     providing display name for variables
-     * @param lore     providing lore lines for variables
+     * @param name     providing display name for placeholders
+     * @param lore     providing lore lines for placeholders
      */
     public SimpleQuestItem(final BlockSelector selector, final List<ItemMetaHandler<?>> handlers,
                            final NameHandler name, final LoreHandler lore) {

@@ -211,13 +211,14 @@ specialOption:
    `guardConv.lookDetected` refers to the option `lookDetected` in the conversation `guardConv` in the same package.    
    `mainStory>Mirko.interrupt` refers to the option `interrupt` in the conversation `Mirko` in the package `mainStory`.    
 
-## Conversation Variables
+## Conversation Placeholders
 
-You can use variables in the conversations. They will be resolved and displayed to the player when he starts a conversation.
-Check the [variables list](../Scripting/Building-Blocks/Variables-List.md) for more information about which variables exist.
+You can use placeholders in the conversations. They will be resolved and displayed to the player when he starts a conversation.
+Check the [placeholders list](../Scripting/Building-Blocks/Placeholders-List.md) for more information about which placeholders exist.
 
 !!! note
-    If you use a variable incorrectly (for example trying to get a property of an objective which isn't active for the player, or using %quester% in `message` event), the variable will be replaced with empty string ("").
+    If you use a placeholders incorrectly (for example trying to get a property of an objective which isn't active for
+    the player, or using %quester% in `message` event), the placeholders will be replaced with empty string ("").
 
 ## Translations
 

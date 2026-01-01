@@ -12,7 +12,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.bukkit.Bukkit;
@@ -66,9 +66,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
     private final FixedComponentLineWrapper componentLineWrapper;
 
     /**
-     * Variable processor to create and resolve variables.
+     * The {@link Placeholders} to create and resolve placeholders.
      */
-    private final Variables variables;
+    private final Placeholders placeholders;
 
     /**
      * The quest package manager to get quest packages from.
@@ -114,7 +114,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
      * @param conv                 the conversation this IO is part of
      * @param onlineProfile        the online profile of the player participating in the conversation
      * @param log                  the custom logger for the conversation
-     * @param variables            the variable processor to create and resolve variables
+     * @param placeholders         the {@link Placeholders} to create and resolve placeholders
      * @param packManager          the quest package manager to get quest packages from
      * @param colors               the colors used in the conversation
      * @param showNumber           whether to show the number of the conversation
@@ -124,7 +124,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public InventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile, final BetonQuestLogger log,
-                           final Variables variables, final QuestPackageManager packManager, final ConversationColors colors,
+                           final Placeholders placeholders, final QuestPackageManager packManager, final ConversationColors colors,
                            final boolean showNumber, final boolean showNPCText, final boolean printMessages,
                            final FixedComponentLineWrapper componentLineWrapper) {
         this.log = log;
@@ -133,7 +133,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         this.packManager = packManager;
         this.colors = colors;
         this.componentLineWrapper = componentLineWrapper;
-        this.variables = variables;
+        this.placeholders = placeholders;
         final TextComponent.Builder answerPrefix = Component.text();
         answerPrefix.append(colors.getPlayer().append(Component.text(profile.getPlayer().getName())))
                 .append(Component.text(": "))
@@ -166,8 +166,8 @@ public class InventoryConvIO implements Listener, ConversationIO {
         final String rawItem = properties.getString("item");
         try {
             final Argument<ItemID> item = rawItem == null ? null
-                    : new DefaultArgument<>(betonQuest.getQuestTypeApi().variables(), conv.getPackage(), rawItem,
-                    (value) -> new ItemID(variables, packManager, conv.getPackage(), value));
+                    : new DefaultArgument<>(betonQuest.getQuestTypeApi().placeholders(), conv.getPackage(), rawItem,
+                    (value) -> new ItemID(placeholders, packManager, conv.getPackage(), value));
             options.put(playerOptionsCount, Pair.of(colors.getOption().append(option), item));
         } catch (final QuestException e) {
             options.put(playerOptionsCount, Pair.of(colors.getOption().append(option), null));

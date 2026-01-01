@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.ValueValidator;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
@@ -107,7 +107,7 @@ public interface DecoratedArgumentParser<T> extends InstructionArgumentParser<T>
      * Returns a new {@link DecoratedArgumentParser} that checks for the given expected string before
      * applying the parser this method is called on.
      * If the expected string matches the string parameter of
-     * {@link InstructionArgumentParser#apply(Variables, QuestPackageManager, QuestPackage, String)}
+     * {@link InstructionArgumentParser#apply(Placeholders, QuestPackageManager, QuestPackage, String)}
      * by {@link String#equalsIgnoreCase(String)}, the fixedValue is returned.
      * Otherwise, the apply method of the current {@link DecoratedArgumentParser} instance is called.
      *
@@ -123,7 +123,7 @@ public interface DecoratedArgumentParser<T> extends InstructionArgumentParser<T>
      * Returns a new {@link DecoratedArgumentParser} that checks for the given expected string before
      * applying the parser this method is called on.
      * If the expected string matches the string parameter of
-     * {@link InstructionArgumentParser#apply(Variables, QuestPackageManager, QuestPackage, String)}
+     * {@link InstructionArgumentParser#apply(Placeholders, QuestPackageManager, QuestPackage, String)}
      * by {@link String#equalsIgnoreCase(String)}, the fixedValue is returned.
      * Otherwise, the apply method of the current parser instance is called.
      * Since apply must not return null, this method returns an {@link Optional} wrapping the result.

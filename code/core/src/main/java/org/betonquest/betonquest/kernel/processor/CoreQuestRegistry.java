@@ -15,7 +15,7 @@ import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.kernel.processor.quest.ConditionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.EventProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.ObjectiveProcessor;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
+import org.betonquest.betonquest.kernel.processor.quest.PlaceholderProcessor;
 import org.betonquest.betonquest.kernel.registry.quest.BaseQuestTypeRegistries;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -29,16 +29,16 @@ import java.util.Map;
 /**
  * Stores the active core quest type Processors to store and execute type logic.
  *
- * @param conditions Condition logic.
- * @param events     Event logic.
- * @param objectives Objective logic.
- * @param variables  Variable logic.
+ * @param conditions   Condition logic.
+ * @param events       Event logic.
+ * @param objectives   Objective logic.
+ * @param placeholders Placeholder logic.
  */
 public record CoreQuestRegistry(
         ConditionProcessor conditions,
         EventProcessor events,
         ObjectiveProcessor objectives,
-        VariableProcessor variables
+        PlaceholderProcessor placeholders
 ) implements QuestTypeApi {
 
     /**
@@ -55,15 +55,15 @@ public record CoreQuestRegistry(
     public static CoreQuestRegistry create(final BetonQuestLoggerFactory loggerFactory, final QuestPackageManager packManager,
                                            final BaseQuestTypeRegistries questTypeRegistries, final PluginManager pluginManager,
                                            final BukkitScheduler scheduler, final Plugin plugin) {
-        final VariableProcessor variableProcessor = new VariableProcessor(loggerFactory.create(VariableProcessor.class),
-                packManager, questTypeRegistries.variable(), scheduler, plugin);
+        final PlaceholderProcessor placeholderProcessor = new PlaceholderProcessor(loggerFactory.create(PlaceholderProcessor.class),
+                packManager, questTypeRegistries.placeholder(), scheduler, plugin);
         return new CoreQuestRegistry(
-                new ConditionProcessor(loggerFactory.create(ConditionProcessor.class), variableProcessor, packManager,
+                new ConditionProcessor(loggerFactory.create(ConditionProcessor.class), placeholderProcessor, packManager,
                         questTypeRegistries.condition(), scheduler, plugin),
-                new EventProcessor(loggerFactory.create(EventProcessor.class), variableProcessor, packManager,
+                new EventProcessor(loggerFactory.create(EventProcessor.class), placeholderProcessor, packManager,
                         questTypeRegistries.event(), scheduler, plugin),
-                new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), variableProcessor, packManager,
-                        questTypeRegistries.objective(), pluginManager, plugin), variableProcessor);
+                new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), placeholderProcessor, packManager,
+                        questTypeRegistries.objective(), pluginManager, plugin), placeholderProcessor);
     }
 
     /**
@@ -73,7 +73,7 @@ public record CoreQuestRegistry(
         conditions.clear();
         events.clear();
         objectives.clear();
-        variables.clear();
+        placeholders.clear();
     }
 
     /**
@@ -85,7 +85,7 @@ public record CoreQuestRegistry(
         events.load(pack);
         conditions.load(pack);
         objectives.load(pack);
-        variables.load(pack);
+        placeholders.load(pack);
     }
 
     /**
@@ -98,7 +98,7 @@ public record CoreQuestRegistry(
                 conditions.metricsSupplier(),
                 events.metricsSupplier(),
                 objectives.metricsSupplier(),
-                variables.metricsSupplier()
+                placeholders.metricsSupplier()
         );
     }
 
@@ -109,7 +109,7 @@ public record CoreQuestRegistry(
      */
     public String readableSize() {
         return String.join(", ", conditions.readableSize(), events.readableSize(),
-                objectives.readableSize(), variables.readableSize());
+                objectives.readableSize(), placeholders.readableSize());
     }
 
     @Override
