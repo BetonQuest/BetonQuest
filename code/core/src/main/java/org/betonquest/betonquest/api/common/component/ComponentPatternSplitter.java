@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.jetbrains.annotations.VisibleForTesting;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -50,6 +51,8 @@ public final class ComponentPatternSplitter {
         if (component instanceof final TextComponent textComponent) {
             final LinkedList<String> parts = split(splitter, textComponent.content());
             parts.forEach(part -> result.add(Component.text(part).style(component.style())));
+        } else {
+            result.add(component.children(Collections.emptyList()));
         }
         final TextComponent parentComponent = Component.empty().style(component.style());
         for (final Component child : component.children()) {
