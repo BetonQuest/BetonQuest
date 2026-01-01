@@ -31,7 +31,6 @@
     <guava.version>33.2.1-jre</guava.version>
     <commons-io.version>2.16.1</commons-io.version>
     <commons-lang3.version>3.18.0</commons-lang3.version>
-    <json.version>20240303</json.version>
   </properties>
 
   <dependencies>
@@ -101,11 +100,6 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
       <version>${commons-lang3.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.json</groupId>
-      <artifactId>json</artifactId>
-      <version>${json.version}</version>
     </dependency>
   </dependencies>
 

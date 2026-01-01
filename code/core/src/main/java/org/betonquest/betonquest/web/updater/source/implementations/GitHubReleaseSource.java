@@ -1,11 +1,12 @@
 package org.betonquest.betonquest.web.updater.source.implementations;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.betonquest.betonquest.versioning.Version;
 import org.betonquest.betonquest.web.ContentSource;
 import org.betonquest.betonquest.web.WebContentSource;
 import org.betonquest.betonquest.web.updater.source.ReleaseUpdateSource;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
@@ -54,6 +55,11 @@ public class GitHubReleaseSource implements ReleaseUpdateSource {
     private final ContentSource contentSource;
 
     /**
+     * The {@link Gson} instance.
+     */
+    private final Gson gson;
+
+    /**
      * Creates a {@link GitHubReleaseSource} with the given apiUrl.
      * Provide only the path to the repository, not the path to a specific API backend itself.
      *
@@ -64,6 +70,7 @@ public class GitHubReleaseSource implements ReleaseUpdateSource {
         super();
         this.apiUrl = apiUrl;
         this.contentSource = contentSource;
+        gson = new Gson();
     }
 
     @Override
@@ -71,15 +78,15 @@ public class GitHubReleaseSource implements ReleaseUpdateSource {
         final Map<Version, String> versions = new HashMap<>();
         Integer page = 1;
         while (page != null) {
-            final JSONArray releaseArray = new JSONArray(contentSource.get(new URL(apiUrl + RELEASES_URL + PAGE + page)));
-            for (int index = 0; index < releaseArray.length(); index++) {
-                final JSONObject release = releaseArray.getJSONObject(index);
-                final Version version = new Version(release.getString("tag_name").substring(1));
-                final JSONArray assetsArray = release.getJSONArray("assets");
-                for (int i = 0; i < assetsArray.length(); i++) {
-                    final JSONObject asset = assetsArray.getJSONObject(i);
-                    if (JAR_NAME.equals(asset.getString("name"))) {
-                        final String url = asset.getString("browser_download_url");
+            final JsonArray releaseArray = gson.fromJson(contentSource.get(new URL(apiUrl + RELEASES_URL + PAGE + page)), JsonArray.class);
+            for (int index = 0; index < releaseArray.size(); index++) {
+                final JsonObject release = releaseArray.get(index).getAsJsonObject();
+                final Version version = new Version(release.get("tag_name").getAsString().substring(1));
+                final JsonArray assetsArray = release.get("assets").getAsJsonArray();
+                for (int i = 0; i < assetsArray.size(); i++) {
+                    final JsonObject asset = assetsArray.get(i).getAsJsonObject();
+                    if (JAR_NAME.equals(asset.get("name").getAsString())) {
+                        final String url = asset.get("browser_download_url").getAsString();
                         versions.put(version, url);
                     }
                 }

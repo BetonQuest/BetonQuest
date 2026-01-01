@@ -1,12 +1,13 @@
 package org.betonquest.betonquest.web.updater.source.implementations;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.betonquest.betonquest.versioning.Version;
 import org.betonquest.betonquest.web.ContentSource;
 import org.betonquest.betonquest.web.WebContentSource;
 import org.betonquest.betonquest.web.updater.source.DevelopmentUpdateSource;
 import org.betonquest.betonquest.web.updater.source.ReleaseUpdateSource;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
@@ -72,6 +73,11 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
     private final ContentSource contentSource;
 
     /**
+     * The {@link Gson} instance.
+     */
+    private final Gson gson;
+
+    /**
      * Creates a {@link NexusReleaseAndDevelopmentSource} with the given apiUrl.
      * Provide only the url to the nexus, not the url to the search itself.
      *
@@ -92,6 +98,7 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
         this.artifactId = artifactId;
         this.classifier = classifier;
         this.contentSource = contentSource;
+        this.gson = new Gson();
     }
 
     @Override
@@ -127,18 +134,19 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
         String continuationToken = "";
         while (continuationToken != null) {
             final String url = apiUrl + SERVICE_REST_V_1 + String.format(SEARCH_URL, repository, groupId, artifactId, classifier, prereleases) + continuationToken;
-            final JSONObject nexusResponse = new JSONObject(contentSource.get(new URL(url)));
-            final JSONArray items = nexusResponse.getJSONArray("items");
-            for (int index = 0; index < items.length(); index++) {
-                final JSONObject entry = items.getJSONObject(index);
-                final JSONObject maven2 = entry.getJSONObject("maven2");
-                final Version version = new Version(maven2.getString("version"));
-                final String downloadUrl = entry.getString("downloadUrl");
+            final JsonObject nexusResponse = gson.fromJson(contentSource.get(new URL(url)), JsonObject.class);
+            final JsonArray items = nexusResponse.get("items").getAsJsonArray();
+            for (int index = 0; index < items.size(); index++) {
+                final JsonObject entry = items.get(index).getAsJsonObject();
+                final JsonObject maven2 = entry.get("maven2").getAsJsonObject();
+                final Version version = new Version(maven2.get("version").getAsString());
+                final String downloadUrl = entry.get("downloadUrl").getAsString();
                 if (!consumer.consume(versions, version, downloadUrl)) {
                     return versions;
                 }
             }
-            continuationToken = nexusResponse.isNull("continuationToken") ? null : CONTINUATION_TOKEN + nexusResponse.getString("continuationToken");
+            continuationToken = nexusResponse.get("continuationToken").isJsonNull()
+                    ? null : CONTINUATION_TOKEN + nexusResponse.get("continuationToken").getAsString();
         }
         return versions;
     }
