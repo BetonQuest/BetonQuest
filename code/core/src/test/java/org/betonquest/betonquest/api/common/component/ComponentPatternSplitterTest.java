@@ -85,7 +85,11 @@ class ComponentPatternSplitterTest extends ComponentFixture {
                                     Component.empty().color(NamedTextColor.RED)
                                             .append(Component.text(" to").color(NamedTextColor.YELLOW))
                                             .append(Component.text(" assertWrap")))
-                    )
+                    ),
+                    Arguments.of("Press <key:key.jump> to Jump!",
+                            List.of(Component.text("Press ")
+                                    .append(Component.keybind("key.jump")
+                                            .append(Component.text(" to Jump!")))))
             );
         }
 
