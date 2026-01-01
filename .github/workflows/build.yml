@@ -60,7 +60,7 @@ jobs:
           ./mvnw ${CHANGELIST-} -P Test-All -B verify
           git diff > target/code/CodeChanges.patch
       - name: Upload Code
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: BetonQuest-Code
           path: |
@@ -105,7 +105,7 @@ jobs:
           MKDOCS_MATERIAL_INSIDERS_ENABLED: ${{ secrets.MKDOCS_MATERIAL_INSIDERS != '' }}
           MKDOCS_MATERIAL_INSIDERS_ENABLED_CI: ${{ secrets.MKDOCS_MATERIAL_INSIDERS != '' }}
       - name: Upload Docs
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: BetonQuest-Docs
           path: |
