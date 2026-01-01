@@ -29,7 +29,7 @@
     <log4j-core.version>3.0.0-beta2</log4j-core.version>
     <maven-artifact.version>4.0.0-beta-3</maven-artifact.version>
     <guava.version>33.5.0-jre</guava.version>
-    <commons-io.version>2.16.1</commons-io.version>
+    <commons-io.version>2.21.0</commons-io.version>
     <commons-lang3.version>3.20.0</commons-lang3.version>
   </properties>
 
