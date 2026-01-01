@@ -16,7 +16,7 @@
         <link rel="prev" href="../Objectives-List/">
       
       
-        <link rel="next" href="../Integration-List/">
+        <link rel="next" href="../Placeholders-List/">
       
       
         
@@ -2889,15 +2889,15 @@
   
   
     <li class="md-nav__item">
-      <a href="../Integration-List/" class="md-nav__link">
+      <a href="../Placeholders-List/" class="md-nav__link">
         
   
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 6h3l3.29-3.3a1 1 0 0 1 1.42 0l2.58 2.59a1 1 0 0 1 0 1.41L19 9h-8v2a1 1 0 0 1-1 1 1 1 0 0 1-1-1V8a2 2 0 0 1 2-2m-6 5v4l-2.29 2.29a1 1 0 0 0 0 1.41l2.58 2.59a1 1 0 0 0 1.42 0L11 17h4a1 1 0 0 0 1-1v-1h1a1 1 0 0 0 1-1v-1h1a1 1 0 0 0 1-1v-1h-7v1a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V9Z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2M7.4 18C5.9 16.5 5 14.3 5 12s.9-4.5 2.4-6l1.6.7C7.7 7.9 7 9.9 7 12s.7 4.1 2 5.3zm5.3-3-.8-2-1.4 2H9l2.3-3.1L10 9h1.3l.8 2 1.4-2H15l-2.2 3 1.3 3zm3.9 3-1.6-.7c1.3-1.3 2-3.2 2-5.3s-.7-4.1-2-5.3l1.6-.7c1.5 1.5 2.4 3.7 2.4 6s-.9 4.5-2.4 6"/></svg>
   
   <span class="md-ellipsis">
     
   
-    Integration List
+    Placeholders List
   
 
     
@@ -2918,15 +2918,15 @@
   
   
     <li class="md-nav__item">
-      <a href="../Variables-List/" class="md-nav__link">
+      <a href="../Integration-List/" class="md-nav__link">
         
   
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2M7.4 18C5.9 16.5 5 14.3 5 12s.9-4.5 2.4-6l1.6.7C7.7 7.9 7 9.9 7 12s.7 4.1 2 5.3zm5.3-3-.8-2-1.4 2H9l2.3-3.1L10 9h1.3l.8 2 1.4-2H15l-2.2 3 1.3 3zm3.9 3-1.6-.7c1.3-1.3 2-3.2 2-5.3s-.7-4.1-2-5.3l1.6-.7c1.5 1.5 2.4 3.7 2.4 6s-.9 4.5-2.4 6"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 6h3l3.29-3.3a1 1 0 0 1 1.42 0l2.58 2.59a1 1 0 0 1 0 1.41L19 9h-8v2a1 1 0 0 1-1 1 1 1 0 0 1-1-1V8a2 2 0 0 1 2-2m-6 5v4l-2.29 2.29a1 1 0 0 0 0 1.41l2.58 2.59a1 1 0 0 0 1.42 0L11 17h4a1 1 0 0 0 1-1v-1h1a1 1 0 0 0 1-1v-1h1a1 1 0 0 0 1-1v-1h-7v1a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V9Z"/></svg>
   
   <span class="md-ellipsis">
     
   
-    Variables List
+    Integration List
   
 
     
@@ -7305,14 +7305,16 @@ with the name of the required entity. You can use <code>marked:</code> argument 
 </code></pre></div>
 </div>
 <h2 id="eval-condition-eval">Eval Condition: <code>eval</code><a class="headerlink" href="#eval-condition-eval" title="Permanent link">🔗</a></h2>
-<p>This condition allows you to resolve an expression containing variables, and the result will then be interpreted again as an condition.</p>
+<p>This condition allows you to resolve an expression containing placeholders, and the result will then be interpreted 
+again as a condition.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">simpleEval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eval chestitem -288;64;357;World emerald:5</span>
 <span class="w">  </span><span class="nt">complexEval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eval point ranking 5 %objective.settings.equal%</span><span class="w"> </span><span class="c1">#(1)!</span>
 </code></pre></div>
 <ol>
 <li>This could evaluate to <code>point ranking 5 equal</code> and will be true if the player has 5 points in the ranking category.
-   But the variable could also be empty, and it could be higher or equal to 5. This is not possible in a normal condition.</li>
+   But the placeholder could also be empty, and it could be higher or equal to 5. This is not possible in a normal 
+   condition.</li>
 </ol>
 <h2 id="experience-experience">Experience: <code>experience</code><a class="headerlink" href="#experience-experience" title="Permanent link">🔗</a></h2>
 <p>This condition is met when the player has the specified amount of experience levels.
@@ -7451,7 +7453,7 @@ Available slot types: <code>HAND</code>, <code>OFF_HAND</code>, <code>HEAD</code
 </code></pre></div>
 </div>
 <h2 id="location-location">Location: <code>location</code><a class="headerlink" href="#location-location" title="Permanent link">🔗</a></h2>
-<p>It returns true only when the player is closer to specified location than the specified distance. Just two mandatory attributes - location and radius around it (can be a variable).</p>
+<p>It returns true only when the player is closer to specified location than the specified distance. Just two mandatory attributes - location and radius around it.</p>
 <div class="admonition example">
 <p class="admonition-title">Example</p>
 <div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">location 100;200;300;survival_nether 5</span>
@@ -7481,13 +7483,13 @@ Available slot types: <code>HAND</code>, <code>OFF_HAND</code>, <code>HEAD</code
 <td><em>MoonPhase</em></td>
 <td><a href="https://jd.papermc.io/paper/1.21.5/io/papermc/paper/world/MoonPhase.html#enum-constant-summary">Keyword</a></td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg></span></td>
-<td>The moon phase to check for. Can be a list and variables.</td>
+<td>A list of moon phases to check for.</td>
 </tr>
 <tr>
 <td><em>world</em></td>
 <td>world:name</td>
 <td>player location</td>
-<td>The world to check for the moon phase. Can be a variable.</td>
+<td>The world to check for the moon phase.</td>
 </tr>
 </tbody>
 </table>
@@ -7515,7 +7517,7 @@ Available slot types: <code>HAND</code>, <code>OFF_HAND</code>, <code>HEAD</code
 </tr>
 <tr>
 <td><em>Distance</em></td>
-<td>Variable</td>
+<td>Number</td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg></span></td>
 <td>The maximum distance</td>
 </tr>
@@ -7802,7 +7804,7 @@ The valid operations are: <code>&lt;</code>, <code>&lt;=</code>, <code>=</code>,
 <td><em>world</em></td>
 <td>world:name</td>
 <td>player location</td>
-<td>The world to check for the time. Can be a variable.</td>
+<td>The world to check for the time.</td>
 </tr>
 </tbody>
 </table>
@@ -7813,7 +7815,7 @@ The valid operations are: <code>&lt;</code>, <code>&lt;=</code>, <code>=</code>,
 </code></pre></div>
 <h2 id="variable-variable">Variable: <code>variable</code><a class="headerlink" href="#variable-variable" title="Permanent link">🔗</a></h2>
 <p><strong>static</strong></p>
-<p>This condition checks if a variable value matches given <a href="../../Data-Formats/#regex-regular-expressions">regular expression</a></p>
+<p>This condition checks if a placeholder value matches given <a href="../../Data-Formats/#regex-regular-expressions">regular expression</a></p>
 <table>
 <thead>
 <tr>
@@ -7825,36 +7827,36 @@ The valid operations are: <code>&lt;</code>, <code>&lt;=</code>, <code>=</code>,
 </thead>
 <tbody>
 <tr>
-<td><em>Variable</em></td>
-<td>Any variable</td>
+<td><em>Placeholder</em></td>
+<td>Any placeholder</td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg></span></td>
-<td>The variable (surrounded by <code>%</code> characters).</td>
+<td>The placeholder (surrounded by <code>%</code> characters).</td>
 </tr>
 <tr>
 <td><em>Regex</em></td>
 <td>A regex pattern</td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg></span></td>
-<td>The <a href="../../Data-Formats/#regex-regular-expressions">regex</a> that the variables value must match. The regex can also be stored in a variable.</td>
+<td>The <a href="../../Data-Formats/#regex-regular-expressions">regex</a> that the placeholder value must match. The regex can also be stored in a placeholder.</td>
 </tr>
 <tr>
 <td><em>forceSync</em></td>
 <td>Keyword</td>
 <td>False</td>
-<td>Forces the variables to be resolved on the main thread. This may be required by some third party variables.</td>
+<td>Forces the placeholder to be resolved on the main thread. This may be required by some third party placeholder.</td>
 </tr>
 </tbody>
 </table>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">anyNumber</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;variable</span><span class="nv"> </span><span class="s">%objective.var.price%</span><span class="nv"> </span><span class="s">-?\\d+&quot;</span><span class="w"> </span><span class="c1">#(1)!</span>
 <span class="nt">isPlayer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;variable</span><span class="nv"> </span><span class="s">%ph.parties_members_1%</span><span class="nv"> </span><span class="s">%player%&quot;</span><span class="w"> </span><span class="c1">#(2)!</span>
-<span class="nt">denizenVariable</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;variable</span><span class="nv"> </span><span class="s">%ph.denizen_&lt;server.match_player[SomeName].has_flag[flag_name]&gt;%</span><span class="nv"> </span><span class="s">true</span><span class="nv"> </span><span class="s">forceSync&quot;</span><span class="w"> </span><span class="c1">#(3)!</span>
-<span class="nt">denizenVariableThis</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;variable</span><span class="nv"> </span><span class="s">%ph.denizen_&lt;player.has_flag[flag_name]&gt;%</span><span class="nv"> </span><span class="s">true</span><span class="nv"> </span><span class="s">forceSync&quot;</span><span class="w"> </span><span class="c1">#(4)!</span>
+<span class="nt">denizenPlaceholder</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;variable</span><span class="nv"> </span><span class="s">%ph.denizen_&lt;server.match_player[SomeName].has_flag[flag_name]&gt;%</span><span class="nv"> </span><span class="s">true</span><span class="nv"> </span><span class="s">forceSync&quot;</span><span class="w"> </span><span class="c1">#(3)!</span>
+<span class="nt">denizenPlaceholderThis</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;variable</span><span class="nv"> </span><span class="s">%ph.denizen_&lt;player.has_flag[flag_name]&gt;%</span><span class="nv"> </span><span class="s">true</span><span class="nv"> </span><span class="s">forceSync&quot;</span><span class="w"> </span><span class="c1">#(4)!</span>
 </code></pre></div>
 <ol>
-<li>Returns true if the variable <code>%objective.var.price%</code> contains any number.</li>
-<li>Returns true if the <code>parties_members_1</code> variable contains the player's name.</li>
-<li>Returns true if the <code>denizen_&lt;server.match_player[SomeName].has_flag[flag_name]&gt;</code> Denizen variable contains <code>true</code>.
-   This variable is resolved on the main thread. <p>The <code>someName</code> part can't be a variable!</li>
-<li>Works the same as the <code>denizenVariable</code> with the only difference it checks for the player the condition is executed with.</li>
+<li>Returns true if the placeholder <code>%objective.var.price%</code> contains any number.</li>
+<li>Returns true if the <code>parties_members_1</code> placeholder contains the player's name.</li>
+<li>Returns true if the <code>denizen_&lt;server.match_player[SomeName].has_flag[flag_name]&gt;</code> Denizen placeholder contains <code>true</code>.
+   This placeholder is resolved on the main thread. <p>The <code>someName</code> part can't be a placeholder!</li>
+<li>Works the same as the <code>denizenPlaceholder</code> with the only difference it checks for the player the condition is executed with.</li>
 </ol>
 <h2 id="weather-weather">Weather: <code>weather</code><a class="headerlink" href="#weather-weather" title="Permanent link">🔗</a></h2>
 <p><strong>static</strong></p>

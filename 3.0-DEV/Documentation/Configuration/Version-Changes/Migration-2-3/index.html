@@ -1592,15 +1592,15 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Scripting/Building-Blocks/Integration-List/" class="md-nav__link">
+      <a href="../../../Scripting/Building-Blocks/Placeholders-List/" class="md-nav__link">
         
   
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 6h3l3.29-3.3a1 1 0 0 1 1.42 0l2.58 2.59a1 1 0 0 1 0 1.41L19 9h-8v2a1 1 0 0 1-1 1 1 1 0 0 1-1-1V8a2 2 0 0 1 2-2m-6 5v4l-2.29 2.29a1 1 0 0 0 0 1.41l2.58 2.59a1 1 0 0 0 1.42 0L11 17h4a1 1 0 0 0 1-1v-1h1a1 1 0 0 0 1-1v-1h1a1 1 0 0 0 1-1v-1h-7v1a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V9Z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2M7.4 18C5.9 16.5 5 14.3 5 12s.9-4.5 2.4-6l1.6.7C7.7 7.9 7 9.9 7 12s.7 4.1 2 5.3zm5.3-3-.8-2-1.4 2H9l2.3-3.1L10 9h1.3l.8 2 1.4-2H15l-2.2 3 1.3 3zm3.9 3-1.6-.7c1.3-1.3 2-3.2 2-5.3s-.7-4.1-2-5.3l1.6-.7c1.5 1.5 2.4 3.7 2.4 6s-.9 4.5-2.4 6"/></svg>
   
   <span class="md-ellipsis">
     
   
-    Integration List
+    Placeholders List
   
 
     
@@ -1621,15 +1621,15 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Scripting/Building-Blocks/Variables-List/" class="md-nav__link">
+      <a href="../../../Scripting/Building-Blocks/Integration-List/" class="md-nav__link">
         
   
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2M7.4 18C5.9 16.5 5 14.3 5 12s.9-4.5 2.4-6l1.6.7C7.7 7.9 7 9.9 7 12s.7 4.1 2 5.3zm5.3-3-.8-2-1.4 2H9l2.3-3.1L10 9h1.3l.8 2 1.4-2H15l-2.2 3 1.3 3zm3.9 3-1.6-.7c1.3-1.3 2-3.2 2-5.3s-.7-4.1-2-5.3l1.6-.7c1.5 1.5 2.4 3.7 2.4 6s-.9 4.5-2.4 6"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 6h3l3.29-3.3a1 1 0 0 1 1.42 0l2.58 2.59a1 1 0 0 1 0 1.41L19 9h-8v2a1 1 0 0 1-1 1 1 1 0 0 1-1-1V8a2 2 0 0 1 2-2m-6 5v4l-2.29 2.29a1 1 0 0 0 0 1.41l2.58 2.59a1 1 0 0 0 1.42 0L11 17h4a1 1 0 0 0 1-1v-1h1a1 1 0 0 0 1-1v-1h1a1 1 0 0 0 1-1v-1h-7v1a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V9Z"/></svg>
   
   <span class="md-ellipsis">
     
   
-    Variables List
+    Integration List
   
 
     
@@ -6152,7 +6152,7 @@ to automatically migrate from "not versioned".
 <ul>
 <li><img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:" /> <strong>Fully automated migration</strong> – These steps are reliably migrated without issues in most cases.
   You usually don’t need to take any action. However, certain rarely used or non-standard formats (e.g., run 
-  events or math variables) may not migrate correctly if they deviate from the common structure.</li>
+  events or math variables (now called placeholders)) may not migrate correctly if they deviate from the common structure.</li>
 <li><img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f325.svg" title=":white_sun_cloud:" /> <strong>Automated migration with known limitations</strong> – These steps are generally migrated automatically,
   especially for straightforward cases. However, there are known edge cases that cannot be detected or handled 
   automatically. You should review these steps and be prepared to make manual adjustments where needed.</li>
@@ -6312,8 +6312,8 @@ Because the keys have been renamed, you need to rename the keys in some parts of
 Starting conversations with Npc interaction is moved inside the <code>npc_conversations</code> section.</p>
 <p>Also, the <code>teleportnpc</code> event got renamed to <code>npcteleport</code>. That change is automated, when updating to version
 3.0.0-DEV-299 or newer.</p>
-<p>In addition, the <code>npc</code> variable to get the quester name of the current conversation got changed to <code>quester</code>.
-That change is automated.</p>
+<p>In addition, the <code>npc</code> variable (now called placeholder) to get the quester name of the current conversation got
+changed to <code>quester</code>. That change is automated.</p>
 <p>You can keep most of the syntax when you use the Citizens Npc id as their BetonQuest identifier,
 but changing the "name" makes the difference more clear.</p>
 <p>Also, the <code>citizens_npcs_by_name</code> configuration option was removed in favor of the
@@ -6470,8 +6470,8 @@ Therefore the follorwing changes were made:</p>
 <summary>Automated Migration</summary>
 <p><em>The migration is automated. You shouldn't have to do anything.</em></p>
 <hr />
-<p>To allow a list of events also containing variables in any form, it is not possible anymore to use the percentage,
-instead the tilde <code>~</code> is used to separate the chance from the event.</p>
+<p>To allow a list of events also containing variables (now called placeholders) in any form, it is not possible
+anymore to use the percentage, instead the tilde <code>~</code> is used to separate the chance from the event.</p>
 <div class="grid" markdown>
 <div class="highlight"><span class="filename">Old Syntax</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">pickRandom</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pickrandom 1%pickRandom1,2%pickRandom2,3%pickRandom3</span>
@@ -6583,7 +6583,7 @@ This includes:</p>
 <p><em>The migration is automated. You shouldn't have to do anything.</em></p>
 <hr />
 <p>"Global Variables" have been replaced by "Constants" to better reflect their purpose
-and also to integrate them into the existing variable system.</p>
+and also to integrate them into the existing variable system (now called placeholder system).</p>
 <div class="grid" markdown>
 <div class="highlight"><span class="filename">Old Syntax</span><pre><span></span><code><span class="nt">variables</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">MyVariable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Hello</span>
@@ -6604,7 +6604,8 @@ and also to integrate them into the existing variable system.</p>
 <summary>Automated Migration</summary>
 <p><em>The migration is automated. You shouldn't have to do anything.</em></p>
 <hr />
-<p>To allow pre-parsing of <code>constant</code> variables in <code>simple</code> Quest Items the <code>owner:%player%</code> has been replaced with <code>owner:</code>.</p>
+<p>To allow pre-parsing of <code>constant</code> variables (now called placeholders) in <code>simple</code> Quest Items the <code>owner:%player%</code>
+has been replaced with <code>owner:</code>.</p>
 <div class="grid" markdown>
 <div class="highlight"><span class="filename">Old Syntax</span><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">head</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple PLAYER_HEAD owner:%player%</span>
@@ -6661,7 +6662,7 @@ The following obsolete implementations were removed:</p>
 <summary>Automated Migration</summary>
 <p><em>The migration is automated. You shouldn't have to do anything.</em></p>
 <hr />
-<p>To allow variables for the time unit in the <code>folder</code> event, the time unit now needs a key <code>unit</code>.</p>
+<p>To allow variables (now called placeholders) for the time unit in the <code>folder</code> event, the time unit now needs a key <code>unit</code>.</p>
 <div class="grid" markdown>
 <div class="highlight"><span class="filename">Old Syntax</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">setBlocks</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">folder block1,block2,block3 period:10 ticks</span>
@@ -6764,7 +6765,7 @@ As a result, the following settings were renamed and some new settings were adde
 </div>
 </details>
 <h3 id="300-dev-394-cross-packages-are-now-referenced-with-instead-of">3.0.0-DEV-394 - Cross packages are now referenced with <code>&gt;</code> instead of <code>.</code> <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /><a class="headerlink" href="#300-dev-394-cross-packages-are-now-referenced-with-instead-of" title="Permanent link">🔗</a></h3>
-<p>To fix some issues where it was not clear if a variable or a package is referenced as both use a dot <code>.</code> as separator,
+<p>To fix some issues where it was not clear if a variable (now called placeholder) or a package is referenced as both use a dot <code>.</code> as separator,
 the cross package reference now uses a greater than <code>&gt;</code> symbol.
 This migration is actually automated, but there are so many edge cases that it is likely that some things are not
 migrated correctly. Most cases should bring up a warning or error in the console, you can fix them manually.
@@ -6791,11 +6792,11 @@ But there are also some edge cases that are not detected, you may need to check 
 Some well known edge cases are:</p>
 <ul>
 <li>The <code>run</code> events is not migrated, as it is too complex</li>
-<li>Variables are not migrated:<ul>
+<li>Variables (now called placeholders) are not migrated:<ul>
 <li>They used <code>.</code> as separator what means that they previously conflicted with cross package references so it can not be detected reliably.</li>
-<li>A special case for variables are some <code>ph</code> variables and the <code>math.calc</code> variable.
+<li>A special case for variables (now called placeholders) are some <code>ph</code> variables and the <code>math.calc</code> variable.
   They can contain a <code>&gt;</code> as cross package reference or for some other reason.
-  It is necessary to escape the <code>&gt;</code> with a backslash <code>\&gt;</code> inside those variables.</li>
+  It is necessary to escape the <code>&gt;</code> with a backslash <code>\&gt;</code> inside those variables (now called placeholders).</li>
 </ul>
 </li>
 <li>Constants are not migrated, as we don't know in which context they are used.</li>

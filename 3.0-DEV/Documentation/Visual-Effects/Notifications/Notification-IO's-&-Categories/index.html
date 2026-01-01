@@ -1592,15 +1592,15 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Scripting/Building-Blocks/Integration-List/" class="md-nav__link">
+      <a href="../../../Scripting/Building-Blocks/Placeholders-List/" class="md-nav__link">
         
   
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 6h3l3.29-3.3a1 1 0 0 1 1.42 0l2.58 2.59a1 1 0 0 1 0 1.41L19 9h-8v2a1 1 0 0 1-1 1 1 1 0 0 1-1-1V8a2 2 0 0 1 2-2m-6 5v4l-2.29 2.29a1 1 0 0 0 0 1.41l2.58 2.59a1 1 0 0 0 1.42 0L11 17h4a1 1 0 0 0 1-1v-1h1a1 1 0 0 0 1-1v-1h1a1 1 0 0 0 1-1v-1h-7v1a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V9Z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2M7.4 18C5.9 16.5 5 14.3 5 12s.9-4.5 2.4-6l1.6.7C7.7 7.9 7 9.9 7 12s.7 4.1 2 5.3zm5.3-3-.8-2-1.4 2H9l2.3-3.1L10 9h1.3l.8 2 1.4-2H15l-2.2 3 1.3 3zm3.9 3-1.6-.7c1.3-1.3 2-3.2 2-5.3s-.7-4.1-2-5.3l1.6-.7c1.5 1.5 2.4 3.7 2.4 6s-.9 4.5-2.4 6"/></svg>
   
   <span class="md-ellipsis">
     
   
-    Integration List
+    Placeholders List
   
 
     
@@ -1621,15 +1621,15 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Scripting/Building-Blocks/Variables-List/" class="md-nav__link">
+      <a href="../../../Scripting/Building-Blocks/Integration-List/" class="md-nav__link">
         
   
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2M7.4 18C5.9 16.5 5 14.3 5 12s.9-4.5 2.4-6l1.6.7C7.7 7.9 7 9.9 7 12s.7 4.1 2 5.3zm5.3-3-.8-2-1.4 2H9l2.3-3.1L10 9h1.3l.8 2 1.4-2H15l-2.2 3 1.3 3zm3.9 3-1.6-.7c1.3-1.3 2-3.2 2-5.3s-.7-4.1-2-5.3l1.6-.7c1.5 1.5 2.4 3.7 2.4 6s-.9 4.5-2.4 6"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 6h3l3.29-3.3a1 1 0 0 1 1.42 0l2.58 2.59a1 1 0 0 1 0 1.41L19 9h-8v2a1 1 0 0 1-1 1 1 1 0 0 1-1-1V8a2 2 0 0 1 2-2m-6 5v4l-2.29 2.29a1 1 0 0 0 0 1.41l2.58 2.59a1 1 0 0 0 1.42 0L11 17h4a1 1 0 0 0 1-1v-1h1a1 1 0 0 0 1-1v-1h1a1 1 0 0 0 1-1v-1h-7v1a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V9Z"/></svg>
   
   <span class="md-ellipsis">
     
   
-    Variables List
+    Integration List
   
 
     
@@ -5590,7 +5590,7 @@ in the <em>lang</em> directory for all built-in notifications. </p>
 <p>You can send notifications using the <code>notify</code> event. This is how to use it:</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>All colons (<code>:</code>) in the message part of the notification need to be escaped, including those inside variables.
+<p>All colons (<code>:</code>) in the message part of the notification need to be escaped, including those inside placeholders.
 One backslash (<code>\</code>) is required when using no quoting at all (<code>...</code>) or single quotes
 (<code>'...'</code>). Two backslashes are required (<code>\\</code>) when using double quotes (<code>"..."</code>).<br />
 You also need to escape the backslash itself, if you use double quotes for some things like <code>\n</code>.</p>
@@ -5615,7 +5615,7 @@ You also need to escape the backslash itself, if you use double quotes for some 
 <td><em>message</em></td>
 <td>Any text with spaces!</td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg></span></td>
-<td>The message that will be displayed. Supports variables and translations. <em>Must be first</em></td>
+<td>The message that will be displayed. Supports translations. <em>Must be first</em></td>
 </tr>
 <tr>
 <td><em>category</em></td>
@@ -5675,7 +5675,7 @@ In this example, english users would see <code>ABC</code> and german ones would 
 <h3 id="broadcasts">Broadcasts<a class="headerlink" href="#broadcasts" title="Permanent link">🔗</a></h3>
 <p><strong>persistent</strong>, <strong>static</strong></p>
 <p>You can broadcast notifications to all players on the server using the <code>notifyall</code> event. It works just like the notify event.
-Variables are resolved for each online player, not for the player the event is executed for.</p>
+Placeholders are resolved for each online player, not for the player the event is executed for.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">announceDungeon</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notifyall</span><span class="nv"> </span><span class="s">A</span><span class="nv"> </span><span class="s">new</span><span class="nv"> </span><span class="s">dungeon</span><span class="nv"> </span><span class="s">has</span><span class="nv"> </span><span class="s">opened!&quot;</span>
 </code></pre></div>
@@ -5794,7 +5794,7 @@ It will then be played together with the default advancement sound.</p>
 </tr>
 <tr>
 <td>progress</td>
-<td>What progress to show in the bar. A floating point number between 0.0 (empty) and 1.0 (full). Supports variables.</td>
+<td>What progress to show in the bar. A floating point number between 0.0 (empty) and 1.0 (full).</td>
 </tr>
 <tr>
 <td>style</td>
@@ -5802,7 +5802,7 @@ It will then be played together with the default advancement sound.</p>
 </tr>
 <tr>
 <td>stay</td>
-<td>How many ticks to keep the bar on screen. Defaults to 70. Supports variables.</td>
+<td>How many ticks to keep the bar on screen. Defaults to 70.</td>
 </tr>
 <tr>
 <td>countdown</td>
@@ -5942,7 +5942,7 @@ Keep that in mind when creating sounds close to a player. They can move around t
 </tr>
 <tr>
 <td>soundlocation</td>
-<td>Default: The player's location. A location using the BetonQuest <a href="../../../Scripting/Data-Formats/#unified-location-formating">ULF</a>. Can include variables.</td>
+<td>Default: The player's location. A location using the BetonQuest <a href="../../../Scripting/Data-Formats/#unified-location-formating">ULF</a>.</td>
 </tr>
 <tr>
 <td>soundplayeroffset</td>
