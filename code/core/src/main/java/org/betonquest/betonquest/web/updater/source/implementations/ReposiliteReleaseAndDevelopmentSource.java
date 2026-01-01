@@ -1,12 +1,13 @@
 package org.betonquest.betonquest.web.updater.source.implementations;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.betonquest.betonquest.versioning.Version;
 import org.betonquest.betonquest.web.ContentSource;
 import org.betonquest.betonquest.web.WebContentSource;
 import org.betonquest.betonquest.web.updater.source.DevelopmentUpdateSource;
 import org.betonquest.betonquest.web.updater.source.ReleaseUpdateSource;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
@@ -54,6 +55,11 @@ public class ReposiliteReleaseAndDevelopmentSource implements ReleaseUpdateSourc
     private final ContentSource contentSource;
 
     /**
+     * The {@link Gson} instance.
+     */
+    private final Gson gson;
+
+    /**
      * Creates a {@link ReposiliteReleaseAndDevelopmentSource} with the given apiUrl.
      * Provide only the url to the reposilite, not the url to the search itself.
      *
@@ -68,6 +74,7 @@ public class ReposiliteReleaseAndDevelopmentSource implements ReleaseUpdateSourc
         this.repository = repository;
         this.pomMapperId = pomMapperId;
         this.contentSource = contentSource;
+        this.gson = new Gson();
     }
 
     @Override
@@ -83,32 +90,32 @@ public class ReposiliteReleaseAndDevelopmentSource implements ReleaseUpdateSourc
     private Map<Version, String> getVersions(final Version currentVersion, final String filter) throws IOException {
         final Map<Version, String> versions = new HashMap<>();
         final String url = reposiliteUrl + String.format(SEARCH_URL, pomMapperId, getAdjustedVersion(currentVersion)) + filter;
-        final JSONArray items = new JSONArray(contentSource.get(new URL(url)));
-        for (int index = 0; index < items.length(); index++) {
-            final JSONObject groupEntry = items.getJSONObject(index);
+        final JsonArray items = gson.fromJson(contentSource.get(new URL(url)), JsonArray.class);
+        items.forEach(item -> {
+            final JsonObject groupEntry = item.getAsJsonObject();
             if (!groupEntry.has("versions")) {
-                continue;
+                return;
             }
-            final JSONArray groupVersions = groupEntry.getJSONArray("versions");
+            final JsonArray groupVersions = groupEntry.get("versions").getAsJsonArray();
             if (groupVersions.isEmpty()) {
-                continue;
+                return;
             }
-            final JSONObject versionEntry = groupVersions.getJSONObject(0);
+            final JsonObject versionEntry = groupVersions.get(0).getAsJsonObject();
             if (!versionEntry.has("jar")) {
-                continue;
+                return;
             }
-            final String downloadPath = versionEntry.getString("jar");
+            final String downloadPath = versionEntry.get("jar").getAsString();
             if (!versionEntry.has("entries")) {
-                continue;
+                return;
             }
-            final JSONObject entries = versionEntry.getJSONObject("entries");
+            final JsonObject entries = versionEntry.get("entries").getAsJsonObject();
             if (!entries.has("pluginVersion")) {
-                continue;
+                return;
             }
-            final String pluginVersion = entries.getString("pluginVersion");
+            final String pluginVersion = entries.get("pluginVersion").getAsString();
             versions.put(new Version(pluginVersion),
                     reposiliteUrl + "/" + repository + "/" + downloadPath.replace(".jar", "-shaded.jar"));
-        }
+        });
         return versions;
     }
 

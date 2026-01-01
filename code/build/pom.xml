@@ -130,7 +130,6 @@
                   <include>org.apache.commons</include>
                   <include>com.google.guava</include>
                   <include>commons-io</include>
-                  <include>org.json</include>
                   <include>com.cronutils:cron-utils</include>
                   <include>de.themoep:minedown-adventure</include>
                 </includes>
@@ -159,10 +158,6 @@
                 <relocation>
                   <pattern>com.google.common</pattern>
                   <shadedPattern>${maven-shade-plugin.path}.dependencies.com.google.common</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>org.json</pattern>
-                  <shadedPattern>${maven-shade-plugin.path}.dependencies.org.json</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>com.cronutils</pattern>
