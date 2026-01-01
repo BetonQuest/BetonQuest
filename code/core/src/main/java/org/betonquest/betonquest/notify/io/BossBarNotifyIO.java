@@ -43,17 +43,17 @@ public class BossBarNotifyIO extends NotifyIO {
     private final BossBar.Overlay style;
 
     /**
-     * The argument for the progress of the boss bar.
+     * The progress of the boss bar.
      */
     private final Argument<Number> progress;
 
     /**
-     * The argument for the time the boss bar should stay visible.
+     * The time the boss bar should stay visible.
      */
     private final Argument<Number> stay;
 
     /**
-     * The argument for the countdown for the boss bar.
+     * The countdown for the boss bar.
      */
     private final Argument<Number> countdown;
 

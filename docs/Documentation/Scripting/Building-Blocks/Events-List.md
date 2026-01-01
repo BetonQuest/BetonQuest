@@ -108,7 +108,7 @@ compass:
 **persistent**, **static**
 
 Runs specified command from the console. The instruction string is the command, without leading slash.
-You can use placeholder here, but placeholders other than `%player%` won't resolve if the event is fired from 
+You can use placeholders here, but placeholders other than `%player%` won't resolve if the event is fired from 
 delayed `folder` and the player is offline now.
 You can define additional commands by separating them with `|` character.
 If you want to use a `|` character in the command use `\|`.
@@ -493,7 +493,7 @@ events:
 
 **persistent**, **static**  
 
-Prints a provided message to the server log. Any placeholder used in the message will be resolved. 
+Prints a provided message to the server log. Any placeholders used in the message will be resolved. 
 Note that when used in static context (by schedules) replacing player dependent placeholders won't work as the event 
 is player independent.
 

@@ -71,8 +71,8 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
     }
 
     /**
-     * Parses a BetonQuest placeholder with package and converts it to the appropriate format for DecentHolograms
-     * which uses PlaceholderAPI format.
+     * Parses a package-specific BetonQuest placeholder and converts it to the PlaceholderAPI format since
+     * DecentHolograms requires it.
      *
      * @param pack the quest pack where the placeholder resides
      * @param text the raw text

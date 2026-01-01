@@ -80,10 +80,16 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
                 loggerFactory.create(HologramGlobalPlaceholder.class), placeholderProcessor));
     }
 
+    /**
+     * Parses a package-specific BetonQuest placeholder and converts it to the HolographicDisplays API specific
+     * placeholder format.
+     *
+     * @param pack the quest pack where the placeholder resides
+     * @param text the raw text
+     * @return the parsed and formatted full string
+     */
     @Override
     public String parsePlaceholder(final QuestPackage pack, final String text) {
-        /* We must convert a normal BetonQuest placeholder with package to
-           "{bq:pack:objective.kills.left}" which is parsed by HolographicDisplays as a custom API placeholder. */
         final Matcher matcher = HologramProvider.PLACEHOLDER_VALIDATOR.matcher(text);
         return matcher.replaceAll(match -> {
             final String group = match.group();

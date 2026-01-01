@@ -34,7 +34,7 @@ notify: |-
 
   | Parameter                  | Syntax                | Default Value          | Explanation                                                                                                                      |
   |----------------------------|-----------------------|------------------------|----------------------------------------------------------------------------------------------------------------------------------|
-  | _message_                  | Any text with spaces! | :octicons-x-circle-16: | The message that will be displayed. Supports placeholdersand translations. *Must be first*                                       |
+  | _message_                  | Any text with spaces! | :octicons-x-circle-16: | The message that will be displayed. Supports translations. *Must be first*                                       |
   | _category_                 | `category:info`       | None                   | Will load all settings from that Notification Category. Can be a comma-separated list. The first existent category will be used. |
   | _io_                       | `io:bossbar`          | io:chat                | Any NotifyIO Overrides the "category". settings.                                                                                 |
   | _any io specific settings_ | `setting:value`       | None                   | Some notifyIO's provide specific settings. Can be used multiple times. Overrides the "category" settings.                        |

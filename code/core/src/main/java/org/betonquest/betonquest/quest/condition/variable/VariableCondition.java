@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.regex.PatternSyntaxException;
 
 /**
- * Checks if a given content matches a given regex pattern.
+ * Matches the content against a regex.
  */
 public class VariableCondition implements NullableCondition {
 
@@ -20,7 +20,7 @@ public class VariableCondition implements NullableCondition {
     private final BetonQuestLogger log;
 
     /**
-     * The content to compare with the regex.
+     * The content to match against the regex.
      */
     private final Argument<String> content;
 
@@ -43,7 +43,7 @@ public class VariableCondition implements NullableCondition {
      * Creates a new VariableCondition based on the given instruction.
      *
      * @param log           the logger
-     * @param content       the content to compare with the regex
+     * @param content       the content to match against the regex
      * @param regex         the regex the content must match
      * @param instructionId the address of the id for logging
      * @param forceSync     whether to force synchronization with the main server thread

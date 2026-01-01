@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Test renaming of placeholders to constants.
+ * Test renaming of variables (now called placeholders) to constants.
  */
 class VariablesRenameTest extends QuestFixture {
 

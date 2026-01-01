@@ -156,7 +156,7 @@ Starting conversations with Npc interaction is moved inside the `npc_conversatio
 Also, the `teleportnpc` event got renamed to `npcteleport`. That change is automated, when updating to version
 3.0.0-DEV-299 or newer.
 
-In addition, the `npc` variable (now called placeholders) to get the quester name of the current conversation got
+In addition, the `npc` variable (now called placeholder) to get the quester name of the current conversation got
 changed to `quester`. That change is automated.
 
 You can keep most of the syntax when you use the Citizens Npc id as their BetonQuest identifier,
@@ -501,7 +501,7 @@ and if you only want sounds and no message, you use `sound` instead of `suppress
     -------------
     
     "Global Variables" have been replaced by "Constants" to better reflect their purpose
-    and also to integrate them into the existing variable (now called placeholders) system.
+    and also to integrate them into the existing variable system (now called placeholder system).
     
     <div class="grid" markdown>
     
@@ -743,7 +743,7 @@ conversation:
 
 ### 3.0.0-DEV-394 - Cross packages are now referenced with `>` instead of `.` :thunder_cloud_rain:
 
-To fix some issues where it was not clear if a variable (now called placeholders) or a package is referenced as both use a dot `.` as separator,
+To fix some issues where it was not clear if a variable (now called placeholder) or a package is referenced as both use a dot `.` as separator,
 the cross package reference now uses a greater than `>` symbol.
 This migration is actually automated, but there are so many edge cases that it is likely that some things are not
 migrated correctly. Most cases should bring up a warning or error in the console, you can fix them manually.

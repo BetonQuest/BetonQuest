@@ -197,7 +197,7 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
         /**
          * Creates a new MoveData instance.
          *
-         * @param profile the profile to resolve the placeholders
+         * @param profile the profile to resolve the placeholders for
          * @return the resolved move data
          * @throws QuestException if there was an error resolving the placeholders
          */

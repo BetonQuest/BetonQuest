@@ -727,8 +727,7 @@ This objective is different. You cannot complete it, it will also ignore defined
 While this objective is active though, everything the player types in chat (and matches a special pattern) will become a variable.
 The pattern is `key: value`. So if the player types `MyFirstVariable: Hello!`, it will create a variable called `MyFirstVariable`, which will resolve as a `Hello!` string.
 You can access them as objective properties. Let's say you defined this objective as `CustomVariable` in your _objectives.yml_ file.
-You can access the placeholder everywhere with `%objective.CustomVariable.
-MyFirstVariable%` - and in the case of this example, it will resolve to `Hello!`.
+You can access the placeholder everywhere with `%objective.CustomVariable.MyFirstVariable%` - and in this example, it will resolve to `Hello!`.
 The player can type something else and the variable will change its value. Variables are per-player, so the value of one player's `MyFirstVariable`
 will be different from other players' `MyFirstVariable` values, depending on what they typed in chat. There is no limit to the amount of variables that can be created and assigned to players.
 To remove this objective, use `objective delete` event - there is no other way.

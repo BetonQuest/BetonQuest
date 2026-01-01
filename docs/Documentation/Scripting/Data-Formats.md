@@ -4,7 +4,7 @@ icon: material/cube
 
 ## :octicons-location-16: Unified location formating
 
-Whenever you want to define a location in your events, conditions, objectives or in any other place, you will define it
+Whenever you want to define locations in your events, conditions, objectives or anywhere else, you will define it
 with this specific format. The location consists of 2 things: base and vector. Only the base is always required.
 
 ### Base Location

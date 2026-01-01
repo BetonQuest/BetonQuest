@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Creates and Resolves {@link Placeholders}.
+ * Resolves placeholders in strings to their values.
  */
 public interface Placeholders {
 

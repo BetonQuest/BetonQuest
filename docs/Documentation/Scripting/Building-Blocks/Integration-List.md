@@ -822,7 +822,7 @@ see [Plugin Configuration](../../Configuration/Plugin-Config.md#conversation-con
 
 ## PlaceholderAPI[](https://www.spigotmc.org/resources/6245/)
 
-If you have this plugin, BetonQuest will add a `betonquest` placeholder to it. You will then be able to use `ph` placeholder.
+If you have this plugin, BetonQuest will add a `betonquest` placeholder to it. You will be able to use the `ph` placeholder.
 
 ### Placeholder: `betonquest`
 

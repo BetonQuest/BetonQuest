@@ -121,7 +121,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `menu` io based on packetevents renamed to `packetevents`
 - config option `conversation.interceptor.delay` to configure a delay between the end of a conversation and the moment the interceptor is ended
 - `hologram` `top:` line to customizable format
-- Variables name to Placeholder, this should not effect any user scripts and only affects the name of this concept
+- Variables to Placeholders. This change won't harm any user scripts, it's only a conceptual change
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation
