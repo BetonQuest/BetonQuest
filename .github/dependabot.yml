@@ -1,0 +1,21 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+  - package-ecosystem: maven
+    directory: /
+    schedule:
+      interval: monthly
+    allow:
+      - dependency-name: org.betonquest:parent
+      - dependency-name: org.betonquest.parent:versions
+      - dependency-name: org.apache.commons:commons-lang3
+      - dependency-name: com.google.guava:guava
+      - dependency-name: commons-io:commons-io
+    groups:
+      parent:
+        patterns:
+          - "org.betonquest:parent"
+          - "org.betonquest.parent:versions"
