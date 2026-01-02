@@ -9,16 +9,13 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.quest.objective.interact.Interaction;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 
 import static org.betonquest.betonquest.quest.objective.interact.Interaction.ANY;
 
 /**
  * An objective that requires the player to interact with a specific NPC.
  */
-public class NpcInteractObjective extends DefaultObjective implements Listener {
+public class NpcInteractObjective extends DefaultObjective {
 
     /**
      * The ID of the NPC to interact with.
@@ -55,11 +52,10 @@ public class NpcInteractObjective extends DefaultObjective implements Listener {
     /**
      * Handles npc interact events and completes the objective on match.
      *
-     * @param event the event npc interact event
+     * @param event   the event npc interact event
+     * @param profile the profile of the player interacting with the NPC
      */
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onNPCLeftClick(final NpcInteractEvent event) {
-        final Profile profile = event.getProfile();
+    public void onNPCLeftClick(final NpcInteractEvent event, final Profile profile) {
         if (!containsPlayer(profile)) {
             return;
         }

@@ -8,13 +8,11 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
 /**
  * Requires the player to equip a specific item in a specific slot.
  */
-public class EquipItemObjective extends DefaultObjective implements Listener {
+public class EquipItemObjective extends DefaultObjective {
 
     /**
      * The item that needs to be equipped.
@@ -44,11 +42,10 @@ public class EquipItemObjective extends DefaultObjective implements Listener {
     /**
      * Check if the player has equipped the right item in the right slot.
      *
-     * @param event the event that triggered this method
+     * @param event         the event that triggered this method
+     * @param onlineProfile the profile of the player that equipped the item
      */
-    @EventHandler
-    public void onEquipmentChange(final PlayerArmorChangeEvent event) {
-        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
+    public void onEquipmentChange(final PlayerArmorChangeEvent event, final OnlineProfile onlineProfile) {
         qeHandler.handle(() -> {
             if (containsPlayer(onlineProfile)
                     && event.getSlotType() == slotType.getValue(onlineProfile)

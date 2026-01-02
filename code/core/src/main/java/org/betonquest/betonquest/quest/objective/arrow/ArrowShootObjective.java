@@ -9,17 +9,14 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  * Requires the player to shoot a target with a bow.
  */
-public class ArrowShootObjective extends DefaultObjective implements Listener {
+public class ArrowShootObjective extends DefaultObjective {
 
     /**
      * Location where the arrow should hit.
@@ -48,18 +45,14 @@ public class ArrowShootObjective extends DefaultObjective implements Listener {
     /**
      * Check if the arrow hit the right location.
      *
-     * @param event the event that triggered this method
+     * @param onlineProfile the profile of the player that shot the arrow
+     * @param event         the event that triggered this method
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onArrowHit(final ProjectileHitEvent event) {
+    public void onArrowHit(final ProjectileHitEvent event, final OnlineProfile onlineProfile) {
         final Projectile arrow = event.getEntity();
         if (arrow.getType() != EntityType.ARROW) {
             return;
         }
-        if (!(arrow.getShooter() instanceof final Player player)) {
-            return;
-        }
-        final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         if (!containsPlayer(onlineProfile)) {
             return;
         }

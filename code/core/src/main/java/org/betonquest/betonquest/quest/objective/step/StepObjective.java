@@ -9,8 +9,6 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -18,7 +16,7 @@ import org.bukkit.inventory.EquipmentSlot;
 /**
  * The player must step on the pressure plate.
  */
-public class StepObjective extends DefaultObjective implements Listener {
+public class StepObjective extends DefaultObjective {
 
     /**
      * The key for the location property.
@@ -52,10 +50,10 @@ public class StepObjective extends DefaultObjective implements Listener {
     /**
      * Check if the player stepped on the pressure plate.
      *
-     * @param event the PlayerInteractEvent
+     * @param event         the PlayerInteractEvent
+     * @param onlineProfile the profile of the player that interacted with the pressure plate
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onStep(final PlayerInteractEvent event) {
+    public void onStep(final PlayerInteractEvent event, final OnlineProfile onlineProfile) {
         if (event.getHand() == EquipmentSlot.OFF_HAND && event.getHand() != null) {
             return;
         }
@@ -67,7 +65,6 @@ public class StepObjective extends DefaultObjective implements Listener {
             return;
         }
         qeHandler.handle(() -> {
-            final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
             final Block block = loc.getValue(onlineProfile).getBlock();
             if (!clickedBlock.equals(block)) {
                 return;

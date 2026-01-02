@@ -11,14 +11,11 @@ import org.betonquest.betonquest.menu.Menu;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.menu.event.MenuOpenEvent;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 
 /**
  * Completed if menu with given id is opened.
  */
-public class MenuObjective extends DefaultObjective implements Listener {
+public class MenuObjective extends DefaultObjective {
 
     /**
      * The key for the menu property.
@@ -59,11 +56,10 @@ public class MenuObjective extends DefaultObjective implements Listener {
     /**
      * Completes the objective when the matching menu is opened.
      *
-     * @param event the open menu event
+     * @param event   the open menu event
+     * @param profile the player profile
      */
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onMenuOpen(final MenuOpenEvent event) {
-        final Profile profile = event.getProfile();
+    public void onMenuOpen(final MenuOpenEvent event, final Profile profile) {
         if (!containsPlayer(profile)) {
             return;
         }

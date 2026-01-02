@@ -8,8 +8,6 @@ import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.util.InventoryUtils;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
@@ -18,7 +16,7 @@ import org.bukkit.inventory.PlayerInventory;
 /**
  * Requires the player to smelt some amount of items.
  */
-public class SmeltingObjective extends CountingObjective implements Listener {
+public class SmeltingObjective extends CountingObjective {
 
     /**
      * The item to be smelted.
@@ -42,13 +40,12 @@ public class SmeltingObjective extends CountingObjective implements Listener {
     /**
      * Check if the item matches the one in the furnace.
      *
-     * @param event the event to check
+     * @param event         the event to check
+     * @param onlineProfile the profile of the player that smelted the item
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onSmelting(final InventoryClickEvent event) {
+    public void onSmelting(final InventoryClickEvent event, final OnlineProfile onlineProfile) {
         final InventoryType inventoryType = event.getInventory().getType();
         if (isSmeltingResultExtraction(event, inventoryType)) {
-            final OnlineProfile onlineProfile = profileProvider.getProfile((Player) event.getWhoClicked());
             qeHandler.handle(() -> {
                 if (containsPlayer(onlineProfile)
                         && item.getValue(onlineProfile).matches(event.getCurrentItem(), onlineProfile)

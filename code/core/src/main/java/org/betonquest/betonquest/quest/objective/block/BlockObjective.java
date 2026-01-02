@@ -10,9 +10,6 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.bukkit.Location;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.jetbrains.annotations.Nullable;
@@ -21,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
  * Player has to break/place specified amount of blocks. Doing opposite thing
  * (breaking when should be placing) will reverse the progress.
  */
-public class BlockObjective extends CountingObjective implements Listener {
+public class BlockObjective extends CountingObjective {
 
     /**
      * Block Selector parameter.
@@ -100,12 +97,11 @@ public class BlockObjective extends CountingObjective implements Listener {
     /**
      * Check if the placed block is the right one.
      *
-     * @param event the event that triggered this method
+     * @param event         the event that triggered this method
+     * @param onlineProfile the profile of the player that placed the block
      */
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onBlockPlace(final BlockPlaceEvent event) {
+    public void onBlockPlace(final BlockPlaceEvent event, final OnlineProfile onlineProfile) {
         qeHandler.handle(() -> {
-            final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
             if (event.isCancelled() && !ignoreCancel.getValue(onlineProfile).orElse(false)) {
                 return;
             }
@@ -123,12 +119,11 @@ public class BlockObjective extends CountingObjective implements Listener {
     /**
      * Check if the broken block is the right one.
      *
-     * @param event the event that triggered this method
+     * @param event         the event that triggered this method
+     * @param onlineProfile the profile of the player that broke the block
      */
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onBlockBreak(final BlockBreakEvent event) {
+    public void onBlockBreak(final BlockBreakEvent event, final OnlineProfile onlineProfile) {
         qeHandler.handle(() -> {
-            final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
             if (event.isCancelled() && !ignoreCancel.getValue(onlineProfile).orElse(false)) {
                 return;
             }

@@ -13,8 +13,6 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,7 +21,7 @@ import java.util.List;
 /**
  * Player has to kill MythicMobs monster.
  */
-public class MythicMobKillObjective extends CountingObjective implements Listener {
+public class MythicMobKillObjective extends CountingObjective {
 
     /**
      * The 'mode' string for properties.
@@ -114,7 +112,6 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
      * @param event the MythicMobDeathEvent
      * @throws QuestException if an argument could not be resolved
      */
-    @EventHandler(ignoreCancelled = true)
     public void onKill(final MythicMobDeathEvent event) throws QuestException {
         if (marked != null && !event.getEntity().getPersistentDataContainer().has(key)) {
             return;

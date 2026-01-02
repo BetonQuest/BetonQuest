@@ -54,10 +54,11 @@ public class DefaultBukkitEventService implements BukkitEventService {
             try {
                 group.bake(plugin);
             } catch (final QuestException e) {
-                logger.error("Failed to register event listener for event " + event.getSimpleName(), e);
+                logger.error("Failed to register event listener for event '" + event.getSimpleName() + "'", e);
                 return Optional.empty();
             }
             listeners.put(event, group);
+            logger.debug("New listener for '" + event.getSimpleName() + "'");
         }
         return Optional.of((EventListenerGroup<T>) listeners.get(event));
     }
@@ -74,7 +75,7 @@ public class DefaultBukkitEventService implements BukkitEventService {
                                                                  final boolean ignoreCancelled, final EventServiceSubscriber<T> subscriber) throws QuestException {
         return require(event)
                 .map(group -> group.subscribe(priority, ignoreCancelled, subscriber))
-                .orElseThrow(() -> new QuestException("Could subscribe to event " + event.getSimpleName()));
+                .orElseThrow(() -> new QuestException("Could subscribe to event '" + event.getSimpleName() + "'"));
     }
 
     @Override

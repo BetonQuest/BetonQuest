@@ -6,13 +6,12 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.bukkit.Bukkit;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.List;
@@ -21,7 +20,7 @@ import java.util.Locale;
 /**
  * Timer objective that tracks the ingame time when the conditions are fulfilled.
  */
-public class TimerObjective extends CountingObjective implements Listener, Runnable {
+public class TimerObjective extends CountingObjective implements Runnable {
 
     /**
      * Quest Type API.
@@ -98,14 +97,14 @@ public class TimerObjective extends CountingObjective implements Listener, Runna
     /**
      * Checks if the objective gets completed and runs the done events.
      *
-     * @param event The event to check.
+     * @param event         The event to check.
+     * @param onlineProfile The profile of the player that completed the objective.
      */
-    @EventHandler
-    public void onPlayerObjectiveChange(final PlayerObjectiveChangeEvent event) {
+    public void onPlayerObjectiveChange(final PlayerObjectiveChangeEvent event, final OnlineProfile onlineProfile) {
         qeHandler.handle(() -> {
-            if (event.getObjective().equals(this) && containsPlayer(event.getProfile())
+            if (event.getObjective().equals(this) && containsPlayer(onlineProfile)
                     && event.getPreviousState() == ObjectiveState.ACTIVE && event.getState() == ObjectiveState.COMPLETED) {
-                questTypeApi.events(event.getProfile(), doneEvents.getValue(event.getProfile()));
+                questTypeApi.events(onlineProfile, doneEvents.getValue(onlineProfile));
             }
         });
     }

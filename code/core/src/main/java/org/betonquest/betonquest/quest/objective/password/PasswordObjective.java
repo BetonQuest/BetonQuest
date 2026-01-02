@@ -11,10 +11,6 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.jetbrains.annotations.Nullable;
@@ -26,7 +22,7 @@ import java.util.regex.Pattern;
 /**
  * Requires the player to type a password in chat.
  */
-public class PasswordObjective extends DefaultObjective implements Listener {
+public class PasswordObjective extends DefaultObjective {
 
     /**
      * Regex pattern to match the password.
@@ -64,12 +60,12 @@ public class PasswordObjective extends DefaultObjective implements Listener {
     /**
      * Check if the password is correct.
      *
-     * @param event the chat event to check
+     * @param event         the chat event to check
+     * @param onlineProfile the profile of the player
      */
-    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-    public void onChat(final AsyncPlayerChatEvent event) {
+    public void onChat(final AsyncPlayerChatEvent event, final OnlineProfile onlineProfile) {
         qeHandler.handle(() -> {
-            if (chatInput(false, event.getPlayer(), event.getMessage())) {
+            if (chatInput(false, onlineProfile, event.getMessage())) {
                 event.setCancelled(true);
             }
         });
@@ -78,20 +74,19 @@ public class PasswordObjective extends DefaultObjective implements Listener {
     /**
      * Capture the command input from the player amd cancel it if the password is correct.
      *
-     * @param event the command event to check
+     * @param event         the command event to check
+     * @param onlineProfile the profile of the player
      */
-    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-    public void onCommand(final PlayerCommandPreprocessEvent event) {
+    public void onCommand(final PlayerCommandPreprocessEvent event, final OnlineProfile onlineProfile) {
         qeHandler.handle(() -> {
-            if (chatInput(true, event.getPlayer(), event.getMessage())) {
+            if (chatInput(true, onlineProfile, event.getMessage())) {
                 event.setCancelled(true);
             }
         });
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
-    private boolean chatInput(final boolean fromCommand, final Player player, final String message) throws QuestException {
-        final OnlineProfile onlineProfile = profileProvider.getProfile(player);
+    private boolean chatInput(final boolean fromCommand, final OnlineProfile onlineProfile, final String message) throws QuestException {
         if (!containsPlayer(onlineProfile)) {
             return false;
         }

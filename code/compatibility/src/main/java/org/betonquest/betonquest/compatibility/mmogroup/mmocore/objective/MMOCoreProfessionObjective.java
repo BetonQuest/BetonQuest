@@ -8,13 +8,11 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
 /**
  * An objective that listens for the player leveling up in their MMOCore profession.
  */
-public class MMOCoreProfessionObjective extends DefaultObjective implements Listener {
+public class MMOCoreProfessionObjective extends DefaultObjective {
 
     /**
      * The name of the profession that the player needs to level up.
@@ -44,11 +42,10 @@ public class MMOCoreProfessionObjective extends DefaultObjective implements List
     /**
      * Listens for the player leveling up in their MMOCore profession.
      *
-     * @param event the event
+     * @param event         the event
+     * @param onlineProfile the player
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onLevelUp(final PlayerLevelUpEvent event) {
-        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
+    public void onLevelUp(final PlayerLevelUpEvent event, final OnlineProfile onlineProfile) {
         if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
             return;
         }

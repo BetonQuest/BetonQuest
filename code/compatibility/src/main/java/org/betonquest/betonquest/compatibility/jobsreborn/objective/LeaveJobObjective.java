@@ -8,13 +8,11 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
 /**
  * Objective that tracks the leave of a player from a specific job.
  */
-public class LeaveJobObjective extends DefaultObjective implements Listener {
+public class LeaveJobObjective extends DefaultObjective {
 
     /**
      * Job to leave.
@@ -36,11 +34,10 @@ public class LeaveJobObjective extends DefaultObjective implements Listener {
     /**
      * Handles the JobsLeaveEvent.
      *
-     * @param event the event that triggered the leave
+     * @param event         the event that triggered the leave
+     * @param onlineProfile the profile related to the player that left the job
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onJobsLeaveEvent(final JobsLeaveEvent event) {
-        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer().getPlayer());
+    public void onJobsLeaveEvent(final JobsLeaveEvent event, final OnlineProfile onlineProfile) {
         qeHandler.handle(() -> {
             if (event.getJob().isSame(this.job.getValue(onlineProfile)) && containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
                 completeObjective(onlineProfile);

@@ -9,10 +9,6 @@ import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.util.InventoryUtils;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -20,7 +16,7 @@ import org.bukkit.inventory.PlayerInventory;
 /**
  * Player has to craft specified amount of items.
  */
-public class CraftingObjective extends CountingObjective implements Listener {
+public class CraftingObjective extends CountingObjective {
 
     /**
      * The item to be crafted.
@@ -59,31 +55,27 @@ public class CraftingObjective extends CountingObjective implements Listener {
     /**
      * Checks if the player has crafted the item.
      *
-     * @param event the CraftItemEvent
+     * @param event         the CraftItemEvent
+     * @param onlineProfile the profile of the player that crafted the item
      */
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onCrafting(final CraftItemEvent event) {
-        if (event.getWhoClicked() instanceof final Player player) {
-            final OnlineProfile onlineProfile = profileProvider.getProfile(player);
-            qeHandler.handle(() -> {
-                if (containsPlayer(onlineProfile)
-                        && item.getValue(onlineProfile).matches(event.getInventory().getResult(), onlineProfile)
-                        && checkConditions(onlineProfile)) {
-                    getCountingData(onlineProfile).progress(calculateCraftAmount(event, event.getInventory().getResult()));
-                    completeIfDoneOrNotify(onlineProfile);
-                }
-            });
-        }
+    public void onCrafting(final CraftItemEvent event, final OnlineProfile onlineProfile) {
+        qeHandler.handle(() -> {
+            if (containsPlayer(onlineProfile)
+                    && item.getValue(onlineProfile).matches(event.getInventory().getResult(), onlineProfile)
+                    && checkConditions(onlineProfile)) {
+                getCountingData(onlineProfile).progress(calculateCraftAmount(event, event.getInventory().getResult()));
+                completeIfDoneOrNotify(onlineProfile);
+            }
+        });
     }
 
     /**
      * Adds the ItemStack from custom craft sources to the progress of this Objective.
      *
-     * @param event the custom source craft event
+     * @param event   the custom source craft event
+     * @param profile the profile of the player that crafted the item
      */
-    @EventHandler
-    public void handleCustomCraft(final ItemStackCraftedEvent event) {
-        final Profile profile = event.getProfile();
+    public void handleCustomCraft(final ItemStackCraftedEvent event, final Profile profile) {
         if (containsPlayer(profile) && checkConditions(profile)) {
             qeHandler.handle(() -> {
                 if (item.getValue(profile).getItem(profile).matches(event.getStack())) {

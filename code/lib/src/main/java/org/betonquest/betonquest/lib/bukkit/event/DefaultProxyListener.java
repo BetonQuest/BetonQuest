@@ -85,7 +85,7 @@ public class DefaultProxyListener<T extends Event> implements ProxyListener<T> {
     private HandlerList getHandlerList() throws QuestException {
         final String handlerRetrievalMethod = "getHandlerList";
         try {
-            final Method getHandlerList = this.eventClass.getDeclaredMethod(handlerRetrievalMethod);
+            final Method getHandlerList = this.eventClass.getMethod(handlerRetrievalMethod);
             if (!getHandlerList.canAccess(null)) {
                 getHandlerList.setAccessible(true);
             }

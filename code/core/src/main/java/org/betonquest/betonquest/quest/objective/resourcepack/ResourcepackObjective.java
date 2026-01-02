@@ -6,14 +6,12 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 
 /**
  * Represents an objective that is completed when the status of the received resource pack matches the target status.
  */
-public class ResourcepackObjective extends DefaultObjective implements Listener {
+public class ResourcepackObjective extends DefaultObjective {
 
     /**
      * The target status for the received resource pack.
@@ -35,11 +33,11 @@ public class ResourcepackObjective extends DefaultObjective implements Listener 
     /**
      * Handles the PlayerResourcePackStatusEvent event.
      *
-     * @param event The event object.
+     * @param event         The event object.
+     * @param onlineProfile The profile of the player that received the resource pack.
      */
-    @EventHandler
-    public void onResourcePackReceived(final PlayerResourcePackStatusEvent event) {
-        processObjective(profileProvider.getProfile(event.getPlayer()), event.getStatus());
+    public void onResourcePackReceived(final PlayerResourcePackStatusEvent event, final OnlineProfile onlineProfile) {
+        processObjective(onlineProfile, event.getStatus());
     }
 
     /**

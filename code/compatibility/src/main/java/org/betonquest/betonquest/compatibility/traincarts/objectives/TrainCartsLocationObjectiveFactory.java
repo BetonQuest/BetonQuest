@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.Location;
 
 /**
@@ -19,9 +20,11 @@ public class TrainCartsLocationObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<Location> loc = instruction.location().get();
         final Argument<Number> range = instruction.number().atLeast(1).get("range", 1);
-        return new TrainCartsLocationObjective(instruction, loc, range);
+        final TrainCartsLocationObjective objective = new TrainCartsLocationObjective(instruction, loc, range);
+        objective.registerLocationEvents(service);
+        return objective;
     }
 }

@@ -14,8 +14,6 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -23,7 +21,7 @@ import java.util.Objects;
 /**
  * Objective that tracks the payment received by a player.
  */
-public class PaymentObjective extends DefaultObjective implements Listener {
+public class PaymentObjective extends DefaultObjective {
 
     /**
      * The Factory for the Payment Data.
@@ -57,11 +55,10 @@ public class PaymentObjective extends DefaultObjective implements Listener {
     /**
      * Check if the player has received a payment.
      *
-     * @param event the event that triggered the payment
+     * @param event   the event that triggered the payment
+     * @param profile the profile of the player that received the payment
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onJobsPaymentEvent(final JobsPaymentEvent event) {
-        final Profile profile = profileProvider.getProfile(event.getPlayer());
+    public void onJobsPaymentEvent(final JobsPaymentEvent event, final Profile profile) {
         if (containsPlayer(profile) && checkConditions(profile)) {
             final PaymentData playerData = getPaymentData(profile);
             final double previousAmount = playerData.amount;

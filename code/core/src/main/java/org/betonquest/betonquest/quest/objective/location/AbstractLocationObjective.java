@@ -5,11 +5,10 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -25,14 +24,15 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * The AbstractLocationObjective class extends the Objective class and implements the Listener interface
- * to handle all movements of players in the game.
+ * The AbstractLocationObjective class extends the Objective class handling all movements of players in the game.
  * This abstract class serves as a base for objectives that are completed
  * when a player enters or exits a specific location.
  * It listens for various player events such as join, quit, death, respawn, teleport, and movement
  * to check the player's location.
+ * To register the required events, the {@link #registerLocationEvents(ObjectiveFactoryService)} method is called.
  */
-public abstract class AbstractLocationObjective extends DefaultObjective implements Listener {
+@SuppressWarnings("PMD.TooManyMethods")
+public abstract class AbstractLocationObjective extends DefaultObjective {
 
     /**
      * Should entry be checked instead of being inside the location of not.
@@ -64,63 +64,79 @@ public abstract class AbstractLocationObjective extends DefaultObjective impleme
     }
 
     /**
+     * Registers the location events.
+     *
+     * @param service the ObjectiveFactoryService to be used in the method
+     * @throws QuestException if there is an error while registering the events
+     */
+    public void registerLocationEvents(final ObjectiveFactoryService service) throws QuestException {
+        service.request(PlayerJoinEvent.class).handler(this::onPlayerJoin, PlayerJoinEvent::getPlayer).subscribe(true);
+        service.request(PlayerQuitEvent.class).handler(this::onPlayerQuit, PlayerQuitEvent::getPlayer).subscribe(true);
+        service.request(PlayerDeathEvent.class).handler(this::onPlayerDeath, PlayerDeathEvent::getPlayer).subscribe(true);
+        service.request(PlayerRespawnEvent.class).handler(this::onPlayerRespawn, PlayerRespawnEvent::getPlayer).subscribe(true);
+        service.request(PlayerTeleportEvent.class).handler(this::onPlayerTeleport, PlayerTeleportEvent::getPlayer).subscribe(true);
+        service.request(PlayerMoveEvent.class).handler(this::onPlayerMove, PlayerMoveEvent::getPlayer).subscribe(true);
+        service.request(VehicleMoveEvent.class).handler(this::onVehicleMove).subscribe(true);
+    }
+
+    /**
      * The onPlayerJoin method listens for the PlayerJoinEvent and checks the player's location.
      *
-     * @param event the PlayerJoinEvent to be used in the method
+     * @param event         the PlayerJoinEvent to be used in the method
+     * @param onlineProfile the online profile of the player
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onPlayerJoin(final PlayerJoinEvent event) {
-        qeHandler.handle(() -> checkLocation(event.getPlayer(), event.getPlayer().getLocation()));
+    public void onPlayerJoin(final PlayerJoinEvent event, final OnlineProfile onlineProfile) {
+        qeHandler.handle(() -> checkLocation(onlineProfile, event.getPlayer().getLocation()));
     }
 
     /**
      * The onPlayerQuit method listens for the PlayerQuitEvent and removes the player from the playersInsideRegion map.
      *
-     * @param event the PlayerQuitEvent to be used in the method
+     * @param event         the PlayerQuitEvent to be used in the method
+     * @param onlineProfile the online profile of the player
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onPlayerQuit(final PlayerQuitEvent event) {
-        playersInsideRegion.remove(profileProvider.getProfile(event.getPlayer()).getProfileUUID());
+    public void onPlayerQuit(final PlayerQuitEvent event, final OnlineProfile onlineProfile) {
+        playersInsideRegion.remove(onlineProfile.getProfileUUID());
     }
 
     /**
      * The onPlayerDeath method listens for the PlayerDeathEvent and checks the player's location.
      *
-     * @param event the PlayerDeathEvent to be used in the method
+     * @param event         the PlayerDeathEvent to be used in the method
+     * @param onlineProfile the online profile of the player
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onPlayerDeath(final PlayerDeathEvent event) {
-        qeHandler.handle(() -> checkLocation(event.getEntity(), event.getEntity().getLocation()));
+    public void onPlayerDeath(final PlayerDeathEvent event, final OnlineProfile onlineProfile) {
+        qeHandler.handle(() -> checkLocation(onlineProfile, event.getEntity().getLocation()));
     }
 
     /**
      * The onPlayerRespawn method listens for the PlayerRespawnEvent and checks the player's location.
      *
-     * @param event the PlayerRespawnEvent to be used in the method
+     * @param event         the PlayerRespawnEvent to be used in the method
+     * @param onlineProfile the online profile of the player
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onPlayerRespawn(final PlayerRespawnEvent event) {
-        qeHandler.handle(() -> checkLocation(event.getPlayer(), event.getRespawnLocation()));
+    public void onPlayerRespawn(final PlayerRespawnEvent event, final OnlineProfile onlineProfile) {
+        qeHandler.handle(() -> checkLocation(onlineProfile, event.getRespawnLocation()));
     }
 
     /**
      * The onPlayerTeleport method listens for the PlayerTeleportEvent and checks the player's location.
      *
-     * @param event the PlayerTeleportEvent to be used in the method
+     * @param event         the PlayerTeleportEvent to be used in the method
+     * @param onlineProfile the online profile of the player
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onPlayerTeleport(final PlayerTeleportEvent event) {
-        onPlayerMove(event);
+    public void onPlayerTeleport(final PlayerTeleportEvent event, final OnlineProfile onlineProfile) {
+        onPlayerMove(event, onlineProfile);
     }
 
     /**
      * The onPlayerMove method listens for the PlayerMoveEvent and checks the player's location.
      *
-     * @param event the PlayerMoveEvent to be used in the method
+     * @param event         the PlayerMoveEvent to be used in the method
+     * @param onlineProfile the online profile of the player
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onPlayerMove(final PlayerMoveEvent event) {
-        qeHandler.handle(() -> checkLocation(event.getPlayer(), event.getTo()));
+    public void onPlayerMove(final PlayerMoveEvent event, final OnlineProfile onlineProfile) {
+        qeHandler.handle(() -> checkLocation(onlineProfile, event.getTo()));
     }
 
     /**
@@ -128,18 +144,17 @@ public abstract class AbstractLocationObjective extends DefaultObjective impleme
      *
      * @param event the VehicleMoveEvent to be used in the method
      */
-    @EventHandler(ignoreCancelled = true)
     public void onVehicleMove(final VehicleMoveEvent event) {
         final List<Entity> passengers = event.getVehicle().getPassengers();
         for (final Entity passenger : passengers) {
             if (passenger instanceof final Player player) {
-                qeHandler.handle(() -> checkLocation(player, event.getTo()));
+                final OnlineProfile onlineProfile = profileProvider.getProfile(player);
+                qeHandler.handle(() -> checkLocation(onlineProfile, event.getTo()));
             }
         }
     }
 
-    private void checkLocation(final Player player, final Location location) throws QuestException {
-        final OnlineProfile onlineProfile = profileProvider.getProfile(player);
+    private void checkLocation(final OnlineProfile onlineProfile, final Location location) throws QuestException {
         if (!containsPlayer(onlineProfile)) {
             return;
         }

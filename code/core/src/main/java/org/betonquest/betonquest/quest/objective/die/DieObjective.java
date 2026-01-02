@@ -11,9 +11,6 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -26,7 +23,7 @@ import java.util.Optional;
 /**
  * Player needs to die. Death can be canceled, also respawn location can be set
  */
-public class DieObjective extends DefaultObjective implements Listener {
+public class DieObjective extends DefaultObjective {
 
     /**
      * Whether the death should be canceled.
@@ -56,22 +53,19 @@ public class DieObjective extends DefaultObjective implements Listener {
     /**
      * Check if the player died.
      *
-     * @param event the event that triggered this method
+     * @param event         the event that triggered this method
+     * @param onlineProfile the profile related to the player that died
      */
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onDeath(final EntityDeathEvent event) {
+    public void onDeath(final EntityDeathEvent event, final OnlineProfile onlineProfile) {
         if (location != null) {
             return;
         }
         qeHandler.handle(() -> {
-            if (event.getEntity() instanceof final Player player) {
-                final OnlineProfile onlineProfile = profileProvider.getProfile(player);
-                if (cancel.getValue(onlineProfile).orElse(false)) {
-                    return;
-                }
-                if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
-                    completeObjective(onlineProfile);
-                }
+            if (cancel.getValue(onlineProfile).orElse(false)) {
+                return;
+            }
+            if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
+                completeObjective(onlineProfile);
             }
         });
     }
@@ -79,12 +73,11 @@ public class DieObjective extends DefaultObjective implements Listener {
     /**
      * Check if the player respawned.
      *
-     * @param event the event that triggered this method
+     * @param event         the event that triggered this method
+     * @param onlineProfile the profile related to the player that respawned
      */
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onRespawn(final PlayerRespawnEvent event) {
+    public void onRespawn(final PlayerRespawnEvent event, final OnlineProfile onlineProfile) {
         qeHandler.handle(() -> {
-            final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
             if (cancel.getValue(onlineProfile).orElse(false) || location == null) {
                 return;
             }
@@ -98,15 +91,12 @@ public class DieObjective extends DefaultObjective implements Listener {
     /**
      * Check if the player died by damage.
      *
-     * @param event the event that triggered this method
+     * @param event         the event that triggered this method
+     * @param onlineProfile the profile last damaged by the player
      */
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onLastDamage(final EntityDamageEvent event) {
-        if (!(event.getEntity() instanceof final Player player)) {
-            return;
-        }
+    public void onLastDamage(final EntityDamageEvent event, final OnlineProfile onlineProfile) {
         qeHandler.handle(() -> {
-            final OnlineProfile onlineProfile = profileProvider.getProfile(player);
+            final Player player = onlineProfile.getPlayer();
             if (!cancel.getValue(onlineProfile).orElse(false)) {
                 return;
             }

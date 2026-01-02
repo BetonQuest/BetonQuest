@@ -4,6 +4,8 @@ import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 /**
  * Factory for creating {@link VariableObjective} instances from {@link Instruction}s.
@@ -17,12 +19,15 @@ public class VariableObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final boolean noChat = instruction.bool().getFlag("no-chat", true)
                 .getValue(null).orElse(false);
         if (noChat) {
             return new VariableObjective(instruction);
         }
-        return new ChatVariableObjective(instruction);
+        final ChatVariableObjective objective = new ChatVariableObjective(instruction);
+        service.request(AsyncPlayerChatEvent.class)
+                .handler(objective::onChat, AsyncPlayerChatEvent::getPlayer).subscribe(true);
+        return objective;
     }
 }

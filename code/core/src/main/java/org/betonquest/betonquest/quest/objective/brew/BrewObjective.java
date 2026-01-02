@@ -14,10 +14,6 @@ import org.betonquest.betonquest.lib.profile.ProfileValueMap;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.BrewingStand;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -32,7 +28,7 @@ import java.util.stream.Collectors;
 /**
  * Requires the player to manually brew a potion.
  */
-public class BrewObjective extends CountingObjective implements Listener {
+public class BrewObjective extends CountingObjective {
 
     /**
      * The potion item to brew.
@@ -63,11 +59,10 @@ public class BrewObjective extends CountingObjective implements Listener {
     /**
      * Checks if the player put an ingredient into the brewing stand.
      *
-     * @param event the event that triggered this method
+     * @param event         the event that triggered this method
+     * @param onlineProfile the profile of the player that put the ingredient
      */
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onIngredientPut(final InventoryClickEvent event) {
-        final OnlineProfile onlineProfile = profileProvider.getProfile((Player) event.getWhoClicked());
+    public void onIngredientPut(final InventoryClickEvent event, final OnlineProfile onlineProfile) {
         if (!containsPlayer(onlineProfile)) {
             return;
         }
@@ -108,7 +103,6 @@ public class BrewObjective extends CountingObjective implements Listener {
      * @param event the event that triggered this method
      */
     @SuppressWarnings("PMD.CognitiveComplexity")
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBrew(final BrewEvent event) {
         final Profile profile = locations.remove(event.getBlock().getLocation());
         if (profile == null) {

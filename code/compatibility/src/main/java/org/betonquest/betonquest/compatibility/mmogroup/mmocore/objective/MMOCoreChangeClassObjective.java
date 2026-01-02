@@ -7,14 +7,12 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * An objective that listens for the player changing their MMOCore class.
  */
-public class MMOCoreChangeClassObjective extends DefaultObjective implements Listener {
+public class MMOCoreChangeClassObjective extends DefaultObjective {
 
     /**
      * The name of the class that the player needs to change to.
@@ -37,11 +35,10 @@ public class MMOCoreChangeClassObjective extends DefaultObjective implements Lis
     /**
      * Listens for the player changing their MMOCore class.
      *
-     * @param event the event
+     * @param event         the event
+     * @param onlineProfile the player
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onClassChange(final PlayerChangeClassEvent event) {
-        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
+    public void onClassChange(final PlayerChangeClassEvent event, final OnlineProfile onlineProfile) {
         if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
             return;
         }

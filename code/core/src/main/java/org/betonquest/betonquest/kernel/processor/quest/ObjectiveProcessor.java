@@ -8,11 +8,16 @@ import org.betonquest.betonquest.api.instruction.argument.parser.IdentifierParse
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Placeholders;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
+import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
-import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
-import org.betonquest.betonquest.kernel.registry.FactoryTypeRegistry;
+import org.betonquest.betonquest.kernel.processor.QuestProcessor;
+import org.betonquest.betonquest.kernel.registry.quest.ObjectiveTypeRegistry;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
@@ -21,12 +26,13 @@ import org.bukkit.plugin.PluginManager;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
  * Stores Objectives and starts/stops/resumes them.
  */
-public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, DefaultObjective> {
+public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjective> {
 
     /**
      * Manager to register listener.
@@ -44,6 +50,16 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Default
     private final Set<ObjectiveID> globalObjectiveIds;
 
     /**
+     * The available objective types.
+     */
+    private final ObjectiveTypeRegistry types;
+
+    /**
+     * The event service for objectives.
+     */
+    private final ObjectiveService eventService;
+
+    /**
      * Create a new Objective Processor to store Objectives and starts/stops/resumes them.
      *
      * @param log            the custom logger for this class
@@ -51,13 +67,16 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Default
      * @param packManager    the quest package manager to get quest packages from
      * @param objectiveTypes the available objective types
      * @param pluginManager  the manager to register listener
+     * @param service        the event service for objectives
      * @param plugin         the plugin instance to associate registered listener with
      */
-    public ObjectiveProcessor(final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager,
-                              final FactoryTypeRegistry<DefaultObjective> objectiveTypes,
-                              final PluginManager pluginManager, final Plugin plugin) {
-        super(log, placeholders, packManager, objectiveTypes, "Objective", "objectives");
+    public ObjectiveProcessor(final BetonQuestLogger log, final Placeholders placeholders,
+                              final QuestPackageManager packManager, final ObjectiveTypeRegistry objectiveTypes,
+                              final PluginManager pluginManager, final ObjectiveService service, final Plugin plugin) {
+        super(log, placeholders, packManager, "Objective", "objectives");
         this.pluginManager = pluginManager;
+        this.eventService = service;
+        this.types = objectiveTypes;
         this.plugin = plugin;
         globalObjectiveIds = new HashSet<>();
     }
@@ -70,6 +89,49 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Default
      */
     public static String getTag(final ObjectiveID objectiveID) {
         return IdentifierParser.INSTANCE.apply(objectiveID.getPackage(), "global-" + objectiveID.get());
+    }
+
+    /**
+     * Gets the bstats metric supplier for registered and active types.
+     *
+     * @return the metric with its type identifier
+     */
+    public Map.Entry<String, CompositeInstructionMetricsSupplier<?>> metricsSupplier() {
+        return Map.entry(internal, new CompositeInstructionMetricsSupplier<>(values::keySet, types::keySet));
+    }
+
+    @Override
+    public void load(final QuestPackage pack) {
+        final ConfigurationSection section = pack.getConfig().getConfigurationSection(internal);
+        if (section == null) {
+            return;
+        }
+        for (final String key : section.getKeys(false)) {
+            if (key.contains(" ")) {
+                log.warn(pack, readable + " name cannot contain spaces: '" + key + "' in pack '" + pack.getQuestPath() + "'");
+                continue;
+            }
+            try {
+                loadKey(key, pack);
+            } catch (final QuestException e) {
+                log.warn(pack, "Error while loading " + readable + " '" + key + "' in pack '" + pack.getQuestPath() + "': " + e.getMessage(), e);
+            }
+        }
+    }
+
+    private void loadKey(final String key, final QuestPackage pack) throws QuestException {
+        final ObjectiveID identifier = getIdentifier(pack, key);
+        final String type = identifier.getInstruction().getPart(0);
+        final ObjectiveFactory factory = types.getFactory(type);
+        try {
+            final ObjectiveFactoryService service = eventService.getSubscriptionService(identifier);
+            final DefaultObjective parsed = factory.parseInstruction(identifier.getInstruction(), service);
+            values.put(identifier, parsed);
+            postCreation(identifier, parsed);
+            log.debug(pack, "  " + readable + " '" + identifier + "' loaded");
+        } catch (final QuestException e) {
+            throw new QuestException("Error in '" + identifier + "' " + readable + " (" + type + "): " + e.getMessage(), e);
+        }
     }
 
     @Override
@@ -89,8 +151,7 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Default
         return new ObjectiveID(placeholders, packManager, pack, identifier);
     }
 
-    @Override
-    protected void postCreation(final ObjectiveID identifier, final DefaultObjective value) {
+    private void postCreation(final ObjectiveID identifier, final DefaultObjective value) {
         boolean global = false;
         try {
             global = identifier.getInstruction().bool().getFlag("global", true)

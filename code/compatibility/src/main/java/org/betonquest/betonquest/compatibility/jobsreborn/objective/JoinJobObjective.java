@@ -8,13 +8,11 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
 /**
  * Objective that tracks the join of a player to a specific job.
  */
-public class JoinJobObjective extends DefaultObjective implements Listener {
+public class JoinJobObjective extends DefaultObjective {
 
     /**
      * Job to join.
@@ -36,11 +34,10 @@ public class JoinJobObjective extends DefaultObjective implements Listener {
     /**
      * Handles the JobsJoinEvent.
      *
-     * @param event the event that triggered the join
+     * @param event         the event that triggered the join
+     * @param onlineProfile the profile related to the player that joined
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onJobsJoinEvent(final JobsJoinEvent event) {
-        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer().getPlayer());
+    public void onJobsJoinEvent(final JobsJoinEvent event, final OnlineProfile onlineProfile) {
         qeHandler.handle(() -> {
             if (event.getJob().isSame(this.job.getValue(onlineProfile)) && containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
                 completeObjective(onlineProfile);

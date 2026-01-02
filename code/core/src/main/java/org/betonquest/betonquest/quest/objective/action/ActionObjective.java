@@ -12,9 +12,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.Nullable;
@@ -25,7 +22,7 @@ import java.util.Optional;
  * Player has to click on a block (or air). Left click, right click and any one of
  * them is supported.
  */
-public class ActionObjective extends DefaultObjective implements Listener {
+public class ActionObjective extends DefaultObjective {
 
     /**
      * The key for the location property.
@@ -99,13 +96,12 @@ public class ActionObjective extends DefaultObjective implements Listener {
     /**
      * Checks if the player clicked on the block.
      *
-     * @param event the event
+     * @param event         the event
+     * @param onlineProfile the profile of the player
      */
     @SuppressWarnings("PMD.CognitiveComplexity")
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onInteract(final PlayerInteractEvent event) {
+    public void onInteract(final PlayerInteractEvent event, final OnlineProfile onlineProfile) {
         qeHandler.handle(() -> {
-            final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
             if (!containsPlayer(onlineProfile) || !action.getValue(onlineProfile).match(event.getAction()) || slot != null && slot != event.getHand()) {
                 return;
             }

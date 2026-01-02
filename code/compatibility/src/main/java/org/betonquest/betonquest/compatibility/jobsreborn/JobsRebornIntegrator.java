@@ -2,11 +2,10 @@ package org.betonquest.betonquest.compatibility.jobsreborn;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
-import org.betonquest.betonquest.api.DefaultObjective;
-import org.betonquest.betonquest.api.kernel.FeatureTypeRegistry;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.api.quest.condition.ConditionRegistry;
 import org.betonquest.betonquest.api.quest.event.EventRegistry;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveRegistry;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.jobsreborn.condition.CanLevelConditionFactory;
 import org.betonquest.betonquest.compatibility.jobsreborn.condition.HasJobConditionFactory;
@@ -57,7 +56,7 @@ public class JobsRebornIntegrator implements Integrator {
         eventRegistry.register("nujobs_leavejob", new LeaveJobEventFactory());
         eventRegistry.register("nujobs_setlevel", new SetLevelEventFactory());
 
-        final FeatureTypeRegistry<DefaultObjective> objectiveRegistry = questRegistries.objective();
+        final ObjectiveRegistry objectiveRegistry = questRegistries.objective();
         objectiveRegistry.register("nujobs_joinjob", new JoinJobObjectiveFactory());
         objectiveRegistry.register("nujobs_leavejob", new LeaveJobObjectiveFactory());
         objectiveRegistry.register("nujobs_levelup", new LevelUpObjectiveFactory());
