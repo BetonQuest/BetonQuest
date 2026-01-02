@@ -24,16 +24,9 @@ public interface SectionInstruction extends SectionChainInstruction {
     QuestPackage getPackage();
 
     /**
-     * Get the section contained in this instruction.
-     *
-     * @return the section
-     */
-    ConfigurationSection getSection();
-
-    /**
      * Start traversing the section to parse it.
      *
      * @return a traverser to traverse the section
      */
-    SectionTraverser traverse();
+    SectionTraverser read();
 }

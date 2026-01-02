@@ -3,11 +3,19 @@ package org.betonquest.betonquest.api.instruction.section;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
+import org.bukkit.configuration.ConfigurationSection;
 
 /**
  * The retriever endpoint of the section instruction chain.
  */
 public interface SectionChainInstruction {
+
+    /**
+     * Get the section contained in this instruction.
+     *
+     * @return the section
+     */
+    ConfigurationSection getSection();
 
     /**
      * Read a value from the section.
