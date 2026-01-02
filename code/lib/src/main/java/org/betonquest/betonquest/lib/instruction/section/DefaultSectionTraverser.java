@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.section.SectionChainInstruction;
 import org.betonquest.betonquest.api.instruction.section.SectionTraverser;
 import org.betonquest.betonquest.api.instruction.section.path.SectionParser;
+import org.betonquest.betonquest.api.instruction.section.subsection.SubSectionRedirector;
 import org.betonquest.betonquest.lib.instruction.section.path.DefaultSectionParser;
 
 /**
@@ -35,5 +36,10 @@ public class DefaultSectionTraverser implements SectionTraverser {
     @Override
     public SectionParser path(final String... sectionPath) {
         return new DefaultSectionParser(instruction, parsers, String.join(".", sectionPath));
+    }
+
+    @Override
+    public SubSectionRedirector section(final String... sectionPath) {
+        return null;
     }
 }
