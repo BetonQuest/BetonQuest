@@ -5,7 +5,7 @@ icon: material/application-export
 
 ## Listening to BetonQuest (Bukkit) events
 
-BetonQuest exposes some of its actions as Bukkit events.  
+BetonQuest exposes some of its features as Bukkit events.  
 You can find these events in `org.betonquest.betonquest.api.bukkit.event` package.
 [Use them as you would use any other Bukkit event](https://bukkit.fandom.com/wiki/Event_API_Reference#The_Basics).
 

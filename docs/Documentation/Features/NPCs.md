@@ -88,7 +88,7 @@ You would then use the `betonQuestNPCID` for all NPC references within BetonQues
 
 !!! warning "Multiple NPCs with the same name"
     If there is more than one NPC with the same name and you select multiple NPCs by name (such as when using 
-    Citizens `byName` option), certain events like `npcteleport` or objectives like `npcrange` might throw an exception.
+    Citizens `byName` option), certain actions like `npcteleport` or objectives like `npcrange` might throw an exception.
 ## Conversations
 
 You can start [Conversations](Conversations.md) through NPC interactions from players by assigning them in the

@@ -31,7 +31,7 @@ The file structure should look like this:
 
 * :material-folder-open: questTracking
     - :material-file: package.yml
-    - :material-file: events.yml
+    - :material-file: actions.yml
     - :material-file: conditions.yml
     - :material-folder-open: conversations
         - :material-file: joe.yml
@@ -124,8 +124,8 @@ and we want to prevent that to get a nice feeling conversation with these NPCs.
 We are now adding conditions to the conversations to prevent the player having the same conversation over and over 
 again and to make sure that you can only talk to the Fren and Joe *after* you get the task to meet those.
 
-First we add events to the correct part of the conversation where the tag should be added and in order to that we 
-will add these events with the corresponding conditions to our events/conditions sections.
+First we add actions to the correct part of the conversation where the tag should be added and in order to that we 
+will add these actions with the corresponding conditions to our actions/conditions sections.
 
 @snippet:tutorials:new-line-highlighting@
 
@@ -147,7 +147,7 @@ will add these events with the corresponding conditions to our events/conditions
           introduce:
             text: "I am %player%"
             pointers: "niceToMeetYou"
-            events: "addTagIntroducedToBonny"
+            actions: "addTagIntroducedToBonny"
     ```
 
 === "joe.yml"
@@ -160,7 +160,7 @@ will add these events with the corresponding conditions to our events/conditions
         NPC_options:
           firstGreeting:
             text: "Hey %player% Bonny already told me about you! Nice to have you here in our town."
-            events: "addTagMetJoe"
+            actions: "addTagMetJoe"
     ```
     
 === "fren.yml"
@@ -180,13 +180,13 @@ will add these events with the corresponding conditions to our events/conditions
           introduce:
             text: "That's correct!"
             pointers: "niceToMeetYou"
-            events: "addTagMetFren"
+            actions: "addTagMetFren"
     ```
 
-=== "events.yml"
+=== "actions.yml"
 
     ``` yaml hl_lines="1-4" linenums="1"
-    events:
+    actions:
       addTagIntroducedToBonny: "tag add introducedToBonny"
       addTagMetJoe: "tag add metJoe"
       addTagMetFren: "tag add metFren"
@@ -201,14 +201,14 @@ will add these events with the corresponding conditions to our events/conditions
       metFren: "tag metFren"
     ```
 
-Now that we have written the events and conditions it's important to actually add the condition tags to the 
+Now that we have written the actions and conditions it's important to actually add the condition tags to the 
 conversations and also add some more conversation so that it makes more sense. This will make the magic work!
 
 !!! tip
 
-    I always start by writing the events into the conversation options. Once the event is written, I proceed to write it in 
-    the **events section** to ensure that the event actually exists. After that, I ask myself: What do I need for the
-    event? Do I still need to write a **condition** or an **objective** for it? If you proceed systematically like this,
+    I always start by writing the actions into the conversation options. Once the action is written, I proceed to write it in 
+    the **actions section** to ensure that the action actually exists. After that, I ask myself: What do I need for the
+    action? Do I still need to write a **condition** or an **objective** for it? If you proceed systematically like this,
     you will make significantly fewer mistakes.
 
 
@@ -236,7 +236,7 @@ conversations and also add some more conversation so that it makes more sense. T
           introduce:
             text: "I am %player%"
             pointers: "niceToMeetYou"
-            events: "addTagIntroducedToBonny"
+            actions: "addTagIntroducedToBonny"
     ```
     
     1. **metJoe** and **metFren** are the conditions that you need to negotiate because we want them to be met. We 
@@ -256,7 +256,7 @@ conversations and also add some more conversation so that it makes more sense. T
         NPC_options:
           firstGreeting:
             text: "Hey %player% Bonny already told me about you! Nice to have you here in our town."
-            events: "addTagMetJoe"
+            actions: "addTagMetJoe"
             conditions: "introducedToBonny" #(1)!
     ```
     
@@ -281,13 +281,13 @@ conversations and also add some more conversation so that it makes more sense. T
           introduce:
             text: "That's correct!"
             pointers: "niceToMeetYou"
-            events: "addTagMetFren"
+            actions: "addTagMetFren"
     ```
 
     1. This conditions will be added to prevent the player from talking with the NPC before he not introduced 
     himself to Bonny first.
     
-After we have added the conditions and events to the conversations and files we can now test it in-game!
+After we have added the conditions and actions to the conversations and files we can now test it in-game!
 You can now only talk to **Fren and Joe** after you introduced yourself to **Bonny**.
 
 @snippet:tutorials:download-solution@
@@ -297,7 +297,7 @@ You can now only talk to **Fren and Joe** after you introduced yourself to **Bon
 
 ## 3. Complete the introduction quest (optional)
 
-We will now add some **events** and **condition tags** to round up the quest feeling. After we talked to the Fren 
+We will now add some **actions** and **condition tags** to round up the quest feeling. After we talked to the Fren 
 and Joe, Bonny always would say the same. We can prevent that also adding a condition tag here.
 Let us have a look:
 
@@ -322,24 +322,24 @@ Let us have a look:
           finishedTask:
             text: "You have met Joe and Fren! We are all there for you if you need something!"
             conditions: "metJoe,metFren"
-            events: "addTagIntroducedToEveryone"
+            actions: "addTagIntroducedToEveryone"
           startMainQuest:
             text: "Now I could need your help! Would you mind bringing me XXX?"
             conditions: "introducedToEveryone"
-            events: #(1)!
+            actions: #(1)!
             pointers: #(2)!
         player_options:
           introduce:
             text: "I am %player%"
             pointers: "niceToMeetYou"
-            events: "addTagIntroducedToBonny"
+            actions: "addTagIntroducedToBonny"
     ```
 
     1. You can now continue your main quest here with whatever you want. Maybe with a **pointer** to another 
-    conversation or a **event** to start something.
+    conversation or a **action** to start something.
     
     2. You can now continue your main quest here with whatever you want. Maybe with a **pointer** to another 
-    conversation or a **event** to start something.
+    conversation or a **action** to start something.
 
 === "joe.yml"
 
@@ -351,7 +351,7 @@ Let us have a look:
         NPC_options:
           firstGreeting:
             text: "Hey %player% Bonny already told me about you! Nice to have you here in our town."
-            events: "addTagMetJoe"
+            actions: "addTagMetJoe"
             conditions: "introducedToBonny"
           mainConversation:
             text: "Very nice to see you again! I dont have any tasks for you at the moment"
@@ -379,13 +379,13 @@ Let us have a look:
           introduce:
             text: "That's correct!"
             pointers: "niceToMeetYou"
-            events: "addTagMetFren"
+            actions: "addTagMetFren"
     ```
 
-=== "events.yml"
+=== "actions.yml"
 
     ``` yaml hl_lines="5" linenums="1"
-    events:
+    actions:
       addTagIntroducedToBonny: "tag add introducedToBonny"
       addTagMetJoe: "tag add metJoe"
       addTagMetFren: "tag add metFren"

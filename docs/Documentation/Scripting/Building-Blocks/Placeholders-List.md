@@ -109,7 +109,7 @@ in the messages.yml config.
 ### Custom Text Placeholder
 
 It is possible to save text per player. This works by using the [`placeholder`](Objectives-List.md#variable-variable)
- objective and the [`placeholder`](Events-List.md#variable-variable) event. 
+ objective and the [`placeholder`](Actions-List.md#variable-variable) action. 
 
 ## Other Placeholders
 
@@ -166,7 +166,7 @@ Additionally, you get the output in percent (inclusive the '%' symbol).
 
 This placeholder resolves to all aspects of the player's location. The x, y and z coordinates, the world name, the yaw and pitch (head rotation).
 There are also modes for the [Unified Location Formatting](../Data-Formats.md#unified-location-formating) (ULF from now on)
-which means that this placeholder can also be used in events, conditions etc.
+which means that this placeholder can also be used in actions, conditions etc.
 If you just specify `%location%` the placeholders will resolve to a ULF with yaw and pitch.
 You can add two options to that base, one will give back parts of the ULF and the other will set to how many decimal places 
 the placeholder will resolve. 
@@ -196,7 +196,7 @@ This placeholder allows you to perform a calculation based on other placeholders
 and resolves to the result of the specified calculation. The placeholder always starts with `math.calc:`, followed by the
 calculation which should be calculated. Supported operations are `+`, `-`, `*`, `/`, `^` and `%`. You can use `( )` and
 `[ ]` braces and also calculate absolute values with `| |`. But be careful, don't use absolute values in the command
-event as it splits the commands at every `|` and don't nest them without parenthesis (`|4*|3-5||` won't work, but
+action as it splits the commands at every `|` and don't nest them without parenthesis (`|4*|3-5||` won't work, but
 `|4*(|3-5|)|` does). Additionally, you can use the round operator `~` to round everything left of it to the number of
 decimal digits given on the right. So `4+0.35~1` will produce `4.4` and `4.2~0` will produce `4`.
 

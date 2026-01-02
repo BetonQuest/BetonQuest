@@ -4,7 +4,7 @@ icon: material/plus-box
 @snippet:api-state:unfinished@
 ## Summary
 
-This page covers the creation of new Quest Types (e.g., Event) and Soon™ Features (e.g., Conversation IO) 
+This page covers the creation of new Quest Types (e.g., Action) and Soon™ Features (e.g., Conversation IO) 
 implementations and how they are [registered](#registry) in BetonQuest so that they can be used on the server.
 
 ## Writing New Quest Type Implementations
@@ -12,7 +12,7 @@ implementations and how they are [registered](#registry) in BetonQuest so that t
 The following concepts are defined as "Quest Types", as they build the core of BetonQuest.
 
 - `Condition`
-- `Event`
+- `Action`
 - `Objective`
 - `Placeholder`
 
@@ -21,8 +21,8 @@ From the list above the `Objective` is still part of the [LegacyAPI](../Legacy-A
 The sub-packages contain the core quest types that are registered in their respective `QuestTypeRegistry` using
 the `register` method.
 
-For an easy event implementation see the
-[Burn Event Package](https://github.com/BetonQuest/BetonQuest/tree/main/src/main/java/org/betonquest/betonquest/quest/event/burn).
+For an easy action implementation see the
+[Burn Action Package](https://github.com/BetonQuest/BetonQuest/tree/main/src/main/java/org/betonquest/betonquest/quest/action/burn).
 
 ### Factory Pattern
 
@@ -31,7 +31,7 @@ This allows the constructing factory to provide any required objects that the sp
 and enables more advanced compositions. For example in [Online](#onlineprofile-player), [Mixed](#mixed),
 and [Main Thread](#executing-on-bukkit-main-thread).
 
-In this context, you register not the actual implementation, but a factory that will create it.
+In this context, you register not the actual implementation but a factory that will create it.
 Into the factory you inject the dependencies that are required for creating the implementation.
 The `Instruction`, providing the "configuration", will be parsed in the factory's `parse` method,
 where the implementation is actually constructed.
@@ -95,7 +95,7 @@ The separation is as follows:
 
 - **QuestTypeRegistries**, which provide the instruction-based core features object creation:
   - `Condition`
-  - `Event`
+  - `Action`
   - `Objective`
   - `Placeholder`
 - **FeatureRegistries**, which cover more complex and varied creation patterns:

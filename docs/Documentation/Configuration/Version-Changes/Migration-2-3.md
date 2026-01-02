@@ -21,7 +21,7 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 !!! Note
     - :sun: **Fully automated migration** – These steps are reliably migrated without issues in most cases.
       You usually don’t need to take any action. However, certain rarely used or non-standard formats (e.g., run 
-      events or math variables (now called placeholders)) may not migrate correctly if they deviate from the common structure.
+      events (now called actions) or math variables (now called placeholders)) may not migrate correctly if they deviate from the common structure.
     - :white_sun_cloud: **Automated migration with known limitations** – These steps are generally migrated automatically,
       especially for straightforward cases. However, there are known edge cases that cannot be detected or handled 
       automatically. You should review these steps and be prepared to make manual adjustments where needed.
@@ -153,7 +153,7 @@ To support more Npc plugins than just Citizens the system got a rework.
 Npcs are now addressed with IDs and defined in the `npcs` section.
 Starting conversations with Npc interaction is moved inside the `npc_conversations` section.
 
-Also, the `teleportnpc` event got renamed to `npcteleport`. That change is automated, when updating to version
+Also, the `teleportnpc` event (now called action) got renamed to `npcteleport`. That change is automated, when updating to version
 3.0.0-DEV-299 or newer.
 
 In addition, the `npc` variable (now called placeholder) to get the quester name of the current conversation got
@@ -221,9 +221,9 @@ Citizens integration.
 
 ### 3.0.0-DEV-135 - Citizens Adaption to NpcID :thunder_cloud_rain:
 
-To streamline usage of Npcs the Citizens specific events and objective now also use the NpcID introduced in 3.0.0-DEV-114.
+To streamline usage of Npcs the Citizens specific events (now called actions) and objective now also use the NpcID introduced in 3.0.0-DEV-114.
 
-Also, the `movenpc` and `stopnpc` events are renamed into `npcmove` and `npcstop`. These renames are automated, when 
+Also, the `movenpc` and `stopnpc` events (now called actions) are renamed into `npcmove` and `npcstop`. These renames are automated, when 
 updating to version 3.0.0-DEV-299 or newer.
 
 As in the migration above stated you can either use a descriptive name as the id or use the numeric Citizens id of the Npc.
@@ -325,7 +325,7 @@ and if you only want sounds and no message, you use `sound` instead of `suppress
     
     -------------
 
-    BetonQuest allows a lot of lists (comma separated values) to reference for example events and conditions.
+    BetonQuest allows a lot of lists (comma separated values) to reference for example events (now called actions) and conditions.
     In the past the key of those lists was always `event` or `condition`.
     Then someone introduced the first plural `events` and `conditions`, and so the project supported both.
     As this leads into a lot of bad code and confusion, we decided to remove the singular version.
@@ -357,7 +357,7 @@ and if you only want sounds and no message, you use `sound` instead of `suppress
     
     -------------
 
-    To allow a list of events also containing variables (now called placeholders) in any form, it is not possible
+    To allow a list of events (now called actions) also containing variables (now called placeholders) in any form, it is not possible
     anymore to use the percentage, instead the tilde `~` is used to separate the chance from the event.
     
     <div class="grid" markdown>
@@ -561,13 +561,13 @@ and if you only want sounds and no message, you use `sound` instead of `suppress
 
 MMOItems is now integrated into the item system.
 
-Instead of using mmo specific pickup objectives or item conditions and events it now uses the standard implementations.
+Instead of using mmo specific pickup objectives or item conditions and events (now called actions) it now uses the standard implementations.
 The following obsolete implementations were removed:
 
 - `mmoitem` condition
 - `mmohand` condition
-- `mmoitemgive` event
-- `mmoitemtake` event
+- `mmoitemgive` event (now called actions)
+- `mmoitemtake` event (now called actions)
 - `mmoitemcraft` objective
 
 <div class="grid" markdown>
@@ -607,7 +607,7 @@ The `mmoitemupgrade` and `mmoitemapplygem` objectives exist unchanged.
     
     -------------
     
-    To allow variables (now called placeholders) for the time unit in the `folder` event, the time unit now needs a key `unit`.
+    To allow variables (now called placeholders) for the time unit in the `folder` event (now called action), the time unit now needs a key `unit`.
     
     <div class="grid" markdown>
     
@@ -776,7 +776,7 @@ events:
 That's how to do this in general, but there are a lot of edge cases, so please check all cross package references.
 Some well known edge cases are:
 
-- The `run` events is not migrated, as it is too complex
+- The `run` events (now called actions) is not migrated, as it is too complex
 - Variables (now called placeholders) are not migrated:
     - They used `.` as separator what means that they previously conflicted with cross package references so it can not be detected reliably.
     - A special case for variables (now called placeholders) are some `ph` variables and the `math.calc` variable.
@@ -904,7 +904,7 @@ you now need to set the interceptor to `none`.
     
     -------------
     
-    To fix certain instruction parsing issues the `money` event no longer allows the `*` in front of the amount
+    To fix certain instruction parsing issues the `money` event (now called actions) no longer allows the `*` in front of the amount
     and instead now has a `multiply` argument.
     
     In practice, this syntax could also be used in the "point", "globalpoint" and "score" events.

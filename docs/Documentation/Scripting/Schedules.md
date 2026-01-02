@@ -2,15 +2,15 @@
 icon: octicons/clock-16
 ---
 # Schedules
-Schedules allow you to run events periodically at specific times for the entire server.
+Schedules allow you to run actions periodically at specific times for the entire server.
 
-## Player independent events
-Whenever events are run from a conversation or an objective, they are always run for a specific player.
-For events run from a schedule this is not the case as there is no specific player involved.   
-This means you can only use events that are player independent, like `setblock` or `globaltag`, in schedules.
-The same applies to the conditions used by these events.
+## Player independent actions
+Whenever actions are run from a conversation or an objective, they are always run for a specific player.
+For actions run from a schedule this is not the case as there is no specific player involved.   
+This means you can only use actions that are player independent, like `setblock` or `globaltag`, in schedules.
+The same applies to the conditions used by these actions.
 
-To determine if an event is player independent (and can be used in schedules), look for the **static** flag in the docs.
+To determine if an action is player independent (and can be used in schedules), look for the **static** flag in the docs.
 
 !!! example annotate
     <h2>Set Block: `setblock`</h2>
@@ -21,12 +21,12 @@ To determine if an event is player independent (and can be used in schedules), l
 
 1.  This flag states that `setblock` can be used player independent.
 
-Some events behave differently when called from a schedule in independent mode.
+Some actions behave differently when called from a schedule in independent mode.
 For example, `tag delete` will include offline players.
-A list of all events that act differently can be found in the [`runIndependent`](Building-Blocks/Events-List.md#run-events-player-independent-runindependent) docs.
+A list of all actions that act differently can be found in the [`runIndependent`](Building-Blocks/Actions-List.md#run-actions-player-independent-runindependent) docs.
 
-But sometimes you might want your schedule to run a player dependent event, like `message` or `give` for all players on the server.
-To do this you can use the [`runforall`](Building-Blocks/Events-List.md#run-events-for-all-online-players-runforall) event. It will run the given events for all players on the server. 
+But sometimes you might want your schedule to run a player dependent action, like `message` or `give` for all players on the server.
+To do this you can use the [`runforall`](Building-Blocks/Actions-List.md#run-actions-for-all-online-players-runforall) action. It will run the given actions for all players on the server. 
 You can even use conditions to filter out players.
 
 ## Realtime schedules
@@ -40,7 +40,7 @@ The time is provided by the system time of the computer your minecraft server is
 ### Daily realtime schedule: `realtime-daily`
 
 A super simple to use type of schedule, but also limited in its functionality.  
-Just specify the time of the day when the events should run, and they will run every day at that same time.
+Just specify the time of the day when the actions should run, and they will run every day at that same time.
 
 === "Simple Example"
 
@@ -49,7 +49,7 @@ Just specify the time of the day when the events should run, and they will run e
       sayGoodNight: #(1)!
         type: realtime-daily #(2)!
         time: '22:00' #(3)!
-        events: bell_ring,notify_goodNight #(4)!
+        actions: bell_ring,notify_goodNight #(4)!
     ```
 
     1.  The name of the schedule.
@@ -58,7 +58,7 @@ Just specify the time of the day when the events should run, and they will run e
 
     3.  `time` is the time of day when the schedule should be run in format `HH:mm`.
 
-    4.  An event (or multiple separated by `,`) that should run at the given time.
+    4.  An action (or multiple separated by `,`) that should run at the given time.
 
     _Runs every day at 10pm, will ring a bell and wish everyone a good night._
 
@@ -66,7 +66,7 @@ Just specify the time of the day when the events should run, and they will run e
 
     ```YAML
     # This example works out of the box. Copy-paste to try out how it works.
-    events:
+    actions:
       bell_sound: 'notifyall io:sound sound:block.bell.use'
       bell_ring: 'folder bell_sound,bell_sound,bell_sound,bell_sound period:0.5'
       notify_goodNight: 'notifyall &6Good night, sleep well!'
@@ -74,7 +74,7 @@ Just specify the time of the day when the events should run, and they will run e
       sayGoodNight:
         type: realtime-daily
         time: '22:00'
-        events: bell_ring,notify_goodNight
+        actions: bell_ring,notify_goodNight
     ```
 ---
 
@@ -83,7 +83,7 @@ Just specify the time of the day when the events should run, and they will run e
 
 ### Cron realtime schedule: `realtime-cron`
 
-The cron realtime schedule is an incredibly flexible tool to define when events shall run.  
+The cron realtime schedule is an incredibly flexible tool to define when actions shall run.  
 It is similar to the [`realtime-daily`](#daily-realtime-schedule-realtime-daily) schedule but the time is defined as a
 [cron expression](https://en.wikipedia.org/wiki/Cron).  
 The supported syntax is identical to the original unix crontab syntax.
@@ -103,7 +103,7 @@ The supported syntax is identical to the original unix crontab syntax.
       sayGoodNight: #(1)!
         type: realtime-cron #(2)!
         time: '0 22 * * *' #(3)!
-        events: bell_ring,notify_goodNight #(4)!
+        actions: bell_ring,notify_goodNight #(4)!
     ```
 
     1.  The name of the schedule.
@@ -113,7 +113,7 @@ The supported syntax is identical to the original unix crontab syntax.
     3.  `time` is the cron expression that defines when the schedule should be run.  
         **Use [crontab.guru](https://crontab.guru/)!**
 
-    4.  An event (or multiple separated by `,`) that should run at the given time.
+    4.  An action (or multiple separated by `,`) that should run at the given time.
 
     _Runs every day at 10pm, will ring a bell and wish everyone a good night._
 
@@ -121,7 +121,7 @@ The supported syntax is identical to the original unix crontab syntax.
 
     ```YAML
     # This example works out of the box. Copy-paste to try out how it works.
-    events:
+    actions:
       bell_sound: 'notifyall io:sound sound:block.bell.use'
       bell_ring: 'folder bell_sound,bell_sound,bell_sound,bell_sound period:0.5'
       notify_goodNight: 'notifyall &6Good night, sleep well!'
@@ -129,7 +129,7 @@ The supported syntax is identical to the original unix crontab syntax.
       sayGoodNight:
         type: realtime-cron
         time: '0 22 * * *'
-        events: bell_ring,notify_goodNight
+        actions: bell_ring,notify_goodNight
     ```
 ---
 
@@ -146,7 +146,7 @@ The following special expressions were added for extended functionality or simpl
 
 ### Catchup Strategies
 
-Obviously, scheduled events can't be run while the server is shut down.  
+Obviously, scheduled actions can't be run while the server is shut down.  
 If you want to be sure that a schedule will nevertheless be run, you can define a **catchup strategy**.
 
 On startup, BetonQuest checks which schedules have been missed and (if needed) they will be run on the first tick.  
@@ -160,7 +160,7 @@ For mixed types the **order** can **not** be **guaranteed**.
       sayGoodNight: 
         type: realtime-daily
         time: '22:00'
-        events: bell_ring,notify_goodNight
+        actions: bell_ring,notify_goodNight
         catchup: none #(1)!
     ```
 
@@ -176,13 +176,13 @@ For mixed types the **order** can **not** be **guaranteed**.
       resetQuarryArea: 
         type: realtime-daily
         time: '03:00'
-        events: pasteQuarry
+        actions: pasteQuarry
         catchup: one #(1)!
     ```
 
     1.  If the schedule was missed (no matter how often) run it **once** after reboot.
 
-    _The quarry should be reset every day at 3am. Even if the server was shut down at that time, run the event once at reboot._
+    _The quarry should be reset every day at 3am. Even if the server was shut down at that time, run the action once at reboot._
 
 === "ALL"
 
@@ -191,7 +191,7 @@ For mixed types the **order** can **not** be **guaranteed**.
       greedyMarchant: 
         type: realtime-daily
         time: '03:00'
-        events: increaseFuelPrice
+        actions: increaseFuelPrice
         catchup: all #(1)!
     ```
 

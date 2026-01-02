@@ -122,7 +122,7 @@ There are three required arguments - entity type, location and range. Entities a
 Each entity type (taken from [here](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html))
 can have an additional amount suffix, for example `ZOMBIE:5,SKELETON:2` means 5 or more zombies and 2 or more skeletons.
 The location is defined as usual. The number after the location is the range around the location in which will be checked for these entities. You can also specify additional `name:` argument,
-with the name of the required entity. You can use `marked:` argument to check only for entities marked in `spawn` event.
+with the name of the required entity. You can use `marked:` argument to check only for entities marked in `spawn` action.
 
 !!! example
     ```YAML
@@ -135,7 +135,7 @@ This condition allows you to resolve an expression containing placeholders, and 
 again as a condition.
 
 ```YAML title="Example"
-events:
+actions:
   simpleEval: eval chestitem -288;64;357;World emerald:5
   complexEval: eval point ranking 5 %objective.settings.equal% #(1)!
 ```
