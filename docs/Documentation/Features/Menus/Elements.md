@@ -1,9 +1,9 @@
 ---
 icon: material/table-of-contents
 ---
-## Events
-### Menu Event: `menu`
-This event can be used to open, close or update menus.
+## Actions
+### Menu Action: `menu`
+This action can be used to open, close or update menus.
 The first argument is the type of action that should be done.
 It is either `open` to open a new menu, `close` to close the currently opened menu, or `update` to update the 
 content of the currently opened menu.  

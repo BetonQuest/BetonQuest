@@ -13,7 +13,7 @@ Added:
   * {--added--} new conversation style: Hologram
   * new conversation style: Hologram
 ```
-* Mark events, objectives etc. names with `` ` `` around them.
+* Mark actions, objectives etc. names with `` ` `` around them.
 
 Here is a breakdown of what belongs in each section:
 
@@ -22,18 +22,18 @@ Here is a breakdown of what belongs in each section:
 
     ```MD
     Added:
-      - event `teleport` allows teleportation of players
-      - Citizens event `movenpc` makes it possible to let a NPC walk to a specific location
+      - action `teleport` allows teleportation of players
+      - Citizens action `movenpc` makes it possible to let a NPC walk to a specific location
     ```
 
 ??? info "Changed"
     Give qualified information that indicates what the user may have to be aware of.
-    Do not write `event x has now argument y` - that is a new feature and belongs to `Added`. Only add to this section
+    Do not write `action x has now argument y` - that is a new feature and belongs to `Added`. Only add to this section
     if there are changed _behaviours_.
 
      ```MD
      Changed:
-       - event `teleport` now first checks if another plugin canceled the event
+       - action `teleport` now first checks if another plugin canceled the action
        - german translations have been updated
      ```
 
@@ -42,7 +42,7 @@ Here is a breakdown of what belongs in each section:
 
      ```MD
      Deprecated:
-       - event `message` will be deleted, use the `notify` event instead
+       - action `message` will be deleted, use the `notify` action instead
        - Minecraft recently replaced material ids with namespaces. Update your items accordingly, ids will stop working soon 
      ```
 
@@ -52,7 +52,7 @@ Here is a breakdown of what belongs in each section:
 
      ```MD
      Removed:
-       - `message` event, use the `notify` event instead
+       - `message` action, use the `notify` action instead
        - old material syntax, use material namespaces instead
      ```
 
@@ -63,8 +63,8 @@ Here is a breakdown of what belongs in each section:
   
     ```MD
     Fixes:
-      - event `notify` did not resolve placeholders correctly
-      - Citizens event `movenpc` is now more robust combined with other events like `stopnpc` and `teleportnpc`
+      - action `notify` did not resolve placeholders correctly
+      - Citizens action `movenpc` is now more robust combined with other actions like `stopnpc` and `teleportnpc`
         - you may need to reduce the distance beetween waypoints
     ```
 
@@ -76,7 +76,7 @@ Here is a breakdown of what belongs in each section:
 
      ```MD
      Security:
-       - the take event is now threadsafe
+       - the take action is now threadsafe
        - a deadlock in conversations was fixed
      ```
 

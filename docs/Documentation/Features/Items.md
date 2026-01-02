@@ -2,7 +2,7 @@
 icon: material/sword
 ---
 ## Item Basics  
-Items in BetonQuest are defined in the _items_ section. Each item has an instruction string, similar to events, conditions etc.
+Items in BetonQuest are defined in the _items_ section. Each item has an instruction string, similar to actions, conditions etc.
 
 BetonQuest provides the `simple` item type, to which this page will outline the creation process. _Item type_ here 
 refers to the "source" of the item (A bit like when you specify the [namespace](https://minecraft.fandom.com/wiki/Resource_location) in `/give` commands). 
@@ -28,7 +28,7 @@ Every argument is used in two ways: When creating an item and when checking if s
 instruction.
 
 The first case is pretty straightforward - BetonQuest takes all the data you specified and creates an item. You would 
-give it to your players using events. 
+give it to your players using actions. 
 The second case is more complicated. You can require certain properties of the item to exist, others to not exist, or 
 skip some property checks altogether. You would use these items in conditions.
 

@@ -44,7 +44,7 @@ nav:
           - 'Basics':
               - 'YAML': Tutorials/Getting-Started/Basics/YAML-Basics.md
               - 'Conversations': Tutorials/Getting-Started/Basics/Conversations.md
-              - '    Events': Tutorials/Getting-Started/Basics/Events.md
+              - '    Actions': Tutorials/Getting-Started/Basics/Actions.md
               - 'Objectives': Tutorials/Getting-Started/Basics/Objectives.md
               - 'Conditions': Tutorials/Getting-Started/Basics/Conditions.md
       - 'Features':
@@ -61,7 +61,7 @@ nav:
       - 'Scripting':
           - 'About Scripting': Documentation/Scripting/About-Scripting.md
           - 'Packages & Templates': Documentation/Scripting/Packages-&-Templates.md
-          - 'Events List': Documentation/Scripting/Building-Blocks/Events-List.md
+          - 'Actions List': Documentation/Scripting/Building-Blocks/Actions-List.md
           - 'Objectives List': Documentation/Scripting/Building-Blocks/Objectives-List.md
           - 'Conditions List': Documentation/Scripting/Building-Blocks/Conditions-List.md
           - 'Placeholders List': Documentation/Scripting/Building-Blocks/Placeholders-List.md
@@ -115,7 +115,7 @@ nav:
           - 'Overview': API/Quest/Quest-API.md
           - 'Writing Implementations': API/Quest/Writing-Implementations.md
           - 'Conditions': API/Quest/Conditions.md
-          - 'Events': API/Quest/Events.md
+          - 'Actions': API/Quest/Actions.md
           - 'Objectives': API/Quest/Objectives.md
           - 'NPCs': API/Quest/NPCs.md
       - 'Other':

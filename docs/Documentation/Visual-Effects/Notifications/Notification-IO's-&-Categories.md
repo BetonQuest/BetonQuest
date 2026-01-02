@@ -18,17 +18,17 @@ of all NotifyIO's:
 
 
 Most NotifyIO's have unique settings that somehow change how a notification is displayed. The actual message is 
-either defined in the event that triggers the NotifyIO or the appropriate language file 
+either defined in the action that triggers the NotifyIO or the appropriate language file 
 in the *lang* directory for all built-in notifications. 
 
-@snippet:events:notify@
+@snippet:actions:notify@
 
 ## Available NotifyIOs
 
 There are a bunch of notify IOs available. Below is a list of all available notifyIOs and their possible options.
 ??? info "Notify Syntax"
     ```YAML
-    events:
+    actions:
       notifyExample: notify <message> io:<NotifyIO_Type> <option_1>:<option_1_value> <option_2>:<option_2_value> 
         <category>:<category_Name>
     ```
@@ -220,7 +220,7 @@ Does not output any sound or text 🔕. Can be used to remove built-in notificat
 
 ## Categories
 
-Notify Categories are pre-defined [NotifyIO settings](#categories). They can be applied to any notify event and are 
+Notify Categories are pre-defined [NotifyIO settings](#categories). They can be applied to any notify action and are 
 also used by BetonQuest's built-in notifications.
 All categories must be defined in a section called `notifications`.
 
@@ -232,9 +232,9 @@ All categories must be defined in a section called `notifications`.
 !!! tip inline end 
     Categories are very useful for notifications that you are going to 
     be sending players multiple times and want to create a unified, consistent look and sound.
-Custom categories are user-created presets for any notify event. They shorten your events and enable you to change
+Custom categories are user-created presets for any notify action. They shorten your actions and enable you to change
 how a notification of a certain category looks in one central place. They do not allow you to set a message though as 
-the message is an argument of the `notify` event!
+the message is an argument of the `notify` action!
 
 ```YAML title="Custom Categories Example Configuration"
 notifications:
@@ -248,7 +248,7 @@ notifications:
 2. Sets the NotifyIO type to be used.
 3. An option of the advancementIO.
 4. An option of the soundIO.
-Now, any `notify` event with `money` as its category will use the `advancement` io, with a `gold_ingot` for its 
+Now, any `notify` action with `money` as its category will use the `advancement` io, with a `gold_ingot` for its 
 icon and play the `entity.item.pickup` sound without you having to define all the options multiple times.    
 
 !!! warning 
@@ -266,7 +266,7 @@ You may notice that the "Categories" column lists two categories: One that match
 and `error`/`info`.
 
 
-These work exactly like the user-made categories in the `notify` event. The first existent category (from left to right) will be used.
+These work exactly like the user-made categories in the `notify` action. The first existent category (from left to right) will be used.
 This allows you to change all built-in notifications with just two entries in your *notifications* section:
 ```YAML
 notifications:

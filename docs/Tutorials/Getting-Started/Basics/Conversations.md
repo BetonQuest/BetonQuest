@@ -242,6 +242,6 @@ options by jumping (++space++ by default).
 ## Summary
 
 You've learned how to create simple conversations in which the player can choose different paths.
-In the next part of the basics tutorial you will learn how Jack the mayor can give food to the player using **events**!
+In the next part of the basics tutorial you will learn how Jack the mayor can give food to the player using **actions**!
 ---
-[:octicons-arrow-right-16: Events ](./Events.md){ .md-button .md-button--primary}
+[:octicons-arrow-right-16: Actions ](./Actions.md){ .md-button .md-button--primary}

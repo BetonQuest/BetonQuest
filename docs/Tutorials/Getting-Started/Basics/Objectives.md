@@ -3,14 +3,14 @@ icon: octicons/codescan-checkmark-16
 tags:
 - Objectives
 ---
-In the last tutorial you learned to create and use events. 
+In the last tutorial you learned to create and use actions. 
 This tutorial is about objectives. Objectives are tasks which you can assign to a player. For example breaking blocks or
 fishing fish. The possibilities are nearly endless! You will learn about these in this tutorial.
 
 <div class="grid" markdown>
 !!! danger "Requirements"
     * [Conversations Tutorial](Conversations.md)
-    * [Events Tutorial](Events.md)
+    * [Actions Tutorial](Actions.md)
 
 !!! example "Related Docs"
     * [Objectives Reference](../../../Documentation/Scripting/About-Scripting.md#objectives)
@@ -33,7 +33,7 @@ Here is an overview of what your directory structure should look like now:
 
 * :material-folder-open: tutorialQuest
     - :material-file: package.yml
-    - :material-file: events.yml
+    - :material-file: actions.yml
     - :material-file: {==objectives.yml==}
     - :material-folder-open: conversations
         - :material-file: jack.yml
@@ -41,13 +41,13 @@ Here is an overview of what your directory structure should look like now:
 
 We now have our file structure ready and can start writing objectives and a new conversation!
 
-## 2. Defining your first objective and finishing event
+## 2. Defining your first objective and finishing action
 
 Open the newly created file "_objectives.yml_" and add the following:
 
 ``` YAML title="objectives.yml" linenums="1"
 objectives: # (1)!
-  fishingObj: "fish cod 3 notify hookLocation:100;63;100;world range:20 events:caughtAllFish"
+  fishingObj: "fish cod 3 notify hookLocation:100;63;100;world range:20 actions:caughtAllFish"
 ```
 
 1. All objectives must be defined in an `objectives` section.
@@ -65,14 +65,14 @@ Let's explain:
        fished in this specific area are counted by the objective. You must adjust this to your world!
     - `range:20`: If you use the hook location you also have to define the range **option**. This is the range around the hook location coordinate
        where fished things are still counted.
-    - `events:caughtAllFish`: This is not an option of the fish objective but a general objective argument. The defined event(s)
+    - `actions:caughtAllFish`: This is not an option of the fish objective but a general objective argument. The defined action(s)
        get triggered once the objective is completed (after you caught 3 cod at the specified hook location).
 
-After that we add the `caughtAllFish` event to the "_events.yml_" like this:
+After that we add the `caughtAllFish` action to the "_actions.yml_" like this:
 
-``` YAML title="events.yml" hl_lines="4" linenums="1"
-events:
-  # Other events not shown here
+``` YAML title="actions.yml" hl_lines="4" linenums="1"
+actions:
+  # Other actions not shown here
   tpBlacksmith: "teleport 50;70;50;world"
   caughtAllFish: "notify You caught enough fish!\nReturn to the blacksmith! io:Title sound:firework_rocket"
 ```
@@ -81,7 +81,7 @@ It lets the player know that they successfully completed the objective.
 
 ## 3. Creating the item in the items section
 
-As we learned in the [previous tutorial](Events.md#3-creating-the-item-in-the-items-section) we have to define `cod` in
+As we learned in the [previous tutorial](Actions.md#3-creating-the-item-in-the-items-section) we have to define `cod` in
 the item section because BetonQuest doesn't know what `cod` is.
 To add the item to the list, let's reopen the "_package.yml_" file.
 
@@ -126,7 +126,7 @@ you should get a notification.
 
 | Command Part                  | Meaning                                                                                                                                                                       |
 |-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `/bq objective`               | Tells BetonQuest that some event should be executed.                                                                                                                          |
+| `/bq objective`               | Tells BetonQuest that some action should be executed.                                                                                                                         |
 | `NAME`                        | A player's name.                                                                                                                                                              |
 | `add`/`complete`/`del`/`list` | Use these arguments to rather add, complete or delete an objective. The list argument does not require any further arguments and lists all objectives of the selected player. |
 | `tutorialQuest`               | The name of a QuestPackage. This is required because you could have objectives with the same name in different packages.                                                      |
@@ -139,24 +139,24 @@ To manually complete the objective for a player you need to type
 `/bq objective YOUR_NAME complete tutorialQuest>fishingObj`. After you send this command you should also get
 a notification about the completion of this objective.
 
-## 5. Using events to start objectives
+## 5. Using actions to start objectives
 
-Objectives cannot only be started and stopped using commands, but also with events.
-Let's add an event to start the fishing objective:
+Objectives cannot only be started and stopped using commands, but also with actions.
+Let's add an action to start the fishing objective:
 
-``` YAML title="events.yml" hl_lines="5" linenums="1"
-events:
-  # Other events not shown here
+``` YAML title="actions.yml" hl_lines="5" linenums="1"
+actions:
+  # Other actions not shown here
   tpBlacksmith: "teleport 50;70;50;world"
   caughtAllFish: "notify You caught enough fish!\\nReturn to the blacksmith! io:Title sound:firework_rocket"
   startFishingObj: "objective start fishingObj" # (1)!
 ```
 
-1. Starts the objective `fishingObj` for the player that this event is executed on.
+1. Starts the objective `fishingObj` for the player that this action is executed on.
 
 ## 6. Integrating objectives into conversations
 
-As you know, we can run events from conversations. We can now use the new event to start an objective from a conversation.
+As you know, we can run actions from conversations. We can now use the new action to start an objective from a conversation.
 
 Let's add some dialog to the newly created file named "_blacksmith.yml_" in the conversation folder:
 
@@ -188,7 +188,7 @@ conversations:
         pointers: collectFish
       accept:
         text: Sure! I could use a new armour.
-        events: startFishingObj # (2)!
+        actions: startFishingObj # (2)!
         pointers: goodLuck
       deny:
         text: I dont have time right now.
@@ -196,7 +196,7 @@ conversations:
 ```
 
 1. The player have the choice to say yes or no.
-2. This is the event to start your actual objective task to fish 3 fresh cod.
+2. This is the action to start your actual objective task to fish 3 fresh cod.
 
 Now link the conversation to a new NPC that is placed wherever the city tour ends. You should already know how to link
 the dialog to the npc in "_package.yml_". If not, [check the previous tutorials](Conversations.md#1-linking-a-conversation-to-a-npc)!

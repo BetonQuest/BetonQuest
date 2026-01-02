@@ -7,7 +7,7 @@ Sometimes it is important to pass an argument that contains spaces or even a new
 For those cases you can use quotes.
 
 ```YAML title="Quoting examples"
-events:
+actions:
   multiline: "notify \"This is the first line.\nAnd here is the second line!\"" #(1)!
   quotes_in_quotes: 'notify "And he said: \"I have to tell you something!\""' #(2)!
   backslash: notify "\\o/" #(3)!
@@ -25,7 +25,7 @@ Very long instructions can be hard to read, but to improve readability there is 
 easily readable formatted text that will work perfectly fine with instructions.
 
 ```YAML title="Folded multi-line block example"
-events:
+actions:
   long_text: >-
     notify
     This is a very long text.

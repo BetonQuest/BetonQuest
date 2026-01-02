@@ -16,7 +16,7 @@ icon: octicons/gear-16
 
 ### Using Quest Types
 
-The methods for using Conditions, Events and Objectives was moved into `BetonQuest.getInstance().getQuestTypeApi()`.
+The methods for using Conditions, Actions and Objectives was moved into `BetonQuest.getInstance().getQuestTypeApi()`.
 
 ### Instruction
 
@@ -33,19 +33,19 @@ Currently, profiles are in development. So at the moment you can use the `Profil
 which can be accessed by `BetonQuest.getInstance().getProfileProvider()`.
 
 ## Base concepts
-How to write and register new base concepts (events, conditions, objectives, placeholders) in BetonQuest.
+How to write and register new base concepts (actions, conditions, objectives, placeholders) in BetonQuest.
 
-For Conditions, Events and Placeholders there is the [new API](./Quest/Writing-Implementations.
+For Conditions, Actions and Placeholders there is the [new API](./Quest/Writing-Implementations.
 md#writing-new-quest-type-implementations) available.
 
 ### Writing objectives
-Objectives are more complicated because they often use event handlers, and they must store players' data.
+Objectives are more complicated because they often use action handlers, and they must store players' data.
 They extend `Objective` class.
 As always, you need to extract all data from supplied `Instruction` object in the constructor.
 Don't register listeners in the constructor!
 
-If your objective handles changing data (like amount of mobs left to kill) you should create a class extending `ObjectiveData`.
-For example `block` objective does need to store amount of blocks left to place/break, and it does that using "BlockData" class.
+If your objective handles changing data (like number of mobs left to kill) you should create a class extending `ObjectiveData`.
+For example `block` objective does need to store number of blocks left to place/break, and it does that using "BlockData" class.
 In the constructor it receives three strings: data string, ID of the player and ID of the objective.
 The latter two are used by BetonQuest to correctly save and load the former one from the database.
 
@@ -57,7 +57,7 @@ It will save the data to the database.
 
 Now you should override `getDefaultDataInstruction()` method.
 It must return the default data instruction understandable by your parser.
-For example in `tame` objective it will return the amount of mobs to tame.
+For example in `tame` objective it will return the number of mobs to tame.
 If you don't use data objects, just return an empty string (not `null`, just `""`).
 
 In order for your objective to use the data object you have created you need to set the `template` field to this 
@@ -68,7 +68,7 @@ Every time your objective accepts the player's action (for example killing the r
 it must be also verified with `checkConditions()` method.
 You don't want your objective ignoring all conditions, right?
 When you decide that the objective is completed you should call `completeObjective()` method.
-It will fire all events for you, so you don't have to do this manually.
+It will fire all actions for you, so you don't have to do this manually.
 
 If the objective is a listener it will automatically be registered from BetonQuest.
 Some objectives, like the `delay` objective, starts and cancels a runnable, instead of using listeners.
@@ -81,18 +81,18 @@ Using it you should parse the data of the objective and return it as a String.
 If the supplied property name is incorrect or there was an error during getting the value,
 throw a `QuestException` with an informative message.
 
-Objectives are registered the same way as conditions and events, see [register base concepts](#base-concepts).
+Objectives are registered the same way as conditions and actions, see [register base concepts](#base-concepts).
 
-## Firing events
-The plugin has a static method for firing events - `event(Profile profile, EventID eventID)`.
+## Firing actions
+The plugin has a static method for firing actions - `action(Profile profile, ActionID actionID)`.
 
-You can't fire an event directly using an instruction string.
+You can't fire an action directly using an instruction string.
 
 ```JAVA title="Example"
 final QuestPackage questPackage = BetonQuest.getInstance().getPackages().get("myPackage"); //(1)!
 final Profile playerProfile = BetonQuest.getInstance().getProfileProvider().getProfile(player); //(2)!
 
-BetonQuest.getInstance().getQuestTypeApi().event(playerProfile, new EventID(questPackage, eventID));
+BetonQuest.getInstance().getQuestTypeApi().action(playerProfile, new ActionID(questPackage, actionID));
 ```
 
 1. You can get the package from the `BetonQuest` class. It's a map of all packages, so you can get the one you need by its
@@ -100,17 +100,17 @@ BetonQuest.getInstance().getQuestTypeApi().event(playerProfile, new EventID(ques
 2. You can get the player's profile from the `ProfileProvider` class. You can use the player object to obtain a players 
    profile.
 
-When the eventID already contains the full path you can just pass `null` as package.
+When the actionID already contains the full path you can just pass `null` as package.
 
 ## Checking conditions
 BetonQuest has static boolean method `condition(String playerID, String conditionID)`.
-It works similarly to the event method described above.
+It works similarly to the action method described above.
 
 ## Starting objectives
 The `newObjective(Profile profile, ObjectiveID objectiveID)` method will launch the objective from start.
 You can however use `resumeObjective(Profile profile, ObjectiveID objectiveID, String instruction)`
 to pass your own `ObjectiveData` instruction to the objective.
-It will not be saved to the database, because it is assumed that the objective has just been loaded from it, and it exists there without any change.
+It will not be saved to the database because it is assumed that the objective has just been loaded from it, and it exists there without any change.
 You should save it manually.
 
 ## Creating additional conversation input/output methods
@@ -126,5 +126,5 @@ It should clear all the previous options, so they do not overlap. `end()` method
 You can also call that message when you detect that the player forced conversation ending (for example by moving away from the NPC).
 Remember to notify the conversation about that using `Conversation.end()`.
 
-Registering the conversation inputs/outputs is done in the same way as objectives, events and conditions,
+Registering the conversation inputs/outputs is done in the same way as objectives, actions and conditions,
 see [Registry](./Quest/Writing-Implementations.md#registry).

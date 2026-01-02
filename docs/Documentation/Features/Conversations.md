@@ -19,14 +19,14 @@ conversations: #(1)!
     quester: "Hans the Mayor" #(3)!
     first: "welcome,blacksmithReminder" #(4)!
     stop: "true"  #(5)!
-    final_events: "setCityState" #(6)!
+    final_actions: "setCityState" #(6)!
     conversationIO: "menu" #(7)!
     interceptor: "simple" #(8)!
     interceptor_delay: 70 #(9)!
     NPC_options: #(10)!
       welcome:
         text: "Good day, dear %player%! Welcome back to my town." #(11)!
-        events: "playSound,giveMoney" #(12)!
+        actions: "playSound,giveMoney" #(12)!
         conditions: "firstVisit,!criminal" #(13)!
         pointers: "friendly,hostile" #(14)!
       blacksmithReminder:
@@ -37,7 +37,7 @@ conversations: #(1)!
     player_options: #(15)!
       friendly:
         text: "Thank you your honor, I'm happy to be here."
-        events: "givePresent"
+        actions: "givePresent"
         pointers: "blacksmithReminder"
       hostile:
         text: "Your Honor, I come bearing a ultimatum letter from the people. They have grown tired of your corruption and greed."
@@ -57,9 +57,9 @@ conversations: #(1)!
     resume it after he joins back in. This way he will have to finish his conversation no matter what. You can modify
     the distance at which the conversation is automatically stopped / player is teleported back with 
     `max_conversation_distance` option in "_config.yml_".
-6. `final_events` are events that will fire when the conversation ends, no matter how it ends (so you can create 
+6. `final_actions` are actions that will fire when the conversation ends, no matter how it ends (so you can create 
     e.g. guards attacking the player if he tries to run). You can leave this option out if you don't need any final 
-    events.
+    actions.
 7. `conversationIO` optionally set the conversation style for this conversation. Multiple styles can be provided in 
     acomma-separated list with the first valid one used. It's better to set this as a global config setting in
     "_config.yml_".
@@ -69,9 +69,9 @@ conversations: #(1)!
 9. `interceptor_delay` optionally set a delay (in ticks) after the conversation ends and before the interceptor is 
     displayed. This can also be set globally in "_config.yml_".
 10. `NPC_options` is a branch with texts said by the NPC.
-11. `text` defines what will display on screen. If you don't want to set any events/conditions/pointers to the 
+11. `text` defines what will display on screen. If you don't want to set any actions/conditions/pointers to the 
     option, just skip them. Only `text` is always required.
-12. `events` is a list of event names that will fire when an option is chosen (either by NPC or a player), defined 
+12. `actions` is a list of action names that will fire when an option is chosen (either by NPC or a player), defined 
     similar to conditions.
 13. `conditions` are names of conditions which must be met for this option to display, separated by commas.
 14. `pointers` is list of pointers to the opposite branch (from NPC branch it will point to options player can 
@@ -80,7 +80,7 @@ conversations: #(1)!
 
 When an NPC wants to say something he will check conditions for the first option (in this case `welcome`). If they are met,
 he will choose it. Otherwise, he will skip to next option (note: conversation ends when there are no options left to choose).
-After choosing an option the NPC will execute any events defined in it and say it's text. Then the player will see options
+After choosing an option the NPC will execute any actions defined in it and say it's text. Then the player will see options
 defined in the `player_options` branch to which the `pointers` setting points, in this case `friendly` and `hostile`. If
 the conditions for a player options is not met, the option is simply not displayed, similar to texts from NPC. The player
 will choose the option they want, and it will point back to other NPC text, which points to next player options and so on.
@@ -88,7 +88,7 @@ will choose the option they want, and it will point back to other NPC text, whic
 If there are no possible options for player or NPC (either from not meeting any conditions or being not defined) the
 conversations ends. If the conversation ends unexpectedly, check the console - it could be an error in the configuration.
 
-This can and will be a little confusing, so you should name your options, conditions and events in a way which you will
+This can and will be a little confusing, so you should name your options, conditions and actions in a way which you will
 understand in the future. Don't worry though, if you make some mistake in configuration, the plugin will tell you this when running `/bq reload`.
 
 
@@ -218,7 +218,7 @@ Check the [placeholders list](../Scripting/Building-Blocks/Placeholders-List.md)
 
 !!! note
     If you use a placeholders incorrectly (for example trying to get a property of an objective which isn't active for
-    the player, or using %quester% in `message` event), the placeholders will be replaced with empty string ("").
+    the player, or using %quester% in `message` action), the placeholders will be replaced with empty string ("").
 
 ## Translations
 
@@ -243,7 +243,7 @@ player_options:
 ```
 `en-US` and `de-DE` are identifiers of languages present in the lang folder. If the conversation is not translated in the players' language, the plugin will fall back to the default language, as defined in "_config.yml_".
 
-The same syntax can be applied in a few other features, e.g. the journal entries, quest cancelers and `notify` events.
+The same syntax can be applied in a few other features, e.g. the journal entries, quest cancelers and `notify` actions.
 
 ## Chat Interceptors
 While engaged in a conversation, it can be distracting when messages from other players or system messages interfere with the dialogue.
@@ -265,7 +265,7 @@ The `none` interceptor is an interceptor that won't intercept messages. That sou
 that you want to be excluded from interception. In this case you can just set `interceptor: none` inside your conversation file.
 
 ## Advanced: Extends
-Conversations also support the concept of inheritance. Any option can include the key `extends` with a comma delimited list of other options of the same time. The first option that does not have any false conditions will have its text, pointers and events merged with the extending option. The extended option may itself extend other options. Infinite loops are detected.
+Conversations also support the concept of inheritance. Any option can include the key `extends` with a comma delimited list of other options of the same time. The first option that does not have any false conditions will have its text, pointers and actions merged with the extending option. The extended option may itself extend other options. Infinite loops are detected.
 
 ```YAML
 NPC_options:
