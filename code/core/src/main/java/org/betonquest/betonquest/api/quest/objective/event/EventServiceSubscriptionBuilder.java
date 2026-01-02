@@ -1,18 +1,18 @@
 package org.betonquest.betonquest.api.quest.objective.event;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.common.function.QuestFunction;
+import org.betonquest.betonquest.api.logger.LogSource;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
 import java.util.UUID;
 
 /**
  * The {@link EventServiceSubscriptionBuilder} allows creating a subscription with a builder pattern
- * as well as registering it with the {@link ObjectiveEventService}.
+ * as well as registering it with the {@link ObjectiveService}.
  *
  * @param <T> the event type
  */
@@ -28,6 +28,15 @@ public interface EventServiceSubscriptionBuilder<T extends Event> {
      */
     @Contract("_ -> this")
     EventServiceSubscriptionBuilder<T> priority(EventPriority priority);
+
+    /**
+     * Optional build call. Defaults to {@link LogSource#EMPTY}.
+     *
+     * @param source the source to be used for logging
+     * @return this
+     */
+    @Contract("_ -> this")
+    EventServiceSubscriptionBuilder<T> source(LogSource source);
 
     /**
      * Required build call. Sets the static handler to be called by the bukkit event.
@@ -63,16 +72,30 @@ public interface EventServiceSubscriptionBuilder<T extends Event> {
     EventServiceSubscriptionBuilder<T> handler(ProfileEventHandler<T> handler, PlayerExtractor<T> playerExtractor);
 
     /**
-     * Required last build call. Registers the subscription with the {@link ObjectiveEventService}.
+     * Required build call. Sets the profile handler to be called by the bukkit event.
+     * A {@link OnlineProfileEventHandler} provides the profile information for the event retrieved from the extractor.
      *
-     * @param ignoreCancelled if canceled events should be ignored
+     * @param handler         the handler to use
+     * @param playerExtractor a method to extract the player from the event to retrieve the profile
+     * @return this
      */
-    void subscribe(boolean ignoreCancelled);
+    @Contract("_, _ -> this")
+    EventServiceSubscriptionBuilder<T> handler(OnlineProfileEventHandler<T> handler, PlayerExtractor<T> playerExtractor);
 
     /**
-     * Required last build call. Registers the subscription with the {@link ObjectiveEventService}.
+     * Required last build call. Registers the subscription with the {@link ObjectiveService}.
+     *
+     * @param ignoreCancelled if canceled events should be ignored
+     * @throws QuestException if the subscription could not be registered
      */
-    void subscribe();
+    void subscribe(boolean ignoreCancelled) throws QuestException;
+
+    /**
+     * Required last build call. Registers the subscription with the {@link ObjectiveService}.
+     *
+     * @throws QuestException if the subscription could not be registered
+     */
+    void subscribe() throws QuestException;
 
     /**
      * Extracts the player uuid from the event.
@@ -80,8 +103,16 @@ public interface EventServiceSubscriptionBuilder<T extends Event> {
      * @param <T> the event type
      */
     @FunctionalInterface
-    interface PlayerUUIDExtractor<T extends Event> extends QuestFunction<T, UUID> {
+    interface PlayerUUIDExtractor<T extends Event> {
 
+        /**
+         * Extracts the player uuid from the event.
+         *
+         * @param event the event to extract from
+         * @return the player uuid of the event
+         */
+        @Nullable
+        UUID read(T event);
     }
 
     /**
@@ -90,7 +121,7 @@ public interface EventServiceSubscriptionBuilder<T extends Event> {
      * @param <T> the event type
      */
     @FunctionalInterface
-    interface PlayerExtractor<T extends Event> extends QuestFunction<T, Optional<UUID>> {
+    interface PlayerExtractor<T extends Event> {
 
         /**
          * Extracts the player from the event.
@@ -98,11 +129,7 @@ public interface EventServiceSubscriptionBuilder<T extends Event> {
          * @param event the event to extract from
          * @return the player of the event
          */
-        Optional<Player> read(T event);
-
-        @Override
-        default Optional<UUID> apply(final T arg) throws QuestException {
-            return read(arg).map(Player::getUniqueId);
-        }
+        @Nullable
+        Player read(T event);
     }
 }

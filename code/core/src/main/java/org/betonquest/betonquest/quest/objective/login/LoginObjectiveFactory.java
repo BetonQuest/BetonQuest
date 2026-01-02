@@ -4,6 +4,9 @@ import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 /**
  * Factory for creating {@link LoginObjective} instances from {@link Instruction}s.
@@ -17,7 +20,10 @@ public class LoginObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
-        return new LoginObjective(instruction);
+    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
+        final LoginObjective objective = new LoginObjective(instruction);
+        service.request(PlayerJoinEvent.class).priority(EventPriority.HIGH)
+                .handler(objective::onJoin, PlayerJoinEvent::getPlayer).subscribe(true);
+        return objective;
     }
 }

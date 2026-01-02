@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 
 /**
  * Factory for creating {@link EquipItemObjective} instances from {@link Instruction}s.
@@ -20,9 +21,11 @@ public class EquipItemObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<PlayerArmorChangeEvent.SlotType> slotType = instruction.enumeration(PlayerArmorChangeEvent.SlotType.class).get();
         final Argument<ItemWrapper> item = instruction.item().get();
-        return new EquipItemObjective(instruction, item, slotType);
+        final EquipItemObjective objective = new EquipItemObjective(instruction, item, slotType);
+        service.request(PlayerArmorChangeEvent.class).handler(objective::onEquipmentChange, PlayerArmorChangeEvent::getPlayer).subscribe(false);
+        return objective;
     }
 }

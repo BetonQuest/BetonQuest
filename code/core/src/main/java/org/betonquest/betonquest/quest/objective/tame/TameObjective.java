@@ -6,15 +6,12 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTameEvent;
 
 /**
  * The player must tame specified amount of specified mobs.
  */
-public class TameObjective extends CountingObjective implements Listener {
+public class TameObjective extends CountingObjective {
 
     /**
      * The entity type to be tamed.
@@ -38,17 +35,14 @@ public class TameObjective extends CountingObjective implements Listener {
     /**
      * Handles the taming event.
      *
-     * @param event the taming event
+     * @param event         the taming event
+     * @param onlineProfile the profile of the player that tamed the entity
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onTaming(final EntityTameEvent event) {
+    public void onTaming(final EntityTameEvent event, final OnlineProfile onlineProfile) {
         qeHandler.handle(() -> {
-            if (event.getOwner() instanceof final Player player) {
-                final OnlineProfile onlineProfile = profileProvider.getProfile(player);
-                if (containsPlayer(onlineProfile) && type.getValue(onlineProfile) == event.getEntity().getType() && checkConditions(onlineProfile)) {
-                    getCountingData(onlineProfile).progress();
-                    completeIfDoneOrNotify(onlineProfile);
-                }
+            if (containsPlayer(onlineProfile) && type.getValue(onlineProfile) == event.getEntity().getType() && checkConditions(onlineProfile)) {
+                getCountingData(onlineProfile).progress();
+                completeIfDoneOrNotify(onlineProfile);
             }
         });
     }

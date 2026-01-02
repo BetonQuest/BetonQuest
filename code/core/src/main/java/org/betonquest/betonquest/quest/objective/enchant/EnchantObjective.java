@@ -8,8 +8,6 @@ import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 
 import java.util.List;
@@ -19,7 +17,7 @@ import java.util.Map;
 /**
  * An objective that requires the player to enchant a {@link QuestItem}.
  */
-public class EnchantObjective extends CountingObjective implements Listener {
+public class EnchantObjective extends CountingObjective {
 
     /**
      * The item to enchant.
@@ -57,11 +55,10 @@ public class EnchantObjective extends CountingObjective implements Listener {
     /**
      * Checks if the item is enchanted with the desired enchantments.
      *
-     * @param event the enchantment event
+     * @param event         the enchantment event
+     * @param onlineProfile the profile of the player that enchanted the item
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onEnchant(final EnchantItemEvent event) {
-        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getEnchanter());
+    public void onEnchant(final EnchantItemEvent event, final OnlineProfile onlineProfile) {
         if (!containsPlayer(onlineProfile)) {
             return;
         }

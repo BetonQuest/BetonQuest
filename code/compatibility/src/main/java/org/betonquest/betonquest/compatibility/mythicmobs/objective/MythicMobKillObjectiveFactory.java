@@ -1,10 +1,12 @@
 package org.betonquest.betonquest.compatibility.mythicmobs.objective;
 
+import io.lumine.mythic.bukkit.events.MythicMobDeathEvent;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class MythicMobKillObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<List<String>> names = instruction.string().list().get();
         final Argument<IdentifierMode> mode = instruction.enumeration(IdentifierMode.class).get("mode", IdentifierMode.INTERNAL_NAME);
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get("amount", 1);
@@ -31,6 +33,8 @@ public class MythicMobKillObjectiveFactory implements ObjectiveFactory {
         final Argument<Number> minMobLevel = instruction.number().get("minLevel", Double.NEGATIVE_INFINITY);
         final Argument<Number> maxMobLevel = instruction.number().get("maxLevel", Double.POSITIVE_INFINITY);
         final Argument<String> marked = instruction.packageIdentifier().get("marked").orElse(null);
-        return new MythicMobKillObjective(instruction, targetAmount, names, mode, minMobLevel, maxMobLevel, deathRadiusAllPlayers, neutralDeathRadiusAllPlayers, marked);
+        final MythicMobKillObjective objective = new MythicMobKillObjective(instruction, targetAmount, names, mode, minMobLevel, maxMobLevel, deathRadiusAllPlayers, neutralDeathRadiusAllPlayers, marked);
+        service.request(MythicMobDeathEvent.class).handler(objective::onKill).subscribe(true);
+        return objective;
     }
 }

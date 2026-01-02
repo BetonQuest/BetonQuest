@@ -9,8 +9,6 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,7 +19,7 @@ import java.util.List;
  * the player to kill specifically named mobs and notify them about the required
  * amount.
  */
-public class MobKillObjective extends CountingObjective implements Listener {
+public class MobKillObjective extends CountingObjective {
 
     /**
      * The entity types that should be killed.
@@ -62,11 +60,10 @@ public class MobKillObjective extends CountingObjective implements Listener {
     /**
      * Check if the player has killed the specified mob.
      *
-     * @param event the event containing the mob kill information
+     * @param event         the event containing the mob kill information
+     * @param onlineProfile the profile of the player that killed the mob
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onMobKill(final MobKilledEvent event) {
-        final OnlineProfile onlineProfile = event.getProfile().getOnlineProfile().get();
+    public void onMobKill(final MobKilledEvent event, final OnlineProfile onlineProfile) {
         qeHandler.handle(() -> {
             if (!containsPlayer(onlineProfile)
                     || !entities.getValue(onlineProfile).contains(event.getEntity().getType())

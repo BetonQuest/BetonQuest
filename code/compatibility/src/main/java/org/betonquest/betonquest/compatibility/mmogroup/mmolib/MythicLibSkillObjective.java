@@ -8,15 +8,13 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
 import java.util.List;
 
 /**
  * An objective that is completed when a player activates a MythicLib skill.
  */
-public class MythicLibSkillObjective extends DefaultObjective implements Listener {
+public class MythicLibSkillObjective extends DefaultObjective {
 
     /**
      * The name of the skill to activate.
@@ -46,13 +44,11 @@ public class MythicLibSkillObjective extends DefaultObjective implements Listene
     /**
      * Whenever a player activates a skill, check if it is the skill we are looking for.
      *
-     * @param event MythicLib skill cast event
+     * @param event         MythicLib skill cast event
+     * @param onlineProfile the player
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onSkillCast(final SkillCastEvent event) {
+    public void onSkillCast(final SkillCastEvent event, final OnlineProfile onlineProfile) {
         qeHandler.handle(() -> {
-
-            final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
             final String skillName = event.getCast().getHandler().getId();
             if (!skillId.getValue(onlineProfile).equalsIgnoreCase(skillName) || !event.getResult().isSuccessful()) {
                 return;

@@ -7,8 +7,13 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,7 +36,7 @@ public class EntityInteractObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService eventService) throws QuestException {
         final Argument<Interaction> interaction = instruction.enumeration(Interaction.class).get();
         final Argument<EntityType> mobType = instruction.enumeration(EntityType.class).get();
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get();
@@ -42,7 +47,14 @@ public class EntityInteractObjectiveFactory implements ObjectiveFactory {
         final Argument<Location> loc = instruction.location().get("loc").orElse(null);
         final Argument<Number> range = instruction.number().get("range", 1);
         final EquipmentSlot slot = getEquipmentSlot(instruction);
-        return new EntityInteractObjective(instruction, targetAmount, loc, range, customName, realName, slot, mobType, marked, interaction, cancel);
+        final EntityInteractObjective objective = new EntityInteractObjective(instruction, targetAmount, loc, range, customName, realName, slot, mobType, marked, interaction, cancel);
+        eventService.request(EntityDamageByEntityEvent.class)
+                .handler(objective::onDamage, this::fromEvent).subscribe(true);
+        eventService.request(PlayerInteractEntityEvent.class)
+                .handler(objective::onRightClick, PlayerInteractEntityEvent::getPlayer).subscribe(true);
+        eventService.request(PlayerInteractAtEntityEvent.class)
+                .handler(objective::onArmorRightClick, PlayerInteractAtEntityEvent::getPlayer).subscribe(true);
+        return objective;
     }
 
     @Nullable
@@ -52,5 +64,10 @@ public class EntityInteractObjectiveFactory implements ObjectiveFactory {
                 .prefilterOptional(ANY, null)
                 .get("hand").orElse(null);
         return hand == null ? null : hand.getValue(null).orElse(null);
+    }
+
+    @Nullable
+    private Player fromEvent(final EntityDamageByEntityEvent event) {
+        return event.getDamager() instanceof final Player player ? player : null;
     }
 }

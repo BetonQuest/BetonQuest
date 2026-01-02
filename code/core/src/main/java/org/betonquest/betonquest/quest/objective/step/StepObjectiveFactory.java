@@ -6,8 +6,10 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.util.DefaultBlockSelector;
 import org.bukkit.Location;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 /**
  * Factory for creating {@link StepObjective} instances from {@link Instruction}s.
@@ -21,9 +23,12 @@ public class StepObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<Location> loc = instruction.location().get();
         final BlockSelector selector = new DefaultBlockSelector(".*_PRESSURE_PLATE");
-        return new StepObjective(instruction, loc, selector);
+        final StepObjective objective = new StepObjective(instruction, loc, selector);
+        service.request(PlayerInteractEvent.class)
+                .handler(objective::onStep, PlayerInteractEvent::getPlayer).subscribe(true);
+        return objective;
     }
 }

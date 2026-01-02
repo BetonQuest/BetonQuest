@@ -7,9 +7,14 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.player.PlayerExpChangeEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLevelChangeEvent;
 
 /**
  * Factory for creating {@link ExperienceObjective} instances from {@link Instruction}s.
@@ -38,12 +43,18 @@ public class ExperienceObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<Number> amount = instruction.number().get();
         final BetonQuestLogger log = loggerFactory.create(ExperienceObjective.class);
         final IngameNotificationSender levelSender = new IngameNotificationSender(log,
                 pluginMessage, instruction.getPackage(), instruction.getID().getFull(),
                 NotificationLevel.INFO, "level_to_gain");
-        return new ExperienceObjective(instruction, amount, levelSender);
+        final ExperienceObjective objective = new ExperienceObjective(instruction, amount, levelSender);
+        service.request(PlayerLevelChangeEvent.class).priority(EventPriority.MONITOR)
+                .handler(objective::onLevelChangeEvent, PlayerLevelChangeEvent::getPlayer).subscribe(true);
+        service.request(PlayerExpChangeEvent.class).priority(EventPriority.MONITOR)
+                .handler(objective::onExpChangeEvent, PlayerExpChangeEvent::getPlayer).subscribe(true);
+        service.request(PlayerJoinEvent.class).handler(objective::onPlayerJoin, PlayerJoinEvent::getPlayer).subscribe(false);
+        return objective;
     }
 }

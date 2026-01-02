@@ -12,9 +12,6 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLevelChangeEvent;
@@ -24,7 +21,7 @@ import java.util.Locale;
 /**
  * Player needs to get specified experience level or more.
  */
-public class ExperienceObjective extends DefaultObjective implements Listener {
+public class ExperienceObjective extends DefaultObjective {
 
     /**
      * The experience level the player needs to get.
@@ -109,38 +106,37 @@ public class ExperienceObjective extends DefaultObjective implements Listener {
     /**
      * Checks the players experience when they level up.
      *
-     * @param event the event that triggered this method
+     * @param event         the event that triggered this method
+     * @param onlineProfile the profile of the player that leveled up
      */
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onLevelChangeEvent(final PlayerLevelChangeEvent event) {
+    public void onLevelChangeEvent(final PlayerLevelChangeEvent event, final OnlineProfile onlineProfile) {
         final Player player = event.getPlayer();
         final double newAmount = player.getLevel() + player.getExp();
-        qeHandler.handle(() -> onExperienceChange(profileProvider.getProfile(player), newAmount, true));
+        qeHandler.handle(() -> onExperienceChange(onlineProfile, newAmount, true));
     }
 
     /**
      * Checks the players experience when they gain experience.
      *
-     * @param event the event that triggered this method
+     * @param event         the event that triggered this method
+     * @param onlineProfile the profile of the player that gained experience
      */
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onExpChangeEvent(final PlayerExpChangeEvent event) {
+    public void onExpChangeEvent(final PlayerExpChangeEvent event, final OnlineProfile onlineProfile) {
         final Player player = event.getPlayer();
         Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
             final double newAmount = player.getLevel() + player.getExp();
-            qeHandler.handle(() -> onExperienceChange(profileProvider.getProfile(player), newAmount, false));
+            qeHandler.handle(() -> onExperienceChange(onlineProfile, newAmount, false));
         });
     }
 
     /**
      * Checks the players experience when they join the server.
      *
-     * @param event the event that triggered this method
+     * @param event         the event that triggered this method
+     * @param onlineProfile the profile of the player that joined
      */
-    @EventHandler
-    public void onPlayerJoin(final PlayerJoinEvent event) {
+    public void onPlayerJoin(final PlayerJoinEvent event, final OnlineProfile onlineProfile) {
         final Player player = event.getPlayer();
-        final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         final double newAmount = player.getLevel() + player.getExp();
         qeHandler.handle(() -> onExperienceChange(onlineProfile, newAmount, false));
     }

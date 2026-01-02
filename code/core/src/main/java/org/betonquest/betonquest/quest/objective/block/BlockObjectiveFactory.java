@@ -9,10 +9,14 @@ import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.bukkit.Location;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 
 /**
  * Factory for creating {@link BlockObjective} instances from {@link Instruction}s.
@@ -41,7 +45,7 @@ public class BlockObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<BlockSelector> selector = instruction.blockSelector().get();
         final FlagArgument<Boolean> exactMatch = instruction.bool().getFlag("exactMatch", true);
         final Argument<Number> targetAmount = instruction.number().get();
@@ -54,7 +58,12 @@ public class BlockObjectiveFactory implements ObjectiveFactory {
                 instruction.getID().getFull(), NotificationLevel.INFO, "blocks_to_break");
         final IngameNotificationSender blockPlaceSender = new IngameNotificationSender(log, pluginMessage, instruction.getPackage(),
                 instruction.getID().getFull(), NotificationLevel.INFO, "blocks_to_place");
-        return new BlockObjective(instruction, targetAmount, selector, exactMatch, noSafety, location, region, ignoreCancel,
-                blockBreakSender, blockPlaceSender);
+        final BlockObjective objective = new BlockObjective(instruction, targetAmount, selector, exactMatch, noSafety,
+                location, region, ignoreCancel, blockBreakSender, blockPlaceSender);
+        service.request(BlockPlaceEvent.class).priority(EventPriority.HIGHEST)
+                .handler(objective::onBlockPlace, BlockPlaceEvent::getPlayer).subscribe(false);
+        service.request(BlockBreakEvent.class).priority(EventPriority.HIGHEST)
+                .handler(objective::onBlockBreak, BlockBreakEvent::getPlayer).subscribe(false);
+        return objective;
     }
 }

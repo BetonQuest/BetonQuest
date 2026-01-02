@@ -1,9 +1,8 @@
 package org.betonquest.betonquest.api.quest;
 
-import org.betonquest.betonquest.api.DefaultObjective;
-import org.betonquest.betonquest.api.kernel.FeatureTypeRegistry;
 import org.betonquest.betonquest.api.quest.condition.ConditionRegistry;
 import org.betonquest.betonquest.api.quest.event.EventRegistry;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveRegistry;
 import org.betonquest.betonquest.api.quest.placeholder.PlaceholderRegistry;
 
 /**
@@ -32,7 +31,7 @@ public interface QuestTypeRegistries {
      *
      * @return the objective registry
      */
-    FeatureTypeRegistry<DefaultObjective> objective();
+    ObjectiveRegistry objective();
 
     /**
      * Gets the registry for placeholders.

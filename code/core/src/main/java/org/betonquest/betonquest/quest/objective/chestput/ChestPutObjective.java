@@ -15,8 +15,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.DoubleChest;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.InventoryHolder;
@@ -28,7 +26,7 @@ import java.util.List;
  * Requires the player to put items in the chest. Items can optionally NOT
  * disappear once the chest is closed.
  */
-public class ChestPutObjective extends DefaultObjective implements Listener {
+public class ChestPutObjective extends DefaultObjective {
 
     /**
      * Condition to check if the items are in the chest.
@@ -82,11 +80,10 @@ public class ChestPutObjective extends DefaultObjective implements Listener {
     /**
      * Permits multiple players to look into the chest, if set.
      *
-     * @param event InventoryOpenEvent
+     * @param event         InventoryOpenEvent
+     * @param onlineProfile the profile of the player that opened the chest
      */
-    @EventHandler
-    public void onChestOpen(final InventoryOpenEvent event) {
-        final OnlineProfile onlineProfile = profileProvider.getProfile((Player) event.getPlayer());
+    public void onChestOpen(final InventoryOpenEvent event, final OnlineProfile onlineProfile) {
         qeHandler.handle(() -> {
             checkIsInventory(loc.getValue(onlineProfile));
             if (!multipleAccess && !checkForNoOtherPlayer(event)) {
@@ -109,15 +106,14 @@ public class ChestPutObjective extends DefaultObjective implements Listener {
     /**
      * Tracks when a chest is closed and checks if the items are in the chest.
      *
-     * @param event the event that triggered this method
+     * @param event         the event that triggered this method
+     * @param onlineProfile the profile of the player that closed the chest
      */
     @SuppressWarnings("PMD.CognitiveComplexity")
-    @EventHandler(ignoreCancelled = true)
-    public void onChestClose(final InventoryCloseEvent event) {
+    public void onChestClose(final InventoryCloseEvent event, final OnlineProfile onlineProfile) {
         if (!(event.getPlayer() instanceof Player)) {
             return;
         }
-        final OnlineProfile onlineProfile = profileProvider.getProfile((Player) event.getPlayer());
         if (!containsPlayer(onlineProfile)) {
             return;
         }

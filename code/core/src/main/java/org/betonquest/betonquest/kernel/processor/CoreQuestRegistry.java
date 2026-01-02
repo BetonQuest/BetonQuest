@@ -7,10 +7,12 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
+import org.betonquest.betonquest.api.quest.objective.event.DefaultObjectiveService;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.kernel.processor.quest.ConditionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.EventProcessor;
@@ -47,23 +49,25 @@ public record CoreQuestRegistry(
      * @param loggerFactory       the logger factory used for new custom logger instances
      * @param packManager         the quest package manager to get quest packages from
      * @param questTypeRegistries the available quest types
-     * @param scheduler           the bukkit scheduler to run sync tasks
      * @param pluginManager       the manager to register listener
+     * @param scheduler           the bukkit scheduler to run sync tasks
+     * @param profileProvider     the profile provider instance
      * @param plugin              the plugin instance to associate registered listener with
      * @return the newly created quest type api
      */
     public static CoreQuestRegistry create(final BetonQuestLoggerFactory loggerFactory, final QuestPackageManager packManager,
                                            final BaseQuestTypeRegistries questTypeRegistries, final PluginManager pluginManager,
-                                           final BukkitScheduler scheduler, final Plugin plugin) {
+                                           final BukkitScheduler scheduler, final ProfileProvider profileProvider, final Plugin plugin) {
         final PlaceholderProcessor placeholderProcessor = new PlaceholderProcessor(loggerFactory.create(PlaceholderProcessor.class),
                 packManager, questTypeRegistries.placeholder(), scheduler, plugin);
+        final DefaultObjectiveService objectiveService = new DefaultObjectiveService(plugin, loggerFactory, profileProvider);
         return new CoreQuestRegistry(
                 new ConditionProcessor(loggerFactory.create(ConditionProcessor.class), placeholderProcessor, packManager,
                         questTypeRegistries.condition(), scheduler, plugin),
                 new EventProcessor(loggerFactory.create(EventProcessor.class), placeholderProcessor, packManager,
                         questTypeRegistries.event(), scheduler, plugin),
                 new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), placeholderProcessor, packManager,
-                        questTypeRegistries.objective(), pluginManager, plugin), placeholderProcessor);
+                        questTypeRegistries.objective(), pluginManager, objectiveService, plugin), placeholderProcessor);
     }
 
     /**

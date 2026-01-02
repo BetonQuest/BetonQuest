@@ -2,9 +2,15 @@ package org.betonquest.betonquest.quest.objective.data;
 
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
+import org.betonquest.betonquest.api.bukkit.event.PlayerTagAddEvent;
+import org.betonquest.betonquest.api.bukkit.event.ProfileEvent;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.data.PlayerDataStorage;
+
+import java.util.UUID;
 
 /**
  * Factory to create {@link TagObjective}s from {@link Instruction}s.
@@ -26,7 +32,14 @@ public class TagObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
-        return new TagObjective(instruction, playerDataStorage, instruction.packageIdentifier().get());
+    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
+        final TagObjective objective = new TagObjective(instruction, playerDataStorage, instruction.packageIdentifier().get());
+        service.request(PlayerTagAddEvent.class).handler(objective::onTag, this::fromEvent).subscribe(false);
+        service.request(PlayerObjectiveChangeEvent.class).handler(objective::onStart, this::fromEvent).subscribe(false);
+        return objective;
+    }
+
+    private UUID fromEvent(final ProfileEvent event) {
+        return event.getProfile().getPlayerUUID();
     }
 }

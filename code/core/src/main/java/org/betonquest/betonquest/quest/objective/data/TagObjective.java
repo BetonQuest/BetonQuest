@@ -9,13 +9,11 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.betonquest.betonquest.data.PlayerDataStorage;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
 /**
  * Player needs to get a certain tag.
  */
-public class TagObjective extends DefaultObjective implements Listener {
+public class TagObjective extends DefaultObjective {
 
     /**
      * Storage for player data.
@@ -54,15 +52,15 @@ public class TagObjective extends DefaultObjective implements Listener {
     /**
      * Handles tag adding.
      *
-     * @param event the event to listen
+     * @param event   the event to listen
+     * @param profile the profile which received the tag
      */
-    @EventHandler
-    public void onTag(final PlayerTagAddEvent event) {
+    public void onTag(final PlayerTagAddEvent event, final Profile profile) {
         qeHandler.handle(() -> {
-            if (containsPlayer(event.getProfile())
-                    && event.getTag().equals(tag.getValue(event.getProfile()))
-                    && checkConditions(event.getProfile())) {
-                completeObjective(event.getProfile());
+            if (containsPlayer(profile)
+                    && event.getTag().equals(tag.getValue(profile))
+                    && checkConditions(profile)) {
+                completeObjective(profile);
             }
         });
     }
@@ -70,17 +68,17 @@ public class TagObjective extends DefaultObjective implements Listener {
     /**
      * Checks for objective completion when it is started.
      *
-     * @param event the event to listen
+     * @param event   the event to listen
+     * @param profile the profile which started the objective
      */
-    @EventHandler
-    public void onStart(final PlayerObjectiveChangeEvent event) {
-        if (event.getState() != ObjectiveState.ACTIVE || !containsPlayer(event.getProfile())) {
+    public void onStart(final PlayerObjectiveChangeEvent event, final Profile profile) {
+        if (event.getState() != ObjectiveState.ACTIVE || !containsPlayer(profile)) {
             return;
         }
         qeHandler.handle(() -> {
-            if (playerDataStorage.getOffline(event.getProfile()).hasTag(tag.getValue(event.getProfile()))
-                    && checkConditions(event.getProfile())) {
-                completeObjective(event.getProfile());
+            if (playerDataStorage.getOffline(profile).hasTag(tag.getValue(profile))
+                    && checkConditions(profile)) {
+                completeObjective(profile);
             }
         });
     }

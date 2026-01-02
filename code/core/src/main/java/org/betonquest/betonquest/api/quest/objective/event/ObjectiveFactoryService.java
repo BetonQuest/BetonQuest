@@ -1,14 +1,22 @@
 package org.betonquest.betonquest.api.quest.objective.event;
 
+import org.betonquest.betonquest.api.logger.LogSource;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.bukkit.event.Event;
 
 /**
- * The event service for objectives managing the subscription of event handlers.
+ * Provides services for objective creation and event subscriptions.
  */
-public interface ObjectiveEventService {
+@FunctionalInterface
+public interface ObjectiveFactoryService {
 
     /**
      * Requests a new event subscription using an {@link EventServiceSubscriptionBuilder}.
+     * <br>
+     * Calling this in the context of an {@link ObjectiveFactory} will cause
+     * {@link EventServiceSubscriptionBuilder#source(LogSource)} to be called
+     * with the objective's source before returning.
+     * <br>
      * The request may be completed in one chain of calls requiring at least a handler and ending with
      * {@link EventServiceSubscriptionBuilder#subscribe()}
      * or {@link EventServiceSubscriptionBuilder#subscribe(boolean)}.

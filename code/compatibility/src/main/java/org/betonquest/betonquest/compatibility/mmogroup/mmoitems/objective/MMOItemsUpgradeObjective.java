@@ -8,13 +8,11 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
 /**
  * An objective that listens for the player upgrading their MMOItems item.
  */
-public class MMOItemsUpgradeObjective extends DefaultObjective implements Listener {
+public class MMOItemsUpgradeObjective extends DefaultObjective {
 
     /**
      * The ID of the item to be upgraded.
@@ -43,12 +41,11 @@ public class MMOItemsUpgradeObjective extends DefaultObjective implements Listen
     /**
      * Checks if the upgrade item event matches the objective's item ID and type.
      *
-     * @param event the upgrade item event
+     * @param event   the upgrade item event
+     * @param profile the player
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onUpgradeItem(final UpgradeItemEvent event) {
+    public void onUpgradeItem(final UpgradeItemEvent event, final OnlineProfile profile) {
         qeHandler.handle(() -> {
-            final OnlineProfile profile = profileProvider.getProfile(event.getPlayer());
             final MMOItem upgradedItem = event.getTargetItem();
             if (!upgradedItem.getId().equals(itemID.getValue(profile))
                     || !upgradedItem.getType().getId().equals(itemType.getValue(profile))) {

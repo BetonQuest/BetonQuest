@@ -13,9 +13,6 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -28,7 +25,7 @@ import java.util.UUID;
  * The scripter can specify the train name and the time in seconds the player has to ride the train.
  * If the train name is not specified, the {@link CountingObjective} will be completed when the player rides any train.
  */
-public class TrainCartsRideObjective extends CountingObjective implements Listener {
+public class TrainCartsRideObjective extends CountingObjective {
 
     /**
      * The conversion factor from milliseconds to seconds.
@@ -66,14 +63,10 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
      * the {@link CountingObjective} will be completed when the player rides any train.
      * The measurement is started if the player enters a train seat.
      *
-     * @param event the {@link MemberSeatEnterEvent}.
+     * @param event         the {@link MemberSeatEnterEvent}.
+     * @param onlineProfile the {@link OnlineProfile}.
      */
-    @EventHandler
-    public void onMemberSeatEnter(final MemberSeatEnterEvent event) {
-        if (!(event.getEntity() instanceof final Player player)) {
-            return;
-        }
-        final OnlineProfile onlineProfile = profileProvider.getProfile(player);
+    public void onMemberSeatEnter(final MemberSeatEnterEvent event, final OnlineProfile onlineProfile) {
         if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
             return;
         }
@@ -88,24 +81,21 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
     /**
      * The {@link MemberSeatExitEvent} is used to stop the time measurement when the player exits the seat.
      *
-     * @param event the {@link MemberSeatExitEvent}.
+     * @param event         the {@link MemberSeatExitEvent}.
+     * @param onlineProfile the {@link OnlineProfile}.
      */
-    @EventHandler
-    public void onMemberSeatExit(final MemberSeatExitEvent event) {
-        if (!(event.getEntity() instanceof final Player player)) {
-            return;
-        }
-        stopCount(profileProvider.getProfile(player));
+    public void onMemberSeatExit(final MemberSeatExitEvent event, final OnlineProfile onlineProfile) {
+        stopCount(onlineProfile);
     }
 
     /**
      * Stops the time measurement when the player quits the server.
      *
-     * @param event the {@link PlayerQuitEvent}.
+     * @param event         the {@link PlayerQuitEvent}.
+     * @param onlineProfile the {@link OnlineProfile}.
      */
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onQuit(final PlayerQuitEvent event) {
-        stopCount(profileProvider.getProfile(event.getPlayer()));
+    public void onQuit(final PlayerQuitEvent event, final OnlineProfile onlineProfile) {
+        stopCount(onlineProfile);
     }
 
     @Override

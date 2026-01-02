@@ -9,9 +9,6 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerFishEvent.State;
 import org.bukkit.inventory.ItemStack;
@@ -20,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Requires the player to catch the fish.
  */
-public class FishObjective extends CountingObjective implements Listener {
+public class FishObjective extends CountingObjective {
 
     /**
      * Item to catch.
@@ -61,14 +58,13 @@ public class FishObjective extends CountingObjective implements Listener {
     /**
      * Check if the fish was caught in the right location.
      *
-     * @param event the event that was triggered
+     * @param event         the event that was triggered
+     * @param onlineProfile the profile of the player that caught the fish
      */
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onFishCatch(final PlayerFishEvent event) {
+    public void onFishCatch(final PlayerFishEvent event, final OnlineProfile onlineProfile) {
         if (event.getState() != State.CAUGHT_FISH) {
             return;
         }
-        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         if (!containsPlayer(onlineProfile) || event.getCaught() == null || event.getCaught().getType() != EntityType.DROPPED_ITEM) {
             return;
         }

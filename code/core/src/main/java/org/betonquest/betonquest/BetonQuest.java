@@ -350,7 +350,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
 
         questTypeRegistries = BaseQuestTypeRegistries.create(loggerFactory, this);
         final CoreQuestRegistry coreQuestRegistry = CoreQuestRegistry.create(loggerFactory, questManager, questTypeRegistries,
-                getServer().getPluginManager(), getServer().getScheduler(), this);
+                getServer().getPluginManager(), getServer().getScheduler(), profileProvider, this);
 
         final PlayerDataFactory playerDataFactory = new PlayerDataFactory(loggerFactory, coreQuestRegistry.placeholders(), questManager, saver, getServer(),
                 coreQuestRegistry, Suppliers.memoize(() -> new JournalFactory(loggerFactory, pluginMessage,

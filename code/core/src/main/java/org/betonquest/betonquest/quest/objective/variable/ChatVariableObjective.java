@@ -6,8 +6,6 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.Locale;
@@ -17,7 +15,7 @@ import java.util.regex.Pattern;
 /**
  * Creates placeholders based on what player is typing, not just from event.
  */
-public class ChatVariableObjective extends VariableObjective implements Listener {
+public class ChatVariableObjective extends VariableObjective {
 
     /**
      * Pattern to match the chat variable format.
@@ -37,11 +35,10 @@ public class ChatVariableObjective extends VariableObjective implements Listener
     /**
      * Handles chat input.
      *
-     * @param event the AsyncPlayerChatEvent
+     * @param event         the AsyncPlayerChatEvent
+     * @param onlineProfile the profile of the player that typed the message
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onChat(final AsyncPlayerChatEvent event) {
-        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
+    public void onChat(final AsyncPlayerChatEvent event, final OnlineProfile onlineProfile) {
         if (!containsPlayer(onlineProfile)) {
             return;
         }
