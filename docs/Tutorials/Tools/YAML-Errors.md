@@ -24,14 +24,14 @@ conversations:
        text: "Hello, how are you?"
        conditions: !hasEnoughFish
 
-events:
+actions:
   giveFishObj "objective add fishObj"
   notifyPlayer: 'notify You've completed the quest!'
   addTag: "tag add enoughFish"
 
 ```
 
-You will notice that two events in the events section are written in green instead of blue.
+You will notice that two actions in the actions section are written in green instead of blue.
 That's because of a YAML Syntax error.
 Do you already see the mistake here? It is simple: There is a colon (`:`) missing after
 the key `giveFishObj` in line 9. Because of the missing colon YAML will fail to parse this file.

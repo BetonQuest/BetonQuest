@@ -12,7 +12,7 @@ with unique options that allow you to customize them. Just take a look at this e
 
 ## Sending custom notifications
 
-A truly custom notification can be sent using the [`notify`](../../Scripting/Building-Blocks/Events-List.md#sending-notifications-notify) event at any time.
+A truly custom notification can be sent using the [`notify`](../../Scripting/Building-Blocks/Actions-List.md#sending-notifications-notify) action at any time.
 
 
 ## Changing BetonQuest's built-in notifications

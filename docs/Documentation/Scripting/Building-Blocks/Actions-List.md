@@ -2,7 +2,7 @@
 icon: fontawesome/solid/play
 toc_depth: 2
 ---
-# Events List
+# Actions List
 
 ## Burn: `burn`
 
@@ -11,30 +11,30 @@ toc_depth: 2
 | _duration_ | `duration:number` | :octicons-x-circle-16: | The duration the player will burn (in seconds). |
 
 ```YAML title="Example"
-events:
+actions:
   burn: "burn duration:4"
   punishing_fire: "burn duration:%point.punishment.amount%"
 ```
 
-@snippet:events:cancel@
+@snippet:actions:cancel@
 
 ## Cancel the Conversation: `cancelconversation`
 
   Cancels the active conversation of the player.
   
 ```YAML title="Example"
-  events:
-    cancel: "cancelconversation"
+actions:
+  cancel: "cancelconversation"
 ```
 
 
 ## Chat player message `chat`
 
-This event will send the given message as the player. Therefore, it will look like as if the player did send the message. 
-The instruction string is the command, without leading slash. You can only use `%player%` as a placeholder in this event.
+This action will send the given message as the player. Therefore, it will look like as if the player did send the message. 
+The instruction string is the command, without leading slash. You can only use `%player%` as a placeholder in this action.
 Additional messages can be defined by separating them with `|` character. If you want to use a `|` character in the message use `\|`.
 
-If a plugin does not work with the sudo / command event you need to use this event.
+If a plugin does not work with the sudo / command action you need to use this action.
 
 !!! example
     ``` YAML
@@ -47,7 +47,7 @@ If a plugin does not work with the sudo / command event you need to use this eve
  
 **persistent**, **static**
 
-This event removes all items from a chest at specified location. The only argument is a location.
+This action removes all items from a chest at specified location. The only argument is a location.
 
 !!! example
     ```YAML
@@ -58,7 +58,7 @@ This event removes all items from a chest at specified location. The only argume
 
 **persistent**, **static**
 
-This works the same as `give` event, but it puts the items in a chest at specified location. The first argument is a location, the second argument is a list of items, like in `give` event. If the chest is full, the items will be dropped on the ground. The chest can be any other block with inventory, i.e. a hopper or a dispenser. BetonQuest will log an error to the console when this event is fired but there is no chest at specified location.
+This works the same as `give` action, but it puts the items in a chest at specified location. The first argument is a location, the second argument is a list of items, like in `give` action. If the chest is full, the items will be dropped on the ground. The chest can be any other block with inventory, i.e. a hopper or a dispenser. BetonQuest will log an error to the console when this action is fired but there is no chest at specified location.
 
 !!! example
     ```YAML
@@ -69,7 +69,7 @@ This works the same as `give` event, but it puts the items in a chest at specifi
  
 **persistent**, **static**
 
-This event works the same as `take` event, but it takes items from a chest at specified location. The instruction string is defined in the same way as in `chestgive` event.
+This action works the same as `take` action, but it takes items from a chest at specified location. The instruction string is defined in the same way as in `chestgive` action.
 
 !!! example
     ```YAML
@@ -78,7 +78,7 @@ This event works the same as `take` event, but it takes items from a chest at sp
 
 ## Compass: `compass`
 
-When you run this event, you can add or remove a compass destination for the player. You may also directly set the player's compass destination as well.
+When you run this action, you can add or remove a compass destination for the player. You may also directly set the player's compass destination as well.
 When a destination is added the player will be able to select a specified location as a target of his compass.
 To select the target the player must open his backpack and click on the compass icon.
 The first argument is `add`,`del` or `set`, and second one is the name of the target, as defined in the _compass_ section.
@@ -108,7 +108,7 @@ compass:
 **persistent**, **static**
 
 Runs specified command from the console. The instruction string is the command, without leading slash.
-You can use placeholders here, but placeholders other than `%player%` won't resolve if the event is fired from 
+You can use placeholders here, but placeholders other than `%player%` won't resolve if the action is fired from 
 delayed `folder` and the player is offline now.
 You can define additional commands by separating them with `|` character.
 If you want to use a `|` character in the command use `\|`.
@@ -168,7 +168,7 @@ deleteBonus: "deleteglobalpoint bonus"
 
 **persistent**, **static**
 
-This event can open and close doors, trapdoors and fence gates. The syntax is exactly the same as in `lever` event above.
+This action can open and close doors, trapdoors and fence gates. The syntax is exactly the same as in `lever` action above.
 
 !!! example
     ```YAML
@@ -179,13 +179,13 @@ This event can open and close doors, trapdoors and fence gates. The syntax is ex
 
 **static**
 
-Drops the defined items at a defined location. The event takes two parameters: `items` and `location`.
+Drops the defined items at a defined location. The action takes two parameters: `items` and `location`.
 Items is a list of [items](../../Features/Items.md) to be dropped.
 Every item can optionally be followed by a colon to define an amount `<item>:<amount>` otherwise the amount is 1.
 The optional location defines where the items will be dropped. It must be specified in the [unified location format](../Data-Formats.md#unified-location-formating).
 If no location is given then the items will be dropped at the player's current location.
 
-If the drop event is used in a schedule then the items will be dropped at the given location.
+If the drop action is used in a schedule then the items will be dropped at the given location.
 If no location is given then the items will be dropped for **every** player at their respective locations.
 
 ```YAML
@@ -215,23 +215,23 @@ Adds a specified potion effect to player. First argument is potion type. You can
     effect BLINDNESS 30 1 ambient icon
     ```
 
-## Eval Event: `eval`
+## Eval Action: `eval`
 
-This event allows you to resolve an expression containing placeholders, and the result will then be interpreted 
-again as an event.
+This action allows you to resolve an expression containing placeholders, and the result will then be interpreted 
+again as an action.
 
 ```YAML title="Example"
-events:
-  simpleEval: eval notify "This is actually an eval event evaluating to a notify event."
+actions:
+  simpleEval: eval notify "This is actually an eval action evaluating to a notify action."
   complexEval: eval point ranking 5 action:add %objective.settings.notify% #(1)!
 ```
 
 1. This could evaluate to `point ranking 5 action:add notify` and will add 5 points to the ranking category and notify the player.
-   But the placeholder could also be empty and add 5 points without notifying the player. This is not possible in a normal event.
+   But the placeholder could also be empty and add 5 points without notifying the player. This is not possible in a normal action.
 
 ## Give experience: `experience`
 
-This event allows you to manipulate player's experience. First you specify a number as the amount, then the modification action.
+This action allows you to manipulate player's experience. First you specify a number as the amount, then the modification action.
 You can use `action:addExperience`, `action:addLevel`, `action:setExperienceBar` and `action:setLevel` as modification types.
 
 To use this correctly, you need to understand this:
@@ -265,71 +265,71 @@ Creates an explosion. It can make fire and destroy blocks. You can also define p
     explosion 0 1 4 100;64;-100;survival
     ```
 
-## :material-folder-play: Run multiple events: `folder`
+## :material-folder-play: Run multiple actions: `folder`
 
 **persistent**, **static**
 
-This event wraps multiple events inside itself. Once triggered, it simply executes it's events.
-This is usefully to easily refer to a bunch of events at once, e.g. in a conversation.
+This action wraps multiple actions inside itself. Once triggered, it simply executes it's actions.
+This is usefully to easily refer to a bunch of actions at once, e.g. in a conversation.
 
-Events marked as _persistent_ will be fired even after the player logs out.
+Actions marked as _persistent_ will be fired even after the player logs out.
 Beware though, all conditions are false when the player is offline (even inverted ones),
-so those events should not be blocked by any conditions!  
-You can use the `cancelOnLogout` argument to stop the folder executing any remaining events if the player disconnects.
+so those actions should not be blocked by any conditions!  
+You can use the `cancelOnLogout` argument to stop the folder executing any remaining actions if the player disconnects.
 
 
 | Parameter          | Syntax                       | Default Value          | Explanation                                                                           |
 |--------------------|------------------------------|------------------------|---------------------------------------------------------------------------------------|
-| _events to run_    | eventName1,event2            | :octicons-x-circle-16: | One or multiple events to run. Contains event names seperated by commas.              |
-| _delay_            | Keyword                      | without delay          | The delay before the folder starts executing it's events.                             |
-| _period_           | period:number                | without delay          | The time between each event of the folder.                                            |
+| _actions to run_   | actionName1,action2          | :octicons-x-circle-16: | One or multiple actions to run. Contains action names seperated by commas.            |
+| _delay_            | Keyword                      | without delay          | The delay before the folder starts executing it's actions.                            |
+| _period_           | period:number                | without delay          | The time between each action of the folder.                                           |
 | _time unit_        | unit:unit                    | Seconds                | The unit of time to use for delay and period. Either `ticks`, `minutes` or `seconds`. |
-| _random_           | random:number                | Disabled               | Enables "random mode". Will randomly pick the defined amount of events .              |
-| _cancelOnLogout_   | Keyword                      | Disabled               | If enabled, the folder will stop executing events if the player disconnects.          |
-| _cancelConditions_ | cancelConditions:cond1,cond2 | Disabled               | If enabled, the folder will stop executing events if the conditions are true.         |
+| _random_           | random:number                | Disabled               | Enables "random mode". Will randomly pick the defined amount of actions .             |
+| _cancelOnLogout_   | Keyword                      | Disabled               | If enabled, the folder will stop executing actions if the player disconnects.         |
+| _cancelConditions_ | cancelConditions:cond1,cond2 | Disabled               | If enabled, the folder will stop executing actions if the conditions are true.        |
 
 
 ```YAML title="Examples" 
-events:
-  simpleFolder: "folder event1,event2,event3" # (1)!
-  runEvents: "folder event1,event2,event3 delay:5 period:1" # (2)!
+actions:
+  simpleFolder: "folder action1,action2,action3" # (1)!
+  runActions: "folder action1,action2,action3 delay:5 period:1" # (2)!
   troll: "folder killPlayer,banPlayer,kickPlayer delay:5 random:1" # (3)!
   wait: "folder messagePlayer,giveReward delay:1 unit:minutes" # (4)!
 ```
 
-1. Runs all events after one tick with a delay of one tick between each event.
-2. Runs `event1` after an initial delay of 5 seconds, then waits one second before executing each leftover event.
-3. Randomly executes one of the three events after 5 seconds.
-4. Executes the events after one minute.
+1. Runs all actions after one tick with a delay of one tick between each action.
+2. Runs `action1` after an initial delay of 5 seconds, then waits one second before executing each leftover action.
+3. Randomly executes one of the three actions after 5 seconds.
+4. Executes the actions after one minute.
 
-## If-else through a list of events: `first`
+## If-else through a list of actions: `first`
 
-This event wraps multiple events inside itself, similar `folder`. Unlike `folder`, it attempts to execute each event,
-starting from the first onward. Once it successfully executes one event, it stops executing the rest. This is useful for
-collapsing long if-else chains into single events.
+This action wraps multiple actions inside itself, similar `folder`. Unlike `folder`, it attempts to execute each action,
+starting from the first onward. Once it successfully executes one action, it stops executing the rest. This is useful for
+collapsing long if-else chains into single actions.
 
-This event is especially powerful when it is used in conjunction with the `conditions:` keyword,
-which can be used with any event.
+This action is especially powerful when it is used in conjunction with the `conditions:` keyword,
+which can be used with any action.
 
 ```YAML title="Example"
-events: # (1)!
-  firstExample: "first event1,event2,event3"
-  event1: "point carry boxes 10 action:add conditions:firstCondition"
-  event2: "point carry boxes 20 action:add conditions:secondCondition"
-  event3: "point carry boxes 40 action:add conditions:thirdCondition"
+actions: # (1)!
+  firstExample: "first action1,action2,action3"
+  action1: "point carry boxes 10 action:add conditions:firstCondition"
+  action2: "point carry boxes 20 action:add conditions:secondCondition"
+  action3: "point carry boxes 40 action:add conditions:thirdCondition"
 ```
 
-1. If firstCondition is false, secondCondition is true, and thirdCondition is true, event2 is the only event that will
+1. If firstCondition is false, secondCondition is true, and thirdCondition is true, action2 is the only action that will
    be run.
 
 ```YAML title="Equivalent using if-else"
-events:
-  firstExample: "if firstCondition event1 else firstExample2"
-  firstExample2: "if secondCondition event2 else firstExample3"
-  firstExample3: "if thirdCondition event3"
-  event1: "point carry boxes 10 action:add"
-  event2: "point carry boxes 20 action:add"
-  event3: "point carry boxes 40 action:add"
+actions:
+  firstExample: "if firstCondition action1 else firstExample2"
+  firstExample2: "if secondCondition action2 else firstExample3"
+  firstExample3: "if thirdCondition action3"
+  action1: "point carry boxes 10 action:add"
+  action2: "point carry boxes 20 action:add"
+  action3: "point carry boxes 40 action:add"
 ```
 
 ## Give Items: `give`
@@ -349,7 +349,7 @@ The optional `backpack` argument forces quest items to be placed in the backpack
 
 ## Give journal: `givejournal`
 
-This event simply gives the player his journal. It acts the same way as **/j** command would.
+This action simply gives the player his journal. It acts the same way as **/j** command would.
 
 !!! example
     ```YAML
@@ -360,7 +360,7 @@ This event simply gives the player his journal. It acts the same way as **/j** c
 
 **persistent**, **static**
 
-This works the same way as the normal [point event](#point-point) but instead to manipulating the points for a category of a specific 
+This works the same way as the normal [point action](#point-point) but instead to manipulating the points for a category of a specific 
 player it manipulates points in a global category. These global categories are player independent, so you could for 
 example add a point to such a global category every time a player does a quest and give some special rewards for 
 the 100th player who does the quest.
@@ -376,7 +376,7 @@ the 100th player who does the quest.
 
 **persistent**, **static**
 
-Works the same way as a normal tag event, but instead of setting a tag for one player it sets it globally for all players.
+Works the same way as a normal tag action, but instead of setting a tag for one player it sets it globally for all players.
 
 !!! example
     ```YAML
@@ -385,7 +385,7 @@ Works the same way as a normal tag event, but instead of setting a tag for one p
 
 ## Hunger: `hunger`
 
-This event changes the food level of the player. The second argument is the modification type.
+This action changes the food level of the player. The second argument is the modification type.
 There are `give`, `take` and `set`. The second argument is the amount. With `set` can the food level be anything.
 If `give` or `take` is specified the final amount won't be more than 20 or less than 0.
 If the hunger level is below 7, the player cannot sprint.
@@ -400,10 +400,10 @@ If the hunger level is below 7, the player cannot sprint.
 
 **persistent**, **static**
 
-This event will check a condition, and based on the outcome it will run the first or second event. The instruction 
-string is `if condition event1 else event2`, where `condition` is a condition ID and `event1` and `event2` are event IDs.
- `else` keyword is mandatory between events for no practical reason. Keep in mind that this event is `persistent` 
- and `static` but probably the condition or the events are not.
+This action will check a condition, and based on the outcome it will run the first or second action. The instruction 
+string is `if condition action1 else action2`, where `condition` is a condition ID and `action1` and `action2` are action IDs.
+ `else` keyword is mandatory between actions for no practical reason. Keep in mind that this action is `persistent` 
+ and `static` but probably the condition or the actions are not.
 
 !!! example
     ```YAML
@@ -415,7 +415,7 @@ string is `if condition event1 else event2`, where `condition` is a condition ID
 Adds or removes durability from an item in the slot.
 The first argument is the slot, the second the change of durability and the third the amount.
 Optional arguments are `ignoreUnbreakable` to ignore the unbreakable flag and unbreaking enchantment
-and `ignoreEvents` to bypass event logic, so other plugins will not be able to interfere.
+and `ignoreEvents` to bypass action logic, so other plugins will not be able to interfere.
 Available slot types: `HAND`, `OFF_HAND`, `HEAD`, `CHEST`, `LEGS`, `FEET`.
 
 !!! info
@@ -452,11 +452,11 @@ Possible actions are:
 
 Kills the player. Nothing else.
 
-## Language Event: `language`
+## Language Action: `language`
 
 **persistent**
 
-This event changes player's language to the specified one. There is only one argument, the language name.
+This action changes player's language to the specified one. There is only one argument, the language name.
 
 !!! example
     ```YAML
@@ -467,7 +467,7 @@ This event changes player's language to the specified one. There is only one arg
 
 **persistent**, **static**
 
-This event can switch a lever. The first argument is a location and the second one is state: `on`, `off` or `toggle`.
+This action can switch a lever. The first argument is a location and the second one is state: `on`, `off` or `toggle`.
 
 !!! example
     ```YAML
@@ -482,19 +482,19 @@ Strikes a lightning at given location. The first argument is the location. By ad
 an effect and therefor does no damage.
 
 ```YAML title="Examples" 
-events:
+actions:
   strikeLightning: lightning 100;64;-100;survival
   showEntrance: lightning 200;65;100;survival noDamage
 ```
 
-@snippet:events:notify@
+@snippet:actions:notify@
 
 ## Log message to console: `log`
 
 **persistent**, **static**  
 
 Prints a provided message to the server log. Any placeholders used in the message will be resolved. 
-Note that when used in static context (by schedules) replacing player dependent placeholders won't work as the event 
+Note that when used in static context (by schedules) replacing player dependent placeholders won't work as the action 
 is player independent.
 
 | Parameter | Syntax           | Default Value | Explanation                                                                                                                               |
@@ -502,7 +502,7 @@ is player independent.
 | _level_   | `level:logLevel` | `INFO`        | Optionally the log level can be specified but only **before** the message. <br>There are 4 levels: `debug`, `info`, `warning` and `error` |
 
 ```YAML title="Example"
-  events:
+  actions:
     logPlayer: "log %player% completed first quest."
     debug: "log level:DEBUG daily quests have been reset"
 ```
@@ -511,7 +511,7 @@ is player independent.
 
 **persistent**, **static**
 
-This event will teleport the Npc to the given location.
+This action will teleport the Npc to the given location.
 
 | Parameter  | Syntax                                                                       | Default Value          | Explanation                                      |
 |------------|------------------------------------------------------------------------------|------------------------|--------------------------------------------------|
@@ -539,14 +539,14 @@ Using this in static contexts only works when removing objectives!
 
 
 ```YAML
-events:
+actions:
   startQuest: "objective add killTheDragon,goToDungeon"
   progressQuest: "objective complete killTheDragon"
 ```
 
 ## OPsudo: `opsudo`
 
-This event is similar to the `sudo` event, the only difference is that it will fire a command as the player with temporary OP permissions. 
+This action is similar to the `sudo` action, the only difference is that it will fire a command as the player with temporary OP permissions. 
 Additional commands can be defined by separating them with `|` character. If you want to use a `|` character in the message use `\|`.
 
 Looking for [run as normal player](#sudo-sudo)?
@@ -557,14 +557,14 @@ Looking for [console commands](#command-command)?
     opsudo spawn
     ```
 
-## Party event: `party`
+## Party action: `party`
 
 This is part of the [party system](../Parties.md).
-Runs the specified list of events (third argument) for every player in the party.
+Runs the specified list of actions (third argument) for every player in the party.
 The last optional argument `amount` specifies a maximum number of players to select.
 Selected players will be picked from the party if they are in range and meet the conditions.
-Players are selected according to their distance from the player who triggered the event.
-For example, if the 'amount' is two, the player who triggered the event and the player closest to that player will be selected.
+Players are selected according to their distance from the player who triggered the action.
+For example, if the 'amount' is two, the player who triggered the action and the player closest to that player will be selected.
 A negative amount will select all players and therefore act as if there was no amount given.
 
 !!! example
@@ -577,26 +577,26 @@ A negative amount will select all players and therefore act as if there was no a
 
 **persistent**, **static**
 
-Another container for events. It picks one (or multiple) of the given events and runs it.
-You must specify how likely it is that each event is picked by adding the weighting before the event's id.
-The weighting is a floating point number, that is the ratio of the event's chance to be picked.
+Another container for actions. It picks one (or multiple) of the given actions and runs it.
+You must specify how likely it is that each action is picked by adding the weighting before the action's id.
+The weighting is a floating point number, that is the ratio of the action's chance to be picked.
 
-It picks one event from the list by default, but you can add an optional `amount:` if you want more to be picked.
-Note that only as many events as specified can be picked and `amount:0` will do nothing.
+It picks one action from the list by default, but you can add an optional `amount:` if you want more to be picked.
+Note that only as many actions as specified can be picked and `amount:0` will do nothing.
 
 !!! example
     ```YAML
-    pickrandom 20.5~event1,0.5~event2,79~event3 amount:2
-    pickrandom %point.factionXP.amount%~event1,0.5~event2,79~event3,1~event4 amount:3
+    pickrandom 20.5~action1,0.5~action2,79~action3 amount:2
+    pickrandom %point.factionXP.amount%~action1,0.5~action2,79~action3,1~action4 amount:3
     ```
     
 ## Point: `point`
 
 **persistent**
 
-This event allows you to manipulate player's points in a specified category. First you can specify a number of points, 
+This action allows you to manipulate player's points in a specified category. First you can specify a number of points, 
 then the modification action. For that, you can use `action:add`, `action:subtract`, `action:set` and `action:multiply` 
-as modification types. This event also supports an optional `notify` argument that will display information about the 
+as modification types. This action also supports an optional `notify` argument that will display information about the 
 change using the notification system.
 
 ```YAML title="Example"
@@ -614,14 +614,14 @@ Removes or kill all entities (mobs) of given type at the location. Here you can 
 
 Can only effect loaded entities!
 
-| Parameter   | Syntax                                                                       | Default Value          | Explanation                                                                                                              |
-|-------------|------------------------------------------------------------------------------|------------------------|--------------------------------------------------------------------------------------------------------------------------|
-| _entity(s)_ | `entity,entity`                                                              | :octicons-x-circle-16: | Required. List of entity's (separated by `,`).                                                                           |
-| _location_  | [Unified Location Formatting](../Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | Required. The center location of the target entity's.                                                                    |
-| _radius_    | Number                                                                       | :octicons-x-circle-16: | Required. The radius around the location.                                                                                |
-| _name_      | `name:name`                                                                  | :octicons-x-circle-16: | Name of the entity.                                                                                                      |
-| _marked_    | `marked:mark`                                                                | :octicons-x-circle-16: | Mark of the entity (from the [spawn event](../../Scripting/Building-Blocks/Events-List.md#spawn-mob-spawn) for example). |
-| _kill_      | `kill`                                                                       | :octicons-x-circle-16: | Whether to remove or actually kill the entity (if possible).                                                             |
+| Parameter   | Syntax                                                                       | Default Value          | Explanation                                                                                                                |
+|-------------|------------------------------------------------------------------------------|------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| _entity(s)_ | `entity,entity`                                                              | :octicons-x-circle-16: | Required. List of entity's (separated by `,`).                                                                             |
+| _location_  | [Unified Location Formatting](../Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | Required. The center location of the target entity's.                                                                      |
+| _radius_    | Number                                                                       | :octicons-x-circle-16: | Required. The radius around the location.                                                                                  |
+| _name_      | `name:name`                                                                  | :octicons-x-circle-16: | Name of the entity.                                                                                                        |
+| _marked_    | `marked:mark`                                                                | :octicons-x-circle-16: | Mark of the entity (from the [spawn action](../../Scripting/Building-Blocks/Actions-List.md#spawn-mob-spawn) for example). |
+| _kill_      | `kill`                                                                       | :octicons-x-circle-16: | Whether to remove or actually kill the entity (if possible).                                                               |
 
 ```YAML title="Example"
 killArenaMobs: "removeentity ZOMBIE 100;200;300;world 10 name:Monster kill"
@@ -629,13 +629,13 @@ clearGameArea: "removeentity ARROW,SNOWBALL,WOLF,ARMOR_STAND 100;200;300;world 5
 ```
 
 
-## Run events: `run`
+## Run actions: `run`
 
 **persistent**, **static**
 
-This event allows you to specify multiple instructions in one, long instruction. Each instruction must be started
-with the `^` character (it divides all the instructions). It's not the same as the `folder` event, because you have to
-specify the actual instruction, not an event name.
+This action allows you to specify multiple instructions in one, long instruction. Each instruction must be started
+with the `^` character (it divides all the instructions). It's not the same as the `folder` action, because you have to
+specify the actual instruction, not an action name.
 Don't use conditions here, it behaves strangely.
 
 !!! example
@@ -643,68 +643,68 @@ Don't use conditions here, it behaves strangely.
     run ^tag add beton ^give emerald:5 ^entry add beton ^kill
     ```
 
-## Run events for all online players: `runForAll`
+## Run actions for all online players: `runForAll`
 
 **persistent**, **static**  
 
-Runs the specified event (or list of events) once for each player on the server.  
+Runs the specified action (or list of actions) once for each player on the server.  
 
-The most common use case is to run an event for all online players from a [schedule](../Schedules.md).
-But you can also use it in conversations, objectives or other events.
+The most common use case is to run an action for all online players from a [schedule](../Schedules.md).
+But you can also use it in conversations, objectives or other actions.
 
-To run the events only for a selection of players, use the `where:` option to filter for players that meet specific conditions.
+To run the actions only for a selection of players, use the `where:` option to filter for players that meet specific conditions.
 
-| Parameter | Syntax             | Default Value          | Explanation                                                                                                                                                                                    |
-|-----------|--------------------|------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| _events_  | `events:events`    | :octicons-x-circle-16: | Required. The events to be run, separated by `,`.                                                                                                                                              |
-| _where_   | `where:conditions` | :octicons-x-circle-16: | A list of optional conditions (separated by `,`) that are checked for every player. <br>The events supplied in `events:` are only executed for the players that meet all the given conditions. |
+| Parameter | Syntax             | Default Value          | Explanation                                                                                                                                                                                      |
+|-----------|--------------------|------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| _actions_ | `actions:actions`  | :octicons-x-circle-16: | Required. The actions to be run, separated by `,`.                                                                                                                                               |
+| _where_   | `where:conditions` | :octicons-x-circle-16: | A list of optional conditions (separated by `,`) that are checked for every player. <br>The actions supplied in `actions:` are only executed for the players that meet all the given conditions. |
 
 
 ```YAML title="Example"
-events:
-    kickAll: "runForAll where:!isOp events:kickPlayer,restartQuest"
+actions:
+    kickAll: "runForAll where:!isOp actions:kickPlayer,restartQuest"
 ```
 
 !!! warning
-    You can still append conditions to the `runForAll` event (e.g. `runForAll events:kickPlayer conditions:!isOp`).  
+    You can still append conditions to the `runForAll` action (e.g. `runForAll actions:kickPlayer conditions:!isOp`).  
     **This won't check the conditions for each player!**  
-    Instead it will check the conditions for the player that triggered the event or check them player independent if triggered player independent (e.g. by a schedule).
+    Instead it will check the conditions for the player that triggered the action or check them player independent if triggered player independent (e.g. by a schedule).
 
-## Run events player independent: `runIndependent`
+## Run actions player independent: `runIndependent`
 
 **persistent**, **static**  
 
-Runs the specified event (or list of events) player independent (as if it was run from a [schedule](../Schedules.md)).  
+Runs the specified action (or list of actions) player independent (as if it was run from a [schedule](../Schedules.md)).  
 
-This is usefully for events that behave differently when run player independent.
+This is usefully for actions that behave differently when run player independent.
 
-??? abstract "Events that behave different if run player independent"
+??? abstract "Actions that behave different if run player independent"
     * [`tag delete`](#tag-tag) - deletes the tag for all players in the database (even if offline)
     * [`objective remove`](#objective-objective) - removes the objective for all players in the database (even if offline)
     * [`journal delete`](#journal-journal) - deletes the journal entry for all players in the database (even if offline)
     * [`deletepoint`](#delete-point-deletepoint) - clears points of a given category for all players in the database (even if offline)
 
-| Parameter | Syntax          | Default Value          | Explanation                                       |
-|-----------|-----------------|------------------------|---------------------------------------------------|
-| _events_  | `events:events` | :octicons-x-circle-16: | Required. The events to be run, separated by `,`. |
+| Parameter | Syntax            | Default Value          | Explanation                                        |
+|-----------|-------------------|------------------------|----------------------------------------------------|
+| _actions_ | `actions:actions` | :octicons-x-circle-16: | Required. The actions to be run, separated by `,`. |
 
 ```YAML title="Example"
-events:
-    resetQuestForAll: "runIndependent events:removeObjective,clearTags,resetJournal"
+actions:
+    resetQuestForAll: "runIndependent actions:removeObjective,clearTags,resetJournal"
 ```
 
 !!! warning 
-    There are a lot of events and conditions that cannot be run (or checked) player independent.  
-    If you try to run such an event player independent (or check such a condition) this won't work, 
+    There are a lot of actions and conditions that cannot be run (or checked) player independent.  
+    If you try to run such an action player independent (or check such a condition) this won't work, 
     and you will get an error message in the console.
     
-    For more information on player independent events [check this](../Schedules.md#player-independent-events).
+    For more information on player independent actions [check this](../Schedules.md#player-independent-actions).
 
 ## Scoreboard: `score`
 
 **persistent**
 
-This event works in the same way as [point](#point-point), the only difference being that it uses scoreboards instead of 
+This action works in the same way as [point](#point-point), the only difference being that it uses scoreboards instead of 
 points. You can use `action:add`, `action:subtract`, `action:set` and `action:multiply` to change the value.
 It's only possible to change the value, you have to create the scoreboard target first.
 
@@ -717,7 +717,7 @@ applyBonus: "score kill 1.2 action:multiply"
 
 ## Scoreboard Tag: `scoretag`
 
-This scoreboard event adds or remove the scoreboard tag from a player. The kind of tags that are used by vanilla Minecraft and not the [betonquest tags](#tag-tag).
+This scoreboard action adds or remove the scoreboard tag from a player. The kind of tags that are used by vanilla Minecraft and not the [betonquest tags](#tag-tag).
 
 | Parameter        | Syntax            | Default Value          | Explanation                       |
 |------------------|-------------------|------------------------|-----------------------------------|
@@ -760,7 +760,7 @@ For more take a look at the [stage objective](./Objectives-List.md#stages-stage)
 | _amount_          | Number                          | 1                      | The amount to increase or decrease by           |
 
 ```YAML title="Example"
-events:
+actions:
   setCookCookies: "stage bakeCookies set cookCookies"
   increase: "stage bakeCookies increase"
   decrease2: "stage bakeCookies decrease 2"
@@ -793,7 +793,7 @@ These take a single item without amount, as defined in the _items_ section. You 
 
 ## Sudo: `sudo`
 
-This event is similar to `command` event, the only difference is that it will fire a command as the player (often referred to as player commands).
+This action is similar to `command` action, the only difference is that it will fire a command as the player (often referred to as player commands).
 Additional commands can be defined by separating them with `|` character. If you want to use a `|` character in the message use `\|`.
 
 Looking for [run as op](#opsudo-opsudo)?
@@ -808,7 +808,7 @@ Looking for [console commands](#command-command)?
 
 **persistent**, **static**
 
-This event adds a tag to or deletes a tag from the player. The first argument after event's name must be
+This action adds a tag to or deletes a tag from the player. The first argument after action's name must be
 `add` or `delete`. Next goes the tag name. It can't contain spaces (though `_` is fine).
 Multiple tags can be added and deleted separated by commas (without spaces).
 
@@ -824,8 +824,8 @@ The items itself must be defined in the `items` section, optionally with an amou
 Which inventory types are checked is defined by the `invOrder:`
 option. You can use `Backpack`, `Inventory`, `Offhand` and `Armor` there. One after another will be checked if multiple types are defined.
 
-Note: If the items aren't quest items don't use `take`event with player options in conversations!
-The player can drop items before selecting the option and pickup them after the event fires.
+Note: If the items aren't quest items don't use `take` action with player options in conversations!
+The player can drop items before selecting the option and pickup them after the action fires.
 Validate it on the NPC’s reaction!
 
 You can also specify `notify` keyword to display a simple message to the player about loosing items.
@@ -870,7 +870,7 @@ Do you only want to [cancel the conversation](#cancel-the-conversation-cancelcon
 | _location_ | [Unified Location Formatting](../Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | The location to which the player will be teleported. |
 
 ```YAML title="Example"
-events:
+actions:
   toCity: "teleport 432;121;532;world" # (1)!
   toHell: "teleport 123;32;-789;world_the_nether;180;45" # (2)!
 ```
@@ -880,12 +880,12 @@ events:
 
 ## Variable: `variable`
 
-This event has only one purpose: Change values that are stored in `variable` objective variables. The first argument is
+This action has only one purpose: Change values that are stored in `variable` objective variables. The first argument is
 the ID of the `variable` objective. The second argument is the name of the variable to set. The third argument is the
 value to set. Both the name and value can use `%...%` placeholders. To delete a variable you can use `""`.
 To store more complex values you can use [quoting](../Quoting-&-YAML.md#quoting).
 Refer to the [`variable` objective](Objectives-List.md#variable-variable) documentation for more information about storing variables.
-This event will do nothing if the player does not already have a `variable` objective assigned to them.
+This action will do nothing if the player does not already have a `variable` objective assigned to them.
 
 !!! example
     ```YAML
@@ -905,7 +905,7 @@ This event will do nothing if the player does not already have a `variable` obje
 @snippet:general:relativeAxisExplanation@
 
 ```YAML title="Example"
-events:
+actions:
   jumppad: "velocity vector:(2;0.8;4)"
   dash: "velocity vector:(0;0.1;1.3) direction:relative_y"
   individual_dash: "velocity vector:%objective.customPlaceholder.dashLength% direction:relative_y"
@@ -929,7 +929,7 @@ Durations less than 1 is equal to no duration.
 | _world_    | `world:worldName` | The player's current world. | The world to change the weather in.                                                         |
 
 ```YAML title="Example"
-events:
+actions:
   setSun: "weather sun"
   setShortRain: "weather rain duration:60 world:rpgworld"
   setStorm: "weather storm duration:%point.tribute.left:150%"
