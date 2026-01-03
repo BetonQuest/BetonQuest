@@ -12,6 +12,7 @@ import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.Remo
 import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.RideUpdates;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.AddSimpleTypeToQuestItem;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.DynamicHologramTopLine;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.EventsToActionsRename;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.FolderTimeUnit;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.HeadOwnerMigrator;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.LanguageRename;
@@ -126,6 +127,7 @@ public class QuestMigrator {
         migrations.put(questVersion("3.0.0", 13), new PackageSeparator());
         migrations.put(questVersion("3.0.0", 14), new RemoveLegacyPointModification());
         migrations.put(questVersion("3.0.0", 15), new DynamicHologramTopLine());
+        migrations.put(questVersion("3.0.0", 16), new EventsToActionsRename());
         this.fallbackVersion = questVersion(pluginDescription.getVersion(), 0);
     }
 

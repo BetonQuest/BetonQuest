@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.config.patcher.migration;
 
+import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.config.quest.Quest;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -70,6 +71,53 @@ public interface QuestMigration {
             final String value = section.getString(key);
             if (value != null && filter.apply(value)) {
                 section.set(key, operation.apply(value));
+            }
+        }
+    }
+
+    /**
+     * Renames a key in all subsections of the given path configuration key in a specific section.
+     *
+     * @param root   the source configuration of the path and associate with
+     * @param path   the base path of the sections to replace the keys in
+     * @param oldKey the old to replace key
+     * @param newKey the new key
+     * @throws InvalidConfigurationException if an error occurs
+     * @see #replaceKeyInSection(MultiConfiguration, ConfigurationSection, String, String)
+     */
+    default void replaceKeyInSections(final MultiConfiguration root, final String path, final String oldKey, final String newKey)
+            throws InvalidConfigurationException {
+        final ConfigurationSection config = root.getConfigurationSection(path);
+        if (config == null) {
+            return;
+        }
+        for (final String key : config.getKeys(false)) {
+            final ConfigurationSection section = config.getConfigurationSection(key);
+            if (section == null) {
+                continue;
+            }
+            replaceKeyInSection(root, section, oldKey, newKey);
+        }
+    }
+
+    /**
+     * Renames a configuration key in a specific section.
+     *
+     * @param root    the source configuration to associate with
+     * @param section the section to replace the key in
+     * @param oldKey  the old to replace key
+     * @param newKey  the new key
+     * @throws InvalidConfigurationException if an error occurs
+     */
+    default void replaceKeyInSection(final MultiConfiguration root, final ConfigurationSection section,
+                                     final String oldKey, final String newKey) throws InvalidConfigurationException {
+        final String value = section.getString(oldKey);
+        if (value != null) {
+            final ConfigurationSection sourceConfigurationSection = root.getSourceConfigurationSection(section.getCurrentPath() + "." + oldKey);
+            section.set(newKey, value);
+            section.set(oldKey, null);
+            if (sourceConfigurationSection != null) {
+                root.associateWith(section.getCurrentPath() + "." + newKey, sourceConfigurationSection);
             }
         }
     }
