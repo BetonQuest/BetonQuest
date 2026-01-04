@@ -44,9 +44,9 @@ class DefaultListArgumentTest {
         final QuestPackage pack = mock(QuestPackage.class);
         final MultiConfiguration config = mock(MultiConfiguration.class);
         lenient().when(pack.getConfig()).thenReturn(config);
-        lenient().when(config.getString("events.a")).thenReturn("?");
-        lenient().when(config.getString("events.b")).thenReturn("?");
-        lenient().when(config.getString("events.c")).thenReturn("?");
+        lenient().when(config.getString("actions.a")).thenReturn("?");
+        lenient().when(config.getString("actions.b")).thenReturn("?");
+        lenient().when(config.getString("actions.c")).thenReturn("?");
         final ConfigurationOptions configurationOptions = mock(ConfigurationOptions.class);
         lenient().when(config.options()).thenReturn(configurationOptions);
         lenient().when(configurationOptions.pathSeparator()).thenReturn('.');
