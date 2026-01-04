@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.bukkit.Bukkit;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -38,7 +38,7 @@ public class PasswordObjective extends DefaultObjective {
     /**
      * Events to be triggered on failure.
      */
-    private final Argument<List<EventID>> failEvents;
+    private final Argument<List<ActionID>> failEvents;
 
     /**
      * Constructor for the PasswordObjective.
@@ -50,7 +50,7 @@ public class PasswordObjective extends DefaultObjective {
      * @throws QuestException if there is an error in the instruction
      */
     public PasswordObjective(final Instruction instruction, final FlagArgument<Pattern> regex,
-                             @Nullable final String passwordPrefix, final Argument<List<EventID>> failEvents) throws QuestException {
+                             @Nullable final String passwordPrefix, final Argument<List<ActionID>> failEvents) throws QuestException {
         super(instruction);
         this.regex = regex;
         this.passwordPrefix = passwordPrefix;

@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,7 +19,7 @@ public class FirstEvent implements NullableEvent {
     /**
      * The events to run.
      */
-    private final Argument<List<EventID>> events;
+    private final Argument<List<ActionID>> events;
 
     /**
      * Quest Type API.
@@ -32,14 +32,14 @@ public class FirstEvent implements NullableEvent {
      * @param eventIDList  A list of events to execute in order.
      * @param questTypeApi the Quest Type API
      */
-    public FirstEvent(final Argument<List<EventID>> eventIDList, final QuestTypeApi questTypeApi) {
+    public FirstEvent(final Argument<List<ActionID>> eventIDList, final QuestTypeApi questTypeApi) {
         events = eventIDList;
         this.questTypeApi = questTypeApi;
     }
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
-        for (final EventID event : events.getValue(profile)) {
+        for (final ActionID event : events.getValue(profile)) {
             if (questTypeApi.event(profile, event)) {
                 break;
             }

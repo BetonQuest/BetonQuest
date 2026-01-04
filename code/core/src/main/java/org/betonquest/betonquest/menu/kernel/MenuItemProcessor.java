@@ -11,8 +11,8 @@ import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.betonquest.betonquest.menu.MenuItem;
@@ -114,8 +114,8 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
             return new MenuItem.ClickEvents(getEvents("click"));
         }
 
-        private Argument<List<EventID>> getEvents(final String key) throws QuestException {
-            return getID(key, EventID::new);
+        private Argument<List<ActionID>> getEvents(final String key) throws QuestException {
+            return getID(key, ActionID::new);
         }
     }
 }

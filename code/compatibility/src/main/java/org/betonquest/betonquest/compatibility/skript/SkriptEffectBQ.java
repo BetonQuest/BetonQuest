@@ -11,7 +11,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.Placeholders;
-import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -87,7 +87,7 @@ public class SkriptEffectBQ extends Effect {
                 try {
                     final ProfileProvider profileProvider = plugin.getProfileProvider();
                     plugin.getQuestTypeApi().event(profileProvider.getProfile(player.getSingle(event)),
-                            new EventID(placeholders, packManager, null, eventID));
+                            new ActionID(placeholders, packManager, null, eventID));
                 } catch (final QuestException e) {
                     log.warn("Error when running Skript event - could not load '" + eventID + "' event: " + e.getMessage(), e);
                 }

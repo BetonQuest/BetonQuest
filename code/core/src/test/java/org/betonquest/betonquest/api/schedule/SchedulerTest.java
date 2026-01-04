@@ -2,7 +2,7 @@ package org.betonquest.betonquest.api.schedule;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -70,9 +70,9 @@ class SchedulerTest {
         final Scheduler<Schedule, FictiveTime> scheduler = new MockedScheduler(logger, questTypeApi);
         final Schedule schedule = mock(Schedule.class);
         when(schedule.getId()).thenReturn(mock(ScheduleID.class));
-        final EventID eventA = mock(EventID.class);
-        final EventID eventB = mock(EventID.class);
-        final List<EventID> eventList = List.of(eventA, eventB);
+        final ActionID eventA = mock(ActionID.class);
+        final ActionID eventB = mock(ActionID.class);
+        final List<ActionID> eventList = List.of(eventA, eventB);
         when(schedule.getEvents()).thenReturn(eventList);
         scheduler.executeEvents(schedule);
         verify(questTypeApi).events(null, eventList);

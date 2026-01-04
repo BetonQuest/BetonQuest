@@ -14,7 +14,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Placeholders;
-import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.Conversation;
@@ -132,7 +132,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
         final Argument<ConversationIOFactory> convIO = helper.parseConvIO();
         final Argument<InterceptorFactory> interceptor = helper.parseInterceptor();
         final Argument<Number> interceptorDelay = helper.parseInterceptorDelay();
-        final Argument<List<EventID>> finalEvents = new DefaultListArgument<>(placeholders, pack, section.getString("final_events", ""), value -> new EventID(placeholders, packManager, pack, value));
+        final Argument<List<ActionID>> finalEvents = new DefaultListArgument<>(placeholders, pack, section.getString("final_events", ""), value -> new ActionID(placeholders, packManager, pack, value));
         final boolean invincible = plugin.getConfig().getBoolean("conversation.damage.invincible");
         final ConversationData.PublicData publicData = new ConversationData.PublicData(conversationID, quester, blockMovement, finalEvents, convIO, interceptor, interceptorDelay, invincible);
 

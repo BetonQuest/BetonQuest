@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.Placeholders;
-import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.api.schedule.FictiveTime;
 import org.betonquest.betonquest.api.schedule.Schedule;
@@ -189,7 +189,7 @@ class EventSchedulingTest {
      */
     private static final class MockedSchedule extends Schedule {
 
-        private MockedSchedule(final ScheduleID scheduleID, final List<EventID> events, final CatchupStrategy catchup) {
+        private MockedSchedule(final ScheduleID scheduleID, final List<ActionID> events, final CatchupStrategy catchup) {
             super(scheduleID, events, catchup);
         }
     }

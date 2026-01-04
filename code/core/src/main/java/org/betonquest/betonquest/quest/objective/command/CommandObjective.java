@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import java.util.List;
@@ -42,7 +42,7 @@ public class CommandObjective extends DefaultObjective {
     /**
      * Events to trigger if the command is not matched.
      */
-    private final Argument<List<EventID>> failEvents;
+    private final Argument<List<ActionID>> failEvents;
 
     /**
      * Creates a new instance of the CommandObjective.
@@ -57,7 +57,7 @@ public class CommandObjective extends DefaultObjective {
      */
     public CommandObjective(final Instruction instruction, final Argument<String> command,
                             final FlagArgument<Boolean> ignoreCase, final FlagArgument<Boolean> exact,
-                            final FlagArgument<Boolean> cancel, final Argument<List<EventID>> failEvents) throws QuestException {
+                            final FlagArgument<Boolean> cancel, final Argument<List<ActionID>> failEvents) throws QuestException {
         super(instruction);
         this.command = command;
         this.ignoreCase = ignoreCase;

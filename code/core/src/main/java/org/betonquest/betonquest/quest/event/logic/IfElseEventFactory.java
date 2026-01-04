@@ -4,8 +4,8 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
@@ -48,11 +48,11 @@ public class IfElseEventFactory implements PlayerEventFactory, PlayerlessEventFa
 
     private NullableEventAdapter createIfElseEvent(final Instruction instruction) throws QuestException {
         final Argument<ConditionID> condition = instruction.parse(ConditionID::new).get();
-        final Argument<EventID> event = instruction.parse(EventID::new).get();
+        final Argument<ActionID> event = instruction.parse(ActionID::new).get();
         if (!ELSE_KEYWORD.equalsIgnoreCase(instruction.nextElement())) {
             throw new QuestException("Missing 'else' keyword");
         }
-        final Argument<EventID> elseEvent = instruction.parse(EventID::new).get();
+        final Argument<ActionID> elseEvent = instruction.parse(ActionID::new).get();
         return new NullableEventAdapter(new IfElseEvent(condition, event, elseEvent, questTypeApi));
     }
 }
