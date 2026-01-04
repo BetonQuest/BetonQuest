@@ -127,16 +127,16 @@ class ScheduleTypeTest {
          * Creates new instance of the schedule.
          *
          * @param scheduleID the schedule id
-         * @param events     the events to execute
+         * @param actions    the actions to execute
          * @param catchup    the catchup strategy
          */
-        public MockedSchedule(final ScheduleID scheduleID, final List<ActionID> events, final CatchupStrategy catchup) {
-            super(scheduleID, events, catchup);
+        public MockedSchedule(final ScheduleID scheduleID, final List<ActionID> actions, final CatchupStrategy catchup) {
+            super(scheduleID, actions, catchup);
         }
     }
 
     /**
-     * Class extending a schedule that throws an unchecked event in its constructor.
+     * Class extending a schedule that throws an unchecked action in its constructor.
      */
     private static class ThrowingUncheckedSchedule extends Schedule {
 
@@ -144,11 +144,11 @@ class ScheduleTypeTest {
          * Creates new instance of the schedule.
          *
          * @param scheduleID the schedule id
-         * @param events     the events to execute
+         * @param actions    the actions to execute
          * @param catchup    the catchup strategy
          */
-        public ThrowingUncheckedSchedule(final ScheduleID scheduleID, final List<ActionID> events, final CatchupStrategy catchup) {
-            super(scheduleID, events, catchup);
+        public ThrowingUncheckedSchedule(final ScheduleID scheduleID, final List<ActionID> actions, final CatchupStrategy catchup) {
+            super(scheduleID, actions, catchup);
             throw new IllegalArgumentException("unchecked");
         }
     }
@@ -165,7 +165,7 @@ class ScheduleTypeTest {
         @Override
         public MockedSchedule createNewInstance(final ScheduleID scheduleID, final ConfigurationSection config) throws QuestException {
             final ScheduleData scheduleData = parseScheduleData(scheduleID.getPackage(), config);
-            return new MockedSchedule(scheduleID, scheduleData.events(), scheduleData.catchup());
+            return new MockedSchedule(scheduleID, scheduleData.actions(), scheduleData.catchup());
         }
     }
 
@@ -181,7 +181,7 @@ class ScheduleTypeTest {
         @Override
         public ThrowingUncheckedSchedule createNewInstance(final ScheduleID scheduleID, final ConfigurationSection config) throws QuestException {
             final ScheduleData scheduleData = parseScheduleData(scheduleID.getPackage(), config);
-            return new ThrowingUncheckedSchedule(scheduleID, scheduleData.events(), scheduleData.catchup());
+            return new ThrowingUncheckedSchedule(scheduleID, scheduleData.actions(), scheduleData.catchup());
         }
     }
 }

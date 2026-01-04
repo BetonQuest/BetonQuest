@@ -10,10 +10,10 @@ import org.betonquest.betonquest.quest.event.CallPlayerlessEventAdapter;
 import java.util.List;
 
 /**
- * Runs specified events player independently.
+ * Runs specified actions player independently.
  * <p>
  * Although the implementation is a {@link PlayerlessEvent}, using it in a static context does not make much sense.
- * Recommended usage is to wrap it in a {@link CallPlayerlessEventAdapter} and using it to call static events
+ * Recommended usage is to wrap it in a {@link CallPlayerlessEventAdapter} and using it to call static actions
  * from non-static context.
  */
 public class RunIndependentEvent implements PlayerlessEvent {
@@ -24,23 +24,23 @@ public class RunIndependentEvent implements PlayerlessEvent {
     private final QuestTypeApi questTypeApi;
 
     /**
-     * List of Events to run.
+     * List of Actions to run.
      */
-    private final Argument<List<ActionID>> events;
+    private final Argument<List<ActionID>> actions;
 
     /**
-     * Create a new RunIndependentEvent instance.
+     * Create a new RunIndependentAction instance.
      *
      * @param questTypeApi the Quest Type API
-     * @param events       the events to run
+     * @param actions      the actions to run
      */
-    public RunIndependentEvent(final QuestTypeApi questTypeApi, final Argument<List<ActionID>> events) {
+    public RunIndependentEvent(final QuestTypeApi questTypeApi, final Argument<List<ActionID>> actions) {
         this.questTypeApi = questTypeApi;
-        this.events = events;
+        this.actions = actions;
     }
 
     @Override
     public void execute() throws QuestException {
-        questTypeApi.events(null, events.getValue(null));
+        questTypeApi.actions(null, actions.getValue(null));
     }
 }

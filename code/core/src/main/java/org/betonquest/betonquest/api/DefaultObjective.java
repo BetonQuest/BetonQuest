@@ -75,9 +75,9 @@ public abstract class DefaultObjective implements PropertyHolder {
     private final Argument<List<ConditionID>> conditions;
 
     /**
-     * Events to fire on completion.
+     * Actions to fire on completion.
      */
-    private final Argument<List<ActionID>> events;
+    private final Argument<List<ActionID>> actions;
 
     /**
      * If the objective should start again on completion.
@@ -120,7 +120,7 @@ public abstract class DefaultObjective implements PropertyHolder {
         this.profileProvider = BetonQuest.getInstance().getProfileProvider();
         this.dataMap = new ProfileKeyMap<>(profileProvider);
         persistent = instruction.bool().getFlag("persistent", true);
-        events = instruction.parse(ActionID::new).list().get("actions", Collections.emptyList());
+        actions = instruction.parse(ActionID::new).list().get("actions", Collections.emptyList());
         conditions = instruction.parse(ConditionID::new).list().get("conditions", Collections.emptyList());
         final FlagArgument<Number> notify = instruction.number().atLeast(0).getFlag("notify", 1);
         this.notifyInterval = notify.getValue(null).orElse(0).intValue();
@@ -158,7 +158,7 @@ public abstract class DefaultObjective implements PropertyHolder {
     public abstract String getDefaultDataInstruction(Profile profile) throws QuestException;
 
     /**
-     * This method fires events for the objective and removes it from the profile's
+     * This method fires actions for the objective and removes it from the profile's
      * list of active objectives. Use it when you detect that the objective has
      * been completed. It deletes the objective using delete() method.
      *
@@ -185,15 +185,15 @@ public abstract class DefaultObjective implements PropertyHolder {
             log.error(instruction.getPackage(), "Could not get persistent flag for '" + instruction.getID() + "' for '" + profile + "' objective: " + e.getMessage(), e);
         }
         log.debug(instruction.getPackage(),
-                "Objective '" + instruction.getID() + "' has been completed for " + profile + ", firing events.");
+                "Objective '" + instruction.getID() + "' has been completed for " + profile + ", firing actions.");
         try {
-            BetonQuest.getInstance().getQuestTypeApi().events(profile, events.getValue(profile));
+            BetonQuest.getInstance().getQuestTypeApi().actions(profile, actions.getValue(profile));
         } catch (final QuestException e) {
-            log.warn(instruction.getPackage(), "Error while firing events in objective '" + instruction.getID()
+            log.warn(instruction.getPackage(), "Error while firing actions in objective '" + instruction.getID()
                     + "' for " + profile + ": " + e.getMessage(), e);
         }
         log.debug(instruction.getPackage(),
-                "Firing events in objective '" + instruction.getID() + "' for " + profile + " finished");
+                "Firing actions in objective '" + instruction.getID() + "' for " + profile + " finished");
     }
 
     /**
@@ -281,7 +281,7 @@ public abstract class DefaultObjective implements PropertyHolder {
 
     /**
      * Complete an active objective for the profile. It will only remove it from the profile and not run any completion
-     * events, run {@link #completeObjective(Profile)} instead! It does also not remove it from the database.
+     * actions, run {@link #completeObjective(Profile)} instead! It does also not remove it from the database.
      *
      * @param profile the {@link Profile} for which the objective is to be completed
      * @see #cancelObjectiveForPlayer(Profile)

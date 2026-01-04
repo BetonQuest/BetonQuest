@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
-import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
+import org.betonquest.betonquest.kernel.registry.quest.ActionTypeRegistry;
 
 /**
  * A factory for creating Eval events.
@@ -29,19 +29,19 @@ public class EvalEventFactory implements PlayerEventFactory, PlayerlessEventFact
     /**
      * The event type registry providing factories to parse the evaluated instruction.
      */
-    private final EventTypeRegistry eventTypeRegistry;
+    private final ActionTypeRegistry actionTypeRegistry;
 
     /**
      * Create a new Eval event factory.
      *
-     * @param placeholders      the {@link Placeholders} to create and resolve placeholders
-     * @param packManager       the quest package manager to get quest packages from
-     * @param eventTypeRegistry the event type registry providing factories to parse the evaluated instruction
+     * @param placeholders       the {@link Placeholders} to create and resolve placeholders
+     * @param packManager        the quest package manager to get quest packages from
+     * @param actionTypeRegistry the event type registry providing factories to parse the evaluated instruction
      */
-    public EvalEventFactory(final Placeholders placeholders, final QuestPackageManager packManager, final EventTypeRegistry eventTypeRegistry) {
+    public EvalEventFactory(final Placeholders placeholders, final QuestPackageManager packManager, final ActionTypeRegistry actionTypeRegistry) {
         this.placeholders = placeholders;
         this.packManager = packManager;
-        this.eventTypeRegistry = eventTypeRegistry;
+        this.actionTypeRegistry = actionTypeRegistry;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class EvalEventFactory implements PlayerEventFactory, PlayerlessEventFact
 
     private NullableEventAdapter parseEvalEvent(final Instruction instruction) throws QuestException {
         final String rawInstruction = String.join(" ", instruction.getValueParts());
-        return new NullableEventAdapter(new EvalEvent(placeholders, packManager, eventTypeRegistry, instruction.getPackage(),
+        return new NullableEventAdapter(new EvalEvent(placeholders, packManager, actionTypeRegistry, instruction.getPackage(),
                 instruction.chainForArgument(rawInstruction).string().get()));
     }
 }

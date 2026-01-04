@@ -8,8 +8,8 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
-import org.betonquest.betonquest.kernel.processor.adapter.EventAdapter;
-import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
+import org.betonquest.betonquest.kernel.processor.adapter.ActionAdapter;
+import org.betonquest.betonquest.kernel.registry.quest.ActionTypeRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -23,9 +23,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 /**
- * Stores Events and execute them.
+ * Stores Actions and execute them.
  */
-public class EventProcessor extends TypedQuestProcessor<ActionID, EventAdapter> {
+public class ActionProcessor extends TypedQuestProcessor<ActionID, ActionAdapter> {
 
     /**
      * The Bukkit scheduler to run sync tasks.
@@ -38,18 +38,18 @@ public class EventProcessor extends TypedQuestProcessor<ActionID, EventAdapter> 
     private final Plugin plugin;
 
     /**
-     * Create a new Event Processor to store events and execute them.
+     * Create a new Action Processor to store actions and execute them.
      *
      * @param placeholders the {@link Placeholders} to create and resolve placeholders
      * @param log          the custom logger for this class
      * @param packManager  the quest package manager to get quest packages from
-     * @param eventTypes   the available event types
+     * @param actionTypes  the available action types
      * @param scheduler    the bukkit scheduler to run sync tasks
      * @param plugin       the plugin instance
      */
-    public EventProcessor(final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager,
-                          final EventTypeRegistry eventTypes, final BukkitScheduler scheduler, final Plugin plugin) {
-        super(log, placeholders, packManager, eventTypes, "Action", "actions");
+    public ActionProcessor(final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager,
+                           final ActionTypeRegistry actionTypes, final BukkitScheduler scheduler, final Plugin plugin) {
+        super(log, placeholders, packManager, actionTypes, "Action", "actions");
         this.scheduler = scheduler;
         this.plugin = plugin;
     }
@@ -60,29 +60,29 @@ public class EventProcessor extends TypedQuestProcessor<ActionID, EventAdapter> 
     }
 
     /**
-     * Fires multiple events for the {@link Profile} if they meet the events' conditions.
-     * If the profile is null, the events will be fired as static events.
+     * Fires multiple actions for the {@link Profile} if they meet the actions' conditions.
+     * If the profile is null, the actions will be fired as static actions.
      *
-     * @param profile   the {@link Profile} for which the events must be executed or null
-     * @param actionIDS IDs of the events to fire
-     * @return true if all events were run even if there was an exception during execution
+     * @param profile   the {@link Profile} for which the actions must be executed or null
+     * @param actionIDS IDs of the actions to fire
+     * @return true if all actions were run even if there was an exception during execution
      */
     public boolean executes(@Nullable final Profile profile, final Collection<ActionID> actionIDS) {
         if (Bukkit.isPrimaryThread()) {
-            return actionIDS.stream().allMatch(eventID -> execute(profile, eventID));
+            return actionIDS.stream().allMatch(actionID -> execute(profile, actionID));
         }
 
         final List<ActionID> syncList = new ArrayList<>();
         final List<ActionID> asyncList = new ArrayList<>();
         actionIDS.forEach(id -> {
-            final EventAdapter adapter = values.get(id);
+            final ActionAdapter adapter = values.get(id);
             final boolean syncAsync = adapter != null && adapter.isPrimaryThreadEnforced();
             (syncAsync ? syncList : asyncList).add(id);
         });
 
         final Future<Boolean> syncFuture = syncList.isEmpty() ? CompletableFuture.completedFuture(true)
-                : scheduler.callSyncMethod(plugin, () -> syncList.stream().allMatch(eventID -> execute(profile, eventID)));
-        final boolean asyncResult = asyncList.stream().allMatch(eventID -> execute(profile, eventID));
+                : scheduler.callSyncMethod(plugin, () -> syncList.stream().allMatch(actionID -> execute(profile, actionID)));
+        final boolean asyncResult = asyncList.stream().allMatch(actionID -> execute(profile, actionID));
 
         try {
             return asyncResult && syncFuture.get();
@@ -93,44 +93,44 @@ public class EventProcessor extends TypedQuestProcessor<ActionID, EventAdapter> 
     }
 
     /**
-     * Fires an event for the {@link Profile} if it meets the event's conditions.
-     * If the profile is null, the event will be fired as a static event.
+     * Fires an action for the {@link Profile} if it meets the action's conditions.
+     * If the profile is null, the action will be fired as a static action.
      *
-     * @param profile  the {@link Profile} for which the event must be executed or null
-     * @param actionID ID of the event to fire
-     * @return true if the event was run even if there was an exception during execution
+     * @param profile  the {@link Profile} for which the action must be executed or null
+     * @param actionID ID of the action to fire
+     * @return true if the action was run even if there was an exception during execution
      */
     public boolean execute(@Nullable final Profile profile, final ActionID actionID) {
-        final EventAdapter event = values.get(actionID);
-        if (event == null) {
-            log.warn(actionID.getPackage(), "Event " + actionID + " is not defined");
+        final ActionAdapter action = values.get(actionID);
+        if (action == null) {
+            log.warn(actionID.getPackage(), "Action " + actionID + " is not defined");
             return false;
         }
         if (profile == null) {
-            log.debug(actionID.getPackage(), "Firing event " + actionID + " player independent");
+            log.debug(actionID.getPackage(), "Firing action " + actionID + " player independent");
         } else {
-            log.debug(actionID.getPackage(), "Firing event " + actionID + " for " + profile);
+            log.debug(actionID.getPackage(), "Firing action " + actionID + " for " + profile);
         }
-        if (event.isPrimaryThreadEnforced() && !Bukkit.isPrimaryThread()) {
-            return callEventSync(profile, actionID, event);
+        if (action.isPrimaryThreadEnforced() && !Bukkit.isPrimaryThread()) {
+            return callActionSync(profile, actionID, action);
         }
-        return callEvent(profile, actionID, event);
+        return callAction(profile, actionID, action);
     }
 
-    private boolean callEventSync(@Nullable final Profile profile, final ActionID actionID, final EventAdapter event) {
+    private boolean callActionSync(@Nullable final Profile profile, final ActionID actionID, final ActionAdapter action) {
         try {
-            return scheduler.callSyncMethod(plugin, () -> callEvent(profile, actionID, event)).get();
+            return scheduler.callSyncMethod(plugin, () -> callAction(profile, actionID, action)).get();
         } catch (final InterruptedException | ExecutionException e) {
             log.reportException(e);
             return true;
         }
     }
 
-    private boolean callEvent(@Nullable final Profile profile, final ActionID actionID, final EventAdapter event) {
+    private boolean callAction(@Nullable final Profile profile, final ActionID actionID, final ActionAdapter action) {
         try {
-            return event.fire(profile);
+            return action.fire(profile);
         } catch (final QuestException e) {
-            log.warn(actionID.getPackage(), "Error while firing '" + actionID + "' event: " + e.getMessage(), e);
+            log.warn(actionID.getPackage(), "Error while firing '" + actionID + "' action: " + e.getMessage(), e);
             return true;
         }
     }

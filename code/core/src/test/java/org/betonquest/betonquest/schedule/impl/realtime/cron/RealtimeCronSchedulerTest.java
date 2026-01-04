@@ -99,7 +99,7 @@ class RealtimeCronSchedulerTest {
         verify(logger, times(1)).debug("Found 0 missed schedule runs that will be caught up.");
         verify(logger, times(1)).debug("Realtime scheduler start complete.");
         verifyNoMoreInteractions(logger);
-        verify(schedule, times(1)).getEvents();
+        verify(schedule, times(1)).getActions();
     }
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
@@ -127,7 +127,7 @@ class RealtimeCronSchedulerTest {
         verify(logger, times(1)).debug(null, "Schedule 'test.schedule' runs its actions...");
         verify(logger, times(1)).debug("Realtime scheduler start complete.");
         verifyNoMoreInteractions(logger);
-        verify(schedule, times(1)).getEvents();
+        verify(schedule, times(1)).getActions();
     }
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
@@ -164,7 +164,7 @@ class RealtimeCronSchedulerTest {
         verify(logger, times(3)).debug(null, "Schedule 'test.schedule' runs its actions...");
         verify(logger, times(1)).debug("Realtime scheduler start complete.");
         verifyNoMoreInteractions(logger);
-        verify(schedule, times(3)).getEvents();
+        verify(schedule, times(3)).getActions();
     }
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
@@ -189,7 +189,7 @@ class RealtimeCronSchedulerTest {
         verify(logger, times(1)).debug("Found 0 missed schedule runs that will be caught up.");
         verify(logger, times(1)).debug("Realtime scheduler start complete.");
         verifyNoMoreInteractions(logger);
-        verify(schedule, never()).getEvents();
+        verify(schedule, never()).getActions();
     }
 
     @Test
@@ -224,6 +224,6 @@ class RealtimeCronSchedulerTest {
         verify(logger, times(3)).debug(null, "Schedule 'test.schedule' runs its actions...");
         verify(logger, times(1)).debug("Realtime scheduler start complete.");
         verifyNoMoreInteractions(logger);
-        verify(schedule, times(3)).getEvents();
+        verify(schedule, times(3)).getActions();
     }
 }

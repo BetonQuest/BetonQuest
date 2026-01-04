@@ -117,7 +117,7 @@ public class CoreFeatureFactories {
      * @param loggerFactory      the factory to create new class specific loggers
      * @param packManager        the quest package manager to get quest packages from
      * @param lastExecutionCache the cache to catch up missed schedulers
-     * @param questTypeApi       the class for executing events
+     * @param questTypeApi       the class for executing actions
      * @param placeholders       the {@link Placeholders} to create and resolve placeholders
      * @param featureApi         the Feature API
      * @param config             the config
