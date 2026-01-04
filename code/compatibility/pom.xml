@@ -57,6 +57,7 @@
     <api.version>5.4</api.version>
     <auraskills-api-bukkit.version>2.2.0</auraskills-api-bukkit.version>
     <fabled.version>1.0.2-R1</fabled.version>
+    <FancyHolograms.version>3.0.0-SNAPSHOT.24</FancyHolograms.version> <!-- 3.0.0-SNAPSHOT.24 -->
   </properties>
 
   <dependencies>
@@ -257,6 +258,13 @@
       <groupId>de.oliver</groupId>
       <artifactId>FancyNpcs</artifactId>
       <version>${FancyNpcs.version}</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>de.oliver</groupId>
+      <artifactId>FancyHolograms</artifactId>
+      <version>${FancyHolograms.version}</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
