@@ -39,7 +39,7 @@ Let's compare the structure of the basic tutorial to one of a realistic quest pa
 !!! example annotate "Basics Tutorial Structure"
     * :material-folder-open: tutorialQuest
         - :material-file-star: package.yml (1)
-        - :material-file: events.yml  (2)
+        - :material-file: actions.yml  (2)
         - :material-file: conditions.yml
         - :material-file: objectives.yml
         - :material-folder-open: conversations
@@ -53,8 +53,8 @@ Let's compare the structure of the basic tutorial to one of a realistic quest pa
 !!! example annotate "Typical Quest Structure"
     - :material-folder-open: myExampleQuest
         - :material-file-star: package.yml (1)
-        - :material-file: myEventsList1.yml (2)
-        - :material-file: myEventsList2.yml (3)
+        - :material-file: myActionsList1.yml (2)
+        - :material-file: myActionsList2.yml (3)
         - :material-file: importantConditions.yml
         - :material-file: normalObjectives.yml (4)
         - :material-file: dungeonObjectives.yml
@@ -90,8 +90,8 @@ Then play around with this system to get a feel for it.
     * :material-folder-open: QuestPackages
         - :material-folder-open: myExampleQuest
             - :material-file: package.yml
-            - :material-file: myEventsList1.yml
-            - :material-file: myEventsList2.yml
+            - :material-file: myActionsList1.yml
+            - :material-file: myActionsList2.yml
             - :material-file: importantConditions.yml
             - :material-file: myAwesomeObjectives.yml
             - :material-file: myConstantsFile.yml
@@ -138,7 +138,7 @@ Then play around with this system to get a feel for it.
                 conditions: "startedTag,!woodcuttingDoneTag,!logsInInventory"
               questDone:
                 text: "That's the wood I was looking for! Thank you so much! Here is my special axe for my special friend."
-                events: "questDone"
+                actions: "questDone"
                 conditions: "woodcuttingDoneTag,logsInInventory"
               questAlreadyDone:
                 text: "Hey! I don't need you anymore. Thanks again for the help."
@@ -150,18 +150,18 @@ Then play around with this system to get a feel for it.
               letsDoIt:
                 text: "Alright let's get the job done!"
                 pointers: "seeYou"
-                events: "questStarted"
+                actions: "questStarted"
         ```
-    === "myEventsList1.yml"
+    === "myActionsList1.yml"
         ```YAML
-        {==events==}:
+        {==actions==}:
           questStarted: "folder startedTagAdd,addWoodcuttingObj"
           startedTagAdd: "tag add startedTag"
           addWoodcuttingObj: "objective add woodCuttingObj"
         ```
-    === "myEventsList2.yml"
+    === "myActionsList2.yml"
         ```YAML
-        {==events==}:
+        {==actions==}:
           questDone: "folder takeWoodFromPlayer,rewardPlayer,addQuestDoneTag"
           takeWoodFromPlayer: "take oakLog:10"
           rewardPlayer: "give jonesAxe"
@@ -172,7 +172,7 @@ Then play around with this system to get a feel for it.
     === "myAwesomeObjectives.yml"
         ```YAML
         {==objectives==}:
-          woodCuttingObj: "block OAK_LOG -10 notify events:addWoodcuttingDoneTag"
+          woodCuttingObj: "block OAK_LOG -10 notify actions:addWoodcuttingDoneTag"
         ```
     === "importantConditions.yml"
         ```YAML
@@ -183,17 +183,17 @@ Then play around with this system to get a feel for it.
           startedTag: "tag startedTag"
         ```
         
-As you can see: Every feature goes into a section like `events:`, `objectives:`, `conversations:` which are marked in
+As you can see: Every feature goes into a section like `actions:`, `objectives:`, `conversations:` which are marked in
 {==blue==} in this example quest.
 BetonQuest uses these section names to understand the contents of a file.
 You can write these sections in any file you want, and it will still work! That's the way you can organize your quests.
 
 !!! note "A note about Sections"
     While you can have multiple sections in one file, you can't have multiple sections with the same name.
-    For example, you can't have two `events:` sections in one file. If you do, the second one will overwrite the first one.
-    You can however have `events:` sections in two different files. In this case, the events from both files will be loaded.
+    For example, you can't have two `actions:` sections in one file. If you do, the second one will overwrite the first one.
+    You can however have `actions:` sections in two different files. In this case, the actions from both files will be loaded.
     
-    You also cannot have two features (e.g. events) with the same name in one package, even if those are in different files.
+    You also cannot have two features (e.g. actions) with the same name in one package, even if those are in different files.
 
 ## 3. Creating a Quest Package with a single file
 
@@ -236,7 +236,7 @@ It's the exact same quest but in just one file:
              conditions: "startedTag,!woodcuttingDoneTag,!logsInInventory"
            questDone:
              text: "That's the wood I was looking for! Thank you so much! Here is my special axe for my special friend."
-             events: "questDone"
+             actions: "questDone"
              conditions: "woodcuttingDoneTag,logsInInventory"
            questAlreadyDone:
              text: "Hey! I don't need you anymore. Thanks again for the help."
@@ -248,9 +248,9 @@ It's the exact same quest but in just one file:
            letsDoIt:
              text: "Alright let's get the job done!"
              pointers: "seeYou"
-             events: "questStarted"
+             actions: "questStarted"
 
-     {==events==}:
+     {==actions==}:
        questStarted: "folder startedTagAdd,addWoodcuttingObj"
        startedTagAdd: "tag add startedTag"
        addWoodcuttingObj: "objective add woodCuttingObj"
@@ -263,7 +263,7 @@ It's the exact same quest but in just one file:
        addWoodcuttingDoneTag: "tag add woodcuttingDoneTag"
 
      {==objectives==}:
-       woodCuttingObj: "block OAK_LOG -10 notify events:addWoodcuttingDoneTag"
+       woodCuttingObj: "block OAK_LOG -10 notify actions:addWoodcuttingDoneTag"
 
      {==conditions==}:
        woodcuttingDoneTag: "tag woodcuttingDoneTag"
@@ -327,10 +327,10 @@ Let me first show you the example for it:
         - :material-folder-open: woodCuttingQuest
             - :material-file: package.yml
             - {==:material-folder-open: questPart1==}
-                - :material-file: myEventsPart1.yml
+                - :material-file: myActionsPart1.yml
                 - :material-file: MageConversation.yml
             - {==:material-folder-open: questPart2==}
-                - :material-file: myEventsPart2.yml
+                - :material-file: myActionsPart2.yml
                 - :material-file: KingConversation.yml
 
 You can create as many subdirectories in your quest packages as you like.

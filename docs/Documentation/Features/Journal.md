@@ -10,7 +10,7 @@ The journal can be obtained with the **/journal** command or by selecting it fro
 It's a quest item, so you cannot put it into any chests, item frames and so on.
 If you ever feel the need to get rid of your journal: Just drop it! It will safely return to your backpack.
 
-The journal is updated with the `journal` event, based on the text entries written inside a _journal_ section.
+The journal is updated with the `journal` action, based on the text entries written inside a _journal_ section.
 The entries can use color codes, but the color will be lost between pages. 
 If you update these texts and reload the plugin, all players' journals will reflect changes. 
 

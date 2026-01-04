@@ -90,7 +90,7 @@ menu_items:
 conditions:
   skeletonQuestDone: "tag skeletonQuestDone"
   goldQuestDone: "tag goldQuestDone"
-events:
+actions:
   locationNotify: "notify &cThe skeletons roam at x\\:123 z\\:456!"
 items:
   openMenuItem: "simple BOOK title:Quests"

@@ -35,14 +35,14 @@ use: "codeboxes for code"
 ```
 ### Referring to YAML elements in written text
 
-An example of this would be to reference an event name in an explanation.
+An example of this would be to reference an action name in an explanation.
 
 ``` YAML linenums="1"
-The event `someEvent` prints a message to the player!
+The action `someAction` prints a message to the player!
 ```
 
 Result:
-The event `someEvent` prints a message to the player!
+The action `someAction` prints a message to the player!
 
 ## File names
 
@@ -52,7 +52,7 @@ Replace all spaces in file and folder names with `-`!
 File names in written text must be quoted and italic.
 
 Example:
-Open "_events.yml_" to add these new events.
+Open "_actions.yml_" to add these new actions.
 
 ## Markdown Formatting Conventions
 Unfortunately, there are different ways to format text in Markdown. Please use the syntax outlined here:

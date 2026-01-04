@@ -35,7 +35,7 @@ Let's take a look at a few examples:
 
 ### Defining features
 
-You can freely define features (events, conversations, items etc.) in all files 
+You can freely define features (actions, conversations, items etc.) in all files 
 of a quest package. However, they need to be defined in a section that defines their type.
 
 The names of these features must be unique in that package, no matter which file they are in.
@@ -43,7 +43,7 @@ The names of these features must be unique in that package, no matter which file
 ??? example
 
     ```YAML
-    events:
+    actions:
       teleportPlayer: "..."
     
     conditions:
@@ -69,7 +69,7 @@ The names of these features must be unique in that package, no matter which file
 ### Working across Packages
 
 Accessing features from other packages can be very helpful to link quests together.
-All events, conditions, objectives, items and conversations can be accessed.
+All actions, conditions, objectives, items and conversations can be accessed.
 
 You never need to access a specific file since feature names are unique within a package.
 
@@ -79,15 +79,15 @@ You can access **top-level packages** (placed directly in "_QuestPackages_") by 
 greater than (`>`) and the package name. 
 
 ??? example
-    Let's assume you have a `rewards` package that contains player reward events.  
-    Let's run the `easyMobObjective` event of the `rewards` package from another package:
+    Let's assume you have a `rewards` package that contains player reward actions.  
+    Let's run the `easyMobObjective` action of the `rewards` package from another package:
     
-    1. Add a greater than (`>`) before the event name :arrow_right: `{==>==}easyMobObjective`
+    1. Add a greater than (`>`) before the action name :arrow_right: `{==>==}easyMobObjective`
     2. Add the package name in front of the greater than :arrow_right: `{==rewards==}>easyMobObjective`
     
     An example usage could look like this:
     ````YAML
-    zombieObjective: "mobkill ZOMBIE 5 events:{==rewards>easyMobObjective==}"
+    zombieObjective: "mobkill ZOMBIE 5 actions:{==rewards>easyMobObjective==}"
     ````
     Note that this only works for top-level packages (the `rewards` package is placed directly in the `QuestPackages`
     folder).
@@ -103,29 +103,29 @@ the package name and the path from the "_QuestPackages_" folder to the package.
     === "One Nested Package"
         Let's assume you have a `dailyQuests` package that contains a `dailyQuestOne` package. The `dailyQuests` package
         is located in the `QuestPackages` folder.
-        Let's run the `startDailyQuest` event of the `dailyQuestOne` package from a third package:
+        Let's run the `startDailyQuest` action of the `dailyQuestOne` package from a third package:
         
-        1. Combine the event name with the package name :arrow_right: `{==dailyQuestOne>==}startDailyQuest`
+        1. Combine the action name with the package name :arrow_right: `{==dailyQuestOne>==}startDailyQuest`
         2. Add the path from the `QuestPackages` folder to the `dailyQuestOne` package seperated by dashes (`-`).
         :arrow_right: `{==dailyQuests-==}dailyQuestOne>startDailyQuest`
         
         An example usage could look like this:
         ````YAML
-        zombieObjective: "mobkill ZOMBIE 5 events:{==dailyQuests-dailyQuestOne>startDailyQuest==}"
+        zombieObjective: "mobkill ZOMBIE 5 actions:{==dailyQuests-dailyQuestOne>startDailyQuest==}"
         ````
         
     === "Multiple Nested Packages"
         Let's assume you have a `dailyQuests` package that contains a `dailyQuestOne` package. The `dailyQuests` package
         is contained inside a folder called `repeatable` which is located in the `QuestPackages` folder.
-        Let's run the `startDailyQuest` event of the `dailyQuestOne` package from a third package:
+        Let's run the `startDailyQuest` action of the `dailyQuestOne` package from a third package:
         
-        1. Combine the event name with the package name :arrow_right: `{==dailyQuestOne>==}startDailyQuest`
+        1. Combine the action name with the package name :arrow_right: `{==dailyQuestOne>==}startDailyQuest`
         2. Add the path from the `QuestPackages` folder to the `dailyQuestOne` package seperated by dashes (`-`).
         :arrow_right: `{==repetable-dailyQuests-==}dailyQuestOne>startDailyQuest`
         
         An example usage could look like this:
         ````YAML
-        zombieObjective: "mobkill ZOMBIE 5 events:{==repetable-dailyQuests-dailyQuestOne>startDailyQuest==}"
+        zombieObjective: "mobkill ZOMBIE 5 actions:{==repetable-dailyQuests-dailyQuestOne>startDailyQuest==}"
         ````
     
 #### Relative paths
@@ -142,31 +142,31 @@ to match the current location, relative paths will still work.
 
     === "Going Upwards"
         Let's assume you have a `weeklyQuests` folder that contains a `weeklyQuestOne` and a `weeklyQuestTwo` package.
-        Let's run the `startQuestTwo` event of the `weeklyQuestTwo` package from the `weeklyQuestOne` package.
+        Let's run the `startQuestTwo` action of the `weeklyQuestTwo` package from the `weeklyQuestOne` package.
         
-        1. Combine the event name with the package name :arrow_right: `{==weeklyQuestTwo>==}startQuestTwo`
+        1. Combine the action name with the package name :arrow_right: `{==weeklyQuestTwo>==}startQuestTwo`
         2. Add the path from the current _package.yml_ to the folder the package of interested lies in. This is done using
         underscores ("go one folder up"). A dash must be added after each underscore (`-`).
         :arrow_right: `{==_-==}weeklyQuestTwo>startQuestTwo`
         
         An example usage could look like this:
         ````YAML
-        zombieObjective: "mobkill ZOMBIE 50 events:{==_-weeklyQuestTwo>startQuestTwo==}"
+        zombieObjective: "mobkill ZOMBIE 50 actions:{==_-weeklyQuestTwo>startQuestTwo==}"
         ````
         
     === "Going Downwards"
         Let's assume you have a `weeklyQuests` package that contains a `weeklyQuestTwo` package which contains another
         package called `subQuest`.
-        Let's run the `startQuest` event of the `subQuest` package from the `weeklyQuests` package.
+        Let's run the `startQuest` action of the `subQuest` package from the `weeklyQuests` package.
         
-        1. Combine the event name with the package name :arrow_right: `{==subQuest>==}startQuest`
+        1. Combine the action name with the package name :arrow_right: `{==subQuest>==}startQuest`
         2. Add the path from the current _package.yml_ to the folder the package of interest lies in. Package names 
         must be seperated by dashes (`-`). The path must also be started with a dash to signal "from the current package
         downwards". :arrow_right: `{==-weeklyQuestTwo-==}subQuest>startQuest`
         
         An example usage could look like this:
         ````YAML
-        zombieObjective: "mobkill ZOMBIE 50 events:{==-weeklyQuestTwo-subQuest>startQuest==}"
+        zombieObjective: "mobkill ZOMBIE 50 actions:{==-weeklyQuestTwo-subQuest>startQuest==}"
         ````
     
 ### Disabling Packages
@@ -213,12 +213,12 @@ package:
 ````
 
 If you use the above in a package, the `MyTemplate` and `SecondTemplate` templates would be used as a base for
-the package. This means that all the events, objectives, conditions, etc. from the templates would be added to the
-package. If the package already contains an event/objective/condition with the same name as one from the template,
-the package's events, objectives, conditions, etc. will be used instead of the one from the template.
+the package. This means that all the actions, objectives, conditions, etc. from the templates would be added to the
+package. If the package already contains an action/objective/condition with the same name as one from the template,
+the package's actions, objectives, conditions, etc. will be used instead of the one from the template.
 
-If the same events, objectives, conditions, etc. is defined in multiple templates, the one from the lists first template
+If the same actions, objectives, conditions, etc. is defined in multiple templates, the one from the lists first template
 will be used.
 
-You can also use templates in templates. Also in this case, the events, objectives, conditions, etc. that are defined
+You can also use templates in templates. Also in this case, the actions, objectives, conditions, etc. that are defined
 in the current template will be used instead of the ones from the template that is being used as a base.

@@ -3,7 +3,7 @@ icon: material/television-guide
 ---
 
 # Menus
-BetonQuest allows the creation of fully custom GUIs using the events and items system.  
+BetonQuest allows the creation of fully custom GUIs using the actions and items system.  
 Nearly everything can be done with these, from GUIs listing open quests over simple warp systems to
 information GUIs that display player stats.
 
@@ -39,8 +39,8 @@ These are general settings for customizing a menu.
 | <div style="width:130px">Setting Name</div> | Example                                     | Description                                                                                                                                           |
 |:-------------------------------------------:|---------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
 |              `open_conditions`              | `open_conditions: "unlockedMenu,!sneaking"` | One or multiple conditions (separated by a `,`) which all have to be true to open the menu with a bound item or a bound command.                      |
-|                `open_events`                | `open_events: "menuOpenSound"`              | One or multiple events (separated by a `,`) which will be fired when the menu is opened.                                                              |
-|               `close_events`                | `close_events: "menuCloseSound"`            | One or multiple events (separated by a `,`) which will be fired when the menu is closed.                                                              |  
+|               `open_actions`                | `open_actions: "menuOpenSound"`             | One or multiple actions (separated by a `,`) which will be fired when the menu is opened.                                                             |
+|               `close_actions`               | `close_actions: "menuCloseSound"`           | One or multiple actions (separated by a `,`) which will be fired when the menu is closed.                                                             |  
 |                   `bind`                    | `bind: "openMenuItem"`                      | Clicking with this [quest item](../../Features/Items.md) in hand will open the menu. You can create this item in the `items` section of your package. |
 |                  `command`                  | `command: "/quests"`                        | This command can be executed to open the menu.                                                                                                        |
 
@@ -127,7 +127,7 @@ menu_items:
 2. The name and description of the item in german.
 
 ### The optional `click` setting
-You can define one or multiple events (separated by `,`) that are run whenever the item is clicked.    
+You can define one or multiple actions (separated by `,`) that are run whenever the item is clicked.    
 ``` YAML title="Example"
 items:
   skeletonQuestDone:
