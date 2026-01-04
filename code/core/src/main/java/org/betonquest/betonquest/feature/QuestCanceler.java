@@ -12,8 +12,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -267,7 +267,7 @@ public class QuestCanceler {
      * @param journal    the journal entries to remove
      * @param location   the location to teleport the player to
      */
-    public record CancelData(Argument<List<ConditionID>> conditions, Argument<List<EventID>> events,
+    public record CancelData(Argument<List<ConditionID>> conditions, Argument<List<ActionID>> events,
                              Argument<List<ObjectiveID>> objectives, Argument<List<String>> tags,
                              Argument<List<String>> points, Argument<List<JournalEntryID>> journal,
                              @Nullable Argument<Location> location) {

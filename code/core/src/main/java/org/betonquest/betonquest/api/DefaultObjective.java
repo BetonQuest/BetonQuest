@@ -8,8 +8,8 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
@@ -77,7 +77,7 @@ public abstract class DefaultObjective implements PropertyHolder {
     /**
      * Events to fire on completion.
      */
-    private final Argument<List<EventID>> events;
+    private final Argument<List<ActionID>> events;
 
     /**
      * If the objective should start again on completion.
@@ -120,7 +120,7 @@ public abstract class DefaultObjective implements PropertyHolder {
         this.profileProvider = BetonQuest.getInstance().getProfileProvider();
         this.dataMap = new ProfileKeyMap<>(profileProvider);
         persistent = instruction.bool().getFlag("persistent", true);
-        events = instruction.parse(EventID::new).list().get("actions", Collections.emptyList());
+        events = instruction.parse(ActionID::new).list().get("actions", Collections.emptyList());
         conditions = instruction.parse(ConditionID::new).list().get("conditions", Collections.emptyList());
         final FlagArgument<Number> notify = instruction.number().atLeast(0).getFlag("notify", 1);
         this.notifyInterval = notify.getValue(null).orElse(0).intValue();

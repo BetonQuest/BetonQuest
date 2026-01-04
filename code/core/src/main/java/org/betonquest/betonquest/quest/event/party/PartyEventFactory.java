@@ -6,8 +6,8 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
@@ -52,7 +52,7 @@ public class PartyEventFactory implements PlayerEventFactory {
         final Argument<Number> range = instruction.number().get();
         final Argument<Number> amount = instruction.number().get("amount").orElse(null);
         final Argument<List<ConditionID>> conditions = instruction.parse(ConditionID::new).list().get();
-        final Argument<List<EventID>> events = instruction.parse(EventID::new).list().get();
+        final Argument<List<ActionID>> events = instruction.parse(ActionID::new).list().get();
         return new OnlineEventAdapter(
                 new PartyEvent(questTypeApi, profileProvider, range, amount, conditions, events),
                 loggerFactory.create(PartyEvent.class),

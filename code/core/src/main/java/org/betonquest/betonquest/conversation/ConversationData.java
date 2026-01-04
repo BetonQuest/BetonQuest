@@ -15,8 +15,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.conversation.interceptor.InterceptorFactory;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultListArgument;
@@ -433,9 +433,9 @@ public class ConversationData {
      * @param profile the profile of the player
      * @param option  the name of the conversation option
      * @param type    the type of the option
-     * @return a list of {@link EventID}s
+     * @return a list of {@link ActionID}s
      */
-    public List<EventID> getEventIDs(final Profile profile, final ResolvedOption option, final OptionType type) {
+    public List<ActionID> getEventIDs(final Profile profile, final ResolvedOption option, final OptionType type) {
         final Map<String, ConversationOption> options;
         if (type == NPC) {
             options = option.conversationData().npcOptions;
@@ -544,7 +544,7 @@ public class ConversationData {
      * @param invincible       If true, the player will not be able to damage or be damaged by entities in conversation.
      */
     public record PublicData(ConversationID conversationID, Text quester, Argument<Boolean> blockMovement,
-                             Argument<List<EventID>> finalEvents, Argument<ConversationIOFactory> convIO,
+                             Argument<List<ActionID>> finalEvents, Argument<ConversationIOFactory> convIO,
                              Argument<InterceptorFactory> interceptor, Argument<Number> interceptorDelay,
                              boolean invincible) {
 
@@ -597,7 +597,7 @@ public class ConversationData {
         /**
          * Events that are triggered when the option is selected.
          */
-        private final List<EventID> events;
+        private final List<ActionID> events;
 
         /**
          * Other options that are available after this option is selected.
@@ -640,7 +640,7 @@ public class ConversationData {
 
             this.text = parseText(conv);
             this.conditions = resolve(conv, "conditions", ConditionID::new);
-            this.events = resolve(conv, "actions", EventID::new);
+            this.events = resolve(conv, "actions", ActionID::new);
 
             final StringParser stringParser = new StringParser();
 
@@ -744,20 +744,20 @@ public class ConversationData {
          * given {@link Profile}).
          *
          * @param profile the profile of the player to get the events for
-         * @return a list of {@link EventID}s
+         * @return a list of {@link ActionID}s
          */
-        public List<EventID> getEvents(final Profile profile) {
+        public List<ActionID> getEvents(final Profile profile) {
             return getEvents(profile, new ArrayList<>());
         }
 
-        private List<EventID> getEvents(final Profile profile, final List<String> optionPath) {
+        private List<ActionID> getEvents(final Profile profile, final List<String> optionPath) {
             // Prevent infinite loops
             if (optionPath.contains(getName())) {
                 return Collections.emptyList();
             }
             optionPath.add(getName());
 
-            final List<EventID> events = new ArrayList<>(this.events);
+            final List<ActionID> events = new ArrayList<>(this.events);
 
             for (final String extend : extendLinks) {
                 if (questTypeApi.conditions(profile, getOption(extend, type).getConditions())) {

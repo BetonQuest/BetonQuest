@@ -5,8 +5,8 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.util.Utils;
 import org.jetbrains.annotations.Nullable;
@@ -50,7 +50,7 @@ public class PartyEvent implements OnlineEvent {
     /**
      * The events to fire.
      */
-    private final Argument<List<EventID>> events;
+    private final Argument<List<ActionID>> events;
 
     /**
      * Creates a new PartyEvent instance.
@@ -64,7 +64,7 @@ public class PartyEvent implements OnlineEvent {
      * @param events          the events to fire
      */
     public PartyEvent(final QuestTypeApi questTypeApi, final ProfileProvider profileProvider, final Argument<Number> range,
-                      @Nullable final Argument<Number> amount, final Argument<List<ConditionID>> conditions, final Argument<List<EventID>> events) {
+                      @Nullable final Argument<Number> amount, final Argument<List<ConditionID>> conditions, final Argument<List<ActionID>> events) {
         this.questTypeApi = questTypeApi;
         this.profileProvider = profileProvider;
         this.range = range;

@@ -10,8 +10,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -99,7 +99,7 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerID, QuestCa
         final StringParser stringParser = new StringParser();
         final QuestCanceler.CancelData cancelData = new QuestCanceler.CancelData(
                 new DefaultListArgument<>(placeholders, pack, section.getString("conditions", ""), value -> new ConditionID(placeholders, packManager, pack, value)),
-                new DefaultListArgument<>(placeholders, pack, section.getString("actions", ""), value -> new EventID(placeholders, packManager, pack, value)),
+                new DefaultListArgument<>(placeholders, pack, section.getString("actions", ""), value -> new ActionID(placeholders, packManager, pack, value)),
                 new DefaultListArgument<>(placeholders, pack, section.getString("objectives", ""), value -> new ObjectiveID(placeholders, packManager, pack, value)),
                 new DefaultListArgument<>(placeholders, pack, section.getString("tags", ""), stringParser),
                 new DefaultListArgument<>(placeholders, pack, section.getString("points", ""), stringParser),

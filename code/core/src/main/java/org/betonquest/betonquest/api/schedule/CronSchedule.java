@@ -5,7 +5,7 @@ import com.cronutils.model.RebootCron;
 import com.cronutils.model.definition.CronDefinition;
 import com.cronutils.model.definition.CronDefinitionBuilder;
 import com.cronutils.model.time.ExecutionTime;
-import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 
 import java.util.List;
 
@@ -65,7 +65,7 @@ public class CronSchedule extends Schedule {
      * @param timeCron      the Cron to schedule execution
      * @param executionTime the time when the schedule should be executed
      */
-    public CronSchedule(final ScheduleID scheduleID, final List<EventID> events, final CatchupStrategy catchup,
+    public CronSchedule(final ScheduleID scheduleID, final List<ActionID> events, final CatchupStrategy catchup,
                         final Cron timeCron, final ExecutionTime executionTime) {
         super(scheduleID, events, catchup);
         this.timeCron = timeCron;

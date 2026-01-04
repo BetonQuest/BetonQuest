@@ -7,8 +7,8 @@ import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
@@ -73,7 +73,7 @@ public class FolderEventFactory implements PlayerEventFactory, PlayerlessEventFa
     }
 
     private NullableEventAdapter createFolderEvent(final Instruction instruction) throws QuestException {
-        final Argument<List<EventID>> events = instruction.parse(EventID::new).list().get();
+        final Argument<List<ActionID>> events = instruction.parse(ActionID::new).list().get();
         final Argument<Number> delay = instruction.number().get("delay").orElse(null);
         final Argument<Number> period = instruction.number().get("period").orElse(null);
         final Argument<Number> random = instruction.number().get("random").orElse(null);

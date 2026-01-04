@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.quest.event.random;
 
-import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 
 /**
  * Represents an event with its weight.
  *
- * @param eventID the event to be executed
- * @param weight  the weight of the event
+ * @param actionID the event to be executed
+ * @param weight   the weight of the event
  */
-public record RandomEvent(EventID eventID, double weight) {
+public record RandomEvent(ActionID actionID, double weight) {
 
 }
