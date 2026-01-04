@@ -221,10 +221,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     case "c":
                         handleConditions(sender, args);
                         break;
-                    case "events":
-                    case "event":
-                    case "e":
-                        handleEvents(sender, args);
+                    case "actions":
+                    case "action":
+                    case "a":
+                        handleActions(sender, args);
                         break;
                     case "items":
                     case "item":
@@ -330,7 +330,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     @Override
     public Optional<List<String>> simpleTabComplete(final CommandSender sender, final Command command, final String alias, final String... args) {
         if (args.length == 1) {
-            return Optional.of(Arrays.asList("condition", "event", "item", "give", "objective", "globaltag",
+            return Optional.of(Arrays.asList("condition", "action", "item", "give", "objective", "globaltag",
                     "globalpoint", "tag", "point", "journal", "delete", "rename", "version", "purge",
                     "update", "reload", "backup", "debug", "download", "variable"));
         }
@@ -338,9 +338,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "conditions",
                  "condition",
                  "c" -> completeConditions(args);
-            case "events",
-                 "event",
-                 "e" -> completeEvents(args);
+            case "actions",
+                 "action",
+                 "a" -> completeActions(args);
             case "items",
                  "item",
                  "i",
@@ -854,18 +854,17 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     }
 
     /**
-     * Fires an event for an online player. It cannot work for offline players!
+     * Fires an action for an online player. It cannot work for offline players!
      */
-    private void handleEvents(final CommandSender sender, final String... args) {
-        // the player has to be specified every time
+    private void handleActions(final CommandSender sender, final String... args) {
         if (args.length < 2 || Bukkit.getPlayer(args[1]) == null && !"-".equals(args[1])) {
             log.debug("Player's name is missing or he's offline");
             sendMessage(sender, "specify_player");
             return;
         }
         if (args.length < 3) {
-            log.debug("Event's ID is missing");
-            sendMessage(sender, "specify_event");
+            log.debug("Actions's ID is missing");
+            sendMessage(sender, "specify_action");
             return;
         }
         final EventID eventID;
@@ -874,21 +873,20 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
-            log.warn("Could not find event: " + e.getMessage(), e);
+            log.warn("Could not find action: " + e.getMessage(), e);
             return;
         }
-        // fire the event
         final Profile profile = "-".equals(args[1]) ? null : profileProvider.getProfile(Bukkit.getOfflinePlayer(args[1]));
         instance.getQuestTypeApi().event(profile, eventID);
-        sendMessage(sender, "player_event",
-                new VariableReplacement("event", Component.text(eventID.getInstruction().toString())));
+        sendMessage(sender, "player_action",
+                new VariableReplacement("action", Component.text(eventID.getInstruction().toString())));
     }
 
     /**
      * Returns a list including all possible options for tab complete of the
-     * /betonquest event command.
+     * /betonquest action command.
      */
-    private Optional<List<String>> completeEvents(final String... args) {
+    private Optional<List<String>> completeActions(final String... args) {
         if (args.length == 2) {
             return Optional.empty();
         }
@@ -1471,7 +1469,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         map.put("points", "point <player> [list/add/del] [category] [amount]");
         map.put("journal", "journal <player> [list/add/del] [entry] [date]");
         map.put("condition", "condition <player> <condition>");
-        map.put("event", "event <player> <event>");
+        map.put("action", "action <player> <action>");
         map.put("item", "item <name>");
         map.put("give", "give <name>");
         map.put("variable", "variable <player> <variable> [list/set/del]");
