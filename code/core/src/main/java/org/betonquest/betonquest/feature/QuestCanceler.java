@@ -155,7 +155,7 @@ public class QuestCanceler {
         removeSimple(onlineProfile, data.points, "point", playerData::removePointsCategory);
         cancelObjectives(onlineProfile, playerData);
         removeEntries(onlineProfile, playerData);
-        executeEvents(onlineProfile);
+        executeActions(onlineProfile);
         teleport(onlineProfile);
         log.debug("Quest removed!");
         final Component questName = getName(onlineProfile);
@@ -200,11 +200,11 @@ public class QuestCanceler {
         }
     }
 
-    private void executeEvents(final OnlineProfile onlineProfile) {
+    private void executeActions(final OnlineProfile onlineProfile) {
         try {
-            questTypeApi.events(onlineProfile, data.events.getValue(onlineProfile));
+            questTypeApi.actions(onlineProfile, data.actions.getValue(onlineProfile));
         } catch (final QuestException e) {
-            log.warn(pack, "Cannot execute events in QuestCanceler " + cancelerID + ": " + e.getMessage(), e);
+            log.warn(pack, "Cannot execute actions in QuestCanceler " + cancelerID + ": " + e.getMessage(), e);
         }
     }
 
@@ -260,14 +260,14 @@ public class QuestCanceler {
      * Relevant data for the cancel process.
      *
      * @param conditions the conditions which need to be fulfilled to use the canceler
-     * @param events     the events to fire when the canceler is used
+     * @param actions    the actions to fire when the canceler is used
      * @param objectives the objectives to stop
      * @param tags       the tags  to remove
      * @param points     the points to remove
      * @param journal    the journal entries to remove
      * @param location   the location to teleport the player to
      */
-    public record CancelData(Argument<List<ConditionID>> conditions, Argument<List<ActionID>> events,
+    public record CancelData(Argument<List<ConditionID>> conditions, Argument<List<ActionID>> actions,
                              Argument<List<ObjectiveID>> objectives, Argument<List<String>> tags,
                              Argument<List<String>> points, Argument<List<JournalEntryID>> journal,
                              @Nullable Argument<Location> location) {

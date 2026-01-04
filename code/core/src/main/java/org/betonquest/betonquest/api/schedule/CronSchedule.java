@@ -47,12 +47,12 @@ public class CronSchedule extends Schedule {
             .instance();
 
     /**
-     * Cron expression that defines when the events from this schedule shall run.
+     * Cron expression that defines when the actions from this schedule shall run.
      */
     protected final Cron timeCron;
 
     /**
-     * Provides information when the events from this schedule shall be executed.
+     * Provides information when the actions from this schedule shall be executed.
      */
     protected final ExecutionTime executionTime;
 
@@ -60,20 +60,20 @@ public class CronSchedule extends Schedule {
      * Creates new instance of the Cron schedule.
      *
      * @param scheduleID    the schedule id
-     * @param events        the events to execute
+     * @param actions       the actions to execute
      * @param catchup       the catchup strategy
      * @param timeCron      the Cron to schedule execution
      * @param executionTime the time when the schedule should be executed
      */
-    public CronSchedule(final ScheduleID scheduleID, final List<ActionID> events, final CatchupStrategy catchup,
+    public CronSchedule(final ScheduleID scheduleID, final List<ActionID> actions, final CatchupStrategy catchup,
                         final Cron timeCron, final ExecutionTime executionTime) {
-        super(scheduleID, events, catchup);
+        super(scheduleID, actions, catchup);
         this.timeCron = timeCron;
         this.executionTime = executionTime;
     }
 
     /**
-     * Get the cron expression that defines when the events from this schedule shall run.
+     * Get the cron expression that defines when the actions from this schedule shall run.
      *
      * @return parsed cron expression
      */
@@ -92,7 +92,7 @@ public class CronSchedule extends Schedule {
     }
 
     /**
-     * Get information when the events from this schedule shall be executed.
+     * Get information when the actions from this schedule shall be executed.
      *
      * @return execution time helper as defined by cron-utils
      */

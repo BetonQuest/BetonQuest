@@ -15,10 +15,10 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Fires a BetonQuest event as a quest reward.
+ * Fires a BetonQuest action as a quest reward.
  */
 @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
-public class EventReward extends BukkitCustomReward {
+public class ActionReward extends BukkitCustomReward {
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -54,24 +54,24 @@ public class EventReward extends BukkitCustomReward {
      * @param questTypeApi    the Quest Type API
      * @param profileProvider the profile provider instance
      */
-    public EventReward(final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager, final QuestTypeApi questTypeApi,
-                       final ProfileProvider profileProvider) {
+    public ActionReward(final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager, final QuestTypeApi questTypeApi,
+                        final ProfileProvider profileProvider) {
         super();
         this.log = log;
         this.placeholders = placeholders;
         this.packManager = packManager;
         this.questTypeApi = questTypeApi;
         this.profileProvider = profileProvider;
-        setName("BetonQuest event");
+        setName("BetonQuest action");
         setAuthor("BetonQuest");
-        addStringPrompt("Event", "Specify BetonQuest event with the package and the name", null);
+        addStringPrompt("Action", "Specify BetonQuest action with the package and the name", null);
     }
 
     @Override
     public void giveReward(final UUID uuid, final Map<String, Object> dataMap) {
-        final Object object = dataMap.get("Event");
+        final Object object = dataMap.get("Action");
         if (object == null) {
-            log.warn("Error while checking quest requirement - Missing Event Object");
+            log.warn("Error while checking quest requirement - Missing Action Object");
             return;
         }
         final String string = object.toString();
@@ -81,10 +81,10 @@ public class EventReward extends BukkitCustomReward {
                 log.warn("Error while running quest reward - Player with UUID '" + uuid + "' not found.");
                 return;
             }
-            final ActionID event = new ActionID(placeholders, packManager, null, string);
-            questTypeApi.event(profileProvider.getProfile(player), event);
+            final ActionID action = new ActionID(placeholders, packManager, null, string);
+            questTypeApi.action(profileProvider.getProfile(player), action);
         } catch (final QuestException e) {
-            log.warn("Error while running quest reward - BetonQuest event '" + string + "' not found: " + e.getMessage(), e);
+            log.warn("Error while running quest reward - BetonQuest action '" + string + "' not found: " + e.getMessage(), e);
         }
     }
 }

@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
  * Test {@link OnlineProfileGroupPlayerlessEventAdapter}.
  */
 @ExtendWith(MockitoExtension.class)
-class OnlineProfileGroupPlayerlessEventAdapterTest {
+class OnlineProfileGroupPlayerlessActionAdapterTest {
 
     /**
      * Internal non-static event mock that is adapted to a static event by the tested class.
@@ -33,7 +33,7 @@ class OnlineProfileGroupPlayerlessEventAdapterTest {
     /**
      * Create test class instance.
      */
-    public OnlineProfileGroupPlayerlessEventAdapterTest() {
+    public OnlineProfileGroupPlayerlessActionAdapterTest() {
     }
 
     private static Stream<List<OnlineProfile>> playerListSource() {

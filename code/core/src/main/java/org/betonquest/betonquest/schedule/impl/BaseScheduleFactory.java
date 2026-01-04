@@ -55,14 +55,14 @@ public abstract class BaseScheduleFactory<S extends Schedule> implements Schedul
         final String time = Optional.ofNullable(instruction.getString("time"))
                 .orElseThrow(() -> new QuestException("Missing time instruction"));
 
-        final String eventsString = Optional.ofNullable(instruction.getString("actions"))
+        final String actionsString = Optional.ofNullable(instruction.getString("actions"))
                 .orElseThrow(() -> new QuestException("Missing actions"));
-        final List<ActionID> events;
+        final List<ActionID> actions;
         try {
-            events = new DefaultListArgument<>(placeholders, pack, eventsString,
+            actions = new DefaultListArgument<>(placeholders, pack, actionsString,
                     value -> new ActionID(placeholders, packManager, pack, value)).getValue(null);
         } catch (final QuestException e) {
-            throw new QuestException("Error while loading events: " + e.getMessage(), e);
+            throw new QuestException("Error while loading actions: " + e.getMessage(), e);
         }
 
         final String catchupString = instruction.getString("catchup");
@@ -72,17 +72,17 @@ public abstract class BaseScheduleFactory<S extends Schedule> implements Schedul
         } else {
             catchup = new EnumParser<>(CatchupStrategy.class).apply(catchupString);
         }
-        return new ScheduleData(time, events, catchup);
+        return new ScheduleData(time, actions, catchup);
     }
 
     /**
      * parsed objects required for schedule creation.
      *
-     * @param time    Instruction string defining at which time the events should be scheduled to run.
-     * @param events  A list of events that will be run by this schedule.
+     * @param time    Instruction string defining at which time the actions should be scheduled to run.
+     * @param actions A list of actions that will be run by this schedule.
      * @param catchup Behavior for missed executions.
      */
-    protected record ScheduleData(String time, List<ActionID> events, CatchupStrategy catchup) {
+    protected record ScheduleData(String time, List<ActionID> actions, CatchupStrategy catchup) {
 
     }
 }

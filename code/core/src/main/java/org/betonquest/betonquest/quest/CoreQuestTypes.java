@@ -13,9 +13,9 @@ import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.database.PlayerDataFactory;
+import org.betonquest.betonquest.kernel.registry.quest.ActionTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.BaseQuestTypeRegistries;
 import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
-import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.PlaceholderTypeRegistry;
 import org.betonquest.betonquest.quest.condition.advancement.AdvancementConditionFactory;
 import org.betonquest.betonquest.quest.condition.armor.ArmorConditionFactory;
@@ -364,7 +364,7 @@ public class CoreQuestTypes {
         conditionTypes.register("world", new WorldConditionFactory(loggerFactory));
     }
 
-    private void registerEvents(final EventTypeRegistry eventTypes) {
+    private void registerEvents(final ActionTypeRegistry eventTypes) {
         eventTypes.register("burn", new BurnEventFactory(loggerFactory));
         eventTypes.register("cancel", new CancelEventFactory(loggerFactory, featureApi));
         eventTypes.register("cancelconversation", new CancelConversationEventFactory(loggerFactory, featureApi.conversationApi()));

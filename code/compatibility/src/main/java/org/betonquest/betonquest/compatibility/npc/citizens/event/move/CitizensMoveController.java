@@ -74,10 +74,10 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
     }
 
     /**
-     * Checks whenever this NPC is moving because of a 'move' event or not.
+     * Checks whenever this NPC is moving because of a 'move' action or not.
      *
      * @param npc NPC to check
-     * @return true if the NPC is moving because of 'move' event, false if it's
+     * @return true if the NPC is moving because of 'move' action, false if it's
      * standing or moving because other reasons
      */
     public boolean isNPCMoving(final NPC npc) {
@@ -96,7 +96,7 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
     }
 
     /**
-     * Checks if you can talk to a npc or if it's moving because of a 'move' event and conversations are blocked.
+     * Checks if you can talk to a npc or if it's moving because of a 'move' action and conversations are blocked.
      *
      * @param npc NPC to check
      * @return false if you can talk to the npc true if not
@@ -109,7 +109,7 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
     /**
      * Start a new path for the NPC if not already running.
      * <p>
-     * It will execute the fail events of the old run for the given profile
+     * It will execute the fail actions of the old run for the given profile
      * and won't elaborate further.
      *
      * @param npc      the npc to move
@@ -123,7 +123,7 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
         }
         final MoveInstance oldMoveInstance = movingNpcs.get(npc.getId());
         if (oldMoveInstance != null) {
-            questTypeApi.events(profile, oldMoveInstance.moveData.failEvents());
+            questTypeApi.actions(profile, oldMoveInstance.moveData.failActions());
             return;
         }
         final MoveInstance moveInstance = new MoveInstance(plugin, moveData, profile, npc);
@@ -212,12 +212,12 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
      *
      * @param locations          the target location of the movement
      * @param waitTicks          the amount of ticks the NPC will wait before moving to the next location
-     * @param doneEvents         the events to execute when the NPC reaches the last destination
-     * @param failEvents         the events to execute when the NPC can't reach the last destination
+     * @param doneActions        the actions to execute when the NPC reaches the last destination
+     * @param failActions        the actions to execute when the NPC can't reach the last destination
      * @param blockConversations if the NPC will block conversation interaction while moving (includes wait time)
      */
     public record ResolvedMoveData(List<Location> locations, long waitTicks,
-                                   List<ActionID> doneEvents, List<ActionID> failEvents,
+                                   List<ActionID> doneActions, List<ActionID> failActions,
                                    boolean blockConversations) {
 
     }
@@ -321,7 +321,7 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
                 public void run() {
                     npc.getNavigator().setPaused(false);
                     movingNpcs.remove(npcId);
-                    questTypeApi.events(profile, moveData.doneEvents());
+                    questTypeApi.actions(profile, moveData.doneActions());
                 }
             }.runTaskLater(plugin, moveData.waitTicks());
         }

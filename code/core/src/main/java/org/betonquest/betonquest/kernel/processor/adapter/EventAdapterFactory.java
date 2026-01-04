@@ -11,9 +11,9 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Wrapper for factories creating events.
+ * Wrapper for factories creating actions.
  */
-public class EventAdapterFactory extends QuestAdapterFactory<PlayerEvent, PlayerlessEvent, EventAdapter> {
+public class EventAdapterFactory extends QuestAdapterFactory<PlayerEvent, PlayerlessEvent, ActionAdapter> {
 
     /**
      * Logger factory to create class specific logger for quest type factories.
@@ -27,7 +27,7 @@ public class EventAdapterFactory extends QuestAdapterFactory<PlayerEvent, Player
 
     /**
      * Create a new adapter factory from {@link org.betonquest.betonquest.api.quest QuestFactories} for
-     * {@link org.betonquest.betonquest.api.quest.event Events}.
+     * {@link org.betonquest.betonquest.api.quest.event Actions}.
      *
      * @param loggerFactory     the logger factory to create a new custom logger
      * @param questTypeApi      the QuestTypeAPi
@@ -44,9 +44,9 @@ public class EventAdapterFactory extends QuestAdapterFactory<PlayerEvent, Player
     }
 
     @Override
-    protected EventAdapter getAdapter(final Instruction instruction,
-                                      @Nullable final PlayerEvent playerType,
-                                      @Nullable final PlayerlessEvent playerlessType) throws QuestException {
-        return new EventAdapter(loggerFactory.create(EventAdapter.class), questTypeApi, instruction, playerType, playerlessType);
+    protected ActionAdapter getAdapter(final Instruction instruction,
+                                       @Nullable final PlayerEvent playerType,
+                                       @Nullable final PlayerlessEvent playerlessType) throws QuestException {
+        return new ActionAdapter(loggerFactory.create(ActionAdapter.class), questTypeApi, instruction, playerType, playerlessType);
     }
 }

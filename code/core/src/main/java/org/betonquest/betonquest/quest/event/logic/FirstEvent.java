@@ -11,13 +11,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * The First event. Similar to the folder, except it runs linearly through a list of events and
- * stops after the first one succeeds. This is intended to be used with condition: syntax in events.
+ * The First action. Similar to the folder, except it runs linearly through a list of actions and
+ * stops after the first one succeeds. This is intended to be used with condition: syntax in actions.
  */
 public class FirstEvent implements NullableEvent {
 
     /**
-     * The events to run.
+     * The actions to run.
      */
     private final Argument<List<ActionID>> events;
 
@@ -40,7 +40,7 @@ public class FirstEvent implements NullableEvent {
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
         for (final ActionID event : events.getValue(profile)) {
-            if (questTypeApi.event(profile, event)) {
+            if (questTypeApi.action(profile, event)) {
                 break;
             }
         }

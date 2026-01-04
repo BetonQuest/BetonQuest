@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 
 /**
- * Moves the NPC to a specified location, optionally firing doneEvents when it's done.
+ * Moves the NPC to a specified location, optionally firing doneActions when it's done.
  */
 public class CitizensMoveEvent implements PlayerEvent {
 
@@ -35,7 +35,7 @@ public class CitizensMoveEvent implements PlayerEvent {
     private final CitizensMoveController.MoveData moveData;
 
     /**
-     * Create a new CitizensMoveEvent.
+     * Create a new CitizensMoveAction.
      *
      * @param featureApi             the Feature API
      * @param npcId                  the ID of the NPC to move
@@ -54,7 +54,7 @@ public class CitizensMoveEvent implements PlayerEvent {
     public void execute(final Profile profile) throws QuestException {
         final Npc<?> bqNpc = featureApi.getNpc(npcId.getValue(profile), profile);
         if (!(bqNpc.getOriginal() instanceof final NPC npc)) {
-            throw new QuestException("Can't use Citizens MoveEvent for non Citizens NPC");
+            throw new QuestException("Can't use Citizens MoveAction for non Citizens NPC");
         }
         if (profile.getOnlineProfile().isEmpty()) {
             citizensMoveController.stopNPCMoving(npc);

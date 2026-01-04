@@ -45,7 +45,7 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<CronSchedule
      * Create a new realtime scheduler and pass BetonQuest instance to it.
      *
      * @param log                the logger that will be used for logging
-     * @param questTypeApi       the class for executing events
+     * @param questTypeApi       the class for executing actions
      * @param lastExecutionCache cache where the last execution times of a schedule are stored
      */
     public RealtimeCronScheduler(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final LastExecutionCache lastExecutionCache) {
@@ -58,7 +58,7 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<CronSchedule
      * Create a new realtime scheduler and pass BetonQuest instance to it.
      *
      * @param log                the logger that will be used for logging
-     * @param questTypeApi       the class for executing events
+     * @param questTypeApi       the class for executing actions
      * @param executor           supplier used to create new instances of the executor used by this scheduler
      * @param lastExecutionCache cache where the last execution times of a schedule are stored
      */
@@ -94,7 +94,7 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<CronSchedule
         final List<CronSchedule> rebootSchedules = schedules.values().stream()
                 .filter(CronSchedule::shouldRunOnReboot).toList();
         log.debug("Found " + rebootSchedules.size() + " reboot schedules. They will be run on next server tick.");
-        rebootSchedules.forEach(this::executeEvents);
+        rebootSchedules.forEach(this::executeActions);
     }
 
     /**
@@ -110,7 +110,7 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<CronSchedule
             log.debug("Running missed schedules to catch up...");
             for (final CronSchedule missed : missedSchedules) {
                 lastExecutionCache.cacheExecutionTime(now, missed.getId());
-                executeEvents(missed);
+                executeActions(missed);
             }
         }
     }
@@ -195,7 +195,7 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<CronSchedule
                 executor.schedule(() -> {
                     final Instant nextExecution = now.plus(durationToNextRun);
                     lastExecutionCache.cacheExecutionTime(nextExecution, schedule.getId());
-                    executeEvents(schedule);
+                    executeActions(schedule);
                     schedule(nextExecution, schedule);
                 }, durationToNextRun.toMillis(), TimeUnit.MILLISECONDS));
     }
