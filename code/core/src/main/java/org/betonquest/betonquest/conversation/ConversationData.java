@@ -640,7 +640,7 @@ public class ConversationData {
 
             this.text = parseText(conv);
             this.conditions = resolve(conv, "conditions", ConditionID::new);
-            this.events = resolve(conv, "events", EventID::new);
+            this.events = resolve(conv, "actions", EventID::new);
 
             final StringParser stringParser = new StringParser();
 

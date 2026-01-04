@@ -44,12 +44,12 @@ public class EventProcessor extends TypedQuestProcessor<EventID, EventAdapter> {
      * @param log          the custom logger for this class
      * @param packManager  the quest package manager to get quest packages from
      * @param eventTypes   the available event types
-     * @param scheduler   the bukkit scheduler to run sync tasks
-     * @param plugin      the plugin instance
+     * @param scheduler    the bukkit scheduler to run sync tasks
+     * @param plugin       the plugin instance
      */
     public EventProcessor(final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager,
                           final EventTypeRegistry eventTypes, final BukkitScheduler scheduler, final Plugin plugin) {
-        super(log, placeholders, packManager, eventTypes, "Event", "events");
+        super(log, placeholders, packManager, eventTypes, "Action", "actions");
         this.scheduler = scheduler;
         this.plugin = plugin;
     }
