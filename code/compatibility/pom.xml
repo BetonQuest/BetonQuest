@@ -61,6 +61,7 @@
     <nexo.version>1.17.0</nexo.version>
     <CraftEngine.version>0.0.66</CraftEngine.version>
     <CMI.version>9.7.14.3</CMI.version>
+    <ItemsAdder.version>4.0.10</ItemsAdder.version>
   </properties>
 
   <dependencies>
@@ -419,6 +420,14 @@
       <scope>provided</scope>
     </dependency>
 
+    <!-- from matteodev repository -->
+    <dependency>
+      <groupId>dev.lone</groupId>
+      <artifactId>api-itemsadder</artifactId>
+      <version>${ItemsAdder.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
   </dependencies>
 
   <repositories>
@@ -490,6 +499,10 @@
     <repository>
       <id>betonquest-momirealms-repo</id>
       <url>https://repo.momirealms.net/releases/</url>
+    </repository>
+    <repository>
+      <id>betonquest-matteodev-repo</id>
+      <url>https://maven.devs.beer/</url>
     </repository>
     <repository>
       <id>maven_central</id>
