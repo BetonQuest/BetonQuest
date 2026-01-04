@@ -7,7 +7,7 @@ import java.util.function.BiConsumer;
 /**
  * The action to perform on a scoreboard tag.
  */
-public enum ScoreboardTagAction {
+public enum ScoreboardTagOperation {
     /**
      * Adds the tag to the player.
      */
@@ -22,7 +22,7 @@ public enum ScoreboardTagAction {
      */
     private final BiConsumer<OnlineProfile, String> biConsumer;
 
-    ScoreboardTagAction(final BiConsumer<OnlineProfile, String> biConsumer) {
+    ScoreboardTagOperation(final BiConsumer<OnlineProfile, String> biConsumer) {
         this.biConsumer = biConsumer;
     }
 
