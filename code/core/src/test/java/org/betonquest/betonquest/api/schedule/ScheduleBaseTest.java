@@ -43,7 +43,7 @@ public class ScheduleBaseTest extends AbstractScheduleTest {
         lenient().when(mockConfig.options()).thenReturn(configurationOptions);
 
         lenient().when(section.getString("time")).thenReturn("22:00");
-        lenient().when(section.getString("events")).thenReturn("bell_ring,notify_goodNight");
+        lenient().when(section.getString("actions")).thenReturn("bell_ring,notify_goodNight");
         lenient().when(section.getString("catchup")).thenReturn("NONE");
     }
 
@@ -71,7 +71,7 @@ public class ScheduleBaseTest extends AbstractScheduleTest {
 
     @Test
     void testEventsNotSet() {
-        when(section.getString("events")).thenReturn(null);
+        when(section.getString("actions")).thenReturn(null);
         final QuestException exception = assertThrows(QuestException.class, this::createSchedule, "Schedule should throw instruction parse exception for missing events");
         assertEquals("Missing events", exception.getMessage(), "QuestException should have correct reason message");
     }
