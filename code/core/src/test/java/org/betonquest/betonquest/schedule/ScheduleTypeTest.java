@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfigurati
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.quest.Placeholders;
-import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.api.schedule.FictiveTime;
 import org.betonquest.betonquest.api.schedule.Schedule;
@@ -130,7 +130,7 @@ class ScheduleTypeTest {
          * @param events     the events to execute
          * @param catchup    the catchup strategy
          */
-        public MockedSchedule(final ScheduleID scheduleID, final List<EventID> events, final CatchupStrategy catchup) {
+        public MockedSchedule(final ScheduleID scheduleID, final List<ActionID> events, final CatchupStrategy catchup) {
             super(scheduleID, events, catchup);
         }
     }
@@ -147,7 +147,7 @@ class ScheduleTypeTest {
          * @param events     the events to execute
          * @param catchup    the catchup strategy
          */
-        public ThrowingUncheckedSchedule(final ScheduleID scheduleID, final List<EventID> events, final CatchupStrategy catchup) {
+        public ThrowingUncheckedSchedule(final ScheduleID scheduleID, final List<ActionID> events, final CatchupStrategy catchup) {
             super(scheduleID, events, catchup);
             throw new IllegalArgumentException("unchecked");
         }

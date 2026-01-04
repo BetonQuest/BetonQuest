@@ -23,8 +23,8 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.Placeholders;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.compatibility.Compatibility;
@@ -867,9 +867,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_action");
             return;
         }
-        final EventID eventID;
+        final ActionID actionID;
         try {
-            eventID = new EventID(placeholders, instance.getQuestPackageManager(), null, args[2]);
+            actionID = new ActionID(placeholders, instance.getQuestPackageManager(), null, args[2]);
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
@@ -877,9 +877,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         final Profile profile = "-".equals(args[1]) ? null : profileProvider.getProfile(Bukkit.getOfflinePlayer(args[1]));
-        instance.getQuestTypeApi().event(profile, eventID);
+        instance.getQuestTypeApi().event(profile, actionID);
         sendMessage(sender, "player_action",
-                new VariableReplacement("action", Component.text(eventID.getInstruction().toString())));
+                new VariableReplacement("action", Component.text(actionID.getInstruction().toString())));
     }
 
     /**

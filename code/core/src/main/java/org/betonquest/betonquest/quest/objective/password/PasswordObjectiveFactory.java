@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 
 import java.util.Collections;
@@ -33,7 +33,7 @@ public class PasswordObjectiveFactory implements ObjectiveFactory {
         final Argument<String> prefix = instruction.string().get("prefix").orElse(null);
         final String resolvedPrefix = prefix == null ? null : prefix.getValue(null);
         final String passwordPrefix = resolvedPrefix == null || resolvedPrefix.isEmpty() ? resolvedPrefix : resolvedPrefix + ": ";
-        final Argument<List<EventID>> failEvents = instruction.parse(EventID::new).list().get("fail", Collections.emptyList());
+        final Argument<List<ActionID>> failEvents = instruction.parse(ActionID::new).list().get("fail", Collections.emptyList());
         return new PasswordObjective(instruction, regex, passwordPrefix, failEvents);
     }
 }

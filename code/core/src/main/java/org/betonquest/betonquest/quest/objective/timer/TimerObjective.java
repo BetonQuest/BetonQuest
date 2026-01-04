@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -36,7 +36,7 @@ public class TimerObjective extends CountingObjective implements Listener, Runna
     /**
      * Events to run before the objective is actually removed.
      */
-    private final Argument<List<EventID>> doneEvents;
+    private final Argument<List<ActionID>> doneEvents;
 
     /**
      * The resolved interval in seconds.
@@ -60,7 +60,7 @@ public class TimerObjective extends CountingObjective implements Listener, Runna
      * @throws QuestException if an error occurs while creating the objective.
      */
     public TimerObjective(final Instruction instruction, final Argument<Number> targetAmount, final QuestTypeApi questTypeApi, final Argument<String> name,
-                          final Argument<Number> interval, final Argument<List<EventID>> doneEvents) throws QuestException {
+                          final Argument<Number> interval, final Argument<List<ActionID>> doneEvents) throws QuestException {
         super(instruction, targetAmount, null);
         this.questTypeApi = questTypeApi;
         this.name = name;

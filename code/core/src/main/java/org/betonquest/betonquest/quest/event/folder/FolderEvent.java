@@ -7,8 +7,8 @@ import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -76,7 +76,7 @@ public class FolderEvent implements NullableEvent {
     /**
      * The events to run.
      */
-    private final Argument<List<EventID>> events;
+    private final Argument<List<ActionID>> events;
 
     /**
      * The time unit to use for the delay and period.
@@ -111,7 +111,7 @@ public class FolderEvent implements NullableEvent {
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public FolderEvent(final BetonQuest betonQuest, final BetonQuestLogger log, final PluginManager pluginManager,
-                       final Argument<List<EventID>> events, final QuestTypeApi questTypeApi, final Random randomGenerator,
+                       final Argument<List<ActionID>> events, final QuestTypeApi questTypeApi, final Random randomGenerator,
                        @Nullable final Argument<Number> delay, @Nullable final Argument<Number> period,
                        @Nullable final Argument<Number> random, final Argument<TimeUnit> timeUnit,
                        final FlagArgument<Boolean> cancelOnLogout, final Argument<List<ConditionID>> cancelConditions) {
@@ -139,8 +139,8 @@ public class FolderEvent implements NullableEvent {
         }
     }
 
-    private void executeAllEvents(@Nullable final Profile profile, final Deque<EventID> chosenList) {
-        for (final EventID event : chosenList) {
+    private void executeAllEvents(@Nullable final Profile profile, final Deque<ActionID> chosenList) {
+        for (final ActionID event : chosenList) {
             if (checkCancelConditions(profile)) {
                 return;
             }
@@ -150,7 +150,7 @@ public class FolderEvent implements NullableEvent {
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
-        final Deque<EventID> chosenList = getEventOrder(profile);
+        final Deque<ActionID> chosenList = getEventOrder(profile);
         final TimeUnit timeUnit = this.timeUnit.getValue(profile);
         final long delayTicks = delay == null ? 0 : timeUnit.getTicks(delay.getValue(profile).longValue());
         final long periodTicks = period == null ? 0 : timeUnit.getTicks(period.getValue(profile).longValue());
@@ -163,10 +163,10 @@ public class FolderEvent implements NullableEvent {
         }
     }
 
-    private void handleDelayPeriod(@Nullable final Profile profile, final long delayTicks, final Deque<EventID> chosenList,
+    private void handleDelayPeriod(@Nullable final Profile profile, final long delayTicks, final Deque<ActionID> chosenList,
                                    final long periodTicks) throws QuestException {
         if (delayTicks == 0 && !chosenList.isEmpty()) {
-            final EventID event = chosenList.removeFirst();
+            final ActionID event = chosenList.removeFirst();
             if (checkCancelConditions(profile)) {
                 return;
             }
@@ -177,7 +177,7 @@ public class FolderEvent implements NullableEvent {
             callSameSyncAsyncContext(new BukkitRunnable() {
                 @Override
                 public void run() {
-                    final EventID event = chosenList.pollFirst();
+                    final ActionID event = chosenList.pollFirst();
                     if (eventCanceler.isCancelled() || event == null || checkCancelConditions(profile)) {
                         eventCanceler.destroy();
                         this.cancel();
@@ -189,7 +189,7 @@ public class FolderEvent implements NullableEvent {
         }
     }
 
-    private void handleDelayNoPeriod(@Nullable final Profile profile, final Deque<EventID> chosenList, final long delayTicks) throws QuestException {
+    private void handleDelayNoPeriod(@Nullable final Profile profile, final Deque<ActionID> chosenList, final long delayTicks) throws QuestException {
         final FolderEventCanceler eventCanceler = createFolderEventCanceler(profile);
         callSameSyncAsyncContext(new BukkitRunnable() {
             @Override
@@ -203,14 +203,14 @@ public class FolderEvent implements NullableEvent {
         }, delayTicks, -1);
     }
 
-    private Deque<EventID> getEventOrder(@Nullable final Profile profile) throws QuestException {
-        final Deque<EventID> chosenList = new LinkedList<>();
+    private Deque<ActionID> getEventOrder(@Nullable final Profile profile) throws QuestException {
+        final Deque<ActionID> chosenList = new LinkedList<>();
         // choose randomly which events should be fired
         final int randomInt = random == null ? 0 : random.getValue(profile).intValue();
-        final List<EventID> resolvedEvents = events.getValue(profile);
+        final List<ActionID> resolvedEvents = events.getValue(profile);
         if (randomInt > 0 && randomInt <= resolvedEvents.size()) {
             // copy events into the modifiable ArrayList
-            final List<EventID> eventsList = new ArrayList<>(resolvedEvents);
+            final List<ActionID> eventsList = new ArrayList<>(resolvedEvents);
             // remove chosen events from that ArrayList and place them in a new
             // list
             for (int i = randomInt; i > 0; i--) {

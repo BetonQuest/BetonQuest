@@ -58,7 +58,7 @@ public class PickRandomEvent implements NullableEvent {
                 final RandomEvent event = iterator.next();
                 random -= event.weight();
                 if (random < 0) {
-                    questTypeApi.event(profile, event.eventID());
+                    questTypeApi.event(profile, event.actionID());
                     iterator.remove();
                     total -= event.weight();
                     break;

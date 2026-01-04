@@ -12,8 +12,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultListArgument;
@@ -141,8 +141,8 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
             }
             final Text title = textCreator.parseFromSection(pack, section, "title");
             final Argument<List<ConditionID>> openConditions = getID("open_conditions", ConditionID::new);
-            final Argument<List<EventID>> openEvents = getID("open_actions", EventID::new);
-            final Argument<List<EventID>> closeEvents = getID("close_actions", EventID::new);
+            final Argument<List<ActionID>> openEvents = getID("open_actions", ActionID::new);
+            final Argument<List<ActionID>> closeEvents = getID("close_actions", ActionID::new);
 
             final List<Slots> slots = loadSlots(height);
             return new Menu.MenuData(title, height, slots, openConditions, openEvents, closeEvents);
