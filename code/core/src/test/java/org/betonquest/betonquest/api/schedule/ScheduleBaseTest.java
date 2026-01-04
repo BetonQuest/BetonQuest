@@ -36,8 +36,8 @@ public class ScheduleBaseTest extends AbstractScheduleTest {
     protected void prepareConfig() {
         final MultiConfiguration mockConfig = mock(MultiConfiguration.class);
         lenient().when(questPackage.getConfig()).thenReturn(mockConfig);
-        lenient().when(mockConfig.getString("events.bell_ring")).thenReturn("folder bell_lever_toggle,bell_lever_toggle period:0.5");
-        lenient().when(mockConfig.getString("events.notify_goodNight")).thenReturn("notify &6Good night, sleep well!");
+        lenient().when(mockConfig.getString("actions.bell_ring")).thenReturn("folder bell_lever_toggle,bell_lever_toggle period:0.5");
+        lenient().when(mockConfig.getString("actions.notify_goodNight")).thenReturn("notify &6Good night, sleep well!");
         final ConfigurationOptions configurationOptions = mock(ConfigurationOptions.class);
         lenient().when(configurationOptions.pathSeparator()).thenReturn('.');
         lenient().when(mockConfig.options()).thenReturn(configurationOptions);
@@ -58,8 +58,8 @@ public class ScheduleBaseTest extends AbstractScheduleTest {
         final Schedule schedule = createSchedule();
         assertEquals(scheduleID, schedule.getId(), "Schedule should return the id it was constructed with");
         assertEquals(CatchupStrategy.NONE, schedule.getCatchup(), "Returned catchup strategy should be correct");
-        assertEquals("bell_ring", schedule.getEvents().get(0).get(), "Returned events should contain 1st event");
-        assertEquals("notify_goodNight", schedule.getEvents().get(1).get(), "Returned events should contain 2nd event");
+        assertEquals("bell_ring", schedule.getEvents().get(0).get(), "Returned actions should contain 1st event");
+        assertEquals("notify_goodNight", schedule.getEvents().get(1).get(), "Returned actions should contain 2nd event");
     }
 
     @Test
@@ -72,13 +72,13 @@ public class ScheduleBaseTest extends AbstractScheduleTest {
     @Test
     void testEventsNotSet() {
         when(section.getString("actions")).thenReturn(null);
-        final QuestException exception = assertThrows(QuestException.class, this::createSchedule, "Schedule should throw instruction parse exception for missing events");
-        assertEquals("Missing events", exception.getMessage(), "QuestException should have correct reason message");
+        final QuestException exception = assertThrows(QuestException.class, this::createSchedule, "Schedule should throw instruction parse exception for missing actions");
+        assertEquals("Missing actions", exception.getMessage(), "QuestException should have correct reason message");
     }
 
     @Test
     void testEventsNotFound() {
-        when(questPackage.getConfig().getString("events.bell_ring")).thenReturn(null);
+        when(questPackage.getConfig().getString("actions.bell_ring")).thenReturn(null);
         final QuestException exception = assertThrows(QuestException.class, this::createSchedule, "Schedule should throw instruction parse exception for invalid event names");
         assertInstanceOf(QuestException.class, exception.getCause(), "Cause should be QuestException");
     }
