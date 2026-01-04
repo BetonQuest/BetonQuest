@@ -189,8 +189,8 @@ class EventSchedulingTest {
      */
     private static final class MockedSchedule extends Schedule {
 
-        private MockedSchedule(final ScheduleID scheduleID, final List<ActionID> events, final CatchupStrategy catchup) {
-            super(scheduleID, events, catchup);
+        private MockedSchedule(final ScheduleID scheduleID, final List<ActionID> actions, final CatchupStrategy catchup) {
+            super(scheduleID, actions, catchup);
         }
     }
 

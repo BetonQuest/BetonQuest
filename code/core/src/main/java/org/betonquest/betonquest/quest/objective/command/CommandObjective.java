@@ -40,9 +40,9 @@ public class CommandObjective extends DefaultObjective {
     private final FlagArgument<Boolean> cancel;
 
     /**
-     * Events to trigger if the command is not matched.
+     * Actions to trigger if the command is not matched.
      */
-    private final Argument<List<ActionID>> failEvents;
+    private final Argument<List<ActionID>> failActions;
 
     /**
      * Creates a new instance of the CommandObjective.
@@ -52,18 +52,18 @@ public class CommandObjective extends DefaultObjective {
      * @param ignoreCase  whether the command should ignore the capitalization
      * @param exact       whether the command should be matched exactly or just the start
      * @param cancel      whether the command should be cancelled after matching
-     * @param failEvents  events to trigger if the command is not matched
+     * @param failActions actions to trigger if the command is not matched
      * @throws QuestException if there is an error in the instruction
      */
     public CommandObjective(final Instruction instruction, final Argument<String> command,
                             final FlagArgument<Boolean> ignoreCase, final FlagArgument<Boolean> exact,
-                            final FlagArgument<Boolean> cancel, final Argument<List<ActionID>> failEvents) throws QuestException {
+                            final FlagArgument<Boolean> cancel, final Argument<List<ActionID>> failActions) throws QuestException {
         super(instruction);
         this.command = command;
         this.ignoreCase = ignoreCase;
         this.exact = exact;
         this.cancel = cancel;
-        this.failEvents = failEvents;
+        this.failActions = failActions;
     }
 
     /**
@@ -83,7 +83,7 @@ public class CommandObjective extends DefaultObjective {
                     }
                     completeObjective(onlineProfile);
                 } else {
-                    BetonQuest.getInstance().getQuestTypeApi().events(onlineProfile, failEvents.getValue(onlineProfile));
+                    BetonQuest.getInstance().getQuestTypeApi().actions(onlineProfile, failActions.getValue(onlineProfile));
                 }
             });
         }

@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * <p>
  * A Schedule may be defined in any package.
- * It allows scheduling events to run for all online players at specific times.
+ * It allows scheduling actions to run for all online players at specific times.
  * </p>
  *
  * <p>
@@ -26,9 +26,9 @@ public abstract class Schedule {
     protected final ScheduleID scheduleID;
 
     /**
-     * A list of events that will be run by this schedule.
+     * A list of actions that will be run by this schedule.
      */
-    protected final List<ActionID> events;
+    protected final List<ActionID> actions;
 
     /**
      * Defines how the scheduler should behave if an execution of the schedule was missed
@@ -41,12 +41,12 @@ public abstract class Schedule {
      * Creates new instance of the schedule.
      *
      * @param scheduleID the schedule id
-     * @param events     the events to execute
+     * @param actions    the actions to execute
      * @param catchup    the catchup strategy
      */
-    public Schedule(final ScheduleID scheduleID, final List<ActionID> events, final CatchupStrategy catchup) {
+    public Schedule(final ScheduleID scheduleID, final List<ActionID> actions, final CatchupStrategy catchup) {
         this.scheduleID = scheduleID;
-        this.events = Collections.unmodifiableList(events);
+        this.actions = Collections.unmodifiableList(actions);
         this.catchup = catchup;
     }
 
@@ -60,12 +60,12 @@ public abstract class Schedule {
     }
 
     /**
-     * Get a list of events that will be run by this schedule.
+     * Get a list of actions that will be run by this schedule.
      *
-     * @return unmodifiable list of events
+     * @return unmodifiable list of actions
      */
-    public List<ActionID> getEvents() {
-        return events;
+    public List<ActionID> getActions() {
+        return actions;
     }
 
     /**

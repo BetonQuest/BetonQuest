@@ -877,7 +877,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         final Profile profile = "-".equals(args[1]) ? null : profileProvider.getProfile(Bukkit.getOfflinePlayer(args[1]));
-        instance.getQuestTypeApi().event(profile, actionID);
+        instance.getQuestTypeApi().action(profile, actionID);
         sendMessage(sender, "player_action",
                 new VariableReplacement("action", Component.text(actionID.getInstruction().toString())));
     }

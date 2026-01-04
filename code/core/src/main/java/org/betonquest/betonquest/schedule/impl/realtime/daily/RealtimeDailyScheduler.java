@@ -38,7 +38,7 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
      * Create a new simple scheduler and pass BetonQuest instance to it.
      *
      * @param log                the logger that will be used for logging
-     * @param questTypeApi       the class for executing events
+     * @param questTypeApi       the class for executing actions
      * @param executor           supplier used to create new instances of the executor used by this scheduler
      * @param lastExecutionCache cache where the last execution times of a schedule are stored
      */
@@ -52,7 +52,7 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
      * Create a new simple scheduler and pass BetonQuest instance to it.
      *
      * @param log                the logger that will be used for logging
-     * @param questTypeApi       the class for executing events
+     * @param questTypeApi       the class for executing actions
      * @param lastExecutionCache cache where the last execution times of a schedule are stored
      */
     public RealtimeDailyScheduler(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final LastExecutionCache lastExecutionCache) {
@@ -89,7 +89,7 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
             log.debug("Running missed schedules to catch up...");
             for (final RealtimeDailySchedule schedule : missedSchedules) {
                 lastExecutionCache.cacheExecutionTime(now, schedule.getId());
-                executeEvents(schedule);
+                executeActions(schedule);
             }
         }
     }
@@ -162,7 +162,7 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
         final Instant nextExecution = schedule.getNextExecution(now);
         executor.schedule(() -> {
             lastExecutionCache.cacheExecutionTime(nextExecution, schedule.getId());
-            executeEvents(schedule);
+            executeActions(schedule);
             schedule(nextExecution, schedule);
         }, ChronoUnit.MILLIS.between(now, nextExecution), TimeUnit.MILLISECONDS);
     }

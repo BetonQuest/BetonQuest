@@ -9,15 +9,15 @@ import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
 import org.betonquest.betonquest.api.quest.event.EventRegistry;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.kernel.processor.adapter.EventAdapter;
+import org.betonquest.betonquest.kernel.processor.adapter.ActionAdapter;
 import org.betonquest.betonquest.kernel.processor.adapter.EventAdapterFactory;
 import org.betonquest.betonquest.kernel.registry.QuestTypeRegistry;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Stores the event types that can be used in BetonQuest.
+ * Stores the action types that can be used in BetonQuest.
  */
-public class EventTypeRegistry extends QuestTypeRegistry<PlayerEvent, PlayerlessEvent, EventAdapter>
+public class ActionTypeRegistry extends QuestTypeRegistry<PlayerEvent, PlayerlessEvent, ActionAdapter>
         implements EventRegistry {
 
     /**
@@ -37,14 +37,14 @@ public class EventTypeRegistry extends QuestTypeRegistry<PlayerEvent, Playerless
      * @param loggerFactory the logger factory to create a new custom logger
      * @param api           the BetonQuest API to get QuestTypeApi from once initialized
      */
-    public EventTypeRegistry(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final BetonQuestApi api) {
+    public ActionTypeRegistry(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final BetonQuestApi api) {
         super(log, "event");
         this.loggerFactory = loggerFactory;
         this.api = api;
     }
 
     @Override
-    protected TypeFactory<EventAdapter> getFactoryAdapter(
+    protected TypeFactory<ActionAdapter> getFactoryAdapter(
             @Nullable final PlayerQuestFactory<PlayerEvent> playerFactory,
             @Nullable final PlayerlessQuestFactory<PlayerlessEvent> playerlessFactory) {
         return new EventAdapterFactory(loggerFactory, api.getQuestTypeApi(), playerFactory, playerlessFactory);
