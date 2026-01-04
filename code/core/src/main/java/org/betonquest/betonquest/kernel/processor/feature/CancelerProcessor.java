@@ -99,7 +99,7 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerID, QuestCa
         final StringParser stringParser = new StringParser();
         final QuestCanceler.CancelData cancelData = new QuestCanceler.CancelData(
                 new DefaultListArgument<>(placeholders, pack, section.getString("conditions", ""), value -> new ConditionID(placeholders, packManager, pack, value)),
-                new DefaultListArgument<>(placeholders, pack, section.getString("events", ""), value -> new EventID(placeholders, packManager, pack, value)),
+                new DefaultListArgument<>(placeholders, pack, section.getString("actions", ""), value -> new EventID(placeholders, packManager, pack, value)),
                 new DefaultListArgument<>(placeholders, pack, section.getString("objectives", ""), value -> new ObjectiveID(placeholders, packManager, pack, value)),
                 new DefaultListArgument<>(placeholders, pack, section.getString("tags", ""), stringParser),
                 new DefaultListArgument<>(placeholders, pack, section.getString("points", ""), stringParser),

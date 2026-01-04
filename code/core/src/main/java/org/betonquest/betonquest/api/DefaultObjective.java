@@ -120,7 +120,7 @@ public abstract class DefaultObjective implements PropertyHolder {
         this.profileProvider = BetonQuest.getInstance().getProfileProvider();
         this.dataMap = new ProfileKeyMap<>(profileProvider);
         persistent = instruction.bool().getFlag("persistent", true);
-        events = instruction.parse(EventID::new).list().get("events", Collections.emptyList());
+        events = instruction.parse(EventID::new).list().get("actions", Collections.emptyList());
         conditions = instruction.parse(ConditionID::new).list().get("conditions", Collections.emptyList());
         final FlagArgument<Number> notify = instruction.number().atLeast(0).getFlag("notify", 1);
         this.notifyInterval = notify.getValue(null).orElse(0).intValue();

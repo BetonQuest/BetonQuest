@@ -78,7 +78,7 @@ class ScheduleTypeTest {
         lenient().when(scheduleID.getPackage()).thenReturn(questPackage);
 
         lenient().when(section.getString("time")).thenReturn("22:00");
-        lenient().when(section.getString("events")).thenReturn("bell_ring,notify_goodNight");
+        lenient().when(section.getString("actions")).thenReturn("bell_ring,notify_goodNight");
         lenient().when(section.getString("catchup")).thenReturn("NONE");
     }
 

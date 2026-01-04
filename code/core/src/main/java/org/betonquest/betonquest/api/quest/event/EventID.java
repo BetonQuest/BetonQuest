@@ -23,6 +23,6 @@ public class EventID extends InstructionIdentifier {
      */
     public EventID(final Placeholders placeholders, final QuestPackageManager packManager, @Nullable final QuestPackage pack,
                    final String identifier) throws QuestException {
-        super(placeholders, packManager, pack, identifier, "events", "Event");
+        super(placeholders, packManager, pack, identifier, "actions", "Action");
     }
 }

@@ -29,7 +29,7 @@ public class CommandObjectiveFactory implements ObjectiveFactory {
         final FlagArgument<Boolean> exact = instruction.bool().getFlag("exact", true);
         final FlagArgument<Boolean> cancel = instruction.bool().getFlag("cancel", true);
         final Argument<List<EventID>> failEvents = instruction.parse(EventID::new)
-                .list().get("failEvents", Collections.emptyList());
+                .list().get("failActions", Collections.emptyList());
         return new CommandObjective(instruction, command, ignoreCase, exact, cancel, failEvents);
     }
 }
