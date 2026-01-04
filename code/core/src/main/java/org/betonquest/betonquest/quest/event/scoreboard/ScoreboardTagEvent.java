@@ -18,7 +18,7 @@ public class ScoreboardTagEvent implements OnlineEvent {
     /**
      * Whether to add or remove the tag.
      */
-    private final Argument<ScoreboardTagAction> action;
+    private final Argument<ScoreboardTagOperation> action;
 
     /**
      * Create a new scoreboard tag event that adds or removes the given tag.
@@ -26,7 +26,7 @@ public class ScoreboardTagEvent implements OnlineEvent {
      * @param tag    the tag to add or remove
      * @param action whether to add or remove the tag
      */
-    public ScoreboardTagEvent(final Argument<String> tag, final Argument<ScoreboardTagAction> action) {
+    public ScoreboardTagEvent(final Argument<String> tag, final Argument<ScoreboardTagOperation> action) {
         this.tag = tag;
         this.action = action;
     }
