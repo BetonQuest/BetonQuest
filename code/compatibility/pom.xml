@@ -57,7 +57,10 @@
     <api.version>5.4</api.version>
     <auraskills-api-bukkit.version>2.2.0</auraskills-api-bukkit.version>
     <fabled.version>1.0.2-R1</fabled.version>
-    <FancyHolograms.version>3.0.0-SNAPSHOT.24</FancyHolograms.version>
+    <FancyHolograms.version>2.9.0</FancyHolograms.version>
+    <nexo.version>1.17.0</nexo.version>
+    <CraftEngine.version>0.0.66</CraftEngine.version>
+    <CMI.version>9.7.14.3</CMI.version>
   </properties>
 
   <dependencies>
@@ -342,6 +345,13 @@
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
+    <dependency>
+      <groupId>com.github.Zrips</groupId>
+      <artifactId>CMI-API</artifactId>
+      <version>${CMI.version}</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
 
     <!-- only dependencies from maven central that are MC Plugins -->
     <dependency>
@@ -379,6 +389,36 @@
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
+
+    <!-- from nexomc repository -->
+    <dependency>
+      <groupId>com.nexomc</groupId>
+      <artifactId>nexo</artifactId>
+      <version>${nexo.version}</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <!-- from momirealms repository -->
+    <dependency>
+      <groupId>net.momirealms</groupId>
+      <artifactId>craft-engine-core</artifactId>
+      <version>${CraftEngine.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.momirealms</groupId>
+      <artifactId>craft-engine-bukkit</artifactId>
+      <version>${CraftEngine.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
   </dependencies>
 
   <repositories>
@@ -442,6 +482,14 @@
     <repository>
       <id>betonquest-scriptlang-repo</id>
       <url>https://repo.skriptlang.org/releases</url>
+    </repository>
+    <repository>
+      <id>betonquest-nexomc-repo</id>
+      <url>https://repo.nexomc.com/releases</url>
+    </repository>
+    <repository>
+      <id>betonquest-momirealms-repo</id>
+      <url>https://repo.momirealms.net/releases/</url>
     </repository>
     <repository>
       <id>maven_central</id>
