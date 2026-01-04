@@ -1,6 +1,6 @@
 variables:
   lever_location: '18;4;7;world'
-events:
+actions:
   bell_ring: 'folder bell_lever_toggle,bell_lever_toggle,bell_lever_toggle,bell_lever_toggle period:0.5'
   bell_lever_toggle: 'lever $lever_location$ toggle'
   notify_goodNight: 'notify &6Good night, sleep well!'

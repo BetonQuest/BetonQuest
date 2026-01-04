@@ -87,7 +87,7 @@ class SchedulerTest {
          * Default constructor.
          *
          * @param logger       the logger that will be used for logging
-         * @param questTypeApi the class for executing events
+         * @param questTypeApi the class for executing actions
          */
         public MockedScheduler(final BetonQuestLogger logger, final QuestTypeApi questTypeApi) {
             super(logger, questTypeApi);
