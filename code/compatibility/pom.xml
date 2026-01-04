@@ -57,7 +57,7 @@
     <api.version>5.4</api.version>
     <auraskills-api-bukkit.version>2.2.0</auraskills-api-bukkit.version>
     <fabled.version>1.0.2-R1</fabled.version>
-    <FancyHolograms.version>3.0.0-SNAPSHOT.24</FancyHolograms.version> <!-- 3.0.0-SNAPSHOT.24 -->
+    <FancyHolograms.version>3.0.0-SNAPSHOT.24</FancyHolograms.version>
   </properties>
 
   <dependencies>

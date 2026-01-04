@@ -8,8 +8,23 @@ import org.bukkit.inventory.ItemStack;
 
 /**
  * FancyHolograms specific implementation of BetonHologram.
+ * https://docs.fancyinnovations.com/fancyholograms/api/getting-started/
  */
 public class FancyHologramsHologram implements BetonHologram {
+
+    /**
+     * The hologram object from FancyHolograms
+     */
+    private final Hologram hologram;
+
+    /**
+     * Create a BetonHologram to wrap the given FancyHolograms hologram.
+     *
+     * @param hologram The hologram object to wrap
+     */
+    public  FancyHologramsHologram(final Hologram hologram) {
+        this.hologram = hologram;
+    }
 
     @Override
     public void appendLine(final ItemStack item) {
