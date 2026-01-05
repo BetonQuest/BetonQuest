@@ -3,7 +3,6 @@ package org.betonquest.betonquest.config.patcher.migration.migrator.from2to3;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.config.patcher.migration.QuestMigration;
 import org.betonquest.betonquest.config.quest.Quest;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.jetbrains.annotations.VisibleForTesting;
 
@@ -26,27 +25,8 @@ public class VariablesRename implements QuestMigration {
     @Override
     public void migrate(final Quest quest) throws InvalidConfigurationException {
         final MultiConfiguration config = quest.getQuestConfig();
-        renameSection(config);
+        renameSection(config, "variables", "constants");
         renameVariables(config);
-    }
-
-    private void renameSection(final MultiConfiguration config) throws InvalidConfigurationException {
-        final ConfigurationSection variables = config.getConfigurationSection("variables");
-        if (variables == null) {
-            return;
-        }
-        final ConfigurationSection constants = config.createSection("constants");
-        for (final String key : variables.getKeys(false)) {
-            final ConfigurationSection source = config.getSourceConfigurationSection("variables." + key);
-            if (source == null) {
-                throw new InvalidConfigurationException("Cannot migrate variables to constants for key: " + key);
-            }
-            constants.set(key, variables.get(key));
-            constants.setComments(key, variables.getComments(key));
-            constants.setInlineComments(key, variables.getInlineComments(key));
-            config.associateWith("constants." + key, source);
-        }
-        config.set("variables", null);
     }
 
     @SuppressWarnings("PMD.CognitiveComplexity")
