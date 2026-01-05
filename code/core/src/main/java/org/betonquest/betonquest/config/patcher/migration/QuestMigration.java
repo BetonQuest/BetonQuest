@@ -140,12 +140,14 @@ public interface QuestMigration {
                                      final String oldKey, final String newKey) throws InvalidConfigurationException {
         final String value = section.getString(oldKey);
         if (value != null) {
-            final ConfigurationSection sourceConfigurationSection = root.getSourceConfigurationSection(section.getCurrentPath() + "." + oldKey);
-            section.set(newKey, value);
-            section.set(oldKey, null);
-            if (sourceConfigurationSection != null) {
-                root.associateWith(section.getCurrentPath() + "." + newKey, sourceConfigurationSection);
+            final ConfigurationSection source = root.getSourceConfigurationSection(section.getCurrentPath() + "." + oldKey);
+            if (source == null) {
+                throw new InvalidConfigurationException("Cannot migrate key '" + oldKey + "' to '" + newKey + "'");
             }
+            section.set(newKey, value);
+            section.setComments(newKey, section.getComments(oldKey));
+            section.setInlineComments(newKey, section.getInlineComments(oldKey));
+            section.set(oldKey, null);
         }
     }
 }
