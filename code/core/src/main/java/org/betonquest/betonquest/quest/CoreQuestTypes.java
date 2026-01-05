@@ -188,7 +188,6 @@ import org.betonquest.betonquest.quest.placeholder.tag.GlobalTagPlaceholderFacto
 import org.betonquest.betonquest.quest.placeholder.tag.TagPlaceholderFactory;
 import org.betonquest.betonquest.quest.placeholder.version.VersionPlaceholderFactory;
 import org.bukkit.Server;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import java.time.InstantSource;
 
@@ -263,7 +262,6 @@ public class CoreQuestTypes {
      *
      * @param loggerFactory     used in factories
      * @param server            the server used for primary server thread access.
-     * @param scheduler         the scheduler used for primary server thread access
      * @param betonQuest        the plugin used for primary server access and type registration
      * @param questTypeApi      the Quest Type API
      * @param featureApi        the Feature API
@@ -277,7 +275,7 @@ public class CoreQuestTypes {
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public CoreQuestTypes(final BetonQuestLoggerFactory loggerFactory,
-                          final Server server, final BukkitScheduler scheduler, final BetonQuest betonQuest,
+                          final Server server, final BetonQuest betonQuest,
                           final QuestTypeApi questTypeApi, final FeatureApi featureApi, final PluginMessage pluginMessage,
                           final Placeholders placeholders, final GlobalData globalData,
                           final PlayerDataStorage dataStorage, final ProfileProvider profileProvider,

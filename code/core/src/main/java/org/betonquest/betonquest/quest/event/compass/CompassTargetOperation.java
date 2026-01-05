@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.event.compass;
 
 /**
- * Enum for compass target actions.
+ * Enum for compass target operations.
  */
-public enum CompassTargetAction {
+public enum CompassTargetOperation {
     /**
      * Add a compass target.
      */

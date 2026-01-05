@@ -377,7 +377,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         setupUpdater();
         registerListener(coreQuestRegistry);
 
-        new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this,
+        new CoreQuestTypes(loggerFactory, getServer(), this,
                 coreQuestRegistry, questRegistry, pluginMessage, coreQuestRegistry.placeholders(), globalData, playerDataStorage,
                 profileProvider, this, playerDataFactory)
                 .register(questTypeRegistries);

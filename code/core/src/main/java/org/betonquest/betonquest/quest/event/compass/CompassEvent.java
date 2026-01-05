@@ -34,7 +34,7 @@ public class CompassEvent implements PlayerEvent {
     /**
      * The action to perform on the compass.
      */
-    private final Argument<CompassTargetAction> action;
+    private final Argument<CompassTargetOperation> action;
 
     /**
      * The compass point to set.
@@ -50,7 +50,7 @@ public class CompassEvent implements PlayerEvent {
      * @param compassId  the compass point
      */
     public CompassEvent(final FeatureApi featureApi, final PlayerDataStorage storage,
-                        final Argument<CompassTargetAction> action, final Argument<CompassID> compassId) {
+                        final Argument<CompassTargetOperation> action, final Argument<CompassID> compassId) {
         this.featureApi = featureApi;
         this.dataStorage = storage;
         this.action = action;
