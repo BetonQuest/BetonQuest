@@ -25,7 +25,7 @@ public class EventsToActionsRename implements QuestMigration {
     @Override
     public void migrate(final Quest quest) throws InvalidConfigurationException {
         final MultiConfiguration config = quest.getQuestConfig();
-        renameSection(config);
+        renameSection(config, "events", ACTIONS);
         replaceConversations(config);
 
         replaceKeyInSections(config, "menus", "open_events", "open_actions");
@@ -38,25 +38,6 @@ public class EventsToActionsRename implements QuestMigration {
         replaceValueInSection(config, "objectives", "command", " failEvents:", " failActions:");
         replaceValueInSection(config, ACTIONS, "runForAll", " events:", " actions:");
         replaceValueInSection(config, ACTIONS, "runIndependent", " events:", " actions:");
-    }
-
-    private void renameSection(final MultiConfiguration config) throws InvalidConfigurationException {
-        final ConfigurationSection events = config.getConfigurationSection("events");
-        if (events == null) {
-            return;
-        }
-        final ConfigurationSection actions = config.createSection(ACTIONS);
-        for (final String key : events.getKeys(false)) {
-            final ConfigurationSection source = config.getSourceConfigurationSection("events." + key);
-            if (source == null) {
-                throw new InvalidConfigurationException("Cannot migrate events to actions for key: " + key);
-            }
-            actions.set(key, events.get(key));
-            actions.setComments(key, events.getComments(key));
-            actions.setInlineComments(key, events.getInlineComments(key));
-            config.associateWith("actions." + key, source);
-        }
-        config.set("events", null);
     }
 
     private void replaceConversations(final MultiConfiguration root) throws InvalidConfigurationException {

@@ -76,6 +76,33 @@ public interface QuestMigration {
     }
 
     /**
+     * Renames a configuration section in the config.
+     *
+     * @param config  the source config
+     * @param oldPath the section path to rename
+     * @param newPath the new name of the section
+     * @throws InvalidConfigurationException if an error occurs
+     */
+    default void renameSection(final MultiConfiguration config, final String oldPath, final String newPath) throws InvalidConfigurationException {
+        final ConfigurationSection oldSection = config.getConfigurationSection(oldPath);
+        if (oldSection == null) {
+            return;
+        }
+        final ConfigurationSection newSection = config.createSection(newPath);
+        for (final String key : oldSection.getKeys(false)) {
+            final ConfigurationSection source = config.getSourceConfigurationSection(oldPath + "." + key);
+            if (source == null) {
+                throw new InvalidConfigurationException("Cannot migrate '" + oldPath + "' to '" + newPath + "' for key: " + key);
+            }
+            newSection.set(key, oldSection.get(key));
+            newSection.setComments(key, oldSection.getComments(key));
+            newSection.setInlineComments(key, oldSection.getInlineComments(key));
+            config.associateWith(newPath + "." + key, source);
+        }
+        config.set(oldPath, null);
+    }
+
+    /**
      * Renames a key in all subsections of the given path configuration key in a specific section.
      *
      * @param root   the source configuration of the path and associate with
