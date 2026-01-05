@@ -23,8 +23,12 @@ public class NexoIntegrator implements Integrator {
     }
 
     @Override
-    public void reload() { }
+    public void reload() {
+        // Empty
+    }
 
     @Override
-    public void close() { }
+    public void close() {
+        // Empty
+    }
 }

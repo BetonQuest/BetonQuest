@@ -18,12 +18,9 @@ public class CraftEngineItemFactory implements TypeFactory<QuestItemWrapper> {
 
     @Override
     public QuestItemWrapper parseInstruction(final Instruction instruction) throws QuestException {
-        final CraftEngineItemWrapper craftEngineItemWrapper = new CraftEngineItemWrapper(instruction.parse(CraftEngineParser.CRAFT_ENGINE_PARSER).get());
-        final boolean questItem = instruction.bool().getFlag("quest-item", true)
+        final CraftEngineItemWrapper wrapper = new CraftEngineItemWrapper(instruction.parse(CraftEngineParser.CRAFT_ENGINE_PARSER).get());
+        final boolean isQuestItem = instruction.bool().getFlag("quest-item", true)
                 .getValue(null).orElse(false);
-        if (questItem) {
-            return new QuestItemTagAdapterWrapper(craftEngineItemWrapper);
-        }
-        return craftEngineItemWrapper;
+        return isQuestItem ? new QuestItemTagAdapterWrapper(wrapper) : wrapper;
     }
 }

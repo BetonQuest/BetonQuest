@@ -17,12 +17,9 @@ public class ItemsAdderItemFactory implements TypeFactory<QuestItemWrapper> {
 
     @Override
     public QuestItemWrapper parseInstruction(final Instruction instruction) throws QuestException {
-        final ItemsAdderItemWrapper itemsAdderItemWrapper = new ItemsAdderItemWrapper(instruction.parse(ItemsAdderParser.ITEMS_ADDER_PARSER).get());
-        final boolean questItem = instruction.bool().getFlag("quest-item", true)
+        final ItemsAdderItemWrapper wrapper = new ItemsAdderItemWrapper(instruction.parse(ItemsAdderParser.ITEMS_ADDER_PARSER).get());
+        final boolean isQuestItem = instruction.bool().getFlag("quest-item", true)
                 .getValue(null).orElse(false);
-        if (questItem) {
-            return new QuestItemTagAdapterWrapper(itemsAdderItemWrapper);
-        }
-        return itemsAdderItemWrapper;
+        return isQuestItem ? new QuestItemTagAdapterWrapper(wrapper) : wrapper;
     }
 }

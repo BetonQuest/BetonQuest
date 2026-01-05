@@ -10,13 +10,13 @@ import org.betonquest.betonquest.util.Utils;
  */
 public class ItemsAdderParser implements SimpleArgumentParser<CustomStack> {
 
-    /** The empty default constructor. */
-    public ItemsAdderParser() { }
-
     /**
      * The default instance of {@link ItemsAdderParser}.
      */
     public static final ItemsAdderParser ITEMS_ADDER_PARSER = new ItemsAdderParser();
+
+    /** The empty default constructor. */
+    public ItemsAdderParser() { }
 
     @Override
     public CustomStack apply(final String string) throws QuestException {

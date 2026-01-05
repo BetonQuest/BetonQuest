@@ -50,7 +50,7 @@ public record NexoItemWrapper(Argument<ItemBuilder> itemBuilderArgument) impleme
 
         @Override
         public boolean matches(@Nullable final ItemStack item) {
-            return itemBuilder == NexoItems.builderFromItem(item);
+            return Objects.equals(itemBuilder, NexoItems.builderFromItem(item));
         }
     }
 }

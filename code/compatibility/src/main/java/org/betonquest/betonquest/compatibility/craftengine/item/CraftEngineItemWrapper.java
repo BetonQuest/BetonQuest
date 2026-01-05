@@ -17,6 +17,7 @@ import java.util.Objects;
 
 /**
  * A wrapper for CraftEngine custom items.
+ *
  * @param customItemArgument the argument containing the custom item
  */
 public record CraftEngineItemWrapper(Argument<CustomItem<ItemStack>> customItemArgument) implements QuestItemWrapper {
@@ -29,16 +30,18 @@ public record CraftEngineItemWrapper(Argument<CustomItem<ItemStack>> customItemA
     /**
      * Implementation of {@link QuestItem} for CraftEngine.
      */
-    class CraftEngineItem implements QuestItem {
+    /* package */ static class CraftEngineItem implements QuestItem {
 
+        /** The base custom item from CraftEngine. */
         private final CustomItem<ItemStack> customItem;
 
+        /** The cached item meta for the custom item. */
         private final ItemMeta itemMeta;
 
         /**
          * @param customItem the base custom item
          */
-        public CraftEngineItem(final CustomItem<ItemStack> customItem) {
+        /* package */ CraftEngineItem(final CustomItem<ItemStack> customItem) {
             this.customItem = customItem;
             this.itemMeta = customItem.buildItemStack().getItemMeta();
         }
@@ -60,7 +63,7 @@ public record CraftEngineItemWrapper(Argument<CustomItem<ItemStack>> customItemA
 
         @Override
         public boolean matches(@Nullable final ItemStack item) {
-            return Objects.equals(customItem.id(), CraftEngineItems.getCustomItemId(item));
+            return item != null && Objects.equals(customItem.id(), CraftEngineItems.getCustomItemId(item));
         }
     }
 }

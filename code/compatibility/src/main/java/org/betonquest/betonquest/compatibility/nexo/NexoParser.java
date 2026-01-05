@@ -11,13 +11,13 @@ import org.betonquest.betonquest.util.Utils;
  */
 public class NexoParser implements SimpleArgumentParser<ItemBuilder> {
 
-    /** The empty default constructor. */
-    public NexoParser() { }
-
     /**
      * The default instance of {@link NexoParser}.
      */
     public static final NexoParser NEXO_PARSER = new NexoParser();
+
+    /** The empty default constructor. */
+    public NexoParser() { }
 
     @Override
     public ItemBuilder apply(final String string) throws QuestException {
