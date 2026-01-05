@@ -11,6 +11,12 @@ import org.betonquest.betonquest.util.Utils;
 public class ItemsAdderParser implements SimpleArgumentParser<CustomStack> {
 
     /**
+     * Default constructor for ItemsAdderParser.
+     */
+    private ItemsAdderParser() {
+    }
+
+    /**
      * The default instance of {@link ItemsAdderParser}.
      */
     public static final ItemsAdderParser ITEMS_ADDER_PARSER = new ItemsAdderParser();

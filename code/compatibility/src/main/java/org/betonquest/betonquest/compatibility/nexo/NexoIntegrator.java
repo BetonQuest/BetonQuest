@@ -13,6 +13,12 @@ import org.betonquest.betonquest.item.ItemRegistry;
 public class NexoIntegrator implements Integrator {
 
     /**
+     * Default constructor for NexoIntegrator.
+     */
+    public NexoIntegrator() {
+    }
+
+    /**
      * Registers Nexo item factory and serializer to BetonQuest.
      *
      * @param api the BetonQuest API instance

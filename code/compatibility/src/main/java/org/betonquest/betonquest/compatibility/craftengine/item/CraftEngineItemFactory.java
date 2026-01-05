@@ -14,6 +14,12 @@ import org.betonquest.betonquest.item.QuestItemWrapper;
 public class CraftEngineItemFactory implements TypeFactory<QuestItemWrapper> {
 
     /**
+     * Default constructor for CraftEngineItemFactory.
+     */
+    public CraftEngineItemFactory() {
+    }
+
+    /**
      * Parses the instruction into a {@link QuestItemWrapper}.
      * @param instruction the instruction to parse
      * @return the wrapped quest item, optionally adapted for quest tags

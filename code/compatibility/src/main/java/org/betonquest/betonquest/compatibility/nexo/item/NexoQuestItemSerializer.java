@@ -11,6 +11,12 @@ import org.bukkit.inventory.ItemStack;
 public class NexoQuestItemSerializer implements QuestItemSerializer {
 
     /**
+     * Default constructor for NexoQuestItemSerializer.
+     */
+    public NexoQuestItemSerializer() {
+    }
+
+    /**
      * Serializes an item stack to its Nexo ID.
      *
      * @param itemStack the item to serialize

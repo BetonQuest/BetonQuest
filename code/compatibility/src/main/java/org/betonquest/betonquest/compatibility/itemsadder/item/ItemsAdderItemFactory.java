@@ -13,6 +13,12 @@ import org.betonquest.betonquest.item.QuestItemWrapper;
 public class ItemsAdderItemFactory implements TypeFactory<QuestItemWrapper> {
 
     /**
+     * Default constructor for ItemsAdderItemFactory.
+     */
+    public ItemsAdderItemFactory() {
+    }
+
+    /**
      * Parses the instruction into an {@link ItemsAdderItemWrapper}.
      * @param instruction the instruction to parse
      * @return the wrapped ItemsAdder item

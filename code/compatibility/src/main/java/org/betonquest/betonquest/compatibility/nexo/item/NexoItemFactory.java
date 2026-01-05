@@ -13,6 +13,12 @@ import org.betonquest.betonquest.item.QuestItemWrapper;
 public class NexoItemFactory implements TypeFactory<QuestItemWrapper> {
 
     /**
+     * Default constructor for NexoItemFactory.
+     */
+    public NexoItemFactory() {
+    }
+
+    /**
      * Parses the instruction into a {@link NexoItemWrapper}.
      *
      * @param instruction the instruction to parse

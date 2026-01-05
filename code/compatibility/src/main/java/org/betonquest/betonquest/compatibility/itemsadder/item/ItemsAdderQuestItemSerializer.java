@@ -11,6 +11,12 @@ import org.bukkit.inventory.ItemStack;
 public class ItemsAdderQuestItemSerializer implements QuestItemSerializer {
 
     /**
+     * Default constructor for ItemsAdderQuestItemSerializer.
+     */
+    public ItemsAdderQuestItemSerializer() {
+    }
+
+    /**
      * Serializes an item stack to its ItemsAdder ID.
      * @param itemStack the item to serialize
      * @return the namespaced ID

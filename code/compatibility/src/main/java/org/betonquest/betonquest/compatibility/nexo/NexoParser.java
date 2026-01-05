@@ -12,6 +12,12 @@ import org.betonquest.betonquest.util.Utils;
 public class NexoParser implements SimpleArgumentParser<ItemBuilder> {
 
     /**
+     * Default constructor for NexoParser.
+     */
+    private NexoParser() {
+    }
+
+    /**
      * The default instance of {@link NexoParser}.
      */
     public static final NexoParser NEXO_PARSER = new NexoParser();

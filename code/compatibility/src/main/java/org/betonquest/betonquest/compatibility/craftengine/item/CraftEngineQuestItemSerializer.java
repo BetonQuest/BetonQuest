@@ -11,6 +11,12 @@ import org.bukkit.inventory.ItemStack;
 public class CraftEngineQuestItemSerializer implements QuestItemSerializer {
 
     /**
+     * Default constructor for CraftEngineQuestItemSerializer.
+     */
+    public CraftEngineQuestItemSerializer() {
+    }
+
+    /**
      * Serializes an item stack to its CraftEngine ID string.
      * @param itemStack the item to serialize
      * @return the CraftEngine item ID
