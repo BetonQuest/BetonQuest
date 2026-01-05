@@ -5,8 +5,17 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.item.QuestItemSerializer;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * Serializes {@link ItemStack}s to their ItemsAdder namespaced IDs.
+ */
 public class ItemsAdderQuestItemSerializer implements QuestItemSerializer {
 
+    /**
+     * Serializes an item stack to its ItemsAdder ID.
+     * @param itemStack the item to serialize
+     * @return the namespaced ID
+     * @throws QuestException if the item is not a valid ItemsAdder item
+     */
     @Override
     public String serialize(final ItemStack itemStack) throws QuestException {
         final CustomStack itemsAdderItem = CustomStack.byItemStack(itemStack);

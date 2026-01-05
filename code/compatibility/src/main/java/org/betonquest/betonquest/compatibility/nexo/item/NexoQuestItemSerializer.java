@@ -5,8 +5,18 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.item.QuestItemSerializer;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * Serializes {@link ItemStack}s to their Nexo IDs.
+ */
 public class NexoQuestItemSerializer implements QuestItemSerializer {
 
+    /**
+     * Serializes an item stack to its Nexo ID.
+     *
+     * @param itemStack the item to serialize
+     * @return the Nexo item ID
+     * @throws QuestException if the item is not a valid Nexo item
+     */
     @Override
     public String serialize(final ItemStack itemStack) throws QuestException {
         final String nexoItem = NexoItems.idFromItem(itemStack);

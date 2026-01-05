@@ -14,26 +14,31 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Objects;
 
-public class NexoItemWrapper implements QuestItemWrapper {
+/**
+ * A wrapper for Nexo custom items.
+ *
+ * @param itemBuilderArgument the argument containing the item builder
+ */
+public record NexoItemWrapper(Argument<ItemBuilder> itemBuilderArgument) implements QuestItemWrapper {
 
-    private final Argument<ItemBuilder> itemBuilderArgument;
-
-    public NexoItemWrapper(final Argument<ItemBuilder> itemBuilderArgument) {
-        this.itemBuilderArgument = itemBuilderArgument;
-    }
-
+    /**
+     * Gets the {@link QuestItem} for the given profile.
+     *
+     * @param profile the player profile
+     * @return the Nexo quest item
+     * @throws QuestException if retrieval fails
+     */
     @Override
     public QuestItem getItem(@Nullable final Profile profile) throws QuestException {
         return new NexoItem(itemBuilderArgument.getValue(profile));
     }
 
-    class NexoItem implements QuestItem {
-
-        private final ItemBuilder itemBuilder;
-
-        NexoItem(final ItemBuilder itemBuilder) {
-            this.itemBuilder = itemBuilder;
-        }
+    /**
+     * Implementation of {@link QuestItem} for Nexo.
+     *
+     * @param itemBuilder the underlying Nexo item builder
+     */
+    public record NexoItem(ItemBuilder itemBuilder) implements QuestItem {
 
         @Override
         public Component getName() {
@@ -45,11 +50,24 @@ public class NexoItemWrapper implements QuestItemWrapper {
             return Objects.requireNonNull(itemBuilder.getLore());
         }
 
+        /**
+         * Generates an {@link ItemStack} with the specified size.
+         *
+         * @param stackSize the amount to generate
+         * @param profile the player profile
+         * @return the generated item stack
+         */
         @Override
         public ItemStack generate(final int stackSize, @Nullable final Profile profile) throws QuestException {
             return itemBuilder.setAmount(stackSize).build();
         }
 
+        /**
+         * Checks if the given item matches this Nexo item.
+         *
+         * @param item the item to check
+         * @return true if it matches
+         */
         @Override
         public boolean matches(@Nullable final ItemStack item) {
             return itemBuilder == NexoItems.builderFromItem(item);

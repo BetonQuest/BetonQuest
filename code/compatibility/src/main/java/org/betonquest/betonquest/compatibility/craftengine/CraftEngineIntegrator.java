@@ -7,6 +7,9 @@ import org.betonquest.betonquest.compatibility.craftengine.item.CraftEngineItemF
 import org.betonquest.betonquest.compatibility.craftengine.item.CraftEngineQuestItemSerializer;
 import org.betonquest.betonquest.item.ItemRegistry;
 
+/**
+ * Integrator for CraftEngine.
+ */
 public class CraftEngineIntegrator implements Integrator {
 
     @Override

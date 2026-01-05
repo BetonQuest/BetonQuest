@@ -7,8 +7,18 @@ import org.betonquest.betonquest.compatibility.nexo.NexoParser;
 import org.betonquest.betonquest.item.QuestItemTagAdapterWrapper;
 import org.betonquest.betonquest.item.QuestItemWrapper;
 
+/**
+ * Factory for creating {@link QuestItemWrapper} from Nexo items.
+ */
 public class NexoItemFactory implements TypeFactory<QuestItemWrapper> {
 
+    /**
+     * Parses the instruction into a {@link NexoItemWrapper}.
+     *
+     * @param instruction the instruction to parse
+     * @return the wrapped Nexo item
+     * @throws QuestException if parsing fails
+     */
     @Override
     public QuestItemWrapper parseInstruction(final Instruction instruction) throws QuestException {
         final NexoItemWrapper nexoItemWrapper = new NexoItemWrapper(instruction.parse(NexoParser.NEXO_PARSER).get());

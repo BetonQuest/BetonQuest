@@ -7,16 +7,25 @@ import org.betonquest.betonquest.compatibility.itemsadder.ItemsAdderParser;
 import org.betonquest.betonquest.item.QuestItemTagAdapterWrapper;
 import org.betonquest.betonquest.item.QuestItemWrapper;
 
+/**
+ * Factory for creating {@link QuestItemWrapper} from ItemsAdder items.
+ */
 public class ItemsAdderItemFactory implements TypeFactory<QuestItemWrapper> {
 
+    /**
+     * Parses the instruction into an {@link ItemsAdderItemWrapper}.
+     * @param instruction the instruction to parse
+     * @return the wrapped ItemsAdder item
+     * @throws QuestException if parsing fails
+     */
     @Override
     public QuestItemWrapper parseInstruction(final Instruction instruction) throws QuestException {
-        final ItemsAdderItemWapper itemsAdderItemWapper = new ItemsAdderItemWapper(instruction.parse(ItemsAdderParser.ITEMS_ADDER_PARSER).get());
+        final ItemsAdderItemWrapper itemsAdderItemWrapper = new ItemsAdderItemWrapper(instruction.parse(ItemsAdderParser.ITEMS_ADDER_PARSER).get());
         final boolean questItem = instruction.bool().getFlag("quest-item", true)
                 .getValue(null).orElse(false);
         if (questItem) {
-            return new QuestItemTagAdapterWrapper(itemsAdderItemWapper);
+            return new QuestItemTagAdapterWrapper(itemsAdderItemWrapper);
         }
-        return itemsAdderItemWapper;
+        return itemsAdderItemWrapper;
     }
 }

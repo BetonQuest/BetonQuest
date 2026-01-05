@@ -15,29 +15,37 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Objects;
 
-public class CraftEngineItemWapper implements QuestItemWrapper {
+/**
+ * A wrapper for CraftEngine custom items.
+ * @param customItemArgument the argument containing the custom item
+ */
+public record CraftEngineItemWrapper(Argument<CustomItem<ItemStack>> customItemArgument) implements QuestItemWrapper {
 
-    private final Argument<CustomItem<ItemStack>> customItemArgument;
-
-    public CraftEngineItemWapper(final Argument<CustomItem<ItemStack>> customItemArgument) {
-        this.customItemArgument = customItemArgument;
-    }
-
+    /**
+     * Gets the {@link QuestItem} for the given profile.
+     * @param profile the player profile
+     * @return the quest item instance
+     * @throws QuestException if item retrieval fails
+     */
     @Override
     public QuestItem getItem(@Nullable final Profile profile) throws QuestException {
         return new CraftEngineItem(customItemArgument.getValue(profile));
     }
 
+    /**
+     * Implementation of {@link QuestItem} for CraftEngine.
+     */
     class CraftEngineItem implements QuestItem {
 
         private final CustomItem<ItemStack> customItem;
         private final ItemMeta itemMeta;
 
-        CraftEngineItem(final CustomItem<ItemStack> customItem) {
+        /**
+         * @param customItem the base custom item
+         */
+        public CraftEngineItem(final CustomItem<ItemStack> customItem) {
             this.customItem = customItem;
-
-            final ItemStack itemStack = customItem.buildItemStack();
-            this.itemMeta = itemStack.getItemMeta();
+            this.itemMeta = customItem.buildItemStack().getItemMeta();
         }
 
         @Override
@@ -50,11 +58,22 @@ public class CraftEngineItemWapper implements QuestItemWrapper {
             return Objects.requireNonNull(itemMeta.lore());
         }
 
+        /**
+         * Generates an {@link ItemStack} with the specified size.
+         * @param stackSize the amount to generate
+         * @param profile the player profile
+         * @return the generated item stack
+         */
         @Override
         public ItemStack generate(final int stackSize, @Nullable final Profile profile) throws QuestException {
             return customItem.buildItemStack(stackSize);
         }
 
+        /**
+         * Checks if the given item matches this custom item's ID.
+         * * @param item the item to check
+         * @return true if IDs match
+         */
         @Override
         public boolean matches(@Nullable final ItemStack item) {
             return Objects.equals(customItem.id(), CraftEngineItems.getCustomItemId(item));
