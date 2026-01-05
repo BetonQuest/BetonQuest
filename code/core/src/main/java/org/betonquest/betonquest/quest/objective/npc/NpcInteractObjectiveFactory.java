@@ -12,8 +12,6 @@ import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryServi
 import org.betonquest.betonquest.quest.objective.interact.Interaction;
 import org.bukkit.event.EventPriority;
 
-import java.util.UUID;
-
 import static org.betonquest.betonquest.quest.objective.interact.Interaction.RIGHT;
 
 /**
@@ -34,11 +32,7 @@ public class NpcInteractObjectiveFactory implements ObjectiveFactory {
         final Argument<Interaction> interactionType = instruction.enumeration(Interaction.class).get("interaction", RIGHT);
         final NpcInteractObjective objective = new NpcInteractObjective(instruction, npcId, cancel, interactionType);
         service.request(NpcInteractEvent.class).priority(EventPriority.LOWEST)
-                .handler(objective::onNPCLeftClick, this::fromEvent).subscribe(true);
+                .handler(objective::onNPCLeftClick, NpcInteractEvent::getProfile).subscribe(true);
         return objective;
-    }
-
-    private UUID fromEvent(final NpcInteractEvent event) {
-        return event.getProfile().getPlayerUUID();
     }
 }

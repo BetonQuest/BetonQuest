@@ -5,12 +5,9 @@ import org.betonquest.betonquest.api.MobKillNotifier.MobKilledEvent;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -32,12 +29,7 @@ public class MobKillObjectiveFactory implements ObjectiveFactory {
         final Argument<String> name = instruction.string().get("name").orElse(null);
         final Argument<String> marked = instruction.packageIdentifier().get("marked").orElse(null);
         final MobKillObjective objective = new MobKillObjective(instruction, targetAmount, entities, name, marked);
-        service.request(MobKilledEvent.class).handler(objective::onMobKill, this::fromEvent).subscribe(true);
+        service.request(MobKilledEvent.class).handler(objective::onMobKill, MobKilledEvent::getProfile).subscribe(true);
         return objective;
-    }
-
-    @Nullable
-    private Player fromEvent(final MobKilledEvent event) {
-        return event.getProfile().getOnlineProfile().map(OnlineProfile::getPlayer).orElse(null);
     }
 }

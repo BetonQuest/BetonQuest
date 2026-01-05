@@ -18,8 +18,7 @@ public interface ObjectiveFactoryService {
      * with the objective's source before returning.
      * <br>
      * The request may be completed in one chain of calls requiring at least a handler and ending with
-     * {@link EventServiceSubscriptionBuilder#subscribe()}
-     * or {@link EventServiceSubscriptionBuilder#subscribe(boolean)}.
+     * {@link EventServiceSubscriptionBuilder#subscribe(boolean)}.
      *
      * @param eventClass the event class to subscribe to
      * @param <T>        the event type

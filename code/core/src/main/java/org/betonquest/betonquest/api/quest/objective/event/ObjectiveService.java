@@ -11,23 +11,22 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * The event service for objectives managing the subscription of event handlers.
+ * The service for objectives managing the subscription of event handlers.
  */
 public interface ObjectiveService {
 
     /**
-     * Creates a new {@link ObjectiveFactoryService} for the given instruction.
+     * Creates a new {@link ObjectiveFactoryService} for the given objectiveId.
      *
      * @param objectiveID the objective to create a subscription service for
-     * @return a new {@link ObjectiveFactoryService} for the given instruction
+     * @return a new {@link ObjectiveFactoryService} for the given objectiveId
      */
     ObjectiveFactoryService getSubscriptionService(ObjectiveID objectiveID);
 
     /**
      * Requests a new event subscription using an {@link EventServiceSubscriptionBuilder}.
      * The request may be completed in one chain of calls requiring at least a handler and ending with
-     * {@link EventServiceSubscriptionBuilder#subscribe()}
-     * or {@link EventServiceSubscriptionBuilder#subscribe(boolean)}.
+     * {@link EventServiceSubscriptionBuilder#subscribe(boolean)}.
      *
      * @param eventClass the event class to subscribe to
      * @param <T>        the event type
@@ -46,7 +45,7 @@ public interface ObjectiveService {
      * @param <T>             the event type
      * @throws QuestException if the event could not be subscribed
      */
-    <T extends Event> void subscribe(LogSource source, Class<T> eventClass, StaticEventHandler<T> handler,
+    <T extends Event> void subscribe(LogSource source, Class<T> eventClass, NonProfileEventHandler<T> handler,
                                      EventPriority priority, boolean ignoreCancelled) throws QuestException;
 
     /**

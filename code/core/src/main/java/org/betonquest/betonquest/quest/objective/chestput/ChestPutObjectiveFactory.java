@@ -15,10 +15,8 @@ import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.betonquest.betonquest.quest.event.chest.ChestTakeEvent;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -62,18 +60,8 @@ public class ChestPutObjectiveFactory implements ObjectiveFactory {
                 instruction.getID().getFull(), NotificationLevel.INFO, "chest_occupied");
         final ChestPutObjective objective = new ChestPutObjective(instruction, chestItemCondition, chestTakeEvent,
                 loc, occupiedSender, multipleAccess);
-        service.request(InventoryOpenEvent.class).handler(objective::onChestOpen, this::fromEvent).subscribe(false);
-        service.request(InventoryCloseEvent.class).handler(objective::onChestClose, this::fromEvent).subscribe(true);
+        service.request(InventoryOpenEvent.class).handler(objective::onChestOpen, InventoryOpenEvent::getPlayer).subscribe(false);
+        service.request(InventoryCloseEvent.class).handler(objective::onChestClose, InventoryCloseEvent::getPlayer).subscribe(true);
         return objective;
-    }
-
-    @Nullable
-    private Player fromEvent(final InventoryCloseEvent event) {
-        return event.getPlayer() instanceof final Player player ? player : null;
-    }
-
-    @Nullable
-    private Player fromEvent(final InventoryOpenEvent event) {
-        return event.getPlayer() instanceof final Player player ? player : null;
     }
 }

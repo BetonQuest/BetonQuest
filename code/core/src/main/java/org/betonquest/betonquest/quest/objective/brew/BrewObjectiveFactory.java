@@ -8,11 +8,9 @@ import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Factory for creating {@link BrewObjective} instances from {@link Instruction}s.
@@ -39,14 +37,9 @@ public class BrewObjectiveFactory implements ObjectiveFactory {
         final Argument<Number> targetAmount = instruction.number().atLeast(0).get();
         final BrewObjective objective = new BrewObjective(instruction, targetAmount, profileProvider, potion);
         service.request(InventoryClickEvent.class).priority(EventPriority.LOWEST)
-                .handler(objective::onIngredientPut, this::fromEvent).subscribe(false);
+                .handler(objective::onIngredientPut, InventoryClickEvent::getWhoClicked).subscribe(false);
         service.request(BrewEvent.class).priority(EventPriority.MONITOR)
-                .handler(objective::onBrew).subscribe();
+                .handler(objective::onBrew).subscribe(true);
         return objective;
-    }
-
-    @Nullable
-    private Player fromEvent(final InventoryClickEvent event) {
-        return event.getWhoClicked() instanceof final Player player ? player : null;
     }
 }

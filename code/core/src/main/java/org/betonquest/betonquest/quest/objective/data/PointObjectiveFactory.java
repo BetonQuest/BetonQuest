@@ -4,15 +4,12 @@ import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerUpdatePointEvent;
-import org.betonquest.betonquest.api.bukkit.event.ProfileEvent;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.quest.condition.number.Operation;
-
-import java.util.UUID;
 
 /**
  * Factory to create {@link PointObjective}s from {@link Instruction}s.
@@ -40,12 +37,8 @@ public class PointObjectiveFactory implements ObjectiveFactory {
         final Argument<CountingMode> mode = instruction.enumeration(CountingMode.class).get("mode", CountingMode.TOTAL);
         final Argument<Operation> operation = instruction.parse(Operation::fromSymbol).get("operation", Operation.GREATER_EQUAL);
         final PointObjective objective = new PointObjective(instruction, playerDataStorage, category, targetAmount, mode, operation);
-        service.request(PlayerUpdatePointEvent.class).handler(objective::onPointUpdate, this::fromProfileEvent).subscribe(false);
-        service.request(PlayerObjectiveChangeEvent.class).handler(objective::onStart, this::fromProfileEvent).subscribe(false);
+        service.request(PlayerUpdatePointEvent.class).handler(objective::onPointUpdate, PlayerUpdatePointEvent::getProfile).subscribe(false);
+        service.request(PlayerObjectiveChangeEvent.class).handler(objective::onStart, PlayerObjectiveChangeEvent::getProfile).subscribe(false);
         return objective;
-    }
-
-    private UUID fromProfileEvent(final ProfileEvent event) {
-        return event.getProfile().getPlayerUUID();
     }
 }
