@@ -14,33 +14,35 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * A wrapper for Nexo custom items.
- *
- * @param itemBuilderArgument the argument containing the item builder
- */
-public record NexoItemWrapper(Argument<ItemBuilder> itemBuilderArgument) implements QuestItemWrapper {
+public class NexoItemWrapper implements QuestItemWrapper {
+
+    private final Argument<ItemBuilder> itemBuilderArgument;
+
+    public NexoItemWrapper(final Argument<ItemBuilder> itemBuilderArgument) {
+        this.itemBuilderArgument = itemBuilderArgument;
+    }
 
     @Override
     public QuestItem getItem(@Nullable final Profile profile) throws QuestException {
         return new NexoItem(itemBuilderArgument.getValue(profile));
     }
 
-    /**
-     * Implementation of {@link QuestItem} for Nexo.
-     *
-     * @param itemBuilder the underlying Nexo item builder
-     */
-    public record NexoItem(ItemBuilder itemBuilder) implements QuestItem {
+    class NexoItem implements QuestItem {
+
+        private final ItemBuilder itemBuilder;
+
+        NexoItem(final ItemBuilder itemBuilder) {
+            this.itemBuilder = itemBuilder;
+        }
 
         @Override
         public Component getName() {
-            return Objects.requireNonNullElse(itemBuilder.getItemName(), Component.empty());
+            return Objects.requireNonNull(itemBuilder.getItemName());
         }
 
         @Override
         public List<Component> getLore() {
-            return Objects.requireNonNullElse(itemBuilder.getLore(), List.of());
+            return Objects.requireNonNull(itemBuilder.getLore());
         }
 
         @Override
@@ -50,7 +52,7 @@ public record NexoItemWrapper(Argument<ItemBuilder> itemBuilderArgument) impleme
 
         @Override
         public boolean matches(@Nullable final ItemStack item) {
-            return itemBuilder.equals(NexoItems.builderFromItem(item));
+            return itemBuilder == NexoItems.builderFromItem(item);
         }
     }
 }

@@ -7,17 +7,7 @@ import org.betonquest.betonquest.compatibility.craftengine.item.CraftEngineItemF
 import org.betonquest.betonquest.compatibility.craftengine.item.CraftEngineQuestItemSerializer;
 import org.betonquest.betonquest.item.ItemRegistry;
 
-/**
- * Integrator for CraftEngine.
- */
 public class CraftEngineIntegrator implements Integrator {
-
-    /**
-     * The empty default constructor.
-     */
-    public CraftEngineIntegrator() {
-        // Empty
-    }
 
     @Override
     public void hook(final BetonQuestApi api) throws HookException {
@@ -27,12 +17,6 @@ public class CraftEngineIntegrator implements Integrator {
     }
 
     @Override
-    public void reload() {
-        // Empty
-    }
 
     @Override
-    public void close() {
-        // Empty
-    }
 }

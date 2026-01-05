@@ -7,24 +7,16 @@ import org.betonquest.betonquest.compatibility.craftengine.CraftEngineParser;
 import org.betonquest.betonquest.item.QuestItemTagAdapterWrapper;
 import org.betonquest.betonquest.item.QuestItemWrapper;
 
-/**
- * Factory for creating {@link QuestItemWrapper} from BetonQuest {@link Instruction}s
- * using the CraftEngine system.
- */
 public class CraftEngineItemFactory implements TypeFactory<QuestItemWrapper> {
-
-    /**
-     * The empty default constructor.
-     */
-    public CraftEngineItemFactory() {
-        // Empty
-    }
 
     @Override
     public QuestItemWrapper parseInstruction(final Instruction instruction) throws QuestException {
-        final CraftEngineItemWrapper wrapper = new CraftEngineItemWrapper(instruction.parse(CraftEngineParser.CRAFT_ENGINE_PARSER).get());
-        final boolean isQuestItem = instruction.bool().getFlag("quest-item", true)
+        final CraftEngineItemWapper craftEngineItemWapper = new CraftEngineItemWapper(instruction.parse(CraftEngineParser.CRAFT_ENGINE_PARSER).get());
+        final boolean questItem = instruction.bool().getFlag("quest-item", true)
                 .getValue(null).orElse(false);
-        return isQuestItem ? new QuestItemTagAdapterWrapper(wrapper) : wrapper;
+        if (questItem) {
+            return new QuestItemTagAdapterWrapper(craftEngineItemWapper);
+        }
+        return craftEngineItemWapper;
     }
 }
