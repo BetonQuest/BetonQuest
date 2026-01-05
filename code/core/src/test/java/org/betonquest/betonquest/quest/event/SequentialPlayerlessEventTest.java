@@ -22,7 +22,7 @@ class SequentialPlayerlessEventTest {
     @Test
     void testCanExecuteWithZeroEvents() {
         final PlayerlessEvent event = new SequentialPlayerlessEvent(List.of());
-        assertDoesNotThrow(event::execute, "SequentialStaticEvent should not fail with no events to execute.");
+        assertDoesNotThrow(event::execute, "SequentialStaticEvent should not fail with no actions to execute.");
     }
 
     @Test

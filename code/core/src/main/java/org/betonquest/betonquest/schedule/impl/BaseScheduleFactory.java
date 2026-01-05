@@ -55,8 +55,8 @@ public abstract class BaseScheduleFactory<S extends Schedule> implements Schedul
         final String time = Optional.ofNullable(instruction.getString("time"))
                 .orElseThrow(() -> new QuestException("Missing time instruction"));
 
-        final String eventsString = Optional.ofNullable(instruction.getString("events"))
-                .orElseThrow(() -> new QuestException("Missing events"));
+        final String eventsString = Optional.ofNullable(instruction.getString("actions"))
+                .orElseThrow(() -> new QuestException("Missing actions"));
         final List<EventID> events;
         try {
             events = new DefaultListArgument<>(placeholders, pack, eventsString,

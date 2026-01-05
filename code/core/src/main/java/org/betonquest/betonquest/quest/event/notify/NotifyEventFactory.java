@@ -133,7 +133,7 @@ public class NotifyEventFactory implements PlayerEventFactory {
             data.put(key, value);
         }
 
-        data.remove("events");
+        data.remove("actions");
         data.remove("conditions");
 
         return data;

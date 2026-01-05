@@ -70,15 +70,15 @@ class ScheduleTypeTest {
         lenient().when(configurationOptions.pathSeparator()).thenReturn('.');
         lenient().when(mockConfig.options()).thenReturn(configurationOptions);
         lenient().when(questPackage.getConfig()).thenReturn(mockConfig);
-        lenient().when(mockConfig.getString("events.bell_ring"))
+        lenient().when(mockConfig.getString("actions.bell_ring"))
                 .thenReturn("folder bell_lever_toggle,bell_lever_toggle period:0.5");
-        lenient().when(mockConfig.getString("events.notify_goodNight"))
+        lenient().when(mockConfig.getString("actions.notify_goodNight"))
                 .thenReturn("notify &6Good night, sleep well!");
 
         lenient().when(scheduleID.getPackage()).thenReturn(questPackage);
 
         lenient().when(section.getString("time")).thenReturn("22:00");
-        lenient().when(section.getString("events")).thenReturn("bell_ring,notify_goodNight");
+        lenient().when(section.getString("actions")).thenReturn("bell_ring,notify_goodNight");
         lenient().when(section.getString("catchup")).thenReturn("NONE");
     }
 

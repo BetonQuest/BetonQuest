@@ -141,8 +141,8 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
             }
             final Text title = textCreator.parseFromSection(pack, section, "title");
             final Argument<List<ConditionID>> openConditions = getID("open_conditions", ConditionID::new);
-            final Argument<List<EventID>> openEvents = getID("open_events", EventID::new);
-            final Argument<List<EventID>> closeEvents = getID("close_events", EventID::new);
+            final Argument<List<EventID>> openEvents = getID("open_actions", EventID::new);
+            final Argument<List<EventID>> closeEvents = getID("close_actions", EventID::new);
 
             final List<Slots> slots = loadSlots(height);
             return new Menu.MenuData(title, height, slots, openConditions, openEvents, closeEvents);

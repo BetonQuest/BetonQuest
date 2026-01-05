@@ -122,6 +122,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - config option `conversation.interceptor.delay` to configure a delay between the end of a conversation and the moment the interceptor is ended
 - `hologram` `top:` line to customizable format
 - Variables to Placeholders. This change won't harm any user scripts, it's only a conceptual change
+- Events to Actions.
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation

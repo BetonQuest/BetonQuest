@@ -95,7 +95,7 @@ class RealtimeCronSchedulerTest {
         verify(logger, times(1)).debug("Starting realtime scheduler.");
         verify(logger, times(1)).debug("Collecting reboot schedules...");
         verify(logger, times(1)).debug("Found 1 reboot schedules. They will be run on next server tick.");
-        verify(logger, times(1)).debug(null, "Schedule 'test.schedule' runs its events...");
+        verify(logger, times(1)).debug(null, "Schedule 'test.schedule' runs its actions...");
         verify(logger, times(1)).debug("Found 0 missed schedule runs that will be caught up.");
         verify(logger, times(1)).debug("Realtime scheduler start complete.");
         verifyNoMoreInteractions(logger);
@@ -124,7 +124,7 @@ class RealtimeCronSchedulerTest {
         verify(logger, times(1)).debug(null, "Schedule 'test.schedule' run missed at " + nextMissedExecution);
         verify(logger, times(1)).debug("Found 1 missed schedule runs that will be caught up.");
         verify(logger, times(1)).debug("Running missed schedules to catch up...");
-        verify(logger, times(1)).debug(null, "Schedule 'test.schedule' runs its events...");
+        verify(logger, times(1)).debug(null, "Schedule 'test.schedule' runs its actions...");
         verify(logger, times(1)).debug("Realtime scheduler start complete.");
         verifyNoMoreInteractions(logger);
         verify(schedule, times(1)).getEvents();
@@ -161,7 +161,7 @@ class RealtimeCronSchedulerTest {
         verify(logger, times(1)).debug(null, "Schedule 'test.schedule' run missed at " + nextMissedExecution3);
         verify(logger, times(1)).debug("Found 3 missed schedule runs that will be caught up.");
         verify(logger, times(1)).debug("Running missed schedules to catch up...");
-        verify(logger, times(3)).debug(null, "Schedule 'test.schedule' runs its events...");
+        verify(logger, times(3)).debug(null, "Schedule 'test.schedule' runs its actions...");
         verify(logger, times(1)).debug("Realtime scheduler start complete.");
         verifyNoMoreInteractions(logger);
         verify(schedule, times(3)).getEvents();
@@ -221,7 +221,7 @@ class RealtimeCronSchedulerTest {
         verify(logger, times(1)).debug("Collecting reboot schedules...");
         verify(logger, times(1)).debug("Found 0 reboot schedules. They will be run on next server tick.");
         verify(logger, times(1)).debug("Found 0 missed schedule runs that will be caught up.");
-        verify(logger, times(3)).debug(null, "Schedule 'test.schedule' runs its events...");
+        verify(logger, times(3)).debug(null, "Schedule 'test.schedule' runs its actions...");
         verify(logger, times(1)).debug("Realtime scheduler start complete.");
         verifyNoMoreInteractions(logger);
         verify(schedule, times(3)).getEvents();

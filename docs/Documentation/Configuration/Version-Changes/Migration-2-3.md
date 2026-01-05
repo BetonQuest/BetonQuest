@@ -58,6 +58,7 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 - [3.0.0-DEV-488 - Remove Legacy Point Multiply](#300-dev-488-remove-legacy-point-multiply) :sun:
 - [3.0.0-DEV-494 - Add native `menu` conversation io](#300-dev-494-add-native-menu-conversation-io) :white_sun_cloud:
 - [3.0.0-DEV-511 - Dynamize `top:` Hologram Line](#300-dev-511-dynamize-top-hologram-line) :sun:
+- [3.0.0-DEV-5xx - Rename `events` to `actions`](#300-dev-5xx-rename-events-to-actions) :sun:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :thunder_cloud_rain:
 
@@ -998,6 +999,51 @@ conversations:
       beton:
         lines:
         - 'top:completed_quests;desc;10;§a{place}. §6{name}§2 - §6{score}'
+    ```
+    
+    </div>
+
+### 3.0.0-DEV-5xx - Rename `events` to `actions` :sun:
+
+BetonQuest "Events" are renamed to "Actions".
+
+??? info "Automated Migration"
+    *The migration is automated. You shouldn't have to do anything.*
+    
+    -------------
+    
+    The `events` section is now called `actions`.
+    Also, the phrase "events" is replaced with "actions" in the following places:
+
+    - `objectives`
+    - `command` objective `failEvents` to `failActions`
+    - `menus` `open_events` to `open_actions` and `close_events` to `close_actions`
+    - `cancel`
+    - `schedules`
+    - `conversations` `final_events` to `final_actions`
+    - `conversations` `NPC_options` 
+    - `conversations` `player_options`
+    - `runForAll`
+    - `runIndependent`
+
+    <div class="grid" markdown>
+    
+    ```YAML title="Old Syntax"
+    events:
+      addTag: globaltag add test
+    schedules:
+      Test:
+        events: addTag
+        ...
+    ```
+    
+    ```YAML title="New Syntax"
+    actions:
+      addTag: globaltag add test
+    schedules:
+      Test:
+        actions: addTag
+        ...
     ```
     
     </div>
