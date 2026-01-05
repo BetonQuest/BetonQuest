@@ -4,12 +4,12 @@ import org.betonquest.betonquest.api.QuestException;
 import org.bukkit.event.Event;
 
 /**
- * A handler for static non-profile events.
+ * A handler for non-profile events.
  *
  * @param <T> the event type
  */
 @FunctionalInterface
-public interface StaticEventHandler<T extends Event> {
+public interface NonProfileEventHandler<T extends Event> {
 
     /**
      * This method gets called when the related event is triggered.

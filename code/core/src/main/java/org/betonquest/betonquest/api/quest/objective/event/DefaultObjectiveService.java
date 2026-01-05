@@ -65,12 +65,12 @@ public class DefaultObjectiveService implements ObjectiveService {
     }
 
     @Override
-    public <T extends Event> void subscribe(final LogSource source, final Class<T> eventClass, final StaticEventHandler<T> handler,
+    public <T extends Event> void subscribe(final LogSource source, final Class<T> eventClass, final NonProfileEventHandler<T> handler,
                                             final EventPriority priority, final boolean ignoreCancelled) throws QuestException {
         if (!eventService.require(eventClass, priority)) {
             throw new QuestException("<%s> Could not subscribe to event '%s'".formatted(source.getSourcePath(), eventClass.getSimpleName()));
         }
-        final EventServiceSubscriber<T> subscriber = subStatic(handler);
+        final EventServiceSubscriber<T> subscriber = subNonProfile(handler);
         eventService.subscribe(eventClass, priority, ignoreCancelled, exceptionHandled(source, eventClass, subscriber));
         logger.debug(source, "Subscribed to event '" + eventClass.getSimpleName() + "' with priority '" + priority.name() + "' and ignoreCancelled '" + ignoreCancelled + "'");
     }
@@ -106,7 +106,7 @@ public class DefaultObjectiveService implements ObjectiveService {
         return (event, priority) -> exceptionHandler.handle(() -> subscriber.call(event, priority));
     }
 
-    private <T extends Event> EventServiceSubscriber<T> subStatic(final StaticEventHandler<T> eventHandler) {
+    private <T extends Event> EventServiceSubscriber<T> subNonProfile(final NonProfileEventHandler<T> eventHandler) {
         return (event, priority) -> eventHandler.handle(event);
     }
 

@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.MobKillNotifier.MobKilledEvent;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
 import org.bukkit.persistence.PersistentDataType;
@@ -60,19 +60,19 @@ public class MobKillObjective extends CountingObjective {
     /**
      * Check if the player has killed the specified mob.
      *
-     * @param event         the event containing the mob kill information
-     * @param onlineProfile the profile of the player that killed the mob
+     * @param event   the event containing the mob kill information
+     * @param profile the profile of the player that killed the mob
      */
-    public void onMobKill(final MobKilledEvent event, final OnlineProfile onlineProfile) {
+    public void onMobKill(final MobKilledEvent event, final Profile profile) {
         qeHandler.handle(() -> {
-            if (!containsPlayer(onlineProfile)
-                    || !entities.getValue(onlineProfile).contains(event.getEntity().getType())
+            if (!containsPlayer(profile)
+                    || !entities.getValue(profile).contains(event.getEntity().getType())
                     || name != null && (event.getEntity().getCustomName() == null
-                    || !event.getEntity().getCustomName().equals(name.getValue(onlineProfile)))) {
+                    || !event.getEntity().getCustomName().equals(name.getValue(profile)))) {
                 return;
             }
             if (marked != null) {
-                final String value = marked.getValue(onlineProfile);
+                final String value = marked.getValue(profile);
                 final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
                 final String dataContainerValue = event.getEntity().getPersistentDataContainer().get(key, PersistentDataType.STRING);
                 if (dataContainerValue == null || !dataContainerValue.equals(value)) {
@@ -80,9 +80,9 @@ public class MobKillObjective extends CountingObjective {
                 }
             }
 
-            if (checkConditions(onlineProfile)) {
-                getCountingData(onlineProfile).progress();
-                completeIfDoneOrNotify(onlineProfile);
+            if (checkConditions(profile)) {
+                getCountingData(profile).progress();
+                completeIfDoneOrNotify(profile);
             }
         });
     }

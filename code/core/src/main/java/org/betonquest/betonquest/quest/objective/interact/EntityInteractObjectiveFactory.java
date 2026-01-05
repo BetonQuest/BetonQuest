@@ -10,7 +10,6 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -49,7 +48,7 @@ public class EntityInteractObjectiveFactory implements ObjectiveFactory {
         final EquipmentSlot slot = getEquipmentSlot(instruction);
         final EntityInteractObjective objective = new EntityInteractObjective(instruction, targetAmount, loc, range, customName, realName, slot, mobType, marked, interaction, cancel);
         eventService.request(EntityDamageByEntityEvent.class)
-                .handler(objective::onDamage, this::fromEvent).subscribe(true);
+                .handler(objective::onDamage, EntityDamageByEntityEvent::getDamager).subscribe(true);
         eventService.request(PlayerInteractEntityEvent.class)
                 .handler(objective::onRightClick, PlayerInteractEntityEvent::getPlayer).subscribe(true);
         eventService.request(PlayerInteractAtEntityEvent.class)
@@ -64,10 +63,5 @@ public class EntityInteractObjectiveFactory implements ObjectiveFactory {
                 .prefilterOptional(ANY, null)
                 .get("hand").orElse(null);
         return hand == null ? null : hand.getValue(null).orElse(null);
-    }
-
-    @Nullable
-    private Player fromEvent(final EntityDamageByEntityEvent event) {
-        return event.getDamager() instanceof final Player player ? player : null;
     }
 }

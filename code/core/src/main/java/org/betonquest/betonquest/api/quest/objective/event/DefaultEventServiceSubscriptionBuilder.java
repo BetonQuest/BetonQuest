@@ -3,6 +3,8 @@ package org.betonquest.betonquest.api.quest.objective.event;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.logger.LogSource;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
@@ -13,7 +15,7 @@ import java.util.UUID;
 
 /**
  * The default implementation of the {@link EventServiceSubscriptionBuilder}.
- * Requires a {@link StaticEventHandler} or {@link ProfileEventHandler} to be set before subscribing.
+ * Requires a {@link NonProfileEventHandler} or {@link ProfileEventHandler} to be set before subscribing.
  * <br>
  * Default priority is {@link EventPriority#NORMAL}.
  * <br>
@@ -59,10 +61,10 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
     private LogSource logSource;
 
     /**
-     * The static event handler.
+     * The non-profile event handler.
      */
     @Nullable
-    private StaticEventHandler<T> staticHandler;
+    private NonProfileEventHandler<T> nonProfileHandler;
 
     /**
      * The profile event handler. Requires a {@link PlayerUUIDExtractor} to be set.
@@ -109,8 +111,8 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
     }
 
     @Override
-    public EventServiceSubscriptionBuilder<T> handler(final StaticEventHandler<T> handler) {
-        this.staticHandler = handler;
+    public EventServiceSubscriptionBuilder<T> handler(final NonProfileEventHandler<T> handler) {
+        this.nonProfileHandler = handler;
         this.profileHandler = null;
         this.onlineProfileHandler = null;
         this.playerUUIDExtractor = null;
@@ -120,28 +122,37 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
     @Override
     public EventServiceSubscriptionBuilder<T> handler(final ProfileEventHandler<T> handler, final PlayerUUIDExtractor<T> playerExtractor) {
         this.profileHandler = handler;
-        this.playerUUIDExtractor = value -> Optional.ofNullable(playerExtractor.read(value));
+        this.playerUUIDExtractor = value -> Optional.ofNullable(playerExtractor.readUUID(value));
         this.onlineProfileHandler = null;
-        this.staticHandler = null;
+        this.nonProfileHandler = null;
         return this;
     }
 
     @Override
-    public EventServiceSubscriptionBuilder<T> handler(final ProfileEventHandler<T> handler, final PlayerExtractor<T> playerExtractor) {
-        this.profileHandler = handler;
-        this.playerUUIDExtractor = value -> Optional.ofNullable(playerExtractor.read(value)).map(Player::getUniqueId);
-        this.onlineProfileHandler = null;
-        this.staticHandler = null;
-        return this;
-    }
-
-    @Override
-    public EventServiceSubscriptionBuilder<T> handler(final OnlineProfileEventHandler<T> handler, final PlayerExtractor<T> playerExtractor) {
+    public EventServiceSubscriptionBuilder<T> handler(final OnlineProfileEventHandler<T> handler, final EntityExtractor<T> entityExtractor) {
         this.onlineProfileHandler = handler;
-        this.playerUUIDExtractor = value -> Optional.ofNullable(playerExtractor.read(value)).map(Player::getUniqueId);
+        this.playerUUIDExtractor = value -> Optional.ofNullable(entityExtractor.readEntity(value)).map(Player.class::cast).map(Player::getUniqueId);
         this.profileHandler = null;
-        this.staticHandler = null;
+        this.nonProfileHandler = null;
         return this;
+    }
+
+    @Override
+    public EventServiceSubscriptionBuilder<T> handler(final ProfileEventHandler<T> handler, final OfflinePlayerExtractor<T> playerExtractor) {
+        final PlayerUUIDExtractor<T> extractor = value -> Optional.ofNullable(playerExtractor.readPlayer(value)).map(OfflinePlayer::getUniqueId).orElse(null);
+        return handler(handler, extractor);
+    }
+
+    @Override
+    public EventServiceSubscriptionBuilder<T> handler(final ProfileEventHandler<T> handler, final EntityExtractor<T> entityExtractor) {
+        final OfflinePlayerExtractor<T> extractor = event -> Optional.ofNullable(entityExtractor.readEntity(event)).map(Player.class::cast).orElse(null);
+        return handler(handler, extractor);
+    }
+
+    @Override
+    public EventServiceSubscriptionBuilder<T> handler(final ProfileEventHandler<T> handler, final ProfileExtractor<T> profileExtractor) {
+        final PlayerUUIDExtractor<T> uuidExtractor = event -> Optional.ofNullable(profileExtractor.readProfile(event)).map(Profile::getPlayerUUID).orElse(null);
+        return handler(handler, uuidExtractor);
     }
 
     @Override
@@ -150,10 +161,9 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
         subscribe();
     }
 
-    @Override
-    public void subscribe() throws QuestException {
-        if (this.staticHandler != null) {
-            eventService.subscribe(logSource, eventClass, staticHandler, eventPriority, ignoreCancelled);
+    private void subscribe() throws QuestException {
+        if (this.nonProfileHandler != null) {
+            eventService.subscribe(logSource, eventClass, nonProfileHandler, eventPriority, ignoreCancelled);
             return;
         }
         if (playerUUIDExtractor == null) {

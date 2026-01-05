@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.EventID;
@@ -97,14 +96,14 @@ public class TimerObjective extends CountingObjective implements Runnable {
     /**
      * Checks if the objective gets completed and runs the done events.
      *
-     * @param event         The event to check.
-     * @param onlineProfile The profile of the player that completed the objective.
+     * @param event   The event to check.
+     * @param profile The profile of the player that completed the objective.
      */
-    public void onPlayerObjectiveChange(final PlayerObjectiveChangeEvent event, final OnlineProfile onlineProfile) {
+    public void onPlayerObjectiveChange(final PlayerObjectiveChangeEvent event, final Profile profile) {
         qeHandler.handle(() -> {
-            if (event.getObjective().equals(this) && containsPlayer(onlineProfile)
+            if (event.getObjective().equals(this) && containsPlayer(profile)
                     && event.getPreviousState() == ObjectiveState.ACTIVE && event.getState() == ObjectiveState.COMPLETED) {
-                questTypeApi.events(onlineProfile, doneEvents.getValue(onlineProfile));
+                questTypeApi.events(profile, doneEvents.getValue(profile));
             }
         });
     }

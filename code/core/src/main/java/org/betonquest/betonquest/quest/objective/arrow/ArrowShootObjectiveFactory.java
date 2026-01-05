@@ -27,11 +27,12 @@ public class ArrowShootObjectiveFactory implements ObjectiveFactory {
         final Argument<Location> location = instruction.location().get();
         final Argument<Number> range = instruction.number().get();
         final ArrowShootObjective objective = new ArrowShootObjective(instruction, location, range);
-        service.request(ProjectileHitEvent.class).handler(objective::onArrowHit, this::fromEvent).subscribe();
+        service.request(ProjectileHitEvent.class).handler(objective::onArrowHit, this::fromEvent).subscribe(true);
         return objective;
     }
 
-    private @Nullable Player fromEvent(final ProjectileHitEvent event) {
-        return (Player) event.getEntity().getShooter();
+    @Nullable
+    private Player fromEvent(final ProjectileHitEvent event) {
+        return event.getEntity().getShooter() instanceof final Player player ? player : null;
     }
 }

@@ -11,8 +11,6 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.compatibility.npc.citizens.CitizensArgument;
 
-import java.util.UUID;
-
 /**
  * Factory for creating {@link NPCKillObjective} instances from {@link Instruction}s.
  */
@@ -37,11 +35,7 @@ public class NPCKillObjectiveFactory implements ObjectiveFactory {
         final Argument<NpcID> npcID = instruction.parse(CitizensArgument.CITIZENS_ID).get();
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get("amount", 1);
         final NPCKillObjective objective = new NPCKillObjective(instruction, registry, targetAmount, npcID);
-        service.request(MobKilledEvent.class).handler(objective::onNpcKill, this::fromEvent).subscribe(true);
+        service.request(MobKilledEvent.class).handler(objective::onNpcKill, MobKilledEvent::getProfile).subscribe(true);
         return objective;
-    }
-
-    private UUID fromEvent(final MobKilledEvent event) {
-        return event.getProfile().getPlayerUUID();
     }
 }
