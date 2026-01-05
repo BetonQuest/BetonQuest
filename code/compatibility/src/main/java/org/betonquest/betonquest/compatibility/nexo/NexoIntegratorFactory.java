@@ -8,15 +8,9 @@ import org.betonquest.betonquest.compatibility.IntegratorFactory;
  */
 public class NexoIntegratorFactory implements IntegratorFactory {
 
-    /**
-     * Default constructor for NexoIntegratorFactory.
-     */
-    public NexoIntegratorFactory() {
-    }
+    /** The empty default constructor. */
+    public NexoIntegratorFactory() { }
 
-    /**
-     * @return a new {@link NexoIntegrator}
-     */
     @Override
     public Integrator getIntegrator() {
         return new NexoIntegrator();

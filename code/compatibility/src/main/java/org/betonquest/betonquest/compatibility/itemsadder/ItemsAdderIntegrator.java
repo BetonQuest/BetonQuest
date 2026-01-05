@@ -12,17 +12,9 @@ import org.betonquest.betonquest.item.ItemRegistry;
  */
 public class ItemsAdderIntegrator implements Integrator {
 
-    /**
-     * Default constructor for ItemsAdderIntegrator.
-     */
-    public ItemsAdderIntegrator() {
-    }
+    /** The empty default constructor. */
+    public ItemsAdderIntegrator() { }
 
-    /**
-     * Registers ItemsAdder item factory and serializer to BetonQuest.
-     * @param api the BetonQuest API instance
-     * @throws HookException if integration fails
-     */
     @Override
     public void hook(final BetonQuestApi api) throws HookException {
         final ItemRegistry itemRegistry = api.getFeatureRegistries().item();

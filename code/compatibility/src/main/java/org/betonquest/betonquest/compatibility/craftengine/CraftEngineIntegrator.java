@@ -12,11 +12,8 @@ import org.betonquest.betonquest.item.ItemRegistry;
  */
 public class CraftEngineIntegrator implements Integrator {
 
-    /**
-     * Default constructor for CraftEngineIntegrator.
-     */
-    public CraftEngineIntegrator() {
-    }
+    /** The empty default constructor. */
+    public CraftEngineIntegrator() { }
 
     @Override
     public void hook(final BetonQuestApi api) throws HookException {

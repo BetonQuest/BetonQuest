@@ -12,19 +12,9 @@ import org.betonquest.betonquest.item.QuestItemWrapper;
  */
 public class NexoItemFactory implements TypeFactory<QuestItemWrapper> {
 
-    /**
-     * Default constructor for NexoItemFactory.
-     */
-    public NexoItemFactory() {
-    }
+    /** The empty default constructor. */
+    public NexoItemFactory() { }
 
-    /**
-     * Parses the instruction into a {@link NexoItemWrapper}.
-     *
-     * @param instruction the instruction to parse
-     * @return the wrapped Nexo item
-     * @throws QuestException if parsing fails
-     */
     @Override
     public QuestItemWrapper parseInstruction(final Instruction instruction) throws QuestException {
         final NexoItemWrapper nexoItemWrapper = new NexoItemWrapper(instruction.parse(NexoParser.NEXO_PARSER).get());

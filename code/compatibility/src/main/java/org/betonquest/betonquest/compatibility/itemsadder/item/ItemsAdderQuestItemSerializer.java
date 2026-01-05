@@ -10,18 +10,9 @@ import org.bukkit.inventory.ItemStack;
  */
 public class ItemsAdderQuestItemSerializer implements QuestItemSerializer {
 
-    /**
-     * Default constructor for ItemsAdderQuestItemSerializer.
-     */
-    public ItemsAdderQuestItemSerializer() {
-    }
+    /** The empty default constructor. */
+    public ItemsAdderQuestItemSerializer() { }
 
-    /**
-     * Serializes an item stack to its ItemsAdder ID.
-     * @param itemStack the item to serialize
-     * @return the namespaced ID
-     * @throws QuestException if the item is not a valid ItemsAdder item
-     */
     @Override
     public String serialize(final ItemStack itemStack) throws QuestException {
         final CustomStack itemsAdderItem = CustomStack.byItemStack(itemStack);

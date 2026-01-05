@@ -13,11 +13,8 @@ import org.bukkit.inventory.ItemStack;
  */
 public class CraftEngineParser implements SimpleArgumentParser<CustomItem<ItemStack>> {
 
-    /**
-     * Default constructor for CraftEngineParser.
-     */
-    private CraftEngineParser() {
-    }
+    /** The empty default constructor. */
+    private CraftEngineParser() { }
 
     /**
      * The default instance of {@link CraftEngineParser}.

@@ -10,18 +10,9 @@ import org.bukkit.inventory.ItemStack;
  */
 public class CraftEngineQuestItemSerializer implements QuestItemSerializer {
 
-    /**
-     * Default constructor for CraftEngineQuestItemSerializer.
-     */
-    public CraftEngineQuestItemSerializer() {
-    }
+    /** The empty default constructor. */
+    public CraftEngineQuestItemSerializer() { }
 
-    /**
-     * Serializes an item stack to its CraftEngine ID string.
-     * @param itemStack the item to serialize
-     * @return the CraftEngine item ID
-     * @throws QuestException if the item is not a valid CraftEngine item
-     */
     @Override
     public String serialize(final ItemStack itemStack) throws QuestException {
         final Object customItemId = CraftEngineItems.getCustomItemId(itemStack);

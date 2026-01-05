@@ -12,18 +12,9 @@ import org.betonquest.betonquest.item.ItemRegistry;
  */
 public class NexoIntegrator implements Integrator {
 
-    /**
-     * Default constructor for NexoIntegrator.
-     */
-    public NexoIntegrator() {
-    }
+    /** The empty default constructor. */
+    public NexoIntegrator() { }
 
-    /**
-     * Registers Nexo item factory and serializer to BetonQuest.
-     *
-     * @param api the BetonQuest API instance
-     * @throws HookException if integration fails
-     */
     @Override
     public void hook(final BetonQuestApi api) throws HookException {
         final ItemRegistry itemRegistry = api.getFeatureRegistries().item();

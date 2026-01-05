@@ -10,19 +10,9 @@ import org.bukkit.inventory.ItemStack;
  */
 public class NexoQuestItemSerializer implements QuestItemSerializer {
 
-    /**
-     * Default constructor for NexoQuestItemSerializer.
-     */
-    public NexoQuestItemSerializer() {
-    }
+    /** The empty default constructor. */
+    public NexoQuestItemSerializer() { }
 
-    /**
-     * Serializes an item stack to its Nexo ID.
-     *
-     * @param itemStack the item to serialize
-     * @return the Nexo item ID
-     * @throws QuestException if the item is not a valid Nexo item
-     */
     @Override
     public String serialize(final ItemStack itemStack) throws QuestException {
         final String nexoItem = NexoItems.idFromItem(itemStack);

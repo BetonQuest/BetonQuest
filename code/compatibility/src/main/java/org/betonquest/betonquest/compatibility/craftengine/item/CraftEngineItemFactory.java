@@ -13,18 +13,9 @@ import org.betonquest.betonquest.item.QuestItemWrapper;
  */
 public class CraftEngineItemFactory implements TypeFactory<QuestItemWrapper> {
 
-    /**
-     * Default constructor for CraftEngineItemFactory.
-     */
-    public CraftEngineItemFactory() {
-    }
+    /** The empty default constructor. */
+    public CraftEngineItemFactory() { }
 
-    /**
-     * Parses the instruction into a {@link QuestItemWrapper}.
-     * @param instruction the instruction to parse
-     * @return the wrapped quest item, optionally adapted for quest tags
-     * @throws QuestException if parsing fails
-     */
     @Override
     public QuestItemWrapper parseInstruction(final Instruction instruction) throws QuestException {
         final CraftEngineItemWrapper craftEngineItemWrapper = new CraftEngineItemWrapper(instruction.parse(CraftEngineParser.CRAFT_ENGINE_PARSER).get());

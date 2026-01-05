@@ -8,15 +8,9 @@ import org.betonquest.betonquest.compatibility.IntegratorFactory;
  */
 public class ItemsAdderIntegratorFactory implements IntegratorFactory {
 
-    /**
-     * Default constructor for ItemsAdderIntegratorFactory.
-     */
-    public ItemsAdderIntegratorFactory() {
-    }
+    /** The empty default constructor. */
+    public ItemsAdderIntegratorFactory() { }
 
-    /**
-     * @return a new {@link ItemsAdderIntegrator}
-     */
     @Override
     public Integrator getIntegrator() {
         return new ItemsAdderIntegrator();

@@ -12,18 +12,9 @@ import org.betonquest.betonquest.item.QuestItemWrapper;
  */
 public class ItemsAdderItemFactory implements TypeFactory<QuestItemWrapper> {
 
-    /**
-     * Default constructor for ItemsAdderItemFactory.
-     */
-    public ItemsAdderItemFactory() {
-    }
+    /** The empty default constructor. */
+    public ItemsAdderItemFactory() { }
 
-    /**
-     * Parses the instruction into an {@link ItemsAdderItemWrapper}.
-     * @param instruction the instruction to parse
-     * @return the wrapped ItemsAdder item
-     * @throws QuestException if parsing fails
-     */
     @Override
     public QuestItemWrapper parseInstruction(final Instruction instruction) throws QuestException {
         final ItemsAdderItemWrapper itemsAdderItemWrapper = new ItemsAdderItemWrapper(instruction.parse(ItemsAdderParser.ITEMS_ADDER_PARSER).get());
