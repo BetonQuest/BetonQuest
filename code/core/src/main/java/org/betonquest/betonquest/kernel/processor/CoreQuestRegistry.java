@@ -8,8 +8,8 @@ import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.kernel.processor.quest.ConditionProcessor;
@@ -128,13 +128,13 @@ public record CoreQuestRegistry(
     }
 
     @Override
-    public boolean events(@Nullable final Profile profile, final Collection<EventID> eventIDs) {
-        return events().executes(profile, eventIDs);
+    public boolean events(@Nullable final Profile profile, final Collection<ActionID> actionIDS) {
+        return events().executes(profile, actionIDS);
     }
 
     @Override
-    public boolean event(@Nullable final Profile profile, final EventID eventID) {
-        return events().execute(profile, eventID);
+    public boolean event(@Nullable final Profile profile, final ActionID actionID) {
+        return events().execute(profile, actionID);
     }
 
     @Override

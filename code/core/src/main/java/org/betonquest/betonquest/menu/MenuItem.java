@@ -10,8 +10,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.text.Text;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
@@ -110,8 +110,8 @@ public class MenuItem {
         };
     }
 
-    private boolean executeEvents(final Argument<List<EventID>> events, final OnlineProfile profile) {
-        final List<EventID> resolved;
+    private boolean executeEvents(final Argument<List<ActionID>> events, final OnlineProfile profile) {
+        final List<ActionID> resolved;
         try {
             resolved = events.getValue(profile);
         } catch (final QuestException exception) {
@@ -199,16 +199,16 @@ public class MenuItem {
      * @param shiftRightClick  for the right click with shift
      * @param middleMouseClick for the middle mouse click
      */
-    public record ClickEvents(Argument<List<EventID>> leftClick, Argument<List<EventID>> shiftLeftClick,
-                              Argument<List<EventID>> rightClick, Argument<List<EventID>> shiftRightClick,
-                              Argument<List<EventID>> middleMouseClick) {
+    public record ClickEvents(Argument<List<ActionID>> leftClick, Argument<List<ActionID>> shiftLeftClick,
+                              Argument<List<ActionID>> rightClick, Argument<List<ActionID>> shiftRightClick,
+                              Argument<List<ActionID>> middleMouseClick) {
 
         /**
          * Fills all click types with the same list.
          *
          * @param click the events to execute on any click
          */
-        public ClickEvents(final Argument<List<EventID>> click) {
+        public ClickEvents(final Argument<List<ActionID>> click) {
             this(click, click, click, click, click);
         }
     }

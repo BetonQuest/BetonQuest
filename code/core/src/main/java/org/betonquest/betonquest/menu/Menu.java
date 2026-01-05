@@ -8,8 +8,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.text.Text;
 import org.jetbrains.annotations.Nullable;
 
@@ -104,9 +104,9 @@ public class Menu {
         executeEvents(data.closeEvents, profile, "close");
     }
 
-    private void executeEvents(final Argument<List<EventID>> events, final OnlineProfile profile, final String type) {
+    private void executeEvents(final Argument<List<ActionID>> events, final OnlineProfile profile, final String type) {
         log.debug(menuID.getPackage(), "Menu " + menuID + ": Running " + type + " events");
-        final List<EventID> resolved;
+        final List<ActionID> resolved;
         try {
             resolved = events.getValue(profile);
         } catch (final QuestException exception) {
@@ -205,7 +205,7 @@ public class Menu {
      */
     public record MenuData(Text title, int height, List<Slots> slots,
                            Argument<List<ConditionID>> openConditions,
-                           Argument<List<EventID>> openEvents, Argument<List<EventID>> closeEvents) {
+                           Argument<List<ActionID>> openEvents, Argument<List<ActionID>> closeEvents) {
 
     }
 }

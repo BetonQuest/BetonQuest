@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.argument.parser.EnumParser;
 import org.betonquest.betonquest.api.quest.Placeholders;
-import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultListArgument;
@@ -57,10 +57,10 @@ public abstract class BaseScheduleFactory<S extends Schedule> implements Schedul
 
         final String eventsString = Optional.ofNullable(instruction.getString("actions"))
                 .orElseThrow(() -> new QuestException("Missing actions"));
-        final List<EventID> events;
+        final List<ActionID> events;
         try {
             events = new DefaultListArgument<>(placeholders, pack, eventsString,
-                    value -> new EventID(placeholders, packManager, pack, value)).getValue(null);
+                    value -> new ActionID(placeholders, packManager, pack, value)).getValue(null);
         } catch (final QuestException e) {
             throw new QuestException("Error while loading events: " + e.getMessage(), e);
         }
@@ -82,7 +82,7 @@ public abstract class BaseScheduleFactory<S extends Schedule> implements Schedul
      * @param events  A list of events that will be run by this schedule.
      * @param catchup Behavior for missed executions.
      */
-    protected record ScheduleData(String time, List<EventID> events, CatchupStrategy catchup) {
+    protected record ScheduleData(String time, List<ActionID> events, CatchupStrategy catchup) {
 
     }
 }

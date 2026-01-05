@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
@@ -59,9 +59,9 @@ public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEve
 
             final String weightString = matcher.group("weight");
             final String eventString = matcher.group("event");
-            final EventID eventID = instruction.chainForArgument(eventString).parse(EventID::new).get().getValue(null);
+            final ActionID actionID = instruction.chainForArgument(eventString).parse(ActionID::new).get().getValue(null);
             final double weight = NumberParser.DEFAULT.apply(weightString).doubleValue();
-            return new RandomEvent(eventID, weight);
+            return new RandomEvent(actionID, weight);
         }).list().get();
         final Argument<Number> amount = instruction.number().get("amount").orElse(null);
         return new NullableEventAdapter(new PickRandomEvent(events, amount, questTypeApi));
