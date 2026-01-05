@@ -23,8 +23,8 @@ public class ItemsAdderIntegrator implements Integrator {
     }
 
     @Override
-    public void reload() {}
+    public void reload() { }
 
     @Override
-    public void close() {}
+    public void close() { }
 }

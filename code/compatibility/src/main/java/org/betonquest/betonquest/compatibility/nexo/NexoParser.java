@@ -23,5 +23,4 @@ public class NexoParser implements SimpleArgumentParser<ItemBuilder> {
     public ItemBuilder apply(final String string) throws QuestException {
         return Utils.getNN(NexoItems.itemFromId(string), "Invalid Nexo Item: " + string);
     }
-
 }

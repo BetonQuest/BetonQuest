@@ -21,12 +21,6 @@ import java.util.Objects;
  */
 public record CraftEngineItemWrapper(Argument<CustomItem<ItemStack>> customItemArgument) implements QuestItemWrapper {
 
-    /**
-     * Gets the {@link QuestItem} for the given profile.
-     * @param profile the player profile
-     * @return the quest item instance
-     * @throws QuestException if item retrieval fails
-     */
     @Override
     public QuestItem getItem(@Nullable final Profile profile) throws QuestException {
         return new CraftEngineItem(customItemArgument.getValue(profile));
@@ -38,6 +32,7 @@ public record CraftEngineItemWrapper(Argument<CustomItem<ItemStack>> customItemA
     class CraftEngineItem implements QuestItem {
 
         private final CustomItem<ItemStack> customItem;
+
         private final ItemMeta itemMeta;
 
         /**
@@ -58,22 +53,11 @@ public record CraftEngineItemWrapper(Argument<CustomItem<ItemStack>> customItemA
             return Objects.requireNonNull(itemMeta.lore());
         }
 
-        /**
-         * Generates an {@link ItemStack} with the specified size.
-         * @param stackSize the amount to generate
-         * @param profile the player profile
-         * @return the generated item stack
-         */
         @Override
         public ItemStack generate(final int stackSize, @Nullable final Profile profile) throws QuestException {
             return customItem.buildItemStack(stackSize);
         }
 
-        /**
-         * Checks if the given item matches this custom item's ID.
-         * * @param item the item to check
-         * @return true if IDs match
-         */
         @Override
         public boolean matches(@Nullable final ItemStack item) {
             return Objects.equals(customItem.id(), CraftEngineItems.getCustomItemId(item));

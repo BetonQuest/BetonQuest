@@ -21,13 +21,6 @@ import java.util.Objects;
  */
 public record NexoItemWrapper(Argument<ItemBuilder> itemBuilderArgument) implements QuestItemWrapper {
 
-    /**
-     * Gets the {@link QuestItem} for the given profile.
-     *
-     * @param profile the player profile
-     * @return the Nexo quest item
-     * @throws QuestException if retrieval fails
-     */
     @Override
     public QuestItem getItem(@Nullable final Profile profile) throws QuestException {
         return new NexoItem(itemBuilderArgument.getValue(profile));
@@ -50,24 +43,11 @@ public record NexoItemWrapper(Argument<ItemBuilder> itemBuilderArgument) impleme
             return Objects.requireNonNull(itemBuilder.getLore());
         }
 
-        /**
-         * Generates an {@link ItemStack} with the specified size.
-         *
-         * @param stackSize the amount to generate
-         * @param profile the player profile
-         * @return the generated item stack
-         */
         @Override
         public ItemStack generate(final int stackSize, @Nullable final Profile profile) throws QuestException {
             return itemBuilder.setAmount(stackSize).build();
         }
 
-        /**
-         * Checks if the given item matches this Nexo item.
-         *
-         * @param item the item to check
-         * @return true if it matches
-         */
         @Override
         public boolean matches(@Nullable final ItemStack item) {
             return itemBuilder == NexoItems.builderFromItem(item);

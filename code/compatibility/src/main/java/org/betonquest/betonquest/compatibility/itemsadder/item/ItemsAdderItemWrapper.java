@@ -20,13 +20,6 @@ import java.util.Objects;
  */
 public record ItemsAdderItemWrapper(Argument<CustomStack> customItemArgument) implements QuestItemWrapper {
 
-    /**
-     * Gets the {@link QuestItem} for the given profile.
-     *
-     * @param profile the player profile
-     * @return the ItemsAdder quest item
-     * @throws QuestException if retrieval fails
-     */
     @Override
     public QuestItem getItem(@Nullable final Profile profile) throws QuestException {
         return new ItemsAdderItem(customItemArgument.getValue(profile));
@@ -49,13 +42,6 @@ public record ItemsAdderItemWrapper(Argument<CustomStack> customItemArgument) im
             return Objects.requireNonNull(customStack.getItemStack().lore());
         }
 
-        /**
-         * Generates an {@link ItemStack} with the specified size.
-         *
-         * @param stackSize the amount to generate
-         * @param profile the player profile
-         * @return the generated item stack
-         */
         @Override
         public ItemStack generate(final int stackSize, @Nullable final Profile profile) throws QuestException {
             final ItemStack itemStack = customStack.getItemStack();
@@ -63,12 +49,6 @@ public record ItemsAdderItemWrapper(Argument<CustomStack> customItemArgument) im
             return itemStack;
         }
 
-        /**
-         * Checks if the given item matches this custom stack's ID.
-         *
-         * @param item the item to check
-         * @return true if namespaced IDs match
-         */
         @Override
         public boolean matches(@Nullable final ItemStack item) {
             return Objects.equals(CustomStack.byItemStack(item).getNamespacedID(), customStack.getNamespacedID());

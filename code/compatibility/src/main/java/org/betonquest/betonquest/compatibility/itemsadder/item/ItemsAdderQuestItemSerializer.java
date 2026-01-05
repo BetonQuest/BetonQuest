@@ -16,7 +16,9 @@ public class ItemsAdderQuestItemSerializer implements QuestItemSerializer {
     @Override
     public String serialize(final ItemStack itemStack) throws QuestException {
         final CustomStack itemsAdderItem = CustomStack.byItemStack(itemStack);
-        if (itemsAdderItem == null) throw new QuestException("Item is not a ItemsAdder Item!");
+        if (itemsAdderItem == null) {
+            throw new QuestException("Item is not a ItemsAdder Item!");
+        }
         return itemsAdderItem.getNamespacedID();
     }
 }

@@ -17,15 +17,14 @@ public class CraftEngineIntegrator implements Integrator {
 
     @Override
     public void hook(final BetonQuestApi api) throws HookException {
-
         final ItemRegistry itemRegistry = api.getFeatureRegistries().item();
         itemRegistry.register("craftEngine", new CraftEngineItemFactory());
         itemRegistry.registerSerializer("craftEngine", new CraftEngineQuestItemSerializer());
     }
 
     @Override
-    public void reload() {}
+    public void reload() { }
 
     @Override
-    public void close() {}
+    public void close() { }
 }
