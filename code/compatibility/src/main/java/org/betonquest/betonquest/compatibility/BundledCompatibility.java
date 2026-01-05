@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.auraskills.AuraSkillsIntegratorFactory;
 import org.betonquest.betonquest.compatibility.brewery.BreweryIntegratorFactory;
+import org.betonquest.betonquest.compatibility.craftengine.CraftEngineIntegratorFactory;
 import org.betonquest.betonquest.compatibility.denizen.DenizenIntegratorFactory;
 import org.betonquest.betonquest.compatibility.effectlib.EffectLibIntegratorFactory;
 import org.betonquest.betonquest.compatibility.fabled.FabledIntegratorFactory;
@@ -11,6 +12,7 @@ import org.betonquest.betonquest.compatibility.fakeblock.FakeBlockIntegratorFact
 import org.betonquest.betonquest.compatibility.heroes.HeroesIntegratorFactory;
 import org.betonquest.betonquest.compatibility.holograms.decentholograms.DecentHologramsIntegratorFactory;
 import org.betonquest.betonquest.compatibility.holograms.holographicdisplays.HolographicDisplaysIntegratorFactory;
+import org.betonquest.betonquest.compatibility.itemsadder.ItemsAdderIntegratorFactory;
 import org.betonquest.betonquest.compatibility.jobsreborn.JobsRebornIntegratorFactory;
 import org.betonquest.betonquest.compatibility.luckperms.LuckPermsIntegratorFactory;
 import org.betonquest.betonquest.compatibility.magic.MagicIntegratorFactory;
@@ -19,6 +21,7 @@ import org.betonquest.betonquest.compatibility.mmogroup.mmocore.MMOCoreIntegrato
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.MMOItemsIntegratorFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmolib.MythicLibIntegratorFactory;
 import org.betonquest.betonquest.compatibility.mythicmobs.MythicMobsIntegratorFactory;
+import org.betonquest.betonquest.compatibility.nexo.NexoIntegratorFactory;
 import org.betonquest.betonquest.compatibility.npc.citizens.CitizensIntegratorFactory;
 import org.betonquest.betonquest.compatibility.npc.fancynpcs.FancyNpcsIntegrator;
 import org.betonquest.betonquest.compatibility.npc.fancynpcs.FancyNpcsIntegratorFactory;
@@ -108,5 +111,8 @@ public class BundledCompatibility {
         compatibility.registerPlugin("Train_Carts", new TrainCartsIntegratorFactory());
         compatibility.registerPlugin(FancyNpcsIntegrator.PREFIX, new FancyNpcsIntegratorFactory(plugin));
         compatibility.registerPlugin(ZNPCsPlusIntegrator.PREFIX, new ZNPCsPlusIntegratorFactory(plugin));
+        compatibility.registerPlugin("Nexo", new NexoIntegratorFactory());
+        compatibility.registerPlugin("CraftEngine", new CraftEngineIntegratorFactory());
+        compatibility.registerPlugin("ItemsAdder", new ItemsAdderIntegratorFactory());
     }
 }

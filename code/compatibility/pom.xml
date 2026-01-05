@@ -57,10 +57,8 @@
     <api.version>5.4</api.version>
     <auraskills-api-bukkit.version>2.2.0</auraskills-api-bukkit.version>
     <fabled.version>1.0.2-R1</fabled.version>
-    <FancyHolograms.version>2.9.0</FancyHolograms.version>
     <nexo.version>1.17.0</nexo.version>
     <CraftEngine.version>0.0.66</CraftEngine.version>
-    <CMI.version>9.7.14.3</CMI.version>
     <ItemsAdder.version>4.0.10</ItemsAdder.version>
   </properties>
 
@@ -265,13 +263,6 @@
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
-    <dependency>
-      <groupId>de.oliver</groupId>
-      <artifactId>FancyHolograms</artifactId>
-      <version>${FancyHolograms.version}</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
 
     <!-- from pyr repository -->
     <dependency>
@@ -343,13 +334,6 @@
       <groupId>com.github.decentsoftware-eu</groupId>
       <artifactId>decentholograms</artifactId>
       <version>${decentholograms.version}</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>com.github.Zrips</groupId>
-      <artifactId>CMI-API</artifactId>
-      <version>${CMI.version}</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
