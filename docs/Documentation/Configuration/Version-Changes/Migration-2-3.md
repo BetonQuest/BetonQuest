@@ -1017,14 +1017,14 @@ BetonQuest "Events" are renamed to "Actions".
 
     - `objectives`
     - `command` objective `failEvents` to `failActions`
-    - `menus` (`open_actions` and `close_actions` instead `open_events` and `close_events`)
+    - `menus` `open_events` to `open_actions` and `close_events` to `close_actions`
     - `cancel`
     - `schedules`
     - `conversations` `final_events` to `final_actions`
     - `conversations` `NPC_options` 
     - `conversations` `player_options`
-    - `runForAll` events (now called actions)
-    - `runIndependent` events (now called actions)
+    - `runForAll`
+    - `runIndependent`
 
     <div class="grid" markdown>
     
