@@ -32,7 +32,7 @@ public class FolderActionFactory implements PlayerActionFactory, PlayerlessActio
     private final BetonQuest betonQuest;
 
     /**
-     * Logger factory to create a logger for the events.
+     * Logger factory to create a logger for the actions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -47,10 +47,10 @@ public class FolderActionFactory implements PlayerActionFactory, PlayerlessActio
     private final QuestTypeApi questTypeApi;
 
     /**
-     * Create a new folder event factory.
+     * Create a new folder action factory.
      *
      * @param betonQuest    the BetonQuest instance
-     * @param loggerFactory the logger factory to create a logger for the events
+     * @param loggerFactory the logger factory to create a logger for the actions
      * @param pluginManager the plugin manager to register the quit listener
      * @param questTypeApi  the Quest Type API
      */
@@ -64,16 +64,16 @@ public class FolderActionFactory implements PlayerActionFactory, PlayerlessActio
 
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
-        return createFolderEvent(instruction);
+        return createFolderAction(instruction);
     }
 
     @Override
     public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
-        return createFolderEvent(instruction);
+        return createFolderAction(instruction);
     }
 
-    private NullableActionAdapter createFolderEvent(final Instruction instruction) throws QuestException {
-        final Argument<List<ActionID>> events = instruction.parse(ActionID::new).list().get();
+    private NullableActionAdapter createFolderAction(final Instruction instruction) throws QuestException {
+        final Argument<List<ActionID>> actions = instruction.parse(ActionID::new).list().get();
         final Argument<Number> delay = instruction.number().get("delay").orElse(null);
         final Argument<Number> period = instruction.number().get("period").orElse(null);
         final Argument<Number> random = instruction.number().get("random").orElse(null);
@@ -82,7 +82,7 @@ public class FolderActionFactory implements PlayerActionFactory, PlayerlessActio
         final Argument<List<ConditionID>> cancelConditions = instruction.parse(ConditionID::new)
                 .list().get("cancelConditions", Collections.emptyList());
         return new NullableActionAdapter(new FolderAction(betonQuest, loggerFactory.create(FolderAction.class), pluginManager,
-                events,
+                actions,
                 questTypeApi, new Random(), delay, period, random, timeUnit, cancelOnLogout, cancelConditions));
     }
 

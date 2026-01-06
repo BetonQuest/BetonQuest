@@ -34,7 +34,7 @@ public class MythicCastSkillAction implements OnlineAction {
     private final Argument<String> skillName;
 
     /**
-     * Constructs a new MythicCastSkillEvent.
+     * Constructs a new MythicCastSkillAction.
      *
      * @param log       logs when the skill could not be cast
      * @param pack      the source pack used as log source

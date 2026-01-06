@@ -20,7 +20,7 @@ public class DeleteEffectAction implements OnlineAction {
     private final Argument<List<PotionEffectType>> effects;
 
     /**
-     * Creates a new DeleteEffect event.
+     * Creates a new DeleteEffect action.
      *
      * @param effects the effects to delete or an empty list to delete all effects
      */

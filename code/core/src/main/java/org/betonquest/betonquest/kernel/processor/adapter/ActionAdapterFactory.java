@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Wrapper for factories creating actions.
  */
-public class EventAdapterFactory extends QuestAdapterFactory<PlayerAction, PlayerlessAction, ActionAdapter> {
+public class ActionAdapterFactory extends QuestAdapterFactory<PlayerAction, PlayerlessAction, ActionAdapter> {
 
     /**
      * Logger factory to create class specific logger for quest type factories.
@@ -35,9 +35,9 @@ public class EventAdapterFactory extends QuestAdapterFactory<PlayerAction, Playe
      * @param playerlessFactory the playerless factory to use
      * @throws IllegalArgumentException if no factory is given
      */
-    public EventAdapterFactory(final BetonQuestLoggerFactory loggerFactory,
-                               final QuestTypeApi questTypeApi, @Nullable final PlayerQuestFactory<PlayerAction> playerFactory,
-                               @Nullable final PlayerlessQuestFactory<PlayerlessAction> playerlessFactory) {
+    public ActionAdapterFactory(final BetonQuestLoggerFactory loggerFactory,
+                                final QuestTypeApi questTypeApi, @Nullable final PlayerQuestFactory<PlayerAction> playerFactory,
+                                @Nullable final PlayerlessQuestFactory<PlayerlessAction> playerlessFactory) {
         super(playerFactory, playerlessFactory);
         this.loggerFactory = loggerFactory;
         this.questTypeApi = questTypeApi;

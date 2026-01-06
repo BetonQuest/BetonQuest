@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 
 /**
- * Event to add attribute reallocation points to a player.
+ * Action to add attribute reallocation points to a player.
  */
 public class MMOCoreAttributeReallocationPointsAction implements PlayerAction {
 
@@ -17,7 +17,7 @@ public class MMOCoreAttributeReallocationPointsAction implements PlayerAction {
     private final Argument<Number> amount;
 
     /**
-     * Create a new attribute reallocation point event.
+     * Create a new attribute reallocation point action.
      *
      * @param amount the amount to grant
      */

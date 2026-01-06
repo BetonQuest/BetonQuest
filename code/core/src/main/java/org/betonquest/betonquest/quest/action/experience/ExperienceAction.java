@@ -21,7 +21,7 @@ public class ExperienceAction implements OnlineAction {
     private final Argument<Number> amount;
 
     /**
-     * Creates a new experience event.
+     * Creates a new experience action.
      *
      * @param experienceModification the modification to apply
      * @param amount                 the amount of experience

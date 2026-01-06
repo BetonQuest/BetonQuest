@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 
 /**
- * Event to set a job level.
+ * Action to set a job level.
  */
 public class SetLevelAction implements PlayerAction {
 
@@ -24,7 +24,7 @@ public class SetLevelAction implements PlayerAction {
     private final Argument<Number> nLevel;
 
     /**
-     * Create a new level delete event.
+     * Create a new level delete action.
      * The set level has a minimum of 1.
      *
      * @param job    the job to remove level from

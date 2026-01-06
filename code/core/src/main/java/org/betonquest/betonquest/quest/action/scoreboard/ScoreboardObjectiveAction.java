@@ -31,7 +31,7 @@ public class ScoreboardObjectiveAction implements PlayerAction {
     private final PointType modification;
 
     /**
-     * Creates a new ScoreboardEvent.
+     * Creates a new ScoreboardAction.
      *
      * @param objective    the name of the objective
      * @param count        the number to modify the score by

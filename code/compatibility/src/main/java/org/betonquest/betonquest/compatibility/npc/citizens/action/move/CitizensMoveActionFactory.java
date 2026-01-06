@@ -46,11 +46,11 @@ public class CitizensMoveActionFactory implements PlayerActionFactory {
         final Argument<NpcID> npcId = instruction.parse(CitizensArgument.CITIZENS_ID).get();
         final Argument<List<Location>> locations = instruction.location().list().invalidate(List::isEmpty).get();
         final Argument<Number> waitTicks = instruction.number().get("wait", 0);
-        final Argument<List<ActionID>> doneEvents = instruction.parse(ActionID::new).list().get("done", Collections.emptyList());
-        final Argument<List<ActionID>> failEvents = instruction.parse(ActionID::new).list().get("fail", Collections.emptyList());
+        final Argument<List<ActionID>> doneActions = instruction.parse(ActionID::new).list().get("done", Collections.emptyList());
+        final Argument<List<ActionID>> failActions = instruction.parse(ActionID::new).list().get("fail", Collections.emptyList());
         final FlagArgument<Boolean> blockConversations = instruction.bool().getFlag("block", true);
         final CitizensMoveController.MoveData moveAction = new CitizensMoveController.MoveData(locations, waitTicks,
-                doneEvents, failEvents, blockConversations);
+                doneActions, failActions, blockConversations);
         return new CitizensMoveAction(featureApi, npcId, citizensMoveController, moveAction);
     }
 }

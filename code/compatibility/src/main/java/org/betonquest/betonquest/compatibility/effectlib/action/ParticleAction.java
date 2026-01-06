@@ -44,7 +44,7 @@ public class ParticleAction implements OnlineAction {
     private final FlagArgument<Boolean> privateParticle;
 
     /**
-     * Create a new EffectLib Particle event.
+     * Create a new EffectLib Particle action.
      *
      * @param manager         the effect manager which will create and control the particles
      * @param parameters      the effects' parameter defining its appearance

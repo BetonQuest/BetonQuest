@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Factory to allows for running multiple events with one instruction string.
+ * Factory to allows for running multiple actions with one instruction string.
  */
 public class RunActionFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
@@ -32,16 +32,16 @@ public class RunActionFactory implements PlayerActionFactory, PlayerlessActionFa
     private final QuestPackageManager packManager;
 
     /**
-     * The event type registry providing factories to parse the evaluated instruction.
+     * The action type registry providing factories to parse the evaluated instruction.
      */
     private final ActionTypeRegistry actionTypeRegistry;
 
     /**
-     * Create a run event factory with the given BetonQuest instance.
+     * Create a run action factory with the given BetonQuest instance.
      *
      * @param placeholders       the {@link Placeholders} to create and resolve placeholders
      * @param packManager        the quest package manager to get quest packages from
-     * @param actionTypeRegistry the event type registry providing factories to parse the evaluated instruction
+     * @param actionTypeRegistry the action type registry providing factories to parse the evaluated instruction
      */
     public RunActionFactory(final Placeholders placeholders, final QuestPackageManager packManager, final ActionTypeRegistry actionTypeRegistry) {
         this.placeholders = placeholders;
@@ -51,22 +51,22 @@ public class RunActionFactory implements PlayerActionFactory, PlayerlessActionFa
 
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
-        return createEvent(instruction);
+        return createAction(instruction);
     }
 
     @Override
     public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
-        return createEvent(instruction);
+        return createAction(instruction);
     }
 
-    private NullableActionAdapter createEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createAction(final Instruction instruction) throws QuestException {
         final List<String> parts = instruction.getValueParts();
         final List<ActionAdapter> actions = new ArrayList<>();
         StringBuilder builder = new StringBuilder();
         for (final String part : parts) {
             if (part.startsWith("^")) {
                 if (!builder.isEmpty()) {
-                    actions.add(EvalAction.createEvent(placeholders, packManager, actionTypeRegistry, instruction.getPackage(), builder.toString().trim()));
+                    actions.add(EvalAction.createAction(placeholders, packManager, actionTypeRegistry, instruction.getPackage(), builder.toString().trim()));
                     builder = new StringBuilder();
                 }
                 builder.append(part.substring(1)).append(' ');
@@ -75,7 +75,7 @@ public class RunActionFactory implements PlayerActionFactory, PlayerlessActionFa
             }
         }
         if (!builder.isEmpty()) {
-            actions.add(EvalAction.createEvent(placeholders, packManager, actionTypeRegistry, instruction.getPackage(), builder.toString().trim()));
+            actions.add(EvalAction.createAction(placeholders, packManager, actionTypeRegistry, instruction.getPackage(), builder.toString().trim()));
         }
         return new NullableActionAdapter(new RunAction(actions));
     }

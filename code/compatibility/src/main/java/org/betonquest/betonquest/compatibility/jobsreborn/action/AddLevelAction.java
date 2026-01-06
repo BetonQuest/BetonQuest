@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 
 /**
- * Event to add job level.
+ * Action to add job level.
  */
 public class AddLevelAction implements PlayerAction {
 
@@ -24,7 +24,7 @@ public class AddLevelAction implements PlayerAction {
     private final Argument<Number> nAddLevel;
 
     /**
-     * Create a new level add event.
+     * Create a new level add action.
      *
      * @param job    the job to add level to
      * @param amount the level amount

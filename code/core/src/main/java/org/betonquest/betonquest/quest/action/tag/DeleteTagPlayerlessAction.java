@@ -12,7 +12,7 @@ import org.betonquest.betonquest.database.UpdateType;
 import java.util.List;
 
 /**
- * Event to delete tags from all players.
+ * Action to delete tags from all players.
  */
 public class DeleteTagPlayerlessAction implements PlayerlessAction {
 
@@ -22,7 +22,7 @@ public class DeleteTagPlayerlessAction implements PlayerlessAction {
     private final PlayerDataStorage dataStorage;
 
     /**
-     * The saver to inject into database-using events.
+     * The saver to inject into database-using actions.
      */
     private final Saver saver;
 
@@ -37,7 +37,7 @@ public class DeleteTagPlayerlessAction implements PlayerlessAction {
     private final Argument<List<String>> tags;
 
     /**
-     * Create a new delete tag playerless event.
+     * Create a new delete tag playerless action.
      *
      * @param dataStorage     the storage providing player data
      * @param saver           database saver to use

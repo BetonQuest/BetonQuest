@@ -17,7 +17,7 @@ import org.betonquest.betonquest.quest.action.tag.TagChanger;
 import org.bukkit.Location;
 
 /**
- * Event to set a compass target and manage compass points.
+ * Action to set a compass target and manage compass points.
  */
 public class CompassAction implements PlayerAction {
 
@@ -42,7 +42,7 @@ public class CompassAction implements PlayerAction {
     private final Argument<CompassID> compassId;
 
     /**
-     * Create the compass event.
+     * Create the compass action.
      *
      * @param featureApi the Feature API
      * @param storage    the storage to get the offline player data

@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 public class ChestClearAction extends AbstractChestAction {
 
     /**
-     * Creates a new chest clear event.
+     * Creates a new chest clear action.
      *
      * @param location the location of the chest
      */

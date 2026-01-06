@@ -13,7 +13,7 @@ import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 
 /**
- * Creates a new CommandEvent from an {@link Instruction}.
+ * Creates a new CommandAction from an {@link Instruction}.
  */
 public class CommandActionFactory extends BaseCommandActionFactory implements PlayerlessActionFactory {
 
@@ -25,28 +25,28 @@ public class CommandActionFactory extends BaseCommandActionFactory implements Pl
     private final CommandSender silentSender;
 
     /**
-     * Create the command event factory.
+     * Create the command action factory.
      *
-     * @param loggerFactory the logger factory to create a logger for the events
+     * @param loggerFactory the logger factory to create a logger for the actions
      * @param server        the server to execute commands on
      */
     public CommandActionFactory(final BetonQuestLoggerFactory loggerFactory, final Server server) {
         super(loggerFactory, server);
         this.silentSender = new SilentConsoleCommandSender(loggerFactory.create(SilentCommandSender.class,
-                "CommandEvent"), server.getConsoleSender());
+                "CommandAction"), server.getConsoleSender());
     }
 
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
-        return createCommandEvent(instruction);
+        return createCommandAction(instruction);
     }
 
     @Override
     public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
-        return createCommandEvent(instruction);
+        return createCommandAction(instruction);
     }
 
-    private NullableActionAdapter createCommandEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createCommandAction(final Instruction instruction) throws QuestException {
         return new NullableActionAdapter(new CommandAction(parseCommands(instruction), silentSender, server));
     }
 }

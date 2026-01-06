@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 
 /**
- * The StageEvent class to make changes to a player's stage.
+ * The StageAction class to make changes to a player's stage.
  */
 public class StageAction implements PlayerAction {
 
@@ -16,7 +16,7 @@ public class StageAction implements PlayerAction {
     private final QuestConsumer<Profile> action;
 
     /**
-     * Creates the stage event.
+     * Creates the stage action.
      *
      * @param action the stage action to perform
      */

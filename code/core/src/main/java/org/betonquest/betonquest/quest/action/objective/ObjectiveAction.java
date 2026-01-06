@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * The objective event, that adds, removes oder completes objectives.
+ * The objective action, that adds, removes oder completes objectives.
  */
 public class ObjectiveAction implements NullableAction {
 
@@ -43,7 +43,7 @@ public class ObjectiveAction implements NullableAction {
     private final BetonQuest betonQuest;
 
     /**
-     * All objectives affected by this event.
+     * All objectives affected by this action.
      */
     private final Argument<List<ObjectiveID>> objectives;
 
@@ -63,7 +63,7 @@ public class ObjectiveAction implements NullableAction {
     private final String action;
 
     /**
-     * Creates a new ObjectiveEvent.
+     * Creates a new ObjectiveAction.
      *
      * @param betonQuest        the BetonQuest instance
      * @param questTypeApi      the class for starting objectives
@@ -108,7 +108,7 @@ public class ObjectiveAction implements NullableAction {
             profileProvider.getOnlineProfiles().forEach(onlineProfile -> cancelObjectiveForOnlinePlayer(onlineProfile, objectiveID, objective));
             betonQuest.getSaver().add(new Saver.Record(UpdateType.REMOVE_ALL_OBJECTIVES, objectiveID.toString()));
         } else {
-            log.warn(questPackage, "You tried to call an objective add / finish event in a static context! Only objective delete works here.");
+            log.warn(questPackage, "You tried to call an objective add / finish action in a static context! Only objective delete works here.");
         }
     }
 

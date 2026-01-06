@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 /**
- * Event to take a certain amount of brews from a player.
+ * Action to take a certain amount of brews from a player.
  */
 public class TakeBrewAction implements OnlineAction {
 
@@ -32,7 +32,7 @@ public class TakeBrewAction implements OnlineAction {
     private final Argument<IdentifierType> mode;
 
     /**
-     * Create a new Take Brew Event.
+     * Create a new Take Brew Action.
      *
      * @param count The amount of brews to take.
      * @param name  The name of the brew to take.

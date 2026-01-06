@@ -110,7 +110,7 @@ public class PasswordObjective extends DefaultObjective {
             try {
                 BetonQuest.getInstance().getQuestTypeApi().actions(onlineProfile, failActions.getValue(onlineProfile));
             } catch (final QuestException e) {
-                throw new QuestException("Failed to resolve events: " + e.getMessage(), e);
+                throw new QuestException("Failed to resolve fail actions: " + e.getMessage(), e);
             }
         }
         return !prefix.isEmpty();

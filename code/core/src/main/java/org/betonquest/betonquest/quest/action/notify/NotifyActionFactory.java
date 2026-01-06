@@ -33,12 +33,12 @@ public class NotifyActionFactory implements PlayerActionFactory {
     private static final Pattern KEY_VALUE_PATTERN = Pattern.compile("(?<key>[a-zA-Z]+?):(?<value>\\S+)");
 
     /**
-     * A pattern for the notation of multiple translations in a single event.
+     * A pattern for the notation of multiple translations in a single action.
      */
     private static final Pattern LANGUAGE_PATTERN = Pattern.compile("\\{(?<lang>" + LANG_KEY + ")}\\s(?<text>.*?)(?=\\s+\\{" + LANG_KEY + "}\\s|$)");
 
     /**
-     * Logger factory to create a logger for the events.
+     * Logger factory to create a logger for the actions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -60,7 +60,7 @@ public class NotifyActionFactory implements PlayerActionFactory {
     /**
      * Creates a new factory for {@link NotifyAction}.
      *
-     * @param loggerFactory     the logger factory to create a logger for the events
+     * @param loggerFactory     the logger factory to create a logger for the actions
      * @param textParser        the text parser to use for parsing text
      * @param playerDataStorage the storage providing player data
      * @param languageProvider  the language provider to get the default language

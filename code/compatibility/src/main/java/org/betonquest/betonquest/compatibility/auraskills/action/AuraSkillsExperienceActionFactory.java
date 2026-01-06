@@ -19,7 +19,7 @@ public class AuraSkillsExperienceActionFactory implements PlayerActionFactory {
     private final AuraSkillsApi auraSkillsApi;
 
     /**
-     * Create a new Factory to create AuraSkills Experience Events.
+     * Create a new Factory to create AuraSkills Experience Actions.
      *
      * @param auraSkillsApi the {@link AuraSkillsApi}.
      */

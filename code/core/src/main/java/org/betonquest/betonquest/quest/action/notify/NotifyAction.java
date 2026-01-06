@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.notify.NotifyIO;
 
 /**
- * {@link PlayerAction} the implementation of the notify events.
+ * {@link PlayerAction} the implementation of the notify actions.
  */
 public class NotifyAction implements OnlineAction {
 

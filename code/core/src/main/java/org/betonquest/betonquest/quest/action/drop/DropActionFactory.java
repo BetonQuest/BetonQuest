@@ -27,7 +27,7 @@ public class DropActionFactory implements PlayerActionFactory, PlayerlessActionF
     private final ProfileProvider profileProvider;
 
     /**
-     * Creates the drop event factory.
+     * Creates the drop action factory.
      *
      * @param profileProvider the profile provider instance
      */
@@ -37,24 +37,24 @@ public class DropActionFactory implements PlayerActionFactory, PlayerlessActionF
 
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
-        return createDropEvent(instruction);
+        return createDropAction(instruction);
     }
 
     @Override
     public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
-        return createStaticDropEvent(instruction);
+        return createStaticDropAction(instruction);
     }
 
-    private PlayerlessAction createStaticDropEvent(final Instruction instruction) throws QuestException {
-        final NullableActionAdapter dropEvent = createDropEvent(instruction);
+    private PlayerlessAction createStaticDropAction(final Instruction instruction) throws QuestException {
+        final NullableActionAdapter dropAction = createDropAction(instruction);
         final boolean location = !instruction.bool().getFlag("location", true).getValue(null).orElse(false);
         if (location) {
-            return new OnlineProfileGroupPlayerlessActionAdapter(profileProvider::getOnlineProfiles, dropEvent);
+            return new OnlineProfileGroupPlayerlessActionAdapter(profileProvider::getOnlineProfiles, dropAction);
         }
-        return dropEvent;
+        return dropAction;
     }
 
-    private NullableActionAdapter createDropEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createDropAction(final Instruction instruction) throws QuestException {
         final Argument<List<ItemWrapper>> items = instruction.item().list().notEmpty().get("items", Collections.emptyList());
         final String locationPart = instruction.string().get("location", "%location%").getValue(null);
         final Argument<Location> location = instruction.chainForArgument(locationPart).location().get();

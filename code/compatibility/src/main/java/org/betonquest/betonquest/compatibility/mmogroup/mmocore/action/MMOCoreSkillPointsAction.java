@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 
 /**
- * Event to add skill points to a player.
+ * Action to add skill points to a player.
  */
 public class MMOCoreSkillPointsAction implements PlayerAction {
 
@@ -17,7 +17,7 @@ public class MMOCoreSkillPointsAction implements PlayerAction {
     private final Argument<Number> amount;
 
     /**
-     * Create a new skill point add event.
+     * Create a new skill point add action.
      *
      * @param amount the amount to grant
      */

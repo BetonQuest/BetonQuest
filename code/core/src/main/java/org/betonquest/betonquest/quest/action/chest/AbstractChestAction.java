@@ -10,7 +10,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Abstract class for chest events.
+ * Abstract class for chest actions.
  */
 public abstract class AbstractChestAction implements NullableAction {
 
@@ -20,7 +20,7 @@ public abstract class AbstractChestAction implements NullableAction {
     private final Argument<Location> location;
 
     /**
-     * Creates a new chest clear event.
+     * Creates a new chest clear action.
      *
      * @param location the location of the chest
      */

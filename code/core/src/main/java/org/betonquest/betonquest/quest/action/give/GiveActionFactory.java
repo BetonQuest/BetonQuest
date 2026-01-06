@@ -20,7 +20,7 @@ import org.betonquest.betonquest.quest.action.NotificationSender;
 public class GiveActionFactory implements PlayerActionFactory {
 
     /**
-     * Logger factory to create a logger for the events.
+     * Logger factory to create a logger for the actions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -35,9 +35,9 @@ public class GiveActionFactory implements PlayerActionFactory {
     private final PluginMessage pluginMessage;
 
     /**
-     * Create the give event factory.
+     * Create the give action factory.
      *
-     * @param loggerFactory the logger factory to create a logger for the events
+     * @param loggerFactory the logger factory to create a logger for the actions
      * @param dataStorage   the storage providing player backpack
      * @param pluginMessage the {@link PluginMessage} instance
      */

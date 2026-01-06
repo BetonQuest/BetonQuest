@@ -53,7 +53,7 @@ public class RemoveEntityAction implements NullableAction {
     private final FlagArgument<Boolean> kill;
 
     /**
-     * Creates a new KillMobEvent.
+     * Creates a new KillMobAction.
      *
      * @param types    the types of the entities
      * @param location the location where to remove the entities

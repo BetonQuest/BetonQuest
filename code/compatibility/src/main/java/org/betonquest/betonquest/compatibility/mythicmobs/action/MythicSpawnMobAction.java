@@ -53,7 +53,7 @@ public class MythicSpawnMobAction implements OnlineAction, PlayerlessAction {
     private final FlagArgument<MythicHider> mythicHider;
 
     /**
-     * Whether the mob should target the player who triggered the event.
+     * Whether the mob should target the player who triggered the action.
      */
     private final FlagArgument<Boolean> targetPlayer;
 
@@ -69,14 +69,14 @@ public class MythicSpawnMobAction implements OnlineAction, PlayerlessAction {
     private final NamespacedKey markedKey;
 
     /**
-     * Constructs a new MythicSpawnMobEvent.
+     * Constructs a new MythicSpawnMobAction.
      *
      * @param plugin       the plugin to start tasks
      * @param loc          the location where the mob should be spawned
      * @param mobLevel     the name and level of the MythicMob to spawn
      * @param amount       the amount of mobs to spawn
      * @param mythicHider  the mythic hider, if the mob should be private (invisible to other players), or null
-     * @param targetPlayer whether the mob should target the player who triggered the event
+     * @param targetPlayer whether the mob should target the player who triggered the action
      * @param marked       the optional identifier for the marked mob
      */
     public MythicSpawnMobAction(final Plugin plugin, final Argument<Location> loc, final Argument<Map.Entry<MythicMob, Double>> mobLevel,

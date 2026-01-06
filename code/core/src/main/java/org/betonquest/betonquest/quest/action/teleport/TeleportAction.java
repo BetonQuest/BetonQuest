@@ -24,7 +24,7 @@ public class TeleportAction implements OnlineAction {
     private final Argument<Location> location;
 
     /**
-     * Create a new teleport event that teleports the player to the given location.
+     * Create a new teleport action that teleports the player to the given location.
      *
      * @param conversationApi the Conversation API
      * @param location        location to teleport to

@@ -20,12 +20,12 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Factory to create weather events from {@link Instruction}s.
+ * Factory to create weather actions from {@link Instruction}s.
  */
 public class WeatherActionFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
-     * Logger factory to create a logger for the events.
+     * Logger factory to create a logger for the actions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -35,9 +35,9 @@ public class WeatherActionFactory implements PlayerActionFactory, PlayerlessActi
     private final Server server;
 
     /**
-     * Creates the weather event factory.
+     * Creates the weather action factory.
      *
-     * @param loggerFactory the logger factory to create a logger for the events
+     * @param loggerFactory the logger factory to create a logger for the actions
      * @param server        the server to access worlds
      */
     public WeatherActionFactory(final BetonQuestLoggerFactory loggerFactory, final Server server) {
@@ -47,18 +47,18 @@ public class WeatherActionFactory implements PlayerActionFactory, PlayerlessActi
 
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
-        final PlayerAction weatherPlayerEvent = parseWeatherEvent(instruction);
-        final PlayerAction playerEvent;
+        final PlayerAction weatherPlayerAction = parseWeatherAction(instruction);
+        final PlayerAction playerAction;
         if (requiresPlayer(instruction)) {
-            playerEvent = new OnlineActionAdapter(
-                    weatherPlayerEvent::execute,
+            playerAction = new OnlineActionAdapter(
+                    weatherPlayerAction::execute,
                     loggerFactory.create(WeatherAction.class),
                     instruction.getPackage()
             );
         } else {
-            playerEvent = weatherPlayerEvent;
+            playerAction = weatherPlayerAction;
         }
-        return playerEvent;
+        return playerAction;
     }
 
     @Override
@@ -66,14 +66,14 @@ public class WeatherActionFactory implements PlayerActionFactory, PlayerlessActi
         if (requiresPlayer(instruction)) {
             return new DoNothingPlayerlessAction();
         }
-        return parseWeatherEvent(instruction);
+        return parseWeatherAction(instruction);
     }
 
     private boolean requiresPlayer(final Instruction instruction) throws QuestException {
         return instruction.copy().string().get("world").isEmpty();
     }
 
-    private NullableActionAdapter parseWeatherEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter parseWeatherAction(final Instruction instruction) throws QuestException {
         final Argument<Weather> weather = instruction.parse(Weather::parseWeather).get();
         final Argument<String> world = instruction.string().get("world").orElse(null);
         final Selector<World> worldSelector = parseWorld(world == null ? null : world.getValue(null));

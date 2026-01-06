@@ -14,7 +14,7 @@ public interface PlayerlessActionFactory extends PlayerlessQuestFactory<Playerle
      * Parses an instruction to create a {@link PlayerlessAction}.
      *
      * @param instruction instruction to parse
-     * @return event represented by the instruction
+     * @return action represented by the instruction
      * @throws QuestException when the instruction cannot be parsed
      */
     @Override

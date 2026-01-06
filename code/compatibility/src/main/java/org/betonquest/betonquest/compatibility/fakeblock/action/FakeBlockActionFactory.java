@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Factory to create FakeBlock events from {@link Instruction}s.
+ * Factory to create FakeBlock actions from {@link Instruction}s.
  */
 public class FakeBlockActionFactory implements PlayerActionFactory {
 
@@ -29,7 +29,7 @@ public class FakeBlockActionFactory implements PlayerActionFactory {
     private final RegisteredServiceProvider<PlayerGroupService> playerGroupService;
 
     /**
-     * Creates the FakeBlock event factory.
+     * Creates the FakeBlock action factory.
      *
      * @param groupService       the {@link GroupService} service.
      * @param playerGroupService the {@link PlayerGroupService}.

@@ -18,7 +18,7 @@ public class BQSkriptAction implements PlayerAction {
     private final Argument<String> identifier;
 
     /**
-     * Create a new Skript Event.
+     * Create a new Skript Action.
      *
      * @param identifier the identifier for the custom event
      */

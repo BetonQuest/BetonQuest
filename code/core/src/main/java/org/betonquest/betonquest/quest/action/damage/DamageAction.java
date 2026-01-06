@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 
 /**
- * The damage event. It damages the player.
+ * The damage action. It damages the player.
  */
 public class DamageAction implements OnlineAction {
 
@@ -16,7 +16,7 @@ public class DamageAction implements OnlineAction {
     private final Argument<Number> damage;
 
     /**
-     * Create a damage event that inflicts the given amount of damage to the player.
+     * Create a damage action that inflicts the given amount of damage to the player.
      *
      * @param damage damage to inflict
      */

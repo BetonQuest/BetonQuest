@@ -132,9 +132,9 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
         final Argument<ConversationIOFactory> convIO = helper.parseConvIO();
         final Argument<InterceptorFactory> interceptor = helper.parseInterceptor();
         final Argument<Number> interceptorDelay = helper.parseInterceptorDelay();
-        final Argument<List<ActionID>> finalEvents = new DefaultListArgument<>(placeholders, pack, section.getString("final_events", ""), value -> new ActionID(placeholders, packManager, pack, value));
+        final Argument<List<ActionID>> finalActions = new DefaultListArgument<>(placeholders, pack, section.getString("final_actions", ""), value -> new ActionID(placeholders, packManager, pack, value));
         final boolean invincible = plugin.getConfig().getBoolean("conversation.damage.invincible");
-        final ConversationData.PublicData publicData = new ConversationData.PublicData(conversationID, quester, blockMovement, finalEvents, convIO, interceptor, interceptorDelay, invincible);
+        final ConversationData.PublicData publicData = new ConversationData.PublicData(conversationID, quester, blockMovement, finalActions, convIO, interceptor, interceptorDelay, invincible);
 
         return new ConversationData(loggerFactory.create(ConversationData.class), packManager,
                 placeholders, plugin.getQuestTypeApi(), plugin.getFeatureApi().conversationApi(), textCreator, section, publicData);

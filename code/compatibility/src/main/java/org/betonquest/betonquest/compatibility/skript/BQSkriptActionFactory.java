@@ -12,7 +12,7 @@ import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 public class BQSkriptActionFactory implements PlayerActionFactory {
 
     /**
-     * Create a new betonquest skript event factory.
+     * Create a new betonquest skript action factory.
      */
     public BQSkriptActionFactory() {
     }

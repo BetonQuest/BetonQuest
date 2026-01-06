@@ -3,13 +3,13 @@ package org.betonquest.betonquest.quest.action;
 import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 
 /**
- * Static event that does nothing. It can be used as a placeholder when static event execution isn't an error in itself
+ * Static action that does nothing. It can be used as a placeholder when static action execution isn't an error in itself
  * or in the case that explicitly nothing should happen.
  */
 public class DoNothingPlayerlessAction implements PlayerlessAction {
 
     /**
-     * Create a static event placeholder that doesn't do anything.
+     * Create a static action placeholder that doesn't do anything.
      */
     public DoNothingPlayerlessAction() {
     }

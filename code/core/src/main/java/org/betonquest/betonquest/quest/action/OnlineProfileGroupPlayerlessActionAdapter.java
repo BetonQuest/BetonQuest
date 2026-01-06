@@ -9,8 +9,8 @@ import org.bukkit.entity.Player;
 import java.util.function.Supplier;
 
 /**
- * Adapt a player event as a playerless event by applying it to a group of online {@link Player}s. The group supplying
- * function will be called every time the event is executed.
+ * Adapt a player action as a playerless action by applying it to a group of online {@link Player}s. The group supplying
+ * function will be called every time the action is executed.
  */
 public class OnlineProfileGroupPlayerlessActionAdapter implements PlayerlessAction {
 
@@ -20,30 +20,30 @@ public class OnlineProfileGroupPlayerlessActionAdapter implements PlayerlessActi
     private final Supplier<? extends Iterable<? extends OnlineProfile>> profileCollectionSupplier;
 
     /**
-     * The event to execute for every player of the group.
+     * The action to execute for every player of the group.
      */
-    private final PlayerAction playerEvent;
+    private final PlayerAction playerAction;
 
     /**
-     * Create a playerless event that will execute a normal event for every player provided by the supplying function.
+     * Create a playerless action that will execute a normal action for every player provided by the supplying function.
      *
      * @param profileSupplier supplier for the player group
-     * @param playerEvent     event to execute
+     * @param playerAction    action to execute
      */
-    public OnlineProfileGroupPlayerlessActionAdapter(final Supplier<? extends Iterable<? extends OnlineProfile>> profileSupplier, final PlayerAction playerEvent) {
+    public OnlineProfileGroupPlayerlessActionAdapter(final Supplier<? extends Iterable<? extends OnlineProfile>> profileSupplier, final PlayerAction playerAction) {
         profileCollectionSupplier = profileSupplier;
-        this.playerEvent = playerEvent;
+        this.playerAction = playerAction;
     }
 
     @Override
     public void execute() throws QuestException {
         for (final OnlineProfile onlineProfile : profileCollectionSupplier.get()) {
-            playerEvent.execute(onlineProfile);
+            playerAction.execute(onlineProfile);
         }
     }
 
     @Override
     public boolean isPrimaryThreadEnforced() {
-        return playerEvent.isPrimaryThreadEnforced();
+        return playerAction.isPrimaryThreadEnforced();
     }
 }

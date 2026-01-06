@@ -54,7 +54,7 @@ public class GiveAction implements OnlineAction {
     private final PlayerDataStorage dataStorage;
 
     /**
-     * Create the give event.
+     * Create the give action.
      *
      * @param questItems            the items to give
      * @param itemsGivenSender      the notification sender when giving items

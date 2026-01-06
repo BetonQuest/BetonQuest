@@ -25,7 +25,7 @@ public class LightningAction implements NullableAction {
     private final FlagArgument<Boolean> noDamage;
 
     /**
-     * Creates a new lightning event.
+     * Creates a new lightning action.
      *
      * @param location the location to strike the lightning at
      * @param noDamage whether the lightning should do damage

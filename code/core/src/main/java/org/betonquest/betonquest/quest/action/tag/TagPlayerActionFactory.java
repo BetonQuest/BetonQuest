@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Factory to create tag events from {@link Instruction}s.
+ * Factory to create tag actions from {@link Instruction}s.
  */
 public class TagPlayerActionFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
@@ -26,7 +26,7 @@ public class TagPlayerActionFactory implements PlayerActionFactory, PlayerlessAc
     private final PlayerDataStorage dataStorage;
 
     /**
-     * The saver to inject into database-using events.
+     * The saver to inject into database-using actions.
      */
     private final Saver saver;
 
@@ -36,7 +36,7 @@ public class TagPlayerActionFactory implements PlayerActionFactory, PlayerlessAc
     private final ProfileProvider profileProvider;
 
     /**
-     * Create the tag player event factory.
+     * Create the tag player action factory.
      *
      * @param dataStorage     the storage providing player data
      * @param saver           database saver to use
@@ -53,8 +53,8 @@ public class TagPlayerActionFactory implements PlayerActionFactory, PlayerlessAc
         final String action = instruction.string().get().getValue(null);
         final Argument<List<String>> tags = instruction.packageIdentifier().list().get();
         return switch (action.toLowerCase(Locale.ROOT)) {
-            case "add" -> createAddTagEvent(tags);
-            case "delete", "del" -> createDeleteTagEvent(tags);
+            case "add" -> createAddTagAction(tags);
+            case "delete", "del" -> createDeleteTagAction(tags);
             default -> throw new QuestException("Unknown tag action: " + action);
         };
     }
@@ -70,12 +70,12 @@ public class TagPlayerActionFactory implements PlayerActionFactory, PlayerlessAc
         };
     }
 
-    private TagAction createAddTagEvent(final Argument<List<String>> tags) {
+    private TagAction createAddTagAction(final Argument<List<String>> tags) {
         final TagChanger tagChanger = new AddTagChanger(tags);
         return new TagAction(dataStorage::getOffline, tagChanger);
     }
 
-    private TagAction createDeleteTagEvent(final Argument<List<String>> tags) {
+    private TagAction createDeleteTagAction(final Argument<List<String>> tags) {
         final TagChanger tagChanger = new DeleteTagChanger(tags);
         return new TagAction(dataStorage::getOffline, tagChanger);
     }

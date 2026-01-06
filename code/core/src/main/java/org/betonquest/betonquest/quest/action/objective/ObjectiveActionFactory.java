@@ -28,7 +28,7 @@ public class ObjectiveActionFactory implements PlayerActionFactory, PlayerlessAc
     private final BetonQuest betonQuest;
 
     /**
-     * Logger factory to create a logger for the events.
+     * Logger factory to create a logger for the actions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -46,7 +46,7 @@ public class ObjectiveActionFactory implements PlayerActionFactory, PlayerlessAc
      * Creates a new factory for {@link ObjectiveAction}s.
      *
      * @param betonQuest        the BetonQuest instance
-     * @param loggerFactory     the logger factory to create a logger for the events
+     * @param loggerFactory     the logger factory to create a logger for the actions
      * @param questTypeApi      the Quest Type API
      * @param playerDataFactory the factory to create player data
      */
@@ -60,15 +60,15 @@ public class ObjectiveActionFactory implements PlayerActionFactory, PlayerlessAc
 
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
-        return createObjectiveEvent(instruction);
+        return createObjectiveAction(instruction);
     }
 
     @Override
     public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
-        return createObjectiveEvent(instruction);
+        return createObjectiveAction(instruction);
     }
 
-    private NullableActionAdapter createObjectiveEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createObjectiveAction(final Instruction instruction) throws QuestException {
         final String action = instruction.string().map(s -> s.toLowerCase(Locale.ROOT)).get().getValue(null);
         final Argument<List<ObjectiveID>> objectives = instruction.parse(ObjectiveID::new).list().get();
         return new NullableActionAdapter(new ObjectiveAction(betonQuest, loggerFactory.create(ObjectiveAction.class),

@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 
 /**
- * The burn event. Sets the player on fire.
+ * The burn action. Sets the player on fire.
  */
 public class BurnAction implements OnlineAction {
 
@@ -16,7 +16,7 @@ public class BurnAction implements OnlineAction {
     private final Argument<Number> duration;
 
     /**
-     * Create a burn event that sets the player on fire for the given duration.
+     * Create a burn action that sets the player on fire for the given duration.
      *
      * @param duration duration of burn
      */

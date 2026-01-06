@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 import org.bukkit.entity.Player;
 
 /**
- * The hunger event, changing the hunger of a player.
+ * The hunger action, changing the hunger of a player.
  */
 public class HungerAction implements OnlineAction {
 
@@ -22,7 +22,7 @@ public class HungerAction implements OnlineAction {
     private final Argument<Number> amount;
 
     /**
-     * Create the hunger event to set the given state.
+     * Create the hunger action to set the given state.
      *
      * @param hunger the hunger type
      * @param amount the amount of hunger to apply

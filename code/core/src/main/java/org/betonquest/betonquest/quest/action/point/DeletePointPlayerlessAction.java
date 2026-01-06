@@ -35,7 +35,7 @@ public class DeletePointPlayerlessAction implements PlayerlessAction {
     private final Argument<String> category;
 
     /**
-     * Create a new Point remove event for every player, online and offline.
+     * Create a new Point remove action for every player, online and offline.
      *
      * @param dataStorage     the storage providing player data
      * @param saver           the saver to use

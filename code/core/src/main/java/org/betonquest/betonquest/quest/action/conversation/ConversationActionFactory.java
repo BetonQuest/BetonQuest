@@ -18,7 +18,7 @@ import org.betonquest.betonquest.conversation.ConversationID;
 public class ConversationActionFactory implements PlayerActionFactory {
 
     /**
-     * Logger factory to create a logger for the events.
+     * Logger factory to create a logger for the actions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -33,9 +33,9 @@ public class ConversationActionFactory implements PlayerActionFactory {
     private final ConversationApi conversationApi;
 
     /**
-     * Create the conversation event factory.
+     * Create the conversation action factory.
      *
-     * @param loggerFactory   the logger factory to create a logger for the events
+     * @param loggerFactory   the logger factory to create a logger for the actions
      * @param packManager     the quest package manager to get quest packages from
      * @param conversationApi the Conversation API
      */

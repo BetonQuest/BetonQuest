@@ -11,12 +11,12 @@ import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
 import org.bukkit.Location;
 
 /**
- * Factory to create teleport events from {@link Instruction}s.
+ * Factory to create teleport actions from {@link Instruction}s.
  */
 public class TeleportActionFactory implements PlayerActionFactory {
 
     /**
-     * Logger factory to create a logger for the events.
+     * Logger factory to create a logger for the actions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -26,9 +26,9 @@ public class TeleportActionFactory implements PlayerActionFactory {
     private final ConversationApi conversationApi;
 
     /**
-     * Create the teleport event factory.
+     * Create the teleport action factory.
      *
-     * @param loggerFactory   the logger factory to create a logger for the events
+     * @param loggerFactory   the logger factory to create a logger for the actions
      * @param conversationApi the Conversation API
      */
     public TeleportActionFactory(final BetonQuestLoggerFactory loggerFactory, final ConversationApi conversationApi) {

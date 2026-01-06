@@ -9,14 +9,14 @@ import org.betonquest.betonquest.quest.action.OpPlayerActionAdapter;
 import org.bukkit.Server;
 
 /**
- * Creates a new OpSudoEvent from an {@link Instruction}.
+ * Creates a new OpSudoAction from an {@link Instruction}.
  */
 public class OpSudoActionFactory extends BaseCommandActionFactory {
 
     /**
-     * Create the OpSudoEvent factory.
+     * Create the OpSudoAction factory.
      *
-     * @param loggerFactory the logger factory to create a logger for the events
+     * @param loggerFactory the logger factory to create a logger for the actions
      * @param server        the server to execute commands on
      */
     public OpSudoActionFactory(final BetonQuestLoggerFactory loggerFactory, final Server server) {

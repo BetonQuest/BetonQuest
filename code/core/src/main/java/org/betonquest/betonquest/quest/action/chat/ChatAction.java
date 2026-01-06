@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 import org.bukkit.entity.Player;
 
 /**
- * The chat event.
+ * The chat action.
  */
 public class ChatAction implements OnlineAction {
 
@@ -15,7 +15,7 @@ public class ChatAction implements OnlineAction {
     private final String[] messages;
 
     /**
-     * Creates a new chat event.
+     * Creates a new chat action.
      *
      * @param messages the messages
      */

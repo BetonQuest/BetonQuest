@@ -23,7 +23,7 @@ public class ChestTakeAction extends AbstractChestAction {
     private final Argument<List<ItemWrapper>> items;
 
     /**
-     * Creates a new ChestTakeEvent.
+     * Creates a new ChestTakeAction.
      *
      * @param location The location of the chest.
      * @param items    The items to take from the chest.

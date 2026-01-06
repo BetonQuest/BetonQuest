@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 /**
- * The velocity event. Throws the player around.
+ * The velocity action. Throws the player around.
  */
 public class VelocityAction implements OnlineAction {
 
@@ -28,7 +28,7 @@ public class VelocityAction implements OnlineAction {
     private final Argument<VectorModification> modification;
 
     /**
-     * Create a velocity event with the given parameters.
+     * Create a velocity action with the given parameters.
      *
      * @param vector       vector of the direction and speed
      * @param direction    direction in which the vector is directed

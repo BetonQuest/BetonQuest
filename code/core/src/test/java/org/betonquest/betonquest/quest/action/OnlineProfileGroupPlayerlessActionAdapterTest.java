@@ -25,10 +25,10 @@ import static org.mockito.Mockito.*;
 class OnlineProfileGroupPlayerlessActionAdapterTest {
 
     /**
-     * Internal non-static event mock that is adapted to a static event by the tested class.
+     * Internal non-static action mock that is adapted to a static action by the tested class.
      */
     @Mock
-    private PlayerAction internalPlayerEvent;
+    private PlayerAction internalPlayerAction;
 
     /**
      * Create test class instance.
@@ -51,12 +51,12 @@ class OnlineProfileGroupPlayerlessActionAdapterTest {
     @ParameterizedTest
     @EmptySource
     @MethodSource("playerListSource")
-    void testInternalEventIsExecutedForEachPlayerExactlyOnce(final List<OnlineProfile> onlineProfileList) throws QuestException {
-        final OnlineProfileGroupPlayerlessActionAdapter subject = new OnlineProfileGroupPlayerlessActionAdapter(() -> onlineProfileList, internalPlayerEvent);
+    void testInternalActionIsExecutedForEachPlayerExactlyOnce(final List<OnlineProfile> onlineProfileList) throws QuestException {
+        final OnlineProfileGroupPlayerlessActionAdapter subject = new OnlineProfileGroupPlayerlessActionAdapter(() -> onlineProfileList, internalPlayerAction);
         subject.execute();
 
         verifyExecutedOnceForPlayers(onlineProfileList);
-        verifyNoMoreInteractions(internalPlayerEvent);
+        verifyNoMoreInteractions(internalPlayerAction);
     }
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
@@ -68,13 +68,13 @@ class OnlineProfileGroupPlayerlessActionAdapterTest {
                 firstExecution, secondExecution
         ).iterator();
 
-        final OnlineProfileGroupPlayerlessActionAdapter subject = new OnlineProfileGroupPlayerlessActionAdapter(playerListsForSupplier::next, internalPlayerEvent);
+        final OnlineProfileGroupPlayerlessActionAdapter subject = new OnlineProfileGroupPlayerlessActionAdapter(playerListsForSupplier::next, internalPlayerAction);
         subject.execute();
         verifyExecutedOnceForPlayers(firstExecution);
         verifyNotExecutedForPlayers(secondExecution);
 
         subject.execute();
-        // the event was executed once during the first call for the first batch of players,
+        // the action was executed once during the first call for the first batch of players,
         // but it would be more than once if the second call did execute for the players of the first batch too
         verifyExecutedOnceForPlayers(firstExecution);
         verifyExecutedOnceForPlayers(secondExecution);
@@ -82,30 +82,30 @@ class OnlineProfileGroupPlayerlessActionAdapterTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testAdapterFailsOnFirstEventFailure() throws QuestException {
+    void testAdapterFailsOnFirstActionFailure() throws QuestException {
         final List<OnlineProfile> playerList = List.of(createRandomProfile(), createRandomProfile(), createRandomProfile());
         final OnlineProfile firstProfile = playerList.get(0);
         final OnlineProfile failingProfile = playerList.get(1);
-        final Exception eventFailureException = new QuestException("test exception");
+        final Exception actionFailureException = new QuestException("test exception");
 
-        doNothing().when(internalPlayerEvent).execute(firstProfile);
-        doThrow(eventFailureException).when(internalPlayerEvent).execute(failingProfile);
+        doNothing().when(internalPlayerAction).execute(firstProfile);
+        doThrow(actionFailureException).when(internalPlayerAction).execute(failingProfile);
 
-        final OnlineProfileGroupPlayerlessActionAdapter subject = new OnlineProfileGroupPlayerlessActionAdapter(() -> playerList, internalPlayerEvent);
+        final OnlineProfileGroupPlayerlessActionAdapter subject = new OnlineProfileGroupPlayerlessActionAdapter(() -> playerList, internalPlayerAction);
         assertThrows(QuestException.class, subject::execute);
-        verify(internalPlayerEvent).execute(firstProfile);
-        verify(internalPlayerEvent, never()).execute(playerList.get(2));
+        verify(internalPlayerAction).execute(firstProfile);
+        verify(internalPlayerAction, never()).execute(playerList.get(2));
     }
 
     private void verifyExecutedOnceForPlayers(final Iterable<OnlineProfile> onlineProfilesList) throws QuestException {
         for (final OnlineProfile onlineProfile : onlineProfilesList) {
-            verify(internalPlayerEvent).execute(onlineProfile);
+            verify(internalPlayerAction).execute(onlineProfile);
         }
     }
 
     private void verifyNotExecutedForPlayers(final Iterable<OnlineProfile> onlineProfilesList) throws QuestException {
         for (final OnlineProfile onlineProfile : onlineProfilesList) {
-            verify(internalPlayerEvent, never()).execute(onlineProfile);
+            verify(internalPlayerAction, never()).execute(onlineProfile);
         }
     }
 }

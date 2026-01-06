@@ -35,7 +35,7 @@ public class MoneyActionFactory implements PlayerActionFactory {
     private final PluginMessage pluginMessage;
 
     /**
-     * Create a new Factory to create Vault Money Events.
+     * Create a new Factory to create Vault Money Actions.
      *
      * @param economy       the economy where the balance will be modified
      * @param loggerFactory the logger factory to create new logger instances.

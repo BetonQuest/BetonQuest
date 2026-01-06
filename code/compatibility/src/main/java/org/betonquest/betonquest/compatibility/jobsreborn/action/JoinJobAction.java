@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 
 /**
- * Event to join a job.
+ * Action to join a job.
  */
 public class JoinJobAction implements PlayerAction {
 
@@ -18,7 +18,7 @@ public class JoinJobAction implements PlayerAction {
     private final Argument<Job> job;
 
     /**
-     * Create a new job join event.
+     * Create a new job join action.
      *
      * @param job the job to check
      */

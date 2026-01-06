@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 
 /**
- * Event to add job experience.
+ * Action to add job experience.
  */
 public class AddExpAction implements PlayerAction {
 
@@ -24,7 +24,7 @@ public class AddExpAction implements PlayerAction {
     private final Argument<Number> nAddExperience;
 
     /**
-     * Create a new experience add event.
+     * Create a new experience add action.
      *
      * @param job    the job to add experience to
      * @param amount the experience amount

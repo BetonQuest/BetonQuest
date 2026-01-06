@@ -13,12 +13,12 @@ import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 
 /**
- * Factory to create if-else events from {@link Instruction}s.
+ * Factory to create if-else actions from {@link Instruction}s.
  */
 public class IfElseActionFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
-     * The keyword to identify an else event following.
+     * The keyword to identify an else action following.
      */
     private static final String ELSE_KEYWORD = "else";
 
@@ -28,7 +28,7 @@ public class IfElseActionFactory implements PlayerActionFactory, PlayerlessActio
     private final QuestTypeApi questTypeApi;
 
     /**
-     * The event constructor.
+     * The action constructor.
      *
      * @param questTypeApi the Quest Type API
      */
@@ -38,21 +38,21 @@ public class IfElseActionFactory implements PlayerActionFactory, PlayerlessActio
 
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
-        return createIfElseEvent(instruction);
+        return createIfElseAction(instruction);
     }
 
     @Override
     public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
-        return createIfElseEvent(instruction);
+        return createIfElseAction(instruction);
     }
 
-    private NullableActionAdapter createIfElseEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createIfElseAction(final Instruction instruction) throws QuestException {
         final Argument<ConditionID> condition = instruction.parse(ConditionID::new).get();
-        final Argument<ActionID> event = instruction.parse(ActionID::new).get();
+        final Argument<ActionID> action = instruction.parse(ActionID::new).get();
         if (!ELSE_KEYWORD.equalsIgnoreCase(instruction.nextElement())) {
             throw new QuestException("Missing 'else' keyword");
         }
-        final Argument<ActionID> elseEvent = instruction.parse(ActionID::new).get();
-        return new NullableActionAdapter(new IfElseAction(condition, event, elseEvent, questTypeApi));
+        final Argument<ActionID> elseAction = instruction.parse(ActionID::new).get();
+        return new NullableActionAdapter(new IfElseAction(condition, action, elseAction, questTypeApi));
     }
 }

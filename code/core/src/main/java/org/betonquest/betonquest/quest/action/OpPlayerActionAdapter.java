@@ -6,24 +6,24 @@ import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 import org.bukkit.entity.Player;
 
 /**
- * Adapt an event to be run as Op.
+ * Adapt an action to be run as Op.
  * <p>
- * Gives the player op, executes the nested event and then reverts the operation if necessary.
+ * Gives the player op, executes the nested action and then reverts the operation if necessary.
  */
 public class OpPlayerActionAdapter implements OnlineAction {
 
     /**
-     * The event to execute as Op.
+     * The action to execute as Op.
      */
-    private final OnlineAction event;
+    private final OnlineAction action;
 
     /**
-     * Creates a new OpPlayerEventAdapter.
+     * Creates a new OpPlayerActionAdapter.
      *
-     * @param event the event to execute as op.
+     * @param action the action to execute as op.
      */
-    public OpPlayerActionAdapter(final OnlineAction event) {
-        this.event = event;
+    public OpPlayerActionAdapter(final OnlineAction action) {
+        this.action = action;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class OpPlayerActionAdapter implements OnlineAction {
         final boolean previousOp = player.isOp();
         try {
             player.setOp(true);
-            event.execute(profile);
+            action.execute(profile);
         } finally {
             player.setOp(previousOp);
         }
@@ -40,6 +40,6 @@ public class OpPlayerActionAdapter implements OnlineAction {
 
     @Override
     public boolean isPrimaryThreadEnforced() {
-        return event.isPrimaryThreadEnforced();
+        return action.isPrimaryThreadEnforced();
     }
 }

@@ -6,31 +6,31 @@ import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 
 /**
- * Adapter to allow executing a playerless event with the API of a player event.
+ * Adapter to allow executing a playerless action with the API of a player action.
  */
 public class CallPlayerlessActionAdapter implements PlayerAction {
 
     /**
-     * The playerless event to execute.
+     * The playerless action to execute.
      */
-    private final PlayerlessAction event;
+    private final PlayerlessAction action;
 
     /**
-     * Create a player event that will execute the given playerless event.
+     * Create a player action that will execute the given playerless action.
      *
-     * @param event playerless event to execute
+     * @param action playerless action to execute
      */
-    public CallPlayerlessActionAdapter(final PlayerlessAction event) {
-        this.event = event;
+    public CallPlayerlessActionAdapter(final PlayerlessAction action) {
+        this.action = action;
     }
 
     @Override
     public void execute(final Profile profile) throws QuestException {
-        event.execute();
+        action.execute();
     }
 
     @Override
     public boolean isPrimaryThreadEnforced() {
-        return event.isPrimaryThreadEnforced();
+        return action.isPrimaryThreadEnforced();
     }
 }

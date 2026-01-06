@@ -14,7 +14,7 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Factory class for creating LuckPerms events.
+ * Factory class for creating LuckPerms actions.
  */
 public class LuckPermsActionFactory implements PlayerActionFactory {
 
@@ -24,7 +24,7 @@ public class LuckPermsActionFactory implements PlayerActionFactory {
     private final LuckPerms luckPermsAPI;
 
     /**
-     * Creates the LuckPerms event factory.
+     * Creates the LuckPerms action factory.
      *
      * @param luckPermsAPI The {@link LuckPerms} API.
      */

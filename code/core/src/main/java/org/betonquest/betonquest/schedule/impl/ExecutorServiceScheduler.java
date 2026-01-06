@@ -16,7 +16,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
 
 /**
- * A scheduler that already provides a {@link ScheduledExecutorService} for scheduling events to run at a specific
+ * A scheduler that already provides a {@link ScheduledExecutorService} for scheduling actions to run at a specific
  * point in (real) time.
  * Starting and stopping the executor as well as adding/removing schedules is already implemented.
  *
@@ -52,7 +52,7 @@ public abstract class ExecutorServiceScheduler<S extends Schedule, T> extends Sc
      * Constructor to create a new instance of this scheduler.
      *
      * @param log          the logger that will be used for logging
-     * @param questTypeApi the class for executing events
+     * @param questTypeApi the class for executing actions
      */
     public ExecutorServiceScheduler(final BetonQuestLogger log, final QuestTypeApi questTypeApi) {
         this(log, questTypeApi, Executors::newSingleThreadScheduledExecutor);
@@ -63,7 +63,7 @@ public abstract class ExecutorServiceScheduler<S extends Schedule, T> extends Sc
      *
      * @param log          the logger that will be used for logging
      * @param executor     supplier used to create new instances of the executor used by this scheduler
-     * @param questTypeApi the class for executing events
+     * @param questTypeApi the class for executing actions
      */
     public ExecutorServiceScheduler(final BetonQuestLogger log, final QuestTypeApi questTypeApi,
                                     final Supplier<ScheduledExecutorService> executor) {

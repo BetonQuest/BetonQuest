@@ -6,16 +6,16 @@ import org.betonquest.betonquest.api.quest.PrimaryThreadEnforceable;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Quest event that can work both with and without a profile.
+ * Quest action that can work both with and without a profile.
  */
 @FunctionalInterface
 public interface NullableAction extends PrimaryThreadEnforceable {
 
     /**
-     * Execute the event with a nullable profile.
+     * Execute the action with a nullable profile.
      *
      * @param profile profile or null
-     * @throws QuestException if the event cannot be executed correctly,
+     * @throws QuestException if the action cannot be executed correctly,
      *                        this might indicate that the profile cannot be null
      *                        in this specific case
      */

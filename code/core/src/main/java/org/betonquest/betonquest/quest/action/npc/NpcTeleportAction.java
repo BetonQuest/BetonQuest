@@ -37,7 +37,7 @@ public class NpcTeleportAction implements NullableAction {
     private final FlagArgument<Boolean> spawn;
 
     /**
-     * Create a new Npc Teleport Event.
+     * Create a new Npc Teleport Action.
      *
      * @param featureApi the Feature API
      * @param npcId      the npc id

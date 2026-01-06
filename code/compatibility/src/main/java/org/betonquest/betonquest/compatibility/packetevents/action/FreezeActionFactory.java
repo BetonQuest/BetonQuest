@@ -32,7 +32,7 @@ public class FreezeActionFactory implements PlayerActionFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Create a new freeze event factory.
+     * Create a new freeze action factory.
      *
      * @param plugin          the plugin instance
      * @param packetEventsAPI the PacketEvents API instance

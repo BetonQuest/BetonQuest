@@ -11,27 +11,27 @@ import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter
 import org.bukkit.Location;
 
 /**
- * Factory to create chest events from {@link Instruction}s.
+ * Factory to create chest actions from {@link Instruction}s.
  */
 public class ChestClearActionFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
-     * Create the chest clear event factory.
+     * Create the chest clear action factory.
      */
     public ChestClearActionFactory() {
     }
 
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
-        return createChestClearEvent(instruction);
+        return createChestClearAction(instruction);
     }
 
     @Override
     public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
-        return createChestClearEvent(instruction);
+        return createChestClearAction(instruction);
     }
 
-    private NullableActionAdapter createChestClearEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createChestClearAction(final Instruction instruction) throws QuestException {
         final Argument<Location> location = instruction.location().get();
         return new NullableActionAdapter(new ChestClearAction(location));
     }

@@ -23,15 +23,15 @@ public class LeverActionFactory implements PlayerActionFactory, PlayerlessAction
 
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
-        return createLeverEvent(instruction);
+        return createLeverAction(instruction);
     }
 
     @Override
     public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
-        return createLeverEvent(instruction);
+        return createLeverAction(instruction);
     }
 
-    private NullableActionAdapter createLeverEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createLeverAction(final Instruction instruction) throws QuestException {
         final Argument<Location> location = instruction.location().get();
         final Argument<StateType> stateType = instruction.enumeration(StateType.class).get();
         return new NullableActionAdapter(new LeverAction(stateType, location));

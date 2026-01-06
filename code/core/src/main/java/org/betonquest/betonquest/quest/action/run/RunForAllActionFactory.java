@@ -41,10 +41,10 @@ public class RunForAllActionFactory implements PlayerlessActionFactory {
 
     @Override
     public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
-        final Argument<List<ActionID>> events = instruction.parse(ActionID::new)
+        final Argument<List<ActionID>> actions = instruction.parse(ActionID::new)
                 .list().get("actions", Collections.emptyList());
         final Argument<List<ConditionID>> conditions = instruction.parse(ConditionID::new)
                 .list().get("where", Collections.emptyList());
-        return new RunForAllAction(profileProvider::getOnlineProfiles, questTypeApi, events, conditions);
+        return new RunForAllAction(profileProvider::getOnlineProfiles, questTypeApi, actions, conditions);
     }
 }

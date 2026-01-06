@@ -13,17 +13,17 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Factory to create global tag events from {@link Instruction}s.
+ * Factory to create global tag actions from {@link Instruction}s.
  */
 public class TagGlobalActionFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
-     * BetonQuest instance to provide to events.
+     * BetonQuest instance to provide to actions.
      */
     private final BetonQuest betonQuest;
 
     /**
-     * Create the global tag event factory.
+     * Create the global tag action factory.
      *
      * @param betonQuest BetonQuest instance to pass on
      */
@@ -36,8 +36,8 @@ public class TagGlobalActionFactory implements PlayerActionFactory, PlayerlessAc
         final String action = instruction.string().get().getValue(null);
         final Argument<List<String>> tags = instruction.packageIdentifier().list().get();
         return switch (action.toLowerCase(Locale.ROOT)) {
-            case "add" -> createAddTagEvent(tags);
-            case "delete", "del" -> createDeleteTagEvent(tags);
+            case "add" -> createAddTagAction(tags);
+            case "delete", "del" -> createDeleteTagAction(tags);
             default -> throw new QuestException("Unknown tag action: " + action);
         };
     }
@@ -47,28 +47,28 @@ public class TagGlobalActionFactory implements PlayerActionFactory, PlayerlessAc
         final String action = instruction.string().get().getValue(null);
         final Argument<List<String>> tags = instruction.packageIdentifier().list().get();
         return switch (action.toLowerCase(Locale.ROOT)) {
-            case "add" -> createStaticAddTagEvent(tags);
-            case "delete", "del" -> createStaticDeleteTagEvent(tags);
+            case "add" -> createStaticAddTagAction(tags);
+            case "delete", "del" -> createStaticDeleteTagAction(tags);
             default -> throw new QuestException("Unknown tag action: " + action);
         };
     }
 
-    private PlayerlessAction createStaticAddTagEvent(final Argument<List<String>> tags) {
+    private PlayerlessAction createStaticAddTagAction(final Argument<List<String>> tags) {
         final TagChanger tagChanger = new AddTagChanger(tags);
         return new PlayerlessTagAction(betonQuest.getGlobalData(), tagChanger);
     }
 
-    private PlayerlessAction createStaticDeleteTagEvent(final Argument<List<String>> tags) {
+    private PlayerlessAction createStaticDeleteTagAction(final Argument<List<String>> tags) {
         final TagChanger tagChanger = new DeleteTagChanger(tags);
         return new PlayerlessTagAction(betonQuest.getGlobalData(), tagChanger);
     }
 
-    private PlayerAction createAddTagEvent(final Argument<List<String>> tags) {
+    private PlayerAction createAddTagAction(final Argument<List<String>> tags) {
         final TagChanger tagChanger = new AddTagChanger(tags);
         return new TagAction(profile -> betonQuest.getGlobalData(), tagChanger);
     }
 
-    private PlayerAction createDeleteTagEvent(final Argument<List<String>> tags) {
+    private PlayerAction createDeleteTagAction(final Argument<List<String>> tags) {
         final TagChanger tagChanger = new DeleteTagChanger(tags);
         return new TagAction(profile -> betonQuest.getGlobalData(), tagChanger);
     }

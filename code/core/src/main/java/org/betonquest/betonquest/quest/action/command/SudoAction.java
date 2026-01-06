@@ -19,7 +19,7 @@ public class SudoAction implements OnlineAction {
     private final List<Argument<String>> commands;
 
     /**
-     * Creates a new SudoEvent.
+     * Creates a new SudoAction.
      *
      * @param commands the commands to run
      */

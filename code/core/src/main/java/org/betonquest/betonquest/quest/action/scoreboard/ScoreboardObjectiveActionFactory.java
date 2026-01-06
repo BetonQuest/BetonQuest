@@ -8,12 +8,12 @@ import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.quest.action.point.PointType;
 
 /**
- * Factory to create scoreboard events from {@link Instruction}s.
+ * Factory to create scoreboard actions from {@link Instruction}s.
  */
 public class ScoreboardObjectiveActionFactory implements PlayerActionFactory {
 
     /**
-     * Create the scoreboard event factory.
+     * Create the scoreboard action factory.
      */
     public ScoreboardObjectiveActionFactory() {
     }

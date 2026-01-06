@@ -22,7 +22,7 @@ public class McMMOAddExpAction implements OnlineAction {
     private final Argument<Number> exp;
 
     /**
-     * Create a new add exp event.
+     * Create a new add exp action.
      *
      * @param skillType the type to add xp to
      * @param exp       the amount to add

@@ -32,7 +32,7 @@ public abstract class AbstractTakeAction implements OnlineAction {
     protected final NotificationSender notificationSender;
 
     /**
-     * Create the abstract take event.
+     * Create the abstract take action.
      *
      * @param checkOrder         the order in which the checks should be performed
      * @param notificationSender the notification sender to use
