@@ -6,13 +6,11 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
 /**
  * Requires the player to jump a certain number of times.
  */
-public class JumpObjective extends CountingObjective implements Listener {
+public class JumpObjective extends CountingObjective {
 
     /**
      * Constructor for the JumpObjective.
@@ -28,11 +26,10 @@ public class JumpObjective extends CountingObjective implements Listener {
     /**
      * Check if the player jumped.
      *
-     * @param event the event that triggered the jump
+     * @param event         the event that triggered the jump
+     * @param onlineProfile the profile of the player that jumped
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onPlayerJump(final PlayerJumpEvent event) {
-        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
+    public void onPlayerJump(final PlayerJumpEvent event, final OnlineProfile onlineProfile) {
         if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
             getCountingData(onlineProfile).progress();
             completeIfDoneOrNotify(onlineProfile);

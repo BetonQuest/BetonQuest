@@ -8,14 +8,11 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
 /**
  * This {@link DefaultObjective} is completed when a player exits a train.
  */
-public class TrainCartsExitObjective extends DefaultObjective implements Listener {
+public class TrainCartsExitObjective extends DefaultObjective {
 
     /**
      * The name of the train, maybe empty.
@@ -37,14 +34,10 @@ public class TrainCartsExitObjective extends DefaultObjective implements Listene
     /**
      * The method is called when a player exits a train.
      *
-     * @param event The {@link MemberSeatExitEvent}.
+     * @param event         The {@link MemberSeatExitEvent}.
+     * @param onlineProfile The {@link OnlineProfile}.
      */
-    @EventHandler
-    public void onMemberSeatExit(final MemberSeatExitEvent event) {
-        if (!(event.getEntity() instanceof final Player player)) {
-            return;
-        }
-        final OnlineProfile onlineProfile = profileProvider.getProfile(player);
+    public void onMemberSeatExit(final MemberSeatExitEvent event, final OnlineProfile onlineProfile) {
         if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
             return;
         }

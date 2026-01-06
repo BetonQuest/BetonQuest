@@ -8,13 +8,11 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
 /**
  * An objective that listens for the player applying a gem to their MMOItems item.
  */
-public class MMOItemsApplyGemObjective extends DefaultObjective implements Listener {
+public class MMOItemsApplyGemObjective extends DefaultObjective {
 
     /**
      * The ID of the item to be upgraded.
@@ -50,12 +48,11 @@ public class MMOItemsApplyGemObjective extends DefaultObjective implements Liste
     /**
      * Checks if the apply gem event matches the objective's item ID and type.
      *
-     * @param event the apply gem event
+     * @param event   the apply gem event
+     * @param profile the player
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onApplyGem(final ApplyGemStoneEvent event) {
+    public void onApplyGem(final ApplyGemStoneEvent event, final OnlineProfile profile) {
         qeHandler.handle(() -> {
-            final OnlineProfile profile = profileProvider.getProfile(event.getPlayer());
             final MMOItem upgradedItem = event.getTargetItem();
             if (!upgradedItem.getId().equals(itemID.getValue(profile))
                     || !upgradedItem.getType().getId().equals(itemType.getValue(profile))) {

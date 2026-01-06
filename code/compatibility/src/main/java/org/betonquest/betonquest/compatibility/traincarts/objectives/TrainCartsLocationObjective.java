@@ -8,12 +8,11 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
 import org.betonquest.betonquest.quest.objective.location.AbstractLocationObjective;
 import org.bukkit.Location;
-import org.bukkit.event.Listener;
 
 /**
  * This {@link AbstractLocationObjective} is completed when a player is inside a certain location while riding a train.
  */
-public class TrainCartsLocationObjective extends AbstractLocationObjective implements Listener {
+public class TrainCartsLocationObjective extends AbstractLocationObjective {
 
     /**
      * The {@link Argument} that stores the location the player has to be inside.

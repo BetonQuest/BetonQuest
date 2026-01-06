@@ -1,11 +1,13 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmolib;
 
+import io.lumine.mythic.lib.api.event.skill.SkillCastEvent;
 import io.lumine.mythic.lib.skill.trigger.TriggerType;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 
 import java.util.List;
 import java.util.Locale;
@@ -22,11 +24,13 @@ public class MythicLibSkillObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<String> skillId = instruction.string().get();
         final List<TriggerType> triggerTypes = instruction
                 .parse(id -> TriggerType.valueOf(id.toUpperCase(Locale.ROOT)))
                 .list().get().getValue(null);
-        return new MythicLibSkillObjective(instruction, skillId, triggerTypes);
+        final MythicLibSkillObjective objective = new MythicLibSkillObjective(instruction, skillId, triggerTypes);
+        service.request(SkillCastEvent.class).handler(objective::onSkillCast, SkillCastEvent::getPlayer).subscribe(true);
+        return objective;
     }
 }

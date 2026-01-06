@@ -14,9 +14,6 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -33,7 +30,7 @@ import java.util.Objects;
  * right-click or damage the entity. Each entity can only be interacted once.
  * The interaction can optionally be canceled by adding the argument cancel.
  */
-public class EntityInteractObjective extends CountingObjective implements Listener {
+public class EntityInteractObjective extends CountingObjective {
 
     /**
      * The Factory for the Entity Interact Data.
@@ -126,8 +123,7 @@ public class EntityInteractObjective extends CountingObjective implements Listen
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
-    private boolean onInteract(final Player player, final Entity entity) throws QuestException {
-        final OnlineProfile onlineProfile = profileProvider.getProfile(player);
+    private boolean onInteract(final OnlineProfile onlineProfile, final Entity entity) throws QuestException {
         if (!containsPlayer(onlineProfile)) {
             return false;
         }
@@ -173,27 +169,19 @@ public class EntityInteractObjective extends CountingObjective implements Listen
     /**
      * The left click event handler.
      *
-     * @param event the event that triggered this method
+     * @param event         the event that triggered this method
+     * @param onlineProfile the profile of the player that interacted with the entity
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onDamage(final EntityDamageByEntityEvent event) {
+    public void onDamage(final EntityDamageByEntityEvent event, final OnlineProfile onlineProfile) {
         if (interaction == Interaction.RIGHT) {
-            return;
-        }
-        final Player player;
-        // check if entity is damaged by a Player
-        if (event.getDamager() instanceof Player) {
-            player = (Player) event.getDamager();
-        } else {
             return;
         }
         if (slot != null && slot != EquipmentSlot.HAND) {
             return;
         }
         qeHandler.handle(() -> {
-            final boolean success = onInteract(player, event.getEntity());
-            final OnlineProfile profile = profileProvider.getProfile(player).getOnlineProfile().orElse(null);
-            if (success && cancel.getValue(profile).orElse(false)) {
+            final boolean success = onInteract(onlineProfile, event.getEntity());
+            if (success && cancel.getValue(onlineProfile).orElse(false)) {
                 event.setCancelled(true);
             }
         });
@@ -202,17 +190,16 @@ public class EntityInteractObjective extends CountingObjective implements Listen
     /**
      * The right click event handler.
      *
-     * @param event the event that triggered this method
+     * @param event         the event that triggered this method
+     * @param onlineProfile the profile of the player that interacted with the entity
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onRightClick(final PlayerInteractEntityEvent event) {
+    public void onRightClick(final PlayerInteractEntityEvent event, final OnlineProfile onlineProfile) {
         if (interaction == Interaction.LEFT || slot != null && slot != event.getHand()) {
             return;
         }
         qeHandler.handle(() -> {
-            final boolean success = onInteract(event.getPlayer(), event.getRightClicked());
-            final OnlineProfile profile = profileProvider.getProfile(event.getPlayer()).getOnlineProfile().orElse(null);
-            if (success && cancel.getValue(profile).orElse(false)) {
+            final boolean success = onInteract(onlineProfile, event.getRightClicked());
+            if (success && cancel.getValue(onlineProfile).orElse(false)) {
                 event.setCancelled(true);
             }
         });
@@ -221,12 +208,12 @@ public class EntityInteractObjective extends CountingObjective implements Listen
     /**
      * The right click event handler specific for armor stands.
      *
-     * @param event the event that triggered this method
+     * @param event         the event that triggered this method
+     * @param onlineProfile the profile of the player that interacted with the entity
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onArmorRightClick(final PlayerInteractAtEntityEvent event) {
+    public void onArmorRightClick(final PlayerInteractAtEntityEvent event, final OnlineProfile onlineProfile) {
         if (event.getRightClicked() instanceof ArmorStand) {
-            onRightClick(event);
+            onRightClick(event, onlineProfile);
         }
     }
 }

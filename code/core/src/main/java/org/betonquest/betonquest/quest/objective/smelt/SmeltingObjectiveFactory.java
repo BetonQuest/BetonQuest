@@ -6,6 +6,8 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.bukkit.event.inventory.InventoryClickEvent;
 
 /**
  * Factory for creating {@link SmeltingObjective} instances from {@link Instruction}s.
@@ -19,9 +21,12 @@ public class SmeltingObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<ItemWrapper> item = instruction.item().get();
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get();
-        return new SmeltingObjective(instruction, targetAmount, item);
+        final SmeltingObjective objective = new SmeltingObjective(instruction, targetAmount, item);
+        service.request(InventoryClickEvent.class)
+                .handler(objective::onSmelting, InventoryClickEvent::getWhoClicked).subscribe(true);
+        return objective;
     }
 }

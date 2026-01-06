@@ -10,9 +10,6 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.EventID;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import java.util.List;
@@ -20,7 +17,7 @@ import java.util.List;
 /**
  * Requires the player to execute a specific command.
  */
-public class CommandObjective extends DefaultObjective implements Listener {
+public class CommandObjective extends DefaultObjective {
 
     /**
      * Command that the player has to execute.
@@ -72,12 +69,11 @@ public class CommandObjective extends DefaultObjective implements Listener {
     /**
      * Checks if the command matches the one that was executed.
      *
-     * @param event the event that was triggered
+     * @param event         the event that was triggered
+     * @param onlineProfile the profile of the player that executed the command
      */
     @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onCommand(final PlayerCommandPreprocessEvent event) {
-        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
+    public void onCommand(final PlayerCommandPreprocessEvent event, final OnlineProfile onlineProfile) {
         if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
             qeHandler.handle(() -> {
                 final String replaceCommand = command.getValue(onlineProfile);

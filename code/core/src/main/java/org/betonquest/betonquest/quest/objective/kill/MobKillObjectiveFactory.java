@@ -1,10 +1,12 @@
 package org.betonquest.betonquest.quest.objective.kill;
 
 import org.betonquest.betonquest.api.DefaultObjective;
+import org.betonquest.betonquest.api.MobKillNotifier.MobKilledEvent;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.entity.EntityType;
 
 import java.util.List;
@@ -21,11 +23,13 @@ public class MobKillObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<List<EntityType>> entities = instruction.enumeration(EntityType.class).list().get();
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get();
         final Argument<String> name = instruction.string().get("name").orElse(null);
         final Argument<String> marked = instruction.packageIdentifier().get("marked").orElse(null);
-        return new MobKillObjective(instruction, targetAmount, entities, name, marked);
+        final MobKillObjective objective = new MobKillObjective(instruction, targetAmount, entities, name, marked);
+        service.request(MobKilledEvent.class).handler(objective::onMobKill, MobKilledEvent::getProfile).subscribe(true);
+        return objective;
     }
 }

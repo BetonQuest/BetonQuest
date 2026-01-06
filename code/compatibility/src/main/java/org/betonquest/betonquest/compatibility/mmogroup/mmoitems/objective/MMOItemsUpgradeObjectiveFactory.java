@@ -1,10 +1,12 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmoitems.objective;
 
+import net.Indyuce.mmoitems.api.event.item.UpgradeItemEvent;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 
 /**
  * Factory for creating {@link MMOItemsUpgradeObjective} instances from {@link Instruction}s.
@@ -18,9 +20,11 @@ public class MMOItemsUpgradeObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<String> itemType = instruction.string().get();
         final Argument<String> itemID = instruction.string().get();
-        return new MMOItemsUpgradeObjective(instruction, itemType, itemID);
+        final MMOItemsUpgradeObjective objective = new MMOItemsUpgradeObjective(instruction, itemType, itemID);
+        service.request(UpgradeItemEvent.class).handler(objective::onUpgradeItem, UpgradeItemEvent::getPlayer).subscribe(true);
+        return objective;
     }
 }

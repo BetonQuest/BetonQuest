@@ -7,9 +7,6 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.spigotmc.event.entity.EntityMountEvent;
 
 import java.util.Optional;
@@ -17,7 +14,7 @@ import java.util.Optional;
 /**
  * Requires the player to ride a vehicle.
  */
-public class RideObjective extends DefaultObjective implements Listener {
+public class RideObjective extends DefaultObjective {
 
     /**
      * The type of vehicle that is required or an empty optional if any vehicle is allowed.
@@ -39,15 +36,11 @@ public class RideObjective extends DefaultObjective implements Listener {
     /**
      * Check if the player is riding the right vehicle.
      *
-     * @param event the event to check
+     * @param event         the event to check
+     * @param onlineProfile the profile of the player that rides the vehicle
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onMount(final EntityMountEvent event) {
-        if (!(event.getEntity() instanceof final Player player)) {
-            return;
-        }
+    public void onMount(final EntityMountEvent event, final OnlineProfile onlineProfile) {
         qeHandler.handle(() -> {
-            final OnlineProfile onlineProfile = profileProvider.getProfile(player);
             final Optional<EntityType> entityType = vehicle.getValue(onlineProfile);
             final boolean matchType = entityType.map(type -> type == event.getMount().getType()).orElse(true);
             if (containsPlayer(onlineProfile) && matchType && checkConditions(onlineProfile)) {

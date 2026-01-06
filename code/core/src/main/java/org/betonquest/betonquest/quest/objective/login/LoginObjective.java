@@ -5,15 +5,12 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 /**
  * Requires the player to join the server.
  */
-public class LoginObjective extends DefaultObjective implements Listener {
+public class LoginObjective extends DefaultObjective {
 
     /**
      * Constructor for the LoginObjective.
@@ -28,11 +25,10 @@ public class LoginObjective extends DefaultObjective implements Listener {
     /**
      * Check if the player has joined the server.
      *
-     * @param event the event that triggers when the player joins
+     * @param event         the event that triggers when the player joins
+     * @param onlineProfile the profile of the player that joined
      */
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onJoin(final PlayerJoinEvent event) {
-        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
+    public void onJoin(final PlayerJoinEvent event, final OnlineProfile onlineProfile) {
         if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
             completeObjective(onlineProfile);
         }

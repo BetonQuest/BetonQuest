@@ -5,15 +5,12 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 /**
  * Requires the player to leave the server.
  */
-public class LogoutObjective extends DefaultObjective implements Listener {
+public class LogoutObjective extends DefaultObjective {
 
     /**
      * Constructor for the LogoutObjective.
@@ -28,11 +25,10 @@ public class LogoutObjective extends DefaultObjective implements Listener {
     /**
      * Check if the player has left the server.
      *
-     * @param event the event that triggered this method
+     * @param event         the event that triggered this method
+     * @param onlineProfile the profile of the player that left
      */
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onQuit(final PlayerQuitEvent event) {
-        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
+    public void onQuit(final PlayerQuitEvent event, final OnlineProfile onlineProfile) {
         if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
             completeObjective(onlineProfile);
         }

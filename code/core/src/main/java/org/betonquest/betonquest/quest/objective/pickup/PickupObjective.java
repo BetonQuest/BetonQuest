@@ -6,9 +6,6 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -17,7 +14,7 @@ import java.util.List;
 /**
  * Represents an objective that is completed when a player picks up a specific item.
  */
-public class PickupObjective extends CountingObjective implements Listener {
+public class PickupObjective extends CountingObjective {
 
     /**
      * The target amount of items to be picked up.
@@ -41,22 +38,19 @@ public class PickupObjective extends CountingObjective implements Listener {
     /**
      * Handles when the player picks up an item.
      *
-     * @param event The event object.
+     * @param event         The event object.
+     * @param onlineProfile The profile of the player that picked up the item.
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onPickup(final EntityPickupItemEvent event) {
-        if (event.getEntity() instanceof final Player player) {
-            final OnlineProfile onlineProfile = profileProvider.getProfile(player);
-            qeHandler.handle(() -> {
-                if (containsPlayer(onlineProfile)
-                        && isValidItem(onlineProfile, event.getItem().getItemStack())
-                        && checkConditions(onlineProfile)) {
-                    final ItemStack pickupItem = event.getItem().getItemStack();
-                    getCountingData(onlineProfile).progress(pickupItem.getAmount());
-                    completeIfDoneOrNotify(onlineProfile);
-                }
-            });
-        }
+    public void onPickup(final EntityPickupItemEvent event, final OnlineProfile onlineProfile) {
+        qeHandler.handle(() -> {
+            if (containsPlayer(onlineProfile)
+                    && isValidItem(onlineProfile, event.getItem().getItemStack())
+                    && checkConditions(onlineProfile)) {
+                final ItemStack pickupItem = event.getItem().getItemStack();
+                getCountingData(onlineProfile).progress(pickupItem.getAmount());
+                completeIfDoneOrNotify(onlineProfile);
+            }
+        });
     }
 
     private boolean isValidItem(final OnlineProfile onlineProfile, final ItemStack itemStack) throws QuestException {

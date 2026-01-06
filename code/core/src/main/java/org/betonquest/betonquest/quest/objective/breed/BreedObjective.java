@@ -6,15 +6,12 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityBreedEvent;
 
 /**
  * Requires the player to breed a specific type of animal.
  */
-public class BreedObjective extends CountingObjective implements Listener {
+public class BreedObjective extends CountingObjective {
 
     /**
      * The type of animal to breed.
@@ -37,17 +34,14 @@ public class BreedObjective extends CountingObjective implements Listener {
     /**
      * Check if the player is breeding the right type of animal.
      *
-     * @param event the event that triggered the breeding
+     * @param event         the event that triggered the breeding
+     * @param onlineProfile the profile of the player that breeds the animal
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onBreeding(final EntityBreedEvent event) {
+    public void onBreeding(final EntityBreedEvent event, final OnlineProfile onlineProfile) {
         qeHandler.handle(() -> {
-            if (event.getBreeder() instanceof Player) {
-                final OnlineProfile onlineProfile = profileProvider.getProfile((Player) event.getBreeder());
-                if (event.getEntityType() == type.getValue(onlineProfile) && containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
-                    getCountingData(onlineProfile).progress();
-                    completeIfDoneOrNotify(onlineProfile);
-                }
+            if (event.getEntityType() == type.getValue(onlineProfile) && containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
+                getCountingData(onlineProfile).progress();
+                completeIfDoneOrNotify(onlineProfile);
             }
         });
     }

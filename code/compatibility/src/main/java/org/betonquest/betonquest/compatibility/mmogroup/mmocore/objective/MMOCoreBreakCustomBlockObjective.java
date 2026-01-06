@@ -10,14 +10,12 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * An objective that listens for the player breaking a custom block.
  */
-public class MMOCoreBreakCustomBlockObjective extends CountingObjective implements Listener {
+public class MMOCoreBreakCustomBlockObjective extends CountingObjective {
 
     /**
      * The ID of the block to be broken.
@@ -40,11 +38,10 @@ public class MMOCoreBreakCustomBlockObjective extends CountingObjective implemen
     /**
      * Listens for the player breaking a custom block.
      *
-     * @param event the event
+     * @param event         the event
+     * @param onlineProfile the player
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onBlockBreak(final CustomBlockMineEvent event) {
-        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
+    public void onBlockBreak(final CustomBlockMineEvent event, final OnlineProfile onlineProfile) {
         if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
             final String blockId = getBlockId(event.getBlockInfo().getBlock());
             qeHandler.handle(() -> {

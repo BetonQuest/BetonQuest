@@ -8,15 +8,13 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.DyeColor;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Sheep;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Requires the player to shear a sheep.
  */
-public class ShearObjective extends CountingObjective implements Listener {
+public class ShearObjective extends CountingObjective {
 
     /**
      * The color of the sheep to shear.
@@ -49,14 +47,13 @@ public class ShearObjective extends CountingObjective implements Listener {
     /**
      * Check if the player sheared the right sheep.
      *
-     * @param event the event that triggered when the player sheared the sheep
+     * @param event         the event that triggered when the player sheared the sheep
+     * @param onlineProfile the profile of the player that sheared the sheep
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onShear(final PlayerShearEntityEvent event) {
+    public void onShear(final PlayerShearEntityEvent event, final OnlineProfile onlineProfile) {
         if (event.getEntity().getType() != EntityType.SHEEP) {
             return;
         }
-        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         qeHandler.handle(() -> {
             if (containsPlayer(onlineProfile)
                     && (name == null || name.getValue(onlineProfile).equals(event.getEntity().getCustomName()))

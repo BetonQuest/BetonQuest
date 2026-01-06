@@ -7,6 +7,10 @@ import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +28,7 @@ public class PasswordObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final String pattern = instruction.string().get().getValue(null);
         final FlagArgument<Pattern> regex = instruction.bool()
                 .map(ignCase -> ignCase
@@ -34,6 +38,11 @@ public class PasswordObjectiveFactory implements ObjectiveFactory {
         final String resolvedPrefix = prefix == null ? null : prefix.getValue(null);
         final String passwordPrefix = resolvedPrefix == null || resolvedPrefix.isEmpty() ? resolvedPrefix : resolvedPrefix + ": ";
         final Argument<List<EventID>> failEvents = instruction.parse(EventID::new).list().get("fail", Collections.emptyList());
-        return new PasswordObjective(instruction, regex, passwordPrefix, failEvents);
+        final PasswordObjective objective = new PasswordObjective(instruction, regex, passwordPrefix, failEvents);
+        service.request(AsyncPlayerChatEvent.class).priority(EventPriority.LOW)
+                .handler(objective::onChat, AsyncPlayerChatEvent::getPlayer).subscribe(true);
+        service.request(PlayerCommandPreprocessEvent.class).priority(EventPriority.LOW)
+                .handler(objective::onCommand, PlayerCommandPreprocessEvent::getPlayer).subscribe(true);
+        return objective;
     }
 }

@@ -8,12 +8,15 @@ import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.quest.condition.chest.ChestItemCondition;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.betonquest.betonquest.quest.event.chest.ChestTakeEvent;
 import org.bukkit.Location;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 
 import java.util.List;
 
@@ -44,7 +47,7 @@ public class ChestPutObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<Location> loc = instruction.location().get();
         final Argument<List<ItemWrapper>> items = instruction.item().list().get();
         final boolean multipleAccess = instruction.bool().get("multipleaccess", false).getValue(null);
@@ -55,7 +58,10 @@ public class ChestPutObjectiveFactory implements ObjectiveFactory {
         final BetonQuestLogger log = loggerFactory.create(ChestPutObjective.class);
         final IngameNotificationSender occupiedSender = new IngameNotificationSender(log, pluginMessage, instruction.getPackage(),
                 instruction.getID().getFull(), NotificationLevel.INFO, "chest_occupied");
-        return new ChestPutObjective(instruction, chestItemCondition, chestTakeEvent, loc, occupiedSender,
-                multipleAccess);
+        final ChestPutObjective objective = new ChestPutObjective(instruction, chestItemCondition, chestTakeEvent,
+                loc, occupiedSender, multipleAccess);
+        service.request(InventoryOpenEvent.class).handler(objective::onChestOpen, InventoryOpenEvent::getPlayer).subscribe(false);
+        service.request(InventoryCloseEvent.class).handler(objective::onChestClose, InventoryCloseEvent::getPlayer).subscribe(true);
+        return objective;
     }
 }

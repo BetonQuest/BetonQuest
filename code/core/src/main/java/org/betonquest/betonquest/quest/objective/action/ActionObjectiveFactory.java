@@ -7,7 +7,10 @@ import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.Location;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
 import java.util.Optional;
@@ -29,7 +32,7 @@ public class ActionObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<Click> action = instruction.enumeration(Click.class).get();
         final Argument<Optional<BlockSelector>> selector = instruction.blockSelector()
                 .prefilterOptional(ANY, null).get();
@@ -42,6 +45,9 @@ public class ActionObjectiveFactory implements ObjectiveFactory {
                 .prefilterOptional(ANY, null)
                 .get("hand").orElse(null);
         final EquipmentSlot slot = hand == null ? null : hand.getValue(null).orElse(null);
-        return new ActionObjective(instruction, action, selector, exactMatch, loc, range, cancel, slot);
+        final ActionObjective objective = new ActionObjective(instruction, action, selector, exactMatch, loc, range, cancel, slot);
+        service.request(PlayerInteractEvent.class).priority(EventPriority.LOWEST)
+                .handler(objective::onInteract, PlayerInteractEvent::getPlayer).subscribe(false);
+        return objective;
     }
 }

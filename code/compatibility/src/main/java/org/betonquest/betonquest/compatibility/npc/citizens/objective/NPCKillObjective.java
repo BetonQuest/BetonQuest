@@ -9,13 +9,11 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
 /**
  * Player has to kill an NPC.
  */
-public class NPCKillObjective extends CountingObjective implements Listener {
+public class NPCKillObjective extends CountingObjective {
 
     /**
      * Source Registry of NPCs to use.
@@ -46,15 +44,14 @@ public class NPCKillObjective extends CountingObjective implements Listener {
     /**
      * Handles the NPC death.
      *
-     * @param event the event to listen
+     * @param event   the event to listen
+     * @param profile the player profile
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onNpcKill(final MobKilledEvent event) {
+    public void onNpcKill(final MobKilledEvent event, final Profile profile) {
         final NPC npc = registry.getNPC(event.getEntity());
         if (npc == null) {
             return;
         }
-        final Profile profile = event.getProfile();
         qeHandler.handle(() -> {
             final Instruction npcInstruction = npcID.getValue(profile).getInstruction();
             final String argument = npcInstruction.getPart(1);

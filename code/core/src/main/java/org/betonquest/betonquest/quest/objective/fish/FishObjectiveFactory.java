@@ -6,7 +6,10 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.Location;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.player.PlayerFishEvent;
 
 /**
  * Factory for creating {@link FishObjective} instances from {@link Instruction}s.
@@ -20,11 +23,14 @@ public class FishObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<ItemWrapper> item = instruction.item().get();
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get();
         final Argument<Location> hookTargetLocation = instruction.location().get("hookLocation").orElse(null);
         final Argument<Number> range = instruction.number().get("range").orElse(null);
-        return new FishObjective(instruction, targetAmount, item, hookTargetLocation, range);
+        final FishObjective objective = new FishObjective(instruction, targetAmount, item, hookTargetLocation, range);
+        service.request(PlayerFishEvent.class).priority(EventPriority.MONITOR)
+                .handler(objective::onFishCatch, PlayerFishEvent::getPlayer).subscribe(true);
+        return objective;
     }
 }

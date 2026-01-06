@@ -1,10 +1,12 @@
 package org.betonquest.betonquest.compatibility.traincarts.objectives;
 
+import com.bergerkiller.bukkit.tc.events.seat.MemberSeatExitEvent;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 
 /**
  * Factory for creating {@link TrainCartsExitObjective} instances from {@link Instruction}s.
@@ -18,8 +20,10 @@ public class TrainCartsExitObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<String> name = instruction.string().get("name", "");
-        return new TrainCartsExitObjective(instruction, name);
+        final TrainCartsExitObjective objective = new TrainCartsExitObjective(instruction, name);
+        service.request(MemberSeatExitEvent.class).handler(objective::onMemberSeatExit, MemberSeatExitEvent::getEntity).subscribe(false);
+        return objective;
     }
 }

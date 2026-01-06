@@ -15,17 +15,15 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.quest.condition.number.Operation;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
 /**
- * Player needs to get a certain amount of points.
+ * Player needs to get a certain number of points.
  */
-public class PointObjective extends DefaultObjective implements Listener {
+public class PointObjective extends DefaultObjective {
 
     /**
      * The Factory for the Point Data.
@@ -109,16 +107,16 @@ public class PointObjective extends DefaultObjective implements Listener {
     /**
      * Handles point updates.
      *
-     * @param event the event to listen
+     * @param event   the event to listen
+     * @param profile the profile which received the update
      */
-    @EventHandler
-    public void onPointUpdate(final PlayerUpdatePointEvent event) {
-        if (!containsPlayer(event.getProfile())) {
+    public void onPointUpdate(final PlayerUpdatePointEvent event, final Profile profile) {
+        if (!containsPlayer(profile)) {
             return;
         }
         qeHandler.handle(() -> {
-            if (event.getCategory().equals(category.getValue(event.getProfile()))) {
-                checkProgress(event.getProfile(), event.getNewCount());
+            if (event.getCategory().equals(category.getValue(profile))) {
+                checkProgress(profile, event.getNewCount());
             }
         });
     }
@@ -126,18 +124,18 @@ public class PointObjective extends DefaultObjective implements Listener {
     /**
      * Checks for objective completion when it is started.
      *
-     * @param event the event to listen
+     * @param event   the event to listen
+     * @param profile the profile which started the objective
      */
-    @EventHandler
-    public void onStart(final PlayerObjectiveChangeEvent event) {
-        if (event.getState() != ObjectiveState.ACTIVE || !containsPlayer(event.getProfile())) {
+    public void onStart(final PlayerObjectiveChangeEvent event, final Profile profile) {
+        if (event.getState() != ObjectiveState.ACTIVE || !containsPlayer(profile)) {
             return;
         }
         qeHandler.handle(() -> {
-            final PlayerData playerData = playerDataStorage.get(event.getProfile());
-            final Optional<Integer> points = playerData.getPointsFromCategory(category.getValue(event.getProfile()));
+            final PlayerData playerData = playerDataStorage.get(profile);
+            final Optional<Integer> points = playerData.getPointsFromCategory(category.getValue(profile));
             if (points.isPresent()) {
-                checkProgress(event.getProfile(), points.get());
+                checkProgress(profile, points.get());
             }
         });
     }

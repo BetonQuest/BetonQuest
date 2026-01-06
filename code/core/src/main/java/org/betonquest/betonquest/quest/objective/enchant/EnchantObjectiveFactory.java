@@ -6,6 +6,8 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.bukkit.event.enchantment.EnchantItemEvent;
 
 import java.util.List;
 
@@ -26,13 +28,15 @@ public class EnchantObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get("amount", 1);
         final Argument<ItemWrapper> item = instruction.item().get();
         final Argument<List<EnchantObjective.EnchantmentData>> desiredEnchantments =
                 instruction.parse(EnchantObjective.EnchantmentData::convert).list().notEmpty().get();
         final boolean requireOne = instruction.parse(JUST_ONE_ENCHANT::equalsIgnoreCase)
                 .get("requirementMode", false).getValue(null);
-        return new EnchantObjective(instruction, targetAmount, item, desiredEnchantments, requireOne);
+        final EnchantObjective objective = new EnchantObjective(instruction, targetAmount, item, desiredEnchantments, requireOne);
+        service.request(EnchantItemEvent.class).handler(objective::onEnchant, EnchantItemEvent::getEnchanter).subscribe(true);
+        return objective;
     }
 }

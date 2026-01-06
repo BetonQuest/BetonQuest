@@ -1,11 +1,10 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmocore;
 
 import org.betonquest.betonquest.api.BetonQuestApi;
-import org.betonquest.betonquest.api.DefaultObjective;
-import org.betonquest.betonquest.api.kernel.FeatureTypeRegistry;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.api.quest.condition.ConditionRegistry;
 import org.betonquest.betonquest.api.quest.event.EventRegistry;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveRegistry;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.condition.MMOCoreAttributeConditionFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.condition.MMOCoreClassConditionFactory;
@@ -39,7 +38,7 @@ public class MMOCoreIntegrator implements Integrator {
         conditionRegistry.register("mmoattribute", new MMOCoreAttributeConditionFactory());
         conditionRegistry.register("mmoprofession", new MMOCoreProfessionLevelConditionFactory());
 
-        final FeatureTypeRegistry<DefaultObjective> objectiveRegistry = questRegistries.objective();
+        final ObjectiveRegistry objectiveRegistry = questRegistries.objective();
         objectiveRegistry.register("mmoprofessionlevelup", new MMOCoreProfessionObjectiveFactory());
         objectiveRegistry.register("mmochangeclass", new MMOCoreChangeClassObjectiveFactory());
         objectiveRegistry.register("mmocorebreakblock", new MMOCoreBreakCustomBlockObjectiveFactory());

@@ -2,11 +2,13 @@ package org.betonquest.betonquest.compatibility.npc.citizens.objective;
 
 import net.citizensnpcs.api.npc.NPCRegistry;
 import org.betonquest.betonquest.api.DefaultObjective;
+import org.betonquest.betonquest.api.MobKillNotifier.MobKilledEvent;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.compatibility.npc.citizens.CitizensArgument;
 
 /**
@@ -29,9 +31,11 @@ public class NPCKillObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<NpcID> npcID = instruction.parse(CitizensArgument.CITIZENS_ID).get();
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get("amount", 1);
-        return new NPCKillObjective(instruction, registry, targetAmount, npcID);
+        final NPCKillObjective objective = new NPCKillObjective(instruction, registry, targetAmount, npcID);
+        service.request(MobKilledEvent.class).handler(objective::onNpcKill, MobKilledEvent::getProfile).subscribe(true);
+        return objective;
     }
 }

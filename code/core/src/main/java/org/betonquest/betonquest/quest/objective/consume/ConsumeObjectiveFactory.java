@@ -6,6 +6,8 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 
 /**
  * Factory for creating {@link ConsumeObjective} instances from {@link Instruction}s.
@@ -24,9 +26,12 @@ public class ConsumeObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public DefaultObjective parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<ItemWrapper> item = instruction.item().get();
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get(AMOUNT_ARGUMENT, 1);
-        return new ConsumeObjective(instruction, targetAmount, item);
+        final ConsumeObjective objective = new ConsumeObjective(instruction, targetAmount, item);
+        service.request(PlayerItemConsumeEvent.class).handler(objective::onConsume, PlayerItemConsumeEvent::getPlayer)
+                .subscribe(true);
+        return objective;
     }
 }

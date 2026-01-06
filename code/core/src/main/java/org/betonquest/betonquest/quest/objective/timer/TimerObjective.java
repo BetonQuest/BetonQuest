@@ -11,8 +11,6 @@ import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.bukkit.Bukkit;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.List;
@@ -21,7 +19,7 @@ import java.util.Locale;
 /**
  * Timer objective that tracks the ingame time when the conditions are fulfilled.
  */
-public class TimerObjective extends CountingObjective implements Listener, Runnable {
+public class TimerObjective extends CountingObjective implements Runnable {
 
     /**
      * Quest Type API.
@@ -98,14 +96,14 @@ public class TimerObjective extends CountingObjective implements Listener, Runna
     /**
      * Checks if the objective gets completed and runs the done events.
      *
-     * @param event The event to check.
+     * @param event   The event to check.
+     * @param profile The profile of the player that completed the objective.
      */
-    @EventHandler
-    public void onPlayerObjectiveChange(final PlayerObjectiveChangeEvent event) {
+    public void onPlayerObjectiveChange(final PlayerObjectiveChangeEvent event, final Profile profile) {
         qeHandler.handle(() -> {
-            if (event.getObjective().equals(this) && containsPlayer(event.getProfile())
+            if (event.getObjective().equals(this) && containsPlayer(profile)
                     && event.getPreviousState() == ObjectiveState.ACTIVE && event.getState() == ObjectiveState.COMPLETED) {
-                questTypeApi.events(event.getProfile(), doneEvents.getValue(event.getProfile()));
+                questTypeApi.events(profile, doneEvents.getValue(profile));
             }
         });
     }

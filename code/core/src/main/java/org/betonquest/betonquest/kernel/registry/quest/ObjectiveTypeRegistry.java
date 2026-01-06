@@ -1,13 +1,14 @@
 package org.betonquest.betonquest.kernel.registry.quest;
 
-import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.kernel.registry.FactoryTypeRegistry;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveRegistry;
+import org.betonquest.betonquest.kernel.registry.FactoryRegistry;
 
 /**
  * Stores the Objectives that can be used in BetonQuest.
  */
-public class ObjectiveTypeRegistry extends FactoryTypeRegistry<DefaultObjective> {
+public class ObjectiveTypeRegistry extends FactoryRegistry<ObjectiveFactory> implements ObjectiveRegistry {
 
     /**
      * Create a new Objective registry.

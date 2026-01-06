@@ -7,8 +7,6 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,7 +15,7 @@ import java.util.List;
 /**
  * Requires the player to kill a target player.
  */
-public class KillPlayerObjective extends CountingObjective implements Listener {
+public class KillPlayerObjective extends CountingObjective {
 
     /**
      * The name of the victim to kill.
@@ -49,23 +47,20 @@ public class KillPlayerObjective extends CountingObjective implements Listener {
     /**
      * Check if the player is the killer of the victim.
      *
-     * @param event the PlayerDeathEvent
+     * @param event  the PlayerDeathEvent
+     * @param killer the profile of the killer
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onKill(final PlayerDeathEvent event) {
-        if (event.getEntity().getKiller() != null) {
-            final OnlineProfile victim = profileProvider.getProfile(event.getEntity());
-            final OnlineProfile killer = profileProvider.getProfile(event.getEntity().getKiller());
-            qeHandler.handle(() -> {
-                if (containsPlayer(killer)
-                        && (name == null || event.getEntity().getName().equalsIgnoreCase(name.getValue(killer)))
-                        && BetonQuest.getInstance().getQuestTypeApi().conditions(victim, required.getValue(victim))
-                        && checkConditions(killer)) {
+    public void onKill(final PlayerDeathEvent event, final OnlineProfile killer) {
+        final OnlineProfile victim = profileProvider.getProfile(event.getEntity());
+        qeHandler.handle(() -> {
+            if (containsPlayer(killer)
+                    && (name == null || event.getEntity().getName().equalsIgnoreCase(name.getValue(killer)))
+                    && BetonQuest.getInstance().getQuestTypeApi().conditions(victim, required.getValue(victim))
+                    && checkConditions(killer)) {
 
-                    getCountingData(killer).progress();
-                    completeIfDoneOrNotify(killer);
-                }
-            });
-        }
+                getCountingData(killer).progress();
+                completeIfDoneOrNotify(killer);
+            }
+        });
     }
 }
