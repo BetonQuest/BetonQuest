@@ -27,7 +27,8 @@ public class MMOCoreBreakCustomBlockObjectiveFactory implements ObjectiveFactory
         }
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get();
         final MMOCoreBreakCustomBlockObjective objective = new MMOCoreBreakCustomBlockObjective(instruction, targetAmount, desiredBlockId);
-        service.request(CustomBlockMineEvent.class).handler(objective::onBlockBreak, CustomBlockMineEvent::getPlayer).subscribe(true);
+        service.request(CustomBlockMineEvent.class).onlineHandler(objective::onBlockBreak)
+                .player(CustomBlockMineEvent::getPlayer).subscribe(true);
         return objective;
     }
 }

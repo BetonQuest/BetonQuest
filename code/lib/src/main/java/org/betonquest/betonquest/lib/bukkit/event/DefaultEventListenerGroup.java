@@ -150,7 +150,11 @@ public class DefaultEventListenerGroup<T extends Event> implements EventListener
     public ProxyListener<T> createListener(final Plugin plugin, final Class<T> eventClass, final EventPriority priority) throws QuestException {
         final QuestExceptionHandler handler = new QuestExceptionHandler(LogSource.EMPTY, log, eventClass.getSimpleName(), priority.name());
         final RegisteredListener registeredListener = new RegisteredListener(NO_OP_LISTENER,
-                (l, e) -> handler.handle(() -> callEvent(eventClass.cast(e), priority)), priority, plugin, false);
+                (l, e) -> {
+                    if (eventClass.isInstance(e)) {
+                        handler.handle(() -> callEvent(eventClass.cast(e), priority));
+                    }
+                }, priority, plugin, false);
         return new DefaultProxyListener<>(eventClass, registeredListener);
     }
 }

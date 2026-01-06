@@ -34,8 +34,8 @@ public class CommandObjectiveFactory implements ObjectiveFactory {
         final Argument<List<EventID>> failEvents = instruction.parse(EventID::new)
                 .list().get("failEvents", Collections.emptyList());
         final CommandObjective objective = new CommandObjective(instruction, command, ignoreCase, exact, cancel, failEvents);
-        service.request(PlayerCommandPreprocessEvent.class).priority(EventPriority.LOWEST)
-                .handler(objective::onCommand, PlayerCommandPreprocessEvent::getPlayer).subscribe(false);
+        service.request(PlayerCommandPreprocessEvent.class).priority(EventPriority.LOWEST).onlineHandler(objective::onCommand)
+                .player(PlayerCommandPreprocessEvent::getPlayer).subscribe(false);
         return objective;
     }
 }

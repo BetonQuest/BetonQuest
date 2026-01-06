@@ -23,7 +23,7 @@ public class LogoutObjectiveFactory implements ObjectiveFactory {
     public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final LogoutObjective objective = new LogoutObjective(instruction);
         service.request(PlayerQuitEvent.class).priority(EventPriority.LOWEST)
-                .handler(objective::onQuit, PlayerQuitEvent::getPlayer).subscribe(true);
+                .onlineHandler(objective::onQuit).player(PlayerQuitEvent::getPlayer).subscribe(true);
         return objective;
     }
 }

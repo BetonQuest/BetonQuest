@@ -27,7 +27,8 @@ public class ArrowShootObjectiveFactory implements ObjectiveFactory {
         final Argument<Location> location = instruction.location().get();
         final Argument<Number> range = instruction.number().get();
         final ArrowShootObjective objective = new ArrowShootObjective(instruction, location, range);
-        service.request(ProjectileHitEvent.class).handler(objective::onArrowHit, this::fromEvent).subscribe(true);
+        service.request(ProjectileHitEvent.class).onlineHandler(objective::onArrowHit)
+                .player(this::fromEvent).subscribe(true);
         return objective;
     }
 

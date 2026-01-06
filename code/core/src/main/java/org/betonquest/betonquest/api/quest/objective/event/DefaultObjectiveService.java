@@ -3,7 +3,7 @@ package org.betonquest.betonquest.api.quest.objective.event;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.BukkitEventService;
 import org.betonquest.betonquest.api.bukkit.event.EventServiceSubscriber;
-import org.betonquest.betonquest.api.common.function.QuestFunction;
+import org.betonquest.betonquest.api.common.function.QuestBiFunction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.logger.LogSource;
@@ -18,7 +18,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * The default implementation of the {@link ObjectiveService}.
@@ -77,12 +76,12 @@ public class DefaultObjectiveService implements ObjectiveService {
 
     @Override
     public <T extends Event> void subscribe(final LogSource source, final Class<T> eventClass, final ProfileEventHandler<T> handler,
-                                            final QuestFunction<T, Optional<UUID>> playerUUIDExtractor,
+                                            final QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor,
                                             final EventPriority priority, final boolean ignoreCancelled) throws QuestException {
         if (!eventService.require(eventClass, priority)) {
             throw new QuestException("<%s> Could not subscribe to event '%s'".formatted(source.getSourcePath(), eventClass.getSimpleName()));
         }
-        final EventServiceSubscriber<T> subscriber = subOffline(handler, playerUUIDExtractor);
+        final EventServiceSubscriber<T> subscriber = subOffline(handler, profileExtractor);
         eventService.subscribe(eventClass, priority, ignoreCancelled, exceptionHandled(source, eventClass, subscriber));
         logger.debug(source, "Subscribed to event '" + eventClass.getSimpleName() + "' with priority '" + priority.name() + "' and ignoreCancelled '" + ignoreCancelled + "'");
     }
@@ -90,12 +89,12 @@ public class DefaultObjectiveService implements ObjectiveService {
     @Override
     public <T extends Event> void subscribe(final LogSource source, final Class<T> eventClass,
                                             final OnlineProfileEventHandler<T> handler,
-                                            final QuestFunction<T, Optional<UUID>> playerUUIDExtractor,
+                                            final QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor,
                                             final EventPriority priority, final boolean ignoreCancelled) throws QuestException {
         if (!eventService.require(eventClass, priority)) {
             throw new QuestException("<%s> Could not subscribe to event '%s'".formatted(source.getSourcePath(), eventClass.getSimpleName()));
         }
-        final EventServiceSubscriber<T> subscriber = subOline(handler, playerUUIDExtractor);
+        final EventServiceSubscriber<T> subscriber = subOline(handler, profileExtractor);
         eventService.subscribe(eventClass, priority, ignoreCancelled, exceptionHandled(source, eventClass, subscriber));
         logger.debug(source, "Subscribed to event '" + eventClass.getSimpleName() + "' with priority '" + priority.name() + "' and ignoreCancelled '" + ignoreCancelled + "'");
     }
@@ -111,9 +110,9 @@ public class DefaultObjectiveService implements ObjectiveService {
     }
 
     private <T extends Event> EventServiceSubscriber<T> subOline(final OnlineProfileEventHandler<T> handler,
-                                                                 final QuestFunction<T, Optional<UUID>> playerUUIDExtractor) {
+                                                                 final QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor) {
         return (event, prio) -> {
-            final Optional<Profile> profile = playerUUIDExtractor.apply(event).map(profileProvider::getProfile);
+            final Optional<Profile> profile = profileExtractor.apply(profileProvider, event);
             if (profile.isEmpty()) {
                 return;
             }
@@ -126,9 +125,9 @@ public class DefaultObjectiveService implements ObjectiveService {
     }
 
     private <T extends Event> EventServiceSubscriber<T> subOffline(final ProfileEventHandler<T> handler,
-                                                                   final QuestFunction<T, Optional<UUID>> playerUUIDExtractor) {
+                                                                   final QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor) {
         return (event, prio) -> {
-            final Optional<Profile> profile = playerUUIDExtractor.apply(event).map(profileProvider::getProfile);
+            final Optional<Profile> profile = profileExtractor.apply(profileProvider, event);
             if (profile.isPresent()) {
                 handler.handle(event, profile.get());
                 return;

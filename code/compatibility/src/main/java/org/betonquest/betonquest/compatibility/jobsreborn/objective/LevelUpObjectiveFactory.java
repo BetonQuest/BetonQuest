@@ -9,8 +9,6 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.compatibility.jobsreborn.JobParser;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Factory for creating {@link LevelUpObjective} instances from {@link Instruction}s.
@@ -27,12 +25,8 @@ public class LevelUpObjectiveFactory implements ObjectiveFactory {
     public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<Job> job = instruction.parse(JobParser.JOB).get();
         final LevelUpObjective objective = new LevelUpObjective(instruction, job);
-        service.request(JobsLevelUpEvent.class).handler(objective::onJobsLevelUpEvent, this::fromEvent).subscribe(true);
+        service.request(JobsLevelUpEvent.class).onlineHandler(objective::onJobsLevelUpEvent)
+                .player(event -> event.getPlayer().getPlayer()).subscribe(true);
         return objective;
-    }
-
-    @Nullable
-    private Player fromEvent(final JobsLevelUpEvent event) {
-        return event.getPlayer().getPlayer();
     }
 }

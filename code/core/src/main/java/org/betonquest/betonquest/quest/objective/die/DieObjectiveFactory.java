@@ -29,12 +29,12 @@ public class DieObjectiveFactory implements ObjectiveFactory {
         final FlagArgument<Boolean> cancel = instruction.bool().getFlag("cancel", true);
         final Argument<Location> location = instruction.location().get("respawn").orElse(null);
         final DieObjective objective = new DieObjective(instruction, cancel, location);
-        service.request(EntityDeathEvent.class).priority(EventPriority.MONITOR)
-                .handler(objective::onDeath, EntityDeathEvent::getEntity).subscribe(true);
-        service.request(PlayerRespawnEvent.class).priority(EventPriority.MONITOR)
-                .handler(objective::onRespawn, PlayerRespawnEvent::getPlayer).subscribe(true);
-        service.request(EntityDamageEvent.class).priority(EventPriority.HIGH)
-                .handler(objective::onLastDamage, EntityDamageEvent::getEntity).subscribe(true);
+        service.request(EntityDeathEvent.class).priority(EventPriority.MONITOR).onlineHandler(objective::onDeath)
+                .entity(EntityDeathEvent::getEntity).subscribe(true);
+        service.request(PlayerRespawnEvent.class).priority(EventPriority.MONITOR).onlineHandler(objective::onRespawn)
+                .player(PlayerRespawnEvent::getPlayer).subscribe(true);
+        service.request(EntityDamageEvent.class).priority(EventPriority.HIGH).onlineHandler(objective::onLastDamage)
+                .entity(EntityDamageEvent::getEntity).subscribe(true);
         return objective;
     }
 }

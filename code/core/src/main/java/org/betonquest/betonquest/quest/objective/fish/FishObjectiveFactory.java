@@ -29,8 +29,8 @@ public class FishObjectiveFactory implements ObjectiveFactory {
         final Argument<Location> hookTargetLocation = instruction.location().get("hookLocation").orElse(null);
         final Argument<Number> range = instruction.number().get("range").orElse(null);
         final FishObjective objective = new FishObjective(instruction, targetAmount, item, hookTargetLocation, range);
-        service.request(PlayerFishEvent.class).priority(EventPriority.MONITOR)
-                .handler(objective::onFishCatch, PlayerFishEvent::getPlayer).subscribe(true);
+        service.request(PlayerFishEvent.class).priority(EventPriority.MONITOR).onlineHandler(objective::onFishCatch)
+                .player(PlayerFishEvent::getPlayer).subscribe(true);
         return objective;
     }
 }

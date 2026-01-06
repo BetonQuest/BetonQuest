@@ -35,7 +35,8 @@ public class NPCKillObjectiveFactory implements ObjectiveFactory {
         final Argument<NpcID> npcID = instruction.parse(CitizensArgument.CITIZENS_ID).get();
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get("amount", 1);
         final NPCKillObjective objective = new NPCKillObjective(instruction, registry, targetAmount, npcID);
-        service.request(MobKilledEvent.class).handler(objective::onNpcKill, MobKilledEvent::getProfile).subscribe(true);
+        service.request(MobKilledEvent.class).handler(objective::onNpcKill)
+                .profile(MobKilledEvent::getProfile).subscribe(true);
         return objective;
     }
 }

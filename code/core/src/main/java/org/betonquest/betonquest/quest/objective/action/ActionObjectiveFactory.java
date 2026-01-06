@@ -46,8 +46,8 @@ public class ActionObjectiveFactory implements ObjectiveFactory {
                 .get("hand").orElse(null);
         final EquipmentSlot slot = hand == null ? null : hand.getValue(null).orElse(null);
         final ActionObjective objective = new ActionObjective(instruction, action, selector, exactMatch, loc, range, cancel, slot);
-        service.request(PlayerInteractEvent.class).priority(EventPriority.LOWEST)
-                .handler(objective::onInteract, PlayerInteractEvent::getPlayer).subscribe(false);
+        service.request(PlayerInteractEvent.class).priority(EventPriority.LOWEST).onlineHandler(objective::onInteract)
+                .player(PlayerInteractEvent::getPlayer).subscribe(false);
         return objective;
     }
 }

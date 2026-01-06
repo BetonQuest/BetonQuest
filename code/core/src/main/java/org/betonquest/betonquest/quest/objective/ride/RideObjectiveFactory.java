@@ -32,8 +32,8 @@ public class RideObjectiveFactory implements ObjectiveFactory {
         final Argument<Optional<EntityType>> vehicle = instruction.enumeration(EntityType.class)
                 .prefilterOptional(ANY_PROPERTY, null).get();
         final RideObjective objective = new RideObjective(instruction, vehicle);
-        service.request(EntityMountEvent.class)
-                .handler(objective::onMount, EntityMountEvent::getEntity).subscribe(true);
+        service.request(EntityMountEvent.class).onlineHandler(objective::onMount)
+                .entity(EntityMountEvent::getEntity).subscribe(true);
         return objective;
     }
 }

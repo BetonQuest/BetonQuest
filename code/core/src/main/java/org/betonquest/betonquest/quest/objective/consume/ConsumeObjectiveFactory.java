@@ -30,8 +30,8 @@ public class ConsumeObjectiveFactory implements ObjectiveFactory {
         final Argument<ItemWrapper> item = instruction.item().get();
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get(AMOUNT_ARGUMENT, 1);
         final ConsumeObjective objective = new ConsumeObjective(instruction, targetAmount, item);
-        service.request(PlayerItemConsumeEvent.class).handler(objective::onConsume, PlayerItemConsumeEvent::getPlayer)
-                .subscribe(true);
+        service.request(PlayerItemConsumeEvent.class).onlineHandler(objective::onConsume)
+                .player(PlayerItemConsumeEvent::getPlayer).subscribe(true);
         return objective;
     }
 }
