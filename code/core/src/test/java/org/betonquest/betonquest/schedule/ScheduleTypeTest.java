@@ -12,7 +12,7 @@ import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.ScheduleID;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
-import org.betonquest.betonquest.schedule.EventScheduling.ScheduleType;
+import org.betonquest.betonquest.schedule.ActionScheduling.ScheduleType;
 import org.betonquest.betonquest.schedule.impl.BaseScheduleFactory;
 import org.bukkit.configuration.ConfigurationOptions;
 import org.bukkit.configuration.ConfigurationSection;
@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Tests for {@link EventScheduling.ScheduleType}.
+ * Tests for {@link ActionScheduling.ScheduleType}.
  */
 @ExtendWith({MockitoExtension.class, BetonQuestLoggerService.class})
 class ScheduleTypeTest {
