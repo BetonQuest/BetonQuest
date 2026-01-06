@@ -8,7 +8,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import java.util.List;
 
 /**
- * Replaces the legacy `*` with the {@link org.betonquest.betonquest.quest.event.point.PointType#MULTIPLY}.
+ * Replaces the legacy `*` with the {@link org.betonquest.betonquest.quest.action.point.PointType#MULTIPLY}.
  */
 public class RemoveLegacyPointModification implements QuestMigration {
 

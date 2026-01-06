@@ -8,8 +8,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.quest.event.IngameNotificationSender;
-import org.betonquest.betonquest.quest.event.NotificationLevel;
+import org.betonquest.betonquest.quest.action.IngameNotificationSender;
+import org.betonquest.betonquest.quest.action.NotificationLevel;
 
 /**
  * Factory for creating {@link ExperienceObjective} instances from {@link Instruction}s.
