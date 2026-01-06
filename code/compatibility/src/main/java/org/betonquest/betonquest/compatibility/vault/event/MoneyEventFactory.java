@@ -11,8 +11,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.quest.event.IngameNotificationSender;
-import org.betonquest.betonquest.quest.event.NotificationLevel;
+import org.betonquest.betonquest.quest.action.IngameNotificationSender;
+import org.betonquest.betonquest.quest.action.NotificationLevel;
 
 /**
  * Factory to create {@link MoneyEvent}s from {@link Instruction}s.
