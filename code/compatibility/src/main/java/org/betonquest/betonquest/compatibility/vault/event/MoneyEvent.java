@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
-import org.betonquest.betonquest.quest.event.IngameNotificationSender;
+import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.Nullable;
 

@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.quest.event.IngameNotificationSender;
+import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerExpChangeEvent;
