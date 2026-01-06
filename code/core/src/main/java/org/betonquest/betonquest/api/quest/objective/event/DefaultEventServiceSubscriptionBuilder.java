@@ -198,9 +198,11 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
         }
         if (onlineProfileHandler != null) {
             eventService.subscribe(logSource, eventClass, onlineProfileHandler, profileExtractor, eventPriority, ignoreCancelled);
+            return;
         }
         if (profileHandler != null) {
             eventService.subscribe(logSource, eventClass, profileHandler, profileExtractor, eventPriority, ignoreCancelled);
+            return;
         }
         throw new IllegalStateException("No valid handler specified!");
     }
