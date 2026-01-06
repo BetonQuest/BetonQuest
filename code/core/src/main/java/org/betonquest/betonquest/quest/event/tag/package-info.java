@@ -1,4 +1,4 @@
 /**
- * {@link org.betonquest.betonquest.api.quest.event Event} implementation for modifying tags.
+ * {@link org.betonquest.betonquest.api.quest.action Action} implementation for modifying tags.
  */
 package org.betonquest.betonquest.quest.event.tag;

@@ -27,7 +27,7 @@ public class EventAdapterFactory extends QuestAdapterFactory<PlayerAction, Playe
 
     /**
      * Create a new adapter factory from {@link org.betonquest.betonquest.api.quest QuestFactories} for
-     * {@link org.betonquest.betonquest.api.quest.event Actions}.
+     * {@link org.betonquest.betonquest.api.quest.action Actions}.
      *
      * @param loggerFactory     the logger factory to create a new custom logger
      * @param questTypeApi      the QuestTypeAPi
