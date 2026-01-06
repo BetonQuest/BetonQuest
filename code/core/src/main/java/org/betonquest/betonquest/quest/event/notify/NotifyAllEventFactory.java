@@ -5,10 +5,10 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.quest.event.CallPlayerlessEventAdapter;
@@ -17,7 +17,7 @@ import org.betonquest.betonquest.quest.event.OnlineProfileGroupPlayerlessEventAd
 /**
  * Factory for the notify all event.
  */
-public class NotifyAllEventFactory extends NotifyEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+public class NotifyAllEventFactory extends NotifyEventFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
      * The profile provider instance.
@@ -41,12 +41,12 @@ public class NotifyAllEventFactory extends NotifyEventFactory implements PlayerE
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         return new CallPlayerlessEventAdapter(parsePlayerless(instruction));
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
         return new OnlineProfileGroupPlayerlessEventAdapter(profileProvider::getOnlineProfiles, super.parsePlayer(instruction));
     }
 }

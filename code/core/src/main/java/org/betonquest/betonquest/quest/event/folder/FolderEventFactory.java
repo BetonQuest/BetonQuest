@@ -8,12 +8,12 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.action.ActionID;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.Collections;
@@ -24,7 +24,7 @@ import java.util.Random;
 /**
  * Factory to create {@link FolderEvent} instances.
  */
-public class FolderEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+public class FolderEventFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
      * The BetonQuest instance.
@@ -63,16 +63,16 @@ public class FolderEventFactory implements PlayerEventFactory, PlayerlessEventFa
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         return createFolderEvent(instruction);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
         return createFolderEvent(instruction);
     }
 
-    private NullableEventAdapter createFolderEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createFolderEvent(final Instruction instruction) throws QuestException {
         final Argument<List<ActionID>> events = instruction.parse(ActionID::new).list().get();
         final Argument<Number> delay = instruction.number().get("delay").orElse(null);
         final Argument<Number> period = instruction.number().get("period").orElse(null);
@@ -81,7 +81,7 @@ public class FolderEventFactory implements PlayerEventFactory, PlayerlessEventFa
         final FlagArgument<Boolean> cancelOnLogout = instruction.bool().getFlag("cancelOnLogout", true);
         final Argument<List<ConditionID>> cancelConditions = instruction.parse(ConditionID::new)
                 .list().get("cancelConditions", Collections.emptyList());
-        return new NullableEventAdapter(new FolderEvent(betonQuest, loggerFactory.create(FolderEvent.class), pluginManager,
+        return new NullableActionAdapter(new FolderEvent(betonQuest, loggerFactory.create(FolderEvent.class), pluginManager,
                 events,
                 questTypeApi, new Random(), delay, period, random, timeUnit, cancelOnLogout, cancelConditions));
     }

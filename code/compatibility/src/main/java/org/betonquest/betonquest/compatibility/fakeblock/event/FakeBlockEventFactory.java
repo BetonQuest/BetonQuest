@@ -6,8 +6,8 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.ValueValidator;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.Locale;
 /**
  * Factory to create FakeBlock events from {@link Instruction}s.
  */
-public class FakeBlockEventFactory implements PlayerEventFactory {
+public class FakeBlockEventFactory implements PlayerActionFactory {
 
     /**
      * GroupService to search for existing Groups from FakeBlock.
@@ -41,11 +41,11 @@ public class FakeBlockEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         return getFakeBlockEvent(instruction);
     }
 
-    private PlayerEvent getFakeBlockEvent(final Instruction instruction) throws QuestException {
+    private PlayerAction getFakeBlockEvent(final Instruction instruction) throws QuestException {
         final String action = instruction.string().get().getValue(null);
         final Argument<List<String>> groupNames = instruction.string()
                 .validate(checkForNotExistingGroups())

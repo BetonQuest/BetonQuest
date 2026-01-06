@@ -3,13 +3,13 @@ package org.betonquest.betonquest.compatibility.denizen.event;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 
 /**
  * Factory to create Denizen Task Script Events.
  */
-public class DenizenTaskScriptEventFactory implements PlayerEventFactory {
+public class DenizenTaskScriptEventFactory implements PlayerActionFactory {
 
     /**
      * Create a new Factory to create Denizen Task Script Events.
@@ -18,7 +18,7 @@ public class DenizenTaskScriptEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<String> name = instruction.string().get();
         return new DenizenTaskScriptEvent(name);
     }

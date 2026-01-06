@@ -4,14 +4,14 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
 import org.bukkit.World;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * The weather event, changing the weather on the server.
  */
-public class WeatherEvent implements NullableEvent {
+public class WeatherEvent implements NullableAction {
 
     /**
      * The weather that will be set when the event is executed.

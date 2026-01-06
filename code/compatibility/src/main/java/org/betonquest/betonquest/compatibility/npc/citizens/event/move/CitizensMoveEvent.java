@@ -5,14 +5,14 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 
 /**
  * Moves the NPC to a specified location, optionally firing doneActions when it's done.
  */
-public class CitizensMoveEvent implements PlayerEvent {
+public class CitizensMoveEvent implements PlayerAction {
 
     /**
      * Feature API.

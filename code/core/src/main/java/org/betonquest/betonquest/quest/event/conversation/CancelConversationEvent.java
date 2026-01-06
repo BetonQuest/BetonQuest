@@ -2,13 +2,13 @@ package org.betonquest.betonquest.quest.event.conversation;
 
 import org.betonquest.betonquest.api.feature.ConversationApi;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
+import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 import org.betonquest.betonquest.conversation.Conversation;
 
 /**
  * Cancels the conversation.
  */
-public class CancelConversationEvent implements OnlineEvent {
+public class CancelConversationEvent implements OnlineAction {
 
     /**
      * Conversation API.

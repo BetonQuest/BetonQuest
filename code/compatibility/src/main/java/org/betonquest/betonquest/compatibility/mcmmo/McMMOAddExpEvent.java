@@ -4,12 +4,12 @@ import com.gmail.nossr50.api.ExperienceAPI;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
+import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 
 /**
  * Adds experience in specified skill.
  */
-public class McMMOAddExpEvent implements OnlineEvent {
+public class McMMOAddExpEvent implements OnlineAction {
 
     /**
      * Name of skill to add xp to.

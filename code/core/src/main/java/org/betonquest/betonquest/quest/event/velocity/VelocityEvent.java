@@ -3,14 +3,14 @@ package org.betonquest.betonquest.quest.event.velocity;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
+import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 /**
  * The velocity event. Throws the player around.
  */
-public class VelocityEvent implements OnlineEvent {
+public class VelocityEvent implements OnlineAction {
 
     /**
      * The vector of the direction and speed.

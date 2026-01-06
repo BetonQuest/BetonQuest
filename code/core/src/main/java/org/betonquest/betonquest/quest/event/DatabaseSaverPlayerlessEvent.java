@@ -2,13 +2,13 @@ package org.betonquest.betonquest.quest.event;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestSupplier;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 import org.betonquest.betonquest.database.Saver;
 
 /**
  * A playerless event that executes a database query with the {@link Saver} when executed.
  */
-public class DatabaseSaverPlayerlessEvent implements PlayerlessEvent {
+public class DatabaseSaverPlayerlessEvent implements PlayerlessAction {
 
     /**
      * The saver used to execute the database query.

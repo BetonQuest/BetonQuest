@@ -6,8 +6,8 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.quest.event.NotificationSender;
 
@@ -29,11 +29,11 @@ public class TakeEventFactory extends AbstractTakeEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final BetonQuestLogger log = loggerFactory.create(TakeEvent.class);
         final List<CheckType> checkOrder = getCheckOrder(instruction);
         final Argument<List<ItemWrapper>> questItems = instruction.item().list().get();
         final NotificationSender notificationSender = getNotificationSender(instruction, log);
-        return new OnlineEventAdapter(new TakeEvent(questItems, checkOrder, notificationSender), log, instruction.getPackage());
+        return new OnlineActionAdapter(new TakeEvent(questItems, checkOrder, notificationSender), log, instruction.getPackage());
     }
 }

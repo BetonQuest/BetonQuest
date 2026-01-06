@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.quest.event.tag;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 import org.betonquest.betonquest.database.TagData;
 
 /**
  * The static tag event, doing what was defined in its instruction.
  */
-public class PlayerlessTagEvent implements PlayerlessEvent {
+public class PlayerlessTagEvent implements PlayerlessAction {
 
     /**
      * Static tagData that shall be tagged.

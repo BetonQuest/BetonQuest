@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
+import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 import org.bukkit.entity.Player;
 
 /**
@@ -10,19 +10,19 @@ import org.bukkit.entity.Player;
  * <p>
  * Gives the player op, executes the nested event and then reverts the operation if necessary.
  */
-public class OpPlayerEventAdapter implements OnlineEvent {
+public class OpPlayerEventAdapter implements OnlineAction {
 
     /**
      * The event to execute as Op.
      */
-    private final OnlineEvent event;
+    private final OnlineAction event;
 
     /**
      * Creates a new OpPlayerEventAdapter.
      *
      * @param event the event to execute as op.
      */
-    public OpPlayerEventAdapter(final OnlineEvent event) {
+    public OpPlayerEventAdapter(final OnlineAction event) {
         this.event = event;
     }
 

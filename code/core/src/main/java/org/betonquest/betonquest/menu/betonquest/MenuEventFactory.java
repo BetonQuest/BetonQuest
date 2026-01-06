@@ -6,9 +6,9 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.OpenedMenu;
 import org.betonquest.betonquest.menu.RPGMenu;
@@ -16,7 +16,7 @@ import org.betonquest.betonquest.menu.RPGMenu;
 /**
  * Factory to create {@link MenuEvent}s from {@link Instruction}s.
  */
-public class MenuEventFactory implements PlayerEventFactory {
+public class MenuEventFactory implements PlayerActionFactory {
 
     /**
      * Factory to create new class specific logger.
@@ -40,7 +40,7 @@ public class MenuEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final Operation operation = instruction.enumeration(Operation.class).get().getValue(null);
         final QuestConsumer<OnlineProfile> action = switch (operation) {
             case OPEN -> {
@@ -57,7 +57,7 @@ public class MenuEventFactory implements PlayerEventFactory {
                 }
             };
         };
-        return new OnlineEventAdapter(new MenuEvent(action), loggerFactory.create(MenuEvent.class), instruction.getPackage());
+        return new OnlineActionAdapter(new MenuEvent(action), loggerFactory.create(MenuEvent.class), instruction.getPackage());
     }
 
     /**

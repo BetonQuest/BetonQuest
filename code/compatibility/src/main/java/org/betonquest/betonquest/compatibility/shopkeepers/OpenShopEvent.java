@@ -2,12 +2,12 @@ package org.betonquest.betonquest.compatibility.shopkeepers;
 
 import com.nisovin.shopkeepers.api.shopkeeper.Shopkeeper;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
+import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 
 /**
  * This event opens Shopkeeper trade window.
  */
-public class OpenShopEvent implements OnlineEvent {
+public class OpenShopEvent implements OnlineAction {
 
     /**
      * Shop to open.

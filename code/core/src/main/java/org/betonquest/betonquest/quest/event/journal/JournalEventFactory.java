@@ -5,10 +5,10 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Saver;
@@ -25,7 +25,7 @@ import java.util.Locale;
 /**
  * Factory to create journal events from {@link Instruction}s.
  */
-public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+public class JournalEventFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
      * Logger factory to create a logger for the events.
@@ -77,7 +77,7 @@ public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventF
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final String action = instruction.string().get().getValue(null);
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "update" -> createJournalUpdateEvent();
@@ -88,7 +88,7 @@ public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventF
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
         final String action = instruction.string().get().getValue(null);
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "update", "add" -> new DoNothingPlayerlessEvent();
@@ -118,7 +118,7 @@ public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventF
         return new JournalEvent(dataStorage, journalChanger, notificationSender);
     }
 
-    private PlayerlessEvent createStaticJournalDeleteEvent(final Instruction instruction) throws QuestException {
+    private PlayerlessAction createStaticJournalDeleteEvent(final Instruction instruction) throws QuestException {
         final Argument<JournalEntryID> entryID = instruction.chainForArgument(instruction.getPart(2)).parse(JournalEntryID::new).get();
         return new DeleteJournalPlayerlessEvent(dataStorage, saver, profileProvider, entryID);
     }

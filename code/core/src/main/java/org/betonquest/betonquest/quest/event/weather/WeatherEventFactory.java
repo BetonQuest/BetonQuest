@@ -7,12 +7,12 @@ import org.betonquest.betonquest.api.common.function.Selectors;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter;
+import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
 import org.betonquest.betonquest.quest.event.DoNothingPlayerlessEvent;
 import org.bukkit.Server;
 import org.bukkit.World;
@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Factory to create weather events from {@link Instruction}s.
  */
-public class WeatherEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+public class WeatherEventFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
      * Logger factory to create a logger for the events.
@@ -46,11 +46,11 @@ public class WeatherEventFactory implements PlayerEventFactory, PlayerlessEventF
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final PlayerEvent weatherPlayerEvent = parseWeatherEvent(instruction);
-        final PlayerEvent playerEvent;
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
+        final PlayerAction weatherPlayerEvent = parseWeatherEvent(instruction);
+        final PlayerAction playerEvent;
         if (requiresPlayer(instruction)) {
-            playerEvent = new OnlineEventAdapter(
+            playerEvent = new OnlineActionAdapter(
                     weatherPlayerEvent::execute,
                     loggerFactory.create(WeatherEvent.class),
                     instruction.getPackage()
@@ -62,7 +62,7 @@ public class WeatherEventFactory implements PlayerEventFactory, PlayerlessEventF
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
         if (requiresPlayer(instruction)) {
             return new DoNothingPlayerlessEvent();
         }
@@ -73,12 +73,12 @@ public class WeatherEventFactory implements PlayerEventFactory, PlayerlessEventF
         return instruction.copy().string().get("world").isEmpty();
     }
 
-    private NullableEventAdapter parseWeatherEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter parseWeatherEvent(final Instruction instruction) throws QuestException {
         final Argument<Weather> weather = instruction.parse(Weather::parseWeather).get();
         final Argument<String> world = instruction.string().get("world").orElse(null);
         final Selector<World> worldSelector = parseWorld(world == null ? null : world.getValue(null));
         final Argument<Number> duration = instruction.number().get("duration", 0);
-        return new NullableEventAdapter(new WeatherEvent(weather, worldSelector, duration));
+        return new NullableActionAdapter(new WeatherEvent(weather, worldSelector, duration));
     }
 
     private Selector<World> parseWorld(@Nullable final String worldName) {

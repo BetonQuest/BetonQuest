@@ -2,25 +2,25 @@ package org.betonquest.betonquest.quest.event;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 
 /**
  * Adapter to allow executing a playerless event with the API of a player event.
  */
-public class CallPlayerlessEventAdapter implements PlayerEvent {
+public class CallPlayerlessEventAdapter implements PlayerAction {
 
     /**
      * The playerless event to execute.
      */
-    private final PlayerlessEvent event;
+    private final PlayerlessAction event;
 
     /**
      * Create a player event that will execute the given playerless event.
      *
      * @param event playerless event to execute
      */
-    public CallPlayerlessEventAdapter(final PlayerlessEvent event) {
+    public CallPlayerlessEventAdapter(final PlayerlessAction event) {
         this.event = event;
     }
 

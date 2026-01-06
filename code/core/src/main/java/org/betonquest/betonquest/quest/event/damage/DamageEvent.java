@@ -3,12 +3,12 @@ package org.betonquest.betonquest.quest.event.damage;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
+import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 
 /**
  * The damage event. It damages the player.
  */
-public class DamageEvent implements OnlineEvent {
+public class DamageEvent implements OnlineAction {
 
     /**
      * Amount of damage to inflict.

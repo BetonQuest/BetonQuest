@@ -4,12 +4,12 @@ import net.Indyuce.mmocore.api.player.PlayerData;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
 
 /**
  * Event to add class points to a player.
  */
-public class MMOCoreClassPointsEvent implements PlayerEvent {
+public class MMOCoreClassPointsEvent implements PlayerAction {
 
     /**
      * Amount to grant.

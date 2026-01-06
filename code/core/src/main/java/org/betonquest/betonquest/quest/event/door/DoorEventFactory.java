@@ -3,11 +3,11 @@ package org.betonquest.betonquest.quest.event.door;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter;
 import org.bukkit.Location;
 
 import java.util.Locale;
@@ -15,7 +15,7 @@ import java.util.Locale;
 /**
  * Factory to create door events from {@link Instruction}s.
  */
-public class DoorEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+public class DoorEventFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
      * Create the door event factory.
@@ -24,16 +24,16 @@ public class DoorEventFactory implements PlayerEventFactory, PlayerlessEventFact
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         return createDoorEvent(instruction);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
         return createDoorEvent(instruction);
     }
 
-    private NullableEventAdapter createDoorEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createDoorEvent(final Instruction instruction) throws QuestException {
         final Argument<Location> location = instruction.location().get();
         final String action = instruction.string().get().getValue(null);
         final DoorEvent doorEvent = switch (action.toLowerCase(Locale.ROOT)) {
@@ -42,7 +42,7 @@ public class DoorEventFactory implements PlayerEventFactory, PlayerlessEventFact
             case "toggle" -> createToggleDoorEvent(location);
             default -> throw new QuestException("Unknown door action (valid options are: on, off, toggle): " + action);
         };
-        return new NullableEventAdapter(doorEvent);
+        return new NullableActionAdapter(doorEvent);
     }
 
     private DoorEvent createOpenDoorEvent(final Argument<Location> location) {

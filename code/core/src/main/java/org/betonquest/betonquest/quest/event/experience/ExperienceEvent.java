@@ -3,12 +3,12 @@ package org.betonquest.betonquest.quest.event.experience;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
+import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 
 /**
  * Gives the player specified amount of experience.
  */
-public class ExperienceEvent implements OnlineEvent {
+public class ExperienceEvent implements OnlineAction {
 
     /**
      * The modification to apply.

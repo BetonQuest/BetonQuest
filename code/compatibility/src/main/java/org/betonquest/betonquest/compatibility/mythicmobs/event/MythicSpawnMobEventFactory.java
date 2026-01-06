@@ -6,11 +6,11 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
+import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
 import org.betonquest.betonquest.compatibility.mythicmobs.MythicHider;
 import org.betonquest.betonquest.compatibility.mythicmobs.MythicMobDoubleParser;
 import org.bukkit.Location;
@@ -22,7 +22,7 @@ import java.util.Optional;
 /**
  * Factory to create {@link MythicSpawnMobEvent}s from {@link Instruction}s.
  */
-public class MythicSpawnMobEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+public class MythicSpawnMobEventFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
      * Factory to create new class specific loggers.
@@ -62,19 +62,19 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<Location> loc = instruction.location().get();
         final Argument<Map.Entry<MythicMob, Double>> mobLevel = instruction.parse(mythicMobParser).get();
         final Argument<Number> amount = instruction.number().get();
         final FlagArgument<MythicHider> privateMob = instruction.bool().map(val -> val ? mythicHider : null).getFlag("private", mythicHider);
         final FlagArgument<Boolean> targetPlayer = instruction.bool().getFlag("target", true);
         final Argument<String> marked = instruction.packageIdentifier().get("marked").orElse(null);
-        return new OnlineEventAdapter(new MythicSpawnMobEvent(plugin, loc, mobLevel, amount, privateMob, targetPlayer, marked),
+        return new OnlineActionAdapter(new MythicSpawnMobEvent(plugin, loc, mobLevel, amount, privateMob, targetPlayer, marked),
                 loggerFactory.create(MythicSpawnMobEvent.class), instruction.getPackage());
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
         final Argument<Location> loc = instruction.location().get();
         final Argument<Map.Entry<MythicMob, Double>> mobLevel = instruction.parse(mythicMobParser).get();
         final Argument<Number> amount = instruction.number().get();

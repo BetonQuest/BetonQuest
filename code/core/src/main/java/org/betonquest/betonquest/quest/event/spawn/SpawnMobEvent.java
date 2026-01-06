@@ -5,7 +5,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Spawns mobs at given location, with given equipment and drops.
  */
-public class SpawnMobEvent implements NullableEvent {
+public class SpawnMobEvent implements NullableAction {
 
     /**
      * The location to spawn the mob at.

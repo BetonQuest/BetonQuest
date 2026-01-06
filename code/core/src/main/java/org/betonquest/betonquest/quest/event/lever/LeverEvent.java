@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.lever;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * This event turns on, of or toggles levers.
  */
-public class LeverEvent implements NullableEvent {
+public class LeverEvent implements NullableAction {
 
     /**
      * The type of state to set the lever to.

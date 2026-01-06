@@ -4,17 +4,17 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.Placeholders;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter;
 import org.betonquest.betonquest.kernel.registry.quest.ActionTypeRegistry;
 
 /**
  * A factory for creating Eval events.
  */
-public class EvalEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+public class EvalEventFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
      * The {@link Placeholders} to create and resolve placeholders.
@@ -45,18 +45,18 @@ public class EvalEventFactory implements PlayerEventFactory, PlayerlessEventFact
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         return parseEvalEvent(instruction);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
         return parseEvalEvent(instruction);
     }
 
-    private NullableEventAdapter parseEvalEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter parseEvalEvent(final Instruction instruction) throws QuestException {
         final String rawInstruction = String.join(" ", instruction.getValueParts());
-        return new NullableEventAdapter(new EvalEvent(placeholders, packManager, actionTypeRegistry, instruction.getPackage(),
+        return new NullableActionAdapter(new EvalEvent(placeholders, packManager, actionTypeRegistry, instruction.getPackage(),
                 instruction.chainForArgument(rawInstruction).string().get()));
     }
 }

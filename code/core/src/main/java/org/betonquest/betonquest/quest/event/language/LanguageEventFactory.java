@@ -3,14 +3,14 @@ package org.betonquest.betonquest.quest.event.language;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 
 /**
  * Factory to create language events from {@link Instruction}s.
  */
-public class LanguageEventFactory implements PlayerEventFactory {
+public class LanguageEventFactory implements PlayerActionFactory {
 
     /**
      * Storage for player data.
@@ -27,7 +27,7 @@ public class LanguageEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<String> language = instruction.string().get();
         return new LanguageEvent(language, dataStorage);
     }
