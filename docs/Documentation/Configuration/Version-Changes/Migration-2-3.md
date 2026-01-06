@@ -58,7 +58,7 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 - [3.0.0-DEV-488 - Remove Legacy Point Multiply](#300-dev-488-remove-legacy-point-multiply) :sun:
 - [3.0.0-DEV-494 - Add native `menu` conversation io](#300-dev-494-add-native-menu-conversation-io) :white_sun_cloud:
 - [3.0.0-DEV-511 - Dynamize `top:` Hologram Line](#300-dev-511-dynamize-top-hologram-line) :sun:
-- [3.0.0-DEV-5xx - Rename `events` to `actions`](#300-dev-5xx-rename-events-to-actions) :sun:
+- [3.0.0-DEV-562 - Rename `events` to `actions`](#300-dev-562-rename-events-to-actions) :sun:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :thunder_cloud_rain:
 
@@ -1003,7 +1003,7 @@ conversations:
     
     </div>
 
-### 3.0.0-DEV-5xx - Rename `events` to `actions` :sun:
+### 3.0.0-DEV-562 - Rename `events` to `actions` :sun:
 
 BetonQuest "Events" are renamed to "Actions".
 
