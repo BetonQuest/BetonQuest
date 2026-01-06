@@ -60,8 +60,10 @@ public class ChestPutObjectiveFactory implements ObjectiveFactory {
                 instruction.getID().getFull(), NotificationLevel.INFO, "chest_occupied");
         final ChestPutObjective objective = new ChestPutObjective(instruction, chestItemCondition, chestTakeEvent,
                 loc, occupiedSender, multipleAccess);
-        service.request(InventoryOpenEvent.class).handler(objective::onChestOpen, InventoryOpenEvent::getPlayer).subscribe(false);
-        service.request(InventoryCloseEvent.class).handler(objective::onChestClose, InventoryCloseEvent::getPlayer).subscribe(true);
+        service.request(InventoryOpenEvent.class).onlineHandler(objective::onChestOpen)
+                .entity(InventoryOpenEvent::getPlayer).subscribe(false);
+        service.request(InventoryCloseEvent.class).onlineHandler(objective::onChestClose)
+                .entity(InventoryCloseEvent::getPlayer).subscribe(true);
         return objective;
     }
 }

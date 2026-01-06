@@ -30,7 +30,8 @@ public class MythicLibSkillObjectiveFactory implements ObjectiveFactory {
                 .parse(id -> TriggerType.valueOf(id.toUpperCase(Locale.ROOT)))
                 .list().get().getValue(null);
         final MythicLibSkillObjective objective = new MythicLibSkillObjective(instruction, skillId, triggerTypes);
-        service.request(SkillCastEvent.class).handler(objective::onSkillCast, SkillCastEvent::getPlayer).subscribe(true);
+        service.request(SkillCastEvent.class).onlineHandler(objective::onSkillCast)
+                .player(SkillCastEvent::getPlayer).subscribe(true);
         return objective;
     }
 }

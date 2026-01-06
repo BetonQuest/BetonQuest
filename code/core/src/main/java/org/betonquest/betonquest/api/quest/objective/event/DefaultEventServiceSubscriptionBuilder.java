@@ -1,10 +1,13 @@
 package org.betonquest.betonquest.api.quest.objective.event;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.common.function.QuestBiFunction;
 import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.logger.LogSource;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
@@ -23,17 +26,13 @@ import java.util.UUID;
  *
  * @param <T> the event type
  */
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals"})
 public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements EventServiceSubscriptionBuilder<T> {
 
     /**
      * The default priority for event subscriptions.
      */
     public static final EventPriority DEFAULT_PRIORITY = EventPriority.NORMAL;
-
-    /**
-     * The default ignoreCancelled flag for event subscriptions.
-     */
-    public static final boolean DEFAULT_IGNORE_CANCELLED = true;
 
     /**
      * The event service to register events with.
@@ -67,13 +66,13 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
     private NonProfileEventHandler<T> nonProfileHandler;
 
     /**
-     * The profile event handler. Requires a {@link PlayerUUIDExtractor} to be set.
+     * The profile event handler. Requires an extractor to be set.
      */
     @Nullable
     private ProfileEventHandler<T> profileHandler;
 
     /**
-     * The online profile event handler. Requires a {@link PlayerUUIDExtractor} to be set.
+     * The online profile event handler. Requires an extractor to be set.
      */
     @Nullable
     private OnlineProfileEventHandler<T> onlineProfileHandler;
@@ -82,7 +81,7 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
      * The player UUID extractor. Required for {@link ProfileEventHandler}s.
      */
     @Nullable
-    private QuestFunction<T, Optional<UUID>> playerUUIDExtractor;
+    private QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor;
 
     /**
      * Creates a new builder for the given event class.
@@ -95,7 +94,6 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
         this.eventClass = eventClass;
         this.logSource = LogSource.EMPTY;
         this.eventPriority = DEFAULT_PRIORITY;
-        this.ignoreCancelled = DEFAULT_IGNORE_CANCELLED;
     }
 
     @Override
@@ -112,47 +110,76 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
 
     @Override
     public EventServiceSubscriptionBuilder<T> handler(final NonProfileEventHandler<T> handler) {
+        if (checkHandlerAlreadySet()) {
+            throw new IllegalStateException("Cannot set more than one handler!");
+        }
         this.nonProfileHandler = handler;
-        this.profileHandler = null;
-        this.onlineProfileHandler = null;
-        this.playerUUIDExtractor = null;
         return this;
     }
 
     @Override
-    public EventServiceSubscriptionBuilder<T> handler(final ProfileEventHandler<T> handler, final PlayerUUIDExtractor<T> playerExtractor) {
+    public EventServiceSubscriptionBuilder<T> handler(final ProfileEventHandler<T> handler) {
+        if (checkHandlerAlreadySet()) {
+            throw new IllegalStateException("Cannot set more than one handler!");
+        }
         this.profileHandler = handler;
-        this.playerUUIDExtractor = value -> Optional.ofNullable(playerExtractor.readUUID(value));
-        this.onlineProfileHandler = null;
-        this.nonProfileHandler = null;
         return this;
     }
 
     @Override
-    public EventServiceSubscriptionBuilder<T> handler(final OnlineProfileEventHandler<T> handler, final EntityExtractor<T> entityExtractor) {
+    public EventServiceSubscriptionBuilder<T> onlineHandler(final OnlineProfileEventHandler<T> handler) {
+        if (checkHandlerAlreadySet()) {
+            throw new IllegalStateException("Cannot set more than one handler!");
+        }
         this.onlineProfileHandler = handler;
-        this.playerUUIDExtractor = value -> Optional.ofNullable(entityExtractor.readEntity(value)).map(Player.class::cast).map(Player::getUniqueId);
-        this.profileHandler = null;
-        this.nonProfileHandler = null;
         return this;
     }
 
     @Override
-    public EventServiceSubscriptionBuilder<T> handler(final ProfileEventHandler<T> handler, final OfflinePlayerExtractor<T> playerExtractor) {
-        final PlayerUUIDExtractor<T> extractor = value -> Optional.ofNullable(playerExtractor.readPlayer(value)).map(OfflinePlayer::getUniqueId).orElse(null);
-        return handler(handler, extractor);
+    public EventServiceSubscriptionBuilder<T> uuid(final QuestFunction<T, UUID> extractor) {
+        if (this.profileExtractor != null) {
+            throw new IllegalStateException("Cannot set more than one extractor!");
+        }
+        this.profileExtractor = (provider, event) -> Optional.ofNullable(provider.getProfile(extractor.apply(event)));
+        return this;
     }
 
     @Override
-    public EventServiceSubscriptionBuilder<T> handler(final ProfileEventHandler<T> handler, final EntityExtractor<T> entityExtractor) {
-        final OfflinePlayerExtractor<T> extractor = event -> Optional.ofNullable(entityExtractor.readEntity(event)).map(Player.class::cast).orElse(null);
-        return handler(handler, extractor);
+    public EventServiceSubscriptionBuilder<T> offlinePlayer(final QuestFunction<T, OfflinePlayer> extractor) {
+        if (this.profileExtractor != null) {
+            throw new IllegalStateException("Cannot set more than one extractor!");
+        }
+        this.profileExtractor = (provider, event) -> Optional.ofNullable(provider.getProfile(extractor.apply(event)));
+        return this;
     }
 
     @Override
-    public EventServiceSubscriptionBuilder<T> handler(final ProfileEventHandler<T> handler, final ProfileExtractor<T> profileExtractor) {
-        final PlayerUUIDExtractor<T> uuidExtractor = event -> Optional.ofNullable(profileExtractor.readProfile(event)).map(Profile::getPlayerUUID).orElse(null);
-        return handler(handler, uuidExtractor);
+    public EventServiceSubscriptionBuilder<T> player(final QuestFunction<T, Player> extractor) {
+        if (this.profileExtractor != null) {
+            throw new IllegalStateException("Cannot set more than one extractor!");
+        }
+        this.profileExtractor = (provider, event) -> Optional.ofNullable(provider.getProfile(extractor.apply(event)));
+        return this;
+    }
+
+    @Override
+    public EventServiceSubscriptionBuilder<T> entity(final QuestFunction<T, Entity> extractor) {
+        if (this.profileExtractor != null) {
+            throw new IllegalStateException("Cannot set more than one extractor!");
+        }
+        this.profileExtractor = (provider, event) ->
+                extractor.apply(event) instanceof final Player player
+                        ? Optional.ofNullable(provider.getProfile(player)) : Optional.empty();
+        return this;
+    }
+
+    @Override
+    public EventServiceSubscriptionBuilder<T> profile(final QuestFunction<T, Profile> extractor) {
+        if (this.profileExtractor != null) {
+            throw new IllegalStateException("Cannot set more than one extractor!");
+        }
+        this.profileExtractor = (provider, event) -> Optional.ofNullable(extractor.apply(event));
+        return this;
     }
 
     @Override
@@ -166,14 +193,19 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
             eventService.subscribe(logSource, eventClass, nonProfileHandler, eventPriority, ignoreCancelled);
             return;
         }
-        if (playerUUIDExtractor == null) {
-            throw new IllegalStateException("No valid handler specified!");
+        if (profileExtractor == null) {
+            throw new IllegalStateException("No valid extractor specified!");
         }
         if (onlineProfileHandler != null) {
-            eventService.subscribe(logSource, eventClass, onlineProfileHandler, playerUUIDExtractor, eventPriority, ignoreCancelled);
+            eventService.subscribe(logSource, eventClass, onlineProfileHandler, profileExtractor, eventPriority, ignoreCancelled);
         }
         if (profileHandler != null) {
-            eventService.subscribe(logSource, eventClass, profileHandler, playerUUIDExtractor, eventPriority, ignoreCancelled);
+            eventService.subscribe(logSource, eventClass, profileHandler, profileExtractor, eventPriority, ignoreCancelled);
         }
+        throw new IllegalStateException("No valid handler specified!");
+    }
+
+    private boolean checkHandlerAlreadySet() {
+        return nonProfileHandler != null || profileHandler != null || onlineProfileHandler != null;
     }
 }

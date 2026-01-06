@@ -23,7 +23,8 @@ public class MMOCoreChangeClassObjectiveFactory implements ObjectiveFactory {
     public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<String> targetClassName = instruction.string().get("class").orElse(null);
         final MMOCoreChangeClassObjective objective = new MMOCoreChangeClassObjective(instruction, targetClassName);
-        service.request(PlayerChangeClassEvent.class).handler(objective::onClassChange, PlayerChangeClassEvent::getPlayer).subscribe(true);
+        service.request(PlayerChangeClassEvent.class).onlineHandler(objective::onClassChange)
+                .player(PlayerChangeClassEvent::getPlayer).subscribe(true);
         return objective;
     }
 }

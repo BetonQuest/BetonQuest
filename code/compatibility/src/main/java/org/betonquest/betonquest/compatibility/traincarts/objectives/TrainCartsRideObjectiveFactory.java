@@ -27,10 +27,12 @@ public class TrainCartsRideObjectiveFactory implements ObjectiveFactory {
         final Argument<String> name = instruction.string().get("name", "");
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get("amount", 1);
         final TrainCartsRideObjective objective = new TrainCartsRideObjective(instruction, targetAmount, name);
-        service.request(MemberSeatEnterEvent.class).handler(objective::onMemberSeatEnter, MemberSeatEnterEvent::getEntity).subscribe(false);
-        service.request(MemberSeatExitEvent.class).handler(objective::onMemberSeatExit, MemberSeatExitEvent::getEntity).subscribe(false);
-        service.request(PlayerQuitEvent.class).priority(EventPriority.LOWEST)
-                .handler(objective::onQuit, PlayerQuitEvent::getPlayer).subscribe(true);
+        service.request(MemberSeatEnterEvent.class).onlineHandler(objective::onMemberSeatEnter)
+                .entity(MemberSeatEnterEvent::getEntity).subscribe(false);
+        service.request(MemberSeatExitEvent.class).onlineHandler(objective::onMemberSeatExit)
+                .entity(MemberSeatExitEvent::getEntity).subscribe(false);
+        service.request(PlayerQuitEvent.class).priority(EventPriority.LOWEST).onlineHandler(objective::onQuit)
+                .player(PlayerQuitEvent::getPlayer).subscribe(true);
         return objective;
     }
 }

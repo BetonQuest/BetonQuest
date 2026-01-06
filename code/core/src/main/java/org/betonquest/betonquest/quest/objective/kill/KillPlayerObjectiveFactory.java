@@ -7,9 +7,7 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
-import org.bukkit.entity.Player;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
@@ -32,12 +30,8 @@ public class KillPlayerObjectiveFactory implements ObjectiveFactory {
         final Argument<List<ConditionID>> required = instruction.parse(ConditionID::new)
                 .list().get("required", Collections.emptyList());
         final KillPlayerObjective objective = new KillPlayerObjective(instruction, targetAmount, name, required);
-        service.request(PlayerDeathEvent.class).handler(objective::onKill, this::fromEvent).subscribe(true);
+        service.request(PlayerDeathEvent.class).onlineHandler(objective::onKill)
+                .player(event -> event.getEntity().getKiller()).subscribe(true);
         return objective;
-    }
-
-    @Nullable
-    private Player fromEvent(final PlayerDeathEvent event) {
-        return event.getEntity().getKiller();
     }
 }

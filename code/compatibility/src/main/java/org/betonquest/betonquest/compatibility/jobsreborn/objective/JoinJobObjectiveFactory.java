@@ -9,8 +9,6 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.compatibility.jobsreborn.JobParser;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Factory for creating {@link JoinJobObjective} instances from {@link Instruction}s.
@@ -27,12 +25,8 @@ public class JoinJobObjectiveFactory implements ObjectiveFactory {
     public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<Job> job = instruction.parse(JobParser.JOB).get();
         final JoinJobObjective objective = new JoinJobObjective(instruction, job);
-        service.request(JobsJoinEvent.class).handler(objective::onJobsJoinEvent, this::fromEvent).subscribe(true);
+        service.request(JobsJoinEvent.class).onlineHandler(objective::onJobsJoinEvent)
+                .player(event -> event.getPlayer().getPlayer()).subscribe(true);
         return objective;
-    }
-
-    @Nullable
-    private Player fromEvent(final JobsJoinEvent event) {
-        return event.getPlayer().getPlayer();
     }
 }

@@ -24,7 +24,8 @@ public class MMOItemsUpgradeObjectiveFactory implements ObjectiveFactory {
         final Argument<String> itemType = instruction.string().get();
         final Argument<String> itemID = instruction.string().get();
         final MMOItemsUpgradeObjective objective = new MMOItemsUpgradeObjective(instruction, itemType, itemID);
-        service.request(UpgradeItemEvent.class).handler(objective::onUpgradeItem, UpgradeItemEvent::getPlayer).subscribe(true);
+        service.request(UpgradeItemEvent.class).onlineHandler(objective::onUpgradeItem)
+                .player(UpgradeItemEvent::getPlayer).subscribe(true);
         return objective;
     }
 }

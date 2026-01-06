@@ -12,9 +12,6 @@ import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.menu.event.MenuOpenEvent;
 import org.bukkit.event.EventPriority;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.UUID;
 
 /**
  * Factory for creating {@link MenuObjective} instances from {@link Instruction}s.
@@ -49,13 +46,8 @@ public class MenuObjectiveFactory implements ObjectiveFactory {
                         -> new MenuID(packManager, pack, string)).get();
         final BetonQuestLogger log = loggerFactory.create(MenuObjective.class);
         final MenuObjective objective = new MenuObjective(instruction, log, rpgMenu, menuID);
-        service.request(MenuOpenEvent.class).priority(EventPriority.MONITOR)
-                .handler(objective::onMenuOpen, this::fromEvent).subscribe(true);
+        service.request(MenuOpenEvent.class).priority(EventPriority.MONITOR).handler(objective::onMenuOpen)
+                .profile(MenuOpenEvent::getProfile).subscribe(true);
         return objective;
-    }
-
-    @Nullable
-    private UUID fromEvent(final MenuOpenEvent event) {
-        return event.getProfile().getPlayerUUID();
     }
 }

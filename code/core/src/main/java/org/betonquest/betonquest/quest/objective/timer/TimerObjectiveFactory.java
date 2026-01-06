@@ -39,8 +39,8 @@ public class TimerObjectiveFactory implements ObjectiveFactory {
         final Argument<Number> interval = instruction.number().get("interval", 1);
         final Argument<List<EventID>> doneEvents = instruction.parse(EventID::new).list().get("done", Collections.emptyList());
         final TimerObjective objective = new TimerObjective(instruction, targetAmount, questTypeApi, name, interval, doneEvents);
-        service.request(PlayerObjectiveChangeEvent.class)
-                .handler(objective::onPlayerObjectiveChange, PlayerObjectiveChangeEvent::getProfile).subscribe(false);
+        service.request(PlayerObjectiveChangeEvent.class).handler(objective::onPlayerObjectiveChange)
+                .profile(PlayerObjectiveChangeEvent::getProfile).subscribe(false);
         return objective;
     }
 }

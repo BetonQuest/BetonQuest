@@ -27,8 +27,8 @@ public class StepObjectiveFactory implements ObjectiveFactory {
         final Argument<Location> loc = instruction.location().get();
         final BlockSelector selector = new DefaultBlockSelector(".*_PRESSURE_PLATE");
         final StepObjective objective = new StepObjective(instruction, loc, selector);
-        service.request(PlayerInteractEvent.class)
-                .handler(objective::onStep, PlayerInteractEvent::getPlayer).subscribe(true);
+        service.request(PlayerInteractEvent.class).onlineHandler(objective::onStep)
+                .player(PlayerInteractEvent::getPlayer).subscribe(true);
         return objective;
     }
 }

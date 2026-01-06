@@ -26,8 +26,8 @@ public class ShearObjectiveFactory implements ObjectiveFactory {
         final Argument<String> name = instruction.string().get("name").orElse(null);
         final Argument<DyeColor> color = instruction.enumeration(DyeColor.class).get("color").orElse(null);
         final ShearObjective objective = new ShearObjective(instruction, targetAmount, name, color);
-        service.request(PlayerShearEntityEvent.class)
-                .handler(objective::onShear, PlayerShearEntityEvent::getPlayer).subscribe(true);
+        service.request(PlayerShearEntityEvent.class).onlineHandler(objective::onShear)
+                .player(PlayerShearEntityEvent::getPlayer).subscribe(true);
         return objective;
     }
 }

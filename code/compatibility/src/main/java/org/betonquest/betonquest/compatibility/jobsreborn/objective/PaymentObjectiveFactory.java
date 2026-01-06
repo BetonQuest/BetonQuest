@@ -13,8 +13,6 @@ import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
 
-import java.util.UUID;
-
 /**
  * Factory for creating {@link PaymentObjective} instances from {@link Instruction}s.
  */
@@ -49,11 +47,8 @@ public class PaymentObjectiveFactory implements ObjectiveFactory {
                 pluginMessage, instruction.getPackage(), instruction.getID().getFull(),
                 NotificationLevel.INFO, "payment_to_receive");
         final PaymentObjective objective = new PaymentObjective(instruction, targetAmount, paymentSender);
-        service.request(JobsPaymentEvent.class).handler(objective::onJobsPaymentEvent, this::fromEvent).subscribe(true);
+        service.request(JobsPaymentEvent.class).handler(objective::onJobsPaymentEvent)
+                .offlinePlayer(JobsPaymentEvent::getPlayer).subscribe(true);
         return objective;
-    }
-
-    private UUID fromEvent(final JobsPaymentEvent event) {
-        return event.getPlayer().getUniqueId();
     }
 }
