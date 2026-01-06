@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
-import org.betonquest.betonquest.quest.event.chest.ChestTakeEvent;
+import org.betonquest.betonquest.quest.event.chest.ChestTakeAction;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -36,10 +36,10 @@ public class ChestPutObjective extends DefaultObjective implements Listener {
     private final NullableCondition chestItemCondition;
 
     /**
-     * Event to execute when the items are put in the chest to take them out.
+     * Action to execute when the items are put in the chest to take them out.
      */
     @Nullable
-    private final ChestTakeEvent chestTakeEvent;
+    private final ChestTakeAction chestTakeAction;
 
     /**
      * Location of the chest.
@@ -61,19 +61,19 @@ public class ChestPutObjective extends DefaultObjective implements Listener {
      *
      * @param instruction        the instruction that created this objective
      * @param chestItemCondition the condition to check if the items are in the chest
-     * @param chestTakeEvent     the event to execute when the items are put in the chest to take them out
+     * @param chestTakeAction    the action to execute when the items are put in the chest to take them out
      * @param loc                the location of the chest
      * @param occupiedSender     the sender to notify the player if the chest is occupied
      * @param multipleAccess     manages the chest access for one or multiple players
      * @throws QuestException if there is an error in the instruction
      */
     public ChestPutObjective(final Instruction instruction,
-                             final NullableCondition chestItemCondition, @Nullable final ChestTakeEvent chestTakeEvent,
+                             final NullableCondition chestItemCondition, @Nullable final ChestTakeAction chestTakeAction,
                              final Argument<Location> loc, final IngameNotificationSender occupiedSender,
                              final boolean multipleAccess) throws QuestException {
         super(instruction);
         this.chestItemCondition = chestItemCondition;
-        this.chestTakeEvent = chestTakeEvent;
+        this.chestTakeAction = chestTakeAction;
         this.loc = loc;
         this.occupiedSender = occupiedSender;
         this.multipleAccess = multipleAccess;
@@ -148,8 +148,8 @@ public class ChestPutObjective extends DefaultObjective implements Listener {
     private void checkItems(final OnlineProfile onlineProfile) throws QuestException {
         if (chestItemCondition.check(onlineProfile) && checkConditions(onlineProfile)) {
             completeObjective(onlineProfile);
-            if (chestTakeEvent != null) {
-                chestTakeEvent.execute(onlineProfile);
+            if (chestTakeAction != null) {
+                chestTakeAction.execute(onlineProfile);
             }
         }
     }

@@ -12,7 +12,7 @@ import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.quest.condition.chest.ChestItemCondition;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
-import org.betonquest.betonquest.quest.event.chest.ChestTakeEvent;
+import org.betonquest.betonquest.quest.event.chest.ChestTakeAction;
 import org.bukkit.Location;
 
 import java.util.List;
@@ -51,11 +51,11 @@ public class ChestPutObjectiveFactory implements ObjectiveFactory {
         final ChestItemCondition chestItemCondition = new ChestItemCondition(loc, items);
         final boolean itemsStay = instruction.bool().getFlag("items-stay", true)
                 .getValue(null).orElse(false);
-        final ChestTakeEvent chestTakeEvent = itemsStay ? null : new ChestTakeEvent(loc, items);
+        final ChestTakeAction chestTakeAction = itemsStay ? null : new ChestTakeAction(loc, items);
         final BetonQuestLogger log = loggerFactory.create(ChestPutObjective.class);
         final IngameNotificationSender occupiedSender = new IngameNotificationSender(log, pluginMessage, instruction.getPackage(),
                 instruction.getID().getFull(), NotificationLevel.INFO, "chest_occupied");
-        return new ChestPutObjective(instruction, chestItemCondition, chestTakeEvent, loc, occupiedSender,
+        return new ChestPutObjective(instruction, chestItemCondition, chestTakeAction, loc, occupiedSender,
                 multipleAccess);
     }
 }

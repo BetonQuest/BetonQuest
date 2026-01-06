@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Test {@link OnlineProfileGroupPlayerlessEventAdapter}.
+ * Test {@link OnlineProfileGroupPlayerlessActionAdapter}.
  */
 @ExtendWith(MockitoExtension.class)
 class OnlineProfileGroupPlayerlessActionAdapterTest {
@@ -52,7 +52,7 @@ class OnlineProfileGroupPlayerlessActionAdapterTest {
     @EmptySource
     @MethodSource("playerListSource")
     void testInternalEventIsExecutedForEachPlayerExactlyOnce(final List<OnlineProfile> onlineProfileList) throws QuestException {
-        final OnlineProfileGroupPlayerlessEventAdapter subject = new OnlineProfileGroupPlayerlessEventAdapter(() -> onlineProfileList, internalPlayerEvent);
+        final OnlineProfileGroupPlayerlessActionAdapter subject = new OnlineProfileGroupPlayerlessActionAdapter(() -> onlineProfileList, internalPlayerEvent);
         subject.execute();
 
         verifyExecutedOnceForPlayers(onlineProfileList);
@@ -68,7 +68,7 @@ class OnlineProfileGroupPlayerlessActionAdapterTest {
                 firstExecution, secondExecution
         ).iterator();
 
-        final OnlineProfileGroupPlayerlessEventAdapter subject = new OnlineProfileGroupPlayerlessEventAdapter(playerListsForSupplier::next, internalPlayerEvent);
+        final OnlineProfileGroupPlayerlessActionAdapter subject = new OnlineProfileGroupPlayerlessActionAdapter(playerListsForSupplier::next, internalPlayerEvent);
         subject.execute();
         verifyExecutedOnceForPlayers(firstExecution);
         verifyNotExecutedForPlayers(secondExecution);
@@ -91,7 +91,7 @@ class OnlineProfileGroupPlayerlessActionAdapterTest {
         doNothing().when(internalPlayerEvent).execute(firstProfile);
         doThrow(eventFailureException).when(internalPlayerEvent).execute(failingProfile);
 
-        final OnlineProfileGroupPlayerlessEventAdapter subject = new OnlineProfileGroupPlayerlessEventAdapter(() -> playerList, internalPlayerEvent);
+        final OnlineProfileGroupPlayerlessActionAdapter subject = new OnlineProfileGroupPlayerlessActionAdapter(() -> playerList, internalPlayerEvent);
         assertThrows(QuestException.class, subject::execute);
         verify(internalPlayerEvent).execute(firstProfile);
         verify(internalPlayerEvent, never()).execute(playerList.get(2));

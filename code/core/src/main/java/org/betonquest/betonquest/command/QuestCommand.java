@@ -52,7 +52,7 @@ import org.betonquest.betonquest.logger.handler.history.LogPublishingController;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NoNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
-import org.betonquest.betonquest.quest.event.give.GiveEvent;
+import org.betonquest.betonquest.quest.event.give.GiveAction;
 import org.betonquest.betonquest.quest.objective.variable.VariableObjective;
 import org.betonquest.betonquest.web.downloader.DownloadFailedException;
 import org.betonquest.betonquest.web.downloader.Downloader;
@@ -452,7 +452,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 log.warn("Could not find Item: " + e.getMessage(), e);
                 return;
             }
-            final OnlineAction give = new GiveEvent(
+            final OnlineAction give = new GiveAction(
                     new DefaultListArgument<>(new Item(instance.getFeatureApi(), itemID, new DefaultArgument<>(1))),
                     new NoNotificationSender(),
                     new IngameNotificationSender(log, pluginMessage, itemID.getPackage(), itemID.getFull(), NotificationLevel.ERROR,
