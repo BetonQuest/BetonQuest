@@ -44,7 +44,7 @@ public class VaultIntegrator implements Integrator {
             final Economy economy = economyProvider.getProvider();
             final QuestTypeRegistries registries = api.getQuestRegistries();
 
-            registries.event().register("money", new MoneyActionFactory(economy, api.getLoggerFactory(),
+            registries.action().register("money", new MoneyActionFactory(economy, api.getLoggerFactory(),
                     plugin.getPluginMessage()));
             registries.condition().register("money", new MoneyConditionFactory(economy));
             registries.placeholder().register("money", new MoneyPlaceholderFactory(economy));
@@ -55,7 +55,7 @@ public class VaultIntegrator implements Integrator {
             log.warn("Could not get permission provider!");
         } else {
             final Permission permission = permissionProvider.getProvider();
-            api.getQuestRegistries().event().register("permission", new PermissionActionFactory(permission));
+            api.getQuestRegistries().action().register("permission", new PermissionActionFactory(permission));
         }
     }
 

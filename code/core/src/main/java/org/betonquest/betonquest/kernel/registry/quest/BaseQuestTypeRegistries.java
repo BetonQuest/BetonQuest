@@ -8,13 +8,13 @@ import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
  * Registry for quest core elements.
  *
  * @param condition   The Registry holding registered condition types.
- * @param event       The Registry holding registered action types.
+ * @param action      The Registry holding registered action types.
  * @param objective   The Registry holding registered objective types.
  * @param placeholder The Registry holding registered placeholder types.
  */
 public record BaseQuestTypeRegistries(
         ConditionTypeRegistry condition,
-        ActionTypeRegistry event,
+        ActionTypeRegistry action,
         ObjectiveTypeRegistry objective,
         PlaceholderTypeRegistry placeholder
 ) implements QuestTypeRegistries {
