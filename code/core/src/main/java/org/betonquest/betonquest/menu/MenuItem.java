@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * An Item which Is displayed as option in a menu and has some events that are fired when item is clicked.
+ * An Item which Is displayed as option in a menu and has some actions that are fired when item is clicked.
  */
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class MenuItem {
@@ -53,9 +53,9 @@ public class MenuItem {
     private final Text descriptions;
 
     /**
-     * Ids of all events that should be run on clicks.
+     * Ids of all actions that should be run on clicks.
      */
-    private final ClickEvents clickEvents;
+    private final ClickActions clickActions;
 
     /**
      * Conditions that have to be matched to view the item.
@@ -75,19 +75,19 @@ public class MenuItem {
      * @param item         the item to display
      * @param itemId       the id of the item
      * @param descriptions the descriptions overriding name and lore of the Item
-     * @param clickEvents  the events to execute on click
+     * @param clickActions the actions to execute on click
      * @param conditions   the conditions required to show the item
      * @param close        if the item click closes
      */
     public MenuItem(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final Argument<ItemWrapper> item, final MenuItemID itemId,
-                    @Nullable final Text descriptions, final ClickEvents clickEvents,
+                    @Nullable final Text descriptions, final ClickActions clickActions,
                     final Argument<List<ConditionID>> conditions, final Argument<Boolean> close) {
         this.log = log;
         this.questTypeApi = questTypeApi;
         this.item = item;
         this.itemId = itemId;
         this.descriptions = descriptions;
-        this.clickEvents = clickEvents;
+        this.clickActions = clickActions;
         this.conditions = conditions;
         this.close = close;
     }
@@ -101,25 +101,25 @@ public class MenuItem {
      */
     public boolean onClick(final OnlineProfile profile, final ClickType type) {
         return switch (type) {
-            case LEFT -> executeEvents(clickEvents.leftClick, profile);
-            case SHIFT_LEFT -> executeEvents(clickEvents.shiftLeftClick, profile);
-            case RIGHT -> executeEvents(clickEvents.rightClick, profile);
-            case SHIFT_RIGHT -> executeEvents(clickEvents.shiftRightClick, profile);
-            case MIDDLE -> executeEvents(clickEvents.middleMouseClick, profile);
+            case LEFT -> executeActions(clickActions.leftClick, profile);
+            case SHIFT_LEFT -> executeActions(clickActions.shiftLeftClick, profile);
+            case RIGHT -> executeActions(clickActions.rightClick, profile);
+            case SHIFT_RIGHT -> executeActions(clickActions.shiftRightClick, profile);
+            case MIDDLE -> executeActions(clickActions.middleMouseClick, profile);
             default -> false;
         };
     }
 
-    private boolean executeEvents(final Argument<List<ActionID>> events, final OnlineProfile profile) {
+    private boolean executeActions(final Argument<List<ActionID>> actions, final OnlineProfile profile) {
         final List<ActionID> resolved;
         try {
-            resolved = events.getValue(profile);
+            resolved = actions.getValue(profile);
         } catch (final QuestException exception) {
-            log.warn(itemId.getPackage(), "Error while resolving events in menu item '" + itemId + "': " + exception.getMessage(), exception);
+            log.warn(itemId.getPackage(), "Error while resolving actions in menu item '" + itemId + "': " + exception.getMessage(), exception);
             return false;
         }
-        log.debug(itemId.getPackage(), "Item " + itemId + ": Run events");
-        questTypeApi.events(profile, resolved);
+        log.debug(itemId.getPackage(), "Item " + itemId + ": Run actions");
+        questTypeApi.actions(profile, resolved);
         try {
             return this.close.getValue(profile);
         } catch (final QuestException e) {
@@ -191,7 +191,7 @@ public class MenuItem {
     }
 
     /**
-     * Contains the ids of events that should be run on a click.
+     * Contains the ids of actions that should be run on a click.
      *
      * @param leftClick        for the left click
      * @param shiftLeftClick   for the left click with shift
@@ -199,16 +199,16 @@ public class MenuItem {
      * @param shiftRightClick  for the right click with shift
      * @param middleMouseClick for the middle mouse click
      */
-    public record ClickEvents(Argument<List<ActionID>> leftClick, Argument<List<ActionID>> shiftLeftClick,
-                              Argument<List<ActionID>> rightClick, Argument<List<ActionID>> shiftRightClick,
-                              Argument<List<ActionID>> middleMouseClick) {
+    public record ClickActions(Argument<List<ActionID>> leftClick, Argument<List<ActionID>> shiftLeftClick,
+                               Argument<List<ActionID>> rightClick, Argument<List<ActionID>> shiftRightClick,
+                               Argument<List<ActionID>> middleMouseClick) {
 
         /**
          * Fills all click types with the same list.
          *
-         * @param click the events to execute on any click
+         * @param click the actions to execute on any click
          */
-        public ClickEvents(final Argument<List<ActionID>> click) {
+        public ClickActions(final Argument<List<ActionID>> click) {
             this(click, click, click, click, click);
         }
     }

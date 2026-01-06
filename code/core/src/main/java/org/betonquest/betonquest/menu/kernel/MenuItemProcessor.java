@@ -73,12 +73,12 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
         } else {
             descriptions = null;
         }
-        final MenuItem.ClickEvents clickEvents = helper.getClickEvents();
+        final MenuItem.ClickActions clickActions = helper.getClickActions();
         final Argument<List<ConditionID>> conditions = helper.getID("conditions", ConditionID::new);
         final String rawClose = section.getString("close", config.getString("menu.default_close", "false"));
         final Argument<Boolean> close = new DefaultArgument<>(placeholders, pack, rawClose, new BooleanParser());
         final BetonQuestLogger log = loggerFactory.create(MenuItem.class);
-        return new MenuItem(log, questTypeApi, item, getIdentifier(pack, section.getName()), descriptions, clickEvents, conditions, close);
+        return new MenuItem(log, questTypeApi, item, getIdentifier(pack, section.getName()), descriptions, clickActions, conditions, close);
     }
 
     @Override
@@ -101,20 +101,20 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
             super(pack, section);
         }
 
-        private MenuItem.ClickEvents getClickEvents() throws QuestException {
+        private MenuItem.ClickActions getClickActions() throws QuestException {
             if (section.isConfigurationSection("click")) {
-                return new MenuItem.ClickEvents(
-                        getEvents("click.left"),
-                        getEvents("click.shiftLeft"),
-                        getEvents("click.right"),
-                        getEvents("click.shiftRight"),
-                        getEvents("click.middleMouse")
+                return new MenuItem.ClickActions(
+                        getActions("click.left"),
+                        getActions("click.shiftLeft"),
+                        getActions("click.right"),
+                        getActions("click.shiftRight"),
+                        getActions("click.middleMouse")
                 );
             }
-            return new MenuItem.ClickEvents(getEvents("click"));
+            return new MenuItem.ClickActions(getActions("click"));
         }
 
-        private Argument<List<ActionID>> getEvents(final String key) throws QuestException {
+        private Argument<List<ActionID>> getActions(final String key) throws QuestException {
             return getID(key, ActionID::new);
         }
     }

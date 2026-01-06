@@ -16,9 +16,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Wrapper for player and playerless events.
+ * Wrapper for player and playerless actions.
  */
-public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> implements PrimaryThreadEnforceable {
+public class ActionAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> implements PrimaryThreadEnforceable {
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -51,7 +51,7 @@ public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> imp
      * @throws IllegalArgumentException if there is no type provided
      * @throws QuestException           when there was an error parsing conditions
      */
-    public EventAdapter(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final Instruction instruction, @Nullable final PlayerEvent player, @Nullable final PlayerlessEvent playerless) throws QuestException {
+    public ActionAdapter(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final Instruction instruction, @Nullable final PlayerEvent player, @Nullable final PlayerlessEvent playerless) throws QuestException {
         super(instruction.getPackage(), player, playerless);
         this.log = log;
         this.questTypeApi = questTypeApi;
@@ -60,7 +60,7 @@ public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> imp
     }
 
     /**
-     * Fires an event for the profile if it meets the event's conditions.
+     * Fires an action for the profile if it meets the event's conditions.
      *
      * @param profile the {@link Profile} to execute for
      * @return whether the event was successfully handled or not
@@ -70,11 +70,11 @@ public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> imp
         if (player == null || profile == null) {
             return handleNullProfile();
         }
-        log.debug(getPackage(), "Event will be fired for "
+        log.debug(getPackage(), "Action will be fired for "
                 + (profile.getOnlineProfile().isPresent() ? "online" : "offline") + " profile.");
 
         if (!questTypeApi.conditions(profile, conditions.getValue(profile))) {
-            log.debug(getPackage(), "Event conditions were not met for " + profile);
+            log.debug(getPackage(), "Action conditions were not met for " + profile);
             return false;
         }
         player.execute(profile);
@@ -89,7 +89,7 @@ public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> imp
         }
         log.debug(getPackage(), "Static event will be fired without a profile.");
         if (!questTypeApi.conditions(null, conditions.getValue(null))) {
-            log.debug(getPackage(), "Event conditions were not met");
+            log.debug(getPackage(), "Action conditions were not met");
             return false;
         }
         playerless.execute();

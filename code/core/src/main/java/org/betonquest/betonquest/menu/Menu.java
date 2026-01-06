@@ -87,35 +87,35 @@ public class Menu {
     }
 
     /**
-     * Runs all open events for the specified player of the {@link Profile}.
+     * Runs all open actions for the specified player of the {@link Profile}.
      *
-     * @param profile the {@link Profile} to run the events for
+     * @param profile the {@link Profile} to run the actions for
      */
-    public void runOpenEvents(final OnlineProfile profile) {
-        executeEvents(data.openEvents, profile, "open");
+    public void runOpenActions(final OnlineProfile profile) {
+        executeActions(data.openActions, profile, "open");
     }
 
     /**
-     * Runs all close events for the specified player of the {@link Profile}.
+     * Runs all close actions for the specified player of the {@link Profile}.
      *
-     * @param profile the profile of the player to run the events for
+     * @param profile the profile of the player to run the actions for
      */
-    public void runCloseEvents(final OnlineProfile profile) {
-        executeEvents(data.closeEvents, profile, "close");
+    public void runCloseActions(final OnlineProfile profile) {
+        executeActions(data.closeActions, profile, "close");
     }
 
-    private void executeEvents(final Argument<List<ActionID>> events, final OnlineProfile profile, final String type) {
-        log.debug(menuID.getPackage(), "Menu " + menuID + ": Running " + type + " events");
+    private void executeActions(final Argument<List<ActionID>> actions, final OnlineProfile profile, final String type) {
+        log.debug(menuID.getPackage(), "Menu " + menuID + ": Running " + type + " actions");
         final List<ActionID> resolved;
         try {
-            resolved = events.getValue(profile);
+            resolved = actions.getValue(profile);
         } catch (final QuestException exception) {
-            log.warn(menuID.getPackage(), "Error while resolving " + type + " events in menu item '" + menuID + "': "
+            log.warn(menuID.getPackage(), "Error while resolving " + type + " actions in menu item '" + menuID + "': "
                     + exception.getMessage(), exception);
             return;
         }
-        log.debug(menuID.getPackage(), "Menu " + menuID + ": Run events");
-        questTypeApi.events(profile, resolved);
+        log.debug(menuID.getPackage(), "Menu " + menuID + ": Run actions");
+        questTypeApi.actions(profile, resolved);
     }
 
     /**
@@ -200,12 +200,12 @@ public class Menu {
      * @param height         The height of the menu in slots.
      * @param slots          List of all slots objects.
      * @param openConditions Conditions which have to be matched to open the menu.
-     * @param openEvents     Events which are fired when the menu is opened.
-     * @param closeEvents    Events which are fired when the menu is closed.
+     * @param openActions    Actions which are fired when the menu is opened.
+     * @param closeActions   Actions which are fired when the menu is closed.
      */
     public record MenuData(Text title, int height, List<Slots> slots,
                            Argument<List<ConditionID>> openConditions,
-                           Argument<List<ActionID>> openEvents, Argument<List<ActionID>> closeEvents) {
+                           Argument<List<ActionID>> openActions, Argument<List<ActionID>> closeActions) {
 
     }
 }

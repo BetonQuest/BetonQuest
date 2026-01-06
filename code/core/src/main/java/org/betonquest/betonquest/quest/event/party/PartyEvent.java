@@ -17,7 +17,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Fires specified events for every player in the party.
+ * Fires specified actions for every player in the party.
  */
 public class PartyEvent implements OnlineEvent {
 
@@ -53,7 +53,7 @@ public class PartyEvent implements OnlineEvent {
     private final Argument<List<ActionID>> events;
 
     /**
-     * Creates a new PartyEvent instance.
+     * Creates a new PartyAction instance.
      *
      * @param questTypeApi    the Quest Type API
      * @param profileProvider the profile provider instance
@@ -76,7 +76,7 @@ public class PartyEvent implements OnlineEvent {
     @Override
     public void execute(final OnlineProfile profile) throws QuestException {
         for (final OnlineProfile member : getMemberList(profile)) {
-            questTypeApi.events(member, events.getValue(profile));
+            questTypeApi.actions(member, events.getValue(profile));
         }
     }
 

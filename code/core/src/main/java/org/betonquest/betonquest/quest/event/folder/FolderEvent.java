@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Folder event is a collection of other events, that can be run after a delay and with a periode between the event.
+ * Folder action is a collection of other events, that can be run after a delay and with a periode between the event.
  * The events can be randomly chosen to run or not.
  */
 public class FolderEvent implements NullableEvent {
@@ -144,7 +144,7 @@ public class FolderEvent implements NullableEvent {
             if (checkCancelConditions(profile)) {
                 return;
             }
-            questTypeApi.event(profile, event);
+            questTypeApi.action(profile, event);
         }
     }
 
@@ -170,7 +170,7 @@ public class FolderEvent implements NullableEvent {
             if (checkCancelConditions(profile)) {
                 return;
             }
-            questTypeApi.event(profile, event);
+            questTypeApi.action(profile, event);
         }
         if (!chosenList.isEmpty()) {
             final FolderEventCanceler eventCanceler = createFolderEventCanceler(profile);
@@ -183,7 +183,7 @@ public class FolderEvent implements NullableEvent {
                         this.cancel();
                         return;
                     }
-                    questTypeApi.event(profile, event);
+                    questTypeApi.action(profile, event);
                 }
             }, delayTicks == 0 ? periodTicks : delayTicks, periodTicks);
         }

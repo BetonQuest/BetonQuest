@@ -12,8 +12,8 @@ import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
+import org.betonquest.betonquest.kernel.processor.quest.ActionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.ConditionProcessor;
-import org.betonquest.betonquest.kernel.processor.quest.EventProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.ObjectiveProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.PlaceholderProcessor;
 import org.betonquest.betonquest.kernel.registry.quest.BaseQuestTypeRegistries;
@@ -30,13 +30,13 @@ import java.util.Map;
  * Stores the active core quest type Processors to store and execute type logic.
  *
  * @param conditions   Condition logic.
- * @param events       Event logic.
+ * @param actions      Action logic.
  * @param objectives   Objective logic.
  * @param placeholders Placeholder logic.
  */
 public record CoreQuestRegistry(
         ConditionProcessor conditions,
-        EventProcessor events,
+        ActionProcessor actions,
         ObjectiveProcessor objectives,
         PlaceholderProcessor placeholders
 ) implements QuestTypeApi {
@@ -60,7 +60,7 @@ public record CoreQuestRegistry(
         return new CoreQuestRegistry(
                 new ConditionProcessor(loggerFactory.create(ConditionProcessor.class), placeholderProcessor, packManager,
                         questTypeRegistries.condition(), scheduler, plugin),
-                new EventProcessor(loggerFactory.create(EventProcessor.class), placeholderProcessor, packManager,
+                new ActionProcessor(loggerFactory.create(ActionProcessor.class), placeholderProcessor, packManager,
                         questTypeRegistries.event(), scheduler, plugin),
                 new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), placeholderProcessor, packManager,
                         questTypeRegistries.objective(), pluginManager, plugin), placeholderProcessor);
@@ -71,7 +71,7 @@ public record CoreQuestRegistry(
      */
     public void clear() {
         conditions.clear();
-        events.clear();
+        actions.clear();
         objectives.clear();
         placeholders.clear();
     }
@@ -82,7 +82,7 @@ public record CoreQuestRegistry(
      * @param pack to load the core quest types from
      */
     public void load(final QuestPackage pack) {
-        events.load(pack);
+        actions.load(pack);
         conditions.load(pack);
         objectives.load(pack);
         placeholders.load(pack);
@@ -96,7 +96,7 @@ public record CoreQuestRegistry(
     public Map<String, InstructionMetricsSupplier<? extends InstructionIdentifier>> metricsSupplier() {
         return Map.ofEntries(
                 conditions.metricsSupplier(),
-                events.metricsSupplier(),
+                actions.metricsSupplier(),
                 objectives.metricsSupplier(),
                 placeholders.metricsSupplier()
         );
@@ -108,7 +108,7 @@ public record CoreQuestRegistry(
      * @return the value size with the identifier
      */
     public String readableSize() {
-        return String.join(", ", conditions.readableSize(), events.readableSize(),
+        return String.join(", ", conditions.readableSize(), actions.readableSize(),
                 objectives.readableSize(), placeholders.readableSize());
     }
 
@@ -128,13 +128,13 @@ public record CoreQuestRegistry(
     }
 
     @Override
-    public boolean events(@Nullable final Profile profile, final Collection<ActionID> actionIDS) {
-        return events().executes(profile, actionIDS);
+    public boolean actions(@Nullable final Profile profile, final Collection<ActionID> actionIDS) {
+        return actions().executes(profile, actionIDS);
     }
 
     @Override
-    public boolean event(@Nullable final Profile profile, final ActionID actionID) {
-        return events().execute(profile, actionID);
+    public boolean action(@Nullable final Profile profile, final ActionID actionID) {
+        return actions().execute(profile, actionID);
     }
 
     @Override

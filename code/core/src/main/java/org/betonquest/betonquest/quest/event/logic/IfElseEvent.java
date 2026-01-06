@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * The if-else event. Either execute the one or the other event, depending on the condition.
+ * The if-else action. Either execute the one or the other action, depending on the condition.
  */
 public class IfElseEvent implements NullableEvent {
 
@@ -20,14 +20,14 @@ public class IfElseEvent implements NullableEvent {
     private final Argument<ConditionID> condition;
 
     /**
-     * The event to run if the condition is true.
+     * The action to run if the condition is true.
      */
-    private final Argument<ActionID> event;
+    private final Argument<ActionID> action;
 
     /**
-     * The event to run if the condition is false.
+     * The action to run if the condition is false.
      */
-    private final Argument<ActionID> elseEvent;
+    private final Argument<ActionID> elseAction;
 
     /**
      * Quest Type API.
@@ -35,26 +35,26 @@ public class IfElseEvent implements NullableEvent {
     private final QuestTypeApi questTypeApi;
 
     /**
-     * Creates a new if-else event.
+     * Creates a new if-else action.
      *
      * @param condition    the condition to check
-     * @param event        the event to run if the condition is true
-     * @param elseEvent    the event to run if the condition is false
+     * @param action       the action to run if the condition is true
+     * @param elseAction   the action to run if the condition is false
      * @param questTypeApi the Quest Type API
      */
-    public IfElseEvent(final Argument<ConditionID> condition, final Argument<ActionID> event, final Argument<ActionID> elseEvent, final QuestTypeApi questTypeApi) {
+    public IfElseEvent(final Argument<ConditionID> condition, final Argument<ActionID> action, final Argument<ActionID> elseAction, final QuestTypeApi questTypeApi) {
         this.condition = condition;
-        this.event = event;
-        this.elseEvent = elseEvent;
+        this.action = action;
+        this.elseAction = elseAction;
         this.questTypeApi = questTypeApi;
     }
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
         if (questTypeApi.condition(profile, condition.getValue(profile))) {
-            questTypeApi.event(profile, event.getValue(profile));
+            questTypeApi.action(profile, action.getValue(profile));
         } else {
-            questTypeApi.event(profile, elseEvent.getValue(profile));
+            questTypeApi.action(profile, elseAction.getValue(profile));
         }
     }
 }

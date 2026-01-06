@@ -83,7 +83,7 @@ public class OpenedMenu implements Listener {
         this.data = menu;
         this.onlineProfile = onlineProfile;
         this.resolvedTitle = data.getTitle(onlineProfile);
-        this.data.runOpenEvents(onlineProfile);
+        this.data.runOpenActions(onlineProfile);
         final Inventory inventory = Bukkit.createInventory(null, data.getSize(), resolvedTitle);
         this.update(onlineProfile, inventory);
         onlineProfile.getPlayer().openInventory(inventory);
@@ -288,7 +288,7 @@ public class OpenedMenu implements Listener {
         OPENED_MENUS.remove(onlineProfile.getProfileUUID());
         closed = true;
         //run close events
-        this.data.runCloseEvents(onlineProfile);
+        this.data.runCloseActions(onlineProfile);
     }
 
     /**

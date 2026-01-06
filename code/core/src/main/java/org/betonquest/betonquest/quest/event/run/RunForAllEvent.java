@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 /**
- * Run given set of events for all profiles supplied by {@link #profileCollectionSupplier} that meet the
+ * Run given set of actions for all profiles supplied by {@link #profileCollectionSupplier} that meet the
  * conditions.
  */
 public class RunForAllEvent implements PlayerlessEvent {
@@ -31,40 +31,40 @@ public class RunForAllEvent implements PlayerlessEvent {
     private final QuestTypeApi questTypeApi;
 
     /**
-     * List of Events to run.
+     * List of Actions to run.
      */
-    private final Argument<List<ActionID>> events;
+    private final Argument<List<ActionID>> actions;
 
     /**
-     * List of conditions each profile must meet to run the events.
+     * List of conditions each profile must meet to run the actions.
      */
     private final Argument<List<ConditionID>> conditions;
 
     /**
-     * Create a new RunForAllEvent instance.
+     * Create a new RunForAllAction instance.
      *
      * @param profileCollectionSupplier the supplier for generating the profiles
      * @param questTypeApi              the Quest Type API
-     * @param events                    the events to run
-     * @param conditions                the conditions each profile must meet to run the events
+     * @param actions                   the actions to run
+     * @param conditions                the conditions each profile must meet to run the actions
      */
     public RunForAllEvent(final Supplier<? extends Iterable<? extends Profile>> profileCollectionSupplier,
-                          final QuestTypeApi questTypeApi, final Argument<List<ActionID>> events,
+                          final QuestTypeApi questTypeApi, final Argument<List<ActionID>> actions,
                           final Argument<List<ConditionID>> conditions) {
         this.profileCollectionSupplier = profileCollectionSupplier;
         this.questTypeApi = questTypeApi;
-        this.events = events;
+        this.actions = actions;
         this.conditions = conditions;
     }
 
     @Override
     public void execute() throws QuestException {
-        final QuestListException questListException = new QuestListException("Could not run events for all profiles:");
+        final QuestListException questListException = new QuestListException("Could not run actions for all profiles:");
         for (final Profile profile : profileCollectionSupplier.get()) {
             try {
                 final List<ConditionID> resolvedConditions = conditions.getValue(profile);
                 if (resolvedConditions.isEmpty() || questTypeApi.conditions(profile, resolvedConditions)) {
-                    questTypeApi.events(profile, events.getValue(profile));
+                    questTypeApi.actions(profile, actions.getValue(profile));
                 }
             } catch (final QuestException e) {
                 questListException.addException(profile.toString(), e);

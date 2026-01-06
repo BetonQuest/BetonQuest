@@ -11,17 +11,17 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Fires randomly events by weight and amount.
+ * Fires randomly actions by weight and amount.
  */
 public class PickRandomEvent implements NullableEvent {
 
     /**
-     * The events with there weight.
+     * The actions with there weight.
      */
-    private final Argument<List<RandomEvent>> events;
+    private final Argument<List<RandomAction>> actions;
 
     /**
-     * The amount of events to fire.
+     * The amount of actions to fire.
      */
     @Nullable
     private final Argument<Number> amount;
@@ -32,35 +32,35 @@ public class PickRandomEvent implements NullableEvent {
     private final QuestTypeApi questTypeApi;
 
     /**
-     * Creates a new PickRandomEvent.
+     * Creates a new PickRandomAction.
      *
-     * @param events       the events with there weight
-     * @param amount       the amount of events to fire
+     * @param actions      the actions with there weight
+     * @param amount       the amount of actions to fire
      * @param questTypeApi the Quest Type API
      */
-    public PickRandomEvent(final Argument<List<RandomEvent>> events, @Nullable final Argument<Number> amount, final QuestTypeApi questTypeApi) {
-        this.events = events;
+    public PickRandomEvent(final Argument<List<RandomAction>> actions, @Nullable final Argument<Number> amount, final QuestTypeApi questTypeApi) {
+        this.actions = actions;
         this.amount = amount;
         this.questTypeApi = questTypeApi;
     }
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
-        final List<RandomEvent> resolvedEvents = events.getValue(profile);
-        double total = resolvedEvents.stream().mapToDouble(RandomEvent::weight).sum();
+        final List<RandomAction> resolvedActions = actions.getValue(profile);
+        double total = resolvedActions.stream().mapToDouble(RandomAction::weight).sum();
 
         int pick = this.amount == null ? 1 : this.amount.getValue(profile).intValue();
-        while (pick > 0 && !resolvedEvents.isEmpty()) {
+        while (pick > 0 && !resolvedActions.isEmpty()) {
             pick--;
             double random = Math.random() * total;
-            final Iterator<RandomEvent> iterator = resolvedEvents.iterator();
+            final Iterator<RandomAction> iterator = resolvedActions.iterator();
             while (iterator.hasNext()) {
-                final RandomEvent event = iterator.next();
-                random -= event.weight();
+                final RandomAction action = iterator.next();
+                random -= action.weight();
                 if (random < 0) {
-                    questTypeApi.event(profile, event.actionID());
+                    questTypeApi.action(profile, action.actionID());
                     iterator.remove();
-                    total -= event.weight();
+                    total -= action.weight();
                     break;
                 }
             }

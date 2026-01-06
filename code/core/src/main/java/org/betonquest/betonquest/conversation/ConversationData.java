@@ -428,14 +428,14 @@ public class ConversationData {
     }
 
     /**
-     * Gets the events that will be executed when the specified option is selected.
+     * Gets the actions that will be executed when the specified option is selected.
      *
      * @param profile the profile of the player
      * @param option  the name of the conversation option
      * @param type    the type of the option
      * @return a list of {@link ActionID}s
      */
-    public List<ActionID> getEventIDs(final Profile profile, final ResolvedOption option, final OptionType type) {
+    public List<ActionID> getActionIDs(final Profile profile, final ResolvedOption option, final OptionType type) {
         final Map<String, ConversationOption> options;
         if (type == NPC) {
             options = option.conversationData().npcOptions;
@@ -443,7 +443,7 @@ public class ConversationData {
             options = option.conversationData().playerOptions;
         }
         if (options.containsKey(option.name())) {
-            return options.get(option.name()).getEvents(profile);
+            return options.get(option.name()).getActions(profile);
         }
         return Collections.emptyList();
     }
@@ -537,14 +537,14 @@ public class ConversationData {
      * @param conversationID   The ID of the conversation.
      * @param quester          A map of the quester's name in different languages.
      * @param blockMovement    If true, the player will not be able to move during this conversation.
-     * @param finalEvents      All events that will be executed when the conversation ends.
+     * @param finalActions     All actions that will be executed when the conversation ends.
      * @param convIO           The conversation IO that should be used for this conversation.
      * @param interceptor      The interceptor that should be used for this conversation.
      * @param interceptorDelay The delay before the interceptor is ended after the conversation ends.
      * @param invincible       If true, the player will not be able to damage or be damaged by entities in conversation.
      */
     public record PublicData(ConversationID conversationID, Text quester, Argument<Boolean> blockMovement,
-                             Argument<List<ActionID>> finalEvents, Argument<ConversationIOFactory> convIO,
+                             Argument<List<ActionID>> finalActions, Argument<ConversationIOFactory> convIO,
                              Argument<InterceptorFactory> interceptor, Argument<Number> interceptorDelay,
                              boolean invincible) {
 
@@ -595,9 +595,9 @@ public class ConversationData {
         private final List<ConditionID> conditions;
 
         /**
-         * Events that are triggered when the option is selected.
+         * Actions that are triggered when the option is selected.
          */
-        private final List<ActionID> events;
+        private final List<ActionID> actions;
 
         /**
          * Other options that are available after this option is selected.
@@ -631,7 +631,7 @@ public class ConversationData {
             if (conv == null) {
                 text = null;
                 conditions = List.of();
-                events = List.of();
+                actions = List.of();
                 pointers = List.of();
                 extendLinks = List.of();
                 properties = new UnmodifiableConfigurationSection(new MemoryConfiguration());
@@ -640,7 +640,7 @@ public class ConversationData {
 
             this.text = parseText(conv);
             this.conditions = resolve(conv, "conditions", ConditionID::new);
-            this.events = resolve(conv, "actions", ActionID::new);
+            this.actions = resolve(conv, "actions", ActionID::new);
 
             final StringParser stringParser = new StringParser();
 
@@ -739,33 +739,33 @@ public class ConversationData {
         }
 
         /**
-         * Returns all events that are triggered when this option is selected.
-         * This will also include events from extended options (if the conditions for these are true for the
+         * Returns all actions that are triggered when this option is selected.
+         * This will also include actions from extended options (if the conditions for these are true for the
          * given {@link Profile}).
          *
-         * @param profile the profile of the player to get the events for
+         * @param profile the profile of the player to get the actions for
          * @return a list of {@link ActionID}s
          */
-        public List<ActionID> getEvents(final Profile profile) {
-            return getEvents(profile, new ArrayList<>());
+        public List<ActionID> getActions(final Profile profile) {
+            return getActions(profile, new ArrayList<>());
         }
 
-        private List<ActionID> getEvents(final Profile profile, final List<String> optionPath) {
+        private List<ActionID> getActions(final Profile profile, final List<String> optionPath) {
             // Prevent infinite loops
             if (optionPath.contains(getName())) {
                 return Collections.emptyList();
             }
             optionPath.add(getName());
 
-            final List<ActionID> events = new ArrayList<>(this.events);
+            final List<ActionID> actions = new ArrayList<>(this.actions);
 
             for (final String extend : extendLinks) {
                 if (questTypeApi.conditions(profile, getOption(extend, type).getConditions())) {
-                    events.addAll(getOption(extend, type).getEvents(profile, optionPath));
+                    actions.addAll(getOption(extend, type).getActions(profile, optionPath));
                     break;
                 }
             }
-            return events;
+            return actions;
         }
 
         /**

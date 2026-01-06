@@ -12,14 +12,14 @@ import java.time.ZoneId;
 import java.util.List;
 
 /**
- * A schedule that mimics the functionality and style of the old static event system.
+ * A schedule that mimics the functionality and style of the old static action system.
  * Time is just {@code HH:mm} format (e.g., 14:45)
- * and defines the time of day when the events from this schedule will be run.
+ * and defines the time of day when the actions from this schedule will be run.
  */
 public class RealtimeDailySchedule extends Schedule {
 
     /**
-     * Parsed time of day when the events should run.
+     * Parsed time of day when the actions should run.
      */
     private final LocalTime timeToRun;
 
@@ -27,20 +27,20 @@ public class RealtimeDailySchedule extends Schedule {
      * Creates new instance of the schedule.
      *
      * @param scheduleID the schedule id
-     * @param events     the events to execute
+     * @param actions    the actions to execute
      * @param catchup    the catchup strategy
      * @param timeToRun  the resolved time to run the schedule
      */
-    public RealtimeDailySchedule(final ScheduleID scheduleID, final List<ActionID> events, final CatchupStrategy catchup,
+    public RealtimeDailySchedule(final ScheduleID scheduleID, final List<ActionID> actions, final CatchupStrategy catchup,
                                  final LocalTime timeToRun) {
-        super(scheduleID, events, catchup);
+        super(scheduleID, actions, catchup);
         this.timeToRun = timeToRun;
     }
 
     /**
-     * Get the time of day when the events should run.
+     * Get the time of day when the actions should run.
      *
-     * @return the local time to run the events
+     * @return the local time to run the actions
      */
     public LocalTime getTimeToRun() {
         return timeToRun;

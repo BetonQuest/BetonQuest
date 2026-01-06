@@ -65,17 +65,17 @@ class SchedulerTest {
     }
 
     @Test
-    void testExecuteEvents() {
+    void testExecuteActions() {
         final QuestTypeApi questTypeApi = mock(QuestTypeApi.class);
         final Scheduler<Schedule, FictiveTime> scheduler = new MockedScheduler(logger, questTypeApi);
         final Schedule schedule = mock(Schedule.class);
         when(schedule.getId()).thenReturn(mock(ScheduleID.class));
-        final ActionID eventA = mock(ActionID.class);
-        final ActionID eventB = mock(ActionID.class);
-        final List<ActionID> eventList = List.of(eventA, eventB);
-        when(schedule.getEvents()).thenReturn(eventList);
-        scheduler.executeEvents(schedule);
-        verify(questTypeApi).events(null, eventList);
+        final ActionID actionA = mock(ActionID.class);
+        final ActionID actionB = mock(ActionID.class);
+        final List<ActionID> actionList = List.of(actionA, actionB);
+        when(schedule.getActions()).thenReturn(actionList);
+        scheduler.executeActions(schedule);
+        verify(questTypeApi).actions(null, actionList);
     }
 
     /**

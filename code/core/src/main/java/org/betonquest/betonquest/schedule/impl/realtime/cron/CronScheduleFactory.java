@@ -34,7 +34,7 @@ public abstract class CronScheduleFactory extends BaseScheduleFactory<CronSchedu
         try {
             final Cron timeCron = new CronParser(parseCronDefinition()).parse(scheduleData.time()).validate();
             final ExecutionTime executionTime = ExecutionTime.forCron(timeCron);
-            return new CronSchedule(scheduleID, scheduleData.events(), scheduleData.catchup(), timeCron, executionTime);
+            return new CronSchedule(scheduleID, scheduleData.actions(), scheduleData.catchup(), timeCron, executionTime);
         } catch (final IllegalArgumentException e) {
             throw new QuestException("Time is no valid cron syntax: '" + scheduleData.time() + "'", e);
         }
