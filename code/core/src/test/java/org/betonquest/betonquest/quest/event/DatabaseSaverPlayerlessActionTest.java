@@ -14,16 +14,16 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 
 /**
- * Test {@link DatabaseSaverPlayerlessEvent}.
+ * Test {@link DatabaseSaverPlayerlessAction}.
  */
 @ExtendWith(MockitoExtension.class)
-class DatabaseSaverPlayerlessEventTest {
+class DatabaseSaverPlayerlessActionTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testAddRecord(@Mock final Saver saver) throws QuestException {
         final Saver.Record record = new Saver.Record(UpdateType.DELETE_GLOBAL_TAGS);
-        final DatabaseSaverPlayerlessEvent event = new DatabaseSaverPlayerlessEvent(saver, () -> record);
+        final DatabaseSaverPlayerlessAction event = new DatabaseSaverPlayerlessAction(saver, () -> record);
 
         verify(saver, never()).add(record);
         event.execute();
@@ -37,7 +37,7 @@ class DatabaseSaverPlayerlessEventTest {
         final Saver.Record firstRecord = new Saver.Record(UpdateType.DELETE_GLOBAL_TAGS);
         final Saver.Record secondRecord = new Saver.Record(UpdateType.DELETE_GLOBAL_POINTS);
         final Iterator<Saver.Record> recordsForSupplier = List.of(firstRecord, secondRecord).iterator();
-        final DatabaseSaverPlayerlessEvent event = new DatabaseSaverPlayerlessEvent(saver, recordsForSupplier::next);
+        final DatabaseSaverPlayerlessAction event = new DatabaseSaverPlayerlessAction(saver, recordsForSupplier::next);
 
         event.execute();
         verify(saver).add(firstRecord);

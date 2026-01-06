@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Test {@link DoNothingPlayerlessEvent}.
+ * Test {@link DoNothingPlayerlessAction}.
  */
 class DoNothingPlayerlessEventTest {
 
     @Test
     void testExecuteDoesNothing() {
-        final PlayerlessAction event = new DoNothingPlayerlessEvent();
+        final PlayerlessAction event = new DoNothingPlayerlessAction();
         assertDoesNotThrow(event::execute, "Doing nothing should not thrown an exception.");
     }
 }

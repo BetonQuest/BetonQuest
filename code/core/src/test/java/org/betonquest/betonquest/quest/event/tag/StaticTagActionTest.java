@@ -10,20 +10,20 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.Mockito.*;
 
 /**
- * Test {@link PlayerlessTagEvent}.
+ * Test {@link PlayerlessTagAction}.
  */
 @ExtendWith(MockitoExtension.class)
-class StaticTagEventTest {
+class StaticTagActionTest {
 
     @Test
-    void testStaticTagEvent(
+    void testStaticTagAction(
             @Mock final TagData data,
             @Mock final TagChanger tagChanger) throws QuestException {
-        final PlayerlessTagEvent staticTagEvent = new PlayerlessTagEvent(data, tagChanger);
+        final PlayerlessTagAction staticTagAction = new PlayerlessTagAction(data, tagChanger);
 
-        staticTagEvent.execute();
-        staticTagEvent.execute();
-        staticTagEvent.execute();
+        staticTagAction.execute();
+        staticTagAction.execute();
+        staticTagAction.execute();
 
         verify(tagChanger, times(3)).changeTags(data, null);
     }
