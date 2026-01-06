@@ -5,12 +5,22 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.item.QuestItemSerializer;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * Serializes {@link ItemStack}s to their CraftEngine IDs.
+ */
 public class CraftEngineQuestItemSerializer implements QuestItemSerializer {
+
+    /**
+ * The empty default constructor.
+ */
+    public CraftEngineQuestItemSerializer() { }
 
     @Override
     public String serialize(final ItemStack itemStack) throws QuestException {
         final Object customItemId = CraftEngineItems.getCustomItemId(itemStack);
-        if (customItemId == null) throw new QuestException("Item is not a CraftEngine Item!");
+        if (customItemId == null) {
+            throw new QuestException("Item is not a CraftEngine Item!");
+        }
         return customItemId.toString();
     }
 }

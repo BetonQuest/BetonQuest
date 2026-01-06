@@ -7,19 +7,30 @@ import org.betonquest.betonquest.compatibility.nexo.item.NexoItemFactory;
 import org.betonquest.betonquest.compatibility.nexo.item.NexoQuestItemSerializer;
 import org.betonquest.betonquest.item.ItemRegistry;
 
+/**
+ * Handles integration with Nexo.
+ */
 public class NexoIntegrator implements Integrator {
+
+    /**
+ * The empty default constructor.
+ */
+    public NexoIntegrator() { }
 
     @Override
     public void hook(final BetonQuestApi api) throws HookException {
-
         final ItemRegistry itemRegistry = api.getFeatureRegistries().item();
         itemRegistry.register("nexo", new NexoItemFactory());
         itemRegistry.registerSerializer("nexo", new NexoQuestItemSerializer());
     }
 
     @Override
-    public void reload() {}
+    public void reload() {
+        // Empty
+    }
 
     @Override
-    public void close() {}
+    public void close() {
+        // Empty
+    }
 }
