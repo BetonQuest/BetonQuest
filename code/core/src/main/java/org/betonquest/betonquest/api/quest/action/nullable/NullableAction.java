@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api.quest.event.nullable;
+package org.betonquest.betonquest.api.quest.action.nullable;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
  * Quest event that can work both with and without a profile.
  */
 @FunctionalInterface
-public interface NullableEvent extends PrimaryThreadEnforceable {
+public interface NullableAction extends PrimaryThreadEnforceable {
 
     /**
      * Execute the event with a nullable profile.

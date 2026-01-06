@@ -1,4 +1,4 @@
 /**
- * {@link org.betonquest.betonquest.api.quest.event Event} implementation for spawn events.
+ * {@link org.betonquest.betonquest.api.quest.action Action} implementation for spawn events.
  */
 package org.betonquest.betonquest.quest.event.spawn;

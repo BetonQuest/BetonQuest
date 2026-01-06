@@ -1,4 +1,4 @@
 /**
- * {@link org.betonquest.betonquest.api.quest.event Event} implementation that causes lightning strikes.
+ * {@link org.betonquest.betonquest.api.quest.action Action} implementation that causes lightning strikes.
  */
 package org.betonquest.betonquest.quest.event.lightning;

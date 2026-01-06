@@ -12,7 +12,7 @@ import org.betonquest.betonquest.api.kernel.FeatureRegistry;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
-import org.betonquest.betonquest.api.quest.event.EventRegistry;
+import org.betonquest.betonquest.api.quest.action.ActionRegistry;
 import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.npc.citizens.event.move.CitizensMoveController;
@@ -73,7 +73,7 @@ public class CitizensIntegrator implements Integrator {
 
         manager.registerEvents(citizensMoveController, plugin);
 
-        final EventRegistry eventRegistry = questRegistries.event();
+        final ActionRegistry eventRegistry = questRegistries.event();
         final FeatureApi featureApi = api.getFeatureApi();
         eventRegistry.register("npcmove", new CitizensMoveEventFactory(featureApi, citizensMoveController));
         eventRegistry.registerCombined("npcstop", new CitizensStopEventFactory(featureApi, citizensMoveController));

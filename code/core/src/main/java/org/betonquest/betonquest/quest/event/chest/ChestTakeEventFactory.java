@@ -4,11 +4,11 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter;
 import org.bukkit.Location;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Factory to create chest events from {@link Instruction}s.
  */
-public class ChestTakeEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+public class ChestTakeEventFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
      * Create the chest take event factory.
@@ -25,18 +25,18 @@ public class ChestTakeEventFactory implements PlayerEventFactory, PlayerlessEven
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         return createChestTakeEvent(instruction);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
         return createChestTakeEvent(instruction);
     }
 
-    private NullableEventAdapter createChestTakeEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createChestTakeEvent(final Instruction instruction) throws QuestException {
         final Argument<Location> location = instruction.location().get();
         final Argument<List<ItemWrapper>> item = instruction.item().list().get();
-        return new NullableEventAdapter(new ChestTakeEvent(location, item));
+        return new NullableActionAdapter(new ChestTakeEvent(location, item));
     }
 }

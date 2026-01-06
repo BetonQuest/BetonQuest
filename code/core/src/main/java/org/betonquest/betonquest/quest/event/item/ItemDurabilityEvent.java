@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
+import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 import org.betonquest.betonquest.quest.event.point.PointType;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
@@ -22,7 +22,7 @@ import java.util.Random;
 /**
  * The item durability event, to modify the durability of an item.
  */
-public class ItemDurabilityEvent implements OnlineEvent {
+public class ItemDurabilityEvent implements OnlineAction {
 
     /**
      * The slot to target.

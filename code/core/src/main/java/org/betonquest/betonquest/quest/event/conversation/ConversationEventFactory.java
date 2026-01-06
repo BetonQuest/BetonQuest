@@ -7,15 +7,15 @@ import org.betonquest.betonquest.api.feature.ConversationApi;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
 import org.betonquest.betonquest.conversation.ConversationID;
 
 /**
  * Factory for {@link ConversationEvent}.
  */
-public class ConversationEventFactory implements PlayerEventFactory {
+public class ConversationEventFactory implements PlayerActionFactory {
 
     /**
      * Logger factory to create a logger for the events.
@@ -47,9 +47,9 @@ public class ConversationEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<Pair<ConversationID, String>> conversation = getConversation(instruction);
-        return new OnlineEventAdapter(new ConversationEvent(conversationApi, conversation),
+        return new OnlineActionAdapter(new ConversationEvent(conversationApi, conversation),
                 loggerFactory.create(ConversationEvent.class), instruction.getPackage());
     }
 

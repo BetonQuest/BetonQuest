@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.scoreboard;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.quest.event.point.PointType;
 import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.Objective;
@@ -13,7 +13,7 @@ import org.bukkit.scoreboard.Scoreboard;
 /**
  * Adds/removes/multiplies/divides scores on scoreboards.
  */
-public class ScoreboardObjectiveEvent implements PlayerEvent {
+public class ScoreboardObjectiveEvent implements PlayerAction {
 
     /**
      * The name of the objective.

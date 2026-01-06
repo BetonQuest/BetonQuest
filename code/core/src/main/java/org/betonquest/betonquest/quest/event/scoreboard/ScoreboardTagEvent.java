@@ -3,12 +3,12 @@ package org.betonquest.betonquest.quest.event.scoreboard;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
+import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 
 /**
  * Adds or removes a scoreboard tag.
  */
-public class ScoreboardTagEvent implements OnlineEvent {
+public class ScoreboardTagEvent implements OnlineAction {
 
     /**
      * The tag to add or remove.

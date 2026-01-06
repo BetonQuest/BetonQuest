@@ -4,15 +4,15 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
 import org.bukkit.util.Vector;
 
 /**
  * Factory to create velocity events from {@link Instruction}s.
  */
-public class VelocityEventFactory implements PlayerEventFactory {
+public class VelocityEventFactory implements PlayerActionFactory {
 
     /**
      * Logger factory to create a logger for the events.
@@ -29,7 +29,7 @@ public class VelocityEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<Vector> vector = instruction.vector().get("vector").orElse(null);
         if (vector == null) {
             throw new QuestException("A 'vector' is required");
@@ -38,7 +38,7 @@ public class VelocityEventFactory implements PlayerEventFactory {
                 .get("direction", VectorDirection.ABSOLUTE);
         final Argument<VectorModification> modification = instruction.enumeration(VectorModification.class)
                 .get("modification", VectorModification.SET);
-        return new OnlineEventAdapter(new VelocityEvent(vector, direction, modification),
+        return new OnlineActionAdapter(new VelocityEvent(vector, direction, modification),
                 loggerFactory.create(VelocityEvent.class), instruction.getPackage());
     }
 }

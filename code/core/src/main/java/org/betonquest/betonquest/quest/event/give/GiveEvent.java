@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
+import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.item.typehandler.QuestHandler;
 import org.betonquest.betonquest.quest.event.NotificationSender;
@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Gives the player items.
  */
-public class GiveEvent implements OnlineEvent {
+public class GiveEvent implements OnlineAction {
 
     /**
      * The items to give.

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.tag;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.database.TagData;
 
 import java.util.function.Function;
@@ -10,7 +10,7 @@ import java.util.function.Function;
 /**
  * The tag event, doing what was defined in its instruction.
  */
-public class TagEvent implements PlayerEvent {
+public class TagEvent implements PlayerAction {
 
     /**
      * Function providing the tagData for the given player.

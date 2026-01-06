@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NoNotificationSender;
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Abstract factory for take events, to take items from the players inventory or backpack.
  */
-public abstract class AbstractTakeEventFactory implements PlayerEventFactory {
+public abstract class AbstractTakeEventFactory implements PlayerActionFactory {
 
     /**
      * Logger factory to create a logger for the events.

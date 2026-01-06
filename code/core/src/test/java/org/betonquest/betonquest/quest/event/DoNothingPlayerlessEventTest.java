@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event;
 
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,7 +12,7 @@ class DoNothingPlayerlessEventTest {
 
     @Test
     void testExecuteDoesNothing() {
-        final PlayerlessEvent event = new DoNothingPlayerlessEvent();
+        final PlayerlessAction event = new DoNothingPlayerlessEvent();
         assertDoesNotThrow(event::execute, "Doing nothing should not thrown an exception.");
     }
 }

@@ -4,8 +4,8 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
@@ -16,7 +16,7 @@ import org.betonquest.betonquest.quest.event.NotificationSender;
 /**
  * Factory to create points events from {@link Instruction}s.
  */
-public class PointEventFactory implements PlayerEventFactory {
+public class PointEventFactory implements PlayerActionFactory {
 
     /**
      * Logger factory to create a logger for the events.
@@ -48,7 +48,7 @@ public class PointEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<String> category = instruction.packageIdentifier().get();
         final Argument<Number> amount = instruction.number().get();
         final PointType type = instruction.enumeration(PointType.class).get("action", PointType.ADD).getValue(null);

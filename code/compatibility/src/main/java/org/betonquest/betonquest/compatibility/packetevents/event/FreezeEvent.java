@@ -4,7 +4,7 @@ import com.github.retrooper.packetevents.PacketEventsAPI;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
+import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 import org.betonquest.betonquest.compatibility.packetevents.passenger.FakeArmorStandPassenger;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -13,7 +13,7 @@ import org.bukkit.plugin.Plugin;
 /**
  * Event to block all player entity movement.
  */
-public class FreezeEvent implements OnlineEvent {
+public class FreezeEvent implements OnlineAction {
 
     /**
      * The plugin instance.

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InOrder;
@@ -21,20 +21,20 @@ class SequentialPlayerlessEventTest {
 
     @Test
     void testCanExecuteWithZeroEvents() {
-        final PlayerlessEvent event = new SequentialPlayerlessEvent(List.of());
+        final PlayerlessAction event = new SequentialPlayerlessEvent(List.of());
         assertDoesNotThrow(event::execute, "SequentialStaticEvent should not fail with no actions to execute.");
     }
 
     @Test
-    void testExecutesOneEvent(@Mock final PlayerlessEvent internal) throws QuestException {
-        final PlayerlessEvent event = new SequentialPlayerlessEvent(List.of(internal));
+    void testExecutesOneEvent(@Mock final PlayerlessAction internal) throws QuestException {
+        final PlayerlessAction event = new SequentialPlayerlessEvent(List.of(internal));
         event.execute();
         verify(internal).execute();
     }
 
     @Test
-    void testExecutesMultipleEvents(@Mock final PlayerlessEvent first, @Mock final PlayerlessEvent second) throws QuestException {
-        final PlayerlessEvent event = new SequentialPlayerlessEvent(List.of(first, second));
+    void testExecutesMultipleEvents(@Mock final PlayerlessAction first, @Mock final PlayerlessAction second) throws QuestException {
+        final PlayerlessAction event = new SequentialPlayerlessEvent(List.of(first, second));
 
         event.execute();
 
@@ -44,10 +44,10 @@ class SequentialPlayerlessEventTest {
     }
 
     @Test
-    void testFailuresArePassedOn(@Mock final PlayerlessEvent internal) throws QuestException {
+    void testFailuresArePassedOn(@Mock final PlayerlessAction internal) throws QuestException {
         final QuestException exception = new QuestException("test exception");
         doThrow(exception).when(internal).execute();
-        final PlayerlessEvent event = new SequentialPlayerlessEvent(List.of(internal));
+        final PlayerlessAction event = new SequentialPlayerlessEvent(List.of(internal));
 
         final QuestException thrown
                 = assertThrows(QuestException.class, event::execute, "The failure of an internal event should fail the sequential event immediately.");

@@ -4,10 +4,10 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
 
 import java.util.List;
 import java.util.Locale;
@@ -15,7 +15,7 @@ import java.util.Locale;
 /**
  * Factory to create global tag events from {@link Instruction}s.
  */
-public class TagGlobalEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+public class TagGlobalEventFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
      * BetonQuest instance to provide to events.
@@ -32,7 +32,7 @@ public class TagGlobalEventFactory implements PlayerEventFactory, PlayerlessEven
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final String action = instruction.string().get().getValue(null);
         final Argument<List<String>> tags = instruction.packageIdentifier().list().get();
         return switch (action.toLowerCase(Locale.ROOT)) {
@@ -43,7 +43,7 @@ public class TagGlobalEventFactory implements PlayerEventFactory, PlayerlessEven
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
         final String action = instruction.string().get().getValue(null);
         final Argument<List<String>> tags = instruction.packageIdentifier().list().get();
         return switch (action.toLowerCase(Locale.ROOT)) {
@@ -53,22 +53,22 @@ public class TagGlobalEventFactory implements PlayerEventFactory, PlayerlessEven
         };
     }
 
-    private PlayerlessEvent createStaticAddTagEvent(final Argument<List<String>> tags) {
+    private PlayerlessAction createStaticAddTagEvent(final Argument<List<String>> tags) {
         final TagChanger tagChanger = new AddTagChanger(tags);
         return new PlayerlessTagEvent(betonQuest.getGlobalData(), tagChanger);
     }
 
-    private PlayerlessEvent createStaticDeleteTagEvent(final Argument<List<String>> tags) {
+    private PlayerlessAction createStaticDeleteTagEvent(final Argument<List<String>> tags) {
         final TagChanger tagChanger = new DeleteTagChanger(tags);
         return new PlayerlessTagEvent(betonQuest.getGlobalData(), tagChanger);
     }
 
-    private PlayerEvent createAddTagEvent(final Argument<List<String>> tags) {
+    private PlayerAction createAddTagEvent(final Argument<List<String>> tags) {
         final TagChanger tagChanger = new AddTagChanger(tags);
         return new TagEvent(profile -> betonQuest.getGlobalData(), tagChanger);
     }
 
-    private PlayerEvent createDeleteTagEvent(final Argument<List<String>> tags) {
+    private PlayerAction createDeleteTagEvent(final Argument<List<String>> tags) {
         final TagChanger tagChanger = new DeleteTagChanger(tags);
         return new TagEvent(profile -> betonQuest.getGlobalData(), tagChanger);
     }

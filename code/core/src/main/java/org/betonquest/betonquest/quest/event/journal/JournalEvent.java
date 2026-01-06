@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.journal;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
@@ -11,7 +11,7 @@ import org.betonquest.betonquest.quest.event.NotificationSender;
 /**
  * The journal event, doing what was defined in its instruction.
  */
-public class JournalEvent implements PlayerEvent {
+public class JournalEvent implements PlayerAction {
 
     /**
      * Storage used to get the {@link PlayerData}.

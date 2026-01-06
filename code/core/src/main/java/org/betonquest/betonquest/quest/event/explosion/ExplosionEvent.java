@@ -3,14 +3,14 @@ package org.betonquest.betonquest.quest.event.explosion;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Spawns an explosion in a given location and with given stats.
  */
-public class ExplosionEvent implements NullableEvent {
+public class ExplosionEvent implements NullableAction {
 
     /**
      * The location of the explosion.

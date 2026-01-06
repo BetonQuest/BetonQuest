@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.quest.event.NotificationSender;
@@ -13,7 +13,7 @@ import org.betonquest.betonquest.quest.event.NotificationSender;
 /**
  * Modifies players Points.
  */
-public class PointEvent implements PlayerEvent {
+public class PointEvent implements PlayerAction {
 
     /**
      * The notification sender to use.

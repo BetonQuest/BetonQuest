@@ -4,11 +4,11 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 /**
  * Factory to parse new {@link LogEvent}s.
  */
-public class LogEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+public class LogEventFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
      * Regex used to detect a conditions statement at the end of the instruction.
@@ -43,16 +43,16 @@ public class LogEventFactory implements PlayerEventFactory, PlayerlessEventFacto
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         return createLogEvent(instruction);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
         return createLogEvent(instruction);
     }
 
-    private NullableEventAdapter createLogEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createLogEvent(final Instruction instruction) throws QuestException {
         final Argument<LogEventLevel> level = instruction.enumeration(LogEventLevel.class).get("level", LogEventLevel.INFO);
         final String raw = String.join(" ", instruction.getValueParts());
         final Matcher conditionsMatcher = CONDITIONS_REGEX.matcher(raw);
@@ -60,6 +60,6 @@ public class LogEventFactory implements PlayerEventFactory, PlayerlessEventFacto
         final int msgStart = levelMatcher.find() ? levelMatcher.end() : 0;
         final int msgEnd = conditionsMatcher.find() ? conditionsMatcher.start() : raw.length();
         final Argument<String> message = instruction.chainForArgument(raw.substring(msgStart, msgEnd)).string().get();
-        return new NullableEventAdapter(new LogEvent(loggerFactory.create(LogEvent.class), level, message));
+        return new NullableActionAdapter(new LogEvent(loggerFactory.create(LogEvent.class), level, message));
     }
 }

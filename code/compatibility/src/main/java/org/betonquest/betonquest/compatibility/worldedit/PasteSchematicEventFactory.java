@@ -4,12 +4,12 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter;
 import org.bukkit.Location;
 
 import java.io.File;
@@ -17,7 +17,7 @@ import java.io.File;
 /**
  * Factory to create {@link PasteSchematicEvent}s from {@link Instruction}s.
  */
-public class PasteSchematicEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+public class PasteSchematicEventFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
      * Schematics folder.
@@ -34,16 +34,16 @@ public class PasteSchematicEventFactory implements PlayerEventFactory, Playerles
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        return new NullableEventAdapter(parseInstruction(instruction));
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
+        return new NullableActionAdapter(parseInstruction(instruction));
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
-        return new NullableEventAdapter(parseInstruction(instruction));
+    public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
+        return new NullableActionAdapter(parseInstruction(instruction));
     }
 
-    private NullableEvent parseInstruction(final Instruction instruction) throws QuestException {
+    private NullableAction parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<Location> loc = instruction.location().get();
         final Argument<Number> rotation = instruction.number().get("rotation", 0);
 

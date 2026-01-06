@@ -5,9 +5,9 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.data.PlayerDataStorage;
@@ -25,7 +25,7 @@ import static org.betonquest.betonquest.config.PluginMessage.LANG_KEY;
 /**
  * Factory for {@link NotifyEvent}.
  */
-public class NotifyEventFactory implements PlayerEventFactory {
+public class NotifyEventFactory implements PlayerActionFactory {
 
     /**
      * A pattern for the notation of notifyIO options.
@@ -74,14 +74,14 @@ public class NotifyEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final String rawInstruction = String.join(" ", instruction.getValueParts());
         final Matcher keyValueMatcher = KEY_VALUE_PATTERN.matcher(rawInstruction);
 
         final Text text = getText(instruction, keyValueMatcher, rawInstruction);
         final NotifyIO notifyIO = processInstruction(instruction, keyValueMatcher);
 
-        return new OnlineEventAdapter(new NotifyEvent(notifyIO, text),
+        return new OnlineActionAdapter(new NotifyEvent(notifyIO, text),
                 loggerFactory.create(NotifyEvent.class),
                 instruction.getPackage());
     }

@@ -4,14 +4,14 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
 
 /**
  * Factory for the hunger event.
  */
-public class HungerEventFactory implements PlayerEventFactory {
+public class HungerEventFactory implements PlayerActionFactory {
 
     /**
      * Logger factory to create a logger for the events.
@@ -28,10 +28,10 @@ public class HungerEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<Hunger> hunger = instruction.enumeration(Hunger.class).get();
         final Argument<Number> amount = instruction.number().get();
-        return new OnlineEventAdapter(new HungerEvent(hunger, amount),
+        return new OnlineActionAdapter(new HungerEvent(hunger, amount),
                 loggerFactory.create(HungerEvent.class), instruction.getPackage());
     }
 }

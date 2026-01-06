@@ -7,12 +7,12 @@ import com.denizenscript.denizencore.scripts.containers.core.TaskScriptContainer
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
 
 /**
  * Runs specified Denizen task script.
  */
-public class DenizenTaskScriptEvent implements PlayerEvent {
+public class DenizenTaskScriptEvent implements PlayerAction {
 
     /**
      * The name of the script to run.

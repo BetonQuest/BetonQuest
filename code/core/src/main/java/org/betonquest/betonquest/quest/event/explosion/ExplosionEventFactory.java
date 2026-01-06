@@ -3,17 +3,17 @@ package org.betonquest.betonquest.quest.event.explosion;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter;
 import org.bukkit.Location;
 
 /**
  * Factory to create explosion events from {@link Instruction}s.
  */
-public class ExplosionEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+public class ExplosionEventFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
      * Create the explosion event factory.
@@ -22,20 +22,20 @@ public class ExplosionEventFactory implements PlayerEventFactory, PlayerlessEven
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         return createExplosionEvent(instruction);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
         return createExplosionEvent(instruction);
     }
 
-    private NullableEventAdapter createExplosionEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createExplosionEvent(final Instruction instruction) throws QuestException {
         final Argument<Boolean> setsFire = instruction.parse("1"::equals).get();
         final Argument<Boolean> breaksBlocks = instruction.parse("1"::equals).get();
         final Argument<Number> power = instruction.number().get();
         final Argument<Location> location = instruction.location().get();
-        return new NullableEventAdapter(new ExplosionEvent(location, power, setsFire, breaksBlocks));
+        return new NullableActionAdapter(new ExplosionEvent(location, power, setsFire, breaksBlocks));
     }
 }

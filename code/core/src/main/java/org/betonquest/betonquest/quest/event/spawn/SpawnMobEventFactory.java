@@ -7,11 +7,11 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.DecoratedArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.EnumParser;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter;
 import org.betonquest.betonquest.lib.instruction.argument.DecoratableArgumentParser;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * Factory to create spawn mob events from {@link Instruction}s.
  */
-public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+public class SpawnMobEventFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
      * The parser for entity types.
@@ -40,12 +40,12 @@ public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEvent
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         return createSpawnMobEvent(instruction);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
         return createSpawnMobEvent(instruction);
     }
 
@@ -56,7 +56,7 @@ public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEvent
      * @return the created event
      * @throws QuestException if the instruction could not be parsed
      */
-    public NullableEventAdapter createSpawnMobEvent(final Instruction instruction) throws QuestException {
+    public NullableActionAdapter createSpawnMobEvent(final Instruction instruction) throws QuestException {
         final Argument<Location> loc = instruction.location().get();
         final Argument<EntityType> type = instruction.parse(entityTypeParser).get();
         final Argument<Number> amount = instruction.number().get();
@@ -71,6 +71,6 @@ public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEvent
         final Argument<List<ItemWrapper>> drops = instruction.item().list().get("drops", Collections.emptyList());
         final Equipment equipment = new Equipment(helmet, chestplate, leggings, boots, mainHand, offHand, drops);
         final SpawnMobEvent event = new SpawnMobEvent(loc, type, equipment, amount, name, marked);
-        return new NullableEventAdapter(event);
+        return new NullableActionAdapter(event);
     }
 }

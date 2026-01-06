@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.journal;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
+import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 import org.betonquest.betonquest.database.PlayerData;
 
 import java.util.function.Function;
@@ -9,7 +9,7 @@ import java.util.function.Function;
 /**
  * Gives journal to the player.
  */
-public class GiveJournalEvent implements OnlineEvent {
+public class GiveJournalEvent implements OnlineAction {
 
     /**
      * Function to get the player data for a given online profile.

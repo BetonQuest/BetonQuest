@@ -6,12 +6,12 @@ import com.gamingmesh.jobs.container.JobProgression;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
 
 /**
  * Event to set a job level.
  */
-public class SetLevelEvent implements PlayerEvent {
+public class SetLevelEvent implements PlayerAction {
 
     /**
      * Job to add experience to.

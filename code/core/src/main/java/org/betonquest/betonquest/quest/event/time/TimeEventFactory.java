@@ -7,11 +7,11 @@ import org.betonquest.betonquest.api.common.function.Selectors;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter;
 import org.betonquest.betonquest.quest.event.DoNothingPlayerlessEvent;
 import org.bukkit.Server;
 import org.bukkit.World;
@@ -23,7 +23,7 @@ import java.util.Optional;
 /**
  * Factory to create time events from {@link Instruction}s.
  */
-public class TimeEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+public class TimeEventFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
      * Server to use for fetching worlds.
@@ -40,24 +40,24 @@ public class TimeEventFactory implements PlayerEventFactory, PlayerlessEventFact
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         return createTimeEvent(instruction);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
         if (instruction.copy().string().get("world").isEmpty()) {
             return new DoNothingPlayerlessEvent();
         }
         return createTimeEvent(instruction);
     }
 
-    private NullableEventAdapter createTimeEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createTimeEvent(final Instruction instruction) throws QuestException {
         final Argument<TimeChange> time = instruction.parse(TimeParser.TIME).get();
         final Optional<Argument<String>> world = instruction.string().get("world");
         final Selector<World> worldSelector = parseWorld(world.isEmpty() ? null : world.get().getValue(null));
         final FlagArgument<Boolean> tickFormat = instruction.bool().getFlag("ticks", true);
-        return new NullableEventAdapter(new TimeEvent(time, worldSelector, tickFormat));
+        return new NullableActionAdapter(new TimeEvent(time, worldSelector, tickFormat));
     }
 
     private Selector<World> parseWorld(@Nullable final String worldName) {

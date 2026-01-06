@@ -8,8 +8,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.action.ActionID;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,7 +28,7 @@ import java.util.Random;
  * Folder action is a collection of other events, that can be run after a delay and with a periode between the event.
  * The events can be randomly chosen to run or not.
  */
-public class FolderEvent implements NullableEvent {
+public class FolderEvent implements NullableAction {
 
     /**
      * The BetonQuest instance.

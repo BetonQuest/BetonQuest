@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.Saver;
@@ -15,7 +15,7 @@ import org.betonquest.betonquest.id.JournalEntryID;
 /**
  * Deletes the journal entry from all online players and database entries.
  */
-public class DeleteJournalPlayerlessEvent implements PlayerlessEvent {
+public class DeleteJournalPlayerlessEvent implements PlayerlessAction {
 
     /**
      * Storage for player data.

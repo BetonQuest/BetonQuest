@@ -24,8 +24,8 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.action.ActionID;
+import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.IntegrationData;
@@ -452,7 +452,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 log.warn("Could not find Item: " + e.getMessage(), e);
                 return;
             }
-            final OnlineEvent give = new GiveEvent(
+            final OnlineAction give = new GiveEvent(
                     new DefaultListArgument<>(new Item(instance.getFeatureApi(), itemID, new DefaultArgument<>(1))),
                     new NoNotificationSender(),
                     new IngameNotificationSender(log, pluginMessage, itemID.getPackage(), itemID.getFull(), NotificationLevel.ERROR,

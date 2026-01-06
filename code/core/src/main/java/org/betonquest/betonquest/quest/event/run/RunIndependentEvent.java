@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.action.ActionID;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 import org.betonquest.betonquest.quest.event.CallPlayerlessEventAdapter;
 
 import java.util.List;
@@ -12,11 +12,11 @@ import java.util.List;
 /**
  * Runs specified actions player independently.
  * <p>
- * Although the implementation is a {@link PlayerlessEvent}, using it in a static context does not make much sense.
+ * Although the implementation is a {@link PlayerlessAction}, using it in a static context does not make much sense.
  * Recommended usage is to wrap it in a {@link CallPlayerlessEventAdapter} and using it to call static actions
  * from non-static context.
  */
-public class RunIndependentEvent implements PlayerlessEvent {
+public class RunIndependentEvent implements PlayerlessAction {
 
     /**
      * Quest Type API.

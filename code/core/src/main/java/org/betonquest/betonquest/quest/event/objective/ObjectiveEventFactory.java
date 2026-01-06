@@ -6,11 +6,11 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.database.PlayerDataFactory;
 
@@ -20,7 +20,7 @@ import java.util.Locale;
 /**
  * Factory for {@link ObjectiveEvent}s.
  */
-public class ObjectiveEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+public class ObjectiveEventFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
      * The BetonQuest instance.
@@ -59,19 +59,19 @@ public class ObjectiveEventFactory implements PlayerEventFactory, PlayerlessEven
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         return createObjectiveEvent(instruction);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
         return createObjectiveEvent(instruction);
     }
 
-    private NullableEventAdapter createObjectiveEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createObjectiveEvent(final Instruction instruction) throws QuestException {
         final String action = instruction.string().map(s -> s.toLowerCase(Locale.ROOT)).get().getValue(null);
         final Argument<List<ObjectiveID>> objectives = instruction.parse(ObjectiveID::new).list().get();
-        return new NullableEventAdapter(new ObjectiveEvent(betonQuest, loggerFactory.create(ObjectiveEvent.class),
+        return new NullableActionAdapter(new ObjectiveEvent(betonQuest, loggerFactory.create(ObjectiveEvent.class),
                 questTypeApi, instruction.getPackage(), objectives, playerDataFactory, action));
     }
 }

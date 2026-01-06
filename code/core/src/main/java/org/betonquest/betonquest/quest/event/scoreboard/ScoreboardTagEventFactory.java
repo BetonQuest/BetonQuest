@@ -5,14 +5,14 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
 
 /**
  * Factory to create scoreboard tag events from {@link Instruction}s.
  */
-public class ScoreboardTagEventFactory implements PlayerEventFactory {
+public class ScoreboardTagEventFactory implements PlayerActionFactory {
 
     /**
      * Logger factory to create a logger for the events.
@@ -29,10 +29,10 @@ public class ScoreboardTagEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<ScoreboardTagOperation> action = instruction.enumeration(ScoreboardTagOperation.class).get();
         final Argument<String> tag = instruction.string().get();
         final BetonQuestLogger logger = loggerFactory.create(ScoreboardTagEvent.class);
-        return new OnlineEventAdapter(new ScoreboardTagEvent(tag, action), logger, instruction.getPackage());
+        return new OnlineActionAdapter(new ScoreboardTagEvent(tag, action), logger, instruction.getPackage());
     }
 }

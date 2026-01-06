@@ -4,9 +4,9 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
 
 import java.util.Locale;
 import java.util.Optional;
@@ -14,7 +14,7 @@ import java.util.Optional;
 /**
  * Factory for the experience event.
  */
-public class ExperienceEventFactory implements PlayerEventFactory {
+public class ExperienceEventFactory implements PlayerActionFactory {
 
     /**
      * Logger factory to create a logger for the events.
@@ -31,7 +31,7 @@ public class ExperienceEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<Number> amount = instruction.number().get();
         ExperienceModification experienceType = ExperienceModification.ADD_EXPERIENCE;
         final Optional<Argument<String>> action = instruction.string().get("action");
@@ -50,7 +50,7 @@ public class ExperienceEventFactory implements PlayerEventFactory {
                 throw new QuestException(targetAction + " is not a valid experience modification type.");
             }
         }
-        return new OnlineEventAdapter(new ExperienceEvent(experienceType, amount),
+        return new OnlineActionAdapter(new ExperienceEvent(experienceType, amount),
                 loggerFactory.create(ExperienceEvent.class), instruction.getPackage());
     }
 }

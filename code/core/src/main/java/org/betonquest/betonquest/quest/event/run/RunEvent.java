@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.run;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
 import org.betonquest.betonquest.kernel.processor.adapter.ActionAdapter;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Allows for running multiple actions.
  */
-public class RunEvent implements NullableEvent {
+public class RunEvent implements NullableAction {
 
     /**
      * Actions that the run event will execute.

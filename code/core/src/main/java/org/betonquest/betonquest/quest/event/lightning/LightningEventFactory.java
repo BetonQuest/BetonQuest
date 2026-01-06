@@ -4,17 +4,17 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter;
 import org.bukkit.Location;
 
 /**
  * Factory for {@link LightningEvent} from the {@link Instruction}.
  */
-public class LightningEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+public class LightningEventFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
      * Create a new LightningEventFactory.
@@ -23,18 +23,18 @@ public class LightningEventFactory implements PlayerEventFactory, PlayerlessEven
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         return createLightningEvent(instruction);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
         return createLightningEvent(instruction);
     }
 
-    private NullableEventAdapter createLightningEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createLightningEvent(final Instruction instruction) throws QuestException {
         final Argument<Location> location = instruction.location().get();
         final FlagArgument<Boolean> noDamage = instruction.bool().getFlag("noDamage", true);
-        return new NullableEventAdapter(new LightningEvent(location, noDamage));
+        return new NullableActionAdapter(new LightningEvent(location, noDamage));
     }
 }
