@@ -12,31 +12,31 @@ import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 public final class NullableActionAdapter implements PlayerAction, PlayerlessAction {
 
     /**
-     * Common null-safe event implementation.
+     * Common null-safe action implementation.
      */
-    private final NullableAction event;
+    private final NullableAction action;
 
     /**
-     * Create an adapter that handles events via the given common implementation.
+     * Create an adapter that handles actions via the given common implementation.
      *
-     * @param event common null-safe event implementation
+     * @param action common null-safe action implementation
      */
-    public NullableActionAdapter(final NullableAction event) {
-        this.event = event;
+    public NullableActionAdapter(final NullableAction action) {
+        this.action = action;
     }
 
     @Override
     public void execute(final Profile profile) throws QuestException {
-        event.execute(profile);
+        action.execute(profile);
     }
 
     @Override
     public void execute() throws QuestException {
-        event.execute(null);
+        action.execute(null);
     }
 
     @Override
     public boolean isPrimaryThreadEnforced() {
-        return event.isPrimaryThreadEnforced();
+        return action.isPrimaryThreadEnforced();
     }
 }

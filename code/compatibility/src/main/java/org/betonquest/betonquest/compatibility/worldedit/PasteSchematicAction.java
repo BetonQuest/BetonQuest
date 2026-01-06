@@ -50,7 +50,7 @@ public class PasteSchematicAction implements NullableAction {
     private final Argument<File> file;
 
     /**
-     * Create a new paste schematic event.
+     * Create a new paste schematic action.
      *
      * @param loc      the root location to place at
      * @param rotation the rotation

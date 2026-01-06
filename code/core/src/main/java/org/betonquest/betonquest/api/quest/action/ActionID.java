@@ -17,9 +17,9 @@ public class ActionID extends InstructionIdentifier {
      *
      * @param placeholders the {@link Placeholders} to create and resolve placeholders
      * @param packManager  the quest package manager to get quest packages from
-     * @param pack         the package of the event
-     * @param identifier   the complete identifier of the event
-     * @throws QuestException if there is no such event
+     * @param pack         the package of the action
+     * @param identifier   the complete identifier of the action
+     * @throws QuestException if there is no such action
      */
     public ActionID(final Placeholders placeholders, final QuestPackageManager packManager, @Nullable final QuestPackage pack,
                     final String identifier) throws QuestException {

@@ -19,7 +19,7 @@ public class QuestsActionFactory implements PlayerActionFactory {
     private final Quests quests;
 
     /**
-     * Create the door event factory.
+     * Create the door action factory.
      *
      * @param quests active quests instance
      */

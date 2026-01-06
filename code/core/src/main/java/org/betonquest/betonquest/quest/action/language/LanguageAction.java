@@ -22,7 +22,7 @@ public class LanguageAction implements PlayerAction {
     private final PlayerDataStorage dataStorage;
 
     /**
-     * Create the language event.
+     * Create the language action.
      *
      * @param language    the language to set
      * @param dataStorage the storage providing player data

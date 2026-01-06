@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Base class for command related event factories.
+ * Base class for command related action factories.
  * <p>
  * Contains common methods for parsing commands from instructions and holds the server, scheduler and plugin.
  */
@@ -31,14 +31,14 @@ public abstract class BaseCommandActionFactory implements PlayerActionFactory {
     protected final Server server;
 
     /**
-     * Logger factory to create a logger for the events.
+     * Logger factory to create a logger for the actions.
      */
     protected final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Create the sudo event factory.
+     * Create the sudo action factory.
      *
-     * @param loggerFactory the logger factory to create a logger for the events
+     * @param loggerFactory the logger factory to create a logger for the actions
      * @param server        the server to execute commands on
      */
     public BaseCommandActionFactory(final BetonQuestLoggerFactory loggerFactory, final Server server) {

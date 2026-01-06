@@ -13,27 +13,27 @@ import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter
 import org.bukkit.Location;
 
 /**
- * Factory to create setblock events from {@link Instruction}s.
+ * Factory to create setblock actions from {@link Instruction}s.
  */
 public class SetBlockActionFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
-     * Create the setblock event factory.
+     * Create the setblock action factory.
      */
     public SetBlockActionFactory() {
     }
 
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
-        return createSetBlockEvent(instruction);
+        return createSetBlockAction(instruction);
     }
 
     @Override
     public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
-        return createSetBlockEvent(instruction);
+        return createSetBlockAction(instruction);
     }
 
-    private NullableActionAdapter createSetBlockEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createSetBlockAction(final Instruction instruction) throws QuestException {
         final Argument<BlockSelector> blockSelector = instruction.blockSelector().get();
         final Argument<Location> location = instruction.location().get();
         final FlagArgument<Boolean> ignorePhysics = instruction.bool().getFlag("ignorePhysics", true);

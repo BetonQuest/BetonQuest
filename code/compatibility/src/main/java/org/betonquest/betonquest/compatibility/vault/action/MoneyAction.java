@@ -47,7 +47,7 @@ public class MoneyAction implements PlayerAction {
     private final IngameNotificationSender takenSender;
 
     /**
-     * Create a new vault money event.
+     * Create a new vault money action.
      *
      * @param economy     the economy where the balance will be modified
      * @param amount      the amount to modify the balance

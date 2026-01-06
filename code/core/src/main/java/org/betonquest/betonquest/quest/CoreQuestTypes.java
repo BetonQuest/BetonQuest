@@ -192,7 +192,7 @@ import org.bukkit.Server;
 import java.time.InstantSource;
 
 /**
- * Registers the Conditions, Events, Objectives and Placeholders that come with BetonQuest.
+ * Registers the Conditions, Actions, Objectives and Placeholders that come with BetonQuest.
  */
 @SuppressWarnings({"PMD.NcssCount", "PMD.AvoidDuplicateLiterals"})
 public class CoreQuestTypes {
@@ -302,7 +302,7 @@ public class CoreQuestTypes {
     public void register(final BaseQuestTypeRegistries questTypeRegistries) {
         // When adding new types they need to be ordered by name in the corresponding method!
         registerConditions(questTypeRegistries.condition());
-        registerEvents(questTypeRegistries.action());
+        registerActions(questTypeRegistries.action());
         registerObjectives(questTypeRegistries.objective());
         registerPlaceholders(questTypeRegistries.placeholder());
     }
@@ -364,7 +364,7 @@ public class CoreQuestTypes {
         conditionTypes.register("world", new WorldConditionFactory(loggerFactory));
     }
 
-    private void registerEvents(final ActionTypeRegistry actionTypes) {
+    private void registerActions(final ActionTypeRegistry actionTypes) {
         actionTypes.register("burn", new BurnActionFactory(loggerFactory));
         actionTypes.register("cancel", new CancelActionFactory(loggerFactory, featureApi));
         actionTypes.register("cancelconversation", new CancelConversationActionFactory(loggerFactory, featureApi.conversationApi()));

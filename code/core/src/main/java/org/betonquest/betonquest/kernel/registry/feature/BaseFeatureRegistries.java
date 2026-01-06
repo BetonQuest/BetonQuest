@@ -15,7 +15,7 @@ import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
  * @param textParser       The Registry holding registered text Parsers.
  * @param npc              The Registry holding registered npc types.
  * @param notifyIO         The Registry holding registered NotifyIOs.
- * @param actionScheduling The Registry holding registered Acion Schedulers.
+ * @param actionScheduling The Registry holding registered Action Schedulers.
  */
 public record BaseFeatureRegistries(
         ConversationIORegistry conversationIO,

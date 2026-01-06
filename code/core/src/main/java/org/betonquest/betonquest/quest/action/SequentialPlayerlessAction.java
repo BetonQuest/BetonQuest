@@ -7,35 +7,35 @@ import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 import java.util.List;
 
 /**
- * A static event that is composed of other static events executed in sequence. If an error occurs execution is stopped
+ * A static action that is composed of other static actions executed in sequence. If an error occurs execution is stopped
  * at that point.
  */
 public class SequentialPlayerlessAction implements PlayerlessAction {
 
     /**
-     * Events to be executed.
+     * Actions to be executed.
      */
-    private final List<PlayerlessAction> playerlessEvents;
+    private final List<PlayerlessAction> playerlessActions;
 
     /**
-     * Create a static event sequence. The events at the front of the array will be executed first, at the end will be
+     * Create a static action sequence. The actions at the front of the array will be executed first, at the end will be
      * executed last.
      *
-     * @param playerlessEvents events to be executed
+     * @param playerlessActions actions to be executed
      */
-    public SequentialPlayerlessAction(final List<PlayerlessAction> playerlessEvents) {
-        this.playerlessEvents = playerlessEvents;
+    public SequentialPlayerlessAction(final List<PlayerlessAction> playerlessActions) {
+        this.playerlessActions = playerlessActions;
     }
 
     @Override
     public void execute() throws QuestException {
-        for (final PlayerlessAction playerlessEvent : playerlessEvents) {
-            playerlessEvent.execute();
+        for (final PlayerlessAction playerlessAction : playerlessActions) {
+            playerlessAction.execute();
         }
     }
 
     @Override
     public boolean isPrimaryThreadEnforced() {
-        return playerlessEvents.stream().anyMatch(PrimaryThreadEnforceable::isPrimaryThreadEnforced);
+        return playerlessActions.stream().anyMatch(PrimaryThreadEnforceable::isPrimaryThreadEnforced);
     }
 }

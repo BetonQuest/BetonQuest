@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcHider;
 
 /**
- * Event to update the visibility of all Npcs to one player now.
+ * Action to update the visibility of all Npcs to one player now.
  */
 public class UpdateVisibilityNowAction implements OnlineAction {
 
@@ -15,7 +15,7 @@ public class UpdateVisibilityNowAction implements OnlineAction {
     private final NpcHider npcHider;
 
     /**
-     * Create a new update visibility event.
+     * Create a new update visibility action.
      *
      * @param npcHider the hider to update the visibility
      */

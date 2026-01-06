@@ -23,7 +23,7 @@ public class OpenShopActionFactory implements PlayerActionFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Create a new open shop event factory.
+     * Create a new open shop action factory.
      *
      * @param loggerFactory the logger factory to create class specific logger
      */

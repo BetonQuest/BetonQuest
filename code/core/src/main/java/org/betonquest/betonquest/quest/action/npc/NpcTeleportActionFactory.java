@@ -24,7 +24,7 @@ public class NpcTeleportActionFactory implements PlayerActionFactory, Playerless
     private final FeatureApi featureApi;
 
     /**
-     * Create a new factory for Npc Teleport Events.
+     * Create a new factory for Npc Teleport Actions.
      *
      * @param featureApi the Feature API
      */
@@ -34,15 +34,15 @@ public class NpcTeleportActionFactory implements PlayerActionFactory, Playerless
 
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
-        return createNpcTeleportEvent(instruction);
+        return createNpcTeleportAction(instruction);
     }
 
     @Override
     public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
-        return createNpcTeleportEvent(instruction);
+        return createNpcTeleportAction(instruction);
     }
 
-    private NullableActionAdapter createNpcTeleportEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createNpcTeleportAction(final Instruction instruction) throws QuestException {
         final Argument<NpcID> npcId = instruction.parse(NpcID::new).get();
         final Argument<Location> location = instruction.location().get();
         final FlagArgument<Boolean> spawn = instruction.bool().getFlag("spawn", true);

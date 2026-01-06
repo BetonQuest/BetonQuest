@@ -26,7 +26,7 @@ public class HeroesExperienceActionFactory implements PlayerActionFactory {
     private final CharacterManager characterManager;
 
     /**
-     * Create a new Factory to create Give Brew Events.
+     * Create a new Factory to create Give Brew Actions.
      *
      * @param loggerFactory    the logger factory.
      * @param characterManager the {@link CharacterManager} of the Heroes plugin.

@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Locale;
 
 /**
- * Factory to create stage events to modify a StageObjective.
+ * Factory to create stage actions to modify a StageObjective.
  */
 public class StageActionFactory implements PlayerActionFactory {
 
@@ -24,7 +24,7 @@ public class StageActionFactory implements PlayerActionFactory {
     private final QuestTypeApi questTypeApi;
 
     /**
-     * Creates the stage event factory.
+     * Creates the stage action factory.
      *
      * @param questTypeApi the Quest Type API
      */
@@ -35,26 +35,26 @@ public class StageActionFactory implements PlayerActionFactory {
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<ObjectiveID> objectiveID = instruction.parse(ObjectiveID::new).get();
-        final String action = instruction.string().get().getValue(null);
-        return switch (action.toLowerCase(Locale.ROOT)) {
-            case "set" -> createSetEvent(instruction, objectiveID);
-            case "increase" -> createIncreaseEvent(instruction, objectiveID);
-            case "decrease" -> createDecreaseEvent(instruction, objectiveID);
-            default -> throw new QuestException("Unknown action '" + action + "'");
+        final String operation = instruction.string().get().getValue(null);
+        return switch (operation.toLowerCase(Locale.ROOT)) {
+            case "set" -> createSetAction(instruction, objectiveID);
+            case "increase" -> createIncreaseAction(instruction, objectiveID);
+            case "decrease" -> createDecreaseAction(instruction, objectiveID);
+            default -> throw new QuestException("Unknown operation '" + operation + "'");
         };
     }
 
-    private PlayerAction createSetEvent(final Instruction instruction, final Argument<ObjectiveID> objectiveID) throws QuestException {
+    private PlayerAction createSetAction(final Instruction instruction, final Argument<ObjectiveID> objectiveID) throws QuestException {
         final Argument<String> stage = instruction.string().get();
         return new StageAction(profile -> getStageObjective(objectiveID.getValue(profile)).setStage(profile, stage.getValue(profile)));
     }
 
-    private PlayerAction createIncreaseEvent(final Instruction instruction, final Argument<ObjectiveID> objectiveID) throws QuestException {
+    private PlayerAction createIncreaseAction(final Instruction instruction, final Argument<ObjectiveID> objectiveID) throws QuestException {
         final Argument<Number> amount = getNumberArgument(instruction);
         return new StageAction(profile -> getStageObjective(objectiveID.getValue(profile)).increaseStage(profile, getAmount(profile, amount)));
     }
 
-    private PlayerAction createDecreaseEvent(final Instruction instruction, final Argument<ObjectiveID> objectiveID) throws QuestException {
+    private PlayerAction createDecreaseAction(final Instruction instruction, final Argument<ObjectiveID> objectiveID) throws QuestException {
         final Argument<Number> amount = getNumberArgument(instruction);
         return new StageAction(profile -> getStageObjective(objectiveID.getValue(profile)).decreaseStage(profile, getAmount(profile, amount)));
     }

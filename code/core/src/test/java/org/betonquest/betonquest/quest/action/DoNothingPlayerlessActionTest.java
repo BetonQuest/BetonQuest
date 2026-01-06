@@ -12,7 +12,7 @@ class DoNothingPlayerlessActionTest {
 
     @Test
     void testExecuteDoesNothing() {
-        final PlayerlessAction event = new DoNothingPlayerlessAction();
-        assertDoesNotThrow(event::execute, "Doing nothing should not thrown an exception.");
+        final PlayerlessAction action = new DoNothingPlayerlessAction();
+        assertDoesNotThrow(action::execute, "Doing nothing should not thrown an exception.");
     }
 }

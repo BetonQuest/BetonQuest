@@ -38,7 +38,7 @@ public class DeleteJournalPlayerlessAction implements PlayerlessAction {
     private final Argument<JournalEntryID> entryID;
 
     /**
-     * Create a new Journal remove event for every player, online and offline.
+     * Create a new Journal remove action for every player, online and offline.
      *
      * @param dataStorage     the storage providing player data
      * @param saver           the saver to use

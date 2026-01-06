@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 /**
- * Factory to create time events from {@link Instruction}s.
+ * Factory to create time actions from {@link Instruction}s.
  */
 public class TimeActionFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
@@ -31,7 +31,7 @@ public class TimeActionFactory implements PlayerActionFactory, PlayerlessActionF
     private final Server server;
 
     /**
-     * Creates the time event factory.
+     * Creates the time action factory.
      *
      * @param server the server to use
      */
@@ -41,7 +41,7 @@ public class TimeActionFactory implements PlayerActionFactory, PlayerlessActionF
 
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
-        return createTimeEvent(instruction);
+        return createTimeAction(instruction);
     }
 
     @Override
@@ -49,10 +49,10 @@ public class TimeActionFactory implements PlayerActionFactory, PlayerlessActionF
         if (instruction.copy().string().get("world").isEmpty()) {
             return new DoNothingPlayerlessAction();
         }
-        return createTimeEvent(instruction);
+        return createTimeAction(instruction);
     }
 
-    private NullableActionAdapter createTimeEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createTimeAction(final Instruction instruction) throws QuestException {
         final Argument<TimeChange> time = instruction.parse(TimeParser.TIME).get();
         final Optional<Argument<String>> world = instruction.string().get("world");
         final Selector<World> worldSelector = parseWorld(world.isEmpty() ? null : world.get().getValue(null));

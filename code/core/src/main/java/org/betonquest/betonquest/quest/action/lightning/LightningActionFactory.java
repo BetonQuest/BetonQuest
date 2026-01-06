@@ -24,15 +24,15 @@ public class LightningActionFactory implements PlayerActionFactory, PlayerlessAc
 
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
-        return createLightningEvent(instruction);
+        return createLightningAction(instruction);
     }
 
     @Override
     public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
-        return createLightningEvent(instruction);
+        return createLightningAction(instruction);
     }
 
-    private NullableActionAdapter createLightningEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createLightningAction(final Instruction instruction) throws QuestException {
         final Argument<Location> location = instruction.location().get();
         final FlagArgument<Boolean> noDamage = instruction.bool().getFlag("noDamage", true);
         return new NullableActionAdapter(new LightningAction(location, noDamage));

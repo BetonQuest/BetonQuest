@@ -14,12 +14,12 @@ import org.betonquest.betonquest.quest.action.NotificationLevel;
 import org.betonquest.betonquest.quest.action.NotificationSender;
 
 /**
- * Factory to create points events from {@link Instruction}s.
+ * Factory to create points actions from {@link Instruction}s.
  */
 public class PointActionFactory implements PlayerActionFactory {
 
     /**
-     * Logger factory to create a logger for the events.
+     * Logger factory to create a logger for the actions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -34,9 +34,9 @@ public class PointActionFactory implements PlayerActionFactory {
     private final PluginMessage pluginMessage;
 
     /**
-     * Create the points event factory.
+     * Create the points action factory.
      *
-     * @param loggerFactory the logger factory to create a logger for the events
+     * @param loggerFactory the logger factory to create a logger for the actions
      * @param dataStorage   the storage providing player data
      * @param pluginMessage the {@link PluginMessage} instance
      */

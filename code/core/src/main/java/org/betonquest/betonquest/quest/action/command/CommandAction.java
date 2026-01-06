@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * Event that runs given commands in the server console.
+ * Action that runs given commands in the server console.
  */
 public class CommandAction implements NullableAction {
 
@@ -34,7 +34,7 @@ public class CommandAction implements NullableAction {
     private final List<Argument<String>> commands;
 
     /**
-     * Creates a new CommandEvent.
+     * Creates a new CommandAction.
      *
      * @param commands     the commands to run
      * @param silentSender the command sender to run the commands as

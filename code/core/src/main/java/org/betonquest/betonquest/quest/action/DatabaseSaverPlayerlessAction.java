@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 import org.betonquest.betonquest.database.Saver;
 
 /**
- * A playerless event that executes a database query with the {@link Saver} when executed.
+ * A playerless action that executes a database query with the {@link Saver} when executed.
  */
 public class DatabaseSaverPlayerlessAction implements PlayerlessAction {
 
@@ -21,7 +21,7 @@ public class DatabaseSaverPlayerlessAction implements PlayerlessAction {
     private final QuestSupplier<? extends Saver.Record> recordSupplier;
 
     /**
-     * Create a playerless database saver event. The saver will be used to save the record created by the record supplier.
+     * Create a playerless database saver action. The saver will be used to save the record created by the record supplier.
      *
      * @param saver          the saver to use
      * @param recordSupplier the record supplier

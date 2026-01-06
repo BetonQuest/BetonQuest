@@ -10,19 +10,19 @@ import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
 
 /**
- * Factory to create scoreboard tag events from {@link Instruction}s.
+ * Factory to create scoreboard tag actions from {@link Instruction}s.
  */
 public class ScoreboardTagActionFactory implements PlayerActionFactory {
 
     /**
-     * Logger factory to create a logger for the events.
+     * Logger factory to create a logger for the actions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Create the scoreboard tag event factory.
+     * Create the scoreboard tag action factory.
      *
-     * @param loggerFactory the logger factory to create a logger for the events
+     * @param loggerFactory the logger factory to create a logger for the actions
      */
     public ScoreboardTagActionFactory(final BetonQuestLoggerFactory loggerFactory) {
         this.loggerFactory = loggerFactory;

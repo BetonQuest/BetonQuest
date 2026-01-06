@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 
 /**
- * Factory to create variable events from {@link Instruction}s.
+ * Factory to create variable actions from {@link Instruction}s.
  */
 public class VariableActionFactory implements PlayerActionFactory {
 

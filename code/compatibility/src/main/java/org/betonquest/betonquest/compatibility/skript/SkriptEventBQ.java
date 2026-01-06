@@ -8,7 +8,7 @@ import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Skript event, which listens to custom event fired by BetonQuest's event.
+ * Skript event, which listens to custom event fired by BetonQuest's action.
  */
 public class SkriptEventBQ extends SkriptEvent {
 
@@ -19,7 +19,7 @@ public class SkriptEventBQ extends SkriptEvent {
     private Literal<?> literal;
 
     /**
-     * Constructs a new ScriptEvent for BetonQuest custom events.
+     * Constructs a new ScriptEvent for BetonQuest custom actions.
      */
     public SkriptEventBQ() {
         super();
@@ -27,7 +27,7 @@ public class SkriptEventBQ extends SkriptEvent {
 
     @Override
     public String toString(@Nullable final Event event, final boolean debug) {
-        return "on betonquest event";
+        return "on betonquest action";
     }
 
     @Override

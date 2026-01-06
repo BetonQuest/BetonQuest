@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 
 /**
- * This event opens Shopkeeper trade window.
+ * This action opens Shopkeeper trade window.
  */
 public class OpenShopAction implements OnlineAction {
 
@@ -15,7 +15,7 @@ public class OpenShopAction implements OnlineAction {
     private final Shopkeeper shopkeeper;
 
     /**
-     * Create a new open shop event.
+     * Create a new open shop action.
      *
      * @param shopkeeper the shop to open
      */

@@ -36,7 +36,7 @@ public class GlobalPointAction implements NullableAction {
     private final PointType pointType;
 
     /**
-     * Creates a new global point event.
+     * Creates a new global point action.
      *
      * @param globalData the global data
      * @param category   the category name

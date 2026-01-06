@@ -8,7 +8,7 @@ import org.betonquest.betonquest.database.TagData;
 import java.util.function.Function;
 
 /**
- * The tag event, doing what was defined in its instruction.
+ * The tag action, doing what was defined in its instruction.
  */
 public class TagAction implements PlayerAction {
 
@@ -23,7 +23,7 @@ public class TagAction implements PlayerAction {
     private final TagChanger tagChanger;
 
     /**
-     * Create a tag event.
+     * Create a tag action.
      *
      * @param getTagData function providing the tagData for the given player
      * @param tagChanger changes the defined tags

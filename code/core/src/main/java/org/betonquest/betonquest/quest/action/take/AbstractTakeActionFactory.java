@@ -14,12 +14,12 @@ import org.betonquest.betonquest.quest.action.NotificationSender;
 import java.util.List;
 
 /**
- * Abstract factory for take events, to take items from the players inventory or backpack.
+ * Abstract factory for take actions, to take items from the players inventory or backpack.
  */
 public abstract class AbstractTakeActionFactory implements PlayerActionFactory {
 
     /**
-     * Logger factory to create a logger for the events.
+     * Logger factory to create a logger for the actions.
      */
     protected final BetonQuestLoggerFactory loggerFactory;
 
@@ -29,9 +29,9 @@ public abstract class AbstractTakeActionFactory implements PlayerActionFactory {
     private final PluginMessage pluginMessage;
 
     /**
-     * Create the abstract take event factory.
+     * Create the abstract take action factory.
      *
-     * @param loggerFactory the logger factory to create a logger for the events
+     * @param loggerFactory the logger factory to create a logger for the actions
      * @param pluginMessage the {@link PluginMessage} instance
      */
     public AbstractTakeActionFactory(final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage) {
@@ -40,7 +40,7 @@ public abstract class AbstractTakeActionFactory implements PlayerActionFactory {
     }
 
     /**
-     * Get the check order for the take event.
+     * Get the check order for the take action.
      *
      * @param instruction the instruction to get the check order from
      * @return the check order
@@ -52,7 +52,7 @@ public abstract class AbstractTakeActionFactory implements PlayerActionFactory {
     }
 
     /**
-     * Get the notification sender for the take event.
+     * Get the notification sender for the take action.
      *
      * @param instruction the instruction to get the notification sender from
      * @param log         the logger to use

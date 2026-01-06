@@ -16,7 +16,7 @@ import org.betonquest.betonquest.kernel.registry.quest.ActionTypeRegistry;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * An action which evaluates to another event.
+ * An action which evaluates to another action.
  */
 public class EvalAction implements NullableAction {
 
@@ -31,12 +31,12 @@ public class EvalAction implements NullableAction {
     private final QuestPackageManager packManager;
 
     /**
-     * The event type registry providing factories to parse the evaluated instruction.
+     * The action type registry providing factories to parse the evaluated instruction.
      */
     private final ActionTypeRegistry actionTypeRegistry;
 
     /**
-     * The quest package to relate the event to.
+     * The quest package to relate the action to.
      */
     private final QuestPackage pack;
 
@@ -46,12 +46,12 @@ public class EvalAction implements NullableAction {
     private final Argument<String> evaluation;
 
     /**
-     * Created a new Eval event.
+     * Created a new Eval action.
      *
      * @param placeholders       the {@link Placeholders} to create and resolve placeholders
      * @param packManager        the quest package manager to get quest packages from
-     * @param actionTypeRegistry the event type registry providing factories to parse the evaluated instruction
-     * @param pack               the quest package to relate the event to
+     * @param actionTypeRegistry the action type registry providing factories to parse the evaluated instruction
+     * @param pack               the quest package to relate the action to
      * @param evaluation         the evaluation input
      */
     public EvalAction(final Placeholders placeholders, final QuestPackageManager packManager, final ActionTypeRegistry actionTypeRegistry,
@@ -64,26 +64,26 @@ public class EvalAction implements NullableAction {
     }
 
     /**
-     * Constructs an event with a given instruction and returns it.
+     * Constructs an action with a given instruction and returns it.
      *
      * @param placeholders       the {@link Placeholders} to create and resolve placeholders
      * @param packManager        the quest package manager to get quest packages from
      * @param instruction        the instruction string to parse
-     * @param actionTypeRegistry the event type registry providing factories to parse the evaluated instruction
-     * @param pack               the quest package to relate the event to
-     * @return the event
-     * @throws QuestException if the event could not be created
+     * @param actionTypeRegistry the action type registry providing factories to parse the evaluated instruction
+     * @param pack               the quest package to relate the action to
+     * @return the action
+     * @throws QuestException if the action could not be created
      */
-    public static ActionAdapter createEvent(final Placeholders placeholders, final QuestPackageManager packManager,
-                                            final ActionTypeRegistry actionTypeRegistry,
-                                            final QuestPackage pack, final String instruction) throws QuestException {
-        final Instruction eventInstruction = new DefaultInstruction(placeholders, packManager, pack, null, DefaultArgumentParsers.INSTANCE, instruction);
-        final TypeFactory<ActionAdapter> actionFactory = actionTypeRegistry.getFactory(eventInstruction.getPart(0));
-        return actionFactory.parseInstruction(eventInstruction);
+    public static ActionAdapter createAction(final Placeholders placeholders, final QuestPackageManager packManager,
+                                             final ActionTypeRegistry actionTypeRegistry,
+                                             final QuestPackage pack, final String instruction) throws QuestException {
+        final Instruction actionInstruction = new DefaultInstruction(placeholders, packManager, pack, null, DefaultArgumentParsers.INSTANCE, instruction);
+        final TypeFactory<ActionAdapter> actionFactory = actionTypeRegistry.getFactory(actionInstruction.getPart(0));
+        return actionFactory.parseInstruction(actionInstruction);
     }
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
-        createEvent(placeholders, packManager, actionTypeRegistry, pack, evaluation.getValue(profile)).fire(profile);
+        createAction(placeholders, packManager, actionTypeRegistry, pack, evaluation.getValue(profile)).fire(profile);
     }
 }

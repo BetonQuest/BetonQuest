@@ -10,7 +10,7 @@ import org.bukkit.World;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * The time event, changing the time on the server.
+ * The time action, changing the time on the server.
  */
 public class TimeAction implements NullableAction {
 
@@ -30,7 +30,7 @@ public class TimeAction implements NullableAction {
     private final FlagArgument<Boolean> tickFormat;
 
     /**
-     * Creates the time event.
+     * Creates the time action.
      *
      * @param timeChange    the time type to set
      * @param worldSelector to get the world that should be affected

@@ -12,12 +12,12 @@ import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
 import org.betonquest.betonquest.id.QuestCancelerID;
 
 /**
- * Factory for the cancel event.
+ * Factory for the cancel action.
  */
 public class CancelActionFactory implements PlayerActionFactory {
 
     /**
-     * Logger factory to create a logger for the events.
+     * Logger factory to create a logger for the actions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -27,9 +27,9 @@ public class CancelActionFactory implements PlayerActionFactory {
     private final FeatureApi featureApi;
 
     /**
-     * Creates a new cancel event factory.
+     * Creates a new cancel action factory.
      *
-     * @param loggerFactory the logger factory to create a logger for the events
+     * @param loggerFactory the logger factory to create a logger for the actions
      * @param featureApi    the feature API
      */
     public CancelActionFactory(final BetonQuestLoggerFactory loggerFactory, final FeatureApi featureApi) {

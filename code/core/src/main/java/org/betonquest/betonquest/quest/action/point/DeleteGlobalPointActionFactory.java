@@ -11,7 +11,7 @@ import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter
 import org.betonquest.betonquest.database.GlobalData;
 
 /**
- * Factory for the delete global point event.
+ * Factory for the delete global point action.
  */
 public class DeleteGlobalPointActionFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
@@ -31,15 +31,15 @@ public class DeleteGlobalPointActionFactory implements PlayerActionFactory, Play
 
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
-        return createDeleteGlobalPointEvent(instruction);
+        return createDeleteGlobalPointAction(instruction);
     }
 
     @Override
     public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
-        return createDeleteGlobalPointEvent(instruction);
+        return createDeleteGlobalPointAction(instruction);
     }
 
-    private NullableActionAdapter createDeleteGlobalPointEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createDeleteGlobalPointAction(final Instruction instruction) throws QuestException {
         final Argument<String> category = instruction.packageIdentifier().get();
         return new NullableActionAdapter(new DeleteGlobalPointAction(globalData, category));
     }

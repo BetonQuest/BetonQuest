@@ -25,7 +25,7 @@ public class PasteSchematicActionFactory implements PlayerActionFactory, Playerl
     private final File folder;
 
     /**
-     * Create the door event factory.
+     * Create the door action factory.
      *
      * @param folder the schematics folder
      */

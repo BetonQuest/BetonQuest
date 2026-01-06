@@ -14,14 +14,14 @@ import java.util.List;
 public class RunAction implements NullableAction {
 
     /**
-     * Actions that the run event will execute.
+     * Actions that the run action will execute.
      */
     private final List<ActionAdapter> actions;
 
     /**
-     * Create a run event from the given instruction.
+     * Create a run action from the given instruction.
      *
-     * @param actions events to run
+     * @param actions actions to run
      */
     public RunAction(final List<ActionAdapter> actions) {
         this.actions = actions;
@@ -29,8 +29,8 @@ public class RunAction implements NullableAction {
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
-        for (final ActionAdapter event : actions) {
-            event.fire(profile);
+        for (final ActionAdapter action : actions) {
+            action.fire(profile);
         }
     }
 }

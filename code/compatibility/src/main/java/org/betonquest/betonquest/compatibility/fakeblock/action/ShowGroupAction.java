@@ -25,7 +25,7 @@ public class ShowGroupAction implements PlayerAction {
     private final RegisteredServiceProvider<PlayerGroupService> playerGroupService;
 
     /**
-     * Creates the showgroup event.
+     * Creates the showgroup action.
      *
      * @param groupNames         is a list that contains Strings of group names that should be shown to the player
      * @param playerGroupService the FakeBlock PlayerGroupService

@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 
 /**
- * Factory to create language events from {@link Instruction}s.
+ * Factory to create language actions from {@link Instruction}s.
  */
 public class LanguageActionFactory implements PlayerActionFactory {
 
@@ -18,7 +18,7 @@ public class LanguageActionFactory implements PlayerActionFactory {
     private final PlayerDataStorage dataStorage;
 
     /**
-     * Create the language event factory.
+     * Create the language action factory.
      *
      * @param dataStorage the storage providing player data
      */

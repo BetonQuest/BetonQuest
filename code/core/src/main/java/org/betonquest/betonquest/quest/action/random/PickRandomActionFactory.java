@@ -24,7 +24,7 @@ public class PickRandomActionFactory implements PlayerActionFactory, PlayerlessA
     /**
      * The character used to separate the percentage and action in the instruction.
      */
-    private static final Pattern EVENT_WEIGHT = Pattern.compile("(?<weight>\\d+\\.?\\d?)~(?<action>.+)");
+    private static final Pattern ACTION_WEIGHT = Pattern.compile("(?<weight>\\d+\\.?\\d?)~(?<action>.+)");
 
     /**
      * Quest Type API.
@@ -42,17 +42,17 @@ public class PickRandomActionFactory implements PlayerActionFactory, PlayerlessA
 
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
-        return createPickRandomEvent(instruction);
+        return createPickRandomAction(instruction);
     }
 
     @Override
     public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
-        return createPickRandomEvent(instruction);
+        return createPickRandomAction(instruction);
     }
 
-    private NullableActionAdapter createPickRandomEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createPickRandomAction(final Instruction instruction) throws QuestException {
         final Argument<List<RandomAction>> actions = instruction.parse(string -> {
-            final Matcher matcher = EVENT_WEIGHT.matcher(string);
+            final Matcher matcher = ACTION_WEIGHT.matcher(string);
             if (!matcher.matches()) {
                 throw new QuestException("Weight must be specified correctly: " + string);
             }

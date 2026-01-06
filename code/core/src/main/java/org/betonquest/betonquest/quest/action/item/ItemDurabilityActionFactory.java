@@ -14,19 +14,19 @@ import org.bukkit.inventory.EquipmentSlot;
 import java.util.Random;
 
 /**
- * Factory for the item durability event.
+ * Factory for the item durability action.
  */
 public class ItemDurabilityActionFactory implements PlayerActionFactory {
 
     /**
-     * Logger factory to create a logger for the events.
+     * Logger factory to create a logger for the actions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Create the item durability event factory.
+     * Create the item durability action factory.
      *
-     * @param loggerFactory the logger factory to create a logger for the events
+     * @param loggerFactory the logger factory to create a logger for the actions
      */
     public ItemDurabilityActionFactory(final BetonQuestLoggerFactory loggerFactory) {
         this.loggerFactory = loggerFactory;

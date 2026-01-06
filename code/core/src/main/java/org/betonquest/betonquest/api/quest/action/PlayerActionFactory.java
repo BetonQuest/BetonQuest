@@ -14,7 +14,7 @@ public interface PlayerActionFactory extends PlayerQuestFactory<PlayerAction> {
      * Parses an instruction to create a {@link PlayerAction}.
      *
      * @param instruction instruction to parse
-     * @return normal event represented by the instruction
+     * @return normal action represented by the instruction
      * @throws QuestException when the instruction cannot be parsed
      */
     @Override

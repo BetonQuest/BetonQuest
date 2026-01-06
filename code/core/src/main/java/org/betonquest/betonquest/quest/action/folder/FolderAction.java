@@ -25,8 +25,8 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Folder action is a collection of other events, that can be run after a delay and with a periode between the event.
- * The events can be randomly chosen to run or not.
+ * Folder action is a collection of other actions, that can be run after a delay and with a periode between the action.
+ * The actions can be randomly chosen to run or not.
  */
 public class FolderAction implements NullableAction {
 
@@ -51,32 +51,32 @@ public class FolderAction implements NullableAction {
     private final QuestTypeApi questTypeApi;
 
     /**
-     * Random generator used to choose events to run.
+     * Random generator used to choose actions to run.
      */
     private final Random randomGenerator;
 
     /**
-     * The delay to apply before running the events.
+     * The delay to apply before running the actions.
      */
     @Nullable
     private final Argument<Number> delay;
 
     /**
-     * The delay to apply between each event.
+     * The delay to apply between each action.
      */
     @Nullable
     private final Argument<Number> period;
 
     /**
-     * The number of events to run.
+     * The number of actions to run.
      */
     @Nullable
     private final Argument<Number> random;
 
     /**
-     * The events to run.
+     * The actions to run.
      */
-    private final Argument<List<ActionID>> events;
+    private final Argument<List<ActionID>> actions;
 
     /**
      * The time unit to use for the delay and period.
@@ -84,34 +84,34 @@ public class FolderAction implements NullableAction {
     private final Argument<TimeUnit> timeUnit;
 
     /**
-     * Whether the event should be canceled on logout.
+     * Whether the action should be canceled on logout.
      */
     private final FlagArgument<Boolean> cancelOnLogout;
 
     /**
-     * Conditions to check if the event should be canceled.
+     * Conditions to check if the action should be canceled.
      */
     private final Argument<List<ConditionID>> cancelConditions;
 
     /**
-     * Create a folder event with the given parameters.
+     * Create a folder action with the given parameters.
      *
      * @param betonQuest       the BetonQuest instance
      * @param log              custom logger for this class
      * @param pluginManager    the plugin manager to register the quit listener
-     * @param events           events to run
+     * @param actions          actions to run
      * @param questTypeApi     the Quest Type API
      * @param randomGenerator  the random instance to use
-     * @param delay            delay to apply before running the events
-     * @param period           delay to apply between each event
-     * @param random           number of events to run
+     * @param delay            delay to apply before running the actions
+     * @param period           delay to apply between each action
+     * @param random           number of actions to run
      * @param timeUnit         time unit to use for the delay and period
-     * @param cancelOnLogout   whether the event should be canceled on logout
-     * @param cancelConditions conditions to check if the event should be canceled
+     * @param cancelOnLogout   whether the action should be canceled on logout
+     * @param cancelConditions conditions to check if the action should be canceled
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public FolderAction(final BetonQuest betonQuest, final BetonQuestLogger log, final PluginManager pluginManager,
-                        final Argument<List<ActionID>> events, final QuestTypeApi questTypeApi, final Random randomGenerator,
+                        final Argument<List<ActionID>> actions, final QuestTypeApi questTypeApi, final Random randomGenerator,
                         @Nullable final Argument<Number> delay, @Nullable final Argument<Number> period,
                         @Nullable final Argument<Number> random, final Argument<TimeUnit> timeUnit,
                         final FlagArgument<Boolean> cancelOnLogout, final Argument<List<ConditionID>> cancelConditions) {
@@ -123,7 +123,7 @@ public class FolderAction implements NullableAction {
         this.delay = delay;
         this.period = period;
         this.random = random;
-        this.events = events;
+        this.actions = actions;
         this.timeUnit = timeUnit;
         this.cancelOnLogout = cancelOnLogout;
         this.cancelConditions = cancelConditions;
@@ -139,23 +139,23 @@ public class FolderAction implements NullableAction {
         }
     }
 
-    private void executeAllEvents(@Nullable final Profile profile, final Deque<ActionID> chosenList) {
-        for (final ActionID event : chosenList) {
+    private void executeAllActions(@Nullable final Profile profile, final Deque<ActionID> chosenList) {
+        for (final ActionID action : chosenList) {
             if (checkCancelConditions(profile)) {
                 return;
             }
-            questTypeApi.action(profile, event);
+            questTypeApi.action(profile, action);
         }
     }
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
-        final Deque<ActionID> chosenList = getEventOrder(profile);
+        final Deque<ActionID> chosenList = getActionOrder(profile);
         final TimeUnit timeUnit = this.timeUnit.getValue(profile);
         final long delayTicks = delay == null ? 0 : timeUnit.getTicks(delay.getValue(profile).longValue());
         final long periodTicks = period == null ? 0 : timeUnit.getTicks(period.getValue(profile).longValue());
         if (delayTicks == 0 && periodTicks == 0) {
-            executeAllEvents(profile, chosenList);
+            executeAllActions(profile, chosenList);
         } else if (periodTicks == 0) {
             handleDelayNoPeriod(profile, chosenList, delayTicks);
         } else {
@@ -166,64 +166,60 @@ public class FolderAction implements NullableAction {
     private void handleDelayPeriod(@Nullable final Profile profile, final long delayTicks, final Deque<ActionID> chosenList,
                                    final long periodTicks) throws QuestException {
         if (delayTicks == 0 && !chosenList.isEmpty()) {
-            final ActionID event = chosenList.removeFirst();
+            final ActionID action = chosenList.removeFirst();
             if (checkCancelConditions(profile)) {
                 return;
             }
-            questTypeApi.action(profile, event);
+            questTypeApi.action(profile, action);
         }
         if (!chosenList.isEmpty()) {
-            final FolderEventCanceler eventCanceler = createFolderEventCanceler(profile);
+            final FolderActionCanceler actionCanceler = createFolderActionCanceler(profile);
             callSameSyncAsyncContext(new BukkitRunnable() {
                 @Override
                 public void run() {
-                    final ActionID event = chosenList.pollFirst();
-                    if (eventCanceler.isCancelled() || event == null || checkCancelConditions(profile)) {
-                        eventCanceler.destroy();
+                    final ActionID action = chosenList.pollFirst();
+                    if (actionCanceler.isCancelled() || action == null || checkCancelConditions(profile)) {
+                        actionCanceler.destroy();
                         this.cancel();
                         return;
                     }
-                    questTypeApi.action(profile, event);
+                    questTypeApi.action(profile, action);
                 }
             }, delayTicks == 0 ? periodTicks : delayTicks, periodTicks);
         }
     }
 
     private void handleDelayNoPeriod(@Nullable final Profile profile, final Deque<ActionID> chosenList, final long delayTicks) throws QuestException {
-        final FolderEventCanceler eventCanceler = createFolderEventCanceler(profile);
+        final FolderActionCanceler actionCanceler = createFolderActionCanceler(profile);
         callSameSyncAsyncContext(new BukkitRunnable() {
             @Override
             public void run() {
-                eventCanceler.destroy();
-                if (eventCanceler.isCancelled()) {
+                actionCanceler.destroy();
+                if (actionCanceler.isCancelled()) {
                     return;
                 }
-                executeAllEvents(profile, chosenList);
+                executeAllActions(profile, chosenList);
             }
         }, delayTicks, -1);
     }
 
-    private Deque<ActionID> getEventOrder(@Nullable final Profile profile) throws QuestException {
+    private Deque<ActionID> getActionOrder(@Nullable final Profile profile) throws QuestException {
         final Deque<ActionID> chosenList = new LinkedList<>();
-        // choose randomly which events should be fired
         final int randomInt = random == null ? 0 : random.getValue(profile).intValue();
-        final List<ActionID> resolvedEvents = events.getValue(profile);
-        if (randomInt > 0 && randomInt <= resolvedEvents.size()) {
-            // copy events into the modifiable ArrayList
-            final List<ActionID> eventsList = new ArrayList<>(resolvedEvents);
-            // remove chosen events from that ArrayList and place them in a new
-            // list
+        final List<ActionID> resolvedActions = actions.getValue(profile);
+        if (randomInt > 0 && randomInt <= resolvedActions.size()) {
+            final List<ActionID> actionsList = new ArrayList<>(resolvedActions);
             for (int i = randomInt; i > 0; i--) {
-                final int chosen = randomGenerator.nextInt(eventsList.size());
-                chosenList.add(eventsList.remove(chosen));
+                final int chosen = randomGenerator.nextInt(actionsList.size());
+                chosenList.add(actionsList.remove(chosen));
             }
         } else {
-            chosenList.addAll(resolvedEvents);
+            chosenList.addAll(resolvedActions);
         }
         return chosenList;
     }
 
-    private FolderEventCanceler createFolderEventCanceler(@Nullable final Profile profile) throws QuestException {
+    private FolderActionCanceler createFolderActionCanceler(@Nullable final Profile profile) throws QuestException {
         if (cancelOnLogout.getValue(null).orElse(false) && profile != null) {
             return new QuitListener(betonQuest, log, pluginManager, profile);
         }
@@ -247,15 +243,15 @@ public class FolderAction implements NullableAction {
     }
 
     /**
-     * Interface to check if an execution of a folder event is cancelled.
+     * Interface to check if an execution of a folder action is cancelled.
      */
     @FunctionalInterface
-    private interface FolderEventCanceler {
+    private interface FolderActionCanceler {
 
         /**
-         * Whether the execution of the folder event should be cancelled.
+         * Whether the execution of the folder action should be cancelled.
          *
-         * @return true if the event needs to be cancelled; false otherwise
+         * @return true if the action needs to be cancelled; false otherwise
          */
         boolean isCancelled();
 
@@ -268,9 +264,9 @@ public class FolderAction implements NullableAction {
     }
 
     /**
-     * Registers the quit listener if the event should be cancelled on logout.
+     * Registers the quit listener if the action should be cancelled on logout.
      */
-    private static class QuitListener implements FolderEventCanceler, Listener {
+    private static class QuitListener implements FolderActionCanceler, Listener {
 
         /**
          * Custom {@link BetonQuestLogger} instance for this class.
@@ -283,7 +279,7 @@ public class FolderAction implements NullableAction {
         private final Profile profile;
 
         /**
-         * Whether the event is cancelled.
+         * Whether the action is cancelled.
          */
         private boolean cancelled;
 
@@ -303,7 +299,7 @@ public class FolderAction implements NullableAction {
         }
 
         /**
-         * Handle quit events to check if an execution of the folder event needs to be cancelled.
+         * Handle quit events to check if an execution of the folder action needs to be cancelled.
          *
          * @param event player quit event to handle
          */
@@ -311,7 +307,7 @@ public class FolderAction implements NullableAction {
         public void onPlayerQuit(final PlayerQuitEvent event) {
             if (event.getPlayer().getUniqueId().equals(profile.getPlayerUUID())) {
                 cancelled = true;
-                log.debug("Folder event cancelled due to disconnect of " + profile);
+                log.debug("Folder action cancelled due to disconnect of " + profile);
             }
         }
 

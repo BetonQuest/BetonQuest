@@ -44,7 +44,7 @@ public class EffectAction implements OnlineAction {
     private final FlagArgument<Boolean> noicon;
 
     /**
-     * Create a new effect event.
+     * Create a new effect action.
      *
      * @param effect   the effect to apply
      * @param duration the duration of the effect

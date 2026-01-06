@@ -1,4 +1,4 @@
 /**
- * Shared API for quest events.
+ * Shared API for quest actions.
  */
 package org.betonquest.betonquest.api.quest.action;

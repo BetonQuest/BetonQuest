@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Consumer;
 
 /**
- * The door event. It applies an action to the {@link Openable} block meta if it could be found at the location.
+ * The door action. It applies an action to the {@link Openable} block meta if it could be found at the location.
  * It fails when no {@link Openable} block is found at the location.
  */
 public class DoorAction implements NullableAction {
@@ -29,7 +29,7 @@ public class DoorAction implements NullableAction {
     private final Consumer<Openable> action;
 
     /**
-     * Create the event to change the {@link Openable} at the given location with the given action.
+     * Create the action to change the {@link Openable} at the given location with the given action.
      *
      * @param location location to act on
      * @param action   action to do

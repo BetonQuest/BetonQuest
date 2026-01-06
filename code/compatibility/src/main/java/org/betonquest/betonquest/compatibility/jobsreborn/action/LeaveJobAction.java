@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 
 /**
- * Event to leave a job.
+ * Action to leave a job.
  */
 public class LeaveJobAction implements PlayerAction {
 
@@ -18,7 +18,7 @@ public class LeaveJobAction implements PlayerAction {
     private final Argument<Job> job;
 
     /**
-     * Create a new job join event.
+     * Create a new job join action.
      *
      * @param job the job to check
      */

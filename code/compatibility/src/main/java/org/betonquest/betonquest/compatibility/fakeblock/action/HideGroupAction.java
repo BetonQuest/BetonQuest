@@ -25,7 +25,7 @@ public class HideGroupAction implements PlayerAction {
     private final RegisteredServiceProvider<PlayerGroupService> playerGroupService;
 
     /**
-     * Creates the hide group event.
+     * Creates the hide group action.
      *
      * @param groupNames         is a string list with group names that should be hidden for the player
      * @param playerGroupService the FakeBlock PlayerGroupService

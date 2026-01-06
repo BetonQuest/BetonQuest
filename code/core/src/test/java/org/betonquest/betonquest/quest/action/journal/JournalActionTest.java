@@ -33,9 +33,9 @@ class JournalActionTest {
         when(dataStorage.getOffline(onlineProfile)).thenReturn(data);
         when(data.getJournal()).thenReturn(journal);
 
-        final JournalAction event = new JournalAction(dataStorage, changer, sender);
+        final JournalAction action = new JournalAction(dataStorage, changer, sender);
 
-        event.execute(onlineProfile);
+        action.execute(onlineProfile);
 
         final InOrder order = inOrder(journal, changer, sender);
         order.verify(changer).changeJournal(journal, onlineProfile);

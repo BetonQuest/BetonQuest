@@ -16,7 +16,7 @@ public class CancelConversationAction implements OnlineAction {
     private final ConversationApi conversationApi;
 
     /**
-     * Create a new conversation cancel event.
+     * Create a new conversation cancel action.
      *
      * @param conversationApi the Conversation API
      */

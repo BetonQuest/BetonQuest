@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 /**
- * Event to block all player entity movement.
+ * Action to block all player entity movement.
  */
 public class FreezeAction implements OnlineAction {
 
@@ -31,7 +31,7 @@ public class FreezeAction implements OnlineAction {
     private final Argument<Number> ticks;
 
     /**
-     * Create a new event that freezes a player.
+     * Create a new action that freezes a player.
      *
      * @param plugin          the plugin instance
      * @param packetEventsAPI the PacketEvents API instance

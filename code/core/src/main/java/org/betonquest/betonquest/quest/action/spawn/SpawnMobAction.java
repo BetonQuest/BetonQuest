@@ -51,7 +51,7 @@ public class SpawnMobAction implements NullableAction {
     private final Argument<String> marked;
 
     /**
-     * Creates a new spawn mob event.
+     * Creates a new spawn mob action.
      *
      * @param location  the location to spawn the mob at
      * @param type      the type of mob to spawn

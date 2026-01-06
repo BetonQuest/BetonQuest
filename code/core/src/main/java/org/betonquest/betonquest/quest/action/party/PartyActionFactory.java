@@ -15,12 +15,12 @@ import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import java.util.List;
 
 /**
- * Fires specified events for every player in the party.
+ * Fires specified actions for every player in the party.
  */
 public class PartyActionFactory implements PlayerActionFactory {
 
     /**
-     * Logger factory to create a logger for the events.
+     * Logger factory to create a logger for the actions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -37,7 +37,7 @@ public class PartyActionFactory implements PlayerActionFactory {
     /**
      * Creates a PartyActionFactory instance.
      *
-     * @param loggerFactory   the logger factory to create a logger for the events
+     * @param loggerFactory   the logger factory to create a logger for the actions
      * @param questTypeApi    the Quest Type API
      * @param profileProvider the profile provider instance
      */
@@ -52,9 +52,9 @@ public class PartyActionFactory implements PlayerActionFactory {
         final Argument<Number> range = instruction.number().get();
         final Argument<Number> amount = instruction.number().get("amount").orElse(null);
         final Argument<List<ConditionID>> conditions = instruction.parse(ConditionID::new).list().get();
-        final Argument<List<ActionID>> events = instruction.parse(ActionID::new).list().get();
+        final Argument<List<ActionID>> actions = instruction.parse(ActionID::new).list().get();
         return new OnlineActionAdapter(
-                new PartyAction(questTypeApi, profileProvider, range, amount, conditions, events),
+                new PartyAction(questTypeApi, profileProvider, range, amount, conditions, actions),
                 loggerFactory.create(PartyAction.class),
                 instruction.getPackage()
         );

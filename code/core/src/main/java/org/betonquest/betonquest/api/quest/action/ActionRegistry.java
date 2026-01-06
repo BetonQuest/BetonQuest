@@ -3,7 +3,7 @@ package org.betonquest.betonquest.api.quest.action;
 import org.betonquest.betonquest.api.kernel.CoreQuestRegistry;
 
 /**
- * Stores the event factories.
+ * Stores the action factories.
  */
 public interface ActionRegistry extends CoreQuestRegistry<PlayerAction, PlayerlessAction> {
 

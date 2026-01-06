@@ -21,7 +21,7 @@ public class ScoreboardTagAction implements OnlineAction {
     private final Argument<ScoreboardTagOperation> action;
 
     /**
-     * Create a new scoreboard tag event that adds or removes the given tag.
+     * Create a new scoreboard tag action that adds or removes the given tag.
      *
      * @param tag    the tag to add or remove
      * @param action whether to add or remove the tag

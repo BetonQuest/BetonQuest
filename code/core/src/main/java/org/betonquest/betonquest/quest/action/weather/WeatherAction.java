@@ -9,12 +9,12 @@ import org.bukkit.World;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * The weather event, changing the weather on the server.
+ * The weather action, changing the weather on the server.
  */
 public class WeatherAction implements NullableAction {
 
     /**
-     * The weather that will be set when the event is executed.
+     * The weather that will be set when the action is executed.
      */
     private final Argument<Weather> weather;
 
@@ -29,7 +29,7 @@ public class WeatherAction implements NullableAction {
     private final Argument<Number> duration;
 
     /**
-     * Creates the weather event to set the given state.
+     * Creates the weather action to set the given state.
      *
      * @param weather       the weather to set
      * @param worldSelector to get the world that should be affected

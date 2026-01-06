@@ -13,27 +13,27 @@ import org.bukkit.Location;
 import java.util.Locale;
 
 /**
- * Factory to create door events from {@link Instruction}s.
+ * Factory to create door actions from {@link Instruction}s.
  */
 public class DoorActionFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
-     * Create the door event factory.
+     * Create the door action factory.
      */
     public DoorActionFactory() {
     }
 
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
-        return createDoorEvent(instruction);
+        return createDoorAction(instruction);
     }
 
     @Override
     public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
-        return createDoorEvent(instruction);
+        return createDoorAction(instruction);
     }
 
-    private NullableActionAdapter createDoorEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createDoorAction(final Instruction instruction) throws QuestException {
         final Argument<Location> location = instruction.location().get();
         final String action = instruction.string().get().getValue(null);
         final DoorAction doorAction = switch (action.toLowerCase(Locale.ROOT)) {

@@ -37,7 +37,7 @@ public class PartyAction implements OnlineAction {
     private final Argument<Number> range;
 
     /**
-     * The optional maximum amount of players affected by this party event.
+     * The optional maximum amount of players affected by this party action.
      */
     @Nullable
     private final Argument<Number> amount;
@@ -48,9 +48,9 @@ public class PartyAction implements OnlineAction {
     private final Argument<List<ConditionID>> conditions;
 
     /**
-     * The events to fire.
+     * The actions to fire.
      */
-    private final Argument<List<ActionID>> events;
+    private final Argument<List<ActionID>> actions;
 
     /**
      * Creates a new PartyAction instance.
@@ -61,22 +61,22 @@ public class PartyAction implements OnlineAction {
      * @param amount          the optional maximum amount of players affected by this party,
      *                        null or negative values sets no maximum amount
      * @param conditions      the conditions that must be met by the party members
-     * @param events          the events to fire
+     * @param actions         the actions to fire
      */
     public PartyAction(final QuestTypeApi questTypeApi, final ProfileProvider profileProvider, final Argument<Number> range,
-                       @Nullable final Argument<Number> amount, final Argument<List<ConditionID>> conditions, final Argument<List<ActionID>> events) {
+                       @Nullable final Argument<Number> amount, final Argument<List<ConditionID>> conditions, final Argument<List<ActionID>> actions) {
         this.questTypeApi = questTypeApi;
         this.profileProvider = profileProvider;
         this.range = range;
         this.amount = amount;
         this.conditions = conditions;
-        this.events = events;
+        this.actions = actions;
     }
 
     @Override
     public void execute(final OnlineProfile profile) throws QuestException {
         for (final OnlineProfile member : getMemberList(profile)) {
-            questTypeApi.actions(member, events.getValue(profile));
+            questTypeApi.actions(member, actions.getValue(profile));
         }
     }
 

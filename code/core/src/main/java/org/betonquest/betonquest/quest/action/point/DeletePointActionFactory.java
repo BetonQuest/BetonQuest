@@ -12,7 +12,7 @@ import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Saver;
 
 /**
- * Factory to create delete points events from {@link Instruction}s.
+ * Factory to create delete points actions from {@link Instruction}s.
  */
 public class DeletePointActionFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
@@ -32,7 +32,7 @@ public class DeletePointActionFactory implements PlayerActionFactory, Playerless
     private final ProfileProvider profileProvider;
 
     /**
-     * Create the delete points event factory.
+     * Create the delete points action factory.
      *
      * @param dataStorage     the storage providing player data
      * @param saver           the saver to use

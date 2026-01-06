@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Random;
 
 /**
- * The item durability event, to modify the durability of an item.
+ * The item durability action, to modify the durability of an item.
  */
 public class ItemDurabilityAction implements OnlineAction {
 
@@ -55,7 +55,7 @@ public class ItemDurabilityAction implements OnlineAction {
     private final Random random;
 
     /**
-     * Creates a new item durability event.
+     * Creates a new item durability action.
      *
      * @param slot              of the item
      * @param modification      on the durability

@@ -10,19 +10,19 @@ import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
 import org.bukkit.util.Vector;
 
 /**
- * Factory to create velocity events from {@link Instruction}s.
+ * Factory to create velocity actions from {@link Instruction}s.
  */
 public class VelocityActionFactory implements PlayerActionFactory {
 
     /**
-     * Logger factory to create a logger for the events.
+     * Logger factory to create a logger for the actions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Create the velocity event factory.
+     * Create the velocity action factory.
      *
-     * @param loggerFactory the logger factory to create a logger for the events
+     * @param loggerFactory the logger factory to create a logger for the actions
      */
     public VelocityActionFactory(final BetonQuestLoggerFactory loggerFactory) {
         this.loggerFactory = loggerFactory;

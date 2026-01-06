@@ -30,7 +30,7 @@ public class SetBlockAction implements NullableAction {
     private final FlagArgument<Boolean> ignorePhysics;
 
     /**
-     * Creates a new set block event.
+     * Creates a new set block action.
      *
      * @param selector      the block selector
      * @param location      the location

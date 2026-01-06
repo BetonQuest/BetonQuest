@@ -11,19 +11,19 @@ import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
 import org.bukkit.potion.PotionEffectType;
 
 /**
- * Factory to create effect events from {@link Instruction}s.
+ * Factory to create effect actions from {@link Instruction}s.
  */
 public class EffectActionFactory implements PlayerActionFactory {
 
     /**
-     * Logger factory to create a logger for the events.
+     * Logger factory to create a logger for the actions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Create the effect event factory.
+     * Create the effect action factory.
      *
-     * @param loggerFactory the logger factory to create a logger for the events
+     * @param loggerFactory the logger factory to create a logger for the actions
      */
     public EffectActionFactory(final BetonQuestLoggerFactory loggerFactory) {
         this.loggerFactory = loggerFactory;
