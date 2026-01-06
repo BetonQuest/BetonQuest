@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.UnsupportedVersionException;
-import org.betonquest.betonquest.compatibility.fakeblock.event.FakeBlockEventFactory;
+import org.betonquest.betonquest.compatibility.fakeblock.event.FakeBlockActionFactory;
 import org.betonquest.betonquest.versioning.UpdateStrategy;
 import org.betonquest.betonquest.versioning.Version;
 import org.betonquest.betonquest.versioning.VersionComparator;
@@ -45,7 +45,7 @@ public class FakeBlockIntegrator implements Integrator {
         final RegisteredServiceProvider<GroupService> groupService = getServiceProvider(GroupService.class);
         final RegisteredServiceProvider<PlayerGroupService> playerGroupService = getServiceProvider(PlayerGroupService.class);
 
-        api.getQuestRegistries().event().register("fakeblock", new FakeBlockEventFactory(groupService, playerGroupService));
+        api.getQuestRegistries().event().register("fakeblock", new FakeBlockActionFactory(groupService, playerGroupService));
     }
 
     private void checkRequiredVersion() throws UnsupportedVersionException {

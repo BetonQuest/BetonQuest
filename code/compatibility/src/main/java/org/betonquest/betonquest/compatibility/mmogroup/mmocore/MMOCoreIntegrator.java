@@ -9,12 +9,12 @@ import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.condition.MMOCoreAttributeConditionFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.condition.MMOCoreClassConditionFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.condition.MMOCoreProfessionLevelConditionFactory;
-import org.betonquest.betonquest.compatibility.mmogroup.mmocore.event.MMOCoreAttributePointsEventFactory;
-import org.betonquest.betonquest.compatibility.mmogroup.mmocore.event.MMOCoreAttributeReallocationPointsEventFactory;
-import org.betonquest.betonquest.compatibility.mmogroup.mmocore.event.MMOCoreClassExperienceEventFactory;
-import org.betonquest.betonquest.compatibility.mmogroup.mmocore.event.MMOCoreClassPointsEventFactory;
-import org.betonquest.betonquest.compatibility.mmogroup.mmocore.event.MMOCoreProfessionExperienceEventFactory;
-import org.betonquest.betonquest.compatibility.mmogroup.mmocore.event.MMOCoreSkillPointsEventFactory;
+import org.betonquest.betonquest.compatibility.mmogroup.mmocore.event.MMOCoreAttributePointsActionFactory;
+import org.betonquest.betonquest.compatibility.mmogroup.mmocore.event.MMOCoreAttributeReallocationPointsActionFactory;
+import org.betonquest.betonquest.compatibility.mmogroup.mmocore.event.MMOCoreClassExperienceActionFactory;
+import org.betonquest.betonquest.compatibility.mmogroup.mmocore.event.MMOCoreClassPointsActionFactory;
+import org.betonquest.betonquest.compatibility.mmogroup.mmocore.event.MMOCoreProfessionExperienceActionFactory;
+import org.betonquest.betonquest.compatibility.mmogroup.mmocore.event.MMOCoreSkillPointsActionFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.objective.MMOCoreBreakCustomBlockObjectiveFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.objective.MMOCoreChangeClassObjectiveFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.objective.MMOCoreProfessionObjectiveFactory;
@@ -44,12 +44,12 @@ public class MMOCoreIntegrator implements Integrator {
         objectiveRegistry.register("mmocorebreakblock", new MMOCoreBreakCustomBlockObjectiveFactory());
 
         final ActionRegistry eventRegistry = questRegistries.event();
-        eventRegistry.register("mmoclassexperience", new MMOCoreClassExperienceEventFactory());
-        eventRegistry.register("mmoprofessionexperience", new MMOCoreProfessionExperienceEventFactory());
-        eventRegistry.register("mmocoreclasspoints", new MMOCoreClassPointsEventFactory());
-        eventRegistry.register("mmocoreattributepoints", new MMOCoreAttributePointsEventFactory());
-        eventRegistry.register("mmocoreattributereallocationpoints", new MMOCoreAttributeReallocationPointsEventFactory());
-        eventRegistry.register("mmocoreskillpoints", new MMOCoreSkillPointsEventFactory());
+        eventRegistry.register("mmoclassexperience", new MMOCoreClassExperienceActionFactory());
+        eventRegistry.register("mmoprofessionexperience", new MMOCoreProfessionExperienceActionFactory());
+        eventRegistry.register("mmocoreclasspoints", new MMOCoreClassPointsActionFactory());
+        eventRegistry.register("mmocoreattributepoints", new MMOCoreAttributePointsActionFactory());
+        eventRegistry.register("mmocoreattributereallocationpoints", new MMOCoreAttributeReallocationPointsActionFactory());
+        eventRegistry.register("mmocoreskillpoints", new MMOCoreSkillPointsActionFactory());
     }
 
     @Override

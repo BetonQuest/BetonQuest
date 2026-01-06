@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.quest.condition.ConditionRegistry;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.auraskills.condition.AuraSkillsLevelConditionFactory;
 import org.betonquest.betonquest.compatibility.auraskills.condition.AuraSkillsStatsConditionFactory;
-import org.betonquest.betonquest.compatibility.auraskills.event.AuraSkillsExperienceEventFactory;
+import org.betonquest.betonquest.compatibility.auraskills.event.AuraSkillsExperienceActionFactory;
 
 /**
  * Integrator for <a href="https://github.com/Archy-X/AuraSkills">AuraSkills</a>.
@@ -25,7 +25,7 @@ public class AuraSkillsIntegrator implements Integrator {
         final AuraSkillsApi auraSkillsApi = AuraSkillsApi.get();
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
 
-        questRegistries.event().register("auraskillsxp", new AuraSkillsExperienceEventFactory(auraSkillsApi));
+        questRegistries.event().register("auraskillsxp", new AuraSkillsExperienceActionFactory(auraSkillsApi));
 
         final ConditionRegistry conditionRegistry = questRegistries.condition();
         conditionRegistry.register("auraskillslevel", new AuraSkillsLevelConditionFactory(auraSkillsApi));

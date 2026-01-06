@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.denizen;
 
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.compatibility.Integrator;
-import org.betonquest.betonquest.compatibility.denizen.event.DenizenTaskScriptEventFactory;
+import org.betonquest.betonquest.compatibility.denizen.event.DenizenTaskScriptActionFactory;
 
 /**
  * Integrator for Denizen.
@@ -17,7 +17,7 @@ public class DenizenIntegrator implements Integrator {
 
     @Override
     public void hook(final BetonQuestApi api) {
-        api.getQuestRegistries().event().register("script", new DenizenTaskScriptEventFactory());
+        api.getQuestRegistries().event().register("script", new DenizenTaskScriptActionFactory());
     }
 
     @Override
