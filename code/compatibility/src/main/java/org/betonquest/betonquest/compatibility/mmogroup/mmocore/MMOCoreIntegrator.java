@@ -43,13 +43,13 @@ public class MMOCoreIntegrator implements Integrator {
         objectiveRegistry.register("mmochangeclass", new MMOCoreChangeClassObjectiveFactory());
         objectiveRegistry.register("mmocorebreakblock", new MMOCoreBreakCustomBlockObjectiveFactory());
 
-        final ActionRegistry eventRegistry = questRegistries.event();
-        eventRegistry.register("mmoclassexperience", new MMOCoreClassExperienceActionFactory());
-        eventRegistry.register("mmoprofessionexperience", new MMOCoreProfessionExperienceActionFactory());
-        eventRegistry.register("mmocoreclasspoints", new MMOCoreClassPointsActionFactory());
-        eventRegistry.register("mmocoreattributepoints", new MMOCoreAttributePointsActionFactory());
-        eventRegistry.register("mmocoreattributereallocationpoints", new MMOCoreAttributeReallocationPointsActionFactory());
-        eventRegistry.register("mmocoreskillpoints", new MMOCoreSkillPointsActionFactory());
+        final ActionRegistry actionRegistry = questRegistries.action();
+        actionRegistry.register("mmoclassexperience", new MMOCoreClassExperienceActionFactory());
+        actionRegistry.register("mmoprofessionexperience", new MMOCoreProfessionExperienceActionFactory());
+        actionRegistry.register("mmocoreclasspoints", new MMOCoreClassPointsActionFactory());
+        actionRegistry.register("mmocoreattributepoints", new MMOCoreAttributePointsActionFactory());
+        actionRegistry.register("mmocoreattributereallocationpoints", new MMOCoreAttributeReallocationPointsActionFactory());
+        actionRegistry.register("mmocoreskillpoints", new MMOCoreSkillPointsActionFactory());
     }
 
     @Override

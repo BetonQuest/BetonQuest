@@ -65,7 +65,7 @@ public record CoreQuestRegistry(
                 new ConditionProcessor(loggerFactory.create(ConditionProcessor.class), placeholderProcessor, packManager,
                         questTypeRegistries.condition(), scheduler, plugin),
                 new ActionProcessor(loggerFactory.create(ActionProcessor.class), placeholderProcessor, packManager,
-                        questTypeRegistries.event(), scheduler, plugin),
+                        questTypeRegistries.action(), scheduler, plugin),
                 new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), placeholderProcessor, packManager,
                         questTypeRegistries.objective(), pluginManager, objectiveService, plugin), placeholderProcessor);
     }

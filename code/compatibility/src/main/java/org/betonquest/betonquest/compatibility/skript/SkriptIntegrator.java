@@ -22,7 +22,7 @@ public class SkriptIntegrator implements Integrator {
         Skript.registerEvent("betonquest", SkriptEventBQ.class, BQSkriptAction.CustomEventForSkript.class,
                 "[betonquest] event %string%");
 
-        api.getQuestRegistries().event().register("skript", new BQSkriptActionFactory());
+        api.getQuestRegistries().action().register("skript", new BQSkriptActionFactory());
     }
 
     @Override

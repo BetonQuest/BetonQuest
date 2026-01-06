@@ -27,9 +27,9 @@ public class BreweryIntegrator implements Integrator {
     public void hook(final BetonQuestApi api) {
         final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
-        final ActionRegistry eventRegistry = questRegistries.event();
-        eventRegistry.register("givebrew", new GiveBrewActionFactory(loggerFactory));
-        eventRegistry.register("takebrew", new TakeBrewActionFactory(loggerFactory));
+        final ActionRegistry actionRegistry = questRegistries.action();
+        actionRegistry.register("givebrew", new GiveBrewActionFactory(loggerFactory));
+        actionRegistry.register("takebrew", new TakeBrewActionFactory(loggerFactory));
 
         final ConditionRegistry conditionRegistry = questRegistries.condition();
         conditionRegistry.register("drunk", new DrunkConditionFactory(loggerFactory));

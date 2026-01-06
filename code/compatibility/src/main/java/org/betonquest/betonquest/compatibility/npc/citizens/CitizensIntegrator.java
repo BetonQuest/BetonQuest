@@ -73,10 +73,10 @@ public class CitizensIntegrator implements Integrator {
 
         manager.registerEvents(citizensMoveController, plugin);
 
-        final ActionRegistry eventRegistry = questRegistries.event();
+        final ActionRegistry actionRegistry = questRegistries.action();
         final FeatureApi featureApi = api.getFeatureApi();
-        eventRegistry.register("npcmove", new CitizensMoveActionFactory(featureApi, citizensMoveController));
-        eventRegistry.registerCombined("npcstop", new CitizensStopActionFactory(featureApi, citizensMoveController));
+        actionRegistry.register("npcmove", new CitizensMoveActionFactory(featureApi, citizensMoveController));
+        actionRegistry.registerCombined("npcstop", new CitizensStopActionFactory(featureApi, citizensMoveController));
 
         final FeatureRegistries featureRegistries = api.getFeatureRegistries();
         final FeatureRegistry<ConversationIOFactory> conversationIORegistry = featureRegistries.conversationIO();
