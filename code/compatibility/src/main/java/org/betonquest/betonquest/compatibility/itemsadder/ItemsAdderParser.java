@@ -16,9 +16,11 @@ public class ItemsAdderParser implements SimpleArgumentParser<CustomStack> {
     public static final ItemsAdderParser ITEMS_ADDER_PARSER = new ItemsAdderParser();
 
     /**
- * The empty default constructor.
- */
-    public ItemsAdderParser() { }
+     * The empty default constructor.
+     */
+    public ItemsAdderParser() {
+        // Empty
+    }
 
     @Override
     public CustomStack apply(final String string) throws QuestException {

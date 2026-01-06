@@ -13,8 +13,8 @@ import org.betonquest.betonquest.item.ItemRegistry;
 public class CraftEngineIntegrator implements Integrator {
 
     /**
- * The empty default constructor.
- */
+     * The empty default constructor.
+     */
     public CraftEngineIntegrator() {
         // Empty
     }

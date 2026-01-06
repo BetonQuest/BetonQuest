@@ -13,9 +13,11 @@ import org.betonquest.betonquest.item.ItemRegistry;
 public class ItemsAdderIntegrator implements Integrator {
 
     /**
- * The empty default constructor.
- */
-    public ItemsAdderIntegrator() { }
+     * The empty default constructor.
+     */
+    public ItemsAdderIntegrator() {
+        // Empty
+    }
 
     @Override
     public void hook(final BetonQuestApi api) throws HookException {
