@@ -5,13 +5,13 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerUpdatePointEvent;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.quest.condition.number.Operation;
@@ -58,7 +58,7 @@ public class PointObjective extends DefaultObjective {
     /**
      * Create a new objective to have specified amount of points.
      *
-     * @param instruction       Instruction object representing the objective
+     * @param service           the objective factory service
      * @param playerDataStorage the storage for player data
      * @param category          the point category to check for
      * @param targetAmount      the target amount of points required for completion
@@ -66,10 +66,10 @@ public class PointObjective extends DefaultObjective {
      * @param operation         the operation to use for comparing
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public PointObjective(final Instruction instruction, final PlayerDataStorage playerDataStorage, final Argument<String> category,
+    public PointObjective(final ObjectiveFactoryService service, final PlayerDataStorage playerDataStorage, final Argument<String> category,
                           final Argument<Number> targetAmount, final Argument<CountingMode> mode, final Argument<Operation> operation)
             throws QuestException {
-        super(instruction, POINT_FACTORY);
+        super(service, POINT_FACTORY);
         this.playerDataStorage = playerDataStorage;
         this.category = category;
         this.targetAmount = targetAmount;

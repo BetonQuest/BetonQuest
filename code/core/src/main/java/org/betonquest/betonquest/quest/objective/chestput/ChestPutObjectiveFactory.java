@@ -58,7 +58,7 @@ public class ChestPutObjectiveFactory implements ObjectiveFactory {
         final BetonQuestLogger log = loggerFactory.create(ChestPutObjective.class);
         final IngameNotificationSender occupiedSender = new IngameNotificationSender(log, pluginMessage, instruction.getPackage(),
                 instruction.getID().getFull(), NotificationLevel.INFO, "chest_occupied");
-        final ChestPutObjective objective = new ChestPutObjective(instruction, chestItemCondition, chestTakeAction,
+        final ChestPutObjective objective = new ChestPutObjective(service, chestItemCondition, chestTakeAction,
                 loc, occupiedSender, multipleAccess);
         service.request(InventoryOpenEvent.class).onlineHandler(objective::onChestOpen)
                 .entity(InventoryOpenEvent::getPlayer).subscribe(false);

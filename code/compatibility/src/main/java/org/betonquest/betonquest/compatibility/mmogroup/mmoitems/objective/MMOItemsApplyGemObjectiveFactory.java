@@ -24,7 +24,7 @@ public class MMOItemsApplyGemObjectiveFactory implements ObjectiveFactory {
         final Argument<String> itemType = instruction.string().get();
         final Argument<String> itemID = instruction.string().get();
         final Argument<String> gemID = instruction.string().get();
-        final MMOItemsApplyGemObjective objective = new MMOItemsApplyGemObjective(instruction, itemType, itemID, gemID);
+        final MMOItemsApplyGemObjective objective = new MMOItemsApplyGemObjective(service, itemType, itemID, gemID);
         service.request(ApplyGemStoneEvent.class).onlineHandler(objective::onApplyGem)
                 .player(ApplyGemStoneEvent::getPlayer).subscribe(true);
         return objective;

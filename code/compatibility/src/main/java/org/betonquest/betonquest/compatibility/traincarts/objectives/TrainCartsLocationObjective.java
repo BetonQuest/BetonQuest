@@ -2,9 +2,9 @@ package org.betonquest.betonquest.compatibility.traincarts.objectives;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
 import org.betonquest.betonquest.quest.objective.location.AbstractLocationObjective;
 import org.bukkit.Location;
@@ -27,13 +27,13 @@ public class TrainCartsLocationObjective extends AbstractLocationObjective {
     /**
      * Creates a new {@link TrainCartsLocationObjective}.
      *
-     * @param instruction the Instruction object to be used in the constructor
-     * @param loc         the location the player has to be inside
-     * @param range       the range around the location
+     * @param service the objective factory service
+     * @param loc     the location the player has to be inside
+     * @param range   the range around the location
      * @throws QuestException if there is an error while parsing the instruction
      */
-    public TrainCartsLocationObjective(final Instruction instruction, final Argument<Location> loc, final Argument<Number> range) throws QuestException {
-        super(instruction);
+    public TrainCartsLocationObjective(final ObjectiveFactoryService service, final Argument<Location> loc, final Argument<Number> range) throws QuestException {
+        super(service);
         this.loc = loc;
         this.range = range;
     }

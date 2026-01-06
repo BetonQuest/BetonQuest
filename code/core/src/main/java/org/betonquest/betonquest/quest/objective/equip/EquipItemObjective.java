@@ -4,10 +4,10 @@ import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 
 /**
  * Requires the player to equip a specific item in a specific slot.
@@ -27,14 +27,14 @@ public class EquipItemObjective extends DefaultObjective {
     /**
      * Constructor for the EquipItemObjective.
      *
-     * @param instruction the instruction that created this objective
-     * @param item        the item that needs to be equipped
-     * @param slotType    the slot type where the item needs to be equipped
+     * @param service  the objective factory service
+     * @param item     the item that needs to be equipped
+     * @param slotType the slot type where the item needs to be equipped
      * @throws QuestException if there is an error in the instruction
      */
-    public EquipItemObjective(final Instruction instruction, final Argument<ItemWrapper> item,
+    public EquipItemObjective(final ObjectiveFactoryService service, final Argument<ItemWrapper> item,
                               final Argument<PlayerArmorChangeEvent.SlotType> slotType) throws QuestException {
-        super(instruction);
+        super(service);
         this.item = item;
         this.slotType = slotType;
     }

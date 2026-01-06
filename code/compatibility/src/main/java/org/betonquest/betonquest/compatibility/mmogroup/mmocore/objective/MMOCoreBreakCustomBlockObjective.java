@@ -8,8 +8,8 @@ import net.Indyuce.mmoitems.comp.mmocore.load.MMOItemsBlockType;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -25,13 +25,13 @@ public class MMOCoreBreakCustomBlockObjective extends CountingObjective {
     /**
      * Constructor for the MMOCoreBreakCustomBlockObjective.
      *
-     * @param instruction    the instruction object representing the objective
+     * @param service        the objective factory service
      * @param targetAmount   the target amount of blocks to break
      * @param desiredBlockId the ID of the block to be broken
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public MMOCoreBreakCustomBlockObjective(final Instruction instruction, final Argument<Number> targetAmount, final Argument<String> desiredBlockId) throws QuestException {
-        super(instruction, targetAmount, "blocks_to_break");
+    public MMOCoreBreakCustomBlockObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount, final Argument<String> desiredBlockId) throws QuestException {
+        super(service, targetAmount, "blocks_to_break");
         this.desiredBlockId = desiredBlockId;
     }
 

@@ -24,7 +24,7 @@ public class LevelUpObjectiveFactory implements ObjectiveFactory {
     @Override
     public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<Job> job = instruction.parse(JobParser.JOB).get();
-        final LevelUpObjective objective = new LevelUpObjective(instruction, job);
+        final LevelUpObjective objective = new LevelUpObjective(service, job);
         service.request(JobsLevelUpEvent.class).onlineHandler(objective::onJobsLevelUpEvent)
                 .player(event -> event.getPlayer().getPlayer()).subscribe(true);
         return objective;

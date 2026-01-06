@@ -4,9 +4,9 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.menu.Menu;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
@@ -40,14 +40,14 @@ public class MenuObjective extends DefaultObjective {
     /**
      * Construct a new Menu Objective from Instruction.
      *
-     * @param instruction the instruction to get the id from
-     * @param log         the logger for this objective
-     * @param rpgMenu     the RPGMenu instance
-     * @param menuID      the menu id to open
+     * @param service the objective factory service
+     * @param log     the logger for this objective
+     * @param rpgMenu the RPGMenu instance
+     * @param menuID  the menu id to open
      * @throws QuestException if the menu id does not exist
      */
-    public MenuObjective(final Instruction instruction, final BetonQuestLogger log, final RPGMenu rpgMenu, final Argument<MenuID> menuID) throws QuestException {
-        super(instruction);
+    public MenuObjective(final ObjectiveFactoryService service, final BetonQuestLogger log, final RPGMenu rpgMenu, final Argument<MenuID> menuID) throws QuestException {
+        super(service);
         this.log = log;
         this.rpgMenu = rpgMenu;
         this.menuID = menuID;
@@ -68,7 +68,7 @@ public class MenuObjective extends DefaultObjective {
                 return;
             }
         } catch (final QuestException e) {
-            log.debug(instruction.getPackage(), "Could not get menu placeholder value in '" + instruction.getID() + "' objective:"
+            log.debug(getPackage(), "Could not get menu placeholder value in '" + getPackage() + "' objective:"
                     + e.getMessage(), e);
             return;
         }
@@ -90,19 +90,19 @@ public class MenuObjective extends DefaultObjective {
             try {
                 menuData = rpgMenu.getMenu(menuID.getValue(profile));
             } catch (final QuestException e) {
-                log.warn(instruction.getPackage(), "Error while getting menu property in '" + instruction.getID() + "' objective: "
+                log.warn(getPackage(), "Error while getting menu property in '" + getObjectiveID() + "' objective: "
                         + e.getMessage(), e);
                 return "";
             }
             if (menuData == null) {
-                log.debug(instruction.getPackage(), "Error while getting menu property in '" + instruction.getID() + "' objective: "
+                log.debug(getPackage(), "Error while getting menu property in '" + getObjectiveID() + "' objective: "
                         + "menu with id " + menuID + " isn't loaded");
                 return "";
             }
             try {
                 return LegacyComponentSerializer.legacySection().serialize(menuData.getTitle(profile));
             } catch (final QuestException e) {
-                log.debug(instruction.getPackage(), "Error while getting menu property in '" + instruction.getID() + "' objective: "
+                log.debug(getPackage(), "Error while getting menu property in '" + getObjectiveID() + "' objective: "
                         + e.getMessage(), e);
             }
         }

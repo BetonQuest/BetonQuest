@@ -5,9 +5,9 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.npc.NpcInteractEvent;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.quest.objective.interact.Interaction;
 
 import static org.betonquest.betonquest.quest.objective.interact.Interaction.ANY;
@@ -35,15 +35,15 @@ public class NpcInteractObjective extends DefaultObjective {
     /**
      * Creates a new NPCInteractObjective from the given instruction.
      *
-     * @param instruction     the user-provided instruction
+     * @param service         the objective factory service
      * @param npcId           the ID of the NPC to interact with
      * @param cancel          whether to cancel the interaction with the NPC
      * @param interactionType the type of interaction with the NPC
      * @throws QuestException if the instruction is invalid
      */
-    public NpcInteractObjective(final Instruction instruction, final Argument<NpcID> npcId,
+    public NpcInteractObjective(final ObjectiveFactoryService service, final Argument<NpcID> npcId,
                                 final FlagArgument<Boolean> cancel, final Argument<Interaction> interactionType) throws QuestException {
-        super(instruction);
+        super(service);
         this.npcId = npcId;
         this.cancel = cancel;
         this.interactionType = interactionType;

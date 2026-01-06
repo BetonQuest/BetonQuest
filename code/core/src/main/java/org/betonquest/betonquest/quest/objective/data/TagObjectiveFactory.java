@@ -30,7 +30,7 @@ public class TagObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
-        final TagObjective objective = new TagObjective(instruction, playerDataStorage, instruction.packageIdentifier().get());
+        final TagObjective objective = new TagObjective(service, playerDataStorage, instruction.packageIdentifier().get());
         service.request(PlayerTagAddEvent.class).handler(objective::onTag)
                 .profile(PlayerTagAddEvent::getProfile).subscribe(false);
         service.request(PlayerObjectiveChangeEvent.class).handler(objective::onStart)

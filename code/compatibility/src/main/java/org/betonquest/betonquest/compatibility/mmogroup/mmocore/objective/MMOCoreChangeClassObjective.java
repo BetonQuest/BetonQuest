@@ -4,9 +4,9 @@ import net.Indyuce.mmocore.api.event.PlayerChangeClassEvent;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -23,12 +23,12 @@ public class MMOCoreChangeClassObjective extends DefaultObjective {
     /**
      * Constructor for the MMOCoreChangeClassObjective.
      *
-     * @param instruction     Instruction object representing the objective;
+     * @param service         the objective factory service
      * @param targetClassName the name of the class to be changed to
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public MMOCoreChangeClassObjective(final Instruction instruction, @Nullable final Argument<String> targetClassName) throws QuestException {
-        super(instruction);
+    public MMOCoreChangeClassObjective(final ObjectiveFactoryService service, @Nullable final Argument<String> targetClassName) throws QuestException {
+        super(service);
         this.targetClassName = targetClassName;
     }
 

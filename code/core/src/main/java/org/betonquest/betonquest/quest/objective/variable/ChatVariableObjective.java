@@ -4,8 +4,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.Locale;
@@ -25,11 +25,11 @@ public class ChatVariableObjective extends VariableObjective {
     /**
      * Creates a new VariableObjective instance which also captures chat input.
      *
-     * @param instruction the instruction that created this objective
+     * @param service the objective factory service
      * @throws QuestException if there is an error in the instruction
      */
-    public ChatVariableObjective(final Instruction instruction) throws QuestException {
-        super(instruction);
+    public ChatVariableObjective(final ObjectiveFactoryService service) throws QuestException {
+        super(service);
     }
 
     /**

@@ -26,7 +26,7 @@ public class PickupObjectiveFactory implements ObjectiveFactory {
     public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<List<ItemWrapper>> pickupItems = instruction.item().list().get();
         final Argument<Number> targetAmount = instruction.number().get("amount", 1);
-        final PickupObjective objective = new PickupObjective(instruction, targetAmount, pickupItems);
+        final PickupObjective objective = new PickupObjective(service, targetAmount, pickupItems);
         service.request(EntityPickupItemEvent.class).onlineHandler(objective::onPickup)
                 .entity(EntityPickupItemEvent::getEntity).subscribe(true);
         return objective;

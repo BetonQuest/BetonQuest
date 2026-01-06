@@ -31,7 +31,7 @@ public class RideObjectiveFactory implements ObjectiveFactory {
     public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<Optional<EntityType>> vehicle = instruction.enumeration(EntityType.class)
                 .prefilterOptional(ANY_PROPERTY, null).get();
-        final RideObjective objective = new RideObjective(instruction, vehicle);
+        final RideObjective objective = new RideObjective(service, vehicle);
         service.request(EntityMountEvent.class).onlineHandler(objective::onMount)
                 .entity(EntityMountEvent::getEntity).subscribe(true);
         return objective;

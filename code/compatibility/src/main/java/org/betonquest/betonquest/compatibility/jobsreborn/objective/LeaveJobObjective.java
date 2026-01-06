@@ -5,9 +5,9 @@ import com.gamingmesh.jobs.container.Job;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 
 /**
  * Objective that tracks the leave of a player from a specific job.
@@ -22,12 +22,12 @@ public class LeaveJobObjective extends DefaultObjective {
     /**
      * Constructor for the LeaveJobObjective.
      *
-     * @param instruction the instruction of the objective
-     * @param job         the job to leave
+     * @param service the objective factory service
+     * @param job     the job to leave
      * @throws QuestException if the instruction is invalid
      */
-    public LeaveJobObjective(final Instruction instruction, final Argument<Job> job) throws QuestException {
-        super(instruction);
+    public LeaveJobObjective(final ObjectiveFactoryService service, final Argument<Job> job) throws QuestException {
+        super(service);
         this.job = job;
     }
 

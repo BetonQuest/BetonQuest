@@ -3,10 +3,10 @@ package org.betonquest.betonquest.quest.objective.enchant;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 
@@ -37,16 +37,16 @@ public class EnchantObjective extends CountingObjective {
     /**
      * Constructor for the EnchantObjective.
      *
-     * @param instruction         the instruction that created this objective
+     * @param service             the objective factory service
      * @param targetAmount        the target amount of items to enchant
      * @param item                the item to enchant
      * @param desiredEnchantments the desired enchantments
      * @param requireOne          true if at least one enchantment is required, false if all enchantments are required
      * @throws QuestException if there is an error in the instruction
      */
-    public EnchantObjective(final Instruction instruction, final Argument<Number> targetAmount, final Argument<ItemWrapper> item,
+    public EnchantObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount, final Argument<ItemWrapper> item,
                             final Argument<List<EnchantmentData>> desiredEnchantments, final boolean requireOne) throws QuestException {
-        super(instruction, targetAmount, "items_to_enchant");
+        super(service, targetAmount, "items_to_enchant");
         this.item = item;
         this.desiredEnchantments = desiredEnchantments;
         this.requireOne = requireOne;

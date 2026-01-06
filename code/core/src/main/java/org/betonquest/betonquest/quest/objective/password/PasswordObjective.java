@@ -6,10 +6,10 @@ import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.action.ActionID;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.Bukkit;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -43,15 +43,15 @@ public class PasswordObjective extends DefaultObjective {
     /**
      * Constructor for the PasswordObjective.
      *
-     * @param instruction    the instruction that created this objective
+     * @param service        the objective factory service
      * @param regex          the regex pattern to match the password
      * @param passwordPrefix the prefix to be shown to the player
      * @param failActions    the actions to be triggered on failure
      * @throws QuestException if there is an error in the instruction
      */
-    public PasswordObjective(final Instruction instruction, final FlagArgument<Pattern> regex,
+    public PasswordObjective(final ObjectiveFactoryService service, final FlagArgument<Pattern> regex,
                              @Nullable final String passwordPrefix, final Argument<List<ActionID>> failActions) throws QuestException {
-        super(instruction);
+        super(service);
         this.regex = regex;
         this.passwordPrefix = passwordPrefix;
         this.failActions = failActions;

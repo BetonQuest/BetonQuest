@@ -6,10 +6,12 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -45,14 +47,14 @@ public class TrainCartsRideObjective extends CountingObjective {
     /**
      * Creates a new {@link TrainCartsRideObjective} from the given instruction.
      *
-     * @param instruction  the user-provided instruction
+     * @param service      the objective factory service
      * @param targetAmount the target amount of time in seconds
      * @param name         the name of the train, maybe empty
      * @throws QuestException if the instruction is invalid
      */
-    public TrainCartsRideObjective(final Instruction instruction, final Argument<Number> targetAmount,
+    public TrainCartsRideObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount,
                                    final Argument<String> name) throws QuestException {
-        super(instruction, targetAmount, null);
+        super(service, targetAmount, null);
         this.name = name;
         this.startTimes = new HashMap<>();
     }
@@ -109,8 +111,16 @@ public class TrainCartsRideObjective extends CountingObjective {
         super.close();
     }
 
-    @Override
-    public void stop(final Profile profile) {
+    /**
+     * Called if the objective state changes from active to inactive.
+     *
+     * @param event   the event
+     * @param profile the profile
+     */
+    public void onStop(final PlayerObjectiveChangeEvent event, final Profile profile) {
+        if (event.getPreviousState() == ObjectiveState.ACTIVE) {
+            return;
+        }
         final Pair<Long, BukkitTask> remove = startTimes.remove(profile.getPlayerUUID());
         if (remove != null) {
             remove.getValue().cancel();

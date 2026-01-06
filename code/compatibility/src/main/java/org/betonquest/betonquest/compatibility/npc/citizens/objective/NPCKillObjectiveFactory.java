@@ -34,7 +34,7 @@ public class NPCKillObjectiveFactory implements ObjectiveFactory {
     public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<NpcID> npcID = instruction.parse(CitizensArgument.CITIZENS_ID).get();
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get("amount", 1);
-        final NPCKillObjective objective = new NPCKillObjective(instruction, registry, targetAmount, npcID);
+        final NPCKillObjective objective = new NPCKillObjective(service, registry, targetAmount, npcID);
         service.request(MobKilledEvent.class).handler(objective::onNpcKill)
                 .profile(MobKilledEvent::getProfile).subscribe(true);
         return objective;

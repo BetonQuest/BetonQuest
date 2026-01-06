@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 
 /**
  * Player has to kill an NPC.
@@ -28,15 +29,15 @@ public class NPCKillObjective extends CountingObjective {
     /**
      * Create a new Citizens NPC kill objective.
      *
-     * @param instruction  the user-provided instruction
+     * @param service      the objective factory service
      * @param registry     the registry of NPCs to use
      * @param targetAmount the amount of NPCs to kill
      * @param npcID        the npc id
      * @throws QuestException when the instruction cannot be parsed or is invalid
      */
-    public NPCKillObjective(final Instruction instruction, final NPCRegistry registry, final Argument<Number> targetAmount,
+    public NPCKillObjective(final ObjectiveFactoryService service, final NPCRegistry registry, final Argument<Number> targetAmount,
                             final Argument<NpcID> npcID) throws QuestException {
-        super(instruction, targetAmount, "mobs_to_kill");
+        super(service, targetAmount, "mobs_to_kill");
         this.registry = registry;
         this.npcID = npcID;
     }

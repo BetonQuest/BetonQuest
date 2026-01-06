@@ -85,4 +85,12 @@ public class DefaultBukkitEventService implements BukkitEventService {
         }
         require(event).ifPresent(group -> group.unsubscribe(priority, subscriber));
     }
+
+    @Override
+    public void unsubscribeAll() {
+        for (final EventListenerGroup<?> group : listeners.values()) {
+            group.disable();
+        }
+        listeners.clear();
+    }
 }

@@ -57,7 +57,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
     /**
      * The event service for objectives.
      */
-    private final ObjectiveService eventService;
+    private final ObjectiveService objectiveService;
 
     /**
      * Create a new Objective Processor to store Objectives and starts/stops/resumes them.
@@ -75,7 +75,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
                               final PluginManager pluginManager, final ObjectiveService service, final Plugin plugin) {
         super(log, placeholders, packManager, "Objective", "objectives");
         this.pluginManager = pluginManager;
-        this.eventService = service;
+        this.objectiveService = service;
         this.types = objectiveTypes;
         this.plugin = plugin;
         globalObjectiveIds = new HashSet<>();
@@ -124,7 +124,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
         final String type = identifier.getInstruction().getPart(0);
         final ObjectiveFactory factory = types.getFactory(type);
         try {
-            final ObjectiveFactoryService service = eventService.getSubscriptionService(identifier);
+            final ObjectiveFactoryService service = objectiveService.getFactoryService(identifier);
             final DefaultObjective parsed = factory.parseInstruction(identifier.getInstruction(), service);
             values.put(identifier, parsed);
             postCreation(identifier, parsed);
@@ -136,6 +136,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
 
     @Override
     public void clear() {
+        objectiveService.clear();
         globalObjectiveIds.clear();
         for (final DefaultObjective objective : values.values()) {
             objective.close();
@@ -176,11 +177,11 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
     public void start(final Profile profile, final ObjectiveID objectiveID) {
         final DefaultObjective objective = values.get(objectiveID);
         if (objective == null) {
-            log.error("Tried to start objective '" + objectiveID + "' but it is not loaded! Check for errors on /bq reload!");
+            log.error("Tried to start objective '%s' but it is not loaded! Check for errors on /bq reload!".formatted(objectiveID));
             return;
         }
         if (objective.containsPlayer(profile)) {
-            log.debug(objectiveID.getPackage(), profile + " already has the " + objectiveID + " objective");
+            log.debug(objectiveID.getPackage(), "'%s' already has the '%s' objective. Request to start the objective discarded.".formatted(profile, objectiveID));
             return;
         }
         objective.newPlayer(profile);
@@ -232,7 +233,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
         final DefaultObjective objective = values.remove(name);
         values.put(rename, objective);
         if (objective != null) {
-            objective.setLabel(rename);
+            objective.getService().renameObjective(rename);
         }
     }
 

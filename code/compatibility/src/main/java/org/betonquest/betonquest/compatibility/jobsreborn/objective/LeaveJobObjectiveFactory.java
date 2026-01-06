@@ -24,7 +24,7 @@ public class LeaveJobObjectiveFactory implements ObjectiveFactory {
     @Override
     public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<Job> job = instruction.parse(JobParser.JOB).get();
-        final LeaveJobObjective objective = new LeaveJobObjective(instruction, job);
+        final LeaveJobObjective objective = new LeaveJobObjective(service, job);
         service.request(JobsLeaveEvent.class).onlineHandler(objective::onJobsLeaveEvent)
                 .player(event -> event.getPlayer().getPlayer()).subscribe(true);
         return objective;

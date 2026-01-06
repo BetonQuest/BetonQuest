@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.objective.location;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.Location;
@@ -53,13 +52,13 @@ public abstract class AbstractLocationObjective extends DefaultObjective {
      * The constructor takes an Instruction object as a parameter and throws an QuestException.
      * It initializes the entry and exit booleans and the playersInsideRegion map.
      *
-     * @param instruction the Instruction object to be used in the constructor
+     * @param service the ObjectiveFactoryService to be used in the constructor
      * @throws QuestException if there is an error while parsing the instruction
      */
-    public AbstractLocationObjective(final Instruction instruction) throws QuestException {
-        super(instruction);
-        entry = instruction.bool().getFlag("entry", true);
-        exit = instruction.bool().getFlag("exit", true);
+    public AbstractLocationObjective(final ObjectiveFactoryService service) throws QuestException {
+        super(service);
+        entry = service.getObjectiveID().getInstruction().bool().getFlag("entry", true);
+        exit = service.getObjectiveID().getInstruction().bool().getFlag("exit", true);
         playersInsideRegion = new HashMap<>();
     }
 

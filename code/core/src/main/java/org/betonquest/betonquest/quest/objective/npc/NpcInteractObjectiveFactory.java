@@ -30,7 +30,7 @@ public class NpcInteractObjectiveFactory implements ObjectiveFactory {
         final Argument<NpcID> npcId = instruction.parse(NpcID::new).get();
         final FlagArgument<Boolean> cancel = instruction.bool().getFlag("cancel", true);
         final Argument<Interaction> interactionType = instruction.enumeration(Interaction.class).get("interaction", RIGHT);
-        final NpcInteractObjective objective = new NpcInteractObjective(instruction, npcId, cancel, interactionType);
+        final NpcInteractObjective objective = new NpcInteractObjective(service, npcId, cancel, interactionType);
         service.request(NpcInteractEvent.class).priority(EventPriority.LOWEST).handler(objective::onNPCLeftClick)
                 .profile(NpcInteractEvent::getProfile).subscribe(true);
         return objective;

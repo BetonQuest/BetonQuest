@@ -4,10 +4,10 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.bukkit.Location;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -65,7 +65,7 @@ public class BlockObjective extends CountingObjective {
     /**
      * Constructor for the BlockObjective.
      *
-     * @param instruction      the instruction that created this objective
+     * @param service          the objective factory service
      * @param targetAmount     the target amount of blocks to break/place
      * @param selector         the block selector to match blocks
      * @param exactMatch       the exact match flag
@@ -78,12 +78,12 @@ public class BlockObjective extends CountingObjective {
      * @throws QuestException if there is an error in the instruction
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
-    public BlockObjective(final Instruction instruction, final Argument<Number> targetAmount,
+    public BlockObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount,
                           final Argument<BlockSelector> selector, final FlagArgument<Boolean> exactMatch,
                           final FlagArgument<Boolean> noSafety, @Nullable final Argument<Location> location,
                           @Nullable final Argument<Location> region, final FlagArgument<Boolean> ignoreCancel,
                           final IngameNotificationSender blockBreakSender, final IngameNotificationSender blockPlaceSender) throws QuestException {
-        super(instruction, targetAmount, null);
+        super(service, targetAmount, null);
         this.selector = selector;
         this.exactMatch = exactMatch;
         this.noSafety = noSafety;

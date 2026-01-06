@@ -21,7 +21,7 @@ public class LogoutObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
-        final LogoutObjective objective = new LogoutObjective(instruction);
+        final LogoutObjective objective = new LogoutObjective(service);
         service.request(PlayerQuitEvent.class).priority(EventPriority.LOWEST)
                 .onlineHandler(objective::onQuit).player(PlayerQuitEvent::getPlayer).subscribe(true);
         return objective;
