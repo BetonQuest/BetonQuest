@@ -19,10 +19,10 @@ public class SkriptIntegrator implements Integrator {
     public void hook(final BetonQuestApi api) {
         Skript.registerCondition(SkriptConditionBQ.class, "%player% (meet|meets) [betonquest] condition %string%");
         Skript.registerEffect(SkriptEffectBQ.class, "fire [betonquest] event %string% for %player%");
-        Skript.registerEvent("betonquest", SkriptEventBQ.class, BQEventSkript.CustomEventForSkript.class,
+        Skript.registerEvent("betonquest", SkriptEventBQ.class, BQSkriptAction.CustomEventForSkript.class,
                 "[betonquest] event %string%");
 
-        api.getQuestRegistries().event().register("skript", new BQEventSkriptFactory());
+        api.getQuestRegistries().event().register("skript", new BQSkriptActionFactory());
     }
 
     @Override

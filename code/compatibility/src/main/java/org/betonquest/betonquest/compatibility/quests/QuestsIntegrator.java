@@ -30,7 +30,7 @@ public class QuestsIntegrator implements Integrator {
 
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         questRegistries.condition().register("quest", new QuestsConditionFactory(questsInstance));
-        questRegistries.event().register("quest", new QuestsEventFactory(questsInstance));
+        questRegistries.event().register("quest", new QuestsActionFactory(questsInstance));
 
         final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
         final QuestTypeApi questTypeApi = api.getQuestTypeApi();

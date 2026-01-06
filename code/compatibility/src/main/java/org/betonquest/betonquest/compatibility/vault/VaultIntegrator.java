@@ -7,9 +7,9 @@ import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.compatibility.Integrator;
+import org.betonquest.betonquest.compatibility.vault.action.MoneyActionFactory;
+import org.betonquest.betonquest.compatibility.vault.action.PermissionActionFactory;
 import org.betonquest.betonquest.compatibility.vault.condition.MoneyConditionFactory;
-import org.betonquest.betonquest.compatibility.vault.event.MoneyEventFactory;
-import org.betonquest.betonquest.compatibility.vault.event.PermissionEventFactory;
 import org.betonquest.betonquest.compatibility.vault.placeholder.MoneyPlaceholderFactory;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -44,7 +44,7 @@ public class VaultIntegrator implements Integrator {
             final Economy economy = economyProvider.getProvider();
             final QuestTypeRegistries registries = api.getQuestRegistries();
 
-            registries.event().register("money", new MoneyEventFactory(economy, api.getLoggerFactory(),
+            registries.event().register("money", new MoneyActionFactory(economy, api.getLoggerFactory(),
                     plugin.getPluginMessage()));
             registries.condition().register("money", new MoneyConditionFactory(economy));
             registries.placeholder().register("money", new MoneyPlaceholderFactory(economy));
@@ -55,7 +55,7 @@ public class VaultIntegrator implements Integrator {
             log.warn("Could not get permission provider!");
         } else {
             final Permission permission = permissionProvider.getProvider();
-            api.getQuestRegistries().event().register("permission", new PermissionEventFactory(permission));
+            api.getQuestRegistries().event().register("permission", new PermissionActionFactory(permission));
         }
     }
 
