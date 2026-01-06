@@ -5,7 +5,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.Integrator;
-import org.betonquest.betonquest.compatibility.effectlib.event.ParticleActionFactory;
+import org.betonquest.betonquest.compatibility.effectlib.action.ParticleActionFactory;
 import org.jetbrains.annotations.Nullable;
 
 /**

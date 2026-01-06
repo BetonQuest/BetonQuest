@@ -6,11 +6,11 @@ import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.api.quest.action.ActionRegistry;
 import org.betonquest.betonquest.api.quest.condition.ConditionRegistry;
 import org.betonquest.betonquest.compatibility.Integrator;
+import org.betonquest.betonquest.compatibility.brewery.action.GiveBrewActionFactory;
+import org.betonquest.betonquest.compatibility.brewery.action.TakeBrewActionFactory;
 import org.betonquest.betonquest.compatibility.brewery.condition.DrunkConditionFactory;
 import org.betonquest.betonquest.compatibility.brewery.condition.DrunkQualityConditionFactory;
 import org.betonquest.betonquest.compatibility.brewery.condition.HasBrewConditionFactory;
-import org.betonquest.betonquest.compatibility.brewery.event.GiveBrewActionFactory;
-import org.betonquest.betonquest.compatibility.brewery.event.TakeBrewActionFactory;
 
 /**
  * Integrator for the Brewery plugin.

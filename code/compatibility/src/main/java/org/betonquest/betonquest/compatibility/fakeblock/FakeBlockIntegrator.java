@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.UnsupportedVersionException;
-import org.betonquest.betonquest.compatibility.fakeblock.event.FakeBlockActionFactory;
+import org.betonquest.betonquest.compatibility.fakeblock.action.FakeBlockActionFactory;
 import org.betonquest.betonquest.versioning.UpdateStrategy;
 import org.betonquest.betonquest.versioning.Version;
 import org.betonquest.betonquest.versioning.VersionComparator;

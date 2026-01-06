@@ -8,10 +8,10 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.api.quest.condition.ConditionRegistry;
 import org.betonquest.betonquest.compatibility.Integrator;
+import org.betonquest.betonquest.compatibility.heroes.action.HeroesExperienceActionFactory;
 import org.betonquest.betonquest.compatibility.heroes.condition.HeroesAttributeConditionFactory;
 import org.betonquest.betonquest.compatibility.heroes.condition.HeroesClassConditionFactory;
 import org.betonquest.betonquest.compatibility.heroes.condition.HeroesSkillConditionFactory;
-import org.betonquest.betonquest.compatibility.heroes.event.HeroesExperienceActionFactory;
 import org.bukkit.plugin.Plugin;
 
 /**

@@ -5,9 +5,9 @@ import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.api.quest.condition.ConditionRegistry;
 import org.betonquest.betonquest.compatibility.Integrator;
+import org.betonquest.betonquest.compatibility.auraskills.action.AuraSkillsExperienceActionFactory;
 import org.betonquest.betonquest.compatibility.auraskills.condition.AuraSkillsLevelConditionFactory;
 import org.betonquest.betonquest.compatibility.auraskills.condition.AuraSkillsStatsConditionFactory;
-import org.betonquest.betonquest.compatibility.auraskills.event.AuraSkillsExperienceActionFactory;
 
 /**
  * Integrator for <a href="https://github.com/Archy-X/AuraSkills">AuraSkills</a>.
