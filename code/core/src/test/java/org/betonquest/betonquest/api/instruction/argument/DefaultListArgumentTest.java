@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.quest.Placeholders;
-import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultListArgument;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.bukkit.configuration.ConfigurationOptions;
@@ -44,23 +44,23 @@ class DefaultListArgumentTest {
         final QuestPackage pack = mock(QuestPackage.class);
         final MultiConfiguration config = mock(MultiConfiguration.class);
         lenient().when(pack.getConfig()).thenReturn(config);
-        lenient().when(config.getString("events.a")).thenReturn("?");
-        lenient().when(config.getString("events.b")).thenReturn("?");
-        lenient().when(config.getString("events.c")).thenReturn("?");
+        lenient().when(config.getString("actions.a")).thenReturn("?");
+        lenient().when(config.getString("actions.b")).thenReturn("?");
+        lenient().when(config.getString("actions.c")).thenReturn("?");
         final ConfigurationOptions configurationOptions = mock(ConfigurationOptions.class);
         lenient().when(config.options()).thenReturn(configurationOptions);
         lenient().when(configurationOptions.pathSeparator()).thenReturn('.');
         this.questPackage = pack;
     }
 
-    private Argument<List<EventID>> getArgumentList(final String input) throws QuestException {
-        return new DefaultListArgument<>(placeholders, questPackage, input, value -> new EventID(mock(Placeholders.class), mock(QuestPackageManager.class), questPackage, value));
+    private Argument<List<ActionID>> getArgumentList(final String input) throws QuestException {
+        return new DefaultListArgument<>(placeholders, questPackage, input, value -> new ActionID(mock(Placeholders.class), mock(QuestPackageManager.class), questPackage, value));
     }
 
     @Test
     void constructNonBackedList() {
         assertThrows(QuestException.class, () -> getArgumentList("a,z,c"),
-                "Non existing event ID should throw an exception when validating");
+                "Non existing action ID should throw an exception when validating");
     }
 
     @Test
@@ -71,7 +71,7 @@ class DefaultListArgumentTest {
 
     @Test
     void constructEmptyList() {
-        final Argument<List<EventID>> list = assertDoesNotThrow(() -> getArgumentList(",,"),
+        final Argument<List<ActionID>> list = assertDoesNotThrow(() -> getArgumentList(",,"),
                 "Parsing an empty list should not fail");
         assertDoesNotThrow(() -> list.getValue(null),
                 "Empty list should not fail getting values");
@@ -93,7 +93,7 @@ class DefaultListArgumentTest {
     void getListWithBackedPlaceholder() throws QuestException {
         final Argument<String> argument = profile -> "b";
         when(placeholders.create(questPackage, "%bVar%")).thenReturn(argument);
-        final Argument<List<EventID>> list = assertDoesNotThrow(() -> getArgumentList("a,%bVar%,c"),
+        final Argument<List<ActionID>> list = assertDoesNotThrow(() -> getArgumentList("a,%bVar%,c"),
                 "Validating existing placeholders should not fail");
         assertDoesNotThrow(() -> list.getValue(null), "Getting existing placeholder should not fail");
     }

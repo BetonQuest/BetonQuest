@@ -8,10 +8,10 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.api.quest.condition.ConditionRegistry;
 import org.betonquest.betonquest.compatibility.Integrator;
+import org.betonquest.betonquest.compatibility.heroes.action.HeroesExperienceActionFactory;
 import org.betonquest.betonquest.compatibility.heroes.condition.HeroesAttributeConditionFactory;
 import org.betonquest.betonquest.compatibility.heroes.condition.HeroesClassConditionFactory;
 import org.betonquest.betonquest.compatibility.heroes.condition.HeroesSkillConditionFactory;
-import org.betonquest.betonquest.compatibility.heroes.event.HeroesExperienceEventFactory;
 import org.bukkit.plugin.Plugin;
 
 /**
@@ -45,7 +45,7 @@ public class HeroesIntegrator implements Integrator {
         conditionRegistry.register("heroesclass", new HeroesClassConditionFactory(loggerFactory, characterManager, classManager));
         conditionRegistry.register("heroesskill", new HeroesSkillConditionFactory(loggerFactory, characterManager));
 
-        questRegistries.event().register("heroesexp", new HeroesExperienceEventFactory(loggerFactory, characterManager));
+        questRegistries.action().register("heroesexp", new HeroesExperienceActionFactory(loggerFactory, characterManager));
 
         plugin.getServer().getPluginManager().registerEvents(new HeroesMobKillListener(api.getProfileProvider()), plugin);
     }

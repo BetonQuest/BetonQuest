@@ -83,7 +83,7 @@ public class OpenedMenu implements Listener {
         this.data = menu;
         this.onlineProfile = onlineProfile;
         this.resolvedTitle = data.getTitle(onlineProfile);
-        this.data.runOpenEvents(onlineProfile);
+        this.data.runOpenActions(onlineProfile);
         final Inventory inventory = Bukkit.createInventory(null, data.getSize(), resolvedTitle);
         this.update(onlineProfile, inventory);
         onlineProfile.getPlayer().openInventory(inventory);
@@ -240,7 +240,6 @@ public class OpenedMenu implements Listener {
     }
 
     private void clickLogic(final InventoryClickEvent event, final MenuItem item) {
-        //call event
         log.debug(getId().getPackage(), onlineProfile + " clicked on slot " + event.getSlot() + " with item " + item.getId() + " in menu " + getId());
         final MenuClickEvent clickEvent = new MenuClickEvent(onlineProfile, getId(), event.getSlot(), item.getId(), event.getClick());
         if (!clickEvent.callEvent()) {
@@ -252,7 +251,6 @@ public class OpenedMenu implements Listener {
             return;
         }
 
-        //run click events
         final boolean close = item.onClick(onlineProfile, event.getClick());
 
         //check if the inventory was closed by an event (teleport event etc.)
@@ -261,7 +259,6 @@ public class OpenedMenu implements Listener {
         }
 
         if (this.equals(getMenu(onlineProfile))) {
-            //if close was set close the menu
             if (close) {
                 this.close();
             } else {
@@ -271,7 +268,7 @@ public class OpenedMenu implements Listener {
     }
 
     /**
-     * Clean the menu up when it gets closed and fires close events.
+     * Clean the menu up when it gets closed and fires close actions.
      *
      * @param event the event to process
      */
@@ -280,15 +277,15 @@ public class OpenedMenu implements Listener {
         if (!(event.getPlayer() instanceof final Player player) || !player.equals(onlineProfile.getPlayer())) {
             return;
         }
-        //call event
+
         new MenuCloseEvent(onlineProfile, getId()).callEvent();
         log.debug(getId().getPackage(), onlineProfile + " closed menu " + getId());
-        //clean up
+
         HandlerList.unregisterAll(this);
         OPENED_MENUS.remove(onlineProfile.getProfileUUID());
         closed = true;
-        //run close events
-        this.data.runCloseEvents(onlineProfile);
+
+        this.data.runCloseActions(onlineProfile);
     }
 
     /**

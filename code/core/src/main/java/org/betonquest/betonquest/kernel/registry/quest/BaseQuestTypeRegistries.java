@@ -8,13 +8,13 @@ import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
  * Registry for quest core elements.
  *
  * @param condition   The Registry holding registered condition types.
- * @param event       The Registry holding registered event types.
+ * @param action      The Registry holding registered action types.
  * @param objective   The Registry holding registered objective types.
  * @param placeholder The Registry holding registered placeholder types.
  */
 public record BaseQuestTypeRegistries(
         ConditionTypeRegistry condition,
-        EventTypeRegistry event,
+        ActionTypeRegistry action,
         ObjectiveTypeRegistry objective,
         PlaceholderTypeRegistry placeholder
 ) implements QuestTypeRegistries {
@@ -29,7 +29,7 @@ public record BaseQuestTypeRegistries(
     public static BaseQuestTypeRegistries create(final BetonQuestLoggerFactory loggerFactory, final BetonQuestApi betonQuest) {
         return new BaseQuestTypeRegistries(
                 new ConditionTypeRegistry(loggerFactory.create(ConditionTypeRegistry.class)),
-                new EventTypeRegistry(loggerFactory.create(EventTypeRegistry.class), loggerFactory, betonQuest),
+                new ActionTypeRegistry(loggerFactory.create(ActionTypeRegistry.class), loggerFactory, betonQuest),
                 new ObjectiveTypeRegistry(loggerFactory.create(ObjectiveTypeRegistry.class)),
                 new PlaceholderTypeRegistry(loggerFactory.create(PlaceholderTypeRegistry.class))
         );

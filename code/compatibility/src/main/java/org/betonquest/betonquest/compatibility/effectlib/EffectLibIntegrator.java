@@ -5,7 +5,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.Integrator;
-import org.betonquest.betonquest.compatibility.effectlib.event.ParticleEventFactory;
+import org.betonquest.betonquest.compatibility.effectlib.action.ParticleActionFactory;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -35,7 +35,7 @@ public class EffectLibIntegrator implements Integrator {
     public void hook(final BetonQuestApi api) {
         manager = new EffectManager(plugin);
         final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
-        api.getQuestRegistries().event().register("particle", new ParticleEventFactory(loggerFactory, manager));
+        api.getQuestRegistries().action().register("particle", new ParticleActionFactory(loggerFactory, manager));
 
         plugin.addProcessor(new EffectLibParticleManager(loggerFactory.create(EffectLibParticleManager.class), loggerFactory,
                 api.getQuestPackageManager(), api.getQuestTypeApi(), api.getFeatureApi(), api.getProfileProvider(),

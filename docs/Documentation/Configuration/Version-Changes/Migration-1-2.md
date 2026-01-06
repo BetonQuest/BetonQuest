@@ -22,7 +22,8 @@ QuestPackages folder to the new 2.0 syntax. This way the migration works for bot
 !!! Note
     - :sun: **Fully automated migration** – These steps are reliably migrated without issues in most cases.
       You usually don’t need to take any action. However, certain rarely used or non-standard formats (e.g., run 
-      events or math variables (now called placeholders)) may not migrate correctly if they deviate from the common structure.
+      events (now called actions) or math variables (now called placeholders)) may not migrate correctly if they deviate
+      from the common structure.
     - :thunder_cloud_rain: **Manual migration required** – These steps are not migrated at all.
       Either the structure is too complex to detect automatically, or the new format requires additional information.
       You will need to fully rewrite or convert these steps yourself.
@@ -98,13 +99,14 @@ QuestPackages folder to the new 2.0 syntax. This way the migration works for bot
     - Ensure your server is running on **Java 17**
     - Move your current Quests to the folder "_BetonQuest/QuestPackages_"`, as quests are now loaded from there
     - Rename all "_main.yml_" files to "_package.yml_"
-    - Quest packages can now contain nested quest packages in sub folders. You can also have any file and folder structure
-      with any file and folder names you want. Only the "_package.yml_" is reserved as indicator for a [quest
-      package](../../Scripting/Packages-&-Templates.md).
+    - Quest packages can now contain nested quest packages in sub folders. You can also have any file and folder
+      structure with any file and folder names you want. Only the "_package.yml_" is reserved as indicator for a
+      [quest package](../../Scripting/Packages-&-Templates.md).
       * Therefore, the "_events.yml_`, "_objectives.yml_", "_conditions.yml_", "_journal.yml_" and "_items.yml_" files must
         be updated to the following format:
         Every type that was previously a separate file with a special name is now identified by a "parent-section". It's
-        the names of the type / the name the file previously had. Let's take a look at an example for events and conditions:
+        the names of the type / the name the file previously had. Let's take a look at an example for events
+        (now called actions) and conditions:
       
         <div class="grid" markdown>
         
@@ -130,7 +132,8 @@ QuestPackages folder to the new 2.0 syntax. This way the migration works for bot
         
         </div>
         
-        This allows you to freely name the files. Also, it is no longer necessary that events, conditions etc. are in separate files.
+        This allows you to freely name the files. Also, it is no longer necessary that events (now called actions),
+        conditions etc. are in separate files.
         You could also put everything in a single file or use any other file structure:
         
         ``` YAML title="anyFileName.yml"
@@ -141,7 +144,7 @@ QuestPackages folder to the new 2.0 syntax. This way the migration works for bot
           myCondition: "location 300;200;300;world"
         ```
         !!! warning 
-            You must do this change for all types, not just events and conditions! 
+            You must do this change for all types, not just events (now called actions) and conditions! 
     
     - Alongside the previous change, **conversations** and **menus** must also be updated to the following format:
       Add an extra prefix matching their type and the file name:
@@ -194,7 +197,7 @@ QuestPackages folder to the new 2.0 syntax. This way the migration works for bot
     
     -------------
     
-    - All your static events need to be converted to the new scheduling system.
+    - All your static events (now called actions) need to be converted to the new scheduling system.
       The [`realtime-daily`](../../Scripting/Schedules.md#daily-realtime-schedule-realtime-daily) schedule makes this easy:
       
       <div class="grid" markdown>
@@ -221,12 +224,12 @@ QuestPackages folder to the new 2.0 syntax. This way the migration works for bot
         Can be anything you want for organizing your schedules.
       
       2. The type schedule `realtime-daily` was created for easy updating.   
-        It behaves just like the old static events.
+        It behaves just like the old static events (now called actions).
       
       3. The former key is now the time value.  
         You still have to put it in 'quotes'.
       
-      4. The former value is now the events value.
+      4. The former value is now the events (now called actions) value.
       
       </div>
 
@@ -256,13 +259,13 @@ QuestPackages folder to the new 2.0 syntax. This way the migration works for bot
     
 ### 2.0.0-DEV-485 - Experience changes :thunder_cloud_rain:
 
-Due to a misuse of the Server API, all code regarding player experience (`experience` event, condition and objective) had to be changed.
+Due to a misuse of the Server API, all code regarding player experience (`experience` event (now called action), condition and objective) had to be changed.
 It is not possible to obtain the amount of experience points a player has, only their level can be obtained.
   
 If you used any of these elements you might have to adjust the configured values because the behaviour changed as follows:
 
 - The `experience` objective and condition do not allow raw experience anymore. Only levels are supported from now on.
-- The `experience` objective, condition and event now supports decimal numbers.  
+- The `experience` objective, condition and event (now called action) now supports decimal numbers.  
   For example, you can use `experience 1.5` to check for one and a half level.  
   You can convert raw experience points to levels, using such decimal numbers.
 
@@ -452,7 +455,7 @@ npc_holograms:
     
     -------------
     
-    Until now if you used non-static events in a [schedule](../../Scripting/Schedules.md), they were executed for every player that was online at the time.  
+    Until now if you used non-static events (now called actions) in a [schedule](../../Scripting/Schedules.md), they were executed for every player that was online at the time.  
     If you run such a schedule now you will get a warning message in the console similar to this:
     
     !!! example
@@ -460,7 +463,7 @@ npc_holograms:
         [15:27:10 WARN]: [BetonQuest] Cannot fire non-static event 'announcements.ringBell' without a player!
         ```
     
-    To fix this wrap the event in a [`runForAll`](../../Scripting/Building-Blocks/Events-List.md#run-events-for-all-online-players-runforall) event:
+    To fix this wrap the event (now called action) in a [`runForAll` event](../../Scripting/Building-Blocks/Actions-List.md#run-actions-for-all-online-players-runforall):
     
     <div class="grid" markdown>
     
@@ -497,20 +500,20 @@ npc_holograms:
     ```
     
     1. Runs `bell_ring` for all online players.
-    2. `notify_goodNight` is a [static event](../../Scripting/Schedules.md#player-independent-events), so no need to wrap it in `runForAll`.
+    2. `notify_goodNight` is a [static event](../../Scripting/Schedules.md#player-independent-actions), so no need to wrap it in `runForAll`.
     
     </div>
     
-    While this seems like more work for the same functionality it gives you more control over how events are run.  
+    While this seems like more work for the same functionality it gives you more control over how events (now called actions) are run.  
     **With this change we finally allow using conditions in schedules!**  
-    Just keep in mind you can only add player dependent conditions if the event is run player dependent (wrapped inside `runForAll`).
+    Just keep in mind you can only add player dependent conditions if the event (now called action) is run player dependent (wrapped inside `runForAll`).
     
     !!! tip
-        To check if your event still works inside a schedule or if it must be wrapped,
-        use the following command to run the event without a player:
+        To check if your event (now called action) still works inside a schedule or if it must be wrapped,
+        use the following command to run the event (now called action) without a player:
          
         ```
-        /bq event - <package>><event>
+        /bq action - <package>><action>
         ```
         The `-` is important, it means run independent :wink:.
 
@@ -521,8 +524,8 @@ npc_holograms:
     
     -------------
     
-    As you probably noticed, the `ClearEntity` event and the `KillMob` event did almost the same thing.
-    Both got merged into the [RemoveEntity event](../../Scripting/Building-Blocks/Events-List.md#remove-entity-removeentity),
+    As you probably noticed, the `ClearEntity` event (now called action) and the `KillMob` event (now called actions) did almost the same thing.
+    Both got merged into the [RemoveEntity event](../../Scripting/Building-Blocks/Actions-List.md#remove-entity-removeentity),
     while keeping the syntax more or less the same.
     
     <div class="grid" markdown>
@@ -586,7 +589,7 @@ conditions:
     
     -------------
     
-    AureliumSkills was renamed to AuraSkills, so all conditions and events where renamed as well.
+    AureliumSkills was renamed to AuraSkills, so all conditions and events (now called actions) where renamed as well.
     
     <div class="grid" markdown>
     

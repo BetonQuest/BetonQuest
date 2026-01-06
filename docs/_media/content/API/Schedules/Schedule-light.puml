@@ -19,12 +19,12 @@ package "org.betonquest.betonquest.api.schedule" <<Frame>> {
         ..
         # scheduleId : ScheduleID
         # time : String
-        # events : List<EventID>
+        # actions : List<ActionID>
         # catchup : CatchupStrategy
         ..
         + getId() : ScheduleID
         + getTime() : String
-        + getEvents() : List<EventID>
+        + getActions() : List<ActionID>
         + getCatchup() : CatchupStrategy
     }
 
@@ -60,7 +60,7 @@ package "org.betonquest.betonquest.api.schedule" <<Frame>> {
         + start() : void
         + stop() : void
         + addSchedule(S) : void
-        + executeEvents(S) : void
+        + executeActions(S) : void
     }
 
     Schedule o-right- CatchupStrategy

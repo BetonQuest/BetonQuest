@@ -25,7 +25,7 @@ Arguments referring to a package are prefixed in the format `package>` and marke
   and templates from a GitHub repository.
 
 * `/bq condition <playerName> <condition(ID)>` - Checks a condition for the player.
-* `/bq event <playerName> <event(ID)>` - Fires an event for the player.
+* `/bq action <playerName> <action(ID)>` - Fires an action for the player.
 * `/bq objective <playerName> <list/add/del/complete> <objective(ID)/filter(ID)>` - Manages player's objectives.
 * `/bq tag <playerName> <list/add/del> <tag(ID)/filter(ID)>` - Manges player's tags.
 * `/bq globaltag <list/add/del/purge> <tag(ID)/filter(ID)>` - Manges global tags.
@@ -43,10 +43,10 @@ Arguments referring to a package are prefixed in the format `package>` and marke
 * `/rpgmenu list` - Lists all currently loaded menus and allows opening them just by clicking on them.
 * `/rpgmenu open <menu(ID)> [player]` - Opens a menu for you or another player.
   [Open conditions](../Features/Menus/Menu.md#general-menu-settings) will be ignored when using this command.
-* `/betonquestanswer` - Selects an answer in a conversation, can not be used manually
+* `/betonquestanswer` - Selects an answer in a conversation, cannot be used manually
 
 The filter only works on the list and will match all objectives/tags/points that start with the filter. 
-Please note, that the names are a composition of the package name and the name of the objective/tag/point.
+Please note that the names are a composition of the package name and the name of the objective/tag/point.
 
 ### Custom Menu Opening commands
 The plugin lets you create a new command for each menu which allows all players to open the menu.  
@@ -66,7 +66,7 @@ The server must be restarted to unregister command tab completions.
 * `/betonquest` - `bq`, `bquest`, `bquests`, `betonquests`, `quest`, `quests`
     * `version` - `v`, `ver`
     * `condition` - `c`, `conditions`
-    * `event` - `e`, `events`
+    * `action` - `a`, `actions`
     * `objective` - `o`, `objectives`
     * `tag` - `t`, `tags`
     * `globaltag` - `gt`, `gtags`, `gtag`, `globaltags`
@@ -153,9 +153,9 @@ logged and the download is stopped.
 You can check for conditions for a given player with for example: '`/bq condition Beton QuestPackage>has_started`'.  
 If you want to check a non player related condition replace the player's name with `-`.
 
-#### Run events: `event`
-You can run events for a given player with for example: '`/bq event Beton QuestPackage>give_emeralds`'.
-If you want to run a non player related event replace the player's name with `-`.
+#### Run actions: `action`
+You can run actions for a given player with for example: '`/bq action Beton QuestPackage>give_emeralds`'.
+If you want to run a non player related action replace the player's name with `-`.
 
 #### Manage objectives: `objective`
 You can manage objectives for a given player with for example: '`/bq objective Beton list`'.
@@ -163,7 +163,7 @@ This would list all active objectives for player Beton.
 You can also add or remove objectives with '`/bq objective Beton add QuestPackage>find_sword`' or
 '`/bq objective Beton del QuestPackage>find_sword`'.
 It is also possible to complete an objective with '`/bq objective Beton complete QuestPackage>find_sword`',
-what would run all the events from the objective.
+what would run all the actions from the objective.
 
 #### Manage tags: `tag`
 You can manage tags for a given player with for example: '`/bq tag Beton list`'.

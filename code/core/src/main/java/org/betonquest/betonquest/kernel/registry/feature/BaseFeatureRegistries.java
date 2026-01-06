@@ -9,13 +9,13 @@ import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 /**
  * Registries that are not based on the Instruction to create instances.
  *
- * @param conversationIO  The Registry holding registered conversation IOs.
- * @param item            The Registry holding registered item types.
- * @param interceptor     The Registry holding registered Interceptors.
- * @param textParser      The Registry holding registered text Parsers.
- * @param npc             The Registry holding registered npc types.
- * @param notifyIO        The Registry holding registered NotifyIOs.
- * @param eventScheduling The Registry holding registered Event Schedulers.
+ * @param conversationIO   The Registry holding registered conversation IOs.
+ * @param item             The Registry holding registered item types.
+ * @param interceptor      The Registry holding registered Interceptors.
+ * @param textParser       The Registry holding registered text Parsers.
+ * @param npc              The Registry holding registered npc types.
+ * @param notifyIO         The Registry holding registered NotifyIOs.
+ * @param actionScheduling The Registry holding registered Action Schedulers.
  */
 public record BaseFeatureRegistries(
         ConversationIORegistry conversationIO,
@@ -24,7 +24,7 @@ public record BaseFeatureRegistries(
         TextParserRegistry textParser,
         NpcTypeRegistry npc,
         NotifyIORegistry notifyIO,
-        ScheduleRegistry eventScheduling
+        ScheduleRegistry actionScheduling
 ) implements FeatureRegistries {
 
     /**

@@ -3,8 +3,8 @@ package org.betonquest.betonquest.api.quest;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,24 +44,24 @@ public interface QuestTypeApi {
     boolean condition(@Nullable Profile profile, ConditionID conditionID);
 
     /**
-     * Fires events for the {@link Profile} if it meets the events' conditions.
-     * If the profile is null, the events will be fired as static events.
+     * Fires actions for the {@link Profile} if it meets the actions' conditions.
+     * If the profile is null, the actions will be fired as static actions.
      *
-     * @param profile  the {@link Profile} for which the events must be executed or null
-     * @param eventIDs IDs of the events to fire
-     * @return true if all events were run even if there were exceptions during execution
+     * @param profile   the {@link Profile} for which the actions must be executed or null
+     * @param actionIDS IDs of the actions to fire
+     * @return true if all actions were run even if there were exceptions during execution
      */
-    boolean events(@Nullable Profile profile, Collection<EventID> eventIDs);
+    boolean actions(@Nullable Profile profile, Collection<ActionID> actionIDS);
 
     /**
-     * Fires an event for the {@link Profile} if it meets the event's conditions.
-     * If the profile is null, the event will be fired as a static event.
+     * Fires an action for the {@link Profile} if it meets the action's conditions.
+     * If the profile is null, the action will be fired as a static action.
      *
-     * @param profile the {@link Profile} for which the event must be executed or null
-     * @param eventID ID of the event to fire
-     * @return true if the event was run even if there was an exception during execution
+     * @param profile  the {@link Profile} for which the action must be executed or null
+     * @param actionID ID of the action to fire
+     * @return true if the action was run even if there was an exception during execution
      */
-    boolean event(@Nullable Profile profile, EventID eventID);
+    boolean action(@Nullable Profile profile, ActionID actionID);
 
     /**
      * Creates new objective for given player.

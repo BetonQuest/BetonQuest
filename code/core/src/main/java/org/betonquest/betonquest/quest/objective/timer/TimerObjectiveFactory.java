@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 
@@ -37,7 +37,7 @@ public class TimerObjectiveFactory implements ObjectiveFactory {
         final Argument<Number> targetAmount = instruction.number().get("amount", Integer.MAX_VALUE);
         final Argument<String> name = instruction.string().get("name", "");
         final Argument<Number> interval = instruction.number().get("interval", 1);
-        final Argument<List<EventID>> doneEvents = instruction.parse(EventID::new).list().get("done", Collections.emptyList());
+        final Argument<List<ActionID>> doneEvents = instruction.parse(ActionID::new).list().get("done", Collections.emptyList());
         final TimerObjective objective = new TimerObjective(instruction, targetAmount, questTypeApi, name, interval, doneEvents);
         service.request(PlayerObjectiveChangeEvent.class).handler(objective::onPlayerObjectiveChange)
                 .profile(PlayerObjectiveChangeEvent::getProfile).subscribe(false);

@@ -147,7 +147,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
     private PlayerDataStorage playerDataStorage;
 
     /**
-     * Stores Conditions, Events, Objectives, Placeholders, Conversations and Cancelers.
+     * Stores all loaded Types.
      */
     private QuestRegistry questRegistry;
 
@@ -157,7 +157,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
     private BaseQuestTypeRegistries questTypeRegistries;
 
     /**
-     * Stores Registry for ConvIO, Interceptor, NotifyIO and EventScheduling.
+     * Stores Registry for ConvIO, Interceptor, NotifyIO and ActionScheduling.
      */
     private BaseFeatureRegistries featureRegistries;
 
@@ -233,7 +233,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
     private RPGMenu rpgMenu;
 
     /**
-     * Cache for event schedulers, holding the last execution of an event.
+     * Cache for action schedulers, holding the last execution of an action.
      */
     private LastExecutionCache lastExecutionCache;
 
@@ -377,7 +377,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         setupUpdater();
         registerListener(coreQuestRegistry);
 
-        new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this,
+        new CoreQuestTypes(loggerFactory, getServer(), this,
                 coreQuestRegistry, questRegistry, pluginMessage, coreQuestRegistry.placeholders(), globalData, playerDataStorage,
                 profileProvider, this, playerDataFactory)
                 .register(questTypeRegistries);
@@ -597,7 +597,6 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
             log.warn("Could not reload conversation colors! " + e.getMessage(), e);
         }
         compatibility.reload();
-        // load all events, conditions, objectives, conversations etc.
         loadData();
         playerDataStorage.reloadProfiles(profileProvider.getOnlineProfiles());
 
@@ -615,7 +614,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     public void onDisable() {
         if (questRegistry != null) {
-            questRegistry.eventScheduling().clear();
+            questRegistry.actionScheduling().clear();
         }
         // suspend all conversations
         if (profileProvider != null) {

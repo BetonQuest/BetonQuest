@@ -71,26 +71,26 @@ public class MultiSectionConfigurationModificationTest {
     }
 
     private Configuration setupConfig1(final Configuration config) {
-        config.set("events.custom.path.give.type", "give");
-        config.set("events.custom.path.give.item", "emerald");
-        config.set("events.custom.path.give.amount", 5);
-        config.set("events.custom.path.take.type", "give");
-        config.set("events.custom.path.take.item", "emerald");
-        config.set("events.custom.path.take.amount", 5);
+        config.set("actions.custom.path.give.type", "give");
+        config.set("actions.custom.path.give.item", "emerald");
+        config.set("actions.custom.path.give.amount", 5);
+        config.set("actions.custom.path.take.type", "give");
+        config.set("actions.custom.path.take.item", "emerald");
+        config.set("actions.custom.path.take.amount", 5);
 
-        config.set("events.custom.journal.type", "journal");
-        config.set("events.custom.journal.action", "add");
-        config.set("events.custom.journal.target", "quest_started");
+        config.set("actions.custom.journal.type", "journal");
+        config.set("actions.custom.journal.action", "add");
+        config.set("actions.custom.journal.target", "quest_started");
 
         return config;
     }
 
     private Configuration setupConfig2(final Configuration config) {
-        config.set("events.custom.path.notify.type", "notify");
-        config.set("events.custom.path.notify.message", "Example Message");
-        config.set("events.custom.path.notify.io", "chat");
-        config.set("events.custom.path.cancel.type", "cancel");
-        config.set("events.custom.path.cancel.target", "myQuest");
+        config.set("actions.custom.path.notify.type", "notify");
+        config.set("actions.custom.path.notify.message", "Example Message");
+        config.set("actions.custom.path.notify.io", "chat");
+        config.set("actions.custom.path.cancel.type", "cancel");
+        config.set("actions.custom.path.cancel.target", "myQuest");
 
         config.set("conditions.items.emerald.type", "item");
         config.set("conditions.items.emerald.item", "emerald");
@@ -100,13 +100,13 @@ public class MultiSectionConfigurationModificationTest {
     }
 
     private Configuration setupConfig3(final Configuration config) {
-        config.set("events.custom.finished.type", "notify");
-        config.set("events.custom.finished.message", "Quest Finished");
-        config.set("events.custom.finished.io", "advancement");
+        config.set("actions.custom.finished.type", "notify");
+        config.set("actions.custom.finished.message", "Quest Finished");
+        config.set("actions.custom.finished.io", "advancement");
 
-        config.set("events.start.type", "notify");
-        config.set("events.start.message", "Quest Started");
-        config.set("events.start.io", "advancement");
+        config.set("actions.start.type", "notify");
+        config.set("actions.start.message", "Quest Started");
+        config.set("actions.start.io", "advancement");
 
         config.set("conditions.items.stone.type", "item");
         config.set("conditions.items.stone.item", "stone");
@@ -166,17 +166,17 @@ public class MultiSectionConfigurationModificationTest {
 
     @Test
     void testModificationToConfigs() {
-        config.set("events.custom.path.give.item", "stone");
+        config.set("actions.custom.path.give.item", "stone");
         assertTrue(config.needSave());
         final Set<ConfigurationSection> unsavedConfigs1 = config.getUnsavedConfigs();
         assertEquals(1, unsavedConfigs1.size());
         final ConfigurationSection unsavedConfig1 = unsavedConfigs1.iterator().next();
         assertEquals(config1, unsavedConfig1);
-        assertEquals("stone", unsavedConfig1.getString("events.custom.path.give.item"));
+        assertEquals("stone", unsavedConfig1.getString("actions.custom.path.give.item"));
         assertTrue(config.markAsSaved(unsavedConfig1));
         assertFalse(config.needSave());
 
-        config.set("events.custom.path.cancel.target", "stone");
+        config.set("actions.custom.path.cancel.target", "stone");
         config.set("conditions.items.stone.amount", "stone");
         assertTrue(config.needSave());
         final Set<ConfigurationSection> unsavedConfigs2 = config.getUnsavedConfigs();
@@ -186,10 +186,10 @@ public class MultiSectionConfigurationModificationTest {
         final ConfigurationSection unsavedConfig3 = iterator.next();
 
         if (unsavedConfig2.equals(config2) && unsavedConfig3.equals(config3)) {
-            assertEquals("stone", unsavedConfig2.getString("events.custom.path.cancel.target"));
+            assertEquals("stone", unsavedConfig2.getString("actions.custom.path.cancel.target"));
             assertEquals("stone", unsavedConfig3.getString("conditions.items.stone.amount"));
         } else if (unsavedConfig2.equals(config3) && unsavedConfig3.equals(config2)) {
-            assertEquals("stone", unsavedConfig3.getString("events.custom.path.cancel.target"));
+            assertEquals("stone", unsavedConfig3.getString("actions.custom.path.cancel.target"));
             assertEquals("stone", unsavedConfig2.getString("conditions.items.stone.amount"));
         } else {
             fail();
@@ -253,14 +253,14 @@ public class MultiSectionConfigurationModificationTest {
 
     @Test
     void testGetSourceConfigurationSection() throws InvalidConfigurationException {
-        assertNull(config.getSourceConfigurationSection("events.custom.path.give.slot"));
-        config.set("events.custom.path.give.slot", "hand");
+        assertNull(config.getSourceConfigurationSection("actions.custom.path.give.slot"));
+        config.set("actions.custom.path.give.slot", "hand");
         assertThrows(InvalidConfigurationException.class,
-                () -> config.getSourceConfigurationSection("events.custom.path.give"),
+                () -> config.getSourceConfigurationSection("actions.custom.path.give"),
                 "Not all entries are from the same source config");
-        config.associateWith("events.custom.path.give.slot", config1);
+        config.associateWith("actions.custom.path.give.slot", config1);
         assertDoesNotThrow(() -> {
-                    final ConfigurationSection config = this.config.getSourceConfigurationSection("events.custom.path.give");
+                    final ConfigurationSection config = this.config.getSourceConfigurationSection("actions.custom.path.give");
                     assertEquals(config1, config);
                 },
                 "Not all entries are from the same source config");
@@ -268,10 +268,10 @@ public class MultiSectionConfigurationModificationTest {
 
     @Test
     void testMoveChildSection() {
-        final ConfigurationSection section = config.getConfigurationSection("events.custom.path.take");
+        final ConfigurationSection section = config.getConfigurationSection("actions.custom.path.take");
         assertNotNull(section);
-        config.set("events.custom.path.take_more", section);
-        config.set("events.custom.path.take", null);
+        config.set("actions.custom.path.take_more", section);
+        config.set("actions.custom.path.take", null);
         final Set<String> expected = Set.of("conditions",
                 "conditions.items",
                 "conditions.items.stone",
@@ -286,40 +286,40 @@ public class MultiSectionConfigurationModificationTest {
                 "conditions.item_iron.amount",
                 "conditions.item_iron.type",
                 "conditions.item_iron.item",
-                "events",
-                "events.custom",
-                "events.custom.finished",
-                "events.custom.finished.message",
-                "events.custom.finished.type",
-                "events.custom.finished.io",
-                "events.custom.path",
-                "events.custom.path.give",
-                "events.custom.path.give.amount",
-                "events.custom.path.give.type",
-                "events.custom.path.give.item",
-                "events.custom.path.cancel",
-                "events.custom.path.cancel.target",
-                "events.custom.path.cancel.type",
-                "events.custom.path.notify",
-                "events.custom.path.notify.io",
-                "events.custom.path.notify.type",
-                "events.custom.path.notify.message",
-                "events.custom.path.take_more",
-                "events.custom.path.take_more.item",
-                "events.custom.path.take_more.amount",
-                "events.custom.path.take_more.type",
-                "events.custom.journal",
-                "events.custom.journal.action",
-                "events.custom.journal.target",
-                "events.custom.journal.type",
-                "events.start",
-                "events.start.type",
-                "events.start.io",
-                "events.start.message");
+                "actions",
+                "actions.custom",
+                "actions.custom.finished",
+                "actions.custom.finished.message",
+                "actions.custom.finished.type",
+                "actions.custom.finished.io",
+                "actions.custom.path",
+                "actions.custom.path.give",
+                "actions.custom.path.give.amount",
+                "actions.custom.path.give.type",
+                "actions.custom.path.give.item",
+                "actions.custom.path.cancel",
+                "actions.custom.path.cancel.target",
+                "actions.custom.path.cancel.type",
+                "actions.custom.path.notify",
+                "actions.custom.path.notify.io",
+                "actions.custom.path.notify.type",
+                "actions.custom.path.notify.message",
+                "actions.custom.path.take_more",
+                "actions.custom.path.take_more.item",
+                "actions.custom.path.take_more.amount",
+                "actions.custom.path.take_more.type",
+                "actions.custom.journal",
+                "actions.custom.journal.action",
+                "actions.custom.journal.target",
+                "actions.custom.journal.type",
+                "actions.start",
+                "actions.start.type",
+                "actions.start.io",
+                "actions.start.message");
         final Set<String> actual = config.getKeys(true);
         assertTrue(expected.containsAll(actual), "expected does not contain all actual keys.");
         assertTrue(actual.containsAll(expected), "actual does not contain all expected keys.");
-        assertTrue(actual.contains("events.custom.path.take_more"), "actual does not contains event take_more.");
-        assertFalse(actual.contains("events.custom.path.take"), "actual contain event take.");
+        assertTrue(actual.contains("actions.custom.path.take_more"), "actual does not contains action take_more.");
+        assertFalse(actual.contains("actions.custom.path.take"), "actual contain action take.");
     }
 }

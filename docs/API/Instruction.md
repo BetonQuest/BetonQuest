@@ -5,7 +5,7 @@ icon: material/text-account
 
 # Instruction Overview
 
-The **Instruction** refers to the user-defined string that specifies conditions, events, items, and similar elements.
+The **Instruction** refers to the user-defined string that specifies conditions, actions, items, and similar elements.
 
 !!! info Package
     The `org.betonquest.betonquest.api.instruction` package contains the `Instruction` interface and related objects.
@@ -15,7 +15,7 @@ The **Instruction** refers to the user-defined string that specifies conditions,
 The `Instruction` object is responsible for parsing the instruction string provided by the user and splitting it into 
 arguments. You can retrieve required arguments or optional key-value arguments one at a time through a parser chain. 
 Required arguments are those specified at the beginning of an instruction string, 
-such as `add someTag` in the `tag` event.
+such as `add someTag` in the `tag` action.
 
 If the instruction string contains an argument formatted as `arg:something` and you request the optional `arg`, 
 it will return `something`. If there is no optional argument by that name, 
@@ -28,7 +28,7 @@ be parsed into the requested type.
 ## Instruction Chain
 
 The instruction chain offers java stream-like methods to read, parse, convert and 
-ultimately retrieve a argument from an instruction. 
+ultimately retrieve an argument from an instruction. 
 It minimally consists of two steps: the argument parsing step and the argument retrieval step.
 
 To offer an overview before explaing all details, the following examples show excerpts from factories in BetonQuest:
@@ -42,16 +42,16 @@ public PlayerCondition parsePlayer(final Instruction instruction) throws QuestEx
 }
 ```
 
-Compare [itemdurability](../Documentation/Scripting/Building-Blocks/Events-List.md#item-durability-itemdurability) event.
-```JAVA title="ItemDurabilityEventFactory.java"
-public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+Compare [itemdurability](../Documentation/Scripting/Building-Blocks/Actions-List.md#item-durability-itemdurability) action.
+```JAVA title="ItemDurabilityActionFactory.java"
+public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
     final Argument<EquipmentSlot> slot = instruction.enumeration(EquipmentSlot.class).get();
     final Argument<PointType> operation = instruction.enumeration(PointType.class).get();
     final Argument<Number> amount = instruction.number().get();
     final FlagArgument<Boolean> ignoreUnbreakable = instruction.bool().getFlag("ignoreUnbreakable", true);
     final FlagArgument<Boolean> ignoreEvents = instruction.bool().getFlag("ignoreEvents", true);
     
-    //creating event object and returning it...
+    //creating action object and returning it...
 }
 ```
 
@@ -87,7 +87,7 @@ The instruction chain may be accessed conveniently, starting directly from any `
 
 ### Argument Retrieval
 The argument retrieval step is required after the argument parsing and represents the wrapping into a `Argument<T>` 
-instance to be carried on into events, conditions and objectives.
+instance to be carried on into actions, conditions and objectives.
 To have valid calls the `Number` parser is used as an example, but naturally any parser will do.
 
 | Call                                                                  |                Type                | Description                                                                                                                                           |

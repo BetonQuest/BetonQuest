@@ -1,6 +1,6 @@
 variables:
   lever_location: '18;4;7;world'
-events:
+actions:
   bell_ring: 'folder bell_lever_toggle,bell_lever_toggle,bell_lever_toggle,bell_lever_toggle period:0.5'
   bell_lever_toggle: 'lever $lever_location$ toggle'
   notify_goodNight: 'notify &6Good night, sleep well!'
@@ -8,8 +8,8 @@ schedules:
   test Simple:
     type: realtime-daily
     time: '22:00'
-    events: bell_ring,notify_goodNight
+    actions: bell_ring,notify_goodNight
   testRealtime:
     type: realtime-cron
     time: '1 22 * * *'
-    events: bell_ring,notify_goodNight
+    actions: bell_ring,notify_goodNight

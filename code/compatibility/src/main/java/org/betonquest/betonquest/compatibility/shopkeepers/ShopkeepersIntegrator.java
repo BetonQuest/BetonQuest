@@ -33,7 +33,7 @@ public class ShopkeepersIntegrator implements Integrator {
         }
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         questRegistries.condition().register("shopamount", new HavingShopConditionFactory());
-        questRegistries.event().register("shopkeeper", new OpenShopEventFactory(api.getLoggerFactory()));
+        questRegistries.action().register("shopkeeper", new OpenShopActionFactory(api.getLoggerFactory()));
     }
 
     @Override

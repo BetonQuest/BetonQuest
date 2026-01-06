@@ -9,7 +9,7 @@ In total @snippet:constants:totalIntegratedPluginsNumber@ plugins have dedicated
  
 ## Provided by BetonQuest
 
-BetonQuest hooks into other plugins by itself to provide more events, conditions and objectives or other features.  
+BetonQuest hooks into other plugins by itself to provide more actions, conditions and objectives or other features.  
 _AuraSkills, Brewery, BreweryX, Citizens, DecentHolograms, Denizen, EffectLib, FancyNpcs, FakeBlock, Heroes, HolographicDisplays, JobsReborn, LuckPerms, Magic,
 mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, PacketEvents, PlaceholderAPI, Quests, RedisChat, Shopkeepers, TrainCarts, ProSkillAPI,
 Skript, Vault, WorldEdit, FastAsyncWorldEdit, WorldGuard and ZNPCsPlus._
@@ -51,7 +51,7 @@ auraskillsstatslevel luck 5
 auraskillsstatslevel luck 10 equal
 ```
 
-### Events
+### Actions
 
 ### Give Skill Xp : `auraskillsxp`
 Adds experience to the players skill. The amount is a number.
@@ -90,7 +90,7 @@ hasbrew 2 "MY BREW"
 hasbrew 2 brew_17 mode:id
 ```
 
-### Events
+### Actions
 
 #### Give Brew: `givebrew`
 Gives the player the specified drink. The first number is the amount, and the second number is the quality of the drink.
@@ -121,25 +121,25 @@ in addition to the normal NPC functionality.
 !!! info
     In addition Citizens integration supports all [BetonQuest NPC](../../Features/NPCs.md) features.
 
-### Events
+### Actions
 
 #### Move NPC: `npcmove`
 
-This event will make the NPC move to a specified location. It will not return on its own,
+This action will make the NPC move to a specified location. It will not return on its own,
 so you have to set a single path point with _/npc path_ command - it will then return to that point every time.
 If you make it move too far away, it will teleport or break, so beware.
 You can change maximum pathfinding range in Citizens configuration files.
 
-Move event can fail if the NPC is already moving for another player.
+Move action can fail if the NPC is already moving for another player.
 
 | Parameter   | Syntax                                                     | Default Value          | Explanation                                                                  |
 |-------------|------------------------------------------------------------|------------------------|------------------------------------------------------------------------------|
 | _NpcID_     | npcId                                                      | :octicons-x-circle-16: | The NPCId.                                                                   |
 | _Locations_ | [Locations](../Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | The locations where the NPC will move to.                                    |
 | _block_     | Keyword (`block`)                                          | Disabled               | Blocks the NPC so interaction won't start a conversation while it is moving. |
-| _wait_      | wait:number                                                | 0                      | Number of ticks the NPC will wait at its destination before firing events.   |
-| _done_      | done:events                                                | Disabled               | List of events fired after reaching the destination.                         |
-| _fail_      | fail:events                                                | Disabled               | List of events fired if this event fails.                                    |
+| _wait_      | wait:number                                                | 0                      | Number of ticks the NPC will wait at its destination before firing actions.  |
+| _done_      | done:actions                                               | Disabled               | List of actions fired after reaching the destination.                        |
+| _fail_      | fail:actions                                               | Disabled               | List of actions fired if this action fails.                                  |
 
 ```YAML title="Example"
 npcmove innkeeper 100;200;300;world,105;200;280;world block wait:20 done:msg_were_here,give_reward fail:msg_cant_go,give_reward
@@ -178,7 +178,7 @@ The NPC Kill objective requires the player to kill a NPC.
 | _total_  | 10             | Shows the initial amount of times that the NPC needed to be killed.                       |
 
 ```YAML title="Example"
-npckill thief amount:3 events:reward notify
+npckill thief amount:3 actions:reward notify
 ```
 
 ## Denizen[](http://dev.bukkit.org/bukkit-plugins/denizen/)
@@ -186,11 +186,11 @@ npckill thief amount:3 events:reward notify
 
 Depenizen is also integrated with BetonQuest! Discover available features on the [meta documentation](https://meta.denizenscript.com/Docs/Search/BetonQuest).
 
-### Events
+### Actions
 
 #### Script: `script`
 
-With this event you can fire Denizen task scripts. Don't confuse it with `skript` event, these are different. The first and only argument is the name of the script.
+With this action you can fire Denizen task scripts. Don't confuse it with `skript` action, these are different. The first and only argument is the name of the script.
 
 ```YAML title="Example"
 runDenizenScript: "script beton"
@@ -199,7 +199,7 @@ runDenizenScript: "script beton"
 ## EffectLib[](http://dev.bukkit.org/bukkit-plugins/effectlib/)
 
 If you install this plugin on your server you will be able to play particle effects on NPCs and locations. 
-You can also use the `particle` event to trigger particle.
+You can also use the `particle` action to trigger particle.
 
 !!! info EffectLib Documentation
     EffectLib is not a normal plugin, it's a powerful developer tool - there are no official docs. However, the Magic plugin has a
@@ -238,16 +238,16 @@ effectlib: #(1)!
 10. Controls the horizontal direction of the effect.
 11. Controls how often the conditions should be checked (in ticks). Optional, default: 100 ticks
 
-### Events
+### Actions
 
 #### Particle: `particle`
 
-This event will load an effect defined in `effects` section
+This action will load an effect defined in `effects` section
 and display it on player's location. The only argument
 is the name of the effect. You can optionally add `loc:` argument
 followed by a location written like `100;200;300;world;180;-90` to put
 it on that location. If you add `private` argument the effect will only
-be displayed to the player for which you ran the event.
+be displayed to the player for which you ran the action.
 
 ```YAML title="Example"
 effects:
@@ -260,7 +260,7 @@ effects:
     grow: 3
     radius: 30
 
-events:
+actions:
   playEffect: particle beton loc:100;200;300;world;180;-90 private
 ```
 
@@ -278,7 +278,7 @@ It is more lightweight than [Citizens](#citizens) but lack some of its features.
 If you have the FakeBlock integration installed, you will be able to view and hide the block groups 
 created in FakeBlock on a player-specific basis.
 
-### Events
+### Actions
 
 #### Show and hide block groups: `fakeblock` 
 
@@ -287,7 +287,7 @@ The groups are case-sensitive. To show a group the `showgroup` argument is requi
 
 
 ```YAML
-events:
+actions:
   showBridge: "fakeblock showgroup bridge"
   hideCityBorder: "fakeblock hidegroup gate,wall,door"
 ```
@@ -329,11 +329,11 @@ This condition checks if the player can use specified skill. The first argument 
     heroesskill charge
     ```
 
-### Events
+### Actions
 
 #### Heroes experience: `heroesexp`
 
-This event simply gives the player specified amount of Heroes experience. The first argument is either `primary` or `secondary` and it means player's class. Second one is the amount of experience to add.
+This action simply gives the player specified amount of Heroes experience. The first argument is either `primary` or `secondary` and it means player's class. Second one is the amount of experience to add.
 
 !!! example
     ```YAML
@@ -376,7 +376,7 @@ Returns true if the player has this job, and at a level equal to or between the 
     nujobs_joblevel Woodcutter 5 10
     ```
 
-### Events
+### Actions
 
 #### Add Jobs Experience: `nujobs_addexp {jobname} {exp}`
 
@@ -390,11 +390,11 @@ Increases the player level by amount.
 
 Decreases the players level by amount.
 
-#### Join Jobs Job Event: `nujobs_joinjob {jobname}`
+#### Join Jobs Job Action: `nujobs_joinjob {jobname}`
 
 Joins the player to job.
 
-#### Leave Jobs Job Event: `nujobs_leavejob {jobname}`
+#### Leave Jobs Job Action: `nujobs_leavejob {jobname}`
 
 Removes the player from job.
 
@@ -433,28 +433,28 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 ### Context Integration
 
 Any BetonQuest tag (global and per-player) can be used as a LuckPerms context. This means that a player needs the specified tag for a permission
-to be true - this removes the need for tons of `permission add ...` events as you can hook your existing
+to be true - this removes the need for tons of `permission add ...` actions as you can hook your existing
 quest progress tags right into LuckPerms permission
 [contexts](https://luckperms.net/wiki/Context).
 The syntax is as follows:
 
 | key                                        | value |
 |--------------------------------------------|-------|
-| betonquest:tag:PACKAGE_NAME.TAG_NAME       | true  |
-| betonquest:globaltag:PACKAGE_NAME.TAG_NAME | true  |
-| betonquest:tag:myPackage.tagName           | true  |
-| betonquest:globaltag:myQuest.someTag       | true  |
+| betonquest:tag:PACKAGE_NAME>TAG_NAME       | true  |
+| betonquest:globaltag:PACKAGE_NAME>TAG_NAME | true  |
+| betonquest:tag:myPackage>tagName           | true  |
+| betonquest:globaltag:myQuest>someTag       | true  |
 
 Check the [Luck Perms documentation](https://luckperms.net/wiki/Context)
 for an in-depth explanation on what contexts are and how to add them to permissions.
 
 ### Permissions
 If you prefer to directly add or remove permissions without triggering the LuckPerms changelog chat notifications,
-you can utilize the `luckperms addPermission` and `luckperms removePermission` events. 
+you can utilize the `luckperms addPermission` and `luckperms removePermission` actions. 
 You also have the possibility to assign groups to the player via the `group.<GroupName>` permission. 
 
  ```YAML title="Example"
- events:
+ actions:
    addDefaultGroup: "luckperms addPermission permission:group.default,group.quester" #(1)!
    addNegated: "luckperms addPermission permission:tutorial.done value:false" #(2)!
    addWithContext: "luckperms addPermission permission:group.legend context:server;lobby" #(3)!
@@ -469,7 +469,7 @@ You also have the possibility to assign groups to the player via the `group.<Gro
 4. With the key `expiry` you can define the time until the permission expires. There can only be one expiry argument. If you dont use the `unit` parameter, it defaults do DAYS. Other units can be found [here](https://help.intrexx.com/apidocs/jdk17/api/java.base/java/util/concurrent/TimeUnit.html).
 5. You can remove multiple permissions at once by separating them with a comma.
 
-You can also add `context`, `value` and `expiry` to the `removePermission` event 
+You can also add `context`, `value` and `expiry` to the `removePermission` action 
 but its not recommended as it only removes exact matches.
 Instead only use the permission to remove.
 
@@ -507,11 +507,11 @@ This conditions checks if the player has high enough level in the specified skil
     mcmmolevel woodcutting 50
     ```
 
-### Events
+### Actions
 
 #### Add MCMMO Experience: `mcmmoexp`
 
-This event adds experience points in a specified skill. The first argument is the name of the skill, second one is the amount of experience to add.
+This action adds experience points in a specified skill. The first argument is the name of the skill, second one is the amount of experience to add.
 
 !!! example
     ```YAML
@@ -522,7 +522,7 @@ This event adds experience points in a specified skill. The first argument is th
 
 ### Items
 
-MMOItems usage is integrated to the [Items](../../Features/Items.md) system and thus used for events and conditions.
+MMOItems usage is integrated to the [Items](../../Features/Items.md) system and thus used for actions and conditions.
 
 In addition, you can also add `quest-item` argument to tag them as "QuestItem".
 
@@ -532,7 +532,7 @@ items:
   gem: mmoitem GEMS SPEED_GEM quest-item
 conditions:
   hasCrown: hand crown
-events:
+actions:
   giveGem: give gem:3
 ```
 
@@ -611,8 +611,8 @@ This objective requires the player to change their class.
 
 ```YAML title="Example" linenums="1"
 objectives:
-    selectAnyClass: "mmochangeclass events:pickedClass"
-    selectMage: "mmochangeclass class:MAGE events:startMageIntroQuest"
+    selectAnyClass: "mmochangeclass actions:pickedClass"
+    selectMage: "mmochangeclass class:MAGE actions:startMageIntroQuest"
 ```
 
 #### MMOCore Profession levelup: `mmoprofessionlevelup`
@@ -646,12 +646,12 @@ This objective requires the player to activate a MythicLib skill (e.g. with MMOI
 
 
 ```YAML title="Example" linenums="1"
-triggerSkill: "mmoskill LIFE_ENDER events:updateStatistics"
-castSkillWithMMOCore: "mmoskill DEEP_WOUND trigger:CAST events:completeTutorial"
-itemSkill: "mmoskill DEEP_WOUND trigger:RIGHT_CLICK,LEFT_CLICK events:giveReward"
+triggerSkill: "mmoskill LIFE_ENDER actions:updateStatistics"
+castSkillWithMMOCore: "mmoskill DEEP_WOUND trigger:CAST actions:completeTutorial"
+itemSkill: "mmoskill DEEP_WOUND trigger:RIGHT_CLICK,LEFT_CLICK actions:giveReward"
 ```
 
-### Events
+### Actions
 
 #### Give MMOCore class experience: `mmoclassexperience`
 Adds experience to the players class. The amount is a number. The `level` argument
@@ -712,7 +712,7 @@ items:
   sword: mythic SkeletonKingSword quest-item
 conditions:
   hasCrown: armor crown
-events:
+actions:
   giveSword: give sword
 ```
 
@@ -732,19 +732,19 @@ You can add a `notify` keyword if you want to send a notification to players whe
 | _maxLevel_                     | maxLevel:number                     | Disabled               | Maximal level of mob to kill.                                                                                                                           |
 | _neutralDeathRadiusAllPlayers_ | neutralDeathRadiusAllPlayers:number | Disabled               | Radius to count objective progress for each nearby player when the mob is killed by any non-player source.                                              |
 | _deathRadiusAllPlayers_        | deathRadiusAllPlayers:number        | Disabled               | Radius to count objective progress for each nearby player, no matter if it was killed by a non-player source or not. Disables the neutral death radius. |
-| _marked_                       | marked:text                         | None                   | Check for mark on mobs as used in `mspawnmob` event.                                                                                                    |
+| _marked_                       | marked:text                         | None                   | Check for mark on mobs as used in `mspawnmob` action.                                                                                                   |
 
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of mythic mobs already killed,
 `left` is the amount of mythic mobs still needed to kill and `total` is the amount of mythic mobs initially required.
 `mode` gives the identification type.
 
 ```YAML title="Example"
-killKnight: mmobkill SkeletalKnight amount:2 events:reward
-killSnails: mmobkill SnekBoss,SnailBoss,SunBoss amount:10 events:reward
-snailFaction: mmobkill snail mode:faction amount:10 events:reward
-killBoss: mmobkill SnekBoss amount:2 minlevel:4 maxlevel:6 events:reward marked:DungeonBoss3
-killDevil: mmobkill dungeonDevil deathRadiusAllPlayers:30 events:reward
-bandits: mmobkill bandit deathRadiusAllPlayers:30 mode:FACTION events:spawnTrader
+killKnight: mmobkill SkeletalKnight amount:2 actions:reward
+killSnails: mmobkill SnekBoss,SnailBoss,SunBoss amount:10 actions:reward
+snailFaction: mmobkill snail mode:faction amount:10 actions:reward
+killBoss: mmobkill SnekBoss amount:2 minlevel:4 maxlevel:6 actions:reward marked:DungeonBoss3
+killDevil: mmobkill dungeonDevil deathRadiusAllPlayers:30 actions:reward
+bandits: mmobkill bandit deathRadiusAllPlayers:30 mode:FACTION actions:spawnTrader
 ```
 
 ### Conditions
@@ -758,7 +758,7 @@ Check whether the player is near a specific MythicMobs entity. The first argumen
     mythicmobdistance SkeletalKnight 7
     ```
     
-### Events
+### Actions
 
 #### :material-skull: Spawn MythicMob: `mspawnmob`
 
@@ -775,7 +775,7 @@ Check whether the player is near a specific MythicMobs entity. The first argumen
 
 
 ```YAML title="Example"
-events:
+actions:
   spawnBoss: mspawnmob 100;200;300;world MegaBoss:1 1 target
   spawnKnights: mspawnmob 100;200;300;world SkeletalKnight:3 5
   spawnPrivateDevil: mspawnmob 100;200;300;world Mephisto:1 5 target private marked:DungeonBoss3
@@ -788,7 +788,7 @@ events:
     Additionally, the mob should be configured to never change its AI target using MythicMobs.
     
 !!! info "Private & Target Arguments"
-    The `private` and `target` arguments are ignored when the event is used in a static context like [Schedules](../Schedules.md).
+    The `private` and `target` arguments are ignored when the action is used in a static context like [Schedules](../Schedules.md).
 
 #### Cast Mythic Skill: `mcast`
 
@@ -797,16 +797,16 @@ events:
 | _name_    | Name   | :octicons-x-circle-16: | Name of Skill to cast. |
 
 ```YAML title="Example"
-events:
+actions:
   castPoison: mcast AngrySludgePoison
 ```
 
 ## PacketEvents[](https://www.spigotmc.org/resources/80279/)
 
-### Events
+### Actions
 
 #### Freeze players: 'freeze'
-This event allows you to freeze player for the given amount of ticks:
+This action allows you to freeze player for the given amount of ticks:
 ```YAML
 freezeMe: "freeze 100" #Freezes the player for 5 seconds
 ```
@@ -852,19 +852,19 @@ You can also use placeholders from other plugins in BetonQuest. Simply insert a 
 
 Quests is another questing plugin, which offers very simple creation of quests.
 If you don't want to spend a lot of time to write advanced quests in BetonQuest but you need a specific thing from
-this plugin you can use Custom Event Reward or Custom Condition Requirement.
+this plugin you can use Custom Action Reward or Custom Condition Requirement.
 Alternatively, if you have a lot of quests written in Quests, but want to integrate them with the conversation system,
-you can use `quest` event and `quest` condition.
+you can use `quest` action and `quest` condition.
 
 ### Condition Requirement (Quests)
 
 When adding requirements to a quest, choose "Custom requirement" and then select "BetonQuest condition".
-Now specify condition's name and it's package (like `package.conditionName`). Quests will check BetonQuest condition when starting the quest.
+Now specify condition's name and it's package (like `package>conditionName`). Quests will check BetonQuest condition when starting the quest.
 
-### Event Reward (Quests)
+### Action Reward (Quests)
 
-When adding rewards to a quest or a stage, choose "Custom reward" and then select "BetonQuest event".
-Now specify event's name and it's package (like `package.eventName`). Quests will fire BetonQuest event when this reward will run.
+When adding rewards to a quest or a stage, choose "Custom reward" and then select "BetonQuest action".
+Now specify action's name and it's package (like `package>actionName`). Quests will fire BetonQuest action when this reward will run.
 
 ### Conditions
 
@@ -878,13 +878,13 @@ If it contains spaces you need to quote it.
     quest stone_miner
     ```
 
-### Events
+### Actions
 
 #### Quest: `quest`
 
-This event will start the quest for the player.
+This action will start the quest for the player.
 The first argument must be the name of the quest, as defined in `name` option in the quest.
-You can optionally add `check-requirements` argument if you want the event to respect this quest's requirements
+You can optionally add `check-requirements` argument if you want the action to respect this quest's requirements
 (otherwise the quest will be forced to be started).
 
 !!! example
@@ -912,11 +912,11 @@ This condition checks if the player owns specified (or greater) amount of shops.
     shopamount 2
     ```
 
-### Events
+### Actions
 
 #### Open shop window: `shopkeeper`
 
-This event opens a trading window of a Villager. The only argument is the uniqueID of the shop. You can find it in _Shopkeepers/saves.yml_ file, under `uniqueID` option.
+This action opens a trading window of a Villager. The only argument is the uniqueID of the shop. You can find it in _Shopkeepers/saves.yml_ file, under `uniqueID` option.
 
 !!! example
     ```YAML
@@ -951,31 +951,31 @@ The first argument is class name, the second one is the required level.
 ## Skript[](http://dev.bukkit.org/bukkit-plugins/skript/)
 
 BetonQuest can also hook into Skript. Firstly, to avoid any confusion, I will reference to everything here by
-name of the plugin (Skript event is something else than BetonQuest event).
-Having Skript on your server will enable using BetonQuest events and conditions in scripts, and also trigger them by BetonQuest event.
+name of the plugin (Skript action is something else than BetonQuest action).
+Having Skript on your server will enable using BetonQuest actions and conditions in scripts, and also trigger them by BetonQuest action.
 
 You can use cross-package paths using `-` between the packages. Example:
-`player meets condition "default-Forest-Jack.Completed"`
+`player meets condition "default-Forest-Jack>Completed"`
 
-### Skript event triggered by BetonQuest `skript` event
+### Skript event triggered by BetonQuest `skript` action
 
-This entry will describe two things: Skript event and BetonQuest event.
+This entry will describe two things: Skript event and BetonQuest action.
 
-1. **Skript event** - `on [betonquest] event "id"` - this is the line you use in your scripts to trigger the code.
+1. **Skript event** - `on [betonquest] action "id"` - this is the line you use in your scripts to trigger the code.
   `betonquest` part is optional, and `id` is just some string, which must be equal to the one you specified in 
-  BetonQuest event.
-2. **BetonQuest event** - `skript` - this event will trigger the above Skript event in your scripts.
+  BetonQuest action.
+2. **BetonQuest action** - `skript` - this action will trigger the above Skript event in your scripts.
   The instruction string accepts only one argument, id of the event. It have to be the same as the one defined in 
   Skript event for it to be triggered.
 
 !!! example
     **In your script**
     ```YAML
-    on betonquest event "concrete":
+    on betonquest action "concrete":
     ```
     **In BetonQuest**
     ```YAML
-    events:
+    actions:
       fire_concrete_script: skript concrete
     ```
 
@@ -993,18 +993,18 @@ You can check BetonQuest conditions in your scripts by using the syntax `player 
     has_ore: item iron_ore:5
     ```
 
-### Skript event
+### Skript action
 
-You can also fire BetonQuest events with scripts. The syntax for Skript effect is `fire [betonquest] event "id" for player`. Everything else works just like in condition above.
+You can also fire BetonQuest actions with scripts. The syntax for Skript effect is `fire [betonquest] action "id" for player`. Everything else works just like in condition above.
 
 !!! example
     **In your script**
     ```YAML
-    fire event "give_emeralds" for player
+    fire action "give_emeralds" for player
     ```
     **In BetonQuest**
     ```YAML
-    events:
+    actions:
       give_emeralds: give emerald:5
     ```
 
@@ -1094,15 +1094,15 @@ conditions:
     ```YAML
     conditions:
       isRich: "money 100000"
-    events:
+    actions:
       giveSubsidy: "money +500 conditions:!isRich" #(1)!
     ```
     
-    1. If the player has less than 100000 money, the `giveSubsidy` event will be fired.    
+    1. If the player has less than 100000 money, the `giveSubsidy` action will be fired.    
 
-### Events
+### Actions
 
-#### Vault Money Event: `money`
+#### Vault Money Action: `money`
 
 Deposits, withdraws or multiplies money in the player's account.
 
@@ -1113,7 +1113,7 @@ Deposits, withdraws or multiplies money in the player's account.
 | _multiply_ | Keyword: `multiply` | Disabled               | Multiplies the current balance with the amount instead simply adding it. |
 
 ```YAML
-events:
+actions:
   sellItem: "money +100"
   buyPlot: "money -10000"
   winLottery: "money 7 multiply notify"
@@ -1131,7 +1131,7 @@ Adds or removes a permission or a group.
 | _world_   | The name of the world.      | Global                 | You can limit permissions to certain worlds only. If no world is set the permission will be set everywhere (global). |
 
 ```YAML
-events:
+actions:
   allowFly: "permission add perm essentials.fly"
   joinBandit: "permission add group bandit"
   leaveBandit: "permission remove group bandit"
@@ -1145,31 +1145,31 @@ Use `%money.amount%` for showing the player's balance.
 Use `%money.left:500%` for showing the difference between the player's balance and the specified amount of money.
 
 ```YAML
-events:
+actions:
   notifyBalance: "notify You have %money.amount%$!"
   notifyNotEnough: "notify You still need %money.left:10000%$ to buy this plot."
 ```
 
 ## WorldEdit[](http://dev.bukkit.org/bukkit-plugins/worldedit/) or FastAsyncWorldEdit[](https://www.spigotmc.org/resources/13932/)
 
-### Events
+### Actions
 
 #### Paste schematic: `paste`
 
 **persistent**, **static**
 
-This event will paste a schematic at the given location.
+This action will paste a schematic at the given location.
 The first argument is a location and the second one is the name of a schematic file.
 The file must be located in `WorldEdit/schematics` or `FastAsyncWorldEdit/schematics` and must have a name like
 `some_building.{++schematic++}`. If WorldEdit saves `.schem` schematic files, simply append `.schem` to the
-schematic name in the event's instruction.
+schematic name in the action's instruction.
 
 The optional `noair` keyword can be added to ignore air blocks while pasting.
 You can also rotate the schematic by adding `rotation:90` where `90` is the angle in degrees.
 
 
 ```YAML title="Example"
-events:
+actions:
   pasteCastle: "paste 100;200;300;world castle noair" #(1)!
   pasteTree: "paste 100;200;300;world tree.schem noair" #(2)!
 ```
@@ -1222,7 +1222,7 @@ To complete this objective you need to be in a WorldGuard region with specified 
 | _Exit_    | `exit`      | Disabled               | The player needs to leave the region  |
 
 ```YAML title="Example"
-deathZone: "region deathZone entry events:kill"
+deathZone: "region deathZone entry actions:kill"
 ```
 
 ## ZNPCsPlus[](https://www.spigotmc.org/resources/109380/)

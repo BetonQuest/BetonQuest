@@ -1,0 +1,88 @@
+package org.betonquest.betonquest.compatibility.skript;
+
+import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.bukkit.event.ProfileEvent;
+import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.bukkit.event.HandlerList;
+
+/**
+ * Fires the custom event for Skript to listen to.
+ */
+public class BQSkriptAction implements PlayerAction {
+
+    /**
+     * Identifier for the event.
+     */
+    private final Argument<String> identifier;
+
+    /**
+     * Create a new Skript Action.
+     *
+     * @param identifier the identifier for the custom event
+     */
+    public BQSkriptAction(final Argument<String> identifier) {
+        this.identifier = identifier;
+    }
+
+    @Override
+    public void execute(final Profile profile) throws QuestException {
+        new CustomEventForSkript(profile, identifier.getValue(profile)).callEvent();
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
+
+    /**
+     * Custom event, which runs for Skript to listen.
+     */
+    public static class CustomEventForSkript extends ProfileEvent {
+
+        /**
+         * HandlerList of this event.
+         */
+        private static final HandlerList HANDLER_LIST = new HandlerList();
+
+        /**
+         * Event identifier.
+         */
+        private final String identifier;
+
+        /**
+         * Create a new Custom Event.
+         *
+         * @param who        the profile for the event
+         * @param identifier the identifier for the event
+         */
+        public CustomEventForSkript(final Profile who, final String identifier) {
+            super(who);
+            this.identifier = identifier;
+        }
+
+        /**
+         * Get the HandlerList of this event.
+         *
+         * @return the HandlerList.
+         */
+        public static HandlerList getHandlerList() {
+            return HANDLER_LIST;
+        }
+
+        /**
+         * Get the event identifier.
+         *
+         * @return the identifier
+         */
+        public String getID() {
+            return identifier;
+        }
+
+        @Override
+        public HandlerList getHandlers() {
+            return HANDLER_LIST;
+        }
+    }
+}

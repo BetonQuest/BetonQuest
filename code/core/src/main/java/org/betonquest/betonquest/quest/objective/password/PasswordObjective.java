@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.bukkit.Bukkit;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -36,9 +36,9 @@ public class PasswordObjective extends DefaultObjective {
     private final String passwordPrefix;
 
     /**
-     * Events to be triggered on failure.
+     * Actions to be triggered on failure.
      */
-    private final Argument<List<EventID>> failEvents;
+    private final Argument<List<ActionID>> failActions;
 
     /**
      * Constructor for the PasswordObjective.
@@ -46,15 +46,15 @@ public class PasswordObjective extends DefaultObjective {
      * @param instruction    the instruction that created this objective
      * @param regex          the regex pattern to match the password
      * @param passwordPrefix the prefix to be shown to the player
-     * @param failEvents     the events to be triggered on failure
+     * @param failActions    the actions to be triggered on failure
      * @throws QuestException if there is an error in the instruction
      */
     public PasswordObjective(final Instruction instruction, final FlagArgument<Pattern> regex,
-                             @Nullable final String passwordPrefix, final Argument<List<EventID>> failEvents) throws QuestException {
+                             @Nullable final String passwordPrefix, final Argument<List<ActionID>> failActions) throws QuestException {
         super(instruction);
         this.regex = regex;
         this.passwordPrefix = passwordPrefix;
-        this.failEvents = failEvents;
+        this.failActions = failActions;
     }
 
     /**
@@ -108,9 +108,9 @@ public class PasswordObjective extends DefaultObjective {
                 return !fromCommand || !prefix.isEmpty();
             }
             try {
-                BetonQuest.getInstance().getQuestTypeApi().events(onlineProfile, failEvents.getValue(onlineProfile));
+                BetonQuest.getInstance().getQuestTypeApi().actions(onlineProfile, failActions.getValue(onlineProfile));
             } catch (final QuestException e) {
-                throw new QuestException("Failed to resolve events: " + e.getMessage(), e);
+                throw new QuestException("Failed to resolve fail actions: " + e.getMessage(), e);
             }
         }
         return !prefix.isEmpty();

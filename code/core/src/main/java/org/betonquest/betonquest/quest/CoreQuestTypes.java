@@ -13,10 +13,71 @@ import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.database.PlayerDataFactory;
+import org.betonquest.betonquest.kernel.registry.quest.ActionTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.BaseQuestTypeRegistries;
 import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
-import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.PlaceholderTypeRegistry;
+import org.betonquest.betonquest.quest.action.burn.BurnActionFactory;
+import org.betonquest.betonquest.quest.action.cancel.CancelActionFactory;
+import org.betonquest.betonquest.quest.action.chat.ChatActionFactory;
+import org.betonquest.betonquest.quest.action.chest.ChestClearActionFactory;
+import org.betonquest.betonquest.quest.action.chest.ChestGiveActionFactory;
+import org.betonquest.betonquest.quest.action.chest.ChestTakeActionFactory;
+import org.betonquest.betonquest.quest.action.command.CommandActionFactory;
+import org.betonquest.betonquest.quest.action.command.OpSudoActionFactory;
+import org.betonquest.betonquest.quest.action.command.SudoActionFactory;
+import org.betonquest.betonquest.quest.action.compass.CompassActionFactory;
+import org.betonquest.betonquest.quest.action.conversation.CancelConversationActionFactory;
+import org.betonquest.betonquest.quest.action.conversation.ConversationActionFactory;
+import org.betonquest.betonquest.quest.action.damage.DamageActionFactory;
+import org.betonquest.betonquest.quest.action.door.DoorActionFactory;
+import org.betonquest.betonquest.quest.action.drop.DropActionFactory;
+import org.betonquest.betonquest.quest.action.effect.DeleteEffectActionFactory;
+import org.betonquest.betonquest.quest.action.effect.EffectActionFactory;
+import org.betonquest.betonquest.quest.action.entity.RemoveEntityActionFactory;
+import org.betonquest.betonquest.quest.action.eval.EvalActionFactory;
+import org.betonquest.betonquest.quest.action.experience.ExperienceActionFactory;
+import org.betonquest.betonquest.quest.action.explosion.ExplosionActionFactory;
+import org.betonquest.betonquest.quest.action.folder.FolderActionFactory;
+import org.betonquest.betonquest.quest.action.give.GiveActionFactory;
+import org.betonquest.betonquest.quest.action.hunger.HungerActionFactory;
+import org.betonquest.betonquest.quest.action.item.ItemDurabilityActionFactory;
+import org.betonquest.betonquest.quest.action.journal.GiveJournalActionFactory;
+import org.betonquest.betonquest.quest.action.journal.JournalActionFactory;
+import org.betonquest.betonquest.quest.action.kill.KillActionFactory;
+import org.betonquest.betonquest.quest.action.language.LanguageActionFactory;
+import org.betonquest.betonquest.quest.action.lever.LeverActionFactory;
+import org.betonquest.betonquest.quest.action.lightning.LightningActionFactory;
+import org.betonquest.betonquest.quest.action.log.LogActionFactory;
+import org.betonquest.betonquest.quest.action.logic.FirstActionFactory;
+import org.betonquest.betonquest.quest.action.logic.IfElseActionFactory;
+import org.betonquest.betonquest.quest.action.notify.NotifyActionFactory;
+import org.betonquest.betonquest.quest.action.notify.NotifyAllActionFactory;
+import org.betonquest.betonquest.quest.action.npc.NpcTeleportActionFactory;
+import org.betonquest.betonquest.quest.action.npc.UpdateVisibilityNowActionFactory;
+import org.betonquest.betonquest.quest.action.objective.ObjectiveActionFactory;
+import org.betonquest.betonquest.quest.action.party.PartyActionFactory;
+import org.betonquest.betonquest.quest.action.point.DeleteGlobalPointActionFactory;
+import org.betonquest.betonquest.quest.action.point.DeletePointActionFactory;
+import org.betonquest.betonquest.quest.action.point.GlobalPointActionFactory;
+import org.betonquest.betonquest.quest.action.point.PointActionFactory;
+import org.betonquest.betonquest.quest.action.random.PickRandomActionFactory;
+import org.betonquest.betonquest.quest.action.run.RunActionFactory;
+import org.betonquest.betonquest.quest.action.run.RunForAllActionFactory;
+import org.betonquest.betonquest.quest.action.run.RunIndependentActionFactory;
+import org.betonquest.betonquest.quest.action.scoreboard.ScoreboardObjectiveActionFactory;
+import org.betonquest.betonquest.quest.action.scoreboard.ScoreboardTagActionFactory;
+import org.betonquest.betonquest.quest.action.setblock.SetBlockActionFactory;
+import org.betonquest.betonquest.quest.action.spawn.SpawnMobActionFactory;
+import org.betonquest.betonquest.quest.action.stage.StageActionFactory;
+import org.betonquest.betonquest.quest.action.tag.TagGlobalActionFactory;
+import org.betonquest.betonquest.quest.action.tag.TagPlayerActionFactory;
+import org.betonquest.betonquest.quest.action.take.TakeActionFactory;
+import org.betonquest.betonquest.quest.action.teleport.TeleportActionFactory;
+import org.betonquest.betonquest.quest.action.time.TimeActionFactory;
+import org.betonquest.betonquest.quest.action.variable.VariableActionFactory;
+import org.betonquest.betonquest.quest.action.velocity.VelocityActionFactory;
+import org.betonquest.betonquest.quest.action.weather.WeatherActionFactory;
 import org.betonquest.betonquest.quest.condition.advancement.AdvancementConditionFactory;
 import org.betonquest.betonquest.quest.condition.armor.ArmorConditionFactory;
 import org.betonquest.betonquest.quest.condition.armor.ArmorRatingConditionFactory;
@@ -71,67 +132,6 @@ import org.betonquest.betonquest.quest.condition.time.real.RealTimeConditionFact
 import org.betonquest.betonquest.quest.condition.variable.VariableConditionFactory;
 import org.betonquest.betonquest.quest.condition.weather.WeatherConditionFactory;
 import org.betonquest.betonquest.quest.condition.world.WorldConditionFactory;
-import org.betonquest.betonquest.quest.event.burn.BurnEventFactory;
-import org.betonquest.betonquest.quest.event.cancel.CancelEventFactory;
-import org.betonquest.betonquest.quest.event.chat.ChatEventFactory;
-import org.betonquest.betonquest.quest.event.chest.ChestClearEventFactory;
-import org.betonquest.betonquest.quest.event.chest.ChestGiveEventFactory;
-import org.betonquest.betonquest.quest.event.chest.ChestTakeEventFactory;
-import org.betonquest.betonquest.quest.event.command.CommandEventFactory;
-import org.betonquest.betonquest.quest.event.command.OpSudoEventFactory;
-import org.betonquest.betonquest.quest.event.command.SudoEventFactory;
-import org.betonquest.betonquest.quest.event.compass.CompassEventFactory;
-import org.betonquest.betonquest.quest.event.conversation.CancelConversationEventFactory;
-import org.betonquest.betonquest.quest.event.conversation.ConversationEventFactory;
-import org.betonquest.betonquest.quest.event.damage.DamageEventFactory;
-import org.betonquest.betonquest.quest.event.door.DoorEventFactory;
-import org.betonquest.betonquest.quest.event.drop.DropEventFactory;
-import org.betonquest.betonquest.quest.event.effect.DeleteEffectEventFactory;
-import org.betonquest.betonquest.quest.event.effect.EffectEventFactory;
-import org.betonquest.betonquest.quest.event.entity.RemoveEntityEventFactory;
-import org.betonquest.betonquest.quest.event.eval.EvalEventFactory;
-import org.betonquest.betonquest.quest.event.experience.ExperienceEventFactory;
-import org.betonquest.betonquest.quest.event.explosion.ExplosionEventFactory;
-import org.betonquest.betonquest.quest.event.folder.FolderEventFactory;
-import org.betonquest.betonquest.quest.event.give.GiveEventFactory;
-import org.betonquest.betonquest.quest.event.hunger.HungerEventFactory;
-import org.betonquest.betonquest.quest.event.item.ItemDurabilityEventFactory;
-import org.betonquest.betonquest.quest.event.journal.GiveJournalEventFactory;
-import org.betonquest.betonquest.quest.event.journal.JournalEventFactory;
-import org.betonquest.betonquest.quest.event.kill.KillEventFactory;
-import org.betonquest.betonquest.quest.event.language.LanguageEventFactory;
-import org.betonquest.betonquest.quest.event.lever.LeverEventFactory;
-import org.betonquest.betonquest.quest.event.lightning.LightningEventFactory;
-import org.betonquest.betonquest.quest.event.log.LogEventFactory;
-import org.betonquest.betonquest.quest.event.logic.FirstEventFactory;
-import org.betonquest.betonquest.quest.event.logic.IfElseEventFactory;
-import org.betonquest.betonquest.quest.event.notify.NotifyAllEventFactory;
-import org.betonquest.betonquest.quest.event.notify.NotifyEventFactory;
-import org.betonquest.betonquest.quest.event.npc.NpcTeleportEventFactory;
-import org.betonquest.betonquest.quest.event.npc.UpdateVisibilityNowEventFactory;
-import org.betonquest.betonquest.quest.event.objective.ObjectiveEventFactory;
-import org.betonquest.betonquest.quest.event.party.PartyEventFactory;
-import org.betonquest.betonquest.quest.event.point.DeleteGlobalPointEventFactory;
-import org.betonquest.betonquest.quest.event.point.DeletePointEventFactory;
-import org.betonquest.betonquest.quest.event.point.GlobalPointEventFactory;
-import org.betonquest.betonquest.quest.event.point.PointEventFactory;
-import org.betonquest.betonquest.quest.event.random.PickRandomEventFactory;
-import org.betonquest.betonquest.quest.event.run.RunEventFactory;
-import org.betonquest.betonquest.quest.event.run.RunForAllEventFactory;
-import org.betonquest.betonquest.quest.event.run.RunIndependentEventFactory;
-import org.betonquest.betonquest.quest.event.scoreboard.ScoreboardObjectiveEventFactory;
-import org.betonquest.betonquest.quest.event.scoreboard.ScoreboardTagEventFactory;
-import org.betonquest.betonquest.quest.event.setblock.SetBlockEventFactory;
-import org.betonquest.betonquest.quest.event.spawn.SpawnMobEventFactory;
-import org.betonquest.betonquest.quest.event.stage.StageEventFactory;
-import org.betonquest.betonquest.quest.event.tag.TagGlobalEventFactory;
-import org.betonquest.betonquest.quest.event.tag.TagPlayerEventFactory;
-import org.betonquest.betonquest.quest.event.take.TakeEventFactory;
-import org.betonquest.betonquest.quest.event.teleport.TeleportEventFactory;
-import org.betonquest.betonquest.quest.event.time.TimeEventFactory;
-import org.betonquest.betonquest.quest.event.variable.VariableEventFactory;
-import org.betonquest.betonquest.quest.event.velocity.VelocityEventFactory;
-import org.betonquest.betonquest.quest.event.weather.WeatherEventFactory;
 import org.betonquest.betonquest.quest.objective.action.ActionObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.arrow.ArrowShootObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.block.BlockObjectiveFactory;
@@ -188,12 +188,11 @@ import org.betonquest.betonquest.quest.placeholder.tag.GlobalTagPlaceholderFacto
 import org.betonquest.betonquest.quest.placeholder.tag.TagPlaceholderFactory;
 import org.betonquest.betonquest.quest.placeholder.version.VersionPlaceholderFactory;
 import org.bukkit.Server;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import java.time.InstantSource;
 
 /**
- * Registers the Conditions, Events, Objectives and Placeholders that come with BetonQuest.
+ * Registers the Conditions, Actions, Objectives and Placeholders that come with BetonQuest.
  */
 @SuppressWarnings({"PMD.NcssCount", "PMD.AvoidDuplicateLiterals"})
 public class CoreQuestTypes {
@@ -263,7 +262,6 @@ public class CoreQuestTypes {
      *
      * @param loggerFactory     used in factories
      * @param server            the server used for primary server thread access.
-     * @param scheduler         the scheduler used for primary server thread access
      * @param betonQuest        the plugin used for primary server access and type registration
      * @param questTypeApi      the Quest Type API
      * @param featureApi        the Feature API
@@ -277,7 +275,7 @@ public class CoreQuestTypes {
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public CoreQuestTypes(final BetonQuestLoggerFactory loggerFactory,
-                          final Server server, final BukkitScheduler scheduler, final BetonQuest betonQuest,
+                          final Server server, final BetonQuest betonQuest,
                           final QuestTypeApi questTypeApi, final FeatureApi featureApi, final PluginMessage pluginMessage,
                           final Placeholders placeholders, final GlobalData globalData,
                           final PlayerDataStorage dataStorage, final ProfileProvider profileProvider,
@@ -304,7 +302,7 @@ public class CoreQuestTypes {
     public void register(final BaseQuestTypeRegistries questTypeRegistries) {
         // When adding new types they need to be ordered by name in the corresponding method!
         registerConditions(questTypeRegistries.condition());
-        registerEvents(questTypeRegistries.event());
+        registerActions(questTypeRegistries.action());
         registerObjectives(questTypeRegistries.objective());
         registerPlaceholders(questTypeRegistries.placeholder());
     }
@@ -366,70 +364,70 @@ public class CoreQuestTypes {
         conditionTypes.register("world", new WorldConditionFactory(loggerFactory));
     }
 
-    private void registerEvents(final EventTypeRegistry eventTypes) {
-        eventTypes.register("burn", new BurnEventFactory(loggerFactory));
-        eventTypes.register("cancel", new CancelEventFactory(loggerFactory, featureApi));
-        eventTypes.register("cancelconversation", new CancelConversationEventFactory(loggerFactory, featureApi.conversationApi()));
-        eventTypes.register("chat", new ChatEventFactory(loggerFactory));
-        eventTypes.registerCombined("chestclear", new ChestClearEventFactory());
-        eventTypes.registerCombined("chestgive", new ChestGiveEventFactory());
-        eventTypes.registerCombined("chesttake", new ChestTakeEventFactory());
-        eventTypes.register("compass", new CompassEventFactory(featureApi, dataStorage));
-        eventTypes.registerCombined("command", new CommandEventFactory(loggerFactory, server));
-        eventTypes.register("conversation", new ConversationEventFactory(loggerFactory, betonQuest.getQuestPackageManager(), featureApi.conversationApi()));
-        eventTypes.register("damage", new DamageEventFactory(loggerFactory));
-        eventTypes.register("deleffect", new DeleteEffectEventFactory(loggerFactory));
-        eventTypes.registerCombined("deleteglobalpoint", new DeleteGlobalPointEventFactory(globalData));
-        eventTypes.registerCombined("deletepoint", new DeletePointEventFactory(dataStorage, betonQuest.getSaver(), profileProvider));
-        eventTypes.registerCombined("door", new DoorEventFactory());
-        eventTypes.registerCombined("drop", new DropEventFactory(profileProvider));
-        eventTypes.register("effect", new EffectEventFactory(loggerFactory));
-        eventTypes.registerCombined("eval", new EvalEventFactory(placeholders, betonQuest.getQuestPackageManager(), eventTypes));
-        eventTypes.register("experience", new ExperienceEventFactory(loggerFactory));
-        eventTypes.registerCombined("explosion", new ExplosionEventFactory());
-        eventTypes.registerCombined("folder", new FolderEventFactory(betonQuest, loggerFactory, server.getPluginManager(), questTypeApi));
-        eventTypes.registerCombined("first", new FirstEventFactory(questTypeApi));
-        eventTypes.register("give", new GiveEventFactory(loggerFactory, dataStorage, pluginMessage));
-        eventTypes.register("givejournal", new GiveJournalEventFactory(loggerFactory, dataStorage));
-        eventTypes.registerCombined("globaltag", new TagGlobalEventFactory(betonQuest));
-        eventTypes.registerCombined("globalpoint", new GlobalPointEventFactory(globalData));
-        eventTypes.register("hunger", new HungerEventFactory(loggerFactory));
-        eventTypes.registerCombined("if", new IfElseEventFactory(questTypeApi));
-        eventTypes.register("itemdurability", new ItemDurabilityEventFactory(loggerFactory));
-        eventTypes.registerCombined("journal", new JournalEventFactory(loggerFactory, pluginMessage, dataStorage,
+    private void registerActions(final ActionTypeRegistry actionTypes) {
+        actionTypes.register("burn", new BurnActionFactory(loggerFactory));
+        actionTypes.register("cancel", new CancelActionFactory(loggerFactory, featureApi));
+        actionTypes.register("cancelconversation", new CancelConversationActionFactory(loggerFactory, featureApi.conversationApi()));
+        actionTypes.register("chat", new ChatActionFactory(loggerFactory));
+        actionTypes.registerCombined("chestclear", new ChestClearActionFactory());
+        actionTypes.registerCombined("chestgive", new ChestGiveActionFactory());
+        actionTypes.registerCombined("chesttake", new ChestTakeActionFactory());
+        actionTypes.register("compass", new CompassActionFactory(featureApi, dataStorage));
+        actionTypes.registerCombined("command", new CommandActionFactory(loggerFactory, server));
+        actionTypes.register("conversation", new ConversationActionFactory(loggerFactory, betonQuest.getQuestPackageManager(), featureApi.conversationApi()));
+        actionTypes.register("damage", new DamageActionFactory(loggerFactory));
+        actionTypes.register("deleffect", new DeleteEffectActionFactory(loggerFactory));
+        actionTypes.registerCombined("deleteglobalpoint", new DeleteGlobalPointActionFactory(globalData));
+        actionTypes.registerCombined("deletepoint", new DeletePointActionFactory(dataStorage, betonQuest.getSaver(), profileProvider));
+        actionTypes.registerCombined("door", new DoorActionFactory());
+        actionTypes.registerCombined("drop", new DropActionFactory(profileProvider));
+        actionTypes.register("effect", new EffectActionFactory(loggerFactory));
+        actionTypes.registerCombined("eval", new EvalActionFactory(placeholders, betonQuest.getQuestPackageManager(), actionTypes));
+        actionTypes.register("experience", new ExperienceActionFactory(loggerFactory));
+        actionTypes.registerCombined("explosion", new ExplosionActionFactory());
+        actionTypes.registerCombined("folder", new FolderActionFactory(betonQuest, loggerFactory, server.getPluginManager(), questTypeApi));
+        actionTypes.registerCombined("first", new FirstActionFactory(questTypeApi));
+        actionTypes.register("give", new GiveActionFactory(loggerFactory, dataStorage, pluginMessage));
+        actionTypes.register("givejournal", new GiveJournalActionFactory(loggerFactory, dataStorage));
+        actionTypes.registerCombined("globaltag", new TagGlobalActionFactory(betonQuest));
+        actionTypes.registerCombined("globalpoint", new GlobalPointActionFactory(globalData));
+        actionTypes.register("hunger", new HungerActionFactory(loggerFactory));
+        actionTypes.registerCombined("if", new IfElseActionFactory(questTypeApi));
+        actionTypes.register("itemdurability", new ItemDurabilityActionFactory(loggerFactory));
+        actionTypes.registerCombined("journal", new JournalActionFactory(loggerFactory, pluginMessage, dataStorage,
                 InstantSource.system(), betonQuest.getSaver(), profileProvider));
-        eventTypes.register("kill", new KillEventFactory(loggerFactory));
-        eventTypes.register("language", new LanguageEventFactory(dataStorage));
-        eventTypes.registerCombined("lever", new LeverEventFactory());
-        eventTypes.registerCombined("lightning", new LightningEventFactory());
-        eventTypes.registerCombined("log", new LogEventFactory(loggerFactory));
-        eventTypes.register("notify", new NotifyEventFactory(loggerFactory, betonQuest.getTextParser(), dataStorage, languageProvider));
-        eventTypes.registerCombined("notifyall", new NotifyAllEventFactory(loggerFactory, betonQuest.getTextParser(), dataStorage, profileProvider, languageProvider));
-        eventTypes.registerCombined("npcteleport", new NpcTeleportEventFactory(featureApi));
-        eventTypes.registerCombined("objective", new ObjectiveEventFactory(betonQuest, loggerFactory, questTypeApi, playerDataFactory));
-        eventTypes.register("opsudo", new OpSudoEventFactory(loggerFactory, server));
-        eventTypes.register("party", new PartyEventFactory(loggerFactory, questTypeApi, profileProvider));
-        eventTypes.registerCombined("pickrandom", new PickRandomEventFactory(questTypeApi));
-        eventTypes.register("point", new PointEventFactory(loggerFactory, dataStorage,
+        actionTypes.register("kill", new KillActionFactory(loggerFactory));
+        actionTypes.register("language", new LanguageActionFactory(dataStorage));
+        actionTypes.registerCombined("lever", new LeverActionFactory());
+        actionTypes.registerCombined("lightning", new LightningActionFactory());
+        actionTypes.registerCombined("log", new LogActionFactory(loggerFactory));
+        actionTypes.register("notify", new NotifyActionFactory(loggerFactory, betonQuest.getTextParser(), dataStorage, languageProvider));
+        actionTypes.registerCombined("notifyall", new NotifyAllActionFactory(loggerFactory, betonQuest.getTextParser(), dataStorage, profileProvider, languageProvider));
+        actionTypes.registerCombined("npcteleport", new NpcTeleportActionFactory(featureApi));
+        actionTypes.registerCombined("objective", new ObjectiveActionFactory(betonQuest, loggerFactory, questTypeApi, playerDataFactory));
+        actionTypes.register("opsudo", new OpSudoActionFactory(loggerFactory, server));
+        actionTypes.register("party", new PartyActionFactory(loggerFactory, questTypeApi, profileProvider));
+        actionTypes.registerCombined("pickrandom", new PickRandomActionFactory(questTypeApi));
+        actionTypes.register("point", new PointActionFactory(loggerFactory, dataStorage,
                 pluginMessage));
-        eventTypes.registerCombined("removeentity", new RemoveEntityEventFactory());
-        eventTypes.registerCombined("run", new RunEventFactory(placeholders, betonQuest.getQuestPackageManager(), eventTypes));
-        eventTypes.register("runForAll", new RunForAllEventFactory(questTypeApi, profileProvider));
-        eventTypes.register("runIndependent", new RunIndependentEventFactory(questTypeApi));
-        eventTypes.registerCombined("setblock", new SetBlockEventFactory());
-        eventTypes.register("score", new ScoreboardObjectiveEventFactory());
-        eventTypes.register("scoretag", new ScoreboardTagEventFactory(loggerFactory));
-        eventTypes.registerCombined("spawn", new SpawnMobEventFactory());
-        eventTypes.register("stage", new StageEventFactory(questTypeApi));
-        eventTypes.register("sudo", new SudoEventFactory(loggerFactory, server));
-        eventTypes.registerCombined("tag", new TagPlayerEventFactory(dataStorage, betonQuest.getSaver(), profileProvider));
-        eventTypes.register("take", new TakeEventFactory(loggerFactory, pluginMessage));
-        eventTypes.register("teleport", new TeleportEventFactory(loggerFactory, featureApi.conversationApi()));
-        eventTypes.registerCombined("time", new TimeEventFactory(server));
-        eventTypes.register("updatevisibility", new UpdateVisibilityNowEventFactory(featureApi.getNpcHider(), loggerFactory));
-        eventTypes.register("variable", new VariableEventFactory(questTypeApi));
-        eventTypes.register("velocity", new VelocityEventFactory(loggerFactory));
-        eventTypes.registerCombined("weather", new WeatherEventFactory(loggerFactory, server));
+        actionTypes.registerCombined("removeentity", new RemoveEntityActionFactory());
+        actionTypes.registerCombined("run", new RunActionFactory(placeholders, betonQuest.getQuestPackageManager(), actionTypes));
+        actionTypes.register("runForAll", new RunForAllActionFactory(questTypeApi, profileProvider));
+        actionTypes.register("runIndependent", new RunIndependentActionFactory(questTypeApi));
+        actionTypes.registerCombined("setblock", new SetBlockActionFactory());
+        actionTypes.register("score", new ScoreboardObjectiveActionFactory());
+        actionTypes.register("scoretag", new ScoreboardTagActionFactory(loggerFactory));
+        actionTypes.registerCombined("spawn", new SpawnMobActionFactory());
+        actionTypes.register("stage", new StageActionFactory(questTypeApi));
+        actionTypes.register("sudo", new SudoActionFactory(loggerFactory, server));
+        actionTypes.registerCombined("tag", new TagPlayerActionFactory(dataStorage, betonQuest.getSaver(), profileProvider));
+        actionTypes.register("take", new TakeActionFactory(loggerFactory, pluginMessage));
+        actionTypes.register("teleport", new TeleportActionFactory(loggerFactory, featureApi.conversationApi()));
+        actionTypes.registerCombined("time", new TimeActionFactory(server));
+        actionTypes.register("updatevisibility", new UpdateVisibilityNowActionFactory(featureApi.getNpcHider(), loggerFactory));
+        actionTypes.register("variable", new VariableActionFactory(questTypeApi));
+        actionTypes.register("velocity", new VelocityActionFactory(loggerFactory));
+        actionTypes.registerCombined("weather", new WeatherActionFactory(loggerFactory, server));
     }
 
     private void registerObjectives(final FeatureRegistry<ObjectiveFactory> objectiveTypes) {

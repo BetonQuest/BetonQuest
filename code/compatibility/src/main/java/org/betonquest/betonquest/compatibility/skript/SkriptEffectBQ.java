@@ -11,14 +11,14 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.Placeholders;
-import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Skript effect, which fires specified BetonQuest's event.
+ * Skript effect, which fires specified BetonQuest's action.
  */
 @SuppressWarnings("NullAway.Init")
 public class SkriptEffectBQ extends Effect {
@@ -44,17 +44,17 @@ public class SkriptEffectBQ extends Effect {
     private final QuestPackageManager packManager;
 
     /**
-     * The event identifier to be fired.
+     * The action identifier to be fired.
      */
-    private Expression<String> event;
+    private Expression<String> action;
 
     /**
-     * The player for whom the event is fired.
+     * The player for whom the action is fired.
      */
     private Expression<Player> player;
 
     /**
-     * Constructs a new SkriptEffect for BetonQuest events.
+     * Constructs a new SkriptEffect for BetonQuest actions.
      */
     public SkriptEffectBQ() {
         super();
@@ -67,7 +67,7 @@ public class SkriptEffectBQ extends Effect {
     @SuppressWarnings("unchecked")
     @Override
     public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final ParseResult parseResult) {
-        this.event = (Expression<String>) exprs[0];
+        this.action = (Expression<String>) exprs[0];
         this.player = (Expression<Player>) exprs[1];
         return true;
     }
@@ -75,7 +75,7 @@ public class SkriptEffectBQ extends Effect {
     @Override
     @SuppressFBWarnings("NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE")
     public String toString(@Nullable final Event event, final boolean debug) {
-        return "fire " + this.event + " for " + player.getSingle(event).getName();
+        return "fire " + this.action + " for " + player.getSingle(event).getName();
     }
 
     @Override
@@ -83,13 +83,13 @@ public class SkriptEffectBQ extends Effect {
         new BukkitRunnable() {
             @Override
             public void run() {
-                final String eventID = SkriptEffectBQ.this.event.getSingle(event);
+                final String actionID = SkriptEffectBQ.this.action.getSingle(event);
                 try {
                     final ProfileProvider profileProvider = plugin.getProfileProvider();
-                    plugin.getQuestTypeApi().event(profileProvider.getProfile(player.getSingle(event)),
-                            new EventID(placeholders, packManager, null, eventID));
+                    plugin.getQuestTypeApi().action(profileProvider.getProfile(player.getSingle(event)),
+                            new ActionID(placeholders, packManager, null, actionID));
                 } catch (final QuestException e) {
-                    log.warn("Error when running Skript event - could not load '" + eventID + "' event: " + e.getMessage(), e);
+                    log.warn("Error when running Skript event - could not load '" + actionID + "' action: " + e.getMessage(), e);
                 }
             }
         }.runTask(plugin);

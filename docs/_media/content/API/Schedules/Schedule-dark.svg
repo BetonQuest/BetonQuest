@@ -1,12 +1,250 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="538px" preserveAspectRatio="none" style="width:871px;height:538px;background:#00000000;" version="1.1" viewBox="0 0 871 538" width="871px" zoomAndPan="magnify"><defs/><g><!--MD5=[8f5ecb6aa78bb8f3c37ca2af39a13428]
-cluster org.betonquest.betonquest.api.schedule--><g id="cluster_org.betonquest.betonquest.api.schedule"><rect height="525" rx="2.5" ry="2.5" style="stroke:#000000;stroke-width:1.0;fill:none;" width="858" x="7" y="7"/><path d="M346,7 L346,16.2969 L336,26.2969 L7,26.2969 " fill="none" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="329" x="10" y="20.9951">org.betonquest.betonquest.api.schedule</text></g><!--MD5=[c680266cf9e454ca06c2d1bb8b683e6b]
-class Schedule--><g id="elem_Schedule"><rect codeLine="19" fill="#293E4E" height="202.6719" id="Schedule" rx="2.5" ry="2.5" style="stroke:#000000;stroke-width:0.5;" width="342" x="316" y="42"/><rect fill="#00B8D4" height="32" rx="2.5" ry="2.5" style="stroke:#00B8D4;stroke-width:0.5;" width="342" x="316" y="42"/><rect fill="#00B8D4" height="2.5" style="stroke:#00B8D4;stroke-width:0.5;" width="342" x="316" y="71.5"/><rect codeLine="19" fill="none" height="202.6719" id="Schedule" rx="2.5" ry="2.5" style="stroke:#000000;stroke-width:0.5;" width="342" x="316" y="42"/><ellipse cx="449.75" cy="58" fill="#A9DCDF" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M451.8281,59.8125 L452.2188,60.7969 L451.8281,60.7969 C451.375,60.7969 451.2656,60.8125 451.1094,60.9219 C450.8594,61.0781 450.7031,61.3594 450.7031,61.6563 C450.7031,61.9219 450.8438,62.1719 451.0625,62.3281 C451.2031,62.4531 451.4063,62.5 451.8281,62.5 L454.1875,62.5 C454.5469,62.5 454.7656,62.4688 454.9063,62.375 C455.1563,62.2344 455.3125,61.9375 455.3125,61.6563 C455.3125,61.375 455.1719,61.125 454.9531,60.9688 C454.7813,60.8281 454.625,60.7969 454.1563,60.7969 L450.7656,52.5938 L447.0938,52.5938 C446.6406,52.5938 446.5156,52.6094 446.3594,52.7031 C446.1094,52.875 445.9531,53.1563 445.9531,53.4375 C445.9531,53.7188 446.0938,53.9688 446.3125,54.1406 C446.4844,54.25 446.6563,54.2813 447.0938,54.2813 L448.1719,54.2813 L445.5313,60.7969 C445.1094,60.7969 444.9531,60.8125 444.7969,60.9219 C444.5469,61.0781 444.3906,61.3594 444.3906,61.6563 C444.3906,62.2188 444.7656,62.5 445.5156,62.5 L447.7813,62.5 C448.1406,62.5 448.3594,62.4688 448.4844,62.375 C448.75,62.2344 448.8906,61.9375 448.8906,61.6563 C448.8906,61.375 448.7656,61.125 448.5469,60.9531 C448.375,60.8281 448.2344,60.7969 447.7813,60.7969 L447.3906,60.7969 L447.7813,59.8125 L451.8281,59.8125 Z M451.125,58.1094 L448.4531,58.1094 L449.7969,54.8438 L451.125,58.1094 Z " fill="#000000"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="66" x="470.25" y="62.8467">Schedule</text><line style="stroke:#000000;stroke-width:0.5;" x1="317" x2="657" y1="74" y2="74"/><ellipse cx="327" cy="85" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="316" x="336" y="90.9951">Schedule(ScheduleID, ConfigurationSection)</text><line style="stroke:#000000;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="317" x2="657" y1="98.2969" y2="98.2969"/><polygon fill="none" points="327,104.2969,331,108.2969,327,112.2969,323,108.2969" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="169" x="336" y="115.292">scheduleId : ScheduleID</text><polygon fill="none" points="327,120.5938,331,124.5938,327,128.5938,323,124.5938" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="91" x="336" y="131.5889">time : String</text><polygon fill="none" points="327,136.8906,331,140.8906,327,144.8906,323,140.8906" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="167" x="336" y="147.8857">events : List&lt;EventID&gt;</text><polygon fill="none" points="327,153.1875,331,157.1875,327,161.1875,323,157.1875" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="194" x="336" y="164.1826">catchup : CatchupStrategy</text><line style="stroke:#000000;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="317" x2="657" y1="171.4844" y2="171.4844"/><ellipse cx="327" cy="182.4844" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="141" x="336" y="188.4795">getId() : ScheduleID</text><ellipse cx="327" cy="198.7813" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="128" x="336" y="204.7764">getTime() : String</text><ellipse cx="327" cy="215.0781" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="202" x="336" y="221.0732">getEvents() : List&lt;EventID&gt;</text><ellipse cx="327" cy="231.375" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="231" x="336" y="237.3701">getCatchup() : CatchupStrategy</text></g><!--MD5=[e13b4104aa9f8dcffcf8529c2f35d3de]
-class CatchupStrategy--><g id="elem_CatchupStrategy"><rect codeLine="33" fill="#293E4E" height="104.8906" id="CatchupStrategy" rx="2.5" ry="2.5" style="stroke:#000000;stroke-width:0.5;" width="155" x="693.5" y="91"/><rect fill="#00B8D4" height="32" rx="2.5" ry="2.5" style="stroke:#00B8D4;stroke-width:0.5;" width="155" x="693.5" y="91"/><rect fill="#00B8D4" height="2.5" style="stroke:#00B8D4;stroke-width:0.5;" width="155" x="693.5" y="120.5"/><rect codeLine="33" fill="none" height="104.8906" id="CatchupStrategy" rx="2.5" ry="2.5" style="stroke:#000000;stroke-width:0.5;" width="155" x="693.5" y="91"/><ellipse cx="708.5" cy="107" fill="#EB937F" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M707.2969,107.875 L708.75,107.875 L708.75,107.9844 C708.75,108.3906 708.7813,108.5469 708.8594,108.7031 C709.0156,108.9531 709.2969,109.1094 709.5938,109.1094 C709.8438,109.1094 710.1094,108.9688 710.2656,108.75 C710.3906,108.5938 710.4219,108.4375 710.4219,107.9844 L710.4219,106.0625 C710.4219,105.9063 710.4219,105.8594 710.4063,105.7031 C710.3438,105.2344 710.0313,104.9219 709.5781,104.9219 C709.3281,104.9219 709.0625,105.0625 708.8906,105.2813 C708.7813,105.4531 708.75,105.6094 708.75,106.0625 L708.75,106.1875 L707.2969,106.1875 L707.2969,103.7813 L711.2813,103.7813 L711.2813,104.6406 C711.2813,105.0469 711.3125,105.2188 711.3906,105.375 C711.5625,105.625 711.8438,105.7813 712.125,105.7813 C712.3906,105.7813 712.6563,105.6406 712.8281,105.4219 C712.9375,105.25 712.9688,105.1094 712.9688,104.6406 L712.9688,102.0938 L705.3438,102.0938 C704.9063,102.0938 704.7813,102.1094 704.625,102.2031 C704.375,102.3594 704.2188,102.6563 704.2188,102.9375 C704.2188,103.2188 704.3594,103.4688 704.5781,103.6406 C704.7344,103.75 704.9219,103.7813 705.3438,103.7813 L705.5938,103.7813 L705.5938,110.2969 L705.3438,110.2969 C704.9375,110.2969 704.7813,110.3125 704.625,110.4219 C704.375,110.5938 704.2188,110.8594 704.2188,111.1563 C704.2188,111.4219 704.3594,111.6719 704.5781,111.8281 C704.7188,111.9531 704.9531,112 705.3438,112 L713.3438,112 L713.3438,109.4219 C713.3438,108.9844 713.3125,108.8438 713.2344,108.6875 C713.0625,108.4375 712.7813,108.2813 712.5,108.2813 C712.2344,108.2813 711.9688,108.3906 711.7969,108.6406 C711.6875,108.7969 711.6563,108.9375 711.6563,109.4219 L711.6563,110.2969 L707.2969,110.2969 L707.2969,107.875 Z " fill="#000000"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="123" x="722.5" y="111.8467">CatchupStrategy</text><line style="stroke:#000000;stroke-width:0.5;" x1="694.5" x2="847.5" y1="123" y2="123"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="40" x="699.5" y="139.9951">NONE</text><line style="stroke:#000000;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="694.5" x2="847.5" y1="147.2969" y2="147.2969"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="30" x="699.5" y="164.292">ONE</text><line style="stroke:#000000;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="694.5" x2="847.5" y1="171.5938" y2="171.5938"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26" x="699.5" y="188.5889">ALL</text></g><!--MD5=[360bbd5fb28fd065afb3478fcbb568c2]
-class CronSchedule--><g id="elem_CronSchedule"><rect codeLine="41" fill="#293E4E" height="210.6719" id="CronSchedule" rx="2.5" ry="2.5" style="stroke:#000000;stroke-width:0.5;" width="344" x="315" y="305"/><rect fill="#00B8D4" height="32" rx="2.5" ry="2.5" style="stroke:#00B8D4;stroke-width:0.5;" width="344" x="315" y="305"/><rect fill="#00B8D4" height="2.5" style="stroke:#00B8D4;stroke-width:0.5;" width="344" x="315" y="334.5"/><rect codeLine="41" fill="none" height="210.6719" id="CronSchedule" rx="2.5" ry="2.5" style="stroke:#000000;stroke-width:0.5;" width="344" x="315" y="305"/><ellipse cx="432.75" cy="321" fill="#A9DCDF" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M434.8281,322.8125 L435.2188,323.7969 L434.8281,323.7969 C434.375,323.7969 434.2656,323.8125 434.1094,323.9219 C433.8594,324.0781 433.7031,324.3594 433.7031,324.6563 C433.7031,324.9219 433.8438,325.1719 434.0625,325.3281 C434.2031,325.4531 434.4063,325.5 434.8281,325.5 L437.1875,325.5 C437.5469,325.5 437.7656,325.4688 437.9063,325.375 C438.1563,325.2344 438.3125,324.9375 438.3125,324.6563 C438.3125,324.375 438.1719,324.125 437.9531,323.9688 C437.7813,323.8281 437.625,323.7969 437.1563,323.7969 L433.7656,315.5938 L430.0938,315.5938 C429.6406,315.5938 429.5156,315.6094 429.3594,315.7031 C429.1094,315.875 428.9531,316.1563 428.9531,316.4375 C428.9531,316.7188 429.0938,316.9688 429.3125,317.1406 C429.4844,317.25 429.6563,317.2813 430.0938,317.2813 L431.1719,317.2813 L428.5313,323.7969 C428.1094,323.7969 427.9531,323.8125 427.7969,323.9219 C427.5469,324.0781 427.3906,324.3594 427.3906,324.6563 C427.3906,325.2188 427.7656,325.5 428.5156,325.5 L430.7813,325.5 C431.1406,325.5 431.3594,325.4688 431.4844,325.375 C431.75,325.2344 431.8906,324.9375 431.8906,324.6563 C431.8906,324.375 431.7656,324.125 431.5469,323.9531 C431.375,323.8281 431.2344,323.7969 430.7813,323.7969 L430.3906,323.7969 L430.7813,322.8125 L434.8281,322.8125 Z M434.125,321.1094 L431.4531,321.1094 L432.7969,317.8438 L434.125,321.1094 Z " fill="#000000"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="100" x="453.25" y="325.8467">CronSchedule</text><line style="stroke:#000000;stroke-width:0.5;" x1="316" x2="658" y1="337" y2="337"/><ellipse cx="326" cy="348" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="318" x="335" y="353.9951">DEFAULT_CRON_DEFINITION : CronDefinition</text><line style="stroke:#000000;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="316" x2="658" y1="361.2969" y2="361.2969"/><polygon fill="none" points="326,367.2969,330,371.2969,326,375.2969,322,371.2969" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="115" x="335" y="378.292">timeCron : Cron</text><polygon fill="none" points="326,383.5938,330,387.5938,326,391.5938,322,387.5938" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="227" x="335" y="394.5889">executionTime : ExecutionTime</text><polygon fill="none" points="326,399.8906,330,403.8906,326,407.8906,322,403.8906" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="143" x="335" y="410.8857">onReboot : boolean</text><line style="stroke:#000000;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="316" x2="658" y1="418.1875" y2="418.1875"/><ellipse cx="326" cy="429.1875" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="152" x="335" y="435.1826">getTimeCron() : Cron</text><ellipse cx="326" cy="445.4844" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="262" x="335" y="451.4795">getExecutionTime() : ExecutionTime</text><ellipse cx="326" cy="461.7813" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="224" x="335" y="467.7764">shouldRunOnReboot(): boolean</text><line style="stroke:#000000;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="316" x2="658" y1="475.0781" y2="475.0781"/><ellipse cx="326" cy="486.0781" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="288" x="335" y="492.0732">getNextExecution() : Optional&lt;Instant&gt;</text><ellipse cx="326" cy="502.375" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="284" x="335" y="508.3701">getLastExecution() : Optional&lt;Instant&gt;</text></g><!--MD5=[8523c9eb2e1b5151dfc9c2a797373c5f]
-class Scheduler--><g id="elem_Scheduler"><rect codeLine="56" fill="#293E4E" height="170.0781" id="Scheduler" rx="2.5" ry="2.5" style="stroke:#000000;stroke-width:0.5;" width="258" x="23" y="58.5"/><rect fill="#00B8D4" height="32" rx="2.5" ry="2.5" style="stroke:#00B8D4;stroke-width:0.5;" width="258" x="23" y="58.5"/><rect fill="#00B8D4" height="2.5" style="stroke:#00B8D4;stroke-width:0.5;" width="258" x="23" y="88"/><rect codeLine="56" fill="none" height="170.0781" id="Scheduler" rx="2.5" ry="2.5" style="stroke:#000000;stroke-width:0.5;" width="258" x="23" y="58.5"/><ellipse cx="51.5" cy="74.5" fill="#A9DCDF" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M53.5781,76.3125 L53.9688,77.2969 L53.5781,77.2969 C53.125,77.2969 53.0156,77.3125 52.8594,77.4219 C52.6094,77.5781 52.4531,77.8594 52.4531,78.1563 C52.4531,78.4219 52.5938,78.6719 52.8125,78.8281 C52.9531,78.9531 53.1563,79 53.5781,79 L55.9375,79 C56.2969,79 56.5156,78.9688 56.6563,78.875 C56.9063,78.7344 57.0625,78.4375 57.0625,78.1563 C57.0625,77.875 56.9219,77.625 56.7031,77.4688 C56.5313,77.3281 56.375,77.2969 55.9063,77.2969 L52.5156,69.0938 L48.8438,69.0938 C48.3906,69.0938 48.2656,69.1094 48.1094,69.2031 C47.8594,69.375 47.7031,69.6563 47.7031,69.9375 C47.7031,70.2188 47.8438,70.4688 48.0625,70.6406 C48.2344,70.75 48.4063,70.7813 48.8438,70.7813 L49.9219,70.7813 L47.2813,77.2969 C46.8594,77.2969 46.7031,77.3125 46.5469,77.4219 C46.2969,77.5781 46.1406,77.8594 46.1406,78.1563 C46.1406,78.7188 46.5156,79 47.2656,79 L49.5313,79 C49.8906,79 50.1094,78.9688 50.2344,78.875 C50.5,78.7344 50.6406,78.4375 50.6406,78.1563 C50.6406,77.875 50.5156,77.625 50.2969,77.4531 C50.125,77.3281 49.9844,77.2969 49.5313,77.2969 L49.1406,77.2969 L49.5313,76.3125 L53.5781,76.3125 Z M52.875,74.6094 L50.2031,74.6094 L51.5469,71.3438 L52.875,74.6094 Z " fill="#000000"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="72" x="68.5" y="79.3467">Scheduler</text><rect height="15.9688" style="stroke:#FFFFFF;stroke-width:1.0;fill:none;stroke-dasharray:2.0,2.0;" width="122" x="162" y="55.5"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="120" x="163" y="67.6387">S extends Schedule</text><line style="stroke:#000000;stroke-width:0.5;" x1="24" x2="280" y1="90.5" y2="90.5"/><polygon fill="none" points="34,96.5,38,100.5,34,104.5,30,100.5" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="232" x="43" y="107.4951">schedules : Map&lt;ScheduleID, S&gt;</text><polygon fill="none" points="34,112.7969,38,116.7969,34,120.7969,30,116.7969" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="125" x="43" y="123.792">running : boolean</text><line style="stroke:#000000;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="24" x2="280" y1="131.0938" y2="131.0938"/><ellipse cx="34" cy="142.0938" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="150" x="43" y="148.0889">isRunning() : boolean</text><line style="stroke:#000000;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="24" x2="280" y1="155.3906" y2="155.3906"/><ellipse cx="34" cy="166.3906" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="88" x="43" y="172.3857">start() : void</text><ellipse cx="34" cy="182.6875" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="86" x="43" y="188.6826">stop() : void</text><ellipse cx="34" cy="198.9844" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="153" x="43" y="204.9795">addSchedule(S) : void</text><ellipse cx="34" cy="215.2813" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="169" x="43" y="221.2764">executeEvents(S) : void</text></g><!--MD5=[30edb8352c823a98548b753918b66b91]
-reverse link Schedule to CronSchedule--><g id="link_Schedule_CronSchedule"><path d="M487,265.418 C487,278.498 487,291.73 487,304.598 " fill="none" id="Schedule-backto-CronSchedule" style="stroke:#FFFFFF;stroke-width:1.0;"/><polygon fill="none" points="480,265.063,487,245.063,494,265.063,480,265.063" style="stroke:#FFFFFF;stroke-width:1.0;"/></g><!--MD5=[444676d053216cf9aa616b37f9eaee87]
-reverse link Schedule to CatchupStrategy--><g id="link_Schedule_CatchupStrategy"><path codeLine="68" d="M671.349,143.5 C678.698,143.5 686.047,143.5 693.396,143.5 " fill="none" id="Schedule-backto-CatchupStrategy" style="stroke:#FFFFFF;stroke-width:1.0;"/><polygon fill="none" points="658.121,143.5,664.121,147.5,670.121,143.5,664.121,139.5,658.121,143.5" style="stroke:#FFFFFF;stroke-width:1.0;"/></g><!--MD5=[e2c8b6947ff46d21721ba3403250454a]
-reverse link Scheduler to Schedule--><g id="link_Scheduler_Schedule"><path codeLine="69" d="M294.455,143.5 C301.566,143.5 308.677,143.5 315.788,143.5 " fill="none" id="Scheduler-backto-Schedule" style="stroke:#FFFFFF;stroke-width:1.0;"/><polygon fill="none" points="281.224,143.5,287.224,147.5,293.224,143.5,287.224,139.5,281.224,143.5" style="stroke:#FFFFFF;stroke-width:1.0;"/></g><!--MD5=[cfc873e09a4f924906599930ebfdb125]
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" contentStyleType="text/css"
+     height="538px" preserveAspectRatio="none" style="width:871px;height:538px;background:#00000000;" version="1.1"
+     viewBox="0 0 871 538" width="871px" zoomAndPan="magnify">
+  <defs/>
+  <g><!--MD5=[8f5ecb6aa78bb8f3c37ca2af39a13428]
+cluster org.betonquest.betonquest.api.schedule-->
+    <g id="cluster_org.betonquest.betonquest.api.schedule">
+      <rect height="525" rx="2.5" ry="2.5" style="stroke:#000000;stroke-width:1.0;fill:none;" width="858" x="7" y="7"/>
+      <path d="M346,7 L346,16.2969 L336,26.2969 L7,26.2969 " fill="none" style="stroke:#000000;stroke-width:1.0;"/>
+      <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing"
+            textLength="329" x="10" y="20.9951">org.betonquest.betonquest.api.schedule
+      </text>
+    </g><!--MD5=[c680266cf9e454ca06c2d1bb8b683e6b]
+class Schedule-->
+    <g id="elem_Schedule">
+      <rect codeLine="19" fill="#293E4E" height="202.6719" id="Schedule" rx="2.5" ry="2.5"
+            style="stroke:#000000;stroke-width:0.5;" width="342" x="316" y="42"/>
+      <rect fill="#00B8D4" height="32" rx="2.5" ry="2.5" style="stroke:#00B8D4;stroke-width:0.5;" width="342" x="316"
+            y="42"/>
+      <rect fill="#00B8D4" height="2.5" style="stroke:#00B8D4;stroke-width:0.5;" width="342" x="316" y="71.5"/>
+      <rect codeLine="19" fill="none" height="202.6719" id="Schedule" rx="2.5" ry="2.5"
+            style="stroke:#000000;stroke-width:0.5;" width="342" x="316" y="42"/>
+      <ellipse cx="449.75" cy="58" fill="#A9DCDF" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/>
+      <path
+        d="M451.8281,59.8125 L452.2188,60.7969 L451.8281,60.7969 C451.375,60.7969 451.2656,60.8125 451.1094,60.9219 C450.8594,61.0781 450.7031,61.3594 450.7031,61.6563 C450.7031,61.9219 450.8438,62.1719 451.0625,62.3281 C451.2031,62.4531 451.4063,62.5 451.8281,62.5 L454.1875,62.5 C454.5469,62.5 454.7656,62.4688 454.9063,62.375 C455.1563,62.2344 455.3125,61.9375 455.3125,61.6563 C455.3125,61.375 455.1719,61.125 454.9531,60.9688 C454.7813,60.8281 454.625,60.7969 454.1563,60.7969 L450.7656,52.5938 L447.0938,52.5938 C446.6406,52.5938 446.5156,52.6094 446.3594,52.7031 C446.1094,52.875 445.9531,53.1563 445.9531,53.4375 C445.9531,53.7188 446.0938,53.9688 446.3125,54.1406 C446.4844,54.25 446.6563,54.2813 447.0938,54.2813 L448.1719,54.2813 L445.5313,60.7969 C445.1094,60.7969 444.9531,60.8125 444.7969,60.9219 C444.5469,61.0781 444.3906,61.3594 444.3906,61.6563 C444.3906,62.2188 444.7656,62.5 445.5156,62.5 L447.7813,62.5 C448.1406,62.5 448.3594,62.4688 448.4844,62.375 C448.75,62.2344 448.8906,61.9375 448.8906,61.6563 C448.8906,61.375 448.7656,61.125 448.5469,60.9531 C448.375,60.8281 448.2344,60.7969 447.7813,60.7969 L447.3906,60.7969 L447.7813,59.8125 L451.8281,59.8125 Z M451.125,58.1094 L448.4531,58.1094 L449.7969,54.8438 L451.125,58.1094 Z "
+        fill="#000000"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing"
+            textLength="66" x="470.25" y="62.8467">Schedule
+      </text>
+      <line style="stroke:#000000;stroke-width:0.5;" x1="317" x2="657" y1="74" y2="74"/>
+      <ellipse cx="327" cy="85" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="316" x="336"
+            y="90.9951">Schedule(ScheduleID, ConfigurationSection)
+      </text>
+      <line style="stroke:#000000;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="317" x2="657" y1="98.2969"
+            y2="98.2969"/>
+      <polygon fill="none" points="327,104.2969,331,108.2969,327,112.2969,323,108.2969"
+               style="stroke:#B38D22;stroke-width:1.0;"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="169" x="336"
+            y="115.292">scheduleId : ScheduleID
+      </text>
+      <polygon fill="none" points="327,120.5938,331,124.5938,327,128.5938,323,124.5938"
+               style="stroke:#B38D22;stroke-width:1.0;"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="91" x="336"
+            y="131.5889">time : String
+      </text>
+      <polygon fill="none" points="327,136.8906,331,140.8906,327,144.8906,323,140.8906"
+               style="stroke:#B38D22;stroke-width:1.0;"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="167" x="336"
+            y="147.8857">actions : List&lt;ActionID&gt;
+      </text>
+      <polygon fill="none" points="327,153.1875,331,157.1875,327,161.1875,323,157.1875"
+               style="stroke:#B38D22;stroke-width:1.0;"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="194" x="336"
+            y="164.1826">catchup : CatchupStrategy
+      </text>
+      <line style="stroke:#000000;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="317" x2="657" y1="171.4844"
+            y2="171.4844"/>
+      <ellipse cx="327" cy="182.4844" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="141" x="336"
+            y="188.4795">getId() : ScheduleID
+      </text>
+      <ellipse cx="327" cy="198.7813" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="128" x="336"
+            y="204.7764">getTime() : String
+      </text>
+      <ellipse cx="327" cy="215.0781" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="202" x="336"
+            y="221.0732">getActions() : List&lt;ActionID&gt;
+      </text>
+      <ellipse cx="327" cy="231.375" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="231" x="336"
+            y="237.3701">getCatchup() : CatchupStrategy
+      </text>
+    </g><!--MD5=[e13b4104aa9f8dcffcf8529c2f35d3de]
+class CatchupStrategy-->
+    <g id="elem_CatchupStrategy">
+      <rect codeLine="33" fill="#293E4E" height="104.8906" id="CatchupStrategy" rx="2.5" ry="2.5"
+            style="stroke:#000000;stroke-width:0.5;" width="155" x="693.5" y="91"/>
+      <rect fill="#00B8D4" height="32" rx="2.5" ry="2.5" style="stroke:#00B8D4;stroke-width:0.5;" width="155" x="693.5"
+            y="91"/>
+      <rect fill="#00B8D4" height="2.5" style="stroke:#00B8D4;stroke-width:0.5;" width="155" x="693.5" y="120.5"/>
+      <rect codeLine="33" fill="none" height="104.8906" id="CatchupStrategy" rx="2.5" ry="2.5"
+            style="stroke:#000000;stroke-width:0.5;" width="155" x="693.5" y="91"/>
+      <ellipse cx="708.5" cy="107" fill="#EB937F" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/>
+      <path
+        d="M707.2969,107.875 L708.75,107.875 L708.75,107.9844 C708.75,108.3906 708.7813,108.5469 708.8594,108.7031 C709.0156,108.9531 709.2969,109.1094 709.5938,109.1094 C709.8438,109.1094 710.1094,108.9688 710.2656,108.75 C710.3906,108.5938 710.4219,108.4375 710.4219,107.9844 L710.4219,106.0625 C710.4219,105.9063 710.4219,105.8594 710.4063,105.7031 C710.3438,105.2344 710.0313,104.9219 709.5781,104.9219 C709.3281,104.9219 709.0625,105.0625 708.8906,105.2813 C708.7813,105.4531 708.75,105.6094 708.75,106.0625 L708.75,106.1875 L707.2969,106.1875 L707.2969,103.7813 L711.2813,103.7813 L711.2813,104.6406 C711.2813,105.0469 711.3125,105.2188 711.3906,105.375 C711.5625,105.625 711.8438,105.7813 712.125,105.7813 C712.3906,105.7813 712.6563,105.6406 712.8281,105.4219 C712.9375,105.25 712.9688,105.1094 712.9688,104.6406 L712.9688,102.0938 L705.3438,102.0938 C704.9063,102.0938 704.7813,102.1094 704.625,102.2031 C704.375,102.3594 704.2188,102.6563 704.2188,102.9375 C704.2188,103.2188 704.3594,103.4688 704.5781,103.6406 C704.7344,103.75 704.9219,103.7813 705.3438,103.7813 L705.5938,103.7813 L705.5938,110.2969 L705.3438,110.2969 C704.9375,110.2969 704.7813,110.3125 704.625,110.4219 C704.375,110.5938 704.2188,110.8594 704.2188,111.1563 C704.2188,111.4219 704.3594,111.6719 704.5781,111.8281 C704.7188,111.9531 704.9531,112 705.3438,112 L713.3438,112 L713.3438,109.4219 C713.3438,108.9844 713.3125,108.8438 713.2344,108.6875 C713.0625,108.4375 712.7813,108.2813 712.5,108.2813 C712.2344,108.2813 711.9688,108.3906 711.7969,108.6406 C711.6875,108.7969 711.6563,108.9375 711.6563,109.4219 L711.6563,110.2969 L707.2969,110.2969 L707.2969,107.875 Z "
+        fill="#000000"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="123" x="722.5"
+            y="111.8467">CatchupStrategy
+      </text>
+      <line style="stroke:#000000;stroke-width:0.5;" x1="694.5" x2="847.5" y1="123" y2="123"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="40" x="699.5"
+            y="139.9951">NONE
+      </text>
+      <line style="stroke:#000000;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="694.5" x2="847.5" y1="147.2969"
+            y2="147.2969"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="30" x="699.5"
+            y="164.292">ONE
+      </text>
+      <line style="stroke:#000000;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="694.5" x2="847.5" y1="171.5938"
+            y2="171.5938"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26" x="699.5"
+            y="188.5889">ALL
+      </text>
+    </g><!--MD5=[360bbd5fb28fd065afb3478fcbb568c2]
+class CronSchedule-->
+    <g id="elem_CronSchedule">
+      <rect codeLine="41" fill="#293E4E" height="210.6719" id="CronSchedule" rx="2.5" ry="2.5"
+            style="stroke:#000000;stroke-width:0.5;" width="344" x="315" y="305"/>
+      <rect fill="#00B8D4" height="32" rx="2.5" ry="2.5" style="stroke:#00B8D4;stroke-width:0.5;" width="344" x="315"
+            y="305"/>
+      <rect fill="#00B8D4" height="2.5" style="stroke:#00B8D4;stroke-width:0.5;" width="344" x="315" y="334.5"/>
+      <rect codeLine="41" fill="none" height="210.6719" id="CronSchedule" rx="2.5" ry="2.5"
+            style="stroke:#000000;stroke-width:0.5;" width="344" x="315" y="305"/>
+      <ellipse cx="432.75" cy="321" fill="#A9DCDF" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/>
+      <path
+        d="M434.8281,322.8125 L435.2188,323.7969 L434.8281,323.7969 C434.375,323.7969 434.2656,323.8125 434.1094,323.9219 C433.8594,324.0781 433.7031,324.3594 433.7031,324.6563 C433.7031,324.9219 433.8438,325.1719 434.0625,325.3281 C434.2031,325.4531 434.4063,325.5 434.8281,325.5 L437.1875,325.5 C437.5469,325.5 437.7656,325.4688 437.9063,325.375 C438.1563,325.2344 438.3125,324.9375 438.3125,324.6563 C438.3125,324.375 438.1719,324.125 437.9531,323.9688 C437.7813,323.8281 437.625,323.7969 437.1563,323.7969 L433.7656,315.5938 L430.0938,315.5938 C429.6406,315.5938 429.5156,315.6094 429.3594,315.7031 C429.1094,315.875 428.9531,316.1563 428.9531,316.4375 C428.9531,316.7188 429.0938,316.9688 429.3125,317.1406 C429.4844,317.25 429.6563,317.2813 430.0938,317.2813 L431.1719,317.2813 L428.5313,323.7969 C428.1094,323.7969 427.9531,323.8125 427.7969,323.9219 C427.5469,324.0781 427.3906,324.3594 427.3906,324.6563 C427.3906,325.2188 427.7656,325.5 428.5156,325.5 L430.7813,325.5 C431.1406,325.5 431.3594,325.4688 431.4844,325.375 C431.75,325.2344 431.8906,324.9375 431.8906,324.6563 C431.8906,324.375 431.7656,324.125 431.5469,323.9531 C431.375,323.8281 431.2344,323.7969 430.7813,323.7969 L430.3906,323.7969 L430.7813,322.8125 L434.8281,322.8125 Z M434.125,321.1094 L431.4531,321.1094 L432.7969,317.8438 L434.125,321.1094 Z "
+        fill="#000000"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing"
+            textLength="100" x="453.25" y="325.8467">CronSchedule
+      </text>
+      <line style="stroke:#000000;stroke-width:0.5;" x1="316" x2="658" y1="337" y2="337"/>
+      <ellipse cx="326" cy="348" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline"
+            textLength="318" x="335" y="353.9951">DEFAULT_CRON_DEFINITION : CronDefinition
+      </text>
+      <line style="stroke:#000000;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="316" x2="658" y1="361.2969"
+            y2="361.2969"/>
+      <polygon fill="none" points="326,367.2969,330,371.2969,326,375.2969,322,371.2969"
+               style="stroke:#B38D22;stroke-width:1.0;"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="115" x="335"
+            y="378.292">timeCron : Cron
+      </text>
+      <polygon fill="none" points="326,383.5938,330,387.5938,326,391.5938,322,387.5938"
+               style="stroke:#B38D22;stroke-width:1.0;"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="227" x="335"
+            y="394.5889">executionTime : ExecutionTime
+      </text>
+      <polygon fill="none" points="326,399.8906,330,403.8906,326,407.8906,322,403.8906"
+               style="stroke:#B38D22;stroke-width:1.0;"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="143" x="335"
+            y="410.8857">onReboot : boolean
+      </text>
+      <line style="stroke:#000000;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="316" x2="658" y1="418.1875"
+            y2="418.1875"/>
+      <ellipse cx="326" cy="429.1875" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="152" x="335"
+            y="435.1826">getTimeCron() : Cron
+      </text>
+      <ellipse cx="326" cy="445.4844" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="262" x="335"
+            y="451.4795">getExecutionTime() : ExecutionTime
+      </text>
+      <ellipse cx="326" cy="461.7813" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="224" x="335"
+            y="467.7764">shouldRunOnReboot(): boolean
+      </text>
+      <line style="stroke:#000000;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="316" x2="658" y1="475.0781"
+            y2="475.0781"/>
+      <ellipse cx="326" cy="486.0781" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="288" x="335"
+            y="492.0732">getNextExecution() : Optional&lt;Instant&gt;
+      </text>
+      <ellipse cx="326" cy="502.375" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="284" x="335"
+            y="508.3701">getLastExecution() : Optional&lt;Instant&gt;
+      </text>
+    </g><!--MD5=[8523c9eb2e1b5151dfc9c2a797373c5f]
+class Scheduler-->
+    <g id="elem_Scheduler">
+      <rect codeLine="56" fill="#293E4E" height="170.0781" id="Scheduler" rx="2.5" ry="2.5"
+            style="stroke:#000000;stroke-width:0.5;" width="258" x="23" y="58.5"/>
+      <rect fill="#00B8D4" height="32" rx="2.5" ry="2.5" style="stroke:#00B8D4;stroke-width:0.5;" width="258" x="23"
+            y="58.5"/>
+      <rect fill="#00B8D4" height="2.5" style="stroke:#00B8D4;stroke-width:0.5;" width="258" x="23" y="88"/>
+      <rect codeLine="56" fill="none" height="170.0781" id="Scheduler" rx="2.5" ry="2.5"
+            style="stroke:#000000;stroke-width:0.5;" width="258" x="23" y="58.5"/>
+      <ellipse cx="51.5" cy="74.5" fill="#A9DCDF" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/>
+      <path
+        d="M53.5781,76.3125 L53.9688,77.2969 L53.5781,77.2969 C53.125,77.2969 53.0156,77.3125 52.8594,77.4219 C52.6094,77.5781 52.4531,77.8594 52.4531,78.1563 C52.4531,78.4219 52.5938,78.6719 52.8125,78.8281 C52.9531,78.9531 53.1563,79 53.5781,79 L55.9375,79 C56.2969,79 56.5156,78.9688 56.6563,78.875 C56.9063,78.7344 57.0625,78.4375 57.0625,78.1563 C57.0625,77.875 56.9219,77.625 56.7031,77.4688 C56.5313,77.3281 56.375,77.2969 55.9063,77.2969 L52.5156,69.0938 L48.8438,69.0938 C48.3906,69.0938 48.2656,69.1094 48.1094,69.2031 C47.8594,69.375 47.7031,69.6563 47.7031,69.9375 C47.7031,70.2188 47.8438,70.4688 48.0625,70.6406 C48.2344,70.75 48.4063,70.7813 48.8438,70.7813 L49.9219,70.7813 L47.2813,77.2969 C46.8594,77.2969 46.7031,77.3125 46.5469,77.4219 C46.2969,77.5781 46.1406,77.8594 46.1406,78.1563 C46.1406,78.7188 46.5156,79 47.2656,79 L49.5313,79 C49.8906,79 50.1094,78.9688 50.2344,78.875 C50.5,78.7344 50.6406,78.4375 50.6406,78.1563 C50.6406,77.875 50.5156,77.625 50.2969,77.4531 C50.125,77.3281 49.9844,77.2969 49.5313,77.2969 L49.1406,77.2969 L49.5313,76.3125 L53.5781,76.3125 Z M52.875,74.6094 L50.2031,74.6094 L51.5469,71.3438 L52.875,74.6094 Z "
+        fill="#000000"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing"
+            textLength="72" x="68.5" y="79.3467">Scheduler
+      </text>
+      <rect height="15.9688" style="stroke:#FFFFFF;stroke-width:1.0;fill:none;stroke-dasharray:2.0,2.0;" width="122"
+            x="162" y="55.5"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing"
+            textLength="120" x="163" y="67.6387">S extends Schedule
+      </text>
+      <line style="stroke:#000000;stroke-width:0.5;" x1="24" x2="280" y1="90.5" y2="90.5"/>
+      <polygon fill="none" points="34,96.5,38,100.5,34,104.5,30,100.5" style="stroke:#B38D22;stroke-width:1.0;"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="232" x="43"
+            y="107.4951">schedules : Map&lt;ScheduleID, S&gt;
+      </text>
+      <polygon fill="none" points="34,112.7969,38,116.7969,34,120.7969,30,116.7969"
+               style="stroke:#B38D22;stroke-width:1.0;"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="125" x="43"
+            y="123.792">running : boolean
+      </text>
+      <line style="stroke:#000000;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="24" x2="280" y1="131.0938"
+            y2="131.0938"/>
+      <ellipse cx="34" cy="142.0938" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="150" x="43"
+            y="148.0889">isRunning() : boolean
+      </text>
+      <line style="stroke:#000000;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="24" x2="280" y1="155.3906"
+            y2="155.3906"/>
+      <ellipse cx="34" cy="166.3906" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="88" x="43"
+            y="172.3857">start() : void
+      </text>
+      <ellipse cx="34" cy="182.6875" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="86" x="43"
+            y="188.6826">stop() : void
+      </text>
+      <ellipse cx="34" cy="198.9844" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="153" x="43"
+            y="204.9795">addSchedule(S) : void
+      </text>
+      <ellipse cx="34" cy="215.2813" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/>
+      <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="169" x="43"
+            y="221.2764">executeActions(S) : void
+      </text>
+    </g><!--MD5=[30edb8352c823a98548b753918b66b91]
+reverse link Schedule to CronSchedule-->
+    <g id="link_Schedule_CronSchedule">
+      <path d="M487,265.418 C487,278.498 487,291.73 487,304.598 " fill="none" id="Schedule-backto-CronSchedule"
+            style="stroke:#FFFFFF;stroke-width:1.0;"/>
+      <polygon fill="none" points="480,265.063,487,245.063,494,265.063,480,265.063"
+               style="stroke:#FFFFFF;stroke-width:1.0;"/>
+    </g><!--MD5=[444676d053216cf9aa616b37f9eaee87]
+reverse link Schedule to CatchupStrategy-->
+    <g id="link_Schedule_CatchupStrategy">
+      <path codeLine="68" d="M671.349,143.5 C678.698,143.5 686.047,143.5 693.396,143.5 " fill="none"
+            id="Schedule-backto-CatchupStrategy" style="stroke:#FFFFFF;stroke-width:1.0;"/>
+      <polygon fill="none" points="658.121,143.5,664.121,147.5,670.121,143.5,664.121,139.5,658.121,143.5"
+               style="stroke:#FFFFFF;stroke-width:1.0;"/>
+    </g><!--MD5=[e2c8b6947ff46d21721ba3403250454a]
+reverse link Scheduler to Schedule-->
+    <g id="link_Scheduler_Schedule">
+      <path codeLine="69" d="M294.455,143.5 C301.566,143.5 308.677,143.5 315.788,143.5 " fill="none"
+            id="Scheduler-backto-Schedule" style="stroke:#FFFFFF;stroke-width:1.0;"/>
+      <polygon fill="none" points="281.224,143.5,287.224,147.5,293.224,143.5,287.224,139.5,281.224,143.5"
+               style="stroke:#FFFFFF;stroke-width:1.0;"/>
+    </g><!--MD5=[cfc873e09a4f924906599930ebfdb125]
 @startuml
 skinparam ArrowColor white
 skinparam BackgroundColor transparent
@@ -31,12 +269,12 @@ package "org.betonquest.betonquest.api.schedule" <<Frame>> {
         ..
         # scheduleId : ScheduleID
         # time : String
-        # events : List<EventID>
+        # actions : List<ActionID>
         # catchup : CatchupStrategy
         ..
         + getId() : ScheduleID
         + getTime() : String
-        + getEvents() : List<EventID>
+        + getActions() : List<ActionID>
         + getCatchup() : CatchupStrategy
     }
 
@@ -72,7 +310,7 @@ package "org.betonquest.betonquest.api.schedule" <<Frame>> {
         + start() : void
         + stop() : void
         + addSchedule(S) : void
-        + executeEvents(S) : void
+        + executeActions(S) : void
     }
 
     Schedule o-right- CatchupStrategy
@@ -88,4 +326,6 @@ JVM: Java HotSpot(TM) 64-Bit Server VM
 Default Encoding: UTF-8
 Language: en
 Country: US
---></g></svg>
+-->
+  </g>
+</svg>

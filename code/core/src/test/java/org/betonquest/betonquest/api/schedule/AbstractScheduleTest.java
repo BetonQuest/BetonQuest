@@ -4,14 +4,11 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.quest.Placeholders;
-import org.betonquest.betonquest.api.quest.event.EventID;
 import org.bukkit.configuration.ConfigurationSection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
 
 import static org.mockito.Mockito.*;
 
@@ -40,12 +37,6 @@ public abstract class AbstractScheduleTest {
      */
     @Mock
     protected ScheduleID scheduleID;
-
-    /**
-     * Events of the schedule to test.
-     */
-    @Mock
-    protected List<EventID> events;
 
     /**
      * Quest package of the schedule to test.

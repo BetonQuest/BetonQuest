@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
@@ -32,9 +32,9 @@ public class TimerObjective extends CountingObjective implements Runnable {
     private final Argument<String> name;
 
     /**
-     * Events to run before the objective is actually removed.
+     * Actions to run before the objective is actually removed.
      */
-    private final Argument<List<EventID>> doneEvents;
+    private final Argument<List<ActionID>> doneActions;
 
     /**
      * The resolved interval in seconds.
@@ -54,15 +54,15 @@ public class TimerObjective extends CountingObjective implements Runnable {
      * @param questTypeApi the QuestTypeApi instance.
      * @param name         the name of the objective.
      * @param interval     the interval to check the conditions and progress the objective.
-     * @param doneEvents   events to run before the objective is actually removed.
+     * @param doneActions  actions to run before the objective is actually removed.
      * @throws QuestException if an error occurs while creating the objective.
      */
     public TimerObjective(final Instruction instruction, final Argument<Number> targetAmount, final QuestTypeApi questTypeApi, final Argument<String> name,
-                          final Argument<Number> interval, final Argument<List<EventID>> doneEvents) throws QuestException {
+                          final Argument<Number> interval, final Argument<List<ActionID>> doneActions) throws QuestException {
         super(instruction, targetAmount, null);
         this.questTypeApi = questTypeApi;
         this.name = name;
-        this.doneEvents = doneEvents;
+        this.doneActions = doneActions;
         this.interval = interval.getValue(null).intValue();
         this.runnable = Bukkit.getScheduler().runTaskTimer(BetonQuest.getInstance(), this, this.interval * 20L, this.interval * 20L);
     }
@@ -94,7 +94,7 @@ public class TimerObjective extends CountingObjective implements Runnable {
     }
 
     /**
-     * Checks if the objective gets completed and runs the done events.
+     * Checks if the objective gets completed.
      *
      * @param event   The event to check.
      * @param profile The profile of the player that completed the objective.
@@ -103,7 +103,7 @@ public class TimerObjective extends CountingObjective implements Runnable {
         qeHandler.handle(() -> {
             if (event.getObjective().equals(this) && containsPlayer(profile)
                     && event.getPreviousState() == ObjectiveState.ACTIVE && event.getState() == ObjectiveState.COMPLETED) {
-                questTypeApi.events(profile, doneEvents.getValue(profile));
+                questTypeApi.actions(profile, doneActions.getValue(profile));
             }
         });
     }

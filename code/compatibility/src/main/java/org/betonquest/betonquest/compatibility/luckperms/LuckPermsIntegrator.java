@@ -4,7 +4,7 @@ import net.luckperms.api.LuckPerms;
 import net.luckperms.api.context.ContextCalculator;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.compatibility.Integrator;
-import org.betonquest.betonquest.compatibility.luckperms.permission.LuckPermsEventFactory;
+import org.betonquest.betonquest.compatibility.luckperms.permission.LuckPermsActionFactory;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -38,7 +38,7 @@ public class LuckPermsIntegrator implements Integrator {
             luckPermsAPI = provider.getProvider();
             tagCalculator = TagCalculatorUtils.getTagContextCalculator();
             luckPermsAPI.getContextManager().registerCalculator(tagCalculator);
-            api.getQuestRegistries().event().register("luckperms", new LuckPermsEventFactory(luckPermsAPI));
+            api.getQuestRegistries().action().register("luckperms", new LuckPermsActionFactory(luckPermsAPI));
         }
     }
 

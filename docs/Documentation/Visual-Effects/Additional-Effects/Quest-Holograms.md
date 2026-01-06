@@ -13,7 +13,7 @@ Installing either of these plugins will enable you to create hidden holograms, w
 In order to create a hologram, you have to add a `holograms` section. Add a node named as your hologram to this section
 and define `lines`, `conditions` and `location` subnodes. The first one should be a list of texts - these will be the lines
 of a hologram. Color codes are supported. Second is a list of conditions separated by commas. Third is a location in a standard
-format, like in `teleport` event. If `max_range` is specified, the hologram will only be visible in this range, if not,
+format, like in `teleport` action. If `max_range` is specified, the hologram will only be visible in this range, if not,
 the default value from the connected hologram plugin will be used.
 An example of such hologram definition:
 

@@ -23,7 +23,7 @@ public class WorldEditIntegrator implements Integrator {
     public void hook(final BetonQuestApi api) {
         final WorldEditPlugin worldEdit = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
         final File folder = new File(worldEdit.getDataFolder(), "schematics");
-        api.getQuestRegistries().event().registerCombined("paste", new PasteSchematicEventFactory(folder));
+        api.getQuestRegistries().action().registerCombined("paste", new PasteSchematicActionFactory(folder));
     }
 
     @Override

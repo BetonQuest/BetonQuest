@@ -10,8 +10,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.quest.event.IngameNotificationSender;
-import org.betonquest.betonquest.quest.event.NotificationLevel;
+import org.betonquest.betonquest.quest.action.IngameNotificationSender;
+import org.betonquest.betonquest.quest.action.NotificationLevel;
 
 /**
  * Factory for creating {@link PaymentObjective} instances from {@link Instruction}s.
@@ -29,7 +29,7 @@ public class PaymentObjectiveFactory implements ObjectiveFactory {
     private final PluginMessage pluginMessage;
 
     /**
-     * Creates a new instance of the ObjectivePaymentEventFactory.
+     * Creates a new instance of the ObjectivePaymentActionFactory.
      *
      * @param loggerFactory the logger factory to create a logger for the objectives
      * @param pluginMessage the {@link PluginMessage} instance

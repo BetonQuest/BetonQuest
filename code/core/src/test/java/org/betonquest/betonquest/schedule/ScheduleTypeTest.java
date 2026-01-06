@@ -5,14 +5,14 @@ import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfigurati
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.quest.Placeholders;
-import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.api.schedule.FictiveTime;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.ScheduleID;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
-import org.betonquest.betonquest.schedule.EventScheduling.ScheduleType;
+import org.betonquest.betonquest.schedule.ActionScheduling.ScheduleType;
 import org.betonquest.betonquest.schedule.impl.BaseScheduleFactory;
 import org.bukkit.configuration.ConfigurationOptions;
 import org.bukkit.configuration.ConfigurationSection;
@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Tests for {@link EventScheduling.ScheduleType}.
+ * Tests for {@link ActionScheduling.ScheduleType}.
  */
 @ExtendWith({MockitoExtension.class, BetonQuestLoggerService.class})
 class ScheduleTypeTest {
@@ -70,15 +70,15 @@ class ScheduleTypeTest {
         lenient().when(configurationOptions.pathSeparator()).thenReturn('.');
         lenient().when(mockConfig.options()).thenReturn(configurationOptions);
         lenient().when(questPackage.getConfig()).thenReturn(mockConfig);
-        lenient().when(mockConfig.getString("events.bell_ring"))
+        lenient().when(mockConfig.getString("actions.bell_ring"))
                 .thenReturn("folder bell_lever_toggle,bell_lever_toggle period:0.5");
-        lenient().when(mockConfig.getString("events.notify_goodNight"))
+        lenient().when(mockConfig.getString("actions.notify_goodNight"))
                 .thenReturn("notify &6Good night, sleep well!");
 
         lenient().when(scheduleID.getPackage()).thenReturn(questPackage);
 
         lenient().when(section.getString("time")).thenReturn("22:00");
-        lenient().when(section.getString("events")).thenReturn("bell_ring,notify_goodNight");
+        lenient().when(section.getString("actions")).thenReturn("bell_ring,notify_goodNight");
         lenient().when(section.getString("catchup")).thenReturn("NONE");
     }
 
@@ -127,16 +127,16 @@ class ScheduleTypeTest {
          * Creates new instance of the schedule.
          *
          * @param scheduleID the schedule id
-         * @param events     the events to execute
+         * @param actions    the actions to execute
          * @param catchup    the catchup strategy
          */
-        public MockedSchedule(final ScheduleID scheduleID, final List<EventID> events, final CatchupStrategy catchup) {
-            super(scheduleID, events, catchup);
+        public MockedSchedule(final ScheduleID scheduleID, final List<ActionID> actions, final CatchupStrategy catchup) {
+            super(scheduleID, actions, catchup);
         }
     }
 
     /**
-     * Class extending a schedule that throws an unchecked event in its constructor.
+     * Class extending a schedule that throws an unchecked action in its constructor.
      */
     private static class ThrowingUncheckedSchedule extends Schedule {
 
@@ -144,11 +144,11 @@ class ScheduleTypeTest {
          * Creates new instance of the schedule.
          *
          * @param scheduleID the schedule id
-         * @param events     the events to execute
+         * @param actions    the actions to execute
          * @param catchup    the catchup strategy
          */
-        public ThrowingUncheckedSchedule(final ScheduleID scheduleID, final List<EventID> events, final CatchupStrategy catchup) {
-            super(scheduleID, events, catchup);
+        public ThrowingUncheckedSchedule(final ScheduleID scheduleID, final List<ActionID> actions, final CatchupStrategy catchup) {
+            super(scheduleID, actions, catchup);
             throw new IllegalArgumentException("unchecked");
         }
     }
@@ -165,7 +165,7 @@ class ScheduleTypeTest {
         @Override
         public MockedSchedule createNewInstance(final ScheduleID scheduleID, final ConfigurationSection config) throws QuestException {
             final ScheduleData scheduleData = parseScheduleData(scheduleID.getPackage(), config);
-            return new MockedSchedule(scheduleID, scheduleData.events(), scheduleData.catchup());
+            return new MockedSchedule(scheduleID, scheduleData.actions(), scheduleData.catchup());
         }
     }
 
@@ -181,7 +181,7 @@ class ScheduleTypeTest {
         @Override
         public ThrowingUncheckedSchedule createNewInstance(final ScheduleID scheduleID, final ConfigurationSection config) throws QuestException {
             final ScheduleData scheduleData = parseScheduleData(scheduleID.getPackage(), config);
-            return new ThrowingUncheckedSchedule(scheduleID, scheduleData.events(), scheduleData.catchup());
+            return new ThrowingUncheckedSchedule(scheduleID, scheduleData.actions(), scheduleData.catchup());
         }
     }
 }

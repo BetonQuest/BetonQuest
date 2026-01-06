@@ -23,9 +23,9 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.Placeholders;
+import org.betonquest.betonquest.api.quest.action.ActionID;
+import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.api.quest.event.EventID;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.IntegrationData;
@@ -49,10 +49,10 @@ import org.betonquest.betonquest.logger.BetonQuestLogRecord;
 import org.betonquest.betonquest.logger.PlayerLogWatcher;
 import org.betonquest.betonquest.logger.format.ChatFormatter;
 import org.betonquest.betonquest.logger.handler.history.LogPublishingController;
-import org.betonquest.betonquest.quest.event.IngameNotificationSender;
-import org.betonquest.betonquest.quest.event.NoNotificationSender;
-import org.betonquest.betonquest.quest.event.NotificationLevel;
-import org.betonquest.betonquest.quest.event.give.GiveEvent;
+import org.betonquest.betonquest.quest.action.IngameNotificationSender;
+import org.betonquest.betonquest.quest.action.NoNotificationSender;
+import org.betonquest.betonquest.quest.action.NotificationLevel;
+import org.betonquest.betonquest.quest.action.give.GiveAction;
 import org.betonquest.betonquest.quest.objective.variable.VariableObjective;
 import org.betonquest.betonquest.web.downloader.DownloadFailedException;
 import org.betonquest.betonquest.web.downloader.Downloader;
@@ -221,10 +221,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     case "c":
                         handleConditions(sender, args);
                         break;
-                    case "events":
-                    case "event":
-                    case "e":
-                        handleEvents(sender, args);
+                    case "actions":
+                    case "action":
+                    case "a":
+                        handleActions(sender, args);
                         break;
                     case "items":
                     case "item":
@@ -330,7 +330,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     @Override
     public Optional<List<String>> simpleTabComplete(final CommandSender sender, final Command command, final String alias, final String... args) {
         if (args.length == 1) {
-            return Optional.of(Arrays.asList("condition", "event", "item", "give", "objective", "globaltag",
+            return Optional.of(Arrays.asList("condition", "action", "item", "give", "objective", "globaltag",
                     "globalpoint", "tag", "point", "journal", "delete", "rename", "version", "purge",
                     "update", "reload", "backup", "debug", "download", "variable"));
         }
@@ -338,9 +338,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "conditions",
                  "condition",
                  "c" -> completeConditions(args);
-            case "events",
-                 "event",
-                 "e" -> completeEvents(args);
+            case "actions",
+                 "action",
+                 "a" -> completeActions(args);
             case "items",
                  "item",
                  "i",
@@ -452,7 +452,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 log.warn("Could not find Item: " + e.getMessage(), e);
                 return;
             }
-            final OnlineEvent give = new GiveEvent(
+            final OnlineAction give = new GiveAction(
                     new DefaultListArgument<>(new Item(instance.getFeatureApi(), itemID, new DefaultArgument<>(1))),
                     new NoNotificationSender(),
                     new IngameNotificationSender(log, pluginMessage, itemID.getPackage(), itemID.getFull(), NotificationLevel.ERROR,
@@ -854,46 +854,44 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     }
 
     /**
-     * Fires an event for an online player. It cannot work for offline players!
+     * Fires an action for an online player. It cannot work for offline players!
      */
-    private void handleEvents(final CommandSender sender, final String... args) {
-        // the player has to be specified every time
+    private void handleActions(final CommandSender sender, final String... args) {
         if (args.length < 2 || Bukkit.getPlayer(args[1]) == null && !"-".equals(args[1])) {
             log.debug("Player's name is missing or he's offline");
             sendMessage(sender, "specify_player");
             return;
         }
         if (args.length < 3) {
-            log.debug("Event's ID is missing");
-            sendMessage(sender, "specify_event");
+            log.debug("Actions's ID is missing");
+            sendMessage(sender, "specify_action");
             return;
         }
-        final EventID eventID;
+        final ActionID actionID;
         try {
-            eventID = new EventID(placeholders, instance.getQuestPackageManager(), null, args[2]);
+            actionID = new ActionID(placeholders, instance.getQuestPackageManager(), null, args[2]);
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
-            log.warn("Could not find event: " + e.getMessage(), e);
+            log.warn("Could not find action: " + e.getMessage(), e);
             return;
         }
-        // fire the event
         final Profile profile = "-".equals(args[1]) ? null : profileProvider.getProfile(Bukkit.getOfflinePlayer(args[1]));
-        instance.getQuestTypeApi().event(profile, eventID);
-        sendMessage(sender, "player_event",
-                new VariableReplacement("event", Component.text(eventID.getInstruction().toString())));
+        instance.getQuestTypeApi().action(profile, actionID);
+        sendMessage(sender, "player_action",
+                new VariableReplacement("action", Component.text(actionID.getInstruction().toString())));
     }
 
     /**
      * Returns a list including all possible options for tab complete of the
-     * /betonquest event command.
+     * /betonquest action command.
      */
-    private Optional<List<String>> completeEvents(final String... args) {
+    private Optional<List<String>> completeActions(final String... args) {
         if (args.length == 2) {
             return Optional.empty();
         }
         if (args.length == 3) {
-            return completeId(args, AccessorType.EVENTS);
+            return completeId(args, AccessorType.ACTIONS);
         }
         return Optional.of(new ArrayList<>());
     }
@@ -1471,7 +1469,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         map.put("points", "point <player> [list/add/del] [category] [amount]");
         map.put("journal", "journal <player> [list/add/del] [entry] [date]");
         map.put("condition", "condition <player> <condition>");
-        map.put("event", "event <player> <event>");
+        map.put("action", "action <player> <action>");
         map.put("item", "item <name>");
         map.put("give", "give <name>");
         map.put("variable", "variable <player> <variable> [list/set/del]");
@@ -1934,9 +1932,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      */
     private enum AccessorType {
         /**
-         * EventID.
+         * ActionID.
          */
-        EVENTS,
+        ACTIONS,
         /**
          * ConditionID.
          */

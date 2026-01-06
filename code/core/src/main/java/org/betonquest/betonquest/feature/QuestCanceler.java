@@ -12,8 +12,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -23,8 +23,8 @@ import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.id.QuestCancelerID;
-import org.betonquest.betonquest.quest.event.IngameNotificationSender;
-import org.betonquest.betonquest.quest.event.NotificationLevel;
+import org.betonquest.betonquest.quest.action.IngameNotificationSender;
+import org.betonquest.betonquest.quest.action.NotificationLevel;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -155,7 +155,7 @@ public class QuestCanceler {
         removeSimple(onlineProfile, data.points, "point", playerData::removePointsCategory);
         cancelObjectives(onlineProfile, playerData);
         removeEntries(onlineProfile, playerData);
-        executeEvents(onlineProfile);
+        executeActions(onlineProfile);
         teleport(onlineProfile);
         log.debug("Quest removed!");
         final Component questName = getName(onlineProfile);
@@ -200,11 +200,11 @@ public class QuestCanceler {
         }
     }
 
-    private void executeEvents(final OnlineProfile onlineProfile) {
+    private void executeActions(final OnlineProfile onlineProfile) {
         try {
-            questTypeApi.events(onlineProfile, data.events.getValue(onlineProfile));
+            questTypeApi.actions(onlineProfile, data.actions.getValue(onlineProfile));
         } catch (final QuestException e) {
-            log.warn(pack, "Cannot execute events in QuestCanceler " + cancelerID + ": " + e.getMessage(), e);
+            log.warn(pack, "Cannot execute actions in QuestCanceler " + cancelerID + ": " + e.getMessage(), e);
         }
     }
 
@@ -260,14 +260,14 @@ public class QuestCanceler {
      * Relevant data for the cancel process.
      *
      * @param conditions the conditions which need to be fulfilled to use the canceler
-     * @param events     the events to fire when the canceler is used
+     * @param actions    the actions to fire when the canceler is used
      * @param objectives the objectives to stop
      * @param tags       the tags  to remove
      * @param points     the points to remove
      * @param journal    the journal entries to remove
      * @param location   the location to teleport the player to
      */
-    public record CancelData(Argument<List<ConditionID>> conditions, Argument<List<EventID>> events,
+    public record CancelData(Argument<List<ConditionID>> conditions, Argument<List<ActionID>> actions,
                              Argument<List<ObjectiveID>> objectives, Argument<List<String>> tags,
                              Argument<List<String>> points, Argument<List<JournalEntryID>> journal,
                              @Nullable Argument<Location> location) {

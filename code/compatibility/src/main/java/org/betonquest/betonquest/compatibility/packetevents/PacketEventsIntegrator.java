@@ -16,7 +16,7 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.UnsupportedVersionException;
-import org.betonquest.betonquest.compatibility.packetevents.event.FreezeEventFactory;
+import org.betonquest.betonquest.compatibility.packetevents.action.FreezeActionFactory;
 import org.betonquest.betonquest.compatibility.packetevents.interceptor.PacketEventsInterceptorFactory;
 import org.betonquest.betonquest.compatibility.packetevents.interceptor.history.ChatHistory;
 import org.betonquest.betonquest.compatibility.packetevents.interceptor.history.NoneChatHistory;
@@ -82,7 +82,7 @@ public class PacketEventsIntegrator implements Integrator {
         final ChatHistory chatHistory = displayHistory ? getPacketChatHistory(packetEventsAPI, pluginManager, plugin) : new NoneChatHistory();
         api.getFeatureRegistries().interceptor().register("packetevents", new PacketEventsInterceptorFactory(packetEventsAPI, chatHistory));
 
-        api.getQuestRegistries().event().register("freeze", new FreezeEventFactory(plugin, packetEventsAPI, api.getLoggerFactory()));
+        api.getQuestRegistries().action().register("freeze", new FreezeActionFactory(plugin, packetEventsAPI, api.getLoggerFactory()));
     }
 
     private PacketChatHistory getPacketChatHistory(final PacketEventsAPI<?> packetEventsAPI, final PluginManager pluginManager, final BetonQuest plugin) {

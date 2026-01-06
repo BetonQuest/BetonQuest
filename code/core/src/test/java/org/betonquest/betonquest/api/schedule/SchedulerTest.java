@@ -2,7 +2,7 @@ package org.betonquest.betonquest.api.schedule;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -65,17 +65,17 @@ class SchedulerTest {
     }
 
     @Test
-    void testExecuteEvents() {
+    void testExecuteActions() {
         final QuestTypeApi questTypeApi = mock(QuestTypeApi.class);
         final Scheduler<Schedule, FictiveTime> scheduler = new MockedScheduler(logger, questTypeApi);
         final Schedule schedule = mock(Schedule.class);
         when(schedule.getId()).thenReturn(mock(ScheduleID.class));
-        final EventID eventA = mock(EventID.class);
-        final EventID eventB = mock(EventID.class);
-        final List<EventID> eventList = List.of(eventA, eventB);
-        when(schedule.getEvents()).thenReturn(eventList);
-        scheduler.executeEvents(schedule);
-        verify(questTypeApi).events(null, eventList);
+        final ActionID actionA = mock(ActionID.class);
+        final ActionID actionB = mock(ActionID.class);
+        final List<ActionID> actionList = List.of(actionA, actionB);
+        when(schedule.getActions()).thenReturn(actionList);
+        scheduler.executeActions(schedule);
+        verify(questTypeApi).actions(null, actionList);
     }
 
     /**
@@ -87,7 +87,7 @@ class SchedulerTest {
          * Default constructor.
          *
          * @param logger       the logger that will be used for logging
-         * @param questTypeApi the class for executing events
+         * @param questTypeApi the class for executing actions
          */
         public MockedScheduler(final BetonQuestLogger logger, final QuestTypeApi questTypeApi) {
             super(logger, questTypeApi);

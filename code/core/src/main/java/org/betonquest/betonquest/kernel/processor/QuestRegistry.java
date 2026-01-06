@@ -36,7 +36,7 @@ import org.betonquest.betonquest.kernel.processor.feature.JournalEntryProcessor;
 import org.betonquest.betonquest.kernel.processor.feature.JournalMainPageProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.BaseFeatureRegistries;
-import org.betonquest.betonquest.schedule.EventScheduling;
+import org.betonquest.betonquest.schedule.ActionScheduling;
 import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,7 +52,7 @@ import java.util.stream.Collectors;
  *
  * @param log              The custom {@link BetonQuestLogger} instance for this class.
  * @param core             The core quest type processors.
- * @param eventScheduling  Event scheduling module.
+ * @param actionScheduling Action scheduling module.
  * @param cancelers        Quest Canceler logic.
  * @param compasses        Compasses.
  * @param conversations    Conversation Data logic.
@@ -66,7 +66,7 @@ import java.util.stream.Collectors;
 public record QuestRegistry(
         BetonQuestLogger log,
         CoreQuestRegistry core,
-        EventScheduling eventScheduling,
+        ActionScheduling actionScheduling,
         CancelerProcessor cancelers,
         CompassProcessor compasses,
         ConversationProcessor conversations,
@@ -78,8 +78,7 @@ public record QuestRegistry(
 ) implements FeatureApi {
 
     /**
-     * Create a new Registry for storing and using Conditions, Events, Objectives, Placeholders,
-     * Conversations and Quest canceler.
+     * Create a new Registry for storing and using Processors.
      *
      * @param log               the custom logger for this registry
      * @param loggerFactory     the logger factory used for new custom logger instances
@@ -99,7 +98,7 @@ public record QuestRegistry(
                                        final PlayerDataStorage playerDataStorage) {
         final Placeholders placeholders = coreQuestRegistry.placeholders();
         final QuestPackageManager packManager = plugin.getQuestPackageManager();
-        final EventScheduling eventScheduling = new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), placeholders, packManager, otherRegistries.eventScheduling());
+        final ActionScheduling actionScheduling = new ActionScheduling(loggerFactory.create(ActionScheduling.class, "Schedules"), placeholders, packManager, otherRegistries.actionScheduling());
         final CancelerProcessor cancelers = new CancelerProcessor(loggerFactory.create(CancelerProcessor.class), loggerFactory, plugin, pluginMessage, placeholders, textCreator, coreQuestRegistry, playerDataStorage);
         final CompassProcessor compasses = new CompassProcessor(loggerFactory.create(CompassProcessor.class), placeholders, packManager, textCreator);
         final ConversationProcessor conversations = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), loggerFactory, plugin,
@@ -109,7 +108,7 @@ public record QuestRegistry(
         final JournalMainPageProcessor journalMainPages = new JournalMainPageProcessor(loggerFactory.create(JournalMainPageProcessor.class), placeholders, packManager, textCreator);
         final NpcProcessor npcs = new NpcProcessor(loggerFactory.create(NpcProcessor.class), loggerFactory, placeholders, packManager,
                 otherRegistries.npc(), pluginMessage, plugin, profileProvider, coreQuestRegistry, conversations.getStarter());
-        return new QuestRegistry(log, coreQuestRegistry, eventScheduling, cancelers, compasses, conversations, items, journalEntries, journalMainPages, npcs, new ArrayList<>());
+        return new QuestRegistry(log, coreQuestRegistry, actionScheduling, cancelers, compasses, conversations, items, journalEntries, journalMainPages, npcs, new ArrayList<>());
     }
 
     /**
@@ -120,7 +119,7 @@ public record QuestRegistry(
      * @param packages the quest packages to load
      */
     public void loadData(final Collection<QuestPackage> packages) {
-        eventScheduling.clear();
+        actionScheduling.clear();
         core.clear();
         cancelers.clear();
         conversations.clear();
@@ -142,7 +141,7 @@ public record QuestRegistry(
             journalEntries.load(pack);
             journalMainPages.load(pack);
             npcs.load(pack);
-            eventScheduling.load(pack);
+            actionScheduling.load(pack);
             additional.forEach(questProcessor -> questProcessor.load(pack));
 
             log.debug(pack, "Everything in package " + packName + " loaded");
@@ -156,7 +155,7 @@ public record QuestRegistry(
                 + " (Additional: " + additional.stream().map(QuestProcessor::readableSize).collect(Collectors.joining(", ")) + ")"
                 + " loaded from " + packages.size() + " packages.");
 
-        eventScheduling.startAll();
+        actionScheduling.startAll();
         additional.forEach(questProcessor -> {
             if (questProcessor instanceof final StartTask startTask) {
                 startTask.startAll();

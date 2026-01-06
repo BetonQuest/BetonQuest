@@ -77,7 +77,7 @@ The scheduler will receive parsed schedules using `addSchedule(S)` and hold them
 It should contain all the scheduling & schedule execution logic.  
 It is also responsible for catching up missed schedules, if they have a catchup strategy other than `NONE` defined.
 
-Here is a pretty basic example, that does not provide any catchup logic:
+Here is a pretty basic example that does not provide any catchup logic:
 
 ```java linenums="1" title="Example Scheduler"
 public class MyCustomScheduler extends Scheduler<MyCustomSchedule>/* (1)! */ {
@@ -94,7 +94,7 @@ public class MyCustomScheduler extends Scheduler<MyCustomSchedule>/* (1)! */ {
             BukkitTask task = new BukkitRunnable() {
                 @Override
                 public void run() {
-                    executeEvents(schedule);
+                    executeActions(schedule);
                 }
             }.runTaskTimer(MyPlugin.getInstance()/* (5)! */, schedule.getRebootSleep(), schedule.getTicks());
             
@@ -120,7 +120,7 @@ public class MyCustomScheduler extends Scheduler<MyCustomSchedule>/* (1)! */ {
 
 3.  An easy way to iterate over all loaded schedules.
 
-4.  Schedule your events to run when their time instruction says.
+4.  Schedule your actions to run when their time instruction says.
 
 5. Pass your plugin instance for the Bukkit-Scheduler.
 
@@ -133,7 +133,7 @@ public class MyCustomScheduler extends Scheduler<MyCustomSchedule>/* (1)! */ {
 ### Register the type
 To register the new schedule type to BetonQuest, use the following method:
 ```java
-BetonQuest.getInstance().getFeatureRegistries().eventScheduling().register("redstoneScheduler"/* (1)! */,
+BetonQuest.getInstance().getFeatureRegistries().actionScheduling().register("redstoneScheduler"/* (1)! */,
   MyCustomSchedule.class/* (2)! */,new MyCustomScheduler()/* (3)! */);
 ```
 

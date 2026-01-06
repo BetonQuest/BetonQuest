@@ -1,0 +1,111 @@
+package org.betonquest.betonquest.quest.action;
+
+import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EmptySource;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+/**
+ * Test {@link OnlineProfileGroupPlayerlessActionAdapter}.
+ */
+@ExtendWith(MockitoExtension.class)
+class OnlineProfileGroupPlayerlessActionAdapterTest {
+
+    /**
+     * Internal non-static action mock that is adapted to a static action by the tested class.
+     */
+    @Mock
+    private PlayerAction internalPlayerAction;
+
+    /**
+     * Create test class instance.
+     */
+    public OnlineProfileGroupPlayerlessActionAdapterTest() {
+    }
+
+    private static Stream<List<OnlineProfile>> playerListSource() {
+        return Stream.of(
+                List.of(createRandomProfile()),
+                List.of(createRandomProfile(), createRandomProfile()),
+                List.of(createRandomProfile(), createRandomProfile(), createRandomProfile(), createRandomProfile())
+        );
+    }
+
+    private static OnlineProfile createRandomProfile() {
+        return mock(OnlineProfile.class);
+    }
+
+    @ParameterizedTest
+    @EmptySource
+    @MethodSource("playerListSource")
+    void testInternalActionIsExecutedForEachPlayerExactlyOnce(final List<OnlineProfile> onlineProfileList) throws QuestException {
+        final OnlineProfileGroupPlayerlessActionAdapter subject = new OnlineProfileGroupPlayerlessActionAdapter(() -> onlineProfileList, internalPlayerAction);
+        subject.execute();
+
+        verifyExecutedOnceForPlayers(onlineProfileList);
+        verifyNoMoreInteractions(internalPlayerAction);
+    }
+
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
+    @Test
+    void testSupplierIsCalledEveryTime() throws QuestException {
+        final List<OnlineProfile> firstExecution = List.of(createRandomProfile(), createRandomProfile());
+        final List<OnlineProfile> secondExecution = List.of(createRandomProfile(), createRandomProfile(), createRandomProfile());
+        final Iterator<List<OnlineProfile>> playerListsForSupplier = List.of(
+                firstExecution, secondExecution
+        ).iterator();
+
+        final OnlineProfileGroupPlayerlessActionAdapter subject = new OnlineProfileGroupPlayerlessActionAdapter(playerListsForSupplier::next, internalPlayerAction);
+        subject.execute();
+        verifyExecutedOnceForPlayers(firstExecution);
+        verifyNotExecutedForPlayers(secondExecution);
+
+        subject.execute();
+        // the action was executed once during the first call for the first batch of players,
+        // but it would be more than once if the second call did execute for the players of the first batch too
+        verifyExecutedOnceForPlayers(firstExecution);
+        verifyExecutedOnceForPlayers(secondExecution);
+    }
+
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
+    @Test
+    void testAdapterFailsOnFirstActionFailure() throws QuestException {
+        final List<OnlineProfile> playerList = List.of(createRandomProfile(), createRandomProfile(), createRandomProfile());
+        final OnlineProfile firstProfile = playerList.get(0);
+        final OnlineProfile failingProfile = playerList.get(1);
+        final Exception actionFailureException = new QuestException("test exception");
+
+        doNothing().when(internalPlayerAction).execute(firstProfile);
+        doThrow(actionFailureException).when(internalPlayerAction).execute(failingProfile);
+
+        final OnlineProfileGroupPlayerlessActionAdapter subject = new OnlineProfileGroupPlayerlessActionAdapter(() -> playerList, internalPlayerAction);
+        assertThrows(QuestException.class, subject::execute);
+        verify(internalPlayerAction).execute(firstProfile);
+        verify(internalPlayerAction, never()).execute(playerList.get(2));
+    }
+
+    private void verifyExecutedOnceForPlayers(final Iterable<OnlineProfile> onlineProfilesList) throws QuestException {
+        for (final OnlineProfile onlineProfile : onlineProfilesList) {
+            verify(internalPlayerAction).execute(onlineProfile);
+        }
+    }
+
+    private void verifyNotExecutedForPlayers(final Iterable<OnlineProfile> onlineProfilesList) throws QuestException {
+        for (final OnlineProfile onlineProfile : onlineProfilesList) {
+            verify(internalPlayerAction, never()).execute(onlineProfile);
+        }
+    }
+}

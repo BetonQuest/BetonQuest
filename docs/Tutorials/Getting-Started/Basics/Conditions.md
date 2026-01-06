@@ -5,7 +5,7 @@ tags:
 ---
 Now that you know how to give the player tasks using objectives, it is time to learn about conditions. 
 These are another essential building blog of quests as they allow you to create different outcomes based on the player's
-actions. This works by attaching conditions to any conversation, event or objective.
+actions. This works by attaching conditions to any conversation, action or objective.
 For example, you could have a conversation option that is only available if the player has a certain item in their inventory.
 
 In this tutorial, you will learn how to create and use conditions!
@@ -13,7 +13,7 @@ In this tutorial, you will learn how to create and use conditions!
 <div class="grid" markdown>
 !!! danger "Requirements"
     * [Conversations Tutorial](Conversations.md)
-    * [Events Tutorial](Events.md)
+    * [Actions Tutorial](Actions.md)
     * [Objectives Tutorial](Objectives.md)
 
 !!! example "Related Docs"
@@ -34,7 +34,7 @@ The file structure should look like this now:
 
 * :material-folder-open: tutorialQuest
     - :material-file: package.yml
-    - :material-file: events.yml
+    - :material-file: actions.yml
     - :material-file: objectives.yml
     - :material-file: {==conditions.yml==}
     - :material-folder-open: conversations
@@ -88,7 +88,7 @@ During day time, the result will show true. In the nighttime it will be false.
 |------------------|--------------------------------------------------------------------------------------------------------------------------|
 | `/bq conditions` | Tells BetonQuest that some conditions should be checked if true or false.                                                |
 | `NAME`           | A player's name.                                                                                                         |
-| `tutorialQuest`  | The name of a QuestPackage. This is required because you could have events with the same name in different packages.     |
+| `tutorialQuest`  | The name of a QuestPackage. This is required because you could have actions with the same name in different packages.    |
 | `isDay`          | The name of the condition to check. Don't forget to separate it with a dot from the package `tutorialQuest{==.==}isDay`. |
 
 
@@ -106,7 +106,7 @@ Let's add the condition `isDay` to the objective:
 
 ``` YAML title="objectives.yml"
 objectives:
-  fishingObj: "fish COD 3 hookLocation:100;63;100;world range:20 events:caughtAllFish {==conditions:!isDay==}"
+  fishingObj: "fish COD 3 hookLocation:100;63;100;world range:20 actions:caughtAllFish {==conditions:!isDay==}"
 ```
 We can see multiple things here:
 
@@ -135,7 +135,7 @@ The player will always obtain more food. This is not what we want.
 
 To solve this problem we need to create an alternative path for the conversation. It must only be shown if the player
 has obtained the food. 
-To do so, we will create an event to give the player a "tag" and add a condition to the conversation.
+To do so, we will create an action to give the player a "tag" and add a condition to the conversation.
 
 We will start with a tag condition:
 
@@ -158,22 +158,22 @@ This tag condition is "true" if the player has the defined tag. Let's break it d
     - `foodReceived`: This is the name of the tag that the player must have.
 
 
-Tags can be assigned to a player using events. Let's create an event that gives the player the tag:
+Tags can be assigned to a player using actions. Let's create an action that gives the player the tag:
 
-``` YAML title="events.yml" hl_lines="3"
-events:
-  # Other events not shown
+``` YAML title="actions.yml" hl_lines="3"
+actions:
+  # Other actions not shown
   addFoodReceivedTag: "tag add foodReceived"
 ```
 
 !!! warning "Tip"
-    If you don't understand why we created the event in the `events` section, you should go back to the events tutorial
+    If you don't understand why we created the action in the `actions` section, you should go back to the actions tutorial
     and read carefully!
 
-We are now ready for the next step: Adding the condition and event to the conversation.
+We are now ready for the next step: Adding the condition and action to the conversation.
 
 
-Open up your `jack.yml` file in the conversations folder and add the event to give the tag to a player and the
+Open up your `jack.yml` file in the conversations folder and add the action to give the tag to a player and the
 condition to not repeat the specified part of the conversation.
 
 ``` YAML title="jack.yml" hl_lines="16-19 24-26"
@@ -189,7 +189,7 @@ conversations:
       # Other NPC_options not shown
       foodAnswer:
         text: "You're welcome! Take it... &7*gives food*"
-        events: "giveFoodToPlayer,{==addFoodReceivedTag==}" #(3)!
+        actions: "giveFoodToPlayer,{==addFoodReceivedTag==}" #(3)!
         pointers: "thankYou"
         conditions: "!hasReceivedFood"
       alreadyReceivedFood:
@@ -213,7 +213,7 @@ conversations:
    In this case, if the player meets the condition `hasRecivedFood`, they will start at the `alreadyReceivedFood` option.
 2. This option will be shown if no other option matches the conditions.
    This is because this option has no conditions and is the last option in the `first` list.
-3. These events will be executed if the player chooses the `foodAnswer` option. It will give the player the food and the
+3. These actions will be executed if the player chooses the `foodAnswer` option. It will give the player the food and the
    tag `foodReceived`.
 4. This condition ensures that the player will only see the `alreadyFoodReceived` option if he has the tag `foodReceived`.
 
@@ -265,7 +265,7 @@ conversations:
       # Other player_options not shown
       accept:
         text: "Sure! I could use a new armour."
-        events: "startFishingObj{==,addStartedFishingTag==}"
+        actions: "startFishingObj{==,addStartedFishingTag==}"
         pointers: "goodLuck"
       # Other player_options not shown
 ```
@@ -283,12 +283,12 @@ conditions:
   hasFishInInv: "item cod:3"
   hasDoneQuest: "tag questDone"
 ```
-Additionally, we must add the new events as well. 
+Additionally, we must add the new actions as well. 
 Those remove three cod from the player's inventory and add a tag for completing the quest.
 
-```YAML title="events.yml" hl_lines="3-5"
-events:
-  # Other events not shown
+```YAML title="actions.yml" hl_lines="3-5"
+actions:
+  # Other actions not shown
   addStartedFishingTag: "tag add startedFishing"
   addQuestDoneTag: "tag add questDone"
   takeFishFromPlayer: "take cod:3"  
@@ -314,7 +314,7 @@ conversations:
       giveFishToBlacksmith:
         text: "Thank you very much and here is the promised armour!"
         pointers: "seeYouSoon"
-        events: "takeFishFromPlayer,addQuestDoneTag"
+        actions: "takeFishFromPlayer,addQuestDoneTag"
         conditions: "hasFishInInv" #(1)!
       goodbye:
         text: "It was nice to meet you! I hope we will see us soon again. Goodbye"
@@ -339,8 +339,8 @@ conversations:
 
 #### 5.3.2 Handing out the armor
 
-Now add an event to reward the player on your own. Tip: You must use the
-[`give`](../../../Documentation/Scripting/Building-Blocks/Events-List.md#give-items-give) event to hand out items that are defined
+Now add an action to reward the player on your own. Tip: You must use the
+[`give`](../../../Documentation/Scripting/Building-Blocks/Actions-List.md#give-items-give) action to hand out items that are defined
 in the `items` section of your "_package.yml_" file.
 
 ??? example "SPOILER: Solution"
@@ -353,9 +353,9 @@ in the `items` section of your "_package.yml_" file.
       ironBoots: "simple IRON_BOOTS"
     ```
     
-    ```YAML title="events.yml" hl_lines="3"
-    events:
-      # Other events not shown
+    ```YAML title="actions.yml" hl_lines="3"
+    actions:
+      # Other actions not shown
       rewardPlayer: "give ironBoots,ironChestplate,ironLeggings,ironHelmet"
     ``` 
     
@@ -363,7 +363,7 @@ in the `items` section of your "_package.yml_" file.
     giveFishToBlacksmith:
       text: "Thank you very much and here is the promised armour!"
       pointers: "seeYouSoon"
-      events: "takeFishFromPlayer,addQuestDoneTag{==,rewardPlayer==}"
+      actions: "takeFishFromPlayer,addQuestDoneTag{==,rewardPlayer==}"
       conditions: "hasFishInInv"
     ``` 
         
@@ -373,9 +373,9 @@ in the `items` section of your "_package.yml_" file.
        /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Basics/Conditions/5-FullExample /tutorialQuest overwrite
        ```
 
-## 6. Conditions in Events
+## 6. Conditions in Actions
 
-In this section, you will learn how to use conditions in events. This is handy when you want to block an event
+In this section, you will learn how to use conditions in actions. This is handy when you want to block an action
 from triggering because some conditions for the players are not met.
 
 We will temporarily create a tag condition called `receiveNotify` in the "_conditions.yml_" like so:
@@ -385,31 +385,31 @@ conditions:
   receiveNotify: "tag receiveNotify"
 ```
 
-We will now create an event to test our recently created condition.
-For testing purposes, we will use a notify event:
+We will now create an action to test our recently created condition.
+For testing purposes, we will use a notify action:
 
-``` YAML title="events.yml" hl_lines="2"
-events:
+``` YAML title="actions.yml" hl_lines="2"
+actions:
   notifyPlayer: "notify You completed the quest! io:Title sound:firework_rocket conditions:receiveNotify"
 ```
 
 Let's break it down:
 
-  * `notifyPlayer`: The name of the event.
-  * `notify`: The event type - notify events are used to send notifications to the player.
+  * `notifyPlayer`: The name of the action.
+  * `notify`: The action type - notify actions are used to send notifications to the player.
   * `You completed the quest!`: The message of the notification.
   * `io:Title`: The message will be displayed as a title.
   * `sound:firework_rocket`: The message will be accompanied by a firework sound.
-  * `conditions:receiveNotify`: The event will only trigger if the condition `receiveNotify` is met. This argument
-     works for all events.
+  * `conditions:receiveNotify`: The action will only trigger if the condition `receiveNotify` is met. This argument
+     works for all actions.
 
-You can see that the notify event uses a condition. This means the player is only able to receive the notification
+You can see that the notify action uses a condition. This means the player is only able to receive the notification
 if they have the tag. 
 Save, reload and execute the command in the game to test how it works!
 
 You can test it with this BetonQuest command:
 ```
-/bq event PLAYERNAME tutorialQuest>notifyPlayer
+/bq action PLAYERNAME tutorialQuest>notifyPlayer
 ```
 Nothing should happen because the player doesn't have the `receiveNotify` tag.
 
@@ -425,12 +425,12 @@ You can also manually delete a tag using
 ```
 This is very helpful when you are testing your quest and want to reset the player's progress.
 
-If you like, you could add the event to your blacksmith conversation. Make sure to remove the condition from the event's
-instruction. There is no use for it in this quest, but the notify event is a good example to show how to use conditions
-in events. 
+If you like, you could add the action to your blacksmith conversation. Make sure to remove the condition from the action's
+instruction. There is no use for it in this quest, but the notify action is a good example to show how to use conditions
+in actions. 
 
 ## Summary
 
-You've learned what conditions are and how to they are used in objectives, conversations and events.
+You've learned what conditions are and how to they are used in objectives, conversations and actions.
 More conditions can be found in the [conditions list](../../../Documentation/Scripting/Building-Blocks/Conditions-List.md).
 ---

@@ -30,14 +30,14 @@ public class QuestsIntegrator implements Integrator {
 
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         questRegistries.condition().register("quest", new QuestsConditionFactory(questsInstance));
-        questRegistries.event().register("quest", new QuestsEventFactory(questsInstance));
+        questRegistries.action().register("quest", new QuestsActionFactory(questsInstance));
 
         final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
         final QuestTypeApi questTypeApi = api.getQuestTypeApi();
         final ProfileProvider profileProvider = api.getProfileProvider();
         final Placeholders placeholders = api.getQuestTypeApi().placeholders();
-        questsInstance.getCustomRewards().add(new EventReward(
-                loggerFactory.create(EventReward.class), placeholders, api.getQuestPackageManager(), questTypeApi, profileProvider));
+        questsInstance.getCustomRewards().add(new ActionReward(
+                loggerFactory.create(ActionReward.class), placeholders, api.getQuestPackageManager(), questTypeApi, profileProvider));
         questsInstance.getCustomRequirements().add(new ConditionRequirement(
                 loggerFactory.create(ConditionRequirement.class), placeholders, api.getQuestPackageManager(), questTypeApi, profileProvider));
     }

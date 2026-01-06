@@ -77,8 +77,8 @@ All of these are defined using an _instruction text_.
 ```YAML title="Instruction Text Example"
 conditions: #(1)!
   myCondition: "health 10" #(2)!
-events:
-  myEvent: "hunger set 20"
+actions:
+  myAction: "hunger set 20"
 objectives:
   myObjective: "mobkill ZOMBIE 10"
 ```
@@ -87,39 +87,39 @@ objectives:
 2. `myCondition` is the name of this condition. The instruction text is `health 10`. 
    This is a condition which checks if the player has 10 health.
 
-### Events
+### Actions
 
 In certain moments you will want something to happen. Updating the journal, setting tags, giving rewards, all these are
-done using events. You define them by specifying a name and instruction string like shown above.
+done using actions. You define them by specifying a name and instruction string like shown above.
 At the end of the instruction string you can add the `conditions:` (with or without `s` at the end)
 attribute followed by a list of condition names separated by commas, 
-like `conditions:angry,!quest_started`. This will make an event fire only when these conditions are met.
+like `conditions:angry,!quest_started`. This will make an action fire only when these conditions are met.
 
-[Explore all Events](./Building-Blocks/Events-List.md){ .md-button }
+[Explore all Actions](./Building-Blocks/Actions-List.md){ .md-button }
 
 
 ### Objectives
 
-Objective are goals that player must complete. At first, they must be started for a player with the `objective` event.
-When the player completes the objective, all defined events are run. For example, you could reward the player by giving
+Objective are goals that player must complete. At first, they must be started for a player with the `objective` action.
+When the player completes the objective, all defined actions are run. For example, you could reward the player by giving
 them an item.
 
 You define them in the `objectives` section as shown above. At the end of the instruction text you can add conditions
-and events for the objective. Conditions will limit when the objective can be completed (e.g. killing zombies only at
-given location), and events will fire when the objective is completed (e.g. giving a reward, or setting a tag which
-will enable collecting a reward from an NPC). You define these like that: `conditions:con1,con2 events:event1,event2`
+and actions for the objective. Conditions will limit when the objective can be completed (e.g. killing zombies only at
+given location), and actions will fire when the objective is completed (e.g. giving a reward, or setting a tag which
+will enable collecting a reward from an NPC). You define these like that: `conditions:con1,con2 actions:action1,action2`
 at the end of instruction text. Separate them by commas and never use spaces!
 
 If you want to start an objective right after it was completed you can add the `persistent` argument at the end of its instruction string.
 For example, you could create a custom respawn system with a `die` objective. When the player dies, they will be
 teleported to the spawnpoint and the `die` objective will be started again.
-The `persistent` argument prevents the objective from being completed, although it will run all its events. To cancel such
-an objective you need to use `objective delete` event.
+The `persistent` argument prevents the objective from being completed, although it will run all its actions. To cancel such
+an objective you need to use `objective delete` action.
 
 ```YAML title="Example"
 objectives:
-  mineDiamonds: 'block DIAMONDS -10 events:reward'
-  die: 'die cancel respawn:100;200;300;world;90;0 events:sendRespawnMessage conditions:hasCustomTotem'
+  mineDiamonds: 'block DIAMONDS -10 actions:reward'
+  die: 'die cancel respawn:100;200;300;world;90;0 actions:sendRespawnMessage conditions:hasCustomTotem'
 ```
 
 #### Global objectives
@@ -137,7 +137,7 @@ the objective is located.
 
 ```YAML title="Example"
 objectives:
-  startQuestByMining: 'location 100;200;300;world 5 events:start_quest_mine_folder {++global++}'
+  startQuestByMining: 'location 100;200;300;world 5 actions:start_quest_mine_folder {++global++}'
 ```
 
 #### Placeholders
@@ -153,9 +153,9 @@ Also, when the placeholder contains an invalid value for the given objective (e.
 
 ```YAML title="Examples"
 objectives:
-  killMonsters: 'mobkill ZOMBIE %math.calc:(100-{point.reputation.amount})*2% events:endSiege'
-  breakObsidian: 'block OBSIDIAN %randomnumber.whole.-60~-40% events:dailyReward'
-  eatSteak: 'consume steak amount:%randomnumber.whole.2~6% events:health_boost'
+  killMonsters: 'mobkill ZOMBIE %math.calc:(100-{point.reputation.amount})*2% actions:endSiege'
+  breakObsidian: 'block OBSIDIAN %randomnumber.whole.-60~-40% actions:dailyReward'
+  eatSteak: 'consume steak amount:%randomnumber.whole.2~6% actions:health_boost'
 ```
 
 [Explore all Objectives](./Building-Blocks/Objectives-List.md){ .md-button }
@@ -171,7 +171,7 @@ If you do so, make sure to enclose the condition in quotes, otherwise YAML will 
 ```YAML title="Example"
 conditions:
   hasFullHealth: "health 20"
-events:
+actions:
   helpWithHealing: "hunger set 20 conditions:!hasFullHealth"
 ```
 
@@ -180,7 +180,7 @@ events:
 ## Tags
 
 Tags are little pieces of text you can assign to player. They are particularly useful to 
-determine if player has started or completed quest. They are given with [`tag` event](./Building-Blocks/Events-List.md#point-point) and checked with
+determine if player has started or completed quest. They are given with [`tag` action](./Building-Blocks/Actions-List.md#point-point) and checked with
 [`tag` condition](./Building-Blocks/Conditions-List.md#tag-tag).
 All tags are bound to a package, so if you add the `questCompleted` tag from within a package named `monsterQuest`,
 the tag will look like `monsterQuest.questCompleted`.
@@ -189,7 +189,7 @@ Read [working across packages](./Packages-&-Templates.md#working-across-packages
 
 ## Points
 
-Points are numbers that can be assigned to a player. You can set them with the [`point` event](./Building-Blocks/Events-List.md#point-point).
+Points are numbers that can be assigned to a player. You can set them with the [`point` action](./Building-Blocks/Actions-List.md#point-point).
 you want. You can also take the points away, even to negative numbers. 
 Of course then you can check if player has (or doesn't have) certain amount with the [`point` condition](./Building-Blocks/Conditions-List.md#point-point). 
 They can be used as counter for specific number of quest done, as a reputation system in villages or even an NPC's 

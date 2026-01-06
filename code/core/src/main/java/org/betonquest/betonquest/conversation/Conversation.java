@@ -16,8 +16,8 @@ import org.betonquest.betonquest.conversation.ConversationData.OptionType;
 import org.betonquest.betonquest.conversation.interceptor.Interceptor;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
-import org.betonquest.betonquest.quest.event.IngameNotificationSender;
-import org.betonquest.betonquest.quest.event.NotificationLevel;
+import org.betonquest.betonquest.quest.action.IngameNotificationSender;
+import org.betonquest.betonquest.quest.action.NotificationLevel;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -216,7 +216,7 @@ public class Conversation {
             return;
         }
         inOut.setNpcResponse(data.getPublicData().getQuester(log, onlineProfile), data.getText(onlineProfile, nextNPCOption));
-        new NPCEventRunner(nextNPCOption).runTask(plugin);
+        new NPCActionRunner(nextNPCOption).runTask(plugin);
     }
 
     /**
@@ -230,7 +230,7 @@ public class Conversation {
         if (playerOption == null) {
             throw new IllegalStateException("No selectable player option found in conversation " + identifier);
         }
-        new PlayerEventRunner(playerOption).runTask(plugin);
+        new PlayerActionRunner(playerOption).runTask(plugin);
         availablePlayerOptions.clear();
     }
 
@@ -283,7 +283,7 @@ public class Conversation {
     }
 
     /**
-     * Ends conversation, firing final events and removing it from the list of
+     * Ends conversation, firing final actions and removing it from the list of
      * active conversations.
      */
     public void endConversation() {
@@ -307,9 +307,9 @@ public class Conversation {
             log.debug(pack, "Ending conversation '" + identifier + FOR + onlineProfile + "'.");
             inOut.end(() -> {
                 try {
-                    plugin.getQuestTypeApi().events(onlineProfile, data.getPublicData().finalEvents().getValue(onlineProfile));
+                    plugin.getQuestTypeApi().actions(onlineProfile, data.getPublicData().finalActions().getValue(onlineProfile));
                 } catch (final QuestException e) {
-                    log.warn(pack, "Error while firing final events: " + e.getMessage(), e);
+                    log.warn(pack, "Error while firing final actions: " + e.getMessage(), e);
                 }
 
                 endConversationDelayed();
@@ -573,50 +573,45 @@ public class Conversation {
     }
 
     /**
-     * Fires events from an NPC option. Should be called on the main thread.
+     * Fires actions from an NPC option. Should be called on the main thread.
      */
-    private final class NPCEventRunner extends BukkitRunnable {
+    private final class NPCActionRunner extends BukkitRunnable {
 
         /**
          * The NPC option that has been selected and should be printed.
          */
         private final ResolvedOption npcOption;
 
-        private NPCEventRunner(final ResolvedOption npcOption) {
+        private NPCActionRunner(final ResolvedOption npcOption) {
             super();
             this.npcOption = npcOption;
         }
 
         @Override
         public void run() {
-            plugin.getQuestTypeApi().events(onlineProfile, data.getEventIDs(onlineProfile, npcOption, NPC));
+            plugin.getQuestTypeApi().actions(onlineProfile, data.getActionIDs(onlineProfile, npcOption, NPC));
             new OptionPrinter(npcOption).runTaskAsynchronously(plugin);
         }
     }
 
     /**
-     * Fires events from the option. Should be called in the main thread.
+     * Fires actions from the option. Should be called in the main thread.
      */
-    private class PlayerEventRunner extends BukkitRunnable {
+    private final class PlayerActionRunner extends BukkitRunnable {
 
         /**
          * The option that has been selected by the player.
          */
         private final ResolvedOption playerOption;
 
-        /**
-         * Creates a new PlayerEventRunner with the option that has been selected by the player.
-         *
-         * @param playerOption the option that has been selected by the player
-         */
-        public PlayerEventRunner(final ResolvedOption playerOption) {
+        private PlayerActionRunner(final ResolvedOption playerOption) {
             super();
             this.playerOption = playerOption;
         }
 
         @Override
         public void run() {
-            plugin.getQuestTypeApi().events(onlineProfile, data.getEventIDs(onlineProfile, playerOption, PLAYER));
+            plugin.getQuestTypeApi().actions(onlineProfile, data.getActionIDs(onlineProfile, playerOption, PLAYER));
             new ResponsePrinter(playerOption).runTaskAsynchronously(plugin);
         }
     }
