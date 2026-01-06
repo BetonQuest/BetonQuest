@@ -8,12 +8,12 @@ import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 
 /**
- * Creates a new GiveJournalEvent from an {@link Instruction}.
+ * Creates a new GiveJournalAction from an {@link Instruction}.
  */
 public class GiveJournalActionFactory implements PlayerActionFactory {
 
     /**
-     * Logger factory to create a logger for the events.
+     * Logger factory to create a logger for the actions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -23,9 +23,9 @@ public class GiveJournalActionFactory implements PlayerActionFactory {
     private final PlayerDataStorage dataStorage;
 
     /**
-     * Create the give journal event factory.
+     * Create the give journal action factory.
      *
-     * @param loggerFactory the logger factory to create a logger for the events
+     * @param loggerFactory the logger factory to create a logger for the actions
      * @param dataStorage   the storage providing player data
      */
     public GiveJournalActionFactory(final BetonQuestLoggerFactory loggerFactory, final PlayerDataStorage dataStorage) {

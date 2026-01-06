@@ -42,16 +42,16 @@ class IdentifierTest {
             final QuestPackage pack2Sub2 = createQuestPackage(manager, packages, "Test2-2");
 
             return Stream.of(
-                    Arguments.of(manager, pack1, "testEvent", pack1, "testEvent"),
-                    Arguments.of(manager, pack1Sub1, "_->testEvent", pack1, "testEvent"),
-                    Arguments.of(manager, pack2Sub1, "_-_-Test1>testEvent", pack1, "testEvent"),
-                    Arguments.of(manager, pack2Sub2, "_-1>testEvent", pack2Sub1, "testEvent"),
-                    Arguments.of(manager, pack2, "-1>testEvent", pack2Sub1, "testEvent"),
-                    Arguments.of(manager, pack1, "Test2>testEvent", pack2, "testEvent"),
-                    Arguments.of(manager, null, "Test1>testEvent", pack1, "testEvent"),
-                    Arguments.of(manager, pack1, "\\>testEvent", pack1, ">testEvent"),
-                    Arguments.of(manager, pack1, ">testEvent", root, "testEvent"),
-                    Arguments.of(manager, pack1, ">>testEvent", root, ">testEvent")
+                    Arguments.of(manager, pack1, "testAction", pack1, "testAction"),
+                    Arguments.of(manager, pack1Sub1, "_->testAction", pack1, "testAction"),
+                    Arguments.of(manager, pack2Sub1, "_-_-Test1>testAction", pack1, "testAction"),
+                    Arguments.of(manager, pack2Sub2, "_-1>testAction", pack2Sub1, "testAction"),
+                    Arguments.of(manager, pack2, "-1>testAction", pack2Sub1, "testAction"),
+                    Arguments.of(manager, pack1, "Test2>testAction", pack2, "testAction"),
+                    Arguments.of(manager, null, "Test1>testAction", pack1, "testAction"),
+                    Arguments.of(manager, pack1, "\\>testAction", pack1, ">testAction"),
+                    Arguments.of(manager, pack1, ">testAction", root, "testAction"),
+                    Arguments.of(manager, pack1, ">>testAction", root, ">testAction")
             );
         }
 
@@ -82,14 +82,14 @@ class IdentifierTest {
             final QuestPackage pack2 = createQuestPackage(manager, packages, "Test2");
 
             return Stream.of(
-                    Arguments.of(manager, pack1, "NonExisting>testEvent",
-                            "ID 'NonExisting>testEvent' could not be parsed: No package 'NonExisting' found!"),
-                    Arguments.of(manager, pack1Sub1, "_-_-_->testEvent",
-                            "ID '_-_-_->testEvent' could not be parsed: Relative path '_-_-_-' goes up too many levels!"),
-                    Arguments.of(manager, pack1Sub1, "_-_->testEvent",
-                            "ID '_-_->testEvent' could not be parsed: Relative path '_-_-' resolved to '', but this package does not exist!"),
-                    Arguments.of(manager, pack2, "-NonExisting>testEvent",
-                            "ID '-NonExisting>testEvent' could not be parsed: Relative path '-NonExisting' resolved to 'Test2-NonExisting', but this package does not exist!")
+                    Arguments.of(manager, pack1, "NonExisting>testAction",
+                            "ID 'NonExisting>testAction' could not be parsed: No package 'NonExisting' found!"),
+                    Arguments.of(manager, pack1Sub1, "_-_-_->testAction",
+                            "ID '_-_-_->testAction' could not be parsed: Relative path '_-_-_-' goes up too many levels!"),
+                    Arguments.of(manager, pack1Sub1, "_-_->testAction",
+                            "ID '_-_->testAction' could not be parsed: Relative path '_-_-' resolved to '', but this package does not exist!"),
+                    Arguments.of(manager, pack2, "-NonExisting>testAction",
+                            "ID '-NonExisting>testAction' could not be parsed: Relative path '-NonExisting' resolved to 'Test2-NonExisting', but this package does not exist!")
             );
         }
 

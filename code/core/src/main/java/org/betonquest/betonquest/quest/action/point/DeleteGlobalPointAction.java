@@ -23,7 +23,7 @@ public class DeleteGlobalPointAction implements NullableAction {
     private final GlobalData globalData;
 
     /**
-     * Creates a new DeleteGlobalPointEvent.
+     * Creates a new DeleteGlobalPointAction.
      *
      * @param globalData the global data
      * @param category   the category to delete

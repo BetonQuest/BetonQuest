@@ -17,7 +17,7 @@ public class GiveJournalAction implements OnlineAction {
     private final Function<OnlineProfile, PlayerData> playerDataSource;
 
     /**
-     * Creates a new GiveJournalEvent.
+     * Creates a new GiveJournalAction.
      *
      * @param playerDataSource source for the player data
      */

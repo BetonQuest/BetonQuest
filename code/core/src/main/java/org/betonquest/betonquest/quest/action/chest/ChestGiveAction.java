@@ -32,7 +32,7 @@ public class ChestGiveAction implements NullableAction {
     private final Argument<Location> location;
 
     /**
-     * Create the chest give event.
+     * Create the chest give action.
      *
      * @param questItems the items to put in the blocks inventory
      * @param location   the location of the block

@@ -20,7 +20,7 @@ public class DenizenTaskScriptAction implements PlayerAction {
     private final Argument<String> name;
 
     /**
-     * Create a new Denizen Task Script Event.
+     * Create a new Denizen Task Script Action.
      *
      * @param name the name of the script to run.
      */

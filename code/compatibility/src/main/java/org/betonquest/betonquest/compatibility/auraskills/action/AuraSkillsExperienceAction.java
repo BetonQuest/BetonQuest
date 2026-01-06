@@ -37,7 +37,7 @@ public class AuraSkillsExperienceAction implements PlayerAction {
     private final FlagArgument<Boolean> level;
 
     /**
-     * Create a new AuraSkills experience event.
+     * Create a new AuraSkills experience action.
      *
      * @param auraSkillsApi the {@link AuraSkillsApi}.
      * @param amount        the amount of experience to give the player in the skill.

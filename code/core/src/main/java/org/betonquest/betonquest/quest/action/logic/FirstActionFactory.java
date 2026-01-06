@@ -14,7 +14,7 @@ import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter
 import java.util.List;
 
 /**
- * Factory to create FirstEvents from events from {@link Instruction}s.
+ * Factory to create FirstActions from actions from {@link Instruction}s.
  */
 public class FirstActionFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
@@ -34,15 +34,15 @@ public class FirstActionFactory implements PlayerActionFactory, PlayerlessAction
 
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
-        return createFirstEvent(instruction);
+        return createFirstAction(instruction);
     }
 
     @Override
     public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
-        return createFirstEvent(instruction);
+        return createFirstAction(instruction);
     }
 
-    private NullableActionAdapter createFirstEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createFirstAction(final Instruction instruction) throws QuestException {
         final Argument<List<ActionID>> list = instruction.parse(ActionID::new).list().get();
         return new NullableActionAdapter(new FirstAction(list, questTypeApi));
     }

@@ -32,7 +32,7 @@ public class RunIndependentActionFactory implements PlayerlessActionFactory {
 
     @Override
     public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
-        final Argument<List<ActionID>> events = instruction.parse(ActionID::new).list().get("actions", Collections.emptyList());
-        return new RunIndependentAction(questTypeApi, events);
+        final Argument<List<ActionID>> actions = instruction.parse(ActionID::new).list().get("actions", Collections.emptyList());
+        return new RunIndependentAction(questTypeApi, actions);
     }
 }

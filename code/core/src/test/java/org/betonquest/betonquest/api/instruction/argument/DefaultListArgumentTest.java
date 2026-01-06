@@ -60,7 +60,7 @@ class DefaultListArgumentTest {
     @Test
     void constructNonBackedList() {
         assertThrows(QuestException.class, () -> getArgumentList("a,z,c"),
-                "Non existing event ID should throw an exception when validating");
+                "Non existing action ID should throw an exception when validating");
     }
 
     @Test

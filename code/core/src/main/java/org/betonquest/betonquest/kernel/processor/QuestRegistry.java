@@ -78,8 +78,7 @@ public record QuestRegistry(
 ) implements FeatureApi {
 
     /**
-     * Create a new Registry for storing and using Conditions, Actions, Objectives, Placeholders,
-     * Conversations and Quest canceler.
+     * Create a new Registry for storing and using Processors.
      *
      * @param log               the custom logger for this registry
      * @param loggerFactory     the logger factory used for new custom logger instances

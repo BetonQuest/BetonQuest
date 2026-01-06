@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * Event that drops items at a location.
+ * Action that drops items at a location.
  */
 public class DropAction implements NullableAction {
 
@@ -27,7 +27,7 @@ public class DropAction implements NullableAction {
     private final Argument<Location> location;
 
     /**
-     * Creates an event that drops the given items at a location selected by the given selector.
+     * Creates an action that drops the given items at a location selected by the given selector.
      *
      * @param items    items to be dropped
      * @param location the location to drop the items at

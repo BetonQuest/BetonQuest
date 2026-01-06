@@ -39,7 +39,7 @@ public class PermissionAction implements PlayerAction {
     private final Argument<Boolean> perm;
 
     /**
-     * Create a new Vault Permission event.
+     * Create a new Vault Permission action.
      *
      * @param permissionService the service where the permission will be modified
      * @param permission        the permission to add or remove

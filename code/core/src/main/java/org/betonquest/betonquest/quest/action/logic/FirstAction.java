@@ -19,7 +19,7 @@ public class FirstAction implements NullableAction {
     /**
      * The actions to run.
      */
-    private final Argument<List<ActionID>> events;
+    private final Argument<List<ActionID>> actions;
 
     /**
      * Quest Type API.
@@ -27,20 +27,20 @@ public class FirstAction implements NullableAction {
     private final QuestTypeApi questTypeApi;
 
     /**
-     * Makes a new first event.
+     * Makes a new first action.
      *
-     * @param eventIDList  A list of events to execute in order.
+     * @param actions      A list of actions to execute in order.
      * @param questTypeApi the Quest Type API
      */
-    public FirstAction(final Argument<List<ActionID>> eventIDList, final QuestTypeApi questTypeApi) {
-        events = eventIDList;
+    public FirstAction(final Argument<List<ActionID>> actions, final QuestTypeApi questTypeApi) {
+        this.actions = actions;
         this.questTypeApi = questTypeApi;
     }
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
-        for (final ActionID event : events.getValue(profile)) {
-            if (questTypeApi.action(profile, event)) {
+        for (final ActionID action : actions.getValue(profile)) {
+            if (questTypeApi.action(profile, action)) {
                 break;
             }
         }

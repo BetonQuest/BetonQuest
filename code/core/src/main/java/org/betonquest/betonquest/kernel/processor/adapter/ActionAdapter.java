@@ -60,11 +60,11 @@ public class ActionAdapter extends QuestAdapter<PlayerAction, PlayerlessAction> 
     }
 
     /**
-     * Fires an action for the profile if it meets the event's conditions.
+     * Fires an action for the profile if it meets the action's conditions.
      *
      * @param profile the {@link Profile} to execute for
-     * @return whether the event was successfully handled or not
-     * @throws QuestException if the event could not be executed or requires a profile for execution
+     * @return whether the action was successfully handled or not
+     * @throws QuestException if the action could not be executed
      */
     public boolean fire(@Nullable final Profile profile) throws QuestException {
         if (player == null || profile == null) {
@@ -83,11 +83,11 @@ public class ActionAdapter extends QuestAdapter<PlayerAction, PlayerlessAction> 
 
     private boolean handleNullProfile() throws QuestException {
         if (playerless == null) {
-            //throw new QuestException("Non-static event '" + instruction + "' cannot be executed without a profile reference!");
-            log.warn(getPackage(), "Cannot execute non-static event '" + instruction.getID() + "' without a player!");
+            //throw new QuestException("Non-static action '" + instruction + "' cannot be executed without a profile reference!");
+            log.warn(getPackage(), "Cannot execute non-static action '" + instruction.getID() + "' without a player!");
             return false;
         }
-        log.debug(getPackage(), "Static event will be fired without a profile.");
+        log.debug(getPackage(), "Static action will be fired without a profile.");
         if (!questTypeApi.conditions(null, conditions.getValue(null))) {
             log.debug(getPackage(), "Action conditions were not met");
             return false;

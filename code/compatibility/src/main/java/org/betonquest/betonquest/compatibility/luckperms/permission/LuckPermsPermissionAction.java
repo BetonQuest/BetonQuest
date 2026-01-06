@@ -16,7 +16,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 /**
- * Event to add permissions to a player using LuckPerms.
+ * Action to add permissions to a player using LuckPerms.
  */
 public class LuckPermsPermissionAction implements PlayerAction {
 

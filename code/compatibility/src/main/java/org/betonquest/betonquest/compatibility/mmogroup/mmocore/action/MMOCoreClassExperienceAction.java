@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 
 /**
- * Event to add class experience to a player.
+ * Action to add class experience to a player.
  */
 public class MMOCoreClassExperienceAction implements PlayerAction {
 
@@ -24,7 +24,7 @@ public class MMOCoreClassExperienceAction implements PlayerAction {
     private final FlagArgument<Boolean> level;
 
     /**
-     * Create a new experience add event.
+     * Create a new experience add action.
      *
      * @param amount the amount to grant
      * @param level  whether to add level instead of experience

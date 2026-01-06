@@ -9,7 +9,7 @@ import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.quest.action.NotificationSender;
 
 /**
- * The journal event, doing what was defined in its instruction.
+ * The journal action, doing what was defined in its instruction.
  */
 public class JournalAction implements PlayerAction {
 
@@ -19,7 +19,7 @@ public class JournalAction implements PlayerAction {
     private final PlayerDataStorage dataStorage;
 
     /**
-     * Change to apply to a journal when the event is executed.
+     * Change to apply to a journal when the action is executed.
      */
     private final JournalChanger journalChanger;
 
@@ -29,7 +29,7 @@ public class JournalAction implements PlayerAction {
     private final NotificationSender notificationSender;
 
     /**
-     * Create a journal event.
+     * Create a journal action.
      *
      * @param dataStorage        to get player data
      * @param journalChanger     change to apply to a journal

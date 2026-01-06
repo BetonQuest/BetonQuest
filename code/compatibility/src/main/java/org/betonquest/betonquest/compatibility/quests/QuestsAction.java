@@ -29,7 +29,7 @@ public class QuestsAction implements PlayerAction {
     private final FlagArgument<Boolean> override;
 
     /**
-     * Create a new start quest event.
+     * Create a new start quest action.
      *
      * @param quests    active quests instance
      * @param questName name of quest to start

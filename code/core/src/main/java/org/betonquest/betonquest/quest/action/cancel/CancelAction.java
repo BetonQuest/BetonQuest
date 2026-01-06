@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 import org.betonquest.betonquest.id.QuestCancelerID;
 
 /**
- * The cancel event.
+ * The cancel action.
  */
 public class CancelAction implements OnlineAction {
 
@@ -29,7 +29,7 @@ public class CancelAction implements OnlineAction {
     private final FlagArgument<Boolean> bypass;
 
     /**
-     * Creates a new cancel event.
+     * Creates a new cancel action.
      *
      * @param featureApi the feature API
      * @param cancelerID the canceler to use

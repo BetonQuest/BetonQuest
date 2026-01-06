@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 
 /**
- * Event to add profession experience to a player.
+ * Action to add profession experience to a player.
  */
 public class MMOCoreProfessionExperienceAction implements PlayerAction {
 
@@ -30,7 +30,7 @@ public class MMOCoreProfessionExperienceAction implements PlayerAction {
     private final FlagArgument<Boolean> level;
 
     /**
-     * Create a new class point add event.
+     * Create a new class point add action.
      *
      * @param profession the profession to add experience to
      * @param amount     the amount to grant

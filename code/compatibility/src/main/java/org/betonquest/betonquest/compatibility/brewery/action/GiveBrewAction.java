@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.stream.IntStream;
 
 /**
- * Event to give a player a certain amount of brews with a specific quality.
+ * Action to give a player a certain amount of brews with a specific quality.
  */
 public class GiveBrewAction implements OnlineAction {
 
@@ -39,7 +39,7 @@ public class GiveBrewAction implements OnlineAction {
     private final Argument<IdentifierType> mode;
 
     /**
-     * Create a new Give Brew Event.
+     * Create a new Give Brew Action.
      *
      * @param amount  the amount of brews to give.
      * @param quality the quality of the brews.

@@ -14,19 +14,19 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Factory to create delete effect events from {@link Instruction}s.
+ * Factory to create delete effect actions from {@link Instruction}s.
  */
 public class DeleteEffectActionFactory implements PlayerActionFactory {
 
     /**
-     * Logger factory to create a logger for the events.
+     * Logger factory to create a logger for the actions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Create the delete effect event factory.
+     * Create the delete effect action factory.
      *
-     * @param loggerFactory the logger factory to create a logger for the events
+     * @param loggerFactory the logger factory to create a logger for the actions
      */
     public DeleteEffectActionFactory(final BetonQuestLoggerFactory loggerFactory) {
         this.loggerFactory = loggerFactory;

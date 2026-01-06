@@ -9,19 +9,19 @@ import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
 
 /**
- * Factory to create damage events from {@link Instruction}s.
+ * Factory to create damage actions from {@link Instruction}s.
  */
 public class DamageActionFactory implements PlayerActionFactory {
 
     /**
-     * Logger factory to create a logger for the events.
+     * Logger factory to create a logger for the actions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Create the damage event factory.
+     * Create the damage action factory.
      *
-     * @param loggerFactory the logger factory to create a logger for the events
+     * @param loggerFactory the logger factory to create a logger for the actions
      */
     public DamageActionFactory(final BetonQuestLoggerFactory loggerFactory) {
         this.loggerFactory = loggerFactory;

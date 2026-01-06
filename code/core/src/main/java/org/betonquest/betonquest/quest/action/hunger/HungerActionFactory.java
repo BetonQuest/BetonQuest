@@ -9,19 +9,19 @@ import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
 
 /**
- * Factory for the hunger event.
+ * Factory for the hunger action.
  */
 public class HungerActionFactory implements PlayerActionFactory {
 
     /**
-     * Logger factory to create a logger for the events.
+     * Logger factory to create a logger for the actions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Create the hunger event factory.
+     * Create the hunger action factory.
      *
-     * @param loggerFactory the logger factory to create a logger for the events
+     * @param loggerFactory the logger factory to create a logger for the actions
      */
     public HungerActionFactory(final BetonQuestLoggerFactory loggerFactory) {
         this.loggerFactory = loggerFactory;

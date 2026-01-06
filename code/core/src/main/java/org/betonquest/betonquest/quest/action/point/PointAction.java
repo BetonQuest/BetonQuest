@@ -41,7 +41,7 @@ public class PointAction implements PlayerAction {
     private final PlayerDataStorage dataStorage;
 
     /**
-     * Creates a new point event.
+     * Creates a new point action.
      *
      * @param pointSender the notification sender to use
      * @param category    the category name

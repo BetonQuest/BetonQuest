@@ -34,7 +34,7 @@ public class TakeAction extends AbstractTakeAction {
     private final Map<UUID, Pair<QuestItem, Integer>> neededDeletions = new ConcurrentHashMap<>();
 
     /**
-     * Constructs a new TakeEvent.
+     * Constructs a new TakeAction.
      *
      * @param questItems         the items to be removed
      * @param checkOrder         the order in which the checks should be performed

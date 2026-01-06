@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Factory to create spawn mob events from {@link Instruction}s.
+ * Factory to create spawn mob actions from {@link Instruction}s.
  */
 public class SpawnMobActionFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
@@ -41,22 +41,22 @@ public class SpawnMobActionFactory implements PlayerActionFactory, PlayerlessAct
 
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
-        return createSpawnMobEvent(instruction);
+        return createSpawnMobAction(instruction);
     }
 
     @Override
     public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
-        return createSpawnMobEvent(instruction);
+        return createSpawnMobAction(instruction);
     }
 
     /**
-     * Creates a new spawn mob event from the given instruction.
+     * Creates a new spawn mob action from the given instruction.
      *
-     * @param instruction the instruction to create the event from
-     * @return the created event
+     * @param instruction the instruction to create the action from
+     * @return the created action
      * @throws QuestException if the instruction could not be parsed
      */
-    public NullableActionAdapter createSpawnMobEvent(final Instruction instruction) throws QuestException {
+    public NullableActionAdapter createSpawnMobAction(final Instruction instruction) throws QuestException {
         final Argument<Location> loc = instruction.location().get();
         final Argument<EntityType> type = instruction.parse(entityTypeParser).get();
         final Argument<Number> amount = instruction.number().get();
@@ -70,7 +70,7 @@ public class SpawnMobActionFactory implements PlayerActionFactory, PlayerlessAct
         final Argument<ItemWrapper> offHand = instruction.item().get("o").orElse(null);
         final Argument<List<ItemWrapper>> drops = instruction.item().list().get("drops", Collections.emptyList());
         final Equipment equipment = new Equipment(helmet, chestplate, leggings, boots, mainHand, offHand, drops);
-        final SpawnMobAction event = new SpawnMobAction(loc, type, equipment, amount, name, marked);
-        return new NullableActionAdapter(event);
+        final SpawnMobAction action = new SpawnMobAction(loc, type, equipment, amount, name, marked);
+        return new NullableActionAdapter(action);
     }
 }

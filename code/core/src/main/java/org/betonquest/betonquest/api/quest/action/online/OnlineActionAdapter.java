@@ -16,54 +16,54 @@ import java.util.Optional;
 public final class OnlineActionAdapter implements PlayerAction {
 
     /**
-     * Event to run with the online profile.
+     * Action to run with the online profile.
      */
-    private final OnlineAction onlineEvent;
+    private final OnlineAction onlineAction;
 
     /**
-     * Fallback event to run if the player is not online.
+     * Fallback action to run if the player is not online.
      */
-    private final PlayerAction fallbackPlayerEvent;
+    private final PlayerAction fallbackPlayerAction;
 
     /**
-     * Create an event that runs the given online event.
+     * Create an action that runs the given online action.
      * If the player is not online, it logs a message into the debug log.
      *
-     * @param onlineEvent  event to run for online players
+     * @param onlineAction action to run for online players
      * @param log          log to write to if the player is not online
      * @param questPackage quest package to reference in the log
      */
-    public OnlineActionAdapter(final OnlineAction onlineEvent, final BetonQuestLogger log, final QuestPackage questPackage) {
-        this(onlineEvent, profile -> log.debug(
+    public OnlineActionAdapter(final OnlineAction onlineAction, final BetonQuestLogger log, final QuestPackage questPackage) {
+        this(onlineAction, profile -> log.debug(
                 questPackage,
-                profile + " is offline, cannot fire event because it's not persistent."
+                profile + " is offline, cannot fire action because it's not persistent."
         ));
     }
 
     /**
-     * Create an event that runs the given online event if the player is online
-     * and falls back to the fallback event otherwise.
+     * Create an action that runs the given online action if the player is online
+     * and falls back to the fallback action otherwise.
      *
-     * @param onlineEvent         event to run for online players
-     * @param fallbackPlayerEvent fallback event to run for offline players
+     * @param onlineAction         action to run for online players
+     * @param fallbackPlayerAction fallback action to run for offline players
      */
-    public OnlineActionAdapter(final OnlineAction onlineEvent, final PlayerAction fallbackPlayerEvent) {
-        this.onlineEvent = onlineEvent;
-        this.fallbackPlayerEvent = fallbackPlayerEvent;
+    public OnlineActionAdapter(final OnlineAction onlineAction, final PlayerAction fallbackPlayerAction) {
+        this.onlineAction = onlineAction;
+        this.fallbackPlayerAction = fallbackPlayerAction;
     }
 
     @Override
     public void execute(final Profile profile) throws QuestException {
         final Optional<OnlineProfile> onlineProfile = profile.getOnlineProfile();
         if (onlineProfile.isPresent()) {
-            onlineEvent.execute(onlineProfile.get());
+            onlineAction.execute(onlineProfile.get());
         } else {
-            fallbackPlayerEvent.execute(profile);
+            fallbackPlayerAction.execute(profile);
         }
     }
 
     @Override
     public boolean isPrimaryThreadEnforced() {
-        return onlineEvent.isPrimaryThreadEnforced() || fallbackPlayerEvent.isPrimaryThreadEnforced();
+        return onlineAction.isPrimaryThreadEnforced() || fallbackPlayerAction.isPrimaryThreadEnforced();
     }
 }

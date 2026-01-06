@@ -29,14 +29,14 @@ public class LogActionFactory implements PlayerActionFactory, PlayerlessActionFa
     private static final Pattern LEVEL_REGEX = Pattern.compile("^\\s*level:\\S*\\s");
 
     /**
-     * Logger factory to create a logger for the events.
+     * Logger factory to create a logger for the actions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Create a new log event factory.
+     * Create a new log action factory.
      *
-     * @param loggerFactory the logger factory to create a logger for the events
+     * @param loggerFactory the logger factory to create a logger for the actions
      */
     public LogActionFactory(final BetonQuestLoggerFactory loggerFactory) {
         this.loggerFactory = loggerFactory;
@@ -44,15 +44,15 @@ public class LogActionFactory implements PlayerActionFactory, PlayerlessActionFa
 
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
-        return createLogEvent(instruction);
+        return createLogAction(instruction);
     }
 
     @Override
     public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
-        return createLogEvent(instruction);
+        return createLogAction(instruction);
     }
 
-    private NullableActionAdapter createLogEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createLogAction(final Instruction instruction) throws QuestException {
         final Argument<LogEventLevel> level = instruction.enumeration(LogEventLevel.class).get("level", LogEventLevel.INFO);
         final String raw = String.join(" ", instruction.getValueParts());
         final Matcher conditionsMatcher = CONDITIONS_REGEX.matcher(raw);

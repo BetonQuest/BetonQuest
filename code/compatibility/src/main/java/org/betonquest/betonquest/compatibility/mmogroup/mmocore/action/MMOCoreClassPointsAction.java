@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 
 /**
- * Event to add class points to a player.
+ * Action to add class points to a player.
  */
 public class MMOCoreClassPointsAction implements PlayerAction {
 
@@ -17,7 +17,7 @@ public class MMOCoreClassPointsAction implements PlayerAction {
     private final Argument<Number> amount;
 
     /**
-     * Create a new class point add event.
+     * Create a new class point add action.
      *
      * @param amount the amount to grant
      */

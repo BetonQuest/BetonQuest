@@ -12,19 +12,19 @@ import java.util.Locale;
 import java.util.Optional;
 
 /**
- * Factory for the experience event.
+ * Factory for the experience action.
  */
 public class ExperienceActionFactory implements PlayerActionFactory {
 
     /**
-     * Logger factory to create a logger for the events.
+     * Logger factory to create a logger for the actions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Create the experience event factory.
+     * Create the experience action factory.
      *
-     * @param loggerFactory the logger factory to create a logger for the events
+     * @param loggerFactory the logger factory to create a logger for the actions
      */
     public ExperienceActionFactory(final BetonQuestLoggerFactory loggerFactory) {
         this.loggerFactory = loggerFactory;

@@ -14,27 +14,27 @@ import org.bukkit.Location;
 import java.util.List;
 
 /**
- * Factory to create chest events from {@link Instruction}s.
+ * Factory to create chest actions from {@link Instruction}s.
  */
 public class ChestGiveActionFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
-     * Create the chest give event factory.
+     * Create the chest give action factory.
      */
     public ChestGiveActionFactory() {
     }
 
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
-        return createChestGiveEvent(instruction);
+        return createChestGiveAction(instruction);
     }
 
     @Override
     public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
-        return createChestGiveEvent(instruction);
+        return createChestGiveAction(instruction);
     }
 
-    private NullableActionAdapter createChestGiveEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createChestGiveAction(final Instruction instruction) throws QuestException {
         final Argument<Location> location = instruction.location().get();
         final Argument<List<ItemWrapper>> items = instruction.item().list().get();
         return new NullableActionAdapter(new ChestGiveAction(location, items)

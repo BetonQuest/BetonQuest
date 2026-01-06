@@ -24,7 +24,7 @@ public class DeletePointAction implements PlayerAction {
     private final Argument<String> category;
 
     /**
-     * Creates a new DeletePointsEvent.
+     * Creates a new DeletePointsAction.
      *
      * @param playerDataSource the source to get a profiles player data
      * @param category         the category to delete

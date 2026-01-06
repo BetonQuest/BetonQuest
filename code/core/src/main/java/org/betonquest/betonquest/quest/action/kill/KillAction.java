@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 public class KillAction implements OnlineAction {
 
     /**
-     * Creates a new kill event.
+     * Creates a new kill action.
      */
     public KillAction() {
     }

@@ -319,7 +319,7 @@ public class MultiSectionConfigurationModificationTest {
         final Set<String> actual = config.getKeys(true);
         assertTrue(expected.containsAll(actual), "expected does not contain all actual keys.");
         assertTrue(actual.containsAll(expected), "actual does not contain all expected keys.");
-        assertTrue(actual.contains("actions.custom.path.take_more"), "actual does not contains event take_more.");
-        assertFalse(actual.contains("actions.custom.path.take"), "actual contain event take.");
+        assertTrue(actual.contains("actions.custom.path.take_more"), "actual does not contains action take_more.");
+        assertFalse(actual.contains("actions.custom.path.take"), "actual contain action take.");
     }
 }

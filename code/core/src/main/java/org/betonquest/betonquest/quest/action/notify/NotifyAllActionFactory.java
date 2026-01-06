@@ -15,7 +15,7 @@ import org.betonquest.betonquest.quest.action.CallPlayerlessActionAdapter;
 import org.betonquest.betonquest.quest.action.OnlineProfileGroupPlayerlessActionAdapter;
 
 /**
- * Factory for the notify all event.
+ * Factory for the notify all action.
  */
 public class NotifyAllActionFactory extends NotifyActionFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
@@ -25,9 +25,9 @@ public class NotifyAllActionFactory extends NotifyActionFactory implements Playe
     private final ProfileProvider profileProvider;
 
     /**
-     * Creates the notify all event factory.
+     * Creates the notify all action factory.
      *
-     * @param loggerFactory    the logger factory to create a logger for the events
+     * @param loggerFactory    the logger factory to create a logger for the actions
      * @param textParser       the text parser to use for parsing text
      * @param dataStorage      the storage providing player data
      * @param profileProvider  the profile provider instance

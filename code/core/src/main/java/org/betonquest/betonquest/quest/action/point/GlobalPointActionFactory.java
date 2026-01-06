@@ -11,7 +11,7 @@ import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter
 import org.betonquest.betonquest.database.GlobalData;
 
 /**
- * Factory to create global points events from {@link Instruction}s.
+ * Factory to create global points actions from {@link Instruction}s.
  */
 public class GlobalPointActionFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
@@ -21,7 +21,7 @@ public class GlobalPointActionFactory implements PlayerActionFactory, Playerless
     private final GlobalData globalData;
 
     /**
-     * Create the global points event factory.
+     * Create the global points action factory.
      *
      * @param globalData the global data
      */
@@ -31,19 +31,19 @@ public class GlobalPointActionFactory implements PlayerActionFactory, Playerless
 
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
-        return parseCombinedEvent(instruction);
+        return parseCombinedAction(instruction);
     }
 
     @Override
     public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
-        return parseCombinedEvent(instruction);
+        return parseCombinedAction(instruction);
     }
 
-    private NullableActionAdapter parseCombinedEvent(final Instruction instruction) throws QuestException {
-        return new NullableActionAdapter(createGlobalPointEvent(instruction));
+    private NullableActionAdapter parseCombinedAction(final Instruction instruction) throws QuestException {
+        return new NullableActionAdapter(createGlobalPointAction(instruction));
     }
 
-    private GlobalPointAction createGlobalPointEvent(final Instruction instruction) throws QuestException {
+    private GlobalPointAction createGlobalPointAction(final Instruction instruction) throws QuestException {
         final Argument<String> category = instruction.packageIdentifier().get();
         final Argument<Number> number = instruction.number().get();
         final PointType type = instruction.enumeration(PointType.class).get("action", PointType.ADD).getValue(null);

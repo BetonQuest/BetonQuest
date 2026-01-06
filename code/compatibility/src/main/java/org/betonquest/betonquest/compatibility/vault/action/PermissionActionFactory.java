@@ -18,7 +18,7 @@ public class PermissionActionFactory implements PlayerActionFactory {
     private final Permission permissionService;
 
     /**
-     * Create a new Factory to create Vault Permission Events.
+     * Create a new Factory to create Vault Permission Actions.
      *
      * @param permissionService the service where the permission will be modified
      */

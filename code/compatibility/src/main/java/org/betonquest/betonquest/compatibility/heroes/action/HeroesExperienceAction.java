@@ -30,7 +30,7 @@ public class HeroesExperienceAction implements OnlineAction {
     private final Argument<Number> amount;
 
     /**
-     * Create a new Heroes Experience Event.
+     * Create a new Heroes Experience Action.
      *
      * @param characterManager The {@link CharacterManager} of the Heroes plugin.
      * @param classType        The {@link HeroesClassType} of the class to add experience to.

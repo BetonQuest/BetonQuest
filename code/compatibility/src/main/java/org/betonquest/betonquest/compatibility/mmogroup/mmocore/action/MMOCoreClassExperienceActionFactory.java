@@ -13,7 +13,7 @@ import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 public class MMOCoreClassExperienceActionFactory implements PlayerActionFactory {
 
     /**
-     * Create a new MMO Core Event Factory.
+     * Create a new MMO Core Action Factory.
      */
     public MMOCoreClassExperienceActionFactory() {
     }

@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.quest.objective.variable.VariableObjective;
 
 /**
- * Event that changes values that are stored in the variable objectives.
+ * Action that changes values that are stored in the variable objectives.
  */
 public class VariableAction implements PlayerAction {
 
@@ -35,7 +35,7 @@ public class VariableAction implements PlayerAction {
     private final Argument<String> value;
 
     /**
-     * Create a new variable event.
+     * Create a new variable action.
      *
      * @param questTypeApi the Quest Type API
      * @param objectiveID  the objective id of the variable objective

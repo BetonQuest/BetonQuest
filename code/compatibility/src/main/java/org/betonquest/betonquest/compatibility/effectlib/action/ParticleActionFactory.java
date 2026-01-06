@@ -29,7 +29,7 @@ public class ParticleActionFactory implements PlayerActionFactory {
     private final EffectManager manager;
 
     /**
-     * Create a factory for particle events.
+     * Create a factory for particle actions.
      *
      * @param loggerFactory the logger factory to create new class specific logger
      * @param manager       the effect manager which will create and control the particles

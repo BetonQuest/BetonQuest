@@ -10,7 +10,7 @@ import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.id.CompassID;
 
 /**
- * The compass event factory.
+ * The compass action factory.
  */
 public class CompassActionFactory implements PlayerActionFactory {
 
@@ -25,7 +25,7 @@ public class CompassActionFactory implements PlayerActionFactory {
     private final PlayerDataStorage dataStorage;
 
     /**
-     * Create the compass event factory.
+     * Create the compass action factory.
      *
      * @param featureApi  the Feature API
      * @param dataStorage the storage for used player data

@@ -19,9 +19,9 @@ import java.util.List;
 public class TakeActionFactory extends AbstractTakeActionFactory {
 
     /**
-     * Create the take event factory.
+     * Create the take action factory.
      *
-     * @param loggerFactory the logger factory to create a logger for the events
+     * @param loggerFactory the logger factory to create a logger for the actions
      * @param pluginMessage the {@link PluginMessage} instance
      */
     public TakeActionFactory(final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage) {

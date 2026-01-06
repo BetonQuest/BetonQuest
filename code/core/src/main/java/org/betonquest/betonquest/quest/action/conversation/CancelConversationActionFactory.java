@@ -8,12 +8,12 @@ import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
 
 /**
- * Factory to create conversation cancel events from {@link Instruction}s.
+ * Factory to create conversation cancel actions from {@link Instruction}s.
  */
 public class CancelConversationActionFactory implements PlayerActionFactory {
 
     /**
-     * Logger factory to create a logger for the events.
+     * Logger factory to create a logger for the actions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -23,9 +23,9 @@ public class CancelConversationActionFactory implements PlayerActionFactory {
     private final ConversationApi conversationApi;
 
     /**
-     * Create the conversation cancel event factory.
+     * Create the conversation cancel action factory.
      *
-     * @param loggerFactory   the logger factory to create a logger for the events
+     * @param loggerFactory   the logger factory to create a logger for the actions
      * @param conversationApi the Conversation API
      */
     public CancelConversationActionFactory(final BetonQuestLoggerFactory loggerFactory, final ConversationApi conversationApi) {

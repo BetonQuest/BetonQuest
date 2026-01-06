@@ -15,7 +15,7 @@ import org.betonquest.betonquest.compatibility.mmogroup.mmocore.MMOProfessionPar
 public class MMOCoreProfessionExperienceActionFactory implements PlayerActionFactory {
 
     /**
-     * Create a new MMO Core Event Factory.
+     * Create a new MMO Core Action Factory.
      */
     public MMOCoreProfessionExperienceActionFactory() {
     }

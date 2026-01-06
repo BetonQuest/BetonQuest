@@ -33,7 +33,7 @@ public class ExplosionAction implements NullableAction {
     private final Argument<Boolean> breaksBlocks;
 
     /**
-     * Creates a new explosion event.
+     * Creates a new explosion action.
      *
      * @param location     the location of the explosion
      * @param power        the power of the explosion

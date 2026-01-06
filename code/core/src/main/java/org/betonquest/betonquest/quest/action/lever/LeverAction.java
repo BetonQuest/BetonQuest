@@ -14,7 +14,7 @@ import org.bukkit.block.data.type.Switch;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * This event turns on, of or toggles levers.
+ * This action turns on, of or toggles levers.
  */
 public class LeverAction implements NullableAction {
 
@@ -29,7 +29,7 @@ public class LeverAction implements NullableAction {
     private final Argument<Location> location;
 
     /**
-     * Create a new lever event.
+     * Create a new lever action.
      *
      * @param stateType the type of state to set the lever to
      * @param location  the location of the lever

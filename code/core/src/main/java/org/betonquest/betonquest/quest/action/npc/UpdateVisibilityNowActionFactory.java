@@ -18,15 +18,15 @@ public class UpdateVisibilityNowActionFactory implements PlayerActionFactory {
     private final NpcHider npcHider;
 
     /**
-     * Logger factory to create a logger for the events.
+     * Logger factory to create a logger for the actions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Create the Npc visibility update event factory.
+     * Create the Npc visibility update action factory.
      *
      * @param npcHider      the hider where to update the visibility
-     * @param loggerFactory the logger factory to create a logger for the events
+     * @param loggerFactory the logger factory to create a logger for the actions
      */
     public UpdateVisibilityNowActionFactory(final NpcHider npcHider, final BetonQuestLoggerFactory loggerFactory) {
         this.npcHider = npcHider;

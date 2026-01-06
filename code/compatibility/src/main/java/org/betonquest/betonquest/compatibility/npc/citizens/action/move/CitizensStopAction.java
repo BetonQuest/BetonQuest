@@ -31,7 +31,7 @@ public class CitizensStopAction implements NullableAction {
     private final CitizensMoveController citizensMoveController;
 
     /**
-     * Create a new CitizensStopEvent.
+     * Create a new CitizensStopAction.
      *
      * @param featureApi             the Feature API
      * @param npcId                  the id of the NPC to stop

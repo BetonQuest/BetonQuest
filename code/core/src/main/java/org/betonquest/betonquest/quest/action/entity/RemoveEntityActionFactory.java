@@ -28,15 +28,15 @@ public class RemoveEntityActionFactory implements PlayerActionFactory, Playerles
 
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
-        return createRemoveEntityEvent(instruction);
+        return createRemoveEntityAction(instruction);
     }
 
     @Override
     public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
-        return createRemoveEntityEvent(instruction);
+        return createRemoveEntityAction(instruction);
     }
 
-    private NullableActionAdapter createRemoveEntityEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createRemoveEntityAction(final Instruction instruction) throws QuestException {
         final Argument<List<EntityType>> types = instruction.enumeration(EntityType.class).list().get();
         final Argument<Location> loc = instruction.location().get();
         final Argument<Number> range = instruction.number().get();

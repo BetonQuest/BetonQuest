@@ -24,7 +24,7 @@ public class ConversationAction implements OnlineAction {
     private final Argument<Pair<ConversationID, String>> conversation;
 
     /**
-     * Creates a new ConversationEvent.
+     * Creates a new ConversationAction.
      *
      * @param conversationApi the Conversation API
      * @param conversation    the conversation and option to start as a pair

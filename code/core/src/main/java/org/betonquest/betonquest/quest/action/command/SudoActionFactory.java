@@ -13,9 +13,9 @@ import org.bukkit.Server;
 public class SudoActionFactory extends BaseCommandActionFactory {
 
     /**
-     * Create the sudo event factory.
+     * Create the sudo action factory.
      *
-     * @param loggerFactory the logger factory to create a logger for the events
+     * @param loggerFactory the logger factory to create a logger for the actions
      * @param server        the server to execute commands on
      */
     public SudoActionFactory(final BetonQuestLoggerFactory loggerFactory, final Server server) {

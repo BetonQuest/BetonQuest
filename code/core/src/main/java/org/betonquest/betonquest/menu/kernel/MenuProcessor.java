@@ -141,11 +141,11 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
             }
             final Text title = textCreator.parseFromSection(pack, section, "title");
             final Argument<List<ConditionID>> openConditions = getID("open_conditions", ConditionID::new);
-            final Argument<List<ActionID>> openEvents = getID("open_actions", ActionID::new);
-            final Argument<List<ActionID>> closeEvents = getID("close_actions", ActionID::new);
+            final Argument<List<ActionID>> openActions = getID("open_actions", ActionID::new);
+            final Argument<List<ActionID>> closeActions = getID("close_actions", ActionID::new);
 
             final List<Slots> slots = loadSlots(height);
-            return new Menu.MenuData(title, height, slots, openConditions, openEvents, closeEvents);
+            return new Menu.MenuData(title, height, slots, openConditions, openActions, closeActions);
         }
 
         private List<Slots> loadSlots(final int height) throws QuestException {

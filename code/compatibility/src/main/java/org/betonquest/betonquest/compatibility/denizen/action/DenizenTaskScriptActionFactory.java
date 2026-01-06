@@ -7,12 +7,12 @@ import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 
 /**
- * Factory to create Denizen Task Script Events.
+ * Factory to create Denizen Task Script Actions.
  */
 public class DenizenTaskScriptActionFactory implements PlayerActionFactory {
 
     /**
-     * Create a new Factory to create Denizen Task Script Events.
+     * Create a new Factory to create Denizen Task Script Actions.
      */
     public DenizenTaskScriptActionFactory() {
     }

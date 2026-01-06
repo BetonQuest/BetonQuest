@@ -23,10 +23,10 @@ class DatabaseSaverPlayerlessActionTest {
     @Test
     void testAddRecord(@Mock final Saver saver) throws QuestException {
         final Saver.Record record = new Saver.Record(UpdateType.DELETE_GLOBAL_TAGS);
-        final DatabaseSaverPlayerlessAction event = new DatabaseSaverPlayerlessAction(saver, () -> record);
+        final DatabaseSaverPlayerlessAction action = new DatabaseSaverPlayerlessAction(saver, () -> record);
 
         verify(saver, never()).add(record);
-        event.execute();
+        action.execute();
         verify(saver).add(record);
         verifyNoMoreInteractions(saver);
     }
@@ -37,12 +37,12 @@ class DatabaseSaverPlayerlessActionTest {
         final Saver.Record firstRecord = new Saver.Record(UpdateType.DELETE_GLOBAL_TAGS);
         final Saver.Record secondRecord = new Saver.Record(UpdateType.DELETE_GLOBAL_POINTS);
         final Iterator<Saver.Record> recordsForSupplier = List.of(firstRecord, secondRecord).iterator();
-        final DatabaseSaverPlayerlessAction event = new DatabaseSaverPlayerlessAction(saver, recordsForSupplier::next);
+        final DatabaseSaverPlayerlessAction action = new DatabaseSaverPlayerlessAction(saver, recordsForSupplier::next);
 
-        event.execute();
+        action.execute();
         verify(saver).add(firstRecord);
         verify(saver, never()).add(secondRecord);
-        event.execute();
+        action.execute();
         // saver.add(firstRecord) was executed once during the first call,
         // but it would be more than once if the second call did execute it too
         verify(saver).add(firstRecord);
