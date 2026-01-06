@@ -181,11 +181,11 @@ public class CoreFeatureFactories {
         notifyIOTypes.register("subtitle", new SubTitleNotifyIOFactory(placeholders));
         notifyIOTypes.register("sound", new SoundIOFactory(placeholders));
 
-        final ScheduleRegistry eventSchedulingTypes = registries.eventScheduling();
-        eventSchedulingTypes.register("realtime-daily", new RealtimeDailyScheduleFactory(placeholders, packManager),
+        final ScheduleRegistry schedulingTypes = registries.actionScheduling();
+        schedulingTypes.register("realtime-daily", new RealtimeDailyScheduleFactory(placeholders, packManager),
                 new RealtimeDailyScheduler(loggerFactory.create(RealtimeDailyScheduler.class, "Schedules"), questTypeApi, lastExecutionCache)
         );
-        eventSchedulingTypes.register("realtime-cron", new RealtimeCronScheduleFactory(placeholders, packManager),
+        schedulingTypes.register("realtime-cron", new RealtimeCronScheduleFactory(placeholders, packManager),
                 new RealtimeCronScheduler(loggerFactory.create(RealtimeCronScheduler.class, "Schedules"), questTypeApi, lastExecutionCache)
         );
 

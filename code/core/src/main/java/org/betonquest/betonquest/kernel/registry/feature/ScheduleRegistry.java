@@ -4,15 +4,15 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.kernel.registry.FactoryRegistry;
-import org.betonquest.betonquest.schedule.EventScheduling;
+import org.betonquest.betonquest.schedule.ActionScheduling;
 import org.betonquest.betonquest.schedule.ScheduleFactory;
 
 import java.util.Set;
 
 /**
- * Registry for usable schedule type in the Event scheduler.
+ * Registry for usable schedule type in the Action scheduler.
  */
-public class ScheduleRegistry extends FactoryRegistry<EventScheduling.ScheduleType<?, ?>> {
+public class ScheduleRegistry extends FactoryRegistry<ActionScheduling.ScheduleType<?, ?>> {
 
     /**
      * Create a new type registry.
@@ -32,7 +32,7 @@ public class ScheduleRegistry extends FactoryRegistry<EventScheduling.ScheduleTy
      * @param <S>       type of schedule
      */
     public <S extends Schedule> void register(final String name, final ScheduleFactory<S> schedule, final Scheduler<S, ?> scheduler) {
-        register(name, new EventScheduling.ScheduleType<>(schedule, scheduler));
+        register(name, new ActionScheduling.ScheduleType<>(schedule, scheduler));
     }
 
     /**
@@ -40,7 +40,7 @@ public class ScheduleRegistry extends FactoryRegistry<EventScheduling.ScheduleTy
      *
      * @return an unmodifiable copy
      */
-    public Set<EventScheduling.ScheduleType<?, ?>> values() {
+    public Set<ActionScheduling.ScheduleType<?, ?>> values() {
         return Set.copyOf(types.values());
     }
 }

@@ -16,7 +16,7 @@ import org.bukkit.configuration.ConfigurationSection;
 /**
  * Class responsible for managing schedule types, their schedulers, as well as parsing schedules from config.
  */
-public class EventScheduling extends SectionProcessor<ScheduleID, Void> {
+public class ActionScheduling extends SectionProcessor<ScheduleID, Void> {
 
     /**
      * Map that contains all types of schedulers,
@@ -25,15 +25,15 @@ public class EventScheduling extends SectionProcessor<ScheduleID, Void> {
     private final ScheduleRegistry scheduleTypes;
 
     /**
-     * Creates a new instance of the event scheduling class.
+     * Creates a new instance of the action scheduling class.
      *
      * @param log           the logger that will be used for logging
      * @param placeholders  the {@link Placeholders} to create and resolve placeholders
      * @param packManager   the quest package manager to get quest packages from
      * @param scheduleTypes map containing the schedule types, provided by {@link org.betonquest.betonquest.BetonQuest}
      */
-    public EventScheduling(final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager,
-                           final ScheduleRegistry scheduleTypes) {
+    public ActionScheduling(final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager,
+                            final ScheduleRegistry scheduleTypes) {
         super(log, placeholders, packManager, "Schedules", "schedules");
         this.scheduleTypes = scheduleTypes;
     }
