@@ -47,12 +47,12 @@ public class EntityInteractObjectiveFactory implements ObjectiveFactory {
         final Argument<Number> range = instruction.number().get("range", 1);
         final EquipmentSlot slot = getEquipmentSlot(instruction);
         final EntityInteractObjective objective = new EntityInteractObjective(instruction, targetAmount, loc, range, customName, realName, slot, mobType, marked, interaction, cancel);
-        eventService.request(EntityDamageByEntityEvent.class)
-                .handler(objective::onDamage, EntityDamageByEntityEvent::getDamager).subscribe(true);
-        eventService.request(PlayerInteractEntityEvent.class)
-                .handler(objective::onRightClick, PlayerInteractEntityEvent::getPlayer).subscribe(true);
-        eventService.request(PlayerInteractAtEntityEvent.class)
-                .handler(objective::onArmorRightClick, PlayerInteractAtEntityEvent::getPlayer).subscribe(true);
+        eventService.request(EntityDamageByEntityEvent.class).onlineHandler(objective::onDamage)
+                .entity(EntityDamageByEntityEvent::getDamager).subscribe(true);
+        eventService.request(PlayerInteractEntityEvent.class).onlineHandler(objective::onRightClick)
+                .player(PlayerInteractEntityEvent::getPlayer).subscribe(true);
+        eventService.request(PlayerInteractAtEntityEvent.class).onlineHandler(objective::onArmorRightClick)
+                .player(PlayerInteractAtEntityEvent::getPlayer).subscribe(true);
         return objective;
     }
 

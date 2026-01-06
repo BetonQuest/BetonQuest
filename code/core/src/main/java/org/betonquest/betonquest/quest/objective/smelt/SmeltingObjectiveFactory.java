@@ -25,8 +25,8 @@ public class SmeltingObjectiveFactory implements ObjectiveFactory {
         final Argument<ItemWrapper> item = instruction.item().get();
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get();
         final SmeltingObjective objective = new SmeltingObjective(instruction, targetAmount, item);
-        service.request(InventoryClickEvent.class)
-                .handler(objective::onSmelting, InventoryClickEvent::getWhoClicked).subscribe(true);
+        service.request(InventoryClickEvent.class).onlineHandler(objective::onSmelting)
+                .entity(InventoryClickEvent::getWhoClicked).subscribe(true);
         return objective;
     }
 }

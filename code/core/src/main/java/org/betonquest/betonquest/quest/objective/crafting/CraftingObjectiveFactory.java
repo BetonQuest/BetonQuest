@@ -27,10 +27,10 @@ public class CraftingObjectiveFactory implements ObjectiveFactory {
         final Argument<ItemWrapper> item = instruction.item().get();
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get();
         final CraftingObjective objective = new CraftingObjective(instruction, targetAmount, item);
-        service.request(CraftItemEvent.class).priority(EventPriority.MONITOR)
-                .handler(objective::onCrafting, CraftItemEvent::getWhoClicked).subscribe(true);
-        service.request(ItemStackCraftedEvent.class)
-                .handler(objective::handleCustomCraft, ItemStackCraftedEvent::getProfile).subscribe(false);
+        service.request(CraftItemEvent.class).priority(EventPriority.MONITOR).onlineHandler(objective::onCrafting)
+                .entity(CraftItemEvent::getWhoClicked).subscribe(true);
+        service.request(ItemStackCraftedEvent.class).handler(objective::handleCustomCraft)
+                .profile(ItemStackCraftedEvent::getProfile).subscribe(false);
         return objective;
     }
 }

@@ -60,10 +60,10 @@ public class BlockObjectiveFactory implements ObjectiveFactory {
                 instruction.getID().getFull(), NotificationLevel.INFO, "blocks_to_place");
         final BlockObjective objective = new BlockObjective(instruction, targetAmount, selector, exactMatch, noSafety,
                 location, region, ignoreCancel, blockBreakSender, blockPlaceSender);
-        service.request(BlockPlaceEvent.class).priority(EventPriority.HIGHEST)
-                .handler(objective::onBlockPlace, BlockPlaceEvent::getPlayer).subscribe(false);
-        service.request(BlockBreakEvent.class).priority(EventPriority.HIGHEST)
-                .handler(objective::onBlockBreak, BlockBreakEvent::getPlayer).subscribe(false);
+        service.request(BlockPlaceEvent.class).priority(EventPriority.HIGHEST).onlineHandler(objective::onBlockPlace)
+                .player(BlockPlaceEvent::getPlayer).subscribe(false);
+        service.request(BlockBreakEvent.class).priority(EventPriority.HIGHEST).onlineHandler(objective::onBlockBreak)
+                .player(BlockBreakEvent::getPlayer).subscribe(false);
         return objective;
     }
 }

@@ -24,8 +24,8 @@ public class ResourcepackObjectiveFactory implements ObjectiveFactory {
         final Argument<PlayerResourcePackStatusEvent.Status> targetStatus =
                 instruction.enumeration(PlayerResourcePackStatusEvent.Status.class).get();
         final ResourcepackObjective objective = new ResourcepackObjective(instruction, targetStatus);
-        service.request(PlayerResourcePackStatusEvent.class)
-                .handler(objective::onResourcePackReceived, PlayerResourcePackStatusEvent::getPlayer).subscribe(false);
+        service.request(PlayerResourcePackStatusEvent.class).onlineHandler(objective::onResourcePackReceived)
+                .player(PlayerResourcePackStatusEvent::getPlayer).subscribe(false);
         return objective;
     }
 }

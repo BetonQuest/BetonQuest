@@ -70,12 +70,18 @@ public abstract class AbstractLocationObjective extends DefaultObjective {
      * @throws QuestException if there is an error while registering the events
      */
     public void registerLocationEvents(final ObjectiveFactoryService service) throws QuestException {
-        service.request(PlayerJoinEvent.class).handler(this::onPlayerJoin, PlayerJoinEvent::getPlayer).subscribe(true);
-        service.request(PlayerQuitEvent.class).handler(this::onPlayerQuit, PlayerQuitEvent::getPlayer).subscribe(true);
-        service.request(PlayerDeathEvent.class).handler(this::onPlayerDeath, PlayerDeathEvent::getPlayer).subscribe(true);
-        service.request(PlayerRespawnEvent.class).handler(this::onPlayerRespawn, PlayerRespawnEvent::getPlayer).subscribe(true);
-        service.request(PlayerTeleportEvent.class).handler(this::onPlayerTeleport, PlayerTeleportEvent::getPlayer).subscribe(true);
-        service.request(PlayerMoveEvent.class).handler(this::onPlayerMove, PlayerMoveEvent::getPlayer).subscribe(true);
+        service.request(PlayerJoinEvent.class).onlineHandler(this::onPlayerJoin)
+                .player(PlayerJoinEvent::getPlayer).subscribe(true);
+        service.request(PlayerQuitEvent.class).onlineHandler(this::onPlayerQuit)
+                .player(PlayerQuitEvent::getPlayer).subscribe(true);
+        service.request(PlayerDeathEvent.class).onlineHandler(this::onPlayerDeath)
+                .player(PlayerDeathEvent::getPlayer).subscribe(true);
+        service.request(PlayerRespawnEvent.class).onlineHandler(this::onPlayerRespawn)
+                .player(PlayerRespawnEvent::getPlayer).subscribe(true);
+        service.request(PlayerTeleportEvent.class).onlineHandler(this::onPlayerTeleport)
+                .player(PlayerTeleportEvent::getPlayer).subscribe(true);
+        service.request(PlayerMoveEvent.class).onlineHandler(this::onPlayerMove)
+                .player(PlayerMoveEvent::getPlayer).subscribe(true);
         service.request(VehicleMoveEvent.class).handler(this::onVehicleMove).subscribe(true);
     }
 

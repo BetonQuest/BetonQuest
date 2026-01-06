@@ -26,8 +26,8 @@ public class VariableObjectiveFactory implements ObjectiveFactory {
             return new VariableObjective(instruction);
         }
         final ChatVariableObjective objective = new ChatVariableObjective(instruction);
-        service.request(AsyncPlayerChatEvent.class)
-                .handler(objective::onChat, AsyncPlayerChatEvent::getPlayer).subscribe(true);
+        service.request(AsyncPlayerChatEvent.class).onlineHandler(objective::onChat)
+                .player(AsyncPlayerChatEvent::getPlayer).subscribe(true);
         return objective;
     }
 }

@@ -22,8 +22,8 @@ public class LoginObjectiveFactory implements ObjectiveFactory {
     @Override
     public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final LoginObjective objective = new LoginObjective(instruction);
-        service.request(PlayerJoinEvent.class).priority(EventPriority.HIGH)
-                .handler(objective::onJoin, PlayerJoinEvent::getPlayer).subscribe(true);
+        service.request(PlayerJoinEvent.class).priority(EventPriority.HIGH).onlineHandler(objective::onJoin)
+                .player(PlayerJoinEvent::getPlayer).subscribe(true);
         return objective;
     }
 }

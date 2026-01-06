@@ -24,7 +24,8 @@ public class MMOCoreProfessionObjectiveFactory implements ObjectiveFactory {
         final Argument<String> professionName = instruction.string().get();
         final Argument<Number> targetLevel = instruction.number().get();
         final MMOCoreProfessionObjective objective = new MMOCoreProfessionObjective(instruction, professionName, targetLevel);
-        service.request(PlayerLevelUpEvent.class).handler(objective::onLevelUp, PlayerLevelUpEvent::getPlayer).subscribe(true);
+        service.request(PlayerLevelUpEvent.class).onlineHandler(objective::onLevelUp)
+                .player(PlayerLevelUpEvent::getPlayer).subscribe(true);
         return objective;
     }
 }

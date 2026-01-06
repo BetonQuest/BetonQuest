@@ -25,7 +25,8 @@ public class EquipItemObjectiveFactory implements ObjectiveFactory {
         final Argument<PlayerArmorChangeEvent.SlotType> slotType = instruction.enumeration(PlayerArmorChangeEvent.SlotType.class).get();
         final Argument<ItemWrapper> item = instruction.item().get();
         final EquipItemObjective objective = new EquipItemObjective(instruction, item, slotType);
-        service.request(PlayerArmorChangeEvent.class).handler(objective::onEquipmentChange, PlayerArmorChangeEvent::getPlayer).subscribe(false);
+        service.request(PlayerArmorChangeEvent.class).onlineHandler(objective::onEquipmentChange)
+                .player(PlayerArmorChangeEvent::getPlayer).subscribe(false);
         return objective;
     }
 }

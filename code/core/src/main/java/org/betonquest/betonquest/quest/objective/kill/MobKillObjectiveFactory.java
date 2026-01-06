@@ -29,7 +29,8 @@ public class MobKillObjectiveFactory implements ObjectiveFactory {
         final Argument<String> name = instruction.string().get("name").orElse(null);
         final Argument<String> marked = instruction.packageIdentifier().get("marked").orElse(null);
         final MobKillObjective objective = new MobKillObjective(instruction, targetAmount, entities, name, marked);
-        service.request(MobKilledEvent.class).handler(objective::onMobKill, MobKilledEvent::getProfile).subscribe(true);
+        service.request(MobKilledEvent.class).handler(objective::onMobKill)
+                .profile(MobKilledEvent::getProfile).subscribe(true);
         return objective;
     }
 }

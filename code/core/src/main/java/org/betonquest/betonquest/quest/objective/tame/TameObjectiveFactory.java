@@ -32,7 +32,8 @@ public class TameObjectiveFactory implements ObjectiveFactory {
                 .get();
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get();
         final TameObjective objective = new TameObjective(instruction, targetAmount, type);
-        eventService.request(EntityTameEvent.class).handler(objective::onTaming, this::fromEvent).subscribe(true);
+        eventService.request(EntityTameEvent.class).onlineHandler(objective::onTaming)
+                .player(this::fromEvent).subscribe(true);
         return objective;
     }
 

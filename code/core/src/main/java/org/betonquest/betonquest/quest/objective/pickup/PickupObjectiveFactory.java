@@ -27,8 +27,8 @@ public class PickupObjectiveFactory implements ObjectiveFactory {
         final Argument<List<ItemWrapper>> pickupItems = instruction.item().list().get();
         final Argument<Number> targetAmount = instruction.number().get("amount", 1);
         final PickupObjective objective = new PickupObjective(instruction, targetAmount, pickupItems);
-        service.request(EntityPickupItemEvent.class)
-                .handler(objective::onPickup, EntityPickupItemEvent::getEntity).subscribe(true);
+        service.request(EntityPickupItemEvent.class).onlineHandler(objective::onPickup)
+                .entity(EntityPickupItemEvent::getEntity).subscribe(true);
         return objective;
     }
 }

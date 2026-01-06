@@ -25,7 +25,8 @@ public class BreedObjectiveFactory implements ObjectiveFactory {
         final Argument<EntityType> type = instruction.enumeration(EntityType.class).get();
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get();
         final BreedObjective objective = new BreedObjective(instruction, targetAmount, type);
-        service.request(EntityBreedEvent.class).handler(objective::onBreeding, EntityBreedEvent::getBreeder).subscribe(true);
+        service.request(EntityBreedEvent.class).onlineHandler(objective::onBreeding)
+                .entity(EntityBreedEvent::getBreeder).subscribe(true);
         return objective;
     }
 }

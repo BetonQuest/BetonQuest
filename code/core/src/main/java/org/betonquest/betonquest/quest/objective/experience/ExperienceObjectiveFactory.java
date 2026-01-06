@@ -50,11 +50,12 @@ public class ExperienceObjectiveFactory implements ObjectiveFactory {
                 pluginMessage, instruction.getPackage(), instruction.getID().getFull(),
                 NotificationLevel.INFO, "level_to_gain");
         final ExperienceObjective objective = new ExperienceObjective(instruction, amount, levelSender);
-        service.request(PlayerLevelChangeEvent.class).priority(EventPriority.MONITOR)
-                .handler(objective::onLevelChangeEvent, PlayerLevelChangeEvent::getPlayer).subscribe(true);
-        service.request(PlayerExpChangeEvent.class).priority(EventPriority.MONITOR)
-                .handler(objective::onExpChangeEvent, PlayerExpChangeEvent::getPlayer).subscribe(true);
-        service.request(PlayerJoinEvent.class).handler(objective::onPlayerJoin, PlayerJoinEvent::getPlayer).subscribe(false);
+        service.request(PlayerLevelChangeEvent.class).priority(EventPriority.MONITOR).onlineHandler(objective::onLevelChangeEvent)
+                .player(PlayerLevelChangeEvent::getPlayer).subscribe(true);
+        service.request(PlayerExpChangeEvent.class).priority(EventPriority.MONITOR).onlineHandler(objective::onExpChangeEvent)
+                .player(PlayerExpChangeEvent::getPlayer).subscribe(true);
+        service.request(PlayerJoinEvent.class).onlineHandler(objective::onPlayerJoin)
+                .player(PlayerJoinEvent::getPlayer).subscribe(false);
         return objective;
     }
 }
