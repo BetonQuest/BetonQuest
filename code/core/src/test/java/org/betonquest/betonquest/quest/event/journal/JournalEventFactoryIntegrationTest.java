@@ -83,7 +83,7 @@ class JournalEventFactoryIntegrationTest {
 
     private EventAdapterFactory createJournalEventFactory(final BetonQuestLogger logger) {
         final ProfileProvider profileProvider = new UUIDProfileProvider(mock(Server.class));
-        final JournalEventFactory journalEventFactory = new JournalEventFactory(new SingletonLoggerFactory(logger), mock(PluginMessage.class), dataStorage, InstantSource.fixed(now), saver, profileProvider);
+        final JournalActionFactory journalEventFactory = new JournalActionFactory(new SingletonLoggerFactory(logger), mock(PluginMessage.class), dataStorage, InstantSource.fixed(now), saver, profileProvider);
         return new EventAdapterFactory(mock(BetonQuestLoggerFactory.class), mock(QuestTypeApi.class), journalEventFactory, journalEventFactory);
     }
 

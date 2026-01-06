@@ -14,13 +14,13 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 
 /**
- * Test {@link TagEvent}.
+ * Test {@link TagAction}.
  */
 @ExtendWith(MockitoExtension.class)
-class TagEventTest {
+class TagActionTest {
 
     @Test
-    void testTagEventUsesAlwaysActualTagData(
+    void testTagActionUsesAlwaysActualTagData(
             @Mock final TagData firstData,
             @Mock final TagData secondData,
             @Mock final TagChanger tagChanger,
@@ -28,10 +28,10 @@ class TagEventTest {
             @Mock final Profile profile2
     ) throws QuestException {
         final Iterator<TagData> data = List.of(firstData, secondData).iterator();
-        final TagEvent tagEvent = new TagEvent(player -> data.next(), tagChanger);
+        final TagAction tagAction = new TagAction(player -> data.next(), tagChanger);
 
-        tagEvent.execute(profile1);
-        tagEvent.execute(profile2);
+        tagAction.execute(profile1);
+        tagAction.execute(profile2);
 
         verify(tagChanger).changeTags(firstData, profile1);
         verify(tagChanger).changeTags(secondData, profile2);
