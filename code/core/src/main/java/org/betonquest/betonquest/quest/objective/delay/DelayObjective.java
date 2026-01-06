@@ -7,12 +7,12 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -52,14 +52,14 @@ public class DelayObjective extends DefaultObjective {
     /**
      * Constructor for the DelayObjective.
      *
-     * @param instruction the instruction that created this objective
-     * @param interval    the interval in ticks at which the objective checks if the time is up
-     * @param delay       the delay time in seconds, minutes, or ticks
+     * @param service  the objective factory service
+     * @param interval the interval in ticks at which the objective checks if the time is up
+     * @param delay    the delay time in seconds, minutes, or ticks
      * @throws QuestException if there is an error in the instruction
      */
-    public DelayObjective(final Instruction instruction, final Argument<Number> interval,
+    public DelayObjective(final ObjectiveFactoryService service, final Argument<Number> interval,
                           final Argument<Number> delay) throws QuestException {
-        super(instruction, DELAY_FACTORY);
+        super(service, DELAY_FACTORY);
         this.delay = delay;
         this.runnable = new BukkitRunnable() {
             @Override
@@ -83,12 +83,12 @@ public class DelayObjective extends DefaultObjective {
     }
 
     private double timeToMilliSeconds(final Profile profile, final double time) throws QuestException {
-        final boolean ticks = instruction.bool().getFlag("ticks", true)
+        final boolean ticks = getObjectiveID().getInstruction().bool().getFlag("ticks", true)
                 .getValue(profile).orElse(false);
         if (ticks) {
             return time * 50;
         }
-        final boolean seconds = instruction.bool().getFlag("seconds", true)
+        final boolean seconds = getObjectiveID().getInstruction().bool().getFlag("seconds", true)
                 .getValue(profile).orElse(false);
         if (seconds) {
             return time * 1000;

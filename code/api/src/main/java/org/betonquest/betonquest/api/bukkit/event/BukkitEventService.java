@@ -57,4 +57,9 @@ public interface BukkitEventService {
                                                                   final EventServiceSubscriber<T> subscriber) throws QuestException {
         return subscribe(event, priority, true, subscriber);
     }
+
+    /**
+     * Unsubscribes all subscribers from all events.
+     */
+    void unsubscribeAll();
 }

@@ -5,9 +5,9 @@ import net.Indyuce.mmoitems.api.item.mmoitem.MMOItem;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 
 /**
  * An objective that listens for the player applying a gem to their MMOItems item.
@@ -32,14 +32,14 @@ public class MMOItemsApplyGemObjective extends DefaultObjective {
     /**
      * Constructor for the MMOItemsApplyGemObjective.
      *
-     * @param instruction the instruction object representing the objective
-     * @param itemID      the ID of the item to be upgraded
-     * @param itemType    the type of the item to be upgraded
-     * @param gemID       the ID of the gem to be applied
+     * @param service  the objective factory service
+     * @param itemID   the ID of the item to be upgraded
+     * @param itemType the type of the item to be upgraded
+     * @param gemID    the ID of the gem to be applied
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public MMOItemsApplyGemObjective(final Instruction instruction, final Argument<String> itemID, final Argument<String> itemType, final Argument<String> gemID) throws QuestException {
-        super(instruction);
+    public MMOItemsApplyGemObjective(final ObjectiveFactoryService service, final Argument<String> itemID, final Argument<String> itemType, final Argument<String> gemID) throws QuestException {
+        super(service);
         this.itemID = itemID;
         this.itemType = itemType;
         this.gemID = gemID;

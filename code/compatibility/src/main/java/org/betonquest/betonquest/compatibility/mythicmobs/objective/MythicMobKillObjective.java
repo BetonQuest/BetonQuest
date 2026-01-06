@@ -7,9 +7,9 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -72,7 +72,7 @@ public class MythicMobKillObjective extends CountingObjective {
     /**
      * Creates a new MythicMobKillObjective.
      *
-     * @param instruction                  the user-provided instruction
+     * @param service                      the objective factory service
      * @param targetAmount                 the target amount of kills
      * @param identifiers                  the identifiers of all mobs that this objective should count
      * @param mode                         the mode to choose the identifier from a mob
@@ -84,11 +84,11 @@ public class MythicMobKillObjective extends CountingObjective {
      * @throws QuestException if the instruction is invalid
      */
     public MythicMobKillObjective(
-            final Instruction instruction, final Argument<Number> targetAmount, final Argument<List<String>> identifiers,
+            final ObjectiveFactoryService service, final Argument<Number> targetAmount, final Argument<List<String>> identifiers,
             final Argument<IdentifierMode> mode, final Argument<Number> minMobLevel, final Argument<Number> maxMobLevel,
             final Argument<Number> deathRadiusAllPlayers, final Argument<Number> neutralDeathRadiusAllPlayers,
             @Nullable final Argument<String> marked) throws QuestException {
-        super(instruction, targetAmount, "mobs_to_kill");
+        super(service, targetAmount, "mobs_to_kill");
         this.identifiers = identifiers;
         this.mode = mode;
         this.minMobLevel = minMobLevel;

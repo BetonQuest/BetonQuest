@@ -6,9 +6,9 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.ArmorStand;
@@ -90,7 +90,7 @@ public class EntityInteractObjective extends CountingObjective {
     /**
      * Creates a new instance of the EntityInteractObjective.
      *
-     * @param instruction  the instruction that created this objective
+     * @param service      the objective factory service
      * @param targetAmount the target amount of entities to interact with
      * @param loc          the location of the entities
      * @param range        the range of the entities
@@ -104,13 +104,13 @@ public class EntityInteractObjective extends CountingObjective {
      * @throws QuestException if there is an error in the instruction
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
-    public EntityInteractObjective(final Instruction instruction, final Argument<Number> targetAmount,
+    public EntityInteractObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount,
                                    @Nullable final Argument<Location> loc,
                                    final Argument<Number> range, @Nullable final Argument<Component> customName,
                                    @Nullable final Argument<String> realName, @Nullable final EquipmentSlot slot,
                                    final Argument<EntityType> mobType, @Nullable final Argument<String> marked,
                                    final Argument<Interaction> interaction, final FlagArgument<Boolean> cancel) throws QuestException {
-        super(instruction, ENTITY_INTERACT_FACTORY, targetAmount, "mobs_to_click");
+        super(service, ENTITY_INTERACT_FACTORY, targetAmount, "mobs_to_click");
         this.loc = loc;
         this.range = range;
         this.customName = customName;

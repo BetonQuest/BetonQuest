@@ -23,9 +23,9 @@ public class VariableObjectiveFactory implements ObjectiveFactory {
         final boolean noChat = instruction.bool().getFlag("no-chat", true)
                 .getValue(null).orElse(false);
         if (noChat) {
-            return new VariableObjective(instruction);
+            return new VariableObjective(service);
         }
-        final ChatVariableObjective objective = new ChatVariableObjective(instruction);
+        final ChatVariableObjective objective = new ChatVariableObjective(service);
         service.request(AsyncPlayerChatEvent.class).onlineHandler(objective::onChat)
                 .player(AsyncPlayerChatEvent::getPlayer).subscribe(true);
         return objective;

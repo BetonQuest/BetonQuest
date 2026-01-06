@@ -35,7 +35,7 @@ public class EntityInteractObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService eventService) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<Interaction> interaction = instruction.enumeration(Interaction.class).get();
         final Argument<EntityType> mobType = instruction.enumeration(EntityType.class).get();
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get();
@@ -46,12 +46,12 @@ public class EntityInteractObjectiveFactory implements ObjectiveFactory {
         final Argument<Location> loc = instruction.location().get("loc").orElse(null);
         final Argument<Number> range = instruction.number().get("range", 1);
         final EquipmentSlot slot = getEquipmentSlot(instruction);
-        final EntityInteractObjective objective = new EntityInteractObjective(instruction, targetAmount, loc, range, customName, realName, slot, mobType, marked, interaction, cancel);
-        eventService.request(EntityDamageByEntityEvent.class).onlineHandler(objective::onDamage)
+        final EntityInteractObjective objective = new EntityInteractObjective(service, targetAmount, loc, range, customName, realName, slot, mobType, marked, interaction, cancel);
+        service.request(EntityDamageByEntityEvent.class).onlineHandler(objective::onDamage)
                 .entity(EntityDamageByEntityEvent::getDamager).subscribe(true);
-        eventService.request(PlayerInteractEntityEvent.class).onlineHandler(objective::onRightClick)
+        service.request(PlayerInteractEntityEvent.class).onlineHandler(objective::onRightClick)
                 .player(PlayerInteractEntityEvent::getPlayer).subscribe(true);
-        eventService.request(PlayerInteractAtEntityEvent.class).onlineHandler(objective::onArmorRightClick)
+        service.request(PlayerInteractAtEntityEvent.class).onlineHandler(objective::onArmorRightClick)
                 .player(PlayerInteractAtEntityEvent::getPlayer).subscribe(true);
         return objective;
     }

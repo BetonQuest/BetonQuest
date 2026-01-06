@@ -36,11 +36,12 @@ import java.util.Map;
  * @param objectives   Objective logic.
  * @param placeholders Placeholder logic.
  */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public record CoreQuestRegistry(
         ConditionProcessor conditions,
         ActionProcessor actions,
-        ObjectiveProcessor objectives,
-        PlaceholderProcessor placeholders
+        PlaceholderProcessor placeholders,
+        ObjectiveProcessor objectives
 ) implements QuestTypeApi {
 
     /**
@@ -60,14 +61,15 @@ public record CoreQuestRegistry(
                                            final BukkitScheduler scheduler, final ProfileProvider profileProvider, final Plugin plugin) {
         final PlaceholderProcessor placeholderProcessor = new PlaceholderProcessor(loggerFactory.create(PlaceholderProcessor.class),
                 packManager, questTypeRegistries.placeholder(), scheduler, plugin);
-        final DefaultObjectiveService objectiveService = new DefaultObjectiveService(plugin, loggerFactory, profileProvider);
-        return new CoreQuestRegistry(
-                new ConditionProcessor(loggerFactory.create(ConditionProcessor.class), placeholderProcessor, packManager,
-                        questTypeRegistries.condition(), scheduler, plugin),
-                new ActionProcessor(loggerFactory.create(ActionProcessor.class), placeholderProcessor, packManager,
-                        questTypeRegistries.action(), scheduler, plugin),
+        final ActionProcessor actionProcessor = new ActionProcessor(loggerFactory.create(ActionProcessor.class),
+                placeholderProcessor, packManager, questTypeRegistries.action(), scheduler, plugin);
+        final ConditionProcessor conditionProcessor = new ConditionProcessor(loggerFactory.create(ConditionProcessor.class),
+                placeholderProcessor, packManager, questTypeRegistries.condition(), scheduler, plugin);
+        final DefaultObjectiveService objectiveService = new DefaultObjectiveService(plugin, conditionProcessor,
+                actionProcessor, loggerFactory, profileProvider);
+        return new CoreQuestRegistry(conditionProcessor, actionProcessor, placeholderProcessor,
                 new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), placeholderProcessor, packManager,
-                        questTypeRegistries.objective(), pluginManager, objectiveService, plugin), placeholderProcessor);
+                        questTypeRegistries.objective(), pluginManager, objectiveService, plugin));
     }
 
     /**

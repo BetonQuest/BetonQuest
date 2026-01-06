@@ -5,9 +5,9 @@ import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
@@ -39,13 +39,13 @@ public class DieObjective extends DefaultObjective {
     /**
      * Constructor for the DieObjective.
      *
-     * @param instruction the instruction that created this objective
-     * @param cancel      whether the death should be canceled
-     * @param location    the location where the player should respawn
+     * @param service  the objective factory service
+     * @param cancel   whether the death should be canceled
+     * @param location the location where the player should respawn
      * @throws QuestException if there is an error in the instruction
      */
-    public DieObjective(final Instruction instruction, final FlagArgument<Boolean> cancel, @Nullable final Argument<Location> location) throws QuestException {
-        super(instruction);
+    public DieObjective(final ObjectiveFactoryService service, final FlagArgument<Boolean> cancel, @Nullable final Argument<Location> location) throws QuestException {
+        super(service);
         this.cancel = cancel;
         this.location = location;
     }

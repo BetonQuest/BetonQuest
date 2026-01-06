@@ -19,10 +19,10 @@ public class DelayObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService eventService) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<Number> delay = instruction.number().atLeast(0).get();
         final Argument<Number> interval = instruction.number()
                 .atLeast(1).get("interval", 20 * 10);
-        return new DelayObjective(instruction, interval, delay);
+        return new DelayObjective(service, interval, delay);
     }
 }

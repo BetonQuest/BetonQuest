@@ -4,12 +4,12 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.lib.profile.ProfileValueMap;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -43,15 +43,15 @@ public class BrewObjective extends CountingObjective {
     /**
      * The target amount of potions to brew.
      *
-     * @param instruction     the instruction that created this objective
+     * @param service         the objective factory service
      * @param targetAmount    the target amount of potions to brew
      * @param profileProvider the profile provider to get the profile of the player
      * @param potion          the potion item to brew
      * @throws QuestException if there is an error in the instruction
      */
-    public BrewObjective(final Instruction instruction, final Argument<Number> targetAmount,
+    public BrewObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount,
                          final ProfileProvider profileProvider, final Argument<ItemWrapper> potion) throws QuestException {
-        super(instruction, targetAmount, "potions_to_brew");
+        super(service, targetAmount, "potions_to_brew");
         this.potion = potion;
         this.locations = new ProfileValueMap<>(profileProvider);
     }

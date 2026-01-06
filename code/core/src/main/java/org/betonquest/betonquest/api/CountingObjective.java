@@ -4,13 +4,13 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.betonquest.betonquest.quest.action.NotificationLevel;
 import org.jetbrains.annotations.Nullable;
@@ -45,34 +45,34 @@ public abstract class CountingObjective extends DefaultObjective {
     /**
      * Create a counting objective.
      *
-     * @param instruction       the objective instruction
+     * @param service           the objective factory service
      * @param targetAmount      the target amount of units required for completion
      * @param notifyMessageName the message name used for notifying by default
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public CountingObjective(final Instruction instruction, final Argument<Number> targetAmount,
+    public CountingObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount,
                              @Nullable final String notifyMessageName) throws QuestException {
-        this(instruction, COUNTING_FACTORY, targetAmount, notifyMessageName);
+        this(service, COUNTING_FACTORY, targetAmount, notifyMessageName);
     }
 
     /**
      * Create a counting objective.
      *
-     * @param instruction       the objective instruction
+     * @param service           the objective factory service
      * @param templateFactory   the factory of the objective data object
      * @param targetAmount      the target amount of units required for completion
      * @param notifyMessageName the message name used for notifying by default
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public CountingObjective(final Instruction instruction, final ObjectiveDataFactory templateFactory,
+    public CountingObjective(final ObjectiveFactoryService service, final ObjectiveDataFactory templateFactory,
                              final Argument<Number> targetAmount, @Nullable final String notifyMessageName)
             throws QuestException {
-        super(instruction, templateFactory);
+        super(service, templateFactory);
         final BetonQuest instance = BetonQuest.getInstance();
         final BetonQuestLoggerFactory loggerFactory = instance.getLoggerFactory();
         this.targetAmount = targetAmount;
         countSender = notifyMessageName == null ? null : new IngameNotificationSender(loggerFactory.create(CountingObjective.class),
-                instance.getPluginMessage(), instruction.getPackage(), instruction.getID().getFull(),
+                instance.getPluginMessage(), service.getObjectiveID().getPackage(), service.getObjectiveID().getFull(),
                 NotificationLevel.INFO, notifyMessageName);
     }
 
@@ -108,7 +108,7 @@ public abstract class CountingObjective extends DefaultObjective {
 
     /**
      * Complete the objective if fulfilled or else notify the profile's player if required. It will use the
-     * {@link #countSender} if set, otherwise no notification will be sent, even if {@link #notify} is
+     * {@link #countSender} if set, otherwise no notification will be sent, even if {@link #hasNotify(Profile)} is
      * {@code true}.
      *
      * @param profile the {@link Profile} to act for
@@ -133,17 +133,18 @@ public abstract class CountingObjective extends DefaultObjective {
             completeObjective(profile);
             return true;
         }
-        if (notify && notificationSender != null && shouldNotify(data) && profile.getOnlineProfile().isPresent()) {
+        if (hasNotify(profile) && notificationSender != null && shouldNotify(profile, data) && profile.getOnlineProfile().isPresent()) {
             notificationSender.sendNotification(profile, new VariableReplacement("amount", Component.text(Math.abs(data.getAmountLeft()))));
         }
         return false;
     }
 
-    private boolean shouldNotify(final CountingData data) {
+    private boolean shouldNotify(final Profile profile, final CountingData data) {
         final int newAmount = Math.abs(data.getAmountLeft());
         final int oldAmount = Math.abs(data.getPreviousAmountLeft());
-        return newAmount > oldAmount && newAmount / notifyInterval != oldAmount / notifyInterval
-                || newAmount < oldAmount && (newAmount - 1) / notifyInterval != (oldAmount - 1) / notifyInterval;
+        final int interval = getNotifyInterval(profile);
+        return newAmount > oldAmount && newAmount / interval != oldAmount / interval
+                || newAmount < oldAmount && (newAmount - 1) / interval != (oldAmount - 1) / interval;
     }
 
     /**

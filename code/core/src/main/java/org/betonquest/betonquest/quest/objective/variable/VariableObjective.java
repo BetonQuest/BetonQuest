@@ -2,11 +2,11 @@ package org.betonquest.betonquest.quest.objective.variable;
 
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -33,11 +33,11 @@ public class VariableObjective extends DefaultObjective {
     /**
      * Creates a new VariableObjective instance.
      *
-     * @param instruction the instruction that created this objective
+     * @param service the objective factory service
      * @throws QuestException if there is an error in the instruction
      */
-    public VariableObjective(final Instruction instruction) throws QuestException {
-        super(instruction, VARIABLE_FACTORY);
+    public VariableObjective(final ObjectiveFactoryService service) throws QuestException {
+        super(service, VARIABLE_FACTORY);
     }
 
     /**

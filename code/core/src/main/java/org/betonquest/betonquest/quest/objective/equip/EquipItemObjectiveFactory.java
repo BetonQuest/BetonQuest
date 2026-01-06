@@ -24,7 +24,7 @@ public class EquipItemObjectiveFactory implements ObjectiveFactory {
     public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<PlayerArmorChangeEvent.SlotType> slotType = instruction.enumeration(PlayerArmorChangeEvent.SlotType.class).get();
         final Argument<ItemWrapper> item = instruction.item().get();
-        final EquipItemObjective objective = new EquipItemObjective(instruction, item, slotType);
+        final EquipItemObjective objective = new EquipItemObjective(service, item, slotType);
         service.request(PlayerArmorChangeEvent.class).onlineHandler(objective::onEquipmentChange)
                 .player(PlayerArmorChangeEvent::getPlayer).subscribe(false);
         return objective;

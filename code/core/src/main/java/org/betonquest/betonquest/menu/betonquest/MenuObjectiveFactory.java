@@ -45,7 +45,7 @@ public class MenuObjectiveFactory implements ObjectiveFactory {
                 (placeholders, packManager, pack, string)
                         -> new MenuID(packManager, pack, string)).get();
         final BetonQuestLogger log = loggerFactory.create(MenuObjective.class);
-        final MenuObjective objective = new MenuObjective(instruction, log, rpgMenu, menuID);
+        final MenuObjective objective = new MenuObjective(service, log, rpgMenu, menuID);
         service.request(MenuOpenEvent.class).priority(EventPriority.MONITOR).handler(objective::onMenuOpen)
                 .profile(MenuOpenEvent::getProfile).subscribe(true);
         return objective;

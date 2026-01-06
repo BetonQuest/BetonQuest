@@ -4,9 +4,9 @@ import com.bergerkiller.bukkit.tc.events.seat.MemberSeatExitEvent;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
 
 /**
@@ -22,12 +22,12 @@ public class TrainCartsExitObjective extends DefaultObjective {
     /**
      * The constructor takes an Instruction object as a parameter and throws an QuestException.
      *
-     * @param instruction the Instruction object to be used in the constructor
-     * @param name        the name of the train, maybe empty
+     * @param service the ObjectiveFactoryService to be used in the constructor
+     * @param name    the name of the train, maybe empty
      * @throws QuestException if there is an error while parsing the instruction
      */
-    public TrainCartsExitObjective(final Instruction instruction, final Argument<String> name) throws QuestException {
-        super(instruction);
+    public TrainCartsExitObjective(final ObjectiveFactoryService service, final Argument<String> name) throws QuestException {
+        super(service);
         this.name = name;
     }
 

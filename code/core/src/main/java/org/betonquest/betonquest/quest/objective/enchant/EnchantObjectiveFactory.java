@@ -35,7 +35,7 @@ public class EnchantObjectiveFactory implements ObjectiveFactory {
                 instruction.parse(EnchantObjective.EnchantmentData::convert).list().notEmpty().get();
         final boolean requireOne = instruction.parse(JUST_ONE_ENCHANT::equalsIgnoreCase)
                 .get("requirementMode", false).getValue(null);
-        final EnchantObjective objective = new EnchantObjective(instruction, targetAmount, item, desiredEnchantments, requireOne);
+        final EnchantObjective objective = new EnchantObjective(service, targetAmount, item, desiredEnchantments, requireOne);
         service.request(EnchantItemEvent.class).onlineHandler(objective::onEnchant)
                 .player(EnchantItemEvent::getEnchanter).subscribe(true);
         return objective;

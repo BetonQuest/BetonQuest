@@ -6,11 +6,11 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.QuestListException;
 import org.betonquest.betonquest.api.common.function.QuestBiPredicate;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -54,15 +54,15 @@ public class NpcRangeObjective extends DefaultObjective {
     /**
      * Creates a new NPCRangeObjective from the given instruction.
      *
-     * @param instruction the user-provided instruction
-     * @param npcIds      the list of Npc IDs to check
-     * @param radius      the radius around the Npc
-     * @param trigger     the trigger type for the objective
+     * @param service the objective factory service
+     * @param npcIds  the list of Npc IDs to check
+     * @param radius  the radius around the Npc
+     * @param trigger the trigger type for the objective
      * @throws QuestException if the instruction is invalid
      */
-    public NpcRangeObjective(final Instruction instruction, final Argument<List<NpcID>> npcIds, final Argument<Number> radius,
+    public NpcRangeObjective(final ObjectiveFactoryService service, final Argument<List<NpcID>> npcIds, final Argument<Number> radius,
                              final Argument<Trigger> trigger) throws QuestException {
-        super(instruction);
+        super(service);
         this.npcIds = npcIds;
         this.radius = radius;
         this.checkStuff = getStuff(trigger);

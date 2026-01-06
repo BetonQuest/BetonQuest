@@ -24,7 +24,7 @@ public class JoinJobObjectiveFactory implements ObjectiveFactory {
     @Override
     public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<Job> job = instruction.parse(JobParser.JOB).get();
-        final JoinJobObjective objective = new JoinJobObjective(instruction, job);
+        final JoinJobObjective objective = new JoinJobObjective(service, job);
         service.request(JobsJoinEvent.class).onlineHandler(objective::onJobsJoinEvent)
                 .player(event -> event.getPlayer().getPlayer()).subscribe(true);
         return objective;

@@ -24,7 +24,7 @@ public class BreedObjectiveFactory implements ObjectiveFactory {
     public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<EntityType> type = instruction.enumeration(EntityType.class).get();
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get();
-        final BreedObjective objective = new BreedObjective(instruction, targetAmount, type);
+        final BreedObjective objective = new BreedObjective(service, targetAmount, type);
         service.request(EntityBreedEvent.class).onlineHandler(objective::onBreeding)
                 .entity(EntityBreedEvent::getBreeder).subscribe(true);
         return objective;

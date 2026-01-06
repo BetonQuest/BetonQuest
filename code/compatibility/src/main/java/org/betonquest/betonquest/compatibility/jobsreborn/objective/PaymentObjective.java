@@ -7,12 +7,12 @@ import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 
 import java.util.Locale;
@@ -41,13 +41,13 @@ public class PaymentObjective extends DefaultObjective {
     /**
      * Constructor for the PaymentObjective.
      *
-     * @param instruction   the instruction of the objective
+     * @param service       the objective factory service
      * @param targetAmount  the target amount of money to be received
      * @param paymentSender the {@link IngameNotificationSender} to send notifications
      * @throws QuestException if the instruction is invalid
      */
-    public PaymentObjective(final Instruction instruction, final Argument<Number> targetAmount, final IngameNotificationSender paymentSender) throws QuestException {
-        super(instruction, PAYMENT_FACTORY);
+    public PaymentObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount, final IngameNotificationSender paymentSender) throws QuestException {
+        super(service, PAYMENT_FACTORY);
         this.targetAmount = targetAmount;
         this.paymentSender = paymentSender;
     }
@@ -66,9 +66,12 @@ public class PaymentObjective extends DefaultObjective {
 
             if (playerData.isCompleted()) {
                 completeObjective(profile);
-            } else if (notify && ((int) playerData.amount) / notifyInterval != ((int) previousAmount) / notifyInterval && profile.getOnlineProfile().isPresent()) {
-                paymentSender.sendNotification(profile,
-                        new VariableReplacement("amount", Component.text(playerData.targetAmount - playerData.amount)));
+            } else {
+                final int interval = getNotifyInterval(profile);
+                if (interval > 0 && ((int) playerData.amount) / interval != ((int) previousAmount) / interval && profile.getOnlineProfile().isPresent()) {
+                    paymentSender.sendNotification(profile,
+                            new VariableReplacement("amount", Component.text(playerData.targetAmount - playerData.amount)));
+                }
             }
         }
     }

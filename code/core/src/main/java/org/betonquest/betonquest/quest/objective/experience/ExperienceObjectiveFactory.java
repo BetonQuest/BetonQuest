@@ -49,7 +49,7 @@ public class ExperienceObjectiveFactory implements ObjectiveFactory {
         final IngameNotificationSender levelSender = new IngameNotificationSender(log,
                 pluginMessage, instruction.getPackage(), instruction.getID().getFull(),
                 NotificationLevel.INFO, "level_to_gain");
-        final ExperienceObjective objective = new ExperienceObjective(instruction, amount, levelSender);
+        final ExperienceObjective objective = new ExperienceObjective(service, amount, levelSender);
         service.request(PlayerLevelChangeEvent.class).priority(EventPriority.MONITOR).onlineHandler(objective::onLevelChangeEvent)
                 .player(PlayerLevelChangeEvent::getPlayer).subscribe(true);
         service.request(PlayerExpChangeEvent.class).priority(EventPriority.MONITOR).onlineHandler(objective::onExpChangeEvent)

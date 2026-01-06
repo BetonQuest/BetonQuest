@@ -22,7 +22,7 @@ public class TrainCartsExitObjectiveFactory implements ObjectiveFactory {
     @Override
     public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<String> name = instruction.string().get("name", "");
-        final TrainCartsExitObjective objective = new TrainCartsExitObjective(instruction, name);
+        final TrainCartsExitObjective objective = new TrainCartsExitObjective(service, name);
         service.request(MemberSeatExitEvent.class).onlineHandler(objective::onMemberSeatExit)
                 .entity(MemberSeatExitEvent::getEntity).subscribe(false);
         return objective;

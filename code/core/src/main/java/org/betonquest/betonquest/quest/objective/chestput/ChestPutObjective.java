@@ -3,10 +3,10 @@ package org.betonquest.betonquest.quest.objective.chestput;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.betonquest.betonquest.quest.action.chest.ChestTakeAction;
 import org.bukkit.Location;
@@ -57,7 +57,7 @@ public class ChestPutObjective extends DefaultObjective {
     /**
      * Constructor for the ChestPutObjective.
      *
-     * @param instruction        the instruction that created this objective
+     * @param service            the objective factory service
      * @param chestItemCondition the condition to check if the items are in the chest
      * @param chestTakeAction    the action to execute when the items are put in the chest to take them out
      * @param loc                the location of the chest
@@ -65,11 +65,11 @@ public class ChestPutObjective extends DefaultObjective {
      * @param multipleAccess     manages the chest access for one or multiple players
      * @throws QuestException if there is an error in the instruction
      */
-    public ChestPutObjective(final Instruction instruction,
+    public ChestPutObjective(final ObjectiveFactoryService service,
                              final NullableCondition chestItemCondition, @Nullable final ChestTakeAction chestTakeAction,
                              final Argument<Location> loc, final IngameNotificationSender occupiedSender,
                              final boolean multipleAccess) throws QuestException {
-        super(instruction);
+        super(service);
         this.chestItemCondition = chestItemCondition;
         this.chestTakeAction = chestTakeAction;
         this.loc = loc;

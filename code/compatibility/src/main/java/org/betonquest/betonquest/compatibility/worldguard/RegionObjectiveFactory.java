@@ -21,7 +21,7 @@ public class RegionObjectiveFactory implements ObjectiveFactory {
     @Override
     public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<String> name = instruction.string().get();
-        final RegionObjective objective = new RegionObjective(instruction, name);
+        final RegionObjective objective = new RegionObjective(service, name);
         objective.registerLocationEvents(service);
         return objective;
     }

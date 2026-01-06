@@ -5,11 +5,11 @@ import com.google.common.collect.HashBiMap;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 
 import java.util.List;
 import java.util.Locale;
@@ -38,13 +38,13 @@ public class StageObjective extends DefaultObjective {
     /**
      * Creates a new stage objective.
      *
-     * @param instruction       the instruction
+     * @param service           the objective factory service
      * @param stageMap          the mapping of stages to indices
      * @param preventCompletion true if the increase of stages should not complete the objective
      * @throws QuestException if the instruction is invalid
      */
-    public StageObjective(final Instruction instruction, final StageMap stageMap, final FlagArgument<Boolean> preventCompletion) throws QuestException {
-        super(instruction, STAGE_FACTORY);
+    public StageObjective(final ObjectiveFactoryService service, final StageMap stageMap, final FlagArgument<Boolean> preventCompletion) throws QuestException {
+        super(service, STAGE_FACTORY);
         this.stageMap = stageMap;
         this.preventCompletion = preventCompletion;
     }
@@ -75,14 +75,14 @@ public class StageObjective extends DefaultObjective {
     public String getStage(final Profile profile) throws QuestException {
         final StageData stageData = (StageObjective.StageData) dataMap.get(profile);
         if (stageData == null) {
-            throw new QuestException("No data found for profile '" + profile + "' for objective '" + instruction.getID() + "'."
+            throw new QuestException("No data found for profile '" + profile + "' for objective '" + getObjectiveID() + "'."
                     + " Make sure the objective is started before setting the stage.");
         }
         final String stage = stageData.getStage();
         if (stageMap.isValidStage(stage)) {
             return stage;
         }
-        throw new QuestException(profile + " has invalid stage '" + stage + "' for objective '" + instruction.getID() + "'.");
+        throw new QuestException(profile + " has invalid stage '" + stage + "' for objective '" + getObjectiveID() + "'.");
     }
 
     /**
@@ -95,7 +95,7 @@ public class StageObjective extends DefaultObjective {
     public void setStage(final Profile profile, final String stage) throws QuestException {
         final StageData stageData = (StageObjective.StageData) dataMap.get(profile);
         if (stageData == null) {
-            throw new QuestException("No data found for profile '" + profile + "' for objective '" + instruction.getID() + "'."
+            throw new QuestException("No data found for profile '" + profile + "' for objective '" + getObjectiveID() + "'."
                     + " Make sure the objective is started before setting the stage.");
         }
         if (stageMap.isValidStage(stage)) {
@@ -104,7 +104,7 @@ public class StageObjective extends DefaultObjective {
             }
             return;
         }
-        throw new QuestException("Invalid stage '" + stage + "' for objective '" + instruction.getID() + "'.");
+        throw new QuestException("Invalid stage '" + stage + "' for objective '" + getObjectiveID() + "'.");
     }
 
     /**
