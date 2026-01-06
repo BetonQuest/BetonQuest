@@ -4,7 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
+import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.quest.event.NotificationSender;
 import org.bukkit.entity.Player;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 /**
  * Removes items from player's inventory and/or backpack.
  */
-public abstract class AbstractTakeEvent implements OnlineEvent {
+public abstract class AbstractTakeEvent implements OnlineAction {
 
     /**
      * The order in which the checks should be performed to remove the item.

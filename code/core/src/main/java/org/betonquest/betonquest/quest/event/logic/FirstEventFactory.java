@@ -5,18 +5,18 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.action.ActionID;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter;
 
 import java.util.List;
 
 /**
  * Factory to create FirstEvents from events from {@link Instruction}s.
  */
-public class FirstEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+public class FirstEventFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
      * Quest Type API.
@@ -33,17 +33,17 @@ public class FirstEventFactory implements PlayerEventFactory, PlayerlessEventFac
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         return createFirstEvent(instruction);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
         return createFirstEvent(instruction);
     }
 
-    private NullableEventAdapter createFirstEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createFirstEvent(final Instruction instruction) throws QuestException {
         final Argument<List<ActionID>> list = instruction.parse(ActionID::new).list().get();
-        return new NullableEventAdapter(new FirstEvent(list, questTypeApi));
+        return new NullableActionAdapter(new FirstEvent(list, questTypeApi));
     }
 }

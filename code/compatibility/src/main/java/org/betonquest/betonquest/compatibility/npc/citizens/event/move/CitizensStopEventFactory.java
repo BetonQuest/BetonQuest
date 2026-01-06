@@ -4,18 +4,18 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.compatibility.npc.citizens.CitizensArgument;
 
 /**
  * Factory for {@link CitizensStopEvent} from the {@link Instruction}.
  */
-public class CitizensStopEventFactory implements PlayerlessEventFactory, PlayerEventFactory {
+public class CitizensStopEventFactory implements PlayerlessActionFactory, PlayerActionFactory {
 
     /**
      * Feature API.
@@ -39,17 +39,17 @@ public class CitizensStopEventFactory implements PlayerlessEventFactory, PlayerE
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
         return createCitizensStopEvent(instruction);
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         return createCitizensStopEvent(instruction);
     }
 
-    private NullableEventAdapter createCitizensStopEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createCitizensStopEvent(final Instruction instruction) throws QuestException {
         final Argument<NpcID> npcId = instruction.parse(CitizensArgument.CITIZENS_ID).get();
-        return new NullableEventAdapter(new CitizensStopEvent(featureApi, npcId, citizensMoveController));
+        return new NullableActionAdapter(new CitizensStopEvent(featureApi, npcId, citizensMoveController));
     }
 }

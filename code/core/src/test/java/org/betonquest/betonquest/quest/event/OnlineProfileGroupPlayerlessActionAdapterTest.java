@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -28,7 +28,7 @@ class OnlineProfileGroupPlayerlessActionAdapterTest {
      * Internal non-static event mock that is adapted to a static event by the tested class.
      */
     @Mock
-    private PlayerEvent internalPlayerEvent;
+    private PlayerAction internalPlayerEvent;
 
     /**
      * Create test class instance.

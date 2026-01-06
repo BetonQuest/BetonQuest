@@ -5,8 +5,8 @@ import net.luckperms.api.model.data.NodeMap;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Factory class for creating LuckPerms events.
  */
-public class LuckPermsEventFactory implements PlayerEventFactory {
+public class LuckPermsEventFactory implements PlayerActionFactory {
 
     /**
      * The {@link LuckPerms} API.
@@ -33,7 +33,7 @@ public class LuckPermsEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final String action = instruction.string().get().getValue(null);
 
         return switch (action.toLowerCase(Locale.ROOT)) {

@@ -3,13 +3,13 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmocore.event;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 
 /**
  * Factory to create {@link MMOCoreClassPointsEvent}s from {@link Instruction}s.
  */
-public class MMOCoreClassPointsEventFactory implements PlayerEventFactory {
+public class MMOCoreClassPointsEventFactory implements PlayerActionFactory {
 
     /**
      * Create a new MMO Core Event Factory.
@@ -18,7 +18,7 @@ public class MMOCoreClassPointsEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<Number> amount = instruction.number().get();
         return new MMOCoreClassPointsEvent(amount);
     }

@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
+import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Displays an effect.
  */
-public class ParticleEvent implements OnlineEvent {
+public class ParticleEvent implements OnlineAction {
 
     /**
      * Effect manager which will create and control the particles.

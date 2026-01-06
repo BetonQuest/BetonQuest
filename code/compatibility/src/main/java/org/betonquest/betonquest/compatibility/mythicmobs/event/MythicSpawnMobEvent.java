@@ -8,8 +8,8 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
+import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 import org.betonquest.betonquest.compatibility.mythicmobs.MythicHider;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * Spawns MythicMobs mobs.
  */
-public class MythicSpawnMobEvent implements OnlineEvent, PlayerlessEvent {
+public class MythicSpawnMobEvent implements OnlineAction, PlayerlessAction {
 
     /**
      * Plugin to start tasks.

@@ -6,12 +6,12 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
+import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 
 /**
  * Casts a skill as a player.
  */
-public class MythicCastSkillEvent implements OnlineEvent {
+public class MythicCastSkillEvent implements OnlineAction {
 
     /**
      * Logger instance for this class.

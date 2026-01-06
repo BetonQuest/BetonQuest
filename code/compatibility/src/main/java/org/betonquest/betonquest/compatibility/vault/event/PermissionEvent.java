@@ -4,13 +4,13 @@ import net.milkbowl.vault.permission.Permission;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Manages player's permissions.
  */
-public class PermissionEvent implements PlayerEvent {
+public class PermissionEvent implements PlayerAction {
 
     /**
      * Service where the permission will be modified.

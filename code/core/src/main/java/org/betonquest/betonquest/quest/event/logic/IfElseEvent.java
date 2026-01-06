@@ -5,14 +5,14 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.action.ActionID;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * The if-else action. Either execute the one or the other action, depending on the condition.
  */
-public class IfElseEvent implements NullableEvent {
+public class IfElseEvent implements NullableAction {
 
     /**
      * The condition to check.

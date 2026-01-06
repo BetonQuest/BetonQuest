@@ -5,14 +5,14 @@ import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
 import org.bukkit.World;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * The time event, changing the time on the server.
  */
-public class TimeEvent implements NullableEvent {
+public class TimeEvent implements NullableAction {
 
     /**
      * The selector to get the world for that the time should be set.

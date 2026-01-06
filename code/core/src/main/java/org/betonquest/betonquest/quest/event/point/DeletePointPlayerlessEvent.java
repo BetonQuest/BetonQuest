@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
@@ -12,7 +12,7 @@ import org.betonquest.betonquest.database.UpdateType;
 /**
  * Deletes the points in the category from all online players and database entries.
  */
-public class DeletePointPlayerlessEvent implements PlayerlessEvent {
+public class DeletePointPlayerlessEvent implements PlayerlessAction {
 
     /**
      * Storage for player data.

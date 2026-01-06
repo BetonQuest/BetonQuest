@@ -8,7 +8,7 @@ import net.luckperms.api.node.Node;
 import net.luckperms.api.node.types.PermissionNode;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.bukkit.OfflinePlayer;
 
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * Event to add permissions to a player using LuckPerms.
  */
-public class LuckPermsPermissionEvent implements PlayerEvent {
+public class LuckPermsPermissionEvent implements PlayerAction {
 
     /**
      * The {@link LuckPerms} API.

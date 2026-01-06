@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.PlayerDataFactory;
@@ -25,7 +25,7 @@ import java.util.Locale;
 /**
  * The objective event, that adds, removes oder completes objectives.
  */
-public class ObjectiveEvent implements NullableEvent {
+public class ObjectiveEvent implements NullableAction {
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.

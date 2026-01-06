@@ -5,18 +5,18 @@ import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.bukkit.Location;
 
 /**
  * Factory for {@link NpcTeleportEvent} from the {@link Instruction}.
  */
-public class NpcTeleportEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+public class NpcTeleportEventFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
      * Quest Type API.
@@ -33,19 +33,19 @@ public class NpcTeleportEventFactory implements PlayerEventFactory, PlayerlessEv
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         return createNpcTeleportEvent(instruction);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
         return createNpcTeleportEvent(instruction);
     }
 
-    private NullableEventAdapter createNpcTeleportEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createNpcTeleportEvent(final Instruction instruction) throws QuestException {
         final Argument<NpcID> npcId = instruction.parse(NpcID::new).get();
         final Argument<Location> location = instruction.location().get();
         final FlagArgument<Boolean> spawn = instruction.bool().getFlag("spawn", true);
-        return new NullableEventAdapter(new NpcTeleportEvent(featureApi, npcId, location, spawn));
+        return new NullableActionAdapter(new NpcTeleportEvent(featureApi, npcId, location, spawn));
     }
 }

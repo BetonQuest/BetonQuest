@@ -4,13 +4,13 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.ProfileEvent;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.bukkit.event.HandlerList;
 
 /**
  * Fires the custom event for Skript to listen to.
  */
-public class BQEventSkript implements PlayerEvent {
+public class BQEventSkript implements PlayerAction {
 
     /**
      * Identifier for the event.

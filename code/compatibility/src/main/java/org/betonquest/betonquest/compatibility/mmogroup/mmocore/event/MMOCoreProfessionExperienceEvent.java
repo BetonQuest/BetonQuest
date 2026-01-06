@@ -7,12 +7,12 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
 
 /**
  * Event to add profession experience to a player.
  */
-public class MMOCoreProfessionExperienceEvent implements PlayerEvent {
+public class MMOCoreProfessionExperienceEvent implements PlayerAction {
 
     /**
      * Profession to add experience to.

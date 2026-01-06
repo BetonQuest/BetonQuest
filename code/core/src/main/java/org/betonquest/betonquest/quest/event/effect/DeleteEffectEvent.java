@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.effect;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
+import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Removes potion effects from the player.
  */
-public class DeleteEffectEvent implements OnlineEvent {
+public class DeleteEffectEvent implements OnlineAction {
 
     /**
      * The effects to delete.

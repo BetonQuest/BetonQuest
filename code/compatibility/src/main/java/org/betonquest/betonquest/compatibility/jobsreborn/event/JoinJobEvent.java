@@ -5,12 +5,12 @@ import com.gamingmesh.jobs.container.Job;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
 
 /**
  * Event to join a job.
  */
-public class JoinJobEvent implements PlayerEvent {
+public class JoinJobEvent implements PlayerAction {
 
     /**
      * Job to join.

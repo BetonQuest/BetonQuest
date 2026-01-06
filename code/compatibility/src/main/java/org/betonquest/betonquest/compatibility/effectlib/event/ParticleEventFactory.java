@@ -6,9 +6,9 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -16,7 +16,7 @@ import org.bukkit.configuration.ConfigurationSection;
 /**
  * Factory to create {@link ParticleEvent}s from {@link Instruction}s.
  */
-public class ParticleEventFactory implements PlayerEventFactory {
+public class ParticleEventFactory implements PlayerActionFactory {
 
     /**
      * Logger Factory to create new class specific logger.
@@ -40,7 +40,7 @@ public class ParticleEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final String string = instruction.string().get().getValue(null);
         final ConfigurationSection parameters = Utils.getNN(instruction.getPackage().getConfig().getConfigurationSection("effects." + string),
                 "Effect '" + string + "' does not exist!");
@@ -49,6 +49,6 @@ public class ParticleEventFactory implements PlayerEventFactory {
         final Argument<Location> loc = instruction.location().get("loc").orElse(null);
         final FlagArgument<Boolean> privateParticle = instruction.bool().getFlag("private", true);
         final ParticleEvent particleEvent = new ParticleEvent(manager, effectClass, parameters, loc, privateParticle);
-        return new OnlineEventAdapter(particleEvent, loggerFactory.create(ParticleEvent.class), instruction.getPackage());
+        return new OnlineActionAdapter(particleEvent, loggerFactory.create(ParticleEvent.class), instruction.getPackage());
     }
 }

@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.command.SilentConsoleCommandSender;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.Nullable;
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Event that runs given commands in the server console.
  */
-public class CommandEvent implements NullableEvent {
+public class CommandEvent implements NullableAction {
 
     /**
      * Command sender to run the commands as.

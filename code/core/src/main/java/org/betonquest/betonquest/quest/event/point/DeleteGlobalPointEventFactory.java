@@ -3,17 +3,17 @@ package org.betonquest.betonquest.quest.event.point;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter;
 import org.betonquest.betonquest.database.GlobalData;
 
 /**
  * Factory for the delete global point event.
  */
-public class DeleteGlobalPointEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+public class DeleteGlobalPointEventFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
      * The global data.
@@ -30,17 +30,17 @@ public class DeleteGlobalPointEventFactory implements PlayerEventFactory, Player
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         return createDeleteGlobalPointEvent(instruction);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
         return createDeleteGlobalPointEvent(instruction);
     }
 
-    private NullableEventAdapter createDeleteGlobalPointEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createDeleteGlobalPointEvent(final Instruction instruction) throws QuestException {
         final Argument<String> category = instruction.packageIdentifier().get();
-        return new NullableEventAdapter(new DeleteGlobalPointEvent(globalData, category));
+        return new NullableActionAdapter(new DeleteGlobalPointEvent(globalData, category));
     }
 }

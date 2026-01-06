@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.action.ActionID;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
  * The First action. Similar to the folder, except it runs linearly through a list of actions and
  * stops after the first one succeeds. This is intended to be used with condition: syntax in actions.
  */
-public class FirstEvent implements NullableEvent {
+public class FirstEvent implements NullableAction {
 
     /**
      * The actions to run.

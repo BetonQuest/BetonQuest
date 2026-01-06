@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.InventoryHolder;
@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * Puts the items in the inventory of a block or drops them if the inventory is full.
  */
-public class ChestGiveEvent implements NullableEvent {
+public class ChestGiveEvent implements NullableAction {
 
     /**
      * The items to put in the blocks inventory.

@@ -4,17 +4,17 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Saver;
 
 /**
  * Factory to create delete points events from {@link Instruction}s.
  */
-public class DeletePointEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+public class DeletePointEventFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
      * Storage for player data.
@@ -45,12 +45,12 @@ public class DeletePointEventFactory implements PlayerEventFactory, PlayerlessEv
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         return new DeletePointEvent(dataStorage::getOffline, instruction.packageIdentifier().get());
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
         final Argument<String> category = instruction.packageIdentifier().get();
         return new DeletePointPlayerlessEvent(dataStorage, saver, profileProvider, category);
     }

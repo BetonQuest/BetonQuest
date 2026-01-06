@@ -3,17 +3,17 @@ package org.betonquest.betonquest.quest.event.point;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter;
 import org.betonquest.betonquest.database.GlobalData;
 
 /**
  * Factory to create global points events from {@link Instruction}s.
  */
-public class GlobalPointEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+public class GlobalPointEventFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
      * The global data.
@@ -30,17 +30,17 @@ public class GlobalPointEventFactory implements PlayerEventFactory, PlayerlessEv
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         return parseCombinedEvent(instruction);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
         return parseCombinedEvent(instruction);
     }
 
-    private NullableEventAdapter parseCombinedEvent(final Instruction instruction) throws QuestException {
-        return new NullableEventAdapter(createGlobalPointEvent(instruction));
+    private NullableActionAdapter parseCombinedEvent(final Instruction instruction) throws QuestException {
+        return new NullableActionAdapter(createGlobalPointEvent(instruction));
     }
 
     private GlobalPointEvent createGlobalPointEvent(final Instruction instruction) throws QuestException {

@@ -6,13 +6,13 @@ import com.herocraftonline.heroes.characters.classes.HeroClass;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
+import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 import org.betonquest.betonquest.compatibility.heroes.HeroesClassType;
 
 /**
  * Adds the experience to a class.
  */
-public class HeroesExperienceEvent implements OnlineEvent {
+public class HeroesExperienceEvent implements OnlineAction {
 
     /**
      * The {@link CharacterManager} of the Heroes plugin.

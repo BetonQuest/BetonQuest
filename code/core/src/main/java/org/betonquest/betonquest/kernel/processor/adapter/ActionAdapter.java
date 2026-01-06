@@ -7,9 +7,9 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.PrimaryThreadEnforceable;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Wrapper for player and playerless actions.
  */
-public class ActionAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> implements PrimaryThreadEnforceable {
+public class ActionAdapter extends QuestAdapter<PlayerAction, PlayerlessAction> implements PrimaryThreadEnforceable {
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -51,7 +51,7 @@ public class ActionAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> im
      * @throws IllegalArgumentException if there is no type provided
      * @throws QuestException           when there was an error parsing conditions
      */
-    public ActionAdapter(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final Instruction instruction, @Nullable final PlayerEvent player, @Nullable final PlayerlessEvent playerless) throws QuestException {
+    public ActionAdapter(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final Instruction instruction, @Nullable final PlayerAction player, @Nullable final PlayerlessAction playerless) throws QuestException {
         super(instruction.getPackage(), player, playerless);
         this.log = log;
         this.questTypeApi = questTypeApi;

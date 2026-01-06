@@ -5,9 +5,9 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
 import org.betonquest.betonquest.quest.event.point.PointType;
 import org.bukkit.inventory.EquipmentSlot;
 
@@ -16,7 +16,7 @@ import java.util.Random;
 /**
  * Factory for the item durability event.
  */
-public class ItemDurabilityEventFactory implements PlayerEventFactory {
+public class ItemDurabilityEventFactory implements PlayerActionFactory {
 
     /**
      * Logger factory to create a logger for the events.
@@ -33,13 +33,13 @@ public class ItemDurabilityEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<EquipmentSlot> slot = instruction.enumeration(EquipmentSlot.class).get();
         final Argument<PointType> operation = instruction.enumeration(PointType.class).get();
         final Argument<Number> amount = instruction.number().get();
         final FlagArgument<Boolean> ignoreUnbreakable = instruction.bool().getFlag("ignoreUnbreakable", true);
         final FlagArgument<Boolean> ignoreEvents = instruction.bool().getFlag("ignoreEvents", true);
-        return new OnlineEventAdapter(new ItemDurabilityEvent(slot, operation, amount, ignoreUnbreakable, ignoreEvents, new Random()),
+        return new OnlineActionAdapter(new ItemDurabilityEvent(slot, operation, amount, ignoreUnbreakable, ignoreEvents, new Random()),
                 loggerFactory.create(ItemDurabilityEvent.class), instruction.getPackage());
     }
 }

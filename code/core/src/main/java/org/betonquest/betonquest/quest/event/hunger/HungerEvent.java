@@ -3,13 +3,13 @@ package org.betonquest.betonquest.quest.event.hunger;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
+import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 import org.bukkit.entity.Player;
 
 /**
  * The hunger event, changing the hunger of a player.
  */
-public class HungerEvent implements OnlineEvent {
+public class HungerEvent implements OnlineAction {
 
     /**
      * The hunger type, how the amount will be applied to the players hunger.

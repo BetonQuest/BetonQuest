@@ -3,8 +3,8 @@ package org.betonquest.betonquest.quest.event.command;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
 import org.bukkit.Server;
 
 /**
@@ -23,8 +23,8 @@ public class SudoEventFactory extends BaseCommandEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        return new OnlineEventAdapter(new SudoEvent(parseCommands(instruction)),
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
+        return new OnlineActionAdapter(new SudoEvent(parseCommands(instruction)),
                 loggerFactory.create(SudoEvent.class), instruction.getPackage());
     }
 }

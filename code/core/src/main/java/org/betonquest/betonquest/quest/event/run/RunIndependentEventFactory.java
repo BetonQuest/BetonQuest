@@ -5,8 +5,8 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.action.ActionID;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
 
 import java.util.Collections;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Create new {@link RunIndependentEvent} from instruction.
  */
-public class RunIndependentEventFactory implements PlayerlessEventFactory {
+public class RunIndependentEventFactory implements PlayerlessActionFactory {
 
     /**
      * Quest Type API.
@@ -31,7 +31,7 @@ public class RunIndependentEventFactory implements PlayerlessEventFactory {
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
         final Argument<List<ActionID>> events = instruction.parse(ActionID::new).list().get("actions", Collections.emptyList());
         return new RunIndependentEvent(questTypeApi, events);
     }
