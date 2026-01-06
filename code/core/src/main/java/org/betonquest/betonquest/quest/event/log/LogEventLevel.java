@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import java.util.function.BiConsumer;
 
 /**
- * Human-readable log level used by the {@link LogEvent}.
+ * Human-readable log level used by the {@link LogAction}.
  * <p>
  * While there is already a ton of similar enums for log levels,
  * they are all not really suitable for this use case for multiple reasons.
