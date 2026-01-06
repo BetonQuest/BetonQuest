@@ -16,7 +16,7 @@ import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.ScheduleID;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.kernel.registry.feature.ScheduleRegistry;
-import org.betonquest.betonquest.schedule.EventScheduling.ScheduleType;
+import org.betonquest.betonquest.schedule.ActionScheduling.ScheduleType;
 import org.betonquest.betonquest.schedule.impl.BaseScheduleFactory;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -34,15 +34,15 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Tests if starting and stopping EventScheduling works reliable and if loading Schedules works as intended.
+ * Tests if starting and stopping ActionScheduling works reliable and if loading Schedules works as intended.
  */
 @ExtendWith(MockitoExtension.class)
-class EventSchedulingTest {
+class ActionSchedulingTest {
 
     /**
-     * Event Scheduling instance.
+     * Action Scheduling instance.
      */
-    private EventScheduling scheduling;
+    private ActionScheduling scheduling;
 
     /**
      * Registry holding all schedule types for {@link #scheduling}.
@@ -52,7 +52,7 @@ class EventSchedulingTest {
     @BeforeEach
     void setUp() {
         scheduleTypes = new ScheduleRegistry(mock(BetonQuestLogger.class));
-        scheduling = new EventScheduling(mock(BetonQuestLogger.class), mock(Placeholders.class), mock(QuestPackageManager.class), scheduleTypes);
+        scheduling = new ActionScheduling(mock(BetonQuestLogger.class), mock(Placeholders.class), mock(QuestPackageManager.class), scheduleTypes);
     }
 
     @SuppressWarnings("unchecked")

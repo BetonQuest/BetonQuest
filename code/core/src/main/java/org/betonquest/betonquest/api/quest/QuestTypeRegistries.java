@@ -20,11 +20,11 @@ public interface QuestTypeRegistries {
     ConditionRegistry condition();
 
     /**
-     * Gets the registry for events.
+     * Gets the registry for actions.
      *
-     * @return the event registry
+     * @return the action registry
      */
-    ActionRegistry event();
+    ActionRegistry action();
 
     /**
      * Gets the registry for objectives.

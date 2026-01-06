@@ -113,7 +113,7 @@ public class JournalActionFactory implements PlayerActionFactory, PlayerlessActi
     }
 
     private JournalAction createJournalUpdateEvent() {
-        final JournalChanger journalChanger = new NoActionJournalChanger();
+        final JournalChanger journalChanger = new NoOperationJournalChanger();
         final NotificationSender notificationSender = new NoNotificationSender();
         return new JournalAction(dataStorage, journalChanger, notificationSender);
     }

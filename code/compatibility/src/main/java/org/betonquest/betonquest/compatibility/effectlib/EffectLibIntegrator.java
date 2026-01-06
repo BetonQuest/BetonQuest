@@ -35,7 +35,7 @@ public class EffectLibIntegrator implements Integrator {
     public void hook(final BetonQuestApi api) {
         manager = new EffectManager(plugin);
         final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
-        api.getQuestRegistries().event().register("particle", new ParticleActionFactory(loggerFactory, manager));
+        api.getQuestRegistries().action().register("particle", new ParticleActionFactory(loggerFactory, manager));
 
         plugin.addProcessor(new EffectLibParticleManager(loggerFactory.create(EffectLibParticleManager.class), loggerFactory,
                 api.getQuestPackageManager(), api.getQuestTypeApi(), api.getFeatureApi(), api.getProfileProvider(),

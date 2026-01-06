@@ -7,7 +7,7 @@ import org.betonquest.betonquest.conversation.ConversationIOFactory;
 import org.betonquest.betonquest.conversation.interceptor.InterceptorFactory;
 import org.betonquest.betonquest.item.ItemRegistry;
 import org.betonquest.betonquest.notify.NotifyIOFactory;
-import org.betonquest.betonquest.schedule.EventScheduling;
+import org.betonquest.betonquest.schedule.ActionScheduling;
 
 /**
  * Provides the BetonQuest Feature Registries.
@@ -59,9 +59,9 @@ public interface FeatureRegistries {
     FeatureRegistry<NotifyIOFactory> notifyIO();
 
     /**
-     * Gets the registry for event scheduling types.
+     * Gets the registry for action scheduling types.
      *
      * @return the scheduling registry
      */
-    FeatureRegistry<EventScheduling.ScheduleType<?, ?>> eventScheduling();
+    FeatureRegistry<ActionScheduling.ScheduleType<?, ?>> actionScheduling();
 }

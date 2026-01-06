@@ -72,9 +72,9 @@ public class MythicMobsIntegrator implements Integrator {
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         questRegistries.condition().register("mythicmobdistance", new MythicMobDistanceConditionFactory(loggerFactory, mobExecutor, new MythicMobParser(mobExecutor)));
         questRegistries.objective().register("mmobkill", new MythicMobKillObjectiveFactory());
-        questRegistries.event().registerCombined("mspawnmob", new MythicSpawnMobActionFactory(loggerFactory,
+        questRegistries.action().registerCombined("mspawnmob", new MythicSpawnMobActionFactory(loggerFactory,
                 new MythicMobDoubleParser(mobExecutor), plugin, mythicHider));
-        questRegistries.event().register("mcast", new MythicCastSkillActionFactory(loggerFactory, apiHelper));
+        questRegistries.action().register("mcast", new MythicCastSkillActionFactory(loggerFactory, apiHelper));
 
         final NpcRegistry npcRegistry = api.getFeatureRegistries().npc();
         manager.registerEvents(new MythicMobsInteractCatcher(api.getProfileProvider(), npcRegistry, mobExecutor, mythicHider), plugin);

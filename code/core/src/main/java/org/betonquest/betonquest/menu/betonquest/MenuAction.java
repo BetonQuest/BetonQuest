@@ -6,21 +6,21 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 
 /**
- * Event to open, close or update menus.
+ * Action to open, close or update menus.
  */
-public class MenuEvent implements OnlineAction {
+public class MenuAction implements OnlineAction {
 
     /**
-     * The action to do with the profile.
+     * The operation to do with the profile.
      */
     private final QuestConsumer<OnlineProfile> action;
 
     /**
-     * Creates a new MenuQuestEvent.
+     * Creates a new MenuQuestAction.
      *
      * @param action the action to do with the profile
      */
-    public MenuEvent(final QuestConsumer<OnlineProfile> action) {
+    public MenuAction(final QuestConsumer<OnlineProfile> action) {
         this.action = action;
     }
 

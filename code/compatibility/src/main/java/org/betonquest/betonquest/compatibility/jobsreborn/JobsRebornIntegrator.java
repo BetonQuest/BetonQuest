@@ -48,13 +48,13 @@ public class JobsRebornIntegrator implements Integrator {
         conditionRegistry.register("nujobs_jobfull", new JobFullConditionFactory());
         conditionRegistry.register("nujobs_joblevel", new JobLevelConditionFactory());
 
-        final ActionRegistry eventRegistry = questRegistries.event();
-        eventRegistry.register("nujobs_addexp", new AddExpActionFactory());
-        eventRegistry.register("nujobs_addlevel", new AddLevelActionFactory());
-        eventRegistry.register("nujobs_dellevel", new DelLevelActionFactory());
-        eventRegistry.register("nujobs_joinjob", new JoinJobActionFactory());
-        eventRegistry.register("nujobs_leavejob", new LeaveJobActionFactory());
-        eventRegistry.register("nujobs_setlevel", new SetLevelActionFactory());
+        final ActionRegistry actionRegistry = questRegistries.action();
+        actionRegistry.register("nujobs_addexp", new AddExpActionFactory());
+        actionRegistry.register("nujobs_addlevel", new AddLevelActionFactory());
+        actionRegistry.register("nujobs_dellevel", new DelLevelActionFactory());
+        actionRegistry.register("nujobs_joinjob", new JoinJobActionFactory());
+        actionRegistry.register("nujobs_leavejob", new LeaveJobActionFactory());
+        actionRegistry.register("nujobs_setlevel", new SetLevelActionFactory());
 
         final ObjectiveRegistry objectiveRegistry = questRegistries.objective();
         objectiveRegistry.register("nujobs_joinjob", new JoinJobObjectiveFactory());

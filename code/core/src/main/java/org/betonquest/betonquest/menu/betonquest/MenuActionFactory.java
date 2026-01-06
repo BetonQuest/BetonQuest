@@ -14,9 +14,9 @@ import org.betonquest.betonquest.menu.OpenedMenu;
 import org.betonquest.betonquest.menu.RPGMenu;
 
 /**
- * Factory to create {@link MenuEvent}s from {@link Instruction}s.
+ * Factory to create {@link MenuAction}s from {@link Instruction}s.
  */
-public class MenuEventFactory implements PlayerActionFactory {
+public class MenuActionFactory implements PlayerActionFactory {
 
     /**
      * Factory to create new class specific logger.
@@ -29,12 +29,12 @@ public class MenuEventFactory implements PlayerActionFactory {
     private final RPGMenu rpgMenu;
 
     /**
-     * Create a new factory for Menu Events.
+     * Create a new factory for Menu Actions.
      *
      * @param loggerFactory the factory to create new class specific logger
      * @param rpgMenu       the rpg menu instance
      */
-    public MenuEventFactory(final BetonQuestLoggerFactory loggerFactory, final RPGMenu rpgMenu) {
+    public MenuActionFactory(final BetonQuestLoggerFactory loggerFactory, final RPGMenu rpgMenu) {
         this.loggerFactory = loggerFactory;
         this.rpgMenu = rpgMenu;
     }
@@ -42,7 +42,7 @@ public class MenuEventFactory implements PlayerActionFactory {
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final Operation operation = instruction.enumeration(Operation.class).get().getValue(null);
-        final QuestConsumer<OnlineProfile> action = switch (operation) {
+        final QuestConsumer<OnlineProfile> consumer = switch (operation) {
             case OPEN -> {
                 final Argument<MenuID> menuID = instruction.parse(
                         (placeholders, packManager, pack, string)
@@ -57,11 +57,11 @@ public class MenuEventFactory implements PlayerActionFactory {
                 }
             };
         };
-        return new OnlineActionAdapter(new MenuEvent(action), loggerFactory.create(MenuEvent.class), instruction.getPackage());
+        return new OnlineActionAdapter(new MenuAction(consumer), loggerFactory.create(MenuAction.class), instruction.getPackage());
     }
 
     /**
-     * The action of the event.
+     * The operation of the action.
      */
     public enum Operation {
         /**

@@ -11,14 +11,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.Mockito.*;
 
 /**
- * Test {@link NoActionJournalChanger}.
+ * Test {@link NoOperationJournalChanger}.
  */
 @ExtendWith({MockitoExtension.class, BetonQuestLoggerService.class})
-class NoActionJournalChangerTest {
+class NoOperationJournalChangerTest {
 
     @Test
     void testChangeJournalDoesNothing(@Mock final Journal journal) {
-        final NoActionJournalChanger changer = new NoActionJournalChanger();
+        final NoOperationJournalChanger changer = new NoOperationJournalChanger();
         changer.changeJournal(journal, mock(Profile.class));
         verifyNoInteractions(journal);
     }

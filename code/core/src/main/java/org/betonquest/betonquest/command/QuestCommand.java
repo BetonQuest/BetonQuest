@@ -891,7 +891,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return Optional.empty();
         }
         if (args.length == 3) {
-            return completeId(args, AccessorType.EVENTS);
+            return completeId(args, AccessorType.ACTIONS);
         }
         return Optional.of(new ArrayList<>());
     }
@@ -1932,9 +1932,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      */
     private enum AccessorType {
         /**
-         * EventID.
+         * ActionID.
          */
-        EVENTS,
+        ACTIONS,
         /**
          * ConditionID.
          */
