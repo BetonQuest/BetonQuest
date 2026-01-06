@@ -3,6 +3,7 @@ package org.betonquest.betonquest.mc_1_21_4.conversation;
 import org.betonquest.betonquest.conversation.menu.input.ConversationAction;
 import org.betonquest.betonquest.conversation.menu.input.ConversationSession;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Input;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attributable;
@@ -20,6 +21,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -73,6 +75,12 @@ public class InputEventSession implements ConversationSession, Listener {
     private final Listener unmount;
 
     /**
+     * The player's previous fly speed before modifying.
+     */
+    @Nullable
+    private Float flySpeed;
+
+    /**
      * Creates a new Conversation Input Session based on the {@link PlayerInputEvent}.
      *
      * @param plugin   the plugin to start tasks
@@ -90,6 +98,7 @@ public class InputEventSession implements ConversationSession, Listener {
 
     @Override
     public void begin() {
+        beginCheckCreative();
         if (setSpeed) {
             for (final Attribute attribute : ATTRIBUTES) {
                 final AttributeInstance attributeInstance = player.getAttribute(attribute);
@@ -112,9 +121,17 @@ public class InputEventSession implements ConversationSession, Listener {
         Bukkit.getPluginManager().registerEvents(unmount, plugin);
     }
 
+    private void beginCheckCreative() {
+        if (player.getGameMode() == GameMode.CREATIVE) {
+            flySpeed = player.getFlySpeed();
+            player.setFlySpeed(0);
+        }
+    }
+
     @Override
     public void end() {
         Bukkit.getScheduler().runTask(plugin, () -> {
+            endResetSpeed();
             for (final Attribute attribute : ATTRIBUTES) {
                 final AttributeInstance attributeInstance = player.getAttribute(attribute);
                 if (attributeInstance != null) {
@@ -133,6 +150,12 @@ public class InputEventSession implements ConversationSession, Listener {
         });
         HandlerList.unregisterAll(this);
         Bukkit.getScheduler().runTaskLater(plugin, () -> HandlerList.unregisterAll(unmount), 20);
+    }
+
+    private void endResetSpeed() {
+        if (flySpeed != null) {
+            player.setFlySpeed(flySpeed);
+        }
     }
 
     /**
