@@ -15,10 +15,10 @@ import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.api.quest.action.ActionRegistry;
 import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
 import org.betonquest.betonquest.compatibility.Integrator;
+import org.betonquest.betonquest.compatibility.npc.citizens.event.move.CitizensMoveAction;
+import org.betonquest.betonquest.compatibility.npc.citizens.event.move.CitizensMoveActionFactory;
 import org.betonquest.betonquest.compatibility.npc.citizens.event.move.CitizensMoveController;
-import org.betonquest.betonquest.compatibility.npc.citizens.event.move.CitizensMoveEvent;
-import org.betonquest.betonquest.compatibility.npc.citizens.event.move.CitizensMoveEventFactory;
-import org.betonquest.betonquest.compatibility.npc.citizens.event.move.CitizensStopEventFactory;
+import org.betonquest.betonquest.compatibility.npc.citizens.event.move.CitizensStopActionFactory;
 import org.betonquest.betonquest.compatibility.npc.citizens.objective.NPCKillObjectiveFactory;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.ConversationIOFactory;
@@ -31,7 +31,7 @@ import org.bukkit.plugin.PluginManager;
 public class CitizensIntegrator implements Integrator {
 
     /**
-     * Handles NPC movement of the {@link CitizensMoveEvent}.
+     * Handles NPC movement of the {@link CitizensMoveAction}.
      */
     @SuppressWarnings("NullAway.Init")
     private static CitizensMoveController citizensMoveController;
@@ -75,8 +75,8 @@ public class CitizensIntegrator implements Integrator {
 
         final ActionRegistry eventRegistry = questRegistries.event();
         final FeatureApi featureApi = api.getFeatureApi();
-        eventRegistry.register("npcmove", new CitizensMoveEventFactory(featureApi, citizensMoveController));
-        eventRegistry.registerCombined("npcstop", new CitizensStopEventFactory(featureApi, citizensMoveController));
+        eventRegistry.register("npcmove", new CitizensMoveActionFactory(featureApi, citizensMoveController));
+        eventRegistry.registerCombined("npcstop", new CitizensStopActionFactory(featureApi, citizensMoveController));
 
         final FeatureRegistries featureRegistries = api.getFeatureRegistries();
         final FeatureRegistry<ConversationIOFactory> conversationIORegistry = featureRegistries.conversationIO();

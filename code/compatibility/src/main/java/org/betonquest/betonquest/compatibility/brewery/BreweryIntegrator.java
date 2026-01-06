@@ -9,8 +9,8 @@ import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.brewery.condition.DrunkConditionFactory;
 import org.betonquest.betonquest.compatibility.brewery.condition.DrunkQualityConditionFactory;
 import org.betonquest.betonquest.compatibility.brewery.condition.HasBrewConditionFactory;
-import org.betonquest.betonquest.compatibility.brewery.event.GiveBrewEventFactory;
-import org.betonquest.betonquest.compatibility.brewery.event.TakeBrewEventFactory;
+import org.betonquest.betonquest.compatibility.brewery.event.GiveBrewActionFactory;
+import org.betonquest.betonquest.compatibility.brewery.event.TakeBrewActionFactory;
 
 /**
  * Integrator for the Brewery plugin.
@@ -28,8 +28,8 @@ public class BreweryIntegrator implements Integrator {
         final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         final ActionRegistry eventRegistry = questRegistries.event();
-        eventRegistry.register("givebrew", new GiveBrewEventFactory(loggerFactory));
-        eventRegistry.register("takebrew", new TakeBrewEventFactory(loggerFactory));
+        eventRegistry.register("givebrew", new GiveBrewActionFactory(loggerFactory));
+        eventRegistry.register("takebrew", new TakeBrewActionFactory(loggerFactory));
 
         final ConditionRegistry conditionRegistry = questRegistries.condition();
         conditionRegistry.register("drunk", new DrunkConditionFactory(loggerFactory));

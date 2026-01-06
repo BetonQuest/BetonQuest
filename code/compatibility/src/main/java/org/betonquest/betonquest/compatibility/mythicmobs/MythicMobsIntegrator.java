@@ -13,8 +13,8 @@ import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.UnsupportedVersionException;
 import org.betonquest.betonquest.compatibility.mythicmobs.condition.MythicMobDistanceConditionFactory;
-import org.betonquest.betonquest.compatibility.mythicmobs.event.MythicCastSkillEventFactory;
-import org.betonquest.betonquest.compatibility.mythicmobs.event.MythicSpawnMobEventFactory;
+import org.betonquest.betonquest.compatibility.mythicmobs.event.MythicCastSkillActionFactory;
+import org.betonquest.betonquest.compatibility.mythicmobs.event.MythicSpawnMobActionFactory;
 import org.betonquest.betonquest.compatibility.mythicmobs.item.MythicItemFactory;
 import org.betonquest.betonquest.compatibility.mythicmobs.item.MythicQuestItemSerializer;
 import org.betonquest.betonquest.compatibility.mythicmobs.npc.MythicMobsInteractCatcher;
@@ -72,9 +72,9 @@ public class MythicMobsIntegrator implements Integrator {
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         questRegistries.condition().register("mythicmobdistance", new MythicMobDistanceConditionFactory(loggerFactory, mobExecutor, new MythicMobParser(mobExecutor)));
         questRegistries.objective().register("mmobkill", new MythicMobKillObjectiveFactory());
-        questRegistries.event().registerCombined("mspawnmob", new MythicSpawnMobEventFactory(loggerFactory,
+        questRegistries.event().registerCombined("mspawnmob", new MythicSpawnMobActionFactory(loggerFactory,
                 new MythicMobDoubleParser(mobExecutor), plugin, mythicHider));
-        questRegistries.event().register("mcast", new MythicCastSkillEventFactory(loggerFactory, apiHelper));
+        questRegistries.event().register("mcast", new MythicCastSkillActionFactory(loggerFactory, apiHelper));
 
         final NpcRegistry npcRegistry = api.getFeatureRegistries().npc();
         manager.registerEvents(new MythicMobsInteractCatcher(api.getProfileProvider(), npcRegistry, mobExecutor, mythicHider), plugin);

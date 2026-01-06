@@ -16,7 +16,7 @@ import org.betonquest.betonquest.compatibility.jobsreborn.JobParser;
 public class LevelUpObjectiveFactory implements ObjectiveFactory {
 
     /**
-     * Creates a new instance of the ObjectiveLevelUpEventFactory.
+     * Creates a new instance of the ObjectiveLevelUpActionFactory.
      */
     public LevelUpObjectiveFactory() {
     }

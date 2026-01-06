@@ -29,7 +29,7 @@ public class PaymentObjectiveFactory implements ObjectiveFactory {
     private final PluginMessage pluginMessage;
 
     /**
-     * Creates a new instance of the ObjectivePaymentEventFactory.
+     * Creates a new instance of the ObjectivePaymentActionFactory.
      *
      * @param loggerFactory the logger factory to create a logger for the objectives
      * @param pluginMessage the {@link PluginMessage} instance
