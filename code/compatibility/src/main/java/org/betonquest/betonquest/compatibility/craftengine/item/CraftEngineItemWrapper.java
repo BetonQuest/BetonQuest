@@ -48,12 +48,12 @@ public record CraftEngineItemWrapper(Argument<CustomItem<ItemStack>> customItemA
 
         @Override
         public Component getName() {
-            return Objects.requireNonNull(itemMeta.displayName());
+            return Objects.requireNonNullElse(itemMeta.displayName(), Component.empty());
         }
 
         @Override
         public List<Component> getLore() {
-            return Objects.requireNonNull(itemMeta.lore());
+            return Objects.requireNonNullElse(itemMeta.lore(), List.of());
         }
 
         @Override

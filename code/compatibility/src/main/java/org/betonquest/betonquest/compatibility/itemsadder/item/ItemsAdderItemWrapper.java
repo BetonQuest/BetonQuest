@@ -34,12 +34,12 @@ public record ItemsAdderItemWrapper(Argument<CustomStack> customItemArgument) im
 
         @Override
         public Component getName() {
-            return Objects.requireNonNull(customStack.itemName());
+            return Objects.requireNonNullElse(customStack.itemName(), Component.empty());
         }
 
         @Override
         public List<Component> getLore() {
-            return Objects.requireNonNull(customStack.getItemStack().lore());
+            return Objects.requireNonNullElse(customStack.getItemStack().lore(), List.of());
         }
 
         @Override

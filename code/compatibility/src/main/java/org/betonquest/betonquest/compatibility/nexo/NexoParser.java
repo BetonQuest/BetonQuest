@@ -16,7 +16,9 @@ public class NexoParser implements SimpleArgumentParser<ItemBuilder> {
      */
     public static final NexoParser NEXO_PARSER = new NexoParser();
 
-    /** The empty default constructor. */
+    /**
+ * The empty default constructor.
+ */
     public NexoParser() { }
 
     @Override

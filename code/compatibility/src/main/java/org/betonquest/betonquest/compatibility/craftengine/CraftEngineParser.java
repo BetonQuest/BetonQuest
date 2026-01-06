@@ -18,7 +18,9 @@ public class CraftEngineParser implements SimpleArgumentParser<CustomItem<ItemSt
      */
     public static final CraftEngineParser CRAFT_ENGINE_PARSER = new CraftEngineParser();
 
-    /** The empty default constructor. */
+    /**
+ * The empty default constructor.
+ */
     public CraftEngineParser() { }
 
     @Override

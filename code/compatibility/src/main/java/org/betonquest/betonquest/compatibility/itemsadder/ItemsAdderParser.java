@@ -15,7 +15,9 @@ public class ItemsAdderParser implements SimpleArgumentParser<CustomStack> {
      */
     public static final ItemsAdderParser ITEMS_ADDER_PARSER = new ItemsAdderParser();
 
-    /** The empty default constructor. */
+    /**
+ * The empty default constructor.
+ */
     public ItemsAdderParser() { }
 
     @Override

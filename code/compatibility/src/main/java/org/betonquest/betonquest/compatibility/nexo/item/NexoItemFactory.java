@@ -12,7 +12,9 @@ import org.betonquest.betonquest.item.QuestItemWrapper;
  */
 public class NexoItemFactory implements TypeFactory<QuestItemWrapper> {
 
-    /** The empty default constructor. */
+    /**
+ * The empty default constructor.
+ */
     public NexoItemFactory() { }
 
     @Override

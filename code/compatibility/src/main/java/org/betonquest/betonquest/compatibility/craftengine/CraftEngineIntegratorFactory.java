@@ -8,7 +8,9 @@ import org.betonquest.betonquest.compatibility.IntegratorFactory;
  */
 public class CraftEngineIntegratorFactory implements IntegratorFactory {
 
-    /** The empty default constructor. */
+    /**
+ * The empty default constructor.
+ */
     public CraftEngineIntegratorFactory() { }
 
     @Override

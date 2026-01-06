@@ -12,7 +12,9 @@ import org.betonquest.betonquest.item.ItemRegistry;
  */
 public class ItemsAdderIntegrator implements Integrator {
 
-    /** The empty default constructor. */
+    /**
+ * The empty default constructor.
+ */
     public ItemsAdderIntegrator() { }
 
     @Override

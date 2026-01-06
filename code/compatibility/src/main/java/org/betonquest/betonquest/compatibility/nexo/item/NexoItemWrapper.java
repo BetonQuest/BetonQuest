@@ -35,12 +35,12 @@ public record NexoItemWrapper(Argument<ItemBuilder> itemBuilderArgument) impleme
 
         @Override
         public Component getName() {
-            return Objects.requireNonNull(itemBuilder.getItemName());
+            return Objects.requireNonNullElse(itemBuilder.getItemName(), Component.empty());
         }
 
         @Override
         public List<Component> getLore() {
-            return Objects.requireNonNull(itemBuilder.getLore());
+            return Objects.requireNonNullElse(itemBuilder.getLore(), List.of());
         }
 
         @Override
@@ -50,7 +50,7 @@ public record NexoItemWrapper(Argument<ItemBuilder> itemBuilderArgument) impleme
 
         @Override
         public boolean matches(@Nullable final ItemStack item) {
-            return Objects.equals(itemBuilder, NexoItems.builderFromItem(item));
+            return itemBuilder.equals(NexoItems.builderFromItem(item));
         }
     }
 }

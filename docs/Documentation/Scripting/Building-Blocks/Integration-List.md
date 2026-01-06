@@ -10,9 +10,9 @@ In total @snippet:constants:totalIntegratedPluginsNumber@ plugins have dedicated
 ## Provided by BetonQuest
 
 BetonQuest hooks into other plugins by itself to provide more events, conditions and objectives or other features.  
-_AuraSkills, Brewery, BreweryX, Citizens, DecentHolograms, Denizen, EffectLib, FancyNpcs, FakeBlock, Heroes, HolographicDisplays, JobsReborn, LuckPerms, Magic,
-mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, PacketEvents, PlaceholderAPI, Quests, RedisChat, Shopkeepers, TrainCarts, ProSkillAPI,
-Skript, Vault, WorldEdit, FastAsyncWorldEdit, WorldGuard, ZNPCsPlus, Nexo, CraftEngine and ItemsAdder_
+_AuraSkills, Brewery, BreweryX, Citizens, CraftEngine, DecentHolograms, Denizen, EffectLib, FancyNpcs, FakeBlock, Heroes, HolographicDisplays, ItemsAdder, JobsReborn, LuckPerms, Magic,
+mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, Nexo, PacketEvents, PlaceholderAPI, Quests, RedisChat, Shopkeepers, TrainCarts, ProSkillAPI,
+Skript, Vault, WorldEdit, FastAsyncWorldEdit, WorldGuard and ZNPCsPlus_
 
 ## Provided by other plugins
 Some plugins also hook into BetonQuest and provide support by themselves:  
@@ -181,6 +181,24 @@ The NPC Kill objective requires the player to kill a NPC.
 npckill thief amount:3 events:reward notify
 ```
 
+## CraftEngine[](https://polymart.org/product/7624/craftengine)
+
+### Items
+
+CraftEngine usage is integrated to the [Items](../../Features/Items.md) system and thus used for events and conditions.
+
+In addition, you can also add `quest-item` argument to tag them as "QuestItem".
+
+```YAML linenums="1" title="Example"
+items:
+  topazAxe: craftEngine default:topaz_axe
+  amethystTorch: craftEngine default:amethyst_torch quest-item
+conditions:
+  hasTopazAxe: hand topazAxe
+events:
+  giveAmethystTorch: give amethystTorch:3
+```
+
 ## Denizen[](http://dev.bukkit.org/bukkit-plugins/denizen/)
 
 
@@ -339,6 +357,25 @@ This event simply gives the player specified amount of Heroes experience. The fi
     ```YAML
     heroesexp primary 1000
     ```
+
+## ItemsAdder[](https://www.spigotmc.org/resources/73355/)
+
+### Items
+
+ItemsAdder usage is integrated to the [Items](../../Features/Items.md) system and thus used for events and conditions.
+
+In addition, you can also add `quest-item` argument to tag them as "QuestItem".
+
+```YAML linenums="1" title="Example"
+items:
+  iconSearch: itemsAdder _iainternal:icon_search
+  iconCancel: itemsAdder _iainternal:icon_cancel quest-item
+conditions:
+  hasIconSearch: hand iconSearch
+events:
+  giveIconCancel: give iconCancel:3
+```
+
 
 ## JobsReborn[](https://www.spigotmc.org/resources/4216/)
 
@@ -801,6 +838,24 @@ events:
   castPoison: mcast AngrySludgePoison
 ```
 
+## Nexo[](https://polymart.org/product/6901/nexo)
+
+### Items
+
+Nexo usage is integrated to the [Items](../../Features/Items.md) system and thus used for events and conditions.
+
+In addition, you can also add `quest-item` argument to tag them as "QuestItem".
+
+```YAML linenums="1" title="Example"
+items:
+  forestTrident: nexo forest_trident
+  tableLamp: nexo table_lamp quest-item
+conditions:
+  hasForestTrident: hand forestTrident
+events:
+  giveTableLamp: give tableLamp:3
+```
+
 ## PacketEvents[](https://www.spigotmc.org/resources/80279/)
 
 ### Events
@@ -1234,58 +1289,3 @@ It is a lightweight packet based plugin.
 
 !!! info
     ZNPCsPlus integration supports all [BetonQuest NPC](../../Features/NPCs.md) features.
-
-## Nexo[](https://polymart.org/product/6901/nexo)
-
-### Items
-
-Nexo usage is integrated to the [Items](../../Features/Items.md) system and thus used for events and conditions.
-
-In addition, you can also add `quest-item` argument to tag them as "QuestItem".
-
-```YAML linenums="1" title="Example"
-items:
-  forestTrident: nexo forest_trident
-  tableLamp: nexo table_lamp quest-item
-conditions:
-  hasForestTrident: hand forestTrident
-events:
-  giveTableLamp: give tableLamp:3
-```
-
-## CraftEngine[](https://polymart.org/product/7624/craftengine)
-
-### Items
-
-CraftEngine usage is integrated to the [Items](../../Features/Items.md) system and thus used for events and conditions.
-
-In addition, you can also add `quest-item` argument to tag them as "QuestItem".
-
-```YAML linenums="1" title="Example"
-items:
-  topazAxe: craftEngine default:topaz_axe
-  amethystTorch: craftEngine default:amethyst_torch quest-item
-conditions:
-  hasTopazAxe: hand topazAxe
-events:
-  giveAmethystTorch: give amethystTorch:3
-```
-
-
-## ItemsAdder[](https://www.spigotmc.org/resources/%E2%9C%A8itemsadder%E2%AD%90emotes-mobs-items-armors-hud-gui-emojis-blocks-wings-hats-liquids.73355/)
-
-### Items
-
-ItemsAdder usage is integrated to the [Items](../../Features/Items.md) system and thus used for events and conditions.
-
-In addition, you can also add `quest-item` argument to tag them as "QuestItem".
-
-```YAML linenums="1" title="Example"
-items:
-  iconSearch: itemsAdder _iainternal:icon_search
-  iconCancel: itemsAdder _iainternal:icon_cancel quest-item
-conditions:
-  hasIconSearch: hand iconSearch
-events:
-  giveIconCancel: give iconCancel:3
-```
