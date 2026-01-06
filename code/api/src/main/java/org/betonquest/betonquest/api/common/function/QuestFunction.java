@@ -16,7 +16,7 @@ public interface QuestFunction<T, R> {
      *
      * @param arg the function argument
      * @return the function result
-     * @throws QuestException if the resolving fails
+     * @throws QuestException if the function execution fails
      */
     R apply(T arg) throws QuestException;
 }
