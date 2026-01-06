@@ -3,8 +3,8 @@ package org.betonquest.betonquest.compatibility.jobsreborn;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
+import org.betonquest.betonquest.api.quest.action.ActionRegistry;
 import org.betonquest.betonquest.api.quest.condition.ConditionRegistry;
-import org.betonquest.betonquest.api.quest.event.EventRegistry;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveRegistry;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.jobsreborn.condition.CanLevelConditionFactory;
@@ -48,7 +48,7 @@ public class JobsRebornIntegrator implements Integrator {
         conditionRegistry.register("nujobs_jobfull", new JobFullConditionFactory());
         conditionRegistry.register("nujobs_joblevel", new JobLevelConditionFactory());
 
-        final EventRegistry eventRegistry = questRegistries.event();
+        final ActionRegistry eventRegistry = questRegistries.event();
         eventRegistry.register("nujobs_addexp", new AddExpEventFactory());
         eventRegistry.register("nujobs_addlevel", new AddLevelEventFactory());
         eventRegistry.register("nujobs_dellevel", new DelLevelEventFactory());

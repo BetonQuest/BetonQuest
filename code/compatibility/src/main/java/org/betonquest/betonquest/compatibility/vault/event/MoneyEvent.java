@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.Nullable;
@@ -17,7 +17,7 @@ import java.text.DecimalFormat;
 /**
  * Modifies player's balance.
  */
-public class MoneyEvent implements PlayerEvent {
+public class MoneyEvent implements PlayerAction {
 
     /**
      * Economy where the balance will be modified.

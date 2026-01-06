@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Event to delete tags from all players.
  */
-public class DeleteTagPlayerlessEvent implements PlayerlessEvent {
+public class DeleteTagPlayerlessEvent implements PlayerlessAction {
 
     /**
      * Storage for player data.

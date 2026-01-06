@@ -5,14 +5,14 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Sets a block at specified location.
  */
-public class SetBlockEvent implements NullableEvent {
+public class SetBlockEvent implements NullableAction {
 
     /**
      * The block selector.

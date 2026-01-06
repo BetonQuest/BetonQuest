@@ -3,12 +3,12 @@ package org.betonquest.betonquest.quest.event.stage;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestConsumer;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
 
 /**
  * The StageEvent class to make changes to a player's stage.
  */
-public class StageEvent implements PlayerEvent {
+public class StageEvent implements PlayerAction {
 
     /**
      * The action to perform.

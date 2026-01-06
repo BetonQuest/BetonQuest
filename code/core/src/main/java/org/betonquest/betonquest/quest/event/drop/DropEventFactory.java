@@ -5,11 +5,11 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter;
 import org.betonquest.betonquest.quest.event.OnlineProfileGroupPlayerlessEventAdapter;
 import org.bukkit.Location;
 
@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Factory to create {@link DropEvent}s for items from {@link Instruction}s.
  */
-public class DropEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+public class DropEventFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
      * The profile provider instance.
@@ -36,17 +36,17 @@ public class DropEventFactory implements PlayerEventFactory, PlayerlessEventFact
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         return createDropEvent(instruction);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
         return createStaticDropEvent(instruction);
     }
 
-    private PlayerlessEvent createStaticDropEvent(final Instruction instruction) throws QuestException {
-        final NullableEventAdapter dropEvent = createDropEvent(instruction);
+    private PlayerlessAction createStaticDropEvent(final Instruction instruction) throws QuestException {
+        final NullableActionAdapter dropEvent = createDropEvent(instruction);
         final boolean location = !instruction.bool().getFlag("location", true).getValue(null).orElse(false);
         if (location) {
             return new OnlineProfileGroupPlayerlessEventAdapter(profileProvider::getOnlineProfiles, dropEvent);
@@ -54,10 +54,10 @@ public class DropEventFactory implements PlayerEventFactory, PlayerlessEventFact
         return dropEvent;
     }
 
-    private NullableEventAdapter createDropEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createDropEvent(final Instruction instruction) throws QuestException {
         final Argument<List<ItemWrapper>> items = instruction.item().list().notEmpty().get("items", Collections.emptyList());
         final String locationPart = instruction.string().get("location", "%location%").getValue(null);
         final Argument<Location> location = instruction.chainForArgument(locationPart).location().get();
-        return new NullableEventAdapter(new DropEvent(items, location));
+        return new NullableActionAdapter(new DropEvent(items, location));
     }
 }

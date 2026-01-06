@@ -3,12 +3,12 @@ package org.betonquest.betonquest.menu.betonquest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestConsumer;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
+import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 
 /**
  * Event to open, close or update menus.
  */
-public class MenuEvent implements OnlineEvent {
+public class MenuEvent implements OnlineAction {
 
     /**
      * The action to do with the profile.

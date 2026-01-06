@@ -2,14 +2,14 @@ package org.betonquest.betonquest.quest.event.chat;
 
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
 
 /**
  * The chat event factory.
  */
-public class ChatEventFactory implements PlayerEventFactory {
+public class ChatEventFactory implements PlayerActionFactory {
 
     /**
      * Logger factory to create a logger for the events.
@@ -26,9 +26,9 @@ public class ChatEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) {
+    public PlayerAction parsePlayer(final Instruction instruction) {
         final String[] messages = String.join(" ", instruction.getValueParts()).split("\\|");
-        return new OnlineEventAdapter(new ChatEvent(messages),
+        return new OnlineActionAdapter(new ChatEvent(messages),
                 loggerFactory.create(ChatEvent.class),
                 instruction.getPackage());
     }

@@ -5,15 +5,15 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
 import org.bukkit.potion.PotionEffectType;
 
 /**
  * Factory to create effect events from {@link Instruction}s.
  */
-public class EffectEventFactory implements PlayerEventFactory {
+public class EffectEventFactory implements PlayerActionFactory {
 
     /**
      * Logger factory to create a logger for the events.
@@ -30,7 +30,7 @@ public class EffectEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final PotionEffectType effect = PotionEffectType.getByName(instruction.string().get().getValue(null));
         if (effect == null) {
             throw new QuestException("Unknown effect type: " + instruction.current());
@@ -41,7 +41,7 @@ public class EffectEventFactory implements PlayerEventFactory {
             final FlagArgument<Boolean> ambient = instruction.bool().getFlag("ambient", true);
             final FlagArgument<Boolean> hidden = instruction.bool().getFlag("hidden", true);
             final FlagArgument<Boolean> noicon = instruction.bool().getFlag("noicon", true);
-            return new OnlineEventAdapter(new EffectEvent(effect, duration, level, ambient, hidden, noicon),
+            return new OnlineActionAdapter(new EffectEvent(effect, duration, level, ambient, hidden, noicon),
                     loggerFactory.create(EffectEvent.class), instruction.getPackage());
         } catch (final QuestException e) {
             throw new QuestException("Could not parse effect duration and amplifier", e);

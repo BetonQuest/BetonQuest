@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.quest.event.chat;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
+import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 import org.bukkit.entity.Player;
 
 /**
  * The chat event.
  */
-public class ChatEvent implements OnlineEvent {
+public class ChatEvent implements OnlineAction {
 
     /**
      * The messages.

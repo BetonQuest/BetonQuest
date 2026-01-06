@@ -5,15 +5,15 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
 import org.betonquest.betonquest.compatibility.heroes.HeroesClassType;
 
 /**
  * Factory to create {@link HeroesExperienceEvent}s from {@link Instruction}s.
  */
-public class HeroesExperienceEventFactory implements PlayerEventFactory {
+public class HeroesExperienceEventFactory implements PlayerActionFactory {
 
     /**
      * The logger factory.
@@ -37,11 +37,11 @@ public class HeroesExperienceEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<HeroesClassType> classType = instruction.enumeration(HeroesClassType.class).get();
         final Argument<Number> amount = instruction.number().get();
 
-        return new OnlineEventAdapter(new HeroesExperienceEvent(characterManager, classType, amount),
+        return new OnlineActionAdapter(new HeroesExperienceEvent(characterManager, classType, amount),
                 loggerFactory.create(HeroesExperienceEvent.class), instruction.getPackage());
     }
 }

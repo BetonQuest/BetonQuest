@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.chest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.InventoryHolder;
@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Abstract class for chest events.
  */
-public abstract class AbstractChestEvent implements NullableEvent {
+public abstract class AbstractChestEvent implements NullableAction {
 
     /**
      * The location of the chest.

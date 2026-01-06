@@ -4,7 +4,7 @@ import com.briarcraft.fakeblock.api.service.PlayerGroupService;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Shows FakeBlock groups to the player.
  */
-public class ShowGroupEvent implements PlayerEvent {
+public class ShowGroupEvent implements PlayerAction {
 
     /**
      * The groupNames that should be shown to the player.

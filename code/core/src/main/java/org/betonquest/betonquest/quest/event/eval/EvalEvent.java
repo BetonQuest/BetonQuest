@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgument
 import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Placeholders;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
 import org.betonquest.betonquest.kernel.processor.adapter.ActionAdapter;
 import org.betonquest.betonquest.kernel.registry.quest.ActionTypeRegistry;
 import org.jetbrains.annotations.Nullable;
@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * An action which evaluates to another event.
  */
-public class EvalEvent implements NullableEvent {
+public class EvalEvent implements NullableAction {
 
     /**
      * The {@link Placeholders} to create and resolve placeholders.

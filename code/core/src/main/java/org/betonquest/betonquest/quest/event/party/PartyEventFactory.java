@@ -7,17 +7,17 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.action.ActionID;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 
 import java.util.List;
 
 /**
  * Fires specified events for every player in the party.
  */
-public class PartyEventFactory implements PlayerEventFactory {
+public class PartyEventFactory implements PlayerActionFactory {
 
     /**
      * Logger factory to create a logger for the events.
@@ -48,12 +48,12 @@ public class PartyEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<Number> range = instruction.number().get();
         final Argument<Number> amount = instruction.number().get("amount").orElse(null);
         final Argument<List<ConditionID>> conditions = instruction.parse(ConditionID::new).list().get();
         final Argument<List<ActionID>> events = instruction.parse(ActionID::new).list().get();
-        return new OnlineEventAdapter(
+        return new OnlineActionAdapter(
                 new PartyEvent(questTypeApi, profileProvider, range, amount, conditions, events),
                 loggerFactory.create(PartyEvent.class),
                 instruction.getPackage()

@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.bukkit.Server;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  * <p>
  * Contains common methods for parsing commands from instructions and holds the server, scheduler and plugin.
  */
-public abstract class BaseCommandEventFactory implements PlayerEventFactory {
+public abstract class BaseCommandEventFactory implements PlayerActionFactory {
 
     /**
      * Regex used to detect a conditions statement at the end of the instruction.

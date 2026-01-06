@@ -4,15 +4,15 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.id.CompassID;
 
 /**
  * The compass event factory.
  */
-public class CompassEventFactory implements PlayerEventFactory {
+public class CompassEventFactory implements PlayerActionFactory {
 
     /**
      * Feature API.
@@ -36,7 +36,7 @@ public class CompassEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<CompassTargetOperation> action = instruction.enumeration(CompassTargetOperation.class).get();
         final Argument<CompassID> compassId = instruction.parse(
                 (placeholders, packManager, pack, string)

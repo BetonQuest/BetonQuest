@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.quest.event.npc;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
+import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcHider;
 
 /**
  * Event to update the visibility of all Npcs to one player now.
  */
-public class UpdateVisibilityNowEvent implements OnlineEvent {
+public class UpdateVisibilityNowEvent implements OnlineAction {
 
     /**
      * Npc Hider to update the visibility.

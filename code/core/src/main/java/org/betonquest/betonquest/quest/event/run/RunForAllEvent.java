@@ -6,8 +6,8 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.action.ActionID;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -16,7 +16,7 @@ import java.util.function.Supplier;
  * Run given set of actions for all profiles supplied by {@link #profileCollectionSupplier} that meet the
  * conditions.
  */
-public class RunForAllEvent implements PlayerlessEvent {
+public class RunForAllEvent implements PlayerlessAction {
 
     /**
      * The supplier for generating the profiles.

@@ -16,7 +16,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,7 +27,7 @@ import java.nio.file.Files;
 /**
  * Pastes a schematic at a given location.
  */
-public class PasteSchematicEvent implements NullableEvent {
+public class PasteSchematicEvent implements NullableAction {
 
     /**
      * Root location of placement.

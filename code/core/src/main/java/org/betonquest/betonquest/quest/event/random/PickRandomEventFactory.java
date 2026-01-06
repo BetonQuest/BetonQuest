@@ -6,11 +6,11 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.action.ActionID;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 /**
  * Creates new {@link PickRandomEvent} instances from an {@link Instruction}.
  */
-public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+public class PickRandomEventFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
      * The character used to separate the percentage and action in the instruction.
@@ -41,16 +41,16 @@ public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEve
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         return createPickRandomEvent(instruction);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
         return createPickRandomEvent(instruction);
     }
 
-    private NullableEventAdapter createPickRandomEvent(final Instruction instruction) throws QuestException {
+    private NullableActionAdapter createPickRandomEvent(final Instruction instruction) throws QuestException {
         final Argument<List<RandomAction>> actions = instruction.parse(string -> {
             final Matcher matcher = EVENT_WEIGHT.matcher(string);
             if (!matcher.matches()) {
@@ -64,6 +64,6 @@ public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEve
             return new RandomAction(actionID, weight);
         }).list().get();
         final Argument<Number> amount = instruction.number().get("amount").orElse(null);
-        return new NullableEventAdapter(new PickRandomEvent(actions, amount, questTypeApi));
+        return new NullableActionAdapter(new PickRandomEvent(actions, amount, questTypeApi));
     }
 }

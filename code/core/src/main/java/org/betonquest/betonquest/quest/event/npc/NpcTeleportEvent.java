@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.bukkit.Location;
@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Teleports a Npc to a given location.
  */
-public class NpcTeleportEvent implements NullableEvent {
+public class NpcTeleportEvent implements NullableAction {
 
     /**
      * Quest Type API.

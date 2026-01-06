@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.quest;
 
+import org.betonquest.betonquest.api.quest.action.ActionRegistry;
 import org.betonquest.betonquest.api.quest.condition.ConditionRegistry;
-import org.betonquest.betonquest.api.quest.event.EventRegistry;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveRegistry;
 import org.betonquest.betonquest.api.quest.placeholder.PlaceholderRegistry;
 
@@ -24,7 +24,7 @@ public interface QuestTypeRegistries {
      *
      * @return the event registry
      */
-    EventRegistry event();
+    ActionRegistry event();
 
     /**
      * Gets the registry for objectives.

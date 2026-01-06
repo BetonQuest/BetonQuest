@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api.quest.event.online;
+package org.betonquest.betonquest.api.quest.action.online;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.quest.PrimaryThreadEnforceable;
  * Quest event that needs an online profile to function correctly.
  */
 @FunctionalInterface
-public interface OnlineEvent extends PrimaryThreadEnforceable {
+public interface OnlineAction extends PrimaryThreadEnforceable {
 
     /**
      * Execute the event with an online profile.

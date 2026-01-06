@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Fires randomly actions by weight and amount.
  */
-public class PickRandomEvent implements NullableEvent {
+public class PickRandomEvent implements NullableAction {
 
     /**
      * The actions with there weight.

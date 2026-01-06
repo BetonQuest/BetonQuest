@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.door;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
@@ -16,7 +16,7 @@ import java.util.function.Consumer;
  * The door event. It applies an action to the {@link Openable} block meta if it could be found at the location.
  * It fails when no {@link Openable} block is found at the location.
  */
-public class DoorEvent implements NullableEvent {
+public class DoorEvent implements NullableAction {
 
     /**
      * The {@link Openable}'s location.

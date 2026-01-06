@@ -5,15 +5,15 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
 import org.betonquest.betonquest.compatibility.brewery.IdentifierType;
 
 /**
  * Factory to create {@link GiveBrewEvent}s from {@link Instruction}s.
  */
-public class GiveBrewEventFactory implements PlayerEventFactory {
+public class GiveBrewEventFactory implements PlayerActionFactory {
 
     /**
      * The logger factory.
@@ -30,12 +30,12 @@ public class GiveBrewEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<Number> amount = instruction.number().atLeast(1).get();
         final Argument<Number> quality = instruction.number().get();
         final Argument<String> name = instruction.string().get();
         final Argument<IdentifierType> mode = instruction.enumeration(IdentifierType.class).get("mode", IdentifierType.NAME);
         final BetonQuestLogger logger = loggerFactory.create(GiveBrewEvent.class);
-        return new OnlineEventAdapter(new GiveBrewEvent(amount, quality, name, mode), logger, instruction.getPackage());
+        return new OnlineActionAdapter(new GiveBrewEvent(amount, quality, name, mode), logger, instruction.getPackage());
     }
 }

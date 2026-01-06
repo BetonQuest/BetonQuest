@@ -5,17 +5,17 @@ import org.betonquest.betonquest.api.bukkit.command.SilentCommandSender;
 import org.betonquest.betonquest.api.bukkit.command.SilentConsoleCommandSender;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
-import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
+import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
+import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 
 /**
  * Creates a new CommandEvent from an {@link Instruction}.
  */
-public class CommandEventFactory extends BaseCommandEventFactory implements PlayerlessEventFactory {
+public class CommandEventFactory extends BaseCommandEventFactory implements PlayerlessActionFactory {
 
     /**
      * Command sender to run the commands as.
@@ -37,16 +37,16 @@ public class CommandEventFactory extends BaseCommandEventFactory implements Play
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         return createCommandEvent(instruction);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
         return createCommandEvent(instruction);
     }
 
-    private NullableEventAdapter createCommandEvent(final Instruction instruction) throws QuestException {
-        return new NullableEventAdapter(new CommandEvent(parseCommands(instruction), silentSender, server));
+    private NullableActionAdapter createCommandEvent(final Instruction instruction) throws QuestException {
+        return new NullableActionAdapter(new CommandEvent(parseCommands(instruction), silentSender, server));
     }
 }

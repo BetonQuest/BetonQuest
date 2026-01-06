@@ -6,15 +6,15 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
+import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
 import org.betonquest.betonquest.id.QuestCancelerID;
 
 /**
  * Factory for the cancel event.
  */
-public class CancelEventFactory implements PlayerEventFactory {
+public class CancelEventFactory implements PlayerActionFactory {
 
     /**
      * Logger factory to create a logger for the events.
@@ -38,10 +38,10 @@ public class CancelEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<QuestCancelerID> cancelerID = instruction.parse(QuestCancelerID::new).get();
         final FlagArgument<Boolean> bypass = instruction.bool().getFlag("bypass", true);
-        return new OnlineEventAdapter(new CancelEvent(featureApi, cancelerID, bypass),
+        return new OnlineActionAdapter(new CancelEvent(featureApi, cancelerID, bypass),
                 loggerFactory.create(CancelEvent.class), instruction.getPackage());
     }
 }
