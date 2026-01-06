@@ -852,7 +852,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Tutorials/Getting-Started/Basics/Events/" class="md-nav__link">
+      <a href="../../../Tutorials/Getting-Started/Basics/Actions/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80v352c0 17.4 9.4 33.4 24.5 41.9S58.2 482 73 473l288-176c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41z"/></svg>
@@ -860,7 +860,7 @@
   <span class="md-ellipsis">
     
   
-        Events
+        Actions
   
 
     
@@ -1505,7 +1505,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Scripting/Building-Blocks/Events-List/" class="md-nav__link">
+      <a href="../../Scripting/Building-Blocks/Actions-List/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80v352c0 17.4 9.4 33.4 24.5 41.9S58.2 482 73 473l288-176c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41z"/></svg>
@@ -1513,7 +1513,7 @@
   <span class="md-ellipsis">
     
   
-    Events List
+    Actions List
   
 
     
@@ -3677,7 +3677,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Quest/Events/" class="md-nav__link">
+      <a href="../../../API/Quest/Actions/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 12h9.8l-2.5-2.5 1.4-1.4 4.9 4.9-4.9 4.9-1.4-1.4 2.5-2.5H9zm12 5.4V20H3V6h18v2.6l2 2V4c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2v-4.6z"/></svg>
@@ -3685,7 +3685,7 @@
   <span class="md-ellipsis">
     
   
-    Events
+    Actions
   
 
     
@@ -5273,7 +5273,7 @@
   <h1>Quest Items</h1>
 
 <h2 id="item-basics">Item Basics<a class="headerlink" href="#item-basics" title="Permanent link">🔗</a></h2>
-<p>Items in BetonQuest are defined in the <em>items</em> section. Each item has an instruction string, similar to events, conditions etc.</p>
+<p>Items in BetonQuest are defined in the <em>items</em> section. Each item has an instruction string, similar to actions, conditions etc.</p>
 <p>BetonQuest provides the <code>simple</code> item type, to which this page will outline the creation process. <em>Item type</em> here 
 refers to the "source" of the item (A bit like when you specify the <a href="https://minecraft.fandom.com/wiki/Resource_location">namespace</a> in <code>/give</code> commands). </p>
 <p>Here is the basic syntax:
@@ -5291,7 +5291,7 @@ Examples would be <code>name</code> (for every item type) and <code>text</code> 
 <p>Every argument is used in two ways: When creating an item and when checking if some existing item matches the 
 instruction.</p>
 <p>The first case is pretty straightforward - BetonQuest takes all the data you specified and creates an item. You would 
-give it to your players using events. 
+give it to your players using actions. 
 The second case is more complicated. You can require certain properties of the item to exist, others to not exist, or 
 skip some property checks altogether. You would use these items in conditions.</p>
 <p>These are arguments that can be applied to every item:</p>

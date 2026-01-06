@@ -852,7 +852,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../Tutorials/Getting-Started/Basics/Events/" class="md-nav__link">
+      <a href="../../../../Tutorials/Getting-Started/Basics/Actions/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80v352c0 17.4 9.4 33.4 24.5 41.9S58.2 482 73 473l288-176c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41z"/></svg>
@@ -860,7 +860,7 @@
   <span class="md-ellipsis">
     
   
-        Events
+        Actions
   
 
     
@@ -1505,7 +1505,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Scripting/Building-Blocks/Events-List/" class="md-nav__link">
+      <a href="../../../Scripting/Building-Blocks/Actions-List/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80v352c0 17.4 9.4 33.4 24.5 41.9S58.2 482 73 473l288-176c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41z"/></svg>
@@ -1513,7 +1513,7 @@
   <span class="md-ellipsis">
     
   
-    Events List
+    Actions List
   
 
     
@@ -3822,7 +3822,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../API/Quest/Events/" class="md-nav__link">
+      <a href="../../../../API/Quest/Actions/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 12h9.8l-2.5-2.5 1.4-1.4 4.9 4.9-4.9 4.9-1.4-1.4 2.5-2.5H9zm12 5.4V20H3V6h18v2.6l2 2V4c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2v-4.6z"/></svg>
@@ -3830,7 +3830,7 @@
   <span class="md-ellipsis">
     
   
-    Events
+    Actions
   
 
     
@@ -5584,10 +5584,10 @@ Therefore, you can play a sound whenever a notification is shown. (1)</p>
 <li>In other words, every NotifyIO also supports every option from <code>SoundIO</code>. </li>
 </ol>
 <p>Most NotifyIO's have unique settings that somehow change how a notification is displayed. The actual message is 
-either defined in the event that triggers the NotifyIO or the appropriate language file 
+either defined in the action that triggers the NotifyIO or the appropriate language file 
 in the <em>lang</em> directory for all built-in notifications. </p>
 <h2 id="sending-notifications-notify">Sending Notifications: <code>notify</code><a class="headerlink" href="#sending-notifications-notify" title="Permanent link">🔗</a></h2>
-<p>You can send notifications using the <code>notify</code> event. This is how to use it:</p>
+<p>You can send notifications using the <code>notify</code> action. This is how to use it:</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>All colons (<code>:</code>) in the message part of the notification need to be escaped, including those inside placeholders.
@@ -5595,10 +5595,10 @@ One backslash (<code>\</code>) is required when using no quoting at all (<code>.
 (<code>'...'</code>). Two backslashes are required (<code>\\</code>) when using double quotes (<code>"..."</code>).<br />
 You also need to escape the backslash itself, if you use double quotes for some things like <code>\n</code>.</p>
 <p>Examples:<br>
-<code>eventName: notify Peter:Heya %player%!</code> <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:" /> <code>eventName: notify Peter<ins class="critic">\</ins>:Heya %player%!</code><br>
-<code>eventName: <mark class="critic">'</mark>notify Peter:Heya %player%!<mark class="critic">'</mark></code> <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:" /> <code>eventName: <mark class="critic">'</mark>notify Peter<ins class="critic">\</ins>:Heya %player%!<mark class="critic">'</mark></code><br>
-<code>eventName: <mark class="critic">"</mark>notify Peter:Heya %player%!<mark class="critic">"</mark></code> <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:" /> <code>eventName: <mark class="critic">"</mark>notify Peter<ins class="critic">\\</ins>:Heya %player%!<mark class="critic">"</mark></code><br>
-<code>otherEvent: notify You own %math.calc:5% fish!</code> <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:" /> <code>otherEvent: You own %math.calc<ins class="critic">\</ins>:5% fish!</code><br>
+<code>actionName: notify Peter:Heya %player%!</code> <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:" /> <code>actionName: notify Peter<ins class="critic">\</ins>:Heya %player%!</code><br>
+<code>actionName: <mark class="critic">'</mark>notify Peter:Heya %player%!<mark class="critic">'</mark></code> <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:" /> <code>actionName: <mark class="critic">'</mark>notify Peter<ins class="critic">\</ins>:Heya %player%!<mark class="critic">'</mark></code><br>
+<code>actionName: <mark class="critic">"</mark>notify Peter:Heya %player%!<mark class="critic">"</mark></code> <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:" /> <code>actionName: <mark class="critic">"</mark>notify Peter<ins class="critic">\\</ins>:Heya %player%!<mark class="critic">"</mark></code><br>
+<code>otherAction: notify You own %math.calc:5% fish!</code> <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:" /> <code>otherAction: You own %math.calc<ins class="critic">\</ins>:5% fish!</code><br>
 <code>newLine: <mark class="critic">"</mark>notify Some multiline \n message<mark class="critic">"</mark></code> <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:" /> <code>newLine: <mark class="critic">"</mark>notify Some multiline <ins class="critic">\</ins>\n message<mark class="critic">"</mark></code></p>
 </div>
 <table>
@@ -5640,8 +5640,8 @@ You also need to escape the backslash itself, if you use double quotes for some 
 <h3 id="usage-examples">Usage Examples<a class="headerlink" href="#usage-examples" title="Permanent link">🔗</a></h3>
 <p>Check out the notify IO specific options if you haven't yet. You must understand these two if you want to use the Notify system to it's full extend.
 Advanced users may also use <a href="../../Documentation/Visual-Effects/Notifications/Notification-IO's-&amp;-Categories.md#categories">Notify Categories</a> to make their lives easier.
-<div class="highlight"><pre><span></span><code><span class="c1">#The simplest of all notify events. Just a chat message:</span>
-<span class="nt">customEvent</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">%player%!&quot;</span><span class="w">  </span>
+<div class="highlight"><pre><span></span><code><span class="c1">#The simplest of all notify actions. Just a chat message:</span>
+<span class="nt">customAction</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">%player%!&quot;</span><span class="w">  </span>
 
 <span class="c1">#It&#39;s the same as this one since &#39;chat&#39; is the default IO.</span>
 <span class="nt">theSame</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">%player%!</span><span class="nv"> </span><span class="s">io:chat&quot;</span>
@@ -5655,12 +5655,12 @@ Advanced users may also use <a href="../../Documentation/Visual-Effects/Notifica
 <span class="c1">#This one explicitly defines an io (bossbar) and adds one bossbarIO option + one soundIO option:</span>
 <span class="nt">myBar</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">This</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">custom</span><span class="nv"> </span><span class="s">message.</span><span class="nv"> </span><span class="s">io:bossbar</span><span class="nv"> </span><span class="s">barColor:red</span><span class="nv"> </span><span class="s">sound:block.anvil.use&quot;</span>
 
-<span class="c1">#Some events with categories.</span>
-<span class="nt">myEvent1</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">This</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">custom</span><span class="nv"> </span><span class="s">message!</span><span class="nv"> </span><span class="s">category:info&quot;</span>
-<span class="nt">myEvent2</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">This</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">custom</span><span class="nv"> </span><span class="s">message!</span><span class="nv"> </span><span class="s">category:firstChoice,secondChoice&quot;</span>
+<span class="c1">#Some actions with categories.</span>
+<span class="nt">myAction1</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">This</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">custom</span><span class="nv"> </span><span class="s">message!</span><span class="nv"> </span><span class="s">category:info&quot;</span>
+<span class="nt">myAction2</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">This</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">custom</span><span class="nv"> </span><span class="s">message!</span><span class="nv"> </span><span class="s">category:firstChoice,secondChoice&quot;</span>
 
 <span class="c1">#You can also override category settings:</span>
-<span class="nt">myEvent3</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Another</span><span class="nv"> </span><span class="s">message!</span><span class="nv"> </span><span class="s">category:info</span><span class="nv"> </span><span class="s">io:advancement</span><span class="nv"> </span><span class="s">frame:challenge&quot;</span>
+<span class="nt">myAction3</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Another</span><span class="nv"> </span><span class="s">message!</span><span class="nv"> </span><span class="s">category:info</span><span class="nv"> </span><span class="s">io:advancement</span><span class="nv"> </span><span class="s">frame:challenge&quot;</span>
 
 <span class="c1">#Use multiple languages:</span>
 <span class="nt">multilanguage</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">{en-US}</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">english</span><span class="nv"> </span><span class="s">person!</span><span class="nv"> </span><span class="s">{de-de}</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">german</span><span class="nv"> </span><span class="s">person!</span><span class="nv"> </span><span class="s">{es-ES}</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">spanish</span><span class="nv"> </span><span class="s">person!&quot;</span>
@@ -5674,16 +5674,16 @@ belongs to the specified language. There must be a space between the language ke
 In this example, english users would see <code>ABC</code> and german ones would see <code>DEF</code>.</p>
 <h3 id="broadcasts">Broadcasts<a class="headerlink" href="#broadcasts" title="Permanent link">🔗</a></h3>
 <p><strong>persistent</strong>, <strong>static</strong></p>
-<p>You can broadcast notifications to all players on the server using the <code>notifyall</code> event. It works just like the notify event.
-Placeholders are resolved for each online player, not for the player the event is executed for.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
+<p>You can broadcast notifications to all players on the server using the <code>notifyall</code> action. It works just like the notify action.
+Placeholders are resolved for each online player, not for the player the action is executed for.</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">announceDungeon</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notifyall</span><span class="nv"> </span><span class="s">A</span><span class="nv"> </span><span class="s">new</span><span class="nv"> </span><span class="s">dungeon</span><span class="nv"> </span><span class="s">has</span><span class="nv"> </span><span class="s">opened!&quot;</span>
 </code></pre></div>
 <h2 id="available-notifyios">Available NotifyIOs<a class="headerlink" href="#available-notifyios" title="Permanent link">🔗</a></h2>
 <p>There are a bunch of notify IOs available. Below is a list of all available notifyIOs and their possible options.</p>
 <details class="info">
 <summary>Notify Syntax</summary>
-<div class="highlight"><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">notifyExample</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">notify &lt;message&gt; io:&lt;NotifyIO_Type&gt; &lt;option_1&gt;:&lt;option_1_value&gt; &lt;option_2&gt;:&lt;option_2_value&gt;</span><span class="w"> </span>
 <span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">&lt;category&gt;:&lt;category_Name&gt;</span>
 </code></pre></div>
@@ -6025,7 +6025,7 @@ The sound is always played 5 block away from the soundlocation. The direction is
 <h3 id="suppress">Suppress<a class="headerlink" href="#suppress" title="Permanent link">🔗</a></h3>
 <p>Does not output any sound or text 🔕. Can be used to remove built-in notifications.</p>
 <h2 id="categories">Categories<a class="headerlink" href="#categories" title="Permanent link">🔗</a></h2>
-<p>Notify Categories are pre-defined <a href="#categories">NotifyIO settings</a>. They can be applied to any notify event and are 
+<p>Notify Categories are pre-defined <a href="#categories">NotifyIO settings</a>. They can be applied to any notify action and are 
 also used by BetonQuest's built-in notifications.
 All categories must be defined in a section called <code>notifications</code>.</p>
 <div class="admonition warning">
@@ -6039,9 +6039,9 @@ Therefore, you should probably create just one <code>notifications</code> sectio
 <p>Categories are very useful for notifications that you are going to 
 be sending players multiple times and want to create a unified, consistent look and sound.</p>
 </div>
-<p>Custom categories are user-created presets for any notify event. They shorten your events and enable you to change
+<p>Custom categories are user-created presets for any notify action. They shorten your actions and enable you to change
 how a notification of a certain category looks in one central place. They do not allow you to set a message though as 
-the message is an argument of the <code>notify</code> event!</p>
+the message is an argument of the <code>notify</code> action!</p>
 <div class="highlight"><span class="filename">Custom Categories Example Configuration</span><pre><span></span><code><span class="nt">notifications</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">money</span><span class="p">:</span><span class="w"> </span><span class="c1">#(1)!</span>
 <span class="w">   </span><span class="nt">io</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">advancement</span><span class="w"> </span><span class="c1">#(2)!</span>
@@ -6053,7 +6053,7 @@ the message is an argument of the <code>notify</code> event!</p>
 <li>Sets the NotifyIO type to be used.</li>
 <li>An option of the advancementIO.</li>
 <li>An option of the soundIO.
-Now, any <code>notify</code> event with <code>money</code> as its category will use the <code>advancement</code> io, with a <code>gold_ingot</code> for its 
+Now, any <code>notify</code> action with <code>money</code> as its category will use the <code>advancement</code> io, with a <code>gold_ingot</code> for its 
 icon and play the <code>entity.item.pickup</code> sound without you having to define all the options multiple times.    </li>
 </ol>
 <div class="admonition warning">
@@ -6071,7 +6071,7 @@ A full list of all reserved names can be found below.</p>
 <p>The table below contains all built-in notification categories.</p>
 <p>You may notice that the "Categories" column lists two categories: One that matches the name of the <code>notification message</code>
 and <code>error</code>/<code>info</code>.</p>
-<p>These work exactly like the user-made categories in the <code>notify</code> event. The first existent category (from left to right) will be used.
+<p>These work exactly like the user-made categories in the <code>notify</code> action. The first existent category (from left to right) will be used.
 This allows you to change all built-in notifications with just two entries in your <em>notifications</em> section:
 <div class="highlight"><pre><span></span><code><span class="nt">notifications</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">info</span><span class="p">:</span>

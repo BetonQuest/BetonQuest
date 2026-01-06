@@ -852,7 +852,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Tutorials/Getting-Started/Basics/Events/" class="md-nav__link">
+      <a href="../../Tutorials/Getting-Started/Basics/Actions/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80v352c0 17.4 9.4 33.4 24.5 41.9S58.2 482 73 473l288-176c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41z"/></svg>
@@ -860,7 +860,7 @@
   <span class="md-ellipsis">
     
   
-        Events
+        Actions
   
 
     
@@ -1497,7 +1497,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Documentation/Scripting/Building-Blocks/Events-List/" class="md-nav__link">
+      <a href="../../Documentation/Scripting/Building-Blocks/Actions-List/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80v352c0 17.4 9.4 33.4 24.5 41.9S58.2 482 73 473l288-176c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41z"/></svg>
@@ -1505,7 +1505,7 @@
   <span class="md-ellipsis">
     
   
-    Events List
+    Actions List
   
 
     
@@ -3345,7 +3345,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Quest/Events/" class="md-nav__link">
+      <a href="../Quest/Actions/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 12h9.8l-2.5-2.5 1.4-1.4 4.9 4.9-4.9 4.9-1.4-1.4 2.5-2.5H9zm12 5.4V20H3V6h18v2.6l2 2V4c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2v-4.6z"/></svg>
@@ -3353,7 +3353,7 @@
   <span class="md-ellipsis">
     
   
-    Events
+    Actions
   
 
     
@@ -3750,13 +3750,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#firing-events">
+  <a class="md-nav__link" href="#firing-actions">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Firing events
+          Firing actions
         </span>
 
       
@@ -5066,13 +5066,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#firing-events">
+  <a class="md-nav__link" href="#firing-actions">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Firing events
+          Firing actions
         </span>
 
       
@@ -5257,7 +5257,7 @@ New APIs will instead get their own page.</p>
 </div>
 <h2 id="re-moved-methods-in-30">(Re-)Moved Methods in 3.0<a class="headerlink" href="#re-moved-methods-in-30" title="Permanent link">🔗</a></h2>
 <h3 id="using-quest-types">Using Quest Types<a class="headerlink" href="#using-quest-types" title="Permanent link">🔗</a></h3>
-<p>The methods for using Conditions, Events and Objectives was moved into <code>BetonQuest.getInstance().getQuestTypeApi()</code>.</p>
+<p>The methods for using Conditions, Actions and Objectives was moved into <code>BetonQuest.getInstance().getQuestTypeApi()</code>.</p>
 <h3 id="instruction">Instruction<a class="headerlink" href="#instruction" title="Permanent link">🔗</a></h3>
 <p>Hard coded get methods were removed in favor of a more dynamic approach. 
 Read how to use them in the <a href="../Instruction/#argument-parsing">Instruction Arguments</a> section.</p>
@@ -5268,15 +5268,15 @@ It is accessed from the BetonQuest instance with <code>#getPlaceholderProcessor(
 <p>Currently, profiles are in development. So at the moment you can use the <code>ProfileProvider</code> class to get a profile,
 which can be accessed by <code>BetonQuest.getInstance().getProfileProvider()</code>.</p>
 <h2 id="base-concepts">Base concepts<a class="headerlink" href="#base-concepts" title="Permanent link">🔗</a></h2>
-<p>How to write and register new base concepts (events, conditions, objectives, placeholders) in BetonQuest.</p>
-<p>For Conditions, Events and Placeholders there is the <a href="../Quest/Writing-Implementations/#writing-new-quest-type-implementations">new API</a> available.</p>
+<p>How to write and register new base concepts (actions, conditions, objectives, placeholders) in BetonQuest.</p>
+<p>For Conditions, Actions and Placeholders there is the <a href="../Quest/Writing-Implementations/#writing-new-quest-type-implementations">new API</a> available.</p>
 <h3 id="writing-objectives">Writing objectives<a class="headerlink" href="#writing-objectives" title="Permanent link">🔗</a></h3>
-<p>Objectives are more complicated because they often use event handlers, and they must store players' data.
+<p>Objectives are more complicated because they often use action handlers, and they must store players' data.
 They extend <code>Objective</code> class.
 As always, you need to extract all data from supplied <code>Instruction</code> object in the constructor.
 Don't register listeners in the constructor!</p>
-<p>If your objective handles changing data (like amount of mobs left to kill) you should create a class extending <code>ObjectiveData</code>.
-For example <code>block</code> objective does need to store amount of blocks left to place/break, and it does that using "BlockData" class.
+<p>If your objective handles changing data (like number of mobs left to kill) you should create a class extending <code>ObjectiveData</code>.
+For example <code>block</code> objective does need to store number of blocks left to place/break, and it does that using "BlockData" class.
 In the constructor it receives three strings: data string, ID of the player and ID of the objective.
 The latter two are used by BetonQuest to correctly save and load the former one from the database.</p>
 <p>The data string should contain all the information you need in your objective.
@@ -5286,7 +5286,7 @@ Everytime the data in your object changes (like when killing a mob), you need to
 It will save the data to the database.</p>
 <p>Now you should override <code>getDefaultDataInstruction()</code> method.
 It must return the default data instruction understandable by your parser.
-For example in <code>tame</code> objective it will return the amount of mobs to tame.
+For example in <code>tame</code> objective it will return the number of mobs to tame.
 If you don't use data objects, just return an empty string (not <code>null</code>, just <code>""</code>).</p>
 <p>In order for your objective to use the data object you have created you need to set the <code>template</code> field to this 
 object's class.
@@ -5295,7 +5295,7 @@ If you're not defining the data object (because you don't need to handle the cha
 it must be also verified with <code>checkConditions()</code> method.
 You don't want your objective ignoring all conditions, right?
 When you decide that the objective is completed you should call <code>completeObjective()</code> method.
-It will fire all events for you, so you don't have to do this manually.</p>
+It will fire all actions for you, so you don't have to do this manually.</p>
 <p>If the objective is a listener it will automatically be registered from BetonQuest.
 Some objectives, like the <code>delay</code> objective, starts and cancels a runnable, instead of using listeners.
 Start it in the constructor and save it as field so you can cancel it in the <code>close()</code> method.</p>
@@ -5305,14 +5305,14 @@ BetonQuest will call that method with <code>theProperty</code> keyword as the fi
 Using it you should parse the data of the objective and return it as a String.
 If the supplied property name is incorrect or there was an error during getting the value,
 throw a <code>QuestException</code> with an informative message.</p>
-<p>Objectives are registered the same way as conditions and events, see <a href="#base-concepts">register base concepts</a>.</p>
-<h2 id="firing-events">Firing events<a class="headerlink" href="#firing-events" title="Permanent link">🔗</a></h2>
-<p>The plugin has a static method for firing events - <code>event(Profile profile, EventID eventID)</code>.</p>
-<p>You can't fire an event directly using an instruction string.</p>
+<p>Objectives are registered the same way as conditions and actions, see <a href="#base-concepts">register base concepts</a>.</p>
+<h2 id="firing-actions">Firing actions<a class="headerlink" href="#firing-actions" title="Permanent link">🔗</a></h2>
+<p>The plugin has a static method for firing actions - <code>action(Profile profile, ActionID actionID)</code>.</p>
+<p>You can't fire an action directly using an instruction string.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="kd">final</span><span class="w"> </span><span class="n">QuestPackage</span><span class="w"> </span><span class="n">questPackage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BetonQuest</span><span class="p">.</span><span class="na">getInstance</span><span class="p">().</span><span class="na">getPackages</span><span class="p">().</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;myPackage&quot;</span><span class="p">);</span><span class="w"> </span><span class="c1">//(1)!</span>
 <span class="kd">final</span><span class="w"> </span><span class="n">Profile</span><span class="w"> </span><span class="n">playerProfile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BetonQuest</span><span class="p">.</span><span class="na">getInstance</span><span class="p">().</span><span class="na">getProfileProvider</span><span class="p">().</span><span class="na">getProfile</span><span class="p">(</span><span class="n">player</span><span class="p">);</span><span class="w"> </span><span class="c1">//(2)!</span>
 
-<span class="n">BetonQuest</span><span class="p">.</span><span class="na">getInstance</span><span class="p">().</span><span class="na">getQuestTypeApi</span><span class="p">().</span><span class="na">event</span><span class="p">(</span><span class="n">playerProfile</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">EventID</span><span class="p">(</span><span class="n">questPackage</span><span class="p">,</span><span class="w"> </span><span class="n">eventID</span><span class="p">));</span>
+<span class="n">BetonQuest</span><span class="p">.</span><span class="na">getInstance</span><span class="p">().</span><span class="na">getQuestTypeApi</span><span class="p">().</span><span class="na">action</span><span class="p">(</span><span class="n">playerProfile</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ActionID</span><span class="p">(</span><span class="n">questPackage</span><span class="p">,</span><span class="w"> </span><span class="n">actionID</span><span class="p">));</span>
 </code></pre></div>
 <ol>
 <li>You can get the package from the <code>BetonQuest</code> class. It's a map of all packages, so you can get the one you need by its
@@ -5320,15 +5320,15 @@ throw a <code>QuestException</code> with an informative message.</p>
 <li>You can get the player's profile from the <code>ProfileProvider</code> class. You can use the player object to obtain a players 
    profile.</li>
 </ol>
-<p>When the eventID already contains the full path you can just pass <code>null</code> as package.</p>
+<p>When the actionID already contains the full path you can just pass <code>null</code> as package.</p>
 <h2 id="checking-conditions">Checking conditions<a class="headerlink" href="#checking-conditions" title="Permanent link">🔗</a></h2>
 <p>BetonQuest has static boolean method <code>condition(String playerID, String conditionID)</code>.
-It works similarly to the event method described above.</p>
+It works similarly to the action method described above.</p>
 <h2 id="starting-objectives">Starting objectives<a class="headerlink" href="#starting-objectives" title="Permanent link">🔗</a></h2>
 <p>The <code>newObjective(Profile profile, ObjectiveID objectiveID)</code> method will launch the objective from start.
 You can however use <code>resumeObjective(Profile profile, ObjectiveID objectiveID, String instruction)</code>
 to pass your own <code>ObjectiveData</code> instruction to the objective.
-It will not be saved to the database, because it is assumed that the objective has just been loaded from it, and it exists there without any change.
+It will not be saved to the database because it is assumed that the objective has just been loaded from it, and it exists there without any change.
 You should save it manually.</p>
 <h2 id="creating-additional-conversation-inputoutput-methods">Creating additional conversation input/output methods<a class="headerlink" href="#creating-additional-conversation-inputoutput-methods" title="Permanent link">🔗</a></h2>
 <p>In order to register an object as the conversation input/output it needs to implement <code>ConversationIO</code> interface.
@@ -5342,7 +5342,7 @@ The integer is the number of the answer, starting at 1. <code>clear()</code> met
 It should clear all the previous options, so they do not overlap. <code>end()</code> method will be called when the conversation ends, and it should unregister all listeners.
 You can also call that message when you detect that the player forced conversation ending (for example by moving away from the NPC).
 Remember to notify the conversation about that using <code>Conversation.end()</code>.</p>
-<p>Registering the conversation inputs/outputs is done in the same way as objectives, events and conditions,
+<p>Registering the conversation inputs/outputs is done in the same way as objectives, actions and conditions,
 see <a href="../Quest/Writing-Implementations/#registry">Registry</a>.</p>
 
 

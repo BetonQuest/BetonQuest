@@ -852,7 +852,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Tutorials/Getting-Started/Basics/Events/" class="md-nav__link">
+      <a href="../../../Tutorials/Getting-Started/Basics/Actions/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80v352c0 17.4 9.4 33.4 24.5 41.9S58.2 482 73 473l288-176c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41z"/></svg>
@@ -860,7 +860,7 @@
   <span class="md-ellipsis">
     
   
-        Events
+        Actions
   
 
     
@@ -1505,7 +1505,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Scripting/Building-Blocks/Events-List/" class="md-nav__link">
+      <a href="../../Scripting/Building-Blocks/Actions-List/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80v352c0 17.4 9.4 33.4 24.5 41.9S58.2 482 73 473l288-176c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41z"/></svg>
@@ -1513,7 +1513,7 @@
   <span class="md-ellipsis">
     
   
-    Events List
+    Actions List
   
 
     
@@ -2322,13 +2322,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#related-events">
+  <a class="md-nav__link" href="#related-actions">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Related Events
+          Related Actions
         </span>
 
       
@@ -3483,7 +3483,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Quest/Events/" class="md-nav__link">
+      <a href="../../../API/Quest/Actions/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 12h9.8l-2.5-2.5 1.4-1.4 4.9 4.9-4.9 4.9-1.4-1.4 2.5-2.5H9zm12 5.4V20H3V6h18v2.6l2 2V4c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2v-4.6z"/></svg>
@@ -3491,7 +3491,7 @@
   <span class="md-ellipsis">
     
   
-    Events
+    Actions
   
 
     
@@ -4733,13 +4733,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#related-events">
+  <a class="md-nav__link" href="#related-actions">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Related Events
+          Related Actions
         </span>
 
       
@@ -4886,7 +4886,7 @@
 </video>
 
 <p>You can easily let players cancel their quests using the cancel option in the quest backpack (or <code>/cancelquest</code>). 
-Cancelers also provide an easy way to clean up all the data that was created during the quest. They can also be triggered by events.</p>
+Cancelers also provide an easy way to clean up all the data that was created during the quest. They can also be triggered by actions.</p>
 <h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">🔗</a></h2>
 <p>Define a <code>cancel</code> section anywhere in your quest package. This section will contain all cancelers. Each canceler has an identifier. </p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">cancel</span><span class="p">:</span>
@@ -4897,7 +4897,7 @@ Cancelers also provide an easy way to clean up all the data that was created dur
 <span class="w">    </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;wood_started,wood_done,wood_paid&quot;</span><span class="w"> </span><span class="c1">#(4)!</span>
 <span class="w">    </span><span class="nt">points</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;wood&quot;</span><span class="w"> </span><span class="c1">#(5)!</span>
 <span class="w">    </span><span class="nt">journal</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;wood_started,wood_done,wood_paid&quot;</span><span class="w"> </span><span class="c1">#(6)!</span>
-<span class="w">    </span><span class="nt">events</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;punishPlayer,sendMessage&quot;</span><span class="w"> </span><span class="c1">#(7)!</span>
+<span class="w">    </span><span class="nt">actions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;punishPlayer,sendMessage&quot;</span><span class="w"> </span><span class="c1">#(7)!</span>
 <span class="w">    </span><span class="nt">location</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;100;200;300;world&quot;</span><span class="w"> </span><span class="c1">#(8)!</span>
 <span class="w">  </span><span class="nt">dragonQuest</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&amp;4Dragon</span><span class="nv"> </span><span class="s">Slayer&quot;</span>
@@ -4911,17 +4911,17 @@ Cancelers also provide an easy way to clean up all the data that was created dur
 <span class="w">  </span><span class="nt">de-DE</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&amp;2Holz</span><span class="nv"> </span><span class="s">für</span><span class="nv"> </span><span class="s">den</span><span class="nv"> </span><span class="s">Gastwirt&#39;</span><span class="w"> </span><span class="c1"># German translation</span>
 </code></pre></div></li>
 <li>A list of conditions separated by commas. The player needs to meet all those conditions to be able to cancel this quest. Place there the ones which detect that the player has started the quest, but he has not finished it yet. </li>
-<li>A list of all objectives used in this quest. They will be canceled without firing their completion events.</li>
+<li>A list of all objectives used in this quest. They will be canceled without firing their completion actions.</li>
 <li>A list of tags that will be deleted. Place here all tags that you use during the quest.</li>
 <li>A list of all points that will be entirely deleted from the player.</li>
 <li>These journal entries will be removed from the player's journal.</li>
-<li>You can run any event when the player cancels a quest. For example, if you want to punish the player for canceling a quest list the related events here.</li>
+<li>You can run any action when the player cancels a quest. For example, if you want to punish the player for canceling a quest list the related actions here.</li>
 <li>This is a location to which the player will be teleported when canceling the quest. Use the <a href="../../Scripting/Data-Formats/#unified-location-formating">ULF</a> format.</li>
 </ol>
-<h2 id="related-events">Related Events<a class="headerlink" href="#related-events" title="Permanent link">🔗</a></h2>
+<h2 id="related-actions">Related Actions<a class="headerlink" href="#related-actions" title="Permanent link">🔗</a></h2>
 <h2 id="cancel-a-quest-cancel">Cancel a quest: <code>cancel</code><a class="headerlink" href="#cancel-a-quest-cancel" title="Permanent link">🔗</a></h2>
-<p>This event works in the same way as a <a href="../Documentation/Features/Quest-Cancelers.md">quest canceler in the backpack</a>.</p>
-<p>Running this event is equal to the player canceling a quest using the backpack.</p>
+<p>This action works in the same way as a <a href="../Documentation/Features/Quest-Cancelers.md">quest canceler in the backpack</a>.</p>
+<p>Running this action is equal to the player canceling a quest using the backpack.</p>
 <table>
 <thead>
 <tr>

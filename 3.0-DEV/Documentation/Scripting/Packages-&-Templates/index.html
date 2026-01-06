@@ -16,7 +16,7 @@
         <link rel="prev" href="../About-Scripting/">
       
       
-        <link rel="next" href="../Building-Blocks/Events-List/">
+        <link rel="next" href="../Building-Blocks/Actions-List/">
       
       
         
@@ -852,7 +852,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Tutorials/Getting-Started/Basics/Events/" class="md-nav__link">
+      <a href="../../../Tutorials/Getting-Started/Basics/Actions/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80v352c0 17.4 9.4 33.4 24.5 41.9S58.2 482 73 473l288-176c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41z"/></svg>
@@ -860,7 +860,7 @@
   <span class="md-ellipsis">
     
   
-        Events
+        Actions
   
 
     
@@ -1830,7 +1830,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Building-Blocks/Events-List/" class="md-nav__link">
+      <a href="../Building-Blocks/Actions-List/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80v352c0 17.4 9.4 33.4 24.5 41.9S58.2 482 73 473l288-176c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41z"/></svg>
@@ -1838,7 +1838,7 @@
   <span class="md-ellipsis">
     
   
-    Events List
+    Actions List
   
 
     
@@ -3682,7 +3682,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Quest/Events/" class="md-nav__link">
+      <a href="../../../API/Quest/Actions/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 12h9.8l-2.5-2.5 1.4-1.4 4.9 4.9-4.9 4.9-1.4-1.4 2.5-2.5H9zm12 5.4V20H3V6h18v2.6l2 2V4c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2v-4.6z"/></svg>
@@ -3690,7 +3690,7 @@
   <span class="md-ellipsis">
     
   
-    Events
+    Actions
   
 
     
@@ -5300,12 +5300,12 @@ separate packages.<br>
 </div>
 </div>
 <h3 id="defining-features">Defining features<a class="headerlink" href="#defining-features" title="Permanent link">🔗</a></h3>
-<p>You can freely define features (events, conversations, items etc.) in all files 
+<p>You can freely define features (actions, conversations, items etc.) in all files 
 of a quest package. However, they need to be defined in a section that defines their type.</p>
 <p>The names of these features must be unique in that package, no matter which file they are in.</p>
 <details class="example">
 <summary>Example</summary>
-<div class="highlight"><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">teleportPlayer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;...&quot;</span>
 
 <span class="nt">conditions</span><span class="p">:</span>
@@ -5330,21 +5330,21 @@ of a quest package. However, they need to be defined in a section that defines t
 </details>
 <h3 id="working-across-packages">Working across Packages<a class="headerlink" href="#working-across-packages" title="Permanent link">🔗</a></h3>
 <p>Accessing features from other packages can be very helpful to link quests together.
-All events, conditions, objectives, items and conversations can be accessed.</p>
+All actions, conditions, objectives, items and conversations can be accessed.</p>
 <p>You never need to access a specific file since feature names are unique within a package.</p>
 <h4 id="top-level-packages">Top-Level Packages<a class="headerlink" href="#top-level-packages" title="Permanent link">🔗</a></h4>
 <p>You can access <strong>top-level packages</strong> (placed directly in "<em>QuestPackages</em>") by prefixing the feature's name with a
 greater than (<code>&gt;</code>) and the package name. </p>
 <details class="example">
 <summary>Example</summary>
-<p>Let's assume you have a <code>rewards</code> package that contains player reward events.<br />
-Let's run the <code>easyMobObjective</code> event of the <code>rewards</code> package from another package:</p>
+<p>Let's assume you have a <code>rewards</code> package that contains player reward actions.<br />
+Let's run the <code>easyMobObjective</code> action of the <code>rewards</code> package from another package:</p>
 <ol>
-<li>Add a greater than (<code>&gt;</code>) before the event name <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:" /> <code><mark class="critic">&gt;</mark>easyMobObjective</code></li>
+<li>Add a greater than (<code>&gt;</code>) before the action name <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:" /> <code><mark class="critic">&gt;</mark>easyMobObjective</code></li>
 <li>Add the package name in front of the greater than <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:" /> <code><mark class="critic">rewards</mark>&gt;easyMobObjective</code></li>
 </ol>
 <p>An example usage could look like this:
-<div class="highlight"><pre><span></span><code><span class="nt">zombieObjective</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mobkill</span><span class="nv"> </span><span class="s">ZOMBIE</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">events:<mark class="critic">rewards&gt;easyMobObjective</mark>&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="nt">zombieObjective</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mobkill</span><span class="nv"> </span><span class="s">ZOMBIE</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">actions:<mark class="critic">rewards&gt;easyMobObjective</mark>&quot;</span>
 </code></pre></div>
 Note that this only works for top-level packages (the <code>rewards</code> package is placed directly in the <code>QuestPackages</code>
 folder).
@@ -5360,27 +5360,27 @@ the package name and the path from the "<em>QuestPackages</em>" folder to the pa
 <div class="tabbed-block">
 <p>Let's assume you have a <code>dailyQuests</code> package that contains a <code>dailyQuestOne</code> package. The <code>dailyQuests</code> package
 is located in the <code>QuestPackages</code> folder.
-Let's run the <code>startDailyQuest</code> event of the <code>dailyQuestOne</code> package from a third package:</p>
+Let's run the <code>startDailyQuest</code> action of the <code>dailyQuestOne</code> package from a third package:</p>
 <ol>
-<li>Combine the event name with the package name <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:" /> <code><mark class="critic">dailyQuestOne&gt;</mark>startDailyQuest</code></li>
+<li>Combine the action name with the package name <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:" /> <code><mark class="critic">dailyQuestOne&gt;</mark>startDailyQuest</code></li>
 <li>Add the path from the <code>QuestPackages</code> folder to the <code>dailyQuestOne</code> package seperated by dashes (<code>-</code>).
 <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:" /> <code><mark class="critic">dailyQuests-</mark>dailyQuestOne&gt;startDailyQuest</code></li>
 </ol>
 <p>An example usage could look like this:
-<div class="highlight"><pre><span></span><code><span class="nt">zombieObjective</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mobkill</span><span class="nv"> </span><span class="s">ZOMBIE</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">events:<mark class="critic">dailyQuests-dailyQuestOne&gt;startDailyQuest</mark>&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="nt">zombieObjective</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mobkill</span><span class="nv"> </span><span class="s">ZOMBIE</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">actions:<mark class="critic">dailyQuests-dailyQuestOne&gt;startDailyQuest</mark>&quot;</span>
 </code></pre></div></p>
 </div>
 <div class="tabbed-block">
 <p>Let's assume you have a <code>dailyQuests</code> package that contains a <code>dailyQuestOne</code> package. The <code>dailyQuests</code> package
 is contained inside a folder called <code>repeatable</code> which is located in the <code>QuestPackages</code> folder.
-Let's run the <code>startDailyQuest</code> event of the <code>dailyQuestOne</code> package from a third package:</p>
+Let's run the <code>startDailyQuest</code> action of the <code>dailyQuestOne</code> package from a third package:</p>
 <ol>
-<li>Combine the event name with the package name <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:" /> <code><mark class="critic">dailyQuestOne&gt;</mark>startDailyQuest</code></li>
+<li>Combine the action name with the package name <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:" /> <code><mark class="critic">dailyQuestOne&gt;</mark>startDailyQuest</code></li>
 <li>Add the path from the <code>QuestPackages</code> folder to the <code>dailyQuestOne</code> package seperated by dashes (<code>-</code>).
 <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:" /> <code><mark class="critic">repetable-dailyQuests-</mark>dailyQuestOne&gt;startDailyQuest</code></li>
 </ol>
 <p>An example usage could look like this:
-<div class="highlight"><pre><span></span><code><span class="nt">zombieObjective</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mobkill</span><span class="nv"> </span><span class="s">ZOMBIE</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">events:<mark class="critic">repetable-dailyQuests-dailyQuestOne&gt;startDailyQuest</mark>&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="nt">zombieObjective</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mobkill</span><span class="nv"> </span><span class="s">ZOMBIE</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">actions:<mark class="critic">repetable-dailyQuests-dailyQuestOne&gt;startDailyQuest</mark>&quot;</span>
 </code></pre></div></p>
 </div>
 </div>
@@ -5399,29 +5399,29 @@ to match the current location, relative paths will still work.</p>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Let's assume you have a <code>weeklyQuests</code> folder that contains a <code>weeklyQuestOne</code> and a <code>weeklyQuestTwo</code> package.
-Let's run the <code>startQuestTwo</code> event of the <code>weeklyQuestTwo</code> package from the <code>weeklyQuestOne</code> package.</p>
+Let's run the <code>startQuestTwo</code> action of the <code>weeklyQuestTwo</code> package from the <code>weeklyQuestOne</code> package.</p>
 <ol>
-<li>Combine the event name with the package name <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:" /> <code><mark class="critic">weeklyQuestTwo&gt;</mark>startQuestTwo</code></li>
+<li>Combine the action name with the package name <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:" /> <code><mark class="critic">weeklyQuestTwo&gt;</mark>startQuestTwo</code></li>
 <li>Add the path from the current <em>package.yml</em> to the folder the package of interested lies in. This is done using
 underscores ("go one folder up"). A dash must be added after each underscore (<code>-</code>).
 <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:" /> <code><mark class="critic">_-</mark>weeklyQuestTwo&gt;startQuestTwo</code></li>
 </ol>
 <p>An example usage could look like this:
-<div class="highlight"><pre><span></span><code><span class="nt">zombieObjective</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mobkill</span><span class="nv"> </span><span class="s">ZOMBIE</span><span class="nv"> </span><span class="s">50</span><span class="nv"> </span><span class="s">events:<mark class="critic">_-weeklyQuestTwo&gt;startQuestTwo</mark>&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="nt">zombieObjective</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mobkill</span><span class="nv"> </span><span class="s">ZOMBIE</span><span class="nv"> </span><span class="s">50</span><span class="nv"> </span><span class="s">actions:<mark class="critic">_-weeklyQuestTwo&gt;startQuestTwo</mark>&quot;</span>
 </code></pre></div></p>
 </div>
 <div class="tabbed-block">
 <p>Let's assume you have a <code>weeklyQuests</code> package that contains a <code>weeklyQuestTwo</code> package which contains another
 package called <code>subQuest</code>.
-Let's run the <code>startQuest</code> event of the <code>subQuest</code> package from the <code>weeklyQuests</code> package.</p>
+Let's run the <code>startQuest</code> action of the <code>subQuest</code> package from the <code>weeklyQuests</code> package.</p>
 <ol>
-<li>Combine the event name with the package name <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:" /> <code><mark class="critic">subQuest&gt;</mark>startQuest</code></li>
+<li>Combine the action name with the package name <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:" /> <code><mark class="critic">subQuest&gt;</mark>startQuest</code></li>
 <li>Add the path from the current <em>package.yml</em> to the folder the package of interest lies in. Package names 
 must be seperated by dashes (<code>-</code>). The path must also be started with a dash to signal "from the current package
 downwards". <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:" /> <code><mark class="critic">-weeklyQuestTwo-</mark>subQuest&gt;startQuest</code></li>
 </ol>
 <p>An example usage could look like this:
-<div class="highlight"><pre><span></span><code><span class="nt">zombieObjective</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mobkill</span><span class="nv"> </span><span class="s">ZOMBIE</span><span class="nv"> </span><span class="s">50</span><span class="nv"> </span><span class="s">events:<mark class="critic">-weeklyQuestTwo-subQuest&gt;startQuest</mark>&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="nt">zombieObjective</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mobkill</span><span class="nv"> </span><span class="s">ZOMBIE</span><span class="nv"> </span><span class="s">50</span><span class="nv"> </span><span class="s">actions:<mark class="critic">-weeklyQuestTwo-subQuest&gt;startQuest</mark>&quot;</span>
 </code></pre></div></p>
 </div>
 </div>
@@ -5459,12 +5459,12 @@ Instead, they are used as a base for other packages by referring to them in the 
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SecondTemplate</span>
 </code></pre></div>
 <p>If you use the above in a package, the <code>MyTemplate</code> and <code>SecondTemplate</code> templates would be used as a base for
-the package. This means that all the events, objectives, conditions, etc. from the templates would be added to the
-package. If the package already contains an event/objective/condition with the same name as one from the template,
-the package's events, objectives, conditions, etc. will be used instead of the one from the template.</p>
-<p>If the same events, objectives, conditions, etc. is defined in multiple templates, the one from the lists first template
+the package. This means that all the actions, objectives, conditions, etc. from the templates would be added to the
+package. If the package already contains an action/objective/condition with the same name as one from the template,
+the package's actions, objectives, conditions, etc. will be used instead of the one from the template.</p>
+<p>If the same actions, objectives, conditions, etc. is defined in multiple templates, the one from the lists first template
 will be used.</p>
-<p>You can also use templates in templates. Also in this case, the events, objectives, conditions, etc. that are defined
+<p>You can also use templates in templates. Also in this case, the actions, objectives, conditions, etc. that are defined
 in the current template will be used instead of the ones from the template that is being used as a base.</p>
 
 

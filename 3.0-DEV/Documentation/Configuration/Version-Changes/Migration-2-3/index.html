@@ -852,7 +852,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../Tutorials/Getting-Started/Basics/Events/" class="md-nav__link">
+      <a href="../../../../Tutorials/Getting-Started/Basics/Actions/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80v352c0 17.4 9.4 33.4 24.5 41.9S58.2 482 73 473l288-176c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41z"/></svg>
@@ -860,7 +860,7 @@
   <span class="md-ellipsis">
     
   
-        Events
+        Actions
   
 
     
@@ -1505,7 +1505,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Scripting/Building-Blocks/Events-List/" class="md-nav__link">
+      <a href="../../../Scripting/Building-Blocks/Actions-List/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80v352c0 17.4 9.4 33.4 24.5 41.9S58.2 482 73 473l288-176c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41z"/></svg>
@@ -1513,7 +1513,7 @@
   <span class="md-ellipsis">
     
   
-    Events List
+    Actions List
   
 
     
@@ -3684,6 +3684,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-562-rename-events-to-actions">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-562 - Rename <code>events</code> to <code>actions</code> <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -4107,7 +4130,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../API/Quest/Events/" class="md-nav__link">
+      <a href="../../../../API/Quest/Actions/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 12h9.8l-2.5-2.5 1.4-1.4 4.9 4.9-4.9 4.9-1.4-1.4 2.5-2.5H9zm12 5.4V20H3V6h18v2.6l2 2V4c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2v-4.6z"/></svg>
@@ -4115,7 +4138,7 @@
   <span class="md-ellipsis">
     
   
-    Events
+    Actions
   
 
     
@@ -6019,6 +6042,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-562-rename-events-to-actions">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-562 - Rename <code>events</code> to <code>actions</code> <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -6152,7 +6198,7 @@ to automatically migrate from "not versioned".
 <ul>
 <li><img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:" /> <strong>Fully automated migration</strong> – These steps are reliably migrated without issues in most cases.
   You usually don’t need to take any action. However, certain rarely used or non-standard formats (e.g., run 
-  events or math variables (now called placeholders)) may not migrate correctly if they deviate from the common structure.</li>
+  events (now called actions) or math variables (now called placeholders)) may not migrate correctly if they deviate from the common structure.</li>
 <li><img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f325.svg" title=":white_sun_cloud:" /> <strong>Automated migration with known limitations</strong> – These steps are generally migrated automatically,
   especially for straightforward cases. However, there are known edge cases that cannot be detected or handled 
   automatically. You should review these steps and be prepared to make manual adjustments where needed.</li>
@@ -6191,6 +6237,7 @@ to automatically migrate from "not versioned".
 <li><a href="#300-dev-488-remove-legacy-point-multiply">3.0.0-DEV-488 - Remove Legacy Point Multiply</a> <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:" /></li>
 <li><a href="#300-dev-494-add-native-menu-conversation-io">3.0.0-DEV-494 - Add native <code>menu</code> conversation io</a> <img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f325.svg" title=":white_sun_cloud:" /></li>
 <li><a href="#300-dev-511-dynamize-top-hologram-line">3.0.0-DEV-511 - Dynamize <code>top:</code> Hologram Line</a> <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:" /></li>
+<li><a href="#300-dev-562-rename-events-to-actions">3.0.0-DEV-562 - Rename <code>events</code> to <code>actions</code></a> <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:" /></li>
 </ul>
 <h3 id="300-dev-58-delete-messagesyml">3.0.0-DEV-58 - Delete messages.yml <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /><a class="headerlink" href="#300-dev-58-delete-messagesyml" title="Permanent link">🔗</a></h3>
 <p>The <code>messages.yml</code> file has been removed.
@@ -6310,7 +6357,7 @@ Because the keys have been renamed, you need to rename the keys in some parts of
 <p>To support more Npc plugins than just Citizens the system got a rework.</p>
 <p>Npcs are now addressed with IDs and defined in the <code>npcs</code> section.
 Starting conversations with Npc interaction is moved inside the <code>npc_conversations</code> section.</p>
-<p>Also, the <code>teleportnpc</code> event got renamed to <code>npcteleport</code>. That change is automated, when updating to version
+<p>Also, the <code>teleportnpc</code> event (now called action) got renamed to <code>npcteleport</code>. That change is automated, when updating to version
 3.0.0-DEV-299 or newer.</p>
 <p>In addition, the <code>npc</code> variable (now called placeholder) to get the quester name of the current conversation got
 changed to <code>quester</code>. That change is automated.</p>
@@ -6370,8 +6417,8 @@ Citizens integration. </li>
 </ol>
 </div>
 <h3 id="300-dev-135-citizens-adaption-to-npcid">3.0.0-DEV-135 - Citizens Adaption to NpcID <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /><a class="headerlink" href="#300-dev-135-citizens-adaption-to-npcid" title="Permanent link">🔗</a></h3>
-<p>To streamline usage of Npcs the Citizens specific events and objective now also use the NpcID introduced in 3.0.0-DEV-114.</p>
-<p>Also, the <code>movenpc</code> and <code>stopnpc</code> events are renamed into <code>npcmove</code> and <code>npcstop</code>. These renames are automated, when 
+<p>To streamline usage of Npcs the Citizens specific events (now called actions) and objective now also use the NpcID introduced in 3.0.0-DEV-114.</p>
+<p>Also, the <code>movenpc</code> and <code>stopnpc</code> events (now called actions) are renamed into <code>npcmove</code> and <code>npcstop</code>. These renames are automated, when 
 updating to version 3.0.0-DEV-299 or newer.</p>
 <p>As in the migration above stated you can either use a descriptive name as the id or use the numeric Citizens id of the Npc.</p>
 <div class="grid">
@@ -6445,7 +6492,7 @@ Also the messages it self are now printed in every conversation and can now be c
 <summary>Automated Migration</summary>
 <p><em>The migration is automated. You shouldn't have to do anything.</em></p>
 <hr />
-<p>BetonQuest allows a lot of lists (comma separated values) to reference for example events and conditions.
+<p>BetonQuest allows a lot of lists (comma separated values) to reference for example events (now called actions) and conditions.
 In the past the key of those lists was always <code>event</code> or <code>condition</code>.
 Then someone introduced the first plural <code>events</code> and <code>conditions</code>, and so the project supported both.
 As this leads into a lot of bad code and confusion, we decided to remove the singular version.
@@ -6470,7 +6517,7 @@ Therefore the follorwing changes were made:</p>
 <summary>Automated Migration</summary>
 <p><em>The migration is automated. You shouldn't have to do anything.</em></p>
 <hr />
-<p>To allow a list of events also containing variables (now called placeholders) in any form, it is not possible
+<p>To allow a list of events (now called actions) also containing variables (now called placeholders) in any form, it is not possible
 anymore to use the percentage, instead the tilde <code>~</code> is used to separate the chance from the event.</p>
 <div class="grid" markdown>
 <div class="highlight"><span class="filename">Old Syntax</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
@@ -6625,13 +6672,13 @@ has been replaced with <code>owner:</code>.</p>
 </details>
 <h3 id="300-dev-306-mmoitems-item-type">3.0.0-DEV-306 - MMOItems Item Type <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /><a class="headerlink" href="#300-dev-306-mmoitems-item-type" title="Permanent link">🔗</a></h3>
 <p>MMOItems is now integrated into the item system.</p>
-<p>Instead of using mmo specific pickup objectives or item conditions and events it now uses the standard implementations.
+<p>Instead of using mmo specific pickup objectives or item conditions and events (now called actions) it now uses the standard implementations.
 The following obsolete implementations were removed:</p>
 <ul>
 <li><code>mmoitem</code> condition</li>
 <li><code>mmohand</code> condition</li>
-<li><code>mmoitemgive</code> event</li>
-<li><code>mmoitemtake</code> event</li>
+<li><code>mmoitemgive</code> event (now called actions)</li>
+<li><code>mmoitemtake</code> event (now called actions)</li>
 <li><code>mmoitemcraft</code> objective</li>
 </ul>
 <div class="grid">
@@ -6662,7 +6709,7 @@ The following obsolete implementations were removed:</p>
 <summary>Automated Migration</summary>
 <p><em>The migration is automated. You shouldn't have to do anything.</em></p>
 <hr />
-<p>To allow variables (now called placeholders) for the time unit in the <code>folder</code> event, the time unit now needs a key <code>unit</code>.</p>
+<p>To allow variables (now called placeholders) for the time unit in the <code>folder</code> event (now called action), the time unit now needs a key <code>unit</code>.</p>
 <div class="grid" markdown>
 <div class="highlight"><span class="filename">Old Syntax</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">setBlocks</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">folder block1,block2,block3 period:10 ticks</span>
@@ -6791,7 +6838,7 @@ But there are also some edge cases that are not detected, you may need to check 
 <p>That's how to do this in general, but there are a lot of edge cases, so please check all cross package references.
 Some well known edge cases are:</p>
 <ul>
-<li>The <code>run</code> events is not migrated, as it is too complex</li>
+<li>The <code>run</code> events (now called actions) is not migrated, as it is too complex</li>
 <li>Variables (now called placeholders) are not migrated:<ul>
 <li>They used <code>.</code> as separator what means that they previously conflicted with cross package references so it can not be detected reliably.</li>
 <li>A special case for variables (now called placeholders) are some <code>ph</code> variables and the <code>math.calc</code> variable.
@@ -6883,7 +6930,7 @@ you now need to set the interceptor to <code>none</code>.</p>
 <summary>Automated Migration</summary>
 <p><em>The migration is automated. You shouldn't have to do anything.</em></p>
 <hr />
-<p>To fix certain instruction parsing issues the <code>money</code> event no longer allows the <code>*</code> in front of the amount
+<p>To fix certain instruction parsing issues the <code>money</code> event (now called actions) no longer allows the <code>*</code> in front of the amount
 and instead now has a <code>multiply</code> argument.</p>
 <p>In practice, this syntax could also be used in the "point", "globalpoint" and "score" events.
 It has now been permanently removed from there as well.</p>
@@ -6946,6 +6993,43 @@ In addition, a new <code>set_speed</code> option was added to achieve a zoom eff
 <span class="w">  </span><span class="nt">beton</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">lines</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;top:completed_quests;desc;10;§a{place}.</span><span class="nv"> </span><span class="s">§6{name}§2</span><span class="nv"> </span><span class="s">-</span><span class="nv"> </span><span class="s">§6{score}&#39;</span>
+</code></pre></div>
+</div>
+</details>
+<h3 id="300-dev-562-rename-events-to-actions">3.0.0-DEV-562 - Rename <code>events</code> to <code>actions</code> <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:" /><a class="headerlink" href="#300-dev-562-rename-events-to-actions" title="Permanent link">🔗</a></h3>
+<p>BetonQuest "Events" are renamed to "Actions".</p>
+<details class="info">
+<summary>Automated Migration</summary>
+<p><em>The migration is automated. You shouldn't have to do anything.</em></p>
+<hr />
+<p>The <code>events</code> section is now called <code>actions</code>.
+Also, the phrase "events" is replaced with "actions" in the following places:</p>
+<ul>
+<li><code>objectives</code></li>
+<li><code>command</code> objective <code>failEvents</code> to <code>failActions</code></li>
+<li><code>menus</code> <code>open_events</code> to <code>open_actions</code> and <code>close_events</code> to <code>close_actions</code></li>
+<li><code>cancel</code></li>
+<li><code>schedules</code></li>
+<li><code>conversations</code> <code>final_events</code> to <code>final_actions</code></li>
+<li><code>conversations</code> <code>NPC_options</code> </li>
+<li><code>conversations</code> <code>player_options</code></li>
+<li><code>runForAll</code></li>
+<li><code>runIndependent</code></li>
+</ul>
+<div class="grid" markdown>
+<div class="highlight"><span class="filename">Old Syntax</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">addTag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">globaltag add test</span>
+<span class="nt">schedules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">Test</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">events</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">addTag</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">New Syntax</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">addTag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">globaltag add test</span>
+<span class="nt">schedules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">Test</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">actions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">addTag</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 </code></pre></div>
 </div>
 </details>

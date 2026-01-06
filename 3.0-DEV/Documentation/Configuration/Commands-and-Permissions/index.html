@@ -852,7 +852,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Tutorials/Getting-Started/Basics/Events/" class="md-nav__link">
+      <a href="../../../Tutorials/Getting-Started/Basics/Actions/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80v352c0 17.4 9.4 33.4 24.5 41.9S58.2 482 73 473l288-176c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41z"/></svg>
@@ -860,7 +860,7 @@
   <span class="md-ellipsis">
     
   
-        Events
+        Actions
   
 
     
@@ -1505,7 +1505,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Scripting/Building-Blocks/Events-List/" class="md-nav__link">
+      <a href="../../Scripting/Building-Blocks/Actions-List/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80v352c0 17.4 9.4 33.4 24.5 41.9S58.2 482 73 473l288-176c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41z"/></svg>
@@ -1513,7 +1513,7 @@
   <span class="md-ellipsis">
     
   
-    Events List
+    Actions List
   
 
     
@@ -3147,13 +3147,13 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#run-events-event">
+  <a class="md-nav__link" href="#run-actions-action">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Run events: <code>event</code>
+          Run actions: <code>action</code>
         </span>
 
       
@@ -3939,7 +3939,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Quest/Events/" class="md-nav__link">
+      <a href="../../../API/Quest/Actions/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 12h9.8l-2.5-2.5 1.4-1.4 4.9 4.9-4.9 4.9-1.4-1.4 2.5-2.5H9zm12 5.4V20H3V6h18v2.6l2 2V4c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2v-4.6z"/></svg>
@@ -3947,7 +3947,7 @@
   <span class="md-ellipsis">
     
   
-    Events
+    Actions
   
 
     
@@ -5451,13 +5451,13 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#run-events-event">
+  <a class="md-nav__link" href="#run-actions-action">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Run events: <code>event</code>
+          Run actions: <code>action</code>
         </span>
 
       
@@ -5806,7 +5806,7 @@ Arguments referring to a package are prefixed in the format <code>package&gt;</c
 <li>
 <p><code>/bq condition &lt;playerName&gt; &lt;condition(ID)&gt;</code> - Checks a condition for the player.</p>
 </li>
-<li><code>/bq event &lt;playerName&gt; &lt;event(ID)&gt;</code> - Fires an event for the player.</li>
+<li><code>/bq action &lt;playerName&gt; &lt;action(ID)&gt;</code> - Fires an action for the player.</li>
 <li><code>/bq objective &lt;playerName&gt; &lt;list/add/del/complete&gt; &lt;objective(ID)/filter(ID)&gt;</code> - Manages player's objectives.</li>
 <li><code>/bq tag &lt;playerName&gt; &lt;list/add/del&gt; &lt;tag(ID)/filter(ID)&gt;</code> - Manges player's tags.</li>
 <li><code>/bq globaltag &lt;list/add/del/purge&gt; &lt;tag(ID)/filter(ID)&gt;</code> - Manges global tags.</li>
@@ -5824,10 +5824,10 @@ Arguments referring to a package are prefixed in the format <code>package&gt;</c
 <li><code>/rpgmenu list</code> - Lists all currently loaded menus and allows opening them just by clicking on them.</li>
 <li><code>/rpgmenu open &lt;menu(ID)&gt; [player]</code> - Opens a menu for you or another player.
   <a href="../../Features/Menus/Menu/#general-menu-settings">Open conditions</a> will be ignored when using this command.</li>
-<li><code>/betonquestanswer</code> - Selects an answer in a conversation, can not be used manually</li>
+<li><code>/betonquestanswer</code> - Selects an answer in a conversation, cannot be used manually</li>
 </ul>
 <p>The filter only works on the list and will match all objectives/tags/points that start with the filter. 
-Please note, that the names are a composition of the package name and the name of the objective/tag/point.</p>
+Please note that the names are a composition of the package name and the name of the objective/tag/point.</p>
 <h3 id="custom-menu-opening-commands">Custom Menu Opening commands<a class="headerlink" href="#custom-menu-opening-commands" title="Permanent link">🔗</a></h3>
 <p>The plugin lets you create a new command for each menu which allows all players to open the menu.<br />
 You can also specify BetonQuest conditions so that the menu can only be opened if the player matches specific conditions.
@@ -5847,7 +5847,7 @@ Have a look at the <a href="../../Features/Menus/Menu/#general-menu-settings">me
 <ul>
 <li><code>version</code> - <code>v</code>, <code>ver</code></li>
 <li><code>condition</code> - <code>c</code>, <code>conditions</code></li>
-<li><code>event</code> - <code>e</code>, <code>events</code></li>
+<li><code>action</code> - <code>a</code>, <code>actions</code></li>
 <li><code>objective</code> - <code>o</code>, <code>objectives</code></li>
 <li><code>tag</code> - <code>t</code>, <code>tags</code></li>
 <li><code>globaltag</code> - <code>gt</code>, <code>gtags</code>, <code>gtag</code>, <code>globaltags</code></li>
@@ -5927,16 +5927,16 @@ logged and the download is stopped.</p>
 <h4 id="check-conditions-condition">Check conditions: <code>condition</code><a class="headerlink" href="#check-conditions-condition" title="Permanent link">🔗</a></h4>
 <p>You can check for conditions for a given player with for example: '<code>/bq condition Beton QuestPackage&gt;has_started</code>'.<br />
 If you want to check a non player related condition replace the player's name with <code>-</code>.</p>
-<h4 id="run-events-event">Run events: <code>event</code><a class="headerlink" href="#run-events-event" title="Permanent link">🔗</a></h4>
-<p>You can run events for a given player with for example: '<code>/bq event Beton QuestPackage&gt;give_emeralds</code>'.
-If you want to run a non player related event replace the player's name with <code>-</code>.</p>
+<h4 id="run-actions-action">Run actions: <code>action</code><a class="headerlink" href="#run-actions-action" title="Permanent link">🔗</a></h4>
+<p>You can run actions for a given player with for example: '<code>/bq action Beton QuestPackage&gt;give_emeralds</code>'.
+If you want to run a non player related action replace the player's name with <code>-</code>.</p>
 <h4 id="manage-objectives-objective">Manage objectives: <code>objective</code><a class="headerlink" href="#manage-objectives-objective" title="Permanent link">🔗</a></h4>
 <p>You can manage objectives for a given player with for example: '<code>/bq objective Beton list</code>'.
 This would list all active objectives for player Beton.
 You can also add or remove objectives with '<code>/bq objective Beton add QuestPackage&gt;find_sword</code>' or
 '<code>/bq objective Beton del QuestPackage&gt;find_sword</code>'.
 It is also possible to complete an objective with '<code>/bq objective Beton complete QuestPackage&gt;find_sword</code>',
-what would run all the events from the objective.</p>
+what would run all the actions from the objective.</p>
 <h4 id="manage-tags-tag">Manage tags: <code>tag</code><a class="headerlink" href="#manage-tags-tag" title="Permanent link">🔗</a></h4>
 <p>You can manage tags for a given player with for example: '<code>/bq tag Beton list</code>'.
 This would list all tags for player Beton.

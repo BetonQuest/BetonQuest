@@ -852,7 +852,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Tutorials/Getting-Started/Basics/Events/" class="md-nav__link">
+      <a href="../../Tutorials/Getting-Started/Basics/Actions/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80v352c0 17.4 9.4 33.4 24.5 41.9S58.2 482 73 473l288-176c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41z"/></svg>
@@ -860,7 +860,7 @@
   <span class="md-ellipsis">
     
   
-        Events
+        Actions
   
 
     
@@ -1497,7 +1497,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Documentation/Scripting/Building-Blocks/Events-List/" class="md-nav__link">
+      <a href="../../Documentation/Scripting/Building-Blocks/Actions-List/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80v352c0 17.4 9.4 33.4 24.5 41.9S58.2 482 73 473l288-176c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41z"/></svg>
@@ -1505,7 +1505,7 @@
   <span class="md-ellipsis">
     
   
-    Events List
+    Actions List
   
 
     
@@ -3345,7 +3345,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Quest/Events/" class="md-nav__link">
+      <a href="../Quest/Actions/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 12h9.8l-2.5-2.5 1.4-1.4 4.9 4.9-4.9 4.9-1.4-1.4 2.5-2.5H9zm12 5.4V20H3V6h18v2.6l2 2V4c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2v-4.6z"/></svg>
@@ -3353,7 +3353,7 @@
   <span class="md-ellipsis">
     
   
-    Events
+    Actions
   
 
     
@@ -5273,7 +5273,7 @@ This part of the API will only change over at least one major version and will l
 <p><strong>This part of the API should be safe to use. We try to keep it compatible with previous versions if changes are needed.</strong></p>
 </details>
 <h1 id="instruction-overview">Instruction Overview<a class="headerlink" href="#instruction-overview" title="Permanent link">🔗</a></h1>
-<p>The <strong>Instruction</strong> refers to the user-defined string that specifies conditions, events, items, and similar elements.</p>
+<p>The <strong>Instruction</strong> refers to the user-defined string that specifies conditions, actions, items, and similar elements.</p>
 <div class="admonition info package">
 <p class="admonition-title">Info</p>
 <p>The <code>org.betonquest.betonquest.api.instruction</code> package contains the <code>Instruction</code> interface and related objects.</p>
@@ -5282,7 +5282,7 @@ This part of the API will only change over at least one major version and will l
 <p>The <code>Instruction</code> object is responsible for parsing the instruction string provided by the user and splitting it into 
 arguments. You can retrieve required arguments or optional key-value arguments one at a time through a parser chain. 
 Required arguments are those specified at the beginning of an instruction string, 
-such as <code>add someTag</code> in the <code>tag</code> event.</p>
+such as <code>add someTag</code> in the <code>tag</code> action.</p>
 <p>If the instruction string contains an argument formatted as <code>arg:something</code> and you request the optional <code>arg</code>, 
 it will return <code>something</code>. If there is no optional argument by that name, 
 it will return an empty Optional for that argument. </p>
@@ -5291,7 +5291,7 @@ This may happen whenever there are no more arguments in the user's instruction o
 be parsed into the requested type.</p>
 <h2 id="instruction-chain">Instruction Chain<a class="headerlink" href="#instruction-chain" title="Permanent link">🔗</a></h2>
 <p>The instruction chain offers java stream-like methods to read, parse, convert and 
-ultimately retrieve a argument from an instruction. 
+ultimately retrieve an argument from an instruction. 
 It minimally consists of two steps: the argument parsing step and the argument retrieval step.</p>
 <p>To offer an overview before explaing all details, the following examples show excerpts from factories in BetonQuest:</p>
 <p>Compare <a href="../../Documentation/Scripting/Building-Blocks/Conditions-List/#experience-experience">experience</a> condition.
@@ -5301,15 +5301,15 @@ It minimally consists of two steps: the argument parsing step and the argument r
 <span class="w">        </span><span class="c1">//creating the condition object and returning it...</span>
 <span class="p">}</span>
 </code></pre></div></p>
-<p>Compare <a href="../../Documentation/Scripting/Building-Blocks/Events-List/#item-durability-itemdurability">itemdurability</a> event.
-<div class="highlight"><span class="filename">ItemDurabilityEventFactory.java</span><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="n">PlayerEvent</span><span class="w"> </span><span class="nf">parsePlayer</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">Instruction</span><span class="w"> </span><span class="n">instruction</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">QuestException</span><span class="w"> </span><span class="p">{</span>
+<p>Compare <a href="../../Documentation/Scripting/Building-Blocks/Actions-List/#item-durability-itemdurability">itemdurability</a> action.
+<div class="highlight"><span class="filename">ItemDurabilityActionFactory.java</span><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="n">PlayerAction</span><span class="w"> </span><span class="nf">parsePlayer</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">Instruction</span><span class="w"> </span><span class="n">instruction</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">QuestException</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Argument</span><span class="o">&lt;</span><span class="n">EquipmentSlot</span><span class="o">&gt;</span><span class="w"> </span><span class="n">slot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">enumeration</span><span class="p">(</span><span class="n">EquipmentSlot</span><span class="p">.</span><span class="na">class</span><span class="p">).</span><span class="na">get</span><span class="p">();</span>
 <span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Argument</span><span class="o">&lt;</span><span class="n">PointType</span><span class="o">&gt;</span><span class="w"> </span><span class="n">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">enumeration</span><span class="p">(</span><span class="n">PointType</span><span class="p">.</span><span class="na">class</span><span class="p">).</span><span class="na">get</span><span class="p">();</span>
 <span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Argument</span><span class="o">&lt;</span><span class="n">Number</span><span class="o">&gt;</span><span class="w"> </span><span class="n">amount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">number</span><span class="p">().</span><span class="na">get</span><span class="p">();</span>
 <span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">FlagArgument</span><span class="o">&lt;</span><span class="n">Boolean</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ignoreUnbreakable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">bool</span><span class="p">().</span><span class="na">getFlag</span><span class="p">(</span><span class="s">&quot;ignoreUnbreakable&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">);</span>
 <span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">FlagArgument</span><span class="o">&lt;</span><span class="n">Boolean</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ignoreEvents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">bool</span><span class="p">().</span><span class="na">getFlag</span><span class="p">(</span><span class="s">&quot;ignoreEvents&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">);</span>
 
-<span class="w">    </span><span class="c1">//creating event object and returning it...</span>
+<span class="w">    </span><span class="c1">//creating action object and returning it...</span>
 <span class="p">}</span>
 </code></pre></div></p>
 <p>Compare <a href="../../Documentation/Scripting/Building-Blocks/Objectives-List/#wait-delay">delay</a> objective.
@@ -5390,7 +5390,7 @@ The instruction chain may be accessed conveniently, starting directly from any <
 </table>
 <h3 id="argument-retrieval">Argument Retrieval<a class="headerlink" href="#argument-retrieval" title="Permanent link">🔗</a></h3>
 <p>The argument retrieval step is required after the argument parsing and represents the wrapping into a <code>Argument&lt;T&gt;</code> 
-instance to be carried on into events, conditions and objectives.
+instance to be carried on into actions, conditions and objectives.
 To have valid calls the <code>Number</code> parser is used as an example, but naturally any parser will do.</p>
 <table>
 <thead>

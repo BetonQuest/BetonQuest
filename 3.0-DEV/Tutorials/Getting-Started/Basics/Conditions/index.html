@@ -864,7 +864,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Events/" class="md-nav__link">
+      <a href="../Actions/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80v352c0 17.4 9.4 33.4 24.5 41.9S58.2 482 73 473l288-176c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41z"/></svg>
@@ -872,7 +872,7 @@
   <span class="md-ellipsis">
     
   
-        Events
+        Actions
   
 
     
@@ -1232,13 +1232,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#6-conditions-in-events">
+  <a class="md-nav__link" href="#6-conditions-in-actions">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          6. Conditions in Events
+          6. Conditions in Actions
         </span>
 
       
@@ -1857,7 +1857,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../Documentation/Scripting/Building-Blocks/Events-List/" class="md-nav__link">
+      <a href="../../../../Documentation/Scripting/Building-Blocks/Actions-List/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80v352c0 17.4 9.4 33.4 24.5 41.9S58.2 482 73 473l288-176c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41z"/></svg>
@@ -1865,7 +1865,7 @@
   <span class="md-ellipsis">
     
   
-    Events List
+    Actions List
   
 
     
@@ -3697,7 +3697,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../API/Quest/Events/" class="md-nav__link">
+      <a href="../../../../API/Quest/Actions/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 12h9.8l-2.5-2.5 1.4-1.4 4.9 4.9-4.9 4.9-1.4-1.4 2.5-2.5H9zm12 5.4V20H3V6h18v2.6l2 2V4c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2v-4.6z"/></svg>
@@ -3705,7 +3705,7 @@
   <span class="md-ellipsis">
     
   
-    Events
+    Actions
   
 
     
@@ -5166,13 +5166,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#6-conditions-in-events">
+  <a class="md-nav__link" href="#6-conditions-in-actions">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          6. Conditions in Events
+          6. Conditions in Actions
         </span>
 
       
@@ -5317,7 +5317,7 @@
 
 <p>Now that you know how to give the player tasks using objectives, it is time to learn about conditions. 
 These are another essential building blog of quests as they allow you to create different outcomes based on the player's
-actions. This works by attaching conditions to any conversation, event or objective.
+actions. This works by attaching conditions to any conversation, action or objective.
 For example, you could have a conversation option that is only available if the player has a certain item in their inventory.</p>
 <p>In this tutorial, you will learn how to create and use conditions!</p>
 <div class="grid">
@@ -5325,7 +5325,7 @@ For example, you could have a conversation option that is only available if the 
 <p class="admonition-title">Requirements</p>
 <ul>
 <li><a href="../Conversations/">Conversations Tutorial</a></li>
-<li><a href="../Events/">Events Tutorial</a></li>
+<li><a href="../Actions/">Actions Tutorial</a></li>
 <li><a href="../Objectives/">Objectives Tutorial</a></li>
 </ul>
 </div>
@@ -5341,7 +5341,7 @@ For example, you could have a conversation option that is only available if the 
 <p class="admonition-title">Download Tutorial Setup</p>
 <p><img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26a0.svg" title=":warning:" /> <strong>Don't do this if you already have the configs of the previous tutorial step.</strong> <img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26a0.svg" title=":warning:" /></p>
 <p>Enter this command in the chat to download the pre-made setup for this tutorial:
-<div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials 0914ba5e1bc4e8991a3965118565e1185d409bcf QuestPackages /Basics/Conditions/1-DirectoryStructure /tutorialQuest
+<div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials 25c8ead56c8aa64ff4075a800a9bc18269749898 QuestPackages /Basics/Conditions/1-DirectoryStructure /tutorialQuest
 </code></pre></div>
 You can now find all files needed for this tutorial in this location:
 "<em>YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/tutorialQuest</em>"</p>
@@ -5352,7 +5352,7 @@ The file structure should look like this now:</p>
 <ul>
 <li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 20H4a2 2 0 0 1-2-2V6c0-1.11.89-2 2-2h6l2 2h7a2 2 0 0 1 2 2H4v10l2.14-8h17.07l-2.28 8.5c-.23.87-1.01 1.5-1.93 1.5"/></svg></span> tutorialQuest<ul>
 <li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> package.yml</li>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> events.yml</li>
+<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> actions.yml</li>
 <li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> objectives.yml</li>
 <li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> <mark class="critic">conditions.yml</mark></li>
 <li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 20H4a2 2 0 0 1-2-2V6c0-1.11.89-2 2-2h6l2 2h7a2 2 0 0 1 2 2H4v10l2.14-8h17.07l-2.28 8.5c-.23.87-1.01 1.5-1.93 1.5"/></svg></span> conversations<ul>
@@ -5419,7 +5419,7 @@ During day time, the result will show true. In the nighttime it will be false.</
 </tr>
 <tr>
 <td><code>tutorialQuest</code></td>
-<td>The name of a QuestPackage. This is required because you could have events with the same name in different packages.</td>
+<td>The name of a QuestPackage. This is required because you could have actions with the same name in different packages.</td>
 </tr>
 <tr>
 <td><code>isDay</code></td>
@@ -5432,7 +5432,7 @@ During day time, the result will show true. In the nighttime it will be false.</
 <p>Get the correct configs by running the following command.<br></p>
 <p><img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26a0.svg" title=":warning:" /> <em>This will overwrite any changes (including NPC ID's and locations) you have made to the example.<br></em></p>
 <p>Linking NPCs to conversations is explained in the <a href="../../Tutorials/Getting-Started/Basics/Conversations.md#1-linking-a-conversation-to-a-npc">basics tutorial</a>.
-<div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials 0914ba5e1bc4e8991a3965118565e1185d409bcf QuestPackages /Basics/Conditions/2-FirstCondition /tutorialQuest overwrite
+<div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials 25c8ead56c8aa64ff4075a800a9bc18269749898 QuestPackages /Basics/Conditions/2-FirstCondition /tutorialQuest overwrite
 </code></pre></div></p>
 </details>
 <h2 id="4-integrating-conditions-into-objectives">4. Integrating conditions into objectives<a class="headerlink" href="#4-integrating-conditions-into-objectives" title="Permanent link">🔗</a></h2>
@@ -5441,7 +5441,7 @@ The objective will only progress when the condition is "true".
 In this case, we want to achieve that the player is only able to make progress when he's fishing at night.
 Let's add the condition <code>isDay</code> to the objective:</p>
 <p><div class="highlight"><span class="filename">objectives.yml</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">fishingObj</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fish</span><span class="nv"> </span><span class="s">COD</span><span class="nv"> </span><span class="s">3</span><span class="nv"> </span><span class="s">hookLocation:100;63;100;world</span><span class="nv"> </span><span class="s">range:20</span><span class="nv"> </span><span class="s">events:caughtAllFish</span><span class="nv"> </span><span class="s"><mark class="critic">conditions:!isDay</mark>&quot;</span>
+<span class="w">  </span><span class="nt">fishingObj</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fish</span><span class="nv"> </span><span class="s">COD</span><span class="nv"> </span><span class="s">3</span><span class="nv"> </span><span class="s">hookLocation:100;63;100;world</span><span class="nv"> </span><span class="s">range:20</span><span class="nv"> </span><span class="s">actions:caughtAllFish</span><span class="nv"> </span><span class="s"><mark class="critic">conditions:!isDay</mark>&quot;</span>
 </code></pre></div>
 We can see multiple things here:</p>
 <ul>
@@ -5467,7 +5467,7 @@ The player will always obtain more food. This is not what we want.    </p>
 <h3 id="51-making-jack-only-give-food-once">5.1. Making Jack only give food once<a class="headerlink" href="#51-making-jack-only-give-food-once" title="Permanent link">🔗</a></h3>
 <p>To solve this problem we need to create an alternative path for the conversation. It must only be shown if the player
 has obtained the food. 
-To do so, we will create an event to give the player a "tag" and add a condition to the conversation.</p>
+To do so, we will create an action to give the player a "tag" and add a condition to the conversation.</p>
 <p>We will start with a tag condition:</p>
 <div class="highlight"><span class="filename">conditions.yml</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">isNight</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;time</span><span class="nv"> </span><span class="s">6-18&quot;</span>
@@ -5488,18 +5488,18 @@ Later on, you will learn more about them in another tutorial.</p>
 </ul>
 </li>
 </ul>
-<p>Tags can be assigned to a player using events. Let's create an event that gives the player the tag:</p>
-<div class="highlight"><span class="filename">events.yml</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
-<span class="w">  </span><span class="c1"># Other events not shown</span>
+<p>Tags can be assigned to a player using actions. Let's create an action that gives the player the tag:</p>
+<div class="highlight"><span class="filename">actions.yml</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># Other actions not shown</span>
 <span class="hll"><span class="w">  </span><span class="nt">addFoodReceivedTag</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">foodReceived&quot;</span>
 </span></code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Tip</p>
-<p>If you don't understand why we created the event in the <code>events</code> section, you should go back to the events tutorial
+<p>If you don't understand why we created the action in the <code>actions</code> section, you should go back to the actions tutorial
 and read carefully!</p>
 </div>
-<p>We are now ready for the next step: Adding the condition and event to the conversation.</p>
-<p>Open up your <code>jack.yml</code> file in the conversations folder and add the event to give the tag to a player and the
+<p>We are now ready for the next step: Adding the condition and action to the conversation.</p>
+<p>Open up your <code>jack.yml</code> file in the conversations folder and add the action to give the tag to a player and the
 condition to not repeat the specified part of the conversation.</p>
 <div class="highlight"><span class="filename">jack.yml</span><pre><span></span><code><span class="nt">conversations</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">Jack</span><span class="p">:</span>
@@ -5513,7 +5513,7 @@ condition to not repeat the specified part of the conversation.</p>
 <span class="w">      </span><span class="c1"># Other NPC_options not shown</span>
 <span class="w">      </span><span class="nt">foodAnswer</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;You&#39;re</span><span class="nv"> </span><span class="s">welcome!</span><span class="nv"> </span><span class="s">Take</span><span class="nv"> </span><span class="s">it...</span><span class="nv"> </span><span class="s">&amp;7*gives</span><span class="nv"> </span><span class="s">food*&quot;</span>
-<span class="w">        </span><span class="nt">events</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;giveFoodToPlayer,<mark class="critic">addFoodReceivedTag</mark>&quot;</span><span class="w"> </span><span class="c1">#(3)!</span>
+<span class="w">        </span><span class="nt">actions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;giveFoodToPlayer,<mark class="critic">addFoodReceivedTag</mark>&quot;</span><span class="w"> </span><span class="c1">#(3)!</span>
 <span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;thankYou&quot;</span>
 <span class="w">        </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;!hasReceivedFood&quot;</span>
 <span class="hll"><span class="w">      </span><span class="nt">alreadyReceivedFood</span><span class="p">:</span>
@@ -5537,7 +5537,7 @@ condition to not repeat the specified part of the conversation.</p>
    In this case, if the player meets the condition <code>hasRecivedFood</code>, they will start at the <code>alreadyReceivedFood</code> option.</li>
 <li>This option will be shown if no other option matches the conditions.
    This is because this option has no conditions and is the last option in the <code>first</code> list.</li>
-<li>These events will be executed if the player chooses the <code>foodAnswer</code> option. It will give the player the food and the
+<li>These actions will be executed if the player chooses the <code>foodAnswer</code> option. It will give the player the food and the
    tag <code>foodReceived</code>.</li>
 <li>This condition ensures that the player will only see the <code>alreadyFoodReceived</code> option if he has the tag <code>foodReceived</code>.</li>
 </ol>
@@ -5553,7 +5553,7 @@ You can do this by using the <code>/bq tag remove &lt;player&gt; &lt;tag&gt;</co
 <p>Get the correct configs by running the following command.<br></p>
 <p><img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26a0.svg" title=":warning:" /> <em>This will overwrite any changes (including NPC ID's and locations) you have made to the example.<br></em></p>
 <p>Linking NPCs to conversations is explained in the <a href="../../Tutorials/Getting-Started/Basics/Conversations.md#1-linking-a-conversation-to-a-npc">basics tutorial</a>.
-   <div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials 0914ba5e1bc4e8991a3965118565e1185d409bcf QuestPackages /Basics/Conditions/3-ConditionsInConversations /tutorialQuest overwrite
+   <div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials 25c8ead56c8aa64ff4075a800a9bc18269749898 QuestPackages /Basics/Conditions/3-ConditionsInConversations /tutorialQuest overwrite
 </code></pre></div></p>
 </details>
 <h3 id="52-limiting-the-town-tour-as-well">5.2. Limiting the town tour as well<a class="headerlink" href="#52-limiting-the-town-tour-as-well" title="Permanent link">🔗</a></h3>
@@ -5564,7 +5564,7 @@ using the method you just learned.</p>
 <p>Get the correct configs by running the following command.<br>
 <img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26a0.svg" title=":warning:" /> <em>This will overwrite any changes (including NPC ID's and locations) you have made to the example.<br></em>
 Linking NPCs to conversations is explained in the <a href="../Conversations/#1-linking-a-conversation-to-a-npc">basics tutorial</a>.
-<div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials 0914ba5e1bc4e8991a3965118565e1185d409bcf QuestPackages /Basics/Conditions/4-JackCompleted /tutorialQuest overwrite
+<div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials 25c8ead56c8aa64ff4075a800a9bc18269749898 QuestPackages /Basics/Conditions/4-JackCompleted /tutorialQuest overwrite
 </code></pre></div></p>
 </details>
 <h3 id="53-making-the-blacksmith-only-trade-the-armor-once">5.3. Making the Blacksmith only trade the armor once<a class="headerlink" href="#53-making-the-blacksmith-only-trade-the-armor-once" title="Permanent link">🔗</a></h3>
@@ -5586,7 +5586,7 @@ start over and over again. Let's fix that!</p>
 <span class="w">      </span><span class="c1"># Other player_options not shown</span>
 <span class="w">      </span><span class="nt">accept</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Sure!</span><span class="nv"> </span><span class="s">I</span><span class="nv"> </span><span class="s">could</span><span class="nv"> </span><span class="s">use</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">new</span><span class="nv"> </span><span class="s">armour.&quot;</span>
-<span class="w">        </span><span class="nt">events</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;startFishingObj<mark class="critic">,addStartedFishingTag</mark>&quot;</span>
+<span class="w">        </span><span class="nt">actions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;startFishingObj<mark class="critic">,addStartedFishingTag</mark>&quot;</span>
 <span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;goodLuck&quot;</span>
 <span class="w">      </span><span class="c1"># Other player_options not shown</span>
 </code></pre></div></p>
@@ -5601,10 +5601,10 @@ We can do so with an <code>item</code> condition.</p>
 </span><span class="hll"><span class="w">  </span><span class="nt">hasFishInInv</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;item</span><span class="nv"> </span><span class="s">cod:3&quot;</span>
 </span><span class="w">  </span><span class="nt">hasDoneQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">questDone&quot;</span>
 </code></pre></div>
-Additionally, we must add the new events as well. 
+Additionally, we must add the new actions as well. 
 Those remove three cod from the player's inventory and add a tag for completing the quest.</p>
-<div class="highlight"><span class="filename">events.yml</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
-<span class="w">  </span><span class="c1"># Other events not shown</span>
+<div class="highlight"><span class="filename">actions.yml</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># Other actions not shown</span>
 <span class="hll"><span class="w">  </span><span class="nt">addStartedFishingTag</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">startedFishing&quot;</span>
 </span><span class="hll"><span class="w">  </span><span class="nt">addQuestDoneTag</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">questDone&quot;</span>
 </span><span class="hll"><span class="w">  </span><span class="nt">takeFishFromPlayer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;take</span><span class="nv"> </span><span class="s">cod:3&quot;</span><span class="w">  </span>
@@ -5626,7 +5626,7 @@ the starting option is determined. If they do so, the conversation will simply e
 </span><span class="hll"><span class="w">      </span><span class="nt">giveFishToBlacksmith</span><span class="p">:</span>
 </span><span class="hll"><span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Thank</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">very</span><span class="nv"> </span><span class="s">much</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">here</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">promised</span><span class="nv"> </span><span class="s">armour!&quot;</span>
 </span><span class="hll"><span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;seeYouSoon&quot;</span>
-</span><span class="hll"><span class="w">        </span><span class="nt">events</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;takeFishFromPlayer,addQuestDoneTag&quot;</span>
+</span><span class="hll"><span class="w">        </span><span class="nt">actions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;takeFishFromPlayer,addQuestDoneTag&quot;</span>
 </span><span class="hll"><span class="w">        </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hasFishInInv&quot;</span><span class="w"> </span><span class="c1">#(1)!</span>
 </span><span class="hll"><span class="w">      </span><span class="nt">goodbye</span><span class="p">:</span>
 </span><span class="hll"><span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;It</span><span class="nv"> </span><span class="s">was</span><span class="nv"> </span><span class="s">nice</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">meet</span><span class="nv"> </span><span class="s">you!</span><span class="nv"> </span><span class="s">I</span><span class="nv"> </span><span class="s">hope</span><span class="nv"> </span><span class="s">we</span><span class="nv"> </span><span class="s">will</span><span class="nv"> </span><span class="s">see</span><span class="nv"> </span><span class="s">us</span><span class="nv"> </span><span class="s">soon</span><span class="nv"> </span><span class="s">again.</span><span class="nv"> </span><span class="s">Goodbye&quot;</span>
@@ -5650,8 +5650,8 @@ the starting option is determined. If they do so, the conversation will simply e
 <li>Some dialog for when the player has already completed the quest.</li>
 </ol>
 <h4 id="532-handing-out-the-armor">5.3.2 Handing out the armor<a class="headerlink" href="#532-handing-out-the-armor" title="Permanent link">🔗</a></h4>
-<p>Now add an event to reward the player on your own. Tip: You must use the
-<a href="../../../../Documentation/Scripting/Building-Blocks/Events-List/#give-items-give"><code>give</code></a> event to hand out items that are defined
+<p>Now add an action to reward the player on your own. Tip: You must use the
+<a href="../../../../Documentation/Scripting/Building-Blocks/Actions-List/#give-items-give"><code>give</code></a> action to hand out items that are defined
 in the <code>items</code> section of your "<em>package.yml</em>" file.</p>
 <details class="example">
 <summary>SPOILER: Solution</summary>
@@ -5662,14 +5662,14 @@ in the <code>items</code> section of your "<em>package.yml</em>" file.</p>
 </span><span class="hll"><span class="w">  </span><span class="nt">ironLeggings</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;simple</span><span class="nv"> </span><span class="s">IRON_LEGGINGS&quot;</span>
 </span><span class="hll"><span class="w">  </span><span class="nt">ironBoots</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;simple</span><span class="nv"> </span><span class="s">IRON_BOOTS&quot;</span>
 </span></code></pre></div>
-<div class="highlight"><span class="filename">events.yml</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
-<span class="w">  </span><span class="c1"># Other events not shown</span>
+<div class="highlight"><span class="filename">actions.yml</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># Other actions not shown</span>
 <span class="hll"><span class="w">  </span><span class="nt">rewardPlayer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;give</span><span class="nv"> </span><span class="s">ironBoots,ironChestplate,ironLeggings,ironHelmet&quot;</span>
 </span></code></pre></div>
 <div class="highlight"><span class="filename">blacksmith.yml</span><pre><span></span><code><span class="nt">giveFishToBlacksmith</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Thank</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">very</span><span class="nv"> </span><span class="s">much</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">here</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">promised</span><span class="nv"> </span><span class="s">armour!&quot;</span>
 <span class="w">  </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;seeYouSoon&quot;</span>
-<span class="w">  </span><span class="nt">events</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;takeFishFromPlayer,addQuestDoneTag<mark class="critic">,rewardPlayer</mark>&quot;</span>
+<span class="w">  </span><span class="nt">actions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;takeFishFromPlayer,addQuestDoneTag<mark class="critic">,rewardPlayer</mark>&quot;</span>
 <span class="w">  </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hasFishInInv&quot;</span>
 </code></pre></div>
 </details>
@@ -5678,36 +5678,36 @@ in the <code>items</code> section of your "<em>package.yml</em>" file.</p>
 <p>Get the correct configs by running the following command.<br></p>
 <p><img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26a0.svg" title=":warning:" /> <em>This will overwrite any changes (including NPC ID's and locations) you have made to the example.<br></em></p>
 <p>Linking NPCs to conversations is explained in the <a href="../../Tutorials/Getting-Started/Basics/Conversations.md#1-linking-a-conversation-to-a-npc">basics tutorial</a>.
-   <div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials 0914ba5e1bc4e8991a3965118565e1185d409bcf QuestPackages /Basics/Conditions/5-FullExample /tutorialQuest overwrite
+   <div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials 25c8ead56c8aa64ff4075a800a9bc18269749898 QuestPackages /Basics/Conditions/5-FullExample /tutorialQuest overwrite
 </code></pre></div></p>
 </details>
-<h2 id="6-conditions-in-events">6. Conditions in Events<a class="headerlink" href="#6-conditions-in-events" title="Permanent link">🔗</a></h2>
-<p>In this section, you will learn how to use conditions in events. This is handy when you want to block an event
+<h2 id="6-conditions-in-actions">6. Conditions in Actions<a class="headerlink" href="#6-conditions-in-actions" title="Permanent link">🔗</a></h2>
+<p>In this section, you will learn how to use conditions in actions. This is handy when you want to block an action
 from triggering because some conditions for the players are not met.</p>
 <p>We will temporarily create a tag condition called <code>receiveNotify</code> in the "<em>conditions.yml</em>" like so:</p>
 <div class="highlight"><span class="filename">conditions.yml</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="hll"><span class="w">  </span><span class="nt">receiveNotify</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">receiveNotify&quot;</span>
 </span></code></pre></div>
-<p>We will now create an event to test our recently created condition.
-For testing purposes, we will use a notify event:</p>
-<div class="highlight"><span class="filename">events.yml</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
+<p>We will now create an action to test our recently created condition.
+For testing purposes, we will use a notify action:</p>
+<div class="highlight"><span class="filename">actions.yml</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="hll"><span class="w">  </span><span class="nt">notifyPlayer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">You</span><span class="nv"> </span><span class="s">completed</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">quest!</span><span class="nv"> </span><span class="s">io:Title</span><span class="nv"> </span><span class="s">sound:firework_rocket</span><span class="nv"> </span><span class="s">conditions:receiveNotify&quot;</span>
 </span></code></pre></div>
 <p>Let's break it down:</p>
 <ul>
-<li><code>notifyPlayer</code>: The name of the event.</li>
-<li><code>notify</code>: The event type - notify events are used to send notifications to the player.</li>
+<li><code>notifyPlayer</code>: The name of the action.</li>
+<li><code>notify</code>: The action type - notify actions are used to send notifications to the player.</li>
 <li><code>You completed the quest!</code>: The message of the notification.</li>
 <li><code>io:Title</code>: The message will be displayed as a title.</li>
 <li><code>sound:firework_rocket</code>: The message will be accompanied by a firework sound.</li>
-<li><code>conditions:receiveNotify</code>: The event will only trigger if the condition <code>receiveNotify</code> is met. This argument
-     works for all events.</li>
+<li><code>conditions:receiveNotify</code>: The action will only trigger if the condition <code>receiveNotify</code> is met. This argument
+     works for all actions.</li>
 </ul>
-<p>You can see that the notify event uses a condition. This means the player is only able to receive the notification
+<p>You can see that the notify action uses a condition. This means the player is only able to receive the notification
 if they have the tag. 
 Save, reload and execute the command in the game to test how it works!</p>
 <p>You can test it with this BetonQuest command:
-<div class="highlight"><pre><span></span><code>/bq event PLAYERNAME tutorialQuest&gt;notifyPlayer
+<div class="highlight"><pre><span></span><code>/bq action PLAYERNAME tutorialQuest&gt;notifyPlayer
 </code></pre></div>
 Nothing should happen because the player doesn't have the <code>receiveNotify</code> tag.</p>
 <p>Now run the following command and then try the command from above again.
@@ -5718,11 +5718,11 @@ You should now see the notification on your screen!</p>
 <div class="highlight"><pre><span></span><code>/bq tag PLAYERNAME del tutorialQuest&gt;receiveNotify`.
 </code></pre></div>
 This is very helpful when you are testing your quest and want to reset the player's progress.</p>
-<p>If you like, you could add the event to your blacksmith conversation. Make sure to remove the condition from the event's
-instruction. There is no use for it in this quest, but the notify event is a good example to show how to use conditions
-in events. </p>
+<p>If you like, you could add the action to your blacksmith conversation. Make sure to remove the condition from the action's
+instruction. There is no use for it in this quest, but the notify action is a good example to show how to use conditions
+in actions. </p>
 <h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">🔗</a></h2>
-<p>You've learned what conditions are and how to they are used in objectives, conversations and events.
+<p>You've learned what conditions are and how to they are used in objectives, conversations and actions.
 More conditions can be found in the <a href="../../../../Documentation/Scripting/Building-Blocks/Conditions-List/">conditions list</a>.</p>
 <hr />
 

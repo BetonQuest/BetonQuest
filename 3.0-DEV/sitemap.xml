@@ -45,11 +45,11 @@
          <lastmod>2026-01-06</lastmod>
     </url>
     <url>
-         <loc>https://betonquest.org/3.0-DEV/API/Quest/Conditions/</loc>
+         <loc>https://betonquest.org/3.0-DEV/API/Quest/Actions/</loc>
          <lastmod>2026-01-06</lastmod>
     </url>
     <url>
-         <loc>https://betonquest.org/3.0-DEV/API/Quest/Events/</loc>
+         <loc>https://betonquest.org/3.0-DEV/API/Quest/Conditions/</loc>
          <lastmod>2026-01-06</lastmod>
     </url>
     <url>
@@ -165,11 +165,11 @@
          <lastmod>2026-01-06</lastmod>
     </url>
     <url>
-         <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Conditions-List/</loc>
+         <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Actions-List/</loc>
          <lastmod>2026-01-06</lastmod>
     </url>
     <url>
-         <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Events-List/</loc>
+         <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Conditions-List/</loc>
          <lastmod>2026-01-06</lastmod>
     </url>
     <url>
@@ -293,15 +293,15 @@
          <lastmod>2026-01-06</lastmod>
     </url>
     <url>
+         <loc>https://betonquest.org/3.0-DEV/Tutorials/Getting-Started/Basics/Actions/</loc>
+         <lastmod>2026-01-06</lastmod>
+    </url>
+    <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Getting-Started/Basics/Conditions/</loc>
          <lastmod>2026-01-06</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Getting-Started/Basics/Conversations/</loc>
-         <lastmod>2026-01-06</lastmod>
-    </url>
-    <url>
-         <loc>https://betonquest.org/3.0-DEV/Tutorials/Getting-Started/Basics/Events/</loc>
          <lastmod>2026-01-06</lastmod>
     </url>
     <url>

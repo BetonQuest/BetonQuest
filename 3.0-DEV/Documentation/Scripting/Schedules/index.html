@@ -852,7 +852,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Tutorials/Getting-Started/Basics/Events/" class="md-nav__link">
+      <a href="../../../Tutorials/Getting-Started/Basics/Actions/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80v352c0 17.4 9.4 33.4 24.5 41.9S58.2 482 73 473l288-176c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41z"/></svg>
@@ -860,7 +860,7 @@
   <span class="md-ellipsis">
     
   
-        Events
+        Actions
   
 
     
@@ -1507,7 +1507,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Building-Blocks/Events-List/" class="md-nav__link">
+      <a href="../Building-Blocks/Actions-List/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80v352c0 17.4 9.4 33.4 24.5 41.9S58.2 482 73 473l288-176c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41z"/></svg>
@@ -1515,7 +1515,7 @@
   <span class="md-ellipsis">
     
   
-    Events List
+    Actions List
   
 
     
@@ -1774,13 +1774,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#player-independent-events">
+  <a class="md-nav__link" href="#player-independent-actions">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Player independent events
+          Player independent actions
         </span>
 
       
@@ -3536,7 +3536,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Quest/Events/" class="md-nav__link">
+      <a href="../../../API/Quest/Actions/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 12h9.8l-2.5-2.5 1.4-1.4 4.9 4.9-4.9 4.9-1.4-1.4 2.5-2.5H9zm12 5.4V20H3V6h18v2.6l2 2V4c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2v-4.6z"/></svg>
@@ -3544,7 +3544,7 @@
   <span class="md-ellipsis">
     
   
-    Events
+    Actions
   
 
     
@@ -4763,13 +4763,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#player-independent-events">
+  <a class="md-nav__link" href="#player-independent-actions">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Player independent events
+          Player independent actions
         </span>
 
       
@@ -4987,13 +4987,13 @@
 
 
 <h1 id="schedules">Schedules<a class="headerlink" href="#schedules" title="Permanent link">🔗</a></h1>
-<p>Schedules allow you to run events periodically at specific times for the entire server.</p>
-<h2 id="player-independent-events">Player independent events<a class="headerlink" href="#player-independent-events" title="Permanent link">🔗</a></h2>
-<p>Whenever events are run from a conversation or an objective, they are always run for a specific player.
-For events run from a schedule this is not the case as there is no specific player involved. <br />
-This means you can only use events that are player independent, like <code>setblock</code> or <code>globaltag</code>, in schedules.
-The same applies to the conditions used by these events.</p>
-<p>To determine if an event is player independent (and can be used in schedules), look for the <strong>static</strong> flag in the docs.</p>
+<p>Schedules allow you to run actions periodically at specific times for the entire server.</p>
+<h2 id="player-independent-actions">Player independent actions<a class="headerlink" href="#player-independent-actions" title="Permanent link">🔗</a></h2>
+<p>Whenever actions are run from a conversation or an objective, they are always run for a specific player.
+For actions run from a schedule this is not the case as there is no specific player involved. <br />
+This means you can only use actions that are player independent, like <code>setblock</code> or <code>globaltag</code>, in schedules.
+The same applies to the conditions used by these actions.</p>
+<p>To determine if an action is player independent (and can be used in schedules), look for the <strong>static</strong> flag in the docs.</p>
 <div class="admonition example annotate">
 <p class="admonition-title">Example</p>
 <p><h2>Set Block: <code>setblock</code></h2></p>
@@ -5003,11 +5003,11 @@ The same applies to the conditions used by these events.</p>
 <ol>
 <li>This flag states that <code>setblock</code> can be used player independent.</li>
 </ol>
-<p>Some events behave differently when called from a schedule in independent mode.
+<p>Some actions behave differently when called from a schedule in independent mode.
 For example, <code>tag delete</code> will include offline players.
-A list of all events that act differently can be found in the <a href="../Building-Blocks/Events-List/#run-events-player-independent-runindependent"><code>runIndependent</code></a> docs.</p>
-<p>But sometimes you might want your schedule to run a player dependent event, like <code>message</code> or <code>give</code> for all players on the server.
-To do this you can use the <a href="../Building-Blocks/Events-List/#run-events-for-all-online-players-runforall"><code>runforall</code></a> event. It will run the given events for all players on the server. 
+A list of all actions that act differently can be found in the <a href="../Building-Blocks/Actions-List/#run-actions-player-independent-runindependent"><code>runIndependent</code></a> docs.</p>
+<p>But sometimes you might want your schedule to run a player dependent action, like <code>message</code> or <code>give</code> for all players on the server.
+To do this you can use the <a href="../Building-Blocks/Actions-List/#run-actions-for-all-online-players-runforall"><code>runforall</code></a> action. It will run the given actions for all players on the server. 
 You can even use conditions to filter out players.</p>
 <h2 id="realtime-schedules">Realtime schedules<a class="headerlink" href="#realtime-schedules" title="Permanent link">🔗</a></h2>
 <p>Realtime schedules are, as the name already says, schedules that run at a specific real world time, for example at 12
@@ -5016,7 +5016,7 @@ Do not confuse these with Minecraft's ingame time!</p>
 <p>The time is provided by the system time of the computer your minecraft server is running on, in the systems time zone.  </p>
 <h3 id="daily-realtime-schedule-realtime-daily">Daily realtime schedule: <code>realtime-daily</code><a class="headerlink" href="#daily-realtime-schedule-realtime-daily" title="Permanent link">🔗</a></h3>
 <p>A super simple to use type of schedule, but also limited in its functionality.<br />
-Just specify the time of the day when the events should run, and they will run every day at that same time.</p>
+Just specify the time of the day when the actions should run, and they will run every day at that same time.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Simple Example</label><label for="__tabbed_1_2">Full Example</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -5024,7 +5024,7 @@ Just specify the time of the day when the events should run, and they will run e
 <span class="w">  </span><span class="nt">sayGoodNight</span><span class="p">:</span><span class="w"> </span><span class="c1">#(1)!</span>
 <span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">realtime-daily</span><span class="w"> </span><span class="c1">#(2)!</span>
 <span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;22:00&#39;</span><span class="w"> </span><span class="c1">#(3)!</span>
-<span class="w">    </span><span class="nt">events</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bell_ring,notify_goodNight</span><span class="w"> </span><span class="c1">#(4)!</span>
+<span class="w">    </span><span class="nt">actions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bell_ring,notify_goodNight</span><span class="w"> </span><span class="c1">#(4)!</span>
 </code></pre></div>
 <ol>
 <li>
@@ -5037,14 +5037,14 @@ Just specify the time of the day when the events should run, and they will run e
 <p><code>time</code> is the time of day when the schedule should be run in format <code>HH:mm</code>.</p>
 </li>
 <li>
-<p>An event (or multiple separated by <code>,</code>) that should run at the given time.</p>
+<p>An action (or multiple separated by <code>,</code>) that should run at the given time.</p>
 </li>
 </ol>
 <p><em>Runs every day at 10pm, will ring a bell and wish everyone a good night.</em></p>
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="c1"># This example works out of the box. Copy-paste to try out how it works.</span>
-<span class="nt">events</span><span class="p">:</span>
+<span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">bell_sound</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;notifyall</span><span class="nv"> </span><span class="s">io:sound</span><span class="nv"> </span><span class="s">sound:block.bell.use&#39;</span>
 <span class="w">  </span><span class="nt">bell_ring</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;folder</span><span class="nv"> </span><span class="s">bell_sound,bell_sound,bell_sound,bell_sound</span><span class="nv"> </span><span class="s">period:0.5&#39;</span>
 <span class="w">  </span><span class="nt">notify_goodNight</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;notifyall</span><span class="nv"> </span><span class="s">&amp;6Good</span><span class="nv"> </span><span class="s">night,</span><span class="nv"> </span><span class="s">sleep</span><span class="nv"> </span><span class="s">well!&#39;</span>
@@ -5052,7 +5052,7 @@ Just specify the time of the day when the events should run, and they will run e
 <span class="w">  </span><span class="nt">sayGoodNight</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">realtime-daily</span>
 <span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;22:00&#39;</span>
-<span class="w">    </span><span class="nt">events</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bell_ring,notify_goodNight</span>
+<span class="w">    </span><span class="nt">actions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bell_ring,notify_goodNight</span>
 </code></pre></div>
 </div>
 </div>
@@ -5063,7 +5063,7 @@ Just specify the time of the day when the events should run, and they will run e
 <p><strong>The time must always be in <code>''</code> to avoid problems. It needs leading zero if less than 10.</strong></p>
 </div>
 <h3 id="cron-realtime-schedule-realtime-cron">Cron realtime schedule: <code>realtime-cron</code><a class="headerlink" href="#cron-realtime-schedule-realtime-cron" title="Permanent link">🔗</a></h3>
-<p>The cron realtime schedule is an incredibly flexible tool to define when events shall run.<br />
+<p>The cron realtime schedule is an incredibly flexible tool to define when actions shall run.<br />
 It is similar to the <a href="#daily-realtime-schedule-realtime-daily"><code>realtime-daily</code></a> schedule but the time is defined as a
 <a href="https://en.wikipedia.org/wiki/Cron">cron expression</a>.<br />
 The supported syntax is identical to the original unix crontab syntax.</p>
@@ -5082,7 +5082,7 @@ BetonQuest supports all features listed there, <strong>even the non-standard one
 <span class="w">  </span><span class="nt">sayGoodNight</span><span class="p">:</span><span class="w"> </span><span class="c1">#(1)!</span>
 <span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">realtime-cron</span><span class="w"> </span><span class="c1">#(2)!</span>
 <span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;0</span><span class="nv"> </span><span class="s">22</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*&#39;</span><span class="w"> </span><span class="c1">#(3)!</span>
-<span class="w">    </span><span class="nt">events</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bell_ring,notify_goodNight</span><span class="w"> </span><span class="c1">#(4)!</span>
+<span class="w">    </span><span class="nt">actions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bell_ring,notify_goodNight</span><span class="w"> </span><span class="c1">#(4)!</span>
 </code></pre></div>
 <ol>
 <li>
@@ -5096,14 +5096,14 @@ BetonQuest supports all features listed there, <strong>even the non-standard one
 <strong>Use <a href="https://crontab.guru/">crontab.guru</a>!</strong></p>
 </li>
 <li>
-<p>An event (or multiple separated by <code>,</code>) that should run at the given time.</p>
+<p>An action (or multiple separated by <code>,</code>) that should run at the given time.</p>
 </li>
 </ol>
 <p><em>Runs every day at 10pm, will ring a bell and wish everyone a good night.</em></p>
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="c1"># This example works out of the box. Copy-paste to try out how it works.</span>
-<span class="nt">events</span><span class="p">:</span>
+<span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">bell_sound</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;notifyall</span><span class="nv"> </span><span class="s">io:sound</span><span class="nv"> </span><span class="s">sound:block.bell.use&#39;</span>
 <span class="w">  </span><span class="nt">bell_ring</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;folder</span><span class="nv"> </span><span class="s">bell_sound,bell_sound,bell_sound,bell_sound</span><span class="nv"> </span><span class="s">period:0.5&#39;</span>
 <span class="w">  </span><span class="nt">notify_goodNight</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;notifyall</span><span class="nv"> </span><span class="s">&amp;6Good</span><span class="nv"> </span><span class="s">night,</span><span class="nv"> </span><span class="s">sleep</span><span class="nv"> </span><span class="s">well!&#39;</span>
@@ -5111,7 +5111,7 @@ BetonQuest supports all features listed there, <strong>even the non-standard one
 <span class="w">  </span><span class="nt">sayGoodNight</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">realtime-cron</span>
 <span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;0</span><span class="nv"> </span><span class="s">22</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*&#39;</span>
-<span class="w">    </span><span class="nt">events</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bell_ring,notify_goodNight</span>
+<span class="w">    </span><span class="nt">actions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bell_ring,notify_goodNight</span>
 </code></pre></div>
 </div>
 </div>
@@ -5160,7 +5160,7 @@ BetonQuest supports all features listed there, <strong>even the non-standard one
 </tbody>
 </table>
 <h3 id="catchup-strategies">Catchup Strategies<a class="headerlink" href="#catchup-strategies" title="Permanent link">🔗</a></h3>
-<p>Obviously, scheduled events can't be run while the server is shut down.<br />
+<p>Obviously, scheduled actions can't be run while the server is shut down.<br />
 If you want to be sure that a schedule will nevertheless be run, you can define a <strong>catchup strategy</strong>.</p>
 <p>On startup, BetonQuest checks which schedules have been missed and (if needed) they will be run on the first tick.<br />
 Schedules of the same type will be run in the order they were missed.
@@ -5172,7 +5172,7 @@ For mixed types the <strong>order</strong> can <strong>not</strong> be <strong>g
 <span class="w">  </span><span class="nt">sayGoodNight</span><span class="p">:</span><span class="w"> </span>
 <span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">realtime-daily</span>
 <span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;22:00&#39;</span>
-<span class="w">    </span><span class="nt">events</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bell_ring,notify_goodNight</span>
+<span class="w">    </span><span class="nt">actions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bell_ring,notify_goodNight</span>
 <span class="w">    </span><span class="nt">catchup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">none</span><span class="w"> </span><span class="c1">#(1)!</span>
 </code></pre></div>
 <ol>
@@ -5186,20 +5186,20 @@ For mixed types the <strong>order</strong> can <strong>not</strong> be <strong>g
 <span class="w">  </span><span class="nt">resetQuarryArea</span><span class="p">:</span><span class="w"> </span>
 <span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">realtime-daily</span>
 <span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;03:00&#39;</span>
-<span class="w">    </span><span class="nt">events</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pasteQuarry</span>
+<span class="w">    </span><span class="nt">actions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pasteQuarry</span>
 <span class="w">    </span><span class="nt">catchup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">one</span><span class="w"> </span><span class="c1">#(1)!</span>
 </code></pre></div>
 <ol>
 <li>If the schedule was missed (no matter how often) run it <strong>once</strong> after reboot.</li>
 </ol>
-<p><em>The quarry should be reset every day at 3am. Even if the server was shut down at that time, run the event once at reboot.</em></p>
+<p><em>The quarry should be reset every day at 3am. Even if the server was shut down at that time, run the action once at reboot.</em></p>
 </div>
 <div class="tabbed-block">
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">schedules</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">greedyMarchant</span><span class="p">:</span><span class="w"> </span>
 <span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">realtime-daily</span>
 <span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;03:00&#39;</span>
-<span class="w">    </span><span class="nt">events</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">increaseFuelPrice</span>
+<span class="w">    </span><span class="nt">actions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">increaseFuelPrice</span>
 <span class="w">    </span><span class="nt">catchup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">all</span><span class="w"> </span><span class="c1">#(1)!</span>
 </code></pre></div>
 <ol>

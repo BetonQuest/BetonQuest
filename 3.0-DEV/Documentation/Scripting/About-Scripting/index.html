@@ -852,7 +852,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Tutorials/Getting-Started/Basics/Events/" class="md-nav__link">
+      <a href="../../../Tutorials/Getting-Started/Basics/Actions/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80v352c0 17.4 9.4 33.4 24.5 41.9S58.2 482 73 473l288-176c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41z"/></svg>
@@ -860,7 +860,7 @@
   <span class="md-ellipsis">
     
   
-        Events
+        Actions
   
 
     
@@ -1539,13 +1539,13 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#events">
+  <a class="md-nav__link" href="#actions">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Events
+          Actions
         </span>
 
       
@@ -1754,7 +1754,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Building-Blocks/Events-List/" class="md-nav__link">
+      <a href="../Building-Blocks/Actions-List/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80v352c0 17.4 9.4 33.4 24.5 41.9S58.2 482 73 473l288-176c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41z"/></svg>
@@ -1762,7 +1762,7 @@
   <span class="md-ellipsis">
     
   
-    Events List
+    Actions List
   
 
     
@@ -3606,7 +3606,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Quest/Events/" class="md-nav__link">
+      <a href="../../../API/Quest/Actions/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 12h9.8l-2.5-2.5 1.4-1.4 4.9 4.9-4.9 4.9-1.4-1.4 2.5-2.5H9zm12 5.4V20H3V6h18v2.6l2 2V4c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2v-4.6z"/></svg>
@@ -3614,7 +3614,7 @@
   <span class="md-ellipsis">
     
   
-    Events
+    Actions
   
 
     
@@ -4855,13 +4855,13 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#events">
+  <a class="md-nav__link" href="#actions">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Events
+          Actions
         </span>
 
       
@@ -5193,8 +5193,8 @@ They can be freely combined to create any quest you want.
 All of these are defined using an <em>instruction text</em>.</p>
 <div class="highlight"><span class="filename">Instruction Text Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="c1">#(1)!</span>
 <span class="w">  </span><span class="nt">myCondition</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;health</span><span class="nv"> </span><span class="s">10&quot;</span><span class="w"> </span><span class="c1">#(2)!</span>
-<span class="nt">events</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">myEvent</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hunger</span><span class="nv"> </span><span class="s">set</span><span class="nv"> </span><span class="s">20&quot;</span>
+<span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">myAction</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hunger</span><span class="nv"> </span><span class="s">set</span><span class="nv"> </span><span class="s">20&quot;</span>
 <span class="nt">objectives</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">myObjective</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mobkill</span><span class="nv"> </span><span class="s">ZOMBIE</span><span class="nv"> </span><span class="s">10&quot;</span>
 </code></pre></div>
@@ -5203,30 +5203,30 @@ All of these are defined using an <em>instruction text</em>.</p>
 <li><code>myCondition</code> is the name of this condition. The instruction text is <code>health 10</code>. 
    This is a condition which checks if the player has 10 health.</li>
 </ol>
-<h3 id="events">Events<a class="headerlink" href="#events" title="Permanent link">🔗</a></h3>
+<h3 id="actions">Actions<a class="headerlink" href="#actions" title="Permanent link">🔗</a></h3>
 <p>In certain moments you will want something to happen. Updating the journal, setting tags, giving rewards, all these are
-done using events. You define them by specifying a name and instruction string like shown above.
+done using actions. You define them by specifying a name and instruction string like shown above.
 At the end of the instruction string you can add the <code>conditions:</code> (with or without <code>s</code> at the end)
 attribute followed by a list of condition names separated by commas, 
-like <code>conditions:angry,!quest_started</code>. This will make an event fire only when these conditions are met.</p>
-<p><a class="md-button" href="../Building-Blocks/Events-List/">Explore all Events</a></p>
+like <code>conditions:angry,!quest_started</code>. This will make an action fire only when these conditions are met.</p>
+<p><a class="md-button" href="../Building-Blocks/Actions-List/">Explore all Actions</a></p>
 <h3 id="objectives">Objectives<a class="headerlink" href="#objectives" title="Permanent link">🔗</a></h3>
-<p>Objective are goals that player must complete. At first, they must be started for a player with the <code>objective</code> event.
-When the player completes the objective, all defined events are run. For example, you could reward the player by giving
+<p>Objective are goals that player must complete. At first, they must be started for a player with the <code>objective</code> action.
+When the player completes the objective, all defined actions are run. For example, you could reward the player by giving
 them an item.</p>
 <p>You define them in the <code>objectives</code> section as shown above. At the end of the instruction text you can add conditions
-and events for the objective. Conditions will limit when the objective can be completed (e.g. killing zombies only at
-given location), and events will fire when the objective is completed (e.g. giving a reward, or setting a tag which
-will enable collecting a reward from an NPC). You define these like that: <code>conditions:con1,con2 events:event1,event2</code>
+and actions for the objective. Conditions will limit when the objective can be completed (e.g. killing zombies only at
+given location), and actions will fire when the objective is completed (e.g. giving a reward, or setting a tag which
+will enable collecting a reward from an NPC). You define these like that: <code>conditions:con1,con2 actions:action1,action2</code>
 at the end of instruction text. Separate them by commas and never use spaces!</p>
 <p>If you want to start an objective right after it was completed you can add the <code>persistent</code> argument at the end of its instruction string.
 For example, you could create a custom respawn system with a <code>die</code> objective. When the player dies, they will be
 teleported to the spawnpoint and the <code>die</code> objective will be started again.
-The <code>persistent</code> argument prevents the objective from being completed, although it will run all its events. To cancel such
-an objective you need to use <code>objective delete</code> event.</p>
+The <code>persistent</code> argument prevents the objective from being completed, although it will run all its actions. To cancel such
+an objective you need to use <code>objective delete</code> action.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">mineDiamonds</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;block</span><span class="nv"> </span><span class="s">DIAMONDS</span><span class="nv"> </span><span class="s">-10</span><span class="nv"> </span><span class="s">events:reward&#39;</span>
-<span class="w">  </span><span class="nt">die</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;die</span><span class="nv"> </span><span class="s">cancel</span><span class="nv"> </span><span class="s">respawn:100;200;300;world;90;0</span><span class="nv"> </span><span class="s">events:sendRespawnMessage</span><span class="nv"> </span><span class="s">conditions:hasCustomTotem&#39;</span>
+<span class="w">  </span><span class="nt">mineDiamonds</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;block</span><span class="nv"> </span><span class="s">DIAMONDS</span><span class="nv"> </span><span class="s">-10</span><span class="nv"> </span><span class="s">actions:reward&#39;</span>
+<span class="w">  </span><span class="nt">die</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;die</span><span class="nv"> </span><span class="s">cancel</span><span class="nv"> </span><span class="s">respawn:100;200;300;world;90;0</span><span class="nv"> </span><span class="s">actions:sendRespawnMessage</span><span class="nv"> </span><span class="s">conditions:hasCustomTotem&#39;</span>
 </code></pre></div>
 <h4 id="global-objectives">Global objectives<a class="headerlink" href="#global-objectives" title="Permanent link">🔗</a></h4>
 <p>If you want an objective to be active for every player right after joining, you can create a global objective.
@@ -5238,7 +5238,7 @@ is started. With this tag, the objective will not be started again.<br />
 These tags follow the syntax <code>&lt;package&gt;.global-&lt;id&gt;</code>, where <code>&lt;id&gt;</code> is the objectives id and <code>&lt;package&gt;</code> the package where
 the objective is located.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">startQuestByMining</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;location</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">events:start_quest_mine_folder</span><span class="nv"> </span><span class="s"><ins class="critic">global</ins>&#39;</span>
+<span class="w">  </span><span class="nt">startQuestByMining</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;location</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">actions:start_quest_mine_folder</span><span class="nv"> </span><span class="s"><ins class="critic">global</ins>&#39;</span>
 </code></pre></div>
 <h4 id="placeholders">Placeholders<a class="headerlink" href="#placeholders" title="Permanent link">🔗</a></h4>
 <div class="admonition warning">
@@ -5251,9 +5251,9 @@ When the objective is started for a player, the amount is set to the placeholder
 not be updated if the placeholder changes.
 Also, when the placeholder contains an invalid value for the given objective (e.g. a negative value) a default value of <code>1</code> is used.</p>
 <div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">killMonsters</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;mobkill</span><span class="nv"> </span><span class="s">ZOMBIE</span><span class="nv"> </span><span class="s">%math.calc:(100-{point.reputation.amount})*2%</span><span class="nv"> </span><span class="s">events:endSiege&#39;</span>
-<span class="w">  </span><span class="nt">breakObsidian</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;block</span><span class="nv"> </span><span class="s">OBSIDIAN</span><span class="nv"> </span><span class="s">%randomnumber.whole.-60~-40%</span><span class="nv"> </span><span class="s">events:dailyReward&#39;</span>
-<span class="w">  </span><span class="nt">eatSteak</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;consume</span><span class="nv"> </span><span class="s">steak</span><span class="nv"> </span><span class="s">amount:%randomnumber.whole.2~6%</span><span class="nv"> </span><span class="s">events:health_boost&#39;</span>
+<span class="w">  </span><span class="nt">killMonsters</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;mobkill</span><span class="nv"> </span><span class="s">ZOMBIE</span><span class="nv"> </span><span class="s">%math.calc:(100-{point.reputation.amount})*2%</span><span class="nv"> </span><span class="s">actions:endSiege&#39;</span>
+<span class="w">  </span><span class="nt">breakObsidian</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;block</span><span class="nv"> </span><span class="s">OBSIDIAN</span><span class="nv"> </span><span class="s">%randomnumber.whole.-60~-40%</span><span class="nv"> </span><span class="s">actions:dailyReward&#39;</span>
+<span class="w">  </span><span class="nt">eatSteak</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;consume</span><span class="nv"> </span><span class="s">steak</span><span class="nv"> </span><span class="s">amount:%randomnumber.whole.2~6%</span><span class="nv"> </span><span class="s">actions:health_boost&#39;</span>
 </code></pre></div>
 <p><a class="md-button" href="../Building-Blocks/Objectives-List/">Explore all Objectives</a></p>
 <h3 id="conditions">Conditions<a class="headerlink" href="#conditions" title="Permanent link">🔗</a></h3>
@@ -5264,19 +5264,19 @@ This only works in the place where conditions are used (i.e. in conversations, n
 If you do so, make sure to enclose the condition in quotes, otherwise YAML will give you a syntax error.
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">hasFullHealth</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;health</span><span class="nv"> </span><span class="s">20&quot;</span>
-<span class="nt">events</span><span class="p">:</span>
+<span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">helpWithHealing</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hunger</span><span class="nv"> </span><span class="s">set</span><span class="nv"> </span><span class="s">20</span><span class="nv"> </span><span class="s">conditions:!hasFullHealth&quot;</span>
 </code></pre></div></p>
 <p><a class="md-button" href="../Building-Blocks/Conditions-List/">Explore all Conditions</a></p>
 <h2 id="tags">Tags<a class="headerlink" href="#tags" title="Permanent link">🔗</a></h2>
 <p>Tags are little pieces of text you can assign to player. They are particularly useful to 
-determine if player has started or completed quest. They are given with <a href="../Building-Blocks/Events-List/#point-point"><code>tag</code> event</a> and checked with
+determine if player has started or completed quest. They are given with <a href="../Building-Blocks/Actions-List/#point-point"><code>tag</code> action</a> and checked with
 <a href="../Building-Blocks/Conditions-List/#tag-tag"><code>tag</code> condition</a>.
 All tags are bound to a package, so if you add the <code>questCompleted</code> tag from within a package named <code>monsterQuest</code>,
 the tag will look like <code>monsterQuest.questCompleted</code>.</p>
 <p>Read <a href="../Packages-%26-Templates/#working-across-packages">working across packages</a> to learn how to work with tags across packages.</p>
 <h2 id="points">Points<a class="headerlink" href="#points" title="Permanent link">🔗</a></h2>
-<p>Points are numbers that can be assigned to a player. You can set them with the <a href="../Building-Blocks/Events-List/#point-point"><code>point</code> event</a>.
+<p>Points are numbers that can be assigned to a player. You can set them with the <a href="../Building-Blocks/Actions-List/#point-point"><code>point</code> action</a>.
 you want. You can also take the points away, even to negative numbers. 
 Of course then you can check if player has (or doesn't have) certain amount with the <a href="../Building-Blocks/Conditions-List/#point-point"><code>point</code> condition</a>. 
 They can be used as counter for specific number of quest done, as a reputation system in villages or even an NPC's 
