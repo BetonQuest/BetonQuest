@@ -18,14 +18,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.Mockito.*;
 
 /**
- * Test {@link JournalEvent}.
+ * Test {@link JournalAction}.
  */
 @ExtendWith({MockitoExtension.class, BetonQuestLoggerService.class})
-class JournalEventTest {
+class JournalActionTest {
 
     @Test
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    void testJournalEventChangesUpdatesAndNotifiesInOrder(
+    void testJournalActionChangesUpdatesAndNotifiesInOrder(
             @Mock final PlayerDataStorage dataStorage, @Mock final PlayerData data, @Mock final Journal journal,
             @Mock final JournalChanger changer, @Mock final NotificationSender sender) throws QuestException {
         final ProfileProvider profileProvider = mock(ProfileProvider.class);
@@ -33,7 +33,7 @@ class JournalEventTest {
         when(dataStorage.getOffline(onlineProfile)).thenReturn(data);
         when(data.getJournal()).thenReturn(journal);
 
-        final JournalEvent event = new JournalEvent(dataStorage, changer, sender);
+        final JournalAction event = new JournalAction(dataStorage, changer, sender);
 
         event.execute(onlineProfile);
 
