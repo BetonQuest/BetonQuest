@@ -16,7 +16,7 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.UnsupportedVersionException;
-import org.betonquest.betonquest.compatibility.packetevents.event.FreezeActionFactory;
+import org.betonquest.betonquest.compatibility.packetevents.action.FreezeActionFactory;
 import org.betonquest.betonquest.compatibility.packetevents.interceptor.PacketEventsInterceptorFactory;
 import org.betonquest.betonquest.compatibility.packetevents.interceptor.history.ChatHistory;
 import org.betonquest.betonquest.compatibility.packetevents.interceptor.history.NoneChatHistory;
