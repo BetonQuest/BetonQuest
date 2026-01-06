@@ -148,6 +148,7 @@ public interface QuestMigration {
             section.setComments(newKey, section.getComments(oldKey));
             section.setInlineComments(newKey, section.getInlineComments(oldKey));
             section.set(oldKey, null);
+            root.associateWith(section.getCurrentPath() + "." + newKey, source);
         }
     }
 }
