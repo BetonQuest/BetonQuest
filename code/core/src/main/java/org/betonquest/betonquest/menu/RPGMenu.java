@@ -12,8 +12,8 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.menu.betonquest.MenuActionFactory;
 import org.betonquest.betonquest.menu.betonquest.MenuConditionFactory;
-import org.betonquest.betonquest.menu.betonquest.MenuEventFactory;
 import org.betonquest.betonquest.menu.betonquest.MenuObjectiveFactory;
 import org.betonquest.betonquest.menu.betonquest.MenuPlaceholderFactory;
 import org.betonquest.betonquest.menu.command.RPGMenuCommand;
@@ -89,7 +89,7 @@ public class RPGMenu {
         final Server server = betonQuest.getServer();
         questRegistries.condition().register(menu, new MenuConditionFactory(loggerFactory));
         questRegistries.objective().register(menu, new MenuObjectiveFactory(loggerFactory, this));
-        questRegistries.action().register(menu, new MenuEventFactory(loggerFactory, this));
+        questRegistries.action().register(menu, new MenuActionFactory(loggerFactory, this));
         questRegistries.placeholder().register(menu, new MenuPlaceholderFactory());
         this.pluginCommand = new RPGMenuCommand(loggerFactory.create(RPGMenuCommand.class), this);
         pluginCommand.register();
