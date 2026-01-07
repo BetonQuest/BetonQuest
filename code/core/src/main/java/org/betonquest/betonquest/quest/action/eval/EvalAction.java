@@ -13,7 +13,11 @@ import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
 import org.betonquest.betonquest.kernel.processor.adapter.ActionAdapter;
 import org.betonquest.betonquest.kernel.registry.quest.ActionTypeRegistry;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.concurrent.ExecutionException;
 
 /**
  * An action which evaluates to another action.
@@ -46,6 +50,16 @@ public class EvalAction implements NullableAction {
     private final Argument<String> evaluation;
 
     /**
+     * The scheduler to use for synchronous execution.
+     */
+    private final BukkitScheduler scheduler;
+
+    /**
+     * The plugin instance.
+     */
+    private final Plugin plugin;
+
+    /**
      * Created a new Eval action.
      *
      * @param placeholders       the {@link Placeholders} to create and resolve placeholders
@@ -53,14 +67,19 @@ public class EvalAction implements NullableAction {
      * @param actionTypeRegistry the action type registry providing factories to parse the evaluated instruction
      * @param pack               the quest package to relate the action to
      * @param evaluation         the evaluation input
+     * @param scheduler          the scheduler to use for synchronous execution
+     * @param plugin             the plugin instance
      */
-    public EvalAction(final Placeholders placeholders, final QuestPackageManager packManager, final ActionTypeRegistry actionTypeRegistry,
-                      final QuestPackage pack, final Argument<String> evaluation) {
+    public EvalAction(final Placeholders placeholders, final QuestPackageManager packManager,
+                      final ActionTypeRegistry actionTypeRegistry, final QuestPackage pack,
+                      final Argument<String> evaluation, final BukkitScheduler scheduler, final Plugin plugin) {
         this.placeholders = placeholders;
         this.packManager = packManager;
         this.actionTypeRegistry = actionTypeRegistry;
         this.pack = pack;
         this.evaluation = evaluation;
+        this.scheduler = scheduler;
+        this.plugin = plugin;
     }
 
     /**
@@ -84,6 +103,15 @@ public class EvalAction implements NullableAction {
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
-        createAction(placeholders, packManager, actionTypeRegistry, pack, evaluation.getValue(profile)).fire(profile);
+        final ActionAdapter action = createAction(placeholders, packManager, actionTypeRegistry, pack, evaluation.getValue(profile));
+        if (action.isPrimaryThreadEnforced()) {
+            try {
+                scheduler.callSyncMethod(plugin, () -> action.fire(profile)).get();
+                return;
+            } catch (InterruptedException | ExecutionException e) {
+                throw new QuestException("Failed to execute action in primary thread", e);
+            }
+        }
+        action.fire(profile);
     }
 }
