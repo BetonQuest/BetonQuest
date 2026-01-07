@@ -307,9 +307,7 @@ public class MenuConvIO extends ChatConvIO {
                 }
             }
             case SELECT -> {
-                if (!isOnCooldown()) {
-                    passPlayerAnswer();
-                }
+                passPlayerAnswer();
             }
             default -> {
             }
@@ -444,9 +442,7 @@ public class MenuConvIO extends ChatConvIO {
                     case SELECT:
                         lock.lock();
                         try {
-                            if (!isOnCooldown()) {
-                                passPlayerAnswer();
-                            }
+                            passPlayerAnswer();
                         } finally {
                             lock.unlock();
                         }
