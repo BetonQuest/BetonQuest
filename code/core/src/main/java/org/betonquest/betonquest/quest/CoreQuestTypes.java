@@ -382,7 +382,7 @@ public class CoreQuestTypes {
         actionTypes.registerCombined("door", new DoorActionFactory());
         actionTypes.registerCombined("drop", new DropActionFactory(profileProvider));
         actionTypes.register("effect", new EffectActionFactory(loggerFactory));
-        actionTypes.registerCombined("eval", new EvalActionFactory(placeholders, betonQuest.getQuestPackageManager(), actionTypes));
+        actionTypes.registerCombined("eval", new EvalActionFactory(placeholders, betonQuest.getQuestPackageManager(), actionTypes, server.getScheduler(), betonQuest));
         actionTypes.register("experience", new ExperienceActionFactory(loggerFactory));
         actionTypes.registerCombined("explosion", new ExplosionActionFactory());
         actionTypes.registerCombined("folder", new FolderActionFactory(betonQuest, loggerFactory, server.getPluginManager(), questTypeApi));

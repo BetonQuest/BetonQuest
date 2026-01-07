@@ -33,4 +33,9 @@ public class RunAction implements NullableAction {
             action.fire(profile);
         }
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return actions.stream().anyMatch(ActionAdapter::isPrimaryThreadEnforced);
+    }
 }
