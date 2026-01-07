@@ -37,15 +37,14 @@ public class ConsumeObjective extends CountingObjective {
      *
      * @param event         the Bukkit event for consuming an item
      * @param onlineProfile the profile of the player that consumed the item
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onConsume(final PlayerItemConsumeEvent event, final OnlineProfile onlineProfile) {
-        qeHandler.handle(() -> {
-            if (containsPlayer(onlineProfile)
-                    && item.getValue(onlineProfile).matches(event.getItem(), onlineProfile)
-                    && checkConditions(onlineProfile)) {
-                getCountingData(onlineProfile).progress();
-                completeIfDoneOrNotify(onlineProfile);
-            }
-        });
+    public void onConsume(final PlayerItemConsumeEvent event, final OnlineProfile onlineProfile) throws QuestException {
+        if (containsPlayer(onlineProfile)
+                && item.getValue(onlineProfile).matches(event.getItem(), onlineProfile)
+                && checkConditions(onlineProfile)) {
+            getCountingData(onlineProfile).progress();
+            completeIfDoneOrNotify(onlineProfile);
+        }
     }
 }

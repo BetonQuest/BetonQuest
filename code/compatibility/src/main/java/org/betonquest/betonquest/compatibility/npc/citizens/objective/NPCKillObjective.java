@@ -47,32 +47,31 @@ public class NPCKillObjective extends CountingObjective {
      *
      * @param event   the event to listen
      * @param profile the player profile
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onNpcKill(final MobKilledEvent event, final Profile profile) {
+    public void onNpcKill(final MobKilledEvent event, final Profile profile) throws QuestException {
         final NPC npc = registry.getNPC(event.getEntity());
         if (npc == null) {
             return;
         }
-        qeHandler.handle(() -> {
-            final Instruction npcInstruction = npcID.getValue(profile).getInstruction();
-            final String argument = npcInstruction.getPart(1);
-            final boolean byName = npcInstruction.bool().getFlag("byName", true)
-                    .getValue(profile).orElse(false);
-            if (byName) {
-                final String resolvedName = npcInstruction.chainForArgument(argument).string().get().getValue(profile);
-                if (!resolvedName.equals(npc.getName())) {
-                    return;
-                }
-            } else {
-                final int resolvedId = npcInstruction.chainForArgument(argument).number().atLeast(1).get().getValue(profile).intValue();
-                if (resolvedId != npc.getId()) {
-                    return;
-                }
+        final Instruction npcInstruction = npcID.getValue(profile).getInstruction();
+        final String argument = npcInstruction.getPart(1);
+        final boolean byName = npcInstruction.bool().getFlag("byName", true)
+                .getValue(profile).orElse(false);
+        if (byName) {
+            final String resolvedName = npcInstruction.chainForArgument(argument).string().get().getValue(profile);
+            if (!resolvedName.equals(npc.getName())) {
+                return;
             }
-            if (containsPlayer(profile) && checkConditions(profile)) {
-                getCountingData(profile).progress();
-                completeIfDoneOrNotify(profile);
+        } else {
+            final int resolvedId = npcInstruction.chainForArgument(argument).number().atLeast(1).get().getValue(profile).intValue();
+            if (resolvedId != npc.getId()) {
+                return;
             }
-        });
+        }
+        if (containsPlayer(profile) && checkConditions(profile)) {
+            getCountingData(profile).progress();
+            completeIfDoneOrNotify(profile);
+        }
     }
 }

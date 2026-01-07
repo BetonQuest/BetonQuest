@@ -62,13 +62,12 @@ public class PasswordObjective extends DefaultObjective {
      *
      * @param event         the chat event to check
      * @param onlineProfile the profile of the player
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onChat(final AsyncPlayerChatEvent event, final OnlineProfile onlineProfile) {
-        qeHandler.handle(() -> {
-            if (chatInput(false, onlineProfile, event.getMessage())) {
-                event.setCancelled(true);
-            }
-        });
+    public void onChat(final AsyncPlayerChatEvent event, final OnlineProfile onlineProfile) throws QuestException {
+        if (chatInput(false, onlineProfile, event.getMessage())) {
+            event.setCancelled(true);
+        }
     }
 
     /**
@@ -76,13 +75,12 @@ public class PasswordObjective extends DefaultObjective {
      *
      * @param event         the command event to check
      * @param onlineProfile the profile of the player
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onCommand(final PlayerCommandPreprocessEvent event, final OnlineProfile onlineProfile) {
-        qeHandler.handle(() -> {
-            if (chatInput(true, onlineProfile, event.getMessage())) {
-                event.setCancelled(true);
-            }
-        });
+    public void onCommand(final PlayerCommandPreprocessEvent event, final OnlineProfile onlineProfile) throws QuestException {
+        if (chatInput(true, onlineProfile, event.getMessage())) {
+            event.setCancelled(true);
+        }
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")

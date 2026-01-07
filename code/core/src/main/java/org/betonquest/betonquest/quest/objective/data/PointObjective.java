@@ -109,16 +109,15 @@ public class PointObjective extends DefaultObjective {
      *
      * @param event   the event to listen
      * @param profile the profile which received the update
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onPointUpdate(final PlayerUpdatePointEvent event, final Profile profile) {
+    public void onPointUpdate(final PlayerUpdatePointEvent event, final Profile profile) throws QuestException {
         if (!containsPlayer(profile)) {
             return;
         }
-        qeHandler.handle(() -> {
-            if (event.getCategory().equals(category.getValue(profile))) {
-                checkProgress(profile, event.getNewCount());
-            }
-        });
+        if (event.getCategory().equals(category.getValue(profile))) {
+            checkProgress(profile, event.getNewCount());
+        }
     }
 
     /**
@@ -126,18 +125,17 @@ public class PointObjective extends DefaultObjective {
      *
      * @param event   the event to listen
      * @param profile the profile which started the objective
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onStart(final PlayerObjectiveChangeEvent event, final Profile profile) {
+    public void onStart(final PlayerObjectiveChangeEvent event, final Profile profile) throws QuestException {
         if (event.getState() != ObjectiveState.ACTIVE || !containsPlayer(profile)) {
             return;
         }
-        qeHandler.handle(() -> {
-            final PlayerData playerData = playerDataStorage.get(profile);
-            final Optional<Integer> points = playerData.getPointsFromCategory(category.getValue(profile));
-            if (points.isPresent()) {
-                checkProgress(profile, points.get());
-            }
-        });
+        final PlayerData playerData = playerDataStorage.get(profile);
+        final Optional<Integer> points = playerData.getPointsFromCategory(category.getValue(profile));
+        if (points.isPresent()) {
+            checkProgress(profile, points.get());
+        }
     }
 
     private void checkProgress(final Profile profile, final int count) throws QuestException {

@@ -44,26 +44,25 @@ public class MMOCoreProfessionObjective extends DefaultObjective {
      *
      * @param event         the event
      * @param onlineProfile the player
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onLevelUp(final PlayerLevelUpEvent event, final OnlineProfile onlineProfile) {
+    public void onLevelUp(final PlayerLevelUpEvent event, final OnlineProfile onlineProfile) throws QuestException {
         if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
             return;
         }
-        qeHandler.handle(() -> {
-            final String professionName = this.professionName.getValue(onlineProfile);
-            final Profession profession = event.getProfession();
-            if (profession == null) {
-                if (!"MAIN".equalsIgnoreCase(professionName)) {
-                    return;
-                }
-            } else if (!profession.getName().equalsIgnoreCase(professionName)) {
+        final String professionName = this.professionName.getValue(onlineProfile);
+        final Profession profession = event.getProfession();
+        if (profession == null) {
+            if (!"MAIN".equalsIgnoreCase(professionName)) {
                 return;
             }
-            if (event.getNewLevel() < targetLevel.getValue(onlineProfile).intValue()) {
-                return;
-            }
-            completeObjective(onlineProfile);
-        });
+        } else if (!profession.getName().equalsIgnoreCase(professionName)) {
+            return;
+        }
+        if (event.getNewLevel() < targetLevel.getValue(onlineProfile).intValue()) {
+            return;
+        }
+        completeObjective(onlineProfile);
     }
 
     @Override

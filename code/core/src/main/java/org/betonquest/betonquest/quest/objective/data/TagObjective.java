@@ -54,15 +54,14 @@ public class TagObjective extends DefaultObjective {
      *
      * @param event   the event to listen
      * @param profile the profile which received the tag
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onTag(final PlayerTagAddEvent event, final Profile profile) {
-        qeHandler.handle(() -> {
-            if (containsPlayer(profile)
-                    && event.getTag().equals(tag.getValue(profile))
-                    && checkConditions(profile)) {
-                completeObjective(profile);
-            }
-        });
+    public void onTag(final PlayerTagAddEvent event, final Profile profile) throws QuestException {
+        if (containsPlayer(profile)
+                && event.getTag().equals(tag.getValue(profile))
+                && checkConditions(profile)) {
+            completeObjective(profile);
+        }
     }
 
     /**
@@ -70,16 +69,15 @@ public class TagObjective extends DefaultObjective {
      *
      * @param event   the event to listen
      * @param profile the profile which started the objective
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onStart(final PlayerObjectiveChangeEvent event, final Profile profile) {
+    public void onStart(final PlayerObjectiveChangeEvent event, final Profile profile) throws QuestException {
         if (event.getState() != ObjectiveState.ACTIVE || !containsPlayer(profile)) {
             return;
         }
-        qeHandler.handle(() -> {
-            if (playerDataStorage.getOffline(profile).hasTag(tag.getValue(profile))
-                    && checkConditions(profile)) {
-                completeObjective(profile);
-            }
-        });
+        if (playerDataStorage.getOffline(profile).hasTag(tag.getValue(profile))
+                && checkConditions(profile)) {
+            completeObjective(profile);
+        }
     }
 }

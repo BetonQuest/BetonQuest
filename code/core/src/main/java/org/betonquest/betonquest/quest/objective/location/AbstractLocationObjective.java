@@ -89,9 +89,10 @@ public abstract class AbstractLocationObjective extends DefaultObjective {
      *
      * @param event         the PlayerJoinEvent to be used in the method
      * @param onlineProfile the online profile of the player
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onPlayerJoin(final PlayerJoinEvent event, final OnlineProfile onlineProfile) {
-        qeHandler.handle(() -> checkLocation(onlineProfile, event.getPlayer().getLocation()));
+    public void onPlayerJoin(final PlayerJoinEvent event, final OnlineProfile onlineProfile) throws QuestException {
+        checkLocation(onlineProfile, event.getPlayer().getLocation());
     }
 
     /**
@@ -109,9 +110,10 @@ public abstract class AbstractLocationObjective extends DefaultObjective {
      *
      * @param event         the PlayerDeathEvent to be used in the method
      * @param onlineProfile the online profile of the player
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onPlayerDeath(final PlayerDeathEvent event, final OnlineProfile onlineProfile) {
-        qeHandler.handle(() -> checkLocation(onlineProfile, event.getEntity().getLocation()));
+    public void onPlayerDeath(final PlayerDeathEvent event, final OnlineProfile onlineProfile) throws QuestException {
+        checkLocation(onlineProfile, event.getEntity().getLocation());
     }
 
     /**
@@ -119,9 +121,10 @@ public abstract class AbstractLocationObjective extends DefaultObjective {
      *
      * @param event         the PlayerRespawnEvent to be used in the method
      * @param onlineProfile the online profile of the player
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onPlayerRespawn(final PlayerRespawnEvent event, final OnlineProfile onlineProfile) {
-        qeHandler.handle(() -> checkLocation(onlineProfile, event.getRespawnLocation()));
+    public void onPlayerRespawn(final PlayerRespawnEvent event, final OnlineProfile onlineProfile) throws QuestException {
+        checkLocation(onlineProfile, event.getRespawnLocation());
     }
 
     /**
@@ -129,8 +132,9 @@ public abstract class AbstractLocationObjective extends DefaultObjective {
      *
      * @param event         the PlayerTeleportEvent to be used in the method
      * @param onlineProfile the online profile of the player
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onPlayerTeleport(final PlayerTeleportEvent event, final OnlineProfile onlineProfile) {
+    public void onPlayerTeleport(final PlayerTeleportEvent event, final OnlineProfile onlineProfile) throws QuestException {
         onPlayerMove(event, onlineProfile);
     }
 
@@ -139,22 +143,24 @@ public abstract class AbstractLocationObjective extends DefaultObjective {
      *
      * @param event         the PlayerMoveEvent to be used in the method
      * @param onlineProfile the online profile of the player
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onPlayerMove(final PlayerMoveEvent event, final OnlineProfile onlineProfile) {
-        qeHandler.handle(() -> checkLocation(onlineProfile, event.getTo()));
+    public void onPlayerMove(final PlayerMoveEvent event, final OnlineProfile onlineProfile) throws QuestException {
+        checkLocation(onlineProfile, event.getTo());
     }
 
     /**
      * The onVehicleMove method listens for the VehicleMoveEvent and checks the player's location.
      *
      * @param event the VehicleMoveEvent to be used in the method
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onVehicleMove(final VehicleMoveEvent event) {
+    public void onVehicleMove(final VehicleMoveEvent event) throws QuestException {
         final List<Entity> passengers = event.getVehicle().getPassengers();
         for (final Entity passenger : passengers) {
             if (passenger instanceof final Player player) {
                 final OnlineProfile onlineProfile = profileProvider.getProfile(player);
-                qeHandler.handle(() -> checkLocation(onlineProfile, event.getTo()));
+                checkLocation(onlineProfile, event.getTo());
             }
         }
     }
@@ -175,7 +181,7 @@ public abstract class AbstractLocationObjective extends DefaultObjective {
         checkLocationEnterExit(onlineProfile, toInside);
     }
 
-    private void checkLocationEnterExit(final OnlineProfile onlineProfile, final boolean toInside) {
+    private void checkLocationEnterExit(final OnlineProfile onlineProfile, final boolean toInside) throws QuestException {
         if (!playersInsideRegion.containsKey(onlineProfile.getProfileUUID())) {
             playersInsideRegion.put(onlineProfile.getProfileUUID(), toInside);
             return;
@@ -184,19 +190,17 @@ public abstract class AbstractLocationObjective extends DefaultObjective {
         final boolean fromInside = playersInsideRegion.get(onlineProfile.getProfileUUID());
         playersInsideRegion.put(onlineProfile.getProfileUUID(), toInside);
 
-        qeHandler.handle(() -> {
-            if ((entry.getValue(onlineProfile).orElse(false)
-                    && toInside && !fromInside || exit.getValue(onlineProfile).orElse(false) && fromInside && !toInside)
-                    && checkConditions(onlineProfile)) {
-                completeObjective(onlineProfile);
-                playersInsideRegion.remove(onlineProfile.getProfileUUID());
-            }
-        });
+        if ((entry.getValue(onlineProfile).orElse(false)
+                && toInside && !fromInside || exit.getValue(onlineProfile).orElse(false) && fromInside && !toInside)
+                && checkConditions(onlineProfile)) {
+            completeObjective(onlineProfile);
+            playersInsideRegion.remove(onlineProfile.getProfileUUID());
+        }
     }
 
-    private boolean isInsideHandleException(final Location location, final OnlineProfile onlineProfile) {
+    private boolean isInsideHandleException(final Location location, final OnlineProfile onlineProfile) throws QuestException {
         final AtomicBoolean toInsideAtomic = new AtomicBoolean();
-        qeHandler.handle(() -> toInsideAtomic.set(isInside(onlineProfile, location)));
+        toInsideAtomic.set(isInside(onlineProfile, location));
         return toInsideAtomic.get();
     }
 

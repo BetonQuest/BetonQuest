@@ -57,16 +57,15 @@ public class CraftingObjective extends CountingObjective {
      *
      * @param event         the CraftItemEvent
      * @param onlineProfile the profile of the player that crafted the item
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onCrafting(final CraftItemEvent event, final OnlineProfile onlineProfile) {
-        qeHandler.handle(() -> {
-            if (containsPlayer(onlineProfile)
-                    && item.getValue(onlineProfile).matches(event.getInventory().getResult(), onlineProfile)
-                    && checkConditions(onlineProfile)) {
-                getCountingData(onlineProfile).progress(calculateCraftAmount(event, event.getInventory().getResult()));
-                completeIfDoneOrNotify(onlineProfile);
-            }
-        });
+    public void onCrafting(final CraftItemEvent event, final OnlineProfile onlineProfile) throws QuestException {
+        if (containsPlayer(onlineProfile)
+                && item.getValue(onlineProfile).matches(event.getInventory().getResult(), onlineProfile)
+                && checkConditions(onlineProfile)) {
+            getCountingData(onlineProfile).progress(calculateCraftAmount(event, event.getInventory().getResult()));
+            completeIfDoneOrNotify(onlineProfile);
+        }
     }
 
     /**
@@ -74,15 +73,14 @@ public class CraftingObjective extends CountingObjective {
      *
      * @param event   the custom source craft event
      * @param profile the profile of the player that crafted the item
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void handleCustomCraft(final ItemStackCraftedEvent event, final Profile profile) {
+    public void handleCustomCraft(final ItemStackCraftedEvent event, final Profile profile) throws QuestException {
         if (containsPlayer(profile) && checkConditions(profile)) {
-            qeHandler.handle(() -> {
-                if (item.getValue(profile).getItem(profile).matches(event.getStack())) {
-                    getCountingData(profile).progress(event.getAmount());
-                    completeIfDoneOrNotify(profile);
-                }
-            });
+            if (item.getValue(profile).getItem(profile).matches(event.getStack())) {
+                getCountingData(profile).progress(event.getAmount());
+                completeIfDoneOrNotify(profile);
+            }
         }
     }
 }

@@ -46,23 +46,22 @@ public class MythicLibSkillObjective extends DefaultObjective {
      *
      * @param event         MythicLib skill cast event
      * @param onlineProfile the player
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onSkillCast(final SkillCastEvent event, final OnlineProfile onlineProfile) {
-        qeHandler.handle(() -> {
-            final String skillName = event.getCast().getHandler().getId();
-            if (!skillId.getValue(onlineProfile).equalsIgnoreCase(skillName) || !event.getResult().isSuccessful()) {
-                return;
-            }
+    public void onSkillCast(final SkillCastEvent event, final OnlineProfile onlineProfile) throws QuestException {
+        final String skillName = event.getCast().getHandler().getId();
+        if (!skillId.getValue(onlineProfile).equalsIgnoreCase(skillName) || !event.getResult().isSuccessful()) {
+            return;
+        }
 
-            if (!triggerTypes.contains(event.getCast().getTrigger())) {
-                return;
-            }
+        if (!triggerTypes.contains(event.getCast().getTrigger())) {
+            return;
+        }
 
-            if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
-                return;
-            }
-            completeObjective(onlineProfile);
-        });
+        if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
+            return;
+        }
+        completeObjective(onlineProfile);
     }
 
     @Override

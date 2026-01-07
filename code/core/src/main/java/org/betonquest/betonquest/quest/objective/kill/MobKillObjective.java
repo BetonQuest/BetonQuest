@@ -62,28 +62,27 @@ public class MobKillObjective extends CountingObjective {
      *
      * @param event   the event containing the mob kill information
      * @param profile the profile of the player that killed the mob
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onMobKill(final MobKilledEvent event, final Profile profile) {
-        qeHandler.handle(() -> {
-            if (!containsPlayer(profile)
-                    || !entities.getValue(profile).contains(event.getEntity().getType())
-                    || name != null && (event.getEntity().getCustomName() == null
-                    || !event.getEntity().getCustomName().equals(name.getValue(profile)))) {
+    public void onMobKill(final MobKilledEvent event, final Profile profile) throws QuestException {
+        if (!containsPlayer(profile)
+                || !entities.getValue(profile).contains(event.getEntity().getType())
+                || name != null && (event.getEntity().getCustomName() == null
+                || !event.getEntity().getCustomName().equals(name.getValue(profile)))) {
+            return;
+        }
+        if (marked != null) {
+            final String value = marked.getValue(profile);
+            final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
+            final String dataContainerValue = event.getEntity().getPersistentDataContainer().get(key, PersistentDataType.STRING);
+            if (dataContainerValue == null || !dataContainerValue.equals(value)) {
                 return;
             }
-            if (marked != null) {
-                final String value = marked.getValue(profile);
-                final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
-                final String dataContainerValue = event.getEntity().getPersistentDataContainer().get(key, PersistentDataType.STRING);
-                if (dataContainerValue == null || !dataContainerValue.equals(value)) {
-                    return;
-                }
-            }
+        }
 
-            if (checkConditions(profile)) {
-                getCountingData(profile).progress();
-                completeIfDoneOrNotify(profile);
-            }
-        });
+        if (checkConditions(profile)) {
+            getCountingData(profile).progress();
+            completeIfDoneOrNotify(profile);
+        }
     }
 }

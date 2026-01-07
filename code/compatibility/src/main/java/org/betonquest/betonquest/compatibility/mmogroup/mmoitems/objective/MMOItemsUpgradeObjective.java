@@ -43,19 +43,18 @@ public class MMOItemsUpgradeObjective extends DefaultObjective {
      *
      * @param event   the upgrade item event
      * @param profile the player
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onUpgradeItem(final UpgradeItemEvent event, final OnlineProfile profile) {
-        qeHandler.handle(() -> {
-            final MMOItem upgradedItem = event.getTargetItem();
-            if (!upgradedItem.getId().equals(itemID.getValue(profile))
-                    || !upgradedItem.getType().getId().equals(itemType.getValue(profile))) {
-                return;
-            }
-            if (!containsPlayer(profile) || !checkConditions(profile)) {
-                return;
-            }
-            completeObjective(profile);
-        });
+    public void onUpgradeItem(final UpgradeItemEvent event, final OnlineProfile profile) throws QuestException {
+        final MMOItem upgradedItem = event.getTargetItem();
+        if (!upgradedItem.getId().equals(itemID.getValue(profile))
+                || !upgradedItem.getType().getId().equals(itemType.getValue(profile))) {
+            return;
+        }
+        if (!containsPlayer(profile) || !checkConditions(profile)) {
+            return;
+        }
+        completeObjective(profile);
     }
 
     @Override

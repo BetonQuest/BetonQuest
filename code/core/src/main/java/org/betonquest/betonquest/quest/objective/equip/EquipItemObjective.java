@@ -44,16 +44,15 @@ public class EquipItemObjective extends DefaultObjective {
      *
      * @param event         the event that triggered this method
      * @param onlineProfile the profile of the player that equipped the item
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onEquipmentChange(final PlayerArmorChangeEvent event, final OnlineProfile onlineProfile) {
-        qeHandler.handle(() -> {
-            if (containsPlayer(onlineProfile)
-                    && event.getSlotType() == slotType.getValue(onlineProfile)
-                    && item.getValue(onlineProfile).matches(event.getNewItem(), onlineProfile)
-                    && checkConditions(onlineProfile)) {
-                completeObjective(onlineProfile);
-            }
-        });
+    public void onEquipmentChange(final PlayerArmorChangeEvent event, final OnlineProfile onlineProfile) throws QuestException {
+        if (containsPlayer(onlineProfile)
+                && event.getSlotType() == slotType.getValue(onlineProfile)
+                && item.getValue(onlineProfile).matches(event.getNewItem(), onlineProfile)
+                && checkConditions(onlineProfile)) {
+            completeObjective(onlineProfile);
+        }
     }
 
     @Override
