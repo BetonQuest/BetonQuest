@@ -68,7 +68,7 @@ public class RPGMenu {
      * Create a new RPG menu instance.
      *
      * @param log             the custom logger for this class
-     * @param loggerFactory   the factory to crete new custom logger instances
+     * @param loggerFactory   the factory to create new custom logger instances
      * @param packManager     the quest package manager to get quest packages from
      * @param pluginConfig    the plugin config
      * @param pluginMessage   the plugin message instance
