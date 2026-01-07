@@ -1,14 +1,14 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/Configuration-Files.md
 3.0.0.23:
   - type: SET
-    key: journalLock
-    value: megaTrue
+    key: hook.craftengine
+    value: true
   - type: SET
-    key: additionalVal
-    value: '42'
+    key: hook.nexo
+    value: true
   - type: SET
-    key: copied
-    value: resource
+    key: hook.itemsadder
+    value: true
 3.0.0.22:
   - type: SET
     key: conversation.interceptor.delay
