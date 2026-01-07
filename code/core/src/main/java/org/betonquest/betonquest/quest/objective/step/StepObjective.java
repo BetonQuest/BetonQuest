@@ -52,8 +52,9 @@ public class StepObjective extends DefaultObjective {
      *
      * @param event         the PlayerInteractEvent
      * @param onlineProfile the profile of the player that interacted with the pressure plate
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onStep(final PlayerInteractEvent event, final OnlineProfile onlineProfile) {
+    public void onStep(final PlayerInteractEvent event, final OnlineProfile onlineProfile) throws QuestException {
         if (event.getHand() == EquipmentSlot.OFF_HAND && event.getHand() != null) {
             return;
         }
@@ -64,22 +65,20 @@ public class StepObjective extends DefaultObjective {
         if (clickedBlock == null) {
             return;
         }
-        qeHandler.handle(() -> {
-            final Block block = loc.getValue(onlineProfile).getBlock();
-            if (!clickedBlock.equals(block)) {
-                return;
-            }
+        final Block block = loc.getValue(onlineProfile).getBlock();
+        if (!clickedBlock.equals(block)) {
+            return;
+        }
 
-            if (!pressurePlateSelector.match(block.getBlockData().getMaterial())) {
-                return;
-            }
-            if (!containsPlayer(onlineProfile)) {
-                return;
-            }
-            if (checkConditions(onlineProfile)) {
-                completeObjective(onlineProfile);
-            }
-        });
+        if (!pressurePlateSelector.match(block.getBlockData().getMaterial())) {
+            return;
+        }
+        if (!containsPlayer(onlineProfile)) {
+            return;
+        }
+        if (checkConditions(onlineProfile)) {
+            completeObjective(onlineProfile);
+        }
     }
 
     @Override

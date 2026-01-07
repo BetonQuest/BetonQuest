@@ -35,8 +35,9 @@ public class ResourcepackObjective extends DefaultObjective {
      *
      * @param event         The event object.
      * @param onlineProfile The profile of the player that received the resource pack.
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onResourcePackReceived(final PlayerResourcePackStatusEvent event, final OnlineProfile onlineProfile) {
+    public void onResourcePackReceived(final PlayerResourcePackStatusEvent event, final OnlineProfile onlineProfile) throws QuestException {
         processObjective(onlineProfile, event.getStatus());
     }
 
@@ -47,15 +48,14 @@ public class ResourcepackObjective extends DefaultObjective {
      *
      * @param onlineProfile The online profile.
      * @param status        The status of the received resource pack.
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void processObjective(final OnlineProfile onlineProfile, final PlayerResourcePackStatusEvent.Status status) {
+    public void processObjective(final OnlineProfile onlineProfile, final PlayerResourcePackStatusEvent.Status status) throws QuestException {
         if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
-            qeHandler.handle(() -> {
-                final PlayerResourcePackStatusEvent.Status expectedStatus = targetStatus.getValue(onlineProfile);
-                if (expectedStatus == status) {
-                    completeObjective(onlineProfile);
-                }
-            });
+            final PlayerResourcePackStatusEvent.Status expectedStatus = targetStatus.getValue(onlineProfile);
+            if (expectedStatus == status) {
+                completeObjective(onlineProfile);
+            }
         }
     }
 

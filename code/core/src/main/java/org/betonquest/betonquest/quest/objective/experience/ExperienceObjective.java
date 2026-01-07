@@ -108,11 +108,12 @@ public class ExperienceObjective extends DefaultObjective {
      *
      * @param event         the event that triggered this method
      * @param onlineProfile the profile of the player that leveled up
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onLevelChangeEvent(final PlayerLevelChangeEvent event, final OnlineProfile onlineProfile) {
+    public void onLevelChangeEvent(final PlayerLevelChangeEvent event, final OnlineProfile onlineProfile) throws QuestException {
         final Player player = event.getPlayer();
         final double newAmount = player.getLevel() + player.getExp();
-        qeHandler.handle(() -> onExperienceChange(onlineProfile, newAmount, true));
+        onExperienceChange(onlineProfile, newAmount, true);
     }
 
     /**
@@ -134,10 +135,11 @@ public class ExperienceObjective extends DefaultObjective {
      *
      * @param event         the event that triggered this method
      * @param onlineProfile the profile of the player that joined
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onPlayerJoin(final PlayerJoinEvent event, final OnlineProfile onlineProfile) {
+    public void onPlayerJoin(final PlayerJoinEvent event, final OnlineProfile onlineProfile) throws QuestException {
         final Player player = event.getPlayer();
         final double newAmount = player.getLevel() + player.getExp();
-        qeHandler.handle(() -> onExperienceChange(onlineProfile, newAmount, false));
+        onExperienceChange(onlineProfile, newAmount, false);
     }
 }

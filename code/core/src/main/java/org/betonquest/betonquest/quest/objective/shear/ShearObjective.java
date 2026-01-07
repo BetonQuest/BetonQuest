@@ -49,19 +49,18 @@ public class ShearObjective extends CountingObjective {
      *
      * @param event         the event that triggered when the player sheared the sheep
      * @param onlineProfile the profile of the player that sheared the sheep
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onShear(final PlayerShearEntityEvent event, final OnlineProfile onlineProfile) {
+    public void onShear(final PlayerShearEntityEvent event, final OnlineProfile onlineProfile) throws QuestException {
         if (event.getEntity().getType() != EntityType.SHEEP) {
             return;
         }
-        qeHandler.handle(() -> {
-            if (containsPlayer(onlineProfile)
-                    && (name == null || name.getValue(onlineProfile).equals(event.getEntity().getCustomName()))
-                    && (color == null || color.getValue(onlineProfile) == ((Sheep) event.getEntity()).getColor())
-                    && checkConditions(onlineProfile)) {
-                getCountingData(onlineProfile).progress();
-                completeIfDoneOrNotify(onlineProfile);
-            }
-        });
+        if (containsPlayer(onlineProfile)
+                && (name == null || name.getValue(onlineProfile).equals(event.getEntity().getCustomName()))
+                && (color == null || color.getValue(onlineProfile) == ((Sheep) event.getEntity()).getColor())
+                && checkConditions(onlineProfile)) {
+            getCountingData(onlineProfile).progress();
+            completeIfDoneOrNotify(onlineProfile);
+        }
     }
 }

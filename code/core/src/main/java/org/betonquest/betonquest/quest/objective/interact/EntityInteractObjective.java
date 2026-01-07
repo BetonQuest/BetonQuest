@@ -171,20 +171,20 @@ public class EntityInteractObjective extends CountingObjective {
      *
      * @param event         the event that triggered this method
      * @param onlineProfile the profile of the player that interacted with the entity
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onDamage(final EntityDamageByEntityEvent event, final OnlineProfile onlineProfile) {
+    public void onDamage(final EntityDamageByEntityEvent event, final OnlineProfile onlineProfile) throws QuestException {
         if (interaction == Interaction.RIGHT) {
             return;
         }
         if (slot != null && slot != EquipmentSlot.HAND) {
             return;
         }
-        qeHandler.handle(() -> {
-            final boolean success = onInteract(onlineProfile, event.getEntity());
-            if (success && cancel.getValue(onlineProfile).orElse(false)) {
-                event.setCancelled(true);
-            }
-        });
+
+        final boolean success = onInteract(onlineProfile, event.getEntity());
+        if (success && cancel.getValue(onlineProfile).orElse(false)) {
+            event.setCancelled(true);
+        }
     }
 
     /**
@@ -192,17 +192,16 @@ public class EntityInteractObjective extends CountingObjective {
      *
      * @param event         the event that triggered this method
      * @param onlineProfile the profile of the player that interacted with the entity
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onRightClick(final PlayerInteractEntityEvent event, final OnlineProfile onlineProfile) {
+    public void onRightClick(final PlayerInteractEntityEvent event, final OnlineProfile onlineProfile) throws QuestException {
         if (interaction == Interaction.LEFT || slot != null && slot != event.getHand()) {
             return;
         }
-        qeHandler.handle(() -> {
-            final boolean success = onInteract(onlineProfile, event.getRightClicked());
-            if (success && cancel.getValue(onlineProfile).orElse(false)) {
-                event.setCancelled(true);
-            }
-        });
+        final boolean success = onInteract(onlineProfile, event.getRightClicked());
+        if (success && cancel.getValue(onlineProfile).orElse(false)) {
+            event.setCancelled(true);
+        }
     }
 
     /**
@@ -210,8 +209,9 @@ public class EntityInteractObjective extends CountingObjective {
      *
      * @param event         the event that triggered this method
      * @param onlineProfile the profile of the player that interacted with the entity
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onArmorRightClick(final PlayerInteractAtEntityEvent event, final OnlineProfile onlineProfile) {
+    public void onArmorRightClick(final PlayerInteractAtEntityEvent event, final OnlineProfile onlineProfile) throws QuestException {
         if (event.getRightClicked() instanceof ArmorStand) {
             onRightClick(event, onlineProfile);
         }

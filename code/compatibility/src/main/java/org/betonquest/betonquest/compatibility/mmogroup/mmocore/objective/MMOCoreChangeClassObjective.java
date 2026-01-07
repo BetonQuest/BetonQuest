@@ -37,8 +37,9 @@ public class MMOCoreChangeClassObjective extends DefaultObjective {
      *
      * @param event         the event
      * @param onlineProfile the player
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onClassChange(final PlayerChangeClassEvent event, final OnlineProfile onlineProfile) {
+    public void onClassChange(final PlayerChangeClassEvent event, final OnlineProfile onlineProfile) throws QuestException {
         if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
             return;
         }
@@ -48,11 +49,9 @@ public class MMOCoreChangeClassObjective extends DefaultObjective {
             return;
         }
 
-        qeHandler.handle(() -> {
-            if (targetClassName.getValue(onlineProfile).equalsIgnoreCase(event.getNewClass().getName())) {
-                completeObjective(onlineProfile);
-            }
-        });
+        if (targetClassName.getValue(onlineProfile).equalsIgnoreCase(event.getNewClass().getName())) {
+            completeObjective(onlineProfile);
+        }
     }
 
     @Override

@@ -36,13 +36,12 @@ public class BreedObjective extends CountingObjective {
      *
      * @param event         the event that triggered the breeding
      * @param onlineProfile the profile of the player that breeds the animal
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onBreeding(final EntityBreedEvent event, final OnlineProfile onlineProfile) {
-        qeHandler.handle(() -> {
-            if (event.getEntityType() == type.getValue(onlineProfile) && containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
-                getCountingData(onlineProfile).progress();
-                completeIfDoneOrNotify(onlineProfile);
-            }
-        });
+    public void onBreeding(final EntityBreedEvent event, final OnlineProfile onlineProfile) throws QuestException {
+        if (event.getEntityType() == type.getValue(onlineProfile) && containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
+            getCountingData(onlineProfile).progress();
+            completeIfDoneOrNotify(onlineProfile);
+        }
     }
 }

@@ -57,20 +57,19 @@ public class EnchantObjective extends CountingObjective {
      *
      * @param event         the enchantment event
      * @param onlineProfile the profile of the player that enchanted the item
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onEnchant(final EnchantItemEvent event, final OnlineProfile onlineProfile) {
+    public void onEnchant(final EnchantItemEvent event, final OnlineProfile onlineProfile) throws QuestException {
         if (!containsPlayer(onlineProfile)) {
             return;
         }
-        qeHandler.handle(() -> {
-            if (!item.getValue(onlineProfile).matches(event.getItem(), onlineProfile)) {
-                return;
-            }
-            if (matchesDesiredEnchants(onlineProfile, event.getEnchantsToAdd()) && checkConditions(onlineProfile)) {
-                getCountingData(onlineProfile).progress();
-                completeIfDoneOrNotify(onlineProfile);
-            }
-        });
+        if (!item.getValue(onlineProfile).matches(event.getItem(), onlineProfile)) {
+            return;
+        }
+        if (matchesDesiredEnchants(onlineProfile, event.getEnchantsToAdd()) && checkConditions(onlineProfile)) {
+            getCountingData(onlineProfile).progress();
+            completeIfDoneOrNotify(onlineProfile);
+        }
     }
 
     private boolean matchesDesiredEnchants(final OnlineProfile onlineProfile, final Map<Enchantment, Integer> addedEnchants) throws QuestException {

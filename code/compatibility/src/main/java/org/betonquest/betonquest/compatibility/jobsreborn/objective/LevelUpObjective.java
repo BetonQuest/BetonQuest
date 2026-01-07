@@ -36,13 +36,12 @@ public class LevelUpObjective extends DefaultObjective {
      *
      * @param event         the event that triggered the level up
      * @param onlineProfile the profile related to the player that leveled up
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onJobsLevelUpEvent(final JobsLevelUpEvent event, final OnlineProfile onlineProfile) {
-        qeHandler.handle(() -> {
-            if (event.getJob().isSame(this.job.getValue(onlineProfile)) && containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
-                completeObjective(onlineProfile);
-            }
-        });
+    public void onJobsLevelUpEvent(final JobsLevelUpEvent event, final OnlineProfile onlineProfile) throws QuestException {
+        if (event.getJob().isSame(this.job.getValue(onlineProfile)) && containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
+            completeObjective(onlineProfile);
+        }
     }
 
     @Override

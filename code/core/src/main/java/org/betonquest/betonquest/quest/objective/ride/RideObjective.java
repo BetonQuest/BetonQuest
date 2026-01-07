@@ -38,15 +38,14 @@ public class RideObjective extends DefaultObjective {
      *
      * @param event         the event to check
      * @param onlineProfile the profile of the player that rides the vehicle
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onMount(final EntityMountEvent event, final OnlineProfile onlineProfile) {
-        qeHandler.handle(() -> {
-            final Optional<EntityType> entityType = vehicle.getValue(onlineProfile);
-            final boolean matchType = entityType.map(type -> type == event.getMount().getType()).orElse(true);
-            if (containsPlayer(onlineProfile) && matchType && checkConditions(onlineProfile)) {
-                completeObjective(onlineProfile);
-            }
-        });
+    public void onMount(final EntityMountEvent event, final OnlineProfile onlineProfile) throws QuestException {
+        final Optional<EntityType> entityType = vehicle.getValue(onlineProfile);
+        final boolean matchType = entityType.map(type -> type == event.getMount().getType()).orElse(true);
+        if (containsPlayer(onlineProfile) && matchType && checkConditions(onlineProfile)) {
+            completeObjective(onlineProfile);
+        }
     }
 
     @Override

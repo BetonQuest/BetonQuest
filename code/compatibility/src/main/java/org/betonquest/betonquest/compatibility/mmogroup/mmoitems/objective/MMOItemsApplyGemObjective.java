@@ -50,23 +50,22 @@ public class MMOItemsApplyGemObjective extends DefaultObjective {
      *
      * @param event   the apply gem event
      * @param profile the player
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onApplyGem(final ApplyGemStoneEvent event, final OnlineProfile profile) {
-        qeHandler.handle(() -> {
-            final MMOItem upgradedItem = event.getTargetItem();
-            if (!upgradedItem.getId().equals(itemID.getValue(profile))
-                    || !upgradedItem.getType().getId().equals(itemType.getValue(profile))) {
-                return;
-            }
-            final MMOItem gemStone = event.getGemStone();
-            if (!gemStone.getId().equals(gemID.getValue(profile))) {
-                return;
-            }
-            if (!containsPlayer(profile) || !checkConditions(profile)) {
-                return;
-            }
-            completeObjective(profile);
-        });
+    public void onApplyGem(final ApplyGemStoneEvent event, final OnlineProfile profile) throws QuestException {
+        final MMOItem upgradedItem = event.getTargetItem();
+        if (!upgradedItem.getId().equals(itemID.getValue(profile))
+                || !upgradedItem.getType().getId().equals(itemType.getValue(profile))) {
+            return;
+        }
+        final MMOItem gemStone = event.getGemStone();
+        if (!gemStone.getId().equals(gemID.getValue(profile))) {
+            return;
+        }
+        if (!containsPlayer(profile) || !checkConditions(profile)) {
+            return;
+        }
+        completeObjective(profile);
     }
 
     @Override
