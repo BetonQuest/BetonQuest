@@ -43,4 +43,9 @@ public class PlaceholderID extends InstructionIdentifier {
     public String get() {
         return PLACEHOLDER_IDENTIFIER + super.get() + PLACEHOLDER_IDENTIFIER;
     }
+
+    @Override
+    public String getFull() {
+        return PLACEHOLDER_IDENTIFIER + getPackage().getQuestPath() + SEPARATOR + super.get() + PLACEHOLDER_IDENTIFIER;
+    }
 }
