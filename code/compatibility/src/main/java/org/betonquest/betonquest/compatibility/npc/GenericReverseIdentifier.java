@@ -71,8 +71,7 @@ public abstract class GenericReverseIdentifier<T> implements NpcReverseIdentifie
     }
 
     @Override
-    public void addID(final NpcID npcId) {
-        final String instruction = npcId.getInstruction().toString();
+    public void addID(final NpcID npcId, final String instruction) {
         if (instruction.startsWith(prefix)) {
             idsByInstruction.computeIfAbsent(instruction, string -> new HashSet<>()).add(npcId);
         }

@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.kernel.registry.quest;
 
+import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
@@ -46,8 +48,16 @@ public class NpcTypeRegistry extends FactoryTypeRegistry<NpcWrapper<?>> implemen
      * @param npcId the id to add store in the mapping
      */
     public void addIdentifier(final NpcID npcId) {
+        final String resolved;
+        try {
+            final Instruction instruction = npcId.getInstruction();
+            resolved = instruction.chainForArgument(instruction.toString()).string().get().getValue(null);
+        } catch (final QuestException e) {
+            log.warn("Could not resolve variables in npc id '" + npcId + "' to add reverse identifier: " + e.getMessage(), e);
+            return;
+        }
         for (final NpcReverseIdentifier identifier : reverseIdentifiers) {
-            identifier.addID(npcId);
+            identifier.addID(npcId, resolved);
         }
     }
 
