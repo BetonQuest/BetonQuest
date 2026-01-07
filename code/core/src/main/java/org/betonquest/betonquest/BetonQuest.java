@@ -384,9 +384,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
 
         conversationColors = new ConversationColors(textParser, config);
 
-        if (!setupFontRegistry()) {
-            throw new IllegalStateException("Could not load fonts!");
-        }
+        setupFontRegistry();
 
         new CoreFeatureFactories(loggerFactory, questManager, lastExecutionCache, coreQuestRegistry, coreQuestRegistry.placeholders(),
                 questRegistry, config, conversationColors, textParser, fontRegistry, pluginMessage)
@@ -433,7 +431,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         log.info("BetonQuest successfully enabled!");
     }
 
-    private boolean setupFontRegistry() {
+    private void setupFontRegistry() {
         final Key defaultkey = Key.key("default");
         final File fontFolder = new File(getDataFolder(), "fonts");
         final FontRetriever fontRetriever = new FontRetriever();
@@ -442,7 +440,9 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         final List<Pair<Key, Font>> fonts = fontRetriever.loadFonts(fontFolder.toPath());
         fonts.forEach(pair -> fontRegistry.registerFont(pair.getKey(), pair.getValue()));
         log.info("Loaded " + fonts.size() + " font index files.");
-        return !fonts.isEmpty();
+        if (fonts.isEmpty()) {
+            throw new IllegalStateException("Could not load fonts!");
+        }
     }
 
     private void setupDatabase() {
@@ -569,7 +569,6 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
      * Reloads the plugin.
      */
     public void reload() {
-        // reload the configuration
         log.debug("Reloading configuration");
         try {
             config.reload();
@@ -586,10 +585,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         Notify.load(config, getQuestPackageManager().getPackages().values());
         lastExecutionCache.reload();
 
-        // reload updater settings
-        getUpdater().search();
-        // stop current global locations listener
-        // and start new one with reloaded configs
+        updater.search();
         log.debug("Restarting global locations");
         try {
             conversationColors.load();
@@ -608,6 +604,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         } catch (final QuestException e) {
             log.error("Could not start PlayerHider! " + e.getMessage(), e);
         }
+        log.debug("Reload complete");
     }
 
     @Override
@@ -616,7 +613,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         if (questRegistry != null) {
             questRegistry.actionScheduling().clear();
         }
-        // suspend all conversations
+
         if (profileProvider != null) {
             for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
                 final Conversation conv = questRegistry == null ? null : questRegistry.conversations().getActive(onlineProfile);
@@ -626,7 +623,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
                 onlineProfile.getPlayer().closeInventory();
             }
         }
-        // cancel database saver
+
         if (saver != null) {
             saver.end();
         }
@@ -640,7 +637,6 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
             playerHider.stop();
         }
 
-        // done
         log.info("BetonQuest successfully disabled!");
 
         if (rpgMenu != null) {
