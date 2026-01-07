@@ -359,6 +359,9 @@ public class MenuConvIO extends ChatConvIO {
     }
 
     private void updateDisplay(final Scroll scroll) {
+        if (chatDisplay == null && scroll != Scroll.NONE) {
+            return;
+        }
         if (chatDisplay == null) {
             chatDisplay = new Display(settings, componentLineWrapper, npcName, npcText, new ArrayList<>(options.values()));
         }
