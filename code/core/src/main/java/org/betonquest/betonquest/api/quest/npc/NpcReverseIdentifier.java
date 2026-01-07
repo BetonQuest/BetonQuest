@@ -22,9 +22,10 @@ public interface NpcReverseIdentifier {
     /**
      * Adds an ID to be possible used to identify npcs.
      *
-     * @param npcId the id to register
+     * @param npcId       the id to register
+     * @param instruction the resolved instruction string
      */
-    void addID(NpcID npcId);
+    void addID(NpcID npcId, String instruction);
 
     /**
      * Resets all possible ID links.
