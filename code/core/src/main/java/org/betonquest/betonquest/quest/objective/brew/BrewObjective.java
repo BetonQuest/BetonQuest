@@ -103,7 +103,6 @@ public class BrewObjective extends CountingObjective {
      * @param event the event that triggered this method
      * @throws QuestException if argument resolving for the profile fails
      */
-    @SuppressWarnings("PMD.CognitiveComplexity")
     public void onBrew(final BrewEvent event) throws QuestException {
         final Profile profile = locations.remove(event.getBlock().getLocation());
         if (profile == null) {

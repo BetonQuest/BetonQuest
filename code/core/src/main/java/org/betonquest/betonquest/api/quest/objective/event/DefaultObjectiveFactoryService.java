@@ -4,12 +4,15 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.kernel.processor.quest.ActionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.ConditionProcessor;
+import org.betonquest.betonquest.lib.logger.QuestExceptionHandler;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,6 +45,16 @@ public class DefaultObjectiveFactoryService implements ObjectiveFactoryService {
     private final ConditionProcessor conditionProcessor;
 
     /**
+     * The exception handler for this service.
+     */
+    private final QuestExceptionHandler questExceptionHandler;
+
+    /**
+     * The logger for this service.
+     */
+    private final BetonQuestLogger logger;
+
+    /**
      * The objective related to this service.
      */
     private ObjectiveID objectiveID;
@@ -53,14 +66,18 @@ public class DefaultObjectiveFactoryService implements ObjectiveFactoryService {
      * @param actionProcessor    the event processor to use
      * @param conditionProcessor the condition processor to use
      * @param objectiveService   the event service to request events from
+     * @param factory            the logger factory to use
      * @throws QuestException if the objective service data of the instruction could not be parsed
      */
     public DefaultObjectiveFactoryService(final ObjectiveID objectiveID, final ActionProcessor actionProcessor,
-                                          final ConditionProcessor conditionProcessor, final ObjectiveService objectiveService) throws QuestException {
+                                          final ConditionProcessor conditionProcessor, final ObjectiveService objectiveService,
+                                          final BetonQuestLoggerFactory factory) throws QuestException {
         this.objectiveID = objectiveID;
         this.objectiveService = objectiveService;
         this.actionProcessor = actionProcessor;
         this.conditionProcessor = conditionProcessor;
+        this.logger = factory.create(DefaultObjectiveFactoryService.class);
+        this.questExceptionHandler = new QuestExceptionHandler(objectiveID.getPackage(), this.logger, objectiveID.getFull());
         this.objectiveServiceData = parseObjectiveData(objectiveID.getInstruction());
     }
 
@@ -75,6 +92,16 @@ public class DefaultObjectiveFactoryService implements ObjectiveFactoryService {
     @Override
     public <T extends Event> EventServiceSubscriptionBuilder<T> request(final Class<T> eventClass) {
         return objectiveService.request(eventClass).source(objectiveID.getPackage());
+    }
+
+    @Override
+    public QuestExceptionHandler getExceptionHandler() {
+        return questExceptionHandler;
+    }
+
+    @Override
+    public BetonQuestLogger getLogger() {
+        return logger;
     }
 
     @Override

@@ -100,7 +100,7 @@ public class ActionObjective extends DefaultObjective {
      * @param onlineProfile the profile of the player
      * @throws QuestException if argument resolving for the profile fails
      */
-    @SuppressWarnings("PMD.CognitiveComplexity")
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public void onInteract(final PlayerInteractEvent event, final OnlineProfile onlineProfile) throws QuestException {
         if (!containsPlayer(onlineProfile) || !action.getValue(onlineProfile).match(event.getAction()) || slot != null && slot != event.getHand()) {
             return;

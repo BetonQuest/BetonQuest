@@ -1,10 +1,12 @@
 package org.betonquest.betonquest.api.quest.objective.event;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.LogSource;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
+import org.betonquest.betonquest.lib.logger.QuestExceptionHandler;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,6 +30,20 @@ public interface ObjectiveFactoryService {
      * @return a new {@link EventServiceSubscriptionBuilder} for the requested event
      */
     <T extends Event> EventServiceSubscriptionBuilder<T> request(Class<T> eventClass);
+
+    /**
+     * Get an exception handler specificly for this objective.
+     *
+     * @return the exception handler
+     */
+    QuestExceptionHandler getExceptionHandler();
+
+    /**
+     * Get the logger specificly for this objective.
+     *
+     * @return the logger
+     */
+    BetonQuestLogger getLogger();
 
     /**
      * Do not use this method directly. It is used for internal logic.

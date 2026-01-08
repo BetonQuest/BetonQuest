@@ -56,7 +56,7 @@ public class StageObjective extends DefaultObjective {
 
     @Override
     public String getProperty(final String name, final Profile profile) {
-        return qeHandler.handle(() -> switch (name.toLowerCase(Locale.ROOT)) {
+        return getExceptionHandler().handle(() -> switch (name.toLowerCase(Locale.ROOT)) {
             case "index" -> String.valueOf(stageMap.getIndex(getStage(profile)));
             case "current" -> getStage(profile);
             case "next" -> stageMap.nextStage(getStage(profile));

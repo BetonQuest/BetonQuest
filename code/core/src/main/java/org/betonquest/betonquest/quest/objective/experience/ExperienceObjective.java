@@ -72,7 +72,7 @@ public class ExperienceObjective extends DefaultObjective {
                 .ifPresent(onlineProfile -> {
                     final Player player = onlineProfile.getPlayer();
                     final double newAmount = player.getLevel() + player.getExp();
-                    qeHandler.handle(() -> onExperienceChange(onlineProfile, newAmount, false));
+                    getExceptionHandler().handle(() -> onExperienceChange(onlineProfile, newAmount, false));
                 });
     }
 
@@ -126,7 +126,7 @@ public class ExperienceObjective extends DefaultObjective {
         final Player player = event.getPlayer();
         Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
             final double newAmount = player.getLevel() + player.getExp();
-            qeHandler.handle(() -> onExperienceChange(onlineProfile, newAmount, false));
+            getExceptionHandler().handle(() -> onExperienceChange(onlineProfile, newAmount, false));
         });
     }
 

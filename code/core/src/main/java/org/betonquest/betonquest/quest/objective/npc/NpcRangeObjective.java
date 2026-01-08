@@ -68,7 +68,7 @@ public class NpcRangeObjective extends DefaultObjective {
         this.checkStuff = getStuff(trigger);
         this.playersInRange = new HashMap<>();
         this.npcMoveTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(BetonQuest.getInstance(),
-                () -> qeHandler.handle(this::loop), 0, 20);
+                () -> getExceptionHandler().handle(this::loop), 0, 20);
     }
 
     private QuestBiPredicate<Profile, Boolean> getStuff(final Argument<Trigger> trigger) {
