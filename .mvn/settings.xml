@@ -6,8 +6,9 @@
     <mirror>
       <id>BetonQuest-Mirror</id>
       <url>https://repo.betonquest.org/mirror</url>
-      <mirrorOf>*</mirrorOf>
+      <mirrorOf>*,!betonquest-nexomc-repo,!betonquest-momirealms-repo,!betonquest-matteodev-repo</mirrorOf>
     </mirror>
   </mirrors>
 
 </settings>
+
