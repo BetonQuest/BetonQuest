@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
@@ -17,18 +16,12 @@ import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.quest.condition.number.Operation;
 
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
  * Player needs to get a certain number of points.
  */
 public class PointObjective extends DefaultObjective {
-
-    /**
-     * The Factory for the Point Data.
-     */
-    private static final ObjectiveDataFactory POINT_FACTORY = PointData::new;
 
     /**
      * Storage for player data.
@@ -69,7 +62,7 @@ public class PointObjective extends DefaultObjective {
     public PointObjective(final ObjectiveFactoryService service, final PlayerDataStorage playerDataStorage, final Argument<String> category,
                           final Argument<Number> targetAmount, final Argument<CountingMode> mode, final Argument<Operation> operation)
             throws QuestException {
-        super(service, POINT_FACTORY);
+        super(service);
         this.playerDataStorage = playerDataStorage;
         this.category = category;
         this.targetAmount = targetAmount;
@@ -90,10 +83,7 @@ public class PointObjective extends DefaultObjective {
 
     @Override
     public String getProperty(final String name, final Profile profile) throws QuestException {
-        final PointData data = (PointData) dataMap.get(profile);
-        if (data == null) {
-            return "";
-        }
+        final PointData data = new PointData(getService().getData().get(profile), profile, getObjectiveID());
         final int value = switch (name.toLowerCase(Locale.ROOT)) {
             case "amount" -> data.getPoints();
             case "left" -> data.getPoints() - playerDataStorage.getOffline(profile)
@@ -139,7 +129,7 @@ public class PointObjective extends DefaultObjective {
     }
 
     private void checkProgress(final Profile profile, final int count) throws QuestException {
-        final PointData data = Objects.requireNonNull((PointData) dataMap.get(profile));
+        final PointData data = new PointData(getService().getData().get(profile), profile, getObjectiveID());
         if (operation.getValue(profile).check(count, data.getPoints()) && checkConditions(profile)) {
             completeObjective(profile);
         }
@@ -147,7 +137,10 @@ public class PointObjective extends DefaultObjective {
 
     /**
      * Data class for the PointObjective.
+     *
+     * @deprecated do not use this class. it's scheduled for removal in future versions
      */
+    @Deprecated
     public static class PointData extends ObjectiveData {
 
         /**

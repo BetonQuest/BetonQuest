@@ -123,7 +123,7 @@ public class MythicMobKillObjective extends CountingObjective {
         if (deathRadiusAllPlayers > 0) {
             executeForEveryoneInRange(event, deathRadiusAllPlayers);
         } else if (event.getKiller() instanceof Player) {
-            checkKill(event, profileProvider.getProfile((Player) event.getKiller()));
+            checkKill(event, getService().getProfileProvider().getProfile((Player) event.getKiller()));
         } else if (neutralDeathRadiusAllPlayers > 0) {
             executeForEveryoneInRange(event, neutralDeathRadiusAllPlayers);
         }
@@ -133,7 +133,7 @@ public class MythicMobKillObjective extends CountingObjective {
         final Location center = BukkitAdapter.adapt(event.getMob().getLocation());
         for (final Player player : center.getWorld().getPlayers()) {
             if (isValidPlayer(player) && player.getLocation().distanceSquared(center) <= range) {
-                checkKill(event, profileProvider.getProfile(player));
+                checkKill(event, getService().getProfileProvider().getProfile(player));
             }
         }
     }

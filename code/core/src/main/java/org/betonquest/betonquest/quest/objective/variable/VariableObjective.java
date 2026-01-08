@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.objective.variable;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.jetbrains.annotations.Nullable;
@@ -14,7 +14,6 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,18 +25,13 @@ import java.util.regex.Pattern;
 public class VariableObjective extends DefaultObjective {
 
     /**
-     * The Factory for the Variable Data.
-     */
-    private static final ObjectiveDataFactory VARIABLE_FACTORY = VariableData::new;
-
-    /**
      * Creates a new VariableObjective instance.
      *
      * @param service the objective factory service
      * @throws QuestException if there is an error in the instruction
      */
     public VariableObjective(final ObjectiveFactoryService service) throws QuestException {
-        super(service, VARIABLE_FACTORY);
+        super(service);
     }
 
     /**
@@ -84,12 +78,16 @@ public class VariableObjective extends DefaultObjective {
     }
 
     /* default */ VariableData getVariableData(final Profile profile) {
-        return Objects.requireNonNull((VariableData) dataMap.get(profile));
+        final String data = getService().getData().get(profile);
+        return new VariableData(data, profile, getObjectiveID());
     }
 
     /**
      * The data class for the {@link VariableObjective}.
+     *
+     * @deprecated do not use this class. it's scheduled for removal in future versions
      */
+    @Deprecated
     public static class VariableData extends ObjectiveData {
 
         /**
@@ -203,12 +201,18 @@ public class VariableObjective extends DefaultObjective {
          * @param value value of the variable
          */
         public void add(final String key, @Nullable final String value) {
+            final ObjectiveFactoryService service;
+            try {
+                service = BetonQuest.getInstance().getQuestTypeApi().getObjective(objID).getService();
+            } catch (final QuestException e) {
+                throw new IllegalStateException("Could not get objective service for objective '" + objID + "'", e);
+            }
             if (value == null || value.isEmpty()) {
                 variables.remove(key.toLowerCase(Locale.ROOT));
             } else {
                 variables.put(key.toLowerCase(Locale.ROOT), value);
             }
-            update();
+            update(service);
         }
 
         @Override

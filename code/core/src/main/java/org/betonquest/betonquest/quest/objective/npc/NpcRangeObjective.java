@@ -114,7 +114,7 @@ public class NpcRangeObjective extends DefaultObjective {
     @SuppressWarnings("PMD.CognitiveComplexity")
     private void loop() throws QuestException {
         final List<UUID> profilesInside = new ArrayList<>();
-        final List<OnlineProfile> profiles = dataMap.keySet().stream()
+        final List<OnlineProfile> profiles = getService().getData().keySet().stream()
                 .map(Profile::getOnlineProfile)
                 .filter(Optional::isPresent)
                 .map(Optional::get)

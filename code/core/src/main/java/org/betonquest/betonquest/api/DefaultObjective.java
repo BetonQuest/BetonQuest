@@ -4,15 +4,11 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.objective.Objective;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.database.PlayerData;
-import org.betonquest.betonquest.lib.profile.ProfileKeyMap;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -22,26 +18,6 @@ import java.util.Map;
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public abstract class DefaultObjective implements Objective {
-
-    /**
-     * The factory for the default Objective Data.
-     */
-    private static final ObjectiveDataFactory DATA_FACTORY = ObjectiveData::new;
-
-    /**
-     * Profile provider to get profiles from players.
-     */
-    protected final ProfileProvider profileProvider;
-
-    /**
-     * Contains all data objects of the profiles with this objective active.
-     */
-    protected final Map<Profile, ObjectiveData> dataMap;
-
-    /**
-     * Should be set to the data class used to hold the objective specific information.
-     */
-    private final ObjectiveDataFactory templateFactory;
 
     /**
      * The {@link ObjectiveFactoryService} for this objective.
@@ -58,24 +34,7 @@ public abstract class DefaultObjective implements Objective {
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
     public DefaultObjective(final ObjectiveFactoryService service) throws QuestException {
-        this(service, DATA_FACTORY);
-    }
-
-    /**
-     * Creates a new instance of the objective.
-     * <p>
-     * <b>Do not register listeners here!</b>
-     * This is done automatically after creation.
-     *
-     * @param service         the {@link ObjectiveFactoryService} for this objective
-     * @param templateFactory the factory for the objective data object
-     * @throws QuestException if the syntax is wrong or any error happens while parsing
-     */
-    public DefaultObjective(final ObjectiveFactoryService service, final ObjectiveDataFactory templateFactory) throws QuestException {
-        this.templateFactory = templateFactory;
         this.service = service;
-        this.profileProvider = BetonQuest.getInstance().getProfileProvider();
-        this.dataMap = new ProfileKeyMap<>(profileProvider);
     }
 
     @Override
@@ -236,15 +195,9 @@ public abstract class DefaultObjective implements Objective {
     @SuppressWarnings("PMD.AvoidSynchronizedStatement")
     public final void startObjective(final Profile profile, final String instructionString, final ObjectiveState previousState) {
         synchronized (this) {
-            try {
-                final ObjectiveData data = templateFactory.create(instructionString, profile, getObjectiveID());
-                runObjectiveChangeEvent(profile, previousState, ObjectiveState.ACTIVE);
-                dataMap.put(profile, data);
-                start(profile);
-            } catch (final QuestException exception) {
-                getLogger().warn(getPackage(), "Error while loading " + getObjectiveID() + " objective data for "
-                        + profile + ": " + exception.getMessage(), exception);
-            }
+            runObjectiveChangeEvent(profile, previousState, ObjectiveState.ACTIVE);
+            getService().getData().put(profile, instructionString);
+            start(profile);
         }
     }
 
@@ -295,7 +248,7 @@ public abstract class DefaultObjective implements Objective {
     public final void stopObjective(final Profile profile, final ObjectiveState newState) {
         synchronized (this) {
             runObjectiveChangeEvent(profile, ObjectiveState.ACTIVE, newState);
-            dataMap.remove(profile);
+            getService().getData().remove(profile);
         }
     }
 
@@ -311,22 +264,7 @@ public abstract class DefaultObjective implements Objective {
      * @return true if the profile has this objective
      */
     public final boolean containsPlayer(final Profile profile) {
-        return dataMap.containsKey(profile);
-    }
-
-    /**
-     * Returns the data of the specified profile.
-     *
-     * @param profile the {@link Profile} to get the data for
-     * @return the data string for this objective or null if there is no data
-     */
-    @Nullable
-    public final String getData(final Profile profile) {
-        final ObjectiveData data = dataMap.get(profile);
-        if (data == null) {
-            return null;
-        }
-        return data.toString();
+        return getService().getData().containsKey(profile);
     }
 
     /**
@@ -344,10 +282,10 @@ public abstract class DefaultObjective implements Objective {
      * when reloading the plugin. It will save all profile data to their "inactive" map.
      */
     public void close() {
-        for (final Map.Entry<Profile, ObjectiveData> entry : dataMap.entrySet()) {
+        for (final Map.Entry<Profile, String> entry : service.getData().entrySet()) {
             final Profile profile = entry.getKey();
             BetonQuest.getInstance().getPlayerDataStorage().get(profile).addRawObjective(getService().getObjectiveID(),
-                    entry.getValue().toString());
+                    entry.getValue());
         }
     }
 }

@@ -159,7 +159,7 @@ public abstract class AbstractLocationObjective extends DefaultObjective {
         final List<Entity> passengers = event.getVehicle().getPassengers();
         for (final Entity passenger : passengers) {
             if (passenger instanceof final Player player) {
-                final OnlineProfile onlineProfile = profileProvider.getProfile(player);
+                final OnlineProfile onlineProfile = getService().getProfileProvider().getProfile(player);
                 checkLocation(onlineProfile, event.getTo());
             }
         }

@@ -104,7 +104,7 @@ public class TrainCartsRideObjective extends CountingObjective {
         while (!startTimes.isEmpty()) {
             final Player player = Bukkit.getPlayer(startTimes.keySet().iterator().next());
             if (player != null) {
-                stopCount(profileProvider.getProfile(player));
+                stopCount(getService().getProfileProvider().getProfile(player));
             }
         }
         super.close();

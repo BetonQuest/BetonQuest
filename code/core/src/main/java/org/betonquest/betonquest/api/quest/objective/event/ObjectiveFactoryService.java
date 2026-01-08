@@ -4,11 +4,14 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.LogSource;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.lib.logger.QuestExceptionHandler;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Map;
 
 /**
  * Provides services for objective creation and event subscriptions.
@@ -44,6 +47,31 @@ public interface ObjectiveFactoryService {
      * @return the logger
      */
     BetonQuestLogger getLogger();
+
+    /**
+     * Get the general profile provider.
+     *
+     * @return the profile provider
+     */
+    ProfileProvider getProfileProvider();
+
+    /**
+     * Get the raw objective data.
+     *
+     * @return the objective data
+     * @deprecated do not use this method. it's scheduled for removal and only exists for compatibility.
+     */
+    @Deprecated
+    Map<Profile, String> getData();
+
+    /**
+     * Update the raw objective data with the database.
+     *
+     * @param profile the profile to update
+     * @deprecated do not use this method. it's scheduled for removal and only exists for compatibility.
+     */
+    @Deprecated
+    void updateData(Profile profile);
 
     /**
      * Do not use this method directly. It is used for internal logic.
@@ -84,4 +112,12 @@ public interface ObjectiveFactoryService {
      * @throws QuestException if argument resolving for the profile fails
      */
     void callActions(@Nullable Profile profile) throws QuestException;
+
+    /**
+     * Checks if the objective contains the given profile.
+     *
+     * @param profile the profile to check for
+     * @return if the objective contains the profile
+     */
+    boolean containsProfile(Profile profile);
 }

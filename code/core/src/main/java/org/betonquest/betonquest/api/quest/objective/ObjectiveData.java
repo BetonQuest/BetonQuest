@@ -1,14 +1,14 @@
 package org.betonquest.betonquest.api.quest.objective;
 
-import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.bukkit.event.QuestDataUpdateEvent;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.database.Saver;
-import org.betonquest.betonquest.database.UpdateType;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 
 /**
  * Stores the profile's data for the objective.
+ *
+ * @deprecated do not use this class, it will be removed in future versions
  */
+@Deprecated
 public class ObjectiveData {
 
     /**
@@ -64,16 +64,11 @@ public class ObjectiveData {
      * If you forget it, the objective will still work for players who don't
      * leave the server. However, if someone leaves before completing, they
      * will have to start this objective from scratch.
+     *
+     * @param service the objective service
      */
-    protected final void update() {
-        final BetonQuest plugin = BetonQuest.getInstance();
-        final Saver saver = plugin.getSaver();
-        saver.add(new Saver.Record(UpdateType.REMOVE_OBJECTIVES, profile.getProfileUUID().toString(), objID.getFull()));
-        saver.add(new Saver.Record(UpdateType.ADD_OBJECTIVES, profile.getProfileUUID().toString(), objID.getFull(), toString()));
-        final QuestDataUpdateEvent event = new QuestDataUpdateEvent(profile, objID, toString());
-        plugin.getServer().getScheduler().runTask(plugin, event::callEvent);
-        if (profile.getOnlineProfile().isPresent()) {
-            plugin.getPlayerDataStorage().get(profile).getJournal().update();
-        }
+    protected final void update(final ObjectiveFactoryService service) {
+        service.getData().put(profile, toString());
+        service.updateData(profile);
     }
 }
