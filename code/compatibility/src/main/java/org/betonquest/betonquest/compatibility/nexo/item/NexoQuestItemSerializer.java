@@ -11,9 +11,11 @@ import org.bukkit.inventory.ItemStack;
 public class NexoQuestItemSerializer implements QuestItemSerializer {
 
     /**
- * The empty default constructor.
- */
-    public NexoQuestItemSerializer() { }
+     * The empty default constructor.
+     */
+    public NexoQuestItemSerializer() {
+        // Empty
+    }
 
     @Override
     public String serialize(final ItemStack itemStack) throws QuestException {

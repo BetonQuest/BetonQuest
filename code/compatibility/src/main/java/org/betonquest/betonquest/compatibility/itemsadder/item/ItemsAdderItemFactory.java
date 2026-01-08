@@ -13,9 +13,11 @@ import org.betonquest.betonquest.item.QuestItemWrapper;
 public class ItemsAdderItemFactory implements TypeFactory<QuestItemWrapper> {
 
     /**
- * The empty default constructor.
- */
-    public ItemsAdderItemFactory() { }
+     * The empty default constructor.
+     */
+    public ItemsAdderItemFactory() {
+        // Empty
+    }
 
     @Override
     public QuestItemWrapper parseInstruction(final Instruction instruction) throws QuestException {

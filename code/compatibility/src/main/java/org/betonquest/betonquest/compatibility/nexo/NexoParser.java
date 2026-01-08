@@ -17,9 +17,11 @@ public class NexoParser implements SimpleArgumentParser<ItemBuilder> {
     public static final NexoParser NEXO_PARSER = new NexoParser();
 
     /**
- * The empty default constructor.
- */
-    public NexoParser() { }
+     * The empty default constructor.
+     */
+    public NexoParser() {
+        // Empty
+    }
 
     @Override
     public ItemBuilder apply(final String string) throws QuestException {

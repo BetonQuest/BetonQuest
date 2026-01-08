@@ -11,9 +11,11 @@ import org.bukkit.inventory.ItemStack;
 public class CraftEngineQuestItemSerializer implements QuestItemSerializer {
 
     /**
- * The empty default constructor.
- */
-    public CraftEngineQuestItemSerializer() { }
+     * The empty default constructor.
+     */
+    public CraftEngineQuestItemSerializer() {
+        // Empty
+    }
 
     @Override
     public String serialize(final ItemStack itemStack) throws QuestException {

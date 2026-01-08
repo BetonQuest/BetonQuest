@@ -13,9 +13,11 @@ import org.betonquest.betonquest.item.QuestItemWrapper;
 public class NexoItemFactory implements TypeFactory<QuestItemWrapper> {
 
     /**
- * The empty default constructor.
- */
-    public NexoItemFactory() { }
+     * The empty default constructor.
+     */
+    public NexoItemFactory() {
+        // Empty
+    }
 
     @Override
     public QuestItemWrapper parseInstruction(final Instruction instruction) throws QuestException {
