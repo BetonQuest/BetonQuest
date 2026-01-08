@@ -67,17 +67,16 @@ public class TrainCartsRideObjective extends CountingObjective {
      *
      * @param event         the {@link MemberSeatEnterEvent}.
      * @param onlineProfile the {@link OnlineProfile}.
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onMemberSeatEnter(final MemberSeatEnterEvent event, final OnlineProfile onlineProfile) {
+    public void onMemberSeatEnter(final MemberSeatEnterEvent event, final OnlineProfile onlineProfile) throws QuestException {
         if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
             return;
         }
-        qeHandler.handle(() -> {
-            if (TrainCartsUtils.isValidTrain(name.getValue(onlineProfile),
-                    event.getMember().getGroup().getProperties().getTrainName())) {
-                startCount(onlineProfile);
-            }
-        });
+        if (TrainCartsUtils.isValidTrain(name.getValue(onlineProfile),
+                event.getMember().getGroup().getProperties().getTrainName())) {
+            startCount(onlineProfile);
+        }
     }
 
     /**

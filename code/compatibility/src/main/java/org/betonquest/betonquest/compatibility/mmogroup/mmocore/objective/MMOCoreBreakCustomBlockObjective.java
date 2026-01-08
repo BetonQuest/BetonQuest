@@ -40,16 +40,15 @@ public class MMOCoreBreakCustomBlockObjective extends CountingObjective {
      *
      * @param event         the event
      * @param onlineProfile the player
+     * @throws QuestException if an argument could not be resolved
      */
-    public void onBlockBreak(final CustomBlockMineEvent event, final OnlineProfile onlineProfile) {
+    public void onBlockBreak(final CustomBlockMineEvent event, final OnlineProfile onlineProfile) throws QuestException {
         if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
             final String blockId = getBlockId(event.getBlockInfo().getBlock());
-            qeHandler.handle(() -> {
-                if (desiredBlockId.getValue(onlineProfile).equals(blockId)) {
-                    getCountingData(onlineProfile).progress();
-                    completeIfDoneOrNotify(onlineProfile);
-                }
-            });
+            if (desiredBlockId.getValue(onlineProfile).equals(blockId)) {
+                getCountingData(onlineProfile).progress();
+                completeIfDoneOrNotify(onlineProfile);
+            }
         }
     }
 

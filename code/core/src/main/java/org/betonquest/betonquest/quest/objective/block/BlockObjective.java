@@ -99,21 +99,20 @@ public class BlockObjective extends CountingObjective {
      *
      * @param event         the event that triggered this method
      * @param onlineProfile the profile of the player that placed the block
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onBlockPlace(final BlockPlaceEvent event, final OnlineProfile onlineProfile) {
-        qeHandler.handle(() -> {
-            if (event.isCancelled() && !ignoreCancel.getValue(onlineProfile).orElse(false)) {
-                return;
-            }
-            final BlockSelector blockSelector = selector.getValue(onlineProfile);
-            if (containsPlayer(onlineProfile)
-                    && blockSelector.match(event.getBlock(), exactMatch.getValue(onlineProfile).orElse(false))
-                    && checkConditions(onlineProfile)
-                    && checkLocation(event.getBlock().getLocation(), onlineProfile)
-                    && (getCountingData(onlineProfile).getDirectionFactor() >= 0 || !noSafety.getValue(onlineProfile).orElse(false))) {
-                handleDataChange(onlineProfile, getCountingData(onlineProfile).add());
-            }
-        });
+    public void onBlockPlace(final BlockPlaceEvent event, final OnlineProfile onlineProfile) throws QuestException {
+        if (event.isCancelled() && !ignoreCancel.getValue(onlineProfile).orElse(false)) {
+            return;
+        }
+        final BlockSelector blockSelector = selector.getValue(onlineProfile);
+        if (containsPlayer(onlineProfile)
+                && blockSelector.match(event.getBlock(), exactMatch.getValue(onlineProfile).orElse(false))
+                && checkConditions(onlineProfile)
+                && checkLocation(event.getBlock().getLocation(), onlineProfile)
+                && (getCountingData(onlineProfile).getDirectionFactor() >= 0 || !noSafety.getValue(onlineProfile).orElse(false))) {
+            handleDataChange(onlineProfile, getCountingData(onlineProfile).add());
+        }
     }
 
     /**
@@ -121,21 +120,20 @@ public class BlockObjective extends CountingObjective {
      *
      * @param event         the event that triggered this method
      * @param onlineProfile the profile of the player that broke the block
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onBlockBreak(final BlockBreakEvent event, final OnlineProfile onlineProfile) {
-        qeHandler.handle(() -> {
-            if (event.isCancelled() && !ignoreCancel.getValue(onlineProfile).orElse(false)) {
-                return;
-            }
-            final BlockSelector blockSelector = selector.getValue(onlineProfile);
-            if (containsPlayer(onlineProfile)
-                    && blockSelector.match(event.getBlock(), exactMatch.getValue(onlineProfile).orElse(false))
-                    && checkConditions(onlineProfile)
-                    && checkLocation(event.getBlock().getLocation(), onlineProfile)
-                    && (getCountingData(onlineProfile).getDirectionFactor() <= 0 || !noSafety.getValue(onlineProfile).orElse(false))) {
-                handleDataChange(onlineProfile, getCountingData(onlineProfile).subtract());
-            }
-        });
+    public void onBlockBreak(final BlockBreakEvent event, final OnlineProfile onlineProfile) throws QuestException {
+        if (event.isCancelled() && !ignoreCancel.getValue(onlineProfile).orElse(false)) {
+            return;
+        }
+        final BlockSelector blockSelector = selector.getValue(onlineProfile);
+        if (containsPlayer(onlineProfile)
+                && blockSelector.match(event.getBlock(), exactMatch.getValue(onlineProfile).orElse(false))
+                && checkConditions(onlineProfile)
+                && checkLocation(event.getBlock().getLocation(), onlineProfile)
+                && (getCountingData(onlineProfile).getDirectionFactor() <= 0 || !noSafety.getValue(onlineProfile).orElse(false))) {
+            handleDataChange(onlineProfile, getCountingData(onlineProfile).subtract());
+        }
     }
 
     private void handleDataChange(final OnlineProfile onlineProfile, final CountingData data) {

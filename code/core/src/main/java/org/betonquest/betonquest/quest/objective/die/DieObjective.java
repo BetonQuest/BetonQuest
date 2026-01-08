@@ -55,19 +55,18 @@ public class DieObjective extends DefaultObjective {
      *
      * @param event         the event that triggered this method
      * @param onlineProfile the profile related to the player that died
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onDeath(final EntityDeathEvent event, final OnlineProfile onlineProfile) {
+    public void onDeath(final EntityDeathEvent event, final OnlineProfile onlineProfile) throws QuestException {
         if (location != null) {
             return;
         }
-        qeHandler.handle(() -> {
-            if (cancel.getValue(onlineProfile).orElse(false)) {
-                return;
-            }
-            if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
-                completeObjective(onlineProfile);
-            }
-        });
+        if (cancel.getValue(onlineProfile).orElse(false)) {
+            return;
+        }
+        if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
+            completeObjective(onlineProfile);
+        }
     }
 
     /**
@@ -75,17 +74,16 @@ public class DieObjective extends DefaultObjective {
      *
      * @param event         the event that triggered this method
      * @param onlineProfile the profile related to the player that respawned
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onRespawn(final PlayerRespawnEvent event, final OnlineProfile onlineProfile) {
-        qeHandler.handle(() -> {
-            if (cancel.getValue(onlineProfile).orElse(false) || location == null) {
-                return;
-            }
-            if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
-                getLocation(onlineProfile).ifPresent(event::setRespawnLocation);
-                completeObjective(onlineProfile);
-            }
-        });
+    public void onRespawn(final PlayerRespawnEvent event, final OnlineProfile onlineProfile) throws QuestException {
+        if (cancel.getValue(onlineProfile).orElse(false) || location == null) {
+            return;
+        }
+        if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
+            getLocation(onlineProfile).ifPresent(event::setRespawnLocation);
+            completeObjective(onlineProfile);
+        }
     }
 
     /**
@@ -93,35 +91,34 @@ public class DieObjective extends DefaultObjective {
      *
      * @param event         the event that triggered this method
      * @param onlineProfile the profile last damaged by the player
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onLastDamage(final EntityDamageEvent event, final OnlineProfile onlineProfile) {
-        qeHandler.handle(() -> {
-            final Player player = onlineProfile.getPlayer();
-            if (!cancel.getValue(onlineProfile).orElse(false)) {
-                return;
+    public void onLastDamage(final EntityDamageEvent event, final OnlineProfile onlineProfile) throws QuestException {
+        final Player player = onlineProfile.getPlayer();
+        if (!cancel.getValue(onlineProfile).orElse(false)) {
+            return;
+        }
+        if (containsPlayer(onlineProfile) && player.getHealth() - event.getFinalDamage() <= 0
+                && checkConditions(onlineProfile)) {
+            event.setCancelled(true);
+            player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+            player.setFoodLevel(20);
+            player.setExhaustion(4);
+            player.setSaturation(20);
+            for (final PotionEffect effect : player.getActivePotionEffects()) {
+                player.removePotionEffect(effect.getType());
             }
-            if (containsPlayer(onlineProfile) && player.getHealth() - event.getFinalDamage() <= 0
-                    && checkConditions(onlineProfile)) {
-                event.setCancelled(true);
-                player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
-                player.setFoodLevel(20);
-                player.setExhaustion(4);
-                player.setSaturation(20);
-                for (final PotionEffect effect : player.getActivePotionEffects()) {
-                    player.removePotionEffect(effect.getType());
-                }
 
-                final Optional<Location> targetLocation = getLocation(onlineProfile);
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        targetLocation.ifPresent(player::teleport);
-                        player.setFireTicks(0);
-                    }
-                }.runTaskLater(BetonQuest.getInstance(), 1);
-                completeObjective(onlineProfile);
-            }
-        });
+            final Optional<Location> targetLocation = getLocation(onlineProfile);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    targetLocation.ifPresent(player::teleport);
+                    player.setFireTicks(0);
+                }
+            }.runTaskLater(BetonQuest.getInstance(), 1);
+            completeObjective(onlineProfile);
+        }
     }
 
     private Optional<Location> getLocation(final OnlineProfile onlineProfile) throws QuestException {

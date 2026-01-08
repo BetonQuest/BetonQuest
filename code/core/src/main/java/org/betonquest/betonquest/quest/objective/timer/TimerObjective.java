@@ -98,13 +98,12 @@ public class TimerObjective extends CountingObjective implements Runnable {
      *
      * @param event   The event to check.
      * @param profile The profile of the player that completed the objective.
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onPlayerObjectiveChange(final PlayerObjectiveChangeEvent event, final Profile profile) {
-        qeHandler.handle(() -> {
-            if (event.getObjective().equals(this) && containsPlayer(profile)
-                    && event.getPreviousState() == ObjectiveState.ACTIVE && event.getState() == ObjectiveState.COMPLETED) {
-                questTypeApi.actions(profile, doneActions.getValue(profile));
-            }
-        });
+    public void onPlayerObjectiveChange(final PlayerObjectiveChangeEvent event, final Profile profile) throws QuestException {
+        if (event.getObjective().equals(this) && containsPlayer(profile)
+                && event.getPreviousState() == ObjectiveState.ACTIVE && event.getState() == ObjectiveState.COMPLETED) {
+            questTypeApi.actions(profile, doneActions.getValue(profile));
+        }
     }
 }

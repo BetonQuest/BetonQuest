@@ -98,31 +98,30 @@ public class ActionObjective extends DefaultObjective {
      *
      * @param event         the event
      * @param onlineProfile the profile of the player
+     * @throws QuestException if argument resolving for the profile fails
      */
-    @SuppressWarnings("PMD.CognitiveComplexity")
-    public void onInteract(final PlayerInteractEvent event, final OnlineProfile onlineProfile) {
-        qeHandler.handle(() -> {
-            if (!containsPlayer(onlineProfile) || !action.getValue(onlineProfile).match(event.getAction()) || slot != null && slot != event.getHand()) {
+    @SuppressWarnings("PMD.CyclomaticComplexity")
+    public void onInteract(final PlayerInteractEvent event, final OnlineProfile onlineProfile) throws QuestException {
+        if (!containsPlayer(onlineProfile) || !action.getValue(onlineProfile).match(event.getAction()) || slot != null && slot != event.getHand()) {
+            return;
+        }
+
+        final Block clickedBlock = event.getClickedBlock();
+        if (loc != null) {
+            final Location current = clickedBlock == null ? event.getPlayer().getLocation() : clickedBlock.getLocation();
+            final Location location = loc.getValue(onlineProfile);
+            final double pRange = range.getValue(onlineProfile).doubleValue();
+            if (!location.getWorld().equals(current.getWorld()) || current.distance(location) > pRange) {
                 return;
             }
+        }
 
-            final Block clickedBlock = event.getClickedBlock();
-            if (loc != null) {
-                final Location current = clickedBlock == null ? event.getPlayer().getLocation() : clickedBlock.getLocation();
-                final Location location = loc.getValue(onlineProfile);
-                final double pRange = range.getValue(onlineProfile).doubleValue();
-                if (!location.getWorld().equals(current.getWorld()) || current.distance(location) > pRange) {
-                    return;
-                }
+        if (checkBlock(onlineProfile, clickedBlock, event.getBlockFace()) && checkConditions(onlineProfile)) {
+            if (cancel.getValue(onlineProfile).orElse(false)) {
+                event.setCancelled(true);
             }
-
-            if (checkBlock(onlineProfile, clickedBlock, event.getBlockFace()) && checkConditions(onlineProfile)) {
-                if (cancel.getValue(onlineProfile).orElse(false)) {
-                    event.setCancelled(true);
-                }
-                completeObjective(onlineProfile);
-            }
-        });
+            completeObjective(onlineProfile);
+        }
     }
 
     private boolean checkBlock(final Profile profile, @Nullable final Block clickedBlock, final BlockFace blockFace) throws QuestException {

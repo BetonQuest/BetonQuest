@@ -112,7 +112,7 @@ public class DelayObjective extends DefaultObjective {
     public String getProperty(final String name, final Profile profile) {
         return switch (name.toLowerCase(Locale.ROOT)) {
             case "left" ->
-                    qeHandler.handle(() -> LegacyComponentSerializer.legacySection().serialize(parseLeftProperty(profile)), "");
+                    getExceptionHandler().handle(() -> LegacyComponentSerializer.legacySection().serialize(parseLeftProperty(profile)), "");
             case "date" -> parseDateProperty(profile);
             case "rawseconds" -> parseRawSecondsProperty(profile);
             default -> "";

@@ -36,13 +36,12 @@ public class LeaveJobObjective extends DefaultObjective {
      *
      * @param event         the event that triggered the leave
      * @param onlineProfile the profile related to the player that left the job
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onJobsLeaveEvent(final JobsLeaveEvent event, final OnlineProfile onlineProfile) {
-        qeHandler.handle(() -> {
-            if (event.getJob().isSame(this.job.getValue(onlineProfile)) && containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
-                completeObjective(onlineProfile);
-            }
-        });
+    public void onJobsLeaveEvent(final JobsLeaveEvent event, final OnlineProfile onlineProfile) throws QuestException {
+        if (event.getJob().isSame(this.job.getValue(onlineProfile)) && containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
+            completeObjective(onlineProfile);
+        }
     }
 
     @Override

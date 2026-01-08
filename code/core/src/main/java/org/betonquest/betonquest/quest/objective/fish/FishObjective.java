@@ -60,24 +60,23 @@ public class FishObjective extends CountingObjective {
      *
      * @param event         the event that was triggered
      * @param onlineProfile the profile of the player that caught the fish
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onFishCatch(final PlayerFishEvent event, final OnlineProfile onlineProfile) {
+    public void onFishCatch(final PlayerFishEvent event, final OnlineProfile onlineProfile) throws QuestException {
         if (event.getState() != State.CAUGHT_FISH) {
             return;
         }
         if (!containsPlayer(onlineProfile) || event.getCaught() == null || event.getCaught().getType() != EntityType.DROPPED_ITEM) {
             return;
         }
-        qeHandler.handle(() -> {
-            if (isInvalidLocation(event, onlineProfile)) {
-                return;
-            }
-            final ItemStack item = ((org.bukkit.entity.Item) event.getCaught()).getItemStack();
-            if (this.item.getValue(onlineProfile).matches(item, onlineProfile) && checkConditions(onlineProfile)) {
-                getCountingData(onlineProfile).progress(item.getAmount());
-                completeIfDoneOrNotify(onlineProfile);
-            }
-        });
+        if (isInvalidLocation(event, onlineProfile)) {
+            return;
+        }
+        final ItemStack item = ((org.bukkit.entity.Item) event.getCaught()).getItemStack();
+        if (this.item.getValue(onlineProfile).matches(item, onlineProfile) && checkConditions(onlineProfile)) {
+            getCountingData(onlineProfile).progress(item.getAmount());
+            completeIfDoneOrNotify(onlineProfile);
+        }
     }
 
     private boolean isInvalidLocation(final PlayerFishEvent event, final Profile profile) throws QuestException {

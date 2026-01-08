@@ -42,19 +42,16 @@ public class SmeltingObjective extends CountingObjective {
      *
      * @param event         the event to check
      * @param onlineProfile the profile of the player that smelted the item
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onSmelting(final InventoryClickEvent event, final OnlineProfile onlineProfile) {
+    public void onSmelting(final InventoryClickEvent event, final OnlineProfile onlineProfile) throws QuestException {
         final InventoryType inventoryType = event.getInventory().getType();
-        if (isSmeltingResultExtraction(event, inventoryType)) {
-            qeHandler.handle(() -> {
-                if (containsPlayer(onlineProfile)
-                        && item.getValue(onlineProfile).matches(event.getCurrentItem(), onlineProfile)
-                        && checkConditions(onlineProfile)) {
-                    final int taken = calculateTakeAmount(event, event.getCurrentItem());
-                    getCountingData(onlineProfile).progress(taken);
-                    completeIfDoneOrNotify(onlineProfile);
-                }
-            });
+        if (isSmeltingResultExtraction(event, inventoryType) && containsPlayer(onlineProfile)
+                && item.getValue(onlineProfile).matches(event.getCurrentItem(), onlineProfile)
+                && checkConditions(onlineProfile)) {
+            final int taken = calculateTakeAmount(event, event.getCurrentItem());
+            getCountingData(onlineProfile).progress(taken);
+            completeIfDoneOrNotify(onlineProfile);
         }
     }
 

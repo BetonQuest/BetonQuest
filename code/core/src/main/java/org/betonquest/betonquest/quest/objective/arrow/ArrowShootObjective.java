@@ -47,8 +47,9 @@ public class ArrowShootObjective extends DefaultObjective {
      *
      * @param onlineProfile the profile of the player that shot the arrow
      * @param event         the event that triggered this method
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onArrowHit(final ProjectileHitEvent event, final OnlineProfile onlineProfile) {
+    public void onArrowHit(final ProjectileHitEvent event, final OnlineProfile onlineProfile) throws QuestException {
         final Projectile arrow = event.getEntity();
         if (arrow.getType() != EntityType.ARROW) {
             return;
@@ -56,23 +57,21 @@ public class ArrowShootObjective extends DefaultObjective {
         if (!containsPlayer(onlineProfile)) {
             return;
         }
-        qeHandler.handle(() -> {
-            final Location location = this.location.getValue(onlineProfile);
-            final double pRange = range.getValue(onlineProfile).doubleValue();
-            // check if the arrow is in the right place in the next tick
-            // wait one tick, let the arrow land completely
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    final Location arrowLocation = arrow.getLocation();
-                    if (arrowLocation.getWorld().equals(location.getWorld())
-                            && arrowLocation.distanceSquared(location) < pRange * pRange
-                            && checkConditions(onlineProfile)) {
-                        completeObjective(onlineProfile);
-                    }
+        final Location location = this.location.getValue(onlineProfile);
+        final double pRange = range.getValue(onlineProfile).doubleValue();
+        // check if the arrow is in the right place in the next tick
+        // wait one tick, let the arrow land completely
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                final Location arrowLocation = arrow.getLocation();
+                if (arrowLocation.getWorld().equals(location.getWorld())
+                        && arrowLocation.distanceSquared(location) < pRange * pRange
+                        && checkConditions(onlineProfile)) {
+                    completeObjective(onlineProfile);
                 }
-            }.runTask(BetonQuest.getInstance());
-        });
+            }
+        }.runTask(BetonQuest.getInstance());
     }
 
     @Override

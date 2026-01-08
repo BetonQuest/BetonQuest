@@ -71,21 +71,20 @@ public class CommandObjective extends DefaultObjective {
      *
      * @param event         the event that was triggered
      * @param onlineProfile the profile of the player that executed the command
+     * @throws QuestException if argument resolving for the profile fails
      */
     @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
-    public void onCommand(final PlayerCommandPreprocessEvent event, final OnlineProfile onlineProfile) {
+    public void onCommand(final PlayerCommandPreprocessEvent event, final OnlineProfile onlineProfile) throws QuestException {
         if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
-            qeHandler.handle(() -> {
-                final String replaceCommand = command.getValue(onlineProfile);
-                if (foundMatch(onlineProfile, event.getMessage(), replaceCommand)) {
-                    if (cancel.getValue(onlineProfile).orElse(false)) {
-                        event.setCancelled(true);
-                    }
-                    completeObjective(onlineProfile);
-                } else {
-                    BetonQuest.getInstance().getQuestTypeApi().actions(onlineProfile, failActions.getValue(onlineProfile));
+            final String replaceCommand = command.getValue(onlineProfile);
+            if (foundMatch(onlineProfile, event.getMessage(), replaceCommand)) {
+                if (cancel.getValue(onlineProfile).orElse(false)) {
+                    event.setCancelled(true);
                 }
-            });
+                completeObjective(onlineProfile);
+            } else {
+                BetonQuest.getInstance().getQuestTypeApi().actions(onlineProfile, failActions.getValue(onlineProfile));
+            }
         }
     }
 
