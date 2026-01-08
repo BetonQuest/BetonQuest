@@ -3,6 +3,7 @@ package org.betonquest.betonquest.api.quest.objective.event;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.QuestDataUpdateEvent;
+import org.betonquest.betonquest.api.identifier.DefaultIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -112,7 +113,7 @@ public class DefaultObjectiveFactoryService implements ObjectiveFactoryService {
 
     @Override
     public <T extends Event> EventServiceSubscriptionBuilder<T> request(final Class<T> eventClass) {
-        return objectiveService.request(eventClass).source(objectiveID.getPackage());
+        return objectiveService.request(eventClass).source(objectiveID);
     }
 
     @Override
@@ -166,6 +167,7 @@ public class DefaultObjectiveFactoryService implements ObjectiveFactoryService {
 
     @Override
     public boolean checkConditions(@Nullable final Profile profile) throws QuestException {
+        getLogger().debug("Checking conditions for objective '%s' and profile '%s'".formatted(objectiveID, profile));
         final ObjectiveServiceDataProvider provider = getServiceDataProvider();
         final List<ConditionID> conditions = provider.getConditions(profile);
         return conditions.isEmpty() || conditionProcessor.checks(profile, conditions, true);
@@ -178,6 +180,8 @@ public class DefaultObjectiveFactoryService implements ObjectiveFactoryService {
         if (events.isEmpty()) {
             return;
         }
+        getLogger().debug("Calling actions [%s] for objective '%s' and profile '%s'"
+                .formatted(String.join(",", events.stream().map(DefaultIdentifier::toString).toList()), objectiveID, profile));
         actionProcessor.executes(profile, events);
     }
 

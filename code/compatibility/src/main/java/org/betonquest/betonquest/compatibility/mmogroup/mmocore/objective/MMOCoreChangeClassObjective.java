@@ -40,10 +40,6 @@ public class MMOCoreChangeClassObjective extends DefaultObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void onClassChange(final PlayerChangeClassEvent event, final OnlineProfile onlineProfile) throws QuestException {
-        if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
-            return;
-        }
-
         if (targetClassName == null) {
             completeObjective(onlineProfile);
             return;

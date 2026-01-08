@@ -39,7 +39,7 @@ public class LevelUpObjective extends DefaultObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void onJobsLevelUpEvent(final JobsLevelUpEvent event, final OnlineProfile onlineProfile) throws QuestException {
-        if (event.getJob().isSame(this.job.getValue(onlineProfile)) && containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
+        if (event.getJob().isSame(this.job.getValue(onlineProfile))) {
             completeObjective(onlineProfile);
         }
     }

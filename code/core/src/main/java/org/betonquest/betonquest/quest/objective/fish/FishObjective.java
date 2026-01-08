@@ -66,14 +66,14 @@ public class FishObjective extends CountingObjective {
         if (event.getState() != State.CAUGHT_FISH) {
             return;
         }
-        if (!containsPlayer(onlineProfile) || event.getCaught() == null || event.getCaught().getType() != EntityType.DROPPED_ITEM) {
+        if (event.getCaught() == null || event.getCaught().getType() != EntityType.DROPPED_ITEM) {
             return;
         }
         if (isInvalidLocation(event, onlineProfile)) {
             return;
         }
         final ItemStack item = ((org.bukkit.entity.Item) event.getCaught()).getItemStack();
-        if (this.item.getValue(onlineProfile).matches(item, onlineProfile) && checkConditions(onlineProfile)) {
+        if (this.item.getValue(onlineProfile).matches(item, onlineProfile)) {
             getCountingData(onlineProfile).progress(item.getAmount());
             completeIfDoneOrNotify(onlineProfile);
         }

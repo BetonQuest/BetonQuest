@@ -43,7 +43,7 @@ public class RideObjective extends DefaultObjective {
     public void onMount(final EntityMountEvent event, final OnlineProfile onlineProfile) throws QuestException {
         final Optional<EntityType> entityType = vehicle.getValue(onlineProfile);
         final boolean matchType = entityType.map(type -> type == event.getMount().getType()).orElse(true);
-        if (containsPlayer(onlineProfile) && matchType && checkConditions(onlineProfile)) {
+        if (matchType) {
             completeObjective(onlineProfile);
         }
     }

@@ -2,8 +2,8 @@ package org.betonquest.betonquest.api.quest.objective.event;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestFunction;
-import org.betonquest.betonquest.api.logger.LogSource;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -34,13 +34,13 @@ public interface EventServiceSubscriptionBuilder<T extends Event> {
     EventServiceSubscriptionBuilder<T> priority(EventPriority priority);
 
     /**
-     * Optional build call. Defaults to {@link LogSource#EMPTY}.
+     * Required build call. Sets the objective related to the registered event.
      *
-     * @param source the source to be used for logging
+     * @param objectiveID the objective id
      * @return this
      */
     @Contract("_ -> this")
-    EventServiceSubscriptionBuilder<T> source(LogSource source);
+    EventServiceSubscriptionBuilder<T> source(ObjectiveID objectiveID);
 
     /**
      * Required build call. Sets the non-profile handler to be called by the bukkit event.
@@ -130,6 +130,18 @@ public interface EventServiceSubscriptionBuilder<T extends Event> {
      */
     @Contract("_ -> this")
     EventServiceSubscriptionBuilder<T> profile(QuestFunction<T, Profile> extractor);
+
+    /**
+     * Optional build call.
+     * <br>
+     * Sets to ignore the conditions check of the event handler.
+     * If used the requested event for this builder will no longer receive the otherwise forced
+     * {@link ObjectiveFactoryService#checkConditions(Profile)} check.
+     *
+     * @return this
+     */
+    @Contract("-> this")
+    EventServiceSubscriptionBuilder<T> ignoreConditions();
 
     /**
      * Required last build call. Registers the subscription with the {@link ObjectiveService}.

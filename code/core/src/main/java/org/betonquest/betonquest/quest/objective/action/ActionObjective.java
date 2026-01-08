@@ -102,7 +102,7 @@ public class ActionObjective extends DefaultObjective {
      */
     @SuppressWarnings("PMD.CyclomaticComplexity")
     public void onInteract(final PlayerInteractEvent event, final OnlineProfile onlineProfile) throws QuestException {
-        if (!containsPlayer(onlineProfile) || !action.getValue(onlineProfile).match(event.getAction()) || slot != null && slot != event.getHand()) {
+        if (!action.getValue(onlineProfile).match(event.getAction()) || slot != null && slot != event.getHand()) {
             return;
         }
 
@@ -116,7 +116,7 @@ public class ActionObjective extends DefaultObjective {
             }
         }
 
-        if (checkBlock(onlineProfile, clickedBlock, event.getBlockFace()) && checkConditions(onlineProfile)) {
+        if (checkBlock(onlineProfile, clickedBlock, event.getBlockFace())) {
             if (cancel.getValue(onlineProfile).orElse(false)) {
                 event.setCancelled(true);
             }

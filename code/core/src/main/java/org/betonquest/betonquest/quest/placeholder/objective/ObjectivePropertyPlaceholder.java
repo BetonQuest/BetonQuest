@@ -43,7 +43,7 @@ public class ObjectivePropertyPlaceholder implements PlayerPlaceholder {
     @Override
     public String getValue(final Profile profile) throws QuestException {
         final DefaultObjective objective = questTypeApi.getObjective(objectiveID);
-        if (objective.containsPlayer(profile)) {
+        if (objective.getService().containsProfile(profile)) {
             return objective.getProperty(propertyName, profile);
         }
         return "";

@@ -139,7 +139,7 @@ public class MythicMobKillObjective extends CountingObjective {
     }
 
     private void checkKill(final MythicMobDeathEvent event, final OnlineProfile onlineProfile) throws QuestException {
-        if (!containsPlayer(onlineProfile)) {
+        if (!getService().containsProfile(onlineProfile)) {
             return;
         }
         if (marked != null) {
@@ -163,7 +163,7 @@ public class MythicMobKillObjective extends CountingObjective {
     }
 
     private void handlePlayerKill(final OnlineProfile onlineProfile, final ActiveMob mob) throws QuestException {
-        if (matchesMobLevel(onlineProfile, mob) && checkConditions(onlineProfile)) {
+        if (matchesMobLevel(onlineProfile, mob) && getService().checkConditions(onlineProfile)) {
             getCountingData(onlineProfile).progress();
             completeIfDoneOrNotify(onlineProfile);
         }

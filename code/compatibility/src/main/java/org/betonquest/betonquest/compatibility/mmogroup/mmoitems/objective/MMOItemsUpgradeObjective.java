@@ -51,9 +51,6 @@ public class MMOItemsUpgradeObjective extends DefaultObjective {
                 || !upgradedItem.getType().getId().equals(itemType.getValue(profile))) {
             return;
         }
-        if (!containsPlayer(profile) || !checkConditions(profile)) {
-            return;
-        }
         completeObjective(profile);
     }
 

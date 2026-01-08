@@ -51,11 +51,9 @@ public class ResourcepackObjective extends DefaultObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void processObjective(final OnlineProfile onlineProfile, final PlayerResourcePackStatusEvent.Status status) throws QuestException {
-        if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
-            final PlayerResourcePackStatusEvent.Status expectedStatus = targetStatus.getValue(onlineProfile);
-            if (expectedStatus == status) {
-                completeObjective(onlineProfile);
-            }
+        final PlayerResourcePackStatusEvent.Status expectedStatus = targetStatus.getValue(onlineProfile);
+        if (expectedStatus == status) {
+            completeObjective(onlineProfile);
         }
     }
 

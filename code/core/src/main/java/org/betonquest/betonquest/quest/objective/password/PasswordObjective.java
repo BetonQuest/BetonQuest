@@ -83,11 +83,7 @@ public class PasswordObjective extends DefaultObjective {
         }
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     private boolean chatInput(final boolean fromCommand, final OnlineProfile onlineProfile, final String message) throws QuestException {
-        if (!containsPlayer(onlineProfile)) {
-            return false;
-        }
         final String prefix;
         try {
             prefix = passwordPrefix == null
@@ -100,16 +96,15 @@ public class PasswordObjective extends DefaultObjective {
             return false;
         }
         final String password = message.substring(prefix.length());
-        if (checkConditions(onlineProfile)) {
-            if (regex.getValue(onlineProfile).map(pattern -> pattern.matcher(password).matches()).orElse(false)) {
-                Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> completeObjective(onlineProfile));
-                return !fromCommand || !prefix.isEmpty();
-            }
-            try {
-                BetonQuest.getInstance().getQuestTypeApi().actions(onlineProfile, failActions.getValue(onlineProfile));
-            } catch (final QuestException e) {
-                throw new QuestException("Failed to resolve fail actions: " + e.getMessage(), e);
-            }
+
+        if (regex.getValue(onlineProfile).map(pattern -> pattern.matcher(password).matches()).orElse(false)) {
+            Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> completeObjective(onlineProfile));
+            return !fromCommand || !prefix.isEmpty();
+        }
+        try {
+            BetonQuest.getInstance().getQuestTypeApi().actions(onlineProfile, failActions.getValue(onlineProfile));
+        } catch (final QuestException e) {
+            throw new QuestException("Failed to resolve fail actions: " + e.getMessage(), e);
         }
         return !prefix.isEmpty();
     }

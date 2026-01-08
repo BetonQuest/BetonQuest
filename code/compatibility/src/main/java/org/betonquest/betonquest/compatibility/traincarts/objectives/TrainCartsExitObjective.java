@@ -39,9 +39,6 @@ public class TrainCartsExitObjective extends DefaultObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void onMemberSeatExit(final MemberSeatExitEvent event, final OnlineProfile onlineProfile) throws QuestException {
-        if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
-            return;
-        }
         if (TrainCartsUtils.isValidTrain(name.getValue(onlineProfile),
                 event.getMember().getGroup().getProperties().getTrainName())) {
             completeObjective(onlineProfile);

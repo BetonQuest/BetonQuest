@@ -106,9 +106,7 @@ public class BlockObjective extends CountingObjective {
             return;
         }
         final BlockSelector blockSelector = selector.getValue(onlineProfile);
-        if (containsPlayer(onlineProfile)
-                && blockSelector.match(event.getBlock(), exactMatch.getValue(onlineProfile).orElse(false))
-                && checkConditions(onlineProfile)
+        if (blockSelector.match(event.getBlock(), exactMatch.getValue(onlineProfile).orElse(false))
                 && checkLocation(event.getBlock().getLocation(), onlineProfile)
                 && (getCountingData(onlineProfile).getDirectionFactor() >= 0 || !noSafety.getValue(onlineProfile).orElse(false))) {
             handleDataChange(onlineProfile, getCountingData(onlineProfile).add());
@@ -127,9 +125,7 @@ public class BlockObjective extends CountingObjective {
             return;
         }
         final BlockSelector blockSelector = selector.getValue(onlineProfile);
-        if (containsPlayer(onlineProfile)
-                && blockSelector.match(event.getBlock(), exactMatch.getValue(onlineProfile).orElse(false))
-                && checkConditions(onlineProfile)
+        if (blockSelector.match(event.getBlock(), exactMatch.getValue(onlineProfile).orElse(false))
                 && checkLocation(event.getBlock().getLocation(), onlineProfile)
                 && (getCountingData(onlineProfile).getDirectionFactor() <= 0 || !noSafety.getValue(onlineProfile).orElse(false))) {
             handleDataChange(onlineProfile, getCountingData(onlineProfile).subtract());

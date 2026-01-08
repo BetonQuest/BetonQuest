@@ -47,9 +47,6 @@ public class MMOCoreProfessionObjective extends DefaultObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void onLevelUp(final PlayerLevelUpEvent event, final OnlineProfile onlineProfile) throws QuestException {
-        if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
-            return;
-        }
         final String professionName = this.professionName.getValue(onlineProfile);
         final Profession profession = event.getProfession();
         if (profession == null) {

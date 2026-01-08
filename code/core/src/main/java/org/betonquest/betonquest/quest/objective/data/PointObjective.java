@@ -102,9 +102,6 @@ public class PointObjective extends DefaultObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void onPointUpdate(final PlayerUpdatePointEvent event, final Profile profile) throws QuestException {
-        if (!containsPlayer(profile)) {
-            return;
-        }
         if (event.getCategory().equals(category.getValue(profile))) {
             checkProgress(profile, event.getNewCount());
         }
@@ -118,7 +115,7 @@ public class PointObjective extends DefaultObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void onStart(final PlayerObjectiveChangeEvent event, final Profile profile) throws QuestException {
-        if (event.getState() != ObjectiveState.ACTIVE || !containsPlayer(profile)) {
+        if (event.getState() != ObjectiveState.ACTIVE) {
             return;
         }
         final PlayerData playerData = playerDataStorage.get(profile);
@@ -130,7 +127,7 @@ public class PointObjective extends DefaultObjective {
 
     private void checkProgress(final Profile profile, final int count) throws QuestException {
         final PointData data = new PointData(getService().getData().get(profile), profile, getObjectiveID());
-        if (operation.getValue(profile).check(count, data.getPoints()) && checkConditions(profile)) {
+        if (operation.getValue(profile).check(count, data.getPoints())) {
             completeObjective(profile);
         }
     }

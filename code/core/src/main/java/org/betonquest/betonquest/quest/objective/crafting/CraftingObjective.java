@@ -60,9 +60,7 @@ public class CraftingObjective extends CountingObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void onCrafting(final CraftItemEvent event, final OnlineProfile onlineProfile) throws QuestException {
-        if (containsPlayer(onlineProfile)
-                && item.getValue(onlineProfile).matches(event.getInventory().getResult(), onlineProfile)
-                && checkConditions(onlineProfile)) {
+        if (item.getValue(onlineProfile).matches(event.getInventory().getResult(), onlineProfile)) {
             getCountingData(onlineProfile).progress(calculateCraftAmount(event, event.getInventory().getResult()));
             completeIfDoneOrNotify(onlineProfile);
         }
@@ -76,7 +74,7 @@ public class CraftingObjective extends CountingObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void handleCustomCraft(final ItemStackCraftedEvent event, final Profile profile) throws QuestException {
-        if (containsPlayer(profile) && checkConditions(profile) && item.getValue(profile).getItem(profile).matches(event.getStack())) {
+        if (item.getValue(profile).getItem(profile).matches(event.getStack())) {
             getCountingData(profile).progress(event.getAmount());
             completeIfDoneOrNotify(profile);
         }

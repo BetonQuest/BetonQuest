@@ -14,7 +14,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.DoubleChest;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.InventoryHolder;
@@ -109,38 +108,31 @@ public class ChestPutObjective extends DefaultObjective {
      * @param onlineProfile the profile of the player that closed the chest
      * @throws QuestException if argument resolving for the profile fails
      */
-    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
     public void onChestClose(final InventoryCloseEvent event, final OnlineProfile onlineProfile) throws QuestException {
-        if (!(event.getPlayer() instanceof Player)) {
-            return;
-        }
-        if (!containsPlayer(onlineProfile)) {
-            return;
-        }
         final Location targetLocation = loc.getValue(onlineProfile);
         checkIsInventory(targetLocation);
 
         final Location invLocation = event.getInventory().getLocation();
         if (invLocation != null && targetLocation.equals(invLocation.getBlock().getLocation())) {
             checkItems(onlineProfile);
-        } else {
-            final InventoryHolder holder = event.getInventory().getHolder();
-            if (holder instanceof final DoubleChest doubleChest) {
-                final Chest leftChest = (Chest) doubleChest.getLeftSide();
-                final Chest rightChest = (Chest) doubleChest.getRightSide();
-                if (leftChest == null || rightChest == null) {
-                    return;
-                }
-                if (leftChest.getLocation().getBlock().getLocation().equals(targetLocation)
-                        || rightChest.getLocation().getBlock().getLocation().equals(targetLocation)) {
-                    checkItems(onlineProfile);
-                }
+            return;
+        }
+        final InventoryHolder holder = event.getInventory().getHolder();
+        if (holder instanceof final DoubleChest doubleChest) {
+            final Chest leftChest = (Chest) doubleChest.getLeftSide();
+            final Chest rightChest = (Chest) doubleChest.getRightSide();
+            if (leftChest == null || rightChest == null) {
+                return;
+            }
+            if (leftChest.getLocation().getBlock().getLocation().equals(targetLocation)
+                    || rightChest.getLocation().getBlock().getLocation().equals(targetLocation)) {
+                checkItems(onlineProfile);
             }
         }
     }
 
     private void checkItems(final OnlineProfile onlineProfile) throws QuestException {
-        if (chestItemCondition.check(onlineProfile) && checkConditions(onlineProfile)) {
+        if (chestItemCondition.check(onlineProfile)) {
             completeObjective(onlineProfile);
             if (chestTakeAction != null) {
                 chestTakeAction.execute(onlineProfile);

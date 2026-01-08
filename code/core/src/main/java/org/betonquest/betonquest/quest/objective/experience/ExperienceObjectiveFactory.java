@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.objective.experience;
 
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -56,6 +57,8 @@ public class ExperienceObjectiveFactory implements ObjectiveFactory {
                 .player(PlayerExpChangeEvent::getPlayer).subscribe(true);
         service.request(PlayerJoinEvent.class).onlineHandler(objective::onPlayerJoin)
                 .player(PlayerJoinEvent::getPlayer).subscribe(false);
+        service.request(PlayerObjectiveChangeEvent.class).handler(objective::onStart)
+                .profile(PlayerObjectiveChangeEvent::getProfile).subscribe(false);
         return objective;
     }
 }

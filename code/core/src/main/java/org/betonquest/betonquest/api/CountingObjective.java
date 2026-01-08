@@ -82,7 +82,6 @@ public abstract class CountingObjective extends DefaultObjective {
      *
      * @param profile the {@link Profile} to get the data for
      * @return counting objective data of the profile
-     * @throws NullPointerException when {@link #containsPlayer(Profile)} is false
      */
     @Nullable
     public final CountingData getCountingData(final Profile profile) {

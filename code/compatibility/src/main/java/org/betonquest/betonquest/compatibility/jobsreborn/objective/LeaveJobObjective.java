@@ -39,7 +39,7 @@ public class LeaveJobObjective extends DefaultObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void onJobsLeaveEvent(final JobsLeaveEvent event, final OnlineProfile onlineProfile) throws QuestException {
-        if (event.getJob().isSame(this.job.getValue(onlineProfile)) && containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
+        if (event.getJob().isSame(this.job.getValue(onlineProfile))) {
             completeObjective(onlineProfile);
         }
     }

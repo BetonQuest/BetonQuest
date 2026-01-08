@@ -116,9 +116,6 @@ public class EntityInteractObjective extends CountingObjective {
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     private boolean onInteract(final OnlineProfile onlineProfile, final Entity entity) throws QuestException {
-        if (!containsPlayer(onlineProfile)) {
-            return false;
-        }
         if (entity.getType() != mobType.getValue(onlineProfile)) {
             return false;
         }
@@ -136,10 +133,6 @@ public class EntityInteractObjective extends CountingObjective {
             if (dataContainerValue == null || !dataContainerValue.equals(value)) {
                 return false;
             }
-        }
-        // check if the profile has this objective
-        if (!checkConditions(onlineProfile)) {
-            return false;
         }
         // Check location matches
         if (loc != null) {

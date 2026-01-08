@@ -43,9 +43,7 @@ public class PickupObjective extends CountingObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void onPickup(final EntityPickupItemEvent event, final OnlineProfile onlineProfile) throws QuestException {
-        if (containsPlayer(onlineProfile)
-                && isValidItem(onlineProfile, event.getItem().getItemStack())
-                && checkConditions(onlineProfile)) {
+        if (isValidItem(onlineProfile, event.getItem().getItemStack())) {
             final ItemStack pickupItem = event.getItem().getItemStack();
             getCountingData(onlineProfile).progress(pickupItem.getAmount());
             completeIfDoneOrNotify(onlineProfile);

@@ -54,9 +54,6 @@ public class ArrowShootObjective extends DefaultObjective {
         if (arrow.getType() != EntityType.ARROW) {
             return;
         }
-        if (!containsPlayer(onlineProfile)) {
-            return;
-        }
         final Location location = this.location.getValue(onlineProfile);
         final double pRange = range.getValue(onlineProfile).doubleValue();
         // check if the arrow is in the right place in the next tick
@@ -66,8 +63,7 @@ public class ArrowShootObjective extends DefaultObjective {
             public void run() {
                 final Location arrowLocation = arrow.getLocation();
                 if (arrowLocation.getWorld().equals(location.getWorld())
-                        && arrowLocation.distanceSquared(location) < pRange * pRange
-                        && checkConditions(onlineProfile)) {
+                        && arrowLocation.distanceSquared(location) < pRange * pRange) {
                     completeObjective(onlineProfile);
                 }
             }

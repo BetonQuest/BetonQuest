@@ -180,7 +180,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
             log.error("Tried to start objective '%s' but it is not loaded! Check for errors on /bq reload!".formatted(objectiveID));
             return;
         }
-        if (objective.containsPlayer(profile)) {
+        if (objective.getService().containsProfile(profile)) {
             log.debug(objectiveID.getPackage(), "'%s' already has the '%s' objective. Request to start the objective discarded.".formatted(profile, objectiveID));
             return;
         }
@@ -197,11 +197,11 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
     public void resume(final Profile profile, final ObjectiveID objectiveID, final String instruction) {
         final DefaultObjective objective = values.get(objectiveID);
         if (objective == null) {
-            log.warn(objectiveID.getPackage(), "Objective " + objectiveID + " does not exist");
+            log.warn(objectiveID.getPackage(), "Objective '%s' does not exist".formatted(objectiveID));
             return;
         }
-        if (objective.containsPlayer(profile)) {
-            log.debug(objectiveID.getPackage(), profile + " already has the " + objectiveID + " objective!");
+        if (objective.getService().containsProfile(profile)) {
+            log.debug(objectiveID.getPackage(), "'%s' already has the '%s' objective!".formatted(profile, objectiveID));
             return;
         }
         objective.resumeObjectiveForPlayer(profile, instruction);
@@ -216,7 +216,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
     public List<DefaultObjective> getActive(final Profile profile) {
         final List<DefaultObjective> list = new ArrayList<>();
         for (final DefaultObjective objective : values.values()) {
-            if (objective.containsPlayer(profile)) {
+            if (objective.getService().containsProfile(profile)) {
                 list.add(objective);
             }
         }
@@ -251,7 +251,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
             if (objective == null || data.hasTag(tag)) {
                 continue;
             }
-            if (objective.containsPlayer(profile)) {
+            if (objective.getService().containsProfile(profile)) {
                 log.debug(id.getPackage(), profile + " already has the " + id + " objective, adding tag");
             } else {
                 objective.newPlayer(profile);

@@ -60,9 +60,6 @@ public class MenuObjective extends DefaultObjective {
      * @param profile the player profile
      */
     public void onMenuOpen(final MenuOpenEvent event, final Profile profile) {
-        if (!containsPlayer(profile)) {
-            return;
-        }
         try {
             if (!event.getMenu().equals(menuID.getValue(profile))) {
                 return;
@@ -70,9 +67,6 @@ public class MenuObjective extends DefaultObjective {
         } catch (final QuestException e) {
             log.debug(getPackage(), "Could not get menu placeholder value in '" + getPackage() + "' objective:"
                     + e.getMessage(), e);
-            return;
-        }
-        if (!checkConditions(profile)) {
             return;
         }
         this.completeObjective(profile);

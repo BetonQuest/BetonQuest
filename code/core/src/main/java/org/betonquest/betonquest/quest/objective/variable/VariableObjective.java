@@ -44,7 +44,7 @@ public class VariableObjective extends DefaultObjective {
      * objective
      */
     public boolean store(final Profile profile, final String key, @Nullable final String value) {
-        if (containsPlayer(profile)) {
+        if (getService().containsProfile(profile)) {
             getVariableData(profile).add(key, value);
             return true;
         }
@@ -71,7 +71,7 @@ public class VariableObjective extends DefaultObjective {
     @SuppressWarnings("PMD.ReturnEmptyCollectionRatherThanNull")
     @Nullable
     public Map<String, String> getProperties(final Profile profile) {
-        if (containsPlayer(profile)) {
+        if (getService().containsProfile(profile)) {
             return Collections.unmodifiableMap(getVariableData(profile).variables);
         }
         return null;

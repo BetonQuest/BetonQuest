@@ -40,9 +40,7 @@ public class ConsumeObjective extends CountingObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void onConsume(final PlayerItemConsumeEvent event, final OnlineProfile onlineProfile) throws QuestException {
-        if (containsPlayer(onlineProfile)
-                && item.getValue(onlineProfile).matches(event.getItem(), onlineProfile)
-                && checkConditions(onlineProfile)) {
+        if (item.getValue(onlineProfile).matches(event.getItem(), onlineProfile)) {
             getCountingData(onlineProfile).progress();
             completeIfDoneOrNotify(onlineProfile);
         }

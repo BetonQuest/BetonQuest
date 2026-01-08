@@ -39,7 +39,7 @@ public class BreedObjective extends CountingObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void onBreeding(final EntityBreedEvent event, final OnlineProfile onlineProfile) throws QuestException {
-        if (event.getEntityType() == type.getValue(onlineProfile) && containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
+        if (event.getEntityType() == type.getValue(onlineProfile)) {
             getCountingData(onlineProfile).progress();
             completeIfDoneOrNotify(onlineProfile);
         }

@@ -54,23 +54,21 @@ public class PaymentObjective extends DefaultObjective {
      * @param profile the profile of the player that received the payment
      */
     public void onJobsPaymentEvent(final JobsPaymentEvent event, final Profile profile) {
-        if (containsPlayer(profile) && checkConditions(profile)) {
-            final PaymentData playerData = getPaymentData(profile);
-            if (playerData == null) {
-                getLogger().warn("Could not access PaymentData for profile '" + profile + "'.");
-                return;
-            }
-            final double previousAmount = playerData.amount;
-            playerData.add(event.get(CurrencyType.MONEY));
+        final PaymentData playerData = getPaymentData(profile);
+        if (playerData == null) {
+            getLogger().warn("Could not access PaymentData for profile '" + profile + "'.");
+            return;
+        }
+        final double previousAmount = playerData.amount;
+        playerData.add(event.get(CurrencyType.MONEY));
 
-            if (playerData.isCompleted()) {
-                completeObjective(profile);
-            } else {
-                final int interval = getNotifyInterval(profile);
-                if (interval > 0 && ((int) playerData.amount) / interval != ((int) previousAmount) / interval && profile.getOnlineProfile().isPresent()) {
-                    paymentSender.sendNotification(profile,
-                            new VariableReplacement("amount", Component.text(playerData.targetAmount - playerData.amount)));
-                }
+        if (playerData.isCompleted()) {
+            completeObjective(profile);
+        } else {
+            final int interval = getNotifyInterval(profile);
+            if (interval > 0 && ((int) playerData.amount) / interval != ((int) previousAmount) / interval && profile.getOnlineProfile().isPresent()) {
+                paymentSender.sendNotification(profile,
+                        new VariableReplacement("amount", Component.text(playerData.targetAmount - playerData.amount)));
             }
         }
     }
@@ -96,8 +94,6 @@ public class PaymentObjective extends DefaultObjective {
 
     /**
      * Get the {@link PaymentData} for the given {@link Profile}.
-     *
-     * @throws NullPointerException when {@link #containsPlayer(Profile)} is false
      */
     @Nullable
     private PaymentData getPaymentData(final Profile profile) {

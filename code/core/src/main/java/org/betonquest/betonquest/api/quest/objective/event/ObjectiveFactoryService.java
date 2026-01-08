@@ -2,7 +2,6 @@ package org.betonquest.betonquest.api.quest.objective.event;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.logger.LogSource;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
@@ -22,7 +21,7 @@ public interface ObjectiveFactoryService {
      * Requests a new event subscription using an {@link EventServiceSubscriptionBuilder}.
      * <br>
      * Calling this in the context of an {@link ObjectiveFactory} will cause
-     * {@link EventServiceSubscriptionBuilder#source(LogSource)} to be called
+     * {@link EventServiceSubscriptionBuilder#source(ObjectiveID)} to be called
      * with the objective's source before returning.
      * <br>
      * The request may be completed in one chain of calls requiring at least a handler and ending with

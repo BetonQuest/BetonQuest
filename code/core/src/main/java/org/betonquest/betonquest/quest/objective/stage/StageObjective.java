@@ -85,7 +85,7 @@ public class StageObjective extends DefaultObjective {
     public void setStage(final Profile profile, final String stage) throws QuestException {
         final StageData stageData = new StageData(getService().getData().get(profile), profile, getObjectiveID());
         if (stageMap.isValidStage(stage)) {
-            if (checkConditions(profile)) {
+            if (getService().checkConditions(profile)) {
                 stageData.setStage(stage);
             }
             return;
@@ -104,7 +104,7 @@ public class StageObjective extends DefaultObjective {
         String nextStage = getStage(profile);
         try {
             for (int i = 0; i < amount; i++) {
-                if (!checkConditions(profile)) {
+                if (!getService().checkConditions(profile)) {
                     break;
                 }
                 nextStage = stageMap.nextStage(nextStage);

@@ -46,9 +46,8 @@ public class SmeltingObjective extends CountingObjective {
      */
     public void onSmelting(final InventoryClickEvent event, final OnlineProfile onlineProfile) throws QuestException {
         final InventoryType inventoryType = event.getInventory().getType();
-        if (isSmeltingResultExtraction(event, inventoryType) && containsPlayer(onlineProfile)
-                && item.getValue(onlineProfile).matches(event.getCurrentItem(), onlineProfile)
-                && checkConditions(onlineProfile)) {
+        if (isSmeltingResultExtraction(event, inventoryType)
+                && item.getValue(onlineProfile).matches(event.getCurrentItem(), onlineProfile)) {
             final int taken = calculateTakeAmount(event, event.getCurrentItem());
             getCountingData(onlineProfile).progress(taken);
             completeIfDoneOrNotify(onlineProfile);

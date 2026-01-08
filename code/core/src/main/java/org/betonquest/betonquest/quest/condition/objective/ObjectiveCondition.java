@@ -35,6 +35,6 @@ public class ObjectiveCondition implements PlayerCondition {
 
     @Override
     public boolean check(final Profile profile) throws QuestException {
-        return questTypeApi.getObjective(objectiveId.getValue(profile)).containsPlayer(profile);
+        return questTypeApi.getObjective(objectiveId.getValue(profile)).getService().containsProfile(profile);
     }
 }
