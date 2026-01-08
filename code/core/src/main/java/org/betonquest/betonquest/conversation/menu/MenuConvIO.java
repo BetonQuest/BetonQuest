@@ -220,7 +220,7 @@ public class MenuConvIO extends ChatConvIO {
      * @param event the event
      */
     @SuppressWarnings("PMD.CollapsibleIfStatements")
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void playerInteractEvent(final PlayerInteractEvent event) {
         if (state.isInactive() || !event.getPlayer().equals(onlineProfile.getPlayer())) {
             return;
@@ -250,7 +250,7 @@ public class MenuConvIO extends ChatConvIO {
      *
      * @param event the event
      */
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void playerInteractEntityEvent(final PlayerInteractEntityEvent event) {
         if (state.isInactive() || !event.getPlayer().equals(onlineProfile.getPlayer())) {
             return;
@@ -277,7 +277,7 @@ public class MenuConvIO extends ChatConvIO {
      *
      * @param event the event
      */
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void entityDamageByEntityEvent(final EntityDamageByEntityEvent event) {
         if (state.isInactive() || !event.getDamager().equals(onlineProfile.getPlayer())) {
             return;
@@ -329,7 +329,7 @@ public class MenuConvIO extends ChatConvIO {
      *
      * @param event the event
      */
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void playerItemHeldEvent(final PlayerItemHeldEvent event) {
         if (state.isInactive() || !event.getPlayer().equals(onlineProfile.getPlayer())) {
             return;
