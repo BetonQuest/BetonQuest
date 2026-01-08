@@ -4,10 +4,12 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.bukkit.Bukkit;
@@ -65,9 +67,16 @@ public class ExperienceObjective extends DefaultObjective {
         }
     }
 
-    @Override
-    public void start(final Profile profile) {
-        super.start(profile);
+    /**
+     * Called when the player starts the objective.
+     *
+     * @param event   the event
+     * @param profile the profile
+     */
+    public void onStart(final PlayerObjectiveChangeEvent event, final Profile profile) {
+        if (event.getState() != ObjectiveState.ACTIVE) {
+            return;
+        }
         profile.getOnlineProfile()
                 .ifPresent(onlineProfile -> {
                     final Player player = onlineProfile.getPlayer();

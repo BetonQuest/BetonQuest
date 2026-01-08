@@ -65,16 +65,6 @@ public abstract class DefaultObjective implements Objective {
     }
 
     /**
-     * This method is called by the plugin when the objective starts for a specific profile.
-     *
-     * @param profile the {@link Profile} of the player
-     */
-    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
-    public void start(final Profile profile) {
-        //Empty
-    }
-
-    /**
      * This method should return the default data instruction for the objective,
      * ready to be parsed by the ObjectiveData class.
      *
@@ -197,7 +187,6 @@ public abstract class DefaultObjective implements Objective {
         synchronized (this) {
             runObjectiveChangeEvent(profile, previousState, ObjectiveState.ACTIVE);
             getService().getData().put(profile, instructionString);
-            start(profile);
         }
     }
 
