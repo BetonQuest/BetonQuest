@@ -137,6 +137,9 @@ public class TrainCartsRideObjective extends CountingObjective {
         }
         final Pair<Long, BukkitTask> remove = startTimes.remove(onlineProfile.getPlayerUUID());
         remove.getValue().cancel();
+        if (!getExceptionHandler().handle(() -> getService().checkConditions(onlineProfile), false)) {
+            return;
+        }
         final int ridden = (int) ((System.currentTimeMillis() - remove.getKey()) / MILLISECONDS_TO_SECONDS);
         final CountingData countingData = getCountingData(onlineProfile);
         countingData.add(ridden);

@@ -44,16 +44,17 @@ public interface ObjectiveService {
     /**
      * Registers a new event subscription for a specific non-profile event.
      *
-     * @param objectiveID     the objective to subscribe to
-     * @param eventClass      the class of the event to subscribe to
-     * @param handler         the handler to call when the event is triggered
-     * @param priority        the priority of the event listener
-     * @param ignoreCancelled if the event should be ignored if canceled
-     * @param <T>             the event type
+     * @param objectiveID      the objective to subscribe to
+     * @param eventClass       the class of the event to subscribe to
+     * @param handler          the handler to call when the event is triggered
+     * @param priority         the priority of the event listener
+     * @param ignoreCancelled  if the event should be ignored if canceled
+     * @param ignoreConditions if the event should ignore if the conditions of the objective are not met
+     * @param <T>              the event type
      * @throws QuestException if the event could not be subscribed
      */
     <T extends Event> void subscribe(ObjectiveID objectiveID, Class<T> eventClass, NonProfileEventHandler<T> handler,
-                                     EventPriority priority, boolean ignoreCancelled) throws QuestException;
+                                     EventPriority priority, boolean ignoreCancelled, boolean ignoreConditions) throws QuestException;
 
     /**
      * Registers a new event subscription for a specific event with a profile involved.
@@ -64,12 +65,13 @@ public interface ObjectiveService {
      * @param profileExtractor a method to extract the profile from the event
      * @param priority         the priority of the event listener
      * @param ignoreCancelled  if the event should be ignored if canceled
+     * @param ignoreConditions if the event should ignore if the conditions of the objective are not met
      * @param <T>              the event type
      * @throws QuestException if the event could not be subscribed
      */
     <T extends Event> void subscribe(ObjectiveID objectiveID, Class<T> eventClass, ProfileEventHandler<T> handler,
                                      QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor,
-                                     EventPriority priority, boolean ignoreCancelled) throws QuestException;
+                                     EventPriority priority, boolean ignoreCancelled, boolean ignoreConditions) throws QuestException;
 
     /**
      * Registers a new event subscription for a specific event with a profile involved.
@@ -80,10 +82,11 @@ public interface ObjectiveService {
      * @param profileExtractor a method to extract the profile from the event
      * @param priority         the priority of the event listener
      * @param ignoreCancelled  if the event should be ignored if canceled
+     * @param ignoreConditions if the event should ignore if the conditions of the objective are not met
      * @param <T>              the event type
      * @throws QuestException if the event could not be subscribed
      */
     <T extends Event> void subscribe(ObjectiveID objectiveID, Class<T> eventClass, OnlineProfileEventHandler<T> handler,
                                      QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor,
-                                     EventPriority priority, boolean ignoreCancelled) throws QuestException;
+                                     EventPriority priority, boolean ignoreCancelled, boolean ignoreConditions) throws QuestException;
 }

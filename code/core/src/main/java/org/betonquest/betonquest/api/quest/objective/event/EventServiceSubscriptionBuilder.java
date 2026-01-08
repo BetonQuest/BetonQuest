@@ -132,6 +132,18 @@ public interface EventServiceSubscriptionBuilder<T extends Event> {
     EventServiceSubscriptionBuilder<T> profile(QuestFunction<T, Profile> extractor);
 
     /**
+     * Optional build call.
+     * <br>
+     * Sets to ignore the conditions check of the event handler.
+     * If used the requested event for this builder will no longer receive the otherwise forced
+     * {@link ObjectiveFactoryService#checkConditions(Profile)} check.
+     *
+     * @return this
+     */
+    @Contract("-> this")
+    EventServiceSubscriptionBuilder<T> ignoreConditions();
+
+    /**
      * Required last build call. Registers the subscription with the {@link ObjectiveService}.
      *
      * @param ignoreCancelled if canceled events should be ignored

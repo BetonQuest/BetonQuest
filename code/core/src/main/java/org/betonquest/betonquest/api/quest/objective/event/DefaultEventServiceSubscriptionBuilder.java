@@ -55,6 +55,11 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
     private boolean ignoreCancelled;
 
     /**
+     * Whether to ignore conditions.
+     */
+    private boolean conditionsIgnore;
+
+    /**
      * The objective related to this event.
      */
     @Nullable
@@ -94,6 +99,7 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
         this.eventService = eventService;
         this.eventClass = eventClass;
         this.objectiveID = null;
+        this.conditionsIgnore = false;
         this.eventPriority = DEFAULT_PRIORITY;
     }
 
@@ -184,6 +190,12 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
     }
 
     @Override
+    public EventServiceSubscriptionBuilder<T> ignoreConditions() {
+        this.conditionsIgnore = true;
+        return this;
+    }
+
+    @Override
     public void subscribe(final boolean ignoreCancelled) throws QuestException {
         this.ignoreCancelled = ignoreCancelled;
         subscribe();
@@ -194,18 +206,18 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
             throw new IllegalStateException("No objective ID specified!");
         }
         if (this.nonProfileHandler != null) {
-            eventService.subscribe(objectiveID, eventClass, nonProfileHandler, eventPriority, ignoreCancelled);
+            eventService.subscribe(objectiveID, eventClass, nonProfileHandler, eventPriority, ignoreCancelled, conditionsIgnore);
             return;
         }
         if (profileExtractor == null) {
             throw new IllegalStateException("No valid extractor specified!");
         }
         if (onlineProfileHandler != null) {
-            eventService.subscribe(objectiveID, eventClass, onlineProfileHandler, profileExtractor, eventPriority, ignoreCancelled);
+            eventService.subscribe(objectiveID, eventClass, onlineProfileHandler, profileExtractor, eventPriority, ignoreCancelled, conditionsIgnore);
             return;
         }
         if (profileHandler != null) {
-            eventService.subscribe(objectiveID, eventClass, profileHandler, profileExtractor, eventPriority, ignoreCancelled);
+            eventService.subscribe(objectiveID, eventClass, profileHandler, profileExtractor, eventPriority, ignoreCancelled, conditionsIgnore);
             return;
         }
         throw new IllegalStateException("No valid handler specified!");
