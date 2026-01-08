@@ -73,16 +73,20 @@ public class AsyncSaver extends Thread implements Saver {
                     }
                 }
             }
-            if (!active) {
-                while (!con.refresh()) {
-                    log.warn("Failed to re-establish connection with the database! Trying again in one second...");
+            while (!active) {
+                try {
+                    con.getDatabase().getConnection();
+                    active = true;
+                } catch (final IllegalStateException e) {
+                    log.warn("Failed to re-establish connection with the database! Trying again in %s second(s)..."
+                            .formatted(reconnectInterval / 1000), e);
                     try {
                         sleep(reconnectInterval);
-                    } catch (final InterruptedException e) {
-                        log.warn("AsyncSaver got interrupted!");
+                    } catch (final InterruptedException e1) {
+                        log.warn("AsyncSaver got interrupted!", e1);
+                        return;
                     }
                 }
-                active = true;
             }
             final Record rec = queue.poll();
             con.updateSQL(rec.type(), rec.args());
