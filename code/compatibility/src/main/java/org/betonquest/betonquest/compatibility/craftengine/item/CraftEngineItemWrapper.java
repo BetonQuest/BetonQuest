@@ -30,18 +30,22 @@ public record CraftEngineItemWrapper(Argument<CustomItem<ItemStack>> customItemA
     /**
      * Implementation of {@link QuestItem} for CraftEngine.
      */
-    /* package */ static class CraftEngineItem implements QuestItem {
+    public static class CraftEngineItem implements QuestItem {
 
-        /** The base custom item from CraftEngine. */
+        /**
+         * The base custom item from CraftEngine.
+         */
         private final CustomItem<ItemStack> customItem;
 
-        /** The cached item meta for the custom item. */
+        /**
+         * The cached item meta for the custom item.
+        */
         private final ItemMeta itemMeta;
 
         /**
-         * @param customItem the base custom item
+         * @param customItem the base custom item.
          */
-        /* package */ CraftEngineItem(final CustomItem<ItemStack> customItem) {
+        public CraftEngineItem(final CustomItem<ItemStack> customItem) {
             this.customItem = customItem;
             this.itemMeta = customItem.buildItemStack().getItemMeta();
         }
