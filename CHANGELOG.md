@@ -61,6 +61,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - native `menu` io implementation which sets the player's speed to zero instead mounting it on an arrow (MC 1.21.4+)
 - support for `itemModel` for the totem NotifyIO (MC 1.21.4+)
 - identifier `mode` to `mmobkill` to check for faction instead of name
+- `nexo` item type
+- `craftEngine` item type
+- `itemsAdder` item type
 ### Changed
 - Spigot is no longer supported, paper is now required 
 - message.yml file was deleted and instead the lang folder now contains all translations

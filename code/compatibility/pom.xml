@@ -57,6 +57,10 @@
     <api.version>5.4</api.version>
     <auraskills-api-bukkit.version>2.2.0</auraskills-api-bukkit.version>
     <fabled.version>1.0.2-R1</fabled.version>
+    <nexo.version>1.17.0</nexo.version>
+    <craft-engine-core.version>0.0.66</craft-engine-core.version>
+    <craft-engine-bukkit.version>0.0.66</craft-engine-bukkit.version>
+    <api-itemsadder.version>4.0.10</api-itemsadder.version>
   </properties>
 
   <dependencies>
@@ -285,6 +289,46 @@
       </exclusions>
     </dependency>
 
+    <!-- from nexomc repository -->
+    <dependency>
+      <groupId>com.nexomc</groupId>
+      <artifactId>nexo</artifactId>
+      <version>${nexo.version}</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+      <exclusions>
+        <exclusion>
+          <groupId>dev.triumphteam</groupId>
+          <artifactId>triumph-gui</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <!-- from momirealms repository -->
+    <dependency>
+      <groupId>net.momirealms</groupId>
+      <artifactId>craft-engine-core</artifactId>
+      <version>${craft-engine-core.version}</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>net.momirealms</groupId>
+      <artifactId>craft-engine-bukkit</artifactId>
+      <version>${craft-engine-bukkit.version}</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
+
+    <!-- from matteodev repository -->
+    <dependency>
+      <groupId>dev.lone</groupId>
+      <artifactId>api-itemsadder</artifactId>
+      <version>${api-itemsadder.version}</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
+
     <!-- from jitpack repository -->
     <dependency>
       <groupId>com.github.toddharrison.BriarCode</groupId>
@@ -434,6 +478,18 @@
     <repository>
       <id>betonquest-scriptlang-repo</id>
       <url>https://repo.skriptlang.org/releases</url>
+    </repository>
+    <repository>
+      <id>betonquest-nexomc-repo</id>
+      <url>https://repo.nexomc.com/releases</url>
+    </repository>
+    <repository>
+      <id>betonquest-momirealms-repo</id>
+      <url>https://repo.momirealms.net/releases/</url>
+    </repository>
+    <repository>
+      <id>betonquest-matteodev-repo</id>
+      <url>https://maven.devs.beer/</url>
     </repository>
     <repository>
       <id>maven_central</id>
