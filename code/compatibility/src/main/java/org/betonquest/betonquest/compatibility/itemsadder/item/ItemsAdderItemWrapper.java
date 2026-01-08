@@ -52,10 +52,7 @@ public record ItemsAdderItemWrapper(Argument<CustomStack> customItemArgument) im
         @Override
         public boolean matches(@Nullable final ItemStack item) {
             final CustomStack otherStack = CustomStack.byItemStack(item);
-            if (otherStack == null) {
-                return false;
-            }
-            return otherStack.getNamespacedID().equals(customStack.getNamespacedID());
+            return otherStack != null && otherStack.getNamespacedID().equals(customStack.getNamespacedID());
         }
     }
 }
