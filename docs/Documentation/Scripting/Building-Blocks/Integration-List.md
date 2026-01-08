@@ -368,12 +368,12 @@ In addition, you can also add `quest-item` argument to tag them as "QuestItem".
 
 ```YAML linenums="1" title="Example"
 items:
-  iconSearch: itemsAdder _iainternal:icon_search
-  iconCancel: itemsAdder _iainternal:icon_cancel quest-item
+  ruby: itemsAdder iasurvival:ruby
+  sword: itemsAdder iaalchemy:mysterious_sword quest-item
 conditions:
-  hasIconSearch: hand iconSearch
+  hasRuby: item ruby
 events:
-  giveIconCancel: give iconCancel:3
+  giveRuby: give ruby:3
 ```
 
 ## JobsReborn[](https://www.spigotmc.org/resources/4216/)
