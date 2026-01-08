@@ -34,7 +34,7 @@ public record ItemsAdderItemWrapper(Argument<CustomStack> customItemArgument) im
 
         @Override
         public Component getName() {
-            return Objects.requireNonNullElse(customStack.getItemStack().displayName(), Component.empty());
+            return Objects.requireNonNullElse(customStack.itemName(), Component.empty());
         }
 
         @Override

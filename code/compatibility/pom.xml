@@ -59,7 +59,7 @@
     <fabled.version>1.0.2-R1</fabled.version>
     <nexo.version>1.17.0</nexo.version>
     <CraftEngine.version>0.0.66</CraftEngine.version>
-    <ItemsAdder.version>3.6.3-beta-14</ItemsAdder.version>
+    <ItemsAdder.version>4.0.10</ItemsAdder.version>
   </properties>
 
   <dependencies>
@@ -337,13 +337,6 @@
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
-    <dependency>
-      <groupId>com.github.LoneDev6</groupId>
-      <artifactId>api-itemsadder</artifactId>
-      <version>${ItemsAdder.version}</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
 
     <!-- only dependencies from maven central that are MC Plugins -->
     <dependency>
@@ -408,6 +401,14 @@
       <groupId>net.momirealms</groupId>
       <artifactId>craft-engine-bukkit</artifactId>
       <version>${CraftEngine.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- from matteodev repository -->
+    <dependency>
+      <groupId>dev.lone</groupId>
+      <artifactId>api-itemsadder</artifactId>
+      <version>${ItemsAdder.version}</version>
       <scope>provided</scope>
     </dependency>
 
@@ -482,6 +483,10 @@
     <repository>
       <id>betonquest-momirealms-repo</id>
       <url>https://repo.momirealms.net/releases/</url>
+    </repository>
+    <repository>
+      <id>betonquest-matteodev-repo</id>
+      <url>https://maven.devs.beer/</url>
     </repository>
     <repository>
       <id>maven_central</id>
