@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -21,8 +20,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
-
 /**
  * Player has to interact with specified amount of specified mobs. It can also
  * require the player to interact with specifically named mobs and notify them
@@ -31,11 +28,6 @@ import java.util.Objects;
  * The interaction can optionally be canceled by adding the argument cancel.
  */
 public class EntityInteractObjective extends CountingObjective {
-
-    /**
-     * The Factory for the Entity Interact Data.
-     */
-    private static final ObjectiveDataFactory ENTITY_INTERACT_FACTORY = EntityInteractData::new;
 
     /**
      * The target location of the entity to interact with.
@@ -110,7 +102,7 @@ public class EntityInteractObjective extends CountingObjective {
                                    @Nullable final Argument<String> realName, @Nullable final EquipmentSlot slot,
                                    final Argument<EntityType> mobType, @Nullable final Argument<String> marked,
                                    final Argument<Interaction> interaction, final FlagArgument<Boolean> cancel) throws QuestException {
-        super(service, ENTITY_INTERACT_FACTORY, targetAmount, "mobs_to_click");
+        super(service, targetAmount, "mobs_to_click");
         this.loc = loc;
         this.range = range;
         this.customName = customName;
@@ -159,7 +151,9 @@ public class EntityInteractObjective extends CountingObjective {
             }
         }
 
-        final boolean success = Objects.requireNonNull((EntityInteractData) dataMap.get(onlineProfile)).tryProgressWithEntity(entity);
+        final String data = getService().getData().get(onlineProfile);
+        final EntityInteractData interactData = new EntityInteractData(data, onlineProfile, getObjectiveID());
+        final boolean success = interactData.tryProgressWithEntity(entity);
         if (success) {
             completeIfDoneOrNotify(onlineProfile);
         }

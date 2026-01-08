@@ -2,12 +2,12 @@ package org.betonquest.betonquest.quest.objective.stage;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 
@@ -17,13 +17,7 @@ import java.util.Locale;
 /**
  * The StageObjective is a special objective that can be used to create a stage system for a quest.
  */
-@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class StageObjective extends DefaultObjective {
-
-    /**
-     * The Factory for the Stage Data.
-     */
-    private static final ObjectiveDataFactory STAGE_FACTORY = StageData::new;
 
     /**
      * The mapping of stages to indices.
@@ -44,7 +38,7 @@ public class StageObjective extends DefaultObjective {
      * @throws QuestException if the instruction is invalid
      */
     public StageObjective(final ObjectiveFactoryService service, final StageMap stageMap, final FlagArgument<Boolean> preventCompletion) throws QuestException {
-        super(service, STAGE_FACTORY);
+        super(service);
         this.stageMap = stageMap;
         this.preventCompletion = preventCompletion;
     }
@@ -73,11 +67,7 @@ public class StageObjective extends DefaultObjective {
      * @throws QuestException if the stage is not a valid stage for the objective
      */
     public String getStage(final Profile profile) throws QuestException {
-        final StageData stageData = (StageObjective.StageData) dataMap.get(profile);
-        if (stageData == null) {
-            throw new QuestException("No data found for profile '" + profile + "' for objective '" + getObjectiveID() + "'."
-                    + " Make sure the objective is started before setting the stage.");
-        }
+        final StageData stageData = new StageData(getService().getData().get(profile), profile, getObjectiveID());
         final String stage = stageData.getStage();
         if (stageMap.isValidStage(stage)) {
             return stage;
@@ -93,11 +83,7 @@ public class StageObjective extends DefaultObjective {
      * @throws QuestException if the stage is not a valid stage for the objective
      */
     public void setStage(final Profile profile, final String stage) throws QuestException {
-        final StageData stageData = (StageObjective.StageData) dataMap.get(profile);
-        if (stageData == null) {
-            throw new QuestException("No data found for profile '" + profile + "' for objective '" + getObjectiveID() + "'."
-                    + " Make sure the objective is started before setting the stage.");
-        }
+        final StageData stageData = new StageData(getService().getData().get(profile), profile, getObjectiveID());
         if (stageMap.isValidStage(stage)) {
             if (checkConditions(profile)) {
                 stageData.setStage(stage);
@@ -160,7 +146,10 @@ public class StageObjective extends DefaultObjective {
 
     /**
      * {@link ObjectiveData} for {@link StageObjective}.
+     *
+     * @deprecated do not use this class. it's scheduled for removal in future versions
      */
+    @Deprecated
     public static class StageData extends ObjectiveData {
 
         /**
@@ -189,8 +178,14 @@ public class StageObjective extends DefaultObjective {
          * @param stage the stage
          */
         public void setStage(final String stage) {
+            final ObjectiveFactoryService service;
+            try {
+                service = BetonQuest.getInstance().getQuestTypeApi().getObjective(objID).getService();
+            } catch (final QuestException e) {
+                throw new IllegalStateException("Could not get objective service for objective '" + objID + "'", e);
+            }
             instruction = stage;
-            update();
+            update(service);
         }
     }
 

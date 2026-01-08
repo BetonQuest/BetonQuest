@@ -57,7 +57,7 @@ public class StageCondition implements PlayerCondition {
 
     private Double getFirst(final Profile profile) throws QuestException {
         final StageObjective stage = getStageObjective(objectiveID.getValue(profile));
-        if (stage.getData(profile) == null) {
+        if (stage.getService().getData().get(profile) == null) {
             return -1.0;
         }
         try {

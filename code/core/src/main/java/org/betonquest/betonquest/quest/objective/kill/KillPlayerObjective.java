@@ -52,7 +52,7 @@ public class KillPlayerObjective extends CountingObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void onKill(final PlayerDeathEvent event, final OnlineProfile killer) throws QuestException {
-        final OnlineProfile victim = profileProvider.getProfile(event.getEntity());
+        final OnlineProfile victim = getService().getProfileProvider().getProfile(event.getEntity());
         if (containsPlayer(killer)
                 && (name == null || event.getEntity().getName().equalsIgnoreCase(name.getValue(killer)))
                 && BetonQuest.getInstance().getQuestTypeApi().conditions(victim, required.getValue(victim))

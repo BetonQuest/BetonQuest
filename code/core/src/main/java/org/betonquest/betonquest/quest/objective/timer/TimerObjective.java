@@ -75,7 +75,7 @@ public class TimerObjective extends CountingObjective implements Runnable {
 
     @Override
     public void run() {
-        dataMap.keySet().forEach(profile -> {
+        getService().getData().keySet().forEach(profile -> {
             if (checkConditions(profile)) {
                 getCountingData(profile).progress(interval);
                 completeIfDoneOrNotify(profile);

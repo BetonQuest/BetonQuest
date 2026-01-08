@@ -96,7 +96,7 @@ public class DefaultObjectiveService implements ObjectiveService {
             return services.get(objectiveID);
         }
         final DefaultObjectiveFactoryService service = new DefaultObjectiveFactoryService(objectiveID,
-                actionProcessor, conditionProcessor, this, factory);
+                actionProcessor, conditionProcessor, this, factory, profileProvider);
         services.put(objectiveID, service);
         return service;
     }

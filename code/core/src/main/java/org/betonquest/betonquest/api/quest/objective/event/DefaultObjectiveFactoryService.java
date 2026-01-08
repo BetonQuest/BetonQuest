@@ -1,27 +1,35 @@
 package org.betonquest.betonquest.api.quest.objective.event;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.bukkit.event.QuestDataUpdateEvent;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
+import org.betonquest.betonquest.database.Saver;
+import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.kernel.processor.quest.ActionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.ConditionProcessor;
 import org.betonquest.betonquest.lib.logger.QuestExceptionHandler;
+import org.betonquest.betonquest.lib.profile.ProfileKeyMap;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
  * Default implementation of the {@link ObjectiveFactoryService}.
  */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class DefaultObjectiveFactoryService implements ObjectiveFactoryService {
 
     /**
@@ -55,6 +63,16 @@ public class DefaultObjectiveFactoryService implements ObjectiveFactoryService {
     private final BetonQuestLogger logger;
 
     /**
+     * The objective data per profile.
+     */
+    private final Map<Profile, String> objectiveData;
+
+    /**
+     * The profile provider.
+     */
+    private final ProfileProvider profileProvider;
+
+    /**
      * The objective related to this service.
      */
     private ObjectiveID objectiveID;
@@ -67,18 +85,21 @@ public class DefaultObjectiveFactoryService implements ObjectiveFactoryService {
      * @param conditionProcessor the condition processor to use
      * @param objectiveService   the event service to request events from
      * @param factory            the logger factory to use
+     * @param profileProvider    the profile provider to use
      * @throws QuestException if the objective service data of the instruction could not be parsed
      */
     public DefaultObjectiveFactoryService(final ObjectiveID objectiveID, final ActionProcessor actionProcessor,
                                           final ConditionProcessor conditionProcessor, final ObjectiveService objectiveService,
-                                          final BetonQuestLoggerFactory factory) throws QuestException {
+                                          final BetonQuestLoggerFactory factory, final ProfileProvider profileProvider) throws QuestException {
         this.objectiveID = objectiveID;
         this.objectiveService = objectiveService;
         this.actionProcessor = actionProcessor;
         this.conditionProcessor = conditionProcessor;
+        this.profileProvider = profileProvider;
         this.logger = factory.create(DefaultObjectiveFactoryService.class);
         this.questExceptionHandler = new QuestExceptionHandler(objectiveID.getPackage(), this.logger, objectiveID.getFull());
         this.objectiveServiceData = parseObjectiveData(objectiveID.getInstruction());
+        this.objectiveData = new ProfileKeyMap<>(profileProvider);
     }
 
     private static ObjectiveServiceData parseObjectiveData(final Instruction instruction) throws QuestException {
@@ -102,6 +123,30 @@ public class DefaultObjectiveFactoryService implements ObjectiveFactoryService {
     @Override
     public BetonQuestLogger getLogger() {
         return logger;
+    }
+
+    @Override
+    public ProfileProvider getProfileProvider() {
+        return profileProvider;
+    }
+
+    @Override
+    public Map<Profile, String> getData() {
+        return objectiveData;
+    }
+
+    @Override
+    public void updateData(final Profile profile) {
+        final BetonQuest plugin = BetonQuest.getInstance();
+        final Saver saver = plugin.getSaver();
+        final String freshData = objectiveData.get(profile);
+        saver.add(new Saver.Record(UpdateType.REMOVE_OBJECTIVES, profile.getProfileUUID().toString(), objectiveID.getFull()));
+        saver.add(new Saver.Record(UpdateType.ADD_OBJECTIVES, profile.getProfileUUID().toString(), objectiveID.getFull(), freshData));
+        final QuestDataUpdateEvent event = new QuestDataUpdateEvent(profile, objectiveID, freshData);
+        plugin.getServer().getScheduler().runTask(plugin, event::callEvent);
+        if (profile.getOnlineProfile().isPresent()) {
+            plugin.getPlayerDataStorage().get(profile).getJournal().update();
+        }
     }
 
     @Override
@@ -134,5 +179,10 @@ public class DefaultObjectiveFactoryService implements ObjectiveFactoryService {
             return;
         }
         actionProcessor.executes(profile, events);
+    }
+
+    @Override
+    public boolean containsProfile(final Profile profile) {
+        return objectiveData.containsKey(profile);
     }
 }

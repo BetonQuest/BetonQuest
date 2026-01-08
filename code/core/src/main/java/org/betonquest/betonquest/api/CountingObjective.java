@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
@@ -16,7 +15,6 @@ import org.betonquest.betonquest.quest.action.NotificationLevel;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -27,18 +25,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 public abstract class CountingObjective extends DefaultObjective {
 
     /**
-     * The Factory for the Counting Data.
-     */
-    private static final ObjectiveDataFactory COUNTING_FACTORY = CountingData::new;
-
-    /**
      * The message used for notifying the player.
      */
     @Nullable
     private final IngameNotificationSender countSender;
 
     /**
-     * The amount of units required for completion.
+     * The number of units required for completion.
      */
     private final Argument<Number> targetAmount;
 
@@ -52,22 +45,7 @@ public abstract class CountingObjective extends DefaultObjective {
      */
     public CountingObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount,
                              @Nullable final String notifyMessageName) throws QuestException {
-        this(service, COUNTING_FACTORY, targetAmount, notifyMessageName);
-    }
-
-    /**
-     * Create a counting objective.
-     *
-     * @param service           the objective factory service
-     * @param templateFactory   the factory of the objective data object
-     * @param targetAmount      the target amount of units required for completion
-     * @param notifyMessageName the message name used for notifying by default
-     * @throws QuestException if the syntax is wrong or any error happens while parsing
-     */
-    public CountingObjective(final ObjectiveFactoryService service, final ObjectiveDataFactory templateFactory,
-                             final Argument<Number> targetAmount, @Nullable final String notifyMessageName)
-            throws QuestException {
-        super(service, templateFactory);
+        super(service);
         final BetonQuest instance = BetonQuest.getInstance();
         final BetonQuestLoggerFactory loggerFactory = instance.getLoggerFactory();
         this.targetAmount = targetAmount;
@@ -83,13 +61,17 @@ public abstract class CountingObjective extends DefaultObjective {
 
     @Override
     public String getProperty(final String name, final Profile profile) throws QuestException {
+        final CountingData countingData = getCountingData(profile);
+        if (countingData == null) {
+            return "";
+        }
         final int data = switch (name.toLowerCase(Locale.ROOT)) {
-            case "amount" -> getCountingData(profile).getCompletedAmount();
-            case "left" -> getCountingData(profile).getAmountLeft();
-            case "total" -> getCountingData(profile).getTargetAmount();
-            case "absoluteamount" -> Math.abs(getCountingData(profile).getCompletedAmount());
-            case "absoluteleft" -> Math.abs(getCountingData(profile).getAmountLeft());
-            case "absolutetotal" -> Math.abs(getCountingData(profile).getTargetAmount());
+            case "amount" -> countingData.getCompletedAmount();
+            case "left" -> countingData.getAmountLeft();
+            case "total" -> countingData.getTargetAmount();
+            case "absoluteamount" -> Math.abs(countingData.getCompletedAmount());
+            case "absoluteleft" -> Math.abs(countingData.getAmountLeft());
+            case "absolutetotal" -> Math.abs(countingData.getTargetAmount());
             default -> throw new QuestException("Unknown property: " + name);
         };
         return Integer.toString(data);
@@ -102,8 +84,15 @@ public abstract class CountingObjective extends DefaultObjective {
      * @return counting objective data of the profile
      * @throws NullPointerException when {@link #containsPlayer(Profile)} is false
      */
+    @Nullable
     public final CountingData getCountingData(final Profile profile) {
-        return Objects.requireNonNull((CountingData) dataMap.get(profile));
+        final String data = getService().getData().getOrDefault(profile, "");
+        try {
+            return new CountingData(data, profile, getObjectiveID());
+        } catch (final QuestException e) {
+            getLogger().error("Could not access CountingData for profile '" + profile + "': " + e.getMessage(), e);
+        }
+        return null;
     }
 
     /**
@@ -149,7 +138,10 @@ public abstract class CountingObjective extends DefaultObjective {
 
     /**
      * Objective data for counting objectives.
+     *
+     * @deprecated do not use this class. it's scheduled for removal in future versions
      */
+    @Deprecated
     public static class CountingData extends ObjectiveData {
 
         /**
@@ -200,7 +192,8 @@ public abstract class CountingObjective extends DefaultObjective {
                     directionFactor = targetAmount < 0 ? -1 : 1;
                     lastChange = new AtomicInteger();
                     if (dirty.get()) {
-                        update();
+                        final ObjectiveFactoryService service = BetonQuest.getInstance().getQuestTypeApi().getObjective(objID).getService();
+                        update(service);
                     }
                     break;
                 case 4:
@@ -376,9 +369,15 @@ public abstract class CountingObjective extends DefaultObjective {
         }
 
         private CountingData change(final int amount) {
+            final ObjectiveFactoryService service;
+            try {
+                service = BetonQuest.getInstance().getQuestTypeApi().getObjective(objID).getService();
+            } catch (final QuestException e) {
+                throw new IllegalStateException("Could not get objective service for objective '" + objID + "'", e);
+            }
             amountLeft.accumulateAndGet(amount, Integer::sum);
             lastChange.set(amount);
-            update();
+            update(service);
             return this;
         }
 

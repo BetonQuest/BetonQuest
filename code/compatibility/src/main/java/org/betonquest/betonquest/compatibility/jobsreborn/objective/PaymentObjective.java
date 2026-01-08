@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.jobsreborn.objective;
 import com.gamingmesh.jobs.api.JobsPaymentEvent;
 import com.gamingmesh.jobs.container.CurrencyType;
 import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
@@ -10,23 +11,17 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
-import java.util.Objects;
 
 /**
  * Objective that tracks the payment received by a player.
  */
 public class PaymentObjective extends DefaultObjective {
-
-    /**
-     * The Factory for the Payment Data.
-     */
-    private static final ObjectiveDataFactory PAYMENT_FACTORY = PaymentData::new;
 
     /**
      * The target amount of money to be received.
@@ -47,7 +42,7 @@ public class PaymentObjective extends DefaultObjective {
      * @throws QuestException if the instruction is invalid
      */
     public PaymentObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount, final IngameNotificationSender paymentSender) throws QuestException {
-        super(service, PAYMENT_FACTORY);
+        super(service);
         this.targetAmount = targetAmount;
         this.paymentSender = paymentSender;
     }
@@ -61,6 +56,10 @@ public class PaymentObjective extends DefaultObjective {
     public void onJobsPaymentEvent(final JobsPaymentEvent event, final Profile profile) {
         if (containsPlayer(profile) && checkConditions(profile)) {
             final PaymentData playerData = getPaymentData(profile);
+            if (playerData == null) {
+                getLogger().warn("Could not access PaymentData for profile '" + profile + "'.");
+                return;
+            }
             final double previousAmount = playerData.amount;
             playerData.add(event.get(CurrencyType.MONEY));
 
@@ -83,13 +82,14 @@ public class PaymentObjective extends DefaultObjective {
 
     @Override
     public String getProperty(final String name, final Profile profile) {
+        final PaymentData data = getPaymentData(profile);
+        if (data == null) {
+            return "";
+        }
         return switch (name.toLowerCase(Locale.ROOT)) {
-            case "amount" -> Double.toString(getPaymentData(profile).amount);
-            case "left" -> {
-                final PaymentData data = getPaymentData(profile);
-                yield Double.toString(data.targetAmount - data.amount);
-            }
-            case "total" -> Double.toString(getPaymentData(profile).targetAmount);
+            case "amount" -> Double.toString(data.amount);
+            case "left" -> Double.toString(data.targetAmount - data.amount);
+            case "total" -> Double.toString(data.targetAmount);
             default -> "";
         };
     }
@@ -99,13 +99,23 @@ public class PaymentObjective extends DefaultObjective {
      *
      * @throws NullPointerException when {@link #containsPlayer(Profile)} is false
      */
+    @Nullable
     private PaymentData getPaymentData(final Profile profile) {
-        return Objects.requireNonNull((PaymentData) dataMap.get(profile));
+        final String data = getService().getData().getOrDefault(profile, "");
+        try {
+            return new PaymentData(data, profile, getObjectiveID());
+        } catch (final QuestException e) {
+            getLogger().error("Could not access PaymentData for profile '" + profile + "': " + e.getMessage(), e);
+        }
+        return null;
     }
 
     /**
      * Data class for the Payment objective.
+     *
+     * @deprecated do not use this class. it's scheduled for removal in future versions
      */
+    @Deprecated
     public static class PaymentData extends ObjectiveData {
 
         /**
@@ -132,8 +142,14 @@ public class PaymentObjective extends DefaultObjective {
         }
 
         private void add(final Double amount) {
+            final ObjectiveFactoryService service;
+            try {
+                service = BetonQuest.getInstance().getQuestTypeApi().getObjective(objID).getService();
+            } catch (final QuestException e) {
+                throw new IllegalStateException("Could not get objective service for objective '" + objID + "'", e);
+            }
             this.amount += amount;
-            update();
+            update(service);
         }
 
         private boolean isCompleted() {

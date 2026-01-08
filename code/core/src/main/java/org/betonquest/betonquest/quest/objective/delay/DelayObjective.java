@@ -10,12 +10,12 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -26,18 +26,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
-import java.util.Objects;
 
 /**
  * Player has to wait specified amount of time. He may logout, the objective
  * will be completed as soon as the time is up and he logs in again.
  */
 public class DelayObjective extends DefaultObjective {
-
-    /**
-     * The Factory for the Delay Data.
-     */
-    private static final ObjectiveDataFactory DELAY_FACTORY = DelayData::new;
 
     /**
      * The delay time in seconds, minutes, or ticks.
@@ -59,16 +53,21 @@ public class DelayObjective extends DefaultObjective {
      */
     public DelayObjective(final ObjectiveFactoryService service, final Argument<Number> interval,
                           final Argument<Number> delay) throws QuestException {
-        super(service, DELAY_FACTORY);
+        super(service);
         this.delay = delay;
         this.runnable = new BukkitRunnable() {
             @Override
             public void run() {
                 final List<Profile> players = new LinkedList<>();
                 final long time = System.currentTimeMillis();
-                for (final Entry<Profile, ObjectiveData> entry : dataMap.entrySet()) {
+                for (final Entry<Profile, String> entry : getService().getData().entrySet()) {
                     final Profile profile = entry.getKey();
-                    final DelayData playerData = (DelayData) entry.getValue();
+                    final DelayData playerData;
+                    try {
+                        playerData = new DelayData(entry.getValue(), entry.getKey(), getObjectiveID());
+                    } catch (final QuestException ignored) {
+                        continue;
+                    }
                     if (time >= playerData.getTime() && checkConditions(profile)) {
                         // don't complete the objective, it will throw CME/
                         // store the player instead, complete later
@@ -172,13 +171,21 @@ public class DelayObjective extends DefaultObjective {
      *
      * @throws NullPointerException when {@link #containsPlayer(Profile)} is false
      */
+    @Nullable
     private DelayData getDelayData(final Profile profile) {
-        return Objects.requireNonNull((DelayData) dataMap.get(profile));
+        try {
+            return new DelayData(getService().getData().get(profile), profile, getObjectiveID());
+        } catch (final QuestException ignored) {
+            return null;
+        }
     }
 
     /**
      * Data class for the DelayObjective.
+     *
+     * @deprecated do not use this class. it's scheduled for removal in future versions
      */
+    @Deprecated
     public static class DelayData extends ObjectiveData {
 
         /**
