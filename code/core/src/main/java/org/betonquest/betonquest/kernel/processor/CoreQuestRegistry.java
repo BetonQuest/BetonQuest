@@ -149,6 +149,16 @@ public record CoreQuestRegistry(
     }
 
     @Override
+    public void pauseObjective(final Profile profile, final ObjectiveID objectiveID) {
+        objectives().pause(profile, objectiveID);
+    }
+
+    @Override
+    public void cancelObjective(final Profile profile, final ObjectiveID objectiveID) {
+        objectives().cancel(profile, objectiveID);
+    }
+
+    @Override
     public void resumeObjective(final Profile profile, final ObjectiveID objectiveID, final String instruction) {
         objectives().resume(profile, objectiveID, instruction);
     }

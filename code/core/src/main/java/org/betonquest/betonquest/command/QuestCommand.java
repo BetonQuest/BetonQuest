@@ -1134,7 +1134,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             }
             case "remove", "delete", "del", "r", "d" -> {
                 log.debug("Deleting objective " + objectiveID + " for " + profile);
-                objective.cancelObjectiveForPlayer(profile);
+                instance.getQuestTypeApi().cancelObjective(profile, objectiveID);
                 playerData.removeRawObjective(objectiveID);
                 sendMessage(sender, "objective_removed");
             }
@@ -1343,7 +1343,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Deleted stuff.
      */
-    @SuppressWarnings("PMD.NcssCount")
     private void handleDeleting(final CommandSender sender, final String... args) {
         if (args.length < 3) {
             sendMessage(sender, "arguments");
@@ -1371,10 +1370,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "objectives", "objective", "o" -> {
                 updateType = UpdateType.REMOVE_ALL_OBJECTIVES;
                 final ObjectiveID objectiveID;
-                final DefaultObjective objective;
                 try {
                     objectiveID = new ObjectiveID(placeholders, instance.getQuestPackageManager(), null, name);
-                    objective = instance.getQuestTypeApi().getObjective(objectiveID);
                 } catch (final QuestException e) {
                     final String message = "The objective '" + name + "' does not exist, it will still be removed from the database!";
                     sendMessage(sender, "error",
@@ -1384,7 +1381,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     break;
                 }
                 for (final OnlineProfile onlineProfile : onlineProfiles) {
-                    objective.cancelObjectiveForPlayer(onlineProfile);
+                    instance.getQuestTypeApi().cancelObjective(onlineProfile, objectiveID);
                     dataStorage.get(onlineProfile).removeRawObjective(objectiveID);
                 }
             }

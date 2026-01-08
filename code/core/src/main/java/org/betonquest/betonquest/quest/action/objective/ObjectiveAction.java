@@ -93,7 +93,7 @@ public class ObjectiveAction implements NullableAction {
         for (final ObjectiveID objectiveID : objectives.getValue(profile)) {
             final DefaultObjective objective = questTypeApi.getObjective(objectiveID);
             if (profile == null) {
-                handleStatic(objectiveID, objective);
+                handleStatic(objectiveID);
             } else if (profile.getOnlineProfile().isEmpty()) {
                 handleForOfflinePlayer(profile, objectiveID);
             } else {
@@ -102,10 +102,10 @@ public class ObjectiveAction implements NullableAction {
         }
     }
 
-    private void handleStatic(final ObjectiveID objectiveID, final DefaultObjective objective) {
+    private void handleStatic(final ObjectiveID objectiveID) {
         if ("delete".equals(action) || "remove".equals(action)) {
             final ProfileProvider profileProvider = betonQuest.getProfileProvider();
-            profileProvider.getOnlineProfiles().forEach(onlineProfile -> cancelObjectiveForOnlinePlayer(onlineProfile, objectiveID, objective));
+            profileProvider.getOnlineProfiles().forEach(onlineProfile -> cancelObjectiveForOnlinePlayer(onlineProfile, objectiveID));
             betonQuest.getSaver().add(new Saver.Record(UpdateType.REMOVE_ALL_OBJECTIVES, objectiveID.toString()));
         } else {
             log.warn(questPackage, "You tried to call an objective add / finish action in a static context! Only objective delete works here.");
@@ -116,7 +116,7 @@ public class ObjectiveAction implements NullableAction {
         switch (action.toLowerCase(Locale.ROOT)) {
             case "start", "add" -> questTypeApi.newObjective(profile, objectiveID);
             case "complete", "finish" -> objective.completeObjective(profile);
-            default -> cancelObjectiveForOnlinePlayer(profile, objectiveID, objective);
+            default -> cancelObjectiveForOnlinePlayer(profile, objectiveID);
         }
     }
 
@@ -132,8 +132,8 @@ public class ObjectiveAction implements NullableAction {
         });
     }
 
-    private void cancelObjectiveForOnlinePlayer(final Profile profile, final ObjectiveID objectiveID, final DefaultObjective objective) {
-        objective.cancelObjectiveForPlayer(profile);
+    private void cancelObjectiveForOnlinePlayer(final Profile profile, final ObjectiveID objectiveID) {
+        betonQuest.getQuestTypeApi().cancelObjective(profile, objectiveID);
         betonQuest.getPlayerDataStorage().get(profile).removeRawObjective(objectiveID);
     }
 }

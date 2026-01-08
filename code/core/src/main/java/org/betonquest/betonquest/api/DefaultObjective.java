@@ -16,7 +16,6 @@ import java.util.Map;
 /**
  * Superclass for all objectives. You need to extend it in order to create new custom objectives.
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public abstract class DefaultObjective implements Objective {
 
     /**
@@ -136,26 +135,13 @@ public abstract class DefaultObjective implements Objective {
      *
      * @param profile           the {@link Profile} for which the objective is to be started
      * @param instructionString the objective data instruction
-     * @see #resumeObjectiveForPlayer(Profile, String)
      */
     public final void createObjectiveForPlayer(final Profile profile, final String instructionString) {
         startObjective(profile, instructionString, ObjectiveState.NEW);
     }
 
     /**
-     * Resumes a paused objective for the profile.
-     *
-     * @param profile           the {@link Profile} for which the objective is to be resumed
-     * @param instructionString the objective data instruction
-     * @see #createObjectiveForPlayer(Profile, String)
-     */
-    public final void resumeObjectiveForPlayer(final Profile profile, final String instructionString) {
-        startObjective(profile, instructionString, ObjectiveState.PAUSED);
-    }
-
-    /**
-     * Start an objective for the profile. This lower level method allows to set the previous state directly. If possible
-     * prefer {@link #createObjectiveForPlayer(Profile, String)} and {@link #resumeObjectiveForPlayer(Profile, String)}.
+     * Start an objective for the profile. This lower level method allows to set the previous state directly.
      *
      * @param profile           the {@link Profile} for which the objective is to be started
      * @param instructionString the objective data instruction
@@ -174,40 +160,13 @@ public abstract class DefaultObjective implements Objective {
      * actions, run {@link #completeObjective(Profile)} instead! It does also not remove it from the database.
      *
      * @param profile the {@link Profile} for which the objective is to be completed
-     * @see #cancelObjectiveForPlayer(Profile)
-     * @see #pauseObjectiveForPlayer(Profile)
      */
     public final void completeObjectiveForPlayer(final Profile profile) {
         stopObjective(profile, ObjectiveState.COMPLETED);
     }
 
     /**
-     * Cancel an active objective for the profile. It will only remove it from the profile and not remove it from the
-     * database.
-     *
-     * @param profile the {@link Profile} for which the objective is to be cancelled
-     * @see #completeObjectiveForPlayer(Profile)
-     * @see #pauseObjectiveForPlayer(Profile)
-     */
-    public final void cancelObjectiveForPlayer(final Profile profile) {
-        stopObjective(profile, ObjectiveState.CANCELED);
-    }
-
-    /**
-     * Pause an active objective for the profile.
-     *
-     * @param profile the {@link Profile} for which the objective is to be paused
-     * @see #completeObjectiveForPlayer(Profile)
-     * @see #cancelObjectiveForPlayer(Profile)
-     */
-    public final void pauseObjectiveForPlayer(final Profile profile) {
-        stopObjective(profile, ObjectiveState.PAUSED);
-    }
-
-    /**
-     * Stops an objective for the profile. This lower level method allows to set the previous state directly. If possible
-     * prefer {@link #completeObjectiveForPlayer(Profile)}, {@link #cancelObjectiveForPlayer(Profile)} and
-     * {@link #pauseObjectiveForPlayer(Profile)}.
+     * Stops an objective for the profile. This lower level method allows to set the previous state directly.
      *
      * @param profile  the {@link Profile} for which the objective is to be stopped
      * @param newState the objective's new state
