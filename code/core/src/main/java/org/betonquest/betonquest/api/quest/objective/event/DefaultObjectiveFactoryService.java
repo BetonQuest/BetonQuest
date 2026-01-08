@@ -112,7 +112,7 @@ public class DefaultObjectiveFactoryService implements ObjectiveFactoryService {
 
     @Override
     public <T extends Event> EventServiceSubscriptionBuilder<T> request(final Class<T> eventClass) {
-        return objectiveService.request(eventClass).source(objectiveID.getPackage());
+        return objectiveService.request(eventClass).source(objectiveID);
     }
 
     @Override

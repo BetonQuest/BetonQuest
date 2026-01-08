@@ -2,7 +2,6 @@ package org.betonquest.betonquest.api.quest.objective.event;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestBiFunction;
-import org.betonquest.betonquest.api.logger.LogSource;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
@@ -45,7 +44,7 @@ public interface ObjectiveService {
     /**
      * Registers a new event subscription for a specific non-profile event.
      *
-     * @param source          the source to use for logging
+     * @param objectiveID     the objective to subscribe to
      * @param eventClass      the class of the event to subscribe to
      * @param handler         the handler to call when the event is triggered
      * @param priority        the priority of the event listener
@@ -53,13 +52,13 @@ public interface ObjectiveService {
      * @param <T>             the event type
      * @throws QuestException if the event could not be subscribed
      */
-    <T extends Event> void subscribe(LogSource source, Class<T> eventClass, NonProfileEventHandler<T> handler,
+    <T extends Event> void subscribe(ObjectiveID objectiveID, Class<T> eventClass, NonProfileEventHandler<T> handler,
                                      EventPriority priority, boolean ignoreCancelled) throws QuestException;
 
     /**
      * Registers a new event subscription for a specific event with a profile involved.
      *
-     * @param source           the source to use for logging
+     * @param objectiveID      the objective to subscribe to
      * @param eventClass       the event class to subscribe to
      * @param handler          the handler to call when the event is triggered
      * @param profileExtractor a method to extract the profile from the event
@@ -68,14 +67,14 @@ public interface ObjectiveService {
      * @param <T>              the event type
      * @throws QuestException if the event could not be subscribed
      */
-    <T extends Event> void subscribe(LogSource source, Class<T> eventClass, ProfileEventHandler<T> handler,
+    <T extends Event> void subscribe(ObjectiveID objectiveID, Class<T> eventClass, ProfileEventHandler<T> handler,
                                      QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor,
                                      EventPriority priority, boolean ignoreCancelled) throws QuestException;
 
     /**
      * Registers a new event subscription for a specific event with a profile involved.
      *
-     * @param source           the source to use for logging
+     * @param objectiveID      the objective to subscribe to
      * @param eventClass       the event class to subscribe to
      * @param handler          the handler to call when the event is triggered
      * @param profileExtractor a method to extract the profile from the event
@@ -84,7 +83,7 @@ public interface ObjectiveService {
      * @param <T>              the event type
      * @throws QuestException if the event could not be subscribed
      */
-    <T extends Event> void subscribe(LogSource source, Class<T> eventClass, OnlineProfileEventHandler<T> handler,
+    <T extends Event> void subscribe(ObjectiveID objectiveID, Class<T> eventClass, OnlineProfileEventHandler<T> handler,
                                      QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor,
                                      EventPriority priority, boolean ignoreCancelled) throws QuestException;
 }

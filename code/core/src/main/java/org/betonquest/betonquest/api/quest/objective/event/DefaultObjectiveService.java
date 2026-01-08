@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.bukkit.event.EventServiceSubscriber;
 import org.betonquest.betonquest.api.common.function.QuestBiFunction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.logger.LogSource;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -107,52 +106,60 @@ public class DefaultObjectiveService implements ObjectiveService {
     }
 
     @Override
-    public <T extends Event> void subscribe(final LogSource source, final Class<T> eventClass, final NonProfileEventHandler<T> handler,
+    public <T extends Event> void subscribe(final ObjectiveID objectiveID, final Class<T> eventClass, final NonProfileEventHandler<T> handler,
                                             final EventPriority priority, final boolean ignoreCancelled) throws QuestException {
         if (!eventService.require(eventClass, priority)) {
-            throw new QuestException("<%s> Could not subscribe to event '%s'".formatted(source.getSourcePath(), eventClass.getSimpleName()));
+            throw new QuestException("<%s> Could not subscribe to event '%s'".formatted(objectiveID, eventClass.getSimpleName()));
         }
-        final EventServiceSubscriber<T> subscriber = subNonProfile(handler);
-        eventService.subscribe(eventClass, priority, ignoreCancelled, exceptionHandled(source, eventClass, subscriber));
-        logger.debug(source, "Subscribed to event '" + eventClass.getSimpleName() + "' with priority '" + priority.name() + "' and ignoreCancelled '" + ignoreCancelled + "'");
+        final EventServiceSubscriber<T> subscriber = subNonProfile(objectiveID, handler);
+        final EventServiceSubscriber<T> exceptionHandled = exceptionHandled(objectiveID, eventClass, subscriber);
+        eventService.subscribe(eventClass, priority, ignoreCancelled, exceptionHandled);
+        logger.debug(objectiveID.getPackage(), "Subscribed to event '" + eventClass.getSimpleName() + "' with priority '" + priority.name() + "' and ignoreCancelled '" + ignoreCancelled + "'");
     }
 
     @Override
-    public <T extends Event> void subscribe(final LogSource source, final Class<T> eventClass, final ProfileEventHandler<T> handler,
+    public <T extends Event> void subscribe(final ObjectiveID objectiveID, final Class<T> eventClass, final ProfileEventHandler<T> handler,
                                             final QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor,
                                             final EventPriority priority, final boolean ignoreCancelled) throws QuestException {
         if (!eventService.require(eventClass, priority)) {
-            throw new QuestException("<%s> Could not subscribe to event '%s'".formatted(source.getSourcePath(), eventClass.getSimpleName()));
+            throw new QuestException("<%s> Could not subscribe to event '%s'".formatted(objectiveID.getFull(), eventClass.getSimpleName()));
         }
-        final EventServiceSubscriber<T> subscriber = subOffline(handler, profileExtractor);
-        eventService.subscribe(eventClass, priority, ignoreCancelled, exceptionHandled(source, eventClass, subscriber));
-        logger.debug(source, "Subscribed to event '" + eventClass.getSimpleName() + "' with priority '" + priority.name() + "' and ignoreCancelled '" + ignoreCancelled + "'");
+        final EventServiceSubscriber<T> subscriber = subOffline(objectiveID, handler, profileExtractor);
+        final EventServiceSubscriber<T> exceptionHandled = exceptionHandled(objectiveID, eventClass, subscriber);
+        eventService.subscribe(eventClass, priority, ignoreCancelled, exceptionHandled);
+        logger.debug(objectiveID.getPackage(), "Subscribed to event '" + eventClass.getSimpleName() + "' with priority '" + priority.name() + "' and ignoreCancelled '" + ignoreCancelled + "'");
     }
 
     @Override
-    public <T extends Event> void subscribe(final LogSource source, final Class<T> eventClass,
+    public <T extends Event> void subscribe(final ObjectiveID objectiveID, final Class<T> eventClass,
                                             final OnlineProfileEventHandler<T> handler,
                                             final QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor,
                                             final EventPriority priority, final boolean ignoreCancelled) throws QuestException {
         if (!eventService.require(eventClass, priority)) {
-            throw new QuestException("<%s> Could not subscribe to event '%s'".formatted(source.getSourcePath(), eventClass.getSimpleName()));
+            throw new QuestException("<%s> Could not subscribe to event '%s'".formatted(objectiveID.getFull(), eventClass.getSimpleName()));
         }
-        final EventServiceSubscriber<T> subscriber = subOnline(handler, profileExtractor);
-        eventService.subscribe(eventClass, priority, ignoreCancelled, exceptionHandled(source, eventClass, subscriber));
-        logger.debug(source, "Subscribed to event '" + eventClass.getSimpleName() + "' with priority '" + priority.name() + "' and ignoreCancelled '" + ignoreCancelled + "'");
+        final EventServiceSubscriber<T> subscriber = subOnline(objectiveID, handler, profileExtractor);
+        final EventServiceSubscriber<T> exceptionHandled = exceptionHandled(objectiveID, eventClass, subscriber);
+        eventService.subscribe(eventClass, priority, ignoreCancelled, exceptionHandled);
+        logger.debug(objectiveID.getPackage(), "Subscribed to event '" + eventClass.getSimpleName() + "' with priority '" + priority.name() + "' and ignoreCancelled '" + ignoreCancelled + "'");
     }
 
-    private <T extends Event> EventServiceSubscriber<T> exceptionHandled(final LogSource source, final Class<T> eventClass,
+    private <T extends Event> EventServiceSubscriber<T> exceptionHandled(final ObjectiveID objectiveID, final Class<T> eventClass,
                                                                          final EventServiceSubscriber<T> subscriber) {
-        final QuestExceptionHandler exceptionHandler = new QuestExceptionHandler(source, logger, eventClass.getSimpleName());
+        final QuestExceptionHandler exceptionHandler = new QuestExceptionHandler(objectiveID.getPackage(), logger, objectiveID.getFull(), eventClass.getSimpleName());
         return (event, priority) -> exceptionHandler.handle(() -> subscriber.call(event, priority));
     }
 
-    private <T extends Event> EventServiceSubscriber<T> subNonProfile(final NonProfileEventHandler<T> eventHandler) {
-        return (event, priority) -> eventHandler.handle(event);
+    private <T extends Event> EventServiceSubscriber<T> subNonProfile(final ObjectiveID objectiveID, final NonProfileEventHandler<T> eventHandler) {
+        return (event, priority) -> {
+            final ObjectiveFactoryService service = getFactoryService(objectiveID);
+            if (service.checkConditions(null)) {
+                eventHandler.handle(event);
+            }
+        };
     }
 
-    private <T extends Event> EventServiceSubscriber<T> subOnline(final OnlineProfileEventHandler<T> handler,
+    private <T extends Event> EventServiceSubscriber<T> subOnline(final ObjectiveID objectiveID, final OnlineProfileEventHandler<T> handler,
                                                                   final QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor) {
         return (event, prio) -> {
             final Optional<Profile> profile = profileExtractor.apply(profileProvider, event);
@@ -163,19 +170,26 @@ public class DefaultObjectiveService implements ObjectiveService {
             if (onlineProfile.isEmpty()) {
                 return;
             }
-            handler.handle(event, onlineProfile.get());
+            final ObjectiveFactoryService service = getFactoryService(objectiveID);
+            final OnlineProfile executingProfile = onlineProfile.get();
+            if (service.containsProfile(executingProfile) && service.checkConditions(executingProfile)) {
+                handler.handle(event, executingProfile);
+            }
         };
     }
 
-    private <T extends Event> EventServiceSubscriber<T> subOffline(final ProfileEventHandler<T> handler,
+    private <T extends Event> EventServiceSubscriber<T> subOffline(final ObjectiveID objectiveID, final ProfileEventHandler<T> handler,
                                                                    final QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor) {
         return (event, prio) -> {
             final Optional<Profile> profile = profileExtractor.apply(profileProvider, event);
-            if (profile.isPresent()) {
-                handler.handle(event, profile.get());
+            if (profile.isEmpty()) {
                 return;
             }
-            logger.warn("Could not find profile for event " + event.getClass().getSimpleName());
+            final ObjectiveFactoryService service = getFactoryService(objectiveID);
+            final Profile executingProfile = profile.get();
+            if (service.containsProfile(executingProfile) && service.checkConditions(executingProfile)) {
+                handler.handle(event, executingProfile);
+            }
         };
     }
 }

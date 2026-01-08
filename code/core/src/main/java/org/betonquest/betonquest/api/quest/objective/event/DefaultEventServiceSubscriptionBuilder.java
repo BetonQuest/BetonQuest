@@ -3,9 +3,9 @@ package org.betonquest.betonquest.api.quest.objective.event;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestBiFunction;
 import org.betonquest.betonquest.api.common.function.QuestFunction;
-import org.betonquest.betonquest.api.logger.LogSource;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -55,9 +55,10 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
     private boolean ignoreCancelled;
 
     /**
-     * The source of the subscription for logging purposes.
+     * The objective related to this event.
      */
-    private LogSource logSource;
+    @Nullable
+    private ObjectiveID objectiveID;
 
     /**
      * The non-profile event handler.
@@ -92,7 +93,7 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
     public DefaultEventServiceSubscriptionBuilder(final DefaultObjectiveService eventService, final Class<T> eventClass) {
         this.eventService = eventService;
         this.eventClass = eventClass;
-        this.logSource = LogSource.EMPTY;
+        this.objectiveID = null;
         this.eventPriority = DEFAULT_PRIORITY;
     }
 
@@ -103,8 +104,8 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
     }
 
     @Override
-    public EventServiceSubscriptionBuilder<T> source(final LogSource source) {
-        this.logSource = source;
+    public EventServiceSubscriptionBuilder<T> source(final ObjectiveID objectiveID) {
+        this.objectiveID = objectiveID;
         return this;
     }
 
@@ -189,19 +190,22 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
     }
 
     private void subscribe() throws QuestException {
+        if (this.objectiveID == null) {
+            throw new IllegalStateException("No objective ID specified!");
+        }
         if (this.nonProfileHandler != null) {
-            eventService.subscribe(logSource, eventClass, nonProfileHandler, eventPriority, ignoreCancelled);
+            eventService.subscribe(objectiveID, eventClass, nonProfileHandler, eventPriority, ignoreCancelled);
             return;
         }
         if (profileExtractor == null) {
             throw new IllegalStateException("No valid extractor specified!");
         }
         if (onlineProfileHandler != null) {
-            eventService.subscribe(logSource, eventClass, onlineProfileHandler, profileExtractor, eventPriority, ignoreCancelled);
+            eventService.subscribe(objectiveID, eventClass, onlineProfileHandler, profileExtractor, eventPriority, ignoreCancelled);
             return;
         }
         if (profileHandler != null) {
-            eventService.subscribe(logSource, eventClass, profileHandler, profileExtractor, eventPriority, ignoreCancelled);
+            eventService.subscribe(objectiveID, eventClass, profileHandler, profileExtractor, eventPriority, ignoreCancelled);
             return;
         }
         throw new IllegalStateException("No valid handler specified!");
