@@ -41,10 +41,12 @@ public class PaymentObjective extends DefaultObjective {
      * @param paymentSender the {@link IngameNotificationSender} to send notifications
      * @throws QuestException if the instruction is invalid
      */
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public PaymentObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount, final IngameNotificationSender paymentSender) throws QuestException {
         super(service);
         this.targetAmount = targetAmount;
         this.paymentSender = paymentSender;
+        getService().setDefaultData(this::getDefaultDataInstruction);
     }
 
     /**
@@ -73,8 +75,7 @@ public class PaymentObjective extends DefaultObjective {
         }
     }
 
-    @Override
-    public String getDefaultDataInstruction(final Profile profile) throws QuestException {
+    private String getDefaultDataInstruction(final Profile profile) throws QuestException {
         return String.valueOf(targetAmount.getValue(profile).doubleValue());
     }
 

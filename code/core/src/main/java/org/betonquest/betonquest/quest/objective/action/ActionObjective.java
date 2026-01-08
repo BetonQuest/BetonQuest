@@ -139,11 +139,6 @@ public class ActionObjective extends DefaultObjective {
     }
 
     @Override
-    public String getDefaultDataInstruction(final Profile profile) {
-        return "";
-    }
-
-    @Override
     public String getProperty(final String name, final Profile profile) throws QuestException {
         if (PROPERTY_LOCATION.equalsIgnoreCase(name)) {
             if (loc == null) {

@@ -51,6 +51,7 @@ public class DelayObjective extends DefaultObjective {
      * @param delay    the delay time in seconds, minutes, or ticks
      * @throws QuestException if there is an error in the instruction
      */
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public DelayObjective(final ObjectiveFactoryService service, final Argument<Number> interval,
                           final Argument<Number> delay) throws QuestException {
         super(service);
@@ -80,6 +81,7 @@ public class DelayObjective extends DefaultObjective {
                 }
             }
         }.runTaskTimer(BetonQuest.getInstance(), 0, interval.getValue(null).longValue());
+        getService().setDefaultData(this::getDefaultDataInstruction);
     }
 
     private double timeToMilliSeconds(final Profile profile, final double time) throws QuestException {
@@ -102,8 +104,7 @@ public class DelayObjective extends DefaultObjective {
         super.close();
     }
 
-    @Override
-    public String getDefaultDataInstruction(final Profile profile) throws QuestException {
+    private String getDefaultDataInstruction(final Profile profile) throws QuestException {
         final double millis = timeToMilliSeconds(profile, delay.getValue(profile).doubleValue());
         return Double.toString(System.currentTimeMillis() + millis);
     }

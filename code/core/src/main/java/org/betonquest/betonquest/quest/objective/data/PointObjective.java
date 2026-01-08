@@ -59,6 +59,7 @@ public class PointObjective extends DefaultObjective {
      * @param operation         the operation to use for comparing
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public PointObjective(final ObjectiveFactoryService service, final PlayerDataStorage playerDataStorage, final Argument<String> category,
                           final Argument<Number> targetAmount, final Argument<CountingMode> mode, final Argument<Operation> operation)
             throws QuestException {
@@ -68,10 +69,10 @@ public class PointObjective extends DefaultObjective {
         this.targetAmount = targetAmount;
         this.mode = mode;
         this.operation = operation;
+        getService().setDefaultData(this::getDefaultDataInstruction);
     }
 
-    @Override
-    public String getDefaultDataInstruction(final Profile profile) throws QuestException {
+    private String getDefaultDataInstruction(final Profile profile) throws QuestException {
         final long targetValue = this.targetAmount.getValue(profile).intValue();
         final CountingMode value = mode.getValue(profile);
         if (value == CountingMode.TOTAL) {

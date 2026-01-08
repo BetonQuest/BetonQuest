@@ -44,11 +44,6 @@ public class StageObjective extends DefaultObjective {
     }
 
     @Override
-    public String getDefaultDataInstruction(final Profile profile) throws QuestException {
-        return stageMap.getStage(0);
-    }
-
-    @Override
     public String getProperty(final String name, final Profile profile) {
         return getExceptionHandler().handle(() -> switch (name.toLowerCase(Locale.ROOT)) {
             case "index" -> String.valueOf(stageMap.getIndex(getStage(profile)));

@@ -380,7 +380,7 @@ public class PlayerData implements TagData, PointData {
         }
         final String data;
         try {
-            data = obj.getDefaultDataInstruction(profile);
+            data = obj.getService().getDefaultData(profile);
         } catch (final QuestException e) {
             log.warn(objectiveID.getPackage(), "Cannot add objective to player data: Could Not get resolved instruction: "
                     + e.getMessage(), e);
