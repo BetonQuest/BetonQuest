@@ -1,9 +1,13 @@
 package org.betonquest.betonquest.compatibility.itemsadder;
 
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.UnsupportedVersionException;
+import org.betonquest.betonquest.compatibility.itemsadder.action.ItemsAdderPlayAnimationActionFactory;
+import org.betonquest.betonquest.compatibility.itemsadder.action.ItemsAdderSetBlockActionFactory;
+import org.betonquest.betonquest.compatibility.itemsadder.action.ItemsAdderSetFurnitureActionFactory;
 import org.betonquest.betonquest.compatibility.itemsadder.item.ItemsAdderItemFactory;
 import org.betonquest.betonquest.compatibility.itemsadder.item.ItemsAdderQuestItemSerializer;
 import org.betonquest.betonquest.item.ItemRegistry;
@@ -28,6 +32,12 @@ public class ItemsAdderIntegrator implements Integrator {
     @Override
     public void hook(final BetonQuestApi api) throws HookException {
         validateVersion();
+
+        final QuestTypeRegistries questTypeRegistries = api.getQuestRegistries();
+
+        questTypeRegistries.action().register("itemsAdderBlockAt", new ItemsAdderSetBlockActionFactory());
+        questTypeRegistries.action().register("itemsAdderFurnitureAt", new ItemsAdderSetFurnitureActionFactory());
+        questTypeRegistries.action().register("itemsAdderPlayAnimation", new ItemsAdderPlayAnimationActionFactory(api.getLoggerFactory()));
 
         final ItemRegistry itemRegistry = api.getFeatureRegistries().item();
         itemRegistry.register("itemsAdder", new ItemsAdderItemFactory());

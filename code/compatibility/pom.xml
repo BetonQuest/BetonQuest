@@ -24,7 +24,8 @@
     <core.version>1.0.0${changelist}</core.version>
 
     <!-- dependency versions -->
-    <paper-api.version>1.18.2-R0.1-SNAPSHOT</paper-api.version>
+<!--    <paper-api.version>1.18.2-R0.1-SNAPSHOT</paper-api.version>-->
+    <paper-api.version>1.19.4-R0.1-SNAPSHOT</paper-api.version>
     <worldguard-bukkit.version>7.0.9</worldguard-bukkit.version>
     <worldguard-core.version>7.0.9</worldguard-core.version>
     <worldedit-bukkit.version>7.3.0</worldedit-bukkit.version>

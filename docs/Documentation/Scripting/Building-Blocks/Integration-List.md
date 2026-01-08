@@ -183,6 +183,22 @@ npckill thief amount:3 actions:reward notify
 
 ## CraftEngine[](https://polymart.org/product/7624/craftengine)
 
+### Actions
+
+#### Set Block: `craftEngineBlockAt <id> <location> [playSound]`
+
+Place the corresponding block at the specified location
+
+#### Set Furniture: `craftEngineFurnitureAt <id> <location> [playSound]`
+
+Place the corresponding furniture at the specified location
+
+| Parameter   | Syntax                                                     | Default Value | Explanation                                                                                                       |
+|-------------|------------------------------------------------------------|---------------|-------------------------------------------------------------------------------------------------------------------|
+| _id_        | block/furniture Id                                         | none          | The unique identifier (ID) of the block or furniture to be spawned.                                               |
+| _location_  | [Locations](../Data-Formats.md#unified-location-formating) | none          | The coordinates where the object will be placed                                                                   |
+| _playSound_ | playSound:Boolean                                          | false         | Display a message to the player each time they kill a NPC. Optionally with the notification interval after colon. |
+
 ### Items
 
 CraftEngine usage is integrated to the [Items](../../Features/Items.md) system and thus used for events and conditions.
@@ -359,6 +375,25 @@ This action simply gives the player specified amount of Heroes experience. The f
     ```
     
 ## ItemsAdder[](https://www.spigotmc.org/resources/73355/)
+
+### Actions
+
+#### Set Block: `itemsAdderBlockAt <id> <location>`
+
+Place the corresponding block at the specified location
+
+#### Set Furniture: `itemsAdderFurnitureAt <id> <location>`
+
+Place the corresponding furniture at the specified location
+
+| Parameter   | Syntax                                                     | Default Value | Explanation                                                                                                       |
+|-------------|------------------------------------------------------------|---------------|-------------------------------------------------------------------------------------------------------------------|
+| _id_        | block/furniture Id                                         | none          | The unique identifier (ID) of the block or furniture to be spawned.                                               |
+| _location_  | [Locations](../Data-Formats.md#unified-location-formating) | none          | The coordinates where the object will be placed                                                                   |
+
+#### Play Animation: `itemsAdderPlayAnimation <id>`
+
+Play animated title
 
 ### Items
 
@@ -838,6 +873,23 @@ actions:
 ```
 
 ## Nexo[](https://polymart.org/product/6901/nexo)
+
+### Actions
+
+#### Set Block: `nexoBlockAt <id> <location>`
+
+Place the corresponding block at the specified location
+
+#### Set Furniture: `nexoFurnitureAt <id> <location> [rotation] [blockFace]`
+
+Place the corresponding furniture at the specified location
+
+| Parameter   | Syntax                                                                                          | Default Value | Explanation                                                                                 |
+|-------------|-------------------------------------------------------------------------------------------------|---------------|---------------------------------------------------------------------------------------------|
+| _id_        | block/furniture Id                                                                              | none          | The unique identifier (ID) of the block or furniture to be spawned.                         |
+| _location_  | [Locations](../Data-Formats.md#unified-location-formating)                                      | none          | The coordinates where the object will be placed                                             |
+| _rotation_  | rotation:[Rotation](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Rotation.html)          | NONE          | Specifies the rotation angle of the object (e.g., CLOCKWISE or CLOCKWISE_45).               |
+| _blockFace_ | blockFace:[BlockFace](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/block/BlockFace.html) | SELF          | Defines the specific face of the block or direction the object is facing (e.g., NORTH, UP). |
 
 ### Items
 
