@@ -30,9 +30,7 @@ public class JumpObjective extends CountingObjective {
      * @param onlineProfile the profile of the player that jumped
      */
     public void onPlayerJump(final PlayerJumpEvent event, final OnlineProfile onlineProfile) {
-        if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
-            getCountingData(onlineProfile).progress();
-            completeIfDoneOrNotify(onlineProfile);
-        }
+        getCountingData(onlineProfile).progress();
+        completeIfDoneOrNotify(onlineProfile);
     }
 }

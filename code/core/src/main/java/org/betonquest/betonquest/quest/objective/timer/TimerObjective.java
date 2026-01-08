@@ -76,10 +76,12 @@ public class TimerObjective extends CountingObjective implements Runnable {
     @Override
     public void run() {
         getService().getData().keySet().forEach(profile -> {
-            if (checkConditions(profile)) {
-                getCountingData(profile).progress(interval);
-                completeIfDoneOrNotify(profile);
-            }
+            getExceptionHandler().handle(() -> {
+                if (getService().checkConditions(profile)) {
+                    getCountingData(profile).progress(interval);
+                    completeIfDoneOrNotify(profile);
+                }
+            });
         });
     }
 
@@ -101,8 +103,8 @@ public class TimerObjective extends CountingObjective implements Runnable {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void onPlayerObjectiveChange(final PlayerObjectiveChangeEvent event, final Profile profile) throws QuestException {
-        if (event.getObjective().equals(this) && containsPlayer(profile)
-                && event.getPreviousState() == ObjectiveState.ACTIVE && event.getState() == ObjectiveState.COMPLETED) {
+        if (event.getObjective().equals(this) && event.getPreviousState() == ObjectiveState.ACTIVE
+                && event.getState() == ObjectiveState.COMPLETED) {
             questTypeApi.actions(profile, doneActions.getValue(profile));
         }
     }

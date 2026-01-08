@@ -62,9 +62,6 @@ public class MMOItemsApplyGemObjective extends DefaultObjective {
         if (!gemStone.getId().equals(gemID.getValue(profile))) {
             return;
         }
-        if (!containsPlayer(profile) || !checkConditions(profile)) {
-            return;
-        }
         completeObjective(profile);
     }
 

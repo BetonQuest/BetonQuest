@@ -39,9 +39,6 @@ public class ChatVariableObjective extends VariableObjective {
      * @param onlineProfile the profile of the player that typed the message
      */
     public void onChat(final AsyncPlayerChatEvent event, final OnlineProfile onlineProfile) {
-        if (!containsPlayer(onlineProfile)) {
-            return;
-        }
         final Matcher chatVariableMatcher = CHAT_VARIABLE_PATTERN.matcher(event.getMessage());
         if (chatVariableMatcher.matches()) {
             event.setCancelled(true);

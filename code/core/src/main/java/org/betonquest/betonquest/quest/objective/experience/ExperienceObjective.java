@@ -51,14 +51,9 @@ public class ExperienceObjective extends DefaultObjective {
     }
 
     private void onExperienceChange(final OnlineProfile onlineProfile, final double newAmount, final boolean notify) throws QuestException {
-        if (!containsPlayer(onlineProfile)) {
-            return;
-        }
         final double amount = this.amount.getValue(onlineProfile).doubleValue();
         if (newAmount >= amount) {
-            if (checkConditions(onlineProfile)) {
-                completeObjective(onlineProfile);
-            }
+            completeObjective(onlineProfile);
         } else if (this.hasNotify(onlineProfile) && notify) {
             final int level = (int) (amount - newAmount);
             if (level % getNotifyInterval(onlineProfile) == 0) {

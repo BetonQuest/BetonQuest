@@ -57,10 +57,6 @@ public class MythicLibSkillObjective extends DefaultObjective {
         if (!triggerTypes.contains(event.getCast().getTrigger())) {
             return;
         }
-
-        if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
-            return;
-        }
         completeObjective(onlineProfile);
     }
 

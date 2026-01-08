@@ -29,9 +29,7 @@ public class LoginObjective extends DefaultObjective {
      * @param onlineProfile the profile of the player that joined
      */
     public void onJoin(final PlayerJoinEvent event, final OnlineProfile onlineProfile) {
-        if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
-            completeObjective(onlineProfile);
-        }
+        completeObjective(onlineProfile);
     }
 
     @Override

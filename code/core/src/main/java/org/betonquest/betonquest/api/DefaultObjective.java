@@ -115,27 +115,6 @@ public abstract class DefaultObjective implements Objective {
     }
 
     /**
-     * Checks if all conditions has been met. Use it when the player has done
-     * something that modifies data (e.g. killing zombies). If conditions are
-     * met, you can safely modify the data.
-     *
-     * @param profile the {@link Profile} for which the conditions are to be checked
-     * @return if all conditions of this objective has been met
-     */
-    public final boolean checkConditions(final Profile profile) {
-        getLogger().debug(getPackage(), "Condition check in '" + getObjectiveID()
-                + "' objective for " + profile);
-        try {
-            return getService().checkConditions(profile);
-        } catch (final QuestException e) {
-            getLogger().warn(getPackage(),
-                    "Error while checking conditions in objective '" + getObjectiveID()
-                            + "' for " + profile + ": " + e.getMessage(), e);
-            return false;
-        }
-    }
-
-    /**
      * Adds this new objective to the profile. Also updates the database with the
      * objective.
      *
@@ -244,16 +223,6 @@ public abstract class DefaultObjective implements Objective {
     private void runObjectiveChangeEvent(final Profile profile, final ObjectiveState previousState, final ObjectiveState newState) {
         final boolean isAsync = !BetonQuest.getInstance().getServer().isPrimaryThread();
         new PlayerObjectiveChangeEvent(profile, isAsync, this, getService().getObjectiveID(), newState, previousState).callEvent();
-    }
-
-    /**
-     * Checks if the profile has this objective.
-     *
-     * @param profile the {@link Profile} to check
-     * @return true if the profile has this objective
-     */
-    public final boolean containsPlayer(final Profile profile) {
-        return getService().getData().containsKey(profile);
     }
 
     /**

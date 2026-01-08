@@ -68,7 +68,8 @@ public class DelayObjective extends DefaultObjective {
                     } catch (final QuestException ignored) {
                         continue;
                     }
-                    if (time >= playerData.getTime() && checkConditions(profile)) {
+                    final boolean profileConditions = getExceptionHandler().handle(() -> getService().checkConditions(profile), false);
+                    if (profileConditions && time >= playerData.getTime()) {
                         // don't complete the objective, it will throw CME/
                         // store the player instead, complete later
                         players.add(profile);
@@ -168,8 +169,6 @@ public class DelayObjective extends DefaultObjective {
 
     /**
      * Get the delay data for a profile.
-     *
-     * @throws NullPointerException when {@link #containsPlayer(Profile)} is false
      */
     @Nullable
     private DelayData getDelayData(final Profile profile) {

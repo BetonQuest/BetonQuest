@@ -40,7 +40,7 @@ public class TameObjective extends CountingObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void onTaming(final EntityTameEvent event, final OnlineProfile onlineProfile) throws QuestException {
-        if (containsPlayer(onlineProfile) && type.getValue(onlineProfile) == event.getEntity().getType() && checkConditions(onlineProfile)) {
+        if (type.getValue(onlineProfile) == event.getEntity().getType()) {
             getCountingData(onlineProfile).progress();
             completeIfDoneOrNotify(onlineProfile);
         }

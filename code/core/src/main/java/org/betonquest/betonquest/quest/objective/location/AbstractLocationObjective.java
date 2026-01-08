@@ -160,19 +160,18 @@ public abstract class AbstractLocationObjective extends DefaultObjective {
         for (final Entity passenger : passengers) {
             if (passenger instanceof final Player player) {
                 final OnlineProfile onlineProfile = getService().getProfileProvider().getProfile(player);
+                if (!getService().checkConditions(onlineProfile) || !getService().containsProfile(onlineProfile)) {
+                    continue;
+                }
                 checkLocation(onlineProfile, event.getTo());
             }
         }
     }
 
     private void checkLocation(final OnlineProfile onlineProfile, final Location location) throws QuestException {
-        if (!containsPlayer(onlineProfile)) {
-            return;
-        }
-
         final boolean toInside = isInsideHandleException(location, onlineProfile);
         if (!entry.getValue(onlineProfile).orElse(false) && !exit.getValue(onlineProfile).orElse(false)) {
-            if (toInside && checkConditions(onlineProfile)) {
+            if (toInside) {
                 completeObjective(onlineProfile);
             }
             return;
@@ -190,9 +189,8 @@ public abstract class AbstractLocationObjective extends DefaultObjective {
         final boolean fromInside = playersInsideRegion.get(onlineProfile.getProfileUUID());
         playersInsideRegion.put(onlineProfile.getProfileUUID(), toInside);
 
-        if ((entry.getValue(onlineProfile).orElse(false)
-                && toInside && !fromInside || exit.getValue(onlineProfile).orElse(false) && fromInside && !toInside)
-                && checkConditions(onlineProfile)) {
+        if (entry.getValue(onlineProfile).orElse(false) && toInside && !fromInside
+                || exit.getValue(onlineProfile).orElse(false) && fromInside && !toInside) {
             completeObjective(onlineProfile);
             playersInsideRegion.remove(onlineProfile.getProfileUUID());
         }

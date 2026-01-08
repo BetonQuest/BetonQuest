@@ -57,16 +57,11 @@ public class NpcInteractObjective extends DefaultObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void onNPCLeftClick(final NpcInteractEvent event, final Profile profile) throws QuestException {
-        if (!containsPlayer(profile)) {
-            return;
-        }
-
         if (event.getInteraction() != ANY && event.getInteraction() != interactionType.getValue(profile)) {
             return;
         }
 
-        if (event.getNpcIdentifier().contains(npcId.getValue(profile))
-                && checkConditions(profile)) {
+        if (event.getNpcIdentifier().contains(npcId.getValue(profile))) {
             if (cancel.getValue(profile).orElse(false)) {
                 event.setCancelled(true);
             }

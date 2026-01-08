@@ -63,9 +63,6 @@ public class BrewObjective extends CountingObjective {
      * @param onlineProfile the profile of the player that put the ingredient
      */
     public void onIngredientPut(final InventoryClickEvent event, final OnlineProfile onlineProfile) {
-        if (!containsPlayer(onlineProfile)) {
-            return;
-        }
         final Inventory topInventory = event.getView().getTopInventory();
         if (event.getRawSlot() < 0 || topInventory.getType() != InventoryType.BREWING) {
             return;
@@ -105,7 +102,7 @@ public class BrewObjective extends CountingObjective {
      */
     public void onBrew(final BrewEvent event) throws QuestException {
         final Profile profile = locations.remove(event.getBlock().getLocation());
-        if (profile == null) {
+        if (profile == null || !getService().containsProfile(profile) || !getService().checkConditions(profile)) {
             return;
         }
         final QuestItem potion = this.potion.getValue(profile).getItem(profile);
@@ -121,7 +118,7 @@ public class BrewObjective extends CountingObjective {
                 }
             }
 
-            if (progress > 0 && checkConditions(profile)) {
+            if (progress > 0) {
                 getCountingData(profile).progress(progress);
                 final boolean completed = completeIfDoneOrNotify(profile);
                 if (completed) {

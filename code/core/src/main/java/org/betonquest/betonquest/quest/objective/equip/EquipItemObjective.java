@@ -47,10 +47,8 @@ public class EquipItemObjective extends DefaultObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void onEquipmentChange(final PlayerArmorChangeEvent event, final OnlineProfile onlineProfile) throws QuestException {
-        if (containsPlayer(onlineProfile)
-                && event.getSlotType() == slotType.getValue(onlineProfile)
-                && item.getValue(onlineProfile).matches(event.getNewItem(), onlineProfile)
-                && checkConditions(onlineProfile)) {
+        if (event.getSlotType() == slotType.getValue(onlineProfile)
+                && item.getValue(onlineProfile).matches(event.getNewItem(), onlineProfile)) {
             completeObjective(onlineProfile);
         }
     }

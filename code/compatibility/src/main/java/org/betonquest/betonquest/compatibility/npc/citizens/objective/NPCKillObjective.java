@@ -69,9 +69,7 @@ public class NPCKillObjective extends CountingObjective {
                 return;
             }
         }
-        if (containsPlayer(profile) && checkConditions(profile)) {
-            getCountingData(profile).progress();
-            completeIfDoneOrNotify(profile);
-        }
+        getCountingData(profile).progress();
+        completeIfDoneOrNotify(profile);
     }
 }

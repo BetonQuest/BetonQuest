@@ -55,10 +55,8 @@ public class ShearObjective extends CountingObjective {
         if (event.getEntity().getType() != EntityType.SHEEP) {
             return;
         }
-        if (containsPlayer(onlineProfile)
-                && (name == null || name.getValue(onlineProfile).equals(event.getEntity().getCustomName()))
-                && (color == null || color.getValue(onlineProfile) == ((Sheep) event.getEntity()).getColor())
-                && checkConditions(onlineProfile)) {
+        if ((name == null || name.getValue(onlineProfile).equals(event.getEntity().getCustomName()))
+                && (color == null || color.getValue(onlineProfile) == ((Sheep) event.getEntity()).getColor())) {
             getCountingData(onlineProfile).progress();
             completeIfDoneOrNotify(onlineProfile);
         }

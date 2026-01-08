@@ -160,11 +160,11 @@ public class NpcRangeObjective extends DefaultObjective {
         if (checkStuff.test(profile, inside)) {
             return;
         }
-
-        if (checkConditions(profile)) {
-            playersInRange.remove(profile.getPlayerUUID());
-            completeObjective(profile);
+        if (!getService().checkConditions(profile)) {
+            return;
         }
+        playersInRange.remove(profile.getPlayerUUID());
+        completeObjective(profile);
     }
 
     @Override

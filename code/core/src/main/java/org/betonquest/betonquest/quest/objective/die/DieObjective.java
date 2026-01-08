@@ -64,9 +64,7 @@ public class DieObjective extends DefaultObjective {
         if (cancel.getValue(onlineProfile).orElse(false)) {
             return;
         }
-        if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
-            completeObjective(onlineProfile);
-        }
+        completeObjective(onlineProfile);
     }
 
     /**
@@ -80,10 +78,8 @@ public class DieObjective extends DefaultObjective {
         if (cancel.getValue(onlineProfile).orElse(false) || location == null) {
             return;
         }
-        if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
-            getLocation(onlineProfile).ifPresent(event::setRespawnLocation);
-            completeObjective(onlineProfile);
-        }
+        getLocation(onlineProfile).ifPresent(event::setRespawnLocation);
+        completeObjective(onlineProfile);
     }
 
     /**
@@ -98,8 +94,7 @@ public class DieObjective extends DefaultObjective {
         if (!cancel.getValue(onlineProfile).orElse(false)) {
             return;
         }
-        if (containsPlayer(onlineProfile) && player.getHealth() - event.getFinalDamage() <= 0
-                && checkConditions(onlineProfile)) {
+        if (player.getHealth() - event.getFinalDamage() <= 0) {
             event.setCancelled(true);
             player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
             player.setFoodLevel(20);

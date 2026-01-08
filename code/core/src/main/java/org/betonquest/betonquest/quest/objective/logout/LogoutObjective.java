@@ -29,9 +29,7 @@ public class LogoutObjective extends DefaultObjective {
      * @param onlineProfile the profile of the player that left
      */
     public void onQuit(final PlayerQuitEvent event, final OnlineProfile onlineProfile) {
-        if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
-            completeObjective(onlineProfile);
-        }
+        completeObjective(onlineProfile);
     }
 
     @Override

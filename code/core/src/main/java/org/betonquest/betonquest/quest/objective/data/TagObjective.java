@@ -57,9 +57,7 @@ public class TagObjective extends DefaultObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void onTag(final PlayerTagAddEvent event, final Profile profile) throws QuestException {
-        if (containsPlayer(profile)
-                && event.getTag().equals(tag.getValue(profile))
-                && checkConditions(profile)) {
+        if (event.getTag().equals(tag.getValue(profile))) {
             completeObjective(profile);
         }
     }
@@ -72,11 +70,10 @@ public class TagObjective extends DefaultObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void onStart(final PlayerObjectiveChangeEvent event, final Profile profile) throws QuestException {
-        if (event.getState() != ObjectiveState.ACTIVE || !containsPlayer(profile)) {
+        if (event.getState() != ObjectiveState.ACTIVE) {
             return;
         }
-        if (playerDataStorage.getOffline(profile).hasTag(tag.getValue(profile))
-                && checkConditions(profile)) {
+        if (playerDataStorage.getOffline(profile).hasTag(tag.getValue(profile))) {
             completeObjective(profile);
         }
     }

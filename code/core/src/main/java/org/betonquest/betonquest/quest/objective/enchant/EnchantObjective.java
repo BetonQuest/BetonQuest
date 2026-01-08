@@ -60,13 +60,10 @@ public class EnchantObjective extends CountingObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void onEnchant(final EnchantItemEvent event, final OnlineProfile onlineProfile) throws QuestException {
-        if (!containsPlayer(onlineProfile)) {
-            return;
-        }
         if (!item.getValue(onlineProfile).matches(event.getItem(), onlineProfile)) {
             return;
         }
-        if (matchesDesiredEnchants(onlineProfile, event.getEnchantsToAdd()) && checkConditions(onlineProfile)) {
+        if (matchesDesiredEnchants(onlineProfile, event.getEnchantsToAdd())) {
             getCountingData(onlineProfile).progress();
             completeIfDoneOrNotify(onlineProfile);
         }

@@ -70,9 +70,6 @@ public class TrainCartsRideObjective extends CountingObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void onMemberSeatEnter(final MemberSeatEnterEvent event, final OnlineProfile onlineProfile) throws QuestException {
-        if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
-            return;
-        }
         if (TrainCartsUtils.isValidTrain(name.getValue(onlineProfile),
                 event.getMember().getGroup().getProperties().getTrainName())) {
             startCount(onlineProfile);
@@ -140,9 +137,6 @@ public class TrainCartsRideObjective extends CountingObjective {
         }
         final Pair<Long, BukkitTask> remove = startTimes.remove(onlineProfile.getPlayerUUID());
         remove.getValue().cancel();
-        if (!checkConditions(onlineProfile)) {
-            return;
-        }
         final int ridden = (int) ((System.currentTimeMillis() - remove.getKey()) / MILLISECONDS_TO_SECONDS);
         final CountingData countingData = getCountingData(onlineProfile);
         countingData.add(ridden);
