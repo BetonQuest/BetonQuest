@@ -43,6 +43,8 @@ public record CraftEngineItemWrapper(Argument<CustomItem<ItemStack>> customItemA
         private final ItemMeta itemMeta;
 
         /**
+         * Constructs a CraftEngineItem for the given base custom item.
+         *
          * @param customItem the base custom item.
          */
         public CraftEngineItem(final CustomItem<ItemStack> customItem) {

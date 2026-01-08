@@ -12,6 +12,13 @@ import org.betonquest.betonquest.item.ItemRegistry;
  */
 public class NexoIntegrator implements Integrator {
 
+    /**
+     * The empty default constructor.
+     */
+    public NexoIntegrator() {
+        // Empty
+    }
+
     @Override
     public void hook(final BetonQuestApi api) throws HookException {
         final ItemRegistry itemRegistry = api.getFeatureRegistries().item();
