@@ -64,6 +64,7 @@ public class MobKillObjective extends CountingObjective {
      * @param profile the profile of the player that killed the mob
      * @throws QuestException if argument resolving for the profile fails
      */
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public void onMobKill(final MobKilledEvent event, final Profile profile) throws QuestException {
         if (!containsPlayer(profile)
                 || !entities.getValue(profile).contains(event.getEntity().getType())

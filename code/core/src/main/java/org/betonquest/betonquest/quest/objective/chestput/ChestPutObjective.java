@@ -109,7 +109,7 @@ public class ChestPutObjective extends DefaultObjective {
      * @param onlineProfile the profile of the player that closed the chest
      * @throws QuestException if argument resolving for the profile fails
      */
-    @SuppressWarnings("PMD.CognitiveComplexity")
+    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
     public void onChestClose(final InventoryCloseEvent event, final OnlineProfile onlineProfile) throws QuestException {
         if (!(event.getPlayer() instanceof Player)) {
             return;

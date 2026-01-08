@@ -3,7 +3,6 @@ package org.betonquest.betonquest.api;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.objective.Objective;
@@ -13,7 +12,6 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.database.PlayerData;
-import org.betonquest.betonquest.lib.logger.QuestExceptionHandler;
 import org.betonquest.betonquest.lib.profile.ProfileKeyMap;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,19 +34,9 @@ public abstract class DefaultObjective implements Objective {
     protected final ProfileProvider profileProvider;
 
     /**
-     * Exception Handler to not spam the log.
-     */
-    protected final QuestExceptionHandler qeHandler;
-
-    /**
      * Contains all data objects of the profiles with this objective active.
      */
     protected final Map<Profile, ObjectiveData> dataMap;
-
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
 
     /**
      * Should be set to the data class used to hold the objective specific information.
@@ -84,10 +72,8 @@ public abstract class DefaultObjective implements Objective {
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
     public DefaultObjective(final ObjectiveFactoryService service, final ObjectiveDataFactory templateFactory) throws QuestException {
-        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         this.templateFactory = templateFactory;
         this.service = service;
-        this.qeHandler = new QuestExceptionHandler(service.getObjectiveID().getPackage(), log, service.getObjectiveID().getFull());
         this.profileProvider = BetonQuest.getInstance().getProfileProvider();
         this.dataMap = new ProfileKeyMap<>(profileProvider);
     }
@@ -116,7 +102,7 @@ public abstract class DefaultObjective implements Objective {
      * @return the notification interval
      */
     protected int getNotifyInterval(@Nullable final Profile profile) {
-        return qeHandler.handle(() -> getService().getServiceDataProvider().getNotificationInterval(profile), 0);
+        return getExceptionHandler().handle(() -> getService().getServiceDataProvider().getNotificationInterval(profile), 0);
     }
 
     /**
@@ -160,22 +146,22 @@ public abstract class DefaultObjective implements Objective {
                     playerData.addObjToDB(objectiveID, defaultDataInstruction);
                     createObjectiveForPlayer(profile, defaultDataInstruction);
                 } catch (final QuestException e) {
-                    log.warn(questPackage, "Could not re-create persistent Objective for '" + objectiveID
+                    getLogger().warn(questPackage, "Could not re-create persistent Objective for '" + objectiveID
                             + "' for '" + profile + "' objective: The Objective Instruction could not be resolved: " + e.getMessage(), e);
                 }
             }
         } catch (final QuestException e) {
-            log.error(questPackage, "Could not get persistent flag for '" + objectiveID + "' for '" + profile + "' objective: " + e.getMessage(), e);
+            getLogger().error(questPackage, "Could not get persistent flag for '" + objectiveID + "' for '" + profile + "' objective: " + e.getMessage(), e);
         }
-        log.debug(questPackage,
+        getLogger().debug(questPackage,
                 "Objective '" + objectiveID + "' has been completed for " + profile + ", firing actions.");
         try {
             getService().callActions(profile);
         } catch (final QuestException e) {
-            log.warn(questPackage, "Error while firing actions in objective '" + objectiveID
+            getLogger().warn(questPackage, "Error while firing actions in objective '" + objectiveID
                     + "' for " + profile + ": " + e.getMessage(), e);
         }
-        log.debug(questPackage,
+        getLogger().debug(questPackage,
                 "Firing actions in objective '" + objectiveID + "' for " + profile + " finished");
     }
 
@@ -188,12 +174,12 @@ public abstract class DefaultObjective implements Objective {
      * @return if all conditions of this objective has been met
      */
     public final boolean checkConditions(final Profile profile) {
-        log.debug(getPackage(), "Condition check in '" + getObjectiveID()
+        getLogger().debug(getPackage(), "Condition check in '" + getObjectiveID()
                 + "' objective for " + profile);
         try {
             return getService().checkConditions(profile);
         } catch (final QuestException e) {
-            log.warn(getPackage(),
+            getLogger().warn(getPackage(),
                     "Error while checking conditions in objective '" + getObjectiveID()
                             + "' for " + profile + ": " + e.getMessage(), e);
             return false;
@@ -212,7 +198,7 @@ public abstract class DefaultObjective implements Objective {
             createObjectiveForPlayer(profile, defaultInstruction);
             BetonQuest.getInstance().getPlayerDataStorage().get(profile).addObjToDB(getObjectiveID(), defaultInstruction);
         } catch (final QuestException e) {
-            log.warn(getPackage(), "Could not create new Objective for '" + getObjectiveID()
+            getLogger().warn(getPackage(), "Could not create new Objective for '" + getObjectiveID()
                     + "' for '" + profile + "' objective: The Objective Instruction could not be resolved: " + e.getMessage(), e);
         }
     }
@@ -256,7 +242,7 @@ public abstract class DefaultObjective implements Objective {
                 dataMap.put(profile, data);
                 start(profile);
             } catch (final QuestException exception) {
-                log.warn(getPackage(), "Error while loading " + getObjectiveID() + " objective data for "
+                getLogger().warn(getPackage(), "Error while loading " + getObjectiveID() + " objective data for "
                         + profile + ": " + exception.getMessage(), exception);
             }
         }

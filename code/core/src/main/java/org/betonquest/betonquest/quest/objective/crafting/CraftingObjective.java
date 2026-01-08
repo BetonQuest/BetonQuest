@@ -76,11 +76,9 @@ public class CraftingObjective extends CountingObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void handleCustomCraft(final ItemStackCraftedEvent event, final Profile profile) throws QuestException {
-        if (containsPlayer(profile) && checkConditions(profile)) {
-            if (item.getValue(profile).getItem(profile).matches(event.getStack())) {
-                getCountingData(profile).progress(event.getAmount());
-                completeIfDoneOrNotify(profile);
-            }
+        if (containsPlayer(profile) && checkConditions(profile) && item.getValue(profile).getItem(profile).matches(event.getStack())) {
+            getCountingData(profile).progress(event.getAmount());
+            completeIfDoneOrNotify(profile);
         }
     }
 }

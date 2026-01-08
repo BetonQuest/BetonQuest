@@ -55,6 +55,11 @@ public class DefaultObjectiveService implements ObjectiveService {
     private final BetonQuestLogger logger;
 
     /**
+     * The logger factory to inject into other services.
+     */
+    private final BetonQuestLoggerFactory factory;
+
+    /**
      * The map holding the objectives service data.
      */
     private final Map<ObjectiveID, DefaultObjectiveFactoryService> services;
@@ -71,7 +76,8 @@ public class DefaultObjectiveService implements ObjectiveService {
     public DefaultObjectiveService(final Plugin plugin, final ConditionProcessor conditionProcessor, final ActionProcessor actionProcessor,
                                    final BetonQuestLoggerFactory factory, final ProfileProvider profileProvider) {
         this.eventService = new DefaultBukkitEventService(plugin, factory);
-        this.logger = factory.create(DefaultObjectiveService.class);
+        this.factory = factory;
+        this.logger = this.factory.create(DefaultObjectiveService.class);
         this.profileProvider = profileProvider;
         this.actionProcessor = actionProcessor;
         this.conditionProcessor = conditionProcessor;
@@ -90,7 +96,7 @@ public class DefaultObjectiveService implements ObjectiveService {
             return services.get(objectiveID);
         }
         final DefaultObjectiveFactoryService service = new DefaultObjectiveFactoryService(objectiveID,
-                actionProcessor, conditionProcessor, this);
+                actionProcessor, conditionProcessor, this, factory);
         services.put(objectiveID, service);
         return service;
     }

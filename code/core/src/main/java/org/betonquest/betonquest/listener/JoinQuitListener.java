@@ -125,7 +125,8 @@ public class JoinQuitListener implements Listener {
             questTypeApi.getActive(onlineProfile).stream()
                     .filter(objective -> objective instanceof ResourcepackObjective)
                     .map(objective -> (ResourcepackObjective) objective)
-                    .forEach(objective -> objective.processObjective(onlineProfile, resourcePackStatus));
+                    .forEach(objective -> objective.getExceptionHandler()
+                            .handle(() -> objective.processObjective(onlineProfile, resourcePackStatus)));
         }
     }
 
