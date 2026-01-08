@@ -371,7 +371,7 @@ items:
   ruby: itemsAdder iasurvival:ruby
   sword: itemsAdder iaalchemy:mysterious_sword quest-item
 conditions:
-  hasRuby: item ruby
+  hasSword: item sword
 events:
   giveRuby: give ruby:3
 ```
