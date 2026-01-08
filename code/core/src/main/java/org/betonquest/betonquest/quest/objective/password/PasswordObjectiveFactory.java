@@ -38,7 +38,7 @@ public class PasswordObjectiveFactory implements ObjectiveFactory {
         final String resolvedPrefix = prefix == null ? null : prefix.getValue(null);
         final String passwordPrefix = resolvedPrefix == null || resolvedPrefix.isEmpty() ? resolvedPrefix : resolvedPrefix + ": ";
         final Argument<List<ActionID>> failEvents = instruction.parse(ActionID::new).list().get("fail", Collections.emptyList());
-        final PasswordObjective objective = new PasswordObjective(instruction, regex, passwordPrefix, failEvents);
+        final PasswordObjective objective = new PasswordObjective(service, regex, passwordPrefix, failEvents);
         service.request(AsyncPlayerChatEvent.class).priority(EventPriority.LOW).onlineHandler(objective::onChat)
                 .player(AsyncPlayerChatEvent::getPlayer).subscribe(true);
         service.request(PlayerCommandPreprocessEvent.class).priority(EventPriority.LOW).onlineHandler(objective::onCommand)

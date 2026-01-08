@@ -24,7 +24,7 @@ public class SmeltingObjectiveFactory implements ObjectiveFactory {
     public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<ItemWrapper> item = instruction.item().get();
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get();
-        final SmeltingObjective objective = new SmeltingObjective(instruction, targetAmount, item);
+        final SmeltingObjective objective = new SmeltingObjective(service, targetAmount, item);
         service.request(InventoryClickEvent.class).onlineHandler(objective::onSmelting)
                 .entity(InventoryClickEvent::getWhoClicked).subscribe(true);
         return objective;

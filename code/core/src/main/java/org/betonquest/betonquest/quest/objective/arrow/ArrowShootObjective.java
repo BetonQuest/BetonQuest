@@ -4,9 +4,9 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Projectile;
@@ -31,13 +31,13 @@ public class ArrowShootObjective extends DefaultObjective {
     /**
      * Constructor for the ArrowShootObjective.
      *
-     * @param instruction the instruction that created this objective
-     * @param location    the location where the arrow should hit
-     * @param range       the range around the location where the arrow should hit
+     * @param service  the objective factory service
+     * @param location the location where the arrow should hit
+     * @param range    the range around the location where the arrow should hit
      * @throws QuestException if there is an error in the instruction
      */
-    public ArrowShootObjective(final Instruction instruction, final Argument<Location> location, final Argument<Number> range) throws QuestException {
-        super(instruction);
+    public ArrowShootObjective(final ObjectiveFactoryService service, final Argument<Location> location, final Argument<Number> range) throws QuestException {
+        super(service);
         this.location = location;
         this.range = range;
     }

@@ -3,9 +3,9 @@ package org.betonquest.betonquest.quest.objective.smelt;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.util.InventoryUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -26,14 +26,14 @@ public class SmeltingObjective extends CountingObjective {
     /**
      * Constructor for the SmeltingObjective.
      *
-     * @param instruction  the instruction that created this objective
+     * @param service      the objective factory service
      * @param targetAmount the target amount of items to be smelted
      * @param item         the item to be smelted
      * @throws QuestException if there is an error in the instruction
      */
-    public SmeltingObjective(final Instruction instruction, final Argument<Number> targetAmount, final Argument<ItemWrapper> item)
+    public SmeltingObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount, final Argument<ItemWrapper> item)
             throws QuestException {
-        super(instruction, targetAmount, "items_to_smelt");
+        super(service, targetAmount, "items_to_smelt");
         this.item = item;
     }
 

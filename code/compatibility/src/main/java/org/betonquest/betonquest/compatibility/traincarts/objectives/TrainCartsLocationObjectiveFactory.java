@@ -23,7 +23,7 @@ public class TrainCartsLocationObjectiveFactory implements ObjectiveFactory {
     public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<Location> loc = instruction.location().get();
         final Argument<Number> range = instruction.number().atLeast(1).get("range", 1);
-        final TrainCartsLocationObjective objective = new TrainCartsLocationObjective(instruction, loc, range);
+        final TrainCartsLocationObjective objective = new TrainCartsLocationObjective(service, loc, range);
         objective.registerLocationEvents(service);
         return objective;
     }

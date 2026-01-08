@@ -6,9 +6,9 @@ import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -37,13 +37,13 @@ public class ExperienceObjective extends DefaultObjective {
     /**
      * Constructor for the ExperienceObjective.
      *
-     * @param instruction the instruction that created this objective
+     * @param service     the objective factory service
      * @param amount      the experience level the player needs to get
      * @param levelSender the notification to send when the player gains experience
      * @throws QuestException if there is an error in the instruction
      */
-    public ExperienceObjective(final Instruction instruction, final Argument<Number> amount, final IngameNotificationSender levelSender) throws QuestException {
-        super(instruction);
+    public ExperienceObjective(final ObjectiveFactoryService service, final Argument<Number> amount, final IngameNotificationSender levelSender) throws QuestException {
+        super(service);
         this.amount = amount;
         this.levelSender = levelSender;
     }
@@ -57,9 +57,9 @@ public class ExperienceObjective extends DefaultObjective {
             if (checkConditions(onlineProfile)) {
                 completeObjective(onlineProfile);
             }
-        } else if (this.notify && notify) {
+        } else if (this.hasNotify(onlineProfile) && notify) {
             final int level = (int) (amount - newAmount);
-            if (level % notifyInterval == 0) {
+            if (level % getNotifyInterval(onlineProfile) == 0) {
                 levelSender.sendNotification(onlineProfile, new VariableReplacement("amount", Component.text(level)));
             }
         }

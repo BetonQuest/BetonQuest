@@ -6,10 +6,10 @@ import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.action.ActionID;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import java.util.List;
@@ -47,7 +47,7 @@ public class CommandObjective extends DefaultObjective {
     /**
      * Creates a new instance of the CommandObjective.
      *
-     * @param instruction the instruction that created this objective
+     * @param service     the objective factory service
      * @param command     the command that the player has to execute
      * @param ignoreCase  whether the command should ignore the capitalization
      * @param exact       whether the command should be matched exactly or just the start
@@ -55,10 +55,10 @@ public class CommandObjective extends DefaultObjective {
      * @param failActions actions to trigger if the command is not matched
      * @throws QuestException if there is an error in the instruction
      */
-    public CommandObjective(final Instruction instruction, final Argument<String> command,
+    public CommandObjective(final ObjectiveFactoryService service, final Argument<String> command,
                             final FlagArgument<Boolean> ignoreCase, final FlagArgument<Boolean> exact,
                             final FlagArgument<Boolean> cancel, final Argument<List<ActionID>> failActions) throws QuestException {
-        super(instruction);
+        super(service);
         this.command = command;
         this.ignoreCase = ignoreCase;
         this.exact = exact;

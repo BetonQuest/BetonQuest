@@ -23,7 +23,7 @@ public class ResourcepackObjectiveFactory implements ObjectiveFactory {
     public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<PlayerResourcePackStatusEvent.Status> targetStatus =
                 instruction.enumeration(PlayerResourcePackStatusEvent.Status.class).get();
-        final ResourcepackObjective objective = new ResourcepackObjective(instruction, targetStatus);
+        final ResourcepackObjective objective = new ResourcepackObjective(service, targetStatus);
         service.request(PlayerResourcePackStatusEvent.class).onlineHandler(objective::onResourcePackReceived)
                 .player(PlayerResourcePackStatusEvent::getPlayer).subscribe(false);
         return objective;

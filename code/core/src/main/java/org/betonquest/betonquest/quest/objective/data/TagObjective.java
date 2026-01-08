@@ -5,9 +5,9 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerTagAddEvent;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 
 /**
@@ -28,13 +28,13 @@ public class TagObjective extends DefaultObjective {
     /**
      * Creates a new tag objective.
      *
-     * @param instruction       Instruction object representing the objective
+     * @param service           the objective factory service
      * @param playerDataStorage the storage for player data
      * @param tag               the tag to get
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public TagObjective(final Instruction instruction, final PlayerDataStorage playerDataStorage, final Argument<String> tag) throws QuestException {
-        super(instruction);
+    public TagObjective(final ObjectiveFactoryService service, final PlayerDataStorage playerDataStorage, final Argument<String> tag) throws QuestException {
+        super(service);
         this.playerDataStorage = playerDataStorage;
         this.tag = tag;
     }

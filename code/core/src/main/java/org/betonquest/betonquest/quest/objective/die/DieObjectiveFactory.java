@@ -28,7 +28,7 @@ public class DieObjectiveFactory implements ObjectiveFactory {
     public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final FlagArgument<Boolean> cancel = instruction.bool().getFlag("cancel", true);
         final Argument<Location> location = instruction.location().get("respawn").orElse(null);
-        final DieObjective objective = new DieObjective(instruction, cancel, location);
+        final DieObjective objective = new DieObjective(service, cancel, location);
         service.request(EntityDeathEvent.class).priority(EventPriority.MONITOR).onlineHandler(objective::onDeath)
                 .entity(EntityDeathEvent::getEntity).subscribe(true);
         service.request(PlayerRespawnEvent.class).priority(EventPriority.MONITOR).onlineHandler(objective::onRespawn)

@@ -23,7 +23,7 @@ public class MMOCoreProfessionObjectiveFactory implements ObjectiveFactory {
     public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<String> professionName = instruction.string().get();
         final Argument<Number> targetLevel = instruction.number().get();
-        final MMOCoreProfessionObjective objective = new MMOCoreProfessionObjective(instruction, professionName, targetLevel);
+        final MMOCoreProfessionObjective objective = new MMOCoreProfessionObjective(service, professionName, targetLevel);
         service.request(PlayerLevelUpEvent.class).onlineHandler(objective::onLevelUp)
                 .player(PlayerLevelUpEvent::getPlayer).subscribe(true);
         return objective;

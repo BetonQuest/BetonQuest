@@ -26,7 +26,7 @@ public class ArrowShootObjectiveFactory implements ObjectiveFactory {
     public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<Location> location = instruction.location().get();
         final Argument<Number> range = instruction.number().get();
-        final ArrowShootObjective objective = new ArrowShootObjective(instruction, location, range);
+        final ArrowShootObjective objective = new ArrowShootObjective(service, location, range);
         service.request(ProjectileHitEvent.class).onlineHandler(objective::onArrowHit)
                 .player(this::fromEvent).subscribe(true);
         return objective;

@@ -23,7 +23,7 @@ public class MMOItemsUpgradeObjectiveFactory implements ObjectiveFactory {
     public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<String> itemType = instruction.string().get();
         final Argument<String> itemID = instruction.string().get();
-        final MMOItemsUpgradeObjective objective = new MMOItemsUpgradeObjective(instruction, itemType, itemID);
+        final MMOItemsUpgradeObjective objective = new MMOItemsUpgradeObjective(service, itemType, itemID);
         service.request(UpgradeItemEvent.class).onlineHandler(objective::onUpgradeItem)
                 .player(UpgradeItemEvent::getPlayer).subscribe(true);
         return objective;

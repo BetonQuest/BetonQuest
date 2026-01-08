@@ -26,7 +26,7 @@ public class MMOCoreBreakCustomBlockObjectiveFactory implements ObjectiveFactory
             throw new QuestException("Missing required argument: block");
         }
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get();
-        final MMOCoreBreakCustomBlockObjective objective = new MMOCoreBreakCustomBlockObjective(instruction, targetAmount, desiredBlockId);
+        final MMOCoreBreakCustomBlockObjective objective = new MMOCoreBreakCustomBlockObjective(service, targetAmount, desiredBlockId);
         service.request(CustomBlockMineEvent.class).onlineHandler(objective::onBlockBreak)
                 .player(CustomBlockMineEvent::getPlayer).subscribe(true);
         return objective;

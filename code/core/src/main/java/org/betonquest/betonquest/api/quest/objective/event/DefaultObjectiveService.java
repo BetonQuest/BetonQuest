@@ -11,12 +11,16 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
+import org.betonquest.betonquest.kernel.processor.quest.ActionProcessor;
+import org.betonquest.betonquest.kernel.processor.quest.ConditionProcessor;
 import org.betonquest.betonquest.lib.bukkit.event.DefaultBukkitEventService;
 import org.betonquest.betonquest.lib.logger.QuestExceptionHandler;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.plugin.Plugin;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -36,26 +40,59 @@ public class DefaultObjectiveService implements ObjectiveService {
     private final ProfileProvider profileProvider;
 
     /**
+     * The processors to process actions.
+     */
+    private final ActionProcessor actionProcessor;
+
+    /**
+     * The processors to process conditions.
+     */
+    private final ConditionProcessor conditionProcessor;
+
+    /**
      * The logger for this service.
      */
     private final BetonQuestLogger logger;
 
     /**
+     * The map holding the objectives service data.
+     */
+    private final Map<ObjectiveID, DefaultObjectiveFactoryService> services;
+
+    /**
      * Sole constructor. Creates an objective event service on top of a {@link BukkitEventService}.
      *
-     * @param plugin          the plugin instance
-     * @param factory         the logger factory
-     * @param profileProvider the profile provider
+     * @param plugin             the plugin instance
+     * @param conditionProcessor the condition processor
+     * @param actionProcessor    the action processor
+     * @param factory            the logger factory
+     * @param profileProvider    the profile provider
      */
-    public DefaultObjectiveService(final Plugin plugin, final BetonQuestLoggerFactory factory, final ProfileProvider profileProvider) {
+    public DefaultObjectiveService(final Plugin plugin, final ConditionProcessor conditionProcessor, final ActionProcessor actionProcessor,
+                                   final BetonQuestLoggerFactory factory, final ProfileProvider profileProvider) {
         this.eventService = new DefaultBukkitEventService(plugin, factory);
         this.logger = factory.create(DefaultObjectiveService.class);
         this.profileProvider = profileProvider;
+        this.actionProcessor = actionProcessor;
+        this.conditionProcessor = conditionProcessor;
+        this.services = new HashMap<>();
     }
 
     @Override
-    public ObjectiveFactoryService getSubscriptionService(final ObjectiveID objectiveID) {
-        return new DefaultObjectiveFactoryService(objectiveID.getPackage(), this);
+    public void clear() {
+        eventService.unsubscribeAll();
+        services.clear();
+    }
+
+    @Override
+    public ObjectiveFactoryService getFactoryService(final ObjectiveID objectiveID) throws QuestException {
+        if (services.containsKey(objectiveID)) {
+            return services.get(objectiveID);
+        }
+        final DefaultObjectiveFactoryService service = new DefaultObjectiveFactoryService(objectiveID,
+                actionProcessor, conditionProcessor, this);
+        services.put(objectiveID, service);
+        return service;
     }
 
     @Override
@@ -94,7 +131,7 @@ public class DefaultObjectiveService implements ObjectiveService {
         if (!eventService.require(eventClass, priority)) {
             throw new QuestException("<%s> Could not subscribe to event '%s'".formatted(source.getSourcePath(), eventClass.getSimpleName()));
         }
-        final EventServiceSubscriber<T> subscriber = subOline(handler, profileExtractor);
+        final EventServiceSubscriber<T> subscriber = subOnline(handler, profileExtractor);
         eventService.subscribe(eventClass, priority, ignoreCancelled, exceptionHandled(source, eventClass, subscriber));
         logger.debug(source, "Subscribed to event '" + eventClass.getSimpleName() + "' with priority '" + priority.name() + "' and ignoreCancelled '" + ignoreCancelled + "'");
     }
@@ -109,8 +146,8 @@ public class DefaultObjectiveService implements ObjectiveService {
         return (event, priority) -> eventHandler.handle(event);
     }
 
-    private <T extends Event> EventServiceSubscriber<T> subOline(final OnlineProfileEventHandler<T> handler,
-                                                                 final QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor) {
+    private <T extends Event> EventServiceSubscriber<T> subOnline(final OnlineProfileEventHandler<T> handler,
+                                                                  final QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor) {
         return (event, prio) -> {
             final Optional<Profile> profile = profileExtractor.apply(profileProvider, event);
             if (profile.isEmpty()) {

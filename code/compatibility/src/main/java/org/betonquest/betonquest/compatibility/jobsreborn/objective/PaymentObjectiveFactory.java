@@ -46,7 +46,7 @@ public class PaymentObjectiveFactory implements ObjectiveFactory {
         final IngameNotificationSender paymentSender = new IngameNotificationSender(log,
                 pluginMessage, instruction.getPackage(), instruction.getID().getFull(),
                 NotificationLevel.INFO, "payment_to_receive");
-        final PaymentObjective objective = new PaymentObjective(instruction, targetAmount, paymentSender);
+        final PaymentObjective objective = new PaymentObjective(service, targetAmount, paymentSender);
         service.request(JobsPaymentEvent.class).handler(objective::onJobsPaymentEvent)
                 .offlinePlayer(JobsPaymentEvent::getPlayer).subscribe(true);
         return objective;

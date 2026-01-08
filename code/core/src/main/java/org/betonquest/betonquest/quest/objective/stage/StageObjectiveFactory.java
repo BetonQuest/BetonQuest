@@ -22,10 +22,10 @@ public class StageObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService eventService) throws QuestException {
+    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final List<String> stages = instruction.string().list().get().getValue(null);
         final StageObjective.StageMap stageMap = new StageObjective.StageMap(stages, (ObjectiveID) instruction.getID());
         final FlagArgument<Boolean> preventCompletion = instruction.bool().getFlag("preventCompletion", true);
-        return new StageObjective(instruction, stageMap, preventCompletion);
+        return new StageObjective(service, stageMap, preventCompletion);
     }
 }

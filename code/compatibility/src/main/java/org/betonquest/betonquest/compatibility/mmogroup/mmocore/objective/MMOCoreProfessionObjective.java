@@ -5,9 +5,9 @@ import net.Indyuce.mmocore.experience.Profession;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 
 /**
  * An objective that listens for the player leveling up in their MMOCore profession.
@@ -27,14 +27,14 @@ public class MMOCoreProfessionObjective extends DefaultObjective {
     /**
      * Constructor for the MMOCoreProfessionObjective.
      *
-     * @param instruction    the instruction object representing the objective
+     * @param service        the objective factory service
      * @param professionName the name of the profession to be leveled up, 'main' for class
      * @param targetLevel    the target level to be reached
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public MMOCoreProfessionObjective(final Instruction instruction, final Argument<String> professionName,
+    public MMOCoreProfessionObjective(final ObjectiveFactoryService service, final Argument<String> professionName,
                                       final Argument<Number> targetLevel) throws QuestException {
-        super(instruction);
+        super(service);
         this.professionName = professionName;
         this.targetLevel = targetLevel;
     }

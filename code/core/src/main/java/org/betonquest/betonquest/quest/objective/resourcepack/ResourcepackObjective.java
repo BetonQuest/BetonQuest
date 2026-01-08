@@ -3,9 +3,9 @@ package org.betonquest.betonquest.quest.objective.resourcepack;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 
 /**
@@ -21,12 +21,12 @@ public class ResourcepackObjective extends DefaultObjective {
     /**
      * Constructs a new ResourcepackObjective instance.
      *
-     * @param instruction  The instruction object.
-     * @param targetStatus The target status for the received resource pack.
+     * @param service      the objective factory service.
+     * @param targetStatus the target status for the received resource pack.
      * @throws QuestException if an error occurs while parsing the instruction.
      */
-    public ResourcepackObjective(final Instruction instruction, final Argument<PlayerResourcePackStatusEvent.Status> targetStatus) throws QuestException {
-        super(instruction);
+    public ResourcepackObjective(final ObjectiveFactoryService service, final Argument<PlayerResourcePackStatusEvent.Status> targetStatus) throws QuestException {
+        super(service);
         this.targetStatus = targetStatus;
     }
 

@@ -26,7 +26,7 @@ public class CraftingObjectiveFactory implements ObjectiveFactory {
     public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<ItemWrapper> item = instruction.item().get();
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get();
-        final CraftingObjective objective = new CraftingObjective(instruction, targetAmount, item);
+        final CraftingObjective objective = new CraftingObjective(service, targetAmount, item);
         service.request(CraftItemEvent.class).priority(EventPriority.MONITOR).onlineHandler(objective::onCrafting)
                 .entity(CraftItemEvent::getWhoClicked).subscribe(true);
         service.request(ItemStackCraftedEvent.class).handler(objective::handleCustomCraft)

@@ -4,10 +4,10 @@ import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -69,21 +69,21 @@ public class ActionObjective extends DefaultObjective {
     /**
      * Creates a new instance of the ActionObjective.
      *
-     * @param instruction the instruction
-     * @param action      the action to check for
-     * @param selector    the selector to check for the block
-     * @param exactMatch  if the block should be checked for exact match
-     * @param loc         the location where the player has to click
-     * @param range       the range of the location
-     * @param cancel      if the event should be canceled
-     * @param slot        the equipment slot to check for the action
+     * @param service    the objective factory service
+     * @param action     the action to check for
+     * @param selector   the selector to check for the block
+     * @param exactMatch if the block should be checked for exact match
+     * @param loc        the location where the player has to click
+     * @param range      the range of the location
+     * @param cancel     if the event should be canceled
+     * @param slot       the equipment slot to check for the action
      * @throws QuestException if an error occurs while creating the objective
      */
-    public ActionObjective(final Instruction instruction, final Argument<Click> action,
+    public ActionObjective(final ObjectiveFactoryService service, final Argument<Click> action,
                            final Argument<Optional<BlockSelector>> selector, final FlagArgument<Boolean> exactMatch,
                            @Nullable final Argument<Location> loc, final Argument<Number> range,
                            final FlagArgument<Boolean> cancel, @Nullable final EquipmentSlot slot) throws QuestException {
-        super(instruction);
+        super(service);
         this.action = action;
         this.selector = selector;
         this.exactMatch = exactMatch;

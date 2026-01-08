@@ -3,9 +3,9 @@ package org.betonquest.betonquest.quest.objective.consume;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 
 /**
@@ -21,14 +21,14 @@ public class ConsumeObjective extends CountingObjective {
     /**
      * Constructs a new {@code ConsumeObjective} for the given {@code Instruction}.
      *
-     * @param instruction  the instruction out of a quest package
+     * @param service      the objective factory service
      * @param targetAmount the amount of items to consume
      * @param item         the item to consume
      * @throws QuestException if the instruction is invalid
      */
-    public ConsumeObjective(final Instruction instruction, final Argument<Number> targetAmount,
+    public ConsumeObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount,
                             final Argument<ItemWrapper> item) throws QuestException {
-        super(instruction, targetAmount, null);
+        super(service, targetAmount, null);
         this.item = item;
     }
 

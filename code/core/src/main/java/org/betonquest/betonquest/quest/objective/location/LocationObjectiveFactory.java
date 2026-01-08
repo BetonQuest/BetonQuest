@@ -23,7 +23,7 @@ public class LocationObjectiveFactory implements ObjectiveFactory {
     public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<Location> loc = instruction.location().get();
         final Argument<Number> range = instruction.number().get();
-        final LocationObjective objective = new LocationObjective(instruction, loc, range);
+        final LocationObjective objective = new LocationObjective(service, loc, range);
         objective.registerLocationEvents(service);
         return objective;
     }

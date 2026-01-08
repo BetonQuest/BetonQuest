@@ -22,7 +22,7 @@ public class JumpObjectiveFactory implements ObjectiveFactory {
     @Override
     public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get();
-        final JumpObjective objective = new JumpObjective(instruction, targetAmount);
+        final JumpObjective objective = new JumpObjective(service, targetAmount);
         service.request(PlayerJumpEvent.class).onlineHandler(objective::onPlayerJump)
                 .player(PlayerJumpEvent::getPlayer).subscribe(true);
         return objective;

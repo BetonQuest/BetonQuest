@@ -17,12 +17,19 @@ import java.util.Optional;
 public interface ObjectiveService {
 
     /**
+     * Resets the entire service.
+     * Use with caution!
+     */
+    void clear();
+
+    /**
      * Creates a new {@link ObjectiveFactoryService} for the given objectiveId.
      *
      * @param objectiveID the objective to create a subscription service for
      * @return a new {@link ObjectiveFactoryService} for the given objectiveId
+     * @throws QuestException if the objective causes issues with creating a factory service
      */
-    ObjectiveFactoryService getSubscriptionService(ObjectiveID objectiveID);
+    ObjectiveFactoryService getFactoryService(ObjectiveID objectiveID) throws QuestException;
 
     /**
      * Requests a new event subscription using an {@link EventServiceSubscriptionBuilder}.

@@ -5,11 +5,11 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -49,7 +49,7 @@ public class TimerObjective extends CountingObjective implements Runnable {
     /**
      * Constructs a new TrackingObjective.
      *
-     * @param instruction  the instruction that created this objective.
+     * @param service      the objective factory service.
      * @param targetAmount the target amount for the objective.
      * @param questTypeApi the QuestTypeApi instance.
      * @param name         the name of the objective.
@@ -57,9 +57,9 @@ public class TimerObjective extends CountingObjective implements Runnable {
      * @param doneActions  actions to run before the objective is actually removed.
      * @throws QuestException if an error occurs while creating the objective.
      */
-    public TimerObjective(final Instruction instruction, final Argument<Number> targetAmount, final QuestTypeApi questTypeApi, final Argument<String> name,
+    public TimerObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount, final QuestTypeApi questTypeApi, final Argument<String> name,
                           final Argument<Number> interval, final Argument<List<ActionID>> doneActions) throws QuestException {
-        super(instruction, targetAmount, null);
+        super(service, targetAmount, null);
         this.questTypeApi = questTypeApi;
         this.name = name;
         this.doneActions = doneActions;

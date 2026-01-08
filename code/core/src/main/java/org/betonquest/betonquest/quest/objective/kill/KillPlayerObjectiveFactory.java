@@ -29,7 +29,7 @@ public class KillPlayerObjectiveFactory implements ObjectiveFactory {
         final Argument<String> name = instruction.string().get("name").orElse(null);
         final Argument<List<ConditionID>> required = instruction.parse(ConditionID::new)
                 .list().get("required", Collections.emptyList());
-        final KillPlayerObjective objective = new KillPlayerObjective(instruction, targetAmount, name, required);
+        final KillPlayerObjective objective = new KillPlayerObjective(service, targetAmount, name, required);
         service.request(PlayerDeathEvent.class).onlineHandler(objective::onKill)
                 .player(event -> event.getEntity().getKiller()).subscribe(true);
         return objective;

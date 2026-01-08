@@ -2,32 +2,28 @@ package org.betonquest.betonquest.api;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
-import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.FlagArgument;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.action.ActionID;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
+import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.lib.logger.QuestExceptionHandler;
 import org.betonquest.betonquest.lib.profile.ProfileKeyMap;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 /**
  * Superclass for all objectives. You need to extend it in order to create new custom objectives.
  */
 @SuppressWarnings("PMD.TooManyMethods")
-public abstract class DefaultObjective implements PropertyHolder {
+public abstract class DefaultObjective implements Objective {
 
     /**
      * The factory for the default Objective Data.
@@ -38,16 +34,6 @@ public abstract class DefaultObjective implements PropertyHolder {
      * Profile provider to get profiles from players.
      */
     protected final ProfileProvider profileProvider;
-
-    /**
-     * Interval in which progress should be notified.
-     */
-    protected final int notifyInterval;
-
-    /**
-     * If progress should be displayed.
-     */
-    protected final boolean notify;
 
     /**
      * Exception Handler to not spam the log.
@@ -70,24 +56,9 @@ public abstract class DefaultObjective implements PropertyHolder {
     private final ObjectiveDataFactory templateFactory;
 
     /**
-     * Conditions to count progress.
+     * The {@link ObjectiveFactoryService} for this objective.
      */
-    private final Argument<List<ConditionID>> conditions;
-
-    /**
-     * Actions to fire on completion.
-     */
-    private final Argument<List<ActionID>> actions;
-
-    /**
-     * If the objective should start again on completion.
-     */
-    private final FlagArgument<Boolean> persistent;
-
-    /**
-     * Instruction of this.
-     */
-    protected Instruction instruction;
+    private final ObjectiveFactoryService service;
 
     /**
      * Creates a new instance of the objective.
@@ -95,11 +66,11 @@ public abstract class DefaultObjective implements PropertyHolder {
      * <b>Do not register listeners here!</b>
      * This is done automatically after creation.
      *
-     * @param instruction Instruction object representing the objective
+     * @param service the {@link ObjectiveFactoryService} for this objective
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public DefaultObjective(final Instruction instruction) throws QuestException {
-        this(instruction, DATA_FACTORY);
+    public DefaultObjective(final ObjectiveFactoryService service) throws QuestException {
+        this(service, DATA_FACTORY);
     }
 
     /**
@@ -108,23 +79,44 @@ public abstract class DefaultObjective implements PropertyHolder {
      * <b>Do not register listeners here!</b>
      * This is done automatically after creation.
      *
-     * @param instruction     Instruction object representing the objective
+     * @param service         the {@link ObjectiveFactoryService} for this objective
      * @param templateFactory the factory for the objective data object
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public DefaultObjective(final Instruction instruction, final ObjectiveDataFactory templateFactory) throws QuestException {
+    public DefaultObjective(final ObjectiveFactoryService service, final ObjectiveDataFactory templateFactory) throws QuestException {
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         this.templateFactory = templateFactory;
-        this.instruction = instruction;
-        this.qeHandler = new QuestExceptionHandler(instruction.getPackage(), log, instruction.getID().getFull());
+        this.service = service;
+        this.qeHandler = new QuestExceptionHandler(service.getObjectiveID().getPackage(), log, service.getObjectiveID().getFull());
         this.profileProvider = BetonQuest.getInstance().getProfileProvider();
         this.dataMap = new ProfileKeyMap<>(profileProvider);
-        persistent = instruction.bool().getFlag("persistent", true);
-        actions = instruction.parse(ActionID::new).list().get("actions", Collections.emptyList());
-        conditions = instruction.parse(ConditionID::new).list().get("conditions", Collections.emptyList());
-        final FlagArgument<Number> notify = instruction.number().atLeast(0).getFlag("notify", 1);
-        this.notifyInterval = notify.getValue(null).orElse(0).intValue();
-        this.notify = notifyInterval > 0;
+    }
+
+    @Override
+    public ObjectiveFactoryService getService() {
+        return service;
+    }
+
+    /**
+     * Whether this objective has notifications enabled for a profile.
+     *
+     * @param profile the profile to check
+     * @return if notifications are enabled for the profile
+     */
+    protected boolean hasNotify(@Nullable final Profile profile) {
+        return getNotifyInterval(profile) > 0;
+    }
+
+    /**
+     * Get the notification interval for a profile.
+     * <br>
+     * An interval of 0 means notifications are disabled.
+     *
+     * @param profile the profile to get the interval for
+     * @return the notification interval
+     */
+    protected int getNotifyInterval(@Nullable final Profile profile) {
+        return qeHandler.handle(() -> getService().getServiceDataProvider().getNotificationInterval(profile), 0);
     }
 
     /**
@@ -134,16 +126,6 @@ public abstract class DefaultObjective implements PropertyHolder {
      */
     @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
     public void start(final Profile profile) {
-        //Empty
-    }
-
-    /**
-     * This method is called by the plugin when the objective stop for a specific profile.
-     *
-     * @param profile the {@link Profile} of the player
-     */
-    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
-    public void stop(final Profile profile) {
         //Empty
     }
 
@@ -167,33 +149,34 @@ public abstract class DefaultObjective implements PropertyHolder {
     public final void completeObjective(final Profile profile) {
         completeObjectiveForPlayer(profile);
         final PlayerData playerData = BetonQuest.getInstance().getPlayerDataStorage().get(profile);
-        final ObjectiveID objectiveID = (ObjectiveID) instruction.getID();
+        final ObjectiveID objectiveID = getService().getObjectiveID();
+        final QuestPackage questPackage = objectiveID.getPackage();
         playerData.removeRawObjective(objectiveID);
         try {
-            if (persistent.getValue(profile).orElse(false)) {
+            if (getService().getServiceDataProvider().isPersistent(profile)) {
                 try {
                     final String defaultDataInstruction = getDefaultDataInstruction(profile);
                     playerData.addRawObjective(objectiveID, defaultDataInstruction);
                     playerData.addObjToDB(objectiveID, defaultDataInstruction);
                     createObjectiveForPlayer(profile, defaultDataInstruction);
                 } catch (final QuestException e) {
-                    log.warn(instruction.getPackage(), "Could not re-create persistent Objective for '" + instruction.getID()
+                    log.warn(questPackage, "Could not re-create persistent Objective for '" + objectiveID
                             + "' for '" + profile + "' objective: The Objective Instruction could not be resolved: " + e.getMessage(), e);
                 }
             }
         } catch (final QuestException e) {
-            log.error(instruction.getPackage(), "Could not get persistent flag for '" + instruction.getID() + "' for '" + profile + "' objective: " + e.getMessage(), e);
+            log.error(questPackage, "Could not get persistent flag for '" + objectiveID + "' for '" + profile + "' objective: " + e.getMessage(), e);
         }
-        log.debug(instruction.getPackage(),
-                "Objective '" + instruction.getID() + "' has been completed for " + profile + ", firing actions.");
+        log.debug(questPackage,
+                "Objective '" + objectiveID + "' has been completed for " + profile + ", firing actions.");
         try {
-            BetonQuest.getInstance().getQuestTypeApi().actions(profile, actions.getValue(profile));
+            getService().callActions(profile);
         } catch (final QuestException e) {
-            log.warn(instruction.getPackage(), "Error while firing actions in objective '" + instruction.getID()
+            log.warn(questPackage, "Error while firing actions in objective '" + objectiveID
                     + "' for " + profile + ": " + e.getMessage(), e);
         }
-        log.debug(instruction.getPackage(),
-                "Firing actions in objective '" + instruction.getID() + "' for " + profile + " finished");
+        log.debug(questPackage,
+                "Firing actions in objective '" + objectiveID + "' for " + profile + " finished");
     }
 
     /**
@@ -205,13 +188,13 @@ public abstract class DefaultObjective implements PropertyHolder {
      * @return if all conditions of this objective has been met
      */
     public final boolean checkConditions(final Profile profile) {
-        log.debug(instruction.getPackage(), "Condition check in '" + instruction.getID()
+        log.debug(getPackage(), "Condition check in '" + getObjectiveID()
                 + "' objective for " + profile);
         try {
-            return BetonQuest.getInstance().getQuestTypeApi().conditions(profile, conditions.getValue(profile));
+            return getService().checkConditions(profile);
         } catch (final QuestException e) {
-            log.warn(instruction.getPackage(),
-                    "Error while checking conditions in objective '" + instruction.getID()
+            log.warn(getPackage(),
+                    "Error while checking conditions in objective '" + getObjectiveID()
                             + "' for " + profile + ": " + e.getMessage(), e);
             return false;
         }
@@ -227,9 +210,9 @@ public abstract class DefaultObjective implements PropertyHolder {
         try {
             final String defaultInstruction = getDefaultDataInstruction(profile);
             createObjectiveForPlayer(profile, defaultInstruction);
-            BetonQuest.getInstance().getPlayerDataStorage().get(profile).addObjToDB((ObjectiveID) instruction.getID(), defaultInstruction);
+            BetonQuest.getInstance().getPlayerDataStorage().get(profile).addObjToDB(getObjectiveID(), defaultInstruction);
         } catch (final QuestException e) {
-            log.warn(instruction.getPackage(), "Could not create new Objective for '" + instruction.getID()
+            log.warn(getPackage(), "Could not create new Objective for '" + getObjectiveID()
                     + "' for '" + profile + "' objective: The Objective Instruction could not be resolved: " + e.getMessage(), e);
         }
     }
@@ -268,12 +251,12 @@ public abstract class DefaultObjective implements PropertyHolder {
     public final void startObjective(final Profile profile, final String instructionString, final ObjectiveState previousState) {
         synchronized (this) {
             try {
-                final ObjectiveData data = templateFactory.create(instructionString, profile, (ObjectiveID) instruction.getID());
+                final ObjectiveData data = templateFactory.create(instructionString, profile, getObjectiveID());
                 runObjectiveChangeEvent(profile, previousState, ObjectiveState.ACTIVE);
                 dataMap.put(profile, data);
                 start(profile);
             } catch (final QuestException exception) {
-                log.warn(instruction.getPackage(), "Error while loading " + instruction.getID() + " objective data for "
+                log.warn(getPackage(), "Error while loading " + getObjectiveID() + " objective data for "
                         + profile + ": " + exception.getMessage(), exception);
             }
         }
@@ -326,14 +309,13 @@ public abstract class DefaultObjective implements PropertyHolder {
     public final void stopObjective(final Profile profile, final ObjectiveState newState) {
         synchronized (this) {
             runObjectiveChangeEvent(profile, ObjectiveState.ACTIVE, newState);
-            stop(profile);
             dataMap.remove(profile);
         }
     }
 
     private void runObjectiveChangeEvent(final Profile profile, final ObjectiveState previousState, final ObjectiveState newState) {
         final boolean isAsync = !BetonQuest.getInstance().getServer().isPrimaryThread();
-        new PlayerObjectiveChangeEvent(profile, isAsync, this, instruction.getID(), newState, previousState).callEvent();
+        new PlayerObjectiveChangeEvent(profile, isAsync, this, getService().getObjectiveID(), newState, previousState).callEvent();
     }
 
     /**
@@ -368,17 +350,7 @@ public abstract class DefaultObjective implements PropertyHolder {
      * @return the label of the objective
      */
     public final String getLabel() {
-        return instruction.getID().getFull();
-    }
-
-    /**
-     * Sets the label of this objective. Don't worry about it, it's only used by
-     * the rest of BetonQuest's logic.
-     *
-     * @param newID new ID of the objective
-     */
-    public void setLabel(final ObjectiveID newID) {
-        instruction = instruction.copy(newID);
+        return getService().getObjectiveID().getFull();
     }
 
     /**
@@ -388,8 +360,7 @@ public abstract class DefaultObjective implements PropertyHolder {
     public void close() {
         for (final Map.Entry<Profile, ObjectiveData> entry : dataMap.entrySet()) {
             final Profile profile = entry.getKey();
-            stop(profile);
-            BetonQuest.getInstance().getPlayerDataStorage().get(profile).addRawObjective((ObjectiveID) instruction.getID(),
+            BetonQuest.getInstance().getPlayerDataStorage().get(profile).addRawObjective(getService().getObjectiveID(),
                     entry.getValue().toString());
         }
     }

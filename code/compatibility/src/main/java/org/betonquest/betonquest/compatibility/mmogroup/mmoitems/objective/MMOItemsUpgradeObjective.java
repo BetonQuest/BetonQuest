@@ -5,9 +5,9 @@ import net.Indyuce.mmoitems.api.item.mmoitem.MMOItem;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 
 /**
  * An objective that listens for the player upgrading their MMOItems item.
@@ -27,13 +27,13 @@ public class MMOItemsUpgradeObjective extends DefaultObjective {
     /**
      * Constructor for the MMOItemsUpgradeObjective.
      *
-     * @param instruction the instruction object representing the objective
-     * @param itemID      the ID of the item to be upgraded
-     * @param itemType    the type of the item to be upgraded
+     * @param service  the objective factory service
+     * @param itemID   the ID of the item to be upgraded
+     * @param itemType the type of the item to be upgraded
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public MMOItemsUpgradeObjective(final Instruction instruction, final Argument<String> itemID, final Argument<String> itemType) throws QuestException {
-        super(instruction);
+    public MMOItemsUpgradeObjective(final ObjectiveFactoryService service, final Argument<String> itemID, final Argument<String> itemType) throws QuestException {
+        super(service);
         this.itemID = itemID;
         this.itemType = itemType;
     }
