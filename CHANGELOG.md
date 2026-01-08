@@ -173,6 +173,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `mspawnmob` exception when spawning the mob is canceled/forbidden
 - conversations could cause deadlocks when too many conditions are checked
 - `itemdurability` variable parsed differently than intended in docs
+- database connection is now more stable and reconnect probably works better now
 ### Security
 
 ## [2.2.1] - 2025-01-12
