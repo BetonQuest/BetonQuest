@@ -139,7 +139,7 @@ public class JoinQuitListener implements Listener {
     public void onPlayerQuit(final PlayerQuitEvent event) {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         for (final DefaultObjective objective : questTypeApi.getActive(onlineProfile)) {
-            objective.pauseObjectiveForPlayer(onlineProfile);
+            questTypeApi.pause(onlineProfile, objective.getObjectiveID());
         }
         playerDataStorage.remove(onlineProfile);
     }

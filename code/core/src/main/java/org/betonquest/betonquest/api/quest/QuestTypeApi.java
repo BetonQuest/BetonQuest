@@ -14,6 +14,7 @@ import java.util.List;
 /**
  * The QuestTypeApi provides access to the quest related core features.
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public interface QuestTypeApi {
 
     /**
@@ -70,6 +71,22 @@ public interface QuestTypeApi {
      * @param objectiveID ID of the objective
      */
     void newObjective(Profile profile, ObjectiveID objectiveID);
+
+    /**
+     * Pauses the existing objective for given player.
+     *
+     * @param profile     the {@link Profile} of the player
+     * @param objectiveID ID of the objective
+     */
+    void pauseObjective(Profile profile, ObjectiveID objectiveID);
+
+    /**
+     * Cancels the existing objective for given player.
+     *
+     * @param profile     the {@link Profile} of the player
+     * @param objectiveID ID of the objective
+     */
+    void cancelObjective(Profile profile, ObjectiveID objectiveID);
 
     /**
      * Resumes the existing objective for given player.

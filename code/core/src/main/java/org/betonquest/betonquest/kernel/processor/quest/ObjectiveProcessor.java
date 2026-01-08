@@ -1,15 +1,19 @@
 package org.betonquest.betonquest.kernel.processor.quest;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.argument.parser.IdentifierParser;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Placeholders;
+import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
@@ -32,6 +36,7 @@ import java.util.Set;
 /**
  * Stores Objectives and starts/stops/resumes them.
  */
+@SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.TooManyMethods"})
 public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjective> {
 
     /**
@@ -168,6 +173,65 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
         }
     }
 
+    private void runObjectiveChangeEvent(final Objective objective, final Profile profile, final ObjectiveState previousState, final ObjectiveState newState) {
+        final boolean isAsync = !BetonQuest.getInstance().getServer().isPrimaryThread();
+        new PlayerObjectiveChangeEvent(profile, isAsync, objective, objective.getObjectiveID(), newState, previousState).callEvent();
+    }
+
+    @SuppressWarnings("PMD.AvoidSynchronizedStatement")
+    private void startObjective(final Objective objective, final Profile profile, final String instructionString, final ObjectiveState previousState) {
+        synchronized (this) {
+            runObjectiveChangeEvent(objective, profile, previousState, ObjectiveState.ACTIVE);
+            objective.getService().getData().put(profile, instructionString);
+        }
+    }
+
+    @SuppressWarnings("PMD.AvoidSynchronizedStatement")
+    private void stopObjective(final Objective objective, final Profile profile, final ObjectiveState newState) {
+        synchronized (this) {
+            runObjectiveChangeEvent(objective, profile, ObjectiveState.ACTIVE, newState);
+            objective.getService().getData().remove(profile);
+        }
+    }
+
+    /**
+     * Cancels the objective for given player.
+     *
+     * @param profile     the {@link Profile} of the player
+     * @param objectiveID ID of the objective
+     */
+    public void cancel(final Profile profile, final ObjectiveID objectiveID) {
+        final Objective objective = values.get(objectiveID);
+        if (objective == null) {
+            log.error("Objective '%s' could not be cancelled - not found.".formatted(objectiveID));
+            return;
+        }
+        if (!objective.getService().containsProfile(profile)) {
+            log.error("Objective '%s' could not be cancelled - profile '%s' does not have it.".formatted(objectiveID, profile));
+            return;
+        }
+        stopObjective(objective, profile, ObjectiveState.CANCELED);
+    }
+
+    /**
+     * Pauses the objective for given player.
+     *
+     * @param profile     the {@link Profile} of the player
+     * @param objectiveID ID of the objective
+     */
+    public void pause(final Profile profile, final ObjectiveID objectiveID) {
+        final Objective objective = values.get(objectiveID);
+        if (objective == null) {
+            log.error("Objective '%s' could not be paused - not found.".formatted(objectiveID));
+            return;
+        }
+        if (!objective.getService().containsProfile(profile)) {
+            log.error("Objective '%s' could not be paused - profile '%s' does not have it.".formatted(objectiveID, profile));
+            return;
+        }
+        stopObjective(objective, profile, ObjectiveState.PAUSED);
+    }
+
     /**
      * Creates new objective for given player.
      *
@@ -204,7 +268,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
             log.debug(objectiveID.getPackage(), "'%s' already has the '%s' objective!".formatted(profile, objectiveID));
             return;
         }
-        objective.resumeObjectiveForPlayer(profile, instruction);
+        startObjective(objective, profile, instruction, ObjectiveState.PAUSED);
     }
 
     /**

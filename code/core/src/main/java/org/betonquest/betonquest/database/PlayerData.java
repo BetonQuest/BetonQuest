@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.conversation.PlayerConversationState;
 import org.betonquest.betonquest.database.Saver.Record;
@@ -562,8 +563,8 @@ public class PlayerData implements TagData, PointData {
      * Purges all profile's data from the database and from this object.
      */
     public void purgePlayer() {
-        for (final DefaultObjective obj : questTypeApi.getPlayerObjectives(profile)) {
-            obj.cancelObjectiveForPlayer(profile);
+        for (final Objective obj : questTypeApi.getPlayerObjectives(profile)) {
+            questTypeApi.cancelObjective(profile, obj.getObjectiveID());
         }
         // clear all lists
         objectives.clear();
