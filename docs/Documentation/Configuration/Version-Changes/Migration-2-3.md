@@ -32,6 +32,7 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 - [3.0.0-DEV-58 - Delete messages.yml](#300-dev-58-delete-messagesyml) :thunder_cloud_rain:
 - [3.0.0-DEV-65 - Delete menuConfig.yml](#300-dev-65-delete-menuconfigyml) :thunder_cloud_rain:
 - [3.0.0-DEV-71 - Renamed Translation Keys](#300-dev-71-renamed-translation-keys) :sun:
+- [3.0.0-DEV-99 - BossBar Style](#300-dev-99-bossbar-style) :thunder_cloud_rain:
 - [3.0.0-DEV-114 - Npc Rework](#300-dev-114-npc-rework) :thunder_cloud_rain:
 - [3.0.0-DEV-135 - Citizens Adaption to NpcID](#300-dev-135-citizens-adaption-to-npcid) :thunder_cloud_rain:
 - [3.0.0-DEV-142 - Conversation Sounds](#300-dev-142-conversation-sounds) :thunder_cloud_rain:
@@ -146,6 +147,27 @@ so also here you need to move your custom translations.
     - `journal.*`
     - `journal_main_page.*.text`
     - `menus.*.items.*.text`
+
+### 3.0.0-DEV-99 - BossBar Style :thunder_cloud_rain:
+
+As the bossbar is now implemented with the adventure API, the style of a bossbar now has different values.
+The new ones can be seen here: [Style](https://jd.advntr.dev/api/4.25.0/net/kyori/adventure/bossbar/BossBar.Overlay.html)
+
+<div class="grid" markdown>
+
+```YAML title="Old Syntax"
+events:
+  bossbar: notify "Time left" io:bossbar
+    barColor:purple stay:100 style:SEGMENTED_12
+```
+
+```YAML title="New Syntax"
+events:
+  bossbar: notify "Time left" io:bossbar
+    barColor:purple stay:100 style:NOTCHED_12
+```
+
+</div>
 
 ### 3.0.0-DEV-114 - Npc Rework :thunder_cloud_rain:
 
