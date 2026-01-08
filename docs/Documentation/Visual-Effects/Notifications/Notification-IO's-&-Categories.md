@@ -87,7 +87,7 @@ Shows the notification using a bossbar at the top of the players screen.
 | barFlags        | What [flags](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/boss/BarFlag.html) to add to the bossbar. `PLAY_BOSS_MUSIC` seems to be broken in either server or the game itself. |
 | barColor        | What [color](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/boss/BarColor.html) to draw the bar.                                                                                |
 | progress        | What progress to show in the bar. A floating point number between 0.0 (empty) and 1.0 (full).                                                                                        |
-| style           | What bar [style](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/boss/BarStyle.html) to use.                                                                                     |
+| style           | What bar [style](https://jd.advntr.dev/api/4.25.0/net/kyori/adventure/bossbar/BossBar.Overlay.html) to use.                                                                          |
 | stay            | How many ticks to keep the bar on screen. Defaults to 70.                                                                                                                            |
 | countdown       | Animates the progress of the bar if set. The value determines how often the bar is updated. Formula: $TimeBetweenUpdates = \frac{stay}{countdown}$                                   |
 | [Sound](#sound) | Any option from the [SoundIO](#sound).                                                                                                                                               |
