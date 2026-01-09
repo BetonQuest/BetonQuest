@@ -7,16 +7,14 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveProperties;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.jetbrains.annotations.Nullable;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -40,6 +38,16 @@ public class DelayObjective extends DefaultObjective {
     private final Argument<Number> delay;
 
     /**
+     * The flag for parsing the delay time as ticks.
+     */
+    private final FlagArgument<Boolean> ticks;
+
+    /**
+     * The flag for parsing the delay time as seconds.
+     */
+    private final FlagArgument<Boolean> seconds;
+
+    /**
      * The runnable task that checks the delay.
      */
     private final BukkitTask runnable;
@@ -50,12 +58,16 @@ public class DelayObjective extends DefaultObjective {
      * @param service  the objective factory service
      * @param interval the interval in ticks at which the objective checks if the time is up
      * @param delay    the delay time in seconds, minutes, or ticks
+     * @param ticks    the flag for parsing the delay time as ticks
+     * @param seconds  the flag for parsing the delay time as seconds
      * @throws QuestException if there is an error in the instruction
      */
     public DelayObjective(final ObjectiveFactoryService service, final Argument<Number> interval,
-                          final Argument<Number> delay) throws QuestException {
+                          final Argument<Number> delay, final FlagArgument<Boolean> ticks, final FlagArgument<Boolean> seconds) throws QuestException {
         super(service);
         this.delay = delay;
+        this.ticks = ticks;
+        this.seconds = seconds;
         this.runnable = new BukkitRunnable() {
             @Override
             public void run() {
@@ -63,14 +75,8 @@ public class DelayObjective extends DefaultObjective {
                 final long time = System.currentTimeMillis();
                 for (final Entry<Profile, String> entry : service.getData().entrySet()) {
                     final Profile profile = entry.getKey();
-                    final DelayData playerData;
-                    try {
-                        playerData = new DelayData(entry.getValue(), entry.getKey(), getObjectiveID());
-                    } catch (final QuestException ignored) {
-                        continue;
-                    }
                     final boolean profileConditions = getExceptionHandler().handle(() -> service.checkConditions(profile), false);
-                    if (profileConditions && time >= playerData.getTime()) {
+                    if (profileConditions && time >= getTargetTimestamp(profile)) {
                         // don't complete the objective, it will throw CME/
                         // store the player instead, complete later
                         players.add(profile);
@@ -89,15 +95,11 @@ public class DelayObjective extends DefaultObjective {
         properties.setProperty("rawseconds", this::parseRawSecondsProperty);
     }
 
-    private double timeToMilliSeconds(final Profile profile, final double time) throws QuestException {
-        final boolean ticks = getObjectiveID().getInstruction().bool().getFlag("ticks", true)
-                .getValue(profile).orElse(false);
-        if (ticks) {
+    private long timeToMilliSeconds(final Profile profile, final long time) throws QuestException {
+        if (ticks.getValue(profile).orElse(false)) {
             return time * 50;
         }
-        final boolean seconds = getObjectiveID().getInstruction().bool().getFlag("seconds", true)
-                .getValue(profile).orElse(false);
-        if (seconds) {
+        if (seconds.getValue(profile).orElse(false)) {
             return time * 1000;
         }
         return time * 1000 * 60;
@@ -110,8 +112,8 @@ public class DelayObjective extends DefaultObjective {
     }
 
     private String getDefaultDataInstruction(final Profile profile) throws QuestException {
-        final double millis = timeToMilliSeconds(profile, delay.getValue(profile).doubleValue());
-        return Double.toString(System.currentTimeMillis() + millis);
+        final long millis = timeToMilliSeconds(profile, delay.getValue(profile).longValue());
+        return Long.toString(System.currentTimeMillis() + millis);
     }
 
     private Component parseLeftProperty(final Profile profile) throws QuestException {
@@ -125,7 +127,7 @@ public class DelayObjective extends DefaultObjective {
         final Component secondsWord = pluginMessage.getMessage(profile, "seconds");
         final Component secondsWordSingular = pluginMessage.getMessage(profile, "seconds_singular");
 
-        final long endTimestamp = (long) getDelayData(profile).getTime();
+        final long endTimestamp = getTargetTimestamp(profile);
         final LocalDateTime end = LocalDateTime.ofInstant(Instant.ofEpochMilli(endTimestamp), ZoneId.systemDefault());
         final Duration duration = Duration.between(LocalDateTime.now(), end);
 
@@ -153,55 +155,21 @@ public class DelayObjective extends DefaultObjective {
     private String parseDateProperty(final Profile profile) {
         final String pattern = BetonQuest.getInstance().getPluginConfig().getString("date_format", "");
         final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.ROOT);
-        final long millis = (long) getDelayData(profile).getTime();
+        final long millis = getTargetTimestamp(profile);
         return Instant.ofEpochMilli(millis).atZone(ZoneId.systemDefault()).format(formatter);
     }
 
     private String parseRawSecondsProperty(final Profile profile) {
-        final double timeLeft = getDelayData(profile).getTime() - System.currentTimeMillis();
+        final long timeLeft = getTargetTimestamp(profile) - System.currentTimeMillis();
         return String.valueOf(timeLeft / 1000);
     }
 
-    /**
-     * Get the delay data for a profile.
-     */
-    @Nullable
-    private DelayData getDelayData(final Profile profile) {
+    private long getTargetTimestamp(final Profile profile) {
+        final String data = getService().getData().get(profile);
         try {
-            return new DelayData(getService().getData().get(profile), profile, getObjectiveID());
-        } catch (final QuestException ignored) {
-            return null;
-        }
-    }
-
-    /**
-     * Data class for the DelayObjective.
-     *
-     * @deprecated do not use this class. it's scheduled for removal in future versions
-     */
-    @Deprecated
-    public static class DelayData extends ObjectiveData {
-
-        /**
-         * The timestamp when the delay is over.
-         */
-        private final double timestamp;
-
-        /**
-         * Constructor for the DelayData.
-         *
-         * @param instruction the data of the objective
-         * @param profile     the profile associated with this objective
-         * @param objID       the ID of the objective
-         * @throws QuestException when the instruction could not be parsed as number
-         */
-        public DelayData(final String instruction, final Profile profile, final ObjectiveID objID) throws QuestException {
-            super(instruction, profile, objID);
-            timestamp = NumberParser.DEFAULT.apply(instruction).doubleValue();
-        }
-
-        private double getTime() {
-            return timestamp;
+            return NumberParser.DEFAULT.apply(data).longValue();
+        } catch (final QuestException e) {
+            return System.currentTimeMillis();
         }
     }
 }
