@@ -3,21 +3,15 @@ package org.betonquest.betonquest.compatibility.jobsreborn.objective;
 import com.gamingmesh.jobs.api.JobsPaymentEvent;
 import com.gamingmesh.jobs.container.CurrencyType;
 import net.kyori.adventure.text.Component;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveProperties;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
 
 /**
  * Objective that tracks the payment received by a player.
@@ -48,12 +42,9 @@ public class PaymentObjective extends DefaultObjective {
         this.paymentSender = paymentSender;
         service.setDefaultData(this::getDefaultDataInstruction);
         final ObjectiveProperties properties = service.getProperties();
-        properties.setProperty("amount", profile -> Optional.ofNullable(getPaymentData(profile))
-                .map(data -> data.amount).map(Object::toString).orElse(""));
-        properties.setProperty("left", profile -> Optional.ofNullable(getPaymentData(profile))
-                .map(data -> data.targetAmount - data.amount).map(Object::toString).orElse(""));
-        properties.setProperty("total", profile -> Optional.ofNullable(getPaymentData(profile))
-                .map(data -> data.targetAmount).map(Object::toString).orElse(""));
+        properties.setProperty("amount", profile -> String.valueOf(getAmount(profile)));
+        properties.setProperty("left", profile -> String.valueOf(getRemainingAmount(profile)));
+        properties.setProperty("total", profile -> targetAmount.getValue(profile).toString());
     }
 
     /**
@@ -64,22 +55,17 @@ public class PaymentObjective extends DefaultObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void onJobsPaymentEvent(final JobsPaymentEvent event, final Profile profile) throws QuestException {
-        final PaymentData playerData = getPaymentData(profile);
-        if (playerData == null) {
-            getLogger().warn("Could not access PaymentData for profile '" + profile + "'.");
+        final double previousAmount = getAmount(profile);
+        add(profile, event.get(CurrencyType.MONEY));
+
+        if (isCompleted(profile)) {
+            getService().complete(profile);
             return;
         }
-        final double previousAmount = playerData.amount;
-        playerData.add(event.get(CurrencyType.MONEY));
-
-        if (playerData.isCompleted()) {
-            getService().complete(profile);
-        } else {
-            final int interval = getService().getServiceDataProvider().getNotificationInterval(profile);
-            if (interval > 0 && ((int) playerData.amount) / interval != ((int) previousAmount) / interval && profile.getOnlineProfile().isPresent()) {
-                paymentSender.sendNotification(profile,
-                        new VariableReplacement("amount", Component.text(playerData.targetAmount - playerData.amount)));
-            }
+        final int interval = getService().getServiceDataProvider().getNotificationInterval(profile);
+        if (interval > 0 && ((int) getAmount(profile)) / interval != ((int) previousAmount) / interval && profile.getOnlineProfile().isPresent()) {
+            paymentSender.sendNotification(profile,
+                    new VariableReplacement("amount", Component.text(getRemainingAmount(profile))));
         }
     }
 
@@ -87,69 +73,25 @@ public class PaymentObjective extends DefaultObjective {
         return String.valueOf(targetAmount.getValue(profile).doubleValue());
     }
 
-    /**
-     * Get the {@link PaymentData} for the given {@link Profile}.
-     */
-    @Nullable
-    private PaymentData getPaymentData(final Profile profile) {
-        final String data = getService().getData().getOrDefault(profile, "");
-        try {
-            return new PaymentData(data, profile, getObjectiveID());
-        } catch (final QuestException e) {
-            getLogger().error("Could not access PaymentData for profile '" + profile + "': " + e.getMessage(), e);
-        }
-        return null;
+    private double getRemainingAmount(final Profile profile) throws QuestException {
+        return targetAmount.getValue(profile).doubleValue() - getAmount(profile);
     }
 
-    /**
-     * Data class for the Payment objective.
-     *
-     * @deprecated do not use this class. it's scheduled for removal in future versions
-     */
-    @Deprecated
-    public static class PaymentData extends ObjectiveData {
+    private boolean isCompleted(final Profile profile) throws QuestException {
+        return getAmount(profile) >= targetAmount.getValue(profile).doubleValue();
+    }
 
-        /**
-         * The amount of money the player has to earn to complete the objective.
-         */
-        private final double targetAmount;
+    private void add(final Profile profile, final double amount) throws QuestException {
+        final double newAmount = getAmount(profile) + amount;
+        getService().getData().put(profile, String.valueOf(newAmount));
+        getService().updateData(profile);
+    }
 
-        /**
-         * The amount of money the player has earned. This is used to check if the objective is completed.
-         */
-        private double amount;
-
-        /**
-         * Constructor for the PaymentData class.
-         *
-         * @param instruction the instruction of the data object; parse it to get all required information
-         * @param profile     the {@link Profile} to load the data for
-         * @param objID       ID of the objective, used by BetonQuest to store this ObjectiveData in the database
-         * @throws QuestException when the instruction is invalid
-         */
-        public PaymentData(final String instruction, final Profile profile, final ObjectiveID objID) throws QuestException {
-            super(instruction, profile, objID);
-            targetAmount = NumberParser.DEFAULT.apply(instruction).doubleValue();
+    private double getAmount(final Profile profile) throws QuestException {
+        final String data = getService().getData().get(profile);
+        if (data == null) {
+            return 0;
         }
-
-        private void add(final Double amount) {
-            final ObjectiveFactoryService service;
-            try {
-                service = BetonQuest.getInstance().getQuestTypeApi().getObjective(objID).getService();
-            } catch (final QuestException e) {
-                throw new IllegalStateException("Could not get objective service for objective '" + objID + "'", e);
-            }
-            this.amount += amount;
-            update(service);
-        }
-
-        private boolean isCompleted() {
-            return amount >= targetAmount;
-        }
-
-        @Override
-        public String toString() {
-            return amount + "/" + targetAmount;
-        }
+        return NumberParser.DEFAULT.apply(data).doubleValue();
     }
 }
