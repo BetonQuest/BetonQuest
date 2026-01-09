@@ -2,12 +2,10 @@ package org.betonquest.betonquest.quest.objective.stage;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveProperties;
@@ -56,8 +54,7 @@ public class StageObjective extends DefaultObjective {
      * @throws QuestException if the stage is not a valid stage for the objective
      */
     public String getStage(final Profile profile) throws QuestException {
-        final StageData stageData = new StageData(getService().getData().get(profile), profile, getObjectiveID());
-        final String stage = stageData.getStage();
+        final String stage = getService().getData().get(profile);
         if (stageMap.isValidStage(stage)) {
             return stage;
         }
@@ -72,10 +69,10 @@ public class StageObjective extends DefaultObjective {
      * @throws QuestException if the stage is not a valid stage for the objective
      */
     public void setStage(final Profile profile, final String stage) throws QuestException {
-        final StageData stageData = new StageData(getService().getData().get(profile), profile, getObjectiveID());
         if (stageMap.isValidStage(stage)) {
             if (getService().checkConditions(profile)) {
-                stageData.setStage(stage);
+                getService().getData().put(profile, stage);
+                getService().updateData(profile);
             }
             return;
         }
@@ -131,51 +128,6 @@ public class StageObjective extends DefaultObjective {
      */
     public int getStageIndex(final String stage) throws QuestException {
         return stageMap.getIndex(stage);
-    }
-
-    /**
-     * {@link ObjectiveData} for {@link StageObjective}.
-     *
-     * @deprecated do not use this class. it's scheduled for removal in future versions
-     */
-    @Deprecated
-    public static class StageData extends ObjectiveData {
-
-        /**
-         * Creates a new objective data.
-         *
-         * @param instruction the instruction
-         * @param profile     the profile
-         * @param objID       the objective ID
-         */
-        public StageData(final String instruction, final Profile profile, final ObjectiveID objID) {
-            super(instruction, profile, objID);
-        }
-
-        /**
-         * Returns the stage of the objective.
-         *
-         * @return the stage
-         */
-        private String getStage() {
-            return instruction;
-        }
-
-        /**
-         * Sets the stage of the objective.
-         *
-         * @param stage the stage
-         */
-        public void setStage(final String stage) {
-            final ObjectiveFactoryService service;
-            try {
-                service = BetonQuest.getInstance().getQuestTypeApi().getObjective(objID).getService();
-            } catch (final QuestException e) {
-                throw new IllegalStateException("Could not get objective service for objective '" + objID + "'", e);
-            }
-            instruction = stage;
-            update(service);
-        }
     }
 
     /**

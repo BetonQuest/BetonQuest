@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.objective.delay;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
@@ -23,6 +24,8 @@ public class DelayObjectiveFactory implements ObjectiveFactory {
         final Argument<Number> delay = instruction.number().atLeast(0).get();
         final Argument<Number> interval = instruction.number()
                 .atLeast(1).get("interval", 20 * 10);
-        return new DelayObjective(service, interval, delay);
+        final FlagArgument<Boolean> ticks = instruction.bool().getFlag("ticks", true);
+        final FlagArgument<Boolean> seconds = instruction.bool().getFlag("seconds", true);
+        return new DelayObjective(service, interval, delay, ticks, seconds);
     }
 }
