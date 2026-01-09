@@ -7,15 +7,12 @@ import org.betonquest.betonquest.api.bukkit.event.PlayerUpdatePointEvent;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.quest.condition.number.Operation;
 
-import java.util.Locale;
 import java.util.Optional;
 
 /**
@@ -70,8 +67,8 @@ public class PointObjective extends DefaultObjective {
         this.mode = mode;
         this.operation = operation;
         getService().setDefaultData(this::getDefaultDataInstruction);
-        service.getProperties().setProperty("amount", profile -> getProperty("amount", profile));
-        service.getProperties().setProperty("left", profile -> getProperty("left", profile));
+        service.getProperties().setProperty("amount", profile -> String.valueOf(getPoints(profile)));
+        service.getProperties().setProperty("left", profile -> String.valueOf(getRemainingPoints(profile)));
     }
 
     private String getDefaultDataInstruction(final Profile profile) throws QuestException {
@@ -82,18 +79,6 @@ public class PointObjective extends DefaultObjective {
         }
         final Optional<Integer> points = playerDataStorage.getOffline(profile).getPointsFromCategory(category.getValue(profile));
         return String.valueOf(targetValue + points.orElse(0));
-    }
-
-    private String getProperty(final String name, final Profile profile) throws QuestException {
-        final PointData data = new PointData(getService().getData().get(profile), profile, getObjectiveID());
-        final int value = switch (name.toLowerCase(Locale.ROOT)) {
-            case "amount" -> data.getPoints();
-            case "left" -> data.getPoints() - playerDataStorage.getOffline(profile)
-                    .getPointsFromCategory(category.getValue(profile))
-                    .orElse(0);
-            default -> throw new QuestException("Unknown property: " + name);
-        };
-        return String.valueOf(value);
     }
 
     /**
@@ -128,40 +113,19 @@ public class PointObjective extends DefaultObjective {
     }
 
     private void checkProgress(final Profile profile, final int count) throws QuestException {
-        final PointData data = new PointData(getService().getData().get(profile), profile, getObjectiveID());
-        if (operation.getValue(profile).check(count, data.getPoints())) {
+        if (operation.getValue(profile).check(count, getPoints(profile))) {
             getService().complete(profile);
         }
     }
 
-    /**
-     * Data class for the PointObjective.
-     *
-     * @deprecated do not use this class. it's scheduled for removal in future versions
-     */
-    @Deprecated
-    public static class PointData extends ObjectiveData {
+    private int getRemainingPoints(final Profile profile) throws QuestException {
+        return getPoints(profile) - playerDataStorage.getOffline(profile)
+                .getPointsFromCategory(category.getValue(profile))
+                .orElse(0);
+    }
 
-        /**
-         * The total required points.
-         */
-        private final int points;
-
-        /**
-         * Constructor for the PointData.
-         *
-         * @param instruction the data of the objective
-         * @param profile     the profile associated with this objective
-         * @param objID       the ID of the objective
-         * @throws QuestException when the instruction is not a number
-         */
-        public PointData(final String instruction, final Profile profile, final ObjectiveID objID) throws QuestException {
-            super(instruction, profile, objID);
-            this.points = NumberParser.DEFAULT.apply(instruction).intValue();
-        }
-
-        private int getPoints() {
-            return points;
-        }
+    private int getPoints(final Profile profile) throws QuestException {
+        final String data = getService().getData().get(profile);
+        return NumberParser.DEFAULT.apply(data).intValue();
     }
 }
