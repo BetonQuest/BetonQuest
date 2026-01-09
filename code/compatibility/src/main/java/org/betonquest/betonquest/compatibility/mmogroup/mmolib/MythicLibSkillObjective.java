@@ -57,7 +57,7 @@ public class MythicLibSkillObjective extends DefaultObjective {
         if (!triggerTypes.contains(event.getCast().getTrigger())) {
             return;
         }
-        completeObjective(onlineProfile);
+        getService().complete(onlineProfile);
     }
 
     @Override

@@ -98,7 +98,7 @@ public class PasswordObjective extends DefaultObjective {
         final String password = message.substring(prefix.length());
 
         if (regex.getValue(onlineProfile).map(pattern -> pattern.matcher(password).matches()).orElse(false)) {
-            Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> completeObjective(onlineProfile));
+            Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> getService().complete(onlineProfile));
             return !fromCommand || !prefix.isEmpty();
         }
         try {

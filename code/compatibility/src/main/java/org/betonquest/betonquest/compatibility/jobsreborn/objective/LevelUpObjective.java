@@ -40,7 +40,7 @@ public class LevelUpObjective extends DefaultObjective {
      */
     public void onJobsLevelUpEvent(final JobsLevelUpEvent event, final OnlineProfile onlineProfile) throws QuestException {
         if (event.getJob().isSame(this.job.getValue(onlineProfile))) {
-            completeObjective(onlineProfile);
+            getService().complete(onlineProfile);
         }
     }
 

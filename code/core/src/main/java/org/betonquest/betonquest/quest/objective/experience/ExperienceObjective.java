@@ -53,7 +53,7 @@ public class ExperienceObjective extends DefaultObjective {
     private void onExperienceChange(final OnlineProfile onlineProfile, final double newAmount, final boolean notify) throws QuestException {
         final double amount = this.amount.getValue(onlineProfile).doubleValue();
         if (newAmount >= amount) {
-            completeObjective(onlineProfile);
+            getService().complete(onlineProfile);
         } else if (this.hasNotify(onlineProfile) && notify) {
             final int level = (int) (amount - newAmount);
             if (level % getNotifyInterval(onlineProfile) == 0) {

@@ -65,7 +65,7 @@ public class PaymentObjective extends DefaultObjective {
         playerData.add(event.get(CurrencyType.MONEY));
 
         if (playerData.isCompleted()) {
-            completeObjective(profile);
+            getService().complete(profile);
         } else {
             final int interval = getNotifyInterval(profile);
             if (interval > 0 && ((int) playerData.amount) / interval != ((int) previousAmount) / interval && profile.getOnlineProfile().isPresent()) {

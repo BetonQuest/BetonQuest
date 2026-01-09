@@ -129,7 +129,7 @@ public class PointObjective extends DefaultObjective {
     private void checkProgress(final Profile profile, final int count) throws QuestException {
         final PointData data = new PointData(getService().getData().get(profile), profile, getObjectiveID());
         if (operation.getValue(profile).check(count, data.getPoints())) {
-            completeObjective(profile);
+            getService().complete(profile);
         }
     }
 

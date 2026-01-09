@@ -41,7 +41,7 @@ public class TrainCartsExitObjective extends DefaultObjective {
     public void onMemberSeatExit(final MemberSeatExitEvent event, final OnlineProfile onlineProfile) throws QuestException {
         if (TrainCartsUtils.isValidTrain(name.getValue(onlineProfile),
                 event.getMember().getGroup().getProperties().getTrainName())) {
-            completeObjective(onlineProfile);
+            getService().complete(onlineProfile);
         }
     }
 

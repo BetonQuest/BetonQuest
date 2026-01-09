@@ -164,7 +164,7 @@ public class NpcRangeObjective extends DefaultObjective {
             return;
         }
         playersInRange.remove(profile.getPlayerUUID());
-        completeObjective(profile);
+        getService().complete(profile);
     }
 
     @Override

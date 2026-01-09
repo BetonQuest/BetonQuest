@@ -77,7 +77,7 @@ public class DelayObjective extends DefaultObjective {
                     }
                 }
                 for (final Profile profile : players) {
-                    completeObjective(profile);
+                    getService().complete(profile);
                 }
             }
         }.runTaskTimer(BetonQuest.getInstance(), 0, interval.getValue(null).longValue());

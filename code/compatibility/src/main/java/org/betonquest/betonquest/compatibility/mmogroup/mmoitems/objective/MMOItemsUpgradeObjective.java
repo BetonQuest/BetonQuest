@@ -51,7 +51,7 @@ public class MMOItemsUpgradeObjective extends DefaultObjective {
                 || !upgradedItem.getType().getId().equals(itemType.getValue(profile))) {
             return;
         }
-        completeObjective(profile);
+        getService().complete(profile);
     }
 
     @Override

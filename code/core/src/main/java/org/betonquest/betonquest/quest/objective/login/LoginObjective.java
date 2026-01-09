@@ -29,7 +29,7 @@ public class LoginObjective extends DefaultObjective {
      * @param onlineProfile the profile of the player that joined
      */
     public void onJoin(final PlayerJoinEvent event, final OnlineProfile onlineProfile) {
-        completeObjective(onlineProfile);
+        getService().complete(onlineProfile);
     }
 
     @Override

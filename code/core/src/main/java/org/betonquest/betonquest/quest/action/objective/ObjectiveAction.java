@@ -115,7 +115,7 @@ public class ObjectiveAction implements NullableAction {
     private void handleForOnlinePlayer(final Profile profile, final ObjectiveID objectiveID, final DefaultObjective objective) {
         switch (action.toLowerCase(Locale.ROOT)) {
             case "start", "add" -> questTypeApi.newObjective(profile, objectiveID);
-            case "complete", "finish" -> objective.completeObjective(profile);
+            case "complete", "finish" -> objective.getService().complete(profile);
             default -> cancelObjectiveForOnlinePlayer(profile, objectiveID);
         }
     }

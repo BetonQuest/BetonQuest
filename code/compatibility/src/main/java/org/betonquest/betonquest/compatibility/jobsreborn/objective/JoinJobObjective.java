@@ -40,7 +40,7 @@ public class JoinJobObjective extends DefaultObjective {
      */
     public void onJobsJoinEvent(final JobsJoinEvent event, final OnlineProfile onlineProfile) throws QuestException {
         if (event.getJob().isSame(this.job.getValue(onlineProfile))) {
-            completeObjective(onlineProfile);
+            getService().complete(onlineProfile);
         }
     }
 

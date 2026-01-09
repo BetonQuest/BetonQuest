@@ -49,7 +49,7 @@ public class EquipItemObjective extends DefaultObjective {
     public void onEquipmentChange(final PlayerArmorChangeEvent event, final OnlineProfile onlineProfile) throws QuestException {
         if (event.getSlotType() == slotType.getValue(onlineProfile)
                 && item.getValue(onlineProfile).matches(event.getNewItem(), onlineProfile)) {
-            completeObjective(onlineProfile);
+            getService().complete(onlineProfile);
         }
     }
 

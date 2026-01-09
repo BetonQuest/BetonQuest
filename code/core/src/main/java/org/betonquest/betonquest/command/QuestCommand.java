@@ -1141,7 +1141,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "complete", "c" -> {
                 log.debug("Completing objective " + objectiveID + " for " + profile);
                 if (isOnline) {
-                    objective.completeObjective(profile);
+                    objective.getService().complete(profile);
                 } else {
                     playerData.removeRawObjective(objectiveID);
                 }

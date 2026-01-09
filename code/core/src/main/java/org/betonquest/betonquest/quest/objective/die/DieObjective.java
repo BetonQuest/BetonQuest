@@ -64,7 +64,7 @@ public class DieObjective extends DefaultObjective {
         if (cancel.getValue(onlineProfile).orElse(false)) {
             return;
         }
-        completeObjective(onlineProfile);
+        getService().complete(onlineProfile);
     }
 
     /**
@@ -79,7 +79,7 @@ public class DieObjective extends DefaultObjective {
             return;
         }
         getLocation(onlineProfile).ifPresent(event::setRespawnLocation);
-        completeObjective(onlineProfile);
+        getService().complete(onlineProfile);
     }
 
     /**
@@ -112,7 +112,7 @@ public class DieObjective extends DefaultObjective {
                     player.setFireTicks(0);
                 }
             }.runTaskLater(BetonQuest.getInstance(), 1);
-            completeObjective(onlineProfile);
+            getService().complete(onlineProfile);
         }
     }
 

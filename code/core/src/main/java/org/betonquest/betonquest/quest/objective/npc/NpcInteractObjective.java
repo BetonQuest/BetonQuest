@@ -65,7 +65,7 @@ public class NpcInteractObjective extends DefaultObjective {
             if (cancel.getValue(profile).orElse(false)) {
                 event.setCancelled(true);
             }
-            completeObjective(profile);
+            getService().complete(profile);
         }
     }
 

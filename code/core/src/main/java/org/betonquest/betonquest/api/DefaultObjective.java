@@ -59,17 +59,6 @@ public abstract class DefaultObjective implements Objective {
     }
 
     /**
-     * This method fires actions for the objective and removes it from the profile's
-     * list of active objectives. Use it when you detect that the objective has
-     * been completed. It deletes the objective using delete() method.
-     *
-     * @param profile the {@link Profile} for which the objective is to be completed
-     */
-    public final void completeObjective(final Profile profile) {
-        getService().complete(profile);
-    }
-
-    /**
      * Should be called at the end of the use of this objective, for example
      * when reloading the plugin. It will save all profile data to their "inactive" map.
      */

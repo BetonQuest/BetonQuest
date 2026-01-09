@@ -41,12 +41,12 @@ public class MMOCoreChangeClassObjective extends DefaultObjective {
      */
     public void onClassChange(final PlayerChangeClassEvent event, final OnlineProfile onlineProfile) throws QuestException {
         if (targetClassName == null) {
-            completeObjective(onlineProfile);
+            getService().complete(onlineProfile);
             return;
         }
 
         if (targetClassName.getValue(onlineProfile).equalsIgnoreCase(event.getNewClass().getName())) {
-            completeObjective(onlineProfile);
+            getService().complete(onlineProfile);
         }
     }
 

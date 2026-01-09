@@ -69,7 +69,7 @@ public class MenuObjective extends DefaultObjective {
                     + e.getMessage(), e);
             return;
         }
-        this.completeObjective(profile);
+        this.getService().complete(profile);
     }
 
     @Override

@@ -53,7 +53,7 @@ public class TagObjective extends DefaultObjective {
      */
     public void onTag(final PlayerTagAddEvent event, final Profile profile) throws QuestException {
         if (event.getTag().equals(tag.getValue(profile))) {
-            completeObjective(profile);
+            getService().complete(profile);
         }
     }
 
@@ -69,7 +69,7 @@ public class TagObjective extends DefaultObjective {
             return;
         }
         if (playerDataStorage.getOffline(profile).hasTag(tag.getValue(profile))) {
-            completeObjective(profile);
+            getService().complete(profile);
         }
     }
 }

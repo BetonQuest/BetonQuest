@@ -106,7 +106,7 @@ public class StageObjective extends DefaultObjective {
             }
         } catch (final QuestException e) {
             if (!preventCompletion.getValue(profile).orElse(false)) {
-                completeObjective(profile);
+                getService().complete(profile);
             }
             return;
         }

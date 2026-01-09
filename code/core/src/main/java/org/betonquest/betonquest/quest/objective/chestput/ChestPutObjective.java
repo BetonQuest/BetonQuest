@@ -133,7 +133,7 @@ public class ChestPutObjective extends DefaultObjective {
 
     private void checkItems(final OnlineProfile onlineProfile) throws QuestException {
         if (chestItemCondition.check(onlineProfile)) {
-            completeObjective(onlineProfile);
+            getService().complete(onlineProfile);
             if (chestTakeAction != null) {
                 chestTakeAction.execute(onlineProfile);
             }
