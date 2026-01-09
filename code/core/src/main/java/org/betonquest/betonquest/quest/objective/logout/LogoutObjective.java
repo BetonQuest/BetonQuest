@@ -29,7 +29,7 @@ public class LogoutObjective extends DefaultObjective {
      * @param onlineProfile the profile of the player that left
      */
     public void onQuit(final PlayerQuitEvent event, final OnlineProfile onlineProfile) {
-        completeObjective(onlineProfile);
+        getService().complete(onlineProfile);
     }
 
     @Override

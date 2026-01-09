@@ -44,7 +44,7 @@ public class RideObjective extends DefaultObjective {
         final Optional<EntityType> entityType = vehicle.getValue(onlineProfile);
         final boolean matchType = entityType.map(type -> type == event.getMount().getType()).orElse(true);
         if (matchType) {
-            completeObjective(onlineProfile);
+            getService().complete(onlineProfile);
         }
     }
 

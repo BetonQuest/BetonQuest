@@ -1,8 +1,10 @@
 package org.betonquest.betonquest.api.quest.objective.event;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.BukkitEventService;
 import org.betonquest.betonquest.api.bukkit.event.EventServiceSubscriber;
+import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.common.function.QuestBiFunction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -10,6 +12,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.betonquest.betonquest.kernel.processor.quest.ActionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.ConditionProcessor;
 import org.betonquest.betonquest.lib.bukkit.event.DefaultBukkitEventService;
@@ -25,7 +28,7 @@ import java.util.Optional;
 /**
  * The default implementation of the {@link ObjectiveService}.
  */
-@SuppressWarnings("PMD.CouplingBetweenObjects")
+@SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.TooManyMethods"})
 public class DefaultObjectiveService implements ObjectiveService {
 
     /**
@@ -106,6 +109,18 @@ public class DefaultObjectiveService implements ObjectiveService {
     }
 
     @Override
+    public void stop(final ObjectiveID objectiveID, final Profile profile, final ObjectiveState newState) throws QuestException {
+        getFactoryService(objectiveID).getData().remove(profile);
+        runObjectiveChangeEvent(objectiveID, profile, ObjectiveState.ACTIVE, newState);
+    }
+
+    @Override
+    public void start(final ObjectiveID objectiveID, final Profile profile, final String instructionString, final ObjectiveState previousState) throws QuestException {
+        getFactoryService(objectiveID).getData().put(profile, instructionString);
+        runObjectiveChangeEvent(objectiveID, profile, previousState, ObjectiveState.ACTIVE);
+    }
+
+    @Override
     public <T extends Event> void subscribe(final ObjectiveID objectiveID, final Class<T> eventClass, final NonProfileEventHandler<T> handler,
                                             final EventPriority priority, final boolean ignoreCancelled, final boolean ignoreConditions) throws QuestException {
         if (!eventService.require(eventClass, priority)) {
@@ -142,6 +157,11 @@ public class DefaultObjectiveService implements ObjectiveService {
         final EventServiceSubscriber<T> exceptionHandled = exceptionHandled(objectiveID, eventClass, subscriber);
         eventService.subscribe(eventClass, priority, ignoreCancelled, exceptionHandled);
         logger.debug(objectiveID.getPackage(), "Subscribed to event '" + eventClass.getSimpleName() + "' with priority '" + priority.name() + "' and ignoreCancelled '" + ignoreCancelled + "'");
+    }
+
+    private void runObjectiveChangeEvent(final ObjectiveID objectiveID, final Profile profile, final ObjectiveState previousState, final ObjectiveState newState) {
+        final boolean isAsync = !BetonQuest.getInstance().getServer().isPrimaryThread();
+        new PlayerObjectiveChangeEvent(profile, isAsync, objectiveID, newState, previousState).callEvent();
     }
 
     private <T extends Event> EventServiceSubscriber<T> exceptionHandled(final ObjectiveID objectiveID, final Class<T> eventClass,

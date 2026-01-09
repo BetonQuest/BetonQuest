@@ -119,7 +119,7 @@ public abstract class CountingObjective extends DefaultObjective {
     protected final boolean completeIfDoneOrNotify(final Profile profile, @Nullable final IngameNotificationSender notificationSender) {
         final CountingData data = getCountingData(profile);
         if (data.isComplete()) {
-            completeObjective(profile);
+            getService().complete(profile);
             return true;
         }
         if (hasNotify(profile) && notificationSender != null && shouldNotify(profile, data) && profile.getOnlineProfile().isPresent()) {

@@ -79,7 +79,7 @@ public class CommandObjective extends DefaultObjective {
             if (cancel.getValue(onlineProfile).orElse(false)) {
                 event.setCancelled(true);
             }
-            completeObjective(onlineProfile);
+            getService().complete(onlineProfile);
             return;
         }
         BetonQuest.getInstance().getQuestTypeApi().actions(onlineProfile, failActions.getValue(onlineProfile));

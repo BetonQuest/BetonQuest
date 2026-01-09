@@ -172,7 +172,7 @@ public abstract class AbstractLocationObjective extends DefaultObjective {
         final boolean toInside = isInsideHandleException(location, onlineProfile);
         if (!entry.getValue(onlineProfile).orElse(false) && !exit.getValue(onlineProfile).orElse(false)) {
             if (toInside) {
-                completeObjective(onlineProfile);
+                getService().complete(onlineProfile);
             }
             return;
         }
@@ -191,7 +191,7 @@ public abstract class AbstractLocationObjective extends DefaultObjective {
 
         if (entry.getValue(onlineProfile).orElse(false) && toInside && !fromInside
                 || exit.getValue(onlineProfile).orElse(false) && fromInside && !toInside) {
-            completeObjective(onlineProfile);
+            getService().complete(onlineProfile);
             playersInsideRegion.remove(onlineProfile.getProfileUUID());
         }
     }

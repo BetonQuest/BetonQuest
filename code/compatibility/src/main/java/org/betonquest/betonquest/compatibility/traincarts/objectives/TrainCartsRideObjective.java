@@ -144,7 +144,7 @@ public class TrainCartsRideObjective extends CountingObjective {
         final CountingData countingData = getCountingData(onlineProfile);
         countingData.add(ridden);
         if (countingData.isComplete()) {
-            completeObjective(onlineProfile);
+            getService().complete(onlineProfile);
         }
     }
 }

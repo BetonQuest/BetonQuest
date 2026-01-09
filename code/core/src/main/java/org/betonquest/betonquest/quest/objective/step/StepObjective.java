@@ -73,7 +73,7 @@ public class StepObjective extends DefaultObjective {
         if (!pressurePlateSelector.match(block.getBlockData().getMaterial())) {
             return;
         }
-        completeObjective(onlineProfile);
+        getService().complete(onlineProfile);
     }
 
     @Override

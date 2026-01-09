@@ -64,7 +64,7 @@ public class ArrowShootObjective extends DefaultObjective {
                 final Location arrowLocation = arrow.getLocation();
                 if (arrowLocation.getWorld().equals(location.getWorld())
                         && arrowLocation.distanceSquared(location) < pRange * pRange) {
-                    completeObjective(onlineProfile);
+                    getService().complete(onlineProfile);
                 }
             }
         }.runTask(BetonQuest.getInstance());

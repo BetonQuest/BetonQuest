@@ -59,7 +59,7 @@ public class MMOCoreProfessionObjective extends DefaultObjective {
         if (event.getNewLevel() < targetLevel.getValue(onlineProfile).intValue()) {
             return;
         }
-        completeObjective(onlineProfile);
+        getService().complete(onlineProfile);
     }
 
     @Override

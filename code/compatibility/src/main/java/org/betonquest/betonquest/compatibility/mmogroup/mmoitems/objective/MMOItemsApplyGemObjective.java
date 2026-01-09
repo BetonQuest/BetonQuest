@@ -62,7 +62,7 @@ public class MMOItemsApplyGemObjective extends DefaultObjective {
         if (!gemStone.getId().equals(gemID.getValue(profile))) {
             return;
         }
-        completeObjective(profile);
+        getService().complete(profile);
     }
 
     @Override

@@ -40,7 +40,7 @@ public class LeaveJobObjective extends DefaultObjective {
      */
     public void onJobsLeaveEvent(final JobsLeaveEvent event, final OnlineProfile onlineProfile) throws QuestException {
         if (event.getJob().isSame(this.job.getValue(onlineProfile))) {
-            completeObjective(onlineProfile);
+            getService().complete(onlineProfile);
         }
     }
 

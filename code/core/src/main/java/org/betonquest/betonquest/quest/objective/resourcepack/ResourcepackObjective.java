@@ -53,7 +53,7 @@ public class ResourcepackObjective extends DefaultObjective {
     public void processObjective(final OnlineProfile onlineProfile, final PlayerResourcePackStatusEvent.Status status) throws QuestException {
         final PlayerResourcePackStatusEvent.Status expectedStatus = targetStatus.getValue(onlineProfile);
         if (expectedStatus == status) {
-            completeObjective(onlineProfile);
+            getService().complete(onlineProfile);
         }
     }
 

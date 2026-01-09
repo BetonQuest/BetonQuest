@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.common.function.QuestBiFunction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 
@@ -40,6 +41,27 @@ public interface ObjectiveService {
      * @return a new {@link EventServiceSubscriptionBuilder} for the requested event
      */
     <T extends Event> EventServiceSubscriptionBuilder<T> request(Class<T> eventClass);
+
+    /**
+     * Stops the objective for the given profile.
+     *
+     * @param objectiveID the objective to stop
+     * @param profile     the profile to stop the objective for
+     * @param newState    the new state of the objective
+     * @throws QuestException if the objective could not be stopped
+     */
+    void stop(ObjectiveID objectiveID, Profile profile, ObjectiveState newState) throws QuestException;
+
+    /**
+     * Starts the objective for the given profile.
+     *
+     * @param objectiveID       the objective to start
+     * @param profile           the profile to start the objective for
+     * @param instructionString the data instruction for the objective
+     * @param previousState     the previous state of the objective
+     * @throws QuestException if the objective could not be started
+     */
+    void start(ObjectiveID objectiveID, Profile profile, String instructionString, ObjectiveState previousState) throws QuestException;
 
     /**
      * Registers a new event subscription for a specific non-profile event.

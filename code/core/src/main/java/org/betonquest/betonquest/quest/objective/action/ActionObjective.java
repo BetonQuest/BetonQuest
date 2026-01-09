@@ -120,7 +120,7 @@ public class ActionObjective extends DefaultObjective {
             if (cancel.getValue(onlineProfile).orElse(false)) {
                 event.setCancelled(true);
             }
-            completeObjective(onlineProfile);
+            getService().complete(onlineProfile);
         }
     }
 
