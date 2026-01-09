@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveProperties;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.betonquest.betonquest.quest.action.NotificationLevel;
 import org.jetbrains.annotations.Nullable;
@@ -54,12 +55,13 @@ public abstract class CountingObjective extends DefaultObjective {
                 instance.getPluginMessage(), service.getObjectiveID().getPackage(), service.getObjectiveID().getFull(),
                 NotificationLevel.INFO, notifyMessageName);
         service.setDefaultData(this::getDefaultDataInstruction);
-        service.getProperties().setProperty("amount", profile -> getProperty("amount", profile));
-        service.getProperties().setProperty("left", profile -> getProperty("left", profile));
-        service.getProperties().setProperty("total", profile -> getProperty("total", profile));
-        service.getProperties().setProperty("absoluteamount", profile -> getProperty("absoluteamount", profile));
-        service.getProperties().setProperty("absoluteleft", profile -> getProperty("absoluteleft", profile));
-        service.getProperties().setProperty("absolutetotal", profile -> getProperty("absolutetotal", profile));
+        final ObjectiveProperties properties = service.getProperties();
+        properties.setProperty("amount", profile -> getProperty("amount", profile));
+        properties.setProperty("left", profile -> getProperty("left", profile));
+        properties.setProperty("total", profile -> getProperty("total", profile));
+        properties.setProperty("absoluteamount", profile -> getProperty("absoluteamount", profile));
+        properties.setProperty("absoluteleft", profile -> getProperty("absoluteleft", profile));
+        properties.setProperty("absolutetotal", profile -> getProperty("absolutetotal", profile));
     }
 
     private String getDefaultDataInstruction(final Profile profile) throws QuestException {

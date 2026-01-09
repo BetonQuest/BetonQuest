@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveProperties;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -81,10 +82,11 @@ public class DelayObjective extends DefaultObjective {
             }
         }.runTaskTimer(BetonQuest.getInstance(), 0, interval.getValue(null).longValue());
         service.setDefaultData(this::getDefaultDataInstruction);
-        service.getProperties().setProperty("left", profile ->
+        final ObjectiveProperties properties = service.getProperties();
+        properties.setProperty("left", profile ->
                 getExceptionHandler().handle(() -> LegacyComponentSerializer.legacySection().serialize(parseLeftProperty(profile)), ""));
-        service.getProperties().setProperty("date", this::parseDateProperty);
-        service.getProperties().setProperty("rawseconds", this::parseRawSecondsProperty);
+        properties.setProperty("date", this::parseDateProperty);
+        properties.setProperty("rawseconds", this::parseRawSecondsProperty);
     }
 
     private double timeToMilliSeconds(final Profile profile, final double time) throws QuestException {

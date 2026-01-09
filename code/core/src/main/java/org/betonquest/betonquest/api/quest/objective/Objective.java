@@ -58,6 +58,6 @@ public interface Objective {
      * This method will be called when the objective is closed when shutting down or reloading.
      */
     default void close() {
-        //empty method
+        // Empty
     }
 }

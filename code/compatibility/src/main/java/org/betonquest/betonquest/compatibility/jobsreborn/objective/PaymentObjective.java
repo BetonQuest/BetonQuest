@@ -13,6 +13,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveProperties;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,11 +47,12 @@ public class PaymentObjective extends DefaultObjective {
         this.targetAmount = targetAmount;
         this.paymentSender = paymentSender;
         service.setDefaultData(this::getDefaultDataInstruction);
-        service.getProperties().setProperty("amount", profile -> Optional.ofNullable(getPaymentData(profile))
+        final ObjectiveProperties properties = service.getProperties();
+        properties.setProperty("amount", profile -> Optional.ofNullable(getPaymentData(profile))
                 .map(data -> data.amount).map(Object::toString).orElse(""));
-        service.getProperties().setProperty("left", profile -> Optional.ofNullable(getPaymentData(profile))
+        properties.setProperty("left", profile -> Optional.ofNullable(getPaymentData(profile))
                 .map(data -> data.targetAmount - data.amount).map(Object::toString).orElse(""));
-        service.getProperties().setProperty("total", profile -> Optional.ofNullable(getPaymentData(profile))
+        properties.setProperty("total", profile -> Optional.ofNullable(getPaymentData(profile))
                 .map(data -> data.targetAmount).map(Object::toString).orElse(""));
     }
 

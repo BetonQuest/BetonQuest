@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveProperties;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -46,12 +47,13 @@ public class ExperienceObjective extends DefaultObjective {
         super(service);
         this.amount = amount;
         this.levelSender = levelSender;
-        service.getProperties().setProperty("amount", profile -> profile.getOnlineProfile()
+        final ObjectiveProperties properties = service.getProperties();
+        properties.setProperty("amount", profile -> profile.getOnlineProfile()
                 .map(OnlineProfile::getPlayer)
                 .map(player -> player.getLevel() + player.getExp())
                 .map(String::valueOf)
                 .orElse(""));
-        service.getProperties().setProperty("left", profile -> {
+        properties.setProperty("left", profile -> {
             final double pAmount = amount.getValue(profile).doubleValue();
             return profile.getOnlineProfile()
                     .map(OnlineProfile::getPlayer)
@@ -60,7 +62,7 @@ public class ExperienceObjective extends DefaultObjective {
                     .map(String::valueOf)
                     .orElse("");
         });
-        service.getProperties().setProperty("total", profile -> String.valueOf(amount.getValue(profile).doubleValue()));
+        properties.setProperty("total", profile -> String.valueOf(amount.getValue(profile).doubleValue()));
     }
 
     private void onExperienceChange(final OnlineProfile onlineProfile, final double newAmount, final boolean notify) throws QuestException {

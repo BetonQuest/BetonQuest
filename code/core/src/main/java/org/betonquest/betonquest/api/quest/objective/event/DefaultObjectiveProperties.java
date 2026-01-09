@@ -16,14 +16,14 @@ import java.util.Map;
 public class DefaultObjectiveProperties implements ObjectiveProperties {
 
     /**
-     * The properties of the objective.
-     */
-    private final Map<String, QuestFunction<Profile, String>> properties;
-
-    /**
      * The logger to use.
      */
     private final BetonQuestLogger logger;
+
+    /**
+     * The properties of the objective.
+     */
+    private final Map<String, QuestFunction<Profile, String>> properties;
 
     /**
      * Other properties of the objective.
@@ -60,7 +60,6 @@ public class DefaultObjectiveProperties implements ObjectiveProperties {
         if (this.properties.containsKey(propertyName)) {
             logger.warn("Overriding property '%s'. Probably unwanted behavior.".formatted(propertyName));
         }
-        logger.debug("Setting property '%s' to '%s'.".formatted(propertyName, property));
         this.properties.put(propertyName, property);
     }
 

@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveProperties;
 
 import java.util.List;
 
@@ -40,10 +41,11 @@ public class StageObjective extends DefaultObjective {
         super(service);
         this.stageMap = stageMap;
         this.preventCompletion = preventCompletion;
-        service.getProperties().setProperty("index", profile -> String.valueOf(stageMap.getIndex(getStage(profile))));
-        service.getProperties().setProperty("current", this::getStage);
-        service.getProperties().setProperty("next", profile -> stageMap.nextStage(getStage(profile)));
-        service.getProperties().setProperty("previous", profile -> stageMap.previousStage(getStage(profile)));
+        final ObjectiveProperties properties = service.getProperties();
+        properties.setProperty("index", profile -> String.valueOf(stageMap.getIndex(getStage(profile))));
+        properties.setProperty("current", this::getStage);
+        properties.setProperty("next", profile -> stageMap.nextStage(getStage(profile)));
+        properties.setProperty("previous", profile -> stageMap.previousStage(getStage(profile)));
     }
 
     /**
