@@ -1093,7 +1093,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             if (isOnline) {
                 // if the player is online then just retrieve tags from his active objectives
                 objectives = instance.getQuestTypeApi().getPlayerObjectives(profile).stream()
-                        .map(DefaultObjective::getLabel);
+                        .map(defaultObjective -> defaultObjective.getObjectiveID().getFull());
             } else {
                 // if player is offline then convert his raw objective strings to tags
                 objectives = playerData.getRawObjectives().keySet().stream();
@@ -1753,11 +1753,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         if (!(tmp instanceof final VariableObjective variableObjective)) {
-            log.debug(tmp.getLabel() + " is not a variable objective");
+            log.debug(tmp.getObjectiveID().getFull() + " is not a variable objective");
             sendMessage(sender, "specify_objective");
             return;
         }
-        log.debug("Using variable objective " + variableObjective.getLabel());
+        log.debug("Using variable objective " + variableObjective.getObjectiveID().getFull());
 
         final boolean isOnline = profile.getOnlineProfile().isPresent();
         final VariableObjective.VariableData data;
@@ -1765,7 +1765,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             data = null;
         } else {
             final PlayerData offline = instance.getPlayerDataStorage().getOffline(profile);
-            final String instruction = offline.getRawObjectives().get(variableObjective.getLabel());
+            final String instruction = offline.getRawObjectives().get(variableObjective.getObjectiveID().getFull());
             if (instruction == null) {
                 log.debug("There is no data for that objective for that player!");
                 sendMessage(sender, "error",
@@ -1794,7 +1794,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 log.debug("Listing keys and values");
                 final Predicate<String> shouldDisplay = createListFilter(args, 4, Function.identity());
                 sendMessage(sender, "player_variables",
-                        new VariableReplacement("objective", Component.text(variableObjective.getLabel())));
+                        new VariableReplacement("objective", Component.text(variableObjective.getObjectiveID().getFull())));
                 properties.entrySet().stream()
                         .filter(entry -> shouldDisplay.test(entry.getKey()))
                         .sorted((o1, o2) -> o1.getKey().compareToIgnoreCase(o2.getKey()))
@@ -1807,7 +1807,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     return;
                 }
                 final String value = String.join(" ", Arrays.copyOfRange(args, 5, args.length));
-                log.debug("Setting value " + value + " for key " + args[4] + " for " + profile + " in " + variableObjective.getLabel());
+                log.debug("Setting value " + value + " for key " + args[4] + " for " + profile + " in " + variableObjective.getObjectiveID().getFull());
                 if (data == null) {
                     variableObjective.store(profile, args[4], value);
                 } else {
@@ -1823,7 +1823,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     sendMessage(sender, "arguments");
                     return;
                 }
-                log.debug("Removing key " + args[4] + " for " + profile + " in " + variableObjective.getLabel());
+                log.debug("Removing key " + args[4] + " for " + profile + " in " + variableObjective.getObjectiveID().getFull());
                 if (data == null) {
                     variableObjective.store(profile, args[4], null);
                 } else {
