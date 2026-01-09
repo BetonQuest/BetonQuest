@@ -78,6 +78,11 @@ public class DefaultObjectiveFactoryService implements ObjectiveFactoryService {
     private final ProfileProvider profileProvider;
 
     /**
+     * The properties of the objective.
+     */
+    private final ObjectiveProperties properties;
+
+    /**
      * The default data supplier.
      */
     private QuestFunction<Profile, String> defaultDataSupplier;
@@ -107,6 +112,7 @@ public class DefaultObjectiveFactoryService implements ObjectiveFactoryService {
         this.conditionProcessor = conditionProcessor;
         this.profileProvider = profileProvider;
         this.logger = factory.create(DefaultObjectiveFactoryService.class);
+        this.properties = new DefaultObjectiveProperties(this.logger);
         this.questExceptionHandler = new QuestExceptionHandler(objectiveID.getPackage(), this.logger, objectiveID.getFull());
         this.objectiveServiceData = parseObjectiveData(objectiveID.getInstruction());
         this.objectiveData = new ProfileKeyMap<>(profileProvider);
@@ -183,6 +189,11 @@ public class DefaultObjectiveFactoryService implements ObjectiveFactoryService {
     @Override
     public ObjectiveServiceDataProvider getServiceDataProvider() {
         return objectiveServiceData;
+    }
+
+    @Override
+    public ObjectiveProperties getProperties() {
+        return properties;
     }
 
     @Override

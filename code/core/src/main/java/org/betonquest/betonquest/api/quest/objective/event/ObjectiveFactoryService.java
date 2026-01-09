@@ -117,6 +117,13 @@ public interface ObjectiveFactoryService {
     ObjectiveServiceDataProvider getServiceDataProvider();
 
     /**
+     * Gets the objective properties.
+     *
+     * @return the objective properties
+     */
+    ObjectiveProperties getProperties();
+
+    /**
      * Checks if the objective conditions are met.
      *
      * @param profile the profile to check conditions for
