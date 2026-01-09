@@ -121,12 +121,12 @@ The easiest way to do this is by running a command:
 Enter `/bq action NAME tutorialQuest>giveFoodToPlayer` on the server.
 This command will give you the specified amount of steak if you've done everything right!
 
-| Command Part       | Meaning                                                                                                                            |
-|--------------------|------------------------------------------------------------------------------------------------------------------------------------|
-| `/bq action`       | Tells BetonQuest that some action should be executed.                                                                              |
-| `NAME`             | A player's name.                                                                                                                   |
-| `tutorialQuest`    | The name of a QuestPackage. This is required because you could have actions with the same name in different packages.              |
-| `giveFoodToPlayer` | The name of the action to execute. Don't forget to separate it with a dot from the package `tutorialQuest{==.==}giveFoodToPlayer`. |
+| Command Part       | Meaning                                                                                                                                     |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| `/bq action`       | Tells BetonQuest that some action should be executed.                                                                                       |
+| `NAME`             | A player's name.                                                                                                                            |
+| `tutorialQuest`    | The name of a QuestPackage. This is required because you could have actions with the same name in different packages.                       |
+| `giveFoodToPlayer` | The name of the action to execute. Don't forget to separate it with the `>` symbol from the package `tutorialQuest{==>==}giveFoodToPlayer`. |
 
 You can also run this command from the console (without the slash at the start). 
 
