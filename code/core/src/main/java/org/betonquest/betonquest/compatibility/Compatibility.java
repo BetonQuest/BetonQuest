@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.compatibility.holograms.HologramIntegrator;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
+import org.betonquest.betonquest.versioning.MinecraftVersion;
 import org.betonquest.betonquest.versioning.UpdateStrategy;
 import org.betonquest.betonquest.versioning.Version;
 import org.betonquest.betonquest.versioning.VersionComparator;
@@ -18,6 +19,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.NavigableMap;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -51,7 +53,7 @@ public class Compatibility {
      * Integrations requiring a specific Minecraft version.
      * The key is the version string, the value data containing all integration factories and instances from it.
      */
-    private final Map<Version, List<VanillaIntegrationData>> vanillaData = new TreeMap<>(new VersionComparator(UpdateStrategy.PATCH));
+    private final NavigableMap<Version, List<VanillaIntegrationData>> vanillaData = new TreeMap<>(new VersionComparator(UpdateStrategy.PATCH));
 
     /**
      * A map of plugin names and their integration data.
@@ -91,7 +93,7 @@ public class Compatibility {
      * Integrate plugins.
      */
     public void init() {
-        vanillaData.forEach((version, dataList) -> {
+        vanillaData.headMap(new MinecraftVersion(), true).forEach((version, dataList) -> {
             log.info("Integrating into Minecraft " + version);
             dataList.forEach(VanillaIntegrationData::integrate);
         });
