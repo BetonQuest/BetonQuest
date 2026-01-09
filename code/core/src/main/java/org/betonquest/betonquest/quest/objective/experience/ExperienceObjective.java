@@ -52,11 +52,12 @@ public class ExperienceObjective extends DefaultObjective {
 
     private void onExperienceChange(final OnlineProfile onlineProfile, final double newAmount, final boolean notify) throws QuestException {
         final double amount = this.amount.getValue(onlineProfile).doubleValue();
+        final int notificationInterval = getService().getServiceDataProvider().getNotificationInterval(onlineProfile);
         if (newAmount >= amount) {
             getService().complete(onlineProfile);
-        } else if (this.hasNotify(onlineProfile) && notify) {
+        } else if (notificationInterval > 0 && notify) {
             final int level = (int) (amount - newAmount);
-            if (level % getNotifyInterval(onlineProfile) == 0) {
+            if (level % notificationInterval == 0) {
                 levelSender.sendNotification(onlineProfile, new VariableReplacement("amount", Component.text(level)));
             }
         }

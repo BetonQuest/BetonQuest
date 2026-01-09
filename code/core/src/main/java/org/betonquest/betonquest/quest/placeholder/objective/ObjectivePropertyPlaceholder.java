@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.placeholder.objective;
 
-import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerPlaceholder;
 
@@ -42,7 +42,7 @@ public class ObjectivePropertyPlaceholder implements PlayerPlaceholder {
 
     @Override
     public String getValue(final Profile profile) throws QuestException {
-        final DefaultObjective objective = questTypeApi.getObjective(objectiveID);
+        final Objective objective = questTypeApi.getObjective(objectiveID);
         if (objective.getService().containsProfile(profile)) {
             return objective.getProperty(propertyName, profile);
         }

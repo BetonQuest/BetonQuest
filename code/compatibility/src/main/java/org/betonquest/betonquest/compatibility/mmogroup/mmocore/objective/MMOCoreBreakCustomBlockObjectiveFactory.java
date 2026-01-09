@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmocore.objective;
 
 import net.Indyuce.mmocore.api.event.CustomBlockMineEvent;
-import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 
@@ -20,7 +20,7 @@ public class MMOCoreBreakCustomBlockObjectiveFactory implements ObjectiveFactory
     }
 
     @Override
-    public DefaultObjective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
+    public Objective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
         final Argument<String> desiredBlockId = instruction.string().get("block").orElse(null);
         if (desiredBlockId == null) {
             throw new QuestException("Missing required argument: block");

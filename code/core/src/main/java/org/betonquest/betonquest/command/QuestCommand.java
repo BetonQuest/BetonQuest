@@ -7,7 +7,6 @@ import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.common.component.VariableComponent;
@@ -26,6 +25,7 @@ import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
+import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.IntegrationData;
@@ -1112,7 +1112,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         // get the objective
         final ObjectiveID objectiveID;
-        final DefaultObjective objective;
+        final Objective objective;
         try {
             objectiveID = new ObjectiveID(placeholders, instance.getQuestPackageManager(), null, args[3]);
             objective = instance.getQuestTypeApi().getObjective(objectiveID);
@@ -1742,7 +1742,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
         // get the objective
         final ObjectiveID objectiveID;
-        final DefaultObjective tmp;
+        final Objective tmp;
         try {
             objectiveID = new ObjectiveID(placeholders, instance.getQuestPackageManager(), null, args[2]);
             tmp = instance.getQuestTypeApi().getObjective(objectiveID);

@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.listener;
 
-import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.feature.ConversationApi;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.conversation.ConversationResumer;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
@@ -138,7 +138,7 @@ public class JoinQuitListener implements Listener {
     @EventHandler
     public void onPlayerQuit(final PlayerQuitEvent event) {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
-        for (final DefaultObjective objective : questTypeApi.getActive(onlineProfile)) {
+        for (final Objective objective : questTypeApi.getActive(onlineProfile)) {
             questTypeApi.pause(onlineProfile, objective.getObjectiveID());
         }
         playerDataStorage.remove(onlineProfile);

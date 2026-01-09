@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.quest.action.variable;
 
-import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.quest.objective.variable.VariableObjective;
 
@@ -52,7 +52,7 @@ public class VariableAction implements PlayerAction {
     @Override
     public void execute(final Profile profile) throws QuestException {
         final ObjectiveID resolved = this.objectiveID.getValue(profile);
-        final DefaultObjective obj = questTypeApi.getObjective(resolved);
+        final Objective obj = questTypeApi.getObjective(resolved);
         if (!(obj instanceof final VariableObjective objective)) {
             throw new QuestException(resolved + " is not a variable objective");
         }

@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.api.quest.objective.event;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.BukkitEventService;
 import org.betonquest.betonquest.api.bukkit.event.EventServiceSubscriber;
@@ -17,6 +16,7 @@ import org.betonquest.betonquest.kernel.processor.quest.ActionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.ConditionProcessor;
 import org.betonquest.betonquest.lib.bukkit.event.DefaultBukkitEventService;
 import org.betonquest.betonquest.lib.logger.QuestExceptionHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.plugin.Plugin;
@@ -109,15 +109,21 @@ public class DefaultObjectiveService implements ObjectiveService {
     }
 
     @Override
+    @SuppressWarnings("PMD.AvoidSynchronizedStatement")
     public void stop(final ObjectiveID objectiveID, final Profile profile, final ObjectiveState newState) throws QuestException {
-        getFactoryService(objectiveID).getData().remove(profile);
-        runObjectiveChangeEvent(objectiveID, profile, ObjectiveState.ACTIVE, newState);
+        synchronized (this) {
+            getFactoryService(objectiveID).getData().remove(profile);
+            runObjectiveChangeEvent(objectiveID, profile, ObjectiveState.ACTIVE, newState);
+        }
     }
 
     @Override
+    @SuppressWarnings("PMD.AvoidSynchronizedStatement")
     public void start(final ObjectiveID objectiveID, final Profile profile, final String instructionString, final ObjectiveState previousState) throws QuestException {
-        getFactoryService(objectiveID).getData().put(profile, instructionString);
-        runObjectiveChangeEvent(objectiveID, profile, previousState, ObjectiveState.ACTIVE);
+        synchronized (this) {
+            getFactoryService(objectiveID).getData().put(profile, instructionString);
+            runObjectiveChangeEvent(objectiveID, profile, previousState, ObjectiveState.ACTIVE);
+        }
     }
 
     @Override
@@ -160,7 +166,7 @@ public class DefaultObjectiveService implements ObjectiveService {
     }
 
     private void runObjectiveChangeEvent(final ObjectiveID objectiveID, final Profile profile, final ObjectiveState previousState, final ObjectiveState newState) {
-        final boolean isAsync = !BetonQuest.getInstance().getServer().isPrimaryThread();
+        final boolean isAsync = !Bukkit.isPrimaryThread();
         new PlayerObjectiveChangeEvent(profile, isAsync, objectiveID, newState, previousState).callEvent();
     }
 

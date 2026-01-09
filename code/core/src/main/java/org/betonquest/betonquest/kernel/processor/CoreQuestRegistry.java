@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.kernel.processor;
 
-import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
@@ -11,6 +10,7 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
+import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.event.DefaultObjectiveService;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
@@ -169,12 +169,12 @@ public record CoreQuestRegistry(
     }
 
     @Override
-    public List<DefaultObjective> getPlayerObjectives(final Profile profile) {
+    public List<Objective> getPlayerObjectives(final Profile profile) {
         return objectives().getActive(profile);
     }
 
     @Override
-    public DefaultObjective getObjective(final ObjectiveID objectiveID) throws QuestException {
+    public Objective getObjective(final ObjectiveID objectiveID) throws QuestException {
         return objectives().get(objectiveID);
     }
 }

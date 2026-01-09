@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.kernel.processor.quest;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
@@ -36,7 +35,7 @@ import java.util.Set;
  * Stores Objectives and starts/stops/resumes them.
  */
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.TooManyMethods", "PMD.GodClass"})
-public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjective> {
+public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
 
     /**
      * Manager to register listener.
@@ -129,7 +128,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
         final ObjectiveFactory factory = types.getFactory(type);
         try {
             final ObjectiveFactoryService service = objectiveService.getFactoryService(identifier);
-            final DefaultObjective parsed = factory.parseInstruction(identifier.getInstruction(), service);
+            final Objective parsed = factory.parseInstruction(identifier.getInstruction(), service);
             values.put(identifier, parsed);
             postCreation(identifier, parsed);
             log.debug(pack, "  " + readable + " '" + identifier + "' loaded");
@@ -138,14 +137,26 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
         }
     }
 
+    private void closeObjective(final Objective objective) {
+        objective.close();
+        final ObjectiveFactoryService service = objective.getService();
+        for (final Map.Entry<Profile, String> entry : service.getData().entrySet()) {
+            final Profile profile = entry.getKey();
+            BetonQuest.getInstance().getPlayerDataStorage().get(profile).addRawObjective(service.getObjectiveID(),
+                    entry.getValue());
+        }
+    }
+
     @Override
     public void clear() {
         objectiveService.clear();
         globalObjectiveIds.clear();
-        for (final DefaultObjective objective : values.values()) {
-            objective.close();
+        for (final Objective objective : values.values()) {
+            closeObjective(objective);
             if (objective instanceof Listener) {
                 HandlerList.unregisterAll((Listener) objective);
+                log.warn("'%s': Deprecated feature usage. Objectives will no longer support listeners in future versions. Use the objective service instead."
+                        .formatted(objective.getObjectiveID()));
             }
         }
         super.clear();
@@ -156,7 +167,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
         return new ObjectiveID(placeholders, packManager, pack, identifier);
     }
 
-    private void postCreation(final ObjectiveID identifier, final DefaultObjective value) {
+    private void postCreation(final ObjectiveID identifier, final Objective objective) {
         boolean global = false;
         try {
             global = identifier.getInstruction().bool().getFlag("global", true)
@@ -167,8 +178,10 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
         if (global) {
             globalObjectiveIds.add(identifier);
         }
-        if (value instanceof Listener) {
-            pluginManager.registerEvents((Listener) value, plugin);
+        if (objective instanceof Listener) {
+            pluginManager.registerEvents((Listener) objective, plugin);
+            log.warn("'%s': Deprecated feature usage. Objectives will no longer support listeners in future versions. Use the objective service instead."
+                    .formatted(objective.getObjectiveID()));
         }
     }
 
@@ -237,7 +250,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
      * @param objectiveID ID of the objective
      */
     public void start(final Profile profile, final ObjectiveID objectiveID) {
-        final DefaultObjective objective = values.get(objectiveID);
+        final Objective objective = values.get(objectiveID);
         if (objective == null) {
             log.error("Tried to start objective '%s' but it is not loaded! Check for errors on /bq reload!".formatted(objectiveID));
             return;
@@ -257,7 +270,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
      * @param instruction data instruction string
      */
     public void resume(final Profile profile, final ObjectiveID objectiveID, final String instruction) {
-        final DefaultObjective objective = values.get(objectiveID);
+        final Objective objective = values.get(objectiveID);
         if (objective == null) {
             log.warn(objectiveID.getPackage(), "Objective '%s' does not exist".formatted(objectiveID));
             return;
@@ -279,9 +292,9 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
      * @param profile the {@link Profile} of the player
      * @return list of this profile's active objectives
      */
-    public List<DefaultObjective> getActive(final Profile profile) {
-        final List<DefaultObjective> list = new ArrayList<>();
-        for (final DefaultObjective objective : values.values()) {
+    public List<Objective> getActive(final Profile profile) {
+        final List<Objective> list = new ArrayList<>();
+        for (final Objective objective : values.values()) {
             if (objective.getService().containsProfile(profile)) {
                 list.add(objective);
             }
@@ -296,7 +309,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
      * @param rename the name it should have now
      */
     public void renameObjective(final ObjectiveID name, final ObjectiveID rename) {
-        final DefaultObjective objective = values.remove(name);
+        final Objective objective = values.remove(name);
         values.put(rename, objective);
         if (objective != null) {
             objective.getService().renameObjective(rename);
@@ -312,7 +325,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
     public void startAll(final Profile profile, final PlayerDataStorage dataStorage) {
         final PlayerData data = dataStorage.get(profile);
         for (final ObjectiveID id : globalObjectiveIds) {
-            final DefaultObjective objective = values.get(id);
+            final Objective objective = values.get(id);
             final String tag = getTag(id);
             if (objective == null || data.hasTag(tag)) {
                 continue;

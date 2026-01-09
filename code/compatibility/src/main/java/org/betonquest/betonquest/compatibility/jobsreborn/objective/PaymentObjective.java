@@ -54,8 +54,9 @@ public class PaymentObjective extends DefaultObjective {
      *
      * @param event   the event that triggered the payment
      * @param profile the profile of the player that received the payment
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onJobsPaymentEvent(final JobsPaymentEvent event, final Profile profile) {
+    public void onJobsPaymentEvent(final JobsPaymentEvent event, final Profile profile) throws QuestException {
         final PaymentData playerData = getPaymentData(profile);
         if (playerData == null) {
             getLogger().warn("Could not access PaymentData for profile '" + profile + "'.");
@@ -67,7 +68,7 @@ public class PaymentObjective extends DefaultObjective {
         if (playerData.isCompleted()) {
             getService().complete(profile);
         } else {
-            final int interval = getNotifyInterval(profile);
+            final int interval = getService().getServiceDataProvider().getNotificationInterval(profile);
             if (interval > 0 && ((int) playerData.amount) / interval != ((int) previousAmount) / interval && profile.getOnlineProfile().isPresent()) {
                 paymentSender.sendNotification(profile,
                         new VariableReplacement("amount", Component.text(playerData.targetAmount - playerData.amount)));

@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryServi
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
 
 /**
- * This {@link DefaultObjective} is completed when a player exits a train.
+ * This objective is completed when a player exits a train.
  */
 public class TrainCartsExitObjective extends DefaultObjective {
 
