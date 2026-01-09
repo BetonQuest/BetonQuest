@@ -3,7 +3,6 @@ package org.betonquest.betonquest.kernel.processor.quest;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.argument.parser.IdentifierParser;
@@ -173,32 +172,11 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
         }
     }
 
-    private void runObjectiveChangeEvent(final Objective objective, final Profile profile, final ObjectiveState previousState, final ObjectiveState newState) {
-        final boolean isAsync = !plugin.getServer().isPrimaryThread();
-        new PlayerObjectiveChangeEvent(profile, isAsync, objective, objective.getObjectiveID(), newState, previousState).callEvent();
-    }
-
-    @SuppressWarnings("PMD.AvoidSynchronizedStatement")
-    private void startObjective(final Objective objective, final Profile profile, final String instructionString, final ObjectiveState previousState) {
-        synchronized (this) {
-            runObjectiveChangeEvent(objective, profile, previousState, ObjectiveState.ACTIVE);
-            objective.getService().getData().put(profile, instructionString);
-        }
-    }
-
-    @SuppressWarnings("PMD.AvoidSynchronizedStatement")
-    private void stopObjective(final Objective objective, final Profile profile, final ObjectiveState newState) {
-        synchronized (this) {
-            runObjectiveChangeEvent(objective, profile, ObjectiveState.ACTIVE, newState);
-            objective.getService().getData().remove(profile);
-        }
-    }
-
     private void newPlayer(final Profile profile, final ObjectiveID objectiveID) {
         try {
             final Objective objective = get(objectiveID);
             final String defaultInstruction = objective.getService().getDefaultData(profile);
-            startObjective(objective, profile, defaultInstruction, ObjectiveState.NEW);
+            objectiveService.start(objective.getObjectiveID(), profile, defaultInstruction, ObjectiveState.NEW);
             BetonQuest.getInstance().getPlayerDataStorage().get(profile).addObjToDB(objectiveID, defaultInstruction);
         } catch (final QuestException e) {
             log.warn("Could not create new objective '%s' for profile '%s': The objective instruction could not be resolved: %s"
@@ -207,7 +185,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
     }
 
     /**
-     * Cancels the objective for given player.
+     * Cancels the objective for the given profile.
      *
      * @param profile     the {@link Profile} of the player
      * @param objectiveID ID of the objective
@@ -222,11 +200,15 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
             log.error("Objective '%s' could not be cancelled - profile '%s' does not have it.".formatted(objectiveID, profile));
             return;
         }
-        stopObjective(objective, profile, ObjectiveState.CANCELED);
+        try {
+            objectiveService.stop(objective.getObjectiveID(), profile, ObjectiveState.CANCELED);
+        } catch (final QuestException e) {
+            log.error("Could not cancel objective '%s'".formatted(objectiveID), e);
+        }
     }
 
     /**
-     * Pauses the objective for given player.
+     * Pauses the objective for the given profile.
      *
      * @param profile     the {@link Profile} of the player
      * @param objectiveID ID of the objective
@@ -241,11 +223,15 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
             log.error("Objective '%s' could not be paused - profile '%s' does not have it.".formatted(objectiveID, profile));
             return;
         }
-        stopObjective(objective, profile, ObjectiveState.PAUSED);
+        try {
+            objectiveService.stop(objective.getObjectiveID(), profile, ObjectiveState.PAUSED);
+        } catch (final QuestException e) {
+            log.error("Could not pause objective '%s'".formatted(objectiveID), e);
+        }
     }
 
     /**
-     * Creates new objective for given player.
+     * Creates new objective for the given profile.
      *
      * @param profile     the {@link Profile} of the player
      * @param objectiveID ID of the objective
@@ -264,7 +250,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
     }
 
     /**
-     * Resumes the existing objective for given player.
+     * Resumes the existing objective for the given profile.
      *
      * @param profile     the {@link Profile} of the player
      * @param objectiveID ID of the objective
@@ -280,14 +266,18 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
             log.debug(objectiveID.getPackage(), "'%s' already has the '%s' objective!".formatted(profile, objectiveID));
             return;
         }
-        startObjective(objective, profile, instruction, ObjectiveState.PAUSED);
+        try {
+            objectiveService.start(objective.getObjectiveID(), profile, instruction, ObjectiveState.ACTIVE);
+        } catch (final QuestException e) {
+            log.error("Could not resume objective '%s'".formatted(objectiveID), e);
+        }
     }
 
     /**
-     * Returns the list of objectives of this player.
+     * Returns the list of objectives of this profile.
      *
      * @param profile the {@link Profile} of the player
-     * @return list of this player's active objectives
+     * @return list of this profile's active objectives
      */
     public List<DefaultObjective> getActive(final Profile profile) {
         final List<DefaultObjective> list = new ArrayList<>();
@@ -328,7 +318,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
                 continue;
             }
             if (objective.getService().containsProfile(profile)) {
-                log.debug(id.getPackage(), profile + " already has the " + id + " objective, adding tag");
+                log.debug(id.getPackage(), "Profile '%s' already has objective '%s', adding tag...".formatted(profile, id));
             } else {
                 newPlayer(profile, id);
             }

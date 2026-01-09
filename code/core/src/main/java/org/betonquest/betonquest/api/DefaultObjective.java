@@ -1,14 +1,9 @@
 package org.betonquest.betonquest.api;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.Objective;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
-import org.betonquest.betonquest.database.PlayerData;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -71,100 +66,7 @@ public abstract class DefaultObjective implements Objective {
      * @param profile the {@link Profile} for which the objective is to be completed
      */
     public final void completeObjective(final Profile profile) {
-        completeObjectiveForPlayer(profile);
-        final PlayerData playerData = BetonQuest.getInstance().getPlayerDataStorage().get(profile);
-        final ObjectiveID objectiveID = getService().getObjectiveID();
-        final QuestPackage questPackage = objectiveID.getPackage();
-        playerData.removeRawObjective(objectiveID);
-        try {
-            if (getService().getServiceDataProvider().isPersistent(profile)) {
-                try {
-                    final String defaultDataInstruction = getService().getDefaultData(profile);
-                    playerData.addRawObjective(objectiveID, defaultDataInstruction);
-                    playerData.addObjToDB(objectiveID, defaultDataInstruction);
-                    createObjectiveForPlayer(profile, defaultDataInstruction);
-                } catch (final QuestException e) {
-                    getLogger().warn(questPackage, "Could not re-create persistent Objective for '" + objectiveID
-                            + "' for '" + profile + "' objective: The Objective Instruction could not be resolved: " + e.getMessage(), e);
-                }
-            }
-        } catch (final QuestException e) {
-            getLogger().error(questPackage, "Could not get persistent flag for '" + objectiveID + "' for '" + profile + "' objective: " + e.getMessage(), e);
-        }
-        getLogger().debug(questPackage,
-                "Objective '" + objectiveID + "' has been completed for " + profile + ", firing actions.");
-        try {
-            getService().callActions(profile);
-        } catch (final QuestException e) {
-            getLogger().warn(questPackage, "Error while firing actions in objective '" + objectiveID
-                    + "' for " + profile + ": " + e.getMessage(), e);
-        }
-        getLogger().debug(questPackage,
-                "Firing actions in objective '" + objectiveID + "' for " + profile + " finished");
-    }
-
-    /**
-     * Starts a new objective for the profile.
-     *
-     * @param profile           the {@link Profile} for which the objective is to be started
-     * @param instructionString the objective data instruction
-     */
-    public final void createObjectiveForPlayer(final Profile profile, final String instructionString) {
-        startObjective(profile, instructionString, ObjectiveState.NEW);
-    }
-
-    /**
-     * Start an objective for the profile. This lower level method allows to set the previous state directly.
-     *
-     * @param profile           the {@link Profile} for which the objective is to be started
-     * @param instructionString the objective data instruction
-     * @param previousState     the objective's previous state
-     */
-    @SuppressWarnings("PMD.AvoidSynchronizedStatement")
-    public final void startObjective(final Profile profile, final String instructionString, final ObjectiveState previousState) {
-        synchronized (this) {
-            runObjectiveChangeEvent(profile, previousState, ObjectiveState.ACTIVE);
-            getService().getData().put(profile, instructionString);
-        }
-    }
-
-    /**
-     * Complete an active objective for the profile. It will only remove it from the profile and not run any completion
-     * actions, run {@link #completeObjective(Profile)} instead! It does also not remove it from the database.
-     *
-     * @param profile the {@link Profile} for which the objective is to be completed
-     */
-    public final void completeObjectiveForPlayer(final Profile profile) {
-        stopObjective(profile, ObjectiveState.COMPLETED);
-    }
-
-    /**
-     * Stops an objective for the profile. This lower level method allows to set the previous state directly.
-     *
-     * @param profile  the {@link Profile} for which the objective is to be stopped
-     * @param newState the objective's new state
-     */
-    @SuppressWarnings("PMD.AvoidSynchronizedStatement")
-    public final void stopObjective(final Profile profile, final ObjectiveState newState) {
-        synchronized (this) {
-            runObjectiveChangeEvent(profile, ObjectiveState.ACTIVE, newState);
-            getService().getData().remove(profile);
-        }
-    }
-
-    private void runObjectiveChangeEvent(final Profile profile, final ObjectiveState previousState, final ObjectiveState newState) {
-        final boolean isAsync = !BetonQuest.getInstance().getServer().isPrimaryThread();
-        new PlayerObjectiveChangeEvent(profile, isAsync, this, getService().getObjectiveID(), newState, previousState).callEvent();
-    }
-
-    /**
-     * Returns the label of this objective. Don't worry about it, it's only used
-     * by the rest of BetonQuest's logic.
-     *
-     * @return the label of the objective
-     */
-    public final String getLabel() {
-        return getService().getObjectiveID().getFull();
+        getService().complete(profile);
     }
 
     /**

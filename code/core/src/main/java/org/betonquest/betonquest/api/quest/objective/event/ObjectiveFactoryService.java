@@ -140,4 +140,11 @@ public interface ObjectiveFactoryService {
      * @return if the objective contains the profile
      */
     boolean containsProfile(Profile profile);
+
+    /**
+     * Completes the objective for the given profile.
+     *
+     * @param profile the profile to complete the objective for
+     */
+    void complete(Profile profile);
 }

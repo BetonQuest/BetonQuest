@@ -53,4 +53,13 @@ public interface Objective extends PropertyHolder {
     default BetonQuestLogger getLogger() {
         return getService().getLogger();
     }
+
+    /**
+     * Returns the label of this objective.
+     *
+     * @return the label of the objective
+     */
+    default String getLabel() {
+        return getService().getObjectiveID().getFull();
+    }
 }

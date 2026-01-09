@@ -4,6 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.QuestDataUpdateEvent;
 import org.betonquest.betonquest.api.common.function.QuestFunction;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.DefaultIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
@@ -15,6 +16,8 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
+import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.kernel.processor.quest.ActionProcessor;
@@ -205,5 +208,48 @@ public class DefaultObjectiveFactoryService implements ObjectiveFactoryService {
     @Override
     public boolean containsProfile(final Profile profile) {
         return objectiveData.containsKey(profile);
+    }
+
+    @Override
+    public void complete(final Profile profile) {
+        try {
+            objectiveService.stop(objectiveID, profile, ObjectiveState.COMPLETED);
+        } catch (final QuestException e) {
+            logger.error("Could not stop objective '%s' for profile '%s': %s".formatted(getObjectiveID(), profile, e.getMessage()), e);
+            return;
+        }
+        final PlayerData playerData = BetonQuest.getInstance().getPlayerDataStorage().get(profile);
+        final QuestPackage questPackage = objectiveID.getPackage();
+        playerData.removeRawObjective(objectiveID);
+        checkForPersistence(profile, playerData);
+        logger.debug("Objective '%s' has been completed for '%s', firing actions.".formatted(objectiveID, profile));
+        try {
+            callActions(profile);
+        } catch (final QuestException e) {
+            logger.warn(questPackage, "Error while firing actions in objective '%s' for profile '%s': %s".formatted(objectiveID, profile, e.getMessage()), e);
+        }
+        logger.debug(questPackage, "Firing actions in objective '%s' for profile '%s' finished".formatted(objectiveID, profile));
+    }
+
+    private void checkForPersistence(final Profile profile, final PlayerData playerData) {
+        boolean persistent;
+        try {
+            persistent = objectiveServiceData.isPersistent(profile);
+        } catch (final QuestException e) {
+            logger.error("Could not get persistent flag of objective '%s' for profile '%s': %s".formatted(objectiveID, profile, e.getMessage()), e);
+            persistent = false;
+        }
+        if (persistent) {
+            try {
+                final String defaultDataInstruction = getDefaultData(profile);
+                playerData.addRawObjective(objectiveID, defaultDataInstruction);
+                playerData.addObjToDB(objectiveID, defaultDataInstruction);
+                objectiveService.start(objectiveID, profile, defaultDataInstruction, ObjectiveState.NEW);
+                logger.debug("Persistent objective '%s' has been re-created for '%s'.".formatted(objectiveID, profile));
+            } catch (final QuestException e) {
+                logger.warn("Could not re-create persistent objective '%s' for profile '%s': The objective instruction could not be resolved: %s"
+                        .formatted(objectiveID, profile, e.getMessage()), e);
+            }
+        }
     }
 }
