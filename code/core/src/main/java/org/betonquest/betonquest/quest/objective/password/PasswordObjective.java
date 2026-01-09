@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.Bukkit;
@@ -107,10 +106,5 @@ public class PasswordObjective extends DefaultObjective {
             throw new QuestException("Failed to resolve fail actions: " + e.getMessage(), e);
         }
         return !prefix.isEmpty();
-    }
-
-    @Override
-    public String getProperty(final String name, final Profile profile) {
-        return "";
     }
 }

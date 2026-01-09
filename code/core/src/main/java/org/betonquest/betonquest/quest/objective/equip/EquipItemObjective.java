@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 
 /**
@@ -51,10 +50,5 @@ public class EquipItemObjective extends DefaultObjective {
                 && item.getValue(onlineProfile).matches(event.getNewItem(), onlineProfile)) {
             getService().complete(onlineProfile);
         }
-    }
-
-    @Override
-    public String getProperty(final String name, final Profile profile) {
-        return "";
     }
 }

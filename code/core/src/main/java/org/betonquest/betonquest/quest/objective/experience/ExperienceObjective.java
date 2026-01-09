@@ -18,8 +18,6 @@ import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLevelChangeEvent;
 
-import java.util.Locale;
-
 /**
  * Player needs to get specified experience level or more.
  */
@@ -48,6 +46,21 @@ public class ExperienceObjective extends DefaultObjective {
         super(service);
         this.amount = amount;
         this.levelSender = levelSender;
+        service.getProperties().setProperty("amount", profile -> profile.getOnlineProfile()
+                .map(OnlineProfile::getPlayer)
+                .map(player -> player.getLevel() + player.getExp())
+                .map(String::valueOf)
+                .orElse(""));
+        service.getProperties().setProperty("left", profile -> {
+            final double pAmount = amount.getValue(profile).doubleValue();
+            return profile.getOnlineProfile()
+                    .map(OnlineProfile::getPlayer)
+                    .map(player -> player.getLevel() + player.getExp())
+                    .map(exp -> pAmount - exp)
+                    .map(String::valueOf)
+                    .orElse("");
+        });
+        service.getProperties().setProperty("total", profile -> String.valueOf(amount.getValue(profile).doubleValue()));
     }
 
     private void onExperienceChange(final OnlineProfile onlineProfile, final double newAmount, final boolean notify) throws QuestException {
@@ -79,28 +92,6 @@ public class ExperienceObjective extends DefaultObjective {
                     final double newAmount = player.getLevel() + player.getExp();
                     getExceptionHandler().handle(() -> onExperienceChange(onlineProfile, newAmount, false));
                 });
-    }
-
-    @Override
-    public String getProperty(final String name, final Profile profile) throws QuestException {
-        return switch (name.toLowerCase(Locale.ROOT)) {
-            case "amount" -> profile.getOnlineProfile()
-                    .map(OnlineProfile::getPlayer)
-                    .map(player -> player.getLevel() + player.getExp())
-                    .map(String::valueOf)
-                    .orElse("");
-            case "left" -> {
-                final double pAmount = amount.getValue(profile).doubleValue();
-                yield profile.getOnlineProfile()
-                        .map(OnlineProfile::getPlayer)
-                        .map(player -> player.getLevel() + player.getExp())
-                        .map(exp -> pAmount - exp)
-                        .map(String::valueOf)
-                        .orElse("");
-            }
-            case "total" -> String.valueOf(amount.getValue(profile).doubleValue());
-            default -> "";
-        };
     }
 
     /**

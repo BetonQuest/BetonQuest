@@ -51,7 +51,6 @@ public class DelayObjective extends DefaultObjective {
      * @param delay    the delay time in seconds, minutes, or ticks
      * @throws QuestException if there is an error in the instruction
      */
-    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public DelayObjective(final ObjectiveFactoryService service, final Argument<Number> interval,
                           final Argument<Number> delay) throws QuestException {
         super(service);
@@ -61,7 +60,7 @@ public class DelayObjective extends DefaultObjective {
             public void run() {
                 final List<Profile> players = new LinkedList<>();
                 final long time = System.currentTimeMillis();
-                for (final Entry<Profile, String> entry : getService().getData().entrySet()) {
+                for (final Entry<Profile, String> entry : service.getData().entrySet()) {
                     final Profile profile = entry.getKey();
                     final DelayData playerData;
                     try {
@@ -69,7 +68,7 @@ public class DelayObjective extends DefaultObjective {
                     } catch (final QuestException ignored) {
                         continue;
                     }
-                    final boolean profileConditions = getExceptionHandler().handle(() -> getService().checkConditions(profile), false);
+                    final boolean profileConditions = getExceptionHandler().handle(() -> service.checkConditions(profile), false);
                     if (profileConditions && time >= playerData.getTime()) {
                         // don't complete the objective, it will throw CME/
                         // store the player instead, complete later
@@ -77,11 +76,15 @@ public class DelayObjective extends DefaultObjective {
                     }
                 }
                 for (final Profile profile : players) {
-                    getService().complete(profile);
+                    service.complete(profile);
                 }
             }
         }.runTaskTimer(BetonQuest.getInstance(), 0, interval.getValue(null).longValue());
-        getService().setDefaultData(this::getDefaultDataInstruction);
+        service.setDefaultData(this::getDefaultDataInstruction);
+        service.getProperties().setProperty("left", profile ->
+                getExceptionHandler().handle(() -> LegacyComponentSerializer.legacySection().serialize(parseLeftProperty(profile)), ""));
+        service.getProperties().setProperty("date", this::parseDateProperty);
+        service.getProperties().setProperty("rawseconds", this::parseRawSecondsProperty);
     }
 
     private double timeToMilliSeconds(final Profile profile, final double time) throws QuestException {
@@ -107,17 +110,6 @@ public class DelayObjective extends DefaultObjective {
     private String getDefaultDataInstruction(final Profile profile) throws QuestException {
         final double millis = timeToMilliSeconds(profile, delay.getValue(profile).doubleValue());
         return Double.toString(System.currentTimeMillis() + millis);
-    }
-
-    @Override
-    public String getProperty(final String name, final Profile profile) {
-        return switch (name.toLowerCase(Locale.ROOT)) {
-            case "left" ->
-                    getExceptionHandler().handle(() -> LegacyComponentSerializer.legacySection().serialize(parseLeftProperty(profile)), "");
-            case "date" -> parseDateProperty(profile);
-            case "rawseconds" -> parseRawSecondsProperty(profile);
-            default -> "";
-        };
     }
 
     private Component parseLeftProperty(final Profile profile) throws QuestException {

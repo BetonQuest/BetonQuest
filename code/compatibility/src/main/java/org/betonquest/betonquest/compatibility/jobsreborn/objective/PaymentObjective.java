@@ -16,7 +16,7 @@ import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryServi
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Locale;
+import java.util.Optional;
 
 /**
  * Objective that tracks the payment received by a player.
@@ -41,12 +41,17 @@ public class PaymentObjective extends DefaultObjective {
      * @param paymentSender the {@link IngameNotificationSender} to send notifications
      * @throws QuestException if the instruction is invalid
      */
-    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public PaymentObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount, final IngameNotificationSender paymentSender) throws QuestException {
         super(service);
         this.targetAmount = targetAmount;
         this.paymentSender = paymentSender;
-        getService().setDefaultData(this::getDefaultDataInstruction);
+        service.setDefaultData(this::getDefaultDataInstruction);
+        service.getProperties().setProperty("amount", profile -> Optional.ofNullable(getPaymentData(profile))
+                .map(data -> data.amount).map(Object::toString).orElse(""));
+        service.getProperties().setProperty("left", profile -> Optional.ofNullable(getPaymentData(profile))
+                .map(data -> data.targetAmount - data.amount).map(Object::toString).orElse(""));
+        service.getProperties().setProperty("total", profile -> Optional.ofNullable(getPaymentData(profile))
+                .map(data -> data.targetAmount).map(Object::toString).orElse(""));
     }
 
     /**
@@ -78,20 +83,6 @@ public class PaymentObjective extends DefaultObjective {
 
     private String getDefaultDataInstruction(final Profile profile) throws QuestException {
         return String.valueOf(targetAmount.getValue(profile).doubleValue());
-    }
-
-    @Override
-    public String getProperty(final String name, final Profile profile) {
-        final PaymentData data = getPaymentData(profile);
-        if (data == null) {
-            return "";
-        }
-        return switch (name.toLowerCase(Locale.ROOT)) {
-            case "amount" -> Double.toString(data.amount);
-            case "left" -> Double.toString(data.targetAmount - data.amount);
-            case "total" -> Double.toString(data.targetAmount);
-            default -> "";
-        };
     }
 
     /**

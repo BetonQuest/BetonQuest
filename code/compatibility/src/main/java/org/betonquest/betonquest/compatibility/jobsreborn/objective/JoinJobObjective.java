@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 
 /**
@@ -42,10 +41,5 @@ public class JoinJobObjective extends DefaultObjective {
         if (event.getJob().isSame(this.job.getValue(onlineProfile))) {
             getService().complete(onlineProfile);
         }
-    }
-
-    @Override
-    public String getProperty(final String name, final Profile profile) {
-        return "";
     }
 }

@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -96,14 +95,7 @@ public class MythicMobKillObjective extends CountingObjective {
         this.deathRadiusAllPlayers = deathRadiusAllPlayers;
         this.neutralDeathRadiusAllPlayers = neutralDeathRadiusAllPlayers;
         this.marked = marked;
-    }
-
-    @Override
-    public String getProperty(final String name, final Profile profile) throws QuestException {
-        if (MODE.equalsIgnoreCase(name)) {
-            return mode.getValue(profile).toString();
-        }
-        return super.getProperty(name, profile);
+        service.getProperties().setProperty(MODE, profile -> mode.getValue(profile).toString());
     }
 
     /**

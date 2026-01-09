@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.objective.location;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.Location;
 
@@ -39,6 +38,10 @@ public class LocationObjective extends AbstractLocationObjective {
         super(service);
         this.loc = loc;
         this.range = range;
+        service.getProperties().setProperty(LOCATION_PROPERTY, profile -> {
+            final Location location = loc.getValue(profile);
+            return "X: " + location.getBlockX() + ", Y: " + location.getBlockY() + ", Z: " + location.getBlockZ();
+        });
     }
 
     @Override
@@ -49,14 +52,5 @@ public class LocationObjective extends AbstractLocationObjective {
         }
         final double pRange = range.getValue(onlineProfile).doubleValue();
         return location.distanceSquared(targetLocation) <= pRange * pRange;
-    }
-
-    @Override
-    public String getProperty(final String name, final Profile profile) throws QuestException {
-        if (LOCATION_PROPERTY.equalsIgnoreCase(name)) {
-            final Location location = loc.getValue(profile);
-            return "X: " + location.getBlockX() + ", Y: " + location.getBlockY() + ", Z: " + location.getBlockZ();
-        }
-        return "";
     }
 }

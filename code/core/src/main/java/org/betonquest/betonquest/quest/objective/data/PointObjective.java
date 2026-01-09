@@ -70,6 +70,8 @@ public class PointObjective extends DefaultObjective {
         this.mode = mode;
         this.operation = operation;
         getService().setDefaultData(this::getDefaultDataInstruction);
+        service.getProperties().setProperty("amount", profile -> getProperty("amount", profile));
+        service.getProperties().setProperty("left", profile -> getProperty("left", profile));
     }
 
     private String getDefaultDataInstruction(final Profile profile) throws QuestException {
@@ -82,8 +84,7 @@ public class PointObjective extends DefaultObjective {
         return String.valueOf(targetValue + points.orElse(0));
     }
 
-    @Override
-    public String getProperty(final String name, final Profile profile) throws QuestException {
+    private String getProperty(final String name, final Profile profile) throws QuestException {
         final PointData data = new PointData(getService().getData().get(profile), profile, getObjectiveID());
         final int value = switch (name.toLowerCase(Locale.ROOT)) {
             case "amount" -> data.getPoints();

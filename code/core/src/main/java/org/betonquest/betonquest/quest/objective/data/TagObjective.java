@@ -37,11 +37,7 @@ public class TagObjective extends DefaultObjective {
         super(service);
         this.playerDataStorage = playerDataStorage;
         this.tag = tag;
-    }
-
-    @Override
-    public String getProperty(final String name, final Profile profile) throws QuestException {
-        return tag.getValue(profile);
+        service.getProperties().setProperty("name", tag::getValue);
     }
 
     /**

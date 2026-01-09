@@ -22,6 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * An objective that is not completed by doing some action just once, but multiple times. It provides common properties
  * and a versatile data object to track the progress.
  */
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public abstract class CountingObjective extends DefaultObjective {
 
     /**
@@ -53,14 +54,19 @@ public abstract class CountingObjective extends DefaultObjective {
                 instance.getPluginMessage(), service.getObjectiveID().getPackage(), service.getObjectiveID().getFull(),
                 NotificationLevel.INFO, notifyMessageName);
         service.setDefaultData(this::getDefaultDataInstruction);
+        service.getProperties().setProperty("amount", profile -> getProperty("amount", profile));
+        service.getProperties().setProperty("left", profile -> getProperty("left", profile));
+        service.getProperties().setProperty("total", profile -> getProperty("total", profile));
+        service.getProperties().setProperty("absoluteamount", profile -> getProperty("absoluteamount", profile));
+        service.getProperties().setProperty("absoluteleft", profile -> getProperty("absoluteleft", profile));
+        service.getProperties().setProperty("absolutetotal", profile -> getProperty("absolutetotal", profile));
     }
 
     private String getDefaultDataInstruction(final Profile profile) throws QuestException {
         return String.valueOf(targetAmount.getValue(profile).intValue());
     }
 
-    @Override
-    public String getProperty(final String name, final Profile profile) throws QuestException {
+    private String getProperty(final String name, final Profile profile) throws QuestException {
         final CountingData countingData = getCountingData(profile);
         if (countingData == null) {
             return "";

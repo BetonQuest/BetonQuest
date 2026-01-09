@@ -31,4 +31,14 @@ public interface ObjectiveProperties {
      * @param property the function to retrieve the property
      */
     void setProperty(String name, QuestFunction<Profile, String> property);
+
+    /**
+     * This method should add all properties from the given {@link ObjectiveProperties} to this one.
+     * Those new properties will be available for retrieval via {@link #getProperty(String, Profile)}
+     * and will be overwritten by {@link #setProperty(String, QuestFunction)}.
+     * There can only be a single parent objective properties instance.
+     *
+     * @param properties the properties to add
+     */
+    void setParentProperties(ObjectiveProperties properties);
 }

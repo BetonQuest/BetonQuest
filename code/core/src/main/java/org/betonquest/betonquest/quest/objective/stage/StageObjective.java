@@ -12,7 +12,6 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 
 import java.util.List;
-import java.util.Locale;
 
 /**
  * The StageObjective is a special objective that can be used to create a stage system for a quest.
@@ -41,17 +40,10 @@ public class StageObjective extends DefaultObjective {
         super(service);
         this.stageMap = stageMap;
         this.preventCompletion = preventCompletion;
-    }
-
-    @Override
-    public String getProperty(final String name, final Profile profile) {
-        return getExceptionHandler().handle(() -> switch (name.toLowerCase(Locale.ROOT)) {
-            case "index" -> String.valueOf(stageMap.getIndex(getStage(profile)));
-            case "current" -> getStage(profile);
-            case "next" -> stageMap.nextStage(getStage(profile));
-            case "previous" -> stageMap.previousStage(getStage(profile));
-            default -> "";
-        }, "");
+        service.getProperties().setProperty("index", profile -> String.valueOf(stageMap.getIndex(getStage(profile))));
+        service.getProperties().setProperty("current", this::getStage);
+        service.getProperties().setProperty("next", profile -> stageMap.nextStage(getStage(profile)));
+        service.getProperties().setProperty("previous", profile -> stageMap.previousStage(getStage(profile)));
     }
 
     /**
