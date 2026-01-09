@@ -5180,6 +5180,8 @@ you should get a notification.</p>
 <div class="admonition tip">
 <p class="admonition-title">Faster Fishing</p>
 <p>Use this command to get a superfast fishing rod:
+<div class="highlight"><span class="filename">1.21+</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">/give @p fishing_rod[custom_name={&quot;text&quot;:&quot;Instant Fishing Rod&quot;,&quot;color&quot;:&quot;yellow&quot;,&quot;italic&quot;:false},lore=[{&quot;text&quot;:&quot;Instantly summons a hungry fish...&quot;,&quot;italic&quot;:false}],item_name=mrjimin,enchantments={lure:100}]</span>
+</code></pre></div>
 <div class="highlight"><span class="filename">1.20.5+</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">/give @p fishing_rod[custom_name=&#39;[&quot;&quot;,{&quot;text&quot;:&quot;Instant Fishing Rod&quot;,&quot;color&quot;:&quot;yellow&quot;}]&#39;,lore=[&#39;[&quot;&quot;,{&quot;text&quot;:&quot;Instantly summons a hungry fish...&quot;,&quot;italic&quot;:false}]&#39;],item_name=derp,enchantments={levels:{lure:100}}]</span>
 </code></pre></div>
 <div class="highlight"><span class="filename">pre 1.20.5</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">/give @p fishing_rod{display:{Name:&#39;{&quot;text&quot;:&quot;Instant Fishing Rod&quot;,&quot;color&quot;:&quot;yellow&quot;,&quot;italic&quot;:true}&#39;,Lore:[&#39;{&quot;text&quot;:&quot;Instantly summons a hungry fish...&quot;}&#39;]},HideFlags:1,Enchantments:[{id:&quot;minecraft:lure&quot;,lvl:100s}]} 1</span>
@@ -5211,7 +5213,7 @@ you should get a notification.</p>
 </tr>
 <tr>
 <td><code>fishingObj</code></td>
-<td>The name of the objective to execute. Don't forget to separate it with a dot from the package <code>tutorialQuest<mark class="critic">.</mark>fishingObj</code>.</td>
+<td>The name of the objective to execute. Don't forget to separate it with the <code>&gt;</code> symbol from the package <code>tutorialQuest<mark class="critic">&gt;</mark>fishingObj</code>.</td>
 </tr>
 </tbody>
 </table>
