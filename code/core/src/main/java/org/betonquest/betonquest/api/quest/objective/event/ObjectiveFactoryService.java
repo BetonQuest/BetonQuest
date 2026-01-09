@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.quest.objective.event;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -71,6 +72,26 @@ public interface ObjectiveFactoryService {
      */
     @Deprecated
     void updateData(Profile profile);
+
+    /**
+     * Get the default objective data.
+     *
+     * @param profile the profile to get the data for
+     * @return the supplier
+     * @throws QuestException when argument resolving fails
+     * @deprecated do not use this method. it's scheduled for removal and only exists for compatibility.
+     */
+    @Deprecated
+    String getDefaultData(Profile profile) throws QuestException;
+
+    /**
+     * Set the default objective data supplier.
+     *
+     * @param supplier the supplier to use
+     * @deprecated do not use this method. it's scheduled for removal and only exists for compatibility.
+     */
+    @Deprecated
+    void setDefaultData(QuestFunction<Profile, String> supplier);
 
     /**
      * Do not use this method directly. It is used for internal logic.

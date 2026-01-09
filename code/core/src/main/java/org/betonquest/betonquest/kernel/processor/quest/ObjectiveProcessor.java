@@ -36,7 +36,7 @@ import java.util.Set;
 /**
  * Stores Objectives and starts/stops/resumes them.
  */
-@SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.TooManyMethods"})
+@SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.TooManyMethods", "PMD.GodClass"})
 public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjective> {
 
     /**
@@ -174,7 +174,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
     }
 
     private void runObjectiveChangeEvent(final Objective objective, final Profile profile, final ObjectiveState previousState, final ObjectiveState newState) {
-        final boolean isAsync = !BetonQuest.getInstance().getServer().isPrimaryThread();
+        final boolean isAsync = !plugin.getServer().isPrimaryThread();
         new PlayerObjectiveChangeEvent(profile, isAsync, objective, objective.getObjectiveID(), newState, previousState).callEvent();
     }
 
@@ -191,6 +191,18 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
         synchronized (this) {
             runObjectiveChangeEvent(objective, profile, ObjectiveState.ACTIVE, newState);
             objective.getService().getData().remove(profile);
+        }
+    }
+
+    private void newPlayer(final Profile profile, final ObjectiveID objectiveID) {
+        try {
+            final Objective objective = get(objectiveID);
+            final String defaultInstruction = objective.getService().getDefaultData(profile);
+            startObjective(objective, profile, defaultInstruction, ObjectiveState.NEW);
+            BetonQuest.getInstance().getPlayerDataStorage().get(profile).addObjToDB(objectiveID, defaultInstruction);
+        } catch (final QuestException e) {
+            log.warn("Could not create new objective '%s' for profile '%s': The objective instruction could not be resolved: %s"
+                    .formatted(objectiveID, profile, e.getMessage()), e);
         }
     }
 
@@ -248,7 +260,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
             log.debug(objectiveID.getPackage(), "'%s' already has the '%s' objective. Request to start the objective discarded.".formatted(profile, objectiveID));
             return;
         }
-        objective.newPlayer(profile);
+        newPlayer(profile, objectiveID);
     }
 
     /**
@@ -318,7 +330,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, DefaultObjec
             if (objective.getService().containsProfile(profile)) {
                 log.debug(id.getPackage(), profile + " already has the " + id + " objective, adding tag");
             } else {
-                objective.newPlayer(profile);
+                newPlayer(profile, id);
             }
             data.addTag(tag);
         }

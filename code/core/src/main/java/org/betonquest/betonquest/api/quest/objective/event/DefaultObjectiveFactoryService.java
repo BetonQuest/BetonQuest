@@ -3,6 +3,7 @@ package org.betonquest.betonquest.api.quest.objective.event;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.QuestDataUpdateEvent;
+import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.identifier.DefaultIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
@@ -74,6 +75,11 @@ public class DefaultObjectiveFactoryService implements ObjectiveFactoryService {
     private final ProfileProvider profileProvider;
 
     /**
+     * The default data supplier.
+     */
+    private QuestFunction<Profile, String> defaultDataSupplier;
+
+    /**
      * The objective related to this service.
      */
     private ObjectiveID objectiveID;
@@ -101,6 +107,7 @@ public class DefaultObjectiveFactoryService implements ObjectiveFactoryService {
         this.questExceptionHandler = new QuestExceptionHandler(objectiveID.getPackage(), this.logger, objectiveID.getFull());
         this.objectiveServiceData = parseObjectiveData(objectiveID.getInstruction());
         this.objectiveData = new ProfileKeyMap<>(profileProvider);
+        this.defaultDataSupplier = profile -> "";
     }
 
     private static ObjectiveServiceData parseObjectiveData(final Instruction instruction) throws QuestException {
@@ -148,6 +155,16 @@ public class DefaultObjectiveFactoryService implements ObjectiveFactoryService {
         if (profile.getOnlineProfile().isPresent()) {
             plugin.getPlayerDataStorage().get(profile).getJournal().update();
         }
+    }
+
+    @Override
+    public String getDefaultData(final Profile profile) throws QuestException {
+        return defaultDataSupplier.apply(profile);
+    }
+
+    @Override
+    public void setDefaultData(final QuestFunction<Profile, String> supplier) {
+        this.defaultDataSupplier = supplier;
     }
 
     @Override

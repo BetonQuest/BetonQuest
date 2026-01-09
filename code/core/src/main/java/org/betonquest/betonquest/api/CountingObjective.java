@@ -25,15 +25,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 public abstract class CountingObjective extends DefaultObjective {
 
     /**
+     * The number of units required for completion.
+     */
+    protected final Argument<Number> targetAmount;
+
+    /**
      * The message used for notifying the player.
      */
     @Nullable
     private final IngameNotificationSender countSender;
-
-    /**
-     * The number of units required for completion.
-     */
-    private final Argument<Number> targetAmount;
 
     /**
      * Create a counting objective.
@@ -43,6 +43,7 @@ public abstract class CountingObjective extends DefaultObjective {
      * @param notifyMessageName the message name used for notifying by default
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public CountingObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount,
                              @Nullable final String notifyMessageName) throws QuestException {
         super(service);
@@ -52,10 +53,10 @@ public abstract class CountingObjective extends DefaultObjective {
         countSender = notifyMessageName == null ? null : new IngameNotificationSender(loggerFactory.create(CountingObjective.class),
                 instance.getPluginMessage(), service.getObjectiveID().getPackage(), service.getObjectiveID().getFull(),
                 NotificationLevel.INFO, notifyMessageName);
+        getService().setDefaultData(this::getDefaultDataInstruction);
     }
 
-    @Override
-    public String getDefaultDataInstruction(final Profile profile) throws QuestException {
+    private String getDefaultDataInstruction(final Profile profile) throws QuestException {
         return String.valueOf(targetAmount.getValue(profile).intValue());
     }
 

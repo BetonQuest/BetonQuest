@@ -73,11 +73,6 @@ public class MenuObjective extends DefaultObjective {
     }
 
     @Override
-    public String getDefaultDataInstruction(final Profile profile) {
-        return "";
-    }
-
-    @Override
     public String getProperty(final String name, final Profile profile) {
         if (MENU_PROPERTY.equalsIgnoreCase(name)) {
             final Menu menuData;

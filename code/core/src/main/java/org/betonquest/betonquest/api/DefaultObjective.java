@@ -64,16 +64,6 @@ public abstract class DefaultObjective implements Objective {
     }
 
     /**
-     * This method should return the default data instruction for the objective,
-     * ready to be parsed by the ObjectiveData class.
-     *
-     * @param profile the {@link Profile} to parse the instruction for
-     * @return the default data instruction string
-     * @throws QuestException when values could not be resolved for the profile
-     */
-    public abstract String getDefaultDataInstruction(Profile profile) throws QuestException;
-
-    /**
      * This method fires actions for the objective and removes it from the profile's
      * list of active objectives. Use it when you detect that the objective has
      * been completed. It deletes the objective using delete() method.
@@ -89,7 +79,7 @@ public abstract class DefaultObjective implements Objective {
         try {
             if (getService().getServiceDataProvider().isPersistent(profile)) {
                 try {
-                    final String defaultDataInstruction = getDefaultDataInstruction(profile);
+                    final String defaultDataInstruction = getService().getDefaultData(profile);
                     playerData.addRawObjective(objectiveID, defaultDataInstruction);
                     playerData.addObjToDB(objectiveID, defaultDataInstruction);
                     createObjectiveForPlayer(profile, defaultDataInstruction);
@@ -111,23 +101,6 @@ public abstract class DefaultObjective implements Objective {
         }
         getLogger().debug(questPackage,
                 "Firing actions in objective '" + objectiveID + "' for " + profile + " finished");
-    }
-
-    /**
-     * Adds this new objective to the profile. Also updates the database with the
-     * objective.
-     *
-     * @param profile the {@link Profile} for which the objective is to be added
-     */
-    public final void newPlayer(final Profile profile) {
-        try {
-            final String defaultInstruction = getDefaultDataInstruction(profile);
-            createObjectiveForPlayer(profile, defaultInstruction);
-            BetonQuest.getInstance().getPlayerDataStorage().get(profile).addObjToDB(getObjectiveID(), defaultInstruction);
-        } catch (final QuestException e) {
-            getLogger().warn(getPackage(), "Could not create new Objective for '" + getObjectiveID()
-                    + "' for '" + profile + "' objective: The Objective Instruction could not be resolved: " + e.getMessage(), e);
-        }
     }
 
     /**

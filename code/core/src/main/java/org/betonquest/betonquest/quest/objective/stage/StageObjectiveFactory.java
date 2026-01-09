@@ -26,6 +26,7 @@ public class StageObjectiveFactory implements ObjectiveFactory {
         final List<String> stages = instruction.string().list().get().getValue(null);
         final StageObjective.StageMap stageMap = new StageObjective.StageMap(stages, (ObjectiveID) instruction.getID());
         final FlagArgument<Boolean> preventCompletion = instruction.bool().getFlag("preventCompletion", true);
+        service.setDefaultData(profile -> stageMap.getStage(0));
         return new StageObjective(service, stageMap, preventCompletion);
     }
 }

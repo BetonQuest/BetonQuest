@@ -81,11 +81,6 @@ public class ExperienceObjective extends DefaultObjective {
     }
 
     @Override
-    public String getDefaultDataInstruction(final Profile profile) {
-        return "";
-    }
-
-    @Override
     public String getProperty(final String name, final Profile profile) throws QuestException {
         return switch (name.toLowerCase(Locale.ROOT)) {
             case "amount" -> profile.getOnlineProfile()
