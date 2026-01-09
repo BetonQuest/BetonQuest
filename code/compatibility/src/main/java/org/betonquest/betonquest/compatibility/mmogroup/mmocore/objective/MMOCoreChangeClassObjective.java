@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.jetbrains.annotations.Nullable;
 
@@ -48,10 +47,5 @@ public class MMOCoreChangeClassObjective extends DefaultObjective {
         if (targetClassName.getValue(onlineProfile).equalsIgnoreCase(event.getNewClass().getName())) {
             getService().complete(onlineProfile);
         }
-    }
-
-    @Override
-    public String getProperty(final String name, final Profile profile) {
-        return "";
     }
 }

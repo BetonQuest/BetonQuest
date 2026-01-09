@@ -14,7 +14,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Timer objective that tracks the ingame time when the conditions are fulfilled.
@@ -25,11 +24,6 @@ public class TimerObjective extends CountingObjective implements Runnable {
      * Quest Type API.
      */
     private final QuestTypeApi questTypeApi;
-
-    /**
-     * An optional DisplayName for the objective.
-     */
-    private final Argument<String> name;
 
     /**
      * Actions to run before the objective is actually removed.
@@ -61,10 +55,10 @@ public class TimerObjective extends CountingObjective implements Runnable {
                           final Argument<Number> interval, final Argument<List<ActionID>> doneActions) throws QuestException {
         super(service, targetAmount, null);
         this.questTypeApi = questTypeApi;
-        this.name = name;
         this.doneActions = doneActions;
         this.interval = interval.getValue(null).intValue();
         this.runnable = Bukkit.getScheduler().runTaskTimer(BetonQuest.getInstance(), this, this.interval * 20L, this.interval * 20L);
+        service.getProperties().setProperty("name", name::getValue);
     }
 
     @Override
@@ -83,16 +77,6 @@ public class TimerObjective extends CountingObjective implements Runnable {
                 }
             });
         });
-    }
-
-    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    @Override
-    public String getProperty(final String name, final Profile profile) throws QuestException {
-        final String lowerName = name.toLowerCase(Locale.ROOT);
-        if ("name".equals(lowerName)) {
-            return this.name.getValue(profile);
-        }
-        return super.getProperty(name, profile);
     }
 
     /**

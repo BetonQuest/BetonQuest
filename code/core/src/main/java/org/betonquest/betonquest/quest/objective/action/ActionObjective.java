@@ -91,6 +91,13 @@ public class ActionObjective extends DefaultObjective {
         this.range = range;
         this.cancel = cancel;
         this.slot = slot;
+        service.getProperties().setProperty(PROPERTY_LOCATION, profile -> {
+            if (loc == null) {
+                return "";
+            }
+            final Location location = loc.getValue(profile);
+            return "X: " + location.getBlockX() + ", Y: " + location.getBlockY() + ", Z: " + location.getBlockZ();
+        });
     }
 
     /**
@@ -136,17 +143,5 @@ public class ActionObjective extends DefaultObjective {
         return (selectorValue.match(Material.WATER) || selectorValue.match(Material.LAVA))
                 && selectorValue.match(clickedBlock.getRelative(blockFace), exactMatch.getValue(profile).orElse(false))
                 || selectorValue.match(clickedBlock, exactMatch.getValue(profile).orElse(false));
-    }
-
-    @Override
-    public String getProperty(final String name, final Profile profile) throws QuestException {
-        if (PROPERTY_LOCATION.equalsIgnoreCase(name)) {
-            if (loc == null) {
-                return "";
-            }
-            final Location location = loc.getValue(profile);
-            return "X: " + location.getBlockX() + ", Y: " + location.getBlockY() + ", Z: " + location.getBlockZ();
-        }
-        return "";
     }
 }

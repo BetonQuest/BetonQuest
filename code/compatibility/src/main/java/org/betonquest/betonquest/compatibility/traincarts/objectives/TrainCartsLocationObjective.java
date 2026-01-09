@@ -3,7 +3,6 @@ package org.betonquest.betonquest.compatibility.traincarts.objectives;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
 import org.betonquest.betonquest.quest.objective.location.AbstractLocationObjective;
@@ -36,11 +35,6 @@ public class TrainCartsLocationObjective extends AbstractLocationObjective {
         super(service);
         this.loc = loc;
         this.range = range;
-    }
-
-    @Override
-    public String getProperty(final String name, final Profile profile) {
-        return "";
     }
 
     @Override

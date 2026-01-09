@@ -11,14 +11,13 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveProperties;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLevelChangeEvent;
-
-import java.util.Locale;
 
 /**
  * Player needs to get specified experience level or more.
@@ -48,15 +47,32 @@ public class ExperienceObjective extends DefaultObjective {
         super(service);
         this.amount = amount;
         this.levelSender = levelSender;
+        final ObjectiveProperties properties = service.getProperties();
+        properties.setProperty("amount", profile -> profile.getOnlineProfile()
+                .map(OnlineProfile::getPlayer)
+                .map(player -> player.getLevel() + player.getExp())
+                .map(String::valueOf)
+                .orElse(""));
+        properties.setProperty("left", profile -> {
+            final double pAmount = amount.getValue(profile).doubleValue();
+            return profile.getOnlineProfile()
+                    .map(OnlineProfile::getPlayer)
+                    .map(player -> player.getLevel() + player.getExp())
+                    .map(exp -> pAmount - exp)
+                    .map(String::valueOf)
+                    .orElse("");
+        });
+        properties.setProperty("total", profile -> String.valueOf(amount.getValue(profile).doubleValue()));
     }
 
     private void onExperienceChange(final OnlineProfile onlineProfile, final double newAmount, final boolean notify) throws QuestException {
         final double amount = this.amount.getValue(onlineProfile).doubleValue();
+        final int notificationInterval = getService().getServiceDataProvider().getNotificationInterval(onlineProfile);
         if (newAmount >= amount) {
             getService().complete(onlineProfile);
-        } else if (this.hasNotify(onlineProfile) && notify) {
+        } else if (notificationInterval > 0 && notify) {
             final int level = (int) (amount - newAmount);
-            if (level % getNotifyInterval(onlineProfile) == 0) {
+            if (level % notificationInterval == 0) {
                 levelSender.sendNotification(onlineProfile, new VariableReplacement("amount", Component.text(level)));
             }
         }
@@ -78,28 +94,6 @@ public class ExperienceObjective extends DefaultObjective {
                     final double newAmount = player.getLevel() + player.getExp();
                     getExceptionHandler().handle(() -> onExperienceChange(onlineProfile, newAmount, false));
                 });
-    }
-
-    @Override
-    public String getProperty(final String name, final Profile profile) throws QuestException {
-        return switch (name.toLowerCase(Locale.ROOT)) {
-            case "amount" -> profile.getOnlineProfile()
-                    .map(OnlineProfile::getPlayer)
-                    .map(player -> player.getLevel() + player.getExp())
-                    .map(String::valueOf)
-                    .orElse("");
-            case "left" -> {
-                final double pAmount = amount.getValue(profile).doubleValue();
-                yield profile.getOnlineProfile()
-                        .map(OnlineProfile::getPlayer)
-                        .map(player -> player.getLevel() + player.getExp())
-                        .map(exp -> pAmount - exp)
-                        .map(String::valueOf)
-                        .orElse("");
-            }
-            case "total" -> String.valueOf(amount.getValue(profile).doubleValue());
-            default -> "";
-        };
     }
 
     /**

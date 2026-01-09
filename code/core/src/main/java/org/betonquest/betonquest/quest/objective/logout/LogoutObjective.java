@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.objective.logout;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -30,10 +29,5 @@ public class LogoutObjective extends DefaultObjective {
      */
     public void onQuit(final PlayerQuitEvent event, final OnlineProfile onlineProfile) {
         getService().complete(onlineProfile);
-    }
-
-    @Override
-    public String getProperty(final String name, final Profile profile) {
-        return "";
     }
 }

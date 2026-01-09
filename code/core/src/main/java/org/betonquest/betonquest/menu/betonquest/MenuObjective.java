@@ -51,6 +51,7 @@ public class MenuObjective extends DefaultObjective {
         this.log = log;
         this.rpgMenu = rpgMenu;
         this.menuID = menuID;
+        service.getProperties().setProperty(MENU_PROPERTY, this::getMenuProperty);
     }
 
     /**
@@ -72,28 +73,25 @@ public class MenuObjective extends DefaultObjective {
         this.getService().complete(profile);
     }
 
-    @Override
-    public String getProperty(final String name, final Profile profile) {
-        if (MENU_PROPERTY.equalsIgnoreCase(name)) {
-            final Menu menuData;
-            try {
-                menuData = rpgMenu.getMenu(menuID.getValue(profile));
-            } catch (final QuestException e) {
-                log.warn(getPackage(), "Error while getting menu property in '" + getObjectiveID() + "' objective: "
-                        + e.getMessage(), e);
-                return "";
-            }
-            if (menuData == null) {
-                log.debug(getPackage(), "Error while getting menu property in '" + getObjectiveID() + "' objective: "
-                        + "menu with id " + menuID + " isn't loaded");
-                return "";
-            }
-            try {
-                return LegacyComponentSerializer.legacySection().serialize(menuData.getTitle(profile));
-            } catch (final QuestException e) {
-                log.debug(getPackage(), "Error while getting menu property in '" + getObjectiveID() + "' objective: "
-                        + e.getMessage(), e);
-            }
+    private String getMenuProperty(final Profile profile) {
+        final Menu menuData;
+        try {
+            menuData = rpgMenu.getMenu(menuID.getValue(profile));
+        } catch (final QuestException e) {
+            log.warn(getPackage(), "Error while getting menu property in '" + getObjectiveID() + "' objective: "
+                    + e.getMessage(), e);
+            return "";
+        }
+        if (menuData == null) {
+            log.debug(getPackage(), "Error while getting menu property in '" + getObjectiveID() + "' objective: "
+                    + "menu with id " + menuID + " isn't loaded");
+            return "";
+        }
+        try {
+            return LegacyComponentSerializer.legacySection().serialize(menuData.getTitle(profile));
+        } catch (final QuestException e) {
+            log.debug(getPackage(), "Error while getting menu property in '" + getObjectiveID() + "' objective: "
+                    + e.getMessage(), e);
         }
         return "";
     }

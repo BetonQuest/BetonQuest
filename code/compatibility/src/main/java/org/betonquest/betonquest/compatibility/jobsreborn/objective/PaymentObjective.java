@@ -13,10 +13,11 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveProperties;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Locale;
+import java.util.Optional;
 
 /**
  * Objective that tracks the payment received by a player.
@@ -41,12 +42,18 @@ public class PaymentObjective extends DefaultObjective {
      * @param paymentSender the {@link IngameNotificationSender} to send notifications
      * @throws QuestException if the instruction is invalid
      */
-    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public PaymentObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount, final IngameNotificationSender paymentSender) throws QuestException {
         super(service);
         this.targetAmount = targetAmount;
         this.paymentSender = paymentSender;
-        getService().setDefaultData(this::getDefaultDataInstruction);
+        service.setDefaultData(this::getDefaultDataInstruction);
+        final ObjectiveProperties properties = service.getProperties();
+        properties.setProperty("amount", profile -> Optional.ofNullable(getPaymentData(profile))
+                .map(data -> data.amount).map(Object::toString).orElse(""));
+        properties.setProperty("left", profile -> Optional.ofNullable(getPaymentData(profile))
+                .map(data -> data.targetAmount - data.amount).map(Object::toString).orElse(""));
+        properties.setProperty("total", profile -> Optional.ofNullable(getPaymentData(profile))
+                .map(data -> data.targetAmount).map(Object::toString).orElse(""));
     }
 
     /**
@@ -54,8 +61,9 @@ public class PaymentObjective extends DefaultObjective {
      *
      * @param event   the event that triggered the payment
      * @param profile the profile of the player that received the payment
+     * @throws QuestException if argument resolving for the profile fails
      */
-    public void onJobsPaymentEvent(final JobsPaymentEvent event, final Profile profile) {
+    public void onJobsPaymentEvent(final JobsPaymentEvent event, final Profile profile) throws QuestException {
         final PaymentData playerData = getPaymentData(profile);
         if (playerData == null) {
             getLogger().warn("Could not access PaymentData for profile '" + profile + "'.");
@@ -67,7 +75,7 @@ public class PaymentObjective extends DefaultObjective {
         if (playerData.isCompleted()) {
             getService().complete(profile);
         } else {
-            final int interval = getNotifyInterval(profile);
+            final int interval = getService().getServiceDataProvider().getNotificationInterval(profile);
             if (interval > 0 && ((int) playerData.amount) / interval != ((int) previousAmount) / interval && profile.getOnlineProfile().isPresent()) {
                 paymentSender.sendNotification(profile,
                         new VariableReplacement("amount", Component.text(playerData.targetAmount - playerData.amount)));
@@ -77,20 +85,6 @@ public class PaymentObjective extends DefaultObjective {
 
     private String getDefaultDataInstruction(final Profile profile) throws QuestException {
         return String.valueOf(targetAmount.getValue(profile).doubleValue());
-    }
-
-    @Override
-    public String getProperty(final String name, final Profile profile) {
-        final PaymentData data = getPaymentData(profile);
-        if (data == null) {
-            return "";
-        }
-        return switch (name.toLowerCase(Locale.ROOT)) {
-            case "amount" -> Double.toString(data.amount);
-            case "left" -> Double.toString(data.targetAmount - data.amount);
-            case "total" -> Double.toString(data.targetAmount);
-            default -> "";
-        };
     }
 
     /**

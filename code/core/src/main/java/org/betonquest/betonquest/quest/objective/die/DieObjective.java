@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
@@ -118,10 +117,5 @@ public class DieObjective extends DefaultObjective {
 
     private Optional<Location> getLocation(final OnlineProfile onlineProfile) throws QuestException {
         return location == null ? Optional.empty() : Optional.of(location.getValue(onlineProfile));
-    }
-
-    @Override
-    public String getProperty(final String name, final Profile profile) {
-        return "";
     }
 }

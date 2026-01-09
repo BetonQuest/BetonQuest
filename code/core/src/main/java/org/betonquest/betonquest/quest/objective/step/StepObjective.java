@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -45,6 +44,10 @@ public class StepObjective extends DefaultObjective {
         super(service);
         this.loc = loc;
         this.pressurePlateSelector = pressurePlateSelector;
+        service.getProperties().setProperty(LOCATION_KEY, profile -> {
+            final Block block = loc.getValue(profile).getBlock();
+            return "X: " + block.getX() + ", Y: " + block.getY() + ", Z: " + block.getZ();
+        });
     }
 
     /**
@@ -74,14 +77,5 @@ public class StepObjective extends DefaultObjective {
             return;
         }
         getService().complete(onlineProfile);
-    }
-
-    @Override
-    public String getProperty(final String name, final Profile profile) throws QuestException {
-        if (LOCATION_KEY.equalsIgnoreCase(name)) {
-            final Block block = loc.getValue(profile).getBlock();
-            return "X: " + block.getX() + ", Y: " + block.getY() + ", Z: " + block.getZ();
-        }
-        return "";
     }
 }

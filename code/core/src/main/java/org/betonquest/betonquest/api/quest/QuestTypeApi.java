@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.api.quest;
 
-import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
+import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.jetbrains.annotations.Nullable;
 
@@ -111,7 +111,7 @@ public interface QuestTypeApi {
      * @param profile the {@link Profile} of the player
      * @return list of this player's active objectives
      */
-    List<DefaultObjective> getPlayerObjectives(Profile profile);
+    List<Objective> getPlayerObjectives(Profile profile);
 
     /**
      * Gets a stored Objective.
@@ -120,7 +120,7 @@ public interface QuestTypeApi {
      * @return the loaded Objective
      * @throws QuestException if no Objective is loaded for the ID
      */
-    DefaultObjective getObjective(ObjectiveID objectiveID) throws QuestException;
+    Objective getObjective(ObjectiveID objectiveID) throws QuestException;
 
     /**
      * Get the Api for placeholder interaction.

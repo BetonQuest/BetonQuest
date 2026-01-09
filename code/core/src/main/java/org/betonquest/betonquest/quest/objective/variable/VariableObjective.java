@@ -3,10 +3,12 @@ package org.betonquest.betonquest.quest.objective.variable;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveProperties;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -32,6 +34,23 @@ public class VariableObjective extends DefaultObjective {
      */
     public VariableObjective(final ObjectiveFactoryService service) throws QuestException {
         super(service);
+        service.getProperties().setParentProperties(new ObjectiveProperties() {
+            @Override
+            public String getProperty(final String name, final Profile profile) {
+                final String value = getVariableData(profile).get(name);
+                return value == null ? "" : value;
+            }
+
+            @Override
+            public void setProperty(final String name, final QuestFunction<Profile, String> property) {
+                throw new UnsupportedOperationException("Cannot set property for VariableObjective");
+            }
+
+            @Override
+            public void setParentProperties(final ObjectiveProperties properties) {
+                throw new UnsupportedOperationException("Cannot set parent properties for VariableObjective");
+            }
+        });
     }
 
     /**
@@ -49,12 +68,6 @@ public class VariableObjective extends DefaultObjective {
             return true;
         }
         return false;
-    }
-
-    @Override
-    public String getProperty(final String name, final Profile profile) {
-        final String value = getVariableData(profile).get(name);
-        return value == null ? "" : value;
     }
 
     /**

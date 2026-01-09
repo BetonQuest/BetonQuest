@@ -68,9 +68,4 @@ public class NpcInteractObjective extends DefaultObjective {
             getService().complete(profile);
         }
     }
-
-    @Override
-    public String getProperty(final String name, final Profile profile) {
-        return "";
-    }
 }

@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.api.quest.objective;
 
-import org.betonquest.betonquest.api.PropertyHolder;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
@@ -9,7 +8,8 @@ import org.betonquest.betonquest.lib.logger.QuestExceptionHandler;
 /**
  * Any objective should implement this interface.
  */
-public interface Objective extends PropertyHolder {
+@FunctionalInterface
+public interface Objective {
 
     /**
      * Should return the {@link ObjectiveFactoryService} for this objective.
@@ -52,5 +52,12 @@ public interface Objective extends PropertyHolder {
      */
     default BetonQuestLogger getLogger() {
         return getService().getLogger();
+    }
+
+    /**
+     * This method will be called when the objective is closed when shutting down or reloading.
+     */
+    default void close() {
+        // Empty
     }
 }

@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveProperties;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.betonquest.betonquest.quest.action.NotificationLevel;
 import org.jetbrains.annotations.Nullable;
@@ -22,6 +23,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * An objective that is not completed by doing some action just once, but multiple times. It provides common properties
  * and a versatile data object to track the progress.
  */
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public abstract class CountingObjective extends DefaultObjective {
 
     /**
@@ -43,7 +45,6 @@ public abstract class CountingObjective extends DefaultObjective {
      * @param notifyMessageName the message name used for notifying by default
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public CountingObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount,
                              @Nullable final String notifyMessageName) throws QuestException {
         super(service);
@@ -53,15 +54,21 @@ public abstract class CountingObjective extends DefaultObjective {
         countSender = notifyMessageName == null ? null : new IngameNotificationSender(loggerFactory.create(CountingObjective.class),
                 instance.getPluginMessage(), service.getObjectiveID().getPackage(), service.getObjectiveID().getFull(),
                 NotificationLevel.INFO, notifyMessageName);
-        getService().setDefaultData(this::getDefaultDataInstruction);
+        service.setDefaultData(this::getDefaultDataInstruction);
+        final ObjectiveProperties properties = service.getProperties();
+        properties.setProperty("amount", profile -> getProperty("amount", profile));
+        properties.setProperty("left", profile -> getProperty("left", profile));
+        properties.setProperty("total", profile -> getProperty("total", profile));
+        properties.setProperty("absoluteamount", profile -> getProperty("absoluteamount", profile));
+        properties.setProperty("absoluteleft", profile -> getProperty("absoluteleft", profile));
+        properties.setProperty("absolutetotal", profile -> getProperty("absolutetotal", profile));
     }
 
     private String getDefaultDataInstruction(final Profile profile) throws QuestException {
         return String.valueOf(targetAmount.getValue(profile).intValue());
     }
 
-    @Override
-    public String getProperty(final String name, final Profile profile) throws QuestException {
+    private String getProperty(final String name, final Profile profile) throws QuestException {
         final CountingData countingData = getCountingData(profile);
         if (countingData == null) {
             return "";
@@ -97,7 +104,7 @@ public abstract class CountingObjective extends DefaultObjective {
 
     /**
      * Complete the objective if fulfilled or else notify the profile's player if required. It will use the
-     * {@link #countSender} if set, otherwise no notification will be sent, even if {@link #hasNotify(Profile)} is
+     * {@link #countSender} if set, otherwise no notification will be sent, even if notification is set to
      * {@code true}.
      *
      * @param profile the {@link Profile} to act for
@@ -122,16 +129,24 @@ public abstract class CountingObjective extends DefaultObjective {
             getService().complete(profile);
             return true;
         }
-        if (hasNotify(profile) && notificationSender != null && shouldNotify(profile, data) && profile.getOnlineProfile().isPresent()) {
+        if (notificationInterval(profile) > 0 && notificationSender != null && shouldNotify(profile, data) && profile.getOnlineProfile().isPresent()) {
             notificationSender.sendNotification(profile, new VariableReplacement("amount", Component.text(Math.abs(data.getAmountLeft()))));
         }
         return false;
     }
 
+    private int notificationInterval(final Profile profile) {
+        try {
+            return getService().getServiceDataProvider().getNotificationInterval(profile);
+        } catch (final QuestException e) {
+            return 0;
+        }
+    }
+
     private boolean shouldNotify(final Profile profile, final CountingData data) {
         final int newAmount = Math.abs(data.getAmountLeft());
         final int oldAmount = Math.abs(data.getPreviousAmountLeft());
-        final int interval = getNotifyInterval(profile);
+        final int interval = notificationInterval(profile);
         return newAmount > oldAmount && newAmount / interval != oldAmount / interval
                 || newAmount < oldAmount && (newAmount - 1) / interval != (oldAmount - 1) / interval;
     }

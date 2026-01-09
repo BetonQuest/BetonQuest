@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.quest.action.objective;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.Argument;
@@ -10,6 +9,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
+import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.PlayerDataFactory;
@@ -91,7 +91,7 @@ public class ObjectiveAction implements NullableAction {
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
         for (final ObjectiveID objectiveID : objectives.getValue(profile)) {
-            final DefaultObjective objective = questTypeApi.getObjective(objectiveID);
+            final Objective objective = questTypeApi.getObjective(objectiveID);
             if (profile == null) {
                 handleStatic(objectiveID);
             } else if (profile.getOnlineProfile().isEmpty()) {
@@ -112,7 +112,7 @@ public class ObjectiveAction implements NullableAction {
         }
     }
 
-    private void handleForOnlinePlayer(final Profile profile, final ObjectiveID objectiveID, final DefaultObjective objective) {
+    private void handleForOnlinePlayer(final Profile profile, final ObjectiveID objectiveID, final Objective objective) {
         switch (action.toLowerCase(Locale.ROOT)) {
             case "start", "add" -> questTypeApi.newObjective(profile, objectiveID);
             case "complete", "finish" -> objective.getService().complete(profile);
