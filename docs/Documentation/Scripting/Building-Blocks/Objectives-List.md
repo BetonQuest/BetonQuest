@@ -622,7 +622,7 @@ objectives:
 
 <h5> Placeholder Properties </h5>
 
-The property of the objective is the tag to receive.
+The `name` property of the objective is the tag to receive.
 
 ## Taming: `tame`
 
