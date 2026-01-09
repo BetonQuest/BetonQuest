@@ -84,12 +84,12 @@ During day time, the result will show true. In the nighttime it will be false.
        Change the world time using the `/time set day` and `/time set night` commands.
        This will allow you to test your conditions in-game.
 
-| Command Part     | Meaning                                                                                                                  |
-|------------------|--------------------------------------------------------------------------------------------------------------------------|
-| `/bq conditions` | Tells BetonQuest that some conditions should be checked if true or false.                                                |
-| `NAME`           | A player's name.                                                                                                         |
-| `tutorialQuest`  | The name of a QuestPackage. This is required because you could have actions with the same name in different packages.    |
-| `isDay`          | The name of the condition to check. Don't forget to separate it with a dot from the package `tutorialQuest{==.==}isDay`. |
+| Command Part     | Meaning                                                                                                                           |
+|------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| `/bq conditions` | Tells BetonQuest that some conditions should be checked if true or false.                                                         |
+| `NAME`           | A player's name.                                                                                                                  |
+| `tutorialQuest`  | The name of a QuestPackage. This is required because you could have actions with the same name in different packages.             |
+| `isDay`          | The name of the condition to check. Don't forget to separate it with the `>` symbol from the package `tutorialQuest{==>==}isDay`. |
 
 
 @snippet:tutorials:download-solution@
