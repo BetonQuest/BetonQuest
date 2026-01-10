@@ -1,45 +1,51 @@
 package org.betonquest.betonquest.api.quest.objective.service;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.bukkit.event.BukkitEventService;
-import org.betonquest.betonquest.api.bukkit.event.EventServiceSubscriber;
-import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
-import org.betonquest.betonquest.api.common.function.QuestBiFunction;
+import org.betonquest.betonquest.api.bukkit.event.QuestDataUpdateEvent;
+import org.betonquest.betonquest.api.common.function.QuestFunction;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.identifier.DefaultIdentifier;
+import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.quest.action.ActionID;
+import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
+import org.betonquest.betonquest.database.PlayerData;
+import org.betonquest.betonquest.database.Saver;
+import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.kernel.processor.quest.ActionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.ConditionProcessor;
-import org.betonquest.betonquest.lib.bukkit.event.DefaultBukkitEventService;
 import org.betonquest.betonquest.lib.logger.QuestExceptionHandler;
-import org.bukkit.Bukkit;
+import org.betonquest.betonquest.lib.profile.ProfileKeyMap;
 import org.bukkit.event.Event;
-import org.bukkit.event.EventPriority;
-import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 /**
- * The default implementation of the {@link ObjectiveServiceProvider}.
+ * Default implementation of the {@link ObjectiveService}.
  */
-@SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.TooManyMethods"})
-public class DefaultObjectiveService implements ObjectiveServiceProvider {
+@SuppressWarnings("PMD.CouplingBetweenObjects")
+public class DefaultObjectiveService implements ObjectiveService {
 
     /**
-     * The event service to register events with.
+     * The objective service data.
      */
-    private final BukkitEventService eventService;
+    private final ObjectiveServiceData objectiveServiceData;
 
     /**
-     * The profile provider to get the profile of a player.
+     * The objective service.
      */
-    private final ProfileProvider profileProvider;
+    private final ObjectiveServiceProvider objectiveService;
 
     /**
      * The processors to process actions.
@@ -52,173 +58,209 @@ public class DefaultObjectiveService implements ObjectiveServiceProvider {
     private final ConditionProcessor conditionProcessor;
 
     /**
+     * The exception handler for this service.
+     */
+    private final QuestExceptionHandler questExceptionHandler;
+
+    /**
      * The logger for this service.
      */
     private final BetonQuestLogger logger;
 
     /**
-     * The logger factory to inject into other services.
+     * The objective data per profile.
      */
-    private final BetonQuestLoggerFactory factory;
+    private final Map<Profile, String> objectiveData;
 
     /**
-     * The map holding the objectives service data.
+     * The profile provider.
      */
-    private final Map<ObjectiveID, DefaultObjectiveFactoryService> services;
+    private final ProfileProvider profileProvider;
 
     /**
-     * Sole constructor. Creates an objective event service on top of a {@link BukkitEventService}.
+     * The properties of the objective.
+     */
+    private final ObjectiveProperties properties;
+
+    /**
+     * The default data supplier.
+     */
+    private QuestFunction<Profile, String> defaultDataSupplier;
+
+    /**
+     * The objective related to this service.
+     */
+    private ObjectiveID objectiveID;
+
+    /**
+     * Creates a new objective service.
      *
-     * @param plugin             the plugin instance
-     * @param conditionProcessor the condition processor
-     * @param actionProcessor    the action processor
-     * @param factory            the logger factory
-     * @param profileProvider    the profile provider
+     * @param objectiveID        the objective related to this service
+     * @param actionProcessor    the event processor to use
+     * @param conditionProcessor the condition processor to use
+     * @param objectiveService   the event service to request events from
+     * @param factory            the logger factory to use
+     * @param profileProvider    the profile provider to use
+     * @throws QuestException if the objective service data of the instruction could not be parsed
      */
-    public DefaultObjectiveService(final Plugin plugin, final ConditionProcessor conditionProcessor, final ActionProcessor actionProcessor,
-                                   final BetonQuestLoggerFactory factory, final ProfileProvider profileProvider) {
-        this.eventService = new DefaultBukkitEventService(plugin, factory);
-        this.factory = factory;
-        this.logger = this.factory.create(DefaultObjectiveService.class);
-        this.profileProvider = profileProvider;
+    public DefaultObjectiveService(final ObjectiveID objectiveID, final ActionProcessor actionProcessor,
+                                   final ConditionProcessor conditionProcessor, final ObjectiveServiceProvider objectiveService,
+                                   final BetonQuestLoggerFactory factory, final ProfileProvider profileProvider) throws QuestException {
+        this.objectiveID = objectiveID;
+        this.objectiveService = objectiveService;
         this.actionProcessor = actionProcessor;
         this.conditionProcessor = conditionProcessor;
-        this.services = new HashMap<>();
+        this.profileProvider = profileProvider;
+        this.logger = factory.create(DefaultObjectiveService.class);
+        this.properties = new DefaultObjectiveProperties(this.logger);
+        this.questExceptionHandler = new QuestExceptionHandler(objectiveID.getPackage(), this.logger, objectiveID.getFull());
+        this.objectiveServiceData = parseObjectiveData(objectiveID.getInstruction());
+        this.objectiveData = new ProfileKeyMap<>(profileProvider);
+        this.defaultDataSupplier = profile -> "";
     }
 
-    @Override
-    public void clear() {
-        eventService.unsubscribeAll();
-        services.clear();
-    }
-
-    @Override
-    public ObjectiveService getFactoryService(final ObjectiveID objectiveID) throws QuestException {
-        if (services.containsKey(objectiveID)) {
-            return services.get(objectiveID);
-        }
-        final DefaultObjectiveFactoryService service = new DefaultObjectiveFactoryService(objectiveID,
-                actionProcessor, conditionProcessor, this, factory, profileProvider);
-        services.put(objectiveID, service);
-        return service;
+    private static ObjectiveServiceData parseObjectiveData(final Instruction instruction) throws QuestException {
+        final FlagArgument<Boolean> persistent = instruction.bool().getFlag("persistent", true);
+        final Optional<Argument<List<ActionID>>> actions = instruction.parse(ActionID::new).list().get("actions");
+        final Optional<Argument<List<ConditionID>>> conditions = instruction.parse(ConditionID::new).list().get("conditions");
+        final FlagArgument<Number> notify = instruction.number().atLeast(0).getFlag("notify", 1);
+        return new ObjectiveServiceData(conditions, actions, persistent, notify);
     }
 
     @Override
     public <T extends Event> EventServiceSubscriptionBuilder<T> request(final Class<T> eventClass) {
-        return new DefaultEventServiceSubscriptionBuilder<>(this, eventClass);
+        return objectiveService.request(eventClass).source(objectiveID);
     }
 
     @Override
-    @SuppressWarnings("PMD.AvoidSynchronizedStatement")
-    public void stop(final ObjectiveID objectiveID, final Profile profile, final ObjectiveState newState) throws QuestException {
-        synchronized (this) {
-            getFactoryService(objectiveID).getData().remove(profile);
-            runObjectiveChangeEvent(objectiveID, profile, ObjectiveState.ACTIVE, newState);
+    public QuestExceptionHandler getExceptionHandler() {
+        return questExceptionHandler;
+    }
+
+    @Override
+    public BetonQuestLogger getLogger() {
+        return logger;
+    }
+
+    @Override
+    public ProfileProvider getProfileProvider() {
+        return profileProvider;
+    }
+
+    @Override
+    public Map<Profile, String> getData() {
+        return objectiveData;
+    }
+
+    @Override
+    public void updateData(final Profile profile) {
+        final BetonQuest plugin = BetonQuest.getInstance();
+        final Saver saver = plugin.getSaver();
+        final String freshData = objectiveData.get(profile);
+        saver.add(new Saver.Record(UpdateType.REMOVE_OBJECTIVES, profile.getProfileUUID().toString(), objectiveID.getFull()));
+        saver.add(new Saver.Record(UpdateType.ADD_OBJECTIVES, profile.getProfileUUID().toString(), objectiveID.getFull(), freshData));
+        final QuestDataUpdateEvent event = new QuestDataUpdateEvent(profile, objectiveID, freshData);
+        plugin.getServer().getScheduler().runTask(plugin, event::callEvent);
+        if (profile.getOnlineProfile().isPresent()) {
+            plugin.getPlayerDataStorage().get(profile).getJournal().update();
         }
     }
 
     @Override
-    @SuppressWarnings("PMD.AvoidSynchronizedStatement")
-    public void start(final ObjectiveID objectiveID, final Profile profile, final String instructionString, final ObjectiveState previousState) throws QuestException {
-        synchronized (this) {
-            getFactoryService(objectiveID).getData().put(profile, instructionString);
-            runObjectiveChangeEvent(objectiveID, profile, previousState, ObjectiveState.ACTIVE);
-        }
+    public String getDefaultData(final Profile profile) throws QuestException {
+        return defaultDataSupplier.apply(profile);
     }
 
     @Override
-    public <T extends Event> void subscribe(final ObjectiveID objectiveID, final Class<T> eventClass, final NonProfileEventHandler<T> handler,
-                                            final EventPriority priority, final boolean ignoreCancelled, final boolean ignoreConditions) throws QuestException {
-        if (!eventService.require(eventClass, priority)) {
-            throw new QuestException("<%s> Could not subscribe to event '%s'".formatted(objectiveID, eventClass.getSimpleName()));
-        }
-        final EventServiceSubscriber<T> subscriber = subNonProfile(objectiveID, handler, ignoreConditions);
-        final EventServiceSubscriber<T> exceptionHandled = exceptionHandled(objectiveID, eventClass, subscriber);
-        eventService.subscribe(eventClass, priority, ignoreCancelled, exceptionHandled);
-        logger.debug(objectiveID.getPackage(), "Subscribed to event '" + eventClass.getSimpleName() + "' with priority '" + priority.name() + "' and ignoreCancelled '" + ignoreCancelled + "'");
+    public void setDefaultData(final QuestFunction<Profile, String> supplier) {
+        this.defaultDataSupplier = supplier;
     }
 
     @Override
-    public <T extends Event> void subscribe(final ObjectiveID objectiveID, final Class<T> eventClass, final ProfileEventHandler<T> handler,
-                                            final QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor,
-                                            final EventPriority priority, final boolean ignoreCancelled, final boolean ignoreConditions) throws QuestException {
-        if (!eventService.require(eventClass, priority)) {
-            throw new QuestException("<%s> Could not subscribe to event '%s'".formatted(objectiveID.getFull(), eventClass.getSimpleName()));
-        }
-        final EventServiceSubscriber<T> subscriber = subOffline(objectiveID, handler, profileExtractor, ignoreConditions);
-        final EventServiceSubscriber<T> exceptionHandled = exceptionHandled(objectiveID, eventClass, subscriber);
-        eventService.subscribe(eventClass, priority, ignoreCancelled, exceptionHandled);
-        logger.debug(objectiveID.getPackage(), "Subscribed to event '" + eventClass.getSimpleName() + "' with priority '" + priority.name() + "' and ignoreCancelled '" + ignoreCancelled + "'");
+    public void renameObjective(final ObjectiveID newObjectiveID) {
+        this.objectiveID = newObjectiveID;
     }
 
     @Override
-    public <T extends Event> void subscribe(final ObjectiveID objectiveID, final Class<T> eventClass,
-                                            final OnlineProfileEventHandler<T> handler,
-                                            final QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor,
-                                            final EventPriority priority, final boolean ignoreCancelled, final boolean ignoreConditions) throws QuestException {
-        if (!eventService.require(eventClass, priority)) {
-            throw new QuestException("<%s> Could not subscribe to event '%s'".formatted(objectiveID.getFull(), eventClass.getSimpleName()));
+    public ObjectiveID getObjectiveID() {
+        return objectiveID;
+    }
+
+    @Override
+    public ObjectiveServiceDataProvider getServiceDataProvider() {
+        return objectiveServiceData;
+    }
+
+    @Override
+    public ObjectiveProperties getProperties() {
+        return properties;
+    }
+
+    @Override
+    public boolean checkConditions(@Nullable final Profile profile) throws QuestException {
+        getLogger().debug("Checking conditions for objective '%s' and profile '%s'".formatted(objectiveID, profile));
+        final ObjectiveServiceDataProvider provider = getServiceDataProvider();
+        final List<ConditionID> conditions = provider.getConditions(profile);
+        return conditions.isEmpty() || conditionProcessor.checks(profile, conditions, true);
+    }
+
+    @Override
+    public void callActions(@Nullable final Profile profile) throws QuestException {
+        final ObjectiveServiceDataProvider provider = getServiceDataProvider();
+        final List<ActionID> events = provider.getActions(profile);
+        if (events.isEmpty()) {
+            return;
         }
-        final EventServiceSubscriber<T> subscriber = subOnline(objectiveID, handler, profileExtractor, ignoreConditions);
-        final EventServiceSubscriber<T> exceptionHandled = exceptionHandled(objectiveID, eventClass, subscriber);
-        eventService.subscribe(eventClass, priority, ignoreCancelled, exceptionHandled);
-        logger.debug(objectiveID.getPackage(), "Subscribed to event '" + eventClass.getSimpleName() + "' with priority '" + priority.name() + "' and ignoreCancelled '" + ignoreCancelled + "'");
+        getLogger().debug("Calling actions [%s] for objective '%s' and profile '%s'"
+                .formatted(String.join(",", events.stream().map(DefaultIdentifier::toString).toList()), objectiveID, profile));
+        actionProcessor.executes(profile, events);
     }
 
-    private void runObjectiveChangeEvent(final ObjectiveID objectiveID, final Profile profile, final ObjectiveState previousState, final ObjectiveState newState) {
-        final boolean isAsync = !Bukkit.isPrimaryThread();
-        new PlayerObjectiveChangeEvent(profile, isAsync, objectiveID, newState, previousState).callEvent();
+    @Override
+    public boolean containsProfile(final Profile profile) {
+        return objectiveData.containsKey(profile);
     }
 
-    private <T extends Event> EventServiceSubscriber<T> exceptionHandled(final ObjectiveID objectiveID, final Class<T> eventClass,
-                                                                         final EventServiceSubscriber<T> subscriber) {
-        final QuestExceptionHandler exceptionHandler = new QuestExceptionHandler(objectiveID.getPackage(), logger, objectiveID.getFull(), eventClass.getSimpleName());
-        return (event, priority) -> exceptionHandler.handle(() -> subscriber.call(event, priority));
+    @Override
+    public void complete(final Profile profile) {
+        try {
+            objectiveService.stop(objectiveID, profile, ObjectiveState.COMPLETED);
+        } catch (final QuestException e) {
+            logger.error("Could not stop objective '%s' for profile '%s': %s".formatted(getObjectiveID(), profile, e.getMessage()), e);
+            return;
+        }
+        final PlayerData playerData = BetonQuest.getInstance().getPlayerDataStorage().get(profile);
+        final QuestPackage questPackage = objectiveID.getPackage();
+        playerData.removeRawObjective(objectiveID);
+        checkForPersistence(profile, playerData);
+        logger.debug("Objective '%s' has been completed for '%s', firing actions.".formatted(objectiveID, profile));
+        try {
+            callActions(profile);
+        } catch (final QuestException e) {
+            logger.warn(questPackage, "Error while firing actions in objective '%s' for profile '%s': %s".formatted(objectiveID, profile, e.getMessage()), e);
+        }
+        logger.debug(questPackage, "Firing actions in objective '%s' for profile '%s' finished".formatted(objectiveID, profile));
     }
 
-    private <T extends Event> EventServiceSubscriber<T> subNonProfile(final ObjectiveID objectiveID, final NonProfileEventHandler<T> eventHandler,
-                                                                      final boolean ignoreConditions) {
-        return (event, priority) -> {
-            final ObjectiveService service = getFactoryService(objectiveID);
-            if (ignoreConditions || service.checkConditions(null)) {
-                eventHandler.handle(event);
+    private void checkForPersistence(final Profile profile, final PlayerData playerData) {
+        boolean persistent;
+        try {
+            persistent = objectiveServiceData.isPersistent(profile);
+        } catch (final QuestException e) {
+            logger.error("Could not get persistent flag of objective '%s' for profile '%s': %s".formatted(objectiveID, profile, e.getMessage()), e);
+            persistent = false;
+        }
+        if (persistent) {
+            try {
+                final String defaultDataInstruction = getDefaultData(profile);
+                playerData.addRawObjective(objectiveID, defaultDataInstruction);
+                playerData.addObjToDB(objectiveID, defaultDataInstruction);
+                objectiveService.start(objectiveID, profile, defaultDataInstruction, ObjectiveState.NEW);
+                logger.debug("Persistent objective '%s' has been re-created for '%s'.".formatted(objectiveID, profile));
+            } catch (final QuestException e) {
+                logger.warn("Could not re-create persistent objective '%s' for profile '%s': The objective instruction could not be resolved: %s"
+                        .formatted(objectiveID, profile, e.getMessage()), e);
             }
-        };
-    }
-
-    private <T extends Event> EventServiceSubscriber<T> subOnline(final ObjectiveID objectiveID, final OnlineProfileEventHandler<T> handler,
-                                                                  final QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor,
-                                                                  final boolean ignoreConditions) {
-        return (event, prio) -> {
-            final Optional<Profile> profile = profileExtractor.apply(profileProvider, event);
-            if (profile.isEmpty()) {
-                return;
-            }
-            final Optional<OnlineProfile> onlineProfile = profile.get().getOnlineProfile();
-            if (onlineProfile.isEmpty()) {
-                return;
-            }
-            final ObjectiveService service = getFactoryService(objectiveID);
-            final OnlineProfile executingProfile = onlineProfile.get();
-            if (service.containsProfile(executingProfile) && (ignoreConditions || service.checkConditions(executingProfile))) {
-                handler.handle(event, executingProfile);
-            }
-        };
-    }
-
-    private <T extends Event> EventServiceSubscriber<T> subOffline(final ObjectiveID objectiveID, final ProfileEventHandler<T> handler,
-                                                                   final QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor,
-                                                                   final boolean ignoreConditions) {
-        return (event, prio) -> {
-            final Optional<Profile> profile = profileExtractor.apply(profileProvider, event);
-            if (profile.isEmpty()) {
-                return;
-            }
-            final ObjectiveService service = getFactoryService(objectiveID);
-            final Profile executingProfile = profile.get();
-            if (service.containsProfile(executingProfile) && (ignoreConditions || service.checkConditions(executingProfile))) {
-                handler.handle(event, executingProfile);
-            }
-        };
+        }
     }
 }
