@@ -10,8 +10,8 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveProperties;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveProperties;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -62,7 +62,7 @@ public class DelayObjective extends DefaultObjective {
      * @param seconds  the flag for parsing the delay time as seconds
      * @throws QuestException if there is an error in the instruction
      */
-    public DelayObjective(final ObjectiveFactoryService service, final Argument<Number> interval,
+    public DelayObjective(final ObjectiveService service, final Argument<Number> interval,
                           final Argument<Number> delay, final FlagArgument<Boolean> ticks, final FlagArgument<Boolean> seconds) throws QuestException {
         super(service);
         this.delay = delay;

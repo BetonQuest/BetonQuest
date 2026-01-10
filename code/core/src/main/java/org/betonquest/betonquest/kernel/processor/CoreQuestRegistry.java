@@ -12,7 +12,7 @@ import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
-import org.betonquest.betonquest.api.quest.objective.event.DefaultObjectiveService;
+import org.betonquest.betonquest.api.quest.objective.service.DefaultObjectiveServiceProvider;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.kernel.processor.quest.ActionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.ConditionProcessor;
@@ -65,7 +65,7 @@ public record CoreQuestRegistry(
                 placeholderProcessor, packManager, questTypeRegistries.action(), scheduler, plugin);
         final ConditionProcessor conditionProcessor = new ConditionProcessor(loggerFactory.create(ConditionProcessor.class),
                 placeholderProcessor, packManager, questTypeRegistries.condition(), scheduler, plugin);
-        final DefaultObjectiveService objectiveService = new DefaultObjectiveService(plugin, conditionProcessor,
+        final DefaultObjectiveServiceProvider objectiveService = new DefaultObjectiveServiceProvider(plugin, conditionProcessor,
                 actionProcessor, loggerFactory, profileProvider);
         return new CoreQuestRegistry(conditionProcessor, actionProcessor, placeholderProcessor,
                 new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), placeholderProcessor, packManager,

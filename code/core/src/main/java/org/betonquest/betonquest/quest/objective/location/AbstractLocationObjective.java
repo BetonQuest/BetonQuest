@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -28,7 +28,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * when a player enters or exits a specific location.
  * It listens for various player events such as join, quit, death, respawn, teleport, and movement
  * to check the player's location.
- * To register the required events, the {@link #registerLocationEvents(ObjectiveFactoryService)} method is called.
+ * To register the required events, the {@link #registerLocationEvents(ObjectiveService)} method is called.
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public abstract class AbstractLocationObjective extends DefaultObjective {
@@ -55,7 +55,7 @@ public abstract class AbstractLocationObjective extends DefaultObjective {
      * @param service the ObjectiveFactoryService to be used in the constructor
      * @throws QuestException if there is an error while parsing the instruction
      */
-    public AbstractLocationObjective(final ObjectiveFactoryService service) throws QuestException {
+    public AbstractLocationObjective(final ObjectiveService service) throws QuestException {
         super(service);
         entry = service.getObjectiveID().getInstruction().bool().getFlag("entry", true);
         exit = service.getObjectiveID().getInstruction().bool().getFlag("exit", true);
@@ -68,7 +68,7 @@ public abstract class AbstractLocationObjective extends DefaultObjective {
      * @param service the ObjectiveFactoryService to be used in the method
      * @throws QuestException if there is an error while registering the events
      */
-    public void registerLocationEvents(final ObjectiveFactoryService service) throws QuestException {
+    public void registerLocationEvents(final ObjectiveService service) throws QuestException {
         service.request(PlayerJoinEvent.class).onlineHandler(this::onPlayerJoin)
                 .player(PlayerJoinEvent::getPlayer).subscribe(true);
         service.request(PlayerQuitEvent.class).onlineHandler(this::onPlayerQuit)

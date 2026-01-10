@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.bukkit.DyeColor;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Sheep;
@@ -37,7 +37,7 @@ public class ShearObjective extends CountingObjective {
      * @param color        the color of the sheep to shear
      * @throws QuestException if there is an error in the instruction
      */
-    public ShearObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount, @Nullable final Argument<String> name,
+    public ShearObjective(final ObjectiveService service, final Argument<Number> targetAmount, @Nullable final Argument<String> name,
                           @Nullable final Argument<DyeColor> color) throws QuestException {
         super(service, targetAmount, "sheep_to_shear");
         this.name = name;

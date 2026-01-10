@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.MobKillNotifier.MobKilledEvent;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
 import org.bukkit.persistence.PersistentDataType;
@@ -48,7 +48,7 @@ public class MobKillObjective extends CountingObjective {
      * @param marked       the optional marker for the mobs to identify them
      * @throws QuestException if there is an error in the instruction
      */
-    public MobKillObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount,
+    public MobKillObjective(final ObjectiveService service, final Argument<Number> targetAmount,
                             final Argument<List<EntityType>> entities, @Nullable final Argument<String> name,
                             @Nullable final Argument<String> marked) throws QuestException {
         super(service, targetAmount, "mobs_to_kill");

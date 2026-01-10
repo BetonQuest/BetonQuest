@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.objective.logout;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 /**
@@ -17,7 +17,7 @@ public class LogoutObjective extends DefaultObjective {
      * @param service the objective factory service
      * @throws QuestException if there is an error in the instruction
      */
-    public LogoutObjective(final ObjectiveFactoryService service) throws QuestException {
+    public LogoutObjective(final ObjectiveService service) throws QuestException {
         super(service);
     }
 

@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 
 /**
  * Objective that tracks the leave of a player from a specific job.
@@ -25,7 +25,7 @@ public class LeaveJobObjective extends DefaultObjective {
      * @param job     the job to leave
      * @throws QuestException if the instruction is invalid
      */
-    public LeaveJobObjective(final ObjectiveFactoryService service, final Argument<Job> job) throws QuestException {
+    public LeaveJobObjective(final ObjectiveService service, final Argument<Job> job) throws QuestException {
         super(service);
         this.job = job;
     }

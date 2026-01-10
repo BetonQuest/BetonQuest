@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api.quest.objective.event;
+package org.betonquest.betonquest.api.quest.objective.service;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestBiFunction;
@@ -14,7 +14,7 @@ import java.util.Optional;
 /**
  * The service for objectives managing the subscription of event handlers.
  */
-public interface ObjectiveService {
+public interface ObjectiveServiceProvider {
 
     /**
      * Resets the entire service.
@@ -23,13 +23,13 @@ public interface ObjectiveService {
     void clear();
 
     /**
-     * Creates a new {@link ObjectiveFactoryService} for the given objectiveId.
+     * Creates a new {@link ObjectiveService} for the given objectiveId.
      *
      * @param objectiveID the objective to create a subscription service for
-     * @return a new {@link ObjectiveFactoryService} for the given objectiveId
+     * @return a new {@link ObjectiveService} for the given objectiveId
      * @throws QuestException if the objective causes issues with creating a factory service
      */
-    ObjectiveFactoryService getFactoryService(ObjectiveID objectiveID) throws QuestException;
+    ObjectiveService getFactoryService(ObjectiveID objectiveID) throws QuestException;
 
     /**
      * Requests a new event subscription using an {@link EventServiceSubscriptionBuilder}.

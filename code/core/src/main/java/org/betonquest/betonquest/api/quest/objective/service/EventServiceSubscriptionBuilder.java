@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api.quest.objective.event;
+package org.betonquest.betonquest.api.quest.objective.service;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestFunction;
@@ -15,7 +15,7 @@ import java.util.UUID;
 
 /**
  * The {@link EventServiceSubscriptionBuilder} allows creating a subscription with a builder pattern
- * as well as registering it with the {@link ObjectiveService}.
+ * as well as registering it with the {@link ObjectiveServiceProvider}.
  *
  * @param <T> the event type
  */
@@ -136,7 +136,7 @@ public interface EventServiceSubscriptionBuilder<T extends Event> {
      * <br>
      * Sets to ignore the conditions check of the event handler.
      * If used the requested event for this builder will no longer receive the otherwise forced
-     * {@link ObjectiveFactoryService#checkConditions(Profile)} check.
+     * {@link ObjectiveService#checkConditions(Profile)} check.
      *
      * @return this
      */
@@ -144,7 +144,7 @@ public interface EventServiceSubscriptionBuilder<T extends Event> {
     EventServiceSubscriptionBuilder<T> ignoreConditions();
 
     /**
-     * Required last build call. Registers the subscription with the {@link ObjectiveService}.
+     * Required last build call. Registers the subscription with the {@link ObjectiveServiceProvider}.
      *
      * @param ignoreCancelled if canceled events should be ignored
      * @throws QuestException        if the subscription could not be registered

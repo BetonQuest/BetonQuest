@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.action.ActionID;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import java.util.List;
@@ -54,7 +54,7 @@ public class CommandObjective extends DefaultObjective {
      * @param failActions actions to trigger if the command is not matched
      * @throws QuestException if there is an error in the instruction
      */
-    public CommandObjective(final ObjectiveFactoryService service, final Argument<String> command,
+    public CommandObjective(final ObjectiveService service, final Argument<String> command,
                             final FlagArgument<Boolean> ignoreCase, final FlagArgument<Boolean> exact,
                             final FlagArgument<Boolean> cancel, final Argument<List<ActionID>> failActions) throws QuestException {
         super(service);

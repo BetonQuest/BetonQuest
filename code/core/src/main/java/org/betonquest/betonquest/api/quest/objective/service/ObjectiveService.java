@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api.quest.objective.event;
+package org.betonquest.betonquest.api.quest.objective.service;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestFunction;
@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Provides services for objective creation and event subscriptions.
  */
-public interface ObjectiveFactoryService {
+public interface ObjectiveService {
 
     /**
      * Requests a new event subscription using an {@link EventServiceSubscriptionBuilder}.

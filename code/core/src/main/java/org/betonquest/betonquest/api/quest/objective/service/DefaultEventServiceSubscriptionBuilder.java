@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api.quest.objective.event;
+package org.betonquest.betonquest.api.quest.objective.service;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestBiFunction;
@@ -37,7 +37,7 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
     /**
      * The event service to register events with.
      */
-    private final DefaultObjectiveService eventService;
+    private final DefaultObjectiveServiceProvider eventService;
 
     /**
      * The event class to register.
@@ -95,7 +95,7 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
      * @param eventService the event service to register events with
      * @param eventClass   the event class to register
      */
-    public DefaultEventServiceSubscriptionBuilder(final DefaultObjectiveService eventService, final Class<T> eventClass) {
+    public DefaultEventServiceSubscriptionBuilder(final DefaultObjectiveServiceProvider eventService, final Class<T> eventClass) {
         this.eventService = eventService;
         this.eventClass = eventClass;
         this.objectiveID = null;

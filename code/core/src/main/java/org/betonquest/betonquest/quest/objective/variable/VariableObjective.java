@@ -7,8 +7,8 @@ import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveProperties;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveProperties;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -32,7 +32,7 @@ public class VariableObjective extends DefaultObjective {
      * @param service the objective factory service
      * @throws QuestException if there is an error in the instruction
      */
-    public VariableObjective(final ObjectiveFactoryService service) throws QuestException {
+    public VariableObjective(final ObjectiveService service) throws QuestException {
         super(service);
         service.getProperties().setParentProperties(new ObjectiveProperties() {
             @Override
@@ -209,7 +209,7 @@ public class VariableObjective extends DefaultObjective {
          * @param value value of the variable
          */
         public void add(final String key, @Nullable final String value) {
-            final ObjectiveFactoryService service;
+            final ObjectiveService service;
             try {
                 service = BetonQuest.getInstance().getQuestTypeApi().getObjective(objID).getService();
             } catch (final QuestException e) {

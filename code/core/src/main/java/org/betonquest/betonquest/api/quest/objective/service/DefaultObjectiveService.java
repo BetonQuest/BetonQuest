@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api.quest.objective.event;
+package org.betonquest.betonquest.api.quest.objective.service;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
@@ -32,10 +32,10 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Default implementation of the {@link ObjectiveFactoryService}.
+ * Default implementation of the {@link ObjectiveService}.
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
-public class DefaultObjectiveFactoryService implements ObjectiveFactoryService {
+public class DefaultObjectiveService implements ObjectiveService {
 
     /**
      * The objective service data.
@@ -45,7 +45,7 @@ public class DefaultObjectiveFactoryService implements ObjectiveFactoryService {
     /**
      * The objective service.
      */
-    private final ObjectiveService objectiveService;
+    private final ObjectiveServiceProvider objectiveService;
 
     /**
      * The processors to process actions.
@@ -103,15 +103,15 @@ public class DefaultObjectiveFactoryService implements ObjectiveFactoryService {
      * @param profileProvider    the profile provider to use
      * @throws QuestException if the objective service data of the instruction could not be parsed
      */
-    public DefaultObjectiveFactoryService(final ObjectiveID objectiveID, final ActionProcessor actionProcessor,
-                                          final ConditionProcessor conditionProcessor, final ObjectiveService objectiveService,
-                                          final BetonQuestLoggerFactory factory, final ProfileProvider profileProvider) throws QuestException {
+    public DefaultObjectiveService(final ObjectiveID objectiveID, final ActionProcessor actionProcessor,
+                                   final ConditionProcessor conditionProcessor, final ObjectiveServiceProvider objectiveService,
+                                   final BetonQuestLoggerFactory factory, final ProfileProvider profileProvider) throws QuestException {
         this.objectiveID = objectiveID;
         this.objectiveService = objectiveService;
         this.actionProcessor = actionProcessor;
         this.conditionProcessor = conditionProcessor;
         this.profileProvider = profileProvider;
-        this.logger = factory.create(DefaultObjectiveFactoryService.class);
+        this.logger = factory.create(DefaultObjectiveService.class);
         this.properties = new DefaultObjectiveProperties(this.logger);
         this.questExceptionHandler = new QuestExceptionHandler(objectiveID.getPackage(), this.logger, objectiveID.getFull());
         this.objectiveServiceData = parseObjectiveData(objectiveID.getInstruction());

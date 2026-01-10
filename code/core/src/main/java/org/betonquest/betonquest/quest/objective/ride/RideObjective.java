@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.bukkit.entity.EntityType;
 import org.spigotmc.event.entity.EntityMountEvent;
 
@@ -27,7 +27,7 @@ public class RideObjective extends DefaultObjective {
      * @param vehicle the type of vehicle that is required, or null if any vehicle is allowed
      * @throws QuestException if there is an error in the instruction
      */
-    public RideObjective(final ObjectiveFactoryService service, final Argument<Optional<EntityType>> vehicle) throws QuestException {
+    public RideObjective(final ObjectiveService service, final Argument<Optional<EntityType>> vehicle) throws QuestException {
         super(service);
         this.vehicle = vehicle;
     }

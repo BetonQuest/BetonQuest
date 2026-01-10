@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.betonquest.betonquest.quest.action.chest.ChestTakeAction;
 import org.bukkit.Location;
@@ -63,7 +63,7 @@ public class ChestPutObjective extends DefaultObjective {
      * @param multipleAccess     manages the chest access for one or multiple players
      * @throws QuestException if there is an error in the instruction
      */
-    public ChestPutObjective(final ObjectiveFactoryService service,
+    public ChestPutObjective(final ObjectiveService service,
                              final NullableCondition chestItemCondition, @Nullable final ChestTakeAction chestTakeAction,
                              final Argument<Location> loc, final IngameNotificationSender occupiedSender,
                              final boolean multipleAccess) throws QuestException {

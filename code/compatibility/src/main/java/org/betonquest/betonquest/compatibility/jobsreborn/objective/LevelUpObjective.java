@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 
 /**
  * Objective that tracks the level up of a player in a specific job.
@@ -25,7 +25,7 @@ public class LevelUpObjective extends DefaultObjective {
      * @param job     the job to level up
      * @throws QuestException if the instruction is invalid
      */
-    public LevelUpObjective(final ObjectiveFactoryService service, final Argument<Job> job) throws QuestException {
+    public LevelUpObjective(final ObjectiveService service, final Argument<Job> job) throws QuestException {
         super(service);
         this.job = job;
     }

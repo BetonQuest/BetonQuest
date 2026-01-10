@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 
 /**
  * An objective that listens for the player applying a gem to their MMOItems item.
@@ -37,7 +37,7 @@ public class MMOItemsApplyGemObjective extends DefaultObjective {
      * @param gemID    the ID of the gem to be applied
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public MMOItemsApplyGemObjective(final ObjectiveFactoryService service, final Argument<String> itemID, final Argument<String> itemType, final Argument<String> gemID) throws QuestException {
+    public MMOItemsApplyGemObjective(final ObjectiveService service, final Argument<String> itemID, final Argument<String> itemType, final Argument<String> gemID) throws QuestException {
         super(service);
         this.itemID = itemID;
         this.itemType = itemType;

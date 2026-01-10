@@ -12,8 +12,8 @@ import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveServiceProvider;
 import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
@@ -60,7 +60,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
     /**
      * The event service for objectives.
      */
-    private final ObjectiveService objectiveService;
+    private final ObjectiveServiceProvider objectiveService;
 
     /**
      * Create a new Objective Processor to store Objectives and starts/stops/resumes them.
@@ -75,7 +75,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
      */
     public ObjectiveProcessor(final BetonQuestLogger log, final Placeholders placeholders,
                               final QuestPackageManager packManager, final ObjectiveTypeRegistry objectiveTypes,
-                              final PluginManager pluginManager, final ObjectiveService service, final Plugin plugin) {
+                              final PluginManager pluginManager, final ObjectiveServiceProvider service, final Plugin plugin) {
         super(log, placeholders, packManager, "Objective", "objectives");
         this.pluginManager = pluginManager;
         this.objectiveService = service;
@@ -127,7 +127,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
         final String type = identifier.getInstruction().getPart(0);
         final ObjectiveFactory factory = types.getFactory(type);
         try {
-            final ObjectiveFactoryService service = objectiveService.getFactoryService(identifier);
+            final ObjectiveService service = objectiveService.getFactoryService(identifier);
             final Objective parsed = factory.parseInstruction(identifier.getInstruction(), service);
             values.put(identifier, parsed);
             postCreation(identifier, parsed);
@@ -139,7 +139,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
 
     private void closeObjective(final Objective objective) {
         objective.close();
-        final ObjectiveFactoryService service = objective.getService();
+        final ObjectiveService service = objective.getService();
         for (final Map.Entry<Profile, String> entry : service.getData().entrySet()) {
             final Profile profile = entry.getKey();
             BetonQuest.getInstance().getPlayerDataStorage().get(profile).addRawObjective(service.getObjectiveID(),

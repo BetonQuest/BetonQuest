@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 
 /**
  * Factory for creating {@link MMOCoreChangeClassObjective} instances from {@link Instruction}s.
@@ -20,7 +20,7 @@ public class MMOCoreChangeClassObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
+    public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
         final Argument<String> targetClassName = instruction.string().get("class").orElse(null);
         final MMOCoreChangeClassObjective objective = new MMOCoreChangeClassObjective(service, targetClassName);
         service.request(PlayerChangeClassEvent.class).onlineHandler(objective::onClassChange)

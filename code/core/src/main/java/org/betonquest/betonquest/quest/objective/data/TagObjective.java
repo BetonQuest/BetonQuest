@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.bukkit.event.PlayerTagAddEvent;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 
 /**
@@ -33,7 +33,7 @@ public class TagObjective extends DefaultObjective {
      * @param tag               the tag to get
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public TagObjective(final ObjectiveFactoryService service, final PlayerDataStorage playerDataStorage, final Argument<String> tag) throws QuestException {
+    public TagObjective(final ObjectiveService service, final PlayerDataStorage playerDataStorage, final Argument<String> tag) throws QuestException {
         super(service);
         this.playerDataStorage = playerDataStorage;
         this.tag = tag;

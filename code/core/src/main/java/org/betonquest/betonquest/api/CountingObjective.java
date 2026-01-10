@@ -9,8 +9,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveProperties;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveProperties;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.betonquest.betonquest.quest.action.NotificationLevel;
 import org.jetbrains.annotations.Nullable;
@@ -45,7 +45,7 @@ public abstract class CountingObjective extends DefaultObjective {
      * @param notifyMessageName the message name used for notifying by default
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public CountingObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount,
+    public CountingObjective(final ObjectiveService service, final Argument<Number> targetAmount,
                              @Nullable final String notifyMessageName) throws QuestException {
         super(service);
         final BetonQuest instance = BetonQuest.getInstance();
@@ -207,7 +207,7 @@ public abstract class CountingObjective extends DefaultObjective {
                     directionFactor = targetAmount < 0 ? -1 : 1;
                     lastChange = new AtomicInteger();
                     if (dirty.get()) {
-                        final ObjectiveFactoryService service = BetonQuest.getInstance().getQuestTypeApi().getObjective(objID).getService();
+                        final ObjectiveService service = BetonQuest.getInstance().getQuestTypeApi().getObjective(objID).getService();
                         update(service);
                     }
                     break;
@@ -384,7 +384,7 @@ public abstract class CountingObjective extends DefaultObjective {
         }
 
         private CountingData change(final int amount) {
-            final ObjectiveFactoryService service;
+            final ObjectiveService service;
             try {
                 service = BetonQuest.getInstance().getQuestTypeApi().getObjective(objID).getService();
             } catch (final QuestException e) {

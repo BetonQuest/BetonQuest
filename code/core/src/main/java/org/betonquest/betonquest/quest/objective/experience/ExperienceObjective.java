@@ -10,8 +10,8 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveProperties;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveProperties;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -43,7 +43,7 @@ public class ExperienceObjective extends DefaultObjective {
      * @param levelSender the notification to send when the player gains experience
      * @throws QuestException if there is an error in the instruction
      */
-    public ExperienceObjective(final ObjectiveFactoryService service, final Argument<Number> amount, final IngameNotificationSender levelSender) throws QuestException {
+    public ExperienceObjective(final ObjectiveService service, final Argument<Number> amount, final IngameNotificationSender levelSender) throws QuestException {
         super(service);
         this.amount = amount;
         this.levelSender = levelSender;

@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 
 /**
  * Player has to kill an NPC.
@@ -35,7 +35,7 @@ public class NPCKillObjective extends CountingObjective {
      * @param npcID        the npc id
      * @throws QuestException when the instruction cannot be parsed or is invalid
      */
-    public NPCKillObjective(final ObjectiveFactoryService service, final NPCRegistry registry, final Argument<Number> targetAmount,
+    public NPCKillObjective(final ObjectiveService service, final NPCRegistry registry, final Argument<Number> targetAmount,
                             final Argument<NpcID> npcID) throws QuestException {
         super(service, targetAmount, "mobs_to_kill");
         this.registry = registry;

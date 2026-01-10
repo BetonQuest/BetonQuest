@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 
 /**
@@ -24,7 +24,7 @@ public class ResourcepackObjective extends DefaultObjective {
      * @param targetStatus the target status for the received resource pack.
      * @throws QuestException if an error occurs while parsing the instruction.
      */
-    public ResourcepackObjective(final ObjectiveFactoryService service, final Argument<PlayerResourcePackStatusEvent.Status> targetStatus) throws QuestException {
+    public ResourcepackObjective(final ObjectiveService service, final Argument<PlayerResourcePackStatusEvent.Status> targetStatus) throws QuestException {
         super(service);
         this.targetStatus = targetStatus;
     }

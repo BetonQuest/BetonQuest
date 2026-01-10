@@ -11,7 +11,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -52,7 +52,7 @@ public class TrainCartsRideObjective extends CountingObjective {
      * @param name         the name of the train, maybe empty
      * @throws QuestException if the instruction is invalid
      */
-    public TrainCartsRideObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount,
+    public TrainCartsRideObjective(final ObjectiveService service, final Argument<Number> targetAmount,
                                    final Argument<String> name) throws QuestException {
         super(service, targetAmount, null);
         this.name = name;

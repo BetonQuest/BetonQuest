@@ -2,7 +2,7 @@ package org.betonquest.betonquest.api.quest.objective;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.lib.logger.QuestExceptionHandler;
 
 /**
@@ -12,11 +12,11 @@ import org.betonquest.betonquest.lib.logger.QuestExceptionHandler;
 public interface Objective {
 
     /**
-     * Should return the {@link ObjectiveFactoryService} for this objective.
+     * Should return the {@link ObjectiveService} for this objective.
      *
      * @return the objective service
      */
-    ObjectiveFactoryService getService();
+    ObjectiveService getService();
 
     /**
      * Should return the objective ID.

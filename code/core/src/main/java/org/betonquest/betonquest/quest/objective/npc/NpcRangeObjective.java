@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -60,7 +60,7 @@ public class NpcRangeObjective extends DefaultObjective {
      * @param trigger the trigger type for the objective
      * @throws QuestException if the instruction is invalid
      */
-    public NpcRangeObjective(final ObjectiveFactoryService service, final Argument<List<NpcID>> npcIds, final Argument<Number> radius,
+    public NpcRangeObjective(final ObjectiveService service, final Argument<List<NpcID>> npcIds, final Argument<Number> radius,
                              final Argument<Trigger> trigger) throws QuestException {
         super(service);
         this.npcIds = npcIds;

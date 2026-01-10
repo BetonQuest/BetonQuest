@@ -1,7 +1,7 @@
-package org.betonquest.betonquest.api.quest.objective.event;
+package org.betonquest.betonquest.api.quest.objective.service;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.event.Event;
 
 /**
@@ -10,7 +10,7 @@ import org.bukkit.event.Event;
  * @param <T> the event type
  */
 @FunctionalInterface
-public interface ProfileEventHandler<T extends Event> {
+public interface OnlineProfileEventHandler<T extends Event> {
 
     /**
      * This method gets called when the related event is triggered.
@@ -19,5 +19,5 @@ public interface ProfileEventHandler<T extends Event> {
      * @param profile the event-related profile extracted from the event
      * @throws QuestException when the event handling fails
      */
-    void handle(T event, Profile profile) throws QuestException;
+    void handle(T event, OnlineProfile profile) throws QuestException;
 }

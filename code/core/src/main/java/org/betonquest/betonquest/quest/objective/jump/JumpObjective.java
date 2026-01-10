@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 
 /**
  * Requires the player to jump a certain number of times.
@@ -19,7 +19,7 @@ public class JumpObjective extends CountingObjective {
      * @param targetAmount the target amount of jumps
      * @throws QuestException if there is an error in the instruction
      */
-    public JumpObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount) throws QuestException {
+    public JumpObjective(final ObjectiveService service, final Argument<Number> targetAmount) throws QuestException {
         super(service, targetAmount, "times_to_jump");
     }
 

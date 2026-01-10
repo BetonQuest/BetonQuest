@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api.quest.objective.event;
+package org.betonquest.betonquest.api.quest.objective.service;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.BukkitEventService;
@@ -26,10 +26,10 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * The default implementation of the {@link ObjectiveService}.
+ * The default implementation of the {@link ObjectiveServiceProvider}.
  */
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.TooManyMethods"})
-public class DefaultObjectiveService implements ObjectiveService {
+public class DefaultObjectiveServiceProvider implements ObjectiveServiceProvider {
 
     /**
      * The event service to register events with.
@@ -64,7 +64,7 @@ public class DefaultObjectiveService implements ObjectiveService {
     /**
      * The map holding the objectives service data.
      */
-    private final Map<ObjectiveID, DefaultObjectiveFactoryService> services;
+    private final Map<ObjectiveID, DefaultObjectiveService> services;
 
     /**
      * Sole constructor. Creates an objective event service on top of a {@link BukkitEventService}.
@@ -75,11 +75,11 @@ public class DefaultObjectiveService implements ObjectiveService {
      * @param factory            the logger factory
      * @param profileProvider    the profile provider
      */
-    public DefaultObjectiveService(final Plugin plugin, final ConditionProcessor conditionProcessor, final ActionProcessor actionProcessor,
-                                   final BetonQuestLoggerFactory factory, final ProfileProvider profileProvider) {
+    public DefaultObjectiveServiceProvider(final Plugin plugin, final ConditionProcessor conditionProcessor, final ActionProcessor actionProcessor,
+                                           final BetonQuestLoggerFactory factory, final ProfileProvider profileProvider) {
         this.eventService = new DefaultBukkitEventService(plugin, factory);
         this.factory = factory;
-        this.logger = this.factory.create(DefaultObjectiveService.class);
+        this.logger = this.factory.create(DefaultObjectiveServiceProvider.class);
         this.profileProvider = profileProvider;
         this.actionProcessor = actionProcessor;
         this.conditionProcessor = conditionProcessor;
@@ -93,11 +93,11 @@ public class DefaultObjectiveService implements ObjectiveService {
     }
 
     @Override
-    public ObjectiveFactoryService getFactoryService(final ObjectiveID objectiveID) throws QuestException {
+    public ObjectiveService getFactoryService(final ObjectiveID objectiveID) throws QuestException {
         if (services.containsKey(objectiveID)) {
             return services.get(objectiveID);
         }
-        final DefaultObjectiveFactoryService service = new DefaultObjectiveFactoryService(objectiveID,
+        final DefaultObjectiveService service = new DefaultObjectiveService(objectiveID,
                 actionProcessor, conditionProcessor, this, factory, profileProvider);
         services.put(objectiveID, service);
         return service;
@@ -179,7 +179,7 @@ public class DefaultObjectiveService implements ObjectiveService {
     private <T extends Event> EventServiceSubscriber<T> subNonProfile(final ObjectiveID objectiveID, final NonProfileEventHandler<T> eventHandler,
                                                                       final boolean ignoreConditions) {
         return (event, priority) -> {
-            final ObjectiveFactoryService service = getFactoryService(objectiveID);
+            final ObjectiveService service = getFactoryService(objectiveID);
             if (ignoreConditions || service.checkConditions(null)) {
                 eventHandler.handle(event);
             }
@@ -198,7 +198,7 @@ public class DefaultObjectiveService implements ObjectiveService {
             if (onlineProfile.isEmpty()) {
                 return;
             }
-            final ObjectiveFactoryService service = getFactoryService(objectiveID);
+            final ObjectiveService service = getFactoryService(objectiveID);
             final OnlineProfile executingProfile = onlineProfile.get();
             if (service.containsProfile(executingProfile) && (ignoreConditions || service.checkConditions(executingProfile))) {
                 handler.handle(event, executingProfile);
@@ -214,7 +214,7 @@ public class DefaultObjectiveService implements ObjectiveService {
             if (profile.isEmpty()) {
                 return;
             }
-            final ObjectiveFactoryService service = getFactoryService(objectiveID);
+            final ObjectiveService service = getFactoryService(objectiveID);
             final Profile executingProfile = profile.get();
             if (service.containsProfile(executingProfile) && (ignoreConditions || service.checkConditions(executingProfile))) {
                 handler.handle(event, executingProfile);

@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -30,7 +30,7 @@ public class MMOCoreBreakCustomBlockObjective extends CountingObjective {
      * @param desiredBlockId the ID of the block to be broken
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public MMOCoreBreakCustomBlockObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount, final Argument<String> desiredBlockId) throws QuestException {
+    public MMOCoreBreakCustomBlockObjective(final ObjectiveService service, final Argument<Number> targetAmount, final Argument<String> desiredBlockId) throws QuestException {
         super(service, targetAmount, "blocks_to_break");
         this.desiredBlockId = desiredBlockId;
     }

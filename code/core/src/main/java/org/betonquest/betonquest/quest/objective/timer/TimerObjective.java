@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -51,7 +51,7 @@ public class TimerObjective extends CountingObjective implements Runnable {
      * @param doneActions  actions to run before the objective is actually removed.
      * @throws QuestException if an error occurs while creating the objective.
      */
-    public TimerObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount, final QuestTypeApi questTypeApi, final Argument<String> name,
+    public TimerObjective(final ObjectiveService service, final Argument<Number> targetAmount, final QuestTypeApi questTypeApi, final Argument<String> name,
                           final Argument<Number> interval, final Argument<List<ActionID>> doneActions) throws QuestException {
         super(service, targetAmount, null);
         this.questTypeApi = questTypeApi;

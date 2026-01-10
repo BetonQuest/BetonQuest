@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.worldguard;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.quest.objective.location.AbstractLocationObjective;
 import org.bukkit.Location;
 
@@ -24,7 +24,7 @@ public class RegionObjective extends AbstractLocationObjective {
      * @param name    the name of the region
      * @throws QuestException if there is an error while parsing the instruction
      */
-    public RegionObjective(final ObjectiveFactoryService service, final Argument<String> name) throws QuestException {
+    public RegionObjective(final ObjectiveService service, final Argument<String> name) throws QuestException {
         super(service);
         this.name = name;
     }

@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 
 /**
  * Factory for creating {@link MMOItemsUpgradeObjective} instances from {@link Instruction}s.
@@ -20,7 +20,7 @@ public class MMOItemsUpgradeObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
+    public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
         final Argument<String> itemType = instruction.string().get();
         final Argument<String> itemID = instruction.string().get();
         final MMOItemsUpgradeObjective objective = new MMOItemsUpgradeObjective(service, itemType, itemID);
