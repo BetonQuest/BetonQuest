@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -26,7 +26,7 @@ public class MMOCoreChangeClassObjective extends DefaultObjective {
      * @param targetClassName the name of the class to be changed to
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public MMOCoreChangeClassObjective(final ObjectiveFactoryService service, @Nullable final Argument<String> targetClassName) throws QuestException {
+    public MMOCoreChangeClassObjective(final ObjectiveService service, @Nullable final Argument<String> targetClassName) throws QuestException {
         super(service);
         this.targetClassName = targetClassName;
     }

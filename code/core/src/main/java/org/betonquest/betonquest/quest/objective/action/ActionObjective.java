@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -79,7 +79,7 @@ public class ActionObjective extends DefaultObjective {
      * @param slot       the equipment slot to check for the action
      * @throws QuestException if an error occurs while creating the objective
      */
-    public ActionObjective(final ObjectiveFactoryService service, final Argument<Click> action,
+    public ActionObjective(final ObjectiveService service, final Argument<Click> action,
                            final Argument<Optional<BlockSelector>> selector, final FlagArgument<Boolean> exactMatch,
                            @Nullable final Argument<Location> loc, final Argument<Number> range,
                            final FlagArgument<Boolean> cancel, @Nullable final EquipmentSlot slot) throws QuestException {

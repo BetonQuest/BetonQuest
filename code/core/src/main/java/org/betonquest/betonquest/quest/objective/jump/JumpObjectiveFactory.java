@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 
 /**
  * Factory for creating {@link JumpObjective} instances from {@link Instruction}s.
@@ -20,7 +20,7 @@ public class JumpObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
+    public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get();
         final JumpObjective objective = new JumpObjective(service, targetAmount);
         service.request(PlayerJumpEvent.class).onlineHandler(objective::onPlayerJump)

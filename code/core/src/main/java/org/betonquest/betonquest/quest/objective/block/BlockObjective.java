@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.bukkit.Location;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -78,7 +78,7 @@ public class BlockObjective extends CountingObjective {
      * @throws QuestException if there is an error in the instruction
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
-    public BlockObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount,
+    public BlockObjective(final ObjectiveService service, final Argument<Number> targetAmount,
                           final Argument<BlockSelector> selector, final FlagArgument<Boolean> exactMatch,
                           final FlagArgument<Boolean> noSafety, @Nullable final Argument<Location> location,
                           @Nullable final Argument<Location> region, final FlagArgument<Boolean> ignoreCancel,

@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -35,7 +35,7 @@ public class EntityInteractObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
+    public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
         final Argument<Interaction> interaction = instruction.enumeration(Interaction.class).get();
         final Argument<EntityType> mobType = instruction.enumeration(EntityType.class).get();
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get();

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.quest.objective;
 
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 
 /**
  * Stores the profile's data for the objective.
@@ -67,7 +67,7 @@ public class ObjectiveData {
      *
      * @param service the objective service
      */
-    protected final void update(final ObjectiveFactoryService service) {
+    protected final void update(final ObjectiveService service) {
         service.getData().put(profile, toString());
         service.updateData(profile);
     }

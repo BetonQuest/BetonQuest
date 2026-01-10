@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.event.block.Action;
@@ -40,7 +40,7 @@ public class StepObjective extends DefaultObjective {
      * @param pressurePlateSelector the selector for the pressure plate block
      * @throws QuestException if there is an error in the instruction
      */
-    public StepObjective(final ObjectiveFactoryService service, final Argument<Location> loc, final BlockSelector pressurePlateSelector) throws QuestException {
+    public StepObjective(final ObjectiveService service, final Argument<Location> loc, final BlockSelector pressurePlateSelector) throws QuestException {
         super(service);
         this.loc = loc;
         this.pressurePlateSelector = pressurePlateSelector;

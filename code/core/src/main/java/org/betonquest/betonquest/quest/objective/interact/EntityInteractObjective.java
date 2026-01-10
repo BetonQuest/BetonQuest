@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.ArmorStand;
@@ -96,7 +96,7 @@ public class EntityInteractObjective extends CountingObjective {
      * @throws QuestException if there is an error in the instruction
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
-    public EntityInteractObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount,
+    public EntityInteractObjective(final ObjectiveService service, final Argument<Number> targetAmount,
                                    @Nullable final Argument<Location> loc,
                                    final Argument<Number> range, @Nullable final Argument<Component> customName,
                                    @Nullable final Argument<String> realName, @Nullable final EquipmentSlot slot,

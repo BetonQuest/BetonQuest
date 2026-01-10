@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 
 /**
  * Objective that tracks the join of a player to a specific job.
@@ -25,7 +25,7 @@ public class JoinJobObjective extends DefaultObjective {
      * @param job     the job to join
      * @throws QuestException if the instruction is invalid
      */
-    public JoinJobObjective(final ObjectiveFactoryService service, final Argument<Job> job) throws QuestException {
+    public JoinJobObjective(final ObjectiveService service, final Argument<Job> job) throws QuestException {
         super(service);
         this.job = job;
     }

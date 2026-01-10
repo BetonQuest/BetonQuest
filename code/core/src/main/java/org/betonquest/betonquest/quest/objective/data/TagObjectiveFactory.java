@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.bukkit.event.PlayerTagAddEvent;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 
 /**
@@ -29,7 +29,7 @@ public class TagObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
+    public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
         final TagObjective objective = new TagObjective(service, playerDataStorage, instruction.packageIdentifier().get());
         service.request(PlayerTagAddEvent.class).handler(objective::onTag)
                 .profile(PlayerTagAddEvent::getProfile).subscribe(false);

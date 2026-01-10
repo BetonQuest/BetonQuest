@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 
 /**
  * Requires the player to equip a specific item in a specific slot.
@@ -31,7 +31,7 @@ public class EquipItemObjective extends DefaultObjective {
      * @param slotType the slot type where the item needs to be equipped
      * @throws QuestException if there is an error in the instruction
      */
-    public EquipItemObjective(final ObjectiveFactoryService service, final Argument<ItemWrapper> item,
+    public EquipItemObjective(final ObjectiveService service, final Argument<ItemWrapper> item,
                               final Argument<PlayerArmorChangeEvent.SlotType> slotType) throws QuestException {
         super(service);
         this.item = item;

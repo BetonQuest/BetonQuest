@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 
 /**
  * Factory for creating {@link RegionObjective} instances from {@link Instruction}s.
@@ -19,7 +19,7 @@ public class RegionObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
+    public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
         final Argument<String> name = instruction.string().get();
         final RegionObjective objective = new RegionObjective(service, name);
         objective.registerLocationEvents(service);

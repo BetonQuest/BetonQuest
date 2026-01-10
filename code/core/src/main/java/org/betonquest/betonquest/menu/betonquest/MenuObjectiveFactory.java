@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.menu.event.MenuOpenEvent;
@@ -40,7 +40,7 @@ public class MenuObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
+    public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
         final Argument<MenuID> menuID = instruction.parse(
                 (placeholders, packManager, pack, string)
                         -> new MenuID(packManager, pack, string)).get();

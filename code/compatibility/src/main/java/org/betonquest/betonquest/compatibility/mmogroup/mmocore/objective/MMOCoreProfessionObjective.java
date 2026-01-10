@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 
 /**
  * An objective that listens for the player leveling up in their MMOCore profession.
@@ -31,7 +31,7 @@ public class MMOCoreProfessionObjective extends DefaultObjective {
      * @param targetLevel    the target level to be reached
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public MMOCoreProfessionObjective(final ObjectiveFactoryService service, final Argument<String> professionName,
+    public MMOCoreProfessionObjective(final ObjectiveService service, final Argument<String> professionName,
                                       final Argument<Number> targetLevel) throws QuestException {
         super(service);
         this.professionName = professionName;

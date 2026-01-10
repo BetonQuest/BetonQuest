@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class MythicLibSkillObjective extends DefaultObjective {
      * @param triggerTypes the trigger types that will activate the skill
      * @throws QuestException if the instruction is invalid
      */
-    public MythicLibSkillObjective(final ObjectiveFactoryService service, final Argument<String> skillId, final List<TriggerType> triggerTypes) throws QuestException {
+    public MythicLibSkillObjective(final ObjectiveService service, final Argument<String> skillId, final List<TriggerType> triggerTypes) throws QuestException {
         super(service);
         this.skillId = skillId;
         this.triggerTypes = triggerTypes;

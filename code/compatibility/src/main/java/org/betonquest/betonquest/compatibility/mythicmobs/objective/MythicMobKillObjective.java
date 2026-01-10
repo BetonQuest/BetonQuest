@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -83,7 +83,7 @@ public class MythicMobKillObjective extends CountingObjective {
      * @throws QuestException if the instruction is invalid
      */
     public MythicMobKillObjective(
-            final ObjectiveFactoryService service, final Argument<Number> targetAmount, final Argument<List<String>> identifiers,
+            final ObjectiveService service, final Argument<Number> targetAmount, final Argument<List<String>> identifiers,
             final Argument<IdentifierMode> mode, final Argument<Number> minMobLevel, final Argument<Number> maxMobLevel,
             final Argument<Number> deathRadiusAllPlayers, final Argument<Number> neutralDeathRadiusAllPlayers,
             @Nullable final Argument<String> marked) throws QuestException {

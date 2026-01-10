@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 import org.betonquest.betonquest.quest.objective.interact.Interaction;
 import org.bukkit.event.EventPriority;
 
@@ -26,7 +26,7 @@ public class NpcInteractObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
+    public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
         final Argument<NpcID> npcId = instruction.parse(NpcID::new).get();
         final FlagArgument<Boolean> cancel = instruction.bool().getFlag("cancel", true);
         final Argument<Interaction> interactionType = instruction.enumeration(Interaction.class).get("interaction", RIGHT);

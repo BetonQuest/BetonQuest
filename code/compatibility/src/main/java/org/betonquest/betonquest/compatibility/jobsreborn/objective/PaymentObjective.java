@@ -9,8 +9,8 @@ import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveProperties;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 
 /**
@@ -36,7 +36,7 @@ public class PaymentObjective extends DefaultObjective {
      * @param paymentSender the {@link IngameNotificationSender} to send notifications
      * @throws QuestException if the instruction is invalid
      */
-    public PaymentObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount, final IngameNotificationSender paymentSender) throws QuestException {
+    public PaymentObjective(final ObjectiveService service, final Argument<Number> targetAmount, final IngameNotificationSender paymentSender) throws QuestException {
         super(service);
         this.targetAmount = targetAmount;
         this.paymentSender = paymentSender;

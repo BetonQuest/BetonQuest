@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityTameEvent;
 
@@ -26,7 +26,7 @@ public class TameObjective extends CountingObjective {
      * @param type         the entity type to be tamed
      * @throws QuestException if there is an error in the instruction
      */
-    public TameObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount,
+    public TameObjective(final ObjectiveService service, final Argument<Number> targetAmount,
                          final Argument<EntityType> type) throws QuestException {
         super(service, targetAmount, "animals_to_tame");
         this.type = type;

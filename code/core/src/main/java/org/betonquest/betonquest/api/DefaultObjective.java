@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api;
 
 import org.betonquest.betonquest.api.quest.objective.Objective;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 
 /**
  * Optional superclass for all objectives instead of implementing {@link Objective} directly.
@@ -9,22 +9,22 @@ import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryServi
 public abstract class DefaultObjective implements Objective {
 
     /**
-     * The {@link ObjectiveFactoryService} for this objective.
+     * The {@link ObjectiveService} for this objective.
      */
-    private final ObjectiveFactoryService service;
+    private final ObjectiveService service;
 
     /**
      * Creates a new instance of the objective.
      *
-     * @param service the {@link ObjectiveFactoryService} for this objective
+     * @param service the {@link ObjectiveService} for this objective
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public DefaultObjective(final ObjectiveFactoryService service) throws QuestException {
+    public DefaultObjective(final ObjectiveService service) throws QuestException {
         this.service = service;
     }
 
     @Override
-    public ObjectiveFactoryService getService() {
+    public ObjectiveService getService() {
         return service;
     }
 }

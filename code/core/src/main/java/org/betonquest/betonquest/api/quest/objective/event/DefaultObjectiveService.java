@@ -26,10 +26,10 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * The default implementation of the {@link ObjectiveService}.
+ * The default implementation of the {@link ObjectiveServiceProvider}.
  */
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.TooManyMethods"})
-public class DefaultObjectiveService implements ObjectiveService {
+public class DefaultObjectiveService implements ObjectiveServiceProvider {
 
     /**
      * The event service to register events with.
@@ -93,7 +93,7 @@ public class DefaultObjectiveService implements ObjectiveService {
     }
 
     @Override
-    public ObjectiveFactoryService getFactoryService(final ObjectiveID objectiveID) throws QuestException {
+    public ObjectiveService getFactoryService(final ObjectiveID objectiveID) throws QuestException {
         if (services.containsKey(objectiveID)) {
             return services.get(objectiveID);
         }
@@ -179,7 +179,7 @@ public class DefaultObjectiveService implements ObjectiveService {
     private <T extends Event> EventServiceSubscriber<T> subNonProfile(final ObjectiveID objectiveID, final NonProfileEventHandler<T> eventHandler,
                                                                       final boolean ignoreConditions) {
         return (event, priority) -> {
-            final ObjectiveFactoryService service = getFactoryService(objectiveID);
+            final ObjectiveService service = getFactoryService(objectiveID);
             if (ignoreConditions || service.checkConditions(null)) {
                 eventHandler.handle(event);
             }
@@ -198,7 +198,7 @@ public class DefaultObjectiveService implements ObjectiveService {
             if (onlineProfile.isEmpty()) {
                 return;
             }
-            final ObjectiveFactoryService service = getFactoryService(objectiveID);
+            final ObjectiveService service = getFactoryService(objectiveID);
             final OnlineProfile executingProfile = onlineProfile.get();
             if (service.containsProfile(executingProfile) && (ignoreConditions || service.checkConditions(executingProfile))) {
                 handler.handle(event, executingProfile);
@@ -214,7 +214,7 @@ public class DefaultObjectiveService implements ObjectiveService {
             if (profile.isEmpty()) {
                 return;
             }
-            final ObjectiveFactoryService service = getFactoryService(objectiveID);
+            final ObjectiveService service = getFactoryService(objectiveID);
             final Profile executingProfile = profile.get();
             if (service.containsProfile(executingProfile) && (ignoreConditions || service.checkConditions(executingProfile))) {
                 handler.handle(event, executingProfile);

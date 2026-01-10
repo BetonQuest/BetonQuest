@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.player.PlayerFishEvent;
@@ -46,7 +46,7 @@ public class FishObjective extends CountingObjective {
      * @param range              the range around the location where the item should be fished
      * @throws QuestException if there is an error in the instruction
      */
-    public FishObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount,
+    public FishObjective(final ObjectiveService service, final Argument<Number> targetAmount,
                          final Argument<ItemWrapper> item, @Nullable final Argument<Location> hookTargetLocation,
                          @Nullable final Argument<Number> range) throws QuestException {
         super(service, targetAmount, "fish_to_catch");

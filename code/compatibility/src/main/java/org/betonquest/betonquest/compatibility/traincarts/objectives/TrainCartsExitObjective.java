@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
 
 /**
@@ -25,7 +25,7 @@ public class TrainCartsExitObjective extends DefaultObjective {
      * @param name    the name of the train, maybe empty
      * @throws QuestException if there is an error while parsing the instruction
      */
-    public TrainCartsExitObjective(final ObjectiveFactoryService service, final Argument<String> name) throws QuestException {
+    public TrainCartsExitObjective(final ObjectiveService service, final Argument<String> name) throws QuestException {
         super(service);
         this.name = name;
     }

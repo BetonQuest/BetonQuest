@@ -32,10 +32,10 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Default implementation of the {@link ObjectiveFactoryService}.
+ * Default implementation of the {@link ObjectiveService}.
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
-public class DefaultObjectiveFactoryService implements ObjectiveFactoryService {
+public class DefaultObjectiveFactoryService implements ObjectiveService {
 
     /**
      * The objective service data.
@@ -45,7 +45,7 @@ public class DefaultObjectiveFactoryService implements ObjectiveFactoryService {
     /**
      * The objective service.
      */
-    private final ObjectiveService objectiveService;
+    private final ObjectiveServiceProvider objectiveService;
 
     /**
      * The processors to process actions.
@@ -104,7 +104,7 @@ public class DefaultObjectiveFactoryService implements ObjectiveFactoryService {
      * @throws QuestException if the objective service data of the instruction could not be parsed
      */
     public DefaultObjectiveFactoryService(final ObjectiveID objectiveID, final ActionProcessor actionProcessor,
-                                          final ConditionProcessor conditionProcessor, final ObjectiveService objectiveService,
+                                          final ConditionProcessor conditionProcessor, final ObjectiveServiceProvider objectiveService,
                                           final BetonQuestLoggerFactory factory, final ProfileProvider profileProvider) throws QuestException {
         this.objectiveID = objectiveID;
         this.objectiveService = objectiveService;

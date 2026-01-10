@@ -5,7 +5,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.Locale;
@@ -28,7 +28,7 @@ public class ChatVariableObjective extends VariableObjective {
      * @param service the objective factory service
      * @throws QuestException if there is an error in the instruction
      */
-    public ChatVariableObjective(final ObjectiveFactoryService service) throws QuestException {
+    public ChatVariableObjective(final ObjectiveService service) throws QuestException {
         super(service);
     }
 

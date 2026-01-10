@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.quest.condition.number.Operation;
@@ -57,7 +57,7 @@ public class PointObjective extends DefaultObjective {
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
     @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
-    public PointObjective(final ObjectiveFactoryService service, final PlayerDataStorage playerDataStorage, final Argument<String> category,
+    public PointObjective(final ObjectiveService service, final PlayerDataStorage playerDataStorage, final Argument<String> category,
                           final Argument<Number> targetAmount, final Argument<CountingMode> mode, final Argument<Operation> operation)
             throws QuestException {
         super(service);

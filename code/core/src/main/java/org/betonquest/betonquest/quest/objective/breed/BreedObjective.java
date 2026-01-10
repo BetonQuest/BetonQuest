@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityBreedEvent;
 
@@ -26,7 +26,7 @@ public class BreedObjective extends CountingObjective {
      * @param type         the type of animal to breed
      * @throws QuestException if there is an error in the instruction
      */
-    public BreedObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount, final Argument<EntityType> type) throws QuestException {
+    public BreedObjective(final ObjectiveService service, final Argument<Number> targetAmount, final Argument<EntityType> type) throws QuestException {
         super(service, targetAmount, "animals_to_breed");
         this.type = type;
     }

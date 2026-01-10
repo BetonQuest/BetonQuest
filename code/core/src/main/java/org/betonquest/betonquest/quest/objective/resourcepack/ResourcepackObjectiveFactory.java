@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 
 /**
@@ -20,7 +20,7 @@ public class ResourcepackObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction, final ObjectiveFactoryService service) throws QuestException {
+    public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
         final Argument<PlayerResourcePackStatusEvent.Status> targetStatus =
                 instruction.enumeration(PlayerResourcePackStatusEvent.Status.class).get();
         final ResourcepackObjective objective = new ResourcepackObjective(service, targetStatus);

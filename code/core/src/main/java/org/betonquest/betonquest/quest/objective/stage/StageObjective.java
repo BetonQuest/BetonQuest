@@ -7,8 +7,8 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
 import org.betonquest.betonquest.api.quest.objective.event.ObjectiveProperties;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class StageObjective extends DefaultObjective {
      * @param preventCompletion true if the increase of stages should not complete the objective
      * @throws QuestException if the instruction is invalid
      */
-    public StageObjective(final ObjectiveFactoryService service, final StageMap stageMap, final FlagArgument<Boolean> preventCompletion) throws QuestException {
+    public StageObjective(final ObjectiveService service, final StageMap stageMap, final FlagArgument<Boolean> preventCompletion) throws QuestException {
         super(service);
         this.stageMap = stageMap;
         this.preventCompletion = preventCompletion;

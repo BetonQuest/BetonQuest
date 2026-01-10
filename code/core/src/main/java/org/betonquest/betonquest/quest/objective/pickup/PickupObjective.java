@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveFactoryService;
+import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -29,7 +29,7 @@ public class PickupObjective extends CountingObjective {
      * @param pickupItems  the items to be picked up
      * @throws QuestException if there is an error in the instruction
      */
-    public PickupObjective(final ObjectiveFactoryService service, final Argument<Number> targetAmount,
+    public PickupObjective(final ObjectiveService service, final Argument<Number> targetAmount,
                            final Argument<List<ItemWrapper>> pickupItems) throws QuestException {
         super(service, targetAmount, "items_to_pickup");
         this.pickupItems = pickupItems;
