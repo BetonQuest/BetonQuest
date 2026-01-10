@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.quest.objective;
 
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 
 /**
  * Stores the profile's data for the objective.

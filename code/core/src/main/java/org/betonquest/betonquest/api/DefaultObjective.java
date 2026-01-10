@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api;
 
 import org.betonquest.betonquest.api.quest.objective.Objective;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 
 /**
  * Optional superclass for all objectives instead of implementing {@link Objective} directly.

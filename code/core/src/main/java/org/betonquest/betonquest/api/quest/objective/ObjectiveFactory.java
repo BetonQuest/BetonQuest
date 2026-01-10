@@ -2,7 +2,7 @@ package org.betonquest.betonquest.api.quest.objective;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.quest.objective.event.ObjectiveService;
+import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 
 /**
  * Factory to create a specific {@link Objective} from {@link Instruction}s.
