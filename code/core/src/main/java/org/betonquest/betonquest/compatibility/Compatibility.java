@@ -53,7 +53,7 @@ public class Compatibility {
      * Integrations requiring a specific Minecraft version.
      * The key is the version string, the value data containing all integration factories and instances from it.
      */
-    private final NavigableMap<Version, List<VanillaIntegrationData>> vanillaData = new TreeMap<>(new VersionComparator(UpdateStrategy.PATCH));
+    private final NavigableMap<Version, List<VanillaIntegrationData>> vanillaData = new TreeMap<>(new VersionComparator(UpdateStrategy.MAJOR));
 
     /**
      * A map of plugin names and their integration data.
