@@ -21,7 +21,7 @@ public class ConsumeObjective extends CountingObjective {
     /**
      * Constructs a new {@code ConsumeObjective} for the given {@code Instruction}.
      *
-     * @param service      the objective factory service
+     * @param service      the objective service
      * @param targetAmount the amount of items to consume
      * @param item         the item to consume
      * @throws QuestException if the instruction is invalid

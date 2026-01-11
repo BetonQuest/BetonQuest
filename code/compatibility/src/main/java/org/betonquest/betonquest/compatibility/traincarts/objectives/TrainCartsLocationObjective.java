@@ -26,7 +26,7 @@ public class TrainCartsLocationObjective extends AbstractLocationObjective {
     /**
      * Creates a new {@link TrainCartsLocationObjective}.
      *
-     * @param service the objective factory service
+     * @param service the objective service
      * @param loc     the location the player has to be inside
      * @param range   the range around the location
      * @throws QuestException if there is an error while parsing the instruction

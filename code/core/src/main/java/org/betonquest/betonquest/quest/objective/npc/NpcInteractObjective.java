@@ -35,7 +35,7 @@ public class NpcInteractObjective extends DefaultObjective {
     /**
      * Creates a new NPCInteractObjective from the given instruction.
      *
-     * @param service         the objective factory service
+     * @param service         the objective service
      * @param npcId           the ID of the NPC to interact with
      * @param cancel          whether to cancel the interaction with the NPC
      * @param interactionType the type of interaction with the NPC

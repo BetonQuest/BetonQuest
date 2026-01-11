@@ -21,7 +21,7 @@ public class BreedObjective extends CountingObjective {
     /**
      * Constructor for the BreedObjective.
      *
-     * @param service      the objective factory service
+     * @param service      the objective service
      * @param targetAmount the target amount of animals to breed
      * @param type         the type of animal to breed
      * @throws QuestException if there is an error in the instruction

@@ -26,7 +26,7 @@ public class CraftingObjective extends CountingObjective {
     /**
      * Constructor for the CraftingObjective.
      *
-     * @param service      the objective factory service
+     * @param service      the objective service
      * @param targetAmount the target amount of items to be crafted
      * @param item         the item to be crafted
      * @throws QuestException if there is an error in the instruction

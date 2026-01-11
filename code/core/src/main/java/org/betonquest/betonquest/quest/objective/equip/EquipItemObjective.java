@@ -26,7 +26,7 @@ public class EquipItemObjective extends DefaultObjective {
     /**
      * Constructor for the EquipItemObjective.
      *
-     * @param service  the objective factory service
+     * @param service  the objective service
      * @param item     the item that needs to be equipped
      * @param slotType the slot type where the item needs to be equipped
      * @throws QuestException if there is an error in the instruction

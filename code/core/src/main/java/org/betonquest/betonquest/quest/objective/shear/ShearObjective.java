@@ -31,7 +31,7 @@ public class ShearObjective extends CountingObjective {
     /**
      * Constructor for the ShearObjective.
      *
-     * @param service      the objective factory service
+     * @param service      the objective service
      * @param targetAmount the target amount of sheep to shear
      * @param name         the name of the sheep to shear
      * @param color        the color of the sheep to shear

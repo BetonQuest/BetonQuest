@@ -35,7 +35,7 @@ public class StepObjective extends DefaultObjective {
     /**
      * Constructor for the StepObjective.
      *
-     * @param service               the objective factory service
+     * @param service               the objective service
      * @param loc                   the location of the pressure plate
      * @param pressurePlateSelector the selector for the pressure plate block
      * @throws QuestException if there is an error in the instruction

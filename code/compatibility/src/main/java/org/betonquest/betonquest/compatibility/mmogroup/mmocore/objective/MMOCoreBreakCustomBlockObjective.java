@@ -25,7 +25,7 @@ public class MMOCoreBreakCustomBlockObjective extends CountingObjective {
     /**
      * Constructor for the MMOCoreBreakCustomBlockObjective.
      *
-     * @param service        the objective factory service
+     * @param service        the objective service
      * @param targetAmount   the target amount of blocks to break
      * @param desiredBlockId the ID of the block to be broken
      * @throws QuestException if the syntax is wrong or any error happens while parsing

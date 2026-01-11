@@ -38,7 +38,7 @@ public class ExperienceObjective extends DefaultObjective {
     /**
      * Constructor for the ExperienceObjective.
      *
-     * @param service     the objective factory service
+     * @param service     the objective service
      * @param amount      the experience level the player needs to get
      * @param levelSender the notification to send when the player gains experience
      * @throws QuestException if there is an error in the instruction

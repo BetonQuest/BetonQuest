@@ -22,7 +22,7 @@ public class MMOCoreChangeClassObjective extends DefaultObjective {
     /**
      * Constructor for the MMOCoreChangeClassObjective.
      *
-     * @param service         the objective factory service
+     * @param service         the objective service
      * @param targetClassName the name of the class to be changed to
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */

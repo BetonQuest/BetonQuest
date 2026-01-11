@@ -43,7 +43,7 @@ public class BrewObjective extends CountingObjective {
     /**
      * The target amount of potions to brew.
      *
-     * @param service         the objective factory service
+     * @param service         the objective service
      * @param targetAmount    the target amount of potions to brew
      * @param profileProvider the profile provider to get the profile of the player
      * @param potion          the potion item to brew

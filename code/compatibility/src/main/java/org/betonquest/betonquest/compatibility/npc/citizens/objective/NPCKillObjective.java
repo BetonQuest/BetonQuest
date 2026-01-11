@@ -29,7 +29,7 @@ public class NPCKillObjective extends CountingObjective {
     /**
      * Create a new Citizens NPC kill objective.
      *
-     * @param service      the objective factory service
+     * @param service      the objective service
      * @param registry     the registry of NPCs to use
      * @param targetAmount the amount of NPCs to kill
      * @param npcID        the npc id

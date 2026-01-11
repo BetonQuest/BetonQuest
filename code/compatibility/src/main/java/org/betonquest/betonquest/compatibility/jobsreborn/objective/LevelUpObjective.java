@@ -21,7 +21,7 @@ public class LevelUpObjective extends DefaultObjective {
     /**
      * Constructor for the LevelUpObjective.
      *
-     * @param service the objective factory service
+     * @param service the objective service
      * @param job     the job to level up
      * @throws QuestException if the instruction is invalid
      */

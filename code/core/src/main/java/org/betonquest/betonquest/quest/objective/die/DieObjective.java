@@ -38,7 +38,7 @@ public class DieObjective extends DefaultObjective {
     /**
      * Constructor for the DieObjective.
      *
-     * @param service  the objective factory service
+     * @param service  the objective service
      * @param cancel   whether the death should be canceled
      * @param location the location where the player should respawn
      * @throws QuestException if there is an error in the instruction

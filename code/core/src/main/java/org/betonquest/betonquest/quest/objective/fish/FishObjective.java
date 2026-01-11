@@ -39,7 +39,7 @@ public class FishObjective extends CountingObjective {
     /**
      * Constructor for the FishObjective.
      *
-     * @param service            the objective factory service
+     * @param service            the objective service
      * @param targetAmount       the target amount of fish to catch
      * @param item               the item to catch
      * @param hookTargetLocation the location where the fish should be caught

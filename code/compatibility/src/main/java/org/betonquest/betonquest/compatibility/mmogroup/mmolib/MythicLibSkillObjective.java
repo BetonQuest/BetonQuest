@@ -29,7 +29,7 @@ public class MythicLibSkillObjective extends DefaultObjective {
     /**
      * Parses the instruction and creates a new objective.
      *
-     * @param service      the objective factory service
+     * @param service      the objective service
      * @param skillId      the skill ID to activate
      * @param triggerTypes the trigger types that will activate the skill
      * @throws QuestException if the instruction is invalid

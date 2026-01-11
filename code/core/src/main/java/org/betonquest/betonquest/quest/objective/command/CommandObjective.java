@@ -46,7 +46,7 @@ public class CommandObjective extends DefaultObjective {
     /**
      * Creates a new instance of the CommandObjective.
      *
-     * @param service     the objective factory service
+     * @param service     the objective service
      * @param command     the command that the player has to execute
      * @param ignoreCase  whether the command should ignore the capitalization
      * @param exact       whether the command should be matched exactly or just the start

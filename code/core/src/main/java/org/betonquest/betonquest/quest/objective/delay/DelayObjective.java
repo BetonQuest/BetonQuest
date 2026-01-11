@@ -55,7 +55,7 @@ public class DelayObjective extends DefaultObjective {
     /**
      * Constructor for the DelayObjective.
      *
-     * @param service  the objective factory service
+     * @param service  the objective service
      * @param interval the interval in ticks at which the objective checks if the time is up
      * @param delay    the delay time in seconds, minutes, or ticks
      * @param ticks    the flag for parsing the delay time as ticks

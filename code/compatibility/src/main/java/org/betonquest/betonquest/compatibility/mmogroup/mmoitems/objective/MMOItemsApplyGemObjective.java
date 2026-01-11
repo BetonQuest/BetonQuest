@@ -31,7 +31,7 @@ public class MMOItemsApplyGemObjective extends DefaultObjective {
     /**
      * Constructor for the MMOItemsApplyGemObjective.
      *
-     * @param service  the objective factory service
+     * @param service  the objective service
      * @param itemID   the ID of the item to be upgraded
      * @param itemType the type of the item to be upgraded
      * @param gemID    the ID of the gem to be applied

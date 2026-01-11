@@ -21,7 +21,7 @@ public class LeaveJobObjective extends DefaultObjective {
     /**
      * Constructor for the LeaveJobObjective.
      *
-     * @param service the objective factory service
+     * @param service the objective service
      * @param job     the job to leave
      * @throws QuestException if the instruction is invalid
      */

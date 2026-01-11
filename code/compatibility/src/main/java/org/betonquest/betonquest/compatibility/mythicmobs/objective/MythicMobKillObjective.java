@@ -71,7 +71,7 @@ public class MythicMobKillObjective extends CountingObjective {
     /**
      * Creates a new MythicMobKillObjective.
      *
-     * @param service                      the objective factory service
+     * @param service                      the objective service
      * @param targetAmount                 the target amount of kills
      * @param identifiers                  the identifiers of all mobs that this objective should count
      * @param mode                         the mode to choose the identifier from a mob

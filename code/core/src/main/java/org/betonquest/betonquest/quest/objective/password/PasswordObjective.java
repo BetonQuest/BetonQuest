@@ -42,7 +42,7 @@ public class PasswordObjective extends DefaultObjective {
     /**
      * Constructor for the PasswordObjective.
      *
-     * @param service        the objective factory service
+     * @param service        the objective service
      * @param regex          the regex pattern to match the password
      * @param passwordPrefix the prefix to be shown to the player
      * @param failActions    the actions to be triggered on failure

@@ -47,7 +47,7 @@ public class TrainCartsRideObjective extends CountingObjective {
     /**
      * Creates a new {@link TrainCartsRideObjective} from the given instruction.
      *
-     * @param service      the objective factory service
+     * @param service      the objective service
      * @param targetAmount the target amount of time in seconds
      * @param name         the name of the train, maybe empty
      * @throws QuestException if the instruction is invalid

@@ -65,7 +65,7 @@ public class BlockObjective extends CountingObjective {
     /**
      * Constructor for the BlockObjective.
      *
-     * @param service          the objective factory service
+     * @param service          the objective service
      * @param targetAmount     the target amount of blocks to break/place
      * @param selector         the block selector to match blocks
      * @param exactMatch       the exact match flag

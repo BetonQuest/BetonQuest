@@ -40,7 +40,7 @@ public abstract class CountingObjective extends DefaultObjective {
     /**
      * Create a counting objective.
      *
-     * @param service           the objective factory service
+     * @param service           the objective service
      * @param targetAmount      the target amount of units required for completion
      * @param notifyMessageName the message name used for notifying by default
      * @throws QuestException if the syntax is wrong or any error happens while parsing
