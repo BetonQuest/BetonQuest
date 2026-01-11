@@ -44,7 +44,7 @@ public class DefaultObjectiveProperties implements ObjectiveProperties {
 
     @Override
     public String getProperty(final String name, final Profile profile) throws QuestException {
-        final QuestFunction<Profile, String> retriever = properties.get(name);
+        final QuestFunction<Profile, String> retriever = properties.get(name.toLowerCase(Locale.ROOT));
         if (retriever != null) {
             return retriever.apply(profile);
         }
