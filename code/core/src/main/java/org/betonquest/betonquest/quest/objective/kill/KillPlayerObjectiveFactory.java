@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.objective.kill;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
@@ -27,7 +27,7 @@ public class KillPlayerObjectiveFactory implements ObjectiveFactory {
     public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get();
         final Argument<String> name = instruction.string().get("name").orElse(null);
-        final Argument<List<ConditionID>> required = instruction.parse(ConditionID::new)
+        final Argument<List<ConditionIdentifier>> required = instruction.identifier(ConditionIdentifier.class)
                 .list().get("required", Collections.emptyList());
         final KillPlayerObjective objective = new KillPlayerObjective(service, targetAmount, name, required);
         service.request(PlayerDeathEvent.class).onlineHandler(objective::onKill)

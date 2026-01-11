@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.menu.event;
 
 import org.betonquest.betonquest.api.bukkit.event.ProfileEvent;
+import org.betonquest.betonquest.api.identifier.MenuIdentifier;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.menu.MenuID;
 
 /**
  * Every event where a menu is involved.
@@ -12,7 +12,7 @@ public abstract class MenuEvent extends ProfileEvent {
     /**
      * Involved Menu's id.
      */
-    private final MenuID menu;
+    private final MenuIdentifier menu;
 
     /**
      * Create a new Menu Event.
@@ -20,7 +20,7 @@ public abstract class MenuEvent extends ProfileEvent {
      * @param who  the profile which interacted with the menu
      * @param menu the id of the menu which was interacted with
      */
-    protected MenuEvent(final Profile who, final MenuID menu) {
+    protected MenuEvent(final Profile who, final MenuIdentifier menu) {
         super(who);
         this.menu = menu;
     }
@@ -30,7 +30,7 @@ public abstract class MenuEvent extends ProfileEvent {
      *
      * @return the id of the menu that was involved in this event
      */
-    public MenuID getMenu() {
+    public MenuIdentifier getMenu() {
         return menu;
     }
 }

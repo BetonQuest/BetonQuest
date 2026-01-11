@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.action.run;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 import org.betonquest.betonquest.quest.action.CallPlayerlessActionAdapter;
 
@@ -26,7 +26,7 @@ public class RunIndependentAction implements PlayerlessAction {
     /**
      * List of Actions to run.
      */
-    private final Argument<List<ActionID>> actions;
+    private final Argument<List<ActionIdentifier>> actions;
 
     /**
      * Create a new RunIndependentAction instance.
@@ -34,7 +34,7 @@ public class RunIndependentAction implements PlayerlessAction {
      * @param questTypeApi the Quest Type API
      * @param actions      the actions to run
      */
-    public RunIndependentAction(final QuestTypeApi questTypeApi, final Argument<List<ActionID>> actions) {
+    public RunIndependentAction(final QuestTypeApi questTypeApi, final Argument<List<ActionIdentifier>> actions) {
         this.questTypeApi = questTypeApi;
         this.actions = actions;
     }

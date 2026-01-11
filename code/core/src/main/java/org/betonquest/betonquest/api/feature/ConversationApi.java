@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.api.feature;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ConversationIdentifier;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationData;
-import org.betonquest.betonquest.conversation.ConversationID;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,7 +21,7 @@ public interface ConversationApi {
      * @return the loaded ConversationData
      * @throws QuestException if no ConversationData is loaded for the ID
      */
-    ConversationData getData(ConversationID conversationID) throws QuestException;
+    ConversationData getData(ConversationIdentifier conversationID) throws QuestException;
 
     /**
      * Creates and starts a conversation.
@@ -31,7 +31,7 @@ public interface ConversationApi {
      * @param center         the location where the conversation should start
      * @param startingOption the name of the option where the conversation should forcibly start at
      */
-    void start(OnlineProfile onlineProfile, ConversationID conversationID, Location center, @Nullable String startingOption);
+    void start(OnlineProfile onlineProfile, ConversationIdentifier conversationID, Location center, @Nullable String startingOption);
 
     /**
      * Checks if the player is in a conversation.

@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.action.objective;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -11,7 +12,6 @@ import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
 import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.database.PlayerDataFactory;
 
 import java.util.List;
@@ -70,7 +70,7 @@ public class ObjectiveActionFactory implements PlayerActionFactory, PlayerlessAc
 
     private NullableActionAdapter createObjectiveAction(final Instruction instruction) throws QuestException {
         final String action = instruction.string().map(s -> s.toLowerCase(Locale.ROOT)).get().getValue(null);
-        final Argument<List<ObjectiveID>> objectives = instruction.parse(ObjectiveID::new).list().get();
+        final Argument<List<ObjectiveIdentifier>> objectives = instruction.identifier(ObjectiveIdentifier.class).list().get();
         return new NullableActionAdapter(new ObjectiveAction(betonQuest, loggerFactory.create(ObjectiveAction.class),
                 questTypeApi, instruction.getPackage(), objectives, playerDataFactory, action));
     }

@@ -2,10 +2,14 @@ package org.betonquest.betonquest.compatibility.holograms;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
+import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.text.TextParser;
+import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -92,16 +96,24 @@ public class HologramProvider implements Integrator {
     }
 
     @Override
-    public void hook(final BetonQuestApi api) {
+    public void hook(final BetonQuestApi api) throws HookException {
         final BetonQuest plugin = BetonQuest.getInstance();
         final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
         final TextParser textParser = plugin.getTextParser();
+        final IdentifierFactory<HologramIdentifier> hologramIdentifierFactory;
+        final ArgumentParsers parsers;
+        try {
+            hologramIdentifierFactory = api.getQuestRegistries().identifiers().getFactory(HologramIdentifier.class);
+            parsers = plugin.getArgumentParsers();
+        } catch (final QuestException e) {
+            throw new HookException(plugin, "Could not hook into Holograms.", e);
+        }
         this.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class),
-                api.getQuestTypeApi().placeholders(), api.getQuestPackageManager(), this, plugin, textParser, plugin.getArgumentParsers());
+                api.getQuestTypeApi().placeholders(), api.getQuestPackageManager(), hologramIdentifierFactory, this, plugin, textParser, parsers);
         plugin.addProcessor(locationHologramLoop);
         this.npcHologramLoop = new NpcHologramLoop(loggerFactory, loggerFactory.create(NpcHologramLoop.class),
                 api.getQuestTypeApi().placeholders(), plugin.getQuestPackageManager(), plugin, this,
-                plugin.getArgumentParsers(), api.getFeatureApi(), api.getFeatureRegistries().npc(), textParser);
+                parsers, hologramIdentifierFactory, api.getFeatureApi(), api.getFeatureRegistries().npc(), textParser);
         plugin.addProcessor(npcHologramLoop);
         plugin.getServer().getPluginManager().registerEvents(new HologramListener(api.getProfileProvider()), plugin);
     }

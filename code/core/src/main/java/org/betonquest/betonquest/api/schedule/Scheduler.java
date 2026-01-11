@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.api.schedule;
 
+import org.betonquest.betonquest.api.identifier.ScheduleIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 
@@ -30,7 +31,7 @@ public abstract class Scheduler<S extends Schedule, T> {
     /**
      * Map containing all schedules that belong to this scheduler.
      */
-    protected final Map<ScheduleID, S> schedules;
+    protected final Map<ScheduleIdentifier, S> schedules;
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.

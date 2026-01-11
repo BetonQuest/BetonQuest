@@ -5,23 +5,23 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
+import org.betonquest.betonquest.api.identifier.ItemIdentifier;
+import org.betonquest.betonquest.api.identifier.JournalEntryIdentifier;
+import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
+import org.betonquest.betonquest.api.identifier.QuestCancelerIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.argument.parser.IdentifierParser;
+import org.betonquest.betonquest.api.instruction.argument.parser.PackageIdentifierParser;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.action.ActionID;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
-import org.betonquest.betonquest.id.ItemID;
-import org.betonquest.betonquest.id.JournalEntryID;
-import org.betonquest.betonquest.id.QuestCancelerID;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.betonquest.betonquest.quest.action.NotificationLevel;
 import org.bukkit.Location;
@@ -56,7 +56,7 @@ public class QuestCanceler {
     /**
      * Identifier of the canceler.
      */
-    private final QuestCancelerID cancelerID;
+    private final QuestCancelerIdentifier cancelerID;
 
     /**
      * Feature API.
@@ -82,7 +82,7 @@ public class QuestCanceler {
      * Custom item used for displaying.
      */
     @Nullable
-    private final ItemID item;
+    private final ItemIdentifier item;
 
     /**
      * The notification for canceling the quest.
@@ -105,8 +105,8 @@ public class QuestCanceler {
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public QuestCanceler(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final PlayerDataStorage playerStorage,
-                         final QuestCancelerID cancelerID, final FeatureApi featureApi, final PluginMessage pluginMessage,
-                         final Text names, @Nullable final ItemID item, final QuestPackage pack, final CancelData cancelData) {
+                         final QuestCancelerIdentifier cancelerID, final FeatureApi featureApi, final PluginMessage pluginMessage,
+                         final Text names, @Nullable final ItemIdentifier item, final QuestPackage pack, final CancelData cancelData) {
         this.log = log;
         this.questTypeApi = questTypeApi;
         this.playerStorage = playerStorage;
@@ -166,7 +166,7 @@ public class QuestCanceler {
         try {
             for (final String entry : toRemove.getValue(profile)) {
                 log.debug(pack, "  Removing " + logIdentifier + " " + entry);
-                action.accept(IdentifierParser.INSTANCE.apply(pack, entry));
+                action.accept(PackageIdentifierParser.INSTANCE.apply(pack, entry));
             }
         } catch (final QuestException e) {
             log.warn(pack, "Cannot remove " + logIdentifier + " in QuestCanceler " + cancelerID + ": " + e.getMessage(), e);
@@ -175,7 +175,7 @@ public class QuestCanceler {
 
     private void cancelObjectives(final Profile profile, final PlayerData playerData) {
         try {
-            for (final ObjectiveID objectiveID : data.objectives.getValue(profile)) {
+            for (final ObjectiveIdentifier objectiveID : data.objectives.getValue(profile)) {
                 log.debug(objectiveID.getPackage(), "  Removing objective " + objectiveID);
                 questTypeApi.cancelObjective(profile, objectiveID);
                 playerData.removeRawObjective(objectiveID);
@@ -188,7 +188,7 @@ public class QuestCanceler {
     private void removeEntries(final Profile profile, final PlayerData playerData) {
         try {
             final Journal journal = playerData.getJournal();
-            for (final JournalEntryID entry : data.journal.getValue(profile)) {
+            for (final JournalEntryIdentifier entry : data.journal.getValue(profile)) {
                 log.debug(pack, "  Removing journal entry " + entry);
                 journal.removePointer(entry);
             }
@@ -265,9 +265,9 @@ public class QuestCanceler {
      * @param journal    the journal entries to remove
      * @param location   the location to teleport the player to
      */
-    public record CancelData(Argument<List<ConditionID>> conditions, Argument<List<ActionID>> actions,
-                             Argument<List<ObjectiveID>> objectives, Argument<List<String>> tags,
-                             Argument<List<String>> points, Argument<List<JournalEntryID>> journal,
+    public record CancelData(Argument<List<ConditionIdentifier>> conditions, Argument<List<ActionIdentifier>> actions,
+                             Argument<List<ObjectiveIdentifier>> objectives, Argument<List<String>> tags,
+                             Argument<List<String>> points, Argument<List<JournalEntryIdentifier>> journal,
                              @Nullable Argument<Location> location) {
 
     }

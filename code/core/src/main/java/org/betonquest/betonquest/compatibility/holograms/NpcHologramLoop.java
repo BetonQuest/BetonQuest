@@ -5,18 +5,19 @@ import org.betonquest.betonquest.api.bukkit.event.npc.NpcVisibilityUpdateEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
+import org.betonquest.betonquest.api.identifier.NpcIdentifier;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.parser.VectorParser;
+import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.npc.Npc;
-import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.kernel.processor.StartTask;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultListArgument;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
@@ -50,11 +51,6 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
     private final List<NpcHologram> npcHolograms;
 
     /**
-     * The quest package manager to get quest packages from.
-     */
-    private final QuestPackageManager packManager;
-
-    /**
      * Plugin instance for task scheduling.
      */
     private final Plugin plugin;
@@ -73,25 +69,26 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
      * Starts a loop, which checks hologram conditions and shows them to players.
      * Also starts the npc update listener.
      *
-     * @param loggerFactory    logger factory to use
-     * @param log              the logger that will be used for logging
-     * @param placeholders     the {@link Placeholders} to create and resolve placeholders
-     * @param packManager      the quest package manager to get quest packages from
-     * @param plugin           the plugin to schedule tasks
-     * @param hologramProvider the hologram provider to create new holograms
-     * @param featureApi       the Feature API to get NPC instances
-     * @param parsers          the argument parsers
-     * @param npcRegistry      the registry to create identifier strings from Npcs
-     * @param textParser       the text parser used to parse text and colors
+     * @param loggerFactory     logger factory to use
+     * @param log               the logger that will be used for logging
+     * @param placeholders      the {@link Placeholders} to create and resolve placeholders
+     * @param packManager       the quest package manager to get quest packages from
+     * @param plugin            the plugin to schedule tasks
+     * @param hologramProvider  the hologram provider to create new holograms
+     * @param identifierFactory the identifier factory to create {@link HologramIdentifier}s for this type
+     * @param featureApi        the Feature API to get NPC instances
+     * @param parsers           the argument parsers
+     * @param npcRegistry       the registry to create identifier strings from Npcs
+     * @param textParser        the text parser used to parse text and colors
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public NpcHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
                            final Placeholders placeholders, final QuestPackageManager packManager, final Plugin plugin,
                            final HologramProvider hologramProvider, final ArgumentParsers parsers,
+                           final IdentifierFactory<HologramIdentifier> identifierFactory,
                            final FeatureApi featureApi, final NpcRegistry npcRegistry, final TextParser textParser) {
         super(loggerFactory, log, placeholders, packManager, hologramProvider,
-                "Npc Hologram", "npc_holograms", textParser, parsers);
-        this.packManager = packManager;
+                "Npc Hologram", "npc_holograms", textParser, parsers, identifierFactory);
         this.plugin = plugin;
         this.featureApi = featureApi;
         this.npcRegistry = npcRegistry;
@@ -118,16 +115,18 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
     }
 
     @Override
-    protected List<BetonHologram> getHologramsFor(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
+    protected List<BetonHologram> getHologramsFor(final SectionInstruction instruction) throws QuestException {
+        final ConfigurationSection section = instruction.getSection();
+        final QuestPackage pack = instruction.getPackage();
         final Vector vector = new Vector(0, 3, 0);
         final String stringVector = section.getString("vector");
         final VectorParser vectorParser = new VectorParser();
         if (stringVector != null) {
             vector.add(new DefaultArgument<>(placeholders, pack, "(" + stringVector + ")", vectorParser).getValue(null));
         }
-        final List<NpcID> npcIDs = getNpcs(pack, section);
+        final List<NpcIdentifier> npcIDs = instruction.read().value("npcs").identifier(NpcIdentifier.class).list().get().getValue(null);
         final boolean follow = section.getBoolean("follow", false);
-        final Map<NpcID, BetonHologram> npcBetonHolograms = new HashMap<>();
+        final Map<NpcIdentifier, BetonHologram> npcBetonHolograms = new HashMap<>();
         npcIDs.forEach(npcID -> npcBetonHolograms.put(npcID, null));
         final List<BetonHologram> holograms = new ArrayList<>();
         npcHolograms.add(new NpcHologram(npcBetonHolograms, holograms, vector, follow));
@@ -144,8 +143,8 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
         plugin.getServer().getScheduler().runTask(plugin, () -> {
             log.debug("Loading delayed NPC Holograms.");
             npcHolograms.forEach(holo -> {
-                for (final Map.Entry<NpcID, BetonHologram> entry : holo.npcHolograms.entrySet()) {
-                    final NpcID npcID = entry.getKey();
+                for (final Map.Entry<NpcIdentifier, BetonHologram> entry : holo.npcHolograms.entrySet()) {
+                    final NpcIdentifier npcID = entry.getKey();
                     final Npc<?> npc;
                     try {
                         npc = featureApi.getNpc(npcID, null);
@@ -171,14 +170,9 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
         });
     }
 
-    private List<NpcID> getNpcs(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
-        return new DefaultListArgument<>(placeholders, pack, section.getString("npcs", ""),
-                value -> new NpcID(placeholders, packManager, pack, value)).getValue(null);
-    }
-
     private void updateHologram(final NpcHologram npcHologram) {
         npcHologram.npcHolograms().entrySet().forEach(entry -> {
-                    final NpcID npcID = entry.getKey();
+            final NpcIdentifier npcID = entry.getKey();
                     final BetonHologram hologram = entry.getValue();
                     final Npc<?> npc;
                     try {
@@ -231,7 +225,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
             npcHolograms.forEach(this::updateHologram);
             return;
         }
-        final Set<NpcID> ids = npcRegistry.getIdentifier(npc, null);
+        final Set<NpcIdentifier> ids = npcRegistry.getIdentifier(npc, null);
         if (ids.isEmpty()) {
             return;
         }
@@ -249,7 +243,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
      * @param npcHolograms the list of NPC IDs and there linked holograms.
      * @param holograms    The holograms.
      */
-    private record NpcHologram(Map<NpcID, BetonHologram> npcHolograms, List<BetonHologram> holograms,
+    private record NpcHologram(Map<NpcIdentifier, BetonHologram> npcHolograms, List<BetonHologram> holograms,
                                Vector vector, boolean follow) {
 
     }

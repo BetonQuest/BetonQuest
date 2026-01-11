@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.menu.event;
 
+import org.betonquest.betonquest.api.identifier.MenuIdentifier;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.menu.MenuID;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 
@@ -26,7 +26,7 @@ public class MenuOpenEvent extends MenuEvent implements Cancellable {
      * @param who  the profile which interacted with the menu
      * @param menu the id of the menu which was interacted with
      */
-    public MenuOpenEvent(final Profile who, final MenuID menu) {
+    public MenuOpenEvent(final Profile who, final MenuIdentifier menu) {
         super(who, menu);
     }
 

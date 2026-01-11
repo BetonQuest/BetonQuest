@@ -2,14 +2,15 @@ package org.betonquest.betonquest.menu;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
+import org.betonquest.betonquest.api.identifier.MenuIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.action.ActionID;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.text.Text;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,7 +35,7 @@ public class Menu {
     /**
      * The internal id of the menu.
      */
-    private final MenuID menuID;
+    private final MenuIdentifier menuID;
 
     /**
      * The general Menu Data.
@@ -56,7 +57,7 @@ public class Menu {
      * @param menuData     the Menu Data
      * @param boundItem    the optional bound Item
      */
-    public Menu(final BetonQuestLogger log, final MenuID menuID, final QuestTypeApi questTypeApi,
+    public Menu(final BetonQuestLogger log, final MenuIdentifier menuID, final QuestTypeApi questTypeApi,
                 final MenuData menuData, @Nullable final Argument<ItemWrapper> boundItem) {
         this.log = log;
         this.questTypeApi = questTypeApi;
@@ -72,7 +73,7 @@ public class Menu {
      * @return true if all opening conditions are true, false otherwise
      */
     public boolean mayOpen(final Profile profile) {
-        final List<ConditionID> resolved;
+        final List<ConditionIdentifier> resolved;
         try {
             resolved = data.openConditions.getValue(profile);
         } catch (final QuestException exception) {
@@ -104,9 +105,9 @@ public class Menu {
         executeActions(data.closeActions, profile, "close");
     }
 
-    private void executeActions(final Argument<List<ActionID>> actions, final OnlineProfile profile, final String type) {
+    private void executeActions(final Argument<List<ActionIdentifier>> actions, final OnlineProfile profile, final String type) {
         log.debug(menuID.getPackage(), "Menu " + menuID + ": Running " + type + " actions");
-        final List<ActionID> resolved;
+        final List<ActionIdentifier> resolved;
         try {
             resolved = actions.getValue(profile);
         } catch (final QuestException exception) {
@@ -123,7 +124,7 @@ public class Menu {
      *
      * @return the menu id of this menu
      */
-    public MenuID getMenuID() {
+    public MenuIdentifier getMenuID() {
         return menuID;
     }
 
@@ -210,8 +211,9 @@ public class Menu {
      * @param closeActions   Actions which are fired when the menu is closed.
      */
     public record MenuData(Text title, int height, Argument<List<Slots>> slots,
-                           Argument<List<ConditionID>> openConditions,
-                           Argument<List<ActionID>> openActions, Argument<List<ActionID>> closeActions) {
+                           Argument<List<ConditionIdentifier>> openConditions,
+                           Argument<List<ActionIdentifier>> openActions,
+                           Argument<List<ActionIdentifier>> closeActions) {
 
     }
 }

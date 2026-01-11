@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.api.quest.npc;
 
+import org.betonquest.betonquest.api.identifier.NpcIdentifier;
 import org.betonquest.betonquest.api.kernel.FeatureTypeRegistry;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.jetbrains.annotations.Nullable;
@@ -25,5 +26,5 @@ public interface NpcRegistry extends FeatureTypeRegistry<NpcWrapper<?>> {
      * @param profile the related profile potentially influencing resolving
      * @return the ids used in BetonQuest to identify the Npc
      */
-    Set<NpcID> getIdentifier(Npc<?> npc, @Nullable OnlineProfile profile);
+    Set<NpcIdentifier> getIdentifier(Npc<?> npc, @Nullable OnlineProfile profile);
 }

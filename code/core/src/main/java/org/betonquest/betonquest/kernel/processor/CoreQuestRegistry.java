@@ -3,15 +3,18 @@ package org.betonquest.betonquest.kernel.processor;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
+import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
+import org.betonquest.betonquest.api.identifier.PlaceholderIdentifier;
+import org.betonquest.betonquest.api.identifier.ReadableIdentifier;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.action.ActionID;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.objective.Objective;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.service.DefaultObjectiveServiceProvider;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.kernel.processor.quest.ActionProcessor;
@@ -51,25 +54,33 @@ public record CoreQuestRegistry(
      * @param packManager         the quest package manager to get quest packages from
      * @param questTypeRegistries the available quest types
      * @param pluginManager       the manager to register listener
+     * @param instructionApi      the instructionApi to use
      * @param scheduler           the bukkit scheduler to run sync tasks
      * @param profileProvider     the profile provider instance
      * @param plugin              the plugin instance to associate registered listener with
      * @return the newly created quest type api
+     * @throws QuestException if creating the processors failed
      */
     public static CoreQuestRegistry create(final BetonQuestLoggerFactory loggerFactory, final QuestPackageManager packManager,
                                            final BaseQuestTypeRegistries questTypeRegistries, final PluginManager pluginManager,
-                                           final BukkitScheduler scheduler, final ProfileProvider profileProvider, final Plugin plugin) {
+                                           final BukkitScheduler scheduler, final ProfileProvider profileProvider, final Plugin plugin,
+                                           final InstructionApi instructionApi) throws QuestException {
+        final IdentifierFactory<ObjectiveIdentifier> objectiveIdentifierFactory = questTypeRegistries.identifiers().getFactory(ObjectiveIdentifier.class);
+        final IdentifierFactory<ActionIdentifier> actionIdentifierFactory = questTypeRegistries.identifiers().getFactory(ActionIdentifier.class);
+        final IdentifierFactory<ConditionIdentifier> conditionIdentifierFactory = questTypeRegistries.identifiers().getFactory(ConditionIdentifier.class);
+        final IdentifierFactory<PlaceholderIdentifier> placeholderIdentifierFactory = questTypeRegistries.identifiers().getFactory(PlaceholderIdentifier.class);
+
         final PlaceholderProcessor placeholderProcessor = new PlaceholderProcessor(loggerFactory.create(PlaceholderProcessor.class),
-                packManager, questTypeRegistries.placeholder(), scheduler, plugin);
+                packManager, questTypeRegistries.placeholder(), scheduler, placeholderIdentifierFactory, instructionApi, plugin);
         final ActionProcessor actionProcessor = new ActionProcessor(loggerFactory.create(ActionProcessor.class),
-                placeholderProcessor, packManager, questTypeRegistries.action(), scheduler, plugin);
+                placeholderProcessor, packManager, actionIdentifierFactory, questTypeRegistries.action(), scheduler, instructionApi, plugin);
         final ConditionProcessor conditionProcessor = new ConditionProcessor(loggerFactory.create(ConditionProcessor.class),
-                placeholderProcessor, packManager, questTypeRegistries.condition(), scheduler, plugin);
+                placeholderProcessor, packManager, questTypeRegistries.condition(), scheduler, conditionIdentifierFactory, plugin, instructionApi);
         final DefaultObjectiveServiceProvider objectiveService = new DefaultObjectiveServiceProvider(plugin, conditionProcessor,
-                actionProcessor, loggerFactory, profileProvider);
+                actionProcessor, loggerFactory, profileProvider, instructionApi);
         return new CoreQuestRegistry(conditionProcessor, actionProcessor, placeholderProcessor,
                 new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), placeholderProcessor, packManager,
-                        questTypeRegistries.objective(), pluginManager, objectiveService, plugin));
+                        questTypeRegistries.objective(), objectiveIdentifierFactory, pluginManager, objectiveService, instructionApi, plugin));
     }
 
     /**
@@ -99,7 +110,7 @@ public record CoreQuestRegistry(
      *
      * @return instruction metrics for core quest types
      */
-    public Map<String, InstructionMetricsSupplier<? extends InstructionIdentifier>> metricsSupplier() {
+    public Map<String, InstructionMetricsSupplier<? extends ReadableIdentifier>> metricsSupplier() {
         return Map.ofEntries(
                 conditions.metricsSupplier(),
                 actions.metricsSupplier(),
@@ -119,52 +130,52 @@ public record CoreQuestRegistry(
     }
 
     @Override
-    public boolean conditions(@Nullable final Profile profile, final Collection<ConditionID> conditionIDs) {
+    public boolean conditions(@Nullable final Profile profile, final Collection<ConditionIdentifier> conditionIDs) {
         return conditions().checks(profile, conditionIDs, true);
     }
 
     @Override
-    public boolean conditionsAny(@Nullable final Profile profile, final Collection<ConditionID> conditionIDs) {
+    public boolean conditionsAny(@Nullable final Profile profile, final Collection<ConditionIdentifier> conditionIDs) {
         return conditions().checks(profile, conditionIDs, false);
     }
 
     @Override
-    public boolean condition(@Nullable final Profile profile, final ConditionID conditionID) {
+    public boolean condition(@Nullable final Profile profile, final ConditionIdentifier conditionID) {
         return conditions().check(profile, conditionID);
     }
 
     @Override
-    public boolean actions(@Nullable final Profile profile, final Collection<ActionID> actionIDS) {
+    public boolean actions(@Nullable final Profile profile, final Collection<ActionIdentifier> actionIDS) {
         return actions().executes(profile, actionIDS);
     }
 
     @Override
-    public boolean action(@Nullable final Profile profile, final ActionID actionID) {
+    public boolean action(@Nullable final Profile profile, final ActionIdentifier actionID) {
         return actions().execute(profile, actionID);
     }
 
     @Override
-    public void newObjective(final Profile profile, final ObjectiveID objectiveID) {
+    public void newObjective(final Profile profile, final ObjectiveIdentifier objectiveID) {
         objectives().start(profile, objectiveID);
     }
 
     @Override
-    public void pauseObjective(final Profile profile, final ObjectiveID objectiveID) {
+    public void pauseObjective(final Profile profile, final ObjectiveIdentifier objectiveID) {
         objectives().pause(profile, objectiveID);
     }
 
     @Override
-    public void cancelObjective(final Profile profile, final ObjectiveID objectiveID) {
+    public void cancelObjective(final Profile profile, final ObjectiveIdentifier objectiveID) {
         objectives().cancel(profile, objectiveID);
     }
 
     @Override
-    public void resumeObjective(final Profile profile, final ObjectiveID objectiveID, final String instruction) {
+    public void resumeObjective(final Profile profile, final ObjectiveIdentifier objectiveID, final String instruction) {
         objectives().resume(profile, objectiveID, instruction);
     }
 
     @Override
-    public void renameObjective(final ObjectiveID name, final ObjectiveID rename) {
+    public void renameObjective(final ObjectiveIdentifier name, final ObjectiveIdentifier rename) {
         objectives().renameObjective(name, rename);
     }
 
@@ -174,7 +185,7 @@ public record CoreQuestRegistry(
     }
 
     @Override
-    public Objective getObjective(final ObjectiveID objectiveID) throws QuestException {
+    public Objective getObjective(final ObjectiveIdentifier objectiveID) throws QuestException {
         return objectives().get(objectiveID);
     }
 }

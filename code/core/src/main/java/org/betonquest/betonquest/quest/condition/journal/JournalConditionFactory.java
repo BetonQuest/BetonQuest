@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.condition.journal;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.JournalEntryIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -9,7 +10,6 @@ import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
 import org.betonquest.betonquest.data.PlayerDataStorage;
-import org.betonquest.betonquest.id.JournalEntryID;
 
 /**
  * Factory for {@link JournalCondition}s.
@@ -39,7 +39,7 @@ public class JournalConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Argument<JournalEntryID> entryID = instruction.parse(JournalEntryID::new).get();
+        final Argument<JournalEntryIdentifier> entryID = instruction.identifier(JournalEntryIdentifier.class).get();
         final BetonQuestLogger log = loggerFactory.create(JournalCondition.class);
         return new OnlineConditionAdapter(new JournalCondition(dataStorage, entryID), log, instruction.getPackage());
     }

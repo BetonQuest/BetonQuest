@@ -2,10 +2,10 @@ package org.betonquest.betonquest.quest.placeholder.npc;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.identifier.NpcIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
-import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.api.quest.placeholder.nullable.NullablePlaceholder;
 import org.betonquest.betonquest.quest.placeholder.location.LocationFormationMode;
 import org.jetbrains.annotations.Nullable;
@@ -25,7 +25,7 @@ public class NpcPlaceholder implements NullablePlaceholder {
     /**
      * Id of the npc.
      */
-    private final Argument<NpcID> npcID;
+    private final Argument<NpcIdentifier> npcID;
 
     /**
      * The key to defining the value.
@@ -51,9 +51,9 @@ public class NpcPlaceholder implements NullablePlaceholder {
      * @param key           the key to defining the value
      * @param formationMode the location formation mode to use for location resolution
      * @param decimalPlaces the number of decimal places to use for location resolution
-     * @throws IllegalArgumentException when location argument is given without location placeholder
+     * @throws IllegalArgumentException when a location argument is given without a location placeholder
      */
-    public NpcPlaceholder(final FeatureApi featureApi, final Argument<NpcID> npcID, final NPCArgument key,
+    public NpcPlaceholder(final FeatureApi featureApi, final Argument<NpcIdentifier> npcID, final NPCArgument key,
                           @Nullable final LocationFormationMode formationMode, final int decimalPlaces) {
         this.featureApi = featureApi;
         this.npcID = npcID;

@@ -1,6 +1,10 @@
 package org.betonquest.betonquest.compatibility;
 
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
+import org.betonquest.betonquest.api.identifier.PlaceholderIdentifier;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.auraskills.AuraSkillsIntegratorFactory;
 import org.betonquest.betonquest.compatibility.brewery.BreweryIntegratorFactory;
@@ -60,13 +64,21 @@ public class BundledCompatibility {
     private final Plugin plugin;
 
     /**
+     * Logger to use.
+     */
+    private final BetonQuestLogger logger;
+
+    /**
      * Creates a new Object to register plugin compatibilities.
      *
+     * @param logger        the logger to use
      * @param compatibility the compatibility to register at
      * @param betonQuestApi the API used for registering
      * @param plugin        the plugin to start tasks and register listener
      */
-    public BundledCompatibility(final Compatibility compatibility, final BetonQuestApi betonQuestApi, final Plugin plugin) {
+    public BundledCompatibility(final BetonQuestLogger logger, final Compatibility compatibility,
+                                final BetonQuestApi betonQuestApi, final Plugin plugin) {
+        this.logger = logger;
         this.compatibility = compatibility;
         this.betonQuestApi = betonQuestApi;
         this.plugin = plugin;
@@ -102,10 +114,16 @@ public class BundledCompatibility {
         compatibility.registerPlugin("Jobs", new JobsRebornIntegratorFactory());
         compatibility.registerPlugin("LuckPerms", new LuckPermsIntegratorFactory());
         compatibility.registerPlugin("AuraSkills", new AuraSkillsIntegratorFactory());
-        compatibility.registerPlugin("DecentHolograms", new DecentHologramsIntegratorFactory(loggerFactory,
-                betonQuestApi.getQuestTypeApi().placeholders(), betonQuestApi.getQuestPackageManager()));
-        compatibility.registerPlugin("HolographicDisplays", new HolographicDisplaysIntegratorFactory(loggerFactory,
-                betonQuestApi.getQuestPackageManager()));
+        try {
+            final IdentifierFactory<PlaceholderIdentifier> placeholderIdentifierFactory =
+                    betonQuestApi.getQuestRegistries().identifiers().getFactory(PlaceholderIdentifier.class);
+            compatibility.registerPlugin("DecentHolograms", new DecentHologramsIntegratorFactory(loggerFactory,
+                    betonQuestApi.getInstructionApi(), placeholderIdentifierFactory));
+            compatibility.registerPlugin("HolographicDisplays", new HolographicDisplaysIntegratorFactory(loggerFactory,
+                    betonQuestApi.getInstructionApi(), placeholderIdentifierFactory));
+        } catch (final QuestException e) {
+            logger.warn("Could not register DecentHolograms and HolographicDisplays compatibility.", e);
+        }
         compatibility.registerPlugin("fake-block", new FakeBlockIntegratorFactory(plugin));
         compatibility.registerPlugin("RedisChat", new RedisChatIntegratorFactory());
         compatibility.registerPlugin("Train_Carts", new TrainCartsIntegratorFactory());

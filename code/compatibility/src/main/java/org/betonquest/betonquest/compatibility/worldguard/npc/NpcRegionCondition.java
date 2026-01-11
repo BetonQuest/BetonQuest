@@ -2,11 +2,11 @@ package org.betonquest.betonquest.compatibility.worldguard.npc;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.identifier.NpcIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.api.quest.npc.Npc;
-import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.compatibility.worldguard.WorldGuardIntegrator;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
@@ -26,7 +26,7 @@ public class NpcRegionCondition implements NullableCondition {
     /**
      * The Npc id.
      */
-    private final Argument<NpcID> npcId;
+    private final Argument<NpcIdentifier> npcId;
 
     /**
      * The region name where the Npc should be.
@@ -40,7 +40,7 @@ public class NpcRegionCondition implements NullableCondition {
      * @param npcId      the npc id, null or positive
      * @param region     the name of the region where the NPC should be
      */
-    public NpcRegionCondition(final FeatureApi featureApi, final Argument<NpcID> npcId, final Argument<String> region) {
+    public NpcRegionCondition(final FeatureApi featureApi, final Argument<NpcIdentifier> npcId, final Argument<String> region) {
         this.featureApi = featureApi;
         this.npcId = npcId;
         this.region = region;

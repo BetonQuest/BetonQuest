@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.quest.action.logic;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -17,17 +17,17 @@ public class IfElseAction implements NullableAction {
     /**
      * The condition to check.
      */
-    private final Argument<ConditionID> condition;
+    private final Argument<ConditionIdentifier> condition;
 
     /**
      * The action to run if the condition is true.
      */
-    private final Argument<ActionID> action;
+    private final Argument<ActionIdentifier> action;
 
     /**
      * The action to run if the condition is false.
      */
-    private final Argument<ActionID> elseAction;
+    private final Argument<ActionIdentifier> elseAction;
 
     /**
      * Quest Type API.
@@ -42,7 +42,8 @@ public class IfElseAction implements NullableAction {
      * @param elseAction   the action to run if the condition is false
      * @param questTypeApi the Quest Type API
      */
-    public IfElseAction(final Argument<ConditionID> condition, final Argument<ActionID> action, final Argument<ActionID> elseAction, final QuestTypeApi questTypeApi) {
+    public IfElseAction(final Argument<ConditionIdentifier> condition, final Argument<ActionIdentifier> action,
+                        final Argument<ActionIdentifier> elseAction, final QuestTypeApi questTypeApi) {
         this.condition = condition;
         this.action = action;
         this.elseAction = elseAction;

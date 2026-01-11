@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.conversation;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.identifier.ConversationIdentifier;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
@@ -19,10 +19,11 @@ import java.util.Optional;
  * @param center              the center of the conversation
  */
 
-public record PlayerConversationState(ConversationID currentConversation, String currentOption, Location center) {
+public record PlayerConversationState(ConversationIdentifier currentConversation, String currentOption,
+                                      Location center) {
 
     /**
-     * The required amount of arguments in the string representation of the conversation state.
+     * The required number of arguments in the string representation of the conversation state.
      * The string must be split at every space to obtain the arguments.
      */
     private static final int REQUIRED_AMOUNT_OF_ARGUMENTS = 3;
@@ -30,11 +31,13 @@ public record PlayerConversationState(ConversationID currentConversation, String
     /**
      * Creates a conversation state from a string.
      *
-     * @param string the string representation of {@link PlayerConversationState}
+     * @param string            the string representation of {@link PlayerConversationState}
+     * @param identifierFactory the conversation identifier factory
      * @return the conversation state represented by the string
      * @throws QuestException if the conversation ID is invalid
      */
-    public static Optional<PlayerConversationState> fromString(@Nullable final String string) throws QuestException {
+    public static Optional<PlayerConversationState> fromString(@Nullable final String string,
+                                                               final IdentifierFactory<ConversationIdentifier> identifierFactory) throws QuestException {
         if (string == null || string.isEmpty()) {
             return Optional.empty();
         }
@@ -45,8 +48,7 @@ public record PlayerConversationState(ConversationID currentConversation, String
             return Optional.empty();
         }
         final String fullID = mainParts[0];
-        final QuestPackageManager packManager = BetonQuest.getInstance().getQuestPackageManager();
-        final ConversationID currentConversation = new ConversationID(packManager, null, fullID);
+        final ConversationIdentifier currentConversation = identifierFactory.parseIdentifier(null, fullID);
 
         final String optionName = mainParts[1];
 

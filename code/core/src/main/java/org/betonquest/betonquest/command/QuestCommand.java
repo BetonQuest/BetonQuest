@@ -14,19 +14,21 @@ import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.identifier.Identifier;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
+import org.betonquest.betonquest.api.identifier.ItemIdentifier;
+import org.betonquest.betonquest.api.identifier.JournalEntryIdentifier;
+import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.Placeholders;
-import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.objective.Objective;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.IntegrationData;
 import org.betonquest.betonquest.compatibility.IntegrationSource;
@@ -41,10 +43,7 @@ import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.feature.journal.Pointer;
-import org.betonquest.betonquest.id.ItemID;
-import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultListArgument;
 import org.betonquest.betonquest.logger.BetonQuestLogRecord;
 import org.betonquest.betonquest.logger.PlayerLogWatcher;
 import org.betonquest.betonquest.logger.format.ChatFormatter;
@@ -128,11 +127,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private final PlayerDataFactory playerDataFactory;
 
     /**
-     * The {@link Placeholders} to create and resolve placeholders.
-     */
-    private final Placeholders placeholders;
-
-    /**
      * The {@link PluginMessage} instance.
      */
     private final PluginMessage pluginMessage;
@@ -174,7 +168,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param dataStorage           the storage providing player data
      * @param profileProvider       the profile provider
      * @param playerDataFactory     the factory to create player data
-     * @param placeholders          the {@link Placeholders} to create and resolve placeholders
      * @param pluginMessage         the {@link PluginMessage} instance
      * @param config                the plugin configuration accessor
      * @param compatibility         the compatibility instance to use for compatibility checks
@@ -184,8 +177,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         final ConfigAccessorFactory configAccessorFactory, final PlayerLogWatcher logWatcher,
                         final LogPublishingController debuggingController, final BetonQuest plugin,
                         final PlayerDataStorage dataStorage, final ProfileProvider profileProvider,
-                        final PlayerDataFactory playerDataFactory, final Placeholders placeholders,
-                        final PluginMessage pluginMessage, final ConfigAccessor config, final Compatibility compatibility) {
+                        final PlayerDataFactory playerDataFactory, final PluginMessage pluginMessage,
+                        final ConfigAccessor config, final Compatibility compatibility) {
         this.loggerFactory = loggerFactory;
         this.log = log;
         this.configAccessorFactory = configAccessorFactory;
@@ -195,7 +188,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         this.dataStorage = dataStorage;
         this.profileProvider = profileProvider;
         this.playerDataFactory = playerDataFactory;
-        this.placeholders = placeholders;
         this.pluginMessage = pluginMessage;
         this.config = config;
         this.compatibility = compatibility;
@@ -443,9 +435,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         try {
-            final ItemID itemID;
+            final ItemIdentifier itemID;
             try {
-                itemID = new ItemID(instance.getQuestTypeApi().placeholders(), instance.getQuestPackageManager(), null, args[1]);
+                itemID = getIdentifier(ItemIdentifier.class, null, args[1]);
             } catch (final QuestException e) {
                 sendMessage(sender, "error",
                         new VariableReplacement("error", Component.text(e.getMessage())));
@@ -453,7 +445,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 return;
             }
             final OnlineAction give = new GiveAction(
-                    new DefaultListArgument<>(new Item(instance.getFeatureApi()::getItem, itemID, new DefaultArgument<>(1))),
+                    new DefaultArgument<>(List.of(new Item(instance.getFeatureApi()::getItem, itemID, new DefaultArgument<>(1)))),
                     new NoNotificationSender(),
                     new IngameNotificationSender(log, pluginMessage, itemID.getPackage(), itemID.getFull(), NotificationLevel.ERROR,
                             "inventory_full_backpack", "inventory_full"),
@@ -563,9 +555,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         switch (args[2].toLowerCase(Locale.ROOT)) {
             case "add", "a" -> {
-                final JournalEntryID entryID;
+                final JournalEntryIdentifier entryID;
                 try {
-                    entryID = new JournalEntryID(instance.getQuestTypeApi().placeholders(), instance.getQuestPackageManager(), null, pointerName);
+                    entryID = getIdentifier(JournalEntryIdentifier.class, null, pointerName);
                 } catch (final QuestException e) {
                     sendMessage(sender, "error",
                             new VariableReplacement("error", Component.text(e.getMessage())));
@@ -596,9 +588,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             }
             case "remove", "delete", "del", "r", "d" -> {
                 log.debug("Removing pointer");
-                final JournalEntryID entryID;
+                final JournalEntryIdentifier entryID;
                 try {
-                    entryID = new JournalEntryID(instance.getQuestTypeApi().placeholders(), instance.getQuestPackageManager(), null, pointerName);
+                    entryID = getIdentifier(JournalEntryIdentifier.class, null, pointerName);
                 } catch (final QuestException e) {
                     sendMessage(sender, "error",
                             new VariableReplacement("error", Component.text(e.getMessage())));
@@ -856,7 +848,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Fires an action for an online player. It cannot work for offline players!
      */
-    private void handleActions(final CommandSender sender, final String... args) {
+    private void handleActions(final CommandSender sender, final String... args) throws QuestException {
         if (args.length < 2 || Bukkit.getPlayer(args[1]) == null && !"-".equals(args[1])) {
             log.debug("Player's name is missing or he's offline");
             sendMessage(sender, "specify_player");
@@ -867,9 +859,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_action");
             return;
         }
-        final ActionID actionID;
+        final ActionIdentifier actionID;
         try {
-            actionID = new ActionID(placeholders, instance.getQuestPackageManager(), null, args[2]);
+            actionID = getIdentifier(ActionIdentifier.class, null, args[2]);
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
@@ -879,7 +871,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final Profile profile = "-".equals(args[1]) ? null : profileProvider.getProfile(Bukkit.getOfflinePlayer(args[1]));
         instance.getQuestTypeApi().action(profile, actionID);
         sendMessage(sender, "player_action",
-                new VariableReplacement("action", Component.text(actionID.getInstruction().toString())));
+                new VariableReplacement("action", Component.text(actionID.readRawInstruction())));
     }
 
     /**
@@ -899,7 +891,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Checks if specified player meets condition described by ID.
      */
-    private void handleConditions(final CommandSender sender, final String... args) {
+    private void handleConditions(final CommandSender sender, final String... args) throws QuestException {
         // the player has to be specified every time
         if (args.length < 2 || Bukkit.getPlayer(args[1]) == null && !"-".equals(args[1])) {
             log.debug("Player's name is missing or he's offline");
@@ -912,9 +904,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_condition");
             return;
         }
-        final ConditionID conditionID;
+        final ConditionIdentifier conditionID;
         try {
-            conditionID = new ConditionID(placeholders, instance.getQuestPackageManager(), null, args[2]);
+            conditionID = getIdentifier(ConditionIdentifier.class, null, args[2]);
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
@@ -924,7 +916,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         // display message about condition
         final Profile profile = "-".equals(args[1]) ? null : profileProvider.getProfile(Bukkit.getOfflinePlayer(args[1]));
         sendMessage(sender, "player_condition",
-                new VariableReplacement("condition", Component.text((conditionID.inverted() ? "! " : "") + conditionID.getInstruction())),
+                new VariableReplacement("condition", Component.text((conditionID.isInverted() ? "! " : "") + conditionID.readRawInstruction())),
                 new VariableReplacement("result", Component.text(instance.getQuestTypeApi().condition(profile, conditionID))));
     }
 
@@ -1111,10 +1103,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         // get the objective
-        final ObjectiveID objectiveID;
+        final ObjectiveIdentifier objectiveID;
         final Objective objective;
         try {
-            objectiveID = new ObjectiveID(placeholders, instance.getQuestPackageManager(), null, args[3]);
+            objectiveID = getIdentifier(ObjectiveIdentifier.class, null, args[3]);
             objective = instance.getQuestTypeApi().getObjective(objectiveID);
         } catch (final QuestException e) {
             sendMessage(sender, "error",
@@ -1174,7 +1166,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Renames stuff.
      */
     @SuppressWarnings("PMD.NcssCount")
-    private void handleRenaming(final CommandSender sender, final String... args) {
+    private void handleRenaming(final CommandSender sender, final String... args) throws QuestException {
         if (args.length < 4) {
             sendMessage(sender, "arguments");
             return;
@@ -1223,9 +1215,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "objectives", "objective", "o" -> {
                 updateType = UpdateType.RENAME_ALL_OBJECTIVES;
                 // get ID and package
-                final ObjectiveID nameID;
+                final ObjectiveIdentifier nameID;
                 try {
-                    nameID = new ObjectiveID(placeholders, instance.getQuestPackageManager(), null, name);
+                    nameID = getIdentifier(ObjectiveIdentifier.class, null, name);
                 } catch (final QuestException e) {
                     sendMessage(sender, "error",
                             new VariableReplacement("error", Component.text(e.getMessage())));
@@ -1235,7 +1227,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 // rename objective in the file
                 final MultiConfiguration configuration = nameID.getPackage().getConfig();
                 final String newPath = "objectives." + rename.split(Identifier.SEPARATOR)[1];
-                configuration.set(newPath, nameID.getInstruction().toString());
+                configuration.set(newPath, nameID.readRawInstruction());
                 try {
                     final ConfigurationSection sourceConfigurationSection = configuration.getSourceConfigurationSection(nameID.get());
                     if (sourceConfigurationSection == null) {
@@ -1251,9 +1243,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     return;
                 }
                 // rename objective instance
-                final ObjectiveID renameID;
+                final ObjectiveIdentifier renameID;
                 try {
-                    renameID = new ObjectiveID(placeholders, instance.getQuestPackageManager(), null, rename);
+                    renameID = getIdentifier(ObjectiveIdentifier.class, null, rename);
                 } catch (final QuestException e) {
                     sender.sendMessage("§4There was an unexpected error: " + e.getMessage());
                     log.reportException(e);
@@ -1278,9 +1270,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     return;
                 }
 
-                final JournalEntryID newEntryID;
+                final JournalEntryIdentifier newEntryID;
                 try {
-                    newEntryID = new JournalEntryID(instance.getQuestTypeApi().placeholders(), instance.getQuestPackageManager(), null, rename);
+                    newEntryID = getIdentifier(JournalEntryIdentifier.class, null, rename);
                 } catch (final QuestException e) {
                     final String message = "You can't rename into non-existent id!";
                     sendMessage(sender, "error", new VariableReplacement("error", Component.text(message)));
@@ -1288,9 +1280,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     return;
                 }
 
-                final JournalEntryID oldEntryID;
+                final JournalEntryIdentifier oldEntryID;
                 try {
-                    oldEntryID = new JournalEntryID(instance.getQuestTypeApi().placeholders(), instance.getQuestPackageManager(), null, name);
+                    oldEntryID = getIdentifier(JournalEntryIdentifier.class, null, name);
                 } catch (final QuestException e) {
                     final String message = "Old journal entry " + name + " does not exist, renaming only database entries!";
                     log.warn(message, e);
@@ -1369,9 +1361,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             }
             case "objectives", "objective", "o" -> {
                 updateType = UpdateType.REMOVE_ALL_OBJECTIVES;
-                final ObjectiveID objectiveID;
+                final ObjectiveIdentifier objectiveID;
                 try {
-                    objectiveID = new ObjectiveID(placeholders, instance.getQuestPackageManager(), null, name);
+                    objectiveID = getIdentifier(ObjectiveIdentifier.class, null, name);
                 } catch (final QuestException e) {
                     final String message = "The objective '" + name + "' does not exist, it will still be removed from the database!";
                     sendMessage(sender, "error",
@@ -1387,9 +1379,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             }
             case "journals", "journal", "j", "entries", "entry", "e" -> {
                 updateType = UpdateType.REMOVE_ALL_ENTRIES;
-                final JournalEntryID entryID;
+                final JournalEntryIdentifier entryID;
                 try {
-                    entryID = new JournalEntryID(instance.getQuestTypeApi().placeholders(), instance.getQuestPackageManager(), null, name);
+                    entryID = getIdentifier(JournalEntryIdentifier.class, null, name);
                 } catch (final QuestException e) {
                     final String message = "The journal entry '" + name + "' does not exist, it will still be removed from the database!";
                     log.warn(message, e);
@@ -1741,10 +1733,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
 
         // get the objective
-        final ObjectiveID objectiveID;
+        final ObjectiveIdentifier objectiveID;
         final Objective tmp;
         try {
-            objectiveID = new ObjectiveID(placeholders, instance.getQuestPackageManager(), null, args[2]);
+            objectiveID = getIdentifier(ObjectiveIdentifier.class, null, args[2]);
             tmp = instance.getQuestTypeApi().getObjective(objectiveID);
         } catch (final QuestException e) {
             sendMessage(sender, "error",
@@ -1921,6 +1913,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     private <T> Predicate<T> createCaseInsensitivePrefixPredicate(final String prefix, final Function<T, String> getId) {
         return element -> getId.apply(element).regionMatches(true, 0, prefix, 0, prefix.length());
+    }
+
+    private <I extends Identifier> I getIdentifier(final Class<I> identifierClass, @Nullable final QuestPackage questPackage, final String identifier) throws QuestException {
+        final IdentifierFactory<I> identifierFactory = instance.getQuestRegistries().identifiers().getFactory(identifierClass);
+        return identifierFactory.parseIdentifier(questPackage, identifier);
     }
 
     /**

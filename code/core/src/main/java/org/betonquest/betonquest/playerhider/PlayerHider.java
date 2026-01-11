@@ -4,12 +4,12 @@ import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.Placeholders;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultListArgument;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
@@ -31,7 +31,7 @@ public class PlayerHider {
      * The map's key is an array containing the source {@link Profile}'s conditions
      * and the map's value is an array containing the target {@link Profile}'s conditions.
      */
-    private final Map<Collection<ConditionID>, Collection<ConditionID>> hiders;
+    private final Map<Collection<ConditionIdentifier>, Collection<ConditionIdentifier>> hiders;
 
     /**
      * The running hider.
@@ -94,15 +94,14 @@ public class PlayerHider {
         bukkitTask.cancel();
     }
 
-    private Collection<ConditionID> getConditions(final Placeholders placeholders, final QuestPackage pack, final String key,
-                                                  @Nullable final String rawConditions) throws QuestException {
+    private Collection<ConditionIdentifier> getConditions(final Placeholders placeholders, final QuestPackage pack, final String key,
+                                                          @Nullable final String rawConditions) throws QuestException {
         if (rawConditions == null) {
             return new ArrayList<>();
         }
         try {
-            return new DefaultListArgument<>(placeholders, pack, rawConditions,
-                    string -> new ConditionID(placeholders, api.getQuestPackageManager(), pack, string))
-                    .getValue(null);
+            final DefaultInstruction instruction = new DefaultInstruction(placeholders, api.getQuestPackageManager(), pack, null, api.getArgumentParsers(), rawConditions);
+            return instruction.identifier(ConditionIdentifier.class).list().get().getValue(null);
         } catch (final QuestException e) {
             throw new QuestException("Error while loading conditions for player_hider '" + key + "' in Package '" + pack.getQuestPath() + "': " + e.getMessage(), e);
         }
@@ -138,7 +137,7 @@ public class PlayerHider {
 
     private Map<OnlineProfile, List<OnlineProfile>> getProfilesToHide(final Collection<? extends OnlineProfile> onlineProfiles) {
         final Map<OnlineProfile, List<OnlineProfile>> profilesToHide = new HashMap<>();
-        for (final Map.Entry<Collection<ConditionID>, Collection<ConditionID>> hider : hiders.entrySet()) {
+        for (final Map.Entry<Collection<ConditionIdentifier>, Collection<ConditionIdentifier>> hider : hiders.entrySet()) {
             final List<OnlineProfile> targetProfiles = new ArrayList<>();
             for (final OnlineProfile target : onlineProfiles) {
                 if (api.getQuestTypeApi().conditions(target, hider.getValue())) {

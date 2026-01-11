@@ -8,12 +8,12 @@ import net.citizensnpcs.api.ai.event.NavigationStuckEvent;
 import net.citizensnpcs.api.event.SpawnReason;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.compatibility.npc.citizens.CitizensWalkingListener;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -191,7 +191,7 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
      * @param blockConversations if the NPC will block conversation interaction while moving (includes wait time)
      */
     public record MoveData(Argument<List<Location>> locations, Argument<Number> waitTicks,
-                           Argument<List<ActionID>> doneEvents, Argument<List<ActionID>> failEvents,
+                           Argument<List<ActionIdentifier>> doneEvents, Argument<List<ActionIdentifier>> failEvents,
                            FlagArgument<Boolean> blockConversations) {
 
         /**
@@ -217,7 +217,7 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
      * @param blockConversations if the NPC will block conversation interaction while moving (includes wait time)
      */
     public record ResolvedMoveData(List<Location> locations, long waitTicks,
-                                   List<ActionID> doneActions, List<ActionID> failActions,
+                                   List<ActionIdentifier> doneActions, List<ActionIdentifier> failActions,
                                    boolean blockConversations) {
 
     }

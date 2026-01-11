@@ -2,11 +2,11 @@ package org.betonquest.betonquest.quest.condition.conversation;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.ConversationApi;
+import org.betonquest.betonquest.api.identifier.ConversationIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.conversation.Conversation;
-import org.betonquest.betonquest.conversation.ConversationID;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -23,7 +23,7 @@ public class InConversationCondition implements PlayerCondition {
      * Identifier of the conversation.
      */
     @Nullable
-    private final Argument<ConversationID> conversationID;
+    private final Argument<ConversationIdentifier> conversationID;
 
     /**
      * Constructor of the InConversationCondition.
@@ -31,7 +31,7 @@ public class InConversationCondition implements PlayerCondition {
      * @param conversationApi the Conversation API
      * @param conversationID  the conversation identifier
      */
-    public InConversationCondition(final ConversationApi conversationApi, @Nullable final Argument<ConversationID> conversationID) {
+    public InConversationCondition(final ConversationApi conversationApi, @Nullable final Argument<ConversationIdentifier> conversationID) {
         this.conversationApi = conversationApi;
         this.conversationID = conversationID;
     }

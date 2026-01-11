@@ -11,12 +11,14 @@ import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
  * @param action      The Registry holding registered action types.
  * @param objective   The Registry holding registered objective types.
  * @param placeholder The Registry holding registered placeholder types.
+ * @param identifiers The Registry holding registered identifier types.
  */
 public record BaseQuestTypeRegistries(
         ConditionTypeRegistry condition,
         ActionTypeRegistry action,
         ObjectiveTypeRegistry objective,
-        PlaceholderTypeRegistry placeholder
+        PlaceholderTypeRegistry placeholder,
+        IdentifierTypeRegistry identifiers
 ) implements QuestTypeRegistries {
 
     /**
@@ -31,7 +33,8 @@ public record BaseQuestTypeRegistries(
                 new ConditionTypeRegistry(loggerFactory.create(ConditionTypeRegistry.class)),
                 new ActionTypeRegistry(loggerFactory.create(ActionTypeRegistry.class), loggerFactory, betonQuest),
                 new ObjectiveTypeRegistry(loggerFactory.create(ObjectiveTypeRegistry.class)),
-                new PlaceholderTypeRegistry(loggerFactory.create(PlaceholderTypeRegistry.class))
+                new PlaceholderTypeRegistry(loggerFactory.create(PlaceholderTypeRegistry.class)),
+                new IdentifierTypeRegistry(loggerFactory.create(IdentifierTypeRegistry.class))
         );
     }
 }

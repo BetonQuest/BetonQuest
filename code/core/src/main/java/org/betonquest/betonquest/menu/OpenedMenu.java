@@ -3,6 +3,7 @@ package org.betonquest.betonquest.menu;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.MenuIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.menu.event.MenuClickEvent;
@@ -140,7 +141,7 @@ public class OpenedMenu implements Listener {
      *
      * @return the id of this menu
      */
-    public final MenuID getId() {
+    public final MenuIdentifier getId() {
         return this.data.getMenuID();
     }
 

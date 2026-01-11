@@ -4,9 +4,9 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.bukkit.Bukkit;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -36,7 +36,7 @@ public class PasswordObjective extends DefaultObjective {
     /**
      * Actions to be triggered on failure.
      */
-    private final Argument<List<ActionID>> failActions;
+    private final Argument<List<ActionIdentifier>> failActions;
 
     /**
      * Constructor for the PasswordObjective.
@@ -48,7 +48,7 @@ public class PasswordObjective extends DefaultObjective {
      * @throws QuestException if there is an error in the instruction
      */
     public PasswordObjective(final ObjectiveService service, final Argument<Pattern> regex,
-                             @Nullable final String passwordPrefix, final Argument<List<ActionID>> failActions) throws QuestException {
+                             @Nullable final String passwordPrefix, final Argument<List<ActionIdentifier>> failActions) throws QuestException {
         super(service);
         this.regex = regex;
         this.passwordPrefix = passwordPrefix;

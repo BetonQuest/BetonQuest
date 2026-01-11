@@ -2,9 +2,9 @@ package org.betonquest.betonquest.quest.placeholder.npc;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.identifier.NpcIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerPlaceholder;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerPlaceholderFactory;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerlessPlaceholder;
@@ -65,7 +65,7 @@ public class NpcPlaceholderFactory implements PlayerPlaceholderFactory, Playerle
                 return questerPlaceholder.getValue(profile);
             };
         }
-        final Argument<NpcID> npcID = instruction.parse(NpcID::new).get();
+        final Argument<NpcIdentifier> npcID = instruction.identifier(NpcIdentifier.class).get();
         final NPCArgument key = instruction.enumeration(NPCArgument.class).get().getValue(null);
         LocationFormationMode locationFormationMode = null;
         int decimalPlaces = 0;

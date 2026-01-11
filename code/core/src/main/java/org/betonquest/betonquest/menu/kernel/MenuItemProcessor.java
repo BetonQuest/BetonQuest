@@ -4,6 +4,10 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
+import org.betonquest.betonquest.api.identifier.MenuItemIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
@@ -11,11 +15,8 @@ import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.action.ActionID;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.menu.MenuItem;
-import org.betonquest.betonquest.menu.MenuItemID;
 import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -26,17 +27,12 @@ import java.util.Map;
 /**
  * Processor to create and store {@link MenuItem}s.
  */
-public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
+public class MenuItemProcessor extends RPGMenuProcessor<MenuItemIdentifier, MenuItem> {
 
     /**
      * Text config property for Item lore.
      */
     private static final String CONFIG_TEXT = "text";
-
-    /**
-     * The quest package manager to get quest packages from.
-     */
-    private final QuestPackageManager packManager;
 
     /**
      * Config to load menu options from.
@@ -46,24 +42,25 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
     /**
      * Create a new Processor to create and store Menu Items.
      *
-     * @param log           the custom logger for this class
-     * @param loggerFactory the logger factory to class specific loggers with
-     * @param packManager   the quest package manager to get quest packages from
-     * @param textCreator   the text creator to parse text
-     * @param questTypeApi  the QuestTypeApi
-     * @param config        the config to load menu item options from
-     * @param parsers       the argument parsers
+     * @param log               the custom logger for this class
+     * @param loggerFactory     the logger factory to class specific loggers with
+     * @param packManager       the quest package manager to get quest packages from
+     * @param textCreator       the text creator to parse text
+     * @param identifierFactory the identifier factory to create {@link MenuItemIdentifier}s for this type
+     * @param questTypeApi      the QuestTypeApi
+     * @param config            the config to load menu item options from
+     * @param parsers           the argument parsers
      */
     public MenuItemProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                              final QuestPackageManager packManager, final ParsedSectionTextCreator textCreator,
+                             final IdentifierFactory<MenuItemIdentifier> identifierFactory,
                              final QuestTypeApi questTypeApi, final ConfigAccessor config, final ArgumentParsers parsers) {
-        super(log, packManager, "Menu Item", "menu_items", loggerFactory, textCreator, parsers, questTypeApi);
-        this.packManager = packManager;
+        super(log, packManager, "Menu Item", "menu_items", loggerFactory, textCreator, parsers, identifierFactory, questTypeApi);
         this.config = config;
     }
 
     @Override
-    protected Map.Entry<MenuItemID, MenuItem> loadSection(final String sectionName, final SectionInstruction instruction) throws QuestException {
+    protected Map.Entry<MenuItemIdentifier, MenuItem> loadSection(final String sectionName, final SectionInstruction instruction) throws QuestException {
         final ConfigurationSection section = instruction.getSection();
         final QuestPackage pack = instruction.getPackage();
 
@@ -75,18 +72,19 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
         final Argument<ItemWrapper> item = instruction.chainForArgument(rawItemValue).item().get();
         final Text descriptions = section.contains(CONFIG_TEXT) ? textCreator.parseFromSection(pack, section, CONFIG_TEXT) : null;
         final MenuItem.ClickActions clickActions = getActions(instruction);
-        final Argument<List<ConditionID>> conditions = instruction.read().value("conditions").parse(ConditionID::new).list().getOptional(Collections.emptyList());
+        final Argument<List<ConditionIdentifier>> conditions = instruction.read().value("conditions")
+                .identifier(ConditionIdentifier.class).list().getOptional(Collections.emptyList());
         final String rawClose = section.getString("close", config.getString("menu.default_close", "false"));
         final Argument<Boolean> close = instruction.chainForArgument(rawClose).bool().get();
 
         final BetonQuestLogger log = loggerFactory.create(MenuItem.class);
-        final MenuItemID menuItemID = getIdentifier(pack, sectionName);
+        final MenuItemIdentifier menuItemID = getIdentifier(pack, sectionName);
         final MenuItem menuItem = new MenuItem(log, questTypeApi, item, menuItemID, descriptions, clickActions, conditions, close);
         return Map.entry(menuItemID, menuItem);
     }
 
-    private Argument<List<ActionID>> getActionList(final SectionInstruction instruction, final String... path) throws QuestException {
-        return instruction.read().value(path).parse(ActionID::new).list().getOptional(List.of());
+    private Argument<List<ActionIdentifier>> getActionList(final SectionInstruction instruction, final String... path) throws QuestException {
+        return instruction.read().value(path).identifier(ActionIdentifier.class).list().getOptional(Collections.emptyList());
     }
 
     private MenuItem.ClickActions getActions(final SectionInstruction instruction) throws QuestException {
@@ -99,10 +97,5 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
                     getActionList(instruction, "click.middleMouse"));
         }
         return new MenuItem.ClickActions(getActionList(instruction, "click"));
-    }
-
-    @Override
-    protected MenuItemID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new MenuItemID(packManager, pack, identifier);
     }
 }

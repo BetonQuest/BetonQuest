@@ -2,6 +2,7 @@ package org.betonquest.betonquest.menu.betonquest;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestConsumer;
+import org.betonquest.betonquest.api.identifier.MenuIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -9,7 +10,6 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
-import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.OpenedMenu;
 import org.betonquest.betonquest.menu.RPGMenu;
 
@@ -44,9 +44,7 @@ public class MenuActionFactory implements PlayerActionFactory {
         final Operation operation = instruction.enumeration(Operation.class).get().getValue(null);
         final QuestConsumer<OnlineProfile> consumer = switch (operation) {
             case OPEN -> {
-                final Argument<MenuID> menuID = instruction.parse(
-                        (placeholders, packManager, pack, string)
-                                -> new MenuID(packManager, pack, string)).get();
+                final Argument<MenuIdentifier> menuID = instruction.identifier(MenuIdentifier.class).get();
                 yield profile -> rpgMenu.openMenu(profile, menuID.getValue(profile));
             }
             case CLOSE -> RPGMenu::closeMenu;

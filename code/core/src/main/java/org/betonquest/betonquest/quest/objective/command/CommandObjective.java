@@ -4,10 +4,10 @@ import org.apache.commons.lang3.Strings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
@@ -41,7 +41,7 @@ public class CommandObjective extends DefaultObjective {
     /**
      * Actions to trigger if the command is not matched.
      */
-    private final Argument<List<ActionID>> failActions;
+    private final Argument<List<ActionIdentifier>> failActions;
 
     /**
      * Creates a new instance of the CommandObjective.
@@ -56,7 +56,7 @@ public class CommandObjective extends DefaultObjective {
      */
     public CommandObjective(final ObjectiveService service, final Argument<String> command,
                             final FlagArgument<Boolean> ignoreCase, final FlagArgument<Boolean> exact,
-                            final FlagArgument<Boolean> cancel, final Argument<List<ActionID>> failActions) throws QuestException {
+                            final FlagArgument<Boolean> cancel, final Argument<List<ActionIdentifier>> failActions) throws QuestException {
         super(service);
         this.command = command;
         this.ignoreCase = ignoreCase;

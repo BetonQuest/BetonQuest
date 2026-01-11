@@ -2,13 +2,13 @@ package org.betonquest.betonquest.quest.condition.conversation;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.ConversationApi;
+import org.betonquest.betonquest.api.identifier.ConversationIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.conversation.ConversationID;
 
 /**
- * Checks if the conversation with player has at least one possible option.
+ * Checks if the conversation with a player has at least one possible option.
  */
 public class ConversationCondition implements PlayerCondition {
 
@@ -20,7 +20,7 @@ public class ConversationCondition implements PlayerCondition {
     /**
      * The conversation to check.
      */
-    private final Argument<ConversationID> conversationID;
+    private final Argument<ConversationIdentifier> conversationID;
 
     /**
      * Creates a new ConversationCondition.
@@ -28,7 +28,7 @@ public class ConversationCondition implements PlayerCondition {
      * @param conversationApi the Conversation API
      * @param conversationID  the conversation to check
      */
-    public ConversationCondition(final ConversationApi conversationApi, final Argument<ConversationID> conversationID) {
+    public ConversationCondition(final ConversationApi conversationApi, final Argument<ConversationIdentifier> conversationID) {
         this.conversationApi = conversationApi;
         this.conversationID = conversationID;
     }

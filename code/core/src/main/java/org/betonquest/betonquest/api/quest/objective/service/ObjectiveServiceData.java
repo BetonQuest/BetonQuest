@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.api.quest.objective.service;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.action.ActionID;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -20,8 +20,8 @@ import java.util.Optional;
  * @param persistent     the boolean flag to decide if the objective will be reapplied after completing
  * @param notifyInterval the number flag to determine how often the objective should inform about progression
  */
-public record ObjectiveServiceData(Optional<Argument<List<ConditionID>>> conditions,
-                                   Optional<Argument<List<ActionID>>> actions,
+public record ObjectiveServiceData(Optional<Argument<List<ConditionIdentifier>>> conditions,
+                                   Optional<Argument<List<ActionIdentifier>>> actions,
                                    FlagArgument<Boolean> persistent, FlagArgument<Number> notifyInterval)
         implements ObjectiveServiceDataProvider {
 
@@ -31,7 +31,7 @@ public record ObjectiveServiceData(Optional<Argument<List<ConditionID>>> conditi
     }
 
     @Override
-    public List<ActionID> getActions(@Nullable final Profile profile) throws QuestException {
+    public List<ActionIdentifier> getActions(@Nullable final Profile profile) throws QuestException {
         if (actions.isPresent()) {
             return actions.get().getValue(profile);
         }
@@ -39,7 +39,7 @@ public record ObjectiveServiceData(Optional<Argument<List<ConditionID>>> conditi
     }
 
     @Override
-    public List<ConditionID> getConditions(@Nullable final Profile profile) throws QuestException {
+    public List<ConditionIdentifier> getConditions(@Nullable final Profile profile) throws QuestException {
         if (conditions.isPresent()) {
             return conditions.get().getValue(profile);
         }

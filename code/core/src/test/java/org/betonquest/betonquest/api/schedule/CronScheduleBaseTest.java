@@ -24,12 +24,12 @@ public class CronScheduleBaseTest extends ScheduleBaseTest {
 
     @Override
     protected CronSchedule createSchedule() throws QuestException {
-        return new CronScheduleFactory(placeholders, packManager) {
+        return new CronScheduleFactory() {
             @Override
             protected CronDefinition parseCronDefinition() {
                 return DEFAULT_CRON_DEFINITION;
             }
-        }.createNewInstance(scheduleID, section);
+        }.createNewInstance(scheduleID, getMockedInstruction());
     }
 
     @Override

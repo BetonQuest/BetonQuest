@@ -2,18 +2,18 @@ package org.betonquest.betonquest.quest.action.folder;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
 import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.Collections;
@@ -73,13 +73,13 @@ public class FolderActionFactory implements PlayerActionFactory, PlayerlessActio
     }
 
     private NullableActionAdapter createFolderAction(final Instruction instruction) throws QuestException {
-        final Argument<List<ActionID>> actions = instruction.parse(ActionID::new).list().get();
+        final Argument<List<ActionIdentifier>> actions = instruction.identifier(ActionIdentifier.class).list().get();
         final Argument<Number> delay = instruction.number().get("delay").orElse(null);
         final Argument<Number> period = instruction.number().get("period").orElse(null);
         final Argument<Number> random = instruction.number().get("random").orElse(null);
         final Argument<TimeUnit> timeUnit = instruction.parse(this::getTimeUnit).get("unit", TimeUnit.SECONDS);
         final FlagArgument<Boolean> cancelOnLogout = instruction.bool().getFlag("cancelOnLogout", true);
-        final Argument<List<ConditionID>> cancelConditions = instruction.parse(ConditionID::new)
+        final Argument<List<ConditionIdentifier>> cancelConditions = instruction.identifier(ConditionIdentifier.class)
                 .list().get("cancelConditions", Collections.emptyList());
         return new NullableActionAdapter(new FolderAction(betonQuest, loggerFactory.create(FolderAction.class), pluginManager,
                 actions,

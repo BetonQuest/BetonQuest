@@ -1,8 +1,9 @@
 package org.betonquest.betonquest.compatibility.holograms.decentholograms;
 
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
+import org.betonquest.betonquest.api.identifier.PlaceholderIdentifier;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.IntegratorFactory;
 
@@ -12,35 +13,35 @@ import org.betonquest.betonquest.compatibility.IntegratorFactory;
 public class DecentHologramsIntegratorFactory implements IntegratorFactory {
 
     /**
-     * Logger factory to create class specific logger.
+     * Logger factory to create class-specific logger.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * The {@link Placeholders} to create and resolve placeholders.
+     * Identifier factory to create placeholders.
      */
-    private final Placeholders placeholders;
+    private final IdentifierFactory<PlaceholderIdentifier> identifierFactory;
 
     /**
-     * The quest package manager to get quest packages from.
+     * Instruction api to use.
      */
-    private final QuestPackageManager packManager;
+    private final InstructionApi instructionApi;
 
     /**
      * Creates a new instance of the factory.
      *
-     * @param placeholders  the {@link Placeholders} to create and resolve placeholders
-     * @param loggerFactory the logger factory to create class specific logger
-     * @param packManager   the quest package manager to get quest packages from
+     * @param loggerFactory     the logger factory to create class-specific logger
+     * @param instructionApi    the instruction api to use
+     * @param identifierFactory the identifier factory to create placeholders
      */
-    public DecentHologramsIntegratorFactory(final BetonQuestLoggerFactory loggerFactory, final Placeholders placeholders, final QuestPackageManager packManager) {
+    public DecentHologramsIntegratorFactory(final BetonQuestLoggerFactory loggerFactory, final InstructionApi instructionApi, final IdentifierFactory<PlaceholderIdentifier> identifierFactory) {
         this.loggerFactory = loggerFactory;
-        this.placeholders = placeholders;
-        this.packManager = packManager;
+        this.instructionApi = instructionApi;
+        this.identifierFactory = identifierFactory;
     }
 
     @Override
     public Integrator getIntegrator() {
-        return new DecentHologramsIntegrator(loggerFactory.create(DecentHologramsIntegrator.class), placeholders, packManager);
+        return new DecentHologramsIntegrator(loggerFactory.create(DecentHologramsIntegrator.class), identifierFactory, instructionApi);
     }
 }

@@ -30,7 +30,8 @@ public class BetonQuestPlugin extends BetonQuest {
         final Compatibility compatibility = getCompatibility();
         compatibility.registerVanilla("1.20.6", () -> new BundledMC_1_20_6(this));
         compatibility.registerVanilla("1.21.4", () -> new BundledMC_1_21_4(this));
-        new BundledCompatibility(compatibility, this, this).registerCompatiblePlugins();
+        new BundledCompatibility(getLoggerFactory().create(BundledCompatibility.class),
+                compatibility, this, this).registerCompatiblePlugins();
         compatibility.init();
         getServer().getPluginManager().registerEvents(compatibility, this);
     }

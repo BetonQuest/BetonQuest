@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.action.objective;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -10,7 +11,6 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
 import org.betonquest.betonquest.api.quest.objective.Objective;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.PlayerDataFactory;
 import org.betonquest.betonquest.database.Saver;
@@ -45,7 +45,7 @@ public class ObjectiveAction implements NullableAction {
     /**
      * All objectives affected by this action.
      */
-    private final Argument<List<ObjectiveID>> objectives;
+    private final Argument<List<ObjectiveIdentifier>> objectives;
 
     /**
      * API for starting objectives.
@@ -75,7 +75,7 @@ public class ObjectiveAction implements NullableAction {
      * @throws QuestException if the action is invalid
      */
     public ObjectiveAction(final BetonQuest betonQuest, final BetonQuestLogger log, final QuestTypeApi questTypeApi,
-                           final QuestPackage questPackage, final Argument<List<ObjectiveID>> objectives, final PlayerDataFactory playerDataFactory, final String action) throws QuestException {
+                           final QuestPackage questPackage, final Argument<List<ObjectiveIdentifier>> objectives, final PlayerDataFactory playerDataFactory, final String action) throws QuestException {
         this.log = log;
         this.questPackage = questPackage;
         this.betonQuest = betonQuest;
@@ -90,7 +90,7 @@ public class ObjectiveAction implements NullableAction {
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
-        for (final ObjectiveID objectiveID : objectives.getValue(profile)) {
+        for (final ObjectiveIdentifier objectiveID : objectives.getValue(profile)) {
             final Objective objective = questTypeApi.getObjective(objectiveID);
             if (profile == null) {
                 handleStatic(objectiveID);
@@ -102,7 +102,7 @@ public class ObjectiveAction implements NullableAction {
         }
     }
 
-    private void handleStatic(final ObjectiveID objectiveID) {
+    private void handleStatic(final ObjectiveIdentifier objectiveID) {
         if ("delete".equals(action) || "remove".equals(action)) {
             final ProfileProvider profileProvider = betonQuest.getProfileProvider();
             profileProvider.getOnlineProfiles().forEach(onlineProfile -> cancelObjectiveForOnlinePlayer(onlineProfile, objectiveID));
@@ -112,7 +112,7 @@ public class ObjectiveAction implements NullableAction {
         }
     }
 
-    private void handleForOnlinePlayer(final Profile profile, final ObjectiveID objectiveID, final Objective objective) {
+    private void handleForOnlinePlayer(final Profile profile, final ObjectiveIdentifier objectiveID, final Objective objective) {
         switch (action.toLowerCase(Locale.ROOT)) {
             case "start", "add" -> questTypeApi.newObjective(profile, objectiveID);
             case "complete", "finish" -> objective.getService().complete(profile);
@@ -120,7 +120,7 @@ public class ObjectiveAction implements NullableAction {
         }
     }
 
-    private void handleForOfflinePlayer(final Profile profile, final ObjectiveID objectiveID) {
+    private void handleForOfflinePlayer(final Profile profile, final ObjectiveIdentifier objectiveID) {
         Bukkit.getScheduler().runTaskAsynchronously(betonQuest, () -> {
             final PlayerData playerData = playerDataFactory.createPlayerData(profile);
             switch (action.toLowerCase(Locale.ROOT)) {
@@ -132,7 +132,7 @@ public class ObjectiveAction implements NullableAction {
         });
     }
 
-    private void cancelObjectiveForOnlinePlayer(final Profile profile, final ObjectiveID objectiveID) {
+    private void cancelObjectiveForOnlinePlayer(final Profile profile, final ObjectiveIdentifier objectiveID) {
         betonQuest.getQuestTypeApi().cancelObjective(profile, objectiveID);
         betonQuest.getPlayerDataStorage().get(profile).removeRawObjective(objectiveID);
     }

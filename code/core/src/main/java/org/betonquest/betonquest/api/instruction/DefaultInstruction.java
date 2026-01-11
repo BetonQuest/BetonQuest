@@ -60,6 +60,7 @@ public class DefaultInstruction implements Instruction {
     /**
      * The identifier for this instruction.
      */
+    @SuppressWarnings("PMD.AvoidFieldNameMatchingMethodName")
     private final Identifier identifier;
 
     /**
@@ -95,7 +96,7 @@ public class DefaultInstruction implements Instruction {
      */
     public DefaultInstruction(final Placeholders placeholders, final QuestPackageManager packManager, final QuestPackage pack,
                               @Nullable final Identifier identifier, final ArgumentParsers parsers, final String instruction) throws QuestException {
-        this(placeholders, packManager, new QuotingTokenizer(), pack, useFallbackIdIfNecessary(packManager, pack, identifier), parsers, instruction);
+        this(placeholders, packManager, new QuotingTokenizer(), pack, useFallbackIdIfNecessary(pack, identifier), parsers, instruction);
     }
 
     /**
@@ -145,12 +146,12 @@ public class DefaultInstruction implements Instruction {
                 this.instructionParts::nextElement, this::getValue, this::getFlag);
     }
 
-    private static Identifier useFallbackIdIfNecessary(final QuestPackageManager packManager, final QuestPackage pack, @Nullable final Identifier identifier) {
+    private static Identifier useFallbackIdIfNecessary(final QuestPackage pack, @Nullable final Identifier identifier) {
         if (identifier != null) {
             return identifier;
         }
         try {
-            return new NoID(packManager, pack);
+            return new NoID(pack);
         } catch (final QuestException e) {
             throw new IllegalStateException("Could not find instruction: " + e.getMessage(), e);
         }
@@ -335,5 +336,10 @@ public class DefaultInstruction implements Instruction {
     @Override
     public <E extends Enum<E>> DecoratableChainRetriever<E> enumeration(final Class<E> enumType) {
         return new DefaultDecoratableChainRetriever<>(this, argumentParsers.forEnum(enumType));
+    }
+
+    @Override
+    public <I extends Identifier> DecoratableChainRetriever<I> identifier(final Class<I> identifierClass) {
+        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.forIdentifier(identifierClass));
     }
 }

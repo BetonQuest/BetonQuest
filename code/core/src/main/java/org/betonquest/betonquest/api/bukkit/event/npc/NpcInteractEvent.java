@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.api.bukkit.event.npc;
 
 import org.betonquest.betonquest.api.bukkit.event.ProfileEvent;
+import org.betonquest.betonquest.api.identifier.NpcIdentifier;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
-import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.quest.objective.interact.Interaction;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
@@ -24,7 +24,7 @@ public class NpcInteractEvent extends ProfileEvent implements Cancellable {
     /**
      * NpcIDs the Npc match.
      */
-    private final Set<NpcID> npcIdentifier;
+    private final Set<NpcIdentifier> npcIdentifier;
 
     /**
      * Interaction done with the Npc.
@@ -51,7 +51,7 @@ public class NpcInteractEvent extends ProfileEvent implements Cancellable {
      * @param isAsync       if the trigger and so this is async
      * @throws IllegalArgumentException if {@code interaction == Interaction.ANY}
      */
-    public NpcInteractEvent(final OnlineProfile profile, final Npc<?> npc, final Set<NpcID> npcIdentifier,
+    public NpcInteractEvent(final OnlineProfile profile, final Npc<?> npc, final Set<NpcIdentifier> npcIdentifier,
                             final Interaction interaction, final boolean isAsync) {
         super(profile, isAsync);
         if (interaction == Interaction.ANY) {
@@ -90,7 +90,7 @@ public class NpcInteractEvent extends ProfileEvent implements Cancellable {
      *
      * @return the instruction string
      */
-    public Set<NpcID> getNpcIdentifier() {
+    public Set<NpcIdentifier> getNpcIdentifier() {
         return npcIdentifier;
     }
 

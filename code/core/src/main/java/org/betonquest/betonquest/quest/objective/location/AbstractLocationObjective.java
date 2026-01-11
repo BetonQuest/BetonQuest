@@ -57,8 +57,8 @@ public abstract class AbstractLocationObjective extends DefaultObjective {
      */
     public AbstractLocationObjective(final ObjectiveService service) throws QuestException {
         super(service);
-        entry = service.getObjectiveID().getInstruction().bool().getFlag("entry", true);
-        exit = service.getObjectiveID().getInstruction().bool().getFlag("exit", true);
+        entry = service.getInstruction().bool().getFlag("entry", true);
+        exit = service.getInstruction().bool().getFlag("exit", true);
         playersInsideRegion = new HashMap<>();
     }
 

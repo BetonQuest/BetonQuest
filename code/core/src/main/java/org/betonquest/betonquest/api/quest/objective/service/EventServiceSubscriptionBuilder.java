@@ -2,8 +2,8 @@ package org.betonquest.betonquest.api.quest.objective.service;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestFunction;
+import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -40,7 +40,7 @@ public interface EventServiceSubscriptionBuilder<T extends Event> {
      * @return this
      */
     @Contract("_ -> this")
-    EventServiceSubscriptionBuilder<T> source(ObjectiveID objectiveID);
+    EventServiceSubscriptionBuilder<T> source(ObjectiveIdentifier objectiveID);
 
     /**
      * Required build call. Sets the non-profile handler to be called by the bukkit event.

@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.compatibility.holograms.lines.AbstractLine;
 import org.betonquest.betonquest.lib.logger.QuestExceptionHandler;
 import org.bukkit.Location;
@@ -40,7 +40,7 @@ import java.util.List;
  */
 public record HologramWrapper(QuestExceptionHandler handler, QuestTypeApi questTypeApi, ProfileProvider profileProvider,
                               int interval, List<BetonHologram> holograms, boolean staticContent,
-                              List<ConditionID> conditionList, List<AbstractLine> cleanedLines,
+                              List<ConditionIdentifier> conditionList, List<AbstractLine> cleanedLines,
                               QuestPackage questPackage, Argument<Number> maxRange) {
 
     /**

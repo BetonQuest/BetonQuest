@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.instruction.section;
 
 import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
@@ -165,4 +166,13 @@ public interface SectionParser {
      * @return a new {@link SectionRetriever} for the argument with the enum parser
      */
     <E extends Enum<E>> DecoratableSectionRetriever<E> enumeration(Class<E> enumClass);
+
+    /**
+     * Use {@link ArgumentParsers#forIdentifier(Class)} to parse the argument.
+     *
+     * @param identifierClass the identifier class to parse
+     * @param <I>             the identifier type
+     * @return a new {@link SectionRetriever} for the argument with the identifier parser
+     */
+    <I extends Identifier> DecoratableSectionRetriever<I> identifier(Class<I> identifierClass);
 }
