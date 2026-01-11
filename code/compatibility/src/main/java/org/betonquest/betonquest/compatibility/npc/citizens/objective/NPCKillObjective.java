@@ -5,10 +5,11 @@ import net.citizensnpcs.api.npc.NPCRegistry;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.MobKillNotifier.MobKilledEvent;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.NpcIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 
 /**
@@ -24,20 +25,27 @@ public class NPCKillObjective extends CountingObjective {
     /**
      * Tests if the id matches the NPC.
      */
-    private final Argument<NpcID> npcID;
+    private final Argument<NpcIdentifier> npcID;
+
+    /**
+     * Instruction API to use.
+     */
+    private final InstructionApi instructionApi;
 
     /**
      * Create a new Citizens NPC kill objective.
      *
-     * @param service      the objective service
-     * @param registry     the registry of NPCs to use
-     * @param targetAmount the amount of NPCs to kill
-     * @param npcID        the npc id
+     * @param service        the objective service
+     * @param registry       the registry of NPCs to use
+     * @param targetAmount   the amount of NPCs to kill
+     * @param npcID          the npc id
+     * @param instructionApi the instruction api to use
      * @throws QuestException when the instruction cannot be parsed or is invalid
      */
     public NPCKillObjective(final ObjectiveService service, final NPCRegistry registry, final Argument<Number> targetAmount,
-                            final Argument<NpcID> npcID) throws QuestException {
+                            final Argument<NpcIdentifier> npcID, final InstructionApi instructionApi) throws QuestException {
         super(service, targetAmount, "mobs_to_kill");
+        this.instructionApi = instructionApi;
         this.registry = registry;
         this.npcID = npcID;
     }
@@ -54,7 +62,8 @@ public class NPCKillObjective extends CountingObjective {
         if (npc == null) {
             return;
         }
-        final Instruction npcInstruction = npcID.getValue(profile).getInstruction();
+        final NpcIdentifier npcIdentifier = npcID.getValue(profile);
+        final Instruction npcInstruction = instructionApi.createInstruction(npcIdentifier, npcIdentifier.readRawInstruction());
         final String argument = npcInstruction.getPart(1);
         final boolean byName = npcInstruction.bool().getFlag("byName", true)
                 .getValue(profile).orElse(false);

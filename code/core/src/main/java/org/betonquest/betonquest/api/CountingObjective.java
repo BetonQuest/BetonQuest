@@ -3,12 +3,12 @@ package org.betonquest.betonquest.api;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
+import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveProperties;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
@@ -194,7 +194,7 @@ public abstract class CountingObjective extends DefaultObjective {
          * @param objID       id of the objective, used by BetonQuest to store this {@link ObjectiveData} in the database
          * @throws QuestException when the instruction format is invalid
          */
-        public CountingData(final String instruction, final Profile profile, final ObjectiveID objID) throws QuestException {
+        public CountingData(final String instruction, final Profile profile, final ObjectiveIdentifier objID) throws QuestException {
             super(instruction, profile, objID);
             this.log = BetonQuest.getInstance().getLoggerFactory().create(CountingObjective.CountingData.class);
             final String countingInstruction = instruction.split(";", 2)[0];

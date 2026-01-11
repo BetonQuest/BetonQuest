@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.quest.action.stage;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.quest.objective.stage.StageObjective;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,7 +34,7 @@ public class StageActionFactory implements PlayerActionFactory {
 
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
-        final Argument<ObjectiveID> objectiveID = instruction.parse(ObjectiveID::new).get();
+        final Argument<ObjectiveIdentifier> objectiveID = instruction.identifier(ObjectiveIdentifier.class).get();
         final String operation = instruction.string().get().getValue(null);
         return switch (operation.toLowerCase(Locale.ROOT)) {
             case "set" -> createSetAction(instruction, objectiveID);
@@ -44,17 +44,17 @@ public class StageActionFactory implements PlayerActionFactory {
         };
     }
 
-    private PlayerAction createSetAction(final Instruction instruction, final Argument<ObjectiveID> objectiveID) throws QuestException {
+    private PlayerAction createSetAction(final Instruction instruction, final Argument<ObjectiveIdentifier> objectiveID) throws QuestException {
         final Argument<String> stage = instruction.string().get();
         return new StageAction(profile -> getStageObjective(objectiveID.getValue(profile)).setStage(profile, stage.getValue(profile)));
     }
 
-    private PlayerAction createIncreaseAction(final Instruction instruction, final Argument<ObjectiveID> objectiveID) throws QuestException {
+    private PlayerAction createIncreaseAction(final Instruction instruction, final Argument<ObjectiveIdentifier> objectiveID) throws QuestException {
         final Argument<Number> amount = getNumberArgument(instruction);
         return new StageAction(profile -> getStageObjective(objectiveID.getValue(profile)).increaseStage(profile, getAmount(profile, amount)));
     }
 
-    private PlayerAction createDecreaseAction(final Instruction instruction, final Argument<ObjectiveID> objectiveID) throws QuestException {
+    private PlayerAction createDecreaseAction(final Instruction instruction, final Argument<ObjectiveIdentifier> objectiveID) throws QuestException {
         final Argument<Number> amount = getNumberArgument(instruction);
         return new StageAction(profile -> getStageObjective(objectiveID.getValue(profile)).decreaseStage(profile, getAmount(profile, amount)));
     }
@@ -81,7 +81,7 @@ public class StageActionFactory implements PlayerActionFactory {
         return targetAmount;
     }
 
-    private StageObjective getStageObjective(final ObjectiveID objectiveID) throws QuestException {
+    private StageObjective getStageObjective(final ObjectiveIdentifier objectiveID) throws QuestException {
         if (questTypeApi.getObjective(objectiveID) instanceof final StageObjective stageObjective) {
             return stageObjective;
         }

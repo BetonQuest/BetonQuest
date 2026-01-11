@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.placeholder.objective;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.objective.Objective;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerPlaceholder;
 
@@ -21,7 +21,7 @@ public class ObjectivePropertyPlaceholder implements PlayerPlaceholder {
     /**
      * The objective ID.
      */
-    private final ObjectiveID objectiveID;
+    private final ObjectiveIdentifier objectiveID;
 
     /**
      * The property name.
@@ -35,7 +35,7 @@ public class ObjectivePropertyPlaceholder implements PlayerPlaceholder {
      * @param objectiveID  The objective ID.
      * @param propertyName The property name.
      */
-    public ObjectivePropertyPlaceholder(final QuestTypeApi questTypeApi, final ObjectiveID objectiveID, final String propertyName) {
+    public ObjectivePropertyPlaceholder(final QuestTypeApi questTypeApi, final ObjectiveIdentifier objectiveID, final String propertyName) {
         this.questTypeApi = questTypeApi;
         this.objectiveID = objectiveID;
         this.propertyName = propertyName;

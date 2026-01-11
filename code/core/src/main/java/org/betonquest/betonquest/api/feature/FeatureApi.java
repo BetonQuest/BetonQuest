@@ -1,20 +1,20 @@
 package org.betonquest.betonquest.api.feature;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.CompassIdentifier;
+import org.betonquest.betonquest.api.identifier.ItemIdentifier;
+import org.betonquest.betonquest.api.identifier.JournalEntryIdentifier;
+import org.betonquest.betonquest.api.identifier.JournalMainPageIdentifier;
+import org.betonquest.betonquest.api.identifier.NpcIdentifier;
+import org.betonquest.betonquest.api.identifier.QuestCancelerIdentifier;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
-import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcHider;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.feature.QuestCanceler;
 import org.betonquest.betonquest.feature.QuestCompass;
 import org.betonquest.betonquest.feature.journal.JournalMainPageEntry;
-import org.betonquest.betonquest.id.CompassID;
-import org.betonquest.betonquest.id.ItemID;
-import org.betonquest.betonquest.id.JournalEntryID;
-import org.betonquest.betonquest.id.JournalMainPageID;
-import org.betonquest.betonquest.id.QuestCancelerID;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -36,7 +36,7 @@ public interface FeatureApi {
      *
      * @return quest cancelers in a new map
      */
-    Map<QuestCancelerID, QuestCanceler> getCancelers();
+    Map<QuestCancelerIdentifier, QuestCanceler> getCancelers();
 
     /**
      * Gets stored Quest Canceler.
@@ -45,14 +45,14 @@ public interface FeatureApi {
      * @return the loaded QuestCanceler
      * @throws QuestException if no QuestCanceler is loaded for the ID
      */
-    QuestCanceler getCanceler(QuestCancelerID cancelerID) throws QuestException;
+    QuestCanceler getCanceler(QuestCancelerIdentifier cancelerID) throws QuestException;
 
     /**
      * Get the loaded Compasses.
      *
      * @return compasses in a new map
      */
-    Map<CompassID, QuestCompass> getCompasses();
+    Map<CompassIdentifier, QuestCompass> getCompasses();
 
     /**
      * Gets stored Journal Entry.
@@ -61,7 +61,7 @@ public interface FeatureApi {
      * @return the loaded text
      * @throws QuestException if no text is loaded for the ID
      */
-    Text getJournalEntry(JournalEntryID journalEntryID) throws QuestException;
+    Text getJournalEntry(JournalEntryIdentifier journalEntryID) throws QuestException;
 
     /**
      * Renames the Journal Entry instance.
@@ -69,14 +69,14 @@ public interface FeatureApi {
      * @param name   the current name
      * @param rename the name it should have now
      */
-    void renameJournalEntry(JournalEntryID name, JournalEntryID rename);
+    void renameJournalEntry(JournalEntryIdentifier name, JournalEntryIdentifier rename);
 
     /**
      * Get the loaded Journal Main Page Entries.
      *
      * @return pages in a new map
      */
-    Map<JournalMainPageID, JournalMainPageEntry> getJournalMainPages();
+    Map<JournalMainPageIdentifier, JournalMainPageEntry> getJournalMainPages();
 
     /**
      * Gets a Npc by its id.
@@ -86,7 +86,7 @@ public interface FeatureApi {
      * @return the betonquest Npc
      * @throws QuestException when there is no Npc with that id
      */
-    Npc<?> getNpc(NpcID npcID, @Nullable Profile profile) throws QuestException;
+    Npc<?> getNpc(NpcIdentifier npcID, @Nullable Profile profile) throws QuestException;
 
     /**
      * Gets the NpcHider.
@@ -103,5 +103,5 @@ public interface FeatureApi {
      * @return the stored quest item
      * @throws QuestException if there exists no QuestItem with that id
      */
-    QuestItem getItem(ItemID itemID, @Nullable Profile profile) throws QuestException;
+    QuestItem getItem(ItemIdentifier itemID, @Nullable Profile profile) throws QuestException;
 }

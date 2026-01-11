@@ -1,6 +1,8 @@
 package org.betonquest.betonquest.compatibility.holograms.holographicdisplays;
 
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
+import org.betonquest.betonquest.api.identifier.PlaceholderIdentifier;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.IntegratorFactory;
@@ -16,23 +18,31 @@ public class HolographicDisplaysIntegratorFactory implements IntegratorFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * The quest package manager to get quest packages from.
+     * The instruction api to use.
      */
-    private final QuestPackageManager packManager;
+    private final InstructionApi instructionApi;
+
+    /**
+     * The identifier factory for placeholders.
+     */
+    private final IdentifierFactory<PlaceholderIdentifier> identifierFactory;
 
     /**
      * Creates a new instance of the factory.
      *
-     * @param loggerFactory the logger factory to create class specific logger
-     * @param packManager   the quest package manager to get quest packages from
+     * @param loggerFactory     the logger factory to create class specific logger
+     * @param instructionApi    the instruction api to use
+     * @param identifierFactory the identifier factory to create placeholders
      */
-    public HolographicDisplaysIntegratorFactory(final BetonQuestLoggerFactory loggerFactory, final QuestPackageManager packManager) {
+    public HolographicDisplaysIntegratorFactory(final BetonQuestLoggerFactory loggerFactory,
+                                                final InstructionApi instructionApi, final IdentifierFactory<PlaceholderIdentifier> identifierFactory) {
         this.loggerFactory = loggerFactory;
-        this.packManager = packManager;
+        this.instructionApi = instructionApi;
+        this.identifierFactory = identifierFactory;
     }
 
     @Override
     public Integrator getIntegrator() {
-        return new HolographicDisplaysIntegrator(loggerFactory.create(HolographicDisplaysIntegrator.class), packManager);
+        return new HolographicDisplaysIntegrator(loggerFactory.create(HolographicDisplaysIntegrator.class), instructionApi, identifierFactory);
     }
 }

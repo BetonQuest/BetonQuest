@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.quest.placeholder.condition;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerPlaceholder;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerPlaceholderFactory;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -38,7 +38,7 @@ public class ConditionPlaceholderFactory implements PlayerPlaceholderFactory {
 
     @Override
     public PlayerPlaceholder parsePlayer(final Instruction instruction) throws QuestException {
-        final Argument<ConditionID> conditionId = instruction.parse(ConditionID::new).get();
+        final Argument<ConditionIdentifier> conditionId = instruction.identifier(ConditionIdentifier.class).get();
         final FlagArgument<Boolean> papiMode = instruction.bool().getFlag("papiMode", true);
         return new ConditionPlaceholder(pluginMessage, conditionId, papiMode, questTypeApi);
     }

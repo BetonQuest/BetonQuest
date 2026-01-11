@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.quest.action.party;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.util.Utils;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,12 +45,12 @@ public class PartyAction implements OnlineAction {
     /**
      * The conditions that must be met by the party members.
      */
-    private final Argument<List<ConditionID>> conditions;
+    private final Argument<List<ConditionIdentifier>> conditions;
 
     /**
      * The actions to fire.
      */
-    private final Argument<List<ActionID>> actions;
+    private final Argument<List<ActionIdentifier>> actions;
 
     /**
      * Creates a new PartyAction instance.
@@ -64,7 +64,7 @@ public class PartyAction implements OnlineAction {
      * @param actions         the actions to fire
      */
     public PartyAction(final QuestTypeApi questTypeApi, final ProfileProvider profileProvider, final Argument<Number> range,
-                       @Nullable final Argument<Number> amount, final Argument<List<ConditionID>> conditions, final Argument<List<ActionID>> actions) {
+                       @Nullable final Argument<Number> amount, final Argument<List<ConditionIdentifier>> conditions, final Argument<List<ActionIdentifier>> actions) {
         this.questTypeApi = questTypeApi;
         this.profileProvider = profileProvider;
         this.range = range;

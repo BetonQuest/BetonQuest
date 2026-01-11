@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.api.quest.objective;
 
+import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 
@@ -19,7 +20,7 @@ public class ObjectiveData {
     /**
      * Full path of the ObjectiveID.
      */
-    protected final ObjectiveID objID;
+    protected final ObjectiveIdentifier objID;
 
     /**
      * Instruction containing all required information.
@@ -37,7 +38,7 @@ public class ObjectiveData {
      * @param objID       ID of the objective, used by BetonQuest to store this
      *                    ObjectiveData in the database
      */
-    public ObjectiveData(final String instruction, final Profile profile, final ObjectiveID objID) {
+    public ObjectiveData(final String instruction, final Profile profile, final ObjectiveIdentifier objID) {
         this.instruction = instruction;
         this.profile = profile;
         this.objID = objID;

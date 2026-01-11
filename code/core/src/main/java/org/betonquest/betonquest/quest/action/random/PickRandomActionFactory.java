@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.quest.action.random;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
@@ -59,7 +59,7 @@ public class PickRandomActionFactory implements PlayerActionFactory, PlayerlessA
 
             final String weightString = matcher.group("weight");
             final String actionString = matcher.group("action");
-            final ActionID actionID = instruction.chainForArgument(actionString).parse(ActionID::new).get().getValue(null);
+            final ActionIdentifier actionID = instruction.chainForArgument(actionString).identifier(ActionIdentifier.class).get().getValue(null);
             final double weight = NumberParser.DEFAULT.apply(weightString).doubleValue();
             return new RandomAction(actionID, weight);
         }).list().get();

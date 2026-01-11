@@ -1,16 +1,12 @@
 package org.betonquest.betonquest.schedule.impl;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.instruction.argument.parser.EnumParser;
-import org.betonquest.betonquest.api.quest.Placeholders;
-import org.betonquest.betonquest.api.quest.action.ActionID;
+import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.api.schedule.Schedule;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultListArgument;
 import org.betonquest.betonquest.schedule.ScheduleFactory;
-import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,49 +19,29 @@ import java.util.Optional;
 public abstract class BaseScheduleFactory<S extends Schedule> implements ScheduleFactory<S> {
 
     /**
-     * The {@link Placeholders} to create and resolve placeholders.
-     */
-    private final Placeholders placeholders;
-
-    /**
-     * Quest package manager to get quest packages from.
-     */
-    private final QuestPackageManager packManager;
-
-    /**
      * Create a new Base Schedule Factory to create parse common schedule data.
-     *
-     * @param placeholders the {@link Placeholders} to create and resolve placeholders
-     * @param packManager  the quest package manager to get quest packages from
      */
-    public BaseScheduleFactory(final Placeholders placeholders, final QuestPackageManager packManager) {
-        this.placeholders = placeholders;
-        this.packManager = packManager;
+    public BaseScheduleFactory() {
     }
 
     /**
      * Parses the common objects required to create a schedule.
      *
-     * @param pack        source pack for argument and id resolving
      * @param instruction the section to load
      * @return the parsed objects
      * @throws QuestException when parts are missing or cannot be resolved
      */
-    protected ScheduleData parseScheduleData(final QuestPackage pack, final ConfigurationSection instruction) throws QuestException {
-        final String time = Optional.ofNullable(instruction.getString("time"))
+    protected ScheduleData parseScheduleData(final SectionInstruction instruction) throws QuestException {
+        final String time = Optional.ofNullable(instruction.getSection().getString("time"))
                 .orElseThrow(() -> new QuestException("Missing time instruction"));
-
-        final String actionsString = Optional.ofNullable(instruction.getString("actions"))
-                .orElseThrow(() -> new QuestException("Missing actions"));
-        final List<ActionID> actions;
+        final List<ActionIdentifier> actions;
         try {
-            actions = new DefaultListArgument<>(placeholders, pack, actionsString,
-                    value -> new ActionID(placeholders, packManager, pack, value)).getValue(null);
+            actions = instruction.read().value("actions").identifier(ActionIdentifier.class).list().get().getValue(null);
         } catch (final QuestException e) {
             throw new QuestException("Error while loading actions: " + e.getMessage(), e);
         }
 
-        final String catchupString = instruction.getString("catchup");
+        final String catchupString = instruction.getSection().getString("catchup");
         final CatchupStrategy catchup;
         if (catchupString == null) {
             catchup = CatchupStrategy.NONE;
@@ -82,7 +58,7 @@ public abstract class BaseScheduleFactory<S extends Schedule> implements Schedul
      * @param actions A list of actions that will be run by this schedule.
      * @param catchup Behavior for missed executions.
      */
-    protected record ScheduleData(String time, List<ActionID> actions, CatchupStrategy catchup) {
+    protected record ScheduleData(String time, List<ActionIdentifier> actions, CatchupStrategy catchup) {
 
     }
 }

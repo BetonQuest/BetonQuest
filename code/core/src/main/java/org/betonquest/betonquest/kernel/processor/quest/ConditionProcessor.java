@@ -1,12 +1,13 @@
 package org.betonquest.betonquest.kernel.processor.quest;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Placeholders;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
 import org.betonquest.betonquest.kernel.processor.adapter.ConditionAdapter;
 import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
@@ -27,7 +28,7 @@ import java.util.stream.Stream;
 /**
  * Does the logic around Conditions.
  */
-public class ConditionProcessor extends TypedQuestProcessor<ConditionID, ConditionAdapter> {
+public class ConditionProcessor extends TypedQuestProcessor<ConditionIdentifier, ConditionAdapter> {
 
     /**
      * The Bukkit scheduler to run sync tasks.
@@ -42,24 +43,22 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
     /**
      * Create a new Condition Processor to store Conditions and checks them.
      *
-     * @param log            the custom logger for this class
-     * @param placeholders   the {@link Placeholders} to create and resolve placeholders
-     * @param packManager    the quest package manager to get quest packages from
-     * @param conditionTypes the available condition types
-     * @param scheduler      the bukkit scheduler to run sync tasks
-     * @param plugin         the plugin instance
+     * @param log                        the custom logger for this class
+     * @param placeholders               the {@link Placeholders} to create and resolve placeholders
+     * @param packManager                the quest package manager to get quest packages from
+     * @param conditionTypes             the available condition types
+     * @param scheduler                  the bukkit scheduler to run sync tasks
+     * @param conditionIdentifierFactory the factory to create condition identifiers
+     * @param plugin                     the plugin instance
+     * @param instructionApi             the instruction api
      */
     public ConditionProcessor(final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager,
                               final ConditionTypeRegistry conditionTypes, final BukkitScheduler scheduler,
-                              final Plugin plugin) {
-        super(log, placeholders, packManager, conditionTypes, "Condition", "conditions");
+                              final IdentifierFactory<ConditionIdentifier> conditionIdentifierFactory, final Plugin plugin,
+                              final InstructionApi instructionApi) {
+        super(log, placeholders, packManager, conditionTypes, conditionIdentifierFactory, instructionApi, "Condition", "conditions");
         this.scheduler = scheduler;
         this.plugin = plugin;
-    }
-
-    @Override
-    protected ConditionID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new ConditionID(placeholders, packManager, pack, identifier);
     }
 
     /**
@@ -70,8 +69,8 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
      * @param matchAll     true if all conditions have to be met, false if only one condition has to be met
      * @return if all conditions are met
      */
-    public boolean checks(@Nullable final Profile profile, final Collection<ConditionID> conditionIDs, final boolean matchAll) {
-        final Function<Stream<ConditionID>, Boolean> allOrAnyMatch = matchAll
+    public boolean checks(@Nullable final Profile profile, final Collection<ConditionIdentifier> conditionIDs, final boolean matchAll) {
+        final Function<Stream<ConditionIdentifier>, Boolean> allOrAnyMatch = matchAll
                 ? stream -> stream.allMatch(id -> check(profile, id))
                 : stream -> stream.anyMatch(id -> check(profile, id));
 
@@ -79,8 +78,8 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
             return allOrAnyMatch.apply(conditionIDs.stream());
         }
 
-        final List<ConditionID> syncList = new ArrayList<>();
-        final List<ConditionID> asyncList = new ArrayList<>();
+        final List<ConditionIdentifier> syncList = new ArrayList<>();
+        final List<ConditionIdentifier> asyncList = new ArrayList<>();
         conditionIDs.forEach(id -> {
             final ConditionAdapter adapter = values.get(id);
             final boolean syncAsync = adapter != null && adapter.isPrimaryThreadEnforced();
@@ -106,7 +105,7 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
      * @param profile     the {@link Profile} of the player which should be checked
      * @return if the condition is met
      */
-    public boolean check(@Nullable final Profile profile, final ConditionID conditionID) {
+    public boolean check(@Nullable final Profile profile, final ConditionIdentifier conditionID) {
         final ConditionAdapter condition = values.get(conditionID);
         if (condition == null) {
             log.warn(conditionID.getPackage(), "The condition " + conditionID + " is not defined!");
@@ -123,7 +122,7 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
         return checkOutcome(profile, conditionID, condition);
     }
 
-    private boolean checkOutcomeSync(@Nullable final Profile profile, final ConditionID conditionID, final ConditionAdapter condition) {
+    private boolean checkOutcomeSync(@Nullable final Profile profile, final ConditionIdentifier conditionID, final ConditionAdapter condition) {
         try {
             return scheduler.callSyncMethod(plugin, () -> checkOutcome(profile, conditionID, condition)).get();
         } catch (final InterruptedException | ExecutionException e) {
@@ -132,7 +131,7 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
         }
     }
 
-    private boolean checkOutcome(@Nullable final Profile profile, final ConditionID conditionID, final ConditionAdapter condition) {
+    private boolean checkOutcome(@Nullable final Profile profile, final ConditionIdentifier conditionID, final ConditionAdapter condition) {
         final boolean outcome;
         try {
             outcome = condition.check(profile);
@@ -140,9 +139,9 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
             log.warn(conditionID.getPackage(), "Error while checking '" + conditionID + "' condition: " + e.getMessage(), e);
             return false;
         }
-        final boolean isMet = outcome != conditionID.inverted();
+        final boolean isMet = outcome != conditionID.isInverted();
         log.debug(conditionID.getPackage(),
-                (isMet ? "TRUE" : "FALSE") + ": " + (conditionID.inverted() ? "inverted" : "") + " condition "
+                (isMet ? "TRUE" : "FALSE") + ": " + (conditionID.isInverted() ? "inverted" : "") + " condition "
                         + conditionID + " for " + profile);
         return isMet;
     }

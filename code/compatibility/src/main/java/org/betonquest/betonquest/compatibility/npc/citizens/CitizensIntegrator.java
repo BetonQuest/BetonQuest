@@ -4,9 +4,9 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.feature.FeatureRegistries;
 import org.betonquest.betonquest.api.kernel.FeatureRegistry;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -14,6 +14,7 @@ import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.api.quest.action.ActionRegistry;
 import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
+import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.npc.citizens.action.move.CitizensMoveAction;
 import org.betonquest.betonquest.compatibility.npc.citizens.action.move.CitizensMoveActionFactory;
@@ -58,7 +59,7 @@ public class CitizensIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final BetonQuestApi api) {
+    public void hook(final BetonQuestApi api) throws HookException {
         final NPCRegistry citizensNpcRegistry = CitizensAPI.getNPCRegistry();
         final CitizensWalkingListener citizensWalkingListener = new CitizensWalkingListener(plugin, citizensNpcRegistry);
         final PluginManager manager = plugin.getServer().getPluginManager();
@@ -69,14 +70,25 @@ public class CitizensIntegrator implements Integrator {
                 plugin, api.getQuestTypeApi(), citizensWalkingListener);
 
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
-        questRegistries.objective().register("npckill", new NPCKillObjectiveFactory(citizensNpcRegistry));
+        try {
+            questRegistries.objective().register("npckill", new NPCKillObjectiveFactory(api, citizensNpcRegistry));
+        } catch (final QuestException e) {
+            throw new HookException(plugin, "Could not register 'npckill' objective while hooking citizens.", e);
+        }
 
         manager.registerEvents(citizensMoveController, plugin);
 
         final ActionRegistry actionRegistry = questRegistries.action();
-        final FeatureApi featureApi = api.getFeatureApi();
-        actionRegistry.register("npcmove", new CitizensMoveActionFactory(featureApi, citizensMoveController));
-        actionRegistry.registerCombined("npcstop", new CitizensStopActionFactory(featureApi, citizensMoveController));
+        try {
+            actionRegistry.register("npcmove", new CitizensMoveActionFactory(api, citizensMoveController));
+        } catch (final QuestException e) {
+            throw new HookException(plugin, "Could not register 'npcmove' action while hooking citizens.", e);
+        }
+        try {
+            actionRegistry.registerCombined("npcstop", new CitizensStopActionFactory(api, citizensMoveController));
+        } catch (final QuestException e) {
+            throw new HookException(plugin, "Could not register 'npcstop' action while hooking citizens.", e);
+        }
 
         final FeatureRegistries featureRegistries = api.getFeatureRegistries();
         final FeatureRegistry<ConversationIOFactory> conversationIORegistry = featureRegistries.conversationIO();

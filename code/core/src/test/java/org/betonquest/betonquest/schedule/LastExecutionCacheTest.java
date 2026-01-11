@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.schedule;
 
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
+import org.betonquest.betonquest.api.identifier.ScheduleIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.schedule.ScheduleID;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,7 +58,7 @@ class LastExecutionCacheTest {
      * ID of the schedule to load and save from.
      */
     @Mock
-    private ScheduleID scheduleID;
+    private ScheduleIdentifier scheduleID;
 
     @BeforeEach
     void setUp() {
@@ -157,8 +157,8 @@ class LastExecutionCacheTest {
     @Test
     void testCacheStartup() throws IOException {
         final Instant now = this.now;
-        final ScheduleID newSchedule = mock(ScheduleID.class);
-        final ScheduleID cachedSchedule = mock(ScheduleID.class);
+        final ScheduleIdentifier newSchedule = mock(ScheduleIdentifier.class);
+        final ScheduleIdentifier cachedSchedule = mock(ScheduleIdentifier.class);
         final String expected = "2000-01-01T00:00:00Z";
         when(newSchedule.getFull()).thenReturn("test-package.testCacheStartup-newSchedule");
         when(cachedSchedule.getFull()).thenReturn("test-package.testCacheStartup-cachedSchedule");

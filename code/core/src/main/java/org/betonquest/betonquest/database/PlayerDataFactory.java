@@ -1,9 +1,8 @@
 package org.betonquest.betonquest.database;
 
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.identifier.factory.IdentifierRegistry;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.feature.journal.JournalFactory;
 import org.bukkit.Server;
@@ -16,19 +15,9 @@ import java.util.function.Supplier;
 public class PlayerDataFactory {
 
     /**
-     * Factory to create new class specific loggers.
+     * Factory to create new class-specific loggers.
      */
     private final BetonQuestLoggerFactory loggerFactory;
-
-    /**
-     * The {@link Placeholders} to create and resolve placeholders.
-     */
-    private final Placeholders placeholders;
-
-    /**
-     * The quest package manager to get quest packages from.
-     */
-    private final QuestPackageManager packManager;
 
     /**
      * Saver to persist player data changes.
@@ -46,6 +35,11 @@ public class PlayerDataFactory {
     private final QuestTypeApi questTypeApi;
 
     /**
+     * Identifier registry to resolve identifiers.
+     */
+    private final IdentifierRegistry identifierRegistry;
+
+    /**
      * Factory to create a new Journal.
      */
     private final Supplier<JournalFactory> journalFactory;
@@ -53,20 +47,18 @@ public class PlayerDataFactory {
     /**
      * Create a new Player Data Factory.
      *
-     * @param loggerFactory  the logger factory to create class specific logger
-     * @param placeholders   the {@link Placeholders} to create and resolve placeholders
-     * @param packManager    the quest package manager to get quest packages from
-     * @param saver          the saver to persist data changes
-     * @param server         the server to determine if an event should be stated as async
-     * @param questTypeApi   the Quest Type API
-     * @param journalFactory the supplier for the journal factory to use
+     * @param loggerFactory      the logger factory to create class specific logger
+     * @param saver              the saver to persist data changes
+     * @param server             the server to determine if an event should be stated as async
+     * @param identifierRegistry the identifier registry to resolve identifiers
+     * @param questTypeApi       the Quest Type API
+     * @param journalFactory     the supplier for the journal factory to use
      */
-    public PlayerDataFactory(final BetonQuestLoggerFactory loggerFactory, final Placeholders placeholders,
-                             final QuestPackageManager packManager, final Saver saver, final Server server,
-                             final QuestTypeApi questTypeApi, final Supplier<JournalFactory> journalFactory) {
+    public PlayerDataFactory(final BetonQuestLoggerFactory loggerFactory, final Saver saver, final Server server,
+                             final IdentifierRegistry identifierRegistry, final QuestTypeApi questTypeApi,
+                             final Supplier<JournalFactory> journalFactory) {
+        this.identifierRegistry = identifierRegistry;
         this.loggerFactory = loggerFactory;
-        this.placeholders = placeholders;
-        this.packManager = packManager;
         this.saver = saver;
         this.server = server;
         this.questTypeApi = questTypeApi;
@@ -80,7 +72,7 @@ public class PlayerDataFactory {
      * @return the newly created player data
      */
     public PlayerData createPlayerData(final Profile profile) {
-        return new PlayerData(loggerFactory.create(PlayerData.class), placeholders, packManager, saver, server, questTypeApi,
-                journalFactory.get(), profile);
+        return new PlayerData(loggerFactory.create(PlayerData.class), saver, server, identifierRegistry,
+                questTypeApi, journalFactory.get(), profile);
     }
 }

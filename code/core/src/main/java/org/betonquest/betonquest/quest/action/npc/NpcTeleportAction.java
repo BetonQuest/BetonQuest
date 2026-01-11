@@ -2,12 +2,12 @@ package org.betonquest.betonquest.quest.action.npc;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.identifier.NpcIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
 import org.betonquest.betonquest.api.quest.npc.Npc;
-import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,7 +24,7 @@ public class NpcTeleportAction implements NullableAction {
     /**
      * The npc id.
      */
-    private final Argument<NpcID> npcId;
+    private final Argument<NpcIdentifier> npcId;
 
     /**
      * The location to teleport the Npc to.
@@ -44,7 +44,7 @@ public class NpcTeleportAction implements NullableAction {
      * @param location   the location the Npc will be teleported to
      * @param spawn      if the npc should be spawned if not in the world
      */
-    public NpcTeleportAction(final FeatureApi featureApi, final Argument<NpcID> npcId, final Argument<Location> location,
+    public NpcTeleportAction(final FeatureApi featureApi, final Argument<NpcIdentifier> npcId, final Argument<Location> location,
                              final FlagArgument<Boolean> spawn) {
         this.featureApi = featureApi;
         this.npcId = npcId;

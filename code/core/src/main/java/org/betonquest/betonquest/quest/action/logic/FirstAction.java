@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.action.logic;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,7 +19,7 @@ public class FirstAction implements NullableAction {
     /**
      * The actions to run.
      */
-    private final Argument<List<ActionID>> actions;
+    private final Argument<List<ActionIdentifier>> actions;
 
     /**
      * Quest Type API.
@@ -32,14 +32,14 @@ public class FirstAction implements NullableAction {
      * @param actions      A list of actions to execute in order.
      * @param questTypeApi the Quest Type API
      */
-    public FirstAction(final Argument<List<ActionID>> actions, final QuestTypeApi questTypeApi) {
+    public FirstAction(final Argument<List<ActionIdentifier>> actions, final QuestTypeApi questTypeApi) {
         this.actions = actions;
         this.questTypeApi = questTypeApi;
     }
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
-        for (final ActionID action : actions.getValue(profile)) {
+        for (final ActionIdentifier action : actions.getValue(profile)) {
             if (questTypeApi.action(profile, action)) {
                 break;
             }

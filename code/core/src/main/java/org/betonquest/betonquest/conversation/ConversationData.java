@@ -8,18 +8,21 @@ import org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable.Unmodifia
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.ConversationApi;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
+import org.betonquest.betonquest.api.identifier.ConversationIdentifier;
+import org.betonquest.betonquest.api.identifier.ConversationOptionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
-import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
+import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
+import org.betonquest.betonquest.api.instruction.argument.DecoratedArgumentParser;
+import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.action.ActionID;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.conversation.interceptor.InterceptorFactory;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultListArgument;
+import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -72,6 +75,11 @@ public class ConversationData {
     private final ConversationApi conversationApi;
 
     /**
+     * The {@link SectionInstruction}.
+     */
+    private final SectionInstruction instruction;
+
+    /**
      * Text creator to parse text.
      */
     private final ParsedSectionTextCreator textCreator;
@@ -105,6 +113,7 @@ public class ConversationData {
      * @param packManager     the quest package manager to get quest packages from
      * @param placeholders    the {@link Placeholders} to create and resolve placeholders
      * @param questTypeApi    the quest type api
+     * @param instruction     the instruction to parse the conversation from
      * @param conversationApi the Conversation API
      * @param textCreator     the text creator to parse text
      * @param convSection     the configuration section of the conversation
@@ -114,18 +123,20 @@ public class ConversationData {
      */
     public ConversationData(final BetonQuestLogger log, final QuestPackageManager packManager,
                             final Placeholders placeholders, final QuestTypeApi questTypeApi,
+                            final SectionInstruction instruction,
                             final ConversationApi conversationApi, final ParsedSectionTextCreator textCreator,
                             final ConfigurationSection convSection, final PublicData publicData) throws QuestException {
         this.log = log;
         this.packManager = packManager;
         this.placeholders = placeholders;
         this.questTypeApi = questTypeApi;
+        this.instruction = instruction;
         this.conversationApi = conversationApi;
         this.publicData = publicData;
         this.textCreator = textCreator;
 
         this.npcOptions = loadNpcOptions(convSection);
-        this.startingOptions = loadStartingOptions(convSection);
+        this.startingOptions = loadStartingOptions();
         this.playerOptions = loadPlayerOptions(convSection);
         validateNpcOptions();
         validatePlayerOptions();
@@ -148,7 +159,7 @@ public class ConversationData {
 
             final ResolvedOption resolvedOption = resolveOption(externalPointer.resolver(), externalPointer.optionType());
             final QuestPackage targetPack = resolvedOption.conversationData().publicData.conversationID().getPackage();
-            final ConversationID targetConv = resolvedOption.conversationData().publicData.conversationID;
+            final ConversationIdentifier targetConv = resolvedOption.conversationData().publicData.conversationID;
             final String targetOptionName = resolvedOption.name();
 
             // This is null if we refer to the starting options of a conversation
@@ -192,8 +203,8 @@ public class ConversationData {
      */
     private CrossConversationReference resolvePointer(@Nullable final String currentOptionName,
                                                       final OptionType optionType, final String option) throws QuestException {
-        final ConversationOptionID resolver = new ConversationOptionID(packManager, getPack(), option);
-        return new CrossConversationReference(getPack(), publicData.conversationID, currentOptionName, optionType, resolver);
+        final ConversationOptionIdentifier identifier = instruction.chainForArgument(option).identifier(ConversationOptionIdentifier.class).get().getValue(null);
+        return new CrossConversationReference(getPack(), publicData.conversationID, currentOptionName, optionType, identifier);
     }
 
     /**
@@ -204,10 +215,11 @@ public class ConversationData {
      * @return a {@link ResolvedOption} pointing to the option
      * @throws QuestException when the conversation could not be resolved
      */
-    public ResolvedOption resolveOption(final ConversationOptionID conversationOptionID, final ConversationData.OptionType optionType) throws QuestException {
+    public ResolvedOption resolveOption(final ConversationOptionIdentifier conversationOptionID, final ConversationData.OptionType optionType) throws QuestException {
         final String conversationName = conversationOptionID.getConversationName();
         final String optionName = conversationOptionID.getOptionName();
-        final ConversationID targetConversationID = conversationName == null ? publicData.conversationID : new ConversationID(packManager, conversationOptionID.getPackage(), conversationName);
+        final ConversationIdentifier targetConversationID = conversationName == null ? publicData.conversationID
+                : instruction.chainForArgument(conversationName).identifier(ConversationIdentifier.class).get().getValue(null);
 
         final ConversationData newData = conversationApi.getData(targetConversationID);
         return new ResolvedOption(newData, optionType, optionName);
@@ -268,11 +280,10 @@ public class ConversationData {
      * @return the loaded starting options
      * @throws QuestException when the conversation could not be resolved
      */
-    private List<String> loadStartingOptions(final ConfigurationSection convSection) throws QuestException {
+    private List<String> loadStartingOptions() throws QuestException {
         final List<String> startingOptions;
         try {
-            startingOptions = new DefaultListArgument<>(placeholders, getPack(), convSection.getString("first", ""),
-                    new StringParser(), DefaultListArgument.notEmptyChecker()).getValue(null);
+            startingOptions = instruction.read().value("first").string().list().notEmpty().get().getValue(null);
         } catch (final QuestException e) {
             throw new QuestException("Could not load starting options: " + e.getMessage(), e);
         }
@@ -292,7 +303,7 @@ public class ConversationData {
         final Map<String, ConversationOption> playerOptions = new HashMap<>();
         if (playerSection != null) {
             for (final String name : playerSection.getKeys(false)) {
-                playerOptions.put(name, new ConversationOption(name, PLAYER, conv));
+                playerOptions.put(name, new ConversationOption(name, PLAYER, conv, instruction.getParsers()));
             }
         }
         return playerOptions;
@@ -305,7 +316,7 @@ public class ConversationData {
         }
         final Map<String, ConversationOption> npcOptions = new HashMap<>();
         for (final String name : npcSection.getKeys(false)) {
-            npcOptions.put(name, new ConversationOption(name, NPC, convSection));
+            npcOptions.put(name, new ConversationOption(name, NPC, convSection, instruction.getParsers()));
         }
         return npcOptions;
     }
@@ -422,7 +433,7 @@ public class ConversationData {
      * @return the conditions required for the specified option to be selected
      */
     @SuppressWarnings("NullAway")
-    public List<ConditionID> getConditionIDs(final String option, final OptionType type) {
+    public List<ConditionIdentifier> getConditionIDs(final String option, final OptionType type) {
         final Map<String, ConversationOption> options = type == NPC ? npcOptions : playerOptions;
         return options.get(option).getConditions();
     }
@@ -433,9 +444,9 @@ public class ConversationData {
      * @param profile the profile of the player
      * @param option  the name of the conversation option
      * @param type    the type of the option
-     * @return a list of {@link ActionID}s
+     * @return a list of {@link ActionIdentifier}s
      */
-    public List<ActionID> getActionIDs(final Profile profile, final ResolvedOption option, final OptionType type) {
+    public List<ActionIdentifier> getActionIDs(final Profile profile, final ResolvedOption option, final OptionType type) {
         final Map<String, ConversationOption> options;
         if (type == NPC) {
             options = option.conversationData().npcOptions;
@@ -468,7 +479,9 @@ public class ConversationData {
             final ConversationData sourceData;
             final String optionName;
             if (option.contains(".")) {
-                final ResolvedOption result = resolveOption(new ConversationOptionID(packManager, getPack(), option), NPC);
+                final ConversationOptionIdentifier identifier = instruction.chainForArgument(option)
+                        .identifier(ConversationOptionIdentifier.class).get().getValue(null);
+                final ResolvedOption result = resolveOption(identifier, NPC);
                 sourceData = result.conversationData();
                 optionName = result.name();
             } else {
@@ -543,8 +556,8 @@ public class ConversationData {
      * @param interceptorDelay The delay before the interceptor is ended after the conversation ends.
      * @param invincible       If true, the player will not be able to damage or be damaged by entities in conversation.
      */
-    public record PublicData(ConversationID conversationID, Text quester, Argument<Boolean> blockMovement,
-                             Argument<List<ActionID>> finalActions, Argument<ConversationIOFactory> convIO,
+    public record PublicData(ConversationIdentifier conversationID, Text quester, Argument<Boolean> blockMovement,
+                             Argument<List<ActionIdentifier>> finalActions, Argument<ConversationIOFactory> convIO,
                              Argument<InterceptorFactory> interceptor, Argument<Number> interceptorDelay,
                              boolean invincible) {
 
@@ -592,12 +605,12 @@ public class ConversationData {
         /**
          * Conditions that must be met for the option to be available.
          */
-        private final List<ConditionID> conditions;
+        private final List<ConditionIdentifier> conditions;
 
         /**
          * Actions that are triggered when the option is selected.
          */
-        private final List<ActionID> actions;
+        private final List<ActionIdentifier> actions;
 
         /**
          * Other options that are available after this option is selected.
@@ -623,11 +636,10 @@ public class ConversationData {
          * @param convSection the {@link ConfigurationSection} of the option
          * @throws QuestException if the configuration is invalid
          */
-        protected ConversationOption(final String name, final OptionType type, final ConfigurationSection convSection) throws QuestException {
+        protected ConversationOption(final String name, final OptionType type, final ConfigurationSection convSection, final ArgumentParsers parsers) throws QuestException {
             this.optionName = name;
             this.type = type;
             final ConfigurationSection conv = convSection.getConfigurationSection(type.getIdentifier() + "." + name);
-
             if (conv == null) {
                 text = null;
                 conditions = List.of();
@@ -639,16 +651,14 @@ public class ConversationData {
             }
 
             this.text = parseText(conv);
-            this.conditions = resolve(conv, "conditions", ConditionID::new);
-            this.actions = resolve(conv, "actions", ActionID::new);
+            this.conditions = resolve(conv, "conditions", parsers.forIdentifier(ConditionIdentifier.class));
+            this.actions = resolve(conv, "actions", parsers.forIdentifier(ActionIdentifier.class));
 
-            final StringParser stringParser = new StringParser();
-
-            pointers = resolve(conv, "pointers", stringParser).stream()
+            pointers = resolve(conv, "pointers", parsers.string()).stream()
                     .filter(StringUtils::isNotEmpty)
                     .toList();
 
-            extendLinks = resolve(conv, "extends", stringParser).stream()
+            extendLinks = resolve(conv, "extends", parsers.string()).stream()
                     .filter(StringUtils::isNotEmpty)
                     .toList();
 
@@ -657,9 +667,9 @@ public class ConversationData {
         }
 
         private <T> List<T> resolve(final ConfigurationSection conv, final String identifier,
-                                    final InstructionArgumentParser<T> resolver) throws QuestException {
-            return new DefaultListArgument<>(placeholders, getPack(), conv.getString(identifier, ""),
-                    value -> resolver.apply(placeholders, packManager, getPack(), value)).getValue(null);
+                                    final DecoratedArgumentParser<T> resolver) throws QuestException {
+            return new DefaultArgument<>(placeholders, getPack(), conv.getString(identifier, ""),
+                    value -> resolver.list().apply(placeholders, packManager, getPack(), value)).getValue(null);
         }
 
         @Nullable
@@ -732,9 +742,9 @@ public class ConversationData {
         /**
          * Returns all conditions that must be met for this option to be available.
          *
-         * @return a list of {@link ConditionID}s
+         * @return a list of {@link ConditionIdentifier}s
          */
-        public List<ConditionID> getConditions() {
+        public List<ConditionIdentifier> getConditions() {
             return new ArrayList<>(conditions);
         }
 
@@ -744,20 +754,20 @@ public class ConversationData {
          * given {@link Profile}).
          *
          * @param profile the profile of the player to get the actions for
-         * @return a list of {@link ActionID}s
+         * @return a list of {@link ActionIdentifier}s
          */
-        public List<ActionID> getActions(final Profile profile) {
+        public List<ActionIdentifier> getActions(final Profile profile) {
             return getActions(profile, new ArrayList<>());
         }
 
-        private List<ActionID> getActions(final Profile profile, final List<String> optionPath) {
+        private List<ActionIdentifier> getActions(final Profile profile, final List<String> optionPath) {
             // Prevent infinite loops
             if (optionPath.contains(getName())) {
                 return Collections.emptyList();
             }
             optionPath.add(getName());
 
-            final List<ActionID> actions = new ArrayList<>(this.actions);
+            final List<ActionIdentifier> actions = new ArrayList<>(this.actions);
 
             for (final String extend : extendLinks) {
                 if (questTypeApi.conditions(profile, getOption(extend, type).getConditions())) {
@@ -793,7 +803,9 @@ public class ConversationData {
                 for (final String extend : extendLinks) {
                     final ResolvedOption resolvedExtend;
                     try {
-                        resolvedExtend = resolveOption(new ConversationOptionID(packManager, getPack(), extend), type);
+                        final ConversationOptionIdentifier identifier = instruction.chainForArgument(extend)
+                                .identifier(ConversationOptionIdentifier.class).get().getValue(null);
+                        resolvedExtend = resolveOption(identifier, type);
                     } catch (final QuestException e) {
                         log.reportException(getPack(), e);
                         throw new IllegalStateException("Cannot ensure a valid conversation flow with unresolvable pointers.", e);

@@ -4,10 +4,10 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.bukkit.Bukkit;
@@ -28,7 +28,7 @@ public class TimerObjective extends CountingObjective implements Runnable {
     /**
      * Actions to run before the objective is actually removed.
      */
-    private final Argument<List<ActionID>> doneActions;
+    private final Argument<List<ActionIdentifier>> doneActions;
 
     /**
      * The resolved interval in seconds.
@@ -52,7 +52,7 @@ public class TimerObjective extends CountingObjective implements Runnable {
      * @throws QuestException if an error occurs while creating the objective.
      */
     public TimerObjective(final ObjectiveService service, final Argument<Number> targetAmount, final QuestTypeApi questTypeApi, final Argument<String> name,
-                          final Argument<Number> interval, final Argument<List<ActionID>> doneActions) throws QuestException {
+                          final Argument<Number> interval, final Argument<List<ActionIdentifier>> doneActions) throws QuestException {
         super(service, targetAmount, null);
         this.questTypeApi = questTypeApi;
         this.doneActions = doneActions;

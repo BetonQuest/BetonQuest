@@ -4,6 +4,9 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.ConversationApi;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
+import org.betonquest.betonquest.api.identifier.ConversationIdentifier;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
@@ -12,12 +15,10 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Placeholders;
-import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationData;
-import org.betonquest.betonquest.conversation.ConversationID;
 import org.betonquest.betonquest.conversation.ConversationIOFactory;
 import org.betonquest.betonquest.conversation.interceptor.InterceptorFactory;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
@@ -39,10 +40,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * Stores Conversation Data and validates it.
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
-public class ConversationProcessor extends SectionProcessor<ConversationID, ConversationData> implements ConversationApi {
+public class ConversationProcessor extends SectionProcessor<ConversationIdentifier, ConversationData> implements ConversationApi {
 
     /**
-     * Factory to create class specific logger.
+     * Factory to create class-specific logger.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -93,13 +94,15 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
      * @param placeholders        the {@link Placeholders} to create and resolve placeholders
      * @param pluginMessage       the plugin message instance to use for ingame notifications
      * @param parsers             the argument parsers to use
+     * @param identifierFactory   the identifier factory to create {@link ConversationIdentifier}s for this type
      */
+    @SuppressWarnings("PMD.ExcessiveParameterList")
     public ConversationProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                                  final BetonQuest plugin, final ParsedSectionTextCreator textCreator,
                                  final ConversationIORegistry convIORegistry, final InterceptorRegistry interceptorRegistry,
                                  final Placeholders placeholders, final PluginMessage pluginMessage,
-                                 final ArgumentParsers parsers) {
-        super(loggerFactory, log, placeholders, plugin.getQuestPackageManager(), parsers, "Conversation", "conversations");
+                                 final ArgumentParsers parsers, final IdentifierFactory<ConversationIdentifier> identifierFactory) {
+        super(loggerFactory, log, placeholders, plugin.getQuestPackageManager(), parsers, identifierFactory, "Conversation", "conversations");
         this.loggerFactory = loggerFactory;
         this.activeConversations = new ProfileKeyMap<>(plugin.getProfileProvider(), new ConcurrentHashMap<>());
         this.starter = new ConversationStarter(loggerFactory, loggerFactory.create(ConversationStarter.class),
@@ -120,10 +123,10 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
     }
 
     @Override
-    protected Map.Entry<ConversationID, ConversationData> loadSection(final String sectionName, final SectionInstruction instruction) throws QuestException {
+    protected Map.Entry<ConversationIdentifier, ConversationData> loadSection(final String sectionName, final SectionInstruction instruction) throws QuestException {
         final QuestPackage pack = instruction.getPackage();
         final ConfigurationSection section = instruction.getSection();
-        final ConversationID identifier = getIdentifier(pack, sectionName);
+        final ConversationIdentifier identifier = getIdentifier(pack, sectionName);
         log.debug(pack, String.format("Loading conversation '%s'.", identifier));
 
         final boolean invincible = plugin.getConfig().getBoolean("conversation.damage.invincible");
@@ -134,7 +137,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
         final String rawInterceptorDelay = defaultingValue(section, "interceptor_delay", "conversation.interceptor.delay", "50");
 
         final Argument<Boolean> stop = instruction.read().value("stop").bool().getOptional(false);
-        final Argument<List<ActionID>> finalActions = instruction.read().value("final_actions").parse(ActionID::new).list().getOptional(Collections.emptyList());
+        final Argument<List<ActionIdentifier>> finalActions = instruction.read().value("final_actions").identifier(ActionIdentifier.class).list().getOptional(Collections.emptyList());
         final Argument<ConversationIOFactory> conversationIO = instruction.chainForArgument(rawConvIO).string().list().map(convIORegistry::getFactory).get();
         final Argument<InterceptorFactory> interceptor = instruction.chainForArgument(rawInterceptor).string().list().map(interceptorRegistry::getFactory).get();
         final Argument<Number> interceptorDelay = instruction.chainForArgument(rawInterceptorDelay).number()
@@ -142,7 +145,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
 
         final ConversationData.PublicData publicData = new ConversationData.PublicData(identifier, quester, stop, finalActions, conversationIO, interceptor, interceptorDelay, invincible);
         final ConversationData conversationData = new ConversationData(loggerFactory.create(ConversationData.class), packManager,
-                placeholders, plugin.getQuestTypeApi(), plugin.getFeatureApi().conversationApi(), textCreator, section, publicData);
+                placeholders, plugin.getQuestTypeApi(), instruction, plugin.getFeatureApi().conversationApi(), textCreator, section, publicData);
         return Map.entry(identifier, conversationData);
     }
 
@@ -151,11 +154,6 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
             return Objects.requireNonNull(section.getString(path));
         }
         return plugin.getPluginConfig().getString(configPath, defaultConfig);
-    }
-
-    @Override
-    protected ConversationID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new ConversationID(packManager, pack, identifier);
     }
 
     /**
@@ -180,12 +178,12 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
     }
 
     @Override
-    public ConversationData getData(final ConversationID conversationID) throws QuestException {
+    public ConversationData getData(final ConversationIdentifier conversationID) throws QuestException {
         return get(conversationID);
     }
 
     @Override
-    public void start(final OnlineProfile onlineProfile, final ConversationID conversationID, final Location center, @Nullable final String startingOption) {
+    public void start(final OnlineProfile onlineProfile, final ConversationIdentifier conversationID, final Location center, @Nullable final String startingOption) {
         starter.startConversation(onlineProfile, conversationID, center, startingOption);
     }
 

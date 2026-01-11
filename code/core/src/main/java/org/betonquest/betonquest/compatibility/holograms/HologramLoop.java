@@ -5,17 +5,17 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableComponent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.identifier.DefaultIdentifier;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
-import org.betonquest.betonquest.api.instruction.argument.parser.IdentifierParser;
+import org.betonquest.betonquest.api.instruction.argument.parser.PackageIdentifierParser;
 import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.Placeholders;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.compatibility.holograms.lines.AbstractLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.ItemLine;
@@ -25,7 +25,6 @@ import org.betonquest.betonquest.compatibility.holograms.lines.TopXObject;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.lib.logger.QuestExceptionHandler;
 import org.bukkit.configuration.ConfigurationSection;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,7 +37,7 @@ import java.util.regex.Pattern;
  * Hides and shows holograms to players, based on conditions.
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
-public abstract class HologramLoop extends SectionProcessor<HologramLoop.HologramID, HologramWrapper> {
+public abstract class HologramLoop extends SectionProcessor<HologramIdentifier, HologramWrapper> {
 
     /**
      * Pattern to match the correct syntax for the top line content.
@@ -84,21 +83,23 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
     /**
      * Creates a new instance of the loop.
      *
-     * @param loggerFactory    logger factory to use
-     * @param log              the logger that will be used for logging
-     * @param packManager      the quest package manager to get quest packages from
-     * @param placeholders     the {@link Placeholders} to create and resolve placeholders
-     * @param hologramProvider the hologram provider to create new holograms
-     * @param readable         the type name used for logging, with the first letter in upper case
-     * @param internal         the section name and/or bstats topic identifier
-     * @param textParser       the text parser used to parse text and colors
-     * @param parsers          the argument parsers
+     * @param loggerFactory     logger factory to use
+     * @param log               the logger that will be used for logging
+     * @param packManager       the quest package manager to get quest packages from
+     * @param placeholders      the {@link Placeholders} to create and resolve placeholders
+     * @param hologramProvider  the hologram provider to create new holograms
+     * @param readable          the type name used for logging, with the first letter in upper case
+     * @param internal          the section name and/or bstats topic identifier
+     * @param textParser        the text parser used to parse text and colors
+     * @param parsers           the argument parsers
+     * @param identifierFactory the identifier factory to create {@link HologramIdentifier}s for this type
      */
+    @SuppressWarnings("PMD.ExcessiveParameterList")
     public HologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
                         final Placeholders placeholders, final QuestPackageManager packManager,
                         final HologramProvider hologramProvider, final String readable, final String internal,
-                        final TextParser textParser, final ArgumentParsers parsers) {
-        super(loggerFactory, log, placeholders, packManager, parsers, readable, internal);
+                        final TextParser textParser, final ArgumentParsers parsers, final IdentifierFactory<HologramIdentifier> identifierFactory) {
+        super(loggerFactory, log, placeholders, packManager, parsers, identifierFactory, readable, internal);
         this.loggerFactory = loggerFactory;
         this.hologramProvider = hologramProvider;
         this.textParser = textParser;
@@ -112,15 +113,16 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
     }
 
     @Override
-    protected Map.Entry<HologramID, HologramWrapper> loadSection(final String sectionName, final SectionInstruction instruction) throws QuestException {
+    protected Map.Entry<HologramIdentifier, HologramWrapper> loadSection(final String sectionName, final SectionInstruction instruction) throws QuestException {
         final QuestPackage pack = instruction.getPackage();
         final ConfigurationSection section = instruction.getSection();
 
         final Argument<Number> checkInterval = instruction.read().value("check_interval").number().getOptional(defaultInterval);
         final Argument<Number> maxRange = instruction.read().value("max_range").number().getOptional(0);
-        final Argument<List<ConditionID>> conditions = instruction.read().value("conditions").parse(ConditionID::new).list().getOptional(Collections.emptyList());
+        final Argument<List<ConditionIdentifier>> conditions = instruction.read().value("conditions")
+                .identifier(ConditionIdentifier.class).list().getOptional(Collections.emptyList());
 
-        final List<BetonHologram> holograms = getHologramsFor(pack, section);
+        final List<BetonHologram> holograms = getHologramsFor(instruction);
         for (final BetonHologram hologram : holograms) {
             hologram.hideAll();
         }
@@ -130,7 +132,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
             final AbstractLine abstractLine = parseLine(pack, sectionName, line);
             cleanedLines.add(abstractLine);
         }
-        final HologramID identifier = getIdentifier(pack, sectionName);
+        final HologramIdentifier identifier = getIdentifier(pack, sectionName);
         final QuestExceptionHandler handler = new QuestExceptionHandler(pack, loggerFactory.create(HologramWrapper.class), identifier.getFull());
         final HologramWrapper hologramWrapper = new HologramWrapper(
                 handler,
@@ -160,12 +162,11 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
     /**
      * Creates and returns a list of holograms for the given section.
      *
-     * @param pack    the package of the holograms
-     * @param section the section of the holograms
+     * @param instruction the section instruction
      * @return a list of holograms
      * @throws QuestException if there is an error while parsing the holograms
      */
-    protected abstract List<BetonHologram> getHologramsFor(QuestPackage pack, ConfigurationSection section) throws QuestException;
+    protected abstract List<BetonHologram> getHologramsFor(SectionInstruction instruction) throws QuestException;
 
     private boolean isStaticHologram(final List<AbstractLine> lines) {
         return lines.stream().noneMatch(AbstractLine::isNotStaticText);
@@ -185,7 +186,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
             throw new QuestException("Malformed top line in hologram! Expected format: 'top:<point>;<order>;<limit>;<formattingString>'.");
         }
 
-        final String pointName = IdentifierParser.INSTANCE.apply(pack, validator.group(1));
+        final String pointName = PackageIdentifierParser.INSTANCE.apply(pack, validator.group(1));
         final TopXObject.OrderType orderType = orderType(validator.group(2));
 
         final int limit;
@@ -220,28 +221,5 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
                 ? hologramProvider.parsePlaceholder(pack, line)
                 : line;
         return new TextLine(textParser.parse(text));
-    }
-
-    @Override
-    protected HologramID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new HologramID(packManager, pack, identifier);
-    }
-
-    /**
-     * Internal identifier/key for a Hologram.
-     */
-    protected static class HologramID extends DefaultIdentifier {
-
-        /**
-         * Creates a new ID.
-         *
-         * @param packManager the quest package manager to get quest packages from
-         * @param pack        the package the ID is in
-         * @param identifier  the id instruction string
-         * @throws QuestException if the ID could not be parsed
-         */
-        protected HologramID(final QuestPackageManager packManager, @Nullable final QuestPackage pack, final String identifier) throws QuestException {
-            super(packManager, pack, identifier);
-        }
     }
 }

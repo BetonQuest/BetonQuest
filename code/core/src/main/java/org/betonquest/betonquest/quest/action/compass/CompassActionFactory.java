@@ -2,12 +2,12 @@ package org.betonquest.betonquest.quest.action.compass;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.identifier.CompassIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.data.PlayerDataStorage;
-import org.betonquest.betonquest.id.CompassID;
 
 /**
  * The compass action factory.
@@ -38,9 +38,7 @@ public class CompassActionFactory implements PlayerActionFactory {
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<CompassTargetOperation> action = instruction.enumeration(CompassTargetOperation.class).get();
-        final Argument<CompassID> compassId = instruction.parse(
-                (placeholders, packManager, pack, string)
-                        -> new CompassID(packManager, pack, string)).get();
+        final Argument<CompassIdentifier> compassId = instruction.identifier(CompassIdentifier.class).get();
         return new CompassAction(featureApi, dataStorage, action, compassId);
     }
 }

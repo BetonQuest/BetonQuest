@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.objective.interact;
 
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.bukkit.entity.Entity;
 
 import java.util.Arrays;
@@ -30,7 +30,7 @@ public class EntityInteractData extends CountingObjective.CountingData {
      * @param objID       the ID of the objective
      * @throws QuestException when the instruction data is malformed
      */
-    public EntityInteractData(final String instruction, final Profile profile, final ObjectiveID objID) throws QuestException {
+    public EntityInteractData(final String instruction, final Profile profile, final ObjectiveIdentifier objID) throws QuestException {
         super(instruction, profile, objID);
         entities = new HashSet<>();
         final String[] entityInstruction = instruction.split(";", 3);

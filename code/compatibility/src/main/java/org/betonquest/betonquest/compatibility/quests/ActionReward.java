@@ -2,12 +2,11 @@ package org.betonquest.betonquest.compatibility.quests;
 
 import me.pikamug.quests.module.BukkitCustomReward;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -26,16 +25,6 @@ public class ActionReward extends BukkitCustomReward {
     private final BetonQuestLogger log;
 
     /**
-     * The {@link Placeholders} to create and resolve placeholders.
-     */
-    private final Placeholders placeholders;
-
-    /**
-     * The quest package manager to get quest packages from.
-     */
-    private final QuestPackageManager packManager;
-
-    /**
      * Quest Type API.
      */
     private final QuestTypeApi questTypeApi;
@@ -46,22 +35,25 @@ public class ActionReward extends BukkitCustomReward {
     private final ProfileProvider profileProvider;
 
     /**
+     * Identifier factory.
+     */
+    private final IdentifierFactory<ActionIdentifier> identifierFactory;
+
+    /**
      * Create a new 'Quests' Reward.
      *
-     * @param log             the custom logger
-     * @param placeholders    the {@link Placeholders} to create and resolve placeholders
-     * @param packManager     the quest package manager to get quest packages from
-     * @param questTypeApi    the Quest Type API
-     * @param profileProvider the profile provider instance
+     * @param log               the custom logger
+     * @param questTypeApi      the Quest Type API
+     * @param profileProvider   the profile provider instance
+     * @param identifierFactory the identifier factory
      */
-    public ActionReward(final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager, final QuestTypeApi questTypeApi,
-                        final ProfileProvider profileProvider) {
+    public ActionReward(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final ProfileProvider profileProvider,
+                        final IdentifierFactory<ActionIdentifier> identifierFactory) {
         super();
         this.log = log;
-        this.placeholders = placeholders;
-        this.packManager = packManager;
         this.questTypeApi = questTypeApi;
         this.profileProvider = profileProvider;
+        this.identifierFactory = identifierFactory;
         setName("BetonQuest action");
         setAuthor("BetonQuest");
         addStringPrompt("Action", "Specify BetonQuest action with the package and the name", null);
@@ -81,7 +73,7 @@ public class ActionReward extends BukkitCustomReward {
                 log.warn("Error while running quest reward - Player with UUID '" + uuid + "' not found.");
                 return;
             }
-            final ActionID action = new ActionID(placeholders, packManager, null, string);
+            final ActionIdentifier action = identifierFactory.parseIdentifier(null, string);
             questTypeApi.action(profileProvider.getProfile(player), action);
         } catch (final QuestException e) {
             log.warn("Error while running quest reward - BetonQuest action '" + string + "' not found: " + e.getMessage(), e);

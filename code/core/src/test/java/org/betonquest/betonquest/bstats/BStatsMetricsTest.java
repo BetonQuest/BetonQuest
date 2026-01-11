@@ -3,9 +3,10 @@ package org.betonquest.betonquest.bstats;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
+import org.betonquest.betonquest.api.identifier.ReadableIdentifier;
 import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -117,7 +118,7 @@ class BStatsMetricsTest {
         when(server.getBukkitVersion()).thenReturn("1.18.2-R0.1");
 
         final Metrics metrics = mock(Metrics.class);
-        new BStatsMetrics(plugin, metrics, Collections.emptyMap(), mock(Compatibility.class));
+        new BStatsMetrics(plugin, metrics, Collections.emptyMap(), mock(Compatibility.class), mock(InstructionApi.class));
     }
 
     @Test
@@ -137,20 +138,36 @@ class BStatsMetricsTest {
         final Metrics bstatsMetrics = mock(Metrics.class);
         final ArgumentCaptor<CustomChart> chartArgumentCaptor = ArgumentCaptor.forClass(CustomChart.class);
 
-        final Map<InstructionIdentifier, Void> ids = new HashMap<>();
+        final Map<ReadableIdentifier, Void> ids = new HashMap<>();
 
-        final InstructionIdentifier firstId = mock(InstructionIdentifier.class);
+        final ReadableIdentifier firstId = mock(ReadableIdentifier.class);
+        when(firstId.readRawInstruction()).thenReturn(TEST_INSTRUCTION);
         final Instruction firstInstruction = new DefaultInstruction(mock(Placeholders.class),
                 mock(QuestPackageManager.class), questPackage, firstId, mock(ArgumentParsers.class), TEST_INSTRUCTION);
-        when(firstId.getInstruction()).thenReturn(firstInstruction);
 
         ids.put(firstId, null);
         final Map<String, Void> types = new HashMap<>();
         types.put(TEST_INSTRUCTION, null);
 
-        final InstructionMetricsSupplier<InstructionIdentifier> metricsSupplier = new CompositeInstructionMetricsSupplier<>(ids::keySet, types::keySet);
+        final InstructionMetricsSupplier<ReadableIdentifier> metricsSupplier = new CompositeInstructionMetricsSupplier<>(ids::keySet, types::keySet);
 
-        new BStatsMetrics(plugin, bstatsMetrics, Map.of("id", metricsSupplier), mock(Compatibility.class));
+        final InstructionApi instructionApi = mock(InstructionApi.class);
+        when(instructionApi.createInstruction(firstId, TEST_INSTRUCTION)).thenReturn(firstInstruction);
+
+        final ReadableIdentifier secondId = mock(ReadableIdentifier.class);
+        when(secondId.readRawInstruction()).thenReturn(TEST_INSTRUCTION);
+        final Instruction secondInstruction = new DefaultInstruction(mock(Placeholders.class), mock(QuestPackageManager.class),
+                questPackage, secondId, mock(ArgumentParsers.class), TEST_INSTRUCTION);
+        when(instructionApi.createInstruction(secondId, TEST_INSTRUCTION)).thenReturn(secondInstruction);
+
+        final ReadableIdentifier thirdId = mock(ReadableIdentifier.class);
+        when(thirdId.readRawInstruction()).thenReturn(OTHER_INSTRUCTION);
+        final Instruction thirdInstruction = new DefaultInstruction(mock(Placeholders.class), mock(QuestPackageManager.class),
+                questPackage, thirdId, mock(ArgumentParsers.class), OTHER_INSTRUCTION);
+        when(instructionApi.createInstruction(thirdId, OTHER_INSTRUCTION)).thenReturn(thirdInstruction);
+        types.put(OTHER_INSTRUCTION, null);
+
+        new BStatsMetrics(plugin, bstatsMetrics, Map.of("id", metricsSupplier), mock(Compatibility.class), instructionApi);
 
         verify(bstatsMetrics, times(6)).addCustomChart(chartArgumentCaptor.capture());
         final List<CustomChart> customCharts = chartArgumentCaptor.getAllValues();
@@ -160,24 +177,14 @@ class BStatsMetricsTest {
         assertCollectedChartData("{\"chartId\":\"idCount\",\"data\":{\"values\":{\"test\":1}}}", countChart);
         assertCollectedChartData("{\"chartId\":\"idEnabled\",\"data\":{\"values\":{\"test\":1}}}", enabledChart);
 
-        types.put(OTHER_INSTRUCTION, null);
-
         assertCollectedChartData("{\"chartId\":\"idCount\",\"data\":{\"values\":{\"test\":1}}}", countChart);
         assertCollectedChartData("{\"chartId\":\"idEnabled\",\"data\":{\"values\":{\"test\":1}}}", enabledChart);
 
-        final InstructionIdentifier secondId = mock(InstructionIdentifier.class);
-        final Instruction secondInstruction = new DefaultInstruction(mock(Placeholders.class), mock(QuestPackageManager.class),
-                questPackage, secondId, mock(ArgumentParsers.class), TEST_INSTRUCTION);
-        when(secondId.getInstruction()).thenReturn(secondInstruction);
         ids.put(secondId, null);
 
         assertCollectedChartData("{\"chartId\":\"idCount\",\"data\":{\"values\":{\"test\":2}}}", countChart);
         assertCollectedChartData("{\"chartId\":\"idEnabled\",\"data\":{\"values\":{\"test\":1}}}", enabledChart);
 
-        final InstructionIdentifier thirdId = mock(InstructionIdentifier.class);
-        final Instruction thirdInstruction = new DefaultInstruction(mock(Placeholders.class), mock(QuestPackageManager.class),
-                questPackage, thirdId, mock(ArgumentParsers.class), OTHER_INSTRUCTION);
-        when(thirdId.getInstruction()).thenReturn(thirdInstruction);
         ids.put(thirdId, null);
 
         assertCollectedChartData("{\"chartId\":\"idCount\",\"data\":{\"values\":{\"other\":1,\"test\":2}}}", countChart);
@@ -185,6 +192,7 @@ class BStatsMetricsTest {
     }
 
     private void assertCollectedChartData(final String expected, final CustomChart chart) {
-        assertEquals(expected, chart.getRequestJsonObject((s, throwable) -> fail("Encountered error: " + s), true).toString(), "generated chart data did not match");
+        final String actual = chart.getRequestJsonObject((s, throwable) -> fail("Encountered error: " + s), true).toString();
+        assertEquals(expected, actual, "generated chart data did not match");
     }
 }

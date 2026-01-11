@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.action.logic;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
@@ -43,7 +43,7 @@ public class FirstActionFactory implements PlayerActionFactory, PlayerlessAction
     }
 
     private NullableActionAdapter createFirstAction(final Instruction instruction) throws QuestException {
-        final Argument<List<ActionID>> list = instruction.parse(ActionID::new).list().get();
+        final Argument<List<ActionIdentifier>> list = instruction.identifier(ActionIdentifier.class).list().get();
         return new NullableActionAdapter(new FirstAction(list, questTypeApi));
     }
 }

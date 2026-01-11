@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.action.npc;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.identifier.NpcIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -10,7 +11,6 @@ import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
 import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter;
-import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.bukkit.Location;
 
 /**
@@ -43,7 +43,7 @@ public class NpcTeleportActionFactory implements PlayerActionFactory, Playerless
     }
 
     private NullableActionAdapter createNpcTeleportAction(final Instruction instruction) throws QuestException {
-        final Argument<NpcID> npcId = instruction.parse(NpcID::new).get();
+        final Argument<NpcIdentifier> npcId = instruction.identifier(NpcIdentifier.class).get();
         final Argument<Location> location = instruction.location().get();
         final FlagArgument<Boolean> spawn = instruction.bool().getFlag("spawn", true);
         return new NullableActionAdapter(new NpcTeleportAction(featureApi, npcId, location, spawn));

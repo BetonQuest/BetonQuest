@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.api.quest.objective.service;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.action.ActionID;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public interface ObjectiveServiceDataProvider {
      * @return a list of actionIds
      * @throws QuestException if argument resolving failed
      */
-    List<ActionID> getActions(@Nullable Profile profile) throws QuestException;
+    List<ActionIdentifier> getActions(@Nullable Profile profile) throws QuestException;
 
     /**
      * Retrieves a list of conditionIds for conditions to check before each bukkit event for the objective.
@@ -40,7 +40,7 @@ public interface ObjectiveServiceDataProvider {
      * @return a list of conditionIds
      * @throws QuestException if argument resolving failed
      */
-    List<ConditionID> getConditions(@Nullable Profile profile) throws QuestException;
+    List<ConditionIdentifier> getConditions(@Nullable Profile profile) throws QuestException;
 
     /**
      * Retrieves the notification interval for the objective.

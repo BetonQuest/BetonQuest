@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.schedule;
 
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
+import org.betonquest.betonquest.api.identifier.ScheduleIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.schedule.ScheduleID;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -56,7 +56,7 @@ public class LastExecutionCache {
      * @param schedule id of the schedule
      * @param rawTime  raw string to cache
      */
-    public void cacheRawExecutionTime(final ScheduleID schedule, final String rawTime) {
+    public void cacheRawExecutionTime(final ScheduleIdentifier schedule, final String rawTime) {
         cache.getConfig().set(schedule.getFull(), rawTime);
         try {
             cache.save();
@@ -72,7 +72,7 @@ public class LastExecutionCache {
      * @param now      The Instance of now
      * @param schedule id of the schedule
      */
-    public void cacheExecutionTime(final Instant now, final ScheduleID schedule) {
+    public void cacheExecutionTime(final Instant now, final ScheduleIdentifier schedule) {
         cacheRawExecutionTime(schedule, now.toString());
     }
 
@@ -82,7 +82,7 @@ public class LastExecutionCache {
      * @param schedule id of the schedule
      * @return optional containing the cached string, empty if nothing was cached
      */
-    public Optional<String> getRawLastExecutionTime(final ScheduleID schedule) {
+    public Optional<String> getRawLastExecutionTime(final ScheduleIdentifier schedule) {
         return Optional.ofNullable(cache.getConfig().getString(schedule.getFull()));
     }
 
@@ -93,7 +93,7 @@ public class LastExecutionCache {
      * @return optional containing the last execution time, empty if no execution time is cached
      * @throws DateTimeParseException if time couldn't be parsed using {@link DateTimeFormatter#ISO_INSTANT}
      */
-    public Optional<Instant> getLastExecutionTime(final ScheduleID schedule) {
+    public Optional<Instant> getLastExecutionTime(final ScheduleIdentifier schedule) {
         return getRawLastExecutionTime(schedule).map(Instant::parse);
     }
 
@@ -103,7 +103,7 @@ public class LastExecutionCache {
      * @param scheduleID id of the schedule
      * @return true if cache contains time for that schedule, false otherwise
      */
-    public boolean isCached(final ScheduleID scheduleID) {
+    public boolean isCached(final ScheduleIdentifier scheduleID) {
         return getRawLastExecutionTime(scheduleID).isPresent();
     }
 
@@ -114,8 +114,8 @@ public class LastExecutionCache {
      * @param now       The Instant of now
      * @param schedules ids of the schedules to cache
      */
-    public void cacheStartupTime(final Instant now, final Collection<ScheduleID> schedules) {
-        for (final ScheduleID schedule : schedules) {
+    public void cacheStartupTime(final Instant now, final Collection<ScheduleIdentifier> schedules) {
+        for (final ScheduleIdentifier schedule : schedules) {
             if (!isCached(schedule)) {
                 cacheExecutionTime(now, schedule);
             }

@@ -1,12 +1,13 @@
 package org.betonquest.betonquest.kernel.processor.quest;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Placeholders;
-import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
 import org.betonquest.betonquest.kernel.processor.adapter.ActionAdapter;
 import org.betonquest.betonquest.kernel.registry.quest.ActionTypeRegistry;
@@ -25,7 +26,7 @@ import java.util.concurrent.Future;
 /**
  * Stores Actions and execute them.
  */
-public class ActionProcessor extends TypedQuestProcessor<ActionID, ActionAdapter> {
+public class ActionProcessor extends TypedQuestProcessor<ActionIdentifier, ActionAdapter> {
 
     /**
      * The Bukkit scheduler to run sync tasks.
@@ -40,23 +41,22 @@ public class ActionProcessor extends TypedQuestProcessor<ActionID, ActionAdapter
     /**
      * Create a new Action Processor to store actions and execute them.
      *
-     * @param placeholders the {@link Placeholders} to create and resolve placeholders
-     * @param log          the custom logger for this class
-     * @param packManager  the quest package manager to get quest packages from
-     * @param actionTypes  the available action types
-     * @param scheduler    the bukkit scheduler to run sync tasks
-     * @param plugin       the plugin instance
+     * @param placeholders            the {@link Placeholders} to create and resolve placeholders
+     * @param log                     the custom logger for this class
+     * @param packManager             the quest package manager to get quest packages from
+     * @param actionIdentifierFactory the factory to create action identifiers
+     * @param actionTypes             the available action types
+     * @param scheduler               the bukkit scheduler to run sync tasks
+     * @param instructionApi          the instruction api
+     * @param plugin                  the plugin instance
      */
     public ActionProcessor(final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager,
-                           final ActionTypeRegistry actionTypes, final BukkitScheduler scheduler, final Plugin plugin) {
-        super(log, placeholders, packManager, actionTypes, "Action", "actions");
+                           final IdentifierFactory<ActionIdentifier> actionIdentifierFactory,
+                           final ActionTypeRegistry actionTypes, final BukkitScheduler scheduler,
+                           final InstructionApi instructionApi, final Plugin plugin) {
+        super(log, placeholders, packManager, actionTypes, actionIdentifierFactory, instructionApi, "Action", "actions");
         this.scheduler = scheduler;
         this.plugin = plugin;
-    }
-
-    @Override
-    protected ActionID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new ActionID(placeholders, packManager, pack, identifier);
     }
 
     /**
@@ -67,13 +67,13 @@ public class ActionProcessor extends TypedQuestProcessor<ActionID, ActionAdapter
      * @param actionIDS IDs of the actions to fire
      * @return true if all actions were run even if there was an exception during execution
      */
-    public boolean executes(@Nullable final Profile profile, final Collection<ActionID> actionIDS) {
+    public boolean executes(@Nullable final Profile profile, final Collection<ActionIdentifier> actionIDS) {
         if (Bukkit.isPrimaryThread()) {
             return actionIDS.stream().map(actionID -> execute(profile, actionID)).reduce(true, Boolean::logicalAnd);
         }
 
-        final List<ActionID> syncList = new ArrayList<>();
-        final List<ActionID> asyncList = new ArrayList<>();
+        final List<ActionIdentifier> syncList = new ArrayList<>();
+        final List<ActionIdentifier> asyncList = new ArrayList<>();
         actionIDS.forEach(id -> {
             final ActionAdapter adapter = values.get(id);
             final boolean syncAsync = adapter != null && adapter.isPrimaryThreadEnforced();
@@ -101,7 +101,7 @@ public class ActionProcessor extends TypedQuestProcessor<ActionID, ActionAdapter
      * @param actionID ID of the action to fire
      * @return true if the action was run even if there was an exception during execution
      */
-    public boolean execute(@Nullable final Profile profile, final ActionID actionID) {
+    public boolean execute(@Nullable final Profile profile, final ActionIdentifier actionID) {
         final ActionAdapter action = values.get(actionID);
         if (action == null) {
             log.warn(actionID.getPackage(), "Action " + actionID + " is not defined");
@@ -118,7 +118,7 @@ public class ActionProcessor extends TypedQuestProcessor<ActionID, ActionAdapter
         return callAction(profile, actionID, action);
     }
 
-    private boolean callActionSync(@Nullable final Profile profile, final ActionID actionID, final ActionAdapter action) {
+    private boolean callActionSync(@Nullable final Profile profile, final ActionIdentifier actionID, final ActionAdapter action) {
         try {
             return scheduler.callSyncMethod(plugin, () -> callAction(profile, actionID, action)).get();
         } catch (final InterruptedException | ExecutionException e) {
@@ -127,7 +127,7 @@ public class ActionProcessor extends TypedQuestProcessor<ActionID, ActionAdapter
         }
     }
 
-    private boolean callAction(@Nullable final Profile profile, final ActionID actionID, final ActionAdapter action) {
+    private boolean callAction(@Nullable final Profile profile, final ActionIdentifier actionID, final ActionAdapter action) {
         try {
             return action.fire(profile);
         } catch (final QuestException e) {

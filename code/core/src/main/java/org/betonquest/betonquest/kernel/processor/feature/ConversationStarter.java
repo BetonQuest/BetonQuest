@@ -3,13 +3,13 @@ package org.betonquest.betonquest.kernel.processor.feature;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.PlayerConversationStartEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.identifier.ConversationIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.Conversation;
-import org.betonquest.betonquest.conversation.ConversationID;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
@@ -69,7 +69,7 @@ public class ConversationStarter {
      * @param center         the location where the conversation should start
      * @param startingOption the name of the option where the conversation should forcibly start at
      */
-    public void startConversation(final OnlineProfile onlineProfile, final ConversationID conversationID,
+    public void startConversation(final OnlineProfile onlineProfile, final ConversationIdentifier conversationID,
                                   final Location center, @Nullable final String startingOption) {
         startConversation(onlineProfile, conversationID, center, startingOption, standardFactory);
     }
@@ -83,7 +83,7 @@ public class ConversationStarter {
      * @param startingOption the name of the option where the conversation should forcibly start at
      * @param factory        the factory that creates the conversation to start
      */
-    public void startConversation(final OnlineProfile onlineProfile, final ConversationID conversationID,
+    public void startConversation(final OnlineProfile onlineProfile, final ConversationIdentifier conversationID,
                                   final Location center, @Nullable final String startingOption, final ConversationFactory factory) {
         if (activeConversations.containsKey(onlineProfile)) {
             log.debug(conversationID.getPackage(), onlineProfile + " is in conversation right now, returning.");
@@ -135,7 +135,7 @@ public class ConversationStarter {
          * @return the newly created conversation
          * @throws QuestException when required conversation objects could not be created
          */
-        Conversation create(OnlineProfile onlineProfile, ConversationID conversationID, Location center,
+        Conversation create(OnlineProfile onlineProfile, ConversationIdentifier conversationID, Location center,
                             Runnable endCallable) throws QuestException;
     }
 }

@@ -3,18 +3,20 @@ package org.betonquest.betonquest.quest.action.compass;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.identifier.CompassIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.feature.QuestCompass;
-import org.betonquest.betonquest.id.CompassID;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultListArgument;
+import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.betonquest.betonquest.quest.action.tag.AddTagChanger;
 import org.betonquest.betonquest.quest.action.tag.DeleteTagChanger;
 import org.betonquest.betonquest.quest.action.tag.TagAction;
 import org.betonquest.betonquest.quest.action.tag.TagChanger;
 import org.bukkit.Location;
+
+import java.util.List;
 
 /**
  * Action to set a compass target and manage compass points.
@@ -39,7 +41,7 @@ public class CompassAction implements PlayerAction {
     /**
      * The compass point to set.
      */
-    private final Argument<CompassID> compassId;
+    private final Argument<CompassIdentifier> compassId;
 
     /**
      * Create the compass action.
@@ -50,7 +52,7 @@ public class CompassAction implements PlayerAction {
      * @param compassId  the compass point
      */
     public CompassAction(final FeatureApi featureApi, final PlayerDataStorage storage,
-                         final Argument<CompassTargetOperation> action, final Argument<CompassID> compassId) {
+                         final Argument<CompassTargetOperation> action, final Argument<CompassIdentifier> compassId) {
         this.featureApi = featureApi;
         this.dataStorage = storage;
         this.action = action;
@@ -59,10 +61,10 @@ public class CompassAction implements PlayerAction {
 
     @Override
     public void execute(final Profile profile) throws QuestException {
-        final CompassID compassId = this.compassId.getValue(profile);
+        final CompassIdentifier compassId = this.compassId.getValue(profile);
         switch (action.getValue(profile)) {
-            case ADD -> changeTag(new AddTagChanger(new DefaultListArgument<>(compassId.getTag())), profile);
-            case DEL -> changeTag(new DeleteTagChanger(new DefaultListArgument<>(compassId.getTag())), profile);
+            case ADD -> changeTag(new AddTagChanger(new DefaultArgument<>(List.of(compassId.getTag()))), profile);
+            case DEL -> changeTag(new DeleteTagChanger(new DefaultArgument<>(List.of(compassId.getTag()))), profile);
             case SET -> {
                 final QuestCompass compass = featureApi.getCompasses().get(compassId);
                 if (compass == null) {

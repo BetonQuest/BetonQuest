@@ -1,8 +1,9 @@
 package org.betonquest.betonquest.api.schedule;
 
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
+import org.betonquest.betonquest.api.identifier.ScheduleIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -34,7 +35,7 @@ class SchedulerTest {
     @Test
     void testAddSchedule() {
         final Scheduler<Schedule, FictiveTime> scheduler = new MockedScheduler(logger, questTypeApi);
-        final ScheduleID scheduleID = mock(ScheduleID.class);
+        final ScheduleIdentifier scheduleID = mock(ScheduleIdentifier.class);
         final Schedule schedule = mock(Schedule.class);
         when(schedule.getId()).thenReturn(scheduleID);
         scheduler.addSchedule(schedule);
@@ -54,7 +55,7 @@ class SchedulerTest {
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     void testStop() {
         final Scheduler<Schedule, FictiveTime> scheduler = new MockedScheduler(logger, questTypeApi);
-        final ScheduleID scheduleID = mock(ScheduleID.class);
+        final ScheduleIdentifier scheduleID = mock(ScheduleIdentifier.class);
         final Schedule schedule = mock(Schedule.class);
         scheduler.schedules.put(scheduleID, schedule);
         scheduler.start();
@@ -69,10 +70,10 @@ class SchedulerTest {
         final QuestTypeApi questTypeApi = mock(QuestTypeApi.class);
         final Scheduler<Schedule, FictiveTime> scheduler = new MockedScheduler(logger, questTypeApi);
         final Schedule schedule = mock(Schedule.class);
-        when(schedule.getId()).thenReturn(mock(ScheduleID.class));
-        final ActionID actionA = mock(ActionID.class);
-        final ActionID actionB = mock(ActionID.class);
-        final List<ActionID> actionList = List.of(actionA, actionB);
+        when(schedule.getId()).thenReturn(mock(ScheduleIdentifier.class));
+        final ActionIdentifier actionA = mock(ActionIdentifier.class);
+        final ActionIdentifier actionB = mock(ActionIdentifier.class);
+        final List<ActionIdentifier> actionList = List.of(actionA, actionB);
         when(schedule.getActions()).thenReturn(actionList);
         scheduler.executeActions(schedule);
         verify(questTypeApi).actions(null, actionList);

@@ -7,10 +7,10 @@ import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -81,7 +81,7 @@ public final class Utils {
      * @return the party of the location
      */
     public static Map<OnlineProfile, Double> getParty(final QuestTypeApi questTypeApi, final Collection<OnlineProfile> profiles,
-                                                      final Location location, final double range, final List<ConditionID> conditions) {
+                                                      final Location location, final double range, final List<ConditionIdentifier> conditions) {
         final World world = location.getWorld();
         final double squared = range * range;
 

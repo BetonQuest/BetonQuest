@@ -171,7 +171,11 @@ public class Compatibility implements Listener {
             }
         });
         hologramProvider = new HologramProvider(hologramIntegrators);
-        hologramProvider.hook(betonQuestApi);
+        try {
+            hologramProvider.hook(betonQuestApi);
+        } catch (final HookException e) {
+            log.warn("Error while enabling some features while post hooking into Holograms: " + e.getMessage(), e);
+        }
     }
 
     /**

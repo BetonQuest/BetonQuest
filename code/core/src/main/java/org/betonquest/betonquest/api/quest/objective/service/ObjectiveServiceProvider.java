@@ -2,9 +2,9 @@ package org.betonquest.betonquest.api.quest.objective.service;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestBiFunction;
+import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
@@ -29,7 +29,7 @@ public interface ObjectiveServiceProvider {
      * @return a new {@link ObjectiveService} for the given objectiveId
      * @throws QuestException if the objective causes issues with creating a factory service
      */
-    ObjectiveService getFactoryService(ObjectiveID objectiveID) throws QuestException;
+    ObjectiveService getFactoryService(ObjectiveIdentifier objectiveID) throws QuestException;
 
     /**
      * Requests a new event subscription using an {@link EventServiceSubscriptionBuilder}.
@@ -50,7 +50,7 @@ public interface ObjectiveServiceProvider {
      * @param newState    the new state of the objective
      * @throws QuestException if the objective could not be stopped
      */
-    void stop(ObjectiveID objectiveID, Profile profile, ObjectiveState newState) throws QuestException;
+    void stop(ObjectiveIdentifier objectiveID, Profile profile, ObjectiveState newState) throws QuestException;
 
     /**
      * Starts the objective for the given profile.
@@ -61,7 +61,7 @@ public interface ObjectiveServiceProvider {
      * @param previousState     the previous state of the objective
      * @throws QuestException if the objective could not be started
      */
-    void start(ObjectiveID objectiveID, Profile profile, String instructionString, ObjectiveState previousState) throws QuestException;
+    void start(ObjectiveIdentifier objectiveID, Profile profile, String instructionString, ObjectiveState previousState) throws QuestException;
 
     /**
      * Registers a new event subscription for a specific non-profile event.
@@ -75,7 +75,7 @@ public interface ObjectiveServiceProvider {
      * @param <T>              the event type
      * @throws QuestException if the event could not be subscribed
      */
-    <T extends Event> void subscribe(ObjectiveID objectiveID, Class<T> eventClass, NonProfileEventHandler<T> handler,
+    <T extends Event> void subscribe(ObjectiveIdentifier objectiveID, Class<T> eventClass, NonProfileEventHandler<T> handler,
                                      EventPriority priority, boolean ignoreCancelled, boolean ignoreConditions) throws QuestException;
 
     /**
@@ -91,7 +91,7 @@ public interface ObjectiveServiceProvider {
      * @param <T>              the event type
      * @throws QuestException if the event could not be subscribed
      */
-    <T extends Event> void subscribe(ObjectiveID objectiveID, Class<T> eventClass, ProfileEventHandler<T> handler,
+    <T extends Event> void subscribe(ObjectiveIdentifier objectiveID, Class<T> eventClass, ProfileEventHandler<T> handler,
                                      QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor,
                                      EventPriority priority, boolean ignoreCancelled, boolean ignoreConditions) throws QuestException;
 
@@ -108,7 +108,7 @@ public interface ObjectiveServiceProvider {
      * @param <T>              the event type
      * @throws QuestException if the event could not be subscribed
      */
-    <T extends Event> void subscribe(ObjectiveID objectiveID, Class<T> eventClass, OnlineProfileEventHandler<T> handler,
+    <T extends Event> void subscribe(ObjectiveIdentifier objectiveID, Class<T> eventClass, OnlineProfileEventHandler<T> handler,
                                      QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor,
                                      EventPriority priority, boolean ignoreCancelled, boolean ignoreConditions) throws QuestException;
 }

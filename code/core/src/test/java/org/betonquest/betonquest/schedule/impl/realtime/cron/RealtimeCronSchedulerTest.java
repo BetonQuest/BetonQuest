@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.schedule.impl.realtime.cron;
 
 import com.cronutils.model.time.ExecutionTime;
+import org.betonquest.betonquest.api.identifier.ScheduleIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.api.schedule.CronSchedule;
-import org.betonquest.betonquest.api.schedule.ScheduleID;
 import org.betonquest.betonquest.schedule.LastExecutionCache;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +31,7 @@ class RealtimeCronSchedulerTest {
     /**
      * Mocked schedule id.
      */
-    private static final ScheduleID SCHEDULE_ID = mock(ScheduleID.class);
+    private static final ScheduleIdentifier SCHEDULE_ID = mock(ScheduleIdentifier.class);
 
     static {
         when(SCHEDULE_ID.toString()).thenReturn("test.schedule");

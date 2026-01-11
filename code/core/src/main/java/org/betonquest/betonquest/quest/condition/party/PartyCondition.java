@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.quest.condition.party;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Bukkit;
@@ -35,17 +35,17 @@ public class PartyCondition implements NullableCondition {
     /**
      * The conditions to check for to be a party member.
      */
-    private final Argument<List<ConditionID>> conditions;
+    private final Argument<List<ConditionIdentifier>> conditions;
 
     /**
      * The conditions that everyone in the party must meet.
      */
-    private final Argument<List<ConditionID>> everyone;
+    private final Argument<List<ConditionIdentifier>> everyone;
 
     /**
      * The conditions that at least one party member must meet.
      */
-    private final Argument<List<ConditionID>> anyone;
+    private final Argument<List<ConditionIdentifier>> anyone;
 
     /**
      * The minimum number of party members.
@@ -76,8 +76,8 @@ public class PartyCondition implements NullableCondition {
      * @param profileProvider the profile provider instance
      */
     public PartyCondition(final Argument<Location> location, final Argument<Number> range,
-                          final Argument<List<ConditionID>> conditions, final Argument<List<ConditionID>> everyone,
-                          final Argument<List<ConditionID>> anyone, @Nullable final Argument<Number> count,
+                          final Argument<List<ConditionIdentifier>> conditions, final Argument<List<ConditionIdentifier>> everyone,
+                          final Argument<List<ConditionIdentifier>> anyone, @Nullable final Argument<Number> count,
                           final QuestTypeApi questTypeApi, final ProfileProvider profileProvider) {
         this.location = location;
         this.range = range;
@@ -102,13 +102,13 @@ public class PartyCondition implements NullableCondition {
         return meetEveryoneConditions(everyone.getValue(profile), partyMembers) && meetAnyoneConditions(anyone.getValue(profile), partyMembers);
     }
 
-    private boolean meetEveryoneConditions(final List<ConditionID> conditions, final Set<OnlineProfile> partyMembers) {
+    private boolean meetEveryoneConditions(final List<ConditionIdentifier> conditions, final Set<OnlineProfile> partyMembers) {
         final Stream<OnlineProfile> everyoneStream = Bukkit.isPrimaryThread() ? partyMembers.stream() : partyMembers.parallelStream();
         return everyoneStream.allMatch(member -> questTypeApi.conditions(member, conditions));
     }
 
-    private boolean meetAnyoneConditions(final List<ConditionID> conditions, final Set<OnlineProfile> partyMembers) {
-        final Stream<ConditionID> anyoneStream = Bukkit.isPrimaryThread() ? conditions.stream() : conditions.stream().parallel();
+    private boolean meetAnyoneConditions(final List<ConditionIdentifier> conditions, final Set<OnlineProfile> partyMembers) {
+        final Stream<ConditionIdentifier> anyoneStream = Bukkit.isPrimaryThread() ? conditions.stream() : conditions.stream().parallel();
         return anyoneStream.allMatch(condition -> {
             final Stream<OnlineProfile> memberStream = Bukkit.isPrimaryThread() ? partyMembers.stream() : partyMembers.parallelStream();
             return memberStream.anyMatch(member -> questTypeApi.condition(member, condition));

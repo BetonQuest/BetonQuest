@@ -3,6 +3,8 @@ package org.betonquest.betonquest.api.identifier;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.identifier.factory.DefaultIdentifierFactory;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -26,6 +28,17 @@ class IdentifierTest {
         when(manager.getPackages()).thenReturn(packages);
 
         return pack;
+    }
+
+    private static IdentifierFactory<Identifier> getFactory(final QuestPackageManager manager) {
+        return new DefaultIdentifierFactory<>(manager) {
+            @Override
+            public Identifier parseIdentifier(@Nullable final QuestPackage source, final String input) throws QuestException {
+                final Map.Entry<QuestPackage, String> entry = parse(source, input);
+                return new DefaultIdentifier(entry.getKey(), entry.getValue()) {
+                };
+            }
+        };
     }
 
     @Nested
@@ -58,9 +71,8 @@ class IdentifierTest {
         @ParameterizedTest
         @MethodSource("identifiersToResolve")
         @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-        void resolve(final QuestPackageManager packManager, final QuestPackage pack, final String identifier, final QuestPackage expectedPack, final String expectedIdentifier) throws QuestException {
-            final Identifier resolvedIdentifier = new DefaultIdentifier(packManager, pack, identifier) {
-            };
+        void resolve(final QuestPackageManager manager, final QuestPackage pack, final String identifier, final QuestPackage expectedPack, final String expectedIdentifier) throws QuestException {
+            final Identifier resolvedIdentifier = getFactory(manager).parseIdentifier(pack, identifier);
             final QuestPackage resolvedPack = resolvedIdentifier.getPackage();
             final String resolvedIdentifierString = resolvedIdentifier.get();
             final String resolvedFull = resolvedIdentifier.getFull();
@@ -95,9 +107,9 @@ class IdentifierTest {
 
         @ParameterizedTest
         @MethodSource("identifiersToResolve")
-        void resolve(final QuestPackageManager packManager, final QuestPackage pack, final String identifier, final String message) {
-            final QuestException questException = assertThrows(QuestException.class, () -> new DefaultIdentifier(packManager, pack, identifier) {
-            }, "Expected QuestException");
+        void resolve(final QuestPackageManager manager, final QuestPackage pack, final String identifier, final String message) {
+            final QuestException questException = assertThrows(QuestException.class,
+                    () -> getFactory(manager).parseIdentifier(pack, identifier), "Expected QuestException");
             assertEquals(message, questException.getMessage(), "Exception message does not equal expected message");
         }
     }

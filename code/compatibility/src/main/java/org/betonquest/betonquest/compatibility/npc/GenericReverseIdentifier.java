@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.compatibility.npc;
 
+import org.betonquest.betonquest.api.identifier.NpcIdentifier;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
-import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.api.quest.npc.NpcReverseIdentifier;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,14 +20,14 @@ import java.util.function.Function;
 public abstract class GenericReverseIdentifier<T> implements NpcReverseIdentifier {
 
     /**
-     * The {@link NpcID} prefix.
+     * The {@link NpcIdentifier} prefix.
      */
     protected final String prefix;
 
     /**
      * Maps the contents of ids to the ids having that content.
      */
-    protected final Map<String, Set<NpcID>> idsByInstruction;
+    protected final Map<String, Set<NpcIdentifier>> idsByInstruction;
 
     /**
      * Original Npc class.
@@ -55,14 +55,14 @@ public abstract class GenericReverseIdentifier<T> implements NpcReverseIdentifie
     }
 
     @Override
-    public Set<NpcID> getIdsFromNpc(final Npc<?> npc, @Nullable final OnlineProfile profile) {
+    public Set<NpcIdentifier> getIdsFromNpc(final Npc<?> npc, @Nullable final OnlineProfile profile) {
         if (!clazz.isAssignableFrom(npc.getOriginal().getClass())) {
             return Set.of();
         }
         final T original = (T) npc.getOriginal();
-        final Set<NpcID> valid = new HashSet<>();
+        final Set<NpcIdentifier> valid = new HashSet<>();
         for (final Function<T, String> function : functions) {
-            final Set<NpcID> identifiers = idsByInstruction.get(prefix + function.apply(original));
+            final Set<NpcIdentifier> identifiers = idsByInstruction.get(prefix + function.apply(original));
             if (identifiers != null) {
                 valid.addAll(identifiers);
             }
@@ -71,7 +71,7 @@ public abstract class GenericReverseIdentifier<T> implements NpcReverseIdentifie
     }
 
     @Override
-    public void addID(final NpcID npcId, final String instruction) {
+    public void addID(final NpcIdentifier npcId, final String instruction) {
         if (instruction.startsWith(prefix)) {
             idsByInstruction.computeIfAbsent(instruction, string -> new HashSet<>()).add(npcId);
         }
