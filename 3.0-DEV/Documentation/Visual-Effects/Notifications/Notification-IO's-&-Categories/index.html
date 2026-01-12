@@ -5640,38 +5640,40 @@ You also need to escape the backslash itself, if you use double quotes for some 
 <h3 id="usage-examples">Usage Examples<a class="headerlink" href="#usage-examples" title="Permanent link">🔗</a></h3>
 <p>Check out the notify IO specific options if you haven't yet. You must understand these two if you want to use the Notify system to it's full extend.
 Advanced users may also use <a href="../../Documentation/Visual-Effects/Notifications/Notification-IO's-&amp;-Categories.md#categories">Notify Categories</a> to make their lives easier.
-<div class="highlight"><pre><span></span><code><span class="c1">#The simplest of all notify actions. Just a chat message:</span>
-<span class="nt">customAction</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">%player%!&quot;</span><span class="w">  </span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="c1">#The simplest of all notify actions. Just a chat message:</span>
+<span class="w">  </span><span class="nt">customAction</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">%player%!&quot;</span><span class="w">  </span>
 
-<span class="c1">#It&#39;s the same as this one since &#39;chat&#39; is the default IO.</span>
-<span class="nt">theSame</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">%player%!</span><span class="nv"> </span><span class="s">io:chat&quot;</span>
+<span class="w">  </span><span class="c1">#It&#39;s the same as this one since &#39;chat&#39; is the default IO.</span>
+<span class="w">  </span><span class="nt">theSame</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">%player%!</span><span class="nv"> </span><span class="s">io:chat&quot;</span>
 
-<span class="c1">#This one displays a title and a subtitle:</span>
-<span class="nt">myTitle</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">This</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">title.\\nThis</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">subtitle.</span><span class="nv"> </span><span class="s">io:title&quot;</span>
+<span class="w">  </span><span class="c1">#This one displays a title and a subtitle:</span>
+<span class="w">  </span><span class="nt">myTitle</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">This</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">title.\\nThis</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">subtitle.</span><span class="nv"> </span><span class="s">io:title&quot;</span>
 
-<span class="c1">#Plays a sound:</span>
-<span class="nt">mySound</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">io:sound</span><span class="nv"> </span><span class="s">sound:x.y.z&quot;</span>
+<span class="w">  </span><span class="c1">#Plays a sound:</span>
+<span class="w">  </span><span class="nt">mySound</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">io:sound</span><span class="nv"> </span><span class="s">sound:x.y.z&quot;</span>
 
-<span class="c1">#This one explicitly defines an io (bossbar) and adds one bossbarIO option + one soundIO option:</span>
-<span class="nt">myBar</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">This</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">custom</span><span class="nv"> </span><span class="s">message.</span><span class="nv"> </span><span class="s">io:bossbar</span><span class="nv"> </span><span class="s">barColor:red</span><span class="nv"> </span><span class="s">sound:block.anvil.use&quot;</span>
+<span class="w">  </span><span class="c1">#This one explicitly defines an io (bossbar) and adds one bossbarIO option + one soundIO option:</span>
+<span class="w">  </span><span class="nt">myBar</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">This</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">custom</span><span class="nv"> </span><span class="s">message.</span><span class="nv"> </span><span class="s">io:bossbar</span><span class="nv"> </span><span class="s">barColor:red</span><span class="nv"> </span><span class="s">sound:block.anvil.use&quot;</span>
 
-<span class="c1">#Some actions with categories.</span>
-<span class="nt">myAction1</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">This</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">custom</span><span class="nv"> </span><span class="s">message!</span><span class="nv"> </span><span class="s">category:info&quot;</span>
-<span class="nt">myAction2</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">This</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">custom</span><span class="nv"> </span><span class="s">message!</span><span class="nv"> </span><span class="s">category:firstChoice,secondChoice&quot;</span>
+<span class="w">  </span><span class="c1">#Some actions with categories.</span>
+<span class="w">  </span><span class="nt">myAction1</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">This</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">custom</span><span class="nv"> </span><span class="s">message!</span><span class="nv"> </span><span class="s">category:info&quot;</span>
+<span class="w">  </span><span class="nt">myAction2</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">This</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">custom</span><span class="nv"> </span><span class="s">message!</span><span class="nv"> </span><span class="s">category:firstChoice,secondChoice&quot;</span>
 
-<span class="c1">#You can also override category settings:</span>
-<span class="nt">myAction3</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Another</span><span class="nv"> </span><span class="s">message!</span><span class="nv"> </span><span class="s">category:info</span><span class="nv"> </span><span class="s">io:advancement</span><span class="nv"> </span><span class="s">frame:challenge&quot;</span>
+<span class="w">  </span><span class="c1">#You can also override category settings:</span>
+<span class="w">  </span><span class="nt">myAction3</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Another</span><span class="nv"> </span><span class="s">message!</span><span class="nv"> </span><span class="s">category:info</span><span class="nv"> </span><span class="s">io:advancement</span><span class="nv"> </span><span class="s">frame:challenge&quot;</span>
 
-<span class="c1">#Use multiple languages:</span>
-<span class="nt">multilanguage</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">{en-US}</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">english</span><span class="nv"> </span><span class="s">person!</span><span class="nv"> </span><span class="s">{de-de}</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">german</span><span class="nv"> </span><span class="s">person!</span><span class="nv"> </span><span class="s">{es-ES}</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">spanish</span><span class="nv"> </span><span class="s">person!&quot;</span>
+<span class="w">  </span><span class="c1">#Use multiple languages:</span>
+<span class="w">  </span><span class="nt">multilanguage</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">{en-US}</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">english</span><span class="nv"> </span><span class="s">person!</span><span class="nv"> </span><span class="s">{de-de}</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">german</span><span class="nv"> </span><span class="s">person!</span><span class="nv"> </span><span class="s">{es-ES}</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">spanish</span><span class="nv"> </span><span class="s">person!&quot;</span>
 </code></pre></div></p>
 <h3 id="translations">Translations<a class="headerlink" href="#translations" title="Permanent link">🔗</a></h3>
-<p>Notifications can be translated with this syntax: 
-<div class="highlight"><pre><span></span><code><span class="nt">example</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">{en-US}</span><span class="nv"> </span><span class="s">ABC</span><span class="nv"> </span><span class="s">{de-DE}</span><span class="nv"> </span><span class="s">DEF&quot;</span>
-</code></pre></div>
-The value in <code>{}</code> is a language key from lang folder. Any text after the language key until the next language key
-belongs to the specified language. There must be a space between the language key and the message.
+<p>A language can be defined with a language key from the language folder in the format <code>{Lang-Key}</code>.
+Any text after the language key until the next language key belongs to the specified language.
+There must be a space between the language key and the message.
 In this example, english users would see <code>ABC</code> and german ones would see <code>DEF</code>.</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">example</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">{en-US}</span><span class="nv"> </span><span class="s">ABC</span><span class="nv"> </span><span class="s">{de-DE}</span><span class="nv"> </span><span class="s">DEF&quot;</span>
+</code></pre></div>
 <h3 id="broadcasts">Broadcasts<a class="headerlink" href="#broadcasts" title="Permanent link">🔗</a></h3>
 <p><strong>persistent</strong>, <strong>static</strong></p>
 <p>You can broadcast notifications to all players on the server using the <code>notifyall</code> action. It works just like the notify action.
