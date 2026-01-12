@@ -11,7 +11,8 @@ cancel: |-
   | _bypass_   | Keyword (`bypass`) | Disabled               | If the canceler conditions should be ignored. If enabled the canceler will be executed, even when its conditions are not met.|
 
   ```YAML title="Example"
-  cancelQuest: "cancel woodQuest bypass"
+  actions:
+    cancelQuest: "cancel woodQuest bypass"
   ```
 
 notify: |-
@@ -43,42 +44,44 @@ notify: |-
 
   Check out the notify IO specific options if you haven't yet. You must understand these two if you want to use the Notify system to it's full extend.
   Advanced users may also use [Notify Categories](/Documentation/Visual-Effects/Notifications/Notification-IO's-&-Categories.md#categories) to make their lives easier.
-  ```YAML
-  #The simplest of all notify actions. Just a chat message:
-  customAction: "notify Hello %player%!"  
-
-  #It's the same as this one since 'chat' is the default IO.
-  theSame: "notify Hello %player%! io:chat"
-
-  #This one displays a title and a subtitle:
-  myTitle: "notify This is a title.\\nThis is a subtitle. io:title"
-
-  #Plays a sound:
-  mySound: "notify io:sound sound:x.y.z"
-
-  #This one explicitly defines an io (bossbar) and adds one bossbarIO option + one soundIO option:
-  myBar: "notify This is a custom message. io:bossbar barColor:red sound:block.anvil.use"
-
-  #Some actions with categories.
-  myAction1: "notify This is a custom message! category:info"
-  myAction2: "notify This is a custom message! category:firstChoice,secondChoice"
-
-  #You can also override category settings:
-  myAction3: "notify Another message! category:info io:advancement frame:challenge"
-
-  #Use multiple languages:
-  multilanguage: "notify {en-US} Hello english person! {de-de} Hello german person! {es-ES} Hello spanish person!"
+  ```YAML title="Example"
+  actions:
+    #The simplest of all notify actions. Just a chat message:
+    customAction: "notify Hello %player%!"  
+  
+    #It's the same as this one since 'chat' is the default IO.
+    theSame: "notify Hello %player%! io:chat"
+  
+    #This one displays a title and a subtitle:
+    myTitle: "notify This is a title.\\nThis is a subtitle. io:title"
+  
+    #Plays a sound:
+    mySound: "notify io:sound sound:x.y.z"
+  
+    #This one explicitly defines an io (bossbar) and adds one bossbarIO option + one soundIO option:
+    myBar: "notify This is a custom message. io:bossbar barColor:red sound:block.anvil.use"
+  
+    #Some actions with categories.
+    myAction1: "notify This is a custom message! category:info"
+    myAction2: "notify This is a custom message! category:firstChoice,secondChoice"
+  
+    #You can also override category settings:
+    myAction3: "notify Another message! category:info io:advancement frame:challenge"
+  
+    #Use multiple languages:
+    multilanguage: "notify {en-US} Hello english person! {de-de} Hello german person! {es-ES} Hello spanish person!"
   ```
   ### Translations
 
-  Notifications can be translated with this syntax: 
-  ```YAML
-  example: "notify {en-US} ABC {de-DE} DEF"
-  ```
-  The value in `{}` is a language key from lang folder. Any text after the language key until the next language key
-  belongs to the specified language. There must be a space between the language key and the message.
+  A language can be defined with a language key from the language folder in the format `{Lang-Key}`.
+  Any text after the language key until the next language key belongs to the specified language.
+  There must be a space between the language key and the message.
   In this example, english users would see `ABC` and german ones would see `DEF`.
-
+  
+  ```YAML title="Example"
+  actions:
+    example: "notify {en-US} ABC {de-DE} DEF"
+  ```
 
   ### Broadcasts
   **persistent**, **static**
