@@ -2101,6 +2101,18 @@
       
       
       
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
     </ul>
   </nav>
   
@@ -6227,6 +6239,18 @@
       
       
       
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
     </ul>
   </nav>
   
@@ -7453,6 +7477,9 @@ Second argument is the required level of the attribute. Must be greater than or 
 </code></pre></div>
 </div>
 <h2 id="itemsadder">ItemsAdder<a href="https://www.spigotmc.org/resources/73355/"></a><a class="headerlink" href="#itemsadder" title="Permanent link">🔗</a></h2>
+<div class="admonition info">
+<p><strong>Required ItemsAdder version: <em>4.0.10</em> or above</strong></p>
+</div>
 <h3 id="items_1">Items<a class="headerlink" href="#items_1" title="Permanent link">🔗</a></h3>
 <p>ItemsAdder usage is integrated to the <a href="../../../Features/Items/">Items</a> system and thus used for actions and conditions.</p>
 <p>In addition, you can also add <code>quest-item</code> argument to tag them as "QuestItem".</p>
@@ -7470,12 +7497,156 @@ Second argument is the required level of the attribute. Must be greater than or 
 <span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">giveRuby</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">give ruby:3</span>
 </code></pre></div></td></tr></table></div>
+<h3 id="conditions_3">Conditions<a class="headerlink" href="#conditions_3" title="Permanent link">🔗</a></h3>
+<h4 id="check-for-block-itemsadderblock">Check for block <code>itemsAdderBlock</code><a class="headerlink" href="#check-for-block-itemsadderblock" title="Permanent link">🔗</a></h4>
+<p>Check if the ItemsAdder block is at a location.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Syntax</th>
+<th>Default Value</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>itemId</em></td>
+<td>string</td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg></span></td>
+<td>Identifier of the block to check.</td>
+</tr>
+<tr>
+<td><em>location</em></td>
+<td><a href="../../Data-Formats/#unified-location-formating">ULF</a></td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg></span></td>
+<td>The location to check the block at.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">iaBlock</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">itemsAdderBlock itemsadder:ruby_ore 40;72;3;world</span>
+</code></pre></div>
+<h3 id="actions_7">Actions<a class="headerlink" href="#actions_7" title="Permanent link">🔗</a></h3>
+<h4 id="place-block-itemsadderblock">Place block <code>itemsAdderBlock</code><a class="headerlink" href="#place-block-itemsadderblock" title="Permanent link">🔗</a></h4>
+<p>Changes the block at the given position.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Syntax</th>
+<th>Default Value</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>itemId</em></td>
+<td>string</td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg></span></td>
+<td>Identifier of the block to place.</td>
+</tr>
+<tr>
+<td><em>location</em></td>
+<td><a href="../../Data-Formats/#unified-location-formating">ULF</a></td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg></span></td>
+<td>The location to place the block at.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">iaSetBlock</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">itemsAdderBlock itemsadder:ruby_ore 100;200;300;world</span>
+</code></pre></div>
+<h4 id="play-totem-animation-itemsadderanimation">Play totem animation <code>itemsAdderAnimation</code><a class="headerlink" href="#play-totem-animation-itemsadderanimation" title="Permanent link">🔗</a></h4>
+<p>Plays an ItemsAdder totem animation.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Syntax</th>
+<th>Default Value</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>animationId</em></td>
+<td>string</td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg></span></td>
+<td>Animation name to play.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">iaPlayAnimation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">itemsAdderAnimation totem1</span>
+</code></pre></div>
+<h3 id="objectives_1">Objectives<a class="headerlink" href="#objectives_1" title="Permanent link">🔗</a></h3>
+<h4 id="break-block-itemsadderblockbreak">Break Block <code>itemsAdderBlockBreak</code><a class="headerlink" href="#break-block-itemsadderblockbreak" title="Permanent link">🔗</a></h4>
+<p>To complete this objective player must break specified amount of ItemsAdder blocks.
+You can add a <code>notify</code> keyword if you want to send a notification to players whenever the objective progresses.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Syntax</th>
+<th>Default Value</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>itemId</em></td>
+<td>string</td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg></span></td>
+<td>Identifier of the block to break.</td>
+</tr>
+<tr>
+<td><em>amount</em></td>
+<td>amount:number</td>
+<td>1</td>
+<td>Amount of blocks to break.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">iaBreak</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">itemsAdderBlockBreak itemsadder:ruby_ore amount:20 notify:5</span>
+</code></pre></div>
+<h4 id="place-block-itemsadderblockplace">Place Block <code>itemsAdderBlockPlace</code><a class="headerlink" href="#place-block-itemsadderblockplace" title="Permanent link">🔗</a></h4>
+<p>To complete this objective player must place specified amount of ItemsAdder blocks.
+You can add a <code>notify</code> keyword if you want to send a notification to players whenever the objective progresses.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Syntax</th>
+<th>Default Value</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>itemId</em></td>
+<td>string</td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg></span></td>
+<td>Identifier of the block to place.</td>
+</tr>
+<tr>
+<td><em>amount</em></td>
+<td>amount:number</td>
+<td>1</td>
+<td>Amount of blocks to place.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">iaPlace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">itemsAdderBlockPlace iasurvival:restoration_table</span>
+</code></pre></div>
 <h2 id="jobsreborn">JobsReborn<a href="https://www.spigotmc.org/resources/4216/"></a><a class="headerlink" href="#jobsreborn" title="Permanent link">🔗</a></h2>
 <p>Requires adding the following to "<em>config.yml</em>":
 <div class="highlight"><pre><span></span><code><span class="nt">hook</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">jobs</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;true&#39;</span>
 </code></pre></div></p>
-<h3 id="conditions_3">Conditions<a class="headerlink" href="#conditions_3" title="Permanent link">🔗</a></h3>
+<h3 id="conditions_4">Conditions<a class="headerlink" href="#conditions_4" title="Permanent link">🔗</a></h3>
 <h4 id="can-level-up-nujobs_canlevel-jobname">Can Level up: <code>nujobs_canlevel {jobname}</code><a class="headerlink" href="#can-level-up-nujobs_canlevel-jobname" title="Permanent link">🔗</a></h4>
 <p>Returns true if the player can level up</p>
 <h4 id="has-job-nujobs_hasjob-jobname">Has Job: <code>nujobs_hasjob {jobname}</code><a class="headerlink" href="#has-job-nujobs_hasjob-jobname" title="Permanent link">🔗</a></h4>
@@ -7494,7 +7665,7 @@ Second argument is the required level of the attribute. Must be greater than or 
 <div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">nujobs_joblevel Woodcutter 5 10</span>
 </code></pre></div>
 </div>
-<h3 id="actions_7">Actions<a class="headerlink" href="#actions_7" title="Permanent link">🔗</a></h3>
+<h3 id="actions_8">Actions<a class="headerlink" href="#actions_8" title="Permanent link">🔗</a></h3>
 <h4 id="add-jobs-experience-nujobs_addexp-jobname-exp">Add Jobs Experience: <code>nujobs_addexp {jobname} {exp}</code><a class="headerlink" href="#add-jobs-experience-nujobs_addexp-jobname-exp" title="Permanent link">🔗</a></h4>
 <p>Gives the player experience</p>
 <h4 id="increase-jobs-level-nujobs_addlevel-jobname-amount">Increase Jobs Level: <code>nujobs_addlevel {jobname} {amount}</code><a class="headerlink" href="#increase-jobs-level-nujobs_addlevel-jobname-amount" title="Permanent link">🔗</a></h4>
@@ -7507,7 +7678,7 @@ Second argument is the required level of the attribute. Must be greater than or 
 <p>Removes the player from job.</p>
 <h4 id="set-jobs-level-nujobs_setlevel-jobname-level">Set Jobs Level: <code>nujobs_setlevel {jobname} {level}</code><a class="headerlink" href="#set-jobs-level-nujobs_setlevel-jobname-level" title="Permanent link">🔗</a></h4>
 <p>Set the player to level.</p>
-<h3 id="objectives_1">Objectives<a class="headerlink" href="#objectives_1" title="Permanent link">🔗</a></h3>
+<h3 id="objectives_2">Objectives<a class="headerlink" href="#objectives_2" title="Permanent link">🔗</a></h3>
 <h4 id="join-jobs-job-objective-nujobs_joinjob-jobname">Join Jobs Job Objective: <code>nujobs_joinjob {jobname}</code><a class="headerlink" href="#join-jobs-job-objective-nujobs_joinjob-jobname" title="Permanent link">🔗</a></h4>
 <p>Triggers when player joins job.</p>
 <h4 id="leave-jobs-job-objective-nujobs_leavejob-jobname">Leave Jobs Job Objective: <code>nujobs_leavejob {jobname}</code><a class="headerlink" href="#leave-jobs-job-objective-nujobs_leavejob-jobname" title="Permanent link">🔗</a></h4>
@@ -7581,7 +7752,7 @@ You also have the possibility to assign groups to the player via the <code>group
 but its not recommended as it only removes exact matches.
 Instead only use the permission to remove.</p>
 <h2 id="magic">Magic<a href="http://dev.bukkit.org/bukkit-plugins/magic/"></a><a class="headerlink" href="#magic" title="Permanent link">🔗</a></h2>
-<h3 id="conditions_4">Conditions<a class="headerlink" href="#conditions_4" title="Permanent link">🔗</a></h3>
+<h3 id="conditions_5">Conditions<a class="headerlink" href="#conditions_5" title="Permanent link">🔗</a></h3>
 <h4 id="wand-wand">Wand: <code>wand</code><a class="headerlink" href="#wand-wand" title="Permanent link">🔗</a></h4>
 <p>This condition can check wands. The first argument is either <code>hand</code>, <code>inventory</code> or <code>lost</code>.
 If you choose <code>lost</code>, the condition will check if the player has lost a wand.
@@ -7598,7 +7769,7 @@ Each spell in this list must have a minimal level defined after a colon.</p>
 </code></pre></div>
 </div>
 <h2 id="mcmmo">McMMO<a href="https://www.spigotmc.org/resources/64348/"></a><a class="headerlink" href="#mcmmo" title="Permanent link">🔗</a></h2>
-<h3 id="conditions_5">Conditions<a class="headerlink" href="#conditions_5" title="Permanent link">🔗</a></h3>
+<h3 id="conditions_6">Conditions<a class="headerlink" href="#conditions_6" title="Permanent link">🔗</a></h3>
 <h4 id="mcmmo-level-mcmmolevel">McMMO Level: <code>mcmmolevel</code><a class="headerlink" href="#mcmmo-level-mcmmolevel" title="Permanent link">🔗</a></h4>
 <p>This conditions checks if the player has high enough level in the specified skill. The first argument is the name of the skill, second one is the minimum level the player needs to have to pass this condition.</p>
 <div class="admonition example">
@@ -7606,7 +7777,7 @@ Each spell in this list must have a minimal level defined after a colon.</p>
 <div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mcmmolevel woodcutting 50</span>
 </code></pre></div>
 </div>
-<h3 id="actions_8">Actions<a class="headerlink" href="#actions_8" title="Permanent link">🔗</a></h3>
+<h3 id="actions_9">Actions<a class="headerlink" href="#actions_9" title="Permanent link">🔗</a></h3>
 <h4 id="add-mcmmo-experience-mcmmoexp">Add MCMMO Experience: <code>mcmmoexp</code><a class="headerlink" href="#add-mcmmo-experience-mcmmoexp" title="Permanent link">🔗</a></h4>
 <p>This action adds experience points in a specified skill. The first argument is the name of the skill, second one is the amount of experience to add.</p>
 <div class="admonition example">
@@ -7645,7 +7816,7 @@ Therefore, a recipe that makes four items at once will let the objective progres
 <span class="nt">objectives</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">craftPotion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">craft potion 5 notify</span>
 </code></pre></div></td></tr></table></div>
-<h3 id="conditions_6">Conditions<a class="headerlink" href="#conditions_6" title="Permanent link">🔗</a></h3>
+<h3 id="conditions_7">Conditions<a class="headerlink" href="#conditions_7" title="Permanent link">🔗</a></h3>
 <h4 id="mmocore-class-mmoclass">MMOCore class: <code>mmoclass</code><a class="headerlink" href="#mmocore-class-mmoclass" title="Permanent link">🔗</a></h4>
 <p>Checks if a player has the given MMOCore class. You can check for any class that is not the default class by writing <code>*</code>
 instead of a class name.
@@ -7681,7 +7852,7 @@ The player needs to be on the specified level or higher in order to meet this co
 You can disable this behaviour by adding the <code>equal</code> argument. 
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mmostat DAMAGE_REDUCTION 3</span>
 </code></pre></div></td></tr></table></div></p>
-<h3 id="objectives_2">Objectives<a class="headerlink" href="#objectives_2" title="Permanent link">🔗</a></h3>
+<h3 id="objectives_3">Objectives<a class="headerlink" href="#objectives_3" title="Permanent link">🔗</a></h3>
 <h4 id="break-special-blocks-mmocorebreakblock">Break Special Blocks: <code>mmocorebreakblock</code><a class="headerlink" href="#break-special-blocks-mmocorebreakblock" title="Permanent link">🔗</a></h4>
 <p>This objective requires the player to break 
 <a href="https://gitlab.com/phoenix-dvpmt/mmocore/-/wikis/Mining%20and%20Block%20Regen">special blocks from MMOCore</a>. Please note that you <em>must</em> use this objective over <code>block</code> if you are using MMOCore's custom mining system.
@@ -7749,7 +7920,7 @@ itemType and itemID.
 <span class="nt">castSkillWithMMOCore</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoskill</span><span class="nv"> </span><span class="s">DEEP_WOUND</span><span class="nv"> </span><span class="s">trigger:CAST</span><span class="nv"> </span><span class="s">actions:completeTutorial&quot;</span>
 <span class="nt">itemSkill</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoskill</span><span class="nv"> </span><span class="s">DEEP_WOUND</span><span class="nv"> </span><span class="s">trigger:RIGHT_CLICK,LEFT_CLICK</span><span class="nv"> </span><span class="s">actions:giveReward&quot;</span>
 </code></pre></div></td></tr></table></div>
-<h3 id="actions_9">Actions<a class="headerlink" href="#actions_9" title="Permanent link">🔗</a></h3>
+<h3 id="actions_10">Actions<a class="headerlink" href="#actions_10" title="Permanent link">🔗</a></h3>
 <h4 id="give-mmocore-class-experience-mmoclassexperience">Give MMOCore class experience: <code>mmoclassexperience</code><a class="headerlink" href="#give-mmocore-class-experience-mmoclassexperience" title="Permanent link">🔗</a></h4>
 <p>Adds experience to the players class. The amount is a number. The <code>level</code> argument
 is optional and would convert the amount to levels instead of XP points.
@@ -7805,7 +7976,7 @@ is optional and would convert the amount to levels instead of XP points.
 <span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">giveSword</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">give sword</span>
 </code></pre></div></td></tr></table></div>
-<h3 id="objectives_3">Objectives<a class="headerlink" href="#objectives_3" title="Permanent link">🔗</a></h3>
+<h3 id="objectives_4">Objectives<a class="headerlink" href="#objectives_4" title="Permanent link">🔗</a></h3>
 <h4 id="mobkill-mmobkill">MobKill: <code>mmobkill</code><a class="headerlink" href="#mobkill-mmobkill" title="Permanent link">🔗</a></h4>
 <p>You need to kill the specified amount of MythicMobs to complete this objective.
 You can add a <code>notify</code> keyword if you want to send a notification to players whenever the objective progresses.</p>
@@ -7879,7 +8050,7 @@ You can add a <code>notify</code> keyword if you want to send a notification to 
 <span class="nt">killDevil</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmobkill dungeonDevil deathRadiusAllPlayers:30 actions:reward</span>
 <span class="nt">bandits</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmobkill bandit deathRadiusAllPlayers:30 mode:FACTION actions:spawnTrader</span>
 </code></pre></div>
-<h3 id="conditions_7">Conditions<a class="headerlink" href="#conditions_7" title="Permanent link">🔗</a></h3>
+<h3 id="conditions_8">Conditions<a class="headerlink" href="#conditions_8" title="Permanent link">🔗</a></h3>
 <h4 id="mythicmob-distance-mythicmobdistance">MythicMob distance: <code>mythicmobdistance</code><a class="headerlink" href="#mythicmob-distance-mythicmobdistance" title="Permanent link">🔗</a></h4>
 <p>Check whether the player is near a specific MythicMobs entity. The first argument is the internal name of the mob (the one defined in MythicMobs' configuration). The second argument is the distance to check, measured in block lengths in a circular radius.</p>
 <div class="admonition example">
@@ -7887,7 +8058,7 @@ You can add a <code>notify</code> keyword if you want to send a notification to 
 <div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mythicmobdistance SkeletalKnight 7</span>
 </code></pre></div>
 </div>
-<h3 id="actions_10">Actions<a class="headerlink" href="#actions_10" title="Permanent link">🔗</a></h3>
+<h3 id="actions_11">Actions<a class="headerlink" href="#actions_11" title="Permanent link">🔗</a></h3>
 <h4 id="spawn-mythicmob-mspawnmob"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a9 9 0 0 0-9 9 8.99 8.99 0 0 0 4 7.47V22h2v-3h2v3h2v-3h2v3h2v-3.54c2.47-1.65 4-4.46 4-7.46a9 9 0 0 0-9-9m-4 9a2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2 2 2 0 0 1 2-2m8 0a2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2 2 2 0 0 1 2-2m-4 3 1.5 3h-3z"/></svg></span> Spawn MythicMob: <code>mspawnmob</code><a class="headerlink" href="#spawn-mythicmob-mspawnmob" title="Permanent link">🔗</a></h4>
 <p><strong>static</strong></p>
 <table>
@@ -7995,7 +8166,7 @@ Additionally, the mob should be configured to never change its AI target using M
 <span class="w">  </span><span class="nt">giveTableLamp</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">give tableLamp:3</span>
 </code></pre></div></td></tr></table></div>
 <h2 id="packetevents">PacketEvents<a href="https://www.spigotmc.org/resources/80279/"></a><a class="headerlink" href="#packetevents" title="Permanent link">🔗</a></h2>
-<h3 id="actions_11">Actions<a class="headerlink" href="#actions_11" title="Permanent link">🔗</a></h3>
+<h3 id="actions_12">Actions<a class="headerlink" href="#actions_12" title="Permanent link">🔗</a></h3>
 <h4 id="freeze-players-freeze">Freeze players: 'freeze'<a class="headerlink" href="#freeze-players-freeze" title="Permanent link">🔗</a></h4>
 <p>This action allows you to freeze player for the given amount of ticks:
 <div class="highlight"><pre><span></span><code><span class="nt">freezeMe</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;freeze</span><span class="nv"> </span><span class="s">100&quot;</span><span class="w"> </span><span class="c1">#Freezes the player for 5 seconds</span>
@@ -8038,7 +8209,7 @@ Now specify condition's name and it's package (like <code>package&gt;conditionNa
 <h3 id="action-reward-quests">Action Reward (Quests)<a class="headerlink" href="#action-reward-quests" title="Permanent link">🔗</a></h3>
 <p>When adding rewards to a quest or a stage, choose "Custom reward" and then select "BetonQuest action".
 Now specify action's name and it's package (like <code>package&gt;actionName</code>). Quests will fire BetonQuest action when this reward will run.</p>
-<h3 id="conditions_8">Conditions<a class="headerlink" href="#conditions_8" title="Permanent link">🔗</a></h3>
+<h3 id="conditions_9">Conditions<a class="headerlink" href="#conditions_9" title="Permanent link">🔗</a></h3>
 <h4 id="quest-condition-quest">Quest condition: <code>quest</code><a class="headerlink" href="#quest-condition-quest" title="Permanent link">🔗</a></h4>
 <p>This condition is met when the player has completed the specified quest. The first and only argument is the name of the quest.
 If it contains spaces you need to quote it.</p>
@@ -8047,7 +8218,7 @@ If it contains spaces you need to quote it.</p>
 <div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">quest stone_miner</span>
 </code></pre></div>
 </div>
-<h3 id="actions_12">Actions<a class="headerlink" href="#actions_12" title="Permanent link">🔗</a></h3>
+<h3 id="actions_13">Actions<a class="headerlink" href="#actions_13" title="Permanent link">🔗</a></h3>
 <h4 id="quest-quest">Quest: <code>quest</code><a class="headerlink" href="#quest-quest" title="Permanent link">🔗</a></h4>
 <p>This action will start the quest for the player.
 The first argument must be the name of the quest, as defined in <code>name</code> option in the quest.
@@ -8063,7 +8234,7 @@ You can optionally add <code>check-requirements</code> argument if you want the 
 <h4 id="redischat-interceptor-redischat">RedisChat interceptor: <code>redischat</code><a class="headerlink" href="#redischat-interceptor-redischat" title="Permanent link">🔗</a></h4>
 <p>This chat interceptor works directly with RedisChat to pause the chat during conversations.</p>
 <h2 id="shopkeepers">Shopkeepers<a href="http://dev.bukkit.org/bukkit-plugins/shopkeepers/"></a><a class="headerlink" href="#shopkeepers" title="Permanent link">🔗</a></h2>
-<h3 id="conditions_9">Conditions<a class="headerlink" href="#conditions_9" title="Permanent link">🔗</a></h3>
+<h3 id="conditions_10">Conditions<a class="headerlink" href="#conditions_10" title="Permanent link">🔗</a></h3>
 <h4 id="shop-amount-shopamount">Shop amount: <code>shopamount</code><a class="headerlink" href="#shop-amount-shopamount" title="Permanent link">🔗</a></h4>
 <p>This condition checks if the player owns specified (or greater) amount of shops. It doesn't matter what type these shops are. The only argument is a number - minimum amount of shops.</p>
 <div class="admonition example">
@@ -8071,7 +8242,7 @@ You can optionally add <code>check-requirements</code> argument if you want the 
 <div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">shopamount 2</span>
 </code></pre></div>
 </div>
-<h3 id="actions_13">Actions<a class="headerlink" href="#actions_13" title="Permanent link">🔗</a></h3>
+<h3 id="actions_14">Actions<a class="headerlink" href="#actions_14" title="Permanent link">🔗</a></h3>
 <h4 id="open-shop-window-shopkeeper">Open shop window: <code>shopkeeper</code><a class="headerlink" href="#open-shop-window-shopkeeper" title="Permanent link">🔗</a></h4>
 <p>This action opens a trading window of a Villager. The only argument is the uniqueID of the shop. You can find it in <em>Shopkeepers/saves.yml</em> file, under <code>uniqueID</code> option.</p>
 <div class="admonition example">
@@ -8080,7 +8251,7 @@ You can optionally add <code>check-requirements</code> argument if you want the 
 </code></pre></div>
 </div>
 <h2 id="fabled">Fabled<a href="https://www.spigotmc.org/resources/91913/"></a><a class="headerlink" href="#fabled" title="Permanent link">🔗</a></h2>
-<h3 id="conditions_10">Conditions<a class="headerlink" href="#conditions_10" title="Permanent link">🔗</a></h3>
+<h3 id="conditions_11">Conditions<a class="headerlink" href="#conditions_11" title="Permanent link">🔗</a></h3>
 <h4 id="fabled-class-fabledclass">Fabled Class: <code>fabledclass</code><a class="headerlink" href="#fabled-class-fabledclass" title="Permanent link">🔗</a></h4>
 <p>This condition checks if the player has specified class or a child class of the specified one.
 The first argument is simply the name of a class.
@@ -8149,7 +8320,7 @@ Having Skript on your server will enable using BetonQuest actions and conditions
 </div>
 <h2 id="traincarts">TrainCarts<a href="https://www.spigotmc.org/resources/39592/"></a><a class="headerlink" href="#traincarts" title="Permanent link">🔗</a></h2>
 <p>TrainCarts is a plugin that allows you to create trains with advanced features.</p>
-<h3 id="conditions_11">Conditions<a class="headerlink" href="#conditions_11" title="Permanent link">🔗</a></h3>
+<h3 id="conditions_12">Conditions<a class="headerlink" href="#conditions_12" title="Permanent link">🔗</a></h3>
 <h4 id="traincarts-ride-condition-traincartsride">TrainCarts ride condition: <code>traincartsride</code><a class="headerlink" href="#traincarts-ride-condition-traincartsride" title="Permanent link">🔗</a></h4>
 <p>Checks if the player is riding a specific named train.</p>
 <div class="admonition example">
@@ -8157,7 +8328,7 @@ Having Skript on your server will enable using BetonQuest actions and conditions
 <div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">traincartsride train1</span>
 </code></pre></div>
 </div>
-<h3 id="objectives_4">Objectives<a class="headerlink" href="#objectives_4" title="Permanent link">🔗</a></h3>
+<h3 id="objectives_5">Objectives<a class="headerlink" href="#objectives_5" title="Permanent link">🔗</a></h3>
 <h4 id="traincarts-location-objective-traincartslocation">TrainCarts location objective: <code>traincartslocation</code><a class="headerlink" href="#traincarts-location-objective-traincartslocation" title="Permanent link">🔗</a></h4>
 <p>This objective requires the player to be at a specific location while sitting in a train. 
 It works similarly to the location objective, but the player must be in a TrainCarts train to complete it.</p>
@@ -8255,7 +8426,7 @@ If the conditions are not met, the time will not be counted.</p>
 </code></pre></div>
 </div>
 <h2 id="vault">Vault<a href="http://dev.bukkit.org/bukkit-plugins/vault/"></a><a class="headerlink" href="#vault" title="Permanent link">🔗</a></h2>
-<h3 id="conditions_12">Conditions<a class="headerlink" href="#conditions_12" title="Permanent link">🔗</a></h3>
+<h3 id="conditions_13">Conditions<a class="headerlink" href="#conditions_13" title="Permanent link">🔗</a></h3>
 <h4 id="vault-money-condition-money">Vault Money Condition: <code>money</code><a class="headerlink" href="#vault-money-condition-money" title="Permanent link">🔗</a></h4>
 <p>Checks if the player has the specified amount of money.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
@@ -8275,7 +8446,7 @@ If the conditions are not met, the time will not be counted.</p>
 <li>If the player has less than 100000 money, the <code>giveSubsidy</code> action will be fired.    </li>
 </ol>
 </div>
-<h3 id="actions_14">Actions<a class="headerlink" href="#actions_14" title="Permanent link">🔗</a></h3>
+<h3 id="actions_15">Actions<a class="headerlink" href="#actions_15" title="Permanent link">🔗</a></h3>
 <h4 id="vault-money-action-money">Vault Money Action: <code>money</code><a class="headerlink" href="#vault-money-action-money" title="Permanent link">🔗</a></h4>
 <p>Deposits, withdraws or multiplies money in the player's account.</p>
 <table>
@@ -8365,7 +8536,7 @@ Use <code>%money.left:500%</code> for showing the difference between the player'
 <span class="w">  </span><span class="nt">notifyNotEnough</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">You</span><span class="nv"> </span><span class="s">still</span><span class="nv"> </span><span class="s">need</span><span class="nv"> </span><span class="s">%money.left:10000%$</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">buy</span><span class="nv"> </span><span class="s">this</span><span class="nv"> </span><span class="s">plot.&quot;</span>
 </code></pre></div>
 <h2 id="worldedit-or-fastasyncworldedit">WorldEdit<a href="http://dev.bukkit.org/bukkit-plugins/worldedit/"></a> or FastAsyncWorldEdit<a href="https://www.spigotmc.org/resources/13932/"></a><a class="headerlink" href="#worldedit-or-fastasyncworldedit" title="Permanent link">🔗</a></h2>
-<h3 id="actions_15">Actions<a class="headerlink" href="#actions_15" title="Permanent link">🔗</a></h3>
+<h3 id="actions_16">Actions<a class="headerlink" href="#actions_16" title="Permanent link">🔗</a></h3>
 <h4 id="paste-schematic-paste">Paste schematic: <code>paste</code><a class="headerlink" href="#paste-schematic-paste" title="Permanent link">🔗</a></h4>
 <p><strong>persistent</strong>, <strong>static</strong></p>
 <p>This action will paste a schematic at the given location.
@@ -8384,7 +8555,7 @@ You can also rotate the schematic by adding <code>rotation:90</code> where <code
 <li>Pastes the schematic file <code>tree.<ins class="critic">schem</ins></code> at the location <code>100;200;300;world</code>.</li>
 </ol>
 <h2 id="worldguard">WorldGuard<a href="http://dev.bukkit.org/bukkit-plugins/worldguard/"></a><a class="headerlink" href="#worldguard" title="Permanent link">🔗</a></h2>
-<h3 id="conditions_13">Conditions<a class="headerlink" href="#conditions_13" title="Permanent link">🔗</a></h3>
+<h3 id="conditions_14">Conditions<a class="headerlink" href="#conditions_14" title="Permanent link">🔗</a></h3>
 <h4 id="npc-region-npcregion">NPC region: <code>npcregion</code><a class="headerlink" href="#npc-region-npcregion" title="Permanent link">🔗</a></h4>
 <p><strong>persistent</strong>, <strong>static</strong></p>
 <p>This condition is met a NPC is inside a region.</p>
@@ -8439,7 +8610,7 @@ You can also rotate the schematic by adding <code>rotation:90</code> where <code
 </table>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">inCastle</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;region</span><span class="nv"> </span><span class="s">castle&quot;</span>
 </code></pre></div>
-<h3 id="objectives_5">Objectives<a class="headerlink" href="#objectives_5" title="Permanent link">🔗</a></h3>
+<h3 id="objectives_6">Objectives<a class="headerlink" href="#objectives_6" title="Permanent link">🔗</a></h3>
 <h4 id="enter-region-region">Enter Region: <code>region</code><a class="headerlink" href="#enter-region-region" title="Permanent link">🔗</a></h4>
 <p>To complete this objective you need to be in a WorldGuard region with specified name. </p>
 <table>
