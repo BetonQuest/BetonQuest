@@ -48,7 +48,7 @@ public class PointObjective extends DefaultObjective {
     /**
      * Create a new objective to have specified amount of points.
      *
-     * @param service           the objective factory service
+     * @param service           the objective service
      * @param playerDataStorage the storage for player data
      * @param category          the point category to check for
      * @param targetAmount      the target amount of points required for completion

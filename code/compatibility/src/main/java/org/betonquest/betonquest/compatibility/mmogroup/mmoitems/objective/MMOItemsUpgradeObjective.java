@@ -26,7 +26,7 @@ public class MMOItemsUpgradeObjective extends DefaultObjective {
     /**
      * Constructor for the MMOItemsUpgradeObjective.
      *
-     * @param service  the objective factory service
+     * @param service  the objective service
      * @param itemID   the ID of the item to be upgraded
      * @param itemType the type of the item to be upgraded
      * @throws QuestException if the syntax is wrong or any error happens while parsing

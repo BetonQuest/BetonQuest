@@ -82,7 +82,7 @@ public class EntityInteractObjective extends CountingObjective {
     /**
      * Creates a new instance of the EntityInteractObjective.
      *
-     * @param service      the objective factory service
+     * @param service      the objective service
      * @param targetAmount the target amount of entities to interact with
      * @param loc          the location of the entities
      * @param range        the range of the entities

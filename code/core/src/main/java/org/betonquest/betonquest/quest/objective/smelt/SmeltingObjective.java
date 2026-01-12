@@ -26,7 +26,7 @@ public class SmeltingObjective extends CountingObjective {
     /**
      * Constructor for the SmeltingObjective.
      *
-     * @param service      the objective factory service
+     * @param service      the objective service
      * @param targetAmount the target amount of items to be smelted
      * @param item         the item to be smelted
      * @throws QuestException if there is an error in the instruction

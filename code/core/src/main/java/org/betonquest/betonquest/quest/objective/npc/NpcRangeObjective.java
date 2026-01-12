@@ -54,7 +54,7 @@ public class NpcRangeObjective extends DefaultObjective {
     /**
      * Creates a new NPCRangeObjective from the given instruction.
      *
-     * @param service the objective factory service
+     * @param service the objective service
      * @param npcIds  the list of Npc IDs to check
      * @param radius  the radius around the Npc
      * @param trigger the trigger type for the objective

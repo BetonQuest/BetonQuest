@@ -28,7 +28,7 @@ public class TagObjective extends DefaultObjective {
     /**
      * Creates a new tag objective.
      *
-     * @param service           the objective factory service
+     * @param service           the objective service
      * @param playerDataStorage the storage for player data
      * @param tag               the tag to get
      * @throws QuestException if the syntax is wrong or any error happens while parsing

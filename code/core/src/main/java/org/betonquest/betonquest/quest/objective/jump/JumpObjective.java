@@ -15,7 +15,7 @@ public class JumpObjective extends CountingObjective {
     /**
      * Constructor for the JumpObjective.
      *
-     * @param service      the objective factory service
+     * @param service      the objective service
      * @param targetAmount the target amount of jumps
      * @throws QuestException if there is an error in the instruction
      */

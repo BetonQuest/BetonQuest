@@ -14,7 +14,7 @@ public class LoginObjective extends DefaultObjective {
     /**
      * Constructor for the LoginObjective.
      *
-     * @param service the objective factory service
+     * @param service the objective service
      * @throws QuestException if there is an error in the instruction
      */
     public LoginObjective(final ObjectiveService service) throws QuestException {

@@ -13,10 +13,10 @@ public interface ObjectiveFactory {
     /**
      * Parses an instruction to create a {@link Objective}.
      *
-     * @param instruction  instruction to parse
-     * @param eventService the event service to register events with
+     * @param instruction instruction to parse
+     * @param service     the objective service
      * @return objective referenced by the instruction
      * @throws QuestException when the instruction cannot be parsed
      */
-    Objective parseInstruction(Instruction instruction, ObjectiveService eventService) throws QuestException;
+    Objective parseInstruction(Instruction instruction, ObjectiveService service) throws QuestException;
 }

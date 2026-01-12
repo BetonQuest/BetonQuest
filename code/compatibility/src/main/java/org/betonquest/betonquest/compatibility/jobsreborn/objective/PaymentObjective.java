@@ -31,7 +31,7 @@ public class PaymentObjective extends DefaultObjective {
     /**
      * Constructor for the PaymentObjective.
      *
-     * @param service       the objective factory service
+     * @param service       the objective service
      * @param targetAmount  the target amount of money to be received
      * @param paymentSender the {@link IngameNotificationSender} to send notifications
      * @throws QuestException if the instruction is invalid

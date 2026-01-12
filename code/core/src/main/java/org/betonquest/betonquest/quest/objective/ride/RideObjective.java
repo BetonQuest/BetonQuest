@@ -23,7 +23,7 @@ public class RideObjective extends DefaultObjective {
     /**
      * Constructor for the RideObjective.
      *
-     * @param service the objective factory service
+     * @param service the objective service
      * @param vehicle the type of vehicle that is required, or null if any vehicle is allowed
      * @throws QuestException if there is an error in the instruction
      */

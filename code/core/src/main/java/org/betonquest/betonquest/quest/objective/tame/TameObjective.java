@@ -21,7 +21,7 @@ public class TameObjective extends CountingObjective {
     /**
      * Constructor for the TameObjective.
      *
-     * @param service      the objective factory service
+     * @param service      the objective service
      * @param targetAmount the target amount of entities to be tamed
      * @param type         the entity type to be tamed
      * @throws QuestException if there is an error in the instruction

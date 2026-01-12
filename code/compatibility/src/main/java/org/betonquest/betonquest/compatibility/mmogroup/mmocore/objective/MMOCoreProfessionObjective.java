@@ -26,7 +26,7 @@ public class MMOCoreProfessionObjective extends DefaultObjective {
     /**
      * Constructor for the MMOCoreProfessionObjective.
      *
-     * @param service        the objective factory service
+     * @param service        the objective service
      * @param professionName the name of the profession to be leveled up, 'main' for class
      * @param targetLevel    the target level to be reached
      * @throws QuestException if the syntax is wrong or any error happens while parsing

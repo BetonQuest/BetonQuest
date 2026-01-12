@@ -30,7 +30,7 @@ public class StageObjective extends DefaultObjective {
     /**
      * Creates a new stage objective.
      *
-     * @param service           the objective factory service
+     * @param service           the objective service
      * @param stageMap          the mapping of stages to indices
      * @param preventCompletion true if the increase of stages should not complete the objective
      * @throws QuestException if the instruction is invalid

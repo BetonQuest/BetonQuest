@@ -31,7 +31,7 @@ public class KillPlayerObjective extends CountingObjective {
     /**
      * Constructor for the KillPlayerObjective.
      *
-     * @param service      the objective factory service
+     * @param service      the objective service
      * @param targetAmount the amount of players to kill
      * @param name         the name of the player to kill, or null for any player
      * @param required     the conditions of the victim that must be met for the objective to count

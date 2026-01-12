@@ -43,7 +43,7 @@ public class TimerObjective extends CountingObjective implements Runnable {
     /**
      * Constructs a new TrackingObjective.
      *
-     * @param service      the objective factory service.
+     * @param service      the objective service.
      * @param targetAmount the target amount for the objective.
      * @param questTypeApi the QuestTypeApi instance.
      * @param name         the name of the objective.

@@ -55,7 +55,7 @@ public class ChestPutObjective extends DefaultObjective {
     /**
      * Constructor for the ChestPutObjective.
      *
-     * @param service            the objective factory service
+     * @param service            the objective service
      * @param chestItemCondition the condition to check if the items are in the chest
      * @param chestTakeAction    the action to execute when the items are put in the chest to take them out
      * @param loc                the location of the chest

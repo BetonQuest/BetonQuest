@@ -37,7 +37,7 @@ public class EnchantObjective extends CountingObjective {
     /**
      * Constructor for the EnchantObjective.
      *
-     * @param service             the objective factory service
+     * @param service             the objective service
      * @param targetAmount        the target amount of items to enchant
      * @param item                the item to enchant
      * @param desiredEnchantments the desired enchantments

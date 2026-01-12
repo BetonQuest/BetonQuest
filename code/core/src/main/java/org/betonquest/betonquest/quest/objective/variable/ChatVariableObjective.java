@@ -25,7 +25,7 @@ public class ChatVariableObjective extends VariableObjective {
     /**
      * Creates a new VariableObjective instance which also captures chat input.
      *
-     * @param service the objective factory service
+     * @param service the objective service
      * @throws QuestException if there is an error in the instruction
      */
     public ChatVariableObjective(final ObjectiveService service) throws QuestException {

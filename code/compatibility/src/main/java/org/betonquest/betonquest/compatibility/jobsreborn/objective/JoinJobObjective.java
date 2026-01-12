@@ -21,7 +21,7 @@ public class JoinJobObjective extends DefaultObjective {
     /**
      * Constructor for the JoinJobObjective.
      *
-     * @param service the objective factory service
+     * @param service the objective service
      * @param job     the job to join
      * @throws QuestException if the instruction is invalid
      */

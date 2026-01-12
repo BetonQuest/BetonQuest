@@ -29,7 +29,7 @@ public class VariableObjective extends DefaultObjective {
     /**
      * Creates a new VariableObjective instance.
      *
-     * @param service the objective factory service
+     * @param service the objective service
      * @throws QuestException if there is an error in the instruction
      */
     public VariableObjective(final ObjectiveService service) throws QuestException {

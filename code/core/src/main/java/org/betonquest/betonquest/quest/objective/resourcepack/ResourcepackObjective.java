@@ -20,7 +20,7 @@ public class ResourcepackObjective extends DefaultObjective {
     /**
      * Constructs a new ResourcepackObjective instance.
      *
-     * @param service      the objective factory service.
+     * @param service      the objective service.
      * @param targetStatus the target status for the received resource pack.
      * @throws QuestException if an error occurs while parsing the instruction.
      */

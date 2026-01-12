@@ -69,7 +69,7 @@ public class ActionObjective extends DefaultObjective {
     /**
      * Creates a new instance of the ActionObjective.
      *
-     * @param service    the objective factory service
+     * @param service    the objective service
      * @param action     the action to check for
      * @param selector   the selector to check for the block
      * @param exactMatch if the block should be checked for exact match

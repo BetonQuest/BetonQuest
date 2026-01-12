@@ -41,7 +41,7 @@ public class MobKillObjective extends CountingObjective {
     /**
      * Constructor for the MobKillObjective.
      *
-     * @param service      the objective factory service
+     * @param service      the objective service
      * @param targetAmount the amount of mobs to kill
      * @param entities     the entity types that should be killed
      * @param name         the optional name of the mob

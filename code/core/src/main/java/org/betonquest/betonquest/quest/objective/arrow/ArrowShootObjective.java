@@ -30,7 +30,7 @@ public class ArrowShootObjective extends DefaultObjective {
     /**
      * Constructor for the ArrowShootObjective.
      *
-     * @param service  the objective factory service
+     * @param service  the objective service
      * @param location the location where the arrow should hit
      * @param range    the range around the location where the arrow should hit
      * @throws QuestException if there is an error in the instruction

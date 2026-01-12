@@ -40,7 +40,7 @@ public class MenuObjective extends DefaultObjective {
     /**
      * Construct a new Menu Objective from Instruction.
      *
-     * @param service the objective factory service
+     * @param service the objective service
      * @param log     the logger for this objective
      * @param rpgMenu the RPGMenu instance
      * @param menuID  the menu id to open
