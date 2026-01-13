@@ -23,10 +23,10 @@ To determine if an action is player independent (and can be used in schedules), 
 
 Some actions behave differently when called from a schedule in independent mode.
 For example, `tag delete` will include offline players.
-A list of all actions that act differently can be found in the [`runIndependent`](Building-Blocks/Actions-List.md#run-actions-player-independent-runindependent) docs.
+A list of all actions that act differently can be found in the [`runIndependent`](Building-Blocks/Actions-List.md#run-actions-as-independent) docs.
 
 But sometimes you might want your schedule to run a player dependent action, like `message` or `give` for all players on the server.
-To do this you can use the [`runforall`](Building-Blocks/Actions-List.md#run-actions-for-all-online-players-runforall) action. It will run the given actions for all players on the server. 
+To do this you can use the [`runforall`](Building-Blocks/Actions-List.md#run-for-online-players) action. It will run the given actions for all players on the server. 
 You can even use conditions to filter out players.
 
 ## Realtime schedules

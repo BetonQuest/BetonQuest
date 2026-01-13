@@ -42,7 +42,7 @@ public PlayerCondition parsePlayer(final Instruction instruction) throws QuestEx
 }
 ```
 
-Compare [itemdurability](../Documentation/Scripting/Building-Blocks/Actions-List.md#item-durability-itemdurability) action.
+Compare [itemdurability](../Documentation/Scripting/Building-Blocks/Actions-List.md#manage-item-durability) action.
 ```JAVA title="ItemDurabilityActionFactory.java"
 public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
     final Argument<EquipmentSlot> slot = instruction.enumeration(EquipmentSlot.class).get();

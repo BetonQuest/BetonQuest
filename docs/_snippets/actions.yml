@@ -1,8 +1,11 @@
 cancel: |-
-  ## Cancel a quest: `cancel`
+  ## Call a quest canceler
 
+  __Context__: @snippet:event-meta:online@  
+  __Syntax__: `cancel <canceler> [bypass]`  
+  __Description__: Call the specified quest canceler.
+  
   This action works in the same way as a [quest canceler in the backpack](/Documentation/Features/Quest-Cancelers.md).
-
   Running this action is equal to the player canceling a quest using the backpack.
 
   | Parameter  | Syntax             | Default Value          | Explanation                                                                                                                  |
@@ -16,9 +19,19 @@ cancel: |-
   ```
 
 notify: |-
-  ## Sending Notifications: `notify`
+  ## Send a notification
 
-  You can send notifications using the `notify` action. This is how to use it:
+  __Context__: @snippet:event-meta:online@  
+  __Syntax__: `notify <message> [category] [io] [any io specific settings]`  
+  __Description__: Send the notification to the player using the specified notifyIO.
+  
+  Every notify IO has it's own specific settings. You must understand these too if you want to use the Notify system to it's full extend.
+  Advanced users may also use [Notify Categories](/Documentation/Visual-Effects/Notifications/Notification-IO's-&-Categories.md#categories) to make their lives easier.
+  
+  Also a language can be defined with a language key from the language folder in the format `{Lang-Key}`.
+  Any text after the language key until the next language key belongs to the specified language.
+  There must be a space between the language key and the message.
+  In this example, english users would see `ABC` and german ones would see `DEF`.
 
   !!! warning
       All colons (`:`) in the message part of the notification need to be escaped, including those inside placeholders.
@@ -39,11 +52,7 @@ notify: |-
   | _category_                 | `category:info`       | None                   | Will load all settings from that Notification Category. Can be a comma-separated list. The first existent category will be used. |
   | _io_                       | `io:bossbar`          | io:chat                | Any NotifyIO Overrides the "category". settings.                                                                                 |
   | _any io specific settings_ | `setting:value`       | None                   | Some notifyIO's provide specific settings. Can be used multiple times. Overrides the "category" settings.                        |
-
-  ### Usage Examples
-
-  Check out the notify IO specific options if you haven't yet. You must understand these two if you want to use the Notify system to it's full extend.
-  Advanced users may also use [Notify Categories](/Documentation/Visual-Effects/Notifications/Notification-IO's-&-Categories.md#categories) to make their lives easier.
+  
   ```YAML title="Example"
   actions:
     #The simplest of all notify actions. Just a chat message:
@@ -71,22 +80,16 @@ notify: |-
     #Use multiple languages:
     multilanguage: "notify {en-US} Hello english person! {de-de} Hello german person! {es-ES} Hello spanish person!"
   ```
-  ### Translations
 
-  A language can be defined with a language key from the language folder in the format `{Lang-Key}`.
-  Any text after the language key until the next language key belongs to the specified language.
-  There must be a space between the language key and the message.
-  In this example, english users would see `ABC` and german ones would see `DEF`.
-  
-  ```YAML title="Example"
-  actions:
-    example: "notify {en-US} ABC {de-DE} DEF"
-  ```
+notify-all: |-
+  ## Broadcast a notification
 
-  ### Broadcasts
-  **persistent**, **static**
+  __Context__: @snippet:event-meta:independent@  
+  __Syntax__: `notifyall <message> [category] [io] [any io specific settings]`  
+  __Description__: Send the notification to all players using the specified notifyIO.
   
-  You can broadcast notifications to all players on the server using the `notifyall` action. It works just like the notify action.
+  You can broadcast notifications to all online players on the server using the `notifyall` action.
+  It works just like the notify action.
   Placeholders are resolved for each online player, not for the player the action is executed for.
 
   ```YAML title="Example"

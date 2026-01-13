@@ -158,8 +158,8 @@ actions:
 
 As you can see, there are a few new actions of the types `folder` and `teleport`.
 The folder action wraps multiple actions inside itself. Once triggered, it simply executes its actions. 
-Every action type is documented in the actions list, read more about the [folder](../../../Documentation/Scripting/Building-Blocks/Actions-List.md#run-multiple-actions-folder)
-and [teleport](../../../Documentation/Scripting/Building-Blocks/Actions-List.md#teleport-teleport) actions there. 
+Every action type is documented in the actions list, read more about the [folder](../../../Documentation/Scripting/Building-Blocks/Actions-List.md#run-multiple-actions)
+and [teleport](../../../Documentation/Scripting/Building-Blocks/Actions-List.md#teleport-a-player) actions there. 
 
 Running the `townTour` action will teleport you to a new location every five seconds
 until we get to our final destination, the blacksmith. The folder action is done after the `tpBlacksmith` action was run.

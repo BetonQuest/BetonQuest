@@ -23,6 +23,8 @@ in the *lang* directory for all built-in notifications.
 
 @snippet:actions:notify@
 
+@snippet:actions:notify-all@
+
 ## Available NotifyIOs
 
 There are a bunch of notify IOs available. Below is a list of all available notifyIOs and their possible options.
