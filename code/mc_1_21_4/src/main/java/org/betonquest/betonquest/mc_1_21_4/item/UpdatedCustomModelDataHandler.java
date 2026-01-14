@@ -156,7 +156,17 @@ public class UpdatedCustomModelDataHandler implements ItemMetaHandler<ItemMeta> 
 
     private boolean check(final CustomModelDataComponent cmd) {
         return floats.equals(cmd.getFloats()) && flags.equals(cmd.getFlags()) && strings.equals(cmd.getStrings())
-                && colors.equals(cmd.getColors());
+                && checkColors(cmd);
+    }
+
+    /**
+     * The color gets modified inside the component (alpha channel) so it is not equal to the actual given color.
+     */
+    private boolean checkColors(final CustomModelDataComponent cmd) {
+        final List<Color> current = cmd.getColors();
+        cmd.setColors(this.colors);
+        final List<Color> wanted = cmd.getColors();
+        return wanted.equals(current);
     }
 
     @SuppressFBWarnings("SF_SWITCH_FALLTHROUGH")
