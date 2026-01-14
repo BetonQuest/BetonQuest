@@ -114,17 +114,16 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
         if (lore == null) {
             return false;
         }
-        if (exact) {
-            if (this.lore.size() != lore.size()) {
+        if (!exact) {
+            return !checkNonExact(lore);
+        }
+        if (this.lore.size() != lore.size()) {
+            return false;
+        }
+        for (int i = 0; i < lore.size(); i++) {
+            if (!this.lore.get(i).equals(lore.get(i))) {
                 return false;
             }
-            for (int i = 0; i < lore.size(); i++) {
-                if (!this.lore.get(i).equals(lore.get(i))) {
-                    return false;
-                }
-            }
-        } else {
-            return !checkNonExact(lore);
         }
         return true;
     }
