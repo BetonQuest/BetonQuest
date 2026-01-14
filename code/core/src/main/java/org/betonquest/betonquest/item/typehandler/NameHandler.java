@@ -68,7 +68,7 @@ public class NameHandler implements ItemMetaHandler<ItemMeta> {
         if (Existence.NONE_KEY.equalsIgnoreCase(data)) {
             existence = Existence.FORBIDDEN;
         } else {
-            this.name = textParser.parse(data);
+            this.name = textParser.parse(data).compact();
             existence = Existence.REQUIRED;
         }
     }
@@ -83,7 +83,7 @@ public class NameHandler implements ItemMetaHandler<ItemMeta> {
         final Component displayName = meta.hasDisplayName() ? meta.displayName() : null;
         return switch (existence) {
             case WHATEVER -> true;
-            case REQUIRED -> displayName != null && displayName.equals(this.name);
+            case REQUIRED -> displayName != null && displayName.compact().equals(this.name);
             case FORBIDDEN -> displayName == null;
         };
     }

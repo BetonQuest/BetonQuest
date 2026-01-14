@@ -65,7 +65,7 @@ public class UpdatedNameHandler extends NameHandler {
             if (Existence.NONE_KEY.equalsIgnoreCase(data)) {
                 itemNameE = Existence.FORBIDDEN;
             } else {
-                this.itemName = textParser.parse(data);
+                this.itemName = textParser.parse(data).compact();
                 itemNameE = Existence.REQUIRED;
             }
         } else {
@@ -87,7 +87,7 @@ public class UpdatedNameHandler extends NameHandler {
         final Component itemName = meta.hasItemName() ? meta.itemName() : null;
         return switch (itemNameE) {
             case WHATEVER -> true;
-            case REQUIRED -> itemName != null && itemName.equals(this.itemName);
+            case REQUIRED -> itemName != null && itemName.compact().equals(this.itemName);
             case FORBIDDEN -> itemName == null;
         };
     }

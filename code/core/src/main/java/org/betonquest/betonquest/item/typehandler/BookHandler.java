@@ -132,7 +132,7 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
     @Override
     public boolean check(final BookMeta bookMeta) {
         return checkExistence(titleE, title, bookMeta.title())
-                && checkExistence(authorE, author, bookMeta.title())
+                && checkExistence(authorE, author, bookMeta.author())
                 && checkText(bookMeta.pages());
     }
 
@@ -140,7 +140,7 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
         if (Existence.NONE_KEY.equalsIgnoreCase(string)) {
             titleE = Existence.FORBIDDEN;
         } else {
-            title = textParser.parse(string);
+            title = textParser.parse(string).compact();
             titleE = Existence.REQUIRED;
         }
     }
@@ -149,7 +149,7 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
         if (Existence.NONE_KEY.equalsIgnoreCase(string)) {
             authorE = Existence.FORBIDDEN;
         } else {
-            author = textParser.parse(string);
+            author = textParser.parse(string).compact();
             authorE = Existence.REQUIRED;
         }
     }
@@ -164,11 +164,11 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
         }
     }
 
-    private boolean checkExistence(final Existence existence, @Nullable final Component present, @Nullable final Component string) {
+    private boolean checkExistence(final Existence existence, @Nullable final Component stored, @Nullable final Component onItem) {
         return switch (existence) {
             case WHATEVER -> true;
-            case REQUIRED -> string != null && string.equals(present);
-            case FORBIDDEN -> string == null || string.equals(Component.empty());
+            case REQUIRED -> onItem != null && onItem.compact().equals(stored);
+            case FORBIDDEN -> onItem == null || onItem.equals(Component.empty());
         };
     }
 
