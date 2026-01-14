@@ -146,8 +146,12 @@ public class UpdatedCustomModelDataHandler implements ItemMetaHandler<ItemMeta> 
             return false;
         }
         return existence == Existence.WHATEVER
-                || existence == Existence.FORBIDDEN && !data.hasCustomModelData()
-                || existence == Existence.REQUIRED && data.hasCustomModelData() && check(data.getCustomModelDataComponent());
+                || existence == Existence.FORBIDDEN && checkEmpty(data.getCustomModelDataComponent())
+                || existence == Existence.REQUIRED && check(data.getCustomModelDataComponent());
+    }
+
+    private boolean checkEmpty(final CustomModelDataComponent cmd) {
+        return cmd.getFloats().isEmpty() && cmd.getFlags().isEmpty() && cmd.getStrings().isEmpty() && cmd.getColors().isEmpty();
     }
 
     private boolean check(final CustomModelDataComponent cmd) {
