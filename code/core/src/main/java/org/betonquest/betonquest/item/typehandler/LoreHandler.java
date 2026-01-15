@@ -77,7 +77,7 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
                 } else {
                     existence = Existence.REQUIRED;
                     for (final String line : data.split(";")) {
-                        this.lore.add(textParser.parse(line));
+                        this.lore.add(textParser.parse(line).compact());
                     }
                 }
             }
@@ -114,17 +114,16 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
         if (lore == null) {
             return false;
         }
-        if (exact) {
-            if (this.lore.size() != lore.size()) {
+        if (!exact) {
+            return !checkNonExact(lore);
+        }
+        if (this.lore.size() != lore.size()) {
+            return false;
+        }
+        for (int i = 0; i < lore.size(); i++) {
+            if (!this.lore.get(i).equals(lore.get(i).compact())) {
                 return false;
             }
-            for (int i = 0; i < lore.size(); i++) {
-                if (!this.lore.get(i).equals(lore.get(i))) {
-                    return false;
-                }
-            }
-        } else {
-            return !checkNonExact(lore);
         }
         return true;
     }
@@ -133,7 +132,7 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
         for (final Component line : this.lore) {
             boolean has = false;
             for (final Component itemLine : lore) {
-                if (itemLine.equals(line)) {
+                if (itemLine.compact().equals(line)) {
                     has = true;
                     break;
                 }

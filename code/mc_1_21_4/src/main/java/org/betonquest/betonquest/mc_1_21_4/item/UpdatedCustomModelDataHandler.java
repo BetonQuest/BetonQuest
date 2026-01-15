@@ -146,13 +146,27 @@ public class UpdatedCustomModelDataHandler implements ItemMetaHandler<ItemMeta> 
             return false;
         }
         return existence == Existence.WHATEVER
-                || existence == Existence.FORBIDDEN && !data.hasCustomModelData()
-                || existence == Existence.REQUIRED && data.hasCustomModelData() && check(data.getCustomModelDataComponent());
+                || existence == Existence.FORBIDDEN && checkEmpty(data.getCustomModelDataComponent())
+                || existence == Existence.REQUIRED && check(data.getCustomModelDataComponent());
+    }
+
+    private boolean checkEmpty(final CustomModelDataComponent cmd) {
+        return cmd.getFloats().isEmpty() && cmd.getFlags().isEmpty() && cmd.getStrings().isEmpty() && cmd.getColors().isEmpty();
     }
 
     private boolean check(final CustomModelDataComponent cmd) {
         return floats.equals(cmd.getFloats()) && flags.equals(cmd.getFlags()) && strings.equals(cmd.getStrings())
-                && colors.equals(cmd.getColors());
+                && checkColors(cmd);
+    }
+
+    /**
+     * The color gets modified inside the component (alpha channel) so it is not equal to the actual given color.
+     */
+    private boolean checkColors(final CustomModelDataComponent cmd) {
+        final List<Color> current = cmd.getColors();
+        cmd.setColors(this.colors);
+        final List<Color> wanted = cmd.getColors();
+        return wanted.equals(current);
     }
 
     @SuppressFBWarnings("SF_SWITCH_FALLTHROUGH")
