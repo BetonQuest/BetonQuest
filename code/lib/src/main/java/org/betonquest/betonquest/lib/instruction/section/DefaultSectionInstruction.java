@@ -73,7 +73,11 @@ public class DefaultSectionInstruction implements SectionInstruction {
             return path.get(0);
         }
         final Configuration root = section.getRoot();
-        return String.join(root == null ? "." : String.valueOf(root.options().pathSeparator()), path);
+        if (root == null) {
+            throw new IllegalStateException("Root section is null for path '%s' in section '%s'"
+                    .formatted(String.join(".", path), section.getName()));
+        }
+        return String.join(String.valueOf(root.options().pathSeparator()), path);
     }
 
     @Override
