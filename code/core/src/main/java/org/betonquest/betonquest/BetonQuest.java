@@ -17,6 +17,8 @@ import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.feature.FeatureRegistries;
+import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -426,7 +428,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         new BStatsMetrics(this, new Metrics(this, BSTATS_METRICS_ID), questRegistry.metricsSupplier(), compatibility);
 
         rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, questManager, config,
-                pluginMessage, textCreator, coreQuestRegistry, questRegistry, profileProvider);
+                pluginMessage, textCreator, coreQuestRegistry, profileProvider, getArgumentParsers());
 
         log.info("BetonQuest successfully enabled!");
     }
@@ -656,6 +658,11 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
     @Override
     public BetonQuestLoggerFactory getLoggerFactory() {
         return loggerFactory;
+    }
+
+    @Override
+    public ArgumentParsers getArgumentParsers() {
+        return new DefaultArgumentParsers(getFeatureApi()::getItem, getTextParser(), getServer());
     }
 
     /**

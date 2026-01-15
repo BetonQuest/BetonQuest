@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.action.run;
 
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -37,13 +38,21 @@ public class RunActionFactory implements PlayerActionFactory, PlayerlessActionFa
     private final ActionTypeRegistry actionTypeRegistry;
 
     /**
+     * The {@link BetonQuestApi} to use.
+     */
+    private final BetonQuestApi betonQuestApi;
+
+    /**
      * Create a run action factory with the given BetonQuest instance.
      *
+     * @param betonQuestApi      the {@link BetonQuestApi} to use
      * @param placeholders       the {@link Placeholders} to create and resolve placeholders
      * @param packManager        the quest package manager to get quest packages from
      * @param actionTypeRegistry the action type registry providing factories to parse the evaluated instruction
      */
-    public RunActionFactory(final Placeholders placeholders, final QuestPackageManager packManager, final ActionTypeRegistry actionTypeRegistry) {
+    public RunActionFactory(final BetonQuestApi betonQuestApi, final Placeholders placeholders,
+                            final QuestPackageManager packManager, final ActionTypeRegistry actionTypeRegistry) {
+        this.betonQuestApi = betonQuestApi;
         this.placeholders = placeholders;
         this.packManager = packManager;
         this.actionTypeRegistry = actionTypeRegistry;
@@ -66,7 +75,7 @@ public class RunActionFactory implements PlayerActionFactory, PlayerlessActionFa
         for (final String part : parts) {
             if (part.startsWith("^")) {
                 if (!builder.isEmpty()) {
-                    actions.add(EvalAction.createAction(placeholders, packManager, actionTypeRegistry, instruction.getPackage(), builder.toString().trim()));
+                    actions.add(EvalAction.createAction(betonQuestApi.getArgumentParsers(), placeholders, packManager, actionTypeRegistry, instruction.getPackage(), builder.toString().trim()));
                     builder = new StringBuilder();
                 }
                 builder.append(part.substring(1)).append(' ');
@@ -75,7 +84,7 @@ public class RunActionFactory implements PlayerActionFactory, PlayerlessActionFa
             }
         }
         if (!builder.isEmpty()) {
-            actions.add(EvalAction.createAction(placeholders, packManager, actionTypeRegistry, instruction.getPackage(), builder.toString().trim()));
+            actions.add(EvalAction.createAction(betonQuestApi.getArgumentParsers(), placeholders, packManager, actionTypeRegistry, instruction.getPackage(), builder.toString().trim()));
         }
         return new NullableActionAdapter(new RunAction(actions));
     }

@@ -2,20 +2,26 @@ package org.betonquest.betonquest.api.instruction.argument.parser;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.common.function.QuestBiFunction;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.DecoratedArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.NumberArgumentParser;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
+import org.betonquest.betonquest.api.item.QuestItem;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.text.TextParser;
+import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.lib.instruction.argument.DecoratableArgumentParser;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultNumberArgumentParser;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 
 import java.util.UUID;
+import java.util.function.Supplier;
 
 /**
  * This offers default implementations for {@link DecoratedArgumentParser} to parse common types.
@@ -26,7 +32,7 @@ public class DefaultArgumentParsers implements ArgumentParsers {
     /**
      * The default instance of {@link DefaultArgumentParsers}.
      */
-    public static final DefaultArgumentParsers INSTANCE = new DefaultArgumentParsers();
+    public static final Supplier<ArgumentParsers> INSTANCE = () -> BetonQuest.getInstance().getArgumentParsers();
 
     /**
      * The default decoratable instance of {@link BlockSelectorParser}.
@@ -91,19 +97,23 @@ public class DefaultArgumentParsers implements ArgumentParsers {
     /**
      * Creates a new instance of {@link DefaultArgumentParsers}
      * and all default instances of {@link DecoratedArgumentParser}s.
+     *
+     * @param getItemFunction the feature API function to retrieve items
+     * @param textParser      the text parser to use for component parsing
+     * @param server          the server to use for world and location parsing
      */
-    public DefaultArgumentParsers() {
+    public DefaultArgumentParsers(final QuestBiFunction<ItemID, Profile, QuestItem> getItemFunction, final TextParser textParser, final Server server) {
         defaultBlockSelectorParser = new DecoratableArgumentParser<>(new BlockSelectorParser());
-        defaultComponentParser = new DecoratableArgumentParser<>(new TextParserToComponentParser(BetonQuest.getInstance().getTextParser()));
+        defaultComponentParser = new DecoratableArgumentParser<>(new TextParserToComponentParser(textParser));
         defaultNumberParser = new DefaultNumberArgumentParser(new NumberParser());
-        defaultLocationParser = new DecoratableArgumentParser<>(new LocationParser(Bukkit.getServer()));
-        defaultItemParser = new DecoratableArgumentParser<>(new ItemParser(BetonQuest.getInstance().getFeatureApi()));
+        defaultLocationParser = new DecoratableArgumentParser<>(new LocationParser(server));
+        defaultItemParser = new DecoratableArgumentParser<>(new ItemParser(getItemFunction));
         defaultPackageIdentifier = new DecoratableArgumentParser<>(new IdentifierParser());
         defaultNamespacedKeyParser = new DecoratableArgumentParser<>(new NamespacedKeyParser());
         defaultBooleanParser = new DecoratableArgumentParser<>(new BooleanParser());
         defaultUUIDParser = new DecoratableArgumentParser<>(new UUIDParser());
         defaultVectorParser = new DecoratableArgumentParser<>(new VectorParser());
-        defaultWorldParser = new DecoratableArgumentParser<>(new WorldParser(Bukkit.getServer()));
+        defaultWorldParser = new DecoratableArgumentParser<>(new WorldParser(server));
         defaultStringParser = new DecoratableArgumentParser<>(new StringParser());
     }
 

@@ -36,6 +36,9 @@ public abstract class DefaultIdentifier implements Identifier {
      */
     protected DefaultIdentifier(final QuestPackageManager packManager, @Nullable final QuestPackage pack,
                                 final String identifier) throws QuestException {
+        if (identifier.contains(" ")) {
+            throw new QuestException("Identifier should not contain spaces: '%s'".formatted(identifier));
+        }
         final RawIdentifier rawIdentifier = splitIdentifier(identifier);
         this.identifier = rawIdentifier.identifier;
         if (rawIdentifier.pack == null) {

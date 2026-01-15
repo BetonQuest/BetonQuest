@@ -453,7 +453,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 return;
             }
             final OnlineAction give = new GiveAction(
-                    new DefaultListArgument<>(new Item(instance.getFeatureApi(), itemID, new DefaultArgument<>(1))),
+                    new DefaultListArgument<>(new Item(instance.getFeatureApi()::getItem, itemID, new DefaultArgument<>(1))),
                     new NoNotificationSender(),
                     new IngameNotificationSender(log, pluginMessage, itemID.getPackage(), itemID.getFull(), NotificationLevel.ERROR,
                             "inventory_full_backpack", "inventory_full"),

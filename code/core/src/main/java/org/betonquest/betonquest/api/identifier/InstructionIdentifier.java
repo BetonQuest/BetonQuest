@@ -56,7 +56,7 @@ public abstract class InstructionIdentifier extends DefaultIdentifier {
             if (rawInstruction == null) {
                 throw new QuestException(readable + " '" + id.getFull() + "' is not defined");
             }
-            return new DefaultInstruction(placeholders, packManager, id.getPackage(), id, DefaultArgumentParsers.INSTANCE, rawInstruction);
+            return new DefaultInstruction(placeholders, packManager, id.getPackage(), id, DefaultArgumentParsers.INSTANCE.get(), rawInstruction);
         });
     }
 

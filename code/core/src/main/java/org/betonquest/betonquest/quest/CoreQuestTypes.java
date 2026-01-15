@@ -313,14 +313,14 @@ public class CoreQuestTypes {
         conditionTypes.register("armor", new ArmorConditionFactory(loggerFactory));
         conditionTypes.register("biome", new BiomeConditionFactory(loggerFactory));
         conditionTypes.register("burning", new BurningConditionFactory(loggerFactory));
-        conditionTypes.registerCombined("check", new CheckConditionFactory(placeholders, betonQuest.getQuestPackageManager(), conditionTypes));
+        conditionTypes.registerCombined("check", new CheckConditionFactory(betonQuest, placeholders, betonQuest.getQuestPackageManager(), conditionTypes));
         conditionTypes.registerCombined("chestitem", new ChestItemConditionFactory());
         conditionTypes.register("conversation", new ConversationConditionFactory(featureApi.conversationApi()));
         conditionTypes.register("dayofweek", new DayOfWeekConditionFactory(loggerFactory.create(DayOfWeekConditionFactory.class)));
         conditionTypes.register("effect", new EffectConditionFactory(loggerFactory));
         conditionTypes.register("empty", new EmptySlotsConditionFactory(loggerFactory));
         conditionTypes.registerCombined("entities", new EntityConditionFactory());
-        conditionTypes.registerCombined("eval", new EvalConditionFactory(placeholders, betonQuest.getQuestPackageManager(), conditionTypes));
+        conditionTypes.registerCombined("eval", new EvalConditionFactory(betonQuest, placeholders, betonQuest.getQuestPackageManager(), conditionTypes));
         conditionTypes.register("experience", new ExperienceConditionFactory(loggerFactory));
         conditionTypes.register("facing", new FacingConditionFactory(loggerFactory));
         conditionTypes.register("fly", new FlyingConditionFactory(loggerFactory));
@@ -411,7 +411,7 @@ public class CoreQuestTypes {
         actionTypes.register("point", new PointActionFactory(loggerFactory, dataStorage,
                 pluginMessage));
         actionTypes.registerCombined("removeentity", new RemoveEntityActionFactory());
-        actionTypes.registerCombined("run", new RunActionFactory(placeholders, betonQuest.getQuestPackageManager(), actionTypes));
+        actionTypes.registerCombined("run", new RunActionFactory(betonQuest, placeholders, betonQuest.getQuestPackageManager(), actionTypes));
         actionTypes.register("runForAll", new RunForAllActionFactory(questTypeApi, profileProvider));
         actionTypes.register("runIndependent", new RunIndependentActionFactory(questTypeApi));
         actionTypes.registerCombined("setblock", new SetBlockActionFactory());

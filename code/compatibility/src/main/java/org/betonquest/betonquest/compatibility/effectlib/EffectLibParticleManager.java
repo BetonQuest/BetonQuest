@@ -7,8 +7,8 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.identifier.DefaultIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
-import org.betonquest.betonquest.api.instruction.argument.parser.LocationParser;
+import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
+import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -17,18 +17,18 @@ import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultListArgument;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Displays a particle effect at the location of an NPC or a list of locations.
  */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class EffectLibParticleManager extends SectionProcessor<EffectLibParticleManager.ParticleID, EffectLibRunnable> {
 
     /**
@@ -73,12 +73,14 @@ public class EffectLibParticleManager extends SectionProcessor<EffectLibParticle
      * @param placeholders    the {@link Placeholders} to create and resolve placeholders
      * @param manager         the effect manager starting and controlling particles
      * @param plugin          the plugin to start new tasks with
+     * @param parsers         the argument parsers to use
      */
+    @SuppressWarnings("PMD.ExcessiveParameterList")
     public EffectLibParticleManager(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                                     final QuestPackageManager packManager, final QuestTypeApi questTypeApi, final FeatureApi featureApi,
                                     final ProfileProvider profileProvider, final Placeholders placeholders,
-                                    final EffectManager manager, final Plugin plugin) {
-        super(log, placeholders, packManager, "Effect", "effectlib");
+                                    final EffectManager manager, final Plugin plugin, final ArgumentParsers parsers) {
+        super(loggerFactory, log, placeholders, packManager, parsers, "Effect", "effectlib");
         this.loggerFactory = loggerFactory;
         this.questTypeApi = questTypeApi;
         this.featureApi = featureApi;
@@ -88,32 +90,19 @@ public class EffectLibParticleManager extends SectionProcessor<EffectLibParticle
     }
 
     @Override
-    protected EffectLibRunnable loadSection(final QuestPackage pack, final ConfigurationSection settings) throws QuestException {
-        final String effectClass = settings.getString("class");
-        if (effectClass == null) {
-            throw new QuestException("No effect 'class' given.");
-        }
+    protected Map.Entry<ParticleID, EffectLibRunnable> loadSection(final String sectionName, final SectionInstruction instruction) throws QuestException {
+        final Argument<String> effectClass = instruction.read().value("class").string().get();
+        final Argument<Number> interval = instruction.read().value("interval").number().atLeast(1).getOptional(100);
+        final Argument<Number> checkInterval = instruction.read().value("checkinterval").number().atLeast(1).getOptional(100);
+        final Argument<List<Location>> locations = instruction.read().value("locations").location().list().getOptional(Collections.emptyList());
+        final Argument<List<NpcID>> npcs = instruction.read().value("npcs").parse(NpcID::new).list().getOptional(Collections.emptyList());
+        final Argument<List<ConditionID>> conditions = instruction.read().value("conditions").parse(ConditionID::new).list().getOptional(Collections.emptyList());
 
-        final int interval = settings.getInt("interval", 100);
-        if (interval <= 0) {
-            throw new QuestException("Effect interval must be bigger than 0.");
-        }
+        final EffectConfiguration configuration = new EffectConfiguration(effectClass, locations, npcs, conditions, instruction.getSection(), checkInterval);
+        final EffectLibRunnable libRunnable = new EffectLibRunnable(loggerFactory.create(EffectLibRunnable.class), questTypeApi, featureApi, profileProvider, manager, configuration);
+        libRunnable.runTaskTimer(plugin, 1, interval.getValue(null).intValue());
 
-        final int conditionsCheckInterval = settings.getInt("checkinterval", 100);
-        if (conditionsCheckInterval <= 0) {
-            throw new QuestException("Check interval must be bigger than 0.");
-        }
-
-        final Argument<List<Location>> locations = load(pack, settings, "locations", new LocationParser(Bukkit.getServer()));
-        final Argument<List<NpcID>> npcs = load(pack, settings, "npcs", value -> new NpcID(placeholders, packManager, pack, value));
-        final Argument<List<ConditionID>> conditions = load(pack, settings, "conditions", value -> new ConditionID(placeholders, packManager, pack, value));
-
-        final EffectConfiguration effect = new EffectConfiguration(effectClass, locations, npcs, conditions, settings, conditionsCheckInterval);
-        final EffectLibRunnable particleRunnable = new EffectLibRunnable(loggerFactory.create(EffectLibRunnable.class),
-                questTypeApi, featureApi, profileProvider, manager, effect);
-
-        particleRunnable.runTaskTimer(plugin, 1, interval);
-        return particleRunnable;
+        return Map.entry(getIdentifier(instruction.getPackage(), sectionName), libRunnable);
     }
 
     @Override
@@ -122,11 +111,6 @@ public class EffectLibParticleManager extends SectionProcessor<EffectLibParticle
             activeParticle.cancel();
         }
         super.clear();
-    }
-
-    private <T> Argument<List<T>> load(final QuestPackage pack, final ConfigurationSection settings,
-                                       final String entryName, final SimpleArgumentParser<T> argument) throws QuestException {
-        return new DefaultListArgument<>(placeholders, pack, settings.getString(entryName, ""), argument);
     }
 
     @Override

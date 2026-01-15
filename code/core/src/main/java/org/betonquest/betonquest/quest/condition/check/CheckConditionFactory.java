@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.quest.condition.check;
 
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -41,15 +41,23 @@ public class CheckConditionFactory implements PlayerConditionFactory, Playerless
     private final ConditionTypeRegistry conditionTypeRegistry;
 
     /**
+     * The {@link BetonQuestApi}.
+     */
+    private final BetonQuestApi betonQuestApi;
+
+    /**
      * Create the check condition factory.
      *
+     * @param betonQuestApi         the BetonQuest API
      * @param placeholders          the {@link Placeholders} to create and resolve placeholders
      * @param packManager           the quest package manager to get quest packages from
      * @param conditionTypeRegistry the condition type registry providing factories to parse the evaluated instruction
      */
-    public CheckConditionFactory(final Placeholders placeholders, final QuestPackageManager packManager, final ConditionTypeRegistry conditionTypeRegistry) {
+    public CheckConditionFactory(final BetonQuestApi betonQuestApi, final Placeholders placeholders,
+                                 final QuestPackageManager packManager, final ConditionTypeRegistry conditionTypeRegistry) {
         this.placeholders = placeholders;
         this.packManager = packManager;
+        this.betonQuestApi = betonQuestApi;
         this.conditionTypeRegistry = conditionTypeRegistry;
     }
 
@@ -97,7 +105,7 @@ public class CheckConditionFactory implements PlayerConditionFactory, Playerless
         }
         final TypeFactory<ConditionAdapter> conditionFactory = conditionTypeRegistry.getFactory(parts[0]);
         try {
-            final Instruction innerInstruction = new DefaultInstruction(placeholders, packManager, questPackage, null, DefaultArgumentParsers.INSTANCE, instruction);
+            final Instruction innerInstruction = new DefaultInstruction(placeholders, packManager, questPackage, null, betonQuestApi.getArgumentParsers(), instruction);
             return conditionFactory.parseInstruction(innerInstruction);
         } catch (final QuestException e) {
             throw new QuestException("Error in internal condition: " + e.getMessage(), e);

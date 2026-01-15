@@ -4,9 +4,9 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.argument.parser.BooleanParser;
+import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
+import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -14,13 +14,14 @@ import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.text.Text;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.betonquest.betonquest.menu.MenuItem;
 import org.betonquest.betonquest.menu.MenuItemID;
 import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Processor to create and store {@link MenuItem}s.
@@ -51,71 +52,57 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
      * @param textCreator   the text creator to parse text
      * @param questTypeApi  the QuestTypeApi
      * @param config        the config to load menu item options from
-     * @param featureApi    the Feature API
+     * @param parsers       the argument parsers
      */
     public MenuItemProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                              final QuestPackageManager packManager, final ParsedSectionTextCreator textCreator,
-                             final QuestTypeApi questTypeApi, final ConfigAccessor config, final FeatureApi featureApi) {
-        super(log, packManager, "Menu Item", "menu_items", loggerFactory, textCreator, questTypeApi, featureApi);
+                             final QuestTypeApi questTypeApi, final ConfigAccessor config, final ArgumentParsers parsers) {
+        super(log, packManager, "Menu Item", "menu_items", loggerFactory, textCreator, parsers, questTypeApi);
         this.packManager = packManager;
         this.config = config;
     }
 
     @Override
-    protected MenuItem loadSection(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
-        final MenuItemCreationHelper helper = new MenuItemCreationHelper(pack, section);
-        final String itemString = helper.getRequired("item") + ":" + section.getString("amount", "1");
-        final Argument<ItemWrapper> item = new DefaultArgument<>(placeholders, pack, itemString,
-                value -> itemParser.apply(placeholders, packManager, pack, value));
-        final Text descriptions;
-        if (section.contains(CONFIG_TEXT)) {
-            descriptions = textCreator.parseFromSection(pack, section, CONFIG_TEXT);
-        } else {
-            descriptions = null;
+    protected Map.Entry<MenuItemID, MenuItem> loadSection(final String sectionName, final SectionInstruction instruction) throws QuestException {
+        final ConfigurationSection section = instruction.getSection();
+        final QuestPackage pack = instruction.getPackage();
+
+        final String itemString = section.getString("item");
+        if (itemString == null) {
+            throw new QuestException("Item not specified for menu item '%s'".formatted(sectionName));
         }
-        final MenuItem.ClickActions clickActions = helper.getClickActions();
-        final Argument<List<ConditionID>> conditions = helper.getID("conditions", ConditionID::new);
+        final String rawItemValue = itemString + ":" + section.getString("amount", "1");
+        final Argument<ItemWrapper> item = instruction.chainForArgument(rawItemValue).item().get();
+        final Text descriptions = section.contains(CONFIG_TEXT) ? textCreator.parseFromSection(pack, section, CONFIG_TEXT) : null;
+        final MenuItem.ClickActions clickActions = getActions(instruction);
+        final Argument<List<ConditionID>> conditions = instruction.read().value("conditions").parse(ConditionID::new).list().getOptional(Collections.emptyList());
         final String rawClose = section.getString("close", config.getString("menu.default_close", "false"));
-        final Argument<Boolean> close = new DefaultArgument<>(placeholders, pack, rawClose, new BooleanParser());
+        final Argument<Boolean> close = instruction.chainForArgument(rawClose).bool().get();
+
         final BetonQuestLogger log = loggerFactory.create(MenuItem.class);
-        return new MenuItem(log, questTypeApi, item, getIdentifier(pack, section.getName()), descriptions, clickActions, conditions, close);
+        final MenuItemID menuItemID = getIdentifier(pack, sectionName);
+        final MenuItem menuItem = new MenuItem(log, questTypeApi, item, menuItemID, descriptions, clickActions, conditions, close);
+        return Map.entry(menuItemID, menuItem);
+    }
+
+    private Argument<List<ActionID>> getActionList(final SectionInstruction instruction, final String... path) throws QuestException {
+        return instruction.read().value(path).parse(ActionID::new).list().getOptional(List.of());
+    }
+
+    private MenuItem.ClickActions getActions(final SectionInstruction instruction) throws QuestException {
+        if (instruction.getSection().isConfigurationSection("click")) {
+            return new MenuItem.ClickActions(
+                    getActionList(instruction, "click.left"),
+                    getActionList(instruction, "click.shiftLeft"),
+                    getActionList(instruction, "click.right"),
+                    getActionList(instruction, "click.shiftRight"),
+                    getActionList(instruction, "click.middleMouse"));
+        }
+        return new MenuItem.ClickActions(getActionList(instruction, "click"));
     }
 
     @Override
     protected MenuItemID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
         return new MenuItemID(packManager, pack, identifier);
-    }
-
-    /**
-     * Class to bundle objects required to create a MenuItem.
-     */
-    private class MenuItemCreationHelper extends CreationHelper {
-
-        /**
-         * Creates a new Creation Helper.
-         *
-         * @param pack    the pack to create from
-         * @param section the section to create from
-         */
-        protected MenuItemCreationHelper(final QuestPackage pack, final ConfigurationSection section) {
-            super(pack, section);
-        }
-
-        private MenuItem.ClickActions getClickActions() throws QuestException {
-            if (section.isConfigurationSection("click")) {
-                return new MenuItem.ClickActions(
-                        getActions("click.left"),
-                        getActions("click.shiftLeft"),
-                        getActions("click.right"),
-                        getActions("click.shiftRight"),
-                        getActions("click.middleMouse")
-                );
-            }
-            return new MenuItem.ClickActions(getActions("click"));
-        }
-
-        private Argument<List<ActionID>> getActions(final String key) throws QuestException {
-            return getID(key, ActionID::new);
-        }
     }
 }

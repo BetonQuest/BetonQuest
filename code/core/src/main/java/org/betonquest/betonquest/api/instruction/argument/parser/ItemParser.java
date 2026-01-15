@@ -1,14 +1,15 @@
 package org.betonquest.betonquest.api.instruction.argument.parser;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.common.function.QuestBiFunction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
+import org.betonquest.betonquest.api.item.QuestItem;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
@@ -19,22 +20,17 @@ import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 public class ItemParser implements InstructionArgumentParser<ItemWrapper> {
 
     /**
-     * The singleton instance of the parser.
-     */
-    public static final ItemParser INSTANCE = new ItemParser(BetonQuest.getInstance().getFeatureApi());
-
-    /**
      * The feature API to use for parsing.
      */
-    private final FeatureApi featureApi;
+    private final QuestBiFunction<ItemID, Profile, QuestItem> getItemFunction;
 
     /**
      * Creates a new parser for items.
      *
-     * @param featureApi the feature API to use for parsing
+     * @param getItemFunction the feature API function to retrieve items
      */
-    public ItemParser(final FeatureApi featureApi) {
-        this.featureApi = featureApi;
+    public ItemParser(final QuestBiFunction<ItemID, Profile, QuestItem> getItemFunction) {
+        this.getItemFunction = getItemFunction;
     }
 
     @Override
@@ -49,6 +45,6 @@ public class ItemParser implements InstructionArgumentParser<ItemWrapper> {
             item = new ItemID(placeholders, packManager, pack, string);
             number = new DefaultArgument<>(1);
         }
-        return new Item(featureApi, item, number);
+        return new Item(getItemFunction, item, number);
     }
 }

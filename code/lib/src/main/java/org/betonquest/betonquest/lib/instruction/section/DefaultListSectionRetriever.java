@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.instruction.ValueValidator;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.section.ListSectionRetriever;
 import org.betonquest.betonquest.api.instruction.section.SectionChainInstruction;
+import org.betonquest.betonquest.api.instruction.source.ValueSource;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultListArgumentParser;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class DefaultListSectionRetriever<T> extends DefaultDecoratableSectionRet
      * @param parser      the argument parser
      * @param pathMode    if the parser is in path mode
      */
-    public DefaultListSectionRetriever(final SectionChainInstruction instruction, final List<String> rootPath, final InstructionArgumentParser<List<T>> parser, final boolean pathMode) {
+    public DefaultListSectionRetriever(final SectionChainInstruction instruction, final ValueSource<List<String>> rootPath, final InstructionArgumentParser<List<T>> parser, final boolean pathMode) {
         super(instruction, rootPath, parser, pathMode);
     }
 

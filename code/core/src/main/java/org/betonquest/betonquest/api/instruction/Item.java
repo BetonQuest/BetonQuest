@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.instruction;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.common.function.QuestBiFunction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -16,9 +16,9 @@ import org.jetbrains.annotations.Nullable;
 public class Item implements ItemWrapper {
 
     /**
-     * Feature API.
+     * Feature API function to retrieve items.
      */
-    private final FeatureApi featureApi;
+    private final QuestBiFunction<ItemID, Profile, QuestItem> getItemFunction;
 
     /**
      * Item id to generate the QuestItem with.
@@ -33,13 +33,13 @@ public class Item implements ItemWrapper {
     /**
      * Create a wrapper for Quest Item and target stack size.
      *
-     * @param featureApi the feature api creating new items
-     * @param itemID     the QuestItemID to create
-     * @param amount     the size to set the created ItemStack to
+     * @param getItemFunction the Feature API function to retrieve items
+     * @param itemID          the QuestItemID to create
+     * @param amount          the size to set the created ItemStack to
      */
-    public Item(final FeatureApi featureApi, final ItemID itemID, final Argument<Number> amount) {
+    public Item(final QuestBiFunction<ItemID, Profile, QuestItem> getItemFunction, final ItemID itemID, final Argument<Number> amount) {
+        this.getItemFunction = getItemFunction;
         this.itemID = itemID;
-        this.featureApi = featureApi;
         this.amount = amount;
     }
 
@@ -60,7 +60,7 @@ public class Item implements ItemWrapper {
 
     @Override
     public QuestItem getItem(@Nullable final Profile profile) throws QuestException {
-        return featureApi.getItem(itemID, profile);
+        return getItemFunction.apply(itemID, profile);
     }
 
     @Override

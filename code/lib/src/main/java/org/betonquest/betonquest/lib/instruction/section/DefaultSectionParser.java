@@ -8,9 +8,11 @@ import org.betonquest.betonquest.api.instruction.section.NumberSectionRetriever;
 import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.instruction.section.SectionParser;
 import org.betonquest.betonquest.api.instruction.section.SubSectionArgumentParser;
+import org.betonquest.betonquest.api.instruction.source.ValueSource;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.lib.instruction.section.capsules.EncapsulatedSectionParser;
+import org.betonquest.betonquest.lib.instruction.source.DefaultedSource;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
@@ -22,7 +24,7 @@ import java.util.UUID;
 /**
  * The default implementation for {@link SectionParser}.
  */
-@SuppressWarnings("PMD.TooManyMethods")
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.CouplingBetweenObjects"})
 public class DefaultSectionParser implements SectionParser {
 
     /**
@@ -43,7 +45,7 @@ public class DefaultSectionParser implements SectionParser {
     /**
      * The root path to the section.
      */
-    private final List<String> rootPath;
+    private final ValueSource<List<String>> rootPath;
 
     /**
      * The parsers used to parse the section.
@@ -58,10 +60,15 @@ public class DefaultSectionParser implements SectionParser {
      * @param rootPath    the root path to the section.
      */
     public DefaultSectionParser(final SectionInstruction instruction, final ArgumentParsers parsers,
-                                final List<String> rootPath) {
+                                final ValueSource<List<String>> rootPath) {
         this.instruction = instruction;
         this.parsers = parsers;
         this.rootPath = rootPath;
+    }
+
+    @Override
+    public SectionParser fallback(final ValueSource<List<String>> fallbackSource) {
+        return new DefaultSectionParser(instruction, parsers, new DefaultedSource<>(rootPath, fallbackSource));
     }
 
     @Override
