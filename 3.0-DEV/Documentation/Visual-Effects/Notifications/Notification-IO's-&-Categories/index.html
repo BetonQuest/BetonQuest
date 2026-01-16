@@ -98,7 +98,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#sending-notifications-notify" class="md-skip">
+        <a href="#send-a-notification" class="md-skip">
           Skip to content
         </a>
       
@@ -2472,37 +2472,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#sending-notifications-notify">
+  <a class="md-nav__link" href="#send-a-notification">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Sending Notifications: <code>notify</code>
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-  <nav aria-label="Sending Notifications: notify" class="md-nav">
-    <ul class="md-nav__list">
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#usage-examples">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Usage Examples
+          Send a notification
         </span>
 
       
@@ -2513,19 +2489,19 @@
   
   
 </li>
-      
-      
-      
-      
+    
+    
+    
+    
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#translations">
+  <a class="md-nav__link" href="#broadcast-a-notification">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Translations
+          Broadcast a notification
         </span>
 
       
@@ -2534,35 +2510,6 @@
   </a>
 
   
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#broadcasts">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Broadcasts
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-    </ul>
-  </nav>
   
 </li>
     
@@ -5047,37 +4994,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#sending-notifications-notify">
+  <a class="md-nav__link" href="#send-a-notification">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Sending Notifications: <code>notify</code>
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-  <nav aria-label="Sending Notifications: notify" class="md-nav">
-    <ul class="md-nav__list">
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#usage-examples">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Usage Examples
+          Send a notification
         </span>
 
       
@@ -5088,19 +5011,19 @@
   
   
 </li>
-      
-      
-      
-      
+    
+    
+    
+    
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#translations">
+  <a class="md-nav__link" href="#broadcast-a-notification">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Translations
+          Broadcast a notification
         </span>
 
       
@@ -5109,35 +5032,6 @@
   </a>
 
   
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#broadcasts">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Broadcasts
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-    </ul>
-  </nav>
   
 </li>
     
@@ -5586,8 +5480,16 @@ Therefore, you can play a sound whenever a notification is shown. (1)</p>
 <p>Most NotifyIO's have unique settings that somehow change how a notification is displayed. The actual message is 
 either defined in the action that triggers the NotifyIO or the appropriate language file 
 in the <em>lang</em> directory for all built-in notifications. </p>
-<h2 id="sending-notifications-notify">Sending Notifications: <code>notify</code><a class="headerlink" href="#sending-notifications-notify" title="Permanent link">🔗</a></h2>
-<p>You can send notifications using the <code>notify</code> action. This is how to use it:</p>
+<h2 id="send-a-notification">Send a notification<a class="headerlink" href="#send-a-notification" title="Permanent link">🔗</a></h2>
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This event can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<strong>Syntax</strong>: <code>notify &lt;message&gt; [category] [io] [any io specific settings]</code><br />
+<strong>Description</strong>: Send the notification to the player using the specified notifyIO.</p>
+<p>Every notify IO has it's own specific settings. You must understand these too if you want to use the Notify system to it's full extend.
+Advanced users may also use <a href="../../Documentation/Visual-Effects/Notifications/Notification-IO's-&amp;-Categories.md#categories">Notify Categories</a> to make their lives easier.</p>
+<p>Also a language can be defined with a language key from the language folder in the format <code>{Lang-Key}</code>.
+Any text after the language key until the next language key belongs to the specified language.
+There must be a space between the language key and the message.
+In this example, english users would see <code>ABC</code> and german ones would see <code>DEF</code>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>All colons (<code>:</code>) in the message part of the notification need to be escaped, including those inside placeholders.
@@ -5637,9 +5539,6 @@ You also need to escape the backslash itself, if you use double quotes for some 
 </tr>
 </tbody>
 </table>
-<h3 id="usage-examples">Usage Examples<a class="headerlink" href="#usage-examples" title="Permanent link">🔗</a></h3>
-<p>Check out the notify IO specific options if you haven't yet. You must understand these two if you want to use the Notify system to it's full extend.
-Advanced users may also use <a href="../../Documentation/Visual-Effects/Notifications/Notification-IO's-&amp;-Categories.md#categories">Notify Categories</a> to make their lives easier.
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="c1">#The simplest of all notify actions. Just a chat message:</span>
 <span class="w">  </span><span class="nt">customAction</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">%player%!&quot;</span><span class="w">  </span>
@@ -5665,18 +5564,13 @@ Advanced users may also use <a href="../../Documentation/Visual-Effects/Notifica
 
 <span class="w">  </span><span class="c1">#Use multiple languages:</span>
 <span class="w">  </span><span class="nt">multilanguage</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">{en-US}</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">english</span><span class="nv"> </span><span class="s">person!</span><span class="nv"> </span><span class="s">{de-de}</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">german</span><span class="nv"> </span><span class="s">person!</span><span class="nv"> </span><span class="s">{es-ES}</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">spanish</span><span class="nv"> </span><span class="s">person!&quot;</span>
-</code></pre></div></p>
-<h3 id="translations">Translations<a class="headerlink" href="#translations" title="Permanent link">🔗</a></h3>
-<p>A language can be defined with a language key from the language folder in the format <code>{Lang-Key}</code>.
-Any text after the language key until the next language key belongs to the specified language.
-There must be a space between the language key and the message.
-In this example, english users would see <code>ABC</code> and german ones would see <code>DEF</code>.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">example</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">{en-US}</span><span class="nv"> </span><span class="s">ABC</span><span class="nv"> </span><span class="s">{de-DE}</span><span class="nv"> </span><span class="s">DEF&quot;</span>
 </code></pre></div>
-<h3 id="broadcasts">Broadcasts<a class="headerlink" href="#broadcasts" title="Permanent link">🔗</a></h3>
-<p><strong>persistent</strong>, <strong>static</strong></p>
-<p>You can broadcast notifications to all players on the server using the <code>notifyall</code> action. It works just like the notify action.
+<h2 id="broadcast-a-notification">Broadcast a notification<a class="headerlink" href="#broadcast-a-notification" title="Permanent link">🔗</a></h2>
+<p><strong>Context</strong>: <span class="twemoji account account-independent" title="<b>Independent</b><br> This event can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"/></svg></span><br />
+<strong>Syntax</strong>: <code>notifyall &lt;message&gt; [category] [io] [any io specific settings]</code><br />
+<strong>Description</strong>: Send the notification to all players using the specified notifyIO.</p>
+<p>You can broadcast notifications to all online players on the server using the <code>notifyall</code> action.
+It works just like the notify action.
 Placeholders are resolved for each online player, not for the player the action is executed for.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">announceDungeon</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notifyall</span><span class="nv"> </span><span class="s">A</span><span class="nv"> </span><span class="s">new</span><span class="nv"> </span><span class="s">dungeon</span><span class="nv"> </span><span class="s">has</span><span class="nv"> </span><span class="s">opened!&quot;</span>

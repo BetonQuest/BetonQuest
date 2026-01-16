@@ -1,3 +1,20 @@
-.task {
-  color: #00AB6C;
+.account {
+  font-size: 90%;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.6);
+  margin: 2px;
+}
+
+.account:hover {
+}
+
+.account-online {
+  color: #4CAF50;
+}
+
+.account-offline {
+  color: #FFC107;
+}
+
+.account-independent {
+  color: #03A9F4;
 }

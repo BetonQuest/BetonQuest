@@ -6983,7 +6983,7 @@ You can also specify the <code>respawn</code> location to which the player will 
 <td><em>marked</em></td>
 <td>marked:text</td>
 <td>Disabled</td>
-<td>If the clicked entity needs to be marked by the <a href="../Actions-List/#spawn-mob-spawn">spawn action</a> (see its description for marking explanation)</td>
+<td>If the clicked entity needs to be marked by the <a href="../Actions-List/#spawn-a-mob">spawn action</a> (see its description for marking explanation)</td>
 </tr>
 <tr>
 <td><em>hand</em></td>
@@ -7367,7 +7367,7 @@ All entities work, make sure to use their <a href="https://hub.spigotmc.org/java
 <td><em>marked</em></td>
 <td>marked:keyword</td>
 <td>Disabled</td>
-<td>Only count marked mobs. See the <a href="../Actions-List/#spawn-mob-spawn">spawn action</a> for more information.</td>
+<td>Only count marked mobs. See the <a href="../Actions-List/#spawn-a-mob">spawn action</a> for more information.</td>
 </tr>
 <tr>
 <td><em>notify</em></td>
@@ -7384,7 +7384,7 @@ All entities work, make sure to use their <a href="https://hub.spigotmc.org/java
 </code></pre></div>
 <ol>
 <li>The player must kill a zombie,skeleton or a spider to progress this objective. In total, they must kill 10 entities. Additionally, there will be a notification after each kill.</li>
-<li>The player must kill a pig that was spawned with the <a href="../Actions-List/#spawn-mob-spawn">spawn action</a> and has a marker. </li>
+<li>The player must kill a pig that was spawned with the <a href="../Actions-List/#spawn-a-mob">spawn action</a> and has a marker. </li>
 <li>The player must kill a zombie named "Uber Zombie".</li>
 </ol>
 <h5> Placeholder Properties </h5>
@@ -7452,10 +7452,10 @@ optionally with the notification interval after a colon.</p>
 <h2 id="stages-stage">Stages: <code>stage</code><a class="headerlink" href="#stages-stage" title="Permanent link">🔗</a></h2>
 <p>The Stage objective is a special objective that can be used to track the progress of a quest or a part of a quest.
 It can be completed in two ways, the first one is by increasing the stage more than there are stages defined
-and the second one is by completing the objective with the <a href="../Actions-List/#objective-objective">objective action</a>.
+and the second one is by completing the objective with the <a href="../Actions-List/#manage-objectives">objective action</a>.
 The behaviour of completing the objective by increasing the stage can be disabled by setting the <code>preventCompletion</code> flag.</p>
 <p>When the conditions of the stage objective are not met, the stage of the player can not be modified.<br />
-You can modify the stages with the <a href="../Actions-List/#modify-stage-stage">stage action</a> and check it's state with the <a href="../Conditions-List/#check-stage-stage">stage condition</a>.</p>
+You can modify the stages with the <a href="../Actions-List/#manage-a-stage-objective">stage action</a> and check it's state with the <a href="../Conditions-List/#check-stage-stage">stage condition</a>.</p>
 <table>
 <thead>
 <tr>
@@ -7547,7 +7547,7 @@ notification interval after a colon.</p>
 <h2 id="track-time-timer">Track time: <code>timer</code><a class="headerlink" href="#track-time-timer" title="Permanent link">🔗</a></h2>
 <p>Tracks time in seconds from the start of the objective to the completion of the objective.
 If you simply want to have something like wait for 10 minutes, you can use the <code>amount</code> argument.
-If you don't define the amount, the objective will run indefinitely until you complete it with the <a href="../Actions-List/#objective-objective">objective action</a>.</p>
+If you don't define the amount, the objective will run indefinitely until you complete it with the <a href="../Actions-List/#manage-objectives">objective action</a>.</p>
 <table>
 <thead>
 <tr>
