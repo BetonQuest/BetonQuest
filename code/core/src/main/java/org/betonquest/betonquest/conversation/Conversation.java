@@ -324,8 +324,8 @@ public class Conversation {
             new BukkitRunnable() {
                 @Override
                 public void run() {
+                    interceptor.end();
                     if (onlineProfile.getOnlineProfile().isPresent()) {
-                        interceptor.end();
                         endSender.sendNotification(onlineProfile, new VariableReplacement("npc", data.getPublicData().getQuester(log, onlineProfile)));
                     }
 
