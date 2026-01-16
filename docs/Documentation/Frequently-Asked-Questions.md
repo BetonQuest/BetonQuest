@@ -25,7 +25,7 @@ Or use a `run` action in which you specify all tag-deleting actions at once.
 (We will improve this don't worry)
 
 ## How do I start an objective from a conversation?
-Use the [objective action](../Documentation/Scripting/Building-Blocks/Actions-List.md#objective-objective).
+Use the [objective action](../Documentation/Scripting/Building-Blocks/Actions-List.md#manage-objectives).
 
 ## Why is X thing not working?
 If something stopped working before asking for help please do `/bq reload` and READ THE OUTPUT IN CONSOLE!

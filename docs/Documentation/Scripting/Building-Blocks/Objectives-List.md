@@ -275,7 +275,7 @@ The player must click on entities to complete this objective.
 | _amount_        | number                                                                                        | :octicons-x-circle-16: | The amount of different entities which must be interacted with.                                                                                 |
 | _name_          | name:text                                                                                     | Disabled               | Only count named mobs.                                                                                                                          |
 | _realname_      | realname:text                                                                                 | Disabled               | To check for the real name (e.g. if you renamed players to include their rank).                                                                 |
-| _marked_        | marked:text                                                                                   | Disabled               | If the clicked entity needs to be marked by the [spawn action](./Actions-List.md#spawn-mob-spawn) (see its description for marking explanation) |
+| _marked_        | marked:text                                                                                   | Disabled               | If the clicked entity needs to be marked by the [spawn action](./Actions-List.md#spawn-a-mob) (see its description for marking explanation) |
 | _hand_          | hand:(`hand`,`off_hand`, `any`)                                                               | `hand`                 | The hand the player must use to click the block, `any` can the objective cause to be completed multiple times                                   |
 | _Notifications_ | Keyword (_notify_)                                                                            | Disabled               | Displays messages to the player each time they progress the objective. Optionally with the notification interval after colon.                   |
 | _Cancel_        | Keyword (_cancel_)                                                                            | Disabled               | if the click shouldn't do what it usually does (i.e. left click won't hurt the entity).                                                         |
@@ -489,7 +489,7 @@ All entities work, make sure to use their [correct types](https://hub.spigotmc.o
 | _type_    | ENTITY_TYPE,ENTITY_TYPE | :octicons-x-circle-16: | A list of entities, e.g. `ZOMBIE,SKELETON`.                                                                       |
 | _amount_  | Positive Number         | :octicons-x-circle-16: | Amount of mobs to kill in total.                                                                                  |
 | _name_    | name:text               | Disabled               | Only count named mobs.                                                                                            |
-| _marked_  | marked:keyword          | Disabled               | Only count marked mobs. See the [spawn action](Actions-List.md#spawn-mob-spawn) for more information.             |
+| _marked_  | marked:keyword          | Disabled               | Only count marked mobs. See the [spawn action](Actions-List.md#spawn-a-mob) for more information.             |
 | _notify_  | notify:interval         | Disabled               | Display a message to the player each time they kill a mob. Optionally with the notification interval after colon. |
 
 ``` YAML title="Example"
@@ -500,7 +500,7 @@ objectives:
 ```
    
 1. The player must kill a zombie,skeleton or a spider to progress this objective. In total, they must kill 10 entities. Additionally, there will be a notification after each kill.
-2. The player must kill a pig that was spawned with the [spawn action](Actions-List.md#spawn-mob-spawn) and has a marker. 
+2. The player must kill a pig that was spawned with the [spawn action](Actions-List.md#spawn-a-mob) and has a marker. 
 3. The player must kill a zombie named "Uber Zombie".
 
 
@@ -568,11 +568,11 @@ smeltIron: "smelt ironIngot 5 actions:reward"
 ## Stages: `stage`
 The Stage objective is a special objective that can be used to track the progress of a quest or a part of a quest.
 It can be completed in two ways, the first one is by increasing the stage more than there are stages defined
-and the second one is by completing the objective with the [objective action](./Actions-List.md#objective-objective).
+and the second one is by completing the objective with the [objective action](./Actions-List.md#manage-objectives).
 The behaviour of completing the objective by increasing the stage can be disabled by setting the `preventCompletion` flag.
 
 When the conditions of the stage objective are not met, the stage of the player can not be modified.  
-You can modify the stages with the [stage action](./Actions-List.md#modify-stage-stage) and check it's state with the [stage condition](./Conditions-List.md#check-stage-stage).
+You can modify the stages with the [stage action](./Actions-List.md#manage-a-stage-objective) and check it's state with the [stage condition](./Conditions-List.md#check-stage-stage).
 
 | Parameter           | Syntax              | Default Value          | Explanation                                                          |
 |---------------------|---------------------|------------------------|----------------------------------------------------------------------|
@@ -642,7 +642,7 @@ tame WOLF 2 actions:wolfs_tamed
 
 Tracks time in seconds from the start of the objective to the completion of the objective.
 If you simply want to have something like wait for 10 minutes, you can use the `amount` argument.
-If you don't define the amount, the objective will run indefinitely until you complete it with the [objective action](./Actions-List.md#objective-objective).
+If you don't define the amount, the objective will run indefinitely until you complete it with the [objective action](./Actions-List.md#manage-objectives).
 
 | Parameter  | Syntax          | Default Value | Explanation                                                                         |
 |------------|-----------------|---------------|-------------------------------------------------------------------------------------|

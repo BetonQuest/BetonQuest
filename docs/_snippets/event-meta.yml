@@ -1,0 +1,31 @@
+info-online: >-
+  <b>Online</b><br>
+  This event can only be executed on a player that is online.
+info-offline: >-
+  <b>Offline</b><br>
+  This event can be executed on a player that is offline.
+info-independent: >-
+  <b>Independent</b><br>
+  This event can be executed without any player.
+
+
+online: >-
+  :material-account-check:{ .account .account-online
+  title="@snippet:event-meta:info-online@" }
+offline: >-
+  :material-account-cancel:{ .account .account-offline
+  title="@snippet:event-meta:info-offline@" }
+independent: >-
+  :material-account-off:{ .account .account-independent
+  title="@snippet:event-meta:info-independent@" }
+
+online-offline-independent: |-
+  @snippet:event-meta:online@
+  @snippet:event-meta:offline@
+  @snippet:event-meta:independent@
+online-offline: |-
+  @snippet:event-meta:online@
+  @snippet:event-meta:offline@
+online-independent: |-
+  @snippet:event-meta:online@
+  @snippet:event-meta:independent@
