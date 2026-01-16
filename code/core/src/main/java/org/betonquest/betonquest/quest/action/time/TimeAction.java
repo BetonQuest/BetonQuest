@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.quest.action.time;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -17,7 +16,7 @@ public class TimeAction implements NullableAction {
     /**
      * The selector to get the world for that the time should be set.
      */
-    private final Selector<World> worldSelector;
+    private final Argument<World> world;
 
     /**
      * The raw time value that will be applied.
@@ -32,19 +31,19 @@ public class TimeAction implements NullableAction {
     /**
      * Creates the time action.
      *
-     * @param timeChange    the time type to set
-     * @param worldSelector to get the world that should be affected
-     * @param tickFormat    if the time needs to be multiplied with 1000
+     * @param timeChange the time type to set
+     * @param world      to get the world that should be affected
+     * @param tickFormat if the time needs to be multiplied with 1000
      */
-    public TimeAction(final Argument<TimeChange> timeChange, final Selector<World> worldSelector, final FlagArgument<Boolean> tickFormat) {
+    public TimeAction(final Argument<TimeChange> timeChange, final Argument<World> world, final FlagArgument<Boolean> tickFormat) {
         this.timeChange = timeChange;
-        this.worldSelector = worldSelector;
+        this.world = world;
         this.tickFormat = tickFormat;
     }
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
-        final World world = worldSelector.selectFor(profile);
+        final World world = this.world.getValue(profile);
         final TimeChange change = timeChange.getValue(profile);
         change.applyTo(world, !tickFormat.getValue(profile).orElse(false));
     }

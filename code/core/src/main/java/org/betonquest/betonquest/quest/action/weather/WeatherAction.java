@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.quest.action.weather;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
@@ -21,7 +20,7 @@ public class WeatherAction implements NullableAction {
     /**
      * The selector to get the world for that the weather should be set.
      */
-    private final Selector<World> worldSelector;
+    private final Argument<World> world;
 
     /**
      * The time weather will not change naturally.
@@ -31,19 +30,19 @@ public class WeatherAction implements NullableAction {
     /**
      * Creates the weather action to set the given state.
      *
-     * @param weather       the weather to set
-     * @param worldSelector to get the world that should be affected
-     * @param duration      how long the weather will not change - values &lt;= 0 won't set a duration
+     * @param weather  the weather to set
+     * @param world    to get the world that should be affected
+     * @param duration how long the weather will not change - values &lt;= 0 won't set a duration
      */
-    public WeatherAction(final Argument<Weather> weather, final Selector<World> worldSelector, final Argument<Number> duration) {
+    public WeatherAction(final Argument<Weather> weather, final Argument<World> world, final Argument<Number> duration) {
         this.weather = weather;
-        this.worldSelector = worldSelector;
+        this.world = world;
         this.duration = duration;
     }
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
-        final World world = worldSelector.selectFor(profile);
+        final World world = this.world.getValue(profile);
         weather.getValue(profile).applyTo(world, duration.getValue(profile).intValue());
     }
 
