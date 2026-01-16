@@ -423,11 +423,11 @@ public class CoreQuestTypes {
         actionTypes.registerCombined("tag", new TagPlayerActionFactory(dataStorage, betonQuest.getSaver(), profileProvider));
         actionTypes.register("take", new TakeActionFactory(loggerFactory, pluginMessage));
         actionTypes.register("teleport", new TeleportActionFactory(loggerFactory, featureApi.conversationApi()));
-        actionTypes.registerCombined("time", new TimeActionFactory(server));
+        actionTypes.registerCombined("time", new TimeActionFactory());
         actionTypes.register("updatevisibility", new UpdateVisibilityNowActionFactory(featureApi.getNpcHider(), loggerFactory));
         actionTypes.register("variable", new VariableActionFactory(questTypeApi));
         actionTypes.register("velocity", new VelocityActionFactory(loggerFactory));
-        actionTypes.registerCombined("weather", new WeatherActionFactory(loggerFactory, server));
+        actionTypes.registerCombined("weather", new WeatherActionFactory(loggerFactory));
     }
 
     private void registerObjectives(final FeatureRegistry<ObjectiveFactory> objectiveTypes) {

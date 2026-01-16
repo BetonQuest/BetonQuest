@@ -1,9 +1,6 @@
 package org.betonquest.betonquest.quest.action.time;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.common.function.ConstantSelector;
-import org.betonquest.betonquest.api.common.function.Selector;
-import org.betonquest.betonquest.api.common.function.Selectors;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -13,12 +10,7 @@ import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
 import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter;
 import org.betonquest.betonquest.quest.action.DoNothingPlayerlessAction;
-import org.bukkit.Server;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
 
 /**
  * Factory to create time actions from {@link Instruction}s.
@@ -26,17 +18,10 @@ import java.util.Optional;
 public class TimeActionFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
-     * Server to use for fetching worlds.
-     */
-    private final Server server;
-
-    /**
      * Creates the time action factory.
      *
-     * @param server the server to use
      */
-    public TimeActionFactory(final Server server) {
-        this.server = server;
+    public TimeActionFactory() {
     }
 
     @Override
@@ -54,17 +39,9 @@ public class TimeActionFactory implements PlayerActionFactory, PlayerlessActionF
 
     private NullableActionAdapter createTimeAction(final Instruction instruction) throws QuestException {
         final Argument<TimeChange> time = instruction.parse(TimeParser.TIME).get();
-        final Optional<Argument<String>> world = instruction.string().get("world");
-        final Selector<World> worldSelector = parseWorld(world.isEmpty() ? null : world.get().getValue(null));
+        final String worldPart = instruction.string().get("world", "%location.world%").getValue(null);
+        final Argument<World> world = instruction.chainForArgument(worldPart).world().get();
         final FlagArgument<Boolean> tickFormat = instruction.bool().getFlag("ticks", true);
-        return new NullableActionAdapter(new TimeAction(time, worldSelector, tickFormat));
-    }
-
-    private Selector<World> parseWorld(@Nullable final String worldName) {
-        if (worldName == null) {
-            return Selectors.fromPlayer(Player::getWorld);
-        }
-        final World world = server.getWorld(worldName);
-        return new ConstantSelector<>(world);
+        return new NullableActionAdapter(new TimeAction(time, world, tickFormat));
     }
 }
