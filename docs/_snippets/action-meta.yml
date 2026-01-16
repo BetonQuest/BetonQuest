@@ -11,21 +11,21 @@ info-independent: >-
 
 online: >-
   :material-account-check:{ .account .account-online
-  title="@snippet:event-meta:info-online@" }
+  title="@snippet:action-meta:info-online@" }
 offline: >-
   :material-account-cancel:{ .account .account-offline
-  title="@snippet:event-meta:info-offline@" }
+  title="@snippet:action-meta:info-offline@" }
 independent: >-
   :material-account-off:{ .account .account-independent
-  title="@snippet:event-meta:info-independent@" }
+  title="@snippet:action-meta:info-independent@" }
 
 online-offline-independent: |-
-  @snippet:event-meta:online@
-  @snippet:event-meta:offline@
-  @snippet:event-meta:independent@
+  @snippet:action-meta:online@
+  @snippet:action-meta:offline@
+  @snippet:action-meta:independent@
 online-offline: |-
-  @snippet:event-meta:online@
-  @snippet:event-meta:offline@
+  @snippet:action-meta:online@
+  @snippet:action-meta:offline@
 online-independent: |-
-  @snippet:event-meta:online@
-  @snippet:event-meta:independent@
+  @snippet:action-meta:online@
+  @snippet:action-meta:independent@

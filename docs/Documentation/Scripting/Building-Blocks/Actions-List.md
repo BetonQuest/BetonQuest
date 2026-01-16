@@ -8,7 +8,7 @@ tags:
 
 ## Burn a player
 
-__Context__: @snippet:event-meta:online@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `burn <duration>`  
 __Description__: Ignite the player for the specified duration.
 
@@ -26,7 +26,7 @@ actions:
 
 ## Cancel a conversation
 
-__Context__: @snippet:event-meta:online@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `cancelconversation`  
 __Description__: Cancel a conversation that is currently active for the player.
   
@@ -37,7 +37,7 @@ actions:
 
 ## Chat as a player
 
-__Context__: @snippet:event-meta:online@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `chat <messages>`  
 __Description__: Send the message in chat as the player.
 
@@ -56,7 +56,7 @@ actions:
 
 ## Clear a chest
 
-__Context__: @snippet:event-meta:independent@  
+__Context__: @snippet:action-meta:independent@  
 __Syntax__: `chestclear <location>`  
 __Description__: Remove all items from the chest at the specified location.
 
@@ -67,7 +67,7 @@ actions:
 
 ## Put items into a chest
 
-__Context__: @snippet:event-meta:independent@  
+__Context__: @snippet:action-meta:independent@  
 __Syntax__: `chestgive <location> <items>`  
 __Description__: Put items into the chest at the specified location.
 
@@ -84,7 +84,7 @@ actions:
 
 ## Take items from a chest
 
-__Context__: @snippet:event-meta:independent@  
+__Context__: @snippet:action-meta:independent@  
 __Syntax__: `chesttake <location> <items>`  
 __Description__: Take items from the chest at the specified location.
 
@@ -97,7 +97,7 @@ actions:
 
 ## Manage compass targets
 
-__Context__: @snippet:event-meta:online-offline@  
+__Context__: @snippet:action-meta:online-offline@  
 __Syntax__: `compass <operation> <target>`  
 __Description__: Manage the compass destinations for the player.
 
@@ -127,7 +127,7 @@ actions:
 
 ## Execute console commands
 
-__Context__: @snippet:event-meta:independent@  
+__Context__: @snippet:action-meta:independent@  
 __Syntax__: `command <commands>`  
 __Description__: Run the specified commands from the console.
 
@@ -147,7 +147,7 @@ actions:
 
 ## Start a conversation
 
-__Context__: @snippet:event-meta:online@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `conversation <conversation> <option>`  
 __Description__: Start a conversation.
  
@@ -164,7 +164,7 @@ actions:
 
 ## Damage a player
 
-__Context__: @snippet:event-meta:online@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `damage <amount>`  
 __Description__: Apply the specified amount of damage to the player.
 
@@ -177,7 +177,7 @@ actions:
 
 ## Delete a point category
 
-__Context__: @snippet:event-meta:online-offline-independent@    
+__Context__: @snippet:action-meta:online-offline-independent@    
 __Syntax__: `deletepoint <category>`  
 __Description__: Delete the point category for the player.
 
@@ -190,7 +190,7 @@ actions:
 
 ## Delete a global point category
 
-__Context__: @snippet:event-meta:independent@  
+__Context__: @snippet:action-meta:independent@  
 __Syntax__: `deleteglobalpoint <category>`  
 __Description__: Delete the global point category.
 
@@ -201,7 +201,7 @@ actions:
 
 ## Control openable blocks
 
-__Context__: @snippet:event-meta:independent@  
+__Context__: @snippet:action-meta:independent@  
 __Syntax__: `door <location> <operation>`  
 __Description__: Open and close doors, trapdoors, and fence gates.
 
@@ -214,7 +214,7 @@ actions:
 
 ## Drop items
 
-__Context__: @snippet:event-meta:independent@  
+__Context__: @snippet:action-meta:independent@  
 __Syntax__: `drop <items> <location>`  
 __Description__: Drop the specified items at the specified location.
 
@@ -236,7 +236,7 @@ actions:
 
 ## Remove potion effects
 
-__Context__: @snippet:event-meta:online@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `deleffect <effects>`  
 __Description__: Remove the specified potion effects from the player.
 
@@ -252,7 +252,7 @@ actions:
 
 ## Apply a potion effect
 
-__Context__: @snippet:event-meta:online@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `effect <effect> <duration> <level> [ambient] [icon] [hidden]`  
 __Description__: Apply the specified potion effect to the player.
 
@@ -269,7 +269,7 @@ actions:
 
 ## Evaluate an expression
 
-__Context__: @snippet:event-meta:independent@  
+__Context__: @snippet:action-meta:independent@  
 __Syntax__: `eval <expression>`  
 __Description__: Evaluate the expression and execute the resulting action.
 
@@ -287,7 +287,7 @@ actions:
 
 ## Manipulate experience 
 
-__Context__: @snippet:event-meta:online@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `experience <amount> <action>`  
 __Description__: Manipulate the player's experience bar.
 
@@ -317,7 +317,7 @@ actions:
 
 ## Create an explosion
 
-__Context__: @snippet:event-meta:independent@  
+__Context__: @snippet:action-meta:independent@  
 __Syntax__: `explosion <fire> <block> <power> <location>`  
 __Description__: Create an explosion at the specified location.
 
@@ -334,7 +334,7 @@ actions:
 
 ## Run multiple actions
 
-__Context__: @snippet:event-meta:independent@  
+__Context__: @snippet:action-meta:independent@  
 __Syntax__: `folder <actions> [delay] [period] [unit] [random] [cancelOnLogout] [cancelConditions]`  
 __Description__: Run multiple actions in sequence.
 
@@ -373,7 +373,7 @@ actions:
 
 ## Run the first possible action
 
-__Context__: @snippet:event-meta:independent@  
+__Context__: @snippet:action-meta:independent@  
 __Syntax__: `first <actions>`  
 __Description__: Execute the first possible action.
 
@@ -408,7 +408,7 @@ actions:
 
 ## Give items
 
-__Context__: @snippet:event-meta:online@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `give <items> [notify] [backpack]`  
 __Description__: Give the player all specified items.
 
@@ -427,7 +427,7 @@ actions:
 
 ## Give the journal
 
-__Context__: @snippet:event-meta:online@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `givejournal`  
 __Description__: Give the journal to the player.
 
@@ -440,7 +440,7 @@ actions:
 
 ## Manage a global point category
 
-__Context__: @snippet:event-meta:independent@  
+__Context__: @snippet:action-meta:independent@  
 __Syntax__: `globalpoint <category> <amount> <action>`  
 __Description__: Manage global points.
 
@@ -458,7 +458,7 @@ actions:
 
 ## Manage global tags
 
-__Context__: @snippet:event-meta:independent@  
+__Context__: @snippet:action-meta:independent@  
 __Syntax__: `globaltag <operation> <tags>`  
 __Description__: Manage global tags.
 
@@ -471,7 +471,7 @@ actions:
 
 ## Manage player hunger
 
-__Context__: @snippet:event-meta:online@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `hunger <operation> <amount>`  
 __Description__: Manage the food level of the player.
 
@@ -488,7 +488,7 @@ actions:
 
 ## Alternate between actions
 
-__Context__: @snippet:event-meta:independent@  
+__Context__: @snippet:action-meta:independent@  
 __Syntax__: `if <condition> <action1> else <action2>`  
 __Description__: Check a condition and run one of two actions.
 
@@ -504,7 +504,7 @@ actions:
 
 ## Manage item durability
 
-__Context__: @snippet:event-meta:online@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `itemdurability <slot> <operation> <amount> [ignoreUnbreakable] [ignoreEvents]`  
 __Description__: Manage the durability of an item in the specified slot.
 
@@ -525,7 +525,7 @@ actions:
 
 ## Manage journal entries
 
-__Context__: @snippet:event-meta:online-offline-independent@  
+__Context__: @snippet:action-meta:online-offline-independent@  
 __Syntax__: `journal <operation> <entry>`  
 __Description__: Manage entries in the player's journal.
 
@@ -550,7 +550,7 @@ actions:
 
 ## Kill a player
 
-__Context__: @snippet:event-meta:online@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `kill`  
 __Description__: Kill the player.
 
@@ -561,7 +561,7 @@ actions:
 
 ## Set a language
 
-__Context__: @snippet:event-meta:online-offline@  
+__Context__: @snippet:action-meta:online-offline@  
 __Syntax__: `language <language>`  
 __Description__: Set the player's language to the specified one.
 
@@ -574,7 +574,7 @@ actions:
 
 ## Control a lever
 
-__Context__: @snippet:event-meta:independent@  
+__Context__: @snippet:action-meta:independent@  
 __Syntax__: `lever <location> <state>`  
 __Description__: Control the lever at the specified location.
 
@@ -587,7 +587,7 @@ actions:
 
 ## Strike lightning
 
-__Context__: @snippet:event-meta:independent@  
+__Context__: @snippet:action-meta:independent@  
 __Syntax__: `lightning <location> [noDamage]`  
 __Description__: Strike lightning at specified location.
 
@@ -606,7 +606,7 @@ actions:
 
 ## Log a message
 
-__Context__: @snippet:event-meta:independent@  
+__Context__: @snippet:action-meta:independent@  
 __Syntax__: `log <message> [level]`  
 __Description__: Print the specified message to the server's console.
 
@@ -622,7 +622,7 @@ actions:
 
 ## Teleport an npc
 
-__Context__: @snippet:event-meta:independent@  
+__Context__: @snippet:action-meta:independent@  
 __Syntax__: `npcteleport <Npc> <Location> [spawn]`  
 __Description__: Teleport the npc to the specified location.
 
@@ -639,7 +639,7 @@ actions:
 
 ## Manage objectives
 
-__Context__: @snippet:event-meta:online-offline-independent@  
+__Context__: @snippet:action-meta:online-offline-independent@  
 __Syntax__: `objective <operation> <objectives>`  
 __Description__: Manage objectives. 
 
@@ -660,7 +660,7 @@ actions:
 
 ## Execute operator commands
 
-__Context__: @snippet:event-meta:online@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `opsudo <commands>`  
 __Description__: Execute the commands as the player with temporary operator permissions.
 
@@ -677,7 +677,7 @@ actions:
 
 ## Run actions for the party
 
-__Context__: @snippet:event-meta:online@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `party <range> <conditions> <actions> [amount]`  
 __Description__: Run actions for all players in the party.
 
@@ -697,7 +697,7 @@ actions:
 
 ## Pick actions randomly
 
-__Context__: @snippet:event-meta:independent@  
+__Context__: @snippet:action-meta:independent@  
 __Syntax__: `pickrandom <actions> [amount]`  
 __Description__: Pick actions randomly from the specified list of actions.
 
@@ -716,7 +716,7 @@ actions:
 
 ## Manage a point category
 
-__Context__: @snippet:event-meta:online-offline@  
+__Context__: @snippet:action-meta:online-offline@  
 __Syntax__: `point <category> <amount> <action>`  
 __Description__: Manage the points in the specific category.
 
@@ -735,7 +735,7 @@ actions:
 
 ## Remove entities
 
-__Context__: @snippet:event-meta:independent@  
+__Context__: @snippet:action-meta:independent@  
 __Syntax__: `removeentity <entitys> <location> <radius> [name] [marked] [type]`  
 __Description__: Remove or kill all entities of the specified type at the specified location.
 
@@ -760,7 +760,7 @@ actions:
 
 ## Run actions inline
 
-__Context__: @snippet:event-meta:independent@  
+__Context__: @snippet:action-meta:independent@  
 __Syntax__: `run <actions>`  
 __Description__: Allows you to specify multiple instructions in one long instruction. 
 
@@ -775,7 +775,7 @@ actions:
 
 ## Run for online players
 
-__Context__: @snippet:event-meta:independent@  
+__Context__: @snippet:action-meta:independent@  
 __Syntax__: `runForAll <actions> <where>`  
 __Description__: Run the specified actions once for each online player.
 
@@ -803,7 +803,7 @@ actions:
 
 ## Run actions as independent
 
-__Context__: @snippet:event-meta:independent@  
+__Context__: @snippet:action-meta:independent@  
 __Syntax__: `runIndependent <actions>`  
 __Description__: Run the specified actions as if they were independent.
 
@@ -835,7 +835,7 @@ actions:
 
 ## Manage a scoreboard objective
 
-__Context__: @snippet:event-meta:online-offline@  
+__Context__: @snippet:action-meta:online-offline@  
 __Syntax__: `score <objective> <number> <action>`  
 __Description__: Manage the scoreboard objective of the player.
 
@@ -853,7 +853,7 @@ actions:
 
 ## Manage a scoreboard tag
 
-__Context__: @snippet:event-meta:online@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `scoretag <operation> <tag>`  
 __Description__: Manage the scoreboard tag of the player.
 
@@ -872,7 +872,7 @@ actions:
 
 ## Set a block
 
-__Context__: @snippet:event-meta:independent@  
+__Context__: @snippet:action-meta:independent@  
 __Syntax__: `setblock <block> <location> [ignorePhysics]`  
 __Description__: Set the block at the specified location.
 
@@ -888,7 +888,7 @@ actions:
 
 ## Manage a stage objective
 
-__Context__: @snippet:event-meta:online-offline@  
+__Context__: @snippet:action-meta:online-offline@  
 __Syntax__: `stage <objective> <operation> <stage|amount>`  
 __Description__: Manage the specified stage objective of the player.
 
@@ -915,7 +915,7 @@ actions:
 
 ## Spawn a mob
 
-__Context__: @snippet:event-meta:independent@  
+__Context__: @snippet:action-meta:independent@  
 __Syntax__: `spawn <location> <type> <amount> [name] [marked] [drops] [h] [c] [l] [b] [m] [o]`  
 __Description__: Spawn the specified number of mobs with the specified type at the specified location.
 
@@ -937,7 +937,7 @@ actions:
 
 ## Execute player commands
 
-__Context__: @snippet:event-meta:online@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `sudo <commands>`  
 __Description__: Execute the commands as the player.
 
@@ -954,7 +954,7 @@ actions:
 
 ## Manage tags
 
-__Context__: @snippet:event-meta:online-offline-independent@  
+__Context__: @snippet:action-meta:online-offline-independent@  
 __Syntax__: `tag <operation> <tags>`  
 __Description__: Manage the tags of the player.
 
@@ -972,7 +972,7 @@ actions:
 
 ## Take items
 
-__Context__: @snippet:event-meta:online@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `take <items> [invOrder] [notify]`  
 __Description__: Take items from the player’s inventory or backpack.
 
@@ -997,7 +997,7 @@ actions:
 
 ## Manage a world's time
 
-__Context__: @snippet:event-meta:independent@  
+__Context__: @snippet:action-meta:independent@  
 __Syntax__: `time <time> [world] [ticks]`  
 __Description__: Manage the time of the specified world.
 
@@ -1018,7 +1018,7 @@ actions:
 
 ## Teleport a player
 
-__Context__: @snippet:event-meta:online@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `teleport <location>`  
 __Description__: Teleport the player to the specified location.
  
@@ -1041,7 +1041,7 @@ actions:
 
 ## Manage a variable objective
 
-__Context__: @snippet:event-meta:online-offline@  
+__Context__: @snippet:action-meta:online-offline@  
 __Syntax__: `variable <objective> <key> <value>`  
 __Description__: Manage values that are stored in `variable` objective variables. 
 
@@ -1061,7 +1061,7 @@ actions:
 
 ## Manage player's velocity
 
-__Context__: @snippet:event-meta:online@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `velocity <vector> <direction> <modification>`  
 __Description__: Manage the velocity of the player.
 
@@ -1085,7 +1085,7 @@ actions:
 
 ## Manage a world's weather
 
-__Context__: @snippet:event-meta:independent@  
+__Context__: @snippet:action-meta:independent@  
 __Syntax__: `weather <type> [duration] [world]`  
 __Description__: Manage the weather of the world.
 
