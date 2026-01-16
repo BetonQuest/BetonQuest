@@ -1,7 +1,7 @@
 cancel: |-
   ## Call a quest canceler
 
-  __Context__: @snippet:event-meta:online@  
+  __Context__: @snippet:action-meta:online@  
   __Syntax__: `cancel <canceler> [bypass]`  
   __Description__: Call the specified quest canceler.
   
@@ -21,7 +21,7 @@ cancel: |-
 notify: |-
   ## Send a notification
 
-  __Context__: @snippet:event-meta:online@  
+  __Context__: @snippet:action-meta:online@  
   __Syntax__: `notify <message> [category] [io] [any io specific settings]`  
   __Description__: Send the notification to the player using the specified notifyIO.
   
@@ -84,7 +84,7 @@ notify: |-
 notify-all: |-
   ## Broadcast a notification
 
-  __Context__: @snippet:event-meta:independent@  
+  __Context__: @snippet:action-meta:independent@  
   __Syntax__: `notifyall <message> [category] [io] [any io specific settings]`  
   __Description__: Send the notification to all players using the specified notifyIO.
   
