@@ -29,6 +29,9 @@ extra:
     - icon: brands/mail
       link: mailto://contact@betonquest.org
 
+extra_css:
+  - '_webCode/css/coloredIcons.css'
+
 #Notice that here are a few strange looking hairspaces in here.
 #They make the space between the emojis and the text look equal
 nav:
