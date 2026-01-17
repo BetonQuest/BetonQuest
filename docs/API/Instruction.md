@@ -33,7 +33,7 @@ It minimally consists of two steps: the argument parsing step and the argument r
 
 To offer an overview before explaing all details, the following examples show excerpts from factories in BetonQuest:
 
-Compare [experience](../Documentation/Scripting/Building-Blocks/Conditions-List.md#experience-experience) condition.
+Compare [experience](../Documentation/Scripting/Building-Blocks/Conditions-List.md#has-experience) condition.
 ```JAVA title="ExperienceConditionFactory.java"
 public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<Number> amount = instruction.number().get();

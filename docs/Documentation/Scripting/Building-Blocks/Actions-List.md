@@ -1,6 +1,5 @@
 ---
 icon: fontawesome/solid/play
-toc_depth: 2
 tags:
   - Action
 ---

@@ -1,13 +1,19 @@
 ---
 icon: octicons/question-16
+tags:
+  - Condition
 ---
 # Conditions List
 
-## Advancement: `advancement`
+## Has advancement
 
-This condition checks if the player has a specified advancement. The only argument is the name of the advancement.
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `advancement <name>`  
+__Description__: Whether the player has the specified advancement.
+
+The only argument is the name of the advancement.
 The namespace can be omitted for the `minecraft` default namespace.
-The name must be in the format as configured on your server.   
+The name must be in the format as configured on your server.  
 [List of all vanilla advancements](https://minecraft.wiki/w/Advancement#List_of_advancements).
 
 ```YAML title="Example"
@@ -16,58 +22,72 @@ conditions:
   killedAMob: "advancement minecraft:adventure/kill_a_mob"
 ```
 
-## Conjunction: `and`
+## Conjunction
 
-**static**
+__Context__: @snippet:condition-meta:independent@  
+__Syntax__: `and <conditions>`  
+__Description__: The conjunction of the specified conditions.
 
-Conjunction of specified conditions. This means that every condition has to be met in order for conjunction to be true. Used only in complex alternatives, because conditions generally work as conjunction. Instruction string is exactly the same as in `alternative`.
+This means that every condition has to be met in order for conjunction to be true. Used only in complex alternatives, because conditions generally work as conjunction. Instruction string is exactly the same as in `alternative`.
 
 ```YAML title="Example"
 conditions:
   hasArmor: "and has_helmet,has_chestplate,has_leggings,has_boots"
 ```
 
-## Armor: `armor`
+## Is wearing armor
 
-The armor condition requires the player to wear an armor that has been specified in the _items_ section.
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `armor <item>`  
+__Description__: Whether the player is wearing the specified armor specified in the _items_ section.
 
 ```YAML title="Example"
 conditions:
   armorHelmet: "armor helmet_of_concrete"
 ```
 
-## Biome: `biome`
+## Is in biome
 
-This condition will check if the player is in specified biome. The only argument is the [biome type](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/block/Biome.html).
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `biome <biome>`  
+__Description__: Whether the player is in the specified biome.
+
+The only argument is the [biome type](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/block/Biome.html).
 
 ```YAML title="Example"
 conditions:
   inSavannaRock: "biome savanna_rock"
 ```
-    
-## Burning: `burning`
 
-This condition will check if the player is on fire.
+## Is burning
+
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `burning`  
+__Description__: Whether the player is on fire.
 
 ```YAML title="Example"
 conditions:
   isOnFire: "burning"
 ```
 
-## Check conditions: `check`
+## Check conditions inline
 
-**persistent**, **static**
+__Context__: @snippet:condition-meta:independent@  
+__Syntax__: `check <conditions>`  
+__Description__: Allows you to specify multiple instructions in one long conjunctive instruction.
 
-This condition allow for specifying multiple instruction strings in one, longer string. Each instruction must be started with `^` character and no other dividers should be used. The condition will be met if all inner conditions are met. It's not the same as `and` condition, because you can specify an instruction string, not a condition name.
+Each instruction must be started with `^` character and no other dividers should be used. The condition will be met if all inner conditions are met. It's not the same as `and` condition, because you can specify an instruction string, not a condition name.
 
 ```YAML title="Example"
 conditions:
   fulfillRequirements: "check ^tag beton ^item emerald:5 ^location 100;200;300;survival_nether;5 ^experience 20"
 ```
 
-## Chest Item: `chestitem` 
+## Are items in a chest
 
-**persistent**, **static**
+__Context__: @snippet:condition-meta:independent@  
+__Syntax__: `chestitem <location> <items>`  
+__Description__: Whether the specified items are in the specified chest.
 
 This condition works in the same way as `item` condition, but it checks the specified chest instead of a player. The first argument is a location of the chest and the second one is the list of items defined in the same way as in `item` condition. If there is no chest at specified location the condition won't be met.
 
@@ -76,36 +96,51 @@ conditions:
   emeraldsInChest: "chestitem 100;200;300;world emerald:5,sword"
 ```
 
-## Conversation: `conversation`
+## Is conversation startable
 
-This condition will check if a conversation has an available starting option. If no starting option has a condition that returns true then this will return false.
+__Context__: @snippet:condition-meta:online-offline@  
+__Syntax__: `conversation <conversation>`  
+__Description__: Whether the conversation has an available starting option.
+
+If no starting option has a condition that returns true then this will return false.
 
 ```YAML title="Example"
 conditions:
   isInInnkeeperConv: "conversation innkeeper"
 ```
 
-## Day of week: `dayofweek`
+## Is day of the week
 
-It must be a specific day of the week that this condition returns true. You can specify either the english name of the day or the number of the day (1 being monday, 7 sunday,...).
+__Context__: @snippet:condition-meta:independent@  
+__Syntax__: `dayofweek <day>`  
+__Description__: Whether the current day of the week is the specified one.
+
+You can specify either the english name of the day or the number of the day (1 being monday, 7 sunday,...).
 
 ```YAML title="Example"
 conditions:
   isSunday: "dayofweek sunday"
 ```
- 
-## Potion Effect: `effect`
 
-To meet this condition the player must have an active potion effect. There is only one argument and it takes values from this page: [potion types](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/potion/PotionEffectType.html).
+## Has potion effect
+
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `effect <effect>`  
+__Description__: Whether the player has the specified potion effect.
+
+There is only one argument and it takes values from this page: [potion types](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/potion/PotionEffectType.html).
 
 ```YAML title="Example"
 conditions:
   hasSpeed: "effect SPEED"
 ```
 
-## Empty inventory slots: `empty`
+## Has empty inventory slots
 
-To meet this condition the players inventory must have the specified amount of empty slots or more.
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `empty <amount>`  
+__Description__: Whether the player has at least the specified amount of empty inventory slots.
+
 If you want to check for a specific amount (for example for a full inventory with 0 empty slots) you can append the `equal` argument.
 
 ```YAML title="Example"
@@ -113,11 +148,12 @@ conditions:
   hasFiveEmptySlots: "empty 5"
 ```
 
-## Entities in area: `entities` 
+## Are entities in area
 
-**persistent**, **static**
+__Context__: @snippet:condition-meta:independent@  
+__Syntax__: `entities <entities> <location> <range> [name] [marked]`  
+__Description__: Whether there are at least the specified amount of specified entities in the specified area.
 
-This condition will return true only if there is a specified amount (or more) of specified entities in the specified area. 
 There are three required arguments - entity type, location and range. Entities are defined as a list separated by commas.
 Each entity type (taken from [here](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html))
 can have an additional amount suffix, for example `ZOMBIE:5,SKELETON:2` means 5 or more zombies and 2 or more skeletons.
@@ -129,9 +165,13 @@ conditions:
   daemonsSpawned: "entities ZOMBIE:2 100;200;300;world 10 name:Daemon"
 ```
 
-## Eval Condition: `eval`
+## Evaluate a condition
 
-This condition allows you to resolve an expression containing placeholders, and the result will then be interpreted 
+__Context__: @snippet:condition-meta:independent@  
+__Syntax__: `eval <expression>`  
+__Description__: Evaluate the expression and checks the resulting condition.
+
+This condition allows you to resolve an expression containing placeholders, and the result will then be interpreted
 again as a condition.
 
 ```YAML title="Example"
@@ -141,12 +181,15 @@ conditions:
 ```
 
 1. This could evaluate to `point ranking 5 equal` and will be true if the player has 5 points in the ranking category.
-   But the placeholder could also be empty, and it could be higher or equal to 5. This is not possible in a normal 
+   But the placeholder could also be empty, and it could be higher or equal to 5. This is not possible in a normal
    condition.
 
-## Experience: `experience`
+## Has experience
 
-This condition is met when the player has the specified amount of experience levels.
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `experience <amount>`  
+__Description__: Whether the player has the specified amount of experience levels.
+
 You can also define decimal numbers, for example `experience 1.5` will be met when the player has 1.5 or more experience levels.
 If you want to check for an absolute amount of experience points you can convert it to decimal levels.
 
@@ -156,58 +199,71 @@ conditions:
   hasLevel5dot5: "experience 5.5"
 ```
 
-## Facing direction: `facing`
+## Is facing in a direction
 
-Checks if the player is looking in the given direction. Valid directions are `UP`, `DOWN`, `NORTH`, `EAST`, `WEST` and `SOUTH`. Up and down start at a pitch of 60°.
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `facing <direction>`  
+__Description__: Whether the player is facing the specified direction.
+
+Valid directions are `UP`, `DOWN`, `NORTH`, `EAST`, `WEST` and `SOUTH`. Up and down start at a pitch of 60°.
 
 ```YAML title="Example"
 conditions:
   lookingEast: "facing EAST"
 ```
 
-## Fly: `fly`
+## Is flying
 
-This will check if the player is currently flying (Elytra type of flight).
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `fly`  
+__Description__: Whether the player is currently flying (Elytra type of flight).
 
 ```YAML title="Example"
 conditions:
   isFlying: "fly"
 ```
 
-## Game mode: `gamemode`
+## Is in gamemode
 
-This condition checks if the player is in a specified game mode. The first argument is the game mode, i.e. survival, creative, adventure.
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `gamemode <gamemode>`  
+__Description__: Whether the player is in the specified gamemode.
+
+The first argument is the game mode, i.e. survival, creative, adventure.
 
 ```YAML title="Example"
 conditions:
   isInSurvival: "gamemode survival"
 ```
 
-## Global point: `globalpoint` 
+## Has global point
 
-**persistent**, **static**
-
-The same as point condition but it checks the amount for a global point category which has the same value for all players.
+__Context__: @snippet:condition-meta:independent@  
+__Syntax__: `globalpoint <category> <point>`  
+__Description__: Whether the specified global point category has the specified amount of points.
 
 ```YAML title="Example"
 conditions:
   has100Users: "globalpoint global_knownusers 100"
 ```
 
-## Global tag: `globaltag`
+## Has global tag
 
-**persistent**, **static**
-
-This requires a specific global tag to be set and works the same as normal tag condition.
+__Context__: @snippet:condition-meta:independent@  
+__Syntax__: `globaltag <tag>`  
+__Description__: Whether the specified global tag is set.
 
 ```YAML title="Example"
 conditions:
   areNpcsAggressive: "globaltag global_areNPCsAggressive"
 ```
 
-## Item in Hand: `hand`
+## Has item in a hand
 
-This condition is met only when the player holds the specified quest item in their hand.
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `hand <item> [offhand]`  
+__Description__: Whether the player holds the specified quest item in the hand.
+
 The offhand will be checked instead of the main hand if the `offhand` keyword is added.
 Amount cannot be set here, though it may be checked with the `item` condition.
 
@@ -217,36 +273,53 @@ conditions:
   holdShieldOffhand: "hand QuestShield offhand"
 ```
 
-## Health: `health`
+## Has health
 
-Requires the player to have equal or more health than specified amount. The only argument is a number (double). Players can have 0 to 20 health by default (there are some plugins and commands which change the maximum) (0 means dead, don't use that since it will only be met when the player sees the red respawn screen).
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `health <amount>`  
+__Description__: Whether the player has at least the specified amount health.
+
+The only argument is a number (double).
+Players can have 0 to 20 health by default (there are some plugins and commands which change the maximum)
+(0 means dead, don't use that since it will only be met when the player sees the red respawn screen).
 
 ```YAML title="Example"
 conditions:
   has5dot6Health: "health 5.6"
 ```
 
-## Height: `height`
+## Is below height
 
-This condition requires the player to be _below_ specific Y height. The required argument is a number or a location (for example 100;200;300;world). In case of location it will take the height from it and use it as regular height.
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `height <amount>`  
+__Description__: Whether the player is _below_ the specified height.
+
+The required argument is a number or a location (for example 100;200;300;world).
+In case of location it will take the height from it and use it as regular height.
 
 ```YAML title="Example"
 conditions:
   isBelow16: "height 16"
 ```
 
-## Hunger: `hunger`
+## Has hunger
 
-Requires the player to have equal or more hunger points, the condition is the same as `health` just for hunger. If the hunger level is below 7, the player cannot sprint.
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `hunger <amount>`  
+__Description__: Whether the player has at least the specified amount of hunger.
+
+If the hunger level is below 7, the player cannot sprint.
 
 ```YAML title="Example"
 conditions:
   has15orMoreHunger: "hunger 15"
 ```
-    
-## In Conversation: `inconversation`
 
-This condition checks, if the player is in a conversation.
+## Is in conversation
+
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `inconversation [conversation]`  
+__Description__: Whether the player is currently in the specified conversation.
 
 | Parameter      | Syntax              | Default Value          | Explanation                                                                                              |
 |----------------|---------------------|------------------------|----------------------------------------------------------------------------------------------------------|
@@ -258,18 +331,27 @@ conditions:
   talksToInnkeeper: "inconversation conversation:innkeeper"
 ```
 
-## Item in Inventory: `item`
+## Has items
 
-This condition requires the player to have all specified items in his inventory or backpack. You specify items in a list separated by commas (without spaces between!) Each item consists of its name and amount, separated by a colon. Amount is optional, so if you specify just item's name the plugin will assume there should be only one item.
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `item <items>`  
+__Description__: Whether the player has the specified items in his inventory or backpack.
+
+You specify items in a list separated by commas (without spaces between!).
+Each item consists of its name and amount, separated by a colon.
+Amount is optional, so if you specify just item's name the plugin will assume there should be only one item.
 
 ```YAML title="Example"
 conditions:
   emeraldsAndGold: "item emerald:5,gold:10"
 ```
 
-## Durability of item: `itemdurability`
+## Has durability
 
-This condition requires the player to have a certain amount of durability on an item.
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `itemdurability <slot> <amount> [relative]`  
+__Description__: Whether the player has a certain amount of durability on an item.
+
 The first argument is the slot, the second the amount.
 Optional `relative` argument sets 0 to broken and 1 to the maximum durability the item can have.
 This condition returns false when no item is in the given slot or does not have durability, like stone or sticks.
@@ -281,50 +363,63 @@ conditions:
   chestMoreThan50Percent: "itemdurability CHEST 0.5 relative"
 ```
 
-## Journal entry: `journal`
+## Has journal entry
 
-This condition will return true if the player has specified entry in his journal (internal name of the entry, like in _journal_ section). The only argument is name of the entry.
+__Context__: @snippet:condition-meta:online-offline@  
+__Syntax__: `journal <entry>`  
+__Description__: Whether the player has the specified journal entry.
+
+The only argument is name of the entry.
 
 ```YAML title="Example"
 conditions:
   journalHasWoodStarted: "journal wood_started"
 ```
 
-## Language: `language`
+## Has language selected
 
-**persistent**
-
-This condition is fulfilled as long as the player has one of the specified languages selected as their quest language.
+__Context__: @snippet:condition-meta:online-offline@  
+__Syntax__: `language <languages>`  
+__Description__: Whether the player has one of the specified languages selected.
 
 ```YAML title="Example"
 conditions:
   hasValidLanguage: "language en-US,de-DE,fr-FR"
 ```
 
-## Location: `location`
+## Is at location
 
-It returns true only when the player is closer to specified location than the specified distance. Just two mandatory attributes - location and radius around it.
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `location <location> <radius>`  
+__Description__: Whether the player is at the specified location within the specified radius.
+
+Just two mandatory attributes - location and radius around it.
 
 ```YAML title="Example"
 conditions:
   netherEntrance: "location 100;200;300;survival_nether 5"
 ```
 
-##  Looking at a block: `looking`
+## Is looking at a block
 
-Checks if the player is looking at a block with the given location or material. You must specify either `loc:` optional (the location of the block) or `type:` optional as a `block selector`. You can also specify both.
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `looking [location | type]`  
+__Description__: Whether the player is looking towards the specified block at the specified location or with the specified material.
+
+You must specify either `loc:` optional (the location of the block) or `type:` optional as a `block selector`.
+You can also specify both.
 
 ```YAML title="Example"
 conditions:
   targetingStone: "looking loc:12.0;14.0;-15.0;world type:STONE"
 ```
 
-## Moon Phase: `moonphase`
+## Is in moonphase
 
-**static**
+__Context__: @snippet:condition-meta:independent@  
+__Syntax__: `moonphase <moonphase> [world]`  
+__Description__: Whether the specified moonphase matches the one in the specified world. 
 
-This condition checks the moon phase in the given world or the player's world.
-    
 | Parameter   | Syntax                                                                                                    | Default Value          | Explanation                            |
 |-------------|-----------------------------------------------------------------------------------------------------------|------------------------|----------------------------------------|
 | _MoonPhase_ | [Keyword](https://jd.papermc.io/paper/1.21.5/io/papermc/paper/world/MoonPhase.html#enum-constant-summary) | :octicons-x-circle-16: | A list of moon phases to check for.    |
@@ -338,9 +433,11 @@ conditions:
   playersFirstJoinMoon: "moonphase %ph.player_first_join_moon%"
 ```
 
-## NPC distance: `npcdistance`
+## Has distance to npc
 
-This condition will check if a Npc is close to the player.
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `npcdistance <npc> <distance>`  
+__Description__: Whether the player is inside the specified radius of the specified npc.
 
 | Parameter  | Syntax   | Default Value          | Explanation          |
 |------------|----------|------------------------|----------------------|
@@ -352,11 +449,11 @@ conditions:
   canHearBandit: "npcdistance bandit 22"
 ```
 
-## NPC location: `npclocation`
+## Is npc at location
 
-**persistent**, **static**
-
-This condition will check if a Npc is close to a location.
+__Context__: @snippet:condition-meta:independent@  
+__Syntax__: `npclocation <npc> <location> <distance>`  
+__Description__: Whether the specified npc is at the specified location within the specified radius.
 
 | Parameter  | Syntax   | Default Value          | Explanation          |
 |------------|----------|------------------------|----------------------|
@@ -369,9 +466,12 @@ conditions:
   nearTarget: "npclocation merchant 4.0;14.0;-20.0;world 22"
 ```
 
-## Number compare: `numbercompare`
+## Compare numbers
 
-This condition compares two numbers.
+__Context__: @snippet:condition-meta:independent@  
+__Syntax__: `numbercompare <number1> <operation> <number2>`  
+__Description__: This condition compares two numbers.
+
 The valid operations are: `<`, `<=`, `=`, `!=`, `>=`, `>`.
 
 ```YAML title="Example"
@@ -379,29 +479,42 @@ conditions:
   hasMoreThan100Points: "numbercompare %ph.other_plugin:points% >= 100"
 ```
 
-## Objective: `objective`
+## Has objective
 
-This condition is very simple: it's true only when the player has an active objective. The only argument is the name of the objective, as defined in the _objectives_ section.
+__Context__: @snippet:condition-meta:online-offline@  
+__Syntax__: `objective <objective>`  
+__Description__: Whether the player has the specified objective.
+
+The only argument is the name of the objective, as defined in the _objectives_ section.
 
 ```YAML title="Example"
 conditions:
   hasWoodObjective: "objective wood"
 ```
 
-## Alternative: `or`
+## Alternative
 
-**persistent**, **static**
+__Context__: @snippet:condition-meta:independent@  
+__Syntax__: `or <conditions>`  
+__Description__: The disjunction of the specified conditions.
 
-Alternative of specified conditions. This means that only one of conditions has to be met in order for alternative to be true. You just define one mandatory argument, condition names separated by commas. `!` prefix works as always.
+This means that only one of the conditions has to be met in order for alternative
+to be true. You just define one mandatory argument, condition names separated by commas. `!` prefix works as always.
 
 ```YAML title="Example"
 conditions:
   hasOneRequirement: "or night,rain,!has_armor"
 ```
 
-## Partial date: `partialdate`
+## Match date
 
-The current date must match the given pattern. You can specify the day of the month, the month or the year it must be that this condition returns true or combine them. You can also specify multiple days/months/years by just separating them by `,` or an interval by using `-`. If you have trouble understanding how this works have a look at the example.
+__Context__: @snippet:condition-meta:independent@  
+__Syntax__: `partialdate <pattern>`  
+__Description__: Whether the current date matches the specified pattern.
+
+You can specify the day of the month, the month or the year it must be that this condition returns true or combine them.
+You can also specify multiple days/months/years by just separating them by `,` or an interval by using `-`.
+If you have trouble understanding how this works have a look at the example.
 
 The example is true between the 1st and the 5th or on the 20th of each month, but only in the year 2017.
 
@@ -410,9 +523,11 @@ conditions:
   isEventDate: "partialdate day:1-5,20 year:2017"
 ```
 
-## Party: `party`
+## Check conditions for party 
 
-**static**
+__Context__: @snippet:condition-meta:independent@  
+__Syntax__: `party <radius> <conditions> [location] [every] [any] [count]`  
+__Description__: Whether the party members fulfill the specified conditions.
 
 This is part of the [party system](../Parties.md).
 This condition takes three optional arguments: `every:`, `any:`, `count:` and `location:`.  
@@ -428,28 +543,39 @@ conditions:
   partyRequirements: "party 10 has_tag1,!has_tag2 every:some_item any:some_location,some_other_item count:5"
 ```
 
-## Permission: `permission`
+## Has permission
 
-The player must have a specified permission for this condition to be met. The instruction string must contain permission node as the required argument.
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `permission <permission>`  
+__Description__: Whether the player has the specified permission.
+
+The instruction string must contain permission node as the required argument.
 
 ```YAML title="Example"
 conditions:
   essentialsTpaPermissions: "permission essentials.tpa"
 ```
 
-## Point: `point`
+## Has point
 
-Requires the player to have amount of points equal to the specified category or more. There are two required arguments, first is the category (string), second is the amount (integer). You can also add optional argument `equal` to accept only players with exactly equal amount of points.
+__Context__: @snippet:condition-meta:online-offline@  
+__Syntax__: `point <category> <amount> [equal]`  
+__Description__: Whether the player has at least the specified amount of points in the specified category.
+
+There are two required arguments, first is the category (string), second is the amount (integer).
+You can also add optional argument `equal` to accept only players with exactly equal amount of points.
 
 ```YAML title="Example"
 conditions:
   has20BetonPoints: "point beton 20"
 ```
 
-## Ride an entity: `ride`
+## Is mounted
 
-This condition checks if the player rides the specified
-[entity](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html).
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `ride <entity>`  
+__Description__: Whether the player is mounted on the specified [entity](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html).
+
 `any` is also a valid input and matches any entity.
 
 ```YAML title="Example"
@@ -458,31 +584,37 @@ conditions:
   anything: "ride any"
 ```
 
-## Random: `random`
+## Random
 
-**persistent**, **static**
+__Context__: @snippet:condition-meta:independent@  
+__Syntax__: `random <number>`  
+__Description__: This condition is met randomly using the specified chance.
 
-This condition is met randomly. There is one argument: two positive numbers like `5-12`. They mean something like that: "It will be true 5 times out of 12".
+There is one argument: two positive numbers like `5-12`. They mean something like that: "It will be true 5 times out of 12".
 
 ```YAML title="Example"
 conditions:
   twelfthPercent: "random 12-100"
 ```
 
-## Armor Rating: `rating`
+## Has armor rating
 
-This one requires the player to wear armor which gives him specified amount of protection (armor icons). The first and only argument should be an integer. One armor point is equal to half armor icon in-game (10 means half of the bar filled).
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `rating <amount>`  
+__Description__: Whether the player wears armor which gives at least the specified amount of protection (armor icons).
+
+The first and only argument should be an integer. One armor point is equal to half armor icon in-game (10 means half of the bar filled).
 
 ```YAML title="Example"
 conditions:
   armorRating10: "rating 10"
 ```
-    
-## Real time: `realtime`
 
-**static**, **persistent**
+## Is real time
 
-There must a specific (real) time for this condition to return true.
+__Context__: @snippet:condition-meta:independent@  
+__Syntax__: `realtime <timespan>`  
+__Description__: Whether the specified time matches the current real time.
 
 | Parameter  | Syntax            | Default Value          | Explanation                                                                                                  |
 |------------|-------------------|------------------------|--------------------------------------------------------------------------------------------------------------|
@@ -496,11 +628,11 @@ conditions:
   knoppersTimeReal: "realtime 9:30-10"
 ```
 
-## Scoreboard: `score`
+## Has scoreboard score
 
-**persistent**
-
-With this condition you can check if the score in a specified objective on a scoreboard is greater or equal to specified amount.
+__Context__: @snippet:condition-meta:online-offline@  
+__Syntax__: `score <score> <amount>`  
+__Description__: Whether the score in the specified scoreboard objective has at least the specified amount.
 
 | Parameter              | Syntax         | Default Value          | Explanation                               |
 |------------------------|----------------|------------------------|-------------------------------------------|
@@ -512,9 +644,13 @@ conditions:
   hasAtLeastTenKills: "score kills 10"
 ```
 
-## Scoreboard Tag: `scoretag`
+## Has scoreboard tag
 
-This scoreboard condition checks if the player has a specified scoreboard tag. The kind of tags that are used by vanilla Minecraft and not the [betonquest tags](#tag-tag).
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `scoretag <tag>`  
+__Description__: Whether the player has the specified scoreboard tag.
+
+The kind of tags that are used by vanilla Minecraft and not the [betonquest tags](#has-tag).
 
 | Parameter        | Syntax   | Default Value          | Explanation                     |
 |------------------|----------|------------------------|---------------------------------|
@@ -525,17 +661,25 @@ conditions:
   hasVanillaTag: "scoretag vanilla_tag"
 ```
 
-## Sneaking: `sneak`
+## Is sneaking
 
-Sneak condition is only true when the player is sneaking. This would probably be useful for creating traps, I'm not sure. There are no arguments for this one.
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `sneak`  
+__Description__: Whether the player is sneaking.
+
+This would probably be useful for creating traps, I'm not sure. There are no arguments for this one.
 
 ```YAML title="Example"
 conditions:
   isSneaking: "sneak"
 ```
     
-## Check Stage: `stage`
-This condition compares the players current stage with the given stage by its index numbers.
+## Compare stage
+
+__Context__: @snippet:condition-meta:online-offline@  
+__Syntax__: `stage <objective> <comparator> <stage>`  
+__Description__: Compare the player's current stage with the specified stage using its index numbers.
+
 For more take a look at the [stage objective](./Objectives-List.md#stages-stage).  
 The valid operations are: `<`, `<=`, `=`, `!=`, `>=`, `>`.
 
@@ -551,31 +695,37 @@ conditions:
   isDeliverCookiesOrAbove: "stage bakeCookies > cookCookies"
 ```
 
-## Tag: `tag`
+## Has tag
 
-This one requires the player to have a specified tag. Together with `!` negation it is one of the most powerful tools when creating conversations. The instruction string must contain tag name.
+__Context__: @snippet:condition-meta:online-offline@  
+__Syntax__: `tag <tag>`  
+__Description__: Whether the player has the specified tag.
+
+Together with `!` negation it is one of the most powerful tools when creating conversations. The instruction string must contain tag name.
 
 ```YAML title="Example"
 conditions:
   questCompleted: "tag quest_completed"
 ```
 
-## Test for block: `testforblock`
+## Matches block
 
-**persistent**, **static**
+__Context__: @snippet:condition-meta:independent@  
+__Syntax__: `testforblock <location> <selector>`  
+__Description__: Whether the block at specified location matches the specified material.
 
-This condition is met if the block at specified location matches the given material. First argument is a location, and the second one is a `block selector`.
+First argument is a location, and the second one is a `block selector`.
 
 ```YAML title="Example"
 conditions:
   stoneSet: "testforblock 100;200;300;world STONE"
 ```
 
-## Time: `time`
+## Is time
 
-**static**
-
-There must be specific (Minecraft) time on the world for this condition to return true.
+__Context__: @snippet:condition-meta:independent@  
+__Syntax__: `time <timespan> [world]`  
+__Description__: Whether the specific time matches the current time in the specified world.
 
 | Parameter  | Syntax            | Default Value          | Explanation                                                                                                  |
 |------------|-------------------|------------------------|--------------------------------------------------------------------------------------------------------------|
@@ -591,11 +741,11 @@ conditions:
   exactAtTwelveAtPlayersHome: "time 12-12 world:%ph.player_home_world%"
 ```
 
-## Variable: `variable`
+## Placeholder matches expression
 
-**static**
-
-This condition checks if a placeholder value matches given [regular expression](../Data-Formats.md#regex-regular-expressions)
+__Context__: @snippet:condition-meta:independent@  
+__Syntax__: `variable <placeholder> <regex> [forceSync]`  
+__Description__: Whether the placeholder value matches the specified [regular expression](../Data-Formats.md#regex-regular-expressions)
 
 | Parameter     | Syntax          | Default Value          | Explanation                                                                                                                                     |
 |---------------|-----------------|------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -618,11 +768,13 @@ conditions:
    This placeholder is resolved on the main thread. <p>The `someName` part can't be a placeholder!
 4. Works the same as the `denizenPlaceholder` with the only difference it checks for the player the condition is executed with.
 
-## Weather: `weather`
+## Is weather
 
-**static**
+__Context__: @snippet:condition-meta:independent@  
+__Syntax__: `weather <weather> [world]`  
+__Description__: Whether the specified weather matches the current weather in the specified world.
 
-There must be a specific weather for this condition to return true. There are three possible options: sun, rain and storm. Note that `/toggledownfall` does not change the weather, it just does what the name suggests: toggles downfall. The rain toggled off will still be considered as rain! Use `/weather clear` instead.
+There are three possible options: sun, rain and storm. Note that `/toggledownfall` does not change the weather, it just does what the name suggests: toggles downfall. The rain toggled off will still be considered as rain! Use `/weather clear` instead.
 
 | Parameter | Syntax     | Default Value          | Explanation                         |
 |-----------|------------|------------------------|-------------------------------------|
@@ -637,9 +789,13 @@ conditions:
   overworldIsRainy: "weather rain world:overworld"
 ```
 
-## World: `world`
+## Is in world
 
-This conditions checks if the player is in a specified world. The first argument is the name of a world.
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `world <world>`  
+__Description__: Whether the player is in the specified world.
+
+The first argument is the name of a world.
 
 ```YAML title="Example"
 conditions:
