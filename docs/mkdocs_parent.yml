@@ -9,7 +9,6 @@ extra_css:
   - '_webCode/css/button.css'
   - '_webCode/css/centered.css'
   - '_webCode/css/contentAreaFullWidth.css'
-  - '_webCode/css/coloredIcons.css'
   - '_webCode/css/mermaidCentered.css'
   - '_webCode/css/externalLinkIcon.css'
 
