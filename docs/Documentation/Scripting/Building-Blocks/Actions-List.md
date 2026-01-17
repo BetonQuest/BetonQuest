@@ -29,7 +29,7 @@ actions:
 __Context__: @snippet:action-meta:online@  
 __Syntax__: `cancelconversation`  
 __Description__: Cancel a conversation that is currently active for the player.
-  
+
 ```YAML title="Example"
 actions:
   cancel: "cancelconversation"
@@ -41,7 +41,7 @@ __Context__: @snippet:action-meta:online@
 __Syntax__: `chat <messages>`  
 __Description__: Send the message in chat as the player.
 
-Therefore, it will look like as if the player did send the message. 
+Therefore, it will look like as if the player did send the message.
 The instruction string is the command, without leading slash. You can only use `%player%` as a placeholder in this action.
 Additional messages can be defined by separating them with `|` character. If you want to use a `|` character in the message use `\|`.
 
@@ -132,7 +132,7 @@ __Syntax__: `command <commands>`
 __Description__: Run the specified commands from the console.
 
 The instruction string is the command, without leading slash.
-You can use placeholders here, but placeholders other than `%player%` won't resolve if the action is fired from 
+You can use placeholders here, but placeholders other than `%player%` won't resolve if the action is fired from
 delayed `folder` and the player is offline now.
 You can define additional commands by separating them with `|` character.
 If you want to use a `|` character in the command use `\|`.
@@ -150,11 +150,11 @@ actions:
 __Context__: @snippet:action-meta:online@  
 __Syntax__: `conversation <conversation> <option>`  
 __Description__: Start a conversation.
- 
+
 The first argument is ID of the conversation. This bypasses the conversation permission!
 
 The optional `option` argument is a NPC option where the conversation will start.
-When using this argument the conversation will start without its header. 
+When using this argument the conversation will start without its header.
 
 ```YAML title="Example"
 actions:
@@ -218,7 +218,7 @@ __Context__: @snippet:action-meta:independent@
 __Syntax__: `drop <items> <location>`  
 __Description__: Drop the specified items at the specified location.
 
-The action takes two parameters: `items` and `location`. Items is a list of [items](../../Features/Items.md) to be 
+The action takes two parameters: `items` and `location`. Items is a list of [items](../../Features/Items.md) to be
 dropped.
 Every item can optionally be followed by a colon to define an amount `<item>:<amount>` otherwise the amount is 1.
 The optional location defines where the items will be dropped. It must be specified in the [unified location format](../Data-Formats.md#unified-location-formating).
@@ -273,7 +273,7 @@ __Context__: @snippet:action-meta:independent@
 __Syntax__: `eval <expression>`  
 __Description__: Evaluate the expression and execute the resulting action.
 
-This action allows you to resolve an expression containing placeholders, and the result will then be interpreted 
+This action allows you to resolve an expression containing placeholders, and the result will then be interpreted
 again as an action.
 
 ```YAML title="Example"
@@ -285,7 +285,7 @@ actions:
 1. This could evaluate to `point ranking 5 action:add notify` and will add 5 points to the ranking category and notify the player.
    But the placeholder could also be empty and add 5 points without notifying the player. This is not possible in a normal action.
 
-## Manipulate experience 
+## Manipulate experience
 
 __Context__: @snippet:action-meta:online@  
 __Syntax__: `experience <amount> <action>`  
@@ -297,7 +297,7 @@ You can use `action:addExperience`, `action:addLevel`, `action:setExperienceBar`
 To use this correctly, you need to understand this:
 
 * A player has experience points.
-* Experience levels, shown are shown as a number in the experience bar. Every level requires more experience points than the previous.  
+* Experience levels, shown are shown as a number in the experience bar. Every level requires more experience points than the previous.
 * The experience bar itself shows the percentage of the experience points needed to reach the next level.
 
 While `action:addExperience` only adds experience points, `action:addLevel` adds a level and keeps the current percentage.
@@ -444,9 +444,9 @@ __Context__: @snippet:action-meta:independent@
 __Syntax__: `globalpoint <category> <amount> <action>`  
 __Description__: Manage global points.
 
-This works the same way as the normal [point action](#manage-a-point-category) but instead to manipulating the points for a category of a specific 
-player it manipulates points in a global category. These global categories are player independent, so you could for 
-example add a point to such a global category every time a player does a quest and give some special rewards for 
+This works the same way as the normal [point action](#manage-a-point-category) but instead to manipulating the points for a category of a specific
+player it manipulates points in a global category. These global categories are player independent, so you could for
+example add a point to such a global category every time a player does a quest and give some special rewards for
 the 100th player who does the quest.
 
 ```YAML title="Example"
@@ -492,9 +492,9 @@ __Context__: @snippet:action-meta:independent@
 __Syntax__: `if <condition> <action1> else <action2>`  
 __Description__: Check a condition and run one of two actions.
 
-This action will check a condition, and based on the outcome it will run the first or second action. The instruction 
+This action will check a condition, and based on the outcome it will run the first or second action. The instruction
 string is `if condition action1 else action2`, where `condition` is a condition ID and `action1` and `action2` are action IDs.
- `else` keyword is mandatory between actions for no practical reason. Keep in mind that this action is `persistent` 
+ `else` keyword is mandatory between actions for no practical reason. Keep in mind that this action is `persistent`
  and `static` but probably the condition or the actions are not.
 
 ```YAML title="Example"
@@ -641,7 +641,7 @@ actions:
 
 __Context__: @snippet:action-meta:online-offline-independent@  
 __Syntax__: `objective <operation> <objectives>`  
-__Description__: Manage objectives. 
+__Description__: Manage objectives.
 
 The independent context is only available for the `remove` operation,
 and removes the objective for all players in the database (even if offline).
@@ -664,7 +664,7 @@ __Context__: @snippet:action-meta:online@
 __Syntax__: `opsudo <commands>`  
 __Description__: Execute the commands as the player with temporary operator permissions.
 
-This action is similar to the `sudo` action, the only difference is that it will fire a command as the player with temporary OP permissions. 
+This action is similar to the `sudo` action, the only difference is that it will fire a command as the player with temporary OP permissions.
 Additional commands can be defined by separating them with `|` character. If you want to use a `|` character in the message use `\|`.
 
 Looking for [execute as player commands](#execute-console-commands)?
@@ -721,8 +721,8 @@ __Syntax__: `point <category> <amount> <action>`
 __Description__: Manage the points in the specific category.
 
 First you can specify a number of points, then the modification action.
-For that, you can use `action:add`, `action:subtract`, `action:set` and `action:multiply` 
-as modification types. This action also supports an optional `notify` argument that will display information about the 
+For that, you can use `action:add`, `action:subtract`, `action:set` and `action:multiply`
+as modification types. This action also supports an optional `notify` argument that will display information about the
 change using the notification system.
 
 ```YAML title="Example"
@@ -762,7 +762,7 @@ actions:
 
 __Context__: @snippet:action-meta:independent@  
 __Syntax__: `run <actions>`  
-__Description__: Allows you to specify multiple instructions in one long instruction. 
+__Description__: Allows you to specify multiple instructions in one long instruction.
 
 Each instruction must be started with the `^` character (it divides all the instructions).
 It's not the same as the `folder` action, because you have to specify the actual instruction, not an action name.
@@ -807,7 +807,7 @@ __Context__: @snippet:action-meta:independent@
 __Syntax__: `runIndependent <actions>`  
 __Description__: Run the specified actions as if they were independent.
 
-Runs the specified action (or list of actions) player independent (as if it was run from a [schedule](../Schedules.md)).  
+Runs the specified action (or list of actions) player independent (as if it was run from a [schedule](../Schedules.md)).
 
 This is usefully for actions that behave differently when run player independent.
 
@@ -826,9 +826,9 @@ actions:
   resetQuestForAll: "runIndependent actions:removeObjective,clearTags,resetJournal"
 ```
 
-!!! warning 
+!!! warning
     There are a lot of actions and conditions that cannot be run (or checked) player independent.  
-    If you try to run such an action player independent (or check such a condition) this won't work, 
+    If you try to run such an action player independent (or check such a condition) this won't work,
     and you will get an error message in the console.
     
     For more information on player independent actions [check this](../Schedules.md#player-independent-actions).
@@ -876,7 +876,7 @@ __Context__: @snippet:action-meta:independent@
 __Syntax__: `setblock <block> <location> [ignorePhysics]`  
 __Description__: Set the block at the specified location.
 
-The first argument is a [Block Selector](../Data-Formats.md#block-selectors), the second a location. It's possible to 
+The first argument is a [Block Selector](../Data-Formats.md#block-selectors), the second a location. It's possible to
 deactivate the physics of the block by adding `ignorePhysics` at the end.
 Very powerful if used to trigger redstone contraptions.
 
@@ -1001,9 +1001,9 @@ __Context__: @snippet:action-meta:independent@
 __Syntax__: `time <time> [world] [ticks]`  
 __Description__: Manage the time of the specified world.
 
-The time is represented in 24 hours format as a float number, so 0 is midnight, 12 is 
-noon, and 23 is 11 PM. For minutes, you can use floating point numbers, so 0.5 is half past midnight, 0.25 is quarter 
-past midnight, and so on. (0.1 hours is 6 minutes). It's possible to add or subtract time by using `+` or `-` prefix or 
+The time is represented in 24 hours format as a float number, so 0 is midnight, 12 is
+noon, and 23 is 11 PM. For minutes, you can use floating point numbers, so 0.5 is half past midnight, 0.25 is quarter
+past midnight, and so on. (0.1 hours is 6 minutes). It's possible to add or subtract time by using `+` or `-` prefix or
 to set the time by setting no prefix.
 Additionally, you can specify the world in which the time will be changed, by adding `world:`.
 Using the `ticks` argument changes the time like the vanilla command.
@@ -1021,8 +1021,8 @@ actions:
 __Context__: @snippet:action-meta:online@  
 __Syntax__: `teleport <location>`  
 __Description__: Teleport the player to the specified location.
- 
-Ends any active conversations. 
+
+Ends any active conversations.
 
 Do you only want to [cancel the conversation](#cancel-a-conversation)?
 
@@ -1043,9 +1043,9 @@ actions:
 
 __Context__: @snippet:action-meta:online-offline@  
 __Syntax__: `variable <objective> <key> <value>`  
-__Description__: Manage values that are stored in `variable` objective variables. 
+__Description__: Manage values that are stored in `variable` objective variables.
 
-The first argument is the ID of the `variable` objective. The second argument is the name of the variable to set. 
+The first argument is the ID of the `variable` objective. The second argument is the name of the variable to set.
 The third argument is the value to set. Both the name and value can use `%...%` placeholders.
 To delete a variable you can use `""`.
 To store more complex values you can use [quoting](../Quoting-&-YAML.md#quoting).
@@ -1079,7 +1079,6 @@ actions:
   dash: "velocity vector:(0;0.1;1.3) direction:relative_y"
   individual_dash: "velocity vector:%objective.customPlaceholder.dashLength% direction:relative_y"
   fly: "velocity vector:(0;0.1;2) direction:relative modification:add"
-  
 ```
 
 
