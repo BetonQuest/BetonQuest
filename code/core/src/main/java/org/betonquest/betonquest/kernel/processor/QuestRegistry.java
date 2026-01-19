@@ -7,6 +7,8 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.ConversationApi;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
+import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -98,14 +100,15 @@ public record QuestRegistry(
                                        final PlayerDataStorage playerDataStorage) {
         final Placeholders placeholders = coreQuestRegistry.placeholders();
         final QuestPackageManager packManager = plugin.getQuestPackageManager();
-        final ActionScheduling actionScheduling = new ActionScheduling(loggerFactory.create(ActionScheduling.class, "Schedules"), placeholders, packManager, otherRegistries.actionScheduling());
-        final CancelerProcessor cancelers = new CancelerProcessor(loggerFactory.create(CancelerProcessor.class), loggerFactory, plugin, pluginMessage, placeholders, textCreator, coreQuestRegistry, playerDataStorage);
-        final CompassProcessor compasses = new CompassProcessor(loggerFactory.create(CompassProcessor.class), placeholders, packManager, textCreator);
-        final ConversationProcessor conversations = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), loggerFactory, plugin,
-                textCreator, otherRegistries.conversationIO(), otherRegistries.interceptor(), placeholders, pluginMessage);
         final ItemProcessor items = new ItemProcessor(loggerFactory.create(ItemProcessor.class), placeholders, packManager, otherRegistries.item());
+        final ArgumentParsers parsers = new DefaultArgumentParsers((id, profile) -> items.get(id).getItem(profile), plugin.getTextParser(), plugin.getServer());
+        final ActionScheduling actionScheduling = new ActionScheduling(loggerFactory, loggerFactory.create(ActionScheduling.class, "Schedules"), placeholders, packManager, otherRegistries.actionScheduling(), parsers);
+        final CancelerProcessor cancelers = new CancelerProcessor(loggerFactory.create(CancelerProcessor.class), loggerFactory, plugin, pluginMessage, parsers, placeholders, textCreator, coreQuestRegistry, playerDataStorage);
+        final CompassProcessor compasses = new CompassProcessor(loggerFactory, loggerFactory.create(CompassProcessor.class), placeholders, packManager, textCreator, parsers);
+        final ConversationProcessor conversations = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), loggerFactory, plugin,
+                textCreator, otherRegistries.conversationIO(), otherRegistries.interceptor(), placeholders, pluginMessage, parsers);
         final JournalEntryProcessor journalEntries = new JournalEntryProcessor(loggerFactory.create(JournalEntryProcessor.class), placeholders, packManager, textCreator);
-        final JournalMainPageProcessor journalMainPages = new JournalMainPageProcessor(loggerFactory.create(JournalMainPageProcessor.class), placeholders, packManager, textCreator);
+        final JournalMainPageProcessor journalMainPages = new JournalMainPageProcessor(loggerFactory, loggerFactory.create(JournalMainPageProcessor.class), placeholders, packManager, textCreator, parsers);
         final NpcProcessor npcs = new NpcProcessor(loggerFactory.create(NpcProcessor.class), loggerFactory, placeholders, packManager,
                 otherRegistries.npc(), pluginMessage, plugin, profileProvider, coreQuestRegistry, conversations.getStarter());
         return new QuestRegistry(log, coreQuestRegistry, actionScheduling, cancelers, compasses, conversations, items, journalEntries, journalMainPages, npcs, new ArrayList<>());

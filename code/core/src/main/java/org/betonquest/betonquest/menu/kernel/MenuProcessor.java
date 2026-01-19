@@ -3,10 +3,10 @@ package org.betonquest.betonquest.menu.kernel;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
-import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
+import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
+import org.betonquest.betonquest.api.instruction.chain.InstructionChainParser;
+import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -15,8 +15,6 @@ import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.text.Text;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultListArgument;
 import org.betonquest.betonquest.menu.Menu;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.MenuItemID;
@@ -28,9 +26,12 @@ import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * Processor to create and store {@link Menu}s.
@@ -61,15 +62,15 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
      * @param packManager     the quest package manager to get quest packages from
      * @param textCreator     the text creator to parse text
      * @param questTypeApi    the QuestTypeApi
-     * @param featureApi      the Feature API
+     * @param parsers         the argument parsers
      * @param rpgMenu         the RPG Menu instance
      * @param profileProvider the Profile Provider
      */
     public MenuProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                          final QuestPackageManager packManager, final ParsedSectionTextCreator textCreator,
-                         final QuestTypeApi questTypeApi,
-                         final FeatureApi featureApi, final RPGMenu rpgMenu, final ProfileProvider profileProvider) {
-        super(log, packManager, "Menu", "menus", loggerFactory, textCreator, questTypeApi, featureApi);
+                         final QuestTypeApi questTypeApi, final ArgumentParsers parsers, final RPGMenu rpgMenu,
+                         final ProfileProvider profileProvider) {
+        super(log, packManager, "Menu", "menus", loggerFactory, textCreator, parsers, questTypeApi);
         this.rpgMenu = rpgMenu;
         this.profileProvider = profileProvider;
         this.boundCommands = new HashSet<>();
@@ -83,22 +84,44 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
     }
 
     @Override
-    public Menu loadSection(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
-        final MenuCreationHelper helper = new MenuCreationHelper(pack, section);
-        final Menu.MenuData menuData = helper.getMenuData();
-        final MenuID menuID = getIdentifier(pack, section.getName());
-        final Argument<ItemWrapper> boundItem = section.isSet("bind")
-                ? new DefaultArgument<>(placeholders, pack, helper.getRequired("bind"),
-                value -> itemParser.apply(placeholders, packManager, pack, value))
-                : null;
+    protected Map.Entry<MenuID, Menu> loadSection(final String sectionName, final SectionInstruction instruction) throws QuestException {
+        final QuestPackage pack = instruction.getPackage();
+        final MenuID identifier = getIdentifier(pack, sectionName);
+        final ConfigurationSection section = instruction.getSection();
         final BetonQuestLogger log = loggerFactory.create(Menu.class);
-        final Menu menu = new Menu(log, menuID, questTypeApi, menuData, boundItem);
-        if (section.isSet("command")) {
-            final String string = new DefaultArgument<>(placeholders, pack, helper.getRequired("command"),
-                    new StringParser()).getValue(null).trim();
-            createBoundCommand(menu, string);
+        final Text title = textCreator.parseFromSection(pack, section, "title");
+
+        final Argument<Number> height = instruction.read().value("height").number().atLeast(1).atMost(6).get();
+        final int heightValue = height.getValue(null).intValue();
+        final Argument<List<ConditionID>> openConditions = instruction.read().value("open_conditions").parse(ConditionID::new).list().getOptional(Collections.emptyList());
+        final Argument<List<ActionID>> openActions = instruction.read().value("open_actions").parse(ActionID::new).list().getOptional(Collections.emptyList());
+        final Argument<List<ActionID>> closeActions = instruction.read().value("close_actions").parse(ActionID::new).list().getOptional(Collections.emptyList());
+        final Argument<List<Slots>> slots = instruction.read().list("slots").namedStrings()
+                .map(list -> loadSlots(instruction::chainForArgument, list))
+                .validate(list -> Slots.checkSlots(list, heightValue * 9))
+                .get();
+        final Argument<ItemWrapper> boundItem = instruction.read().value("bind").item().getOptional(null);
+
+        final Menu.MenuData menuData = new Menu.MenuData(title, heightValue, slots, openConditions, openActions, closeActions);
+        final Menu menu = new Menu(log, identifier, questTypeApi, menuData, section.isSet("bind") ? boundItem : null);
+        final Argument<String> command = instruction.read().value("command").string().getOptional("");
+        final String commandValue = command.getValue(null);
+        if (!commandValue.isEmpty()) {
+            createBoundCommand(menu, commandValue);
         }
-        return menu;
+        return Map.entry(identifier, menu);
+    }
+
+    private List<Slots> loadSlots(final Function<String, InstructionChainParser> parserFunction,
+                                  final List<Map.Entry<String, String>> slots) throws QuestException {
+        final List<Slots> loadedSlots = new ArrayList<>();
+        for (final Map.Entry<String, String> slot : slots) {
+            final Argument<List<MenuItemID>> items = parserFunction.apply(slot.getValue())
+                    .parse((placeholders, packManager, pack, string) -> new MenuItemID(packManager, pack, string))
+                    .list().get();
+            loadedSlots.add(new Slots(rpgMenu, slot.getKey(), items));
+        }
+        return loadedSlots;
     }
 
     private void createBoundCommand(final Menu menu, final String command)
@@ -116,55 +139,5 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
     @Override
     protected MenuID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
         return new MenuID(packManager, pack, identifier);
-    }
-
-    /**
-     * Class to bundle objects required to create a Menu.
-     */
-    private class MenuCreationHelper extends CreationHelper {
-
-        /**
-         * Creates a new Creation Helper.
-         *
-         * @param pack    the pack to create from
-         * @param section the section to create from
-         */
-        protected MenuCreationHelper(final QuestPackage pack, final ConfigurationSection section) {
-            super(pack, section);
-        }
-
-        private Menu.MenuData getMenuData() throws QuestException {
-            final int height = new DefaultArgument<>(placeholders, pack, getRequired("height"), NumberParser.DEFAULT)
-                    .getValue(null).intValue();
-            if (height < 1 || height > 6) {
-                throw new QuestException("height is invalid!");
-            }
-            final Text title = textCreator.parseFromSection(pack, section, "title");
-            final Argument<List<ConditionID>> openConditions = getID("open_conditions", ConditionID::new);
-            final Argument<List<ActionID>> openActions = getID("open_actions", ActionID::new);
-            final Argument<List<ActionID>> closeActions = getID("close_actions", ActionID::new);
-
-            final List<Slots> slots = loadSlots(height);
-            return new Menu.MenuData(title, height, slots, openConditions, openActions, closeActions);
-        }
-
-        private List<Slots> loadSlots(final int height) throws QuestException {
-            final ConfigurationSection slotsSection = section.getConfigurationSection("slots");
-            if (slotsSection == null) {
-                throw new QuestException("slots are missing!");
-            }
-            final List<Slots> slots = new ArrayList<>();
-            for (final String key : slotsSection.getKeys(false)) {
-                final Argument<List<MenuItemID>> itemsList = new DefaultListArgument<>(placeholders, pack,
-                        slotsSection.getString(key, ""), value -> new MenuItemID(packManager, pack, value));
-                try {
-                    slots.add(new Slots(rpgMenu, key, itemsList));
-                } catch (final IllegalArgumentException e) {
-                    throw new QuestException("slots." + key + " is invalid: " + e.getMessage(), e);
-                }
-            }
-            Slots.checkSlots(slots, height * 9);
-            return slots;
-        }
     }
 }

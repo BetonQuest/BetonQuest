@@ -1,12 +1,13 @@
 package org.betonquest.betonquest.quest.action.eval;
 
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
+import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Placeholders;
@@ -60,8 +61,14 @@ public class EvalAction implements NullableAction {
     private final Plugin plugin;
 
     /**
+     * The {@link BetonQuestApi}.
+     */
+    private final BetonQuestApi betonQuestApi;
+
+    /**
      * Created a new Eval action.
      *
+     * @param betonQuestApi      the BetonQuest API
      * @param placeholders       the {@link Placeholders} to create and resolve placeholders
      * @param packManager        the quest package manager to get quest packages from
      * @param actionTypeRegistry the action type registry providing factories to parse the evaluated instruction
@@ -70,11 +77,12 @@ public class EvalAction implements NullableAction {
      * @param scheduler          the scheduler to use for synchronous execution
      * @param plugin             the plugin instance
      */
-    public EvalAction(final Placeholders placeholders, final QuestPackageManager packManager,
+    public EvalAction(final BetonQuestApi betonQuestApi, final Placeholders placeholders, final QuestPackageManager packManager,
                       final ActionTypeRegistry actionTypeRegistry, final QuestPackage pack,
                       final Argument<String> evaluation, final BukkitScheduler scheduler, final Plugin plugin) {
         this.placeholders = placeholders;
         this.packManager = packManager;
+        this.betonQuestApi = betonQuestApi;
         this.actionTypeRegistry = actionTypeRegistry;
         this.pack = pack;
         this.evaluation = evaluation;
@@ -85,6 +93,7 @@ public class EvalAction implements NullableAction {
     /**
      * Constructs an action with a given instruction and returns it.
      *
+     * @param parsers            the {@link ArgumentParsers} to use to parse arguments
      * @param placeholders       the {@link Placeholders} to create and resolve placeholders
      * @param packManager        the quest package manager to get quest packages from
      * @param instruction        the instruction string to parse
@@ -93,17 +102,17 @@ public class EvalAction implements NullableAction {
      * @return the action
      * @throws QuestException if the action could not be created
      */
-    public static ActionAdapter createAction(final Placeholders placeholders, final QuestPackageManager packManager,
-                                             final ActionTypeRegistry actionTypeRegistry,
+    public static ActionAdapter createAction(final ArgumentParsers parsers, final Placeholders placeholders,
+                                             final QuestPackageManager packManager, final ActionTypeRegistry actionTypeRegistry,
                                              final QuestPackage pack, final String instruction) throws QuestException {
-        final Instruction actionInstruction = new DefaultInstruction(placeholders, packManager, pack, null, DefaultArgumentParsers.INSTANCE, instruction);
+        final Instruction actionInstruction = new DefaultInstruction(placeholders, packManager, pack, null, parsers, instruction);
         final TypeFactory<ActionAdapter> actionFactory = actionTypeRegistry.getFactory(actionInstruction.getPart(0));
         return actionFactory.parseInstruction(actionInstruction);
     }
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
-        final ActionAdapter action = createAction(placeholders, packManager, actionTypeRegistry, pack, evaluation.getValue(profile));
+        final ActionAdapter action = createAction(betonQuestApi.getArgumentParsers(), placeholders, packManager, actionTypeRegistry, pack, evaluation.getValue(profile));
         if (action.isPrimaryThreadEnforced()) {
             try {
                 scheduler.callSyncMethod(plugin, () -> action.fire(profile)).get();

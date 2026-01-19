@@ -3,6 +3,7 @@ package org.betonquest.betonquest.api.instruction.section;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
+import org.betonquest.betonquest.api.instruction.source.ValueSource;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.bukkit.Location;
@@ -10,6 +11,8 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -18,6 +21,28 @@ import java.util.UUID;
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public interface ListSectionParser {
+
+    /**
+     * Adds a fallback source for the section.
+     * All further fallbacks will be added in order with lower priority.
+     *
+     * @param fallbackSource the fallback source to add
+     * @return this instance for chaining
+     */
+    ListSectionParser fallback(ValueSource<List<String>> fallbackSource);
+
+    /**
+     * Adds a fallback path for the section.
+     * All further fallbacks will be added in order with lower priority.
+     * <br>
+     * Utilizes {@link #fallback(ValueSource)} internally by default.
+     *
+     * @param fallbackPath the fallback path to add
+     * @return this instance for chaining
+     */
+    default ListSectionParser fallback(final String... fallbackPath) {
+        return fallback(() -> List.of(fallbackPath));
+    }
 
     /**
      * Parses the element list into a list of values of type T using the given parser.
@@ -56,6 +81,34 @@ public interface ListSectionParser {
      * @return a new {@link ListSectionRetriever} for the parsed values
      */
     <T> ListSectionRetriever<T> namedSections(NamedSubSectionArgumentParser<T> sectionParser);
+
+    /**
+     * Use the given parser to parse a number of named key-value sections into a list of values of T.
+     *
+     * @param sectionParser the parser to use for each of the sections
+     * @param <T>           the type of the parsed values
+     * @return a new {@link ListSectionRetriever} for the parsed values
+     */
+    <T> ListSectionRetriever<Map.Entry<String, T>> namedValues(InstructionArgumentParser<T> sectionParser);
+
+    /**
+     * Use the given parser to parse a number of named key-value sections into a list of values of T.
+     *
+     * @param sectionParser the parser to use for each of the sections
+     * @param <T>           the type of the parsed values
+     * @return a new {@link ListSectionRetriever} for the parsed values
+     */
+    default <T> ListSectionRetriever<Map.Entry<String, T>> namedValues(final SimpleArgumentParser<T> sectionParser) {
+        return namedValues((InstructionArgumentParser<T>) sectionParser);
+    }
+
+    /**
+     * Use the given parser to parse a number of named key-value sections into a list of strings.
+     *
+     * @param <T> the type of the parsed values
+     * @return a new {@link ListSectionRetriever} for the parsed values
+     */
+    <T> ListSectionRetriever<Map.Entry<String, String>> namedStrings();
 
     /**
      * Parses the element list into a list of strings.

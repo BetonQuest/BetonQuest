@@ -1,12 +1,13 @@
 package org.betonquest.betonquest.quest.condition.eval;
 
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
+import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Placeholders;
@@ -49,18 +50,25 @@ public class EvalCondition implements NullableCondition {
     private final Argument<String> evaluation;
 
     /**
+     * The {@link BetonQuestApi}.
+     */
+    private final BetonQuestApi betonQuestApi;
+
+    /**
      * Creates a new Eval condition.
      *
+     * @param betonQuestApi         the {@link BetonQuestApi} to use
      * @param placeholders          the {@link Placeholders} to create and resolve placeholders
      * @param packManager           the quest package manager to get quest packages from
      * @param conditionTypeRegistry the condition type registry providing factories to parse the evaluated instruction
      * @param pack                  the quest package to relate the condition to
      * @param evaluation            the evaluation input
      */
-    public EvalCondition(final Placeholders placeholders, final QuestPackageManager packManager, final ConditionTypeRegistry conditionTypeRegistry,
+    public EvalCondition(final BetonQuestApi betonQuestApi, final Placeholders placeholders, final QuestPackageManager packManager, final ConditionTypeRegistry conditionTypeRegistry,
                          final QuestPackage pack, final Argument<String> evaluation) {
         this.placeholders = placeholders;
         this.packManager = packManager;
+        this.betonQuestApi = betonQuestApi;
         this.conditionTypeRegistry = conditionTypeRegistry;
         this.pack = pack;
         this.evaluation = evaluation;
@@ -69,6 +77,7 @@ public class EvalCondition implements NullableCondition {
     /**
      * Constructs a condition with a given instruction and returns it.
      *
+     * @param parsers               the {@link ArgumentParsers} to use to parse arguments
      * @param placeholders          the {@link Placeholders} to create and resolve placeholders
      * @param packManager           the quest package manager to get quest packages from
      * @param instruction           the instruction string to parse
@@ -77,14 +86,16 @@ public class EvalCondition implements NullableCondition {
      * @return the condition
      * @throws QuestException if the condition could not be created
      */
-    public static ConditionAdapter createCondition(final Placeholders placeholders, final QuestPackageManager packManager, final QuestTypeRegistry<PlayerCondition, PlayerlessCondition, ConditionAdapter> conditionTypeRegistry, final QuestPackage pack, final String instruction) throws QuestException {
-        final Instruction conditionInstruction = new DefaultInstruction(placeholders, packManager, pack, null, DefaultArgumentParsers.INSTANCE, instruction);
+    public static ConditionAdapter createCondition(final ArgumentParsers parsers, final Placeholders placeholders, final QuestPackageManager packManager,
+                                                   final QuestTypeRegistry<PlayerCondition, PlayerlessCondition, ConditionAdapter> conditionTypeRegistry,
+                                                   final QuestPackage pack, final String instruction) throws QuestException {
+        final Instruction conditionInstruction = new DefaultInstruction(placeholders, packManager, pack, null, parsers, instruction);
         final TypeFactory<ConditionAdapter> conditionFactory = conditionTypeRegistry.getFactory(conditionInstruction.getPart(0));
         return conditionFactory.parseInstruction(conditionInstruction);
     }
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
-        return createCondition(placeholders, packManager, conditionTypeRegistry, pack, evaluation.getValue(profile)).check(profile);
+        return createCondition(betonQuestApi.getArgumentParsers(), placeholders, packManager, conditionTypeRegistry, pack, evaluation.getValue(profile)).check(profile);
     }
 }

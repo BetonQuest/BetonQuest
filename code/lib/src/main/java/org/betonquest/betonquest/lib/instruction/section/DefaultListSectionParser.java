@@ -8,17 +8,21 @@ import org.betonquest.betonquest.api.instruction.section.ListSectionRetriever;
 import org.betonquest.betonquest.api.instruction.section.NamedSubSectionArgumentParser;
 import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.instruction.section.SubSectionArgumentParser;
+import org.betonquest.betonquest.api.instruction.source.ValueSource;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.lib.instruction.section.capsules.EncapsulatedListSectionParser;
 import org.betonquest.betonquest.lib.instruction.section.capsules.EncapsulatedListSubSectionParser;
+import org.betonquest.betonquest.lib.instruction.section.capsules.EncapsulatedNamedFlatSectionParser;
 import org.betonquest.betonquest.lib.instruction.section.capsules.EncapsulatedNamedSubSectionParser;
+import org.betonquest.betonquest.lib.instruction.source.DefaultedSource;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -40,7 +44,7 @@ public class DefaultListSectionParser implements ListSectionParser {
     /**
      * The root path to the section.
      */
-    private final List<String> rootPath;
+    private final ValueSource<List<String>> rootPath;
 
     /**
      * The parsers used to parse the section.
@@ -54,7 +58,7 @@ public class DefaultListSectionParser implements ListSectionParser {
      * @param parsers     the parsers used to parse the section.
      * @param rootPath    the root path to the section.
      */
-    public DefaultListSectionParser(final SectionInstruction instruction, final ArgumentParsers parsers, final List<String> rootPath) {
+    public DefaultListSectionParser(final SectionInstruction instruction, final ArgumentParsers parsers, final ValueSource<List<String>> rootPath) {
         this.instruction = instruction;
         this.parsers = parsers;
         this.rootPath = rootPath;
@@ -63,6 +67,11 @@ public class DefaultListSectionParser implements ListSectionParser {
     private <T> ListSectionRetriever<T> listSection(final InstructionArgumentParser<T> parser) {
         final EncapsulatedListSectionParser<T> listSectionParser = new EncapsulatedListSectionParser<>(instruction, parser);
         return new DefaultListSectionRetriever<>(instruction, rootPath, listSectionParser, CONFIG_SECTION_MODE);
+    }
+
+    @Override
+    public ListSectionParser fallback(final ValueSource<List<String>> fallbackSource) {
+        return new DefaultListSectionParser(instruction, parsers, new DefaultedSource<>(rootPath, fallbackSource));
     }
 
     @Override
@@ -80,6 +89,17 @@ public class DefaultListSectionParser implements ListSectionParser {
     public <T> ListSectionRetriever<T> namedSections(final NamedSubSectionArgumentParser<T> sectionParser) {
         final EncapsulatedNamedSubSectionParser<T> namedSectionParser = new EncapsulatedNamedSubSectionParser<>(instruction, sectionParser);
         return new DefaultListSectionRetriever<>(instruction, rootPath, namedSectionParser, CONFIG_SECTION_MODE);
+    }
+
+    @Override
+    public <T> ListSectionRetriever<Map.Entry<String, T>> namedValues(final InstructionArgumentParser<T> parser) {
+        final EncapsulatedNamedFlatSectionParser<T> namedSectionParser = new EncapsulatedNamedFlatSectionParser<>(instruction, parser);
+        return new DefaultListSectionRetriever<>(instruction, rootPath, namedSectionParser, CONFIG_SECTION_MODE);
+    }
+
+    @Override
+    public <T> ListSectionRetriever<Map.Entry<String, String>> namedStrings() {
+        return namedValues(parsers.string());
     }
 
     @Override

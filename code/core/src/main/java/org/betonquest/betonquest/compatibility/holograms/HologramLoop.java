@@ -7,9 +7,11 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.DefaultIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
+import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.IdentifierParser;
-import org.betonquest.betonquest.api.instruction.argument.parser.ItemParser;
-import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
+import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
+import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.Placeholders;
@@ -21,13 +23,14 @@ import org.betonquest.betonquest.compatibility.holograms.lines.TextLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TopLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TopXObject;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultListArgument;
+import org.betonquest.betonquest.lib.logger.QuestExceptionHandler;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -71,7 +74,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
     /**
      * Parser for the item line.
      */
-    private final ItemParser itemParser;
+    private final InstructionArgumentParser<ItemWrapper> itemParser;
 
     /**
      * Default refresh Interval for Holograms.
@@ -89,15 +92,17 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
      * @param readable         the type name used for logging, with the first letter in upper case
      * @param internal         the section name and/or bstats topic identifier
      * @param textParser       the text parser used to parse text and colors
+     * @param parsers          the argument parsers
      */
     public HologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
                         final Placeholders placeholders, final QuestPackageManager packManager,
-                        final HologramProvider hologramProvider, final String readable, final String internal, final TextParser textParser) {
-        super(log, placeholders, packManager, readable, internal);
+                        final HologramProvider hologramProvider, final String readable, final String internal,
+                        final TextParser textParser, final ArgumentParsers parsers) {
+        super(loggerFactory, log, placeholders, packManager, parsers, readable, internal);
         this.loggerFactory = loggerFactory;
         this.hologramProvider = hologramProvider;
         this.textParser = textParser;
-        this.itemParser = ItemParser.INSTANCE;
+        this.itemParser = parsers.item();
     }
 
     @Override
@@ -107,42 +112,49 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
     }
 
     @Override
-    protected HologramWrapper loadSection(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
-        final String checkIntervalString = section.getString("check_interval", String.valueOf(defaultInterval));
-        final Argument<Number> checkInterval = new DefaultArgument<>(placeholders, pack, checkIntervalString, NumberParser.DEFAULT);
-        final Argument<Number> maxRange = new DefaultArgument<>(placeholders, pack, section.getString("max_range", "0"), NumberParser.DEFAULT);
+    protected Map.Entry<HologramID, HologramWrapper> loadSection(final String sectionName, final SectionInstruction instruction) throws QuestException {
+        final QuestPackage pack = instruction.getPackage();
+        final ConfigurationSection section = instruction.getSection();
 
-        final List<String> lines = section.getStringList("lines");
-        final List<ConditionID> conditions = new DefaultListArgument<>(placeholders, pack, section.getString("conditions", ""),
-                value -> new ConditionID(placeholders, packManager, pack, value)).getValue(null);
+        final Argument<Number> checkInterval = instruction.read().value("check_interval").number().getOptional(defaultInterval);
+        final Argument<Number> maxRange = instruction.read().value("max_range").number().getOptional(0);
+        final Argument<List<ConditionID>> conditions = instruction.read().value("conditions").parse(ConditionID::new).list().getOptional(Collections.emptyList());
 
-        final List<AbstractLine> cleanedLines = new ArrayList<>();
-        for (final String line : lines) {
-            if (line.startsWith("item:")) {
-                cleanedLines.add(parseItemLine(pack, line.substring("item:".length())));
-            } else if (line.startsWith("top:")) {
-                cleanedLines.add(parseTopLine(pack, line.substring("top:".length()), section.getName()));
-            } else {
-                cleanedLines.add(parseTextLine(pack, line));
-            }
-        }
         final List<BetonHologram> holograms = getHologramsFor(pack, section);
         for (final BetonHologram hologram : holograms) {
             hologram.hideAll();
         }
+        final List<String> lines = section.getStringList("lines");
+        final List<AbstractLine> cleanedLines = new ArrayList<>();
+        for (final String line : lines) {
+            final AbstractLine abstractLine = parseLine(pack, sectionName, line);
+            cleanedLines.add(abstractLine);
+        }
+        final HologramID identifier = getIdentifier(pack, sectionName);
+        final QuestExceptionHandler handler = new QuestExceptionHandler(pack, loggerFactory.create(HologramWrapper.class), identifier.getFull());
         final HologramWrapper hologramWrapper = new HologramWrapper(
-                loggerFactory.create(HologramWrapper.class),
+                handler,
                 BetonQuest.getInstance().getQuestTypeApi(),
                 BetonQuest.getInstance().getProfileProvider(),
                 checkInterval.getValue(null).intValue(),
                 holograms,
                 isStaticHologram(cleanedLines),
-                conditions,
+                conditions.getValue(null),
                 cleanedLines,
                 pack,
                 maxRange);
         HologramRunner.addHologram(hologramWrapper);
-        return hologramWrapper;
+        return Map.entry(identifier, hologramWrapper);
+    }
+
+    private AbstractLine parseLine(final QuestPackage pack, final String sectionName, final String line) throws QuestException {
+        if (line.startsWith("item:")) {
+            return parseItemLine(pack, line.substring("item:".length()));
+        }
+        if (line.startsWith("top:")) {
+            return parseTopLine(pack, line.substring("top:".length()), sectionName);
+        }
+        return parseTextLine(pack, line);
     }
 
     /**

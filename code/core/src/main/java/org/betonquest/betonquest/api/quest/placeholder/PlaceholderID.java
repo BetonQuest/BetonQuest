@@ -35,7 +35,7 @@ public class PlaceholderID extends InstructionIdentifier {
             if (!identifier.startsWith(PLACEHOLDER_IDENTIFIER) || !identifier.endsWith(PLACEHOLDER_IDENTIFIER)) {
                 throw new QuestException("Placeholder instruction has to start and end with '%' characters");
             }
-            return new PlaceholderInstruction(placeholders, packManager, id.getPackage(), id, DefaultArgumentParsers.INSTANCE, id.get());
+            return new PlaceholderInstruction(placeholders, packManager, id.getPackage(), id, DefaultArgumentParsers.INSTANCE.get(), id.get());
         });
     }
 

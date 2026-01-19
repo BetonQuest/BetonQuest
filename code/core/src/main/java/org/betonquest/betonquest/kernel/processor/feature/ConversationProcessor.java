@@ -5,10 +5,8 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.ConversationApi;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.argument.DecoratedArgumentParser;
-import org.betonquest.betonquest.api.instruction.argument.parser.BooleanParser;
-import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
-import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
+import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
+import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -25,15 +23,13 @@ import org.betonquest.betonquest.conversation.interceptor.InterceptorFactory;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.kernel.registry.feature.InterceptorRegistry;
-import org.betonquest.betonquest.lib.instruction.argument.DecoratableArgumentParser;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultListArgument;
 import org.betonquest.betonquest.lib.profile.ProfileKeyMap;
 import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -96,12 +92,14 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
      * @param interceptorRegistry the registry for available Interceptors
      * @param placeholders        the {@link Placeholders} to create and resolve placeholders
      * @param pluginMessage       the plugin message instance to use for ingame notifications
+     * @param parsers             the argument parsers to use
      */
     public ConversationProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                                  final BetonQuest plugin, final ParsedSectionTextCreator textCreator,
                                  final ConversationIORegistry convIORegistry, final InterceptorRegistry interceptorRegistry,
-                                 final Placeholders placeholders, final PluginMessage pluginMessage) {
-        super(log, placeholders, plugin.getQuestPackageManager(), "Conversation", "conversations");
+                                 final Placeholders placeholders, final PluginMessage pluginMessage,
+                                 final ArgumentParsers parsers) {
+        super(loggerFactory, log, placeholders, plugin.getQuestPackageManager(), parsers, "Conversation", "conversations");
         this.loggerFactory = loggerFactory;
         this.activeConversations = new ProfileKeyMap<>(plugin.getProfileProvider(), new ConcurrentHashMap<>());
         this.starter = new ConversationStarter(loggerFactory, loggerFactory.create(ConversationStarter.class),
@@ -122,22 +120,37 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
     }
 
     @Override
-    protected ConversationData loadSection(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
-        final ConversationID conversationID = getIdentifier(pack, section.getName());
-        log.debug(pack, String.format("Loading conversation '%s'.", conversationID));
+    protected Map.Entry<ConversationID, ConversationData> loadSection(final String sectionName, final SectionInstruction instruction) throws QuestException {
+        final QuestPackage pack = instruction.getPackage();
+        final ConfigurationSection section = instruction.getSection();
+        final ConversationID identifier = getIdentifier(pack, sectionName);
+        log.debug(pack, String.format("Loading conversation '%s'.", identifier));
 
-        final Text quester = textCreator.parseFromSection(pack, section, "quester");
-        final CreationHelper helper = new CreationHelper(pack, section);
-        final Argument<Boolean> blockMovement = new DefaultArgument<>(placeholders, pack, section.getString("stop", "false"), new BooleanParser());
-        final Argument<ConversationIOFactory> convIO = helper.parseConvIO();
-        final Argument<InterceptorFactory> interceptor = helper.parseInterceptor();
-        final Argument<Number> interceptorDelay = helper.parseInterceptorDelay();
-        final Argument<List<ActionID>> finalActions = new DefaultListArgument<>(placeholders, pack, section.getString("final_actions", ""), value -> new ActionID(placeholders, packManager, pack, value));
         final boolean invincible = plugin.getConfig().getBoolean("conversation.damage.invincible");
-        final ConversationData.PublicData publicData = new ConversationData.PublicData(conversationID, quester, blockMovement, finalActions, convIO, interceptor, interceptorDelay, invincible);
+        final Text quester = textCreator.parseFromSection(pack, section, "quester");
 
-        return new ConversationData(loggerFactory.create(ConversationData.class), packManager,
+        final String rawConvIO = defaultingValue(section, "conversationIO", "conversation.default_io", "menu,tellraw");
+        final String rawInterceptor = defaultingValue(section, "interceptor", "conversation.interceptor.default", "simple");
+        final String rawInterceptorDelay = defaultingValue(section, "interceptor_delay", "conversation.interceptor.delay", "50");
+
+        final Argument<Boolean> stop = instruction.read().value("stop").bool().getOptional(false);
+        final Argument<List<ActionID>> finalActions = instruction.read().value("final_actions").parse(ActionID::new).list().getOptional(Collections.emptyList());
+        final Argument<ConversationIOFactory> conversationIO = instruction.chainForArgument(rawConvIO).string().list().map(convIORegistry::getFactory).get();
+        final Argument<InterceptorFactory> interceptor = instruction.chainForArgument(rawInterceptor).string().list().map(interceptorRegistry::getFactory).get();
+        final Argument<Number> interceptorDelay = instruction.chainForArgument(rawInterceptorDelay).number()
+                .validate(delay -> delay.doubleValue() > 0, "Expected a non-negative number for 'interceptor_delay', got '%s' instead.").get();
+
+        final ConversationData.PublicData publicData = new ConversationData.PublicData(identifier, quester, stop, finalActions, conversationIO, interceptor, interceptorDelay, invincible);
+        final ConversationData conversationData = new ConversationData(loggerFactory.create(ConversationData.class), packManager,
                 placeholders, plugin.getQuestTypeApi(), plugin.getFeatureApi().conversationApi(), textCreator, section, publicData);
+        return Map.entry(identifier, conversationData);
+    }
+
+    private String defaultingValue(final ConfigurationSection section, final String path, final String configPath, final String defaultConfig) {
+        if (section.isSet(path)) {
+            return Objects.requireNonNull(section.getString(path));
+        }
+        return plugin.getPluginConfig().getString(configPath, defaultConfig);
     }
 
     @Override
@@ -194,73 +207,5 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
      */
     public ConversationStarter getStarter() {
         return starter;
-    }
-
-    /**
-     * Class to bundle objects required to create a ConversationData.
-     */
-    private final class CreationHelper {
-
-        /**
-         * The conversation pack.
-         */
-        private final QuestPackage pack;
-
-        /**
-         * The conversation specific section.
-         */
-        private final ConfigurationSection section;
-
-        /**
-         * The string parser to use for parsing strings.
-         */
-        private final StringParser stringParser;
-
-        /**
-         * The number parser to use for parsing numbers.
-         */
-        private final DecoratedArgumentParser<Number> numberParser;
-
-        private CreationHelper(final QuestPackage pack, final ConfigurationSection section) {
-            this.pack = pack;
-            this.section = section;
-            this.stringParser = new StringParser();
-            this.numberParser = new DecoratableArgumentParser<>(NumberParser.DEFAULT)
-                    .validate(value -> value.doubleValue() > 0,
-                            "Expected a non-negative number for 'interceptor_delay', got '%s' instead.");
-        }
-
-        @Nullable
-        private String opt(final String path) {
-            return section.getString(path);
-        }
-
-        private String defaulting(final String path, final String configPath, final String defaultConfig) {
-            if (section.isSet(path)) {
-                return Objects.requireNonNull(opt(path));
-            }
-            return plugin.getPluginConfig().getString(configPath, defaultConfig);
-        }
-
-        private Argument<ConversationIOFactory> parseConvIO() throws QuestException {
-            final String rawConvIOs = defaulting("conversationIO", "conversation.default_io", "menu,tellraw");
-            return new DefaultArgument<>(placeholders, pack, rawConvIOs, value -> {
-                final List<String> ios = new DefaultListArgument<>(placeholders, pack, value, stringParser).getValue(null);
-                return convIORegistry.getFactory(ios);
-            });
-        }
-
-        private Argument<InterceptorFactory> parseInterceptor() throws QuestException {
-            final String rawInterceptor = defaulting("interceptor", "conversation.interceptor.default", "simple");
-            return new DefaultArgument<>(placeholders, pack, rawInterceptor, value -> {
-                final List<String> interceptors = new DefaultListArgument<>(placeholders, pack, value, stringParser).getValue(null);
-                return interceptorRegistry.getFactory(interceptors);
-            });
-        }
-
-        private Argument<Number> parseInterceptorDelay() throws QuestException {
-            final String rawInterceptorDelay = defaulting("interceptor_delay", "conversation.interceptor.delay", "50");
-            return new DefaultArgument<>(placeholders, pack, rawInterceptorDelay, value -> numberParser.apply(placeholders, packManager, pack, value));
-        }
     }
 }

@@ -7,7 +7,9 @@ import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfigurati
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiSectionConfiguration;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
@@ -16,6 +18,7 @@ import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.ScheduleID;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.kernel.registry.feature.ScheduleRegistry;
+import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.schedule.ActionScheduling.ScheduleType;
 import org.betonquest.betonquest.schedule.impl.BaseScheduleFactory;
 import org.bukkit.configuration.ConfigurationSection;
@@ -37,6 +40,7 @@ import static org.mockito.Mockito.*;
  * Tests if starting and stopping ActionScheduling works reliable and if loading Schedules works as intended.
  */
 @ExtendWith(MockitoExtension.class)
+@ExtendWith(BetonQuestLoggerService.class)
 class ActionSchedulingTest {
 
     /**
@@ -50,9 +54,10 @@ class ActionSchedulingTest {
     private ScheduleRegistry scheduleTypes;
 
     @BeforeEach
-    void setUp() {
+    void setUp(final BetonQuestLoggerFactory loggerFactory) {
         scheduleTypes = new ScheduleRegistry(mock(BetonQuestLogger.class));
-        scheduling = new ActionScheduling(mock(BetonQuestLogger.class), mock(Placeholders.class), mock(QuestPackageManager.class), scheduleTypes);
+        final ArgumentParsers parsers = mock(ArgumentParsers.class);
+        scheduling = new ActionScheduling(loggerFactory, mock(BetonQuestLogger.class), mock(Placeholders.class), mock(QuestPackageManager.class), scheduleTypes, parsers);
     }
 
     @SuppressWarnings("unchecked")
@@ -133,9 +138,9 @@ class ActionSchedulingTest {
     @Test
     void testLoad() throws KeyConflictException, InvalidSubConfigurationException, QuestException {
         final ScheduleType<?, FictiveTime> simpleType = registerSpyType("realtime-daily");
-        doNothing().when(simpleType).createAndScheduleNewInstance(any(), any());
+        doReturn(mock(Schedule.class)).when(simpleType).createAndScheduleNewInstance(any(), any());
         final ScheduleType<?, FictiveTime> cronType = registerSpyType("realtime-cron");
-        doNothing().when(cronType).createAndScheduleNewInstance(any(), any());
+        doReturn(mock(Schedule.class)).when(cronType).createAndScheduleNewInstance(any(), any());
         final QuestPackage pack = mockQuestPackage("src/test/resources/schedule/packageExample.yml");
         scheduling.load(pack);
         verify(simpleType).createAndScheduleNewInstance(argThat(id -> "testSimple".equals(id.get())), any());

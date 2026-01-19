@@ -83,9 +83,10 @@ public class Slots {
      *
      * @param slots         an iterable containing all slots objects to check
      * @param inventorySize the size of the inventory in which the slots should be
+     * @return true if all slots are valid, throws an exception otherwise
      * @throws QuestException if a defined list of slots is invalid
      */
-    public static void checkSlots(final Iterable<Slots> slots, final int inventorySize) throws QuestException {
+    public static boolean checkSlots(final Iterable<Slots> slots, final int inventorySize) throws QuestException {
         final boolean[] contained = new boolean[inventorySize]; //initialized with 'false'
         for (final Slots s : slots) {
             for (final int slot : s.getSlots()) {
@@ -99,6 +100,7 @@ public class Slots {
                 }
             }
         }
+        return true;
     }
 
     /**

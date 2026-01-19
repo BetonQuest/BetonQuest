@@ -18,8 +18,9 @@ import java.util.List;
  * @param settings               the whole configuration settings
  * @param conditionCheckInterval the interval when the conditions should be checked
  */
-public record EffectConfiguration(String effectClass, Argument<List<Location>> locations, Argument<List<NpcID>> npcs,
+public record EffectConfiguration(Argument<String> effectClass, Argument<List<Location>> locations,
+                                  Argument<List<NpcID>> npcs,
                                   Argument<List<ConditionID>> conditions, ConfigurationSection settings,
-                                  Integer conditionCheckInterval) {
+                                  Argument<Number> conditionCheckInterval) {
 
 }

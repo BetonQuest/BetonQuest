@@ -1,15 +1,14 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
-import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.compatibility.holograms.lines.AbstractLine;
+import org.betonquest.betonquest.lib.logger.QuestExceptionHandler;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,7 +17,7 @@ import java.util.List;
 /**
  * Wrapper class for {@link BetonHologram} that stores data parsed from hologram configuration.
  *
- * @param log             A {@link BetonQuestLogger} instance for this class.
+ * @param handler         A {@link QuestExceptionHandler} instance for this class.
  * @param questTypeApi    The {@link QuestTypeApi} to check for conditions.
  * @param profileProvider The {@link ProfileProvider} instance to get a profile from.
  * @param holograms       A list of actual hologram
@@ -39,24 +38,22 @@ import java.util.List;
  * @param questPackage    {@link QuestPackage} in which the hologram is specified in.
  * @param maxRange        The maximum range in which the hologram is visible.
  */
-public record HologramWrapper(BetonQuestLogger log, QuestTypeApi questTypeApi, ProfileProvider profileProvider,
+public record HologramWrapper(QuestExceptionHandler handler, QuestTypeApi questTypeApi, ProfileProvider profileProvider,
                               int interval, List<BetonHologram> holograms, boolean staticContent,
-                              List<ConditionID> conditionList,
-                              List<AbstractLine> cleanedLines, QuestPackage questPackage,
-                              Argument<Number> maxRange) {
+                              List<ConditionID> conditionList, List<AbstractLine> cleanedLines,
+                              QuestPackage questPackage, Argument<Number> maxRange) {
 
     /**
      * Checks whether all conditions are met by a players and displays or hides the hologram.
      */
     public void updateVisibility() {
         final int maxRange = getMaxRangeFromArgument(null);
-        if (conditionList.isEmpty() && maxRange <= 0) {
+        if (cleanedLines.isEmpty() && maxRange <= 0) {
             for (final BetonHologram hologram : holograms) {
                 hologram.showAll();
             }
             return;
         }
-
         for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
             updateVisibilityForPlayer(onlineProfile);
         }
@@ -69,10 +66,8 @@ public record HologramWrapper(BetonQuestLogger log, QuestTypeApi questTypeApi, P
      */
     public void updateVisibilityForPlayer(final OnlineProfile profile) {
         final boolean conditionsMet = questTypeApi.conditions(profile, conditionList);
-
         for (final BetonHologram hologram : holograms) {
             final boolean playerOutOfRange = isPlayerOutOfRange(profile, hologram);
-
             if (conditionsMet && !playerOutOfRange) {
                 hologram.show(profile.getPlayer());
             } else {
@@ -146,13 +141,6 @@ public record HologramWrapper(BetonQuestLogger log, QuestTypeApi questTypeApi, P
     }
 
     private int getMaxRangeFromArgument(@Nullable final Profile profile) {
-        int maxRange;
-        try {
-            maxRange = this.maxRange.getValue(profile).intValue();
-        } catch (final QuestException e) {
-            maxRange = 0;
-            log.debug("Failed to parse max range from placeholder. Defaulting to 0.", e);
-        }
-        return maxRange;
+        return handler.handle(() -> this.maxRange.getValue(profile).intValue(), 0);
     }
 }

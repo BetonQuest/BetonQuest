@@ -180,7 +180,13 @@ public class Menu {
      */
     @Nullable
     public MenuItem getItem(final Profile profile, final int slot) {
-        for (final Slots slots : data.slots) {
+        final List<Slots> value;
+        try {
+            value = data.slots.getValue(profile);
+        } catch (final QuestException e) {
+            return null;
+        }
+        for (final Slots slots : value) {
             if (slots.containsSlot(slot)) {
                 try {
                     return slots.getItem(profile, slot);
@@ -203,7 +209,7 @@ public class Menu {
      * @param openActions    Actions which are fired when the menu is opened.
      * @param closeActions   Actions which are fired when the menu is closed.
      */
-    public record MenuData(Text title, int height, List<Slots> slots,
+    public record MenuData(Text title, int height, Argument<List<Slots>> slots,
                            Argument<List<ConditionID>> openConditions,
                            Argument<List<ActionID>> openActions, Argument<List<ActionID>> closeActions) {
 

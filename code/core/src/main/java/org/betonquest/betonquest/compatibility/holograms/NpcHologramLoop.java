@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.bukkit.event.npc.NpcVisibilityUpdateEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.parser.VectorParser;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -79,14 +80,17 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
      * @param plugin           the plugin to schedule tasks
      * @param hologramProvider the hologram provider to create new holograms
      * @param featureApi       the Feature API to get NPC instances
+     * @param parsers          the argument parsers
      * @param npcRegistry      the registry to create identifier strings from Npcs
      * @param textParser       the text parser used to parse text and colors
      */
+    @SuppressWarnings("PMD.ExcessiveParameterList")
     public NpcHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
                            final Placeholders placeholders, final QuestPackageManager packManager, final Plugin plugin,
-                           final HologramProvider hologramProvider,
+                           final HologramProvider hologramProvider, final ArgumentParsers parsers,
                            final FeatureApi featureApi, final NpcRegistry npcRegistry, final TextParser textParser) {
-        super(loggerFactory, log, placeholders, packManager, hologramProvider, "Npc Hologram", "npc_holograms", textParser);
+        super(loggerFactory, log, placeholders, packManager, hologramProvider,
+                "Npc Hologram", "npc_holograms", textParser, parsers);
         this.packManager = packManager;
         this.plugin = plugin;
         this.featureApi = featureApi;

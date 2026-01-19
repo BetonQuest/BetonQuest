@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
+import org.betonquest.betonquest.api.instruction.source.ValueSource;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.bukkit.Location;
@@ -11,6 +12,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -19,6 +21,28 @@ import java.util.UUID;
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public interface SectionParser {
+
+    /**
+     * Adds a fallback source for the section.
+     * All further fallbacks will be added in order with lower priority.
+     *
+     * @param fallbackSource the fallback source to add
+     * @return this instance for chaining
+     */
+    SectionParser fallback(ValueSource<List<String>> fallbackSource);
+
+    /**
+     * Adds a fallback path for the section.
+     * All further fallbacks will be added in order with lower priority.
+     * <br>
+     * Utilizes {@link #fallback(ValueSource)} internally by default.
+     *
+     * @param fallbackPath the fallback path to add
+     * @return this instance for chaining
+     */
+    default SectionParser fallback(final String... fallbackPath) {
+        return fallback(() -> List.of(fallbackPath));
+    }
 
     /**
      * Use the given parser to parse the argument.

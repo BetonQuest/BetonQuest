@@ -4,10 +4,16 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.Identifier;
+import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
+import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.Placeholders;
-import org.bukkit.configuration.ConfigurationSection;
+import org.betonquest.betonquest.lib.instruction.section.DefaultSectionInstruction;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,56 +25,60 @@ import java.util.Map;
 public abstract class SectionProcessor<I extends Identifier, T> extends QuestProcessor<I, T> {
 
     /**
+     * The argument parsers to use for parsing arguments.
+     */
+    private final ArgumentParsers parsers;
+
+    /**
+     * The logger factory to create new class-specific loggers.
+     */
+    private final BetonQuestLoggerFactory loggerFactory;
+
+    /**
      * Create a new QuestProcessor to store and execute type logic.
      *
-     * @param log          the custom logger for this class
-     * @param placeholders the {@link Placeholders} to create and resolve placeholders
-     * @param packManager  the quest package manager to get quest packages from
-     * @param readable     the type name used for logging, with the first letter in upper case
-     * @param internal     the section name and/or bstats topic identifier
+     * @param loggerFactory the logger factory to create new class specific logger
+     * @param log           the custom logger for this class
+     * @param placeholders  the {@link Placeholders} to create and resolve placeholders
+     * @param packManager   the quest package manager to get quest packages from
+     * @param parsers       the {@link ArgumentParsers} to use for parsing arguments
+     * @param readable      the type name used for logging, with the first letter in upper case
+     * @param internal      the section name and/or bstats topic identifier
      */
-    public SectionProcessor(final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager,
-                            final String readable, final String internal) {
+    public SectionProcessor(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager,
+                            final ArgumentParsers parsers, final String readable, final String internal) {
         super(log, placeholders, packManager, readable, internal);
+        this.loggerFactory = loggerFactory;
+        this.parsers = parsers;
     }
 
     @Override
     public void load(final QuestPackage pack) {
-        final ConfigurationSection section = pack.getConfig().getConfigurationSection(internal);
-        if (section == null) {
-            return;
-        }
-        for (final String key : section.getKeys(false)) {
-            if (key.contains(" ")) {
-                log.warn(pack, readable + " name cannot contain spaces: '" + key + "' (in " + pack.getQuestPath() + " package)");
-                continue;
-            }
-            try {
-                final ConfigurationSection featureSection = section.getConfigurationSection(key);
-                final I identifier = getIdentifier(pack, key);
-                if (featureSection == null) {
-                    log.warn(pack, "No configuration section for '" + identifier + "' " + readable + "!");
-                    continue;
-                }
-                values.put(identifier, loadSection(pack, featureSection));
-                log.debug(pack, "  " + readable + " '" + identifier + "' loaded");
-            } catch (final QuestException e) {
-                log.warn("Could not load " + readable + " '" + key + "' in pack '" + pack.getQuestPath() + "': " + e.getMessage(), e);
-            }
+        final DefaultSectionInstruction instruction = new DefaultSectionInstruction(parsers, placeholders, packManager, pack, pack.getConfig(), loggerFactory);
+        try {
+            final Argument<List<Map.Entry<I, T>>> sections = instruction.read().list(internal).namedSections(this::loadSection)
+                    .withoutEarlyValidation().getOptional(Collections.emptyList());
+            final List<Map.Entry<I, T>> entries = sections.getValue(null);
+            entries.forEach(entry -> {
+                values.put(entry.getKey(), entry.getValue());
+                log.debug(pack, "%s '%s' loaded".formatted(readable, entry.getKey()));
+            });
+        } catch (final QuestException e) {
+            log.error(pack, "Could not load %ss: %s".formatted(readable, e.getMessage()), e);
         }
     }
 
     /**
-     * Load all {@link T} from the QuestPackage.
+     * Load all {@link T} from the SectionInstruction.
      * <p>
      * Any errors will be logged.
      *
-     * @param pack    to load the {@link T} from
-     * @param section the section to load
+     * @param sectionName the section name to use for identifiers
+     * @param instruction the section instruction to parse the values
      * @return the loaded {@link T}
      * @throws QuestException if the loading fails
      */
-    protected abstract T loadSection(QuestPackage pack, ConfigurationSection section) throws QuestException;
+    protected abstract Map.Entry<I, T> loadSection(String sectionName, SectionInstruction instruction) throws QuestException;
 
     /**
      * Get the loaded {@link T} by their ID.

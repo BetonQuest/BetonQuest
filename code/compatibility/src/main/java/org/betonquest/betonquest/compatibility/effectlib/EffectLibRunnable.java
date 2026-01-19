@@ -57,6 +57,11 @@ public class EffectLibRunnable extends BukkitRunnable {
     private final EffectConfiguration effectConfiguration;
 
     /**
+     * The condition check interval in ticks.
+     */
+    private final int conditionCheckInterval;
+
+    /**
      * All player profiles that meet the conditions for this classes' effect.
      */
     private List<OnlineProfile> activeProfiles;
@@ -75,9 +80,10 @@ public class EffectLibRunnable extends BukkitRunnable {
      * @param profileProvider     the profile provider instance
      * @param manager             the effect manager which will create and control the particles
      * @param effectConfiguration the effect to show
+     * @throws QuestException if the condition check interval could not be parsed
      */
     public EffectLibRunnable(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final FeatureApi featureApi, final ProfileProvider profileProvider,
-                             final EffectManager manager, final EffectConfiguration effectConfiguration) {
+                             final EffectManager manager, final EffectConfiguration effectConfiguration) throws QuestException {
         super();
         this.log = log;
         this.questTypeApi = questTypeApi;
@@ -86,11 +92,12 @@ public class EffectLibRunnable extends BukkitRunnable {
         this.manager = manager;
         this.effectConfiguration = effectConfiguration;
         this.activeProfiles = new ArrayList<>();
+        this.conditionCheckInterval = effectConfiguration.conditionCheckInterval().getValue(null).intValue();
     }
 
     @Override
     public void run() {
-        if (Bukkit.getCurrentTick() - lastConditionCheckTick >= effectConfiguration.conditionCheckInterval()) {
+        if (Bukkit.getCurrentTick() - lastConditionCheckTick >= conditionCheckInterval) {
             activeProfiles = checkActiveEffects();
             lastConditionCheckTick = Bukkit.getCurrentTick();
         }
@@ -143,7 +150,7 @@ public class EffectLibRunnable extends BukkitRunnable {
                     continue;
                 }
 
-                manager.start(effect.effectClass(), effect.settings(), new NpcDynamicLocation(npc),
+                manager.start(effect.effectClass().getValue(profile), effect.settings(), new NpcDynamicLocation(npc),
                         new DynamicLocation(null, null), (ConfigurationSection) null, player);
             }
         } catch (final QuestException e) {
@@ -154,7 +161,7 @@ public class EffectLibRunnable extends BukkitRunnable {
     private void runLocationEffects(final OnlineProfile profile, final EffectConfiguration effect) {
         try {
             for (final Location location : effect.locations().getValue(profile)) {
-                manager.start(effect.effectClass(), effect.settings(), location, profile.getPlayer());
+                manager.start(effect.effectClass().getValue(profile), effect.settings(), location, profile.getPlayer());
             }
         } catch (final QuestException e) {
             log.warn("Could not resolve locations for effectlib effect '" + effect.effectClass() + "': " + e.getMessage(), e);

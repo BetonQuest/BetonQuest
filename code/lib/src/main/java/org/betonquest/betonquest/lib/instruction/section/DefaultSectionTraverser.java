@@ -36,11 +36,11 @@ public class DefaultSectionTraverser implements SectionTraverser {
 
     @Override
     public SectionParser value(final String... sectionPath) {
-        return new DefaultSectionParser(instruction, parsers, List.of(sectionPath));
+        return new DefaultSectionParser(instruction, parsers, () -> List.of(sectionPath));
     }
 
     @Override
     public ListSectionParser list(final String... sectionPath) {
-        return new DefaultListSectionParser(instruction, parsers, List.of(sectionPath));
+        return new DefaultListSectionParser(instruction, parsers, () -> List.of(sectionPath));
     }
 }

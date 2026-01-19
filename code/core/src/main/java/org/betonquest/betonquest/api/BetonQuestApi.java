@@ -3,6 +3,7 @@ package org.betonquest.betonquest.api;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.feature.FeatureRegistries;
+import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
@@ -63,4 +64,11 @@ public interface BetonQuestApi {
      * @return the logger factory.
      */
     BetonQuestLoggerFactory getLoggerFactory();
+
+    /**
+     * Gets the default argument parsers.
+     *
+     * @return the argument parsers.
+     */
+    ArgumentParsers getArgumentParsers();
 }
