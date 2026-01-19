@@ -18,8 +18,9 @@ It works great with the location condition and the item in hand condition to fur
 | _hand_       | hand:(`hand`,`off_hand`, `any`)                               | `hand`                  | The hand the player must use to click the block, `any` can the objective cause to be completed multiple times |
 
 ```YAML title="Example"
-action right DOOR conditions:holding_key loc:100;200;300;world range:5
-action any any conditions:holding_magicWand actions:fireSpell #Custom click listener for a wand
+objectives:
+  door: "action right DOOR conditions:holding_key loc:100;200;300;world range:5"
+  customWand: "action any any conditions:holding_magicWand actions:fireSpell"
 ```
 
 <h5> Placeholder Properties </h5> 
@@ -35,7 +36,8 @@ of an arrow after hit is on the wall of a _full_ block, which means that shootin
 give accurate results. Experiment with this objective a bit to make sure you've set the numbers correctly.
 
 ```YAML title="Example"
-arrow 100.5;200.5;300.5;world 1.1 actions:reward conditions:correct_player_position
+objectives:
+  shootTarget: "arrow 100.5;200.5;300.5;world 1.1 actions:reward conditions:correct_player_position"
 ```
 
 ## :material-pickaxe: Break or Place Blocks: `block`
@@ -90,7 +92,8 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 `left` is the amount of animals still needed to breed and `total` is the amount of animals initially required.
 
 ```YAML title="Example"
-breed cow 10 notify:2 actions:reward
+objectives:
+  10Cows: "breed cow 10 notify:2 actions:reward"
 ```
 
 ## Put items in a chest: `chestput`
@@ -102,8 +105,9 @@ argument. By default, only one player can look into the chest at the same time. 
 `multipleaccess`.
 
 ```YAML title="Example"
-chestput 100;200;300;world emerald:5,sword actions:tag,message
-chestput 0;50;100;world apple:42 actions:message multipleaccess:true
+objectives:
+  emeraldsAndSword: "chestput 100;200;300;world emerald:5,sword actions:tag,message"
+  apples: "chestput 0;50;100;world apple:42 actions:message multipleaccess:true"
 ```
 
 ## :material-food-fork-drink: Eat/drink: `consume`
@@ -141,7 +145,8 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 `left` is the amount of items still needed to craft and `total` is the amount of items initially required.
 
 ```YAML title="Example"
-craft saddle 5 actions:reward
+objectives:
+  craftSaddle: "craft saddle 5 actions:reward"
 ```
 
 ## :fontawesome-solid-wand-magic-sparkles: Enchant item: `enchant`
@@ -156,9 +161,10 @@ This objective is completed when the player enchants the specified quest item wi
 | _amount_          | amount:number                         | 1                      | The amount of items to enchant.                                                                                                                                                                                                                                                                                                                    |
 
 ```YAML title="Example"
-lordSword: "enchant lordsSword damage_all,knockback actions:rewardLord"
-kingSword: "enchant kingsSword damage_all:2,knockback:1 actions:rewardKing"
-massProduction: "enchant ironSword sharpness amount:10 actions:blacksmithLevel2Reward"
+objectives:
+  lordSword: "enchant lordsSword damage_all,knockback actions:rewardLord"
+  kingSword: "enchant kingsSword damage_all:2,knockback:1 actions:rewardKing"
+  massProduction: "enchant ironSword sharpness amount:10 actions:blacksmithLevel2Reward"
 ```
 
 <h5> Placeholder Properties </h5> 
@@ -185,7 +191,8 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 `left` is the amount of experience levels still needed and `total` is the amount of experience required.
 
 ```YAML title="Example"
-experience 25 level actions:reward
+objectives:
+  25Level: "experience 25 level actions:reward"
 ```
 
 ##:material-clock-time-two-outline: Wait: `delay` 
@@ -200,7 +207,7 @@ next login.
 | _unit_      | Keyword         | minutes                | The unit of time. Either `minutes`, `seconds` or `ticks`.                                                                                          |
 | _precision_ | interval:number | interval:200           | The interval in which the objective checks if the time is up. Measured in ticks. Low values cost more performance but make the objective preciser. |
 
-``` YAML title="Example"
+```YAML title="Example"
 objectives:
   waitDay: "delay 1440 actions:resetDaily" #(1)!
   wait50sec: "delay 1000 ticks interval:5 actions:failQuest" #(2)! 
@@ -229,8 +236,9 @@ In this case, the player will be healed and all status effects will be removed.
 You can also specify the `respawn` location to which the player will be teleported to.
 
 ```YAML title="Example"
-die respawn:100;200;300;world;90;0 actions:respawned
-die cancel respawn:100;200;300;world;90;0 actions:respawned
+objectives:
+  respawn: "die respawn:100;200;300;world;90;0 actions:respawned"
+  preventDying: "die cancel respawn:100;200;300;world;90;0 actions:respawned"
 ```
 
 ## :fontawesome-solid-fish-fins: Fishing: `fish`
@@ -283,7 +291,8 @@ The player must click on entities to complete this objective.
 | _range_         | range:number                                                                                  | 1                      | The range around the `loc`. Requires defined `loc`.                                                                                             |
 
 ```YAML title="Example"
-interact right creeper 1 marked:sick conditions:syringeInHand cancel
+objectives:
+  rightCreeper: "interact right creeper 1 marked:sick conditions:syringeInHand cancel"
 ```
 
 <h5> Placeholder Properties </h5>
@@ -301,8 +310,9 @@ The first argument is the state of the resource pack.
 It can be `successfully_loaded`, `declined`, `failed_download` and `accepted`.
 
 ```YAML title="Example"
-resourcepack successfully_loaded actions:reward
-resourcepack declined actions:declined
+objectives:
+  successful: "resourcepack successfully_loaded actions:reward"
+  declined: "resourcepack declined actions:declined"
 ```
 
 ## Kill player: `kill`
@@ -316,7 +326,8 @@ The kill objective has three properties: `left` is the amount of players still l
 already killed players and `total` is the initially required amount to kill.
 
 ```YAML title="Example"
-kill 5 required:team_B
+objectives:
+  kill5: "kill 5 required:team_B"
 ```
 
 ## Location: `location`
@@ -332,11 +343,12 @@ if the player just moves inside the location's range.
 | _entry_    | entry                                                | Disabled               | The player must enter (go from outside to inside) the location to complete the objective. |
 | _exit_     | exit                                                 | Disabled               | The player must exit (go from inside to outside) the location to complete the objective.  |
 
-!!! example
-    ```YAML
-    location 100;200;300;world 5 conditions:started actions:notifyWelcome,start
-    location 100;200;300;world 5 exit conditions:started actions:notifyBye
-    ```
+```YAML title="Example"
+objectives:
+  welcome: "location 100;200;300;world 5 conditions:started actions:notifyWelcome,start"
+  goodBy: "location 100;200;300;world 5 exit conditions:started actions:notifyBye"
+```
+
 <h5> Placeholder Properties </h5> 
 
 | Name       | Example Output        | Explanation                              |
@@ -351,7 +363,8 @@ If you use `persistent` it will be permanent.
 Don't forget that if you use global and persistent you can still remove the objective explicitly.
 
 ```YAML title="Example"
-login actions:welcome_message
+objectives:
+  welcome: "login actions:welcome_message"
 ```
 
 ## Logout: `logout`
@@ -359,10 +372,10 @@ login actions:welcome_message
 To complete this objective the player simply needs to leave the server. Keep in mind that running a `folder` action here
 will make it run in "persistent" mode, since the player is offline on the next tick.
 
-!!! example
-    ```YAML
-    logout actions:delete_objective
-    ```
+```YAML title="Example"
+objectives:
+  clean: "logout actions:delete_objective"
+```
 
 ## NPC Interact: `npcinteract`
 
@@ -375,8 +388,9 @@ The player has to interact with a Npc.
 | _Interaction_ | interaction:Keyword | `right`                | The interaction type. Either `left`, `right` or `any`.                              |
 
 ```YAML title="Example"
-stealItem: npcinteract mayor cancel conditions:sneak actions:steal
-punchThief: npcinteract thief interaction:left actions:poke
+objectives:
+  stealItem: "npcinteract mayor cancel conditions:sneak actions:steal"
+  punchThief: "npcinteract thief interaction:left actions:poke"
 ```
 
 ## NPC Range: `npcrange`
@@ -396,7 +410,8 @@ The objective will be completed as soon as you meet the requirement of just one 
     This means that `enter` is not completed when the player gets the objective and is already in the range, while `inside` is instantly completed.
 
 ```YAML title="Example"
-goToVillage: npcrange farmer,guard enter 20 actions:master_inRange
+objectives:
+  goToVillage: "npcrange farmer,guard enter 20 actions:master_inRange"
 ```
 
 ## Password: `password`
@@ -430,7 +445,7 @@ The objective's instruction string is defined as follows:
 
 ```YAML title="Example"
 objectives:
-  theBetonPassword: 'password beton ignoreCase prefix:secret fail:failAction1,failAction2 actions:message,reward'
+  theBetonPassword: "password beton ignoreCase prefix:secret fail:failAction1,failAction2 actions:message,reward"
   theBetonPasswordSpaced: 'password "beton quest" ignoreCase prefix:secret fail:failAction1,failAction2 actions:message,reward'
 ```
 
@@ -448,8 +463,9 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 `left` is the amount of items still needed to pick up and `total` is the amount of items initially required.
 
 ```YAML title="Example"
-pickup emerald amount:3 actions:reward notify
-pickup emerald,diamond amount:6 actions:reward notify
+objectives:
+  emeralds: "pickup emerald amount:3 actions:reward notify"
+  emeraldsAndDiamonds: "pickup emerald,diamond amount:6 actions:reward notify"
 ```
 
 ## Point: `point`
@@ -467,9 +483,9 @@ If the player is not online the objective is completed on the player's next logi
 
 ```YAML title="Example"
 objectives:
-  reach100: point counter 100
-  punish: point reputation -100 operation:<
-  progressFive: point reputation 5 mode:relative
+  reach100: "point counter 100"
+  punish: "point reputation -100 operation:<"
+  progressFive: "point reputation 5 mode:relative"
 ```
 
 <h5> Placeholder Properties </h5> 
@@ -489,17 +505,17 @@ All entities work, make sure to use their [correct types](https://hub.spigotmc.o
 | _type_    | ENTITY_TYPE,ENTITY_TYPE | :octicons-x-circle-16: | A list of entities, e.g. `ZOMBIE,SKELETON`.                                                                       |
 | _amount_  | Positive Number         | :octicons-x-circle-16: | Amount of mobs to kill in total.                                                                                  |
 | _name_    | name:text               | Disabled               | Only count named mobs.                                                                                            |
-| _marked_  | marked:keyword          | Disabled               | Only count marked mobs. See the [spawn action](Actions-List.md#spawn-a-mob) for more information.             |
+| _marked_  | marked:keyword          | Disabled               | Only count marked mobs. See the [spawn action](Actions-List.md#spawn-a-mob) for more information.                 |
 | _notify_  | notify:interval         | Disabled               | Display a message to the player each time they kill a mob. Optionally with the notification interval after colon. |
 
-``` YAML title="Example"
+```YAML title="Example"
 objectives:
   monsterHunter: "mobkill ZOMBIE,SKELETON,SPIDER 10 notify" #(1)!
   specialMob: "mobkill PIG 1 marked:special" #(2)!
   bossZombie: "mobkill ZOMBIE 1 name:Uber_Zombie" #(3)!
 ```
    
-1. The player must kill a zombie,skeleton or a spider to progress this objective. In total, they must kill 10 entities. Additionally, there will be a notification after each kill.
+1. The player must kill a zombie, skeleton or a spider to progress this objective. In total, they must kill 10 entities. Additionally, there will be a notification after each kill.
 2. The player must kill a pig that was spawned with the [spawn action](Actions-List.md#spawn-a-mob) and has a marker. 
 3. The player must kill a zombie named "Uber Zombie".
 
@@ -528,7 +544,8 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 `left` is the amount of potions still needed to brew and `total` is the amount of potions initially required.
 
 ```YAML title="Example"
-brew weird_concoction 4 actions:add_tag
+objectives:
+  weird: "brew weird_concoction 4 actions:add_tag"
 ```
 
 ## Sheep shearing: `shear`
@@ -544,9 +561,10 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 `left` is the amount of sheep still needed to shear and `total` is the amount of sheep initially required.
 
 ```YAML title="Example"
-shear 1 name:Bob color:black
-shear 1 name:jeb
-shear 1 "name:jeb 2"
+objectives:
+  bob: "shear 1 name:Bob color:black"
+  jeb: "shear 1 name:jeb"
+  jeb2: 'shear 1 "name:jeb 2"'
 ```
 
 ## Smelting: `smelt`
@@ -562,7 +580,8 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 `left` is the amount of items still needed to smelt and `total` is the amount of items initially required.
 
 ```YAML title="Example"
-smeltIron: "smelt ironIngot 5 actions:reward"
+objectives:
+  smeltIron: "smelt ironIngot 5 actions:reward"
 ```
 
 ## Stages: `stage`
@@ -605,7 +624,8 @@ Step objective contains one property, `location`. It shows the exact location of
 formatted like `X: 100, Y: 200, Z:300`.
 
 ```YAML title="Example"
-step 100;200;300;world actions:done
+objectives:
+  step: "step 100;200;300;world actions:done"
 ```
 
 ## Getting a tag: `tag`
@@ -617,7 +637,7 @@ If the player is not online the objective is completed on the player's next logi
 
 ```YAML title="Example"
 objectives:
-  finish: tag finishedTag
+  finish: "tag finishedTag"
 ```
 
 <h5> Placeholder Properties </h5>
@@ -635,7 +655,8 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 `left` is the amount of animals still needed to tame and `total` is the amount of animals initially required.
 
 ```YAML title="Example"
-tame WOLF 2 actions:wolfs_tamed
+objectives:
+  wolf: "tame WOLF 2 actions:wolfs_tamed"
 ```
 
 ## Track time: `timer`
@@ -657,7 +678,7 @@ normal `actions` as they are executed after the objective is already removed.
 
 ```YAML title="Example"
 objectives:
-	track: timer "name:This is the Display Name" interval:10 done:done_in actions:done conditions:in_region
+	track: 'timer "name:This is the Display Name" interval:10 done:done_in actions:done conditions:in_region'
 ```
 
 ## Player must Jump: `jump`
@@ -669,7 +690,8 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 `left` is the amount of jumps still needed and `total` is the amount of jumps initially required.
 
 ```YAML title="Example"
-jump 15 actions:legExerciseDone
+objectives:
+  jump: "jump 15 actions:legExerciseDone"
 ```
 
 ## Ride an entity: `ride`
@@ -679,8 +701,9 @@ This objective can be completed by riding the specified
 `any` is also a valid input and matches any entity.
 
 ```YAML title="Example"
-ride horse
-ride any
+objectives:
+  horse: "ride horse"
+  any: "ride any"
 ```
 
 ## Run a Command: `command`
@@ -691,8 +714,9 @@ The command argument is case-sensitive and also supports using placeholders.
 The second required argument is a list of actions to execute when the objective ismet.
 
 ```YAML title="Example"
-command "/warp %player% farms" actions:action1,action2
-command "//replace oak_wood" actions:action1,action2
+objectives:
+  warp: 'command "/warp %player% farms" actions:action1,action2'
+  replace: 'command "//replace oak_wood" actions:action1,action2'
 ```
 
 With this configuration, the command objective requires the player to execute `/warp MyName farms` to be completed. The
@@ -706,8 +730,9 @@ Optional arguments:
 * `cancel`: If provided, the objective will cancel the execution of the command on a match. This needs to be enabled to suppress the `Unknown Command` message when using custom commands.
 * `failActions`: If provided, specifies a list of actions to execute if a non-matching command is run and conditions are met.
 
-```YAML title="Complex Example"
-command "/warp %player% farms" ignoreCase exact cancel failActions:failAction1,failAction2 actions:action1,action2
+```YAML title="Example"
+objectives:
+  warp: 'command "/warp %player% farms" ignoreCase exact cancel failActions:failAction1,failAction2 actions:action1,action2'
 ```
 
 ## Equip Armor Item: `equip`
@@ -717,8 +742,9 @@ The item must be any quest item as defined in the _items_ section.
 Available slot types: `HEAD`, `CHEST`, `LEGS`, `FEET`.
 
 ```YAML title="Example"
-eqHelm: equip HEAD amazing_helmet actions:action1,action2
-equipBody: equip CHEST amazing_armor actions:action1,action2
+objectives:
+  eqHelm: "equip HEAD amazing_helmet actions:action1,action2"
+  equipBody: "equip CHEST amazing_armor actions:action1,action2"
 ```
 
 ## Variable: `variable`
@@ -738,6 +764,7 @@ by what players type in chat which is only useful when you're also using the `va
 Also, the key is interpreted in lower case. That means there is no difference between `MyFirstVariable`, `myfirstvariable` or `MYfirstVARIABLE`.
 
 ```YAML title="Example"
-storage: variable
-storeChat: variable no-chat
+objectives:
+  storage: "variable"
+  storeChat: "variable no-chat"
 ```
