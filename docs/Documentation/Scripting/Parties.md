@@ -7,7 +7,7 @@ icon: material/party-popper
 Parties are very simple. So simple, that they are hard to understand if you already know some other party system.
 Basically, they don't even have to be created before using them. 
 Parties are defined directly in the [party action](./Building-Blocks/Actions-List.md#run-actions-for-the-party) or the
-[party condition](./Building-Blocks/Conditions-List.md#party-party).  
+[party condition](./Building-Blocks/Conditions-List.md#check-conditions-for-party).  
 In such instruction strings the first argument is a number - range. It defines the radius where the party
 members will be looked for. A range of 0 will look for all players in the same world as the player who triggered the action.
 And a range of -1 will look for all players in all worlds.  

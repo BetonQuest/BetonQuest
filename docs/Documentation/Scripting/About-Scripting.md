@@ -181,7 +181,7 @@ actions:
 
 Tags are little pieces of text you can assign to player. They are particularly useful to 
 determine if player has started or completed quest. They are given with [`tag` action](./Building-Blocks/Actions-List.md#manage-a-point-category) and checked with
-[`tag` condition](./Building-Blocks/Conditions-List.md#tag-tag).
+[`tag` condition](./Building-Blocks/Conditions-List.md#has-tag).
 All tags are bound to a package, so if you add the `questCompleted` tag from within a package named `monsterQuest`,
 the tag will look like `monsterQuest.questCompleted`.
  
@@ -191,6 +191,6 @@ Read [working across packages](./Packages-&-Templates.md#working-across-packages
 
 Points are numbers that can be assigned to a player. You can set them with the [`point` action](./Building-Blocks/Actions-List.md#manage-a-point-category).
 you want. You can also take the points away, even to negative numbers. 
-Of course then you can check if player has (or doesn't have) certain amount with the [`point` condition](./Building-Blocks/Conditions-List.md#point-point). 
+Of course then you can check if player has (or doesn't have) certain amount with the [`point` condition](./Building-Blocks/Conditions-List.md#has-point). 
 They can be used as counter for specific number of quest done, as a reputation system in villages or even an NPC's 
 attitude to player.

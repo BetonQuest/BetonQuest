@@ -1,0 +1,31 @@
+info-online: >-
+  <b>Online</b><br>
+  This condition can only be checked on a player that is online.
+info-offline: >-
+  <b>Offline</b><br>
+  This condition can be checked on a player that is offline.
+info-independent: >-
+  <b>Independent</b><br>
+  This condition can be checked without any player.
+
+
+online: >-
+  :material-account-check:{ .account .account-online
+  title="@snippet:condition-meta:info-online@" }
+offline: >-
+  :material-account-cancel:{ .account .account-offline
+  title="@snippet:condition-meta:info-offline@" }
+independent: >-
+  :material-account-off:{ .account .account-independent
+  title="@snippet:condition-meta:info-independent@" }
+
+online-offline-independent: |-
+  @snippet:condition-meta:online@
+  @snippet:condition-meta:offline@
+  @snippet:condition-meta:independent@
+online-offline: |-
+  @snippet:condition-meta:online@
+  @snippet:condition-meta:offline@
+online-independent: |-
+  @snippet:condition-meta:online@
+  @snippet:condition-meta:independent@

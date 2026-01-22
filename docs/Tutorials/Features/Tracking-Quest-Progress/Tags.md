@@ -20,7 +20,7 @@ using them.
 
 !!! example "Related Docs"
     * [Conditions Reference](../../../Documentation/Scripting/About-Scripting.md#conditions)
-    * [Condition Tag](../../../Documentation/Scripting/Building-Blocks/Conditions-List.md#tag-tag)
+    * [Condition Tag](../../../Documentation/Scripting/Building-Blocks/Conditions-List.md#has-tag)
 </div>
 
 ## 1. Creating the folder structure for the example quest
