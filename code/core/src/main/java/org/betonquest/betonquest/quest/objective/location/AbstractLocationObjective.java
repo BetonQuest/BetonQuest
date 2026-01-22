@@ -81,7 +81,7 @@ public abstract class AbstractLocationObjective extends DefaultObjective {
                 .player(PlayerTeleportEvent::getPlayer).subscribe(true);
         service.request(PlayerMoveEvent.class).onlineHandler(this::onPlayerMove)
                 .player(PlayerMoveEvent::getPlayer).subscribe(true);
-        service.request(VehicleMoveEvent.class).handler(this::onVehicleMove).subscribe(true);
+        service.request(VehicleMoveEvent.class).handler(this::onVehicleMove).ignoreConditions().subscribe(true);
     }
 
     /**

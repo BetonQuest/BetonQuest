@@ -39,7 +39,7 @@ public class BrewObjectiveFactory implements ObjectiveFactory {
         service.request(InventoryClickEvent.class).priority(EventPriority.LOWEST).onlineHandler(objective::onIngredientPut)
                 .entity(InventoryClickEvent::getWhoClicked).subscribe(false);
         service.request(BrewEvent.class).priority(EventPriority.MONITOR)
-                .handler(objective::onBrew).subscribe(true);
+                .handler(objective::onBrew).ignoreConditions().subscribe(true);
         return objective;
     }
 }
