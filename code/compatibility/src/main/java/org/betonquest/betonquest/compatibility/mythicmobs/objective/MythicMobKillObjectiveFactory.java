@@ -34,7 +34,7 @@ public class MythicMobKillObjectiveFactory implements ObjectiveFactory {
         final Argument<Number> maxMobLevel = instruction.number().get("maxLevel", Double.POSITIVE_INFINITY);
         final Argument<String> marked = instruction.packageIdentifier().get("marked").orElse(null);
         final MythicMobKillObjective objective = new MythicMobKillObjective(service, targetAmount, names, mode, minMobLevel, maxMobLevel, deathRadiusAllPlayers, neutralDeathRadiusAllPlayers, marked);
-        service.request(MythicMobDeathEvent.class).handler(objective::onKill).subscribe(true);
+        service.request(MythicMobDeathEvent.class).handler(objective::onKill).ignoreConditions().subscribe(true);
         return objective;
     }
 }
