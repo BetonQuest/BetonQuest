@@ -320,7 +320,7 @@ public class CoreQuestTypes {
         conditionTypes.register("effect", new EffectConditionFactory(loggerFactory));
         conditionTypes.register("empty", new EmptySlotsConditionFactory(loggerFactory));
         conditionTypes.registerCombined("entities", new EntityConditionFactory());
-        conditionTypes.registerCombined("eval", new EvalConditionFactory(betonQuest, placeholders, betonQuest.getQuestPackageManager(), conditionTypes));
+        conditionTypes.registerCombined("eval", new EvalConditionFactory(betonQuest, placeholders, betonQuest.getQuestPackageManager(), conditionTypes, server.getScheduler(), betonQuest));
         conditionTypes.register("experience", new ExperienceConditionFactory(loggerFactory));
         conditionTypes.register("facing", new FacingConditionFactory(loggerFactory));
         conditionTypes.register("fly", new FlyingConditionFactory(loggerFactory));

@@ -14,6 +14,7 @@ import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
 import org.betonquest.betonquest.kernel.processor.adapter.ActionAdapter;
 import org.betonquest.betonquest.kernel.registry.quest.ActionTypeRegistry;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.Nullable;
@@ -113,7 +114,7 @@ public class EvalAction implements NullableAction {
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
         final ActionAdapter action = createAction(betonQuestApi.getArgumentParsers(), placeholders, packManager, actionTypeRegistry, pack, evaluation.getValue(profile));
-        if (action.isPrimaryThreadEnforced()) {
+        if (action.isPrimaryThreadEnforced() && !Bukkit.isPrimaryThread()) {
             try {
                 scheduler.callSyncMethod(plugin, () -> action.fire(profile)).get();
                 return;

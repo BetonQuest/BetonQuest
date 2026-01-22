@@ -17,7 +17,12 @@ import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.kernel.processor.adapter.ConditionAdapter;
 import org.betonquest.betonquest.kernel.registry.QuestTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.concurrent.ExecutionException;
 
 /**
  * A condition which evaluates to another condition.
@@ -55,6 +60,16 @@ public class EvalCondition implements NullableCondition {
     private final BetonQuestApi betonQuestApi;
 
     /**
+     * The scheduler to use for synchronous execution.
+     */
+    private final BukkitScheduler scheduler;
+
+    /**
+     * The plugin instance.
+     */
+    private final Plugin plugin;
+
+    /**
      * Creates a new Eval condition.
      *
      * @param betonQuestApi         the {@link BetonQuestApi} to use
@@ -63,15 +78,19 @@ public class EvalCondition implements NullableCondition {
      * @param conditionTypeRegistry the condition type registry providing factories to parse the evaluated instruction
      * @param pack                  the quest package to relate the condition to
      * @param evaluation            the evaluation input
+     * @param scheduler             the scheduler to use for synchronous execution
+     * @param plugin                the plugin instance
      */
     public EvalCondition(final BetonQuestApi betonQuestApi, final Placeholders placeholders, final QuestPackageManager packManager, final ConditionTypeRegistry conditionTypeRegistry,
-                         final QuestPackage pack, final Argument<String> evaluation) {
+                         final QuestPackage pack, final Argument<String> evaluation, final BukkitScheduler scheduler, final Plugin plugin) {
         this.placeholders = placeholders;
         this.packManager = packManager;
         this.betonQuestApi = betonQuestApi;
         this.conditionTypeRegistry = conditionTypeRegistry;
         this.pack = pack;
         this.evaluation = evaluation;
+        this.scheduler = scheduler;
+        this.plugin = plugin;
     }
 
     /**
@@ -96,6 +115,14 @@ public class EvalCondition implements NullableCondition {
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
-        return createCondition(betonQuestApi.getArgumentParsers(), placeholders, packManager, conditionTypeRegistry, pack, evaluation.getValue(profile)).check(profile);
+        final ConditionAdapter condition = createCondition(betonQuestApi.getArgumentParsers(), placeholders, packManager, conditionTypeRegistry, pack, evaluation.getValue(profile));
+        if (condition.isPrimaryThreadEnforced() && !Bukkit.isPrimaryThread()) {
+            try {
+                return scheduler.callSyncMethod(plugin, () -> condition.check(profile)).get();
+            } catch (InterruptedException | ExecutionException e) {
+                throw new QuestException("Failed to check condition in primary thread", e);
+            }
+        }
+        return condition.check(profile);
     }
 }
