@@ -6467,8 +6467,9 @@ It works great with the location condition and the item in hand condition to fur
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">action right DOOR conditions:holding_key loc:100;200;300;world range:5</span>
-<span class="l l-Scalar l-Scalar-Plain">action any any conditions:holding_magicWand actions:fireSpell</span><span class="w"> </span><span class="c1">#Custom click listener for a wand</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">door</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;action</span><span class="nv"> </span><span class="s">right</span><span class="nv"> </span><span class="s">DOOR</span><span class="nv"> </span><span class="s">conditions:holding_key</span><span class="nv"> </span><span class="s">loc:100;200;300;world</span><span class="nv"> </span><span class="s">range:5&quot;</span>
+<span class="w">  </span><span class="nt">customWand</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;action</span><span class="nv"> </span><span class="s">any</span><span class="nv"> </span><span class="s">any</span><span class="nv"> </span><span class="s">conditions:holding_magicWand</span><span class="nv"> </span><span class="s">actions:fireSpell&quot;</span>
 </code></pre></div>
 <h5> Placeholder Properties </h5>
 
@@ -6479,7 +6480,8 @@ show the radius.</p>
 target and precision number (radius around location where the arrow must land, should be small). Note that the position
 of an arrow after hit is on the wall of a <em>full</em> block, which means that shooting not full blocks (like heads) won't
 give accurate results. Experiment with this objective a bit to make sure you've set the numbers correctly.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">arrow 100.5;200.5;300.5;world 1.1 actions:reward conditions:correct_player_position</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">shootTarget</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;arrow</span><span class="nv"> </span><span class="s">100.5;200.5;300.5;world</span><span class="nv"> </span><span class="s">1.1</span><span class="nv"> </span><span class="s">actions:reward</span><span class="nv"> </span><span class="s">conditions:correct_player_position&quot;</span>
 </code></pre></div>
 <h2 id="break-or-place-blocks-block"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.79 10.62 3.5 21.9l-1.4-1.4L13.38 9.21zm4.48-2.89.59-.59-.79-.79.64-.64-1.42-1.42-.64.64-.79-.79-.59.59c-1.74-1.42-3.7-2.56-5.8-3.36l-.83 1.79c1.75.92 3.36 2.03 4.86 3.34L14 7l3 3 .5-.5c1.31 1.5 2.42 3.11 3.34 4.86l1.79-.83c-.8-2.1-1.94-4.06-3.36-5.8"/></svg></span> Break or Place Blocks: <code>block</code><a class="headerlink" href="#break-or-place-blocks-block" title="Permanent link">🔗</a></h2>
 <p>To complete this objective the player must break or place the specified amount of blocks.</p>
@@ -6606,7 +6608,8 @@ the animal is bred, optionally with the notification interval after a colon. Whi
 objective will be completable only for breedable ones.</p>
 <p>This objective has three properties: <code>amount</code>, <code>left</code> and <code>total</code>. <code>amount</code> is the amount of animals already breed,
 <code>left</code> is the amount of animals still needed to breed and <code>total</code> is the amount of animals initially required.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">breed cow 10 notify:2 actions:reward</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">10Cows</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;breed</span><span class="nv"> </span><span class="s">cow</span><span class="nv"> </span><span class="s">10</span><span class="nv"> </span><span class="s">notify:2</span><span class="nv"> </span><span class="s">actions:reward&quot;</span>
 </code></pre></div>
 <h2 id="put-items-in-a-chest-chestput">Put items in a chest: <code>chestput</code><a class="headerlink" href="#put-items-in-a-chest-chestput" title="Permanent link">🔗</a></h2>
 <p>This objective requires the player to put specified items in a specified chest. First argument is a location of the
@@ -6614,8 +6617,9 @@ chest, second argument is a list of items (from <em>items</em> section), separat
 items after a colon. The items will be removed upon completing the objective unless you add <code>items-stay</code> optional
 argument. By default, only one player can look into the chest at the same time. You can change it by adding the key 
 <code>multipleaccess</code>.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">chestput 100;200;300;world emerald:5,sword actions:tag,message</span>
-<span class="l l-Scalar l-Scalar-Plain">chestput 0;50;100;world apple:42 actions:message multipleaccess:true</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">emeraldsAndSword</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;chestput</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">emerald:5,sword</span><span class="nv"> </span><span class="s">actions:tag,message&quot;</span>
+<span class="w">  </span><span class="nt">apples</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;chestput</span><span class="nv"> </span><span class="s">0;50;100;world</span><span class="nv"> </span><span class="s">apple:42</span><span class="nv"> </span><span class="s">actions:message</span><span class="nv"> </span><span class="s">multipleaccess:true&quot;</span>
 </code></pre></div>
 <h2 id="eatdrink-consume"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 3a1 1 0 0 0-1 1v5.5c0 1.69 1.03 3.13 2.5 3.72v6.28A1.5 1.5 0 0 0 6 21a1.5 1.5 0 0 0 1.5-1.5v-6.28c1.47-.59 2.5-2.03 2.5-3.72V4a1 1 0 0 0-1-1 1 1 0 0 0-1 1v4a.5.5 0 0 1-.5.5A.5.5 0 0 1 7 8V4a1 1 0 0 0-1-1 1 1 0 0 0-1 1v4a.5.5 0 0 1-.5.5A.5.5 0 0 1 4 8V4a1 1 0 0 0-1-1m16.88 0c-.13 0-.26.09-.38.16L16 5.25V9h-4v2h1l1 10h6l1-10h1V9h-4V6.34l2.5-1.5c.5-.28.63-.84.34-1.34-.21-.36-.58-.55-.96-.5"/></svg></span> Eat/drink: <code>consume</code><a class="headerlink" href="#eatdrink-consume" title="Permanent link">🔗</a></h2>
 <p>This objective is completed by eating the specified food or drinking the specified potion. </p>
@@ -6681,7 +6685,8 @@ Next is amount (integer). You can use the <code>notify</code> keyword to display
 objective, optionally with the notification interval after a colon.</p>
 <p>This objective has three properties: <code>amount</code>, <code>left</code> and <code>total</code>. <code>amount</code> is the amount of items already crafted,
 <code>left</code> is the amount of items still needed to craft and <code>total</code> is the amount of items initially required.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">craft saddle 5 actions:reward</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">craftSaddle</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;craft</span><span class="nv"> </span><span class="s">saddle</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">actions:reward&quot;</span>
 </code></pre></div>
 <h2 id="enchant-item-enchant"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M234.7 42.7 197 56.8c-3 1.1-5 4-5 7.2s2 6.1 5 7.2l37.7 14.1 14.1 37.7c1.1 3 4 5 7.2 5s6.1-2 7.2-5l14.1-37.7L315 71.2c3-1.1 5-4 5-7.2s-2-6.1-5-7.2l-37.7-14.1L263.2 5c-1.1-3-4-5-7.2-5s-6.1 2-7.2 5zM46.1 395.4c-18.7 18.7-18.7 49.1 0 67.9l34.6 34.6c18.7 18.7 49.1 18.7 67.9 0l381.3-381.4c18.7-18.7 18.7-49.1 0-67.9l-34.6-34.5c-18.7-18.7-49.1-18.7-67.9 0zM484.6 82.6l-105 105-23.3-23.3 105-105zM7.5 117.2C3 118.9 0 123.2 0 128s3 9.1 7.5 10.8L64 160l21.2 56.5c1.7 4.5 6 7.5 10.8 7.5s9.1-3 10.8-7.5L128 160l56.5-21.2c4.5-1.7 7.5-6 7.5-10.8s-3-9.1-7.5-10.8L128 96l-21.2-56.5c-1.7-4.5-6-7.5-10.8-7.5s-9.1 3-10.8 7.5L64 96zm352 256c-4.5 1.7-7.5 6-7.5 10.8s3 9.1 7.5 10.8L416 416l21.2 56.5c1.7 4.5 6 7.5 10.8 7.5s9.1-3 10.8-7.5L480 416l56.5-21.2c4.5-1.7 7.5-6 7.5-10.8s-3-9.1-7.5-10.8L480 352l-21.2-56.5c-1.7-4.5-6-7.5-10.8-7.5s-9.1 3-10.8 7.5L416 352z"/></svg></span> Enchant item: <code>enchant</code><a class="headerlink" href="#enchant-item-enchant" title="Permanent link">🔗</a></h2>
 <p>This objective is completed when the player enchants the specified quest item with the specified enchantment. </p>
@@ -6721,9 +6726,10 @@ objective, optionally with the notification interval after a colon.</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">lordSword</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;enchant</span><span class="nv"> </span><span class="s">lordsSword</span><span class="nv"> </span><span class="s">damage_all,knockback</span><span class="nv"> </span><span class="s">actions:rewardLord&quot;</span>
-<span class="nt">kingSword</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;enchant</span><span class="nv"> </span><span class="s">kingsSword</span><span class="nv"> </span><span class="s">damage_all:2,knockback:1</span><span class="nv"> </span><span class="s">actions:rewardKing&quot;</span>
-<span class="nt">massProduction</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;enchant</span><span class="nv"> </span><span class="s">ironSword</span><span class="nv"> </span><span class="s">sharpness</span><span class="nv"> </span><span class="s">amount:10</span><span class="nv"> </span><span class="s">actions:blacksmithLevel2Reward&quot;</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">lordSword</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;enchant</span><span class="nv"> </span><span class="s">lordsSword</span><span class="nv"> </span><span class="s">damage_all,knockback</span><span class="nv"> </span><span class="s">actions:rewardLord&quot;</span>
+<span class="w">  </span><span class="nt">kingSword</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;enchant</span><span class="nv"> </span><span class="s">kingsSword</span><span class="nv"> </span><span class="s">damage_all:2,knockback:1</span><span class="nv"> </span><span class="s">actions:rewardKing&quot;</span>
+<span class="w">  </span><span class="nt">massProduction</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;enchant</span><span class="nv"> </span><span class="s">ironSword</span><span class="nv"> </span><span class="s">sharpness</span><span class="nv"> </span><span class="s">amount:10</span><span class="nv"> </span><span class="s">actions:blacksmithLevel2Reward&quot;</span>
 </code></pre></div>
 <h5> Placeholder Properties </h5>
 
@@ -6765,7 +6771,8 @@ You can use the <code>notify</code> keyword to display a message each time the p
 optionally with the notification interval after a colon.</p>
 <p>This objective has three properties: <code>amount</code>, <code>left</code> and <code>total</code>. <code>amount</code> is the current amount of experience levels,
 <code>left</code> is the amount of experience levels still needed and <code>total</code> is the amount of experience required.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">experience 25 level actions:reward</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">25Level</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;experience</span><span class="nv"> </span><span class="s">25</span><span class="nv"> </span><span class="s">level</span><span class="nv"> </span><span class="s">actions:reward&quot;</span>
 </code></pre></div>
 <h2 id="wait-delay"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"/></svg></span> Wait: <code>delay</code><a class="headerlink" href="#wait-delay" title="Permanent link">🔗</a></h2>
 <p>This objective completes itself after certain amount of time.
@@ -6844,8 +6851,9 @@ and the objective will be completed then, not immediately on death.</p>
 <p>Optionally you can also add the <code>cancel</code> argument to prevent the player from dying.
 In this case, the player will be healed and all status effects will be removed.
 You can also specify the <code>respawn</code> location to which the player will be teleported to.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">die respawn:100;200;300;world;90;0 actions:respawned</span>
-<span class="l l-Scalar l-Scalar-Plain">die cancel respawn:100;200;300;world;90;0 actions:respawned</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">respawn</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;die</span><span class="nv"> </span><span class="s">respawn:100;200;300;world;90;0</span><span class="nv"> </span><span class="s">actions:respawned&quot;</span>
+<span class="w">  </span><span class="nt">preventDying</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;die</span><span class="nv"> </span><span class="s">cancel</span><span class="nv"> </span><span class="s">respawn:100;200;300;world;90;0</span><span class="nv"> </span><span class="s">actions:respawned&quot;</span>
 </code></pre></div>
 <h2 id="fishing-fish"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M275.2 38.4c-10.6-8-25-8.5-36.3-1.5S222 57.3 224.6 70.3l9.7 48.6c-19.4 9-36.9 19.9-52.4 31.5-15.3 11.5-29 23.9-40.7 36.3l-93.1-54.3c-12.5-7.3-28.4-5.3-38.6 4.9s-12.5 26-5.3 38.6L50 256 4.2 336.1c-7.2 12.6-5 28.4 5.3 38.6s26.1 12.2 38.6 4.9l93.1-54.3c11.8 12.3 25.4 24.8 40.7 36.3 15.5 11.6 33 22.5 52.4 31.5l-9.7 48.6c-2.6 13 3.1 26.3 14.3 33.3s25.6 6.5 36.3-1.5l77.6-58.2c54.9-4 101.5-27 137.2-53.8 39.2-29.4 67.2-64.7 81.6-89.5 5.8-9.9 5.8-22.2 0-32.1-14.4-24.8-42.5-60.1-81.6-89.5-35.8-26.8-82.3-49.8-137.2-53.8zM384 256a32 32 0 1 1 64 0 32 32 0 1 1-64 0"/></svg></span> Fishing: <code>fish</code><a class="headerlink" href="#fishing-fish" title="Permanent link">🔗</a></h2>
 <p>Requires the player to catch something with the fishing rod. It doesn't have to be a fish, it can also be any other item.</p>
@@ -7007,7 +7015,8 @@ You can also specify the <code>respawn</code> location to which the player will 
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">interact right creeper 1 marked:sick conditions:syringeInHand cancel</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">rightCreeper</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;interact</span><span class="nv"> </span><span class="s">right</span><span class="nv"> </span><span class="s">creeper</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">marked:sick</span><span class="nv"> </span><span class="s">conditions:syringeInHand</span><span class="nv"> </span><span class="s">cancel&quot;</span>
 </code></pre></div>
 <h5> Placeholder Properties </h5>
 
@@ -7041,8 +7050,9 @@ You can also specify the <code>respawn</code> location to which the player will 
 <p>To complete this objective the player must have the specified resource pack state.
 The first argument is the state of the resource pack.
 It can be <code>successfully_loaded</code>, <code>declined</code>, <code>failed_download</code> and <code>accepted</code>.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">resourcepack successfully_loaded actions:reward</span>
-<span class="l l-Scalar l-Scalar-Plain">resourcepack declined actions:declined</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">successful</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;resourcepack</span><span class="nv"> </span><span class="s">successfully_loaded</span><span class="nv"> </span><span class="s">actions:reward&quot;</span>
+<span class="w">  </span><span class="nt">declined</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;resourcepack</span><span class="nv"> </span><span class="s">declined</span><span class="nv"> </span><span class="s">actions:declined&quot;</span>
 </code></pre></div>
 <h2 id="kill-player-kill">Kill player: <code>kill</code><a class="headerlink" href="#kill-player-kill" title="Permanent link">🔗</a></h2>
 <p>To complete this objective the player needs to kill another player. The first argument is amount of players to kill.
@@ -7051,7 +7061,8 @@ You can also specify additional arguments: <code>name:</code> followed by the na
 and <code>notify</code> will display notifications when a player is killed, optionally with the notification interval after a colon.</p>
 <p>The kill objective has three properties: <code>left</code> is the amount of players still left to kill, <code>amount</code> is the amount of
 already killed players and <code>total</code> is the initially required amount to kill.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">kill 5 required:team_B</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">kill5</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;kill</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">required:team_B&quot;</span>
 </code></pre></div>
 <h2 id="location-location">Location: <code>location</code><a class="headerlink" href="#location-location" title="Permanent link">🔗</a></h2>
 <p>The specified location where the player needs to be.
@@ -7093,12 +7104,10 @@ if the player just moves inside the location's range.</p>
 </tr>
 </tbody>
 </table>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">location 100;200;300;world 5 conditions:started actions:notifyWelcome,start</span>
-<span class="l l-Scalar l-Scalar-Plain">location 100;200;300;world 5 exit conditions:started actions:notifyBye</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">welcome</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;location</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">conditions:started</span><span class="nv"> </span><span class="s">actions:notifyWelcome,start&quot;</span>
+<span class="w">  </span><span class="nt">goodBy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;location</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">exit</span><span class="nv"> </span><span class="s">conditions:started</span><span class="nv"> </span><span class="s">actions:notifyBye&quot;</span>
 </code></pre></div>
-</div>
 <h5> Placeholder Properties </h5>
 
 <table>
@@ -7122,16 +7131,15 @@ if the player just moves inside the location's range.</p>
 If you use <code>global</code> this objective will be also completed directly when a new player joins for the first time.
 If you use <code>persistent</code> it will be permanent.
 Don't forget that if you use global and persistent you can still remove the objective explicitly.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">login actions:welcome_message</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">welcome</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;login</span><span class="nv"> </span><span class="s">actions:welcome_message&quot;</span>
 </code></pre></div>
 <h2 id="logout-logout">Logout: <code>logout</code><a class="headerlink" href="#logout-logout" title="Permanent link">🔗</a></h2>
 <p>To complete this objective the player simply needs to leave the server. Keep in mind that running a <code>folder</code> action here
 will make it run in "persistent" mode, since the player is offline on the next tick.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">logout actions:delete_objective</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">clean</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;logout</span><span class="nv"> </span><span class="s">actions:delete_objective&quot;</span>
 </code></pre></div>
-</div>
 <h2 id="npc-interact-npcinteract">NPC Interact: <code>npcinteract</code><a class="headerlink" href="#npc-interact-npcinteract" title="Permanent link">🔗</a></h2>
 <p>The player has to interact with a Npc. </p>
 <table>
@@ -7164,8 +7172,9 @@ will make it run in "persistent" mode, since the player is offline on the next t
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">stealItem</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">npcinteract mayor cancel conditions:sneak actions:steal</span>
-<span class="nt">punchThief</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">npcinteract thief interaction:left actions:poke</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">stealItem</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;npcinteract</span><span class="nv"> </span><span class="s">mayor</span><span class="nv"> </span><span class="s">cancel</span><span class="nv"> </span><span class="s">conditions:sneak</span><span class="nv"> </span><span class="s">actions:steal&quot;</span>
+<span class="w">  </span><span class="nt">punchThief</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;npcinteract</span><span class="nv"> </span><span class="s">thief</span><span class="nv"> </span><span class="s">interaction:left</span><span class="nv"> </span><span class="s">actions:poke&quot;</span>
 </code></pre></div>
 <h2 id="npc-range-npcrange">NPC Range: <code>npcrange</code><a class="headerlink" href="#npc-range-npcrange" title="Permanent link">🔗</a></h2>
 <p>The player has to enter/leave a circle with the given radius around the NPC to complete this objective.
@@ -7206,7 +7215,8 @@ The objective will be completed as soon as you meet the requirement of just one 
 <p>The types <code>enter</code>, <code>leave</code> force the player to actually enter the radius after you were outside of it and vice versa.
 This means that <code>enter</code> is not completed when the player gets the objective and is already in the range, while <code>inside</code> is instantly completed.</p>
 </div>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">goToVillage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">npcrange farmer,guard enter 20 actions:master_inRange</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">goToVillage</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;npcrange</span><span class="nv"> </span><span class="s">farmer,guard</span><span class="nv"> </span><span class="s">enter</span><span class="nv"> </span><span class="s">20</span><span class="nv"> </span><span class="s">actions:master_inRange&quot;</span>
 </code></pre></div>
 <h2 id="password-password">Password: <code>password</code><a class="headerlink" href="#password-password" title="Permanent link">🔗</a></h2>
 <p>This objective requires the player to write a certain password in chat. All attempts of a player will be hidden from public chat.
@@ -7240,7 +7250,7 @@ The password consists of a prefix followed by the actual secret word:
 </li>
 </ol>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">theBetonPassword</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;password</span><span class="nv"> </span><span class="s">beton</span><span class="nv"> </span><span class="s">ignoreCase</span><span class="nv"> </span><span class="s">prefix:secret</span><span class="nv"> </span><span class="s">fail:failAction1,failAction2</span><span class="nv"> </span><span class="s">actions:message,reward&#39;</span>
+<span class="w">  </span><span class="nt">theBetonPassword</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;password</span><span class="nv"> </span><span class="s">beton</span><span class="nv"> </span><span class="s">ignoreCase</span><span class="nv"> </span><span class="s">prefix:secret</span><span class="nv"> </span><span class="s">fail:failAction1,failAction2</span><span class="nv"> </span><span class="s">actions:message,reward&quot;</span>
 <span class="w">  </span><span class="nt">theBetonPasswordSpaced</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;password</span><span class="nv"> </span><span class="s">&quot;beton</span><span class="nv"> </span><span class="s">quest&quot;</span><span class="nv"> </span><span class="s">ignoreCase</span><span class="nv"> </span><span class="s">prefix:secret</span><span class="nv"> </span><span class="s">fail:failAction1,failAction2</span><span class="nv"> </span><span class="s">actions:message,reward&#39;</span>
 </code></pre></div>
 <h2 id="pickup-item-pickup">Pickup item: <code>pickup</code><a class="headerlink" href="#pickup-item-pickup" title="Permanent link">🔗</a></h2>
@@ -7252,8 +7262,9 @@ display a message each time the player advances the objective, optionally with t
 <p>You can also add the <code>notify</code> keyword to display how many items are left to pickup.</p>
 <p>This objective has three properties: <code>amount</code>, <code>left</code> and <code>total</code>. <code>amount</code> is the amount of items already picked up,
 <code>left</code> is the amount of items still needed to pick up and <code>total</code> is the amount of items initially required.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">pickup emerald amount:3 actions:reward notify</span>
-<span class="l l-Scalar l-Scalar-Plain">pickup emerald,diamond amount:6 actions:reward notify</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">emeralds</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pickup</span><span class="nv"> </span><span class="s">emerald</span><span class="nv"> </span><span class="s">amount:3</span><span class="nv"> </span><span class="s">actions:reward</span><span class="nv"> </span><span class="s">notify&quot;</span>
+<span class="w">  </span><span class="nt">emeraldsAndDiamonds</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pickup</span><span class="nv"> </span><span class="s">emerald,diamond</span><span class="nv"> </span><span class="s">amount:6</span><span class="nv"> </span><span class="s">actions:reward</span><span class="nv"> </span><span class="s">notify&quot;</span>
 </code></pre></div>
 <h2 id="point-point">Point: <code>point</code><a class="headerlink" href="#point-point" title="Permanent link">🔗</a></h2>
 <p>The player must have a specific amount of points in a category.</p>
@@ -7295,9 +7306,9 @@ display a message each time the player advances the objective, optionally with t
 </tbody>
 </table>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">reach100</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">point counter 100</span>
-<span class="w">  </span><span class="nt">punish</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">point reputation -100 operation:&lt;</span>
-<span class="w">  </span><span class="nt">progressFive</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">point reputation 5 mode:relative</span>
+<span class="w">  </span><span class="nt">reach100</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;point</span><span class="nv"> </span><span class="s">counter</span><span class="nv"> </span><span class="s">100&quot;</span>
+<span class="w">  </span><span class="nt">punish</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;point</span><span class="nv"> </span><span class="s">reputation</span><span class="nv"> </span><span class="s">-100</span><span class="nv"> </span><span class="s">operation:&lt;&quot;</span>
+<span class="w">  </span><span class="nt">progressFive</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;point</span><span class="nv"> </span><span class="s">reputation</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">mode:relative&quot;</span>
 </code></pre></div>
 <h5> Placeholder Properties </h5>
 
@@ -7373,7 +7384,7 @@ All entities work, make sure to use their <a href="https://hub.spigotmc.org/java
 <span class="w">  </span><span class="nt">bossZombie</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mobkill</span><span class="nv"> </span><span class="s">ZOMBIE</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">name:Uber_Zombie&quot;</span><span class="w"> </span><span class="c1">#(3)!</span>
 </code></pre></div>
 <ol>
-<li>The player must kill a zombie,skeleton or a spider to progress this objective. In total, they must kill 10 entities. Additionally, there will be a notification after each kill.</li>
+<li>The player must kill a zombie, skeleton or a spider to progress this objective. In total, they must kill 10 entities. Additionally, there will be a notification after each kill.</li>
 <li>The player must kill a pig that was spawned with the <a href="../Actions-List/#spawn-a-mob">spawn action</a> and has a marker. </li>
 <li>The player must kill a zombie named "Uber Zombie".</li>
 </ol>
@@ -7414,7 +7425,8 @@ optionally with the notification interval after a colon.</p>
 created potions are counted.</p>
 <p>This objective has three properties: <code>amount</code>, <code>left</code> and <code>total</code>. <code>amount</code> is the amount of potions already brewed,
 <code>left</code> is the amount of potions still needed to brew and <code>total</code> is the amount of potions initially required.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">brew weird_concoction 4 actions:add_tag</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">weird</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;brew</span><span class="nv"> </span><span class="s">weird_concoction</span><span class="nv"> </span><span class="s">4</span><span class="nv"> </span><span class="s">actions:add_tag&quot;</span>
 </code></pre></div>
 <h2 id="sheep-shearing-shear">Sheep shearing: <code>shear</code><a class="headerlink" href="#sheep-shearing-shear" title="Permanent link">🔗</a></h2>
 <p>To complete this objective the player has to shear specified amount of sheep, optionally with specified color and/or
@@ -7425,9 +7437,10 @@ You can use the <code>notify</code> keyword to display a message each time the p
 optionally with the notification interval after a colon.</p>
 <p>This objective has three properties: <code>amount</code>, <code>left</code> and <code>total</code>. <code>amount</code> is the amount of sheep already sheared,
 <code>left</code> is the amount of sheep still needed to shear and <code>total</code> is the amount of sheep initially required.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">shear 1 name:Bob color:black</span>
-<span class="l l-Scalar l-Scalar-Plain">shear 1 name:jeb</span>
-<span class="l l-Scalar l-Scalar-Plain">shear 1 &quot;name:jeb 2&quot;</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">bob</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;shear</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">name:Bob</span><span class="nv"> </span><span class="s">color:black&quot;</span>
+<span class="w">  </span><span class="nt">jeb</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;shear</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">name:jeb&quot;</span>
+<span class="w">  </span><span class="nt">jeb2</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;shear</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">&quot;name:jeb</span><span class="nv"> </span><span class="s">2&quot;&#39;</span>
 </code></pre></div>
 <h2 id="smelting-smelt">Smelting: <code>smelt</code><a class="headerlink" href="#smelting-smelt" title="Permanent link">🔗</a></h2>
 <p>To complete this objective the player must smelt the specified item. Note that you must define the output item, not the
@@ -7437,7 +7450,8 @@ The second one is the amount (integer).</p>
 optionally with the notification interval after a colon.</p>
 <p>This objective has three properties: <code>amount</code>, <code>left</code> and <code>total</code>. <code>amount</code> is the amount of items already smelted,
 <code>left</code> is the amount of items still needed to smelt and <code>total</code> is the amount of items initially required.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">smeltIron</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;smelt</span><span class="nv"> </span><span class="s">ironIngot</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">actions:reward&quot;</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">smeltIron</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;smelt</span><span class="nv"> </span><span class="s">ironIngot</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">actions:reward&quot;</span>
 </code></pre></div>
 <h2 id="stages-stage">Stages: <code>stage</code><a class="headerlink" href="#stages-stage" title="Permanent link">🔗</a></h2>
 <p>The Stage objective is a special objective that can be used to track the progress of a quest or a part of a quest.
@@ -7513,14 +7527,15 @@ matter. The first and only required argument is a location. If the pressure plat
 objective will not be completable and will log errors in the console.</p>
 <p>Step objective contains one property, <code>location</code>. It shows the exact location of the pressure plate in a string
 formatted like <code>X: 100, Y: 200, Z:300</code>.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">step 100;200;300;world actions:done</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;step</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">actions:done&quot;</span>
 </code></pre></div>
 <h2 id="getting-a-tag-tag">Getting a tag: <code>tag</code><a class="headerlink" href="#getting-a-tag-tag" title="Permanent link">🔗</a></h2>
 <p>To complete this objective player must get a tag.
 The only argument is the tag to receive.</p>
 <p>If the player is not online the objective is completed on the player's next login.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">finish</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tag finishedTag</span>
+<span class="w">  </span><span class="nt">finish</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">finishedTag&quot;</span>
 </code></pre></div>
 <h5> Placeholder Properties </h5>
 
@@ -7532,7 +7547,8 @@ can use the <code>notify</code> keyword to display a message each time the playe
 notification interval after a colon.</p>
 <p>This objective has three properties: <code>amount</code>, <code>left</code> and <code>total</code>. <code>amount</code> is the amount of animals already tamed,
 <code>left</code> is the amount of animals still needed to tame and <code>total</code> is the amount of animals initially required.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">tame WOLF 2 actions:wolfs_tamed</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">wolf</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tame</span><span class="nv"> </span><span class="s">WOLF</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">actions:wolfs_tamed&quot;</span>
 </code></pre></div>
 <h2 id="track-time-timer">Track time: <code>timer</code><a class="headerlink" href="#track-time-timer" title="Permanent link">🔗</a></h2>
 <p>Tracks time in seconds from the start of the objective to the completion of the objective.
@@ -7578,29 +7594,32 @@ If you don't define the amount, the objective will run indefinitely until you co
 They are only available while the objective is active, this is still the case in the <code>done</code> actions, but not in the 
 normal <code>actions</code> as they are executed after the objective is already removed.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">track</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">timer &quot;name:This is the Display Name&quot; interval:10 done:done_in actions:done conditions:in_region</span>
+<span class="w">    </span><span class="nt">track</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;timer</span><span class="nv"> </span><span class="s">&quot;name:This</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">Display</span><span class="nv"> </span><span class="s">Name&quot;</span><span class="nv"> </span><span class="s">interval:10</span><span class="nv"> </span><span class="s">done:done_in</span><span class="nv"> </span><span class="s">actions:done</span><span class="nv"> </span><span class="s">conditions:in_region&#39;</span>
 </code></pre></div>
 <h2 id="player-must-jump-jump">Player must Jump: <code>jump</code><a class="headerlink" href="#player-must-jump-jump" title="Permanent link">🔗</a></h2>
 <p>To complete this objective the player must jump. The only argument is amount. You can use the <code>notify</code> keyword to display a
 message each time the player advances the objective, optionally with the notification interval after a colon.</p>
 <p>This objective has three properties: <code>amount</code>, <code>left</code> and <code>total</code>. <code>amount</code> is the amount of jumps already done,
 <code>left</code> is the amount of jumps still needed and <code>total</code> is the amount of jumps initially required.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">jump 15 actions:legExerciseDone</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">jump</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;jump</span><span class="nv"> </span><span class="s">15</span><span class="nv"> </span><span class="s">actions:legExerciseDone&quot;</span>
 </code></pre></div>
 <h2 id="ride-an-entity-ride">Ride an entity: <code>ride</code><a class="headerlink" href="#ride-an-entity-ride" title="Permanent link">🔗</a></h2>
 <p>This objective can be completed by riding the specified
 <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html">entity</a>.
 <code>any</code> is also a valid input and matches any entity.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">ride horse</span>
-<span class="l l-Scalar l-Scalar-Plain">ride any</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">horse</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ride</span><span class="nv"> </span><span class="s">horse&quot;</span>
+<span class="w">  </span><span class="nt">any</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ride</span><span class="nv"> </span><span class="s">any&quot;</span>
 </code></pre></div>
 <h2 id="run-a-command-command">Run a Command: <code>command</code><a class="headerlink" href="#run-a-command-command" title="Permanent link">🔗</a></h2>
 <p>To complete this objective the player must execute a specified command. It can be both an existing or a new, custom
 command. The first argument is the command text. To allow spaces use <a href="../../Quoting-%26-YAML/#quoting">quoting</a> syntax.
 The command argument is case-sensitive and also supports using placeholders.
 The second required argument is a list of actions to execute when the objective ismet.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">command &quot;/warp %player% farms&quot; actions:action1,action2</span>
-<span class="l l-Scalar l-Scalar-Plain">command &quot;//replace oak_wood&quot; actions:action1,action2</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">warp</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;command</span><span class="nv"> </span><span class="s">&quot;/warp</span><span class="nv"> </span><span class="s">%player%</span><span class="nv"> </span><span class="s">farms&quot;</span><span class="nv"> </span><span class="s">actions:action1,action2&#39;</span>
+<span class="w">  </span><span class="nt">replace</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;command</span><span class="nv"> </span><span class="s">&quot;//replace</span><span class="nv"> </span><span class="s">oak_wood&quot;</span><span class="nv"> </span><span class="s">actions:action1,action2&#39;</span>
 </code></pre></div>
 <p>With this configuration, the command objective requires the player to execute <code>/warp MyName farms</code> to be completed. The
 command objective matches from the start of the command that was executed, therefore if the player executed
@@ -7612,14 +7631,16 @@ command objective matches from the start of the command that was executed, there
 <li><code>cancel</code>: If provided, the objective will cancel the execution of the command on a match. This needs to be enabled to suppress the <code>Unknown Command</code> message when using custom commands.</li>
 <li><code>failActions</code>: If provided, specifies a list of actions to execute if a non-matching command is run and conditions are met.</li>
 </ul>
-<div class="highlight"><span class="filename">Complex Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">command &quot;/warp %player% farms&quot; ignoreCase exact cancel failActions:failAction1,failAction2 actions:action1,action2</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">warp</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;command</span><span class="nv"> </span><span class="s">&quot;/warp</span><span class="nv"> </span><span class="s">%player%</span><span class="nv"> </span><span class="s">farms&quot;</span><span class="nv"> </span><span class="s">ignoreCase</span><span class="nv"> </span><span class="s">exact</span><span class="nv"> </span><span class="s">cancel</span><span class="nv"> </span><span class="s">failActions:failAction1,failAction2</span><span class="nv"> </span><span class="s">actions:action1,action2&#39;</span>
 </code></pre></div>
 <h2 id="equip-armor-item-equip">Equip Armor Item: <code>equip</code><a class="headerlink" href="#equip-armor-item-equip" title="Permanent link">🔗</a></h2>
 <p>The player must equip the specified quest item in the specified slot.
 The item must be any quest item as defined in the <em>items</em> section.
 Available slot types: <code>HEAD</code>, <code>CHEST</code>, <code>LEGS</code>, <code>FEET</code>.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">eqHelm</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">equip HEAD amazing_helmet actions:action1,action2</span>
-<span class="nt">equipBody</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">equip CHEST amazing_armor actions:action1,action2</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">eqHelm</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;equip</span><span class="nv"> </span><span class="s">HEAD</span><span class="nv"> </span><span class="s">amazing_helmet</span><span class="nv"> </span><span class="s">actions:action1,action2&quot;</span>
+<span class="w">  </span><span class="nt">equipBody</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;equip</span><span class="nv"> </span><span class="s">CHEST</span><span class="nv"> </span><span class="s">amazing_armor</span><span class="nv"> </span><span class="s">actions:action1,action2&quot;</span>
 </code></pre></div>
 <h2 id="variable-variable">Variable: <code>variable</code><a class="headerlink" href="#variable-variable" title="Permanent link">🔗</a></h2>
 <p>This objective is different. You cannot complete it, it will also ignore defined actions and conditions. You can start it and that's it.
@@ -7633,8 +7654,9 @@ To remove this objective, use <code>objective delete</code> action - there is no
 <p>You can also use <code>variable</code> action to change variables stored in this objective. There is one optional argument, <code>no-chat</code>. If you use it, the objective won't be modified 
 by what players type in chat which is only useful when you're also using the <code>variable</code> action.</p>
 <p>Also, the key is interpreted in lower case. That means there is no difference between <code>MyFirstVariable</code>, <code>myfirstvariable</code> or <code>MYfirstVARIABLE</code>.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">variable</span>
-<span class="nt">storeChat</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">variable no-chat</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;variable&quot;</span>
+<span class="w">  </span><span class="nt">storeChat</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;variable</span><span class="nv"> </span><span class="s">no-chat&quot;</span>
 </code></pre></div>
 
 
