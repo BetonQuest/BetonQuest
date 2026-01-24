@@ -108,7 +108,7 @@ in the messages.yml config.
 
 ### Custom Text Placeholder
 
-It is possible to save text per player. This works by using the [`placeholder`](Objectives-List.md#variable-variable)
+It is possible to save text per player. This works by using the [`placeholder`](Objectives-List.md#variable-storage)
  objective and the [`placeholder`](Actions-List.md#manage-a-variable-objective) action. 
 
 ## Other Placeholders

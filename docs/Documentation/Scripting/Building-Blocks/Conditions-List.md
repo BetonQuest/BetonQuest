@@ -680,7 +680,7 @@ __Context__: @snippet:condition-meta:online-offline@
 __Syntax__: `stage <objective> <comparator> <stage>`  
 __Description__: Compare the player's current stage with the specified stage using its index numbers.
 
-For more take a look at the [stage objective](./Objectives-List.md#stages-stage).  
+For more take a look at the [stage objective](./Objectives-List.md#complete-stages).  
 The valid operations are: `<`, `<=`, `=`, `!=`, `>=`, `>`.
 
 | Parameter         | Syntax     | Default Value          | Explanation                              |
