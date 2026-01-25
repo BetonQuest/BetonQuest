@@ -69,7 +69,7 @@ public class ActionProcessor extends TypedQuestProcessor<ActionID, ActionAdapter
      */
     public boolean executes(@Nullable final Profile profile, final Collection<ActionID> actionIDS) {
         if (Bukkit.isPrimaryThread()) {
-            return actionIDS.stream().allMatch(actionID -> execute(profile, actionID));
+            return actionIDS.stream().map(actionID -> execute(profile, actionID)).reduce(true, Boolean::logicalAnd);
         }
 
         final List<ActionID> syncList = new ArrayList<>();
@@ -81,8 +81,9 @@ public class ActionProcessor extends TypedQuestProcessor<ActionID, ActionAdapter
         });
 
         final Future<Boolean> syncFuture = syncList.isEmpty() ? CompletableFuture.completedFuture(true)
-                : scheduler.callSyncMethod(plugin, () -> syncList.stream().allMatch(actionID -> execute(profile, actionID)));
-        final boolean asyncResult = asyncList.stream().allMatch(actionID -> execute(profile, actionID));
+                : scheduler.callSyncMethod(plugin, () -> syncList.stream().map(actionID -> execute(profile, actionID))
+                .reduce(true, Boolean::logicalAnd));
+        final boolean asyncResult = asyncList.stream().map(actionID -> execute(profile, actionID)).reduce(true, Boolean::logicalAnd);
 
         try {
             return asyncResult && syncFuture.get();
