@@ -5837,7 +5837,7 @@ Some of them are only useful when exported for use in other plugins through the 
 defined in the <em>objectives</em> section (not the type). Make sure that the player has this objective active or it
 will be replaced with nothing (""). Second argument is the name of a property you want to display.
 All properties are described in "Objectives List" chapter.</p>
-<div class="highlight"><pre><span></span><code>%objective.kill_zombies.left%
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">objective</span><span class="nc">.kill_zombies.left</span><span class="err">%</span>
 </code></pre></div>
 <h3 id="condition-placeholder">Condition Placeholder<a class="headerlink" href="#condition-placeholder" title="Permanent link">🔗</a></h3>
 <p>You can expose BetonQuest's conditions to 3<sup>rd</sup> party plugins by using the <code>condition</code> placeholder together with the 
@@ -5845,8 +5845,8 @@ All properties are described in "Objectives List" chapter.</p>
 The placeholder will return <code>true</code> or <code>false</code> by default. If you add <code>papiMode</code> to the instruction it will return <code>yes</code> or <code>no</code>.  <br />
 You can translate the papiMode's result by changing the values of <code>condition_placeholder_met</code> <code>condition_placeholder_not_met</code> in 
 the <em>messages.yml</em> config.</p>
-<div class="highlight"><pre><span></span><code>%condition.myCondition%
-%condition.myCondition.papiMode%
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">condition</span><span class="nc">.myCondition</span><span class="err">%</span>
+<span class="err">%</span><span class="nt">condition</span><span class="nc">.myCondition.papiMode</span><span class="err">%</span>
 </code></pre></div>
 <h3 id="constant-placeholder">Constant Placeholder<a class="headerlink" href="#constant-placeholder" title="Permanent link">🔗</a></h3>
 <p>Constants are a bit different from other placeholders, as you can freely define the values of them.
@@ -5856,8 +5856,8 @@ They are defined in the <em>constants</em> section like this:</p>
 <span class="w">  </span><span class="nt">village_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Concrete</span>
 </code></pre></div>
 <p>To use a <code>constant</code> placeholder, you must use <code>%constant.constantName%</code>:</p>
-<div class="highlight"><pre><span></span><code>%constant.village_location%
-%constant.village_name%
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">constant</span><span class="nc">.village_location</span><span class="err">%</span>
+<span class="err">%</span><span class="nt">constant</span><span class="nc">.village_name</span><span class="err">%</span>
 </code></pre></div>
 <p>If you want to parse a placeholder from a different package,
 follow the same syntax as you would <a href="https://betonquest.org/3.0-DEV/Documentation/Scripting/Packages-%26-Templates/#defining-features">working across packages</a>.
@@ -5866,23 +5866,23 @@ The proper syntax is <code>%questPackage&gt;constant.constantName%</code>.</p>
 <h3 id="point-placeholder">Point Placeholder<a class="headerlink" href="#point-placeholder" title="Permanent link">🔗</a></h3>
 <p>This placeholder displays the amount of points you have in some category or amount of points you need to have to reach a
 number. The first argument is the name of a category and the second argument is either <code>amount</code> or <code>left:x</code>, where <code>x</code> is a number.</p>
-<div class="highlight"><pre><span></span><code>%point.reputation.amount%
-%point.reputation.left:15%
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">point</span><span class="nc">.reputation.amount</span><span class="err">%</span>
+<span class="err">%</span><span class="nt">point</span><span class="nc">.reputation.left</span><span class="nd">:15</span><span class="err">%</span>
 </code></pre></div>
 <h3 id="global-point-placeholder">Global Point Placeholder<a class="headerlink" href="#global-point-placeholder" title="Permanent link">🔗</a></h3>
 <p><strong>static</strong></p>
 <p>This placeholder displays the amount of global points in some category or the amount of points needed to reach a number.
 The first argument is the name of a category and the second argument is either <code>amount</code> or <code>left:x</code>, where <code>x</code> is a number.</p>
-<div class="highlight"><pre><span></span><code>%globalpoint.global_knownusers.amount%
-%globalpoint.global_knownusers.left:100%
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">globalpoint</span><span class="nc">.global_knownusers.amount</span><span class="err">%</span>
+<span class="err">%</span><span class="nt">globalpoint</span><span class="nc">.global_knownusers.left</span><span class="nd">:100</span><span class="err">%</span>
 </code></pre></div>
 <h3 id="tag-placeholder">Tag Placeholder<a class="headerlink" href="#tag-placeholder" title="Permanent link">🔗</a></h3>
 <p>This placeholder displays whether the player has a tag or not.
 The placeholder will return true or false by default. If you add papiMode to the instruction it will return yes or no.
 You can translate the papiMode's result by changing the values of <code>condition_placeholder_met</code> and <code>condition_placeholder_not_met</code>
 in the messages.yml config.</p>
-<div class="highlight"><pre><span></span><code>%tag.test%
-%tag.test.papiMode%
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">tag</span><span class="nc">.test</span><span class="err">%</span>
+<span class="err">%</span><span class="nt">tag</span><span class="nc">.test.papiMode</span><span class="err">%</span>
 </code></pre></div>
 <h3 id="global-tag-placeholder">Global Tag Placeholder<a class="headerlink" href="#global-tag-placeholder" title="Permanent link">🔗</a></h3>
 <p><strong>static</strong></p>
@@ -5890,8 +5890,8 @@ in the messages.yml config.</p>
 The placeholder will return true or false by default. If you add papiMode to the instruction it will return yes or no.
 You can translate the papiMode's result by changing the values of <code>condition_placeholder_met</code> and <code>condition_placeholder_not_met</code>
 in the messages.yml config.</p>
-<div class="highlight"><pre><span></span><code>%globaltag.test%
-%globaltag.test.papiMode%
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">globaltag</span><span class="nc">.test</span><span class="err">%</span>
+<span class="err">%</span><span class="nt">globaltag</span><span class="nc">.test.papiMode</span><span class="err">%</span>
 </code></pre></div>
 <h3 id="custom-text-placeholder">Custom Text Placeholder<a class="headerlink" href="#custom-text-placeholder" title="Permanent link">🔗</a></h3>
 <p>It is possible to save text per player. This works by using the <a href="../Objectives-List/#variable-variable"><code>placeholder</code></a>
@@ -5905,8 +5905,8 @@ You need to escape the <code>%</code> inside eval with a backslash <code>\</code
 You can nest multiple evals, but this leads you to an escape hell.
 If you do so, you need to add one escape level with each nesting level,
 this means normally you write <code>\%</code> and in the next level you need to write <code>\\\%</code>.</p>
-<div class="highlight"><pre><span></span><code>%eval.player.\%objective.placeholderStore.displayType\%%
-%eval.player.\%eval.objective.\\\%objective.otherStore.targetStore\\\%.displayType\%%
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">eval</span><span class="nc">.player.</span><span class="err">\%</span><span class="nt">objective</span><span class="nc">.placeholderStore.displayType</span><span class="err">\%%</span>
+<span class="err">%</span><span class="nt">eval</span><span class="nc">.player.</span><span class="err">\%</span><span class="nt">eval</span><span class="nc">.objective.</span><span class="err">\\\%</span><span class="nt">objective</span><span class="nc">.otherStore.targetStore</span><span class="err">\\\%</span><span class="nc">.displayType</span><span class="err">\%%</span>
 </code></pre></div>
 <h3 id="item-placeholder">Item Placeholder<a class="headerlink" href="#item-placeholder" title="Permanent link">🔗</a></h3>
 <p>With this placeholder you can display different properties of a specific QuestItem.
@@ -5916,10 +5916,10 @@ the <code>left:x</code> gives the difference to the <code>x</code> value (when t
 The <code>name</code> argument simply gives the defined name or an empty String, when not set
 and <code>lore:x</code> displays the lore row with index <code>x</code> (starting with 0).
 Both <code>name</code> and <code>lore</code> supports the <code>raw</code> subargument to get the text without formatting.</p>
-<div class="highlight"><pre><span></span><code>%item.stick.amount%
-%item.stick.left:32%
-%item.epic_sword.name%
-%item.epic_sword.lore:0.raw%
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">item</span><span class="nc">.stick.amount</span><span class="err">%</span>
+<span class="err">%</span><span class="nt">item</span><span class="nc">.stick.left</span><span class="nd">:32</span><span class="err">%</span>
+<span class="err">%</span><span class="nt">item</span><span class="nc">.epic_sword.name</span><span class="err">%</span>
+<span class="err">%</span><span class="nt">item</span><span class="nc">.epic_sword.lore</span><span class="nd">:0</span><span class="nc">.raw</span><span class="err">%</span>
 </code></pre></div>
 <h3 id="item-durability-placeholder">Item durability placeholder<a class="headerlink" href="#item-durability-placeholder" title="Permanent link">🔗</a></h3>
 <p>With this placeholder you can display the durability of an item.
@@ -5928,10 +5928,10 @@ An optional argument is <code>relative</code> which will display the durability 
 from 0 to 1, where 1 is the maximum. You can specify the amount of digits with the argument <code>digits:x</code>,
 where <code>x</code> is a whole number. This default is 2 digits.
 Additionally, you get the output in percent (inclusive the '%' symbol).</p>
-<div class="highlight"><pre><span></span><code>%itemdurability.HAND%
-%itemdurability.CHEST.relative%
-%itemdurability.CHEST.relative.percent%
-%itemdurability.HEAD.relative.digits:5%
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">itemdurability</span><span class="nc">.HAND</span><span class="err">%</span>
+<span class="err">%</span><span class="nt">itemdurability</span><span class="nc">.CHEST.relative</span><span class="err">%</span>
+<span class="err">%</span><span class="nt">itemdurability</span><span class="nc">.CHEST.relative.percent</span><span class="err">%</span>
+<span class="err">%</span><span class="nt">itemdurability</span><span class="nc">.HEAD.relative.digits</span><span class="nd">:5</span><span class="err">%</span>
 </code></pre></div>
 <h3 id="location-placeholder">Location Placeholder<a class="headerlink" href="#location-placeholder" title="Permanent link">🔗</a></h3>
 <p>This placeholder resolves to all aspects of the player's location. The x, y and z coordinates, the world name, the yaw and pitch (head rotation).
@@ -5940,19 +5940,19 @@ which means that this placeholder can also be used in actions, conditions etc.
 If you just specify <code>%location%</code> the placeholders will resolve to a ULF with yaw and pitch.
 You can add two options to that base, one will give back parts of the ULF and the other will set to how many decimal places 
 the placeholder will resolve. </p>
-<div class="highlight"><pre><span></span><code><span class="err">%</span><span class="l l-Scalar l-Scalar-Plain">location%</span><span class="w">           </span><span class="c1"># -&gt; 325;121;814;myWorldName;12;6</span>
-<span class="err">%</span><span class="l l-Scalar l-Scalar-Plain">location.xyz%</span><span class="w">       </span><span class="c1"># -&gt; 325 121 814 </span>
-<span class="err">%</span><span class="l l-Scalar l-Scalar-Plain">location.x%</span><span class="w">         </span><span class="c1"># -&gt; 325</span>
-<span class="err">%</span><span class="l l-Scalar l-Scalar-Plain">location.y%</span><span class="w">         </span><span class="c1"># -&gt; 121</span>
-<span class="err">%</span><span class="l l-Scalar l-Scalar-Plain">location.z%</span><span class="w">         </span><span class="c1"># -&gt; 814</span>
-<span class="err">%</span><span class="l l-Scalar l-Scalar-Plain">location.yaw%</span><span class="w">       </span><span class="c1"># -&gt; 12</span>
-<span class="err">%</span><span class="l l-Scalar l-Scalar-Plain">location.pitch%</span><span class="w">     </span><span class="c1"># -&gt; 6</span>
-<span class="err">%</span><span class="l l-Scalar l-Scalar-Plain">location.world%</span><span class="w">     </span><span class="c1"># -&gt; myWorldName</span>
-<span class="err">%</span><span class="l l-Scalar l-Scalar-Plain">location.ulfShort%</span><span class="w">  </span><span class="c1"># -&gt; 325;121;814;myWorldName</span>
-<span class="err">%</span><span class="l l-Scalar l-Scalar-Plain">location.ulfLong%</span><span class="w">   </span><span class="c1"># -&gt; 325;121;814;myWorldName;12;6</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">location</span><span class="err">%</span><span class="w">           </span><span class="nn">#</span><span class="w"> </span><span class="nt">-</span><span class="o">&gt;</span><span class="w"> </span><span class="nt">325</span><span class="o">;</span><span class="nt">121</span><span class="o">;</span><span class="nt">814</span><span class="o">;</span><span class="nt">myWorldName</span><span class="o">;</span><span class="nt">12</span><span class="o">;</span><span class="nt">6</span>
+<span class="err">%</span><span class="nt">location</span><span class="nc">.xyz</span><span class="err">%</span><span class="w">       </span><span class="nn">#</span><span class="w"> </span><span class="nt">-</span><span class="o">&gt;</span><span class="w"> </span><span class="nt">325</span><span class="w"> </span><span class="nt">121</span><span class="w"> </span><span class="nt">814</span><span class="w"> </span>
+<span class="err">%</span><span class="nt">location</span><span class="nc">.x</span><span class="err">%</span><span class="w">         </span><span class="nn">#</span><span class="w"> </span><span class="nt">-</span><span class="o">&gt;</span><span class="w"> </span><span class="nt">325</span>
+<span class="err">%</span><span class="nt">location</span><span class="nc">.y</span><span class="err">%</span><span class="w">         </span><span class="nn">#</span><span class="w"> </span><span class="nt">-</span><span class="o">&gt;</span><span class="w"> </span><span class="nt">121</span>
+<span class="err">%</span><span class="nt">location</span><span class="nc">.z</span><span class="err">%</span><span class="w">         </span><span class="nn">#</span><span class="w"> </span><span class="nt">-</span><span class="o">&gt;</span><span class="w"> </span><span class="nt">814</span>
+<span class="err">%</span><span class="nt">location</span><span class="nc">.yaw</span><span class="err">%</span><span class="w">       </span><span class="nn">#</span><span class="w"> </span><span class="nt">-</span><span class="o">&gt;</span><span class="w"> </span><span class="nt">12</span>
+<span class="err">%</span><span class="nt">location</span><span class="nc">.pitch</span><span class="err">%</span><span class="w">     </span><span class="nn">#</span><span class="w"> </span><span class="nt">-</span><span class="o">&gt;</span><span class="w"> </span><span class="nt">6</span>
+<span class="err">%</span><span class="nt">location</span><span class="nc">.world</span><span class="err">%</span><span class="w">     </span><span class="nn">#</span><span class="w"> </span><span class="nt">-</span><span class="o">&gt;</span><span class="w"> </span><span class="nt">myWorldName</span>
+<span class="err">%</span><span class="nt">location</span><span class="nc">.ulfShort</span><span class="err">%</span><span class="w">  </span><span class="nn">#</span><span class="w"> </span><span class="nt">-</span><span class="o">&gt;</span><span class="w"> </span><span class="nt">325</span><span class="o">;</span><span class="nt">121</span><span class="o">;</span><span class="nt">814</span><span class="o">;</span><span class="nt">myWorldName</span>
+<span class="err">%</span><span class="nt">location</span><span class="nc">.ulfLong</span><span class="err">%</span><span class="w">   </span><span class="nn">#</span><span class="w"> </span><span class="nt">-</span><span class="o">&gt;</span><span class="w"> </span><span class="nt">325</span><span class="o">;</span><span class="nt">121</span><span class="o">;</span><span class="nt">814</span><span class="o">;</span><span class="nt">myWorldName</span><span class="o">;</span><span class="nt">12</span><span class="o">;</span><span class="nt">6</span>
 
-<span class="err">%</span><span class="l l-Scalar l-Scalar-Plain">location.x.2%</span><span class="w">       </span><span class="c1"># -&gt; 325.16</span>
-<span class="err">%</span><span class="l l-Scalar l-Scalar-Plain">location.ulfLong.5%</span><span class="w"> </span><span class="c1"># -&gt; 325.54268;121.32186;814.45824;myWorldName;12.0;6.0</span>
+<span class="err">%</span><span class="nt">location</span><span class="nc">.x.2</span><span class="err">%</span><span class="w">       </span><span class="nn">#</span><span class="w"> </span><span class="nt">-</span><span class="o">&gt;</span><span class="w"> </span><span class="nt">325</span><span class="nc">.16</span>
+<span class="err">%</span><span class="nt">location</span><span class="nc">.ulfLong.5</span><span class="err">%</span><span class="w"> </span><span class="nn">#</span><span class="w"> </span><span class="nt">-</span><span class="o">&gt;</span><span class="w"> </span><span class="nt">325</span><span class="nc">.54268</span><span class="o">;</span><span class="nt">121</span><span class="nc">.32186</span><span class="o">;</span><span class="nt">814</span><span class="nc">.45824</span><span class="o">;</span><span class="nt">myWorldName</span><span class="o">;</span><span class="nt">12</span><span class="nc">.0</span><span class="o">;</span><span class="nt">6</span><span class="nc">.0</span>
 </code></pre></div>
 <h3 id="math-placeholder">Math Placeholder<a class="headerlink" href="#math-placeholder" title="Permanent link">🔗</a></h3>
 <p><strong>static</strong></p>
@@ -5974,10 +5974,10 @@ braces <code>{ }</code>. Inside the curly braces you have to escape with <code>\
 If you don't want to escape the percentage and actually want to write a backslash you can use <code>\\%</code>.
 Don't forget to escape the backslash itself with another backslash if you are inside a double-quoted string <code>"</code>.</p>
 </div>
-<div class="highlight"><pre><span></span><code>%math.calc:100*(15-point.reputation.amount)%
-%math.calc:objective.kill_zombies.left/objective.kill_zombies.total*100~2%
-%math.calc:-{ph.myplugin_stragee+placeholder}%
-%math.calc:64\%32%
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">math</span><span class="nc">.calc</span><span class="nd">:100</span><span class="o">*(</span><span class="nt">15-point</span><span class="nc">.reputation.amount</span><span class="o">)</span><span class="err">%</span>
+<span class="err">%</span><span class="nt">math</span><span class="nc">.calc</span><span class="nd">:objective</span><span class="nc">.kill_zombies.left</span><span class="o">/</span><span class="nt">objective</span><span class="nc">.kill_zombies.total</span><span class="o">*</span><span class="nt">100</span><span class="o">~</span><span class="nt">2</span><span class="err">%</span>
+<span class="err">%</span><span class="nt">math</span><span class="nc">.calc</span><span class="nd">:-</span><span class="p">{</span><span class="nt">ph</span><span class="nc">.myplugin_stragee</span><span class="o">+</span><span class="nt">placeholder</span><span class="p">}</span><span class="err">%</span>
+<span class="err">%</span><span class="nt">math</span><span class="nc">.calc</span><span class="nd">:64</span><span class="err">\%</span><span class="nt">32</span><span class="err">%</span>
 </code></pre></div>
 <h3 id="npc-placeholder">Npc Placeholder<a class="headerlink" href="#npc-placeholder" title="Permanent link">🔗</a></h3>
 <p><strong>static</strong></p>
@@ -5986,28 +5986,28 @@ Specifying an argument determines the return: the Npc name, or full name (with f
 <p>Arguments:<br />
 * name - Return Npc name<br />
 * full_name - Return Npc name with formatting  </p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="l l-Scalar l-Scalar-Plain">npc.bob.name%</span><span class="w">        </span><span class="c1"># Bob</span>
-<span class="err">%</span><span class="l l-Scalar l-Scalar-Plain">npc.bob.full_name%</span><span class="w">   </span><span class="c1"># &amp;eBob</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">npc</span><span class="nc">.bob.name</span><span class="err">%</span>
+<span class="err">%</span><span class="nt">npc</span><span class="nc">.bob.full_name</span><span class="err">%</span>
 </code></pre></div>
 <h4 id="npc-location-placeholder">Npc Location Placeholder<a class="headerlink" href="#npc-location-placeholder" title="Permanent link">🔗</a></h4>
 <p>This placeholder resolves to all Npc location. For details see the <a href="#location-placeholder">location placeholder</a>.
 The general syntax is <code>%npc.&lt;id&gt;.location.&lt;mode&gt;.&lt;precision&gt;%</code>.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="l l-Scalar l-Scalar-Plain">npc.mayor.location%</span><span class="w">           </span><span class="c1"># -&gt; 325;121;814;npcWorldName;12;6</span>
-<span class="err">%</span><span class="l l-Scalar l-Scalar-Plain">npc.mayor.location.xyz%</span><span class="w">       </span><span class="c1"># -&gt; 325 121 814 </span>
-<span class="err">%</span><span class="l l-Scalar l-Scalar-Plain">npc.mayor.location.ulfLong.5%</span><span class="w"> </span><span class="c1"># -&gt; 325.54268;121.32186;814.45824;npcWorldName;12.0;6.0</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">npc</span><span class="nc">.mayor.location</span><span class="err">%</span><span class="w">           </span><span class="nn">#</span><span class="w"> </span><span class="nt">-</span><span class="o">&gt;</span><span class="w"> </span><span class="nt">325</span><span class="o">;</span><span class="nt">121</span><span class="o">;</span><span class="nt">814</span><span class="o">;</span><span class="nt">npcWorldName</span><span class="o">;</span><span class="nt">12</span><span class="o">;</span><span class="nt">6</span>
+<span class="err">%</span><span class="nt">npc</span><span class="nc">.mayor.location.xyz</span><span class="err">%</span><span class="w">       </span><span class="nn">#</span><span class="w"> </span><span class="nt">-</span><span class="o">&gt;</span><span class="w"> </span><span class="nt">325</span><span class="w"> </span><span class="nt">121</span><span class="w"> </span><span class="nt">814</span><span class="w"> </span>
+<span class="err">%</span><span class="nt">npc</span><span class="nc">.mayor.location.ulfLong.5</span><span class="err">%</span><span class="w"> </span><span class="nn">#</span><span class="w"> </span><span class="nt">-</span><span class="o">&gt;</span><span class="w"> </span><span class="nt">325</span><span class="nc">.54268</span><span class="o">;</span><span class="nt">121</span><span class="nc">.32186</span><span class="o">;</span><span class="nt">814</span><span class="nc">.45824</span><span class="o">;</span><span class="nt">npcWorldName</span><span class="o">;</span><span class="nt">12</span><span class="nc">.0</span><span class="o">;</span><span class="nt">6</span><span class="nc">.0</span>
 </code></pre></div>
 <h3 id="player-name-placeholder">Player Name Placeholder<a class="headerlink" href="#player-name-placeholder" title="Permanent link">🔗</a></h3>
 <p>The placeholder <code>%player%</code> is the same as <code>%player.name%</code> and will display the name of the player.
 <code>%player.display%</code> will use the display name used in chat and <code>%player.uuid%</code> will display the UUID of the player.</p>
-<div class="highlight"><pre><span></span><code>%player%
-%player.name%
-%player.display%
-%player.uuid%
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">player</span><span class="err">%</span>
+<span class="err">%</span><span class="nt">player</span><span class="nc">.name</span><span class="err">%</span>
+<span class="err">%</span><span class="nt">player</span><span class="nc">.display</span><span class="err">%</span>
+<span class="err">%</span><span class="nt">player</span><span class="nc">.uuid</span><span class="err">%</span>
 </code></pre></div>
 <h3 id="quester-name-conversation">Quester Name (Conversation)<a class="headerlink" href="#quester-name-conversation" title="Permanent link">🔗</a></h3>
 <p>When the player is in a conversation, this placeholder will contain the quester's name in the player's quest language.
 If the player is not in a conversation, the placeholder is empty.</p>
-<div class="highlight"><pre><span></span><code>%quester%
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">quester</span><span class="err">%</span>
 </code></pre></div>
 <h3 id="random-number-placeholder">Random Number Placeholder<a class="headerlink" href="#random-number-placeholder" title="Permanent link">🔗</a></h3>
 <p><strong>static</strong></p>
@@ -6018,24 +6018,24 @@ Like the <code>math</code> placeholder you can round the decimal value by using
 instead of <code>decimal</code> the argument <code>decimal~x</code> where <code>x</code> is the maximal amount of decimal places. 
 Placeholders can be used with <code>{}</code> instead of <code>%%</code>.
 Note that the first value is returned when it is higher than the second.</p>
-<div class="highlight"><pre><span></span><code>%randomnumber.whole.0~10%
-%randomnumber.whole.-70~70%
-%randomnumber.decimal~3.3.112~100%
-%randomnumber.decimal~1.0~{location.y}%
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">randomnumber</span><span class="nc">.whole.0</span><span class="o">~</span><span class="nt">10</span><span class="err">%</span>
+<span class="err">%</span><span class="nt">randomnumber</span><span class="nc">.whole.-70</span><span class="o">~</span><span class="nt">70</span><span class="err">%</span>
+<span class="err">%</span><span class="nt">randomnumber</span><span class="nc">.decimal</span><span class="o">~</span><span class="nt">3</span><span class="nc">.3.112</span><span class="o">~</span><span class="nt">100</span><span class="err">%</span>
+<span class="err">%</span><span class="nt">randomnumber</span><span class="nc">.decimal</span><span class="o">~</span><span class="nt">1</span><span class="nc">.0</span><span class="o">~</span><span class="p">{</span><span class="nt">location</span><span class="nc">.y</span><span class="p">}</span><span class="err">%</span>
 </code></pre></div>
 <h3 id="forced-sync-placeholder">Forced Sync Placeholder<a class="headerlink" href="#forced-sync-placeholder" title="Permanent link">🔗</a></h3>
 <p><strong>static</strong></p>
 <p>This placeholder forces an evaluation on the server's main thread.
 Its syntax is identical to the <a href="#eval-placeholder">eval placeholder</a>, but you should only use it if syncing is required.
 If you encapsule multiple evaluations with <code>sync</code>, all sub-evaluations will be executed on the server's main thread 
-and should be done with <code>eval</code> instead.
-<div class="highlight"><pre><span></span><code>%sync.player.\%objective.placeholderStore.displayType\%%
-%sync.player.\%eval.objective.\\\%objective.otherStore.targetStore\\\%.displayType\%%
-</code></pre></div></p>
+and should be done with <code>eval</code> instead.</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">sync</span><span class="nc">.player.</span><span class="err">\%</span><span class="nt">objective</span><span class="nc">.placeholderStore.displayType</span><span class="err">\%%</span>
+<span class="err">%</span><span class="nt">sync</span><span class="nc">.player.</span><span class="err">\%</span><span class="nt">eval</span><span class="nc">.objective.</span><span class="err">\\\%</span><span class="nt">objective</span><span class="nc">.otherStore.targetStore</span><span class="err">\\\%</span><span class="nc">.displayType</span><span class="err">\%%</span>
+</code></pre></div>
 <h3 id="version-placeholder">Version Placeholder<a class="headerlink" href="#version-placeholder" title="Permanent link">🔗</a></h3>
 <p><strong>static</strong></p>
 <p>This placeholder displays the version of the plugin. You can optionally add the name of the plugin as an argument to display version of another plugin.</p>
-<div class="highlight"><pre><span></span><code>%version.Citizens%
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">version</span><span class="nc">.Citizens</span><span class="err">%</span>
 </code></pre></div>
 
 
