@@ -434,11 +434,11 @@ objectives:
   clean: "logout actions:delete_objective"
 ```
 
-## Interact with an npc 
+## Interact with an NPC 
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `npcinteract <npc> [cancel] [interaction]`  
-__Description__: The player has to interact with the specified npc. 
+__Description__: The player has to interact with the specified NPC. 
 
 | Parameter     | Syntax              | Default Value          | Explanation                                                                         |
 |---------------|---------------------|------------------------|-------------------------------------------------------------------------------------|
@@ -452,14 +452,14 @@ objectives:
   punchThief: "npcinteract thief interaction:left actions:poke"
 ```
 
-## Get in range of an npc
+## Get in range of an NPC
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `npcrange <npc <action> <range>`  
-__Description__: The player has to enter or leave the specified area around the npc.
+__Description__: The player has to enter or leave the specified area around the NPC.
 
 It is also possible to define multiple NPCs separated with `,`.
-The objective will be completed as soon as you meet the requirement of just one npc.
+The objective will be completed as soon as you meet the requirement of just one NPC.
 
 | Parameter | Syntax   | Default Value          | Explanation                                                          |
 |-----------|----------|------------------------|----------------------------------------------------------------------|

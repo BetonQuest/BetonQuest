@@ -619,11 +619,11 @@ actions:
     debug: "log daily quests have been reset level:DEBUG "
 ```
 
-## Teleport an npc
+## Teleport an NPC
 
 __Context__: @snippet:action-meta:independent@  
 __Syntax__: `npcteleport <Npc> <Location> [spawn]`  
-__Description__: Teleport the npc to the specified location.
+__Description__: Teleport the NPC to the specified location.
 
 | Parameter  | Syntax                                                                       | Default Value          | Explanation                                      |
 |------------|------------------------------------------------------------------------------|------------------------|--------------------------------------------------|
