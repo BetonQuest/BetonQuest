@@ -619,11 +619,11 @@ actions:
     debug: "log daily quests have been reset level:DEBUG "
 ```
 
-## Teleport an npc
+## Teleport an NPC
 
 __Context__: @snippet:action-meta:independent@  
 __Syntax__: `npcteleport <Npc> <Location> [spawn]`  
-__Description__: Teleport the npc to the specified location.
+__Description__: Teleport the NPC to the specified location.
 
 | Parameter  | Syntax                                                                       | Default Value          | Explanation                                      |
 |------------|------------------------------------------------------------------------------|------------------------|--------------------------------------------------|
@@ -896,7 +896,7 @@ By increasing it the player will be able to complete the objective. When increas
 you can optionally specify an amount to increase or decrease by.  
 When decreasing the objective it will do nothing when the first stage is reached.  
 When the conditions of the stage objective are not met, the stage of the player can not be modified.  
-For more take a look at the [stage objective](./Objectives-List.md#stages-stage).
+For more take a look at the [stage objective](./Objectives-List.md#complete-stages).
 
 | Parameter         | Syntax                          | Default Value          | Explanation                                     |
 |-------------------|---------------------------------|------------------------|-------------------------------------------------|
@@ -1048,7 +1048,7 @@ The first argument is the ID of the `variable` objective. The second argument is
 The third argument is the value to set. Both the name and value can use `%...%` placeholders.
 To delete a variable you can use `""`.
 To store more complex values you can use [quoting](../Quoting-&-YAML.md#quoting).
-Refer to the [`variable` objective](Objectives-List.md#variable-variable) documentation for more information about storing variables.
+Refer to the [`variable` objective](Objectives-List.md#variable-storage) documentation for more information about storing variables.
 This action will do nothing if the player does not already have a `variable` objective assigned to them.
 
 ```YAML title="Example"

@@ -55,7 +55,7 @@ public PlayerAction parsePlayer(final Instruction instruction) throws QuestExcep
 }
 ```
 
-Compare [delay](../Documentation/Scripting/Building-Blocks/Objectives-List.md#wait-delay) objective.
+Compare [delay](../Documentation/Scripting/Building-Blocks/Objectives-List.md#wait-real-time) objective.
 ```java title="DelayObjectiveFactory.java"
 public Objective parseInstruction(final Instruction instruction) throws QuestException {
     final Argument<Number> delay = instruction.number().atLeast(0).get();

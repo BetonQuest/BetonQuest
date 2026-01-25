@@ -87,7 +87,7 @@ A regular expression is a sequence of characters that specifies a search pattern
 check if game objects match a user-defined input. For example, [Block Selectors](#block-selectors) use a regex to match
 multiple materials or block states. You can also use regular expressions in the 
 [variable condition](Building-Blocks/Conditions-List.md#placeholder-matches-expression) or the 
-[password objective](Building-Blocks/Objectives-List.md#password-password) to match player names, item names, etc. These expressions are
+[password objective](Building-Blocks/Objectives-List.md#enter-a-password) to match player names, item names, etc. These expressions are
 a very powerful tool, but can be confusing at first.
 
 ### Common Use Cases

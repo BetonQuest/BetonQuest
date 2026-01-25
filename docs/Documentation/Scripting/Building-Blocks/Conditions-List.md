@@ -433,11 +433,11 @@ conditions:
   playersFirstJoinMoon: "moonphase %ph.player_first_join_moon%"
 ```
 
-## Has distance to npc
+## Has distance to NPC
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `npcdistance <npc> <distance>`  
-__Description__: Whether the player is inside the specified radius of the specified npc.
+__Description__: Whether the player is inside the specified radius of the specified NPC.
 
 | Parameter  | Syntax   | Default Value          | Explanation          |
 |------------|----------|------------------------|----------------------|
@@ -449,11 +449,11 @@ conditions:
   canHearBandit: "npcdistance bandit 22"
 ```
 
-## Is npc at location
+## Is NPC at location
 
 __Context__: @snippet:condition-meta:independent@  
 __Syntax__: `npclocation <npc> <location> <distance>`  
-__Description__: Whether the specified npc is at the specified location within the specified radius.
+__Description__: Whether the specified NPC is at the specified location within the specified radius.
 
 | Parameter  | Syntax   | Default Value          | Explanation          |
 |------------|----------|------------------------|----------------------|
@@ -680,7 +680,7 @@ __Context__: @snippet:condition-meta:online-offline@
 __Syntax__: `stage <objective> <comparator> <stage>`  
 __Description__: Compare the player's current stage with the specified stage using its index numbers.
 
-For more take a look at the [stage objective](./Objectives-List.md#stages-stage).  
+For more take a look at the [stage objective](./Objectives-List.md#complete-stages).  
 The valid operations are: `<`, `<=`, `=`, `!=`, `>=`, `>`.
 
 | Parameter         | Syntax     | Default Value          | Explanation                              |
