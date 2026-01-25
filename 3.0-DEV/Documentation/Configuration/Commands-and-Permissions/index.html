@@ -5806,7 +5806,7 @@ Arguments referring to a package are prefixed in the format <code>package&gt;</c
 <li><code>/bq item &lt;item(ID)&gt; &lt;serializer&gt;</code> - Creates an item under the item(ID), based on the item you are holding.</li>
 <li><code>/bq give &lt;item(ID)&gt;</code> - Gives you the item defined under the item(ID).</li>
 <li><code>/bq variable &lt;playerName&gt; &lt;objective(ID)&gt; &lt;list/set/del&gt; [key/filter] [value]</code> - Manage variables stored in a 
-<a href="../../Scripting/Building-Blocks/Objectives-List/#variable-variable"><code>variable</code></a> objective.</li>
+<a href="../../Scripting/Building-Blocks/Objectives-List/#variable-storage"><code>variable</code></a> objective.</li>
 <li><code>/bq purge &lt;playerName&gt;</code> - Deletes all player's data from the database.</li>
 <li><code>/bq rename &lt;tag/point/globalpoint/objective/entry&gt; &lt;oldName(ID)&gt; &lt;newName(ID)&gt;</code> - Renames the specified thing in 
   the database.</li>
@@ -5948,7 +5948,7 @@ It will copy the item you're holding into the "<em>items.yml</em>" file and save
 The <em>serializer</em> defines the format in which the item is saved (and loaded).</p>
 <p>The '<code>/bq give QuestPackage&gt;nettlebane</code>' command will simply give you specified item.</p>
 <h4 id="manage-variables-variable">Manage variables: <code>variable</code><a class="headerlink" href="#manage-variables-variable" title="Permanent link">🔗</a></h4>
-<p>This command relates to active <a href="../../Scripting/Building-Blocks/Objectives-List/#variable-variable">variable objectives</a>.
+<p>This command relates to active <a href="../../Scripting/Building-Blocks/Objectives-List/#variable-storage">variable objectives</a>.
 You can list all <code>key-value</code> pairs with an optional objective filter.
 Further can such a value be set for a key with <code>set &lt;key&gt; &lt;value&gt;</code> or an existing pair removed by using <code>del &lt;key&gt;</code>.</p>
 <h3 id="purge-player-data-purge">Purge player data: <code>purge</code><a class="headerlink" href="#purge-player-data-purge" title="Permanent link">🔗</a></h3>

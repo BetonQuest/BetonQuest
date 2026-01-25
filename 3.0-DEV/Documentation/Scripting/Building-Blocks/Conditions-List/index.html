@@ -2344,7 +2344,7 @@
       
       
         <span class="md-typeset">
-          Has distance to npc
+          Has distance to NPC
         </span>
 
       
@@ -2367,7 +2367,7 @@
       
       
         <span class="md-typeset">
-          Is npc at location
+          Is NPC at location
         </span>
 
       
@@ -6590,7 +6590,7 @@
       
       
         <span class="md-typeset">
-          Has distance to npc
+          Has distance to NPC
         </span>
 
       
@@ -6613,7 +6613,7 @@
       
       
         <span class="md-typeset">
-          Is npc at location
+          Is NPC at location
         </span>
 
       
@@ -7515,10 +7515,10 @@ You can also specify both.</p>
 <span class="w">  </span><span class="nt">darkInHub</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;moonphase</span><span class="nv"> </span><span class="s">WANING_CRESCENT,NEW_MOON,WAXING_CRESCENT</span><span class="nv"> </span><span class="s">world:hub&quot;</span>
 <span class="w">  </span><span class="nt">playersFirstJoinMoon</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;moonphase</span><span class="nv"> </span><span class="s">%ph.player_first_join_moon%&quot;</span>
 </code></pre></div>
-<h2 id="has-distance-to-npc">Has distance to npc<a class="headerlink" href="#has-distance-to-npc" title="Permanent link">🔗</a></h2>
+<h2 id="has-distance-to-npc">Has distance to NPC<a class="headerlink" href="#has-distance-to-npc" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>npcdistance &lt;npc&gt; &lt;distance&gt;</code><br />
-<strong>Description</strong>: Whether the player is inside the specified radius of the specified npc.</p>
+<strong>Description</strong>: Whether the player is inside the specified radius of the specified NPC.</p>
 <table>
 <thead>
 <tr>
@@ -7546,10 +7546,10 @@ You can also specify both.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">canHearBandit</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;npcdistance</span><span class="nv"> </span><span class="s">bandit</span><span class="nv"> </span><span class="s">22&quot;</span>
 </code></pre></div>
-<h2 id="is-npc-at-location">Is npc at location<a class="headerlink" href="#is-npc-at-location" title="Permanent link">🔗</a></h2>
+<h2 id="is-npc-at-location">Is NPC at location<a class="headerlink" href="#is-npc-at-location" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="<b>Independent</b><br> This condition can be checked without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"/></svg></span><br />
 <strong>Syntax</strong>: <code>npclocation &lt;npc&gt; &lt;location&gt; &lt;distance&gt;</code><br />
-<strong>Description</strong>: Whether the specified npc is at the specified location within the specified radius.</p>
+<strong>Description</strong>: Whether the specified NPC is at the specified location within the specified radius.</p>
 <table>
 <thead>
 <tr>
@@ -7776,7 +7776,7 @@ You can also add optional argument <code>equal</code> to accept only players wit
 <span class="twemoji account account-offline" title="<b>Offline</b><br> This condition can be checked on a player that is offline."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 4a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m7.5 9C15 13 13 15 13 17.5s2 4.5 4.5 4.5 4.5-2 4.5-4.5-2-4.5-4.5-4.5M10 14c-4.42 0-8 1.79-8 4v2h9.5a6.5 6.5 0 0 1-.5-2.5 6.5 6.5 0 0 1 .95-3.36c-.63-.08-1.27-.14-1.95-.14m7.5.5c1.66 0 3 1.34 3 3 0 .56-.15 1.08-.42 1.5L16 14.92c.42-.27.94-.42 1.5-.42M14.92 16 19 20.08c-.42.27-.94.42-1.5.42-1.66 0-3-1.34-3-3 0-.56.15-1.08.42-1.5"/></svg></span><br />
 <strong>Syntax</strong>: <code>stage &lt;objective&gt; &lt;comparator&gt; &lt;stage&gt;</code><br />
 <strong>Description</strong>: Compare the player's current stage with the specified stage using its index numbers.</p>
-<p>For more take a look at the <a href="../Objectives-List/#stages-stage">stage objective</a>.<br />
+<p>For more take a look at the <a href="../Objectives-List/#complete-stages">stage objective</a>.<br />
 The valid operations are: <code>&lt;</code>, <code>&lt;=</code>, <code>=</code>, <code>!=</code>, <code>&gt;=</code>, <code>&gt;</code>.</p>
 <table>
 <thead>

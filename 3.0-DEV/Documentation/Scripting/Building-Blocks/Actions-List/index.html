@@ -2424,7 +2424,7 @@
       
       
         <span class="md-typeset">
-          Teleport an npc
+          Teleport an NPC
         </span>
 
       
@@ -6866,7 +6866,7 @@
       
       
         <span class="md-typeset">
-          Teleport an npc
+          Teleport an NPC
         </span>
 
       
@@ -8114,10 +8114,10 @@ Placeholders are resolved for each online player, not for the player the action 
 <span class="w">    </span><span class="nt">logPlayer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;log</span><span class="nv"> </span><span class="s">%player%</span><span class="nv"> </span><span class="s">completed</span><span class="nv"> </span><span class="s">first</span><span class="nv"> </span><span class="s">quest.&quot;</span>
 <span class="w">    </span><span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;log</span><span class="nv"> </span><span class="s">daily</span><span class="nv"> </span><span class="s">quests</span><span class="nv"> </span><span class="s">have</span><span class="nv"> </span><span class="s">been</span><span class="nv"> </span><span class="s">reset</span><span class="nv"> </span><span class="s">level:DEBUG</span><span class="nv"> </span><span class="s">&quot;</span>
 </code></pre></div>
-<h2 id="teleport-an-npc">Teleport an npc<a class="headerlink" href="#teleport-an-npc" title="Permanent link">🔗</a></h2>
+<h2 id="teleport-an-npc">Teleport an NPC<a class="headerlink" href="#teleport-an-npc" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="<b>Independent</b><br> This event can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"/></svg></span><br />
 <strong>Syntax</strong>: <code>npcteleport &lt;Npc&gt; &lt;Location&gt; [spawn]</code><br />
-<strong>Description</strong>: Teleport the npc to the specified location.</p>
+<strong>Description</strong>: Teleport the NPC to the specified location.</p>
 <table>
 <thead>
 <tr>
@@ -8461,7 +8461,7 @@ By increasing it the player will be able to complete the objective. When increas
 you can optionally specify an amount to increase or decrease by.<br />
 When decreasing the objective it will do nothing when the first stage is reached.<br />
 When the conditions of the stage objective are not met, the stage of the player can not be modified.<br />
-For more take a look at the <a href="../Objectives-List/#stages-stage">stage objective</a>.</p>
+For more take a look at the <a href="../Objectives-List/#complete-stages">stage objective</a>.</p>
 <table>
 <thead>
 <tr>
@@ -8619,7 +8619,7 @@ Using the <code>ticks</code> argument changes the time like the vanilla command.
 The third argument is the value to set. Both the name and value can use <code>%...%</code> placeholders.
 To delete a variable you can use <code>""</code>.
 To store more complex values you can use <a href="../../Quoting-%26-YAML/#quoting">quoting</a>.
-Refer to the <a href="../Objectives-List/#variable-variable"><code>variable</code> objective</a> documentation for more information about storing variables.
+Refer to the <a href="../Objectives-List/#variable-storage"><code>variable</code> objective</a> documentation for more information about storing variables.
 This action will do nothing if the player does not already have a <code>variable</code> objective assigned to them.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">goody</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;variable</span><span class="nv"> </span><span class="s">CustomVariable</span><span class="nv"> </span><span class="s">MyFirstVariable</span><span class="nv"> </span><span class="s">Goodbye!&quot;</span>
