@@ -17,7 +17,7 @@ defined in the _objectives_ section (not the type). Make sure that the player ha
 will be replaced with nothing (""). Second argument is the name of a property you want to display.
 All properties are described in "Objectives List" chapter.
 
-```
+```scss title="Example"
 %objective.kill_zombies.left%
 ```
 
@@ -29,7 +29,7 @@ The placeholder will return `true` or `false` by default. If you add `papiMode` 
 You can translate the papiMode's result by changing the values of `condition_placeholder_met` `condition_placeholder_not_met` in 
 the *messages.yml* config.
 
-```
+```scss title="Example"
 %condition.myCondition%
 %condition.myCondition.papiMode%
 ``` 
@@ -47,7 +47,7 @@ constants:
 
 To use a `constant` placeholder, you must use `%constant.constantName%`:
 
-```
+```scss title="Example"
 %constant.village_location%
 %constant.village_name%
 ```
@@ -63,7 +63,7 @@ The proper syntax is `%questPackage>constant.constantName%`.
 This placeholder displays the amount of points you have in some category or amount of points you need to have to reach a
 number. The first argument is the name of a category and the second argument is either `amount` or `left:x`, where `x` is a number.
 
-```
+```scss title="Example"
 %point.reputation.amount%
 %point.reputation.left:15%
 ```
@@ -75,7 +75,7 @@ number. The first argument is the name of a category and the second argument is 
 This placeholder displays the amount of global points in some category or the amount of points needed to reach a number.
 The first argument is the name of a category and the second argument is either `amount` or `left:x`, where `x` is a number.
 
-```
+```scss title="Example"
 %globalpoint.global_knownusers.amount%
 %globalpoint.global_knownusers.left:100%
 ```
@@ -87,7 +87,7 @@ The placeholder will return true or false by default. If you add papiMode to the
 You can translate the papiMode's result by changing the values of `condition_placeholder_met` and `condition_placeholder_not_met`
 in the messages.yml config.
 
-```
+```scss title="Example"
 %tag.test%
 %tag.test.papiMode%
 ```
@@ -101,7 +101,7 @@ The placeholder will return true or false by default. If you add papiMode to the
 You can translate the papiMode's result by changing the values of `condition_placeholder_met` and `condition_placeholder_not_met`
 in the messages.yml config.
 
-```
+```scss title="Example"
 %globaltag.test%
 %globaltag.test.papiMode%
 ```
@@ -124,10 +124,10 @@ You can nest multiple evals, but this leads you to an escape hell.
 If you do so, you need to add one escape level with each nesting level,
 this means normally you write `\%` and in the next level you need to write `\\\%`.
 
-````
+```scss title="Example"
 %eval.player.\%objective.placeholderStore.displayType\%%
 %eval.player.\%eval.objective.\\\%objective.otherStore.targetStore\\\%.displayType\%%
-````
+```
 
 ### Item Placeholder
 
@@ -139,7 +139,7 @@ The `name` argument simply gives the defined name or an empty String, when not s
 and `lore:x` displays the lore row with index `x` (starting with 0).
 Both `name` and `lore` supports the `raw` subargument to get the text without formatting.
 
-```
+```scss title="Example"
 %item.stick.amount%
 %item.stick.left:32%
 %item.epic_sword.name%
@@ -155,7 +155,7 @@ from 0 to 1, where 1 is the maximum. You can specify the amount of digits with t
 where `x` is a whole number. This default is 2 digits.
 Additionally, you get the output in percent (inclusive the '%' symbol).
 
-```
+```scss title="Example"
 %itemdurability.HAND%
 %itemdurability.CHEST.relative%
 %itemdurability.CHEST.relative.percent%
@@ -171,7 +171,7 @@ If you just specify `%location%` the placeholders will resolve to a ULF with yaw
 You can add two options to that base, one will give back parts of the ULF and the other will set to how many decimal places 
 the placeholder will resolve. 
 
-```YAML
+```scss title="Example"
 %location%           # -> 325;121;814;myWorldName;12;6
 %location.xyz%       # -> 325 121 814 
 %location.x%         # -> 325
@@ -186,8 +186,7 @@ the placeholder will resolve.
 %location.x.2%       # -> 325.16
 %location.ulfLong.5% # -> 325.54268;121.32186;814.45824;myWorldName;12.0;6.0
 ```
-    
-    
+
 ### Math Placeholder
 
 **static**
@@ -212,7 +211,7 @@ When the calculation fails `0` will be returned and the reason logged.
     If you don't want to escape the percentage and actually want to write a backslash you can use `\\%`.
     Don't forget to escape the backslash itself with another backslash if you are inside a double-quoted string `"`.
 
-```
+```scss title="Example"
 %math.calc:100*(15-point.reputation.amount)%
 %math.calc:objective.kill_zombies.left/objective.kill_zombies.total*100~2%
 %math.calc:-{ph.myplugin_stragee+placeholder}%
@@ -230,9 +229,9 @@ Arguments:
 * name - Return Npc name  
 * full_name - Return Npc name with formatting  
 
-```YAML title="Example"
-%npc.bob.name%        # Bob
-%npc.bob.full_name%   # &eBob
+```scss title="Example"
+%npc.bob.name%
+%npc.bob.full_name%
 ```
 
 #### Npc Location Placeholder
@@ -240,7 +239,7 @@ Arguments:
 This placeholder resolves to all Npc location. For details see the [location placeholder](#location-placeholder).
 The general syntax is `%npc.<id>.location.<mode>.<precision>%`.
 
-```YAML title="Example"
+```scss title="Example"
 %npc.mayor.location%           # -> 325;121;814;npcWorldName;12;6
 %npc.mayor.location.xyz%       # -> 325 121 814 
 %npc.mayor.location.ulfLong.5% # -> 325.54268;121.32186;814.45824;npcWorldName;12.0;6.0
@@ -251,7 +250,7 @@ The general syntax is `%npc.<id>.location.<mode>.<precision>%`.
 The placeholder `%player%` is the same as `%player.name%` and will display the name of the player.
 `%player.display%` will use the display name used in chat and `%player.uuid%` will display the UUID of the player.
 
-```
+```scss title="Example"
 %player%
 %player.name%
 %player.display%
@@ -263,7 +262,7 @@ The placeholder `%player%` is the same as `%player.name%` and will display the n
 When the player is in a conversation, this placeholder will contain the quester's name in the player's quest language.
 If the player is not in a conversation, the placeholder is empty.
 
-```
+```scss title="Example"
 %quester%
 ```
 
@@ -279,7 +278,7 @@ instead of `decimal` the argument `decimal~x` where `x` is the maximal amount of
 Placeholders can be used with `{}` instead of `%%`.
 Note that the first value is returned when it is higher than the second.
 
-```
+```scss title="Example"
 %randomnumber.whole.0~10%
 %randomnumber.whole.-70~70%
 %randomnumber.decimal~3.3.112~100%
@@ -294,10 +293,11 @@ This placeholder forces an evaluation on the server's main thread.
 Its syntax is identical to the [eval placeholder](#eval-placeholder), but you should only use it if syncing is required.
 If you encapsule multiple evaluations with `sync`, all sub-evaluations will be executed on the server's main thread 
 and should be done with `eval` instead.
-````
+
+```scss title="Example"
 %sync.player.\%objective.placeholderStore.displayType\%%
 %sync.player.\%eval.objective.\\\%objective.otherStore.targetStore\\\%.displayType\%%
-````
+```
 
 ### Version Placeholder
 
@@ -305,6 +305,6 @@ and should be done with `eval` instead.
 
 This placeholder displays the version of the plugin. You can optionally add the name of the plugin as an argument to display version of another plugin.
 
-```
+```scss title="Example"
 %version.Citizens%
 ```
