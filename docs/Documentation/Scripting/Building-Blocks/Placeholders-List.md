@@ -1,27 +1,35 @@
 ---
 icon: material/variable-box
+tags:
+  - Placeholder
 ---
 # Placeholders List
 
 This page lists all the placeholders that are available in BetonQuest.
 Some of them are only useful when exported for use in other plugins through the [support for PlaceHolderAPI](Integration-List.md#placeholderapi).
 
-Placeholders marked as **static** can be resolved without a player specified.
+## Quest types
 
-## BetonQuest Elements
+### Objective
 
-### Objective Property Placeholder
+__Context__: @snippet:placeholder-meta:online-offline@  
+__Syntax__: `objective.<id>.<property>`  
+__Description__: Represents the specified property of the specified objective.
 
-Using this placeholder you can display a property of an objective. The first argument is an ID of the objective as
-defined in the _objectives_ section (not the type). Make sure that the player has this objective active or it
-will be replaced with nothing (""). Second argument is the name of a property you want to display.
+The first argument is an ID of the objective as defined in the _objectives_ section (not the type).
+Make sure that the player has this objective active or it will be replaced with nothing ("").
+Second argument is the name of a property you want to display.
 All properties are described in "Objectives List" chapter.
 
 ```scss title="Example"
 %objective.kill_zombies.left%
 ```
 
-### Condition Placeholder
+### Condition
+
+__Context__: @snippet:placeholder-meta:online-offline@  
+__Syntax__: `condition.<id>.[papiMode]`  
+__Description__: Represents the specified condition as a boolean value.
 
 You can expose BetonQuest's conditions to 3rd party plugins by using the `condition` placeholder together with the 
 [PAPI support](Integration-List.md#placeholderapi).
@@ -34,7 +42,11 @@ the *messages.yml* config.
 %condition.myCondition.papiMode%
 ``` 
 
-### Constant Placeholder
+### Constant
+
+__Context__: @snippet:placeholder-meta:independent@  
+__Syntax__: `constant.<name>`  
+__Description__: Represents the value of the specified constant.
 
 Constants are a bit different from other placeholders, as you can freely define the values of them.
 They are defined in the *constants* section like this:
@@ -56,23 +68,29 @@ If you want to parse a placeholder from a different package,
 follow the same syntax as you would [working across packages](https://betonquest.org/3.0-DEV/Documentation/Scripting/Packages-%26-Templates/#defining-features).
 The proper syntax is `%questPackage>constant.constantName%`.
 
-## BetonQuest Data Types
+## Data types
 
-### Point Placeholder
+### Point
 
-This placeholder displays the amount of points you have in some category or amount of points you need to have to reach a
-number. The first argument is the name of a category and the second argument is either `amount` or `left:x`, where `x` is a number.
+__Context__: @snippet:placeholder-meta:online-offline@  
+__Syntax__: `point.<category>.<amount|left>`  
+__Description__: Represents the number of points in the specified category.
+ 
+It is also possible to display the remaining number of points to reach a certain number of points.
+The first argument is the name of a category and the second argument is either `amount` or `left:x`, where `x` is a number.
 
 ```scss title="Example"
 %point.reputation.amount%
 %point.reputation.left:15%
 ```
 
-### Global Point Placeholder
+### Global point
 
-**static**
-
-This placeholder displays the amount of global points in some category or the amount of points needed to reach a number.
+__Context__: @snippet:placeholder-meta:independent@  
+__Syntax__: `globalpoint.<category>.<amount|left>`  
+__Description__: Represents the number of global points in the specified category.
+ 
+It is also possible to display the remaining number of points to reach a certain number of points.
 The first argument is the name of a category and the second argument is either `amount` or `left:x`, where `x` is a number.
 
 ```scss title="Example"
@@ -80,9 +98,12 @@ The first argument is the name of a category and the second argument is either `
 %globalpoint.global_knownusers.left:100%
 ```
 
-### Tag Placeholder
+### Tag
 
-This placeholder displays whether the player has a tag or not.
+__Context__: @snippet:placeholder-meta:online-offline@  
+__Syntax__: `tag.<name>.[papiMode]`  
+__Description__: Represents whether a tag is set or not as a boolean value.
+
 The placeholder will return true or false by default. If you add papiMode to the instruction it will return yes or no.
 You can translate the papiMode's result by changing the values of `condition_placeholder_met` and `condition_placeholder_not_met`
 in the messages.yml config.
@@ -92,11 +113,12 @@ in the messages.yml config.
 %tag.test.papiMode%
 ```
 
-### Global Tag Placeholder
+### Global tag
 
-**static**
+__Context__: @snippet:placeholder-meta:independent@  
+__Syntax__: `globaltag.<name>.[papiMode]`  
+__Description__: Represents whether a global tag is set or not as a boolean value.
 
-This placeholder displays whether a global tag is set or not.
 The placeholder will return true or false by default. If you add papiMode to the instruction it will return yes or no.
 You can translate the papiMode's result by changing the values of `condition_placeholder_met` and `condition_placeholder_not_met`
 in the messages.yml config.
@@ -106,19 +128,14 @@ in the messages.yml config.
 %globaltag.test.papiMode%
 ```
 
-### Custom Text Placeholder
+## Others
 
-It is possible to save text per player. This works by using the [`placeholder`](Objectives-List.md#variable-storage)
- objective and the [`placeholder`](Actions-List.md#manage-a-variable-objective) action. 
+### Evaluate
 
-## Other Placeholders
+__Context__: @snippet:placeholder-meta:independent@  
+__Syntax__: `eval.<expression>`  
+__Description__: Represents the value of the resolved expression.
 
-### Eval Placeholder
-
-**static**
-
-This placeholder allows you to resolve an expression containing placeholders,
-and the result will then be interpreted again as a placeholder.
 You need to escape the `%` inside eval with a backslash `\` to prevent it from being interpreted as a delimiter.
 You can nest multiple evals, but this leads you to an escape hell.
 If you do so, you need to add one escape level with each nesting level,
@@ -129,9 +146,12 @@ this means normally you write `\%` and in the next level you need to write `\\\%
 %eval.player.\%eval.objective.\\\%objective.otherStore.targetStore\\\%.displayType\%%
 ```
 
-### Item Placeholder
+### Item property
 
-With this placeholder you can display different properties of a specific QuestItem.
+__Context__: @snippet:placeholder-meta:independent@  
+__Syntax__: `item.<id>.<property>`  
+__Description__: Represents the specified property of the specified item.
+
 The first argument is the name of the item (as defined in the _items_ section).
 The `amount` argument displays the number of items in the players inventory and backpack,
 the `left:x` gives the difference to the `x` value (when the amount is higher than the value it will be negative).
@@ -146,14 +166,17 @@ Both `name` and `lore` supports the `raw` subargument to get the text without fo
 %item.epic_sword.lore:0.raw%
 ```
 
-### Item durability placeholder
+### Item durability
 
-With this placeholder you can display the durability of an item.
+__Context__: @snippet:placeholder-meta:online@  
+__Syntax__: `itemdurability.<slot>.[relative].[digits|percent]`  
+__Description__: Represents the durability of the item in the specified slot.
+
 The first argument is the slot.
 An optional argument is `relative` which will display the durability of the item relative to the maximum
 from 0 to 1, where 1 is the maximum. You can specify the amount of digits with the argument `digits:x`,
 where `x` is a whole number. This default is 2 digits.
-Additionally, you get the output in percent (inclusive the '%' symbol).
+Additionally, you get the output in `percent` (inclusive the '%' symbol).
 
 ```scss title="Example"
 %itemdurability.HAND%
@@ -162,9 +185,13 @@ Additionally, you get the output in percent (inclusive the '%' symbol).
 %itemdurability.HEAD.relative.digits:5%
 ```
 
-### Location Placeholder
+### Location
 
-This placeholder resolves to all aspects of the player's location. The x, y and z coordinates, the world name, the yaw and pitch (head rotation).
+__Context__: @snippet:placeholder-meta:online@  
+__Syntax__: `location.<format>.[precision]`  
+__Description__: Represents the location of the player in the specified format.
+
+The x, y and z coordinates, the world name, the yaw and pitch (head rotation).
 There are also modes for the [Unified Location Formatting](../Data-Formats.md#unified-location-formating) (ULF from now on)
 which means that this placeholder can also be used in actions, conditions etc.
 If you just specify `%location%` the placeholders will resolve to a ULF with yaw and pitch.
@@ -187,11 +214,13 @@ the placeholder will resolve.
 %location.ulfLong.5% # -> 325.54268;121.32186;814.45824;myWorldName;12.0;6.0
 ```
 
-### Math Placeholder
+### Calculate
 
-**static**
+__Context__: @snippet:placeholder-meta:independent@  
+__Syntax__: `math.calc:<calculation>`  
+__Description__: Represents the result of the specified mathematical operation.
 
-This placeholder allows you to perform a calculation based on other placeholders (for example point or objective placeholders)
+Performs a calculation based on other placeholders (for example point or objective placeholders)
 and resolves to the result of the specified calculation. The placeholder always starts with `math.calc:`, followed by the
 calculation which should be calculated. Supported operations are `+`, `-`, `*`, `/`, `^` and `%`. You can use `( )` and
 `[ ]` braces and also calculate absolute values with `| |`. But be careful, don't use absolute values in the command
@@ -218,34 +247,35 @@ When the calculation fails `0` will be returned and the reason logged.
 %math.calc:64\%32%
 ```
 
-### Npc Placeholder
+### Npc
 
-**static**
-
-This placeholder resolves information about a Npc. 
+__Context__: @snippet:placeholder-meta:independent@  
+__Syntax__: `npc.<id>.<property>`  
+__Description__: Represents the specified property of the specified npc.
+ 
 Specifying an argument determines the return: the Npc name, or full name (with formatting).
 
-Arguments:  
-* name - Return Npc name  
-* full_name - Return Npc name with formatting  
+Arguments:
+  
+- `name` - Return Npc name  
+- `full_name` - Return Npc name with formatting  
+- `location` - Return Npc location in the specified format, for details see the [location placeholder](#location).
+  The general syntax is `%npc.<id>.location.<mode>.<precision>%`.
 
 ```scss title="Example"
 %npc.bob.name%
 %npc.bob.full_name%
-```
 
-#### Npc Location Placeholder
-
-This placeholder resolves to all Npc location. For details see the [location placeholder](#location-placeholder).
-The general syntax is `%npc.<id>.location.<mode>.<precision>%`.
-
-```scss title="Example"
 %npc.mayor.location%           # -> 325;121;814;npcWorldName;12;6
 %npc.mayor.location.xyz%       # -> 325 121 814 
 %npc.mayor.location.ulfLong.5% # -> 325.54268;121.32186;814.45824;npcWorldName;12.0;6.0
 ```
 
-### Player Name Placeholder
+### Player
+
+__Context__: @snippet:placeholder-meta:online-offline@  
+__Syntax__: `player.<format>`  
+__Description__: Represents the player's name in the specified format.
 
 The placeholder `%player%` is the same as `%player.name%` and will display the name of the player.
 `%player.display%` will use the display name used in chat and `%player.uuid%` will display the UUID of the player.
@@ -257,20 +287,24 @@ The placeholder `%player%` is the same as `%player.name%` and will display the n
 %player.uuid%
 ```
 
-### Quester Name (Conversation)
+### Quester
 
-When the player is in a conversation, this placeholder will contain the quester's name in the player's quest language.
+__Context__: @snippet:placeholder-meta:online-offline@  
+__Syntax__: `quester`  
+__Description__: Represents the name of the quester in the current conversation.
+
 If the player is not in a conversation, the placeholder is empty.
 
 ```scss title="Example"
 %quester%
 ```
 
-### Random Number Placeholder
+### Random
 
-**static**
+__Context__: @snippet:placeholder-meta:independent@  
+__Syntax__: `randomnumber.<whole|decimal>.<min>~<max>`  
+__Description__: Represents a random number in the specified range.
 
-This placeholder gives a random number from the first value to the second.
 The first argument is `whole` or `decimal`, the second and third arguments are numbers or placeholders,
 separated by a `~`.
 Like the `math` placeholder you can round the decimal value by using
@@ -285,12 +319,13 @@ Note that the first value is returned when it is higher than the second.
 %randomnumber.decimal~1.0~{location.y}%
 ```
 
-### Forced Sync Placeholder
+### Synchronization
 
-**static**
+__Context__: @snippet:placeholder-meta:online-offline-independent@  
+__Syntax__: `sync.<expression>`  
+__Description__: Represents the value of the specified placeholder but resolved on the server's main thread.
 
-This placeholder forces an evaluation on the server's main thread.
-Its syntax is identical to the [eval placeholder](#eval-placeholder), but you should only use it if syncing is required.
+Its syntax is identical to the [eval placeholder](#evaluate), but you should only use it if syncing is required.
 If you encapsule multiple evaluations with `sync`, all sub-evaluations will be executed on the server's main thread 
 and should be done with `eval` instead.
 
@@ -299,11 +334,13 @@ and should be done with `eval` instead.
 %sync.player.\%eval.objective.\\\%objective.otherStore.targetStore\\\%.displayType\%%
 ```
 
-### Version Placeholder
+### Plugin version
 
-**static**
+__Context__: @snippet:placeholder-meta:independent@  
+__Syntax__: `version.[plugin]`  
+__Description__: Represents the version of the specified plugin.
 
-This placeholder displays the version of the plugin. You can optionally add the name of the plugin as an argument to display version of another plugin.
+You can optionally add the name of the plugin as an argument to display version of another plugin.
 
 ```scss title="Example"
 %version.Citizens%
