@@ -31,7 +31,7 @@ The only required argument is the id of the menu.
 If you want to use menus from other packages just use the cross package format.
 
 The objective also has the property `menu` which can be used by the
-[objective properties](../../Scripting/Building-Blocks/Placeholders-List.md#objective-property-placeholder).
+[objective properties](../../Scripting/Building-Blocks/Placeholders-List.md#objective).
 It returns the title of the menu which should be opened.
 
 **Example:** `menu quest_gui`

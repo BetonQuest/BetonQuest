@@ -959,7 +959,7 @@ If you have this plugin, BetonQuest will add a `betonquest` placeholder to it. Y
 
 ### Placeholder: `betonquest`
 
-You can even use BetonQuests conditions using the [condition placeholder](Placeholders-List.md#condition-placeholder)!    
+You can even use BetonQuests conditions using the [condition placeholder](Placeholders-List.md#condition)!    
 You can use all BetonQuest placeholders in any other plugin that supports PlaceholderAPI.
 This works using the `%betonquest_package:placeholder%` placeholder. The `package:` part is the name of a package.
 The `placeholder` part is just a [BetonQuest placeholder](Placeholders-List.md) without percentage characters, like `point.beton.amount`.

@@ -16,7 +16,7 @@ Yaw is the left-right rotation, pitch is the up-down rotation.
 A fully defined location may look like this: `100;200;300;world;90;-45`.
 
 Every single element may be a placeholder as well as the entire location itself.
-As an example you can use the [`%location%`](Building-Blocks/Placeholders-List.md#location-placeholder) placeholder to get a player's current location.
+As an example you can use the [`%location%`](Building-Blocks/Placeholders-List.md#location) placeholder to get a player's current location.
 
 ### Vectors
 The vector is a modification of the location. Vectors look like `->(10;2.5;-13)` and are added
