@@ -10,6 +10,9 @@ import org.betonquest.betonquest.versioning.UpdateStrategy;
 import org.betonquest.betonquest.versioning.Version;
 import org.betonquest.betonquest.versioning.VersionComparator;
 import org.bukkit.Bukkit;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,7 +30,7 @@ import java.util.stream.Stream;
 /**
  * Loads compatibility with other plugins.
  */
-public class Compatibility {
+public class Compatibility implements Listener {
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -100,15 +103,6 @@ public class Compatibility {
         for (final Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
             integratePlugin(plugin);
         }
-
-        final String hooks = betonQuestSource.dataList.stream()
-                .filter(IntegrationData::isIntegrated)
-                .map(data -> data.getName() + " (" + data.getVersion() + ")")
-                .collect(Collectors.joining(", "));
-        if (!hooks.isEmpty()) {
-            log.info("Enabled compatibility for " + hooks + "!");
-        }
-        postHook();
     }
 
     /**
@@ -156,7 +150,14 @@ public class Compatibility {
      * After all integrations are successfully hooked,
      * this method can be called to activate cross compatibility features.
      */
-    private void postHook() {
+    public void postHook() {
+        final String hooks = betonQuestSource.dataList.stream()
+                .filter(IntegrationData::isIntegrated)
+                .map(data -> data.getName() + " (" + data.getVersion() + ")")
+                .collect(Collectors.joining(", "));
+        if (!hooks.isEmpty()) {
+            log.info("Enabled compatibility for " + hooks + "!");
+        }
         final List<HologramIntegrator> hologramIntegrators = new ArrayList<>();
         getAllIntegrators().forEach((integrator, data) -> {
             try {
@@ -191,6 +192,16 @@ public class Compatibility {
         if (hologramProvider != null) {
             hologramProvider.close();
         }
+    }
+
+    /**
+     * Triggers the integration of a plugin.
+     *
+     * @param event the event to listen for
+     */
+    @EventHandler
+    public void onPluginEnable(final PluginEnableEvent event) {
+        integratePlugin(event.getPlugin());
     }
 
     private void integratePlugin(final Plugin hookedPlugin) {
