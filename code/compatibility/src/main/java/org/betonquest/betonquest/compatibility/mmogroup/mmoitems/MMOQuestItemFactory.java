@@ -4,6 +4,7 @@ import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.item.QuestItemWrapper;
 import org.betonquest.betonquest.api.quest.TypeFactory;
@@ -32,7 +33,8 @@ public class MMOQuestItemFactory implements TypeFactory<QuestItemWrapper> {
     public QuestItemWrapper parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<Type> itemType = instruction.parse(MMOItemsUtils::getMMOItemType).get();
         final Argument<String> itemId = instruction.string().get();
-        final MMOQuestItemWrapper mmoQuestItemWrapper = new MMOQuestItemWrapper(mmoPlugin, itemType, itemId);
+        final FlagArgument<Number> soulBound = instruction.number().getFlag("soulBound", 1);
+        final MMOQuestItemWrapper mmoQuestItemWrapper = new MMOQuestItemWrapper(mmoPlugin, itemType, itemId, soulBound);
         final boolean questItem = instruction.bool().getFlag("quest-item", true)
                 .getValue(null).orElse(false);
         if (questItem) {
