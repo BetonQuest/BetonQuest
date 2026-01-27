@@ -7103,9 +7103,10 @@ Some integrations also have dedicated pages in the documentation.
 In total 44 plugins have dedicated support for BetonQuest.</p>
 <h2 id="provided-by-betonquest">Provided by BetonQuest<a class="headerlink" href="#provided-by-betonquest" title="Permanent link">🔗</a></h2>
 <p>BetonQuest hooks into other plugins by itself to provide more actions, conditions and objectives or other features.<br />
-<em>AuraSkills, Brewery, BreweryX, Citizens, CraftEngine, DecentHolograms, Denizen, EffectLib, FancyNpcs, FakeBlock, Heroes, HolographicDisplays, ItemsAdder, JobsReborn, LuckPerms, Magic,
-mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, Nexo, PacketEvents, PlaceholderAPI, Quests, RedisChat, Shopkeepers, TrainCarts, ProSkillAPI,
-Skript, Vault, WorldEdit, FastAsyncWorldEdit, WorldGuard and ZNPCsPlus.</em></p>
+<em>AuraSkills, Brewery, BreweryX, Citizens, CraftEngine, DecentHolograms, Denizen, EffectLib, FancyNpcs, FakeBlock,
+Heroes, HolographicDisplays, ItemsAdder, JobsReborn, LuckPerms, Magic, mcMMO, MythicLib, MMOCore, MMOItems,
+MythicMobs, Nexo, PacketEvents, PlaceholderAPI, Quests, RedisChat, Shopkeepers, TrainCarts, ProSkillAPI, Skript,
+Vault, WorldEdit, FastAsyncWorldEdit, WorldGuard and ZNPCsPlus.</em></p>
 <h2 id="provided-by-other-plugins">Provided by other plugins<a class="headerlink" href="#provided-by-other-plugins" title="Permanent link">🔗</a></h2>
 <p>Some plugins also hook into BetonQuest and provide support by themselves:<br />
 <a href="https://www.spigotmc.org/resources/13863/">nuNPCDestinations</a>,
@@ -7123,59 +7124,61 @@ Skript, Vault, WorldEdit, FastAsyncWorldEdit, WorldGuard and ZNPCsPlus.</em></p>
 <h4 id="skill-level-auraskillslevel">Skill level: <code>auraskillslevel</code><a class="headerlink" href="#skill-level-auraskillslevel" title="Permanent link">🔗</a></h4>
 <p>Checks if the player has the specified skill level. The amount is a number.
 The player needs to be on that level or higher to meet the condition.
-You can disable this behaviour by adding the <code>equal</code> argument, then the player must match the specified level exactly.
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">auraskillslevel fighting 5</span>
-<span class="l l-Scalar l-Scalar-Plain">auraskillslevel farming 10 equal</span>
-</code></pre></div></td></tr></table></div></p>
+You can disable this behaviour by adding the <code>equal</code> argument, then the player must match the specified level exactly.</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">fighting5</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;auraskillslevel</span><span class="nv"> </span><span class="s">fighting</span><span class="nv"> </span><span class="s">5&quot;</span>
+<span class="w">  </span><span class="nt">farming10</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;auraskillslevel</span><span class="nv"> </span><span class="s">farming</span><span class="nv"> </span><span class="s">10</span><span class="nv"> </span><span class="s">equal&quot;</span>
+</code></pre></div>
 <h4 id="stat-level-auraskillsstatslevel">Stat level: <code>auraskillsstatslevel</code><a class="headerlink" href="#stat-level-auraskillsstatslevel" title="Permanent link">🔗</a></h4>
 <p>Checks if the player has the specified stat level. The amount is a number.
 The player needs to be on that level or higher to meet the condition.
-You can disable this behaviour by adding the <code>equal</code> argument, then the player must match the specified level exactly.
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">auraskillsstatslevel luck 5</span>
-<span class="l l-Scalar l-Scalar-Plain">auraskillsstatslevel luck 10 equal</span>
-</code></pre></div></td></tr></table></div></p>
+You can disable this behaviour by adding the <code>equal</code> argument, then the player must match the specified level exactly.</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">luck5</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;auraskillsstatslevel</span><span class="nv"> </span><span class="s">luck</span><span class="nv"> </span><span class="s">5&quot;</span>
+<span class="w">  </span><span class="nt">luck10</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;auraskillsstatslevel</span><span class="nv"> </span><span class="s">luck</span><span class="nv"> </span><span class="s">10</span><span class="nv"> </span><span class="s">equal&quot;</span>
+</code></pre></div>
 <h3 id="actions">Actions<a class="headerlink" href="#actions" title="Permanent link">🔗</a></h3>
 <h3 id="give-skill-xp-auraskillsxp">Give Skill Xp : <code>auraskillsxp</code><a class="headerlink" href="#give-skill-xp-auraskillsxp" title="Permanent link">🔗</a></h3>
 <p>Adds experience to the players skill. The amount is a number.
-The <code>level</code> argument is optional and would convert the amount to levels instead of XP points.
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">auraskillsxp farming 5</span>
-<span class="l l-Scalar l-Scalar-Plain">auraskillsxp farming 10 level</span>
-</code></pre></div></td></tr></table></div></p>
+The <code>level</code> argument is optional and would convert the amount to levels instead of XP points.</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">farming5</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;auraskillsxp</span><span class="nv"> </span><span class="s">farming</span><span class="nv"> </span><span class="s">5&quot;</span>
+<span class="w">  </span><span class="nt">farming10</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;auraskillsxp</span><span class="nv"> </span><span class="s">farming</span><span class="nv"> </span><span class="s">10</span><span class="nv"> </span><span class="s">level&quot;</span>
+</code></pre></div>
 <h2 id="brewery-breweryx">Brewery<a href="https://www.spigotmc.org/resources/3082/"></a> &amp; BreweryX<a href="https://www.spigotmc.org/resources/114777/"></a><a class="headerlink" href="#brewery-breweryx" title="Permanent link">🔗</a></h2>
 <h3 id="conditions_1">Conditions<a class="headerlink" href="#conditions_1" title="Permanent link">🔗</a></h3>
 <h4 id="drunk-drunk">Drunk: <code>drunk</code><a class="headerlink" href="#drunk-drunk" title="Permanent link">🔗</a></h4>
 <p>This condition is true if the player is drunken. Only argument is the minimal drunkness (0-100).</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">drunk 50</span>
-</code></pre></div></td></tr></table></div>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">drunk50</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;drunk</span><span class="nv"> </span><span class="s">50&quot;</span>
+</code></pre></div>
 <h4 id="drunk-quality-drunkquality">Drunk Quality: <code>drunkquality</code><a class="headerlink" href="#drunk-quality-drunkquality" title="Permanent link">🔗</a></h4>
 <p>This condition is true if the player has the given drunk quality. Only argument is the minimal drunk quality (1-10).</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">drunkquality 3</span>
-</code></pre></div></td></tr></table></div>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">quality3</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;drunkquality</span><span class="nv"> </span><span class="s">3&quot;</span>
+</code></pre></div>
 <h4 id="has-brew-hasbrew">Has Brew: <code>hasbrew</code><a class="headerlink" href="#has-brew-hasbrew" title="Permanent link">🔗</a></h4>
 <p>This condition is true if the player has the given brew with the specified amount in his inventory.</p>
 <p>You can specify the mode to select the brew by either the name or its id, defaulting to the name.</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">hasbrew 2 &quot;MY BREW&quot;</span>
-<span class="l l-Scalar l-Scalar-Plain">hasbrew 2 brew_17 mode:id</span>
-</code></pre></div></td></tr></table></div>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">hasMyBrew</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;hasbrew</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">&quot;MY</span><span class="nv"> </span><span class="s">BREW&quot;&#39;</span>
+<span class="w">  </span><span class="nt">hasBrew17</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hasbrew</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">brew_17</span><span class="nv"> </span><span class="s">mode:id&quot;</span>
+</code></pre></div>
 <h3 id="actions_1">Actions<a class="headerlink" href="#actions_1" title="Permanent link">🔗</a></h3>
 <h4 id="give-brew-givebrew">Give Brew: <code>givebrew</code><a class="headerlink" href="#give-brew-givebrew" title="Permanent link">🔗</a></h4>
 <p>Gives the player the specified drink. The first number is the amount, and the second number is the quality of the drink.</p>
 <p>You can specify the mode to select the brew by either the name or its id, defaulting to the name.</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">givebrew 1 10 &quot;MY BREW&quot;</span>
-<span class="l l-Scalar l-Scalar-Plain">givebrew 1 10 brew_17 mode:id</span>
-</code></pre></div></td></tr></table></div>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">giveMyBrew</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;givebrew</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">10</span><span class="nv"> </span><span class="s">&quot;MY</span><span class="nv"> </span><span class="s">BREW&quot;&#39;</span>
+<span class="w">  </span><span class="nt">giveBrew17</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;givebrew</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">10</span><span class="nv"> </span><span class="s">brew_17</span><span class="nv"> </span><span class="s">mode:id&quot;</span>
+</code></pre></div>
 <h4 id="take-brew-takebrew">Take Brew: <code>takebrew</code><a class="headerlink" href="#take-brew-takebrew" title="Permanent link">🔗</a></h4>
 <p>Removes the specified drink from the players inventory. An amount needs to be specified.</p>
 <p>You can specify the mode to select the brew by either the name or its id, defaulting to the name.</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">takebrew 2 &quot;MY OTHER BREW&quot;</span>
-<span class="l l-Scalar l-Scalar-Plain">takebrew 2 brew_quest_3</span>
-</code></pre></div></td></tr></table></div>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">takeMyBrew</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;takebrew</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">&quot;MY</span><span class="nv"> </span><span class="s">OTHER</span><span class="nv"> </span><span class="s">BREW&quot;&#39;</span>
+<span class="w">  </span><span class="nt">takeBrew17</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;takebrew</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">brew_quest_3&quot;</span>
+</code></pre></div>
 <h2 id="citizens">Citizens<a href="https://www.spigotmc.org/resources/13811/"></a><a class="headerlink" href="#citizens" title="Permanent link">🔗</a></h2>
 <p>If you have this plugin you can use it's NPCs. I highly recommend you installing it,
 it's NPCs are way more immersive. Having Citizens also allows you to use NPCKill objective and to have moving NPC's
@@ -7239,7 +7242,8 @@ You can change maximum pathfinding range in Citizens configuration files.</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">npcmove innkeeper 100;200;300;world,105;200;280;world block wait:20 done:msg_were_here,give_reward fail:msg_cant_go,give_reward</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">showPath</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;npcmove</span><span class="nv"> </span><span class="s">innkeeper</span><span class="nv"> </span><span class="s">100;200;300;world,105;200;280;world</span><span class="nv"> </span><span class="s">block</span><span class="nv"> </span><span class="s">wait:20</span><span class="nv"> </span><span class="s">done:msg_were_here,give_reward</span><span class="nv"> </span><span class="s">fail:msg_cant_go,give_reward&quot;</span>
 </code></pre></div>
 <h4 id="stop-moving-npc-npcstop">Stop moving NPC: <code>npcstop</code><a class="headerlink" href="#stop-moving-npc-npcstop" title="Permanent link">🔗</a></h4>
 <p>This will stop all current move tasks for the NPC.</p>
@@ -7261,11 +7265,12 @@ You can change maximum pathfinding range in Citizens configuration files.</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">npcstop guard</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">stopGuide</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;npcstop</span><span class="nv"> </span><span class="s">guard&quot;</span>
 </code></pre></div>
 <h3 id="objectives">Objectives<a class="headerlink" href="#objectives" title="Permanent link">🔗</a></h3>
 <h4 id="npc-kill-npckill">NPC Kill: <code>npckill</code><a class="headerlink" href="#npc-kill-npckill" title="Permanent link">🔗</a></h4>
-<p>The NPC Kill objective requires the player to kill a NPC. </p>
+<p>The NPC Kill objective requires the player to kill a NPC.</p>
 <table>
 <thead>
 <tr>
@@ -7324,35 +7329,31 @@ You can change maximum pathfinding range in Citizens configuration files.</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">npckill thief amount:3 actions:reward notify</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">killThief</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;npckill</span><span class="nv"> </span><span class="s">thief</span><span class="nv"> </span><span class="s">amount:3</span><span class="nv"> </span><span class="s">actions:reward</span><span class="nv"> </span><span class="s">notify&quot;</span>
 </code></pre></div>
 <h2 id="craftengine">CraftEngine<a href="https://polymart.org/product/7624/craftengine"></a><a class="headerlink" href="#craftengine" title="Permanent link">🔗</a></h2>
 <h3 id="items">Items<a class="headerlink" href="#items" title="Permanent link">🔗</a></h3>
 <p>CraftEngine usage is integrated to the <a href="../../../Features/Items/">Items</a> system and thus used for actions and conditions.</p>
 <p>In addition, you can also add <code>quest-item</code> argument to tag them as "QuestItem".</p>
-<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Example</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span>
-<span class="normal">6</span>
-<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">topazAxe</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">craftEngine default:topaz_axe</span>
-<span class="w">  </span><span class="nt">amethystTorch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">craftEngine default:amethyst_torch quest-item</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">topazAxe</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;craftEngine</span><span class="nv"> </span><span class="s">default:topaz_axe&quot;</span>
+<span class="w">  </span><span class="nt">amethystTorch</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;craftEngine</span><span class="nv"> </span><span class="s">default:amethyst_torch</span><span class="nv"> </span><span class="s">quest-item&quot;</span>
 <span class="nt">conditions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">hasTopazAxe</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hand topazAxe</span>
+<span class="w">  </span><span class="nt">hasTopazAxe</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hand</span><span class="nv"> </span><span class="s">topazAxe&quot;</span>
 <span class="nt">actions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">giveAmethystTorch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">give amethystTorch:3</span>
-</code></pre></div></td></tr></table></div>
+<span class="w">  </span><span class="nt">giveAmethystTorch</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;give</span><span class="nv"> </span><span class="s">amethystTorch:3&quot;</span>
+</code></pre></div>
 <h2 id="denizen">Denizen<a href="http://dev.bukkit.org/bukkit-plugins/denizen/"></a><a class="headerlink" href="#denizen" title="Permanent link">🔗</a></h2>
 <p>Depenizen is also integrated with BetonQuest! Discover available features on the <a href="https://meta.denizenscript.com/Docs/Search/BetonQuest">meta documentation</a>.</p>
 <h3 id="actions_3">Actions<a class="headerlink" href="#actions_3" title="Permanent link">🔗</a></h3>
 <h4 id="script-script">Script: <code>script</code><a class="headerlink" href="#script-script" title="Permanent link">🔗</a></h4>
 <p>With this action you can fire Denizen task scripts. Don't confuse it with <code>skript</code> action, these are different. The first and only argument is the name of the script.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">runDenizenScript</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;script</span><span class="nv"> </span><span class="s">beton&quot;</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">runDenizenScript</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;script</span><span class="nv"> </span><span class="s">beton&quot;</span>
 </code></pre></div>
 <h2 id="effectlib">EffectLib<a href="http://dev.bukkit.org/bukkit-plugins/effectlib/"></a><a class="headerlink" href="#effectlib" title="Permanent link">🔗</a></h2>
-<p>If you install this plugin on your server you will be able to play particle effects on NPCs and locations. 
+<p>If you install this plugin on your server you will be able to play particle effects on NPCs and locations.
 You can also use the <code>particle</code> action to trigger particle.</p>
 <div class="admonition info effectlib documentation">
 <p class="admonition-title">Info</p>
@@ -7365,7 +7366,7 @@ There is also a <a href="https://sandbox.elmakers.com/#betonquestEffectLibTempla
 <span class="w">   </span><span class="nt">farmer</span><span class="p">:</span><span class="w"> </span><span class="c1">#(2)!</span>
 <span class="w">      </span><span class="nt">class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VortexEffect</span><span class="w"> </span><span class="c1">#(3)!</span>
 <span class="w">      </span><span class="nt">iterations</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span><span class="w"> </span><span class="c1">#(4)!</span>
-<span class="w">      </span><span class="nt">particle</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">crit_magic</span><span class="w"> </span>
+<span class="w">      </span><span class="nt">particle</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">crit_magic</span>
 <span class="w">      </span><span class="nt">helixes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
 <span class="w">      </span><span class="nt">circles</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 <span class="w">      </span><span class="nt">grow</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span>
@@ -7408,9 +7409,8 @@ be displayed to the player for which you ran the action.</p>
 <span class="w">    </span><span class="nt">circles</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
 <span class="w">    </span><span class="nt">grow</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
 <span class="w">    </span><span class="nt">radius</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
-
 <span class="nt">actions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">playEffect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">particle beton loc:100;200;300;world;180;-90 private</span>
+<span class="w">  </span><span class="nt">playEffect</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;particle</span><span class="nv"> </span><span class="s">beton</span><span class="nv"> </span><span class="s">loc:100;200;300;world;180;-90</span><span class="nv"> </span><span class="s">private&quot;</span>
 </code></pre></div>
 <h2 id="fancynpcs">FancyNpcs<a href="https://modrinth.com/plugin/fancynpcs"></a><a class="headerlink" href="#fancynpcs" title="Permanent link">🔗</a></h2>
 <p>If you have this plugin you can use its NPCs.
@@ -7420,13 +7420,13 @@ It is more lightweight than <a href="#citizens">Citizens</a> but lack some of it
 <p>FancyNpcs integration supports all <a href="../../../Features/NPCs/">BetonQuest NPC</a> features.</p>
 </div>
 <h2 id="fakeblock">FakeBlock<a href="https://github.com/toddharrison/BriarCode/tree/main/fake-block"></a><a class="headerlink" href="#fakeblock" title="Permanent link">🔗</a></h2>
-<p>If you have the FakeBlock integration installed, you will be able to view and hide the block groups 
+<p>If you have the FakeBlock integration installed, you will be able to view and hide the block groups
 created in FakeBlock on a player-specific basis.</p>
 <h3 id="actions_5">Actions<a class="headerlink" href="#actions_5" title="Permanent link">🔗</a></h3>
 <h4 id="show-and-hide-block-groups-fakeblock">Show and hide block groups: <code>fakeblock</code><a class="headerlink" href="#show-and-hide-block-groups-fakeblock" title="Permanent link">🔗</a></h4>
-<p>Shows or hides the block group for the player. The block group can be specified as a comma-separated list. 
+<p>Shows or hides the block group for the player. The block group can be specified as a comma-separated list.
 The groups are case-sensitive. To show a group the <code>showgroup</code> argument is required. To hide a group the <code>hidegroup</code> argument is required.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">showBridge</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fakeblock</span><span class="nv"> </span><span class="s">showgroup</span><span class="nv"> </span><span class="s">bridge&quot;</span>
 <span class="w">  </span><span class="nt">hideCityBorder</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fakeblock</span><span class="nv"> </span><span class="s">hidegroup</span><span class="nv"> </span><span class="s">gate,wall,door&quot;</span>
 </code></pre></div>
@@ -7437,35 +7437,27 @@ The groups are case-sensitive. To show a group the <code>showgroup</code> argume
 <p>This condition checks the classes of the player.
 The first argument must be <code>primary</code>, <code>secondary</code> or <code>mastered</code>. Second is the name of a class or <code>any</code>.
 You can optionally specify <code>level:</code> argument followed by the required level of the player.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">heroesclass mastered warrior</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">masteredWarrior</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;heroesclass</span><span class="nv"> </span><span class="s">mastered</span><span class="nv"> </span><span class="s">warrior&quot;</span>
 </code></pre></div>
-</div>
 <h4 id="heroes-attribute-heroesattribute">Heroes Attribute: <code>heroesattribute</code><a class="headerlink" href="#heroes-attribute-heroesattribute" title="Permanent link">🔗</a></h4>
 <p>This condition check's the level of a player's attribute.
 The first argument must be <code>strength</code>, <code>constitution</code>, <code>endurance</code>, <code>dexterity</code>, <code>intellect</code>, <code>wisdom</code>, or <code>charisma</code>.
 Second argument is the required level of the attribute. Must be greater than or equal the specified number.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">heroesattribute strength 5</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">strength5</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;heroesattribute</span><span class="nv"> </span><span class="s">strength</span><span class="nv"> </span><span class="s">5&quot;</span>
 </code></pre></div>
-</div>
 <h4 id="skill-heroesskill">Skill: <code>heroesskill</code><a class="headerlink" href="#skill-heroesskill" title="Permanent link">🔗</a></h4>
 <p>This condition checks if the player can use specified skill. The first argument is the name of the skill.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">heroesskill charge</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">charge</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;heroesskill</span><span class="nv"> </span><span class="s">charge&quot;</span>
 </code></pre></div>
-</div>
 <h3 id="actions_6">Actions<a class="headerlink" href="#actions_6" title="Permanent link">🔗</a></h3>
 <h4 id="heroes-experience-heroesexp">Heroes experience: <code>heroesexp</code><a class="headerlink" href="#heroes-experience-heroesexp" title="Permanent link">🔗</a></h4>
 <p>This action simply gives the player specified amount of Heroes experience. The first argument is either <code>primary</code> or <code>secondary</code> and it means player's class. Second one is the amount of experience to add.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">heroesexp primary 1000</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">primary1000</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;heroesexp</span><span class="nv"> </span><span class="s">primary</span><span class="nv"> </span><span class="s">1000&quot;</span>
 </code></pre></div>
-</div>
 <h2 id="itemsadder">ItemsAdder<a href="https://www.spigotmc.org/resources/73355/"></a><a class="headerlink" href="#itemsadder" title="Permanent link">🔗</a></h2>
 <div class="admonition info">
 <p><strong>Required ItemsAdder version: <em>4.0.10</em> or above</strong></p>
@@ -7473,20 +7465,14 @@ Second argument is the required level of the attribute. Must be greater than or 
 <h3 id="items_1">Items<a class="headerlink" href="#items_1" title="Permanent link">🔗</a></h3>
 <p>ItemsAdder usage is integrated to the <a href="../../../Features/Items/">Items</a> system and thus used for actions and conditions.</p>
 <p>In addition, you can also add <code>quest-item</code> argument to tag them as "QuestItem".</p>
-<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Example</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span>
-<span class="normal">6</span>
-<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">ruby</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">itemsAdder iasurvival:ruby</span>
-<span class="w">  </span><span class="nt">sword</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">itemsAdder iaalchemy:mysterious_sword quest-item</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ruby</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;itemsAdder</span><span class="nv"> </span><span class="s">iasurvival:ruby&quot;</span>
+<span class="w">  </span><span class="nt">sword</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;itemsAdder</span><span class="nv"> </span><span class="s">iaalchemy:mysterious_sword</span><span class="nv"> </span><span class="s">quest-item&quot;</span>
 <span class="nt">conditions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">hasSword</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">item sword</span>
+<span class="w">  </span><span class="nt">hasSword</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;item</span><span class="nv"> </span><span class="s">sword&quot;</span>
 <span class="nt">actions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">giveRuby</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">give ruby:3</span>
-</code></pre></div></td></tr></table></div>
+<span class="w">  </span><span class="nt">giveRuby</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;give</span><span class="nv"> </span><span class="s">ruby:3&quot;</span>
+</code></pre></div>
 <h3 id="conditions_3">Conditions<a class="headerlink" href="#conditions_3" title="Permanent link">🔗</a></h3>
 <h4 id="check-for-block-itemsadderblock">Check for block <code>itemsAdderBlock</code><a class="headerlink" href="#check-for-block-itemsadderblock" title="Permanent link">🔗</a></h4>
 <p>Check if the ItemsAdder block is at a location.</p>
@@ -7515,7 +7501,7 @@ Second argument is the required level of the attribute. Must be greater than or 
 </tbody>
 </table>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">iaBlock</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">itemsAdderBlock itemsadder:ruby_ore 40;72;3;world</span>
+<span class="w">  </span><span class="nt">iaBlock</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;itemsAdderBlock</span><span class="nv"> </span><span class="s">itemsadder:ruby_ore</span><span class="nv"> </span><span class="s">40;72;3;world&quot;</span>
 </code></pre></div>
 <h3 id="actions_7">Actions<a class="headerlink" href="#actions_7" title="Permanent link">🔗</a></h3>
 <h4 id="place-block-itemsadderblock">Place block <code>itemsAdderBlock</code><a class="headerlink" href="#place-block-itemsadderblock" title="Permanent link">🔗</a></h4>
@@ -7545,7 +7531,7 @@ Second argument is the required level of the attribute. Must be greater than or 
 </tbody>
 </table>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">iaSetBlock</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">itemsAdderBlock itemsadder:ruby_ore 100;200;300;world</span>
+<span class="w">  </span><span class="nt">iaSetBlock</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;itemsAdderBlock</span><span class="nv"> </span><span class="s">itemsadder:ruby_ore</span><span class="nv"> </span><span class="s">100;200;300;world&quot;</span>
 </code></pre></div>
 <h4 id="play-totem-animation-itemsadderanimation">Play totem animation <code>itemsAdderAnimation</code><a class="headerlink" href="#play-totem-animation-itemsadderanimation" title="Permanent link">🔗</a></h4>
 <p>Plays an ItemsAdder totem animation.</p>
@@ -7568,7 +7554,7 @@ Second argument is the required level of the attribute. Must be greater than or 
 </tbody>
 </table>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">iaPlayAnimation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">itemsAdderAnimation totem1</span>
+<span class="w">  </span><span class="nt">iaPlayAnimation</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;itemsAdderAnimation</span><span class="nv"> </span><span class="s">totem1&quot;</span>
 </code></pre></div>
 <h3 id="objectives_1">Objectives<a class="headerlink" href="#objectives_1" title="Permanent link">🔗</a></h3>
 <h4 id="break-block-itemsadderblockbreak">Break Block <code>itemsAdderBlockBreak</code><a class="headerlink" href="#break-block-itemsadderblockbreak" title="Permanent link">🔗</a></h4>
@@ -7599,7 +7585,7 @@ You can add a <code>notify</code> keyword if you want to send a notification to 
 </tbody>
 </table>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">iaBreak</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">itemsAdderBlockBreak itemsadder:ruby_ore amount:20 notify:5</span>
+<span class="w">  </span><span class="nt">iaBreak</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;itemsAdderBlockBreak</span><span class="nv"> </span><span class="s">itemsadder:ruby_ore</span><span class="nv"> </span><span class="s">amount:20</span><span class="nv"> </span><span class="s">notify:5&quot;</span>
 </code></pre></div>
 <h4 id="place-block-itemsadderblockplace">Place Block <code>itemsAdderBlockPlace</code><a class="headerlink" href="#place-block-itemsadderblockplace" title="Permanent link">🔗</a></h4>
 <p>To complete this objective player must place specified amount of ItemsAdder blocks.
@@ -7629,32 +7615,24 @@ You can add a <code>notify</code> keyword if you want to send a notification to 
 </tbody>
 </table>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">iaPlace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">itemsAdderBlockPlace iasurvival:restoration_table</span>
+<span class="w">  </span><span class="nt">iaPlace</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;itemsAdderBlockPlace</span><span class="nv"> </span><span class="s">iasurvival:restoration_table&quot;</span>
 </code></pre></div>
 <h2 id="jobsreborn">JobsReborn<a href="https://www.spigotmc.org/resources/4216/"></a><a class="headerlink" href="#jobsreborn" title="Permanent link">🔗</a></h2>
-<p>Requires adding the following to "<em>config.yml</em>":
-<div class="highlight"><pre><span></span><code><span class="nt">hook</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">jobs</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;true&#39;</span>
-</code></pre></div></p>
 <h3 id="conditions_4">Conditions<a class="headerlink" href="#conditions_4" title="Permanent link">🔗</a></h3>
 <h4 id="can-level-up-nujobs_canlevel-jobname">Can Level up: <code>nujobs_canlevel {jobname}</code><a class="headerlink" href="#can-level-up-nujobs_canlevel-jobname" title="Permanent link">🔗</a></h4>
 <p>Returns true if the player can level up</p>
 <h4 id="has-job-nujobs_hasjob-jobname">Has Job: <code>nujobs_hasjob {jobname}</code><a class="headerlink" href="#has-job-nujobs_hasjob-jobname" title="Permanent link">🔗</a></h4>
 <p>Returns true if the player has this job</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">nujobs_hasjob Woodcutter</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">hasWoodcutter</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nujobs_hasjob</span><span class="nv"> </span><span class="s">Woodcutter&quot;</span>
 </code></pre></div>
-</div>
 <h4 id="job-full-nujobs_jobfull-jobname">Job Full: <code>nujobs_jobfull {jobname}</code><a class="headerlink" href="#job-full-nujobs_jobfull-jobname" title="Permanent link">🔗</a></h4>
 <p>Returns true if the job is at the maximum slots</p>
 <h4 id="job-level-nujobs_joblevel-jobname-min-max">Job Level: <code>nujobs_joblevel {jobname} {min} {max}</code><a class="headerlink" href="#job-level-nujobs_joblevel-jobname-min-max" title="Permanent link">🔗</a></h4>
 <p>Returns true if the player has this job, and at a level equal to or between the min/max</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">nujobs_joblevel Woodcutter 5 10</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">woodcutterLevel5</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nujobs_joblevel</span><span class="nv"> </span><span class="s">Woodcutter</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">10&quot;</span>
 </code></pre></div>
-</div>
 <h3 id="actions_8">Actions<a class="headerlink" href="#actions_8" title="Permanent link">🔗</a></h3>
 <h4 id="add-jobs-experience-nujobs_addexp-jobname-exp">Add Jobs Experience: <code>nujobs_addexp {jobname} {exp}</code><a class="headerlink" href="#add-jobs-experience-nujobs_addexp-jobname-exp" title="Permanent link">🔗</a></h4>
 <p>Gives the player experience</p>
@@ -7721,8 +7699,8 @@ The syntax is as follows:</p>
 for an in-depth explanation on what contexts are and how to add them to permissions.</p>
 <h3 id="permissions">Permissions<a class="headerlink" href="#permissions" title="Permanent link">🔗</a></h3>
 <p>If you prefer to directly add or remove permissions without triggering the LuckPerms changelog chat notifications,
-you can utilize the <code>luckperms addPermission</code> and <code>luckperms removePermission</code> actions. 
-You also have the possibility to assign groups to the player via the <code>group.&lt;GroupName&gt;</code> permission. </p>
+you can utilize the <code>luckperms addPermission</code> and <code>luckperms removePermission</code> actions.
+You also have the possibility to assign groups to the player via the <code>group.&lt;GroupName&gt;</code> permission.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">addDefaultGroup</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;luckperms</span><span class="nv"> </span><span class="s">addPermission</span><span class="nv"> </span><span class="s">permission:group.default,group.quester&quot;</span><span class="w"> </span><span class="c1">#(1)!</span>
 <span class="w">  </span><span class="nt">addNegated</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;luckperms</span><span class="nv"> </span><span class="s">addPermission</span><span class="nv"> </span><span class="s">permission:tutorial.done</span><span class="nv"> </span><span class="s">value:false&quot;</span><span class="w"> </span><span class="c1">#(2)!</span>
@@ -7738,7 +7716,7 @@ You also have the possibility to assign groups to the player via the <code>group
 <li>With the key <code>expiry</code> you can define the time until the permission expires. There can only be one expiry argument. If you dont use the <code>unit</code> parameter, it defaults do DAYS. Other units can be found <a href="https://help.intrexx.com/apidocs/jdk17/api/java.base/java/util/concurrent/TimeUnit.html">here</a>.</li>
 <li>You can remove multiple permissions at once by separating them with a comma.</li>
 </ol>
-<p>You can also add <code>context</code>, <code>value</code> and <code>expiry</code> to the <code>removePermission</code> action 
+<p>You can also add <code>context</code>, <code>value</code> and <code>expiry</code> to the <code>removePermission</code> action
 but its not recommended as it only removes exact matches.
 Instead only use the permission to remove.</p>
 <h2 id="magic">Magic<a href="http://dev.bukkit.org/bukkit-plugins/magic/"></a><a class="headerlink" href="#magic" title="Permanent link">🔗</a></h2>
@@ -7753,133 +7731,117 @@ of the wand (as defined in <em>wands.yml</em> in Magic plugin) to check if it's 
 In the case of <code>inventory</code> you can specify an amount with <code>amount</code> and this will only return true if a player has that amount.
 You can also use optional <code>spells:</code> argument, followed by a list of spells separated with a comma.
 Each spell in this list must have a minimal level defined after a colon.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">wand hand name:master spells:flare:3,missile:2</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">wand</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;wand</span><span class="nv"> </span><span class="s">hand</span><span class="nv"> </span><span class="s">name:master</span><span class="nv"> </span><span class="s">spells:flare:3,missile:2&quot;</span>
 </code></pre></div>
-</div>
 <h2 id="mcmmo">McMMO<a href="https://www.spigotmc.org/resources/64348/"></a><a class="headerlink" href="#mcmmo" title="Permanent link">🔗</a></h2>
 <h3 id="conditions_6">Conditions<a class="headerlink" href="#conditions_6" title="Permanent link">🔗</a></h3>
 <h4 id="mcmmo-level-mcmmolevel">McMMO Level: <code>mcmmolevel</code><a class="headerlink" href="#mcmmo-level-mcmmolevel" title="Permanent link">🔗</a></h4>
 <p>This conditions checks if the player has high enough level in the specified skill. The first argument is the name of the skill, second one is the minimum level the player needs to have to pass this condition.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mcmmolevel woodcutting 50</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">woodcutting50</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mcmmolevel</span><span class="nv"> </span><span class="s">woodcutting</span><span class="nv"> </span><span class="s">50&quot;</span>
 </code></pre></div>
-</div>
 <h3 id="actions_9">Actions<a class="headerlink" href="#actions_9" title="Permanent link">🔗</a></h3>
 <h4 id="add-mcmmo-experience-mcmmoexp">Add MCMMO Experience: <code>mcmmoexp</code><a class="headerlink" href="#add-mcmmo-experience-mcmmoexp" title="Permanent link">🔗</a></h4>
 <p>This action adds experience points in a specified skill. The first argument is the name of the skill, second one is the amount of experience to add.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mcmmoexp swords 1500</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">swords1500</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mcmmoexp</span><span class="nv"> </span><span class="s">swords</span><span class="nv"> </span><span class="s">1500&quot;</span>
 </code></pre></div>
-</div>
 <h2 id="mmocore-mmoitems-mythiclib">MMOCore<a href="https://www.spigotmc.org/resources/70575/"></a> &amp; MMOItems<a href="https://www.spigotmc.org/resources/39267/"></a> &amp; MythicLib<a href="https://www.spigotmc.org/resources/90306/"></a><a class="headerlink" href="#mmocore-mmoitems-mythiclib" title="Permanent link">🔗</a></h2>
 <h3 id="items_2">Items<a class="headerlink" href="#items_2" title="Permanent link">🔗</a></h3>
 <p>MMOItems usage is integrated to the <a href="../../../Features/Items/">Items</a> system and thus used for actions and conditions.</p>
 <p>In addition, you can also add <code>quest-item</code> argument to tag them as "QuestItem".</p>
-<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Example</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span>
-<span class="normal">6</span>
-<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">crown</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmoitem ARMOR SKELETON_CROWN</span>
-<span class="w">  </span><span class="nt">gem</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmoitem GEMS SPEED_GEM quest-item</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">crown</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoitem</span><span class="nv"> </span><span class="s">ARMOR</span><span class="nv"> </span><span class="s">SKELETON_CROWN&quot;</span>
+<span class="w">  </span><span class="nt">gem</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoitem</span><span class="nv"> </span><span class="s">GEMS</span><span class="nv"> </span><span class="s">SPEED_GEM</span><span class="nv"> </span><span class="s">quest-item&quot;</span>
 <span class="nt">conditions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">hasCrown</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hand crown</span>
+<span class="w">  </span><span class="nt">hasCrown</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hand</span><span class="nv"> </span><span class="s">crown&quot;</span>
 <span class="nt">actions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">giveGem</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">give gem:3</span>
-</code></pre></div></td></tr></table></div>
+<span class="w">  </span><span class="nt">giveGem</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;give</span><span class="nv"> </span><span class="s">gem:3&quot;</span>
+</code></pre></div>
 <h4 id="craft-item-craft">Craft item: <code>craft</code><a class="headerlink" href="#craft-item-craft" title="Permanent link">🔗</a></h4>
 <p>When MMOItems is installed the <a href="../Objectives-List/#craft-an-item"><code>craft</code></a> objective also processes MMOItems
 "recipe-amounts" crafting and MMOItems station crafting.
 The amount is based on how many items have actually been crafted, not how often a specific recipe has been used!
 Therefore, a recipe that makes four items at once will let the objective progress by four steps.</p>
-<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Crafting Example</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">potion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmoitem HEALTH_POTION_RECIPE</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">potion</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoitem</span><span class="nv"> </span><span class="s">HEALTH_POTION_RECIPE&quot;</span>
 <span class="nt">objectives</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">craftPotion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">craft potion 5 notify</span>
-</code></pre></div></td></tr></table></div>
+<span class="w">  </span><span class="nt">craftPotion</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;craft</span><span class="nv"> </span><span class="s">potion</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">notify&quot;</span>
+</code></pre></div>
 <h3 id="conditions_7">Conditions<a class="headerlink" href="#conditions_7" title="Permanent link">🔗</a></h3>
 <h4 id="mmocore-class-mmoclass">MMOCore class: <code>mmoclass</code><a class="headerlink" href="#mmocore-class-mmoclass" title="Permanent link">🔗</a></h4>
 <p>Checks if a player has the given MMOCore class. You can check for any class that is not the default class by writing <code>*</code>
 instead of a class name.
 If a level has been specified the player needs to be on that level
 or higher to meet the condition.
-You can disable this behaviour by adding the <code>equal</code> argument. 
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mmoclass * 5</span>
-<span class="l l-Scalar l-Scalar-Plain">mmoclass WARRIOR</span>
-<span class="l l-Scalar l-Scalar-Plain">mmoclass MAGE 5</span>
-<span class="l l-Scalar l-Scalar-Plain">mmoclass MAGE 5 equal</span>
-</code></pre></div></td></tr></table></div></p>
+You can disable this behaviour by adding the <code>equal</code> argument.</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">5</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoclass</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">5&quot;</span>
+<span class="w">  </span><span class="nt">warrior</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoclass</span><span class="nv"> </span><span class="s">WARRIOR&quot;</span>
+<span class="w">  </span><span class="nt">mage5</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoclass</span><span class="nv"> </span><span class="s">MAGE</span><span class="nv"> </span><span class="s">5&quot;</span>
+<span class="w">  </span><span class="nt">mage5Equal</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoclass</span><span class="nv"> </span><span class="s">MAGE</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">equal&quot;</span>
+</code></pre></div>
 <h4 id="mmocore-attribute-mmoattribute">MMOCore attribute: <code>mmoattribute</code><a class="headerlink" href="#mmocore-attribute-mmoattribute" title="Permanent link">🔗</a></h4>
 <p>Checks if a player has the specified attribute on the given level or higher.
-You can disable this behaviour by adding the <code>equal</code> argument. 
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mmoclass mmoattribute strength 2</span><span class="w"> </span>
-<span class="l l-Scalar l-Scalar-Plain">mmoclass mmoattribute strength 2 equal</span>
-</code></pre></div></td></tr></table></div></p>
+You can disable this behaviour by adding the <code>equal</code> argument.</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">strength2</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoclass</span><span class="nv"> </span><span class="s">mmoattribute</span><span class="nv"> </span><span class="s">strength</span><span class="nv"> </span><span class="s">2&quot;</span>
+<span class="w">  </span><span class="nt">strength2Equal</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoclass</span><span class="nv"> </span><span class="s">mmoattribute</span><span class="nv"> </span><span class="s">strength</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">equal&quot;</span>
+</code></pre></div>
 <h4 id="mmocore-profession-mmoprofession">MMOCore profession: <code>mmoprofession</code><a class="headerlink" href="#mmocore-profession-mmoprofession" title="Permanent link">🔗</a></h4>
 <p>Checks if a player has the specified profession on the given level or higher.
-You can disable this behaviour by adding the <code>equal</code> argument. 
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mmoprofession mining 2</span><span class="w"> </span>
-<span class="l l-Scalar l-Scalar-Plain">mmoprofession mining 2 equal</span>
-</code></pre></div></td></tr></table></div></p>
+You can disable this behaviour by adding the <code>equal</code> argument.</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">mining2</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoprofession</span><span class="nv"> </span><span class="s">mining</span><span class="nv"> </span><span class="s">2&quot;</span>
+<span class="w">  </span><span class="nt">mining2Equal</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoprofession</span><span class="nv"> </span><span class="s">mining</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">equal&quot;</span>
+</code></pre></div>
 <h4 id="mythiclib-stat-mmostat">MythicLib stat: <code>mmostat</code><a class="headerlink" href="#mythiclib-stat-mmostat" title="Permanent link">🔗</a></h4>
 <p>Checks <a href="https://gitlab.com/phoenix-dvpmt/mythiclib/-/blob/master/plugin/src/main/java/io/lumine/mythic/lib/api/stat/SharedStat.java">these</a>
 stats that combine all sorts of stats from MMOCore and MMOItems.
 The player needs to be on the specified level or higher in order to meet this condition.
-You can disable this behaviour by adding the <code>equal</code> argument. 
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mmostat DAMAGE_REDUCTION 3</span>
-</code></pre></div></td></tr></table></div></p>
+You can disable this behaviour by adding the <code>equal</code> argument.</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">damageReduction3</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmostat</span><span class="nv"> </span><span class="s">DAMAGE_REDUCTION</span><span class="nv"> </span><span class="s">3&quot;</span>
+</code></pre></div>
 <h3 id="objectives_3">Objectives<a class="headerlink" href="#objectives_3" title="Permanent link">🔗</a></h3>
 <h4 id="break-special-blocks-mmocorebreakblock">Break Special Blocks: <code>mmocorebreakblock</code><a class="headerlink" href="#break-special-blocks-mmocorebreakblock" title="Permanent link">🔗</a></h4>
-<p>This objective requires the player to break 
+<p>This objective requires the player to break
 <a href="https://gitlab.com/phoenix-dvpmt/mmocore/-/wikis/Mining%20and%20Block%20Regen">special blocks from MMOCore</a>. Please note that you <em>must</em> use this objective over <code>block</code> if you are using MMOCore's custom mining system.
 All three different block types and an amount can be defined. You can also send notifications to the player by appending
 the <code>notify</code> keyword optionally with the notification interval after a colon.</p>
 <p>This objective has three properties: <code>amount</code>, <code>left</code> and <code>total</code>. <code>amount</code> is the amount of blocks already broken,
 <code>left</code> is the amount of blocks still left to break and <code>total</code> is the amount of blocks initially required.</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mmocorebreakblock 5 block:1</span><span class="w">      </span><span class="c1">#A custom block&#39;s block ID</span>
-<span class="l l-Scalar l-Scalar-Plain">mmocorebreakblock 64 block:STONE</span><span class="w">  </span><span class="c1">#vanilla material</span>
-<span class="l l-Scalar l-Scalar-Plain">mmocorebreakblock 1 block:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVy</span><span class="w"> </span><span class="c1">#... this is a heads texture data</span>
-</code></pre></div></td></tr></table></div>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">block1</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmocorebreakblock</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">block:1&quot;</span><span class="w">      </span><span class="c1">#A custom block&#39;s block ID</span>
+<span class="w">  </span><span class="nt">stone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmocorebreakblock</span><span class="nv"> </span><span class="s">64</span><span class="nv"> </span><span class="s">block:STONE&quot;</span><span class="w">  </span><span class="c1">#vanilla material</span>
+<span class="w">  </span><span class="nt">head</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmocorebreakblock</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">block:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVy&quot;</span><span class="w"> </span><span class="c1">#... this is a heads texture data</span>
+</code></pre></div>
 <h4 id="change-mmocore-class-mmochangeclass">Change MMOCore class: <code>mmochangeclass</code><a class="headerlink" href="#change-mmocore-class-mmochangeclass" title="Permanent link">🔗</a></h4>
 <p>This objective requires the player to change their class.</p>
-<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Example</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">selectAnyClass</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmochangeclass</span><span class="nv"> </span><span class="s">actions:pickedClass&quot;</span>
-<span class="w">    </span><span class="nt">selectMage</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmochangeclass</span><span class="nv"> </span><span class="s">class:MAGE</span><span class="nv"> </span><span class="s">actions:startMageIntroQuest&quot;</span>
-</code></pre></div></td></tr></table></div>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">selectAnyClass</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmochangeclass</span><span class="nv"> </span><span class="s">actions:pickedClass&quot;</span>
+<span class="w">  </span><span class="nt">selectMage</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmochangeclass</span><span class="nv"> </span><span class="s">class:MAGE</span><span class="nv"> </span><span class="s">actions:startMageIntroQuest&quot;</span>
+</code></pre></div>
 <h4 id="mmocore-profession-levelup-mmoprofessionlevelup">MMOCore Profession levelup: <code>mmoprofessionlevelup</code><a class="headerlink" href="#mmocore-profession-levelup-mmoprofessionlevelup" title="Permanent link">🔗</a></h4>
 <p>This objective requires the player to level the given profession to the specified level.
 Use <code>main</code> to check for class level ups.</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mmoprofessionlevelup MINING 10</span>
-</code></pre></div></td></tr></table></div>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">mining10</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoprofessionlevelup</span><span class="nv"> </span><span class="s">MINING</span><span class="nv"> </span><span class="s">10&quot;</span>
+</code></pre></div>
 <h4 id="upgrade-item-mmoitemupgrade">Upgrade Item: <code>mmoitemupgrade</code><a class="headerlink" href="#upgrade-item-mmoitemupgrade" title="Permanent link">🔗</a></h4>
-<p>This objective tracks if a player upgrades the given item with an upgrade consumable.<br />
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mmoitemupgrade SWORD FALCON_BLADE</span>
-</code></pre></div></td></tr></table></div></p>
+<p>This objective tracks if a player upgrades the given item with an upgrade consumable.</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">sword</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoitemupgrade</span><span class="nv"> </span><span class="s">SWORD</span><span class="nv"> </span><span class="s">FALCON_BLADE&quot;</span>
+</code></pre></div>
 <h4 id="apply-gemstone-mmoitemapplygem">Apply gemstone: <code>mmoitemapplygem</code><a class="headerlink" href="#apply-gemstone-mmoitemapplygem" title="Permanent link">🔗</a></h4>
 <p>This objective is completed when the player applies the gemstone with the given gemstoneID to an item with the given
-itemType and itemID.
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mmoitemapplygem SWORD CUTLASS GEM_OF_ACCURACY</span>
-</code></pre></div></td></tr></table></div></p>
+itemType and itemID.</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">sword</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoitemapplygem</span><span class="nv"> </span><span class="s">SWORD</span><span class="nv"> </span><span class="s">CUTLASS</span><span class="nv"> </span><span class="s">GEM_OF_ACCURACY&quot;</span>
+</code></pre></div>
 <h4 id="activate-mythiclib-skill-mmoskill">Activate MythicLib skill: <code>mmoskill</code><a class="headerlink" href="#activate-mythiclib-skill-mmoskill" title="Permanent link">🔗</a></h4>
-<p>This objective requires the player to activate a MythicLib skill (e.g. with MMOItems or MMOCore). </p>
+<p>This objective requires the player to activate a MythicLib skill (e.g. with MMOItems or MMOCore).</p>
 <table>
 <thead>
 <tr>
@@ -7904,46 +7866,49 @@ itemType and itemID.
 </tr>
 </tbody>
 </table>
-<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Example</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">triggerSkill</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoskill</span><span class="nv"> </span><span class="s">LIFE_ENDER</span><span class="nv"> </span><span class="s">actions:updateStatistics&quot;</span>
-<span class="nt">castSkillWithMMOCore</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoskill</span><span class="nv"> </span><span class="s">DEEP_WOUND</span><span class="nv"> </span><span class="s">trigger:CAST</span><span class="nv"> </span><span class="s">actions:completeTutorial&quot;</span>
-<span class="nt">itemSkill</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoskill</span><span class="nv"> </span><span class="s">DEEP_WOUND</span><span class="nv"> </span><span class="s">trigger:RIGHT_CLICK,LEFT_CLICK</span><span class="nv"> </span><span class="s">actions:giveReward&quot;</span>
-</code></pre></div></td></tr></table></div>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">triggerSkill</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoskill</span><span class="nv"> </span><span class="s">LIFE_ENDER</span><span class="nv"> </span><span class="s">actions:updateStatistics&quot;</span>
+<span class="w">  </span><span class="nt">castSkillWithMMOCore</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoskill</span><span class="nv"> </span><span class="s">DEEP_WOUND</span><span class="nv"> </span><span class="s">trigger:CAST</span><span class="nv"> </span><span class="s">actions:completeTutorial&quot;</span>
+<span class="w">  </span><span class="nt">itemSkill</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoskill</span><span class="nv"> </span><span class="s">DEEP_WOUND</span><span class="nv"> </span><span class="s">trigger:RIGHT_CLICK,LEFT_CLICK</span><span class="nv"> </span><span class="s">actions:giveReward&quot;</span>
+</code></pre></div>
 <h3 id="actions_10">Actions<a class="headerlink" href="#actions_10" title="Permanent link">🔗</a></h3>
 <h4 id="give-mmocore-class-experience-mmoclassexperience">Give MMOCore class experience: <code>mmoclassexperience</code><a class="headerlink" href="#give-mmocore-class-experience-mmoclassexperience" title="Permanent link">🔗</a></h4>
 <p>Adds experience to the players class. The amount is a number. The <code>level</code> argument
-is optional and would convert the amount to levels instead of XP points.
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mmoclassexperience 150</span>
-<span class="l l-Scalar l-Scalar-Plain">mmoclassexperience 1 level</span>
-</code></pre></div></td></tr></table></div></p>
+is optional and would convert the amount to levels instead of XP points.</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">150</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoclassexperience</span><span class="nv"> </span><span class="s">150&quot;</span>
+<span class="w">  </span><span class="nt">level1</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoclassexperience</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">level&quot;</span>
+</code></pre></div>
 <h4 id="give-mmocore-profession-experience-mmoprofessionexperience">Give MMOCore profession experience: <code>mmoprofessionexperience</code><a class="headerlink" href="#give-mmocore-profession-experience-mmoprofessionexperience" title="Permanent link">🔗</a></h4>
 <p>Adds experience in the specified player profession. The amount is a number. The <code>level</code> argument
-is optional and would convert the amount to levels instead of XP points.
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mmoprofessionexperience MINING 100</span>
-<span class="l l-Scalar l-Scalar-Plain">mmoprofessionexperience CUSTOM_PROFESSION_NAME 1 level</span>
-</code></pre></div></td></tr></table></div></p>
+is optional and would convert the amount to levels instead of XP points.</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">mining</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoprofessionexperience</span><span class="nv"> </span><span class="s">MINING</span><span class="nv"> </span><span class="s">100&quot;</span>
+<span class="w">  </span><span class="nt">customProf</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoprofessionexperience</span><span class="nv"> </span><span class="s">CUSTOM_PROFESSION_NAME</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">level&quot;</span>
+</code></pre></div>
 <h4 id="give-class-points-mmocoreclasspoints">Give class points: <code>mmocoreclasspoints</code><a class="headerlink" href="#give-class-points-mmocoreclasspoints" title="Permanent link">🔗</a></h4>
-<p>Gives the player class points. The amount is a number.
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mmocoreclasspoints 1</span>
-</code></pre></div></td></tr></table></div></p>
+<p>Gives the player class points. The amount is a number.</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">give1</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmocoreclasspoints</span><span class="nv"> </span><span class="s">1&quot;</span>
+</code></pre></div>
 <h4 id="give-skill-points-mmocoreskillpoints">Give skill points: <code>mmocoreskillpoints</code><a class="headerlink" href="#give-skill-points-mmocoreskillpoints" title="Permanent link">🔗</a></h4>
-<p>Gives the player skill points. The amount is a number.
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mmocoreskillpoints 10</span>
-</code></pre></div></td></tr></table></div></p>
+<p>Gives the player skill points. The amount is a number.</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">give10</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmocoreskillpoints</span><span class="nv"> </span><span class="s">10&quot;</span>
+</code></pre></div>
 <h4 id="give-attribute-points-mmocoreattributepoints">Give attribute points: <code>mmocoreattributepoints</code><a class="headerlink" href="#give-attribute-points-mmocoreattributepoints" title="Permanent link">🔗</a></h4>
-<p>Gives the player attribute points. The amount is a number.
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mmocoreattributepoints 2</span>
-</code></pre></div></td></tr></table></div></p>
+<p>Gives the player attribute points. The amount is a number.</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">give2</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmocoreattributepoints</span><span class="nv"> </span><span class="s">2&quot;</span>
+</code></pre></div>
 <h4 id="give-attribute-reallocation-points-mmocoreattributereallocationpoints">Give attribute reallocation points: <code>mmocoreattributereallocationpoints</code><a class="headerlink" href="#give-attribute-reallocation-points-mmocoreattributereallocationpoints" title="Permanent link">🔗</a></h4>
-<p>Gives the player attribute reallocation points. The amount is a number.
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mmocoreattributereallocationpoints 1</span>
-</code></pre></div></td></tr></table></div></p>
+<p>Gives the player attribute reallocation points. The amount is a number.</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">give1</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmocoreattributereallocationpoints</span><span class="nv"> </span><span class="s">1&quot;</span>
+</code></pre></div>
 <h2 id="mythicmobs">MythicMobs<a href="http://dev.bukkit.org/bukkit-plugins/mythicmobs/"></a><a class="headerlink" href="#mythicmobs" title="Permanent link">🔗</a></h2>
 <div class="admonition info">
-<p><strong>Required MythicMobs version: <em>5.3.5</em> or above</strong> </p>
+<p><strong>Required MythicMobs version: <em>5.3.5</em> or above</strong></p>
 </div>
 <div class="admonition info">
 <p class="admonition-title">Info</p>
@@ -7952,20 +7917,14 @@ is optional and would convert the amount to levels instead of XP points.
 <h3 id="items_3">Items<a class="headerlink" href="#items_3" title="Permanent link">🔗</a></h3>
 <p>Mythic(Mobs) items are integrated to the <a href="../../../Features/Items/">BetonQuest Items</a> system.</p>
 <p>In addition, you can also add <code>quest-item</code> argument to tag them as "QuestItem".</p>
-<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Example</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span>
-<span class="normal">6</span>
-<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">crown</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mythic KingsCrown</span>
-<span class="w">  </span><span class="nt">sword</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mythic SkeletonKingSword quest-item</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">crown</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mythic</span><span class="nv"> </span><span class="s">KingsCrown&quot;</span>
+<span class="w">  </span><span class="nt">sword</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mythic</span><span class="nv"> </span><span class="s">SkeletonKingSword</span><span class="nv"> </span><span class="s">quest-item&quot;</span>
 <span class="nt">conditions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">hasCrown</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">armor crown</span>
+<span class="w">  </span><span class="nt">hasCrown</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;armor</span><span class="nv"> </span><span class="s">crown&quot;</span>
 <span class="nt">actions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">giveSword</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">give sword</span>
-</code></pre></div></td></tr></table></div>
+<span class="w">  </span><span class="nt">giveSword</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;give</span><span class="nv"> </span><span class="s">sword&quot;</span>
+</code></pre></div>
 <h3 id="objectives_4">Objectives<a class="headerlink" href="#objectives_4" title="Permanent link">🔗</a></h3>
 <h4 id="mobkill-mmobkill">MobKill: <code>mmobkill</code><a class="headerlink" href="#mobkill-mmobkill" title="Permanent link">🔗</a></h4>
 <p>You need to kill the specified amount of MythicMobs to complete this objective.
@@ -8033,21 +7992,20 @@ You can add a <code>notify</code> keyword if you want to send a notification to 
 <p>This objective has three properties: <code>amount</code>, <code>left</code> and <code>total</code>. <code>amount</code> is the amount of mythic mobs already killed,
 <code>left</code> is the amount of mythic mobs still needed to kill and <code>total</code> is the amount of mythic mobs initially required.
 <code>mode</code> gives the identification type.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">killKnight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmobkill SkeletalKnight amount:2 actions:reward</span>
-<span class="nt">killSnails</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmobkill SnekBoss,SnailBoss,SunBoss amount:10 actions:reward</span>
-<span class="nt">snailFaction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmobkill snail mode:faction amount:10 actions:reward</span>
-<span class="nt">killBoss</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmobkill SnekBoss amount:2 minlevel:4 maxlevel:6 actions:reward marked:DungeonBoss3</span>
-<span class="nt">killDevil</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmobkill dungeonDevil deathRadiusAllPlayers:30 actions:reward</span>
-<span class="nt">bandits</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmobkill bandit deathRadiusAllPlayers:30 mode:FACTION actions:spawnTrader</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">killKnight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmobkill SkeletalKnight amount:2 actions:reward</span>
+<span class="w">  </span><span class="nt">killSnails</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmobkill SnekBoss,SnailBoss,SunBoss amount:10 actions:reward</span>
+<span class="w">  </span><span class="nt">snailFaction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmobkill snail mode:faction amount:10 actions:reward</span>
+<span class="w">  </span><span class="nt">killBoss</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmobkill SnekBoss amount:2 minlevel:4 maxlevel:6 actions:reward marked:DungeonBoss3</span>
+<span class="w">  </span><span class="nt">killDevil</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmobkill dungeonDevil deathRadiusAllPlayers:30 actions:reward</span>
+<span class="w">  </span><span class="nt">bandits</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmobkill bandit deathRadiusAllPlayers:30 mode:FACTION actions:spawnTrader</span>
 </code></pre></div>
 <h3 id="conditions_8">Conditions<a class="headerlink" href="#conditions_8" title="Permanent link">🔗</a></h3>
 <h4 id="mythicmob-distance-mythicmobdistance">MythicMob distance: <code>mythicmobdistance</code><a class="headerlink" href="#mythicmob-distance-mythicmobdistance" title="Permanent link">🔗</a></h4>
 <p>Check whether the player is near a specific MythicMobs entity. The first argument is the internal name of the mob (the one defined in MythicMobs' configuration). The second argument is the distance to check, measured in block lengths in a circular radius.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mythicmobdistance SkeletalKnight 7</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">nearKnight</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mythicmobdistance</span><span class="nv"> </span><span class="s">SkeletalKnight</span><span class="nv"> </span><span class="s">7&quot;</span>
 </code></pre></div>
-</div>
 <h3 id="actions_11">Actions<a class="headerlink" href="#actions_11" title="Permanent link">🔗</a></h3>
 <h4 id="spawn-mythicmob-mspawnmob"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a9 9 0 0 0-9 9 8.99 8.99 0 0 0 4 7.47V22h2v-3h2v3h2v-3h2v3h2v-3.54c2.47-1.65 4-4.46 4-7.46a9 9 0 0 0-9-9m-4 9a2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2 2 2 0 0 1 2-2m8 0a2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2 2 2 0 0 1 2-2m-4 3 1.5 3h-3z"/></svg></span> Spawn MythicMob: <code>mspawnmob</code><a class="headerlink" href="#spawn-mythicmob-mspawnmob" title="Permanent link">🔗</a></h4>
 <p><strong>static</strong></p>
@@ -8100,14 +8058,14 @@ You can add a <code>notify</code> keyword if you want to send a notification to 
 </tbody>
 </table>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">spawnBoss</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mspawnmob 100;200;300;world MegaBoss:1 1 target</span>
-<span class="w">  </span><span class="nt">spawnKnights</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mspawnmob 100;200;300;world SkeletalKnight:3 5</span>
-<span class="w">  </span><span class="nt">spawnPrivateDevil</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mspawnmob 100;200;300;world Mephisto:1 5 target private marked:DungeonBoss3</span>
+<span class="w">  </span><span class="nt">spawnBoss</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mspawnmob</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">MegaBoss:1</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">target&quot;</span>
+<span class="w">  </span><span class="nt">spawnKnights</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mspawnmob</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">SkeletalKnight:3</span><span class="nv"> </span><span class="s">5&quot;</span>
+<span class="w">  </span><span class="nt">spawnPrivateDevil</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mspawnmob</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">Mephisto:1</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">target</span><span class="nv"> </span><span class="s">private</span><span class="nv"> </span><span class="s">marked:DungeonBoss3&quot;</span>
 </code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Private Argument</p>
 <p>The <code>private</code> argument requires some MythicMob setup for optimal use.
-It's best to use the <code>private</code> argument in combination with the <code>target</code> argument so the mob does not attack 
+It's best to use the <code>private</code> argument in combination with the <code>target</code> argument so the mob does not attack
 players that cannot see it.
 Additionally, the mob should be configured to never change its AI target using MythicMobs.</p>
 </div>
@@ -8135,32 +8093,27 @@ Additionally, the mob should be configured to never change its AI target using M
 </tbody>
 </table>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">castPoison</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mcast AngrySludgePoison</span>
+<span class="w">  </span><span class="nt">castPoison</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mcast</span><span class="nv"> </span><span class="s">AngrySludgePoison&quot;</span>
 </code></pre></div>
 <h2 id="nexo">Nexo<a href="https://polymart.org/product/6901/nexo"></a><a class="headerlink" href="#nexo" title="Permanent link">🔗</a></h2>
 <h3 id="items_4">Items<a class="headerlink" href="#items_4" title="Permanent link">🔗</a></h3>
 <p>Nexo usage is integrated to the <a href="../../../Features/Items/">Items</a> system and thus used for actions and conditions.</p>
 <p>In addition, you can also add <code>quest-item</code> argument to tag them as "QuestItem".</p>
-<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Example</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span>
-<span class="normal">6</span>
-<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">forestTrident</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nexo forest_trident</span>
-<span class="w">  </span><span class="nt">tableLamp</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nexo table_lamp quest-item</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">forestTrident</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nexo</span><span class="nv"> </span><span class="s">forest_trident&quot;</span>
+<span class="w">  </span><span class="nt">tableLamp</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nexo</span><span class="nv"> </span><span class="s">table_lamp</span><span class="nv"> </span><span class="s">quest-item&quot;</span>
 <span class="nt">conditions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">hasForestTrident</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hand forestTrident</span>
+<span class="w">  </span><span class="nt">hasForestTrident</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hand</span><span class="nv"> </span><span class="s">forestTrident&quot;</span>
 <span class="nt">actions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">giveTableLamp</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">give tableLamp:3</span>
-</code></pre></div></td></tr></table></div>
+<span class="w">  </span><span class="nt">giveTableLamp</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;give</span><span class="nv"> </span><span class="s">tableLamp:3&quot;</span>
+</code></pre></div>
 <h2 id="packetevents">PacketEvents<a href="https://www.spigotmc.org/resources/80279/"></a><a class="headerlink" href="#packetevents" title="Permanent link">🔗</a></h2>
 <h3 id="actions_12">Actions<a class="headerlink" href="#actions_12" title="Permanent link">🔗</a></h3>
 <h4 id="freeze-players-freeze">Freeze players: 'freeze'<a class="headerlink" href="#freeze-players-freeze" title="Permanent link">🔗</a></h4>
-<p>This action allows you to freeze player for the given amount of ticks:
-<div class="highlight"><pre><span></span><code><span class="nt">freezeMe</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;freeze</span><span class="nv"> </span><span class="s">100&quot;</span><span class="w"> </span><span class="c1">#Freezes the player for 5 seconds</span>
-</code></pre></div></p>
+<p>This action allows you to freeze player for the given amount of ticks:</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">freezeMe</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;freeze</span><span class="nv"> </span><span class="s">100&quot;</span><span class="w"> </span><span class="c1">#Freezes the player for 5 seconds</span>
+</code></pre></div>
 <h3 id="chat-interceptor">Chat Interceptor<a class="headerlink" href="#chat-interceptor" title="Permanent link">🔗</a></h3>
 <h4 id="packet-interceptor-packetevents">Packet interceptor: <code>packetevents</code><a class="headerlink" href="#packet-interceptor-packetevents" title="Permanent link">🔗</a></h4>
 <p>This interceptor works on network package level and is thus much more reliable than the <code>simple</code> interceptor
@@ -8171,22 +8124,19 @@ see <a href="../../../Configuration/Plugin-Config/#conversation-conversation-set
 <h2 id="placeholderapi">PlaceholderAPI<a href="https://www.spigotmc.org/resources/6245/"></a><a class="headerlink" href="#placeholderapi" title="Permanent link">🔗</a></h2>
 <p>If you have this plugin, BetonQuest will add a <code>betonquest</code> placeholder to it. You will be able to use the <code>ph</code> placeholder.</p>
 <h3 id="placeholder-betonquest">Placeholder: <code>betonquest</code><a class="headerlink" href="#placeholder-betonquest" title="Permanent link">🔗</a></h3>
-<p>You can even use BetonQuests conditions using the <a href="../Placeholders-List/#condition">condition placeholder</a>!  <br />
+<p>You can even use BetonQuests conditions using the <a href="../Placeholders-List/#condition">condition placeholder</a>!<br />
 You can use all BetonQuest placeholders in any other plugin that supports PlaceholderAPI.
 This works using the <code>%betonquest_package:placeholder%</code> placeholder. The <code>package:</code> part is the name of a package.
 The <code>placeholder</code> part is just a <a href="../Placeholders-List/">BetonQuest placeholder</a> without percentage characters, like <code>point.beton.amount</code>.</p>
-<p>Testing your placeholder is easy using this command:  <br />
-<code>/papi parse &lt;PlayerName&gt; %betonquest_&lt;PackageName&gt;:&lt;PlaceholderType&gt;.&lt;Property&gt;%</code>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="err">%</span><span class="l l-Scalar l-Scalar-Plain">betonquest_someGreatQuest:objective.killZombies.left%</span>
-</code></pre></div></td></tr></table></div></p>
+<p>Testing your placeholder is easy using this command:<br />
+<code>/papi parse &lt;PlayerName&gt; %betonquest_&lt;PackageName&gt;:&lt;PlaceholderType&gt;.&lt;Property&gt;%</code></p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">betonquest_someGreatQuest</span><span class="nd">:objective</span><span class="nc">.killZombies.left</span><span class="err">%</span>
+</code></pre></div>
 <h3 id="placeholder-ph">Placeholder: <code>ph</code><a class="headerlink" href="#placeholder-ph" title="Permanent link">🔗</a></h3>
 <p><strong>persistent</strong>, <strong>static</strong></p>
 <p>You can also use placeholders from other plugins in BetonQuest. Simply insert a placeholder starting with <code>ph</code>, the second argument should be the placeholder without percentage characters.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="err">%</span><span class="l l-Scalar l-Scalar-Plain">ph.player_item_in_hand%</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">ph</span><span class="nc">.player_item_in_hand</span><span class="err">%</span>
 </code></pre></div>
-</div>
 <h2 id="quests">Quests<a href="https://www.spigotmc.org/resources/3711/"></a><a class="headerlink" href="#quests" title="Permanent link">🔗</a></h2>
 <p>Quests is another questing plugin, which offers very simple creation of quests.
 If you don't want to spend a lot of time to write advanced quests in BetonQuest but you need a specific thing from
@@ -8203,22 +8153,18 @@ Now specify action's name and it's package (like <code>package&gt;actionName</co
 <h4 id="quest-condition-quest">Quest condition: <code>quest</code><a class="headerlink" href="#quest-condition-quest" title="Permanent link">🔗</a></h4>
 <p>This condition is met when the player has completed the specified quest. The first and only argument is the name of the quest.
 If it contains spaces you need to quote it.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">quest stone_miner</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">completedQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;quest</span><span class="nv"> </span><span class="s">stone_miner&quot;</span>
 </code></pre></div>
-</div>
 <h3 id="actions_13">Actions<a class="headerlink" href="#actions_13" title="Permanent link">🔗</a></h3>
 <h4 id="quest-quest">Quest: <code>quest</code><a class="headerlink" href="#quest-quest" title="Permanent link">🔗</a></h4>
 <p>This action will start the quest for the player.
 The first argument must be the name of the quest, as defined in <code>name</code> option in the quest.
 You can optionally add <code>check-requirements</code> argument if you want the action to respect this quest's requirements
 (otherwise the quest will be forced to be started).</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">quest stone_miner check-requirements</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">startStoneMiner</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;quest</span><span class="nv"> </span><span class="s">stone_miner</span><span class="nv"> </span><span class="s">check-requirements&quot;</span>
 </code></pre></div>
-</div>
 <h2 id="redischat">RedisChat<a href="https://emibergo.gitbook.io/redischat/"></a><a class="headerlink" href="#redischat" title="Permanent link">🔗</a></h2>
 <h3 id="chat-interceptor_1">Chat Interceptor<a class="headerlink" href="#chat-interceptor_1" title="Permanent link">🔗</a></h3>
 <h4 id="redischat-interceptor-redischat">RedisChat interceptor: <code>redischat</code><a class="headerlink" href="#redischat-interceptor-redischat" title="Permanent link">🔗</a></h4>
@@ -8227,38 +8173,30 @@ You can optionally add <code>check-requirements</code> argument if you want the 
 <h3 id="conditions_10">Conditions<a class="headerlink" href="#conditions_10" title="Permanent link">🔗</a></h3>
 <h4 id="shop-amount-shopamount">Shop amount: <code>shopamount</code><a class="headerlink" href="#shop-amount-shopamount" title="Permanent link">🔗</a></h4>
 <p>This condition checks if the player owns specified (or greater) amount of shops. It doesn't matter what type these shops are. The only argument is a number - minimum amount of shops.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">shopamount 2</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">twoShops</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;shopamount</span><span class="nv"> </span><span class="s">2&quot;</span>
 </code></pre></div>
-</div>
 <h3 id="actions_14">Actions<a class="headerlink" href="#actions_14" title="Permanent link">🔗</a></h3>
 <h4 id="open-shop-window-shopkeeper">Open shop window: <code>shopkeeper</code><a class="headerlink" href="#open-shop-window-shopkeeper" title="Permanent link">🔗</a></h4>
 <p>This action opens a trading window of a Villager. The only argument is the uniqueID of the shop. You can find it in <em>Shopkeepers/saves.yml</em> file, under <code>uniqueID</code> option.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">shopkeeper b687538e-14ce-4b77-ae9f-e83b12f0b929</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">openShop</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;shopkeeper</span><span class="nv"> </span><span class="s">b687538e-14ce-4b77-ae9f-e83b12f0b929&quot;</span>
 </code></pre></div>
-</div>
 <h2 id="fabled">Fabled<a href="https://www.spigotmc.org/resources/91913/"></a><a class="headerlink" href="#fabled" title="Permanent link">🔗</a></h2>
 <h3 id="conditions_11">Conditions<a class="headerlink" href="#conditions_11" title="Permanent link">🔗</a></h3>
 <h4 id="fabled-class-fabledclass">Fabled Class: <code>fabledclass</code><a class="headerlink" href="#fabled-class-fabledclass" title="Permanent link">🔗</a></h4>
 <p>This condition checks if the player has specified class or a child class of the specified one.
 The first argument is simply the name of a class.
 You can add <code>exact</code> argument if you want to check for that exact class, without checking child classes.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">fabledclass warrior</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">isWarrior</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fabledclass</span><span class="nv"> </span><span class="s">warrior&quot;</span>
 </code></pre></div>
-</div>
 <h4 id="fabled-level-fabledlevel">Fabled Level: <code>fabledlevel</code><a class="headerlink" href="#fabled-level-fabledlevel" title="Permanent link">🔗</a></h4>
 <p>This condition checks if the player has specified or greater level than the specified class level.
 The first argument is class name, the second one is the required level.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">fabledlevel warrior 3</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">isWarrior3</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fabledlevel</span><span class="nv"> </span><span class="s">warrior</span><span class="nv"> </span><span class="s">3&quot;</span>
 </code></pre></div>
-</div>
 <h2 id="skript">Skript<a href="http://dev.bukkit.org/bukkit-plugins/skript/"></a><a class="headerlink" href="#skript" title="Permanent link">🔗</a></h2>
 <p>BetonQuest can also hook into Skript. Firstly, to avoid any confusion, I will reference to everything here by
 name of the plugin (Skript action is something else than BetonQuest action).
@@ -8269,58 +8207,48 @@ Having Skript on your server will enable using BetonQuest actions and conditions
 <p>This entry will describe two things: Skript event and BetonQuest action.</p>
 <ol>
 <li><strong>Skript event</strong> - <code>on [betonquest] action "id"</code> - this is the line you use in your scripts to trigger the code.
-  <code>betonquest</code> part is optional, and <code>id</code> is just some string, which must be equal to the one you specified in 
+  <code>betonquest</code> part is optional, and <code>id</code> is just some string, which must be equal to the one you specified in
   BetonQuest action.</li>
 <li><strong>BetonQuest action</strong> - <code>skript</code> - this action will trigger the above Skript event in your scripts.
-  The instruction string accepts only one argument, id of the event. It have to be the same as the one defined in 
+  The instruction string accepts only one argument, id of the event. It have to be the same as the one defined in
   Skript event for it to be triggered.</li>
 </ol>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<p><strong>In your script</strong>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">on betonquest action &quot;concrete&quot;</span><span class="p p-Indicator">:</span>
+<p><strong>In your script</strong></p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code>on betonquest action &quot;concrete&quot;:
 </code></pre></div>
-<strong>In BetonQuest</strong>
-<div class="highlight"><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">fire_concrete_script</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">skript concrete</span>
-</code></pre></div></p>
-</div>
+<p><strong>In BetonQuest</strong></p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">fire_concrete_script</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;skript</span><span class="nv"> </span><span class="s">concrete&quot;</span>
+</code></pre></div>
 <h3 id="skript-condition">Skript condition<a class="headerlink" href="#skript-condition" title="Permanent link">🔗</a></h3>
 <p>You can check BetonQuest conditions in your scripts by using the syntax <code>player meets [betonquest] condition "id"</code>. <code>betonquest</code> is optional, and <code>id</code> is the name of the condition, as defined in the <em>conditions</em> section.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<p><strong>In your script</strong>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">player meets condition &quot;has_ore&quot;</span>
+<p><strong>In your script</strong></p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code>player meets condition &quot;has_ore&quot;
 </code></pre></div>
-<strong>In BetonQuest</strong>
-<div class="highlight"><pre><span></span><code><span class="nt">has_ore</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">item iron_ore:5</span>
-</code></pre></div></p>
-</div>
+<p><strong>In BetonQuest</strong></p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">has_ore</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;item</span><span class="nv"> </span><span class="s">iron_ore:5&quot;</span>
+</code></pre></div>
 <h3 id="skript-action">Skript action<a class="headerlink" href="#skript-action" title="Permanent link">🔗</a></h3>
 <p>You can also fire BetonQuest actions with scripts. The syntax for Skript effect is <code>fire [betonquest] action "id" for player</code>. Everything else works just like in condition above.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<p><strong>In your script</strong>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">fire action &quot;give_emeralds&quot; for player</span>
+<p><strong>In your script</strong></p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code>fire action &quot;give_emeralds&quot; for player
 </code></pre></div>
-<strong>In BetonQuest</strong>
-<div class="highlight"><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">give_emeralds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">give emerald:5</span>
-</code></pre></div></p>
-</div>
+<p><strong>In BetonQuest</strong></p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">give_emeralds</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;give</span><span class="nv"> </span><span class="s">emerald:5&quot;</span>
+</code></pre></div>
 <h2 id="traincarts">TrainCarts<a href="https://www.spigotmc.org/resources/39592/"></a><a class="headerlink" href="#traincarts" title="Permanent link">🔗</a></h2>
 <p>TrainCarts is a plugin that allows you to create trains with advanced features.</p>
 <h3 id="conditions_12">Conditions<a class="headerlink" href="#conditions_12" title="Permanent link">🔗</a></h3>
 <h4 id="traincarts-ride-condition-traincartsride">TrainCarts ride condition: <code>traincartsride</code><a class="headerlink" href="#traincarts-ride-condition-traincartsride" title="Permanent link">🔗</a></h4>
 <p>Checks if the player is riding a specific named train.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">traincartsride train1</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">onTrain</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;traincartsride</span><span class="nv"> </span><span class="s">train1&quot;</span>
 </code></pre></div>
-</div>
 <h3 id="objectives_5">Objectives<a class="headerlink" href="#objectives_5" title="Permanent link">🔗</a></h3>
 <h4 id="traincarts-location-objective-traincartslocation">TrainCarts location objective: <code>traincartslocation</code><a class="headerlink" href="#traincarts-location-objective-traincartslocation" title="Permanent link">🔗</a></h4>
-<p>This objective requires the player to be at a specific location while sitting in a train. 
+<p>This objective requires the player to be at a specific location while sitting in a train.
 It works similarly to the location objective, but the player must be in a TrainCarts train to complete it.</p>
 <table>
 <thead>
@@ -8364,13 +8292,11 @@ It works similarly to the location objective, but the player must be in a TrainC
 </tr>
 </tbody>
 </table>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">traincartslocation 100;60;100;world</span>
-<span class="l l-Scalar l-Scalar-Plain">traincartslocation name:Train1 100;60;100;world range:2</span>
-<span class="l l-Scalar l-Scalar-Plain">traincartslocation 100;60;100;world entry range:2</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">checkpoint1</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;traincartslocation</span><span class="nv"> </span><span class="s">100;60;100;world&quot;</span>
+<span class="w">  </span><span class="nt">train1</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;traincartslocation</span><span class="nv"> </span><span class="s">name:Train1</span><span class="nv"> </span><span class="s">100;60;100;world</span><span class="nv"> </span><span class="s">range:2&quot;</span>
+<span class="w">  </span><span class="nt">enter</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;traincartslocation</span><span class="nv"> </span><span class="s">100;60;100;world</span><span class="nv"> </span><span class="s">entry</span><span class="nv"> </span><span class="s">range:2&quot;</span>
 </code></pre></div>
-</div>
 <h4 id="traincarts-ride-objective-traincartsride">TrainCarts ride objective: <code>traincartsride</code><a class="headerlink" href="#traincarts-ride-objective-traincartsride" title="Permanent link">🔗</a></h4>
 <p>This objective requires the player to ride a train for a specific time.
 The time starts after the player enters the train and stops when the player exits the train.
@@ -8400,42 +8326,26 @@ If the conditions are not met, the time will not be counted.</p>
 </tr>
 </tbody>
 </table>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">traincartsride</span>
-<span class="l l-Scalar l-Scalar-Plain">traincartsride name:Train1</span>
-<span class="l l-Scalar l-Scalar-Plain">traincartsride name:Train1 amount:20</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">rideTrain</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;traincartsride&quot;</span>
+<span class="w">  </span><span class="nt">rideTrain1</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;traincartsride</span><span class="nv"> </span><span class="s">name:Train1&quot;</span>
+<span class="w">  </span><span class="nt">rideTrain20Seconds</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;traincartsride</span><span class="nv"> </span><span class="s">name:Train1</span><span class="nv"> </span><span class="s">amount:20&quot;</span>
 </code></pre></div>
-</div>
 <h4 id="traincarts-ride-objective-traincartsexit">TrainCarts ride objective: <code>traincartsexit</code><a class="headerlink" href="#traincarts-ride-objective-traincartsexit" title="Permanent link">🔗</a></h4>
 <p>This objective requires the player to exit a train.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">traincartsexit</span>
-<span class="l l-Scalar l-Scalar-Plain">traincartsexit name:Train1</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">exitTrain</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;traincartsexit&quot;</span>
+<span class="w">  </span><span class="nt">exitTrain1</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;traincartsexit</span><span class="nv"> </span><span class="s">name:Train1&quot;</span>
 </code></pre></div>
-</div>
 <h2 id="vault">Vault<a href="http://dev.bukkit.org/bukkit-plugins/vault/"></a><a class="headerlink" href="#vault" title="Permanent link">🔗</a></h2>
 <h3 id="conditions_13">Conditions<a class="headerlink" href="#conditions_13" title="Permanent link">🔗</a></h3>
 <h4 id="vault-money-condition-money">Vault Money Condition: <code>money</code><a class="headerlink" href="#vault-money-condition-money" title="Permanent link">🔗</a></h4>
 <p>Checks if the player has the specified amount of money.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">hasMoney</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;money</span><span class="nv"> </span><span class="s">1&quot;</span>
 <span class="w">  </span><span class="nt">canAffordPlot</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;money</span><span class="nv"> </span><span class="s">10000&quot;</span>
 <span class="w">  </span><span class="nt">isRich</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;money</span><span class="nv"> </span><span class="s">1000000&quot;</span>
 </code></pre></div>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>Invert this condition if you want to check if the player has less money than specified. Example:
-<div class="highlight"><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">isRich</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;money</span><span class="nv"> </span><span class="s">100000&quot;</span>
-<span class="nt">actions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">giveSubsidy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;money</span><span class="nv"> </span><span class="s">+500</span><span class="nv"> </span><span class="s">conditions:!isRich&quot;</span><span class="w"> </span><span class="c1">#(1)!</span>
-</code></pre></div></p>
-<ol>
-<li>If the player has less than 100000 money, the <code>giveSubsidy</code> action will be fired.    </li>
-</ol>
-</div>
 <h3 id="actions_15">Actions<a class="headerlink" href="#actions_15" title="Permanent link">🔗</a></h3>
 <h4 id="vault-money-action-money">Vault Money Action: <code>money</code><a class="headerlink" href="#vault-money-action-money" title="Permanent link">🔗</a></h4>
 <p>Deposits, withdraws or multiplies money in the player's account.</p>
@@ -8469,7 +8379,7 @@ If the conditions are not met, the time will not be counted.</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sellItem</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;money</span><span class="nv"> </span><span class="s">+100&quot;</span>
 <span class="w">  </span><span class="nt">buyPlot</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;money</span><span class="nv"> </span><span class="s">-10000&quot;</span>
 <span class="w">  </span><span class="nt">winLottery</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;money</span><span class="nv"> </span><span class="s">7</span><span class="nv"> </span><span class="s">multiply</span><span class="nv"> </span><span class="s">notify&quot;</span>
@@ -8512,7 +8422,7 @@ If the conditions are not met, the time will not be counted.</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">allowFly</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;permission</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">perm</span><span class="nv"> </span><span class="s">essentials.fly&quot;</span>
 <span class="w">  </span><span class="nt">joinBandit</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;permission</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">group</span><span class="nv"> </span><span class="s">bandit&quot;</span>
 <span class="w">  </span><span class="nt">leaveBandit</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;permission</span><span class="nv"> </span><span class="s">remove</span><span class="nv"> </span><span class="s">group</span><span class="nv"> </span><span class="s">bandit&quot;</span>
@@ -8521,7 +8431,7 @@ If the conditions are not met, the time will not be counted.</p>
 <h4 id="vault-money-placeholder-money">Vault Money Placeholder: <code>money</code><a class="headerlink" href="#vault-money-placeholder-money" title="Permanent link">🔗</a></h4>
 <p>Use <code>%money.amount%</code> for showing the player's balance.
 Use <code>%money.left:500%</code> for showing the difference between the player's balance and the specified amount of money.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">notifyBalance</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">You</span><span class="nv"> </span><span class="s">have</span><span class="nv"> </span><span class="s">%money.amount%$!&quot;</span>
 <span class="w">  </span><span class="nt">notifyNotEnough</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">You</span><span class="nv"> </span><span class="s">still</span><span class="nv"> </span><span class="s">need</span><span class="nv"> </span><span class="s">%money.left:10000%$</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">buy</span><span class="nv"> </span><span class="s">this</span><span class="nv"> </span><span class="s">plot.&quot;</span>
 </code></pre></div>
@@ -8573,10 +8483,8 @@ You can also rotate the schematic by adding <code>rotation:90</code> where <code
 </tr>
 </tbody>
 </table>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-</div>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">mayorAtSpawn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">npcregion mayor spawn</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">mayorAtSpawn</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;npcregion</span><span class="nv"> </span><span class="s">mayor</span><span class="nv"> </span><span class="s">spawn&quot;</span>
 </code></pre></div>
 <h4 id="inside-region-region">Inside Region: <code>region</code><a class="headerlink" href="#inside-region-region" title="Permanent link">🔗</a></h4>
 <p>This condition is met when the player is inside the specified region.</p>
@@ -8598,11 +8506,12 @@ You can also rotate the schematic by adding <code>rotation:90</code> where <code
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">inCastle</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;region</span><span class="nv"> </span><span class="s">castle&quot;</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">inCastle</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;region</span><span class="nv"> </span><span class="s">castle&quot;</span>
 </code></pre></div>
 <h3 id="objectives_6">Objectives<a class="headerlink" href="#objectives_6" title="Permanent link">🔗</a></h3>
 <h4 id="enter-region-region">Enter Region: <code>region</code><a class="headerlink" href="#enter-region-region" title="Permanent link">🔗</a></h4>
-<p>To complete this objective you need to be in a WorldGuard region with specified name. </p>
+<p>To complete this objective you need to be in a WorldGuard region with specified name.</p>
 <table>
 <thead>
 <tr>
@@ -8633,7 +8542,8 @@ You can also rotate the schematic by adding <code>rotation:90</code> where <code
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">deathZone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;region</span><span class="nv"> </span><span class="s">deathZone</span><span class="nv"> </span><span class="s">entry</span><span class="nv"> </span><span class="s">actions:kill&quot;</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">deathZone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;region</span><span class="nv"> </span><span class="s">deathZone</span><span class="nv"> </span><span class="s">entry</span><span class="nv"> </span><span class="s">actions:kill&quot;</span>
 </code></pre></div>
 <h2 id="znpcsplus">ZNPCsPlus<a href="https://www.spigotmc.org/resources/109380/"></a><a class="headerlink" href="#znpcsplus" title="Permanent link">🔗</a></h2>
 <div class="admonition info">
