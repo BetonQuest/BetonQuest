@@ -405,7 +405,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         // schedule quest data loading on the first tick, so all other
         // plugins can register their types
         getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
-            compatibility.init();
+            compatibility.postHook();
             loadData();
             playerDataStorage.initProfiles(profileProvider.getOnlineProfiles(), getFeatureApi().conversationApi());
 
