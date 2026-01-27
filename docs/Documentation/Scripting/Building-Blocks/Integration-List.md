@@ -3,18 +3,21 @@ icon: material/handshake
 toc_depth: 2
 ---
 # Integration List
+
 This page contains documentation for known integrations that exist for third party plugins.
 Some integrations also have dedicated pages in the documentation.
 In total @snippet:constants:totalIntegratedPluginsNumber@ plugins have dedicated support for BetonQuest.
- 
+
 ## Provided by BetonQuest
 
 BetonQuest hooks into other plugins by itself to provide more actions, conditions and objectives or other features.  
-_AuraSkills, Brewery, BreweryX, Citizens, CraftEngine, DecentHolograms, Denizen, EffectLib, FancyNpcs, FakeBlock, Heroes, HolographicDisplays, ItemsAdder, JobsReborn, LuckPerms, Magic,
-mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, Nexo, PacketEvents, PlaceholderAPI, Quests, RedisChat, Shopkeepers, TrainCarts, ProSkillAPI,
-Skript, Vault, WorldEdit, FastAsyncWorldEdit, WorldGuard and ZNPCsPlus._
+_AuraSkills, Brewery, BreweryX, Citizens, CraftEngine, DecentHolograms, Denizen, EffectLib, FancyNpcs, FakeBlock,
+Heroes, HolographicDisplays, ItemsAdder, JobsReborn, LuckPerms, Magic, mcMMO, MythicLib, MMOCore, MMOItems,
+MythicMobs, Nexo, PacketEvents, PlaceholderAPI, Quests, RedisChat, Shopkeepers, TrainCarts, ProSkillAPI, Skript,
+Vault, WorldEdit, FastAsyncWorldEdit, WorldGuard and ZNPCsPlus._
 
 ## Provided by other plugins
+
 Some plugins also hook into BetonQuest and provide support by themselves:  
 [nuNPCDestinations](https://www.spigotmc.org/resources/13863/),
 [CalebCompass](https://www.spigotmc.org/resources/82674/),
@@ -28,88 +31,105 @@ There are also plugins that hook into BetonQuest that require a clientside mod:
 [BetonQuestGUI](https://github.com/giovanni-bozzano/betonquest-gui-plugin),
 [NGVexJournal](https://www.spigotmc.org/resources/76938/)
 
-
 ## AuraSkills[](https://www.spigotmc.org/resources/81069/)
 
 ### Conditions
 
 #### Skill level: `auraskillslevel`
+
 Checks if the player has the specified skill level. The amount is a number.
 The player needs to be on that level or higher to meet the condition.
 You can disable this behaviour by adding the `equal` argument, then the player must match the specified level exactly.
-```YAML linenums="1"
-auraskillslevel fighting 5
-auraskillslevel farming 10 equal
+
+```YAML title="Example"
+conditions:
+  fighting5: "auraskillslevel fighting 5"
+  farming10: "auraskillslevel farming 10 equal"
 ```
 
 #### Stat level: `auraskillsstatslevel`
+
 Checks if the player has the specified stat level. The amount is a number.
 The player needs to be on that level or higher to meet the condition.
 You can disable this behaviour by adding the `equal` argument, then the player must match the specified level exactly.
-```YAML linenums="1"
-auraskillsstatslevel luck 5
-auraskillsstatslevel luck 10 equal
+
+```YAML title="Example"
+conditions:
+  luck5: "auraskillsstatslevel luck 5"
+  luck10: "auraskillsstatslevel luck 10 equal"
 ```
 
 ### Actions
 
 ### Give Skill Xp : `auraskillsxp`
+
 Adds experience to the players skill. The amount is a number.
 The `level` argument is optional and would convert the amount to levels instead of XP points.
-```YAML linenums="1"
-auraskillsxp farming 5
-auraskillsxp farming 10 level
-```
 
+```YAML title="Example"
+actions:
+  farming5: "auraskillsxp farming 5"
+  farming10: "auraskillsxp farming 10 level"
+```
 
 ## Brewery[](https://www.spigotmc.org/resources/3082/) & BreweryX[](https://www.spigotmc.org/resources/114777/)
 
 ### Conditions
 
 #### Drunk: `drunk`
+
 This condition is true if the player is drunken. Only argument is the minimal drunkness (0-100).
 
-``` YAML linenums="1"
-drunk 50
+```YAML title="Example"
+conditions:
+  drunk50: "drunk 50"
 ```
 
 #### Drunk Quality: `drunkquality`
+
 This condition is true if the player has the given drunk quality. Only argument is the minimal drunk quality (1-10).
 
-``` YAML linenums="1"
-drunkquality 3
+```YAML title="Example"
+conditions:
+  quality3: "drunkquality 3"
 ```
 
 #### Has Brew: `hasbrew`
+
 This condition is true if the player has the given brew with the specified amount in his inventory.
 
 You can specify the mode to select the brew by either the name or its id, defaulting to the name.
 
-``` YAML linenums="1"
-hasbrew 2 "MY BREW"
-hasbrew 2 brew_17 mode:id
+```YAML title="Example"
+conditions:
+  hasMyBrew: 'hasbrew 2 "MY BREW"'
+  hasBrew17: "hasbrew 2 brew_17 mode:id"
 ```
 
 ### Actions
 
 #### Give Brew: `givebrew`
+
 Gives the player the specified drink. The first number is the amount, and the second number is the quality of the drink.
 
 You can specify the mode to select the brew by either the name or its id, defaulting to the name.
 
-``` YAML linenums="1"
-givebrew 1 10 "MY BREW"
-givebrew 1 10 brew_17 mode:id
+```YAML title="Example"
+actions:
+  giveMyBrew: 'givebrew 1 10 "MY BREW"'
+  giveBrew17: "givebrew 1 10 brew_17 mode:id"
 ```
 
 #### Take Brew: `takebrew`
+
 Removes the specified drink from the players inventory. An amount needs to be specified.
 
 You can specify the mode to select the brew by either the name or its id, defaulting to the name.
 
-``` YAML linenums="1"
-takebrew 2 "MY OTHER BREW"
-takebrew 2 brew_quest_3
+```YAML title="Example"
+actions:
+  takeMyBrew: 'takebrew 2 "MY OTHER BREW"'
+  takeBrew17: "takebrew 2 brew_quest_3"
 ```
 
 ## Citizens[](https://www.spigotmc.org/resources/13811/)
@@ -142,7 +162,8 @@ Move action can fail if the NPC is already moving for another player.
 | _fail_      | fail:actions                                               | Disabled               | List of actions fired if this action fails.                                  |
 
 ```YAML title="Example"
-npcmove innkeeper 100;200;300;world,105;200;280;world block wait:20 done:msg_were_here,give_reward fail:msg_cant_go,give_reward
+actions:
+  showPath: "npcmove innkeeper 100;200;300;world,105;200;280;world block wait:20 done:msg_were_here,give_reward fail:msg_cant_go,give_reward"
 ```
 
 #### Stop moving NPC: `npcstop`
@@ -154,14 +175,15 @@ This will stop all current move tasks for the NPC.
 | _NpcID_   | npcId  | :octicons-x-circle-16: | The NpcId.  |
 
 ```YAML title="Example"
-npcstop guard
+actions:
+  stopGuide: "npcstop guard"
 ```
 
 ### Objectives
 
 #### NPC Kill: `npckill`
 
-The NPC Kill objective requires the player to kill a NPC. 
+The NPC Kill objective requires the player to kill a NPC.
 
 | Parameter | Syntax        | Default Value          | Explanation                                                                                                       |
 |-----------|---------------|------------------------|-------------------------------------------------------------------------------------------------------------------|
@@ -169,7 +191,7 @@ The NPC Kill objective requires the player to kill a NPC.
 | _amount_  | amount:number | 1                      | The time the NPC needs to be killed.                                                                              |
 | _notify_  | notify        | Disabled               | Display a message to the player each time they kill a NPC. Optionally with the notification interval after colon. |
 
-<h5> Placeholder Properties </h5> 
+<h5> Placeholder Properties </h5>
 
 | Name     | Example Output | Explanation                                                                               |
 |----------|----------------|-------------------------------------------------------------------------------------------|
@@ -178,7 +200,8 @@ The NPC Kill objective requires the player to kill a NPC.
 | _total_  | 10             | Shows the initial amount of times that the NPC needed to be killed.                       |
 
 ```YAML title="Example"
-npckill thief amount:3 actions:reward notify
+objectives:
+  killThief: "npckill thief amount:3 actions:reward notify"
 ```
 
 ## CraftEngine[](https://polymart.org/product/7624/craftengine)
@@ -189,18 +212,17 @@ CraftEngine usage is integrated to the [Items](../../Features/Items.md) system a
 
 In addition, you can also add `quest-item` argument to tag them as "QuestItem".
 
-```YAML linenums="1" title="Example"
+```YAML title="Example"
 items:
-  topazAxe: craftEngine default:topaz_axe
-  amethystTorch: craftEngine default:amethyst_torch quest-item
+  topazAxe: "craftEngine default:topaz_axe"
+  amethystTorch: "craftEngine default:amethyst_torch quest-item"
 conditions:
-  hasTopazAxe: hand topazAxe
+  hasTopazAxe: "hand topazAxe"
 actions:
-  giveAmethystTorch: give amethystTorch:3
+  giveAmethystTorch: "give amethystTorch:3"
 ```
 
 ## Denizen[](http://dev.bukkit.org/bukkit-plugins/denizen/)
-
 
 Depenizen is also integrated with BetonQuest! Discover available features on the [meta documentation](https://meta.denizenscript.com/Docs/Search/BetonQuest).
 
@@ -211,12 +233,13 @@ Depenizen is also integrated with BetonQuest! Discover available features on the
 With this action you can fire Denizen task scripts. Don't confuse it with `skript` action, these are different. The first and only argument is the name of the script.
 
 ```YAML title="Example"
-runDenizenScript: "script beton"
+actions:
+  runDenizenScript: "script beton"
 ```
 
 ## EffectLib[](http://dev.bukkit.org/bukkit-plugins/effectlib/)
 
-If you install this plugin on your server you will be able to play particle effects on NPCs and locations. 
+If you install this plugin on your server you will be able to play particle effects on NPCs and locations.
 You can also use the `particle` action to trigger particle.
 
 !!! info EffectLib Documentation
@@ -230,7 +253,7 @@ effectlib: #(1)!
    farmer: #(2)!
       class: VortexEffect #(3)!
       iterations: 20 #(4)!
-      particle: crit_magic 
+      particle: crit_magic
       helixes: 3
       circles: 1
       grow: 0.1
@@ -277,9 +300,8 @@ effects:
     circles: 20
     grow: 3
     radius: 30
-
 actions:
-  playEffect: particle beton loc:100;200;300;world;180;-90 private
+  playEffect: "particle beton loc:100;200;300;world;180;-90 private"
 ```
 
 ## FancyNpcs[](https://modrinth.com/plugin/fancynpcs)
@@ -290,21 +312,19 @@ It is more lightweight than [Citizens](#citizens) but lack some of its features.
 !!! info
     FancyNpcs integration supports all [BetonQuest NPC](../../Features/NPCs.md) features.
 
-
 ## FakeBlock[](https://github.com/toddharrison/BriarCode/tree/main/fake-block)
 
-If you have the FakeBlock integration installed, you will be able to view and hide the block groups 
+If you have the FakeBlock integration installed, you will be able to view and hide the block groups
 created in FakeBlock on a player-specific basis.
 
 ### Actions
 
-#### Show and hide block groups: `fakeblock` 
+#### Show and hide block groups: `fakeblock`
 
-Shows or hides the block group for the player. The block group can be specified as a comma-separated list. 
+Shows or hides the block group for the player. The block group can be specified as a comma-separated list.
 The groups are case-sensitive. To show a group the `showgroup` argument is required. To hide a group the `hidegroup` argument is required.
 
-
-```YAML
+```YAML title="Example"
 actions:
   showBridge: "fakeblock showgroup bridge"
   hideCityBorder: "fakeblock hidegroup gate,wall,door"
@@ -322,10 +342,10 @@ This condition checks the classes of the player.
 The first argument must be `primary`, `secondary` or `mastered`. Second is the name of a class or `any`.
 You can optionally specify `level:` argument followed by the required level of the player.
 
-!!! example
-    ```YAML
-    heroesclass mastered warrior
-    ```
+```YAML title="Example"
+conditions:
+  masteredWarrior: "heroesclass mastered warrior"
+```
 
 #### Heroes Attribute: `heroesattribute`
 
@@ -333,19 +353,19 @@ This condition check's the level of a player's attribute.
 The first argument must be `strength`, `constitution`, `endurance`, `dexterity`, `intellect`, `wisdom`, or `charisma`.
 Second argument is the required level of the attribute. Must be greater than or equal the specified number.
 
-!!! example
-    ```YAML
-    heroesattribute strength 5
-    ```
+```YAML title="Example"
+conditions:
+  strength5: "heroesattribute strength 5"
+```
 
 #### Skill: `heroesskill`
 
 This condition checks if the player can use specified skill. The first argument is the name of the skill.
 
-!!! example
-    ```YAML
-    heroesskill charge
-    ```
+```YAML title="Example"
+conditions:
+  charge: "heroesskill charge"
+```
 
 ### Actions
 
@@ -353,12 +373,13 @@ This condition checks if the player can use specified skill. The first argument 
 
 This action simply gives the player specified amount of Heroes experience. The first argument is either `primary` or `secondary` and it means player's class. Second one is the amount of experience to add.
 
-!!! example
-    ```YAML
-    heroesexp primary 1000
-    ```
+```YAML title="Example"
+actions:
+  primary1000: "heroesexp primary 1000"
+```
 
 ## ItemsAdder[](https://www.spigotmc.org/resources/73355/)
+
 !!! info ""
     **Required ItemsAdder version: _4.0.10_ or above**
 
@@ -368,14 +389,14 @@ ItemsAdder usage is integrated to the [Items](../../Features/Items.md) system an
 
 In addition, you can also add `quest-item` argument to tag them as "QuestItem".
 
-```YAML linenums="1" title="Example"
+```YAML title="Example"
 items:
-  ruby: itemsAdder iasurvival:ruby
-  sword: itemsAdder iaalchemy:mysterious_sword quest-item
+  ruby: "itemsAdder iasurvival:ruby"
+  sword: "itemsAdder iaalchemy:mysterious_sword quest-item"
 conditions:
-  hasSword: item sword
+  hasSword: "item sword"
 actions:
-  giveRuby: give ruby:3
+  giveRuby: "give ruby:3"
 ```
 
 ### Conditions
@@ -389,9 +410,9 @@ Check if the ItemsAdder block is at a location.
 | _itemId_   | string                                               | :octicons-x-circle-16: | Identifier of the block to check.   |
 | _location_ | [ULF](../Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | The location to check the block at. |
 
-```yaml title="Example"
+```YAML title="Example"
 conditions:
-  iaBlock: itemsAdderBlock itemsadder:ruby_ore 40;72;3;world
+  iaBlock: "itemsAdderBlock itemsadder:ruby_ore 40;72;3;world"
 ```
 
 ### Actions
@@ -405,9 +426,9 @@ Changes the block at the given position.
 | _itemId_   | string                                               | :octicons-x-circle-16: | Identifier of the block to place.   |
 | _location_ | [ULF](../Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | The location to place the block at. |
 
-```yaml title="Example"
+```YAML title="Example"
 actions:
-  iaSetBlock: itemsAdderBlock itemsadder:ruby_ore 100;200;300;world
+  iaSetBlock: "itemsAdderBlock itemsadder:ruby_ore 100;200;300;world"
 ```
 
 #### Play totem animation `itemsAdderAnimation`
@@ -418,9 +439,9 @@ Plays an ItemsAdder totem animation.
 |---------------|--------|------------------------|-------------------------|
 | _animationId_ | string | :octicons-x-circle-16: | Animation name to play. |
 
-```yaml title="Example"
+```YAML title="Example"
 actions:
-  iaPlayAnimation: itemsAdderAnimation totem1
+  iaPlayAnimation: "itemsAdderAnimation totem1"
 ```
 
 ### Objectives
@@ -435,9 +456,9 @@ You can add a `notify` keyword if you want to send a notification to players whe
 | _itemId_  | string        | :octicons-x-circle-16: | Identifier of the block to break. |
 | _amount_  | amount:number | 1                      | Amount of blocks to break.        |
 
-```yaml title="Example"
+```YAML title="Example"
 objectives:
-  iaBreak: itemsAdderBlockBreak itemsadder:ruby_ore amount:20 notify:5
+  iaBreak: "itemsAdderBlockBreak itemsadder:ruby_ore amount:20 notify:5"
 ```
 
 #### Place Block `itemsAdderBlockPlace`
@@ -450,18 +471,12 @@ You can add a `notify` keyword if you want to send a notification to players whe
 | _itemId_  | string        | :octicons-x-circle-16: | Identifier of the block to place. |
 | _amount_  | amount:number | 1                      | Amount of blocks to place.        |
 
-```yaml title="Example"
+```YAML title="Example"
 objectives:
-  iaPlace: itemsAdderBlockPlace iasurvival:restoration_table
+  iaPlace: "itemsAdderBlockPlace iasurvival:restoration_table"
 ```
 
 ## JobsReborn[](https://www.spigotmc.org/resources/4216/)
-
-Requires adding the following to "_config.yml_":
-```YAML
-hook:
-  jobs: 'true'
-```
 
 ### Conditions
 
@@ -473,10 +488,10 @@ Returns true if the player can level up
 
 Returns true if the player has this job
 
-!!! example
-    ```YAML
-    nujobs_hasjob Woodcutter
-    ```
+```YAML title="Example"
+conditions:
+  hasWoodcutter: "nujobs_hasjob Woodcutter"
+```
 
 #### Job Full: `nujobs_jobfull {jobname}`
 
@@ -486,10 +501,10 @@ Returns true if the job is at the maximum slots
 
 Returns true if the player has this job, and at a level equal to or between the min/max
 
-!!! example
-    ```YAML
-    nujobs_joblevel Woodcutter 5 10
-    ```
+```YAML title="Example"
+conditions:
+  woodcutterLevel5: "nujobs_joblevel Woodcutter 5 10"
+```
 
 ### Actions
 
@@ -542,7 +557,6 @@ the player advances the objective, optionally with the notification interval aft
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of money already received,
 `left` is the amount of money still needed to receive and `total` is the amount of money initially required.
 
-
 ## LuckPerms[](https://luckperms.net/)
 
 ### Context Integration
@@ -564,19 +578,20 @@ Check the [Luck Perms documentation](https://luckperms.net/wiki/Context)
 for an in-depth explanation on what contexts are and how to add them to permissions.
 
 ### Permissions
-If you prefer to directly add or remove permissions without triggering the LuckPerms changelog chat notifications,
-you can utilize the `luckperms addPermission` and `luckperms removePermission` actions. 
-You also have the possibility to assign groups to the player via the `group.<GroupName>` permission. 
 
- ```YAML title="Example"
- actions:
-   addDefaultGroup: "luckperms addPermission permission:group.default,group.quester" #(1)!
-   addNegated: "luckperms addPermission permission:tutorial.done value:false" #(2)!
-   addWithContext: "luckperms addPermission permission:group.legend context:server;lobby" #(3)!
-   addTemporary: "luckperms addPermission permission:donator.level.one expiry:20 unit:MINUTES" #(4)!
-   removeTutorial: "luckperms removePermission permission:tutorial.done"
-   removeMultiple: "luckperms removePermission permission:tutorial.done,group.default" #(5)!
- ```
+If you prefer to directly add or remove permissions without triggering the LuckPerms changelog chat notifications,
+you can utilize the `luckperms addPermission` and `luckperms removePermission` actions.
+You also have the possibility to assign groups to the player via the `group.<GroupName>` permission.
+
+```YAML title="Example"
+actions:
+  addDefaultGroup: "luckperms addPermission permission:group.default,group.quester" #(1)!
+  addNegated: "luckperms addPermission permission:tutorial.done value:false" #(2)!
+  addWithContext: "luckperms addPermission permission:group.legend context:server;lobby" #(3)!
+  addTemporary: "luckperms addPermission permission:donator.level.one expiry:20 unit:MINUTES" #(4)!
+  removeTutorial: "luckperms removePermission permission:tutorial.done"
+  removeMultiple: "luckperms removePermission permission:tutorial.done,group.default" #(5)!
+```
 
 1. You can define single or multiple permissions with the `permission` key. You need to separate them with a comma.
 2. You can define Permissions with a optional `value` of `false` to negate them and give them to the player. If you want to override the value of the permission, you can use the `value` argument and set it to `true`.
@@ -584,7 +599,7 @@ You also have the possibility to assign groups to the player via the `group.<Gro
 4. With the key `expiry` you can define the time until the permission expires. There can only be one expiry argument. If you dont use the `unit` parameter, it defaults do DAYS. Other units can be found [here](https://help.intrexx.com/apidocs/jdk17/api/java.base/java/util/concurrent/TimeUnit.html).
 5. You can remove multiple permissions at once by separating them with a comma.
 
-You can also add `context`, `value` and `expiry` to the `removePermission` action 
+You can also add `context`, `value` and `expiry` to the `removePermission` action
 but its not recommended as it only removes exact matches.
 Instead only use the permission to remove.
 
@@ -604,10 +619,10 @@ In the case of `inventory` you can specify an amount with `amount` and this will
 You can also use optional `spells:` argument, followed by a list of spells separated with a comma.
 Each spell in this list must have a minimal level defined after a colon.
 
-!!! example
-    ```YAML
-    wand hand name:master spells:flare:3,missile:2
-    ```
+```YAML title="Example"
+conditions:
+  wand: "wand hand name:master spells:flare:3,missile:2"
+```
 
 ## McMMO[](https://www.spigotmc.org/resources/64348/)
 
@@ -617,10 +632,10 @@ Each spell in this list must have a minimal level defined after a colon.
 
 This conditions checks if the player has high enough level in the specified skill. The first argument is the name of the skill, second one is the minimum level the player needs to have to pass this condition.
 
-!!! example
-    ```YAML
-    mcmmolevel woodcutting 50
-    ```
+```YAML title="Example"
+conditions:
+  woodcutting50: "mcmmolevel woodcutting 50"
+```
 
 ### Actions
 
@@ -628,10 +643,10 @@ This conditions checks if the player has high enough level in the specified skil
 
 This action adds experience points in a specified skill. The first argument is the name of the skill, second one is the amount of experience to add.
 
-!!! example
-    ```YAML
-    mcmmoexp swords 1500
-    ```
+```YAML title="Example"
+actions:
+  swords1500: "mcmmoexp swords 1500"
+```
 
 ## MMOCore[](https://www.spigotmc.org/resources/70575/) & MMOItems[](https://www.spigotmc.org/resources/39267/) & MythicLib[](https://www.spigotmc.org/resources/90306/)
 
@@ -641,73 +656,87 @@ MMOItems usage is integrated to the [Items](../../Features/Items.md) system and 
 
 In addition, you can also add `quest-item` argument to tag them as "QuestItem".
 
-```YAML linenums="1" title="Example"
+```YAML title="Example"
 items:
-  crown: mmoitem ARMOR SKELETON_CROWN
-  gem: mmoitem GEMS SPEED_GEM quest-item
+  crown: "mmoitem ARMOR SKELETON_CROWN"
+  gem: "mmoitem GEMS SPEED_GEM quest-item"
 conditions:
-  hasCrown: hand crown
+  hasCrown: "hand crown"
 actions:
-  giveGem: give gem:3
+  giveGem: "give gem:3"
 ```
 
 #### Craft item: `craft`
+
 When MMOItems is installed the [`craft`](./Objectives-List.md#craft-an-item) objective also processes MMOItems
 "recipe-amounts" crafting and MMOItems station crafting.
 The amount is based on how many items have actually been crafted, not how often a specific recipe has been used!
 Therefore, a recipe that makes four items at once will let the objective progress by four steps.
 
-```YAML linenums="1" title="Crafting Example"
+```YAML title="Example"
 items:
-  potion: mmoitem HEALTH_POTION_RECIPE
+  potion: "mmoitem HEALTH_POTION_RECIPE"
 objectives:
-  craftPotion: craft potion 5 notify
+  craftPotion: "craft potion 5 notify"
 ```
 
 ### Conditions
 
-#### MMOCore class: `mmoclass` 
+#### MMOCore class: `mmoclass`
+
 Checks if a player has the given MMOCore class. You can check for any class that is not the default class by writing `*`
 instead of a class name.
 If a level has been specified the player needs to be on that level
 or higher to meet the condition.
-You can disable this behaviour by adding the `equal` argument. 
-```YAML linenums="1"
-mmoclass * 5
-mmoclass WARRIOR
-mmoclass MAGE 5
-mmoclass MAGE 5 equal
+You can disable this behaviour by adding the `equal` argument.
+
+```YAML title="Example"
+conditions:
+  5: "mmoclass * 5"
+  warrior: "mmoclass WARRIOR"
+  mage5: "mmoclass MAGE 5"
+  mage5Equal: "mmoclass MAGE 5 equal"
 ```
 
 #### MMOCore attribute: `mmoattribute`
+
 Checks if a player has the specified attribute on the given level or higher.
-You can disable this behaviour by adding the `equal` argument. 
-```YAML linenums="1"
-mmoclass mmoattribute strength 2 
-mmoclass mmoattribute strength 2 equal
+You can disable this behaviour by adding the `equal` argument.
+
+```YAML title="Example"
+conditions:
+  strength2: "mmoclass mmoattribute strength 2"
+  strength2Equal: "mmoclass mmoattribute strength 2 equal"
 ```
 
 #### MMOCore profession: `mmoprofession`
+
 Checks if a player has the specified profession on the given level or higher.
-You can disable this behaviour by adding the `equal` argument. 
-```YAML linenums="1"
-mmoprofession mining 2 
-mmoprofession mining 2 equal
+You can disable this behaviour by adding the `equal` argument.
+
+```YAML title="Example"
+conditions:
+  mining2: "mmoprofession mining 2"
+  mining2Equal: "mmoprofession mining 2 equal"
 ```
 
 #### MythicLib stat: `mmostat`
+
 Checks [these](https://gitlab.com/phoenix-dvpmt/mythiclib/-/blob/master/plugin/src/main/java/io/lumine/mythic/lib/api/stat/SharedStat.java)
 stats that combine all sorts of stats from MMOCore and MMOItems.
 The player needs to be on the specified level or higher in order to meet this condition.
-You can disable this behaviour by adding the `equal` argument. 
-```YAML linenums="1"
-mmostat DAMAGE_REDUCTION 3
+You can disable this behaviour by adding the `equal` argument.
+
+```YAML title="Example"
+conditions:
+  damageReduction3: "mmostat DAMAGE_REDUCTION 3"
 ```
 
 ### Objectives
 
 #### Break Special Blocks: `mmocorebreakblock`
-This objective requires the player to break 
+
+This objective requires the player to break
 [special blocks from MMOCore](https://gitlab.com/phoenix-dvpmt/mmocore/-/wikis/Mining%20and%20Block%20Regen). Please note that you *must* use this objective over `block` if you are using MMOCore's custom mining system.
 All three different block types and an amount can be defined. You can also send notifications to the player by appending
 the `notify` keyword optionally with the notification interval after a colon.
@@ -715,102 +744,132 @@ the `notify` keyword optionally with the notification interval after a colon.
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of blocks already broken,
 `left` is the amount of blocks still left to break and `total` is the amount of blocks initially required.
 
-```YAML linenums="1"
-mmocorebreakblock 5 block:1      #A custom block's block ID
-mmocorebreakblock 64 block:STONE  #vanilla material
-mmocorebreakblock 1 block:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVy #... this is a heads texture data
+```YAML title="Example"
+objectives:
+  block1: "mmocorebreakblock 5 block:1"      #A custom block's block ID
+  stone: "mmocorebreakblock 64 block:STONE"  #vanilla material
+  head: "mmocorebreakblock 1 block:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVy" #... this is a heads texture data
 ```
 
 #### Change MMOCore class: `mmochangeclass`
+
 This objective requires the player to change their class.
 
-```YAML title="Example" linenums="1"
+```YAML title="Example"
 objectives:
-    selectAnyClass: "mmochangeclass actions:pickedClass"
-    selectMage: "mmochangeclass class:MAGE actions:startMageIntroQuest"
+  selectAnyClass: "mmochangeclass actions:pickedClass"
+  selectMage: "mmochangeclass class:MAGE actions:startMageIntroQuest"
 ```
 
 #### MMOCore Profession levelup: `mmoprofessionlevelup`
+
 This objective requires the player to level the given profession to the specified level.
 Use `main` to check for class level ups.
 
-```YAML linenums="1"
-mmoprofessionlevelup MINING 10
+```YAML title="Example"
+objectives:
+  mining10: "mmoprofessionlevelup MINING 10"
 ```
 
 #### Upgrade Item: `mmoitemupgrade`
-This objective tracks if a player upgrades the given item with an upgrade consumable.  
-```YAML linenums="1"
-mmoitemupgrade SWORD FALCON_BLADE
+
+This objective tracks if a player upgrades the given item with an upgrade consumable.
+
+```YAML title="Example"
+objectives:
+  sword: "mmoitemupgrade SWORD FALCON_BLADE"
 ```
 
 #### Apply gemstone: `mmoitemapplygem`
+
 This objective is completed when the player applies the gemstone with the given gemstoneID to an item with the given
 itemType and itemID.
-```YAML linenums="1"
-mmoitemapplygem SWORD CUTLASS GEM_OF_ACCURACY
+
+```YAML title="Example"
+objectives:
+  sword: "mmoitemapplygem SWORD CUTLASS GEM_OF_ACCURACY"
 ```
 
 #### Activate MythicLib skill: `mmoskill`
-This objective requires the player to activate a MythicLib skill (e.g. with MMOItems or MMOCore). 
+
+This objective requires the player to activate a MythicLib skill (e.g. with MMOItems or MMOCore).
 
 | Parameter | Syntax     | Default Value          | Explanation                                                                                                                                                                          |
 |-----------|------------|------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | _skill_   | SKILL_ID   | :octicons-x-circle-16: | The ID of the skill.                                                                                                                                                                 |
 | _trigger_ | name:level | All trigger types.     | The [types of triggers](https://gitlab.com/phoenix-dvpmt/mythiclib/-/wikis/Skills#trigger-types) that can be used to activate the skill. If not specified, all triggers are allowed. |
 
-
-```YAML title="Example" linenums="1"
-triggerSkill: "mmoskill LIFE_ENDER actions:updateStatistics"
-castSkillWithMMOCore: "mmoskill DEEP_WOUND trigger:CAST actions:completeTutorial"
-itemSkill: "mmoskill DEEP_WOUND trigger:RIGHT_CLICK,LEFT_CLICK actions:giveReward"
+```YAML title="Example"
+objectives:
+  triggerSkill: "mmoskill LIFE_ENDER actions:updateStatistics"
+  castSkillWithMMOCore: "mmoskill DEEP_WOUND trigger:CAST actions:completeTutorial"
+  itemSkill: "mmoskill DEEP_WOUND trigger:RIGHT_CLICK,LEFT_CLICK actions:giveReward"
 ```
 
 ### Actions
 
 #### Give MMOCore class experience: `mmoclassexperience`
+
 Adds experience to the players class. The amount is a number. The `level` argument
 is optional and would convert the amount to levels instead of XP points.
-```YAML linenums="1"
-mmoclassexperience 150
-mmoclassexperience 1 level
+
+```YAML title="Example"
+actions:
+  150: "mmoclassexperience 150"
+  level1: "mmoclassexperience 1 level"
 ```
 
 #### Give MMOCore profession experience: `mmoprofessionexperience`
+
 Adds experience in the specified player profession. The amount is a number. The `level` argument
 is optional and would convert the amount to levels instead of XP points.
-```YAML linenums="1"
-mmoprofessionexperience MINING 100
-mmoprofessionexperience CUSTOM_PROFESSION_NAME 1 level
+
+```YAML title="Example"
+actions:
+  mining: "mmoprofessionexperience MINING 100"
+  customProf: "mmoprofessionexperience CUSTOM_PROFESSION_NAME 1 level"
 ```
 
 #### Give class points: `mmocoreclasspoints`
+
 Gives the player class points. The amount is a number.
-```YAML linenums="1"
-mmocoreclasspoints 1
+
+```YAML title="Example"
+actions:
+  give1: "mmocoreclasspoints 1"
 ```
 
 #### Give skill points: `mmocoreskillpoints`
+
 Gives the player skill points. The amount is a number.
-```YAML linenums="1"
-mmocoreskillpoints 10
+
+```YAML title="Example"
+actions:
+  give10: "mmocoreskillpoints 10"
 ```
 
 #### Give attribute points: `mmocoreattributepoints`
+
 Gives the player attribute points. The amount is a number.
-```YAML linenums="1"
-mmocoreattributepoints 2
+
+```YAML title="Example"
+actions:
+  give2: "mmocoreattributepoints 2"
 ```
 
 #### Give attribute reallocation points: `mmocoreattributereallocationpoints`
+
 Gives the player attribute reallocation points. The amount is a number.
-```YAML linenums="1"
-mmocoreattributereallocationpoints 1
+
+```YAML title="Example"
+actions:
+  give1: "mmocoreattributereallocationpoints 1"
 ```
 
 ## MythicMobs[](http://dev.bukkit.org/bukkit-plugins/mythicmobs/)
+
 !!! info ""
-    **Required MythicMobs version: _5.3.5_ or above** 
+    **Required MythicMobs version: _5.3.5_ or above**
 
 !!! info
     MythicMobs integration supports all [BetonQuest NPC](../../Features/NPCs.md) features.
@@ -821,14 +880,14 @@ Mythic(Mobs) items are integrated to the [BetonQuest Items](../../Features/Items
 
 In addition, you can also add `quest-item` argument to tag them as "QuestItem".
 
-```YAML linenums="1" title="Example"
+```YAML title="Example"
 items:
-  crown: mythic KingsCrown
-  sword: mythic SkeletonKingSword quest-item
+  crown: "mythic KingsCrown"
+  sword: "mythic SkeletonKingSword quest-item"
 conditions:
-  hasCrown: armor crown
+  hasCrown: "armor crown"
 actions:
-  giveSword: give sword
+  giveSword: "give sword"
 ```
 
 ### Objectives
@@ -854,12 +913,13 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 `mode` gives the identification type.
 
 ```YAML title="Example"
-killKnight: mmobkill SkeletalKnight amount:2 actions:reward
-killSnails: mmobkill SnekBoss,SnailBoss,SunBoss amount:10 actions:reward
-snailFaction: mmobkill snail mode:faction amount:10 actions:reward
-killBoss: mmobkill SnekBoss amount:2 minlevel:4 maxlevel:6 actions:reward marked:DungeonBoss3
-killDevil: mmobkill dungeonDevil deathRadiusAllPlayers:30 actions:reward
-bandits: mmobkill bandit deathRadiusAllPlayers:30 mode:FACTION actions:spawnTrader
+objectives:
+  killKnight: mmobkill SkeletalKnight amount:2 actions:reward
+  killSnails: mmobkill SnekBoss,SnailBoss,SunBoss amount:10 actions:reward
+  snailFaction: mmobkill snail mode:faction amount:10 actions:reward
+  killBoss: mmobkill SnekBoss amount:2 minlevel:4 maxlevel:6 actions:reward marked:DungeonBoss3
+  killDevil: mmobkill dungeonDevil deathRadiusAllPlayers:30 actions:reward
+  bandits: mmobkill bandit deathRadiusAllPlayers:30 mode:FACTION actions:spawnTrader
 ```
 
 ### Conditions
@@ -868,11 +928,11 @@ bandits: mmobkill bandit deathRadiusAllPlayers:30 mode:FACTION actions:spawnTrad
 
 Check whether the player is near a specific MythicMobs entity. The first argument is the internal name of the mob (the one defined in MythicMobs' configuration). The second argument is the distance to check, measured in block lengths in a circular radius.
 
-!!! example
-    ```YAML
-    mythicmobdistance SkeletalKnight 7
-    ```
-    
+```YAML title="Example"
+conditions:
+  nearKnight: "mythicmobdistance SkeletalKnight 7"
+```
+
 ### Actions
 
 #### :material-skull: Spawn MythicMob: `mspawnmob`
@@ -888,20 +948,19 @@ Check whether the player is near a specific MythicMobs entity. The first argumen
 | _private_  | Keyword                                              | Disabled               | Will hide the mob from all other players until restart. This does not hide particles or block sound from the mob. Also see notes below. |
 | _marked_   | marked:text                                          | None                   | Marks the mob. You can check for marked mobs in mmobkill objective.                                                                     |
 
-
 ```YAML title="Example"
 actions:
-  spawnBoss: mspawnmob 100;200;300;world MegaBoss:1 1 target
-  spawnKnights: mspawnmob 100;200;300;world SkeletalKnight:3 5
-  spawnPrivateDevil: mspawnmob 100;200;300;world Mephisto:1 5 target private marked:DungeonBoss3
+  spawnBoss: "mspawnmob 100;200;300;world MegaBoss:1 1 target"
+  spawnKnights: "mspawnmob 100;200;300;world SkeletalKnight:3 5"
+  spawnPrivateDevil: "mspawnmob 100;200;300;world Mephisto:1 5 target private marked:DungeonBoss3"
 ```
 
 !!! warning "Private Argument"
     The `private` argument requires some MythicMob setup for optimal use.
-    It's best to use the `private` argument in combination with the `target` argument so the mob does not attack 
+    It's best to use the `private` argument in combination with the `target` argument so the mob does not attack
     players that cannot see it.
     Additionally, the mob should be configured to never change its AI target using MythicMobs.
-    
+
 !!! info "Private & Target Arguments"
     The `private` and `target` arguments are ignored when the action is used in a static context like [Schedules](../Schedules.md).
 
@@ -913,7 +972,7 @@ actions:
 
 ```YAML title="Example"
 actions:
-  castPoison: mcast AngrySludgePoison
+  castPoison: "mcast AngrySludgePoison"
 ```
 
 ## Nexo[](https://polymart.org/product/6901/nexo)
@@ -924,14 +983,14 @@ Nexo usage is integrated to the [Items](../../Features/Items.md) system and thus
 
 In addition, you can also add `quest-item` argument to tag them as "QuestItem".
 
-```YAML linenums="1" title="Example"
+```YAML title="Example"
 items:
-  forestTrident: nexo forest_trident
-  tableLamp: nexo table_lamp quest-item
+  forestTrident: "nexo forest_trident"
+  tableLamp: "nexo table_lamp quest-item"
 conditions:
-  hasForestTrident: hand forestTrident
+  hasForestTrident: "hand forestTrident"
 actions:
-  giveTableLamp: give tableLamp:3
+  giveTableLamp: "give tableLamp:3"
 ```
 
 ## PacketEvents[](https://www.spigotmc.org/resources/80279/)
@@ -939,14 +998,18 @@ actions:
 ### Actions
 
 #### Freeze players: 'freeze'
+
 This action allows you to freeze player for the given amount of ticks:
-```YAML
-freezeMe: "freeze 100" #Freezes the player for 5 seconds
+
+```YAML title="Example"
+actions:
+  freezeMe: "freeze 100" #Freezes the player for 5 seconds
 ```
 
 ### Chat Interceptor
 
 #### Packet interceptor: `packetevents`
+
 This interceptor works on network package level and is thus much more reliable than the `simple` interceptor
 when working with advanced Chat plugins.
 It can also reprint the history of the chat after the conversation,
@@ -959,14 +1022,15 @@ If you have this plugin, BetonQuest will add a `betonquest` placeholder to it. Y
 
 ### Placeholder: `betonquest`
 
-You can even use BetonQuests conditions using the [condition placeholder](Placeholders-List.md#condition)!    
+You can even use BetonQuests conditions using the [condition placeholder](Placeholders-List.md#condition)!  
 You can use all BetonQuest placeholders in any other plugin that supports PlaceholderAPI.
 This works using the `%betonquest_package:placeholder%` placeholder. The `package:` part is the name of a package.
 The `placeholder` part is just a [BetonQuest placeholder](Placeholders-List.md) without percentage characters, like `point.beton.amount`.
 
-Testing your placeholder is easy using this command:    
+Testing your placeholder is easy using this command:  
 `/papi parse <PlayerName> %betonquest_<PackageName>:<PlaceholderType>.<Property>%`
-```YAML linenums="1"
+
+```scss title="Example"
 %betonquest_someGreatQuest:objective.killZombies.left%
 ```
 
@@ -976,10 +1040,9 @@ Testing your placeholder is easy using this command:
 
 You can also use placeholders from other plugins in BetonQuest. Simply insert a placeholder starting with `ph`, the second argument should be the placeholder without percentage characters.
 
-!!! example
-    ```YAML
-    %ph.player_item_in_hand%
-    ```
+```scss title="Example"
+%ph.player_item_in_hand%
+```
 
 ## Quests[](https://www.spigotmc.org/resources/3711/)
 
@@ -1006,10 +1069,10 @@ Now specify action's name and it's package (like `package>actionName`). Quests w
 This condition is met when the player has completed the specified quest. The first and only argument is the name of the quest.
 If it contains spaces you need to quote it.
 
-!!! example
-    ```YAML
-    quest stone_miner
-    ```
+```YAML title="Example"
+conditions:
+  completedQuest: "quest stone_miner"
+```
 
 ### Actions
 
@@ -1020,10 +1083,10 @@ The first argument must be the name of the quest, as defined in `name` option in
 You can optionally add `check-requirements` argument if you want the action to respect this quest's requirements
 (otherwise the quest will be forced to be started).
 
-!!! example
-    ```YAML
-    quest stone_miner check-requirements
-    ```
+```YAML title="Example"
+actions:
+  startStoneMiner: "quest stone_miner check-requirements"
+```
 
 ## RedisChat[](https://emibergo.gitbook.io/redischat/)
 
@@ -1040,10 +1103,10 @@ This chat interceptor works directly with RedisChat to pause the chat during con
 
 This condition checks if the player owns specified (or greater) amount of shops. It doesn't matter what type these shops are. The only argument is a number - minimum amount of shops.
 
-!!! example
-    ```YAML
-    shopamount 2
-    ```
+```YAML title="Example"
+conditions:
+  twoShops: "shopamount 2"
+```
 
 ### Actions
 
@@ -1051,12 +1114,12 @@ This condition checks if the player owns specified (or greater) amount of shops.
 
 This action opens a trading window of a Villager. The only argument is the uniqueID of the shop. You can find it in _Shopkeepers/saves.yml_ file, under `uniqueID` option.
 
-!!! example
-    ```YAML
-    shopkeeper b687538e-14ce-4b77-ae9f-e83b12f0b929
-    ```
+```YAML title="Example"
+actions:
+  openShop: "shopkeeper b687538e-14ce-4b77-ae9f-e83b12f0b929"
+```
 
-## Fabled[](https://www.spigotmc.org/resources/91913/)  
+## Fabled[](https://www.spigotmc.org/resources/91913/)
 
 ### Conditions
 
@@ -1066,20 +1129,20 @@ This condition checks if the player has specified class or a child class of the 
 The first argument is simply the name of a class.
 You can add `exact` argument if you want to check for that exact class, without checking child classes.
 
-!!! example
-    ```YAML
-    fabledclass warrior
-    ```
+```YAML title="Example"
+conditions:
+  isWarrior: "fabledclass warrior"
+```
 
 #### Fabled Level: `fabledlevel`
 
 This condition checks if the player has specified or greater level than the specified class level.
 The first argument is class name, the second one is the required level.
 
-!!! example
-    ```YAML
-    fabledlevel warrior 3
-    ```
+```YAML title="Example"
+conditions:
+  isWarrior3: "fabledlevel warrior 3"
+```
 
 ## Skript[](http://dev.bukkit.org/bukkit-plugins/skript/)
 
@@ -1095,51 +1158,58 @@ You can use cross-package paths using `-` between the packages. Example:
 This entry will describe two things: Skript event and BetonQuest action.
 
 1. **Skript event** - `on [betonquest] action "id"` - this is the line you use in your scripts to trigger the code.
-  `betonquest` part is optional, and `id` is just some string, which must be equal to the one you specified in 
+  `betonquest` part is optional, and `id` is just some string, which must be equal to the one you specified in
   BetonQuest action.
 2. **BetonQuest action** - `skript` - this action will trigger the above Skript event in your scripts.
-  The instruction string accepts only one argument, id of the event. It have to be the same as the one defined in 
+  The instruction string accepts only one argument, id of the event. It have to be the same as the one defined in
   Skript event for it to be triggered.
 
-!!! example
-    **In your script**
-    ```YAML
-    on betonquest action "concrete":
-    ```
-    **In BetonQuest**
-    ```YAML
-    actions:
-      fire_concrete_script: skript concrete
-    ```
+**In your script**
+
+```text title="Example"
+on betonquest action "concrete":
+```
+
+**In BetonQuest**
+
+```YAML title="Example"
+actions:
+  fire_concrete_script: "skript concrete"
+```
 
 ### Skript condition
 
 You can check BetonQuest conditions in your scripts by using the syntax `player meets [betonquest] condition "id"`. `betonquest` is optional, and `id` is the name of the condition, as defined in the _conditions_ section.
 
-!!! example
-    **In your script**
-    ```YAML
-    player meets condition "has_ore"
-    ```
-    **In BetonQuest**
-    ```YAML
-    has_ore: item iron_ore:5
-    ```
+**In your script**
+
+```text title="Example"
+player meets condition "has_ore"
+```
+
+**In BetonQuest**
+
+```YAML title="Example"
+conditions:
+  has_ore: "item iron_ore:5"
+```
 
 ### Skript action
 
 You can also fire BetonQuest actions with scripts. The syntax for Skript effect is `fire [betonquest] action "id" for player`. Everything else works just like in condition above.
 
-!!! example
-    **In your script**
-    ```YAML
-    fire action "give_emeralds" for player
-    ```
-    **In BetonQuest**
-    ```YAML
-    actions:
-      give_emeralds: give emerald:5
-    ```
+**In your script**
+
+```text title="Example"
+fire action "give_emeralds" for player
+```
+
+**In BetonQuest**
+
+```YAML title="Example"
+actions:
+  give_emeralds: "give emerald:5"
+```
 
 ## TrainCarts[](https://www.spigotmc.org/resources/39592/)
 
@@ -1151,16 +1221,16 @@ TrainCarts is a plugin that allows you to create trains with advanced features.
 
 Checks if the player is riding a specific named train.
 
-!!! example
-    ```YAML
-    traincartsride train1
-    ```
+```YAML title="Example"
+conditions:
+  onTrain: "traincartsride train1"
+```
 
 ### Objectives
 
 #### TrainCarts location objective: `traincartslocation`
 
-This objective requires the player to be at a specific location while sitting in a train. 
+This objective requires the player to be at a specific location while sitting in a train.
 It works similarly to the location objective, but the player must be in a TrainCarts train to complete it.
 
 | Parameter  | Syntax       | Default Value          | Explanation                                                                               |
@@ -1171,12 +1241,12 @@ It works similarly to the location objective, but the player must be in a TrainC
 | _exit_     | exit         | Disabled               | The player must exit (go from inside to outside) the location to complete the objective.  |
 | _name_     | name:Train1  | :octicons-x-circle-16: | The optional Name of the Train.                                                           |
 
-!!! example
-    ```YAML
-    traincartslocation 100;60;100;world
-    traincartslocation name:Train1 100;60;100;world range:2
-    traincartslocation 100;60;100;world entry range:2
-    ```
+```YAML title="Example"
+objectives:
+  checkpoint1: "traincartslocation 100;60;100;world"
+  train1: "traincartslocation name:Train1 100;60;100;world range:2"
+  enter: "traincartslocation 100;60;100;world entry range:2"
+```
 
 #### TrainCarts ride objective: `traincartsride`
 
@@ -1190,22 +1260,22 @@ If the conditions are not met, the time will not be counted.
 | _name_    | name:Train1 | :octicons-x-circle-16: | The optional Name of the Train.                                                  |
 | _amount_  | amount:20   | 0                      | The optional amount of time in seconds, the player has to ride a specific train. |
 
-!!! example
-    ```YAML
-    traincartsride
-    traincartsride name:Train1
-    traincartsride name:Train1 amount:20
-    ```
+```YAML title="Example"
+objectives:
+  rideTrain: "traincartsride"
+  rideTrain1: "traincartsride name:Train1"
+  rideTrain20Seconds: "traincartsride name:Train1 amount:20"
+```
 
 #### TrainCarts ride objective: `traincartsexit`
 
 This objective requires the player to exit a train.
 
-!!! example
-    ```YAML
-    traincartsexit
-    traincartsexit name:Train1
-    ```
+```YAML title="Example"
+objectives:
+  exitTrain: "traincartsexit"
+  exitTrain1: "traincartsexit name:Train1"
+```
 
 ## Vault[](http://dev.bukkit.org/bukkit-plugins/vault/)
 
@@ -1215,23 +1285,12 @@ This objective requires the player to exit a train.
 
 Checks if the player has the specified amount of money.
 
-```YAML
+```YAML title="Example"
 conditions:
   hasMoney: "money 1"
   canAffordPlot: "money 10000"
   isRich: "money 1000000"
 ```
-
-!!! tip
-    Invert this condition if you want to check if the player has less money than specified. Example:
-    ```YAML
-    conditions:
-      isRich: "money 100000"
-    actions:
-      giveSubsidy: "money +500 conditions:!isRich" #(1)!
-    ```
-    
-    1. If the player has less than 100000 money, the `giveSubsidy` action will be fired.    
 
 ### Actions
 
@@ -1245,7 +1304,7 @@ Deposits, withdraws or multiplies money in the player's account.
 | _notify_   | Keyword: `notify`   | Disabled               | Display a message to the player when their balance is changed.           |
 | _multiply_ | Keyword: `multiply` | Disabled               | Multiplies the current balance with the amount instead simply adding it. |
 
-```YAML
+```YAML title="Example"
 actions:
   sellItem: "money +100"
   buyPlot: "money -10000"
@@ -1263,7 +1322,7 @@ Adds or removes a permission or a group.
 | _name_    | The name of the permission. | :octicons-x-circle-16: | The name of the permission or group to add.                                                                          |
 | _world_   | The name of the world.      | Global                 | You can limit permissions to certain worlds only. If no world is set the permission will be set everywhere (global). |
 
-```YAML
+```YAML title="Example"
 actions:
   allowFly: "permission add perm essentials.fly"
   joinBandit: "permission add group bandit"
@@ -1277,7 +1336,7 @@ actions:
 Use `%money.amount%` for showing the player's balance.
 Use `%money.left:500%` for showing the difference between the player's balance and the specified amount of money.
 
-```YAML
+```YAML title="Example"
 actions:
   notifyBalance: "notify You have %money.amount%$!"
   notifyNotEnough: "notify You still need %money.left:10000%$ to buy this plot."
@@ -1299,7 +1358,6 @@ schematic name in the action's instruction.
 
 The optional `noair` keyword can be added to ignore air blocks while pasting.
 You can also rotate the schematic by adding `rotation:90` where `90` is the angle in degrees.
-
 
 ```YAML title="Example"
 actions:
@@ -1325,9 +1383,9 @@ This condition is met a NPC is inside a region.
 | _Npc_     | Npc         | :octicons-x-circle-16: | The ID of the NPC                    |
 | _Region_  | Region Name | :octicons-x-circle-16: | The region where the NPC needs to be |
 
-!!! example
 ```YAML title="Example"
-mayorAtSpawn: npcregion mayor spawn
+conditions:
+  mayorAtSpawn: "npcregion mayor spawn"
 ```
 
 #### Inside Region: `region`
@@ -1339,14 +1397,15 @@ This condition is met when the player is inside the specified region.
 | _Region_  | Region name | :octicons-x-circle-16: | The region where the player has to be |
 
 ```YAML title="Example"
-inCastle: "region castle"
+conditions:
+  inCastle: "region castle"
 ```
 
 ### Objectives
 
 #### Enter Region: `region`
 
-To complete this objective you need to be in a WorldGuard region with specified name. 
+To complete this objective you need to be in a WorldGuard region with specified name.
 
 | Parameter | Syntax      | Default Value          | Explanation                           |
 |-----------|-------------|------------------------|---------------------------------------|
@@ -1355,10 +1414,12 @@ To complete this objective you need to be in a WorldGuard region with specified 
 | _Exit_    | `exit`      | Disabled               | The player needs to leave the region  |
 
 ```YAML title="Example"
-deathZone: "region deathZone entry actions:kill"
+objectives:
+  deathZone: "region deathZone entry actions:kill"
 ```
 
 ## ZNPCsPlus[](https://www.spigotmc.org/resources/109380/)
+
 !!! info ""
     **Required ZNPCsPlus version: _2.1.0-SNAPSHOT_ or above**
 
