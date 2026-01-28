@@ -115,10 +115,8 @@ public class UpdatedPotionHandler extends PotionHandler {
                     return false;
                 }
                 final String key = base.getKey().getKey();
-                if (extendedE == Existence.REQUIRED && key.startsWith(LONG_PREFIX) == extended) {
-                    return false;
-                }
-                return upgradedE != Existence.REQUIRED || key.startsWith(STRONG_PREFIX) == upgraded;
+                return (extendedE != Existence.REQUIRED || key.startsWith(LONG_PREFIX) == extended)
+                        && (upgradedE != Existence.REQUIRED || key.startsWith(STRONG_PREFIX) == upgraded);
             default:
                 return false;
         }
