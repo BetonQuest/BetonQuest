@@ -2,11 +2,14 @@ package org.betonquest.betonquest.quest.action.tag;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.database.TagData;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultListArgument;
+import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Collections;
+import java.util.List;
 
 import static org.mockito.Mockito.*;
 
@@ -18,7 +21,7 @@ class DeleteTagChangerTest {
 
     @Test
     void testDeleteTagChangerRemoveNoTags(@Mock final TagData tagData) throws QuestException {
-        final DeleteTagChanger changer = new DeleteTagChanger(new DefaultListArgument<>());
+        final DeleteTagChanger changer = new DeleteTagChanger(new DefaultArgument<>(Collections.emptyList()));
 
         changer.changeTags(tagData, null);
         verifyNoInteractions(tagData);
@@ -27,7 +30,7 @@ class DeleteTagChangerTest {
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testDeleteTagChangerRemoveMultipleTags(@Mock final TagData tagData) throws QuestException {
-        final DeleteTagChanger changer = new DeleteTagChanger(new DefaultListArgument<>("tag-1", "tag-2", "tag-3"));
+        final DeleteTagChanger changer = new DeleteTagChanger(new DefaultArgument<>(List.of("tag-1", "tag-2", "tag-3")));
 
         changer.changeTags(tagData, null);
         verify(tagData).removeTag("tag-1");

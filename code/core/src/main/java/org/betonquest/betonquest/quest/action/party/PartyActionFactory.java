@@ -1,16 +1,16 @@
 package org.betonquest.betonquest.quest.action.party;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 
 import java.util.List;
 
@@ -51,8 +51,8 @@ public class PartyActionFactory implements PlayerActionFactory {
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<Number> range = instruction.number().get();
         final Argument<Number> amount = instruction.number().get("amount").orElse(null);
-        final Argument<List<ConditionID>> conditions = instruction.parse(ConditionID::new).list().get();
-        final Argument<List<ActionID>> actions = instruction.parse(ActionID::new).list().get();
+        final Argument<List<ConditionIdentifier>> conditions = instruction.identifier(ConditionIdentifier.class).list().get();
+        final Argument<List<ActionIdentifier>> actions = instruction.identifier(ActionIdentifier.class).list().get();
         return new OnlineActionAdapter(
                 new PartyAction(questTypeApi, profileProvider, range, amount, conditions, actions),
                 loggerFactory.create(PartyAction.class),

@@ -1,6 +1,8 @@
 package org.betonquest.betonquest.conversation;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.identifier.ConversationIdentifier;
+import org.betonquest.betonquest.api.identifier.ConversationOptionIdentifier;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -13,8 +15,8 @@ import org.jetbrains.annotations.Nullable;
  * @param optionType   the type of option that is referring
  * @param resolver     the resolver that will be used to resolve the conversation option
  */
-public record CrossConversationReference(QuestPackage sourcePack, ConversationID sourceConv,
+public record CrossConversationReference(QuestPackage sourcePack, ConversationIdentifier sourceConv,
                                          @Nullable String sourceOption, ConversationData.OptionType optionType,
-                                         ConversationOptionID resolver) {
+                                         ConversationOptionIdentifier resolver) {
 
 }

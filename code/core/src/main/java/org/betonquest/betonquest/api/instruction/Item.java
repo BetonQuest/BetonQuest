@@ -2,10 +2,10 @@ package org.betonquest.betonquest.api.instruction;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestBiFunction;
+import org.betonquest.betonquest.api.identifier.ItemIdentifier;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.id.ItemID;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,12 +18,12 @@ public class Item implements ItemWrapper {
     /**
      * Feature API function to retrieve items.
      */
-    private final QuestBiFunction<ItemID, Profile, QuestItem> getItemFunction;
+    private final QuestBiFunction<ItemIdentifier, Profile, QuestItem> getItemFunction;
 
     /**
      * Item id to generate the QuestItem with.
      */
-    private final ItemID itemID;
+    private final ItemIdentifier itemID;
 
     /**
      * Size of the stack to create.
@@ -37,7 +37,7 @@ public class Item implements ItemWrapper {
      * @param itemID          the QuestItemID to create
      * @param amount          the size to set the created ItemStack to
      */
-    public Item(final QuestBiFunction<ItemID, Profile, QuestItem> getItemFunction, final ItemID itemID, final Argument<Number> amount) {
+    public Item(final QuestBiFunction<ItemIdentifier, Profile, QuestItem> getItemFunction, final ItemIdentifier itemID, final Argument<Number> amount) {
         this.getItemFunction = getItemFunction;
         this.itemID = itemID;
         this.amount = amount;
@@ -54,7 +54,7 @@ public class Item implements ItemWrapper {
     }
 
     @Override
-    public ItemID getID() {
+    public ItemIdentifier getID() {
         return itemID;
     }
 

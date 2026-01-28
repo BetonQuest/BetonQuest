@@ -5,19 +5,19 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.PlayerTagAddEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerTagRemoveEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerUpdatePointEvent;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.identifier.ConversationIdentifier;
+import org.betonquest.betonquest.api.identifier.JournalEntryIdentifier;
+import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
+import org.betonquest.betonquest.api.identifier.factory.IdentifierRegistry;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.objective.Objective;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.conversation.PlayerConversationState;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.feature.journal.JournalFactory;
 import org.betonquest.betonquest.feature.journal.Pointer;
-import org.betonquest.betonquest.id.JournalEntryID;
 import org.bukkit.Server;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -48,16 +48,6 @@ public class PlayerData implements TagData, PointData {
     private final BetonQuestLogger log;
 
     /**
-     * The {@link Placeholders} to create and resolve placeholders.
-     */
-    private final Placeholders placeholders;
-
-    /**
-     * The quest package manager to get quest packages from.
-     */
-    private final QuestPackageManager packManager;
-
-    /**
      * The database saver for player data.
      */
     private final Saver saver;
@@ -76,6 +66,11 @@ public class PlayerData implements TagData, PointData {
      * Factory to create a new Journal.
      */
     private final JournalFactory journalFactory;
+
+    /**
+     * Identifier registry to resolve identifiers.
+     */
+    private final IdentifierRegistry identifierRegistry;
 
     /**
      * The profile this data belongs to.
@@ -133,21 +128,19 @@ public class PlayerData implements TagData, PointData {
     /**
      * Loads the PlayerData of the given {@link Profile}.
      *
-     * @param log            the custom logger for this class
-     * @param placeholders   the {@link Placeholders} to create and resolve placeholders
-     * @param packManager    the quest package manager to get quest packages from
-     * @param saver          the saver to persist data changes
-     * @param server         the server to determine if an event should be stated as async
-     * @param questTypeApi   the Quest Type API
-     * @param journalFactory the factory to create a new journal
-     * @param profile        the profile to load the data for
+     * @param log                the custom logger for this class
+     * @param saver              the saver to persist data changes
+     * @param server             the server to determine if an event should be stated as async
+     * @param identifierRegistry the identifier registry to resolve identifiers
+     * @param questTypeApi       the Quest Type API
+     * @param journalFactory     the factory to create a new journal
+     * @param profile            the profile to load the data for
      */
-    public PlayerData(final BetonQuestLogger log, final Placeholders placeholders,
-                      final QuestPackageManager packManager, final Saver saver, final Server server,
-                      final QuestTypeApi questTypeApi, final JournalFactory journalFactory, final Profile profile) {
+    public PlayerData(final BetonQuestLogger log, final Saver saver, final Server server,
+                      final IdentifierRegistry identifierRegistry, final QuestTypeApi questTypeApi,
+                      final JournalFactory journalFactory, final Profile profile) {
         this.log = log;
-        this.placeholders = placeholders;
-        this.packManager = packManager;
+        this.identifierRegistry = identifierRegistry;
         this.saver = saver;
         this.server = server;
         this.questTypeApi = questTypeApi;
@@ -207,8 +200,8 @@ public class PlayerData implements TagData, PointData {
 
     private void loadJournalPointer(final String pointer, final long date) {
         try {
-            final JournalEntryID entryID = new JournalEntryID(questTypeApi.placeholders(), packManager, null, pointer);
-            entries.add(new Pointer(entryID, date));
+            final JournalEntryIdentifier entryIdentifier = identifierRegistry.getFactory(JournalEntryIdentifier.class).parseIdentifier(null, pointer);
+            entries.add(new Pointer(entryIdentifier, date));
         } catch (final QuestException e) {
             log.warn("Loaded '" + pointer
                     + "' journal entry from the database, but it is not defined in configuration. Skipping.", e);
@@ -219,7 +212,8 @@ public class PlayerData implements TagData, PointData {
         final String fullInstruction = playerResult.getString("conversation");
 
         try {
-            final Optional<PlayerConversationState> playerConversationState = PlayerConversationState.fromString(fullInstruction);
+            final Optional<PlayerConversationState> playerConversationState = PlayerConversationState.fromString(fullInstruction,
+                    identifierRegistry.getFactory(ConversationIdentifier.class));
             playerConversationState.ifPresent(conversationState -> activeConversation = conversationState);
         } catch (final QuestException e) {
             log.debug("The profile" + profile + " is in a conversation that does not exist anymore ("
@@ -344,8 +338,8 @@ public class PlayerData implements TagData, PointData {
         for (final Map.Entry<String, String> entry : objectives.entrySet()) {
             final String objective = entry.getKey();
             try {
-                final ObjectiveID objectiveID = new ObjectiveID(placeholders, packManager, null, objective);
-                questTypeApi.resumeObjective(profile, objectiveID, entry.getValue());
+                final ObjectiveIdentifier objectiveIdentifier = identifierRegistry.getFactory(ObjectiveIdentifier.class).parseIdentifier(null, objective);
+                questTypeApi.resumeObjective(profile, objectiveIdentifier, entry.getValue());
             } catch (final QuestException e) {
                 log.warn("Loaded '" + objective
                         + "' objective from the database, but it is not defined in configuration. Skipping.", e);
@@ -369,7 +363,7 @@ public class PlayerData implements TagData, PointData {
      *
      * @param objectiveID ID of the objective
      */
-    public void addNewRawObjective(final ObjectiveID objectiveID) {
+    public void addNewRawObjective(final ObjectiveIdentifier objectiveID) {
         final Objective obj;
         try {
             obj = questTypeApi.getObjective(objectiveID);
@@ -400,7 +394,7 @@ public class PlayerData implements TagData, PointData {
      * @return true if the objective was successfully added, false if it was
      * already there
      */
-    public boolean addRawObjective(final ObjectiveID objectiveID, final String data) {
+    public boolean addRawObjective(final ObjectiveIdentifier objectiveID, final String data) {
         final String idString = objectiveID.toString();
         if (objectives.containsKey(idString)) {
             return false;
@@ -414,7 +408,7 @@ public class PlayerData implements TagData, PointData {
      *
      * @param objectiveID the ID of the objective
      */
-    public void removeRawObjective(final ObjectiveID objectiveID) {
+    public void removeRawObjective(final ObjectiveIdentifier objectiveID) {
         objectives.remove(objectiveID.toString());
         removeObjFromDB(objectiveID.toString());
     }
@@ -425,7 +419,7 @@ public class PlayerData implements TagData, PointData {
      * @param objectiveID the ID of the objective
      * @param data        the data string of this objective (the one associated with ObjectiveData)
      */
-    public void addObjToDB(final ObjectiveID objectiveID, final String data) {
+    public void addObjToDB(final ObjectiveIdentifier objectiveID, final String data) {
         saver.add(new Record(UpdateType.ADD_OBJECTIVES, profileID, objectiveID.toString(), data));
     }
 

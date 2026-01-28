@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.quest.action.variable;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.objective.Objective;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.quest.objective.variable.VariableObjective;
 
 /**
@@ -22,7 +22,7 @@ public class VariableAction implements PlayerAction {
     /**
      * The variable objective id to change the variable in.
      */
-    private final Argument<ObjectiveID> objectiveID;
+    private final Argument<ObjectiveIdentifier> objectiveID;
 
     /**
      * The key of the variable to store.
@@ -42,7 +42,7 @@ public class VariableAction implements PlayerAction {
      * @param key          the key of the variable to store
      * @param value        the value of the variable to store
      */
-    public VariableAction(final QuestTypeApi questTypeApi, final Argument<ObjectiveID> objectiveID, final Argument<String> key, final Argument<String> value) {
+    public VariableAction(final QuestTypeApi questTypeApi, final Argument<ObjectiveIdentifier> objectiveID, final Argument<String> key, final Argument<String> value) {
         this.questTypeApi = questTypeApi;
         this.objectiveID = objectiveID;
         this.key = key;
@@ -51,7 +51,7 @@ public class VariableAction implements PlayerAction {
 
     @Override
     public void execute(final Profile profile) throws QuestException {
-        final ObjectiveID resolved = this.objectiveID.getValue(profile);
+        final ObjectiveIdentifier resolved = this.objectiveID.getValue(profile);
         final Objective obj = questTypeApi.getObjective(resolved);
         if (!(obj instanceof final VariableObjective objective)) {
             throw new QuestException(resolved + " is not a variable objective");

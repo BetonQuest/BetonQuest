@@ -3,9 +3,9 @@ package org.betonquest.betonquest.quest.objective.kill;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.jetbrains.annotations.Nullable;
@@ -26,7 +26,7 @@ public class KillPlayerObjective extends CountingObjective {
     /**
      * The conditions of the victim that must be met for the objective to count.
      */
-    private final Argument<List<ConditionID>> required;
+    private final Argument<List<ConditionIdentifier>> required;
 
     /**
      * Constructor for the KillPlayerObjective.
@@ -38,7 +38,7 @@ public class KillPlayerObjective extends CountingObjective {
      * @throws QuestException if there is an error in the instruction
      */
     public KillPlayerObjective(final ObjectiveService service, final Argument<Number> targetAmount,
-                               @Nullable final Argument<String> name, final Argument<List<ConditionID>> required) throws QuestException {
+                               @Nullable final Argument<String> name, final Argument<List<ConditionIdentifier>> required) throws QuestException {
         super(service, targetAmount, "players_to_kill");
         this.name = name;
         this.required = required;

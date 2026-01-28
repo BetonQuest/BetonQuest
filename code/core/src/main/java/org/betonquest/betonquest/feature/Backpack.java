@@ -6,17 +6,16 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.identifier.CompassIdentifier;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
+import org.betonquest.betonquest.api.identifier.ItemIdentifier;
+import org.betonquest.betonquest.api.identifier.QuestCancelerIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
-import org.betonquest.betonquest.id.CompassID;
-import org.betonquest.betonquest.id.ItemID;
-import org.betonquest.betonquest.id.QuestCancelerID;
 import org.betonquest.betonquest.item.typehandler.QuestHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -53,16 +52,6 @@ public class Backpack implements Listener {
     private final BetonQuestLogger log;
 
     /**
-     * The {@link Placeholders} to create and resolve placeholders.
-     */
-    private final Placeholders placeholders;
-
-    /**
-     * The quest package manager to get quest packages from.
-     */
-    private final QuestPackageManager packManager;
-
-    /**
      * The {@link PluginMessage} instance.
      */
     private final PluginMessage pluginMessage;
@@ -91,19 +80,16 @@ public class Backpack implements Listener {
      * Creates new backpack GUI opened at given page type.
      *
      * @param config        the plugin configuration file
-     * @param placeholders  the {@link Placeholders} to create and resolve placeholders
      * @param pluginMessage the {@link PluginMessage} instance
      * @param onlineProfile the {@link OnlineProfile} of the player
      * @param type          type of the display
      */
-    public Backpack(final ConfigAccessor config, final Placeholders placeholders, final PluginMessage pluginMessage,
+    public Backpack(final ConfigAccessor config, final PluginMessage pluginMessage,
                     final OnlineProfile onlineProfile, final DisplayType type) {
         this.config = config;
-        this.placeholders = placeholders;
         this.pluginMessage = pluginMessage;
         final BetonQuest instance = BetonQuest.getInstance();
         this.log = instance.getLoggerFactory().create(getClass());
-        this.packManager = instance.getQuestPackageManager();
         this.onlineProfile = onlineProfile;
         this.playerData = instance.getPlayerDataStorage().get(onlineProfile);
         this.display = switch (type) {
@@ -117,12 +103,11 @@ public class Backpack implements Listener {
      * Creates new backpack GUI.
      *
      * @param config        the plugin configuration file
-     * @param placeholders  the {@link Placeholders} to create and resolve placeholders
      * @param pluginMessage the {@link PluginMessage} instance
      * @param onlineProfile the {@link OnlineProfile} of the player
      */
-    public Backpack(final ConfigAccessor config, final Placeholders placeholders, final PluginMessage pluginMessage, final OnlineProfile onlineProfile) {
-        this(config, placeholders, pluginMessage, onlineProfile, DisplayType.DEFAULT);
+    public Backpack(final ConfigAccessor config, final PluginMessage pluginMessage, final OnlineProfile onlineProfile) {
+        this(config, pluginMessage, onlineProfile, DisplayType.DEFAULT);
     }
 
     /**
@@ -328,8 +313,9 @@ public class Backpack implements Listener {
             if (buttonString != null && !buttonString.isEmpty()) {
                 present = true;
                 try {
-                    final ItemID itemId = new ItemID(placeholders, packManager, null, buttonString);
-                    stack = BetonQuest.getInstance().getFeatureApi().getItem(itemId, onlineProfile).generate(1);
+                    final IdentifierFactory<ItemIdentifier> identifierFactory = BetonQuest.getInstance().getQuestRegistries().identifiers().getFactory(ItemIdentifier.class);
+                    final ItemIdentifier itemIdentifier = identifierFactory.parseIdentifier(null, buttonString);
+                    stack = BetonQuest.getInstance().getFeatureApi().getItem(itemIdentifier, onlineProfile).generate(1);
                 } catch (final QuestException e) {
                     log.warn("Could not load " + button + " button: " + e.getMessage(), e);
                 }
@@ -441,7 +427,7 @@ public class Backpack implements Listener {
         public Cancelers() {
             super();
             final List<QuestCanceler> cancelers = new ArrayList<>();
-            for (final Map.Entry<QuestCancelerID, QuestCanceler> entry : BetonQuest.getInstance().getFeatureApi().getCancelers().entrySet()) {
+            for (final Map.Entry<QuestCancelerIdentifier, QuestCanceler> entry : BetonQuest.getInstance().getFeatureApi().getCancelers().entrySet()) {
                 try {
                     if (entry.getValue().isCancelable(onlineProfile)) {
                         cancelers.add(entry.getValue());
@@ -505,7 +491,7 @@ public class Backpack implements Listener {
             super();
             int counter = 0;
             final FeatureApi featureApi = BetonQuest.getInstance().getFeatureApi();
-            for (final Map.Entry<CompassID, QuestCompass> entry : featureApi.getCompasses().entrySet()) {
+            for (final Map.Entry<CompassIdentifier, QuestCompass> entry : featureApi.getCompasses().entrySet()) {
                 if (playerData.hasTag(entry.getKey().getTag())) {
                     compasses.put(counter, entry.getValue());
                     counter++;
@@ -539,7 +525,7 @@ public class Backpack implements Listener {
             int index = 0;
             for (final Map.Entry<Integer, QuestCompass> entry : compasses.entrySet()) {
                 final QuestCompass comp = entry.getValue();
-                final ItemID item = comp.itemID();
+                final ItemIdentifier item = comp.itemID();
                 if (item == null) {
                     continue;
                 }

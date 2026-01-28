@@ -1,26 +1,25 @@
 package org.betonquest.betonquest.schedule;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
+import org.betonquest.betonquest.api.identifier.ScheduleIdentifier;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.schedule.Schedule;
-import org.betonquest.betonquest.api.schedule.ScheduleID;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.ScheduleRegistry;
-import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Map;
 
 /**
  * Class responsible for managing schedule types, their schedulers, as well as parsing schedules from config.
  */
-public class ActionScheduling extends SectionProcessor<ScheduleID, Schedule> {
+public class ActionScheduling extends SectionProcessor<ScheduleIdentifier, Schedule> {
 
     /**
      * Map that contains all types of schedulers,
@@ -31,25 +30,26 @@ public class ActionScheduling extends SectionProcessor<ScheduleID, Schedule> {
     /**
      * Creates a new instance of the action scheduling class.
      *
-     * @param loggerFactory logger factory to use
-     * @param log           the logger that will be used for logging
-     * @param placeholders  the {@link Placeholders} to create and resolve placeholders
-     * @param packManager   the quest package manager to get quest packages from
-     * @param scheduleTypes map containing the schedule types, provided by {@link org.betonquest.betonquest.BetonQuest}
-     * @param parsers       the argument parsers
+     * @param loggerFactory     logger factory to use
+     * @param log               the logger that will be used for logging
+     * @param placeholders      the {@link Placeholders} to create and resolve placeholders
+     * @param packManager       the quest package manager to get quest packages from
+     * @param scheduleTypes     map containing the schedule types, provided by {@link org.betonquest.betonquest.BetonQuest}
+     * @param identifierFactory the identifier factory to create {@link ScheduleIdentifier}s for this type
+     * @param parsers           the argument parsers
      */
     public ActionScheduling(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager,
-                            final ScheduleRegistry scheduleTypes, final ArgumentParsers parsers) {
-        super(loggerFactory, log, placeholders, packManager, parsers, "Schedules", "schedules");
+                            final ScheduleRegistry scheduleTypes, final IdentifierFactory<ScheduleIdentifier> identifierFactory, final ArgumentParsers parsers) {
+        super(loggerFactory, log, placeholders, packManager, parsers, identifierFactory, "Schedules", "schedules");
         this.scheduleTypes = scheduleTypes;
     }
 
     @Override
-    protected Map.Entry<ScheduleID, Schedule> loadSection(final String sectionName, final SectionInstruction instruction) throws QuestException {
-        final ScheduleID scheduleID = getIdentifier(instruction.getPackage(), sectionName);
+    protected Map.Entry<ScheduleIdentifier, Schedule> loadSection(final String sectionName, final SectionInstruction instruction) throws QuestException {
+        final ScheduleIdentifier scheduleID = getIdentifier(instruction.getPackage(), sectionName);
         log.debug(instruction.getPackage(), "Parse schedule '" + scheduleID + "'...");
         final ScheduleType<?, ?> scheduleType = instruction.read().value("type").parse(scheduleTypes::getFactory).get().getValue(null);
-        final Schedule scheduleInstance = scheduleType.createAndScheduleNewInstance(scheduleID, instruction.getSection());
+        final Schedule scheduleInstance = scheduleType.createAndScheduleNewInstance(scheduleID, instruction);
         return Map.entry(scheduleID, scheduleInstance);
     }
 
@@ -82,11 +82,6 @@ public class ActionScheduling extends SectionProcessor<ScheduleID, Schedule> {
         super.clear();
     }
 
-    @Override
-    protected ScheduleID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new ScheduleID(packManager, pack, identifier);
-    }
-
     /**
      * Helper class that holds all implementations needed for a specific schedule type.
      *
@@ -97,14 +92,14 @@ public class ActionScheduling extends SectionProcessor<ScheduleID, Schedule> {
      */
     public record ScheduleType<S extends Schedule, T>(ScheduleFactory<S> scheduleFactory, Scheduler<S, T> scheduler) {
 
-        /* default */ S newScheduleInstance(final ScheduleID scheduleID, final ConfigurationSection scheduleConfig)
+        /* default */ S newScheduleInstance(final ScheduleIdentifier scheduleID, final SectionInstruction instruction)
                 throws QuestException {
-            return scheduleFactory.createNewInstance(scheduleID, scheduleConfig);
+            return scheduleFactory.createNewInstance(scheduleID, instruction);
         }
 
-        /* default */ Schedule createAndScheduleNewInstance(final ScheduleID scheduleID, final ConfigurationSection scheduleConfig)
+        /* default */ Schedule createAndScheduleNewInstance(final ScheduleIdentifier scheduleID, final SectionInstruction instruction)
                 throws QuestException {
-            final S schedule = newScheduleInstance(scheduleID, scheduleConfig);
+            final S schedule = newScheduleInstance(scheduleID, instruction);
             scheduler.addSchedule(schedule);
             return schedule;
         }

@@ -3,6 +3,7 @@ package org.betonquest.betonquest.api;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.feature.FeatureRegistries;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -69,6 +70,14 @@ public interface BetonQuestApi {
      * Gets the default argument parsers.
      *
      * @return the argument parsers.
+     * @throws QuestException an exception if called too early.
      */
-    ArgumentParsers getArgumentParsers();
+    ArgumentParsers getArgumentParsers() throws QuestException;
+
+    /**
+     * Gets the default instruction api.
+     *
+     * @return the instruction api.
+     */
+    InstructionApi getInstructionApi();
 }

@@ -2,11 +2,11 @@ package org.betonquest.betonquest.quest.placeholder.condition;
 
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerPlaceholder;
 import org.betonquest.betonquest.config.PluginMessage;
 
@@ -23,10 +23,10 @@ public class ConditionPlaceholder implements PlayerPlaceholder {
     /**
      * Condition to check.
      */
-    private final Argument<ConditionID> conditionId;
+    private final Argument<ConditionIdentifier> conditionId;
 
     /**
-     * If placeholder should be in PAPI style.
+     * If the placeholder should be in PAPI style.
      */
     private final FlagArgument<Boolean> papiMode;
 
@@ -43,7 +43,7 @@ public class ConditionPlaceholder implements PlayerPlaceholder {
      * @param papiMode      if the return value should be in PAPI mode as defined in the documentation
      * @param questTypeApi  the Quest Type API
      */
-    public ConditionPlaceholder(final PluginMessage pluginMessage, final Argument<ConditionID> conditionId,
+    public ConditionPlaceholder(final PluginMessage pluginMessage, final Argument<ConditionIdentifier> conditionId,
                                 final FlagArgument<Boolean> papiMode, final QuestTypeApi questTypeApi) {
         this.pluginMessage = pluginMessage;
         this.conditionId = conditionId;

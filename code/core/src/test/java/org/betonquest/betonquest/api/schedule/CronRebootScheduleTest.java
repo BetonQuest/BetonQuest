@@ -21,12 +21,12 @@ public class CronRebootScheduleTest extends CronScheduleBaseTest {
 
     @Override
     protected CronSchedule createSchedule() throws QuestException {
-        return new CronScheduleFactory(placeholders, packManager) {
+        return new CronScheduleFactory() {
             @Override
             protected CronDefinition parseCronDefinition() {
                 return REBOOT_CRON_DEFINITION;
             }
-        }.createNewInstance(scheduleID, section);
+        }.createNewInstance(scheduleID, getMockedInstruction());
     }
 
     @Test

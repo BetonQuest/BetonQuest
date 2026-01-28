@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.quest.condition.objective;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 
 /**
  * A factory for creating ObjectiveConditions.
@@ -28,6 +28,6 @@ public class ObjectiveConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        return new ObjectiveCondition(questTypeApi, instruction.parse(ObjectiveID::new).get());
+        return new ObjectiveCondition(questTypeApi, instruction.identifier(ObjectiveIdentifier.class).get());
     }
 }

@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.quest.condition.stage;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.quest.condition.number.Operation;
 import org.betonquest.betonquest.quest.objective.stage.StageObjective;
 
@@ -17,7 +17,7 @@ public class StageCondition implements PlayerCondition {
     /**
      * The stage objective.
      */
-    private final Argument<ObjectiveID> objectiveID;
+    private final Argument<ObjectiveIdentifier> objectiveID;
 
     /**
      * The target stage.
@@ -42,7 +42,7 @@ public class StageCondition implements PlayerCondition {
      * @param targetStage  the target stage
      * @param operation    the operation
      */
-    public StageCondition(final QuestTypeApi questTypeApi, final Argument<ObjectiveID> objectiveID, final Argument<String> targetStage,
+    public StageCondition(final QuestTypeApi questTypeApi, final Argument<ObjectiveIdentifier> objectiveID, final Argument<String> targetStage,
                           final Argument<Operation> operation) {
         this.questTypeApi = questTypeApi;
         this.objectiveID = objectiveID;
@@ -77,7 +77,7 @@ public class StageCondition implements PlayerCondition {
         }
     }
 
-    private StageObjective getStageObjective(final ObjectiveID objectiveID) throws QuestException {
+    private StageObjective getStageObjective(final ObjectiveIdentifier objectiveID) throws QuestException {
         if (questTypeApi.getObjective(objectiveID) instanceof final StageObjective stageObjective) {
             return stageObjective;
         }

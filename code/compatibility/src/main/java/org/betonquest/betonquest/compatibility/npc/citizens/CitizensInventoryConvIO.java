@@ -56,7 +56,7 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
                                    final Placeholders placeholders, final QuestPackageManager packManager, final ConversationColors colors,
                                    final boolean showNumber, final boolean showNPCText, final boolean printMessages,
                                    final FixedComponentLineWrapper componentLineWrapper) {
-        super(conv, onlineProfile, log, placeholders, packManager, colors, showNumber, showNPCText, printMessages, componentLineWrapper);
+        super(conv, onlineProfile, log, colors, showNumber, showNPCText, printMessages, componentLineWrapper);
     }
 
     @Override

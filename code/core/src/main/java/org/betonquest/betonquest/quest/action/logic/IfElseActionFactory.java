@@ -1,16 +1,16 @@
 package org.betonquest.betonquest.quest.action.logic;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
 import org.betonquest.betonquest.api.quest.action.nullable.NullableActionAdapter;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 
 /**
  * Factory to create if-else actions from {@link Instruction}s.
@@ -47,12 +47,12 @@ public class IfElseActionFactory implements PlayerActionFactory, PlayerlessActio
     }
 
     private NullableActionAdapter createIfElseAction(final Instruction instruction) throws QuestException {
-        final Argument<ConditionID> condition = instruction.parse(ConditionID::new).get();
-        final Argument<ActionID> action = instruction.parse(ActionID::new).get();
+        final Argument<ConditionIdentifier> condition = instruction.identifier(ConditionIdentifier.class).get();
+        final Argument<ActionIdentifier> action = instruction.identifier(ActionIdentifier.class).get();
         if (!ELSE_KEYWORD.equalsIgnoreCase(instruction.nextElement())) {
             throw new QuestException("Missing 'else' keyword");
         }
-        final Argument<ActionID> elseAction = instruction.parse(ActionID::new).get();
+        final Argument<ActionIdentifier> elseAction = instruction.identifier(ActionIdentifier.class).get();
         return new NullableActionAdapter(new IfElseAction(condition, action, elseAction, questTypeApi));
     }
 }

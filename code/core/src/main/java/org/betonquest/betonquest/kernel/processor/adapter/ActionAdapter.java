@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.kernel.processor.adapter;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -9,7 +10,6 @@ import org.betonquest.betonquest.api.quest.PrimaryThreadEnforceable;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -38,7 +38,7 @@ public class ActionAdapter extends QuestAdapter<PlayerAction, PlayerlessAction> 
     /**
      * Conditions that must be met to execute.
      */
-    private final Argument<List<ConditionID>> conditions;
+    private final Argument<List<ConditionIdentifier>> conditions;
 
     /**
      * Create a new Wrapper for placeholders with instruction.
@@ -56,7 +56,7 @@ public class ActionAdapter extends QuestAdapter<PlayerAction, PlayerlessAction> 
         this.log = log;
         this.questTypeApi = questTypeApi;
         this.instruction = instruction;
-        conditions = instruction.parse(ConditionID::new).list().get("conditions", Collections.emptyList());
+        conditions = instruction.identifier(ConditionIdentifier.class).list().get("conditions", Collections.emptyList());
     }
 
     /**

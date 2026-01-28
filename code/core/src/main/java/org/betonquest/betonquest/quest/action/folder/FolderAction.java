@@ -2,14 +2,14 @@ package org.betonquest.betonquest.quest.action.folder;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -76,7 +76,7 @@ public class FolderAction implements NullableAction {
     /**
      * The actions to run.
      */
-    private final Argument<List<ActionID>> actions;
+    private final Argument<List<ActionIdentifier>> actions;
 
     /**
      * The time unit to use for the delay and period.
@@ -91,7 +91,7 @@ public class FolderAction implements NullableAction {
     /**
      * Conditions to check if the action should be canceled.
      */
-    private final Argument<List<ConditionID>> cancelConditions;
+    private final Argument<List<ConditionIdentifier>> cancelConditions;
 
     /**
      * Create a folder action with the given parameters.
@@ -111,10 +111,10 @@ public class FolderAction implements NullableAction {
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public FolderAction(final BetonQuest betonQuest, final BetonQuestLogger log, final PluginManager pluginManager,
-                        final Argument<List<ActionID>> actions, final QuestTypeApi questTypeApi, final Random randomGenerator,
+                        final Argument<List<ActionIdentifier>> actions, final QuestTypeApi questTypeApi, final Random randomGenerator,
                         @Nullable final Argument<Number> delay, @Nullable final Argument<Number> period,
                         @Nullable final Argument<Number> random, final Argument<TimeUnit> timeUnit,
-                        final FlagArgument<Boolean> cancelOnLogout, final Argument<List<ConditionID>> cancelConditions) {
+                        final FlagArgument<Boolean> cancelOnLogout, final Argument<List<ConditionIdentifier>> cancelConditions) {
         this.betonQuest = betonQuest;
         this.log = log;
         this.pluginManager = pluginManager;
@@ -131,7 +131,7 @@ public class FolderAction implements NullableAction {
 
     private boolean checkCancelConditions(@Nullable final Profile profile) {
         try {
-            final List<ConditionID> resolvedCancelConditions = cancelConditions.getValue(profile);
+            final List<ConditionIdentifier> resolvedCancelConditions = cancelConditions.getValue(profile);
             return !resolvedCancelConditions.isEmpty() && questTypeApi.conditions(profile, resolvedCancelConditions);
         } catch (final QuestException e) {
             log.warn("Exception while checking cancel conditions: " + e.getMessage(), e);
@@ -139,8 +139,8 @@ public class FolderAction implements NullableAction {
         }
     }
 
-    private void executeAllActions(@Nullable final Profile profile, final Deque<ActionID> chosenList) {
-        for (final ActionID action : chosenList) {
+    private void executeAllActions(@Nullable final Profile profile, final Deque<ActionIdentifier> chosenList) {
+        for (final ActionIdentifier action : chosenList) {
             if (checkCancelConditions(profile)) {
                 return;
             }
@@ -150,7 +150,7 @@ public class FolderAction implements NullableAction {
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
-        final Deque<ActionID> chosenList = getActionOrder(profile);
+        final Deque<ActionIdentifier> chosenList = getActionOrder(profile);
         final TimeUnit timeUnit = this.timeUnit.getValue(profile);
         final long delayTicks = delay == null ? 0 : timeUnit.getTicks(delay.getValue(profile).longValue());
         final long periodTicks = period == null ? 0 : timeUnit.getTicks(period.getValue(profile).longValue());
@@ -163,10 +163,10 @@ public class FolderAction implements NullableAction {
         }
     }
 
-    private void handleDelayPeriod(@Nullable final Profile profile, final long delayTicks, final Deque<ActionID> chosenList,
+    private void handleDelayPeriod(@Nullable final Profile profile, final long delayTicks, final Deque<ActionIdentifier> chosenList,
                                    final long periodTicks) throws QuestException {
         if (delayTicks == 0 && !chosenList.isEmpty()) {
-            final ActionID action = chosenList.removeFirst();
+            final ActionIdentifier action = chosenList.removeFirst();
             if (checkCancelConditions(profile)) {
                 return;
             }
@@ -177,7 +177,7 @@ public class FolderAction implements NullableAction {
             callSameSyncAsyncContext(new BukkitRunnable() {
                 @Override
                 public void run() {
-                    final ActionID action = chosenList.pollFirst();
+                    final ActionIdentifier action = chosenList.pollFirst();
                     if (actionCanceler.isCancelled() || action == null || checkCancelConditions(profile)) {
                         actionCanceler.destroy();
                         this.cancel();
@@ -189,7 +189,7 @@ public class FolderAction implements NullableAction {
         }
     }
 
-    private void handleDelayNoPeriod(@Nullable final Profile profile, final Deque<ActionID> chosenList, final long delayTicks) throws QuestException {
+    private void handleDelayNoPeriod(@Nullable final Profile profile, final Deque<ActionIdentifier> chosenList, final long delayTicks) throws QuestException {
         final FolderActionCanceler actionCanceler = createFolderActionCanceler(profile);
         callSameSyncAsyncContext(new BukkitRunnable() {
             @Override
@@ -203,12 +203,12 @@ public class FolderAction implements NullableAction {
         }, delayTicks, -1);
     }
 
-    private Deque<ActionID> getActionOrder(@Nullable final Profile profile) throws QuestException {
-        final Deque<ActionID> chosenList = new LinkedList<>();
+    private Deque<ActionIdentifier> getActionOrder(@Nullable final Profile profile) throws QuestException {
+        final Deque<ActionIdentifier> chosenList = new LinkedList<>();
         final int randomInt = random == null ? 0 : random.getValue(profile).intValue();
-        final List<ActionID> resolvedActions = actions.getValue(profile);
+        final List<ActionIdentifier> resolvedActions = actions.getValue(profile);
         if (randomInt > 0 && randomInt <= resolvedActions.size()) {
-            final List<ActionID> actionsList = new ArrayList<>(resolvedActions);
+            final List<ActionIdentifier> actionsList = new ArrayList<>(resolvedActions);
             for (int i = randomInt; i > 0; i--) {
                 final int chosen = randomGenerator.nextInt(actionsList.size());
                 chosenList.add(actionsList.remove(chosen));

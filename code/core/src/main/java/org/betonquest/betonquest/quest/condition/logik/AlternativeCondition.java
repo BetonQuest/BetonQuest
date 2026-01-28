@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.condition.logik;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,7 +23,7 @@ public class AlternativeCondition implements NullableCondition {
     /**
      * List of condition IDs.
      */
-    private final Argument<List<ConditionID>> conditionIDs;
+    private final Argument<List<ConditionIdentifier>> conditionIDs;
 
     /**
      * Create a new alternative condition.
@@ -31,14 +31,14 @@ public class AlternativeCondition implements NullableCondition {
      * @param questTypeApi the Quest Type API to check conditions
      * @param conditionIDs the condition IDs
      */
-    public AlternativeCondition(final QuestTypeApi questTypeApi, final Argument<List<ConditionID>> conditionIDs) {
+    public AlternativeCondition(final QuestTypeApi questTypeApi, final Argument<List<ConditionIdentifier>> conditionIDs) {
         this.questTypeApi = questTypeApi;
         this.conditionIDs = conditionIDs;
     }
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
-        final List<ConditionID> conditionIDs = this.conditionIDs.getValue(profile);
+        final List<ConditionIdentifier> conditionIDs = this.conditionIDs.getValue(profile);
         return questTypeApi.conditionsAny(profile, conditionIDs);
     }
 }

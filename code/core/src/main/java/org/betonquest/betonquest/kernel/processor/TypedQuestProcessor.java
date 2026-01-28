@@ -3,7 +3,10 @@ package org.betonquest.betonquest.kernel.processor;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
+import org.betonquest.betonquest.api.identifier.ReadableIdentifier;
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.Placeholders;
@@ -17,10 +20,10 @@ import java.util.Map;
  * Does the logic around a quest type and stores their type registry.
  * Also provides their BStats metrics.
  *
- * @param <I> the {@link InstructionIdentifier} identifying the type
+ * @param <I> the {@link ReadableIdentifier} identifying the type
  * @param <T> the legacy type
  */
-public abstract class TypedQuestProcessor<I extends InstructionIdentifier, T> extends QuestProcessor<I, T> {
+public abstract class TypedQuestProcessor<I extends ReadableIdentifier, T> extends QuestProcessor<I, T> {
 
     /**
      * Available types.
@@ -28,19 +31,28 @@ public abstract class TypedQuestProcessor<I extends InstructionIdentifier, T> ex
     protected final FactoryTypeRegistry<T> types;
 
     /**
+     * Instruction API.
+     */
+    protected final InstructionApi instructionApi;
+
+    /**
      * Create a new QuestProcessor to store and execute type logic.
      *
-     * @param log          the custom logger for this class
-     * @param placeholders the {@link Placeholders} to create and resolve placeholders
-     * @param packManager  the quest package manager to get quest packages from
-     * @param types        the available types
-     * @param readable     the type name used for logging, with the first letter in upper case
-     * @param internal     the section name and/or bstats topic identifier
+     * @param log               the custom logger for this class
+     * @param placeholders      the {@link Placeholders} to create and resolve placeholders
+     * @param packManager       the quest package manager to get quest packages from
+     * @param types             the available types
+     * @param identifierFactory the identifier factory to create {@link ReadableIdentifier}s for this type
+     * @param instructionApi    the instruction api
+     * @param readable          the type name used for logging, with the first letter in upper case
+     * @param internal          the section name and/or bstats topic identifier
      */
     public TypedQuestProcessor(final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager,
-                               final FactoryTypeRegistry<T> types, final String readable, final String internal) {
-        super(log, placeholders, packManager, readable, internal);
+                               final FactoryTypeRegistry<T> types, final IdentifierFactory<I> identifierFactory,
+                               final InstructionApi instructionApi, final String readable, final String internal) {
+        super(log, placeholders, packManager, identifierFactory, readable, internal);
         this.types = types;
+        this.instructionApi = instructionApi;
     }
 
     /**
@@ -73,10 +85,11 @@ public abstract class TypedQuestProcessor<I extends InstructionIdentifier, T> ex
 
     private void loadKey(final String key, final QuestPackage pack) throws QuestException {
         final I identifier = getIdentifier(pack, key);
-        final String type = identifier.getInstruction().getPart(0);
-        final TypeFactory<T> factory = types.getFactory(type);
+        final Instruction instruction = instructionApi.createInstruction(identifier, identifier.readRawInstruction());
+        final String type = instruction.getPart(0);
         try {
-            final T parsed = factory.parseInstruction(identifier.getInstruction());
+            final TypeFactory<T> factory = types.getFactory(type);
+            final T parsed = factory.parseInstruction(instruction);
             values.put(identifier, parsed);
             postCreation(identifier, parsed);
             log.debug(pack, "  " + readable + " '" + identifier + "' loaded");

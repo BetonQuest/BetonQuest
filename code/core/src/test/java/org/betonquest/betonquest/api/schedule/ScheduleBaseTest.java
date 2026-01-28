@@ -2,10 +2,11 @@ package org.betonquest.betonquest.api.schedule;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
+import org.betonquest.betonquest.api.identifier.ScheduleIdentifier;
+import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.schedule.impl.BaseScheduleFactory;
 import org.bukkit.configuration.ConfigurationOptions;
-import org.bukkit.configuration.ConfigurationSection;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -21,15 +22,15 @@ public class ScheduleBaseTest extends AbstractScheduleTest {
 
     @Override
     protected Schedule createSchedule() throws QuestException {
-        return new BaseScheduleFactory<>(placeholders, packManager) {
+        return new BaseScheduleFactory<>() {
             @Override
-            public Schedule createNewInstance(final ScheduleID scheduleID, final ConfigurationSection config)
+            public Schedule createNewInstance(final ScheduleIdentifier scheduleID, final SectionInstruction instruction)
                     throws QuestException {
-                final ScheduleData scheduleData = parseScheduleData(scheduleID.getPackage(), config);
+                final ScheduleData scheduleData = parseScheduleData(instruction);
                 return new Schedule(scheduleID, scheduleData.actions(), scheduleData.catchup()) {
                 };
             }
-        }.createNewInstance(scheduleID, section);
+        }.createNewInstance(scheduleID, getMockedInstruction());
     }
 
     @Override
@@ -37,14 +38,19 @@ public class ScheduleBaseTest extends AbstractScheduleTest {
         final MultiConfiguration mockConfig = mock(MultiConfiguration.class);
         lenient().when(questPackage.getConfig()).thenReturn(mockConfig);
         lenient().when(mockConfig.getString("actions.bell_ring")).thenReturn("folder bell_lever_toggle,bell_lever_toggle period:0.5");
+        lenient().when(mockConfig.isString("actions.bell_ring")).thenReturn(true);
         lenient().when(mockConfig.getString("actions.notify_goodNight")).thenReturn("notify &6Good night, sleep well!");
+        lenient().when(mockConfig.isString("actions.notify_goodNight")).thenReturn(true);
         final ConfigurationOptions configurationOptions = mock(ConfigurationOptions.class);
         lenient().when(configurationOptions.pathSeparator()).thenReturn('.');
         lenient().when(mockConfig.options()).thenReturn(configurationOptions);
 
         lenient().when(section.getString("time")).thenReturn("22:00");
+        lenient().when(section.contains("time")).thenReturn(true);
         lenient().when(section.getString("actions")).thenReturn("bell_ring,notify_goodNight");
+        lenient().when(section.contains("actions")).thenReturn(true);
         lenient().when(section.getString("catchup")).thenReturn("NONE");
+        lenient().when(section.contains("catchup")).thenReturn(true);
     }
 
     /**
@@ -60,25 +66,25 @@ public class ScheduleBaseTest extends AbstractScheduleTest {
         assertEquals(CatchupStrategy.NONE, schedule.getCatchup(), "Returned catchup strategy should be correct");
         assertEquals("bell_ring", schedule.getActions().get(0).get(), "Returned actions should contain 1st action");
         assertEquals("notify_goodNight", schedule.getActions().get(1).get(), "Returned actions should contain 2nd action");
+        assertEquals(2, schedule.getActions().size(), "Returned actions should contain 2 actions");
     }
 
     @Test
     void testTimeNotSet() {
         when(section.getString("time")).thenReturn(null);
-        final QuestException exception = assertThrows(QuestException.class, this::createSchedule, "Schedule should throw instruction parse exception for invalid time");
-        assertEquals("Missing time instruction", exception.getMessage(), "QuestException should have correct reason message");
+        lenient().when(section.contains("time")).thenReturn(false);
+        assertThrows(QuestException.class, this::createSchedule, "Schedule should throw instruction parse exception for invalid time");
     }
 
     @Test
     void testActionsNotSet() {
-        when(section.getString("actions")).thenReturn(null);
-        final QuestException exception = assertThrows(QuestException.class, this::createSchedule, "Schedule should throw instruction parse exception for missing actions");
-        assertEquals("Missing actions", exception.getMessage(), "QuestException should have correct reason message");
+        when(section.contains("actions")).thenReturn(false);
+        assertThrows(QuestException.class, this::createSchedule, "Schedule should throw instruction parse exception for missing actions");
     }
 
     @Test
     void testActionsNotFound() {
-        when(questPackage.getConfig().getString("actions.bell_ring")).thenReturn(null);
+        when(section.getString("actions")).thenReturn("bell_ring,notify_goodNight,action_does_not_exist");
         final QuestException exception = assertThrows(QuestException.class, this::createSchedule, "Schedule should throw instruction parse exception for invalid action names");
         assertInstanceOf(QuestException.class, exception.getCause(), "Cause should be QuestException");
     }
@@ -86,8 +92,7 @@ public class ScheduleBaseTest extends AbstractScheduleTest {
     @Test
     void testInvalidCatchup() {
         when(section.getString("catchup")).thenReturn("NotExistingCatchupStrategy");
-        final QuestException exception = assertThrows(QuestException.class, this::createSchedule, "Schedule should throw instruction parse exception for invalid catchup");
-        assertEquals("Invalid enum value 'NOTEXISTINGCATCHUPSTRATEGY' for type 'CatchupStrategy'", exception.getMessage(), "QuestException should have correct reason message");
+        assertThrows(QuestException.class, this::createSchedule, "Schedule should throw instruction parse exception for invalid catchup");
     }
 
     @Test

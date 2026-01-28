@@ -6,9 +6,10 @@ import java.util.regex.Pattern;
 
 /**
  * Identifiers are used to identify objects in BetonQuest.
- * A dot separates the package name from the identifier.
- * The package name can be relative or absolute.
- * Navigation in the package hierarchy is done with the dash as separator and the underscore as up navigator.
+ * The {@link #SEPARATOR} separates the package name from the identifier.
+ * The package name can be relative to {@link #getPackage()} or absolute.
+ * Navigation in the package hierarchy is done using the {@link #PACKAGE_SEPARATOR} as separator to traverse downwards
+ * and the {@link #PACKAGE_NAVIGATOR} to traverse upwards.
  */
 public interface Identifier {
 

@@ -4,7 +4,7 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
-import org.betonquest.betonquest.api.instruction.argument.parser.IdentifierParser;
+import org.betonquest.betonquest.api.instruction.argument.parser.PackageIdentifierParser;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.jetbrains.annotations.Nullable;
@@ -54,7 +54,7 @@ public abstract class AbstractTagPlaceholder<T> {
      * @param papiMode      whether to return true/false or the configured messages
      */
     public AbstractTagPlaceholder(final PluginMessage pluginMessage, final T data, final String tagName,
-                               final QuestPackage questPackage, final FlagArgument<Boolean> papiMode) {
+                                  final QuestPackage questPackage, final FlagArgument<Boolean> papiMode) {
         this.pluginMessage = pluginMessage;
         this.data = data;
         this.tagName = tagName;
@@ -72,7 +72,7 @@ public abstract class AbstractTagPlaceholder<T> {
      */
     public String getValueFor(@Nullable final Profile profile, final Set<String> tags) throws QuestException {
         final boolean papiMode = this.papiMode.getValue(profile).orElse(false);
-        if (tags.contains(IdentifierParser.INSTANCE.apply(questPackage, tagName))) {
+        if (tags.contains(PackageIdentifierParser.INSTANCE.apply(questPackage, tagName))) {
             return papiMode ? LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage(profile, "condition_placeholder_met")) : "true";
         }
         return papiMode ? LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage(profile, "condition_placeholder_not_met")) : "false";

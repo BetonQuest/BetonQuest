@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.objective.command;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
@@ -31,7 +31,7 @@ public class CommandObjectiveFactory implements ObjectiveFactory {
         final FlagArgument<Boolean> ignoreCase = instruction.bool().getFlag("ignoreCase", true);
         final FlagArgument<Boolean> exact = instruction.bool().getFlag("exact", true);
         final FlagArgument<Boolean> cancel = instruction.bool().getFlag("cancel", true);
-        final Argument<List<ActionID>> failEvents = instruction.parse(ActionID::new)
+        final Argument<List<ActionIdentifier>> failEvents = instruction.identifier(ActionIdentifier.class)
                 .list().get("failActions", Collections.emptyList());
         final CommandObjective objective = new CommandObjective(service, command, ignoreCase, exact, cancel, failEvents);
         service.request(PlayerCommandPreprocessEvent.class).priority(EventPriority.LOWEST).onlineHandler(objective::onCommand)

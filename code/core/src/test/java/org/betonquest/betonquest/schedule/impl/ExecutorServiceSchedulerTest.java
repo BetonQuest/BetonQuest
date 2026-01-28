@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.schedule.impl;
 
+import org.betonquest.betonquest.api.identifier.ScheduleIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.schedule.FictiveTime;
 import org.betonquest.betonquest.api.schedule.Schedule;
-import org.betonquest.betonquest.api.schedule.ScheduleID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -49,7 +49,7 @@ class ExecutorServiceSchedulerTest {
 
     private Schedule mockSchedule() {
         final Schedule schedule = mock(Schedule.class);
-        when(schedule.getId()).thenReturn(mock(ScheduleID.class));
+        when(schedule.getId()).thenReturn(mock(ScheduleIdentifier.class));
         return schedule;
     }
 

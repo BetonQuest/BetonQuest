@@ -4,14 +4,15 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
+import org.betonquest.betonquest.api.identifier.MenuItemIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.action.ActionID;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.text.Text;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
@@ -44,7 +45,7 @@ public class MenuItem {
     /**
      * The ID of this item.
      */
-    private final MenuItemID itemId;
+    private final MenuItemIdentifier itemId;
 
     /**
      * Name and lore for displayed item.
@@ -60,7 +61,7 @@ public class MenuItem {
     /**
      * Conditions that have to be matched to view the item.
      */
-    private final Argument<List<ConditionID>> conditions;
+    private final Argument<List<ConditionIdentifier>> conditions;
 
     /**
      * If the menu should be closed when the item is clicked.
@@ -79,9 +80,9 @@ public class MenuItem {
      * @param conditions   the conditions required to show the item
      * @param close        if the item click closes
      */
-    public MenuItem(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final Argument<ItemWrapper> item, final MenuItemID itemId,
-                    @Nullable final Text descriptions, final ClickActions clickActions,
-                    final Argument<List<ConditionID>> conditions, final Argument<Boolean> close) {
+    public MenuItem(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final Argument<ItemWrapper> item,
+                    final MenuItemIdentifier itemId, @Nullable final Text descriptions, final ClickActions clickActions,
+                    final Argument<List<ConditionIdentifier>> conditions, final Argument<Boolean> close) {
         this.log = log;
         this.questTypeApi = questTypeApi;
         this.item = item;
@@ -110,8 +111,8 @@ public class MenuItem {
         };
     }
 
-    private boolean executeActions(final Argument<List<ActionID>> actions, final OnlineProfile profile) {
-        final List<ActionID> resolved;
+    private boolean executeActions(final Argument<List<ActionIdentifier>> actions, final OnlineProfile profile) {
+        final List<ActionIdentifier> resolved;
         try {
             resolved = actions.getValue(profile);
         } catch (final QuestException exception) {
@@ -186,7 +187,7 @@ public class MenuItem {
      *
      * @return the items internal id
      */
-    public MenuItemID getId() {
+    public MenuItemIdentifier getId() {
         return itemId;
     }
 
@@ -199,16 +200,18 @@ public class MenuItem {
      * @param shiftRightClick  for the right click with shift
      * @param middleMouseClick for the middle mouse click
      */
-    public record ClickActions(Argument<List<ActionID>> leftClick, Argument<List<ActionID>> shiftLeftClick,
-                               Argument<List<ActionID>> rightClick, Argument<List<ActionID>> shiftRightClick,
-                               Argument<List<ActionID>> middleMouseClick) {
+    public record ClickActions(Argument<List<ActionIdentifier>> leftClick,
+                               Argument<List<ActionIdentifier>> shiftLeftClick,
+                               Argument<List<ActionIdentifier>> rightClick,
+                               Argument<List<ActionIdentifier>> shiftRightClick,
+                               Argument<List<ActionIdentifier>> middleMouseClick) {
 
         /**
          * Fills all click types with the same list.
          *
          * @param click the actions to execute on any click
          */
-        public ClickActions(final Argument<List<ActionID>> click) {
+        public ClickActions(final Argument<List<ActionIdentifier>> click) {
             this(click, click, click, click, click);
         }
     }

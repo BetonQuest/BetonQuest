@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.menu.command;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.MenuIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.menu.Menu;
-import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -56,7 +56,7 @@ public class MenuBoundCommand extends SimpleCommand {
         }
         final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         if (menu.mayOpen(onlineProfile)) {
-            final MenuID menuID = menu.getMenuID();
+            final MenuIdentifier menuID = menu.getMenuID();
             log.debug(menuID.getPackage(), onlineProfile + " run bound command of " + menuID);
             try {
                 rpgMenu.openMenu(onlineProfile, menuID);

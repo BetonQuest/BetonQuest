@@ -4,9 +4,9 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.NoID;
+import org.betonquest.betonquest.api.identifier.PlaceholderIdentifier;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.quest.Placeholders;
-import org.betonquest.betonquest.api.quest.placeholder.PlaceholderID;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -29,7 +29,7 @@ class PlaceholderInstructionTest {
 
     private PlaceholderInstruction createNoIDInstruction(final String instruction) throws QuestException {
         return new PlaceholderInstruction(mock(Placeholders.class), mock(QuestPackageManager.class),
-                questPackage, new NoID(mock(QuestPackageManager.class), questPackage), mock(ArgumentParsers.class), instruction);
+                questPackage, new NoID(questPackage), mock(ArgumentParsers.class), instruction);
     }
 
     @Test
@@ -56,8 +56,8 @@ class PlaceholderInstructionTest {
 
     @Test
     void copyWithNewIDShouldReturnNewPlaceholderInstructionWithNewID() throws QuestException {
-        final PlaceholderID placeholderID1 = mock(PlaceholderID.class);
-        final PlaceholderID placeholderID2 = mock(PlaceholderID.class);
+        final PlaceholderIdentifier placeholderID1 = mock(PlaceholderIdentifier.class);
+        final PlaceholderIdentifier placeholderID2 = mock(PlaceholderIdentifier.class);
         final PlaceholderInstruction original = new PlaceholderInstruction(mock(Placeholders.class), mock(QuestPackageManager.class),
                 questPackage, placeholderID1, mock(ArgumentParsers.class), "%instruction%");
         final Instruction copy = original.copy(placeholderID2);

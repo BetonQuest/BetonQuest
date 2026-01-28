@@ -7,13 +7,12 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
+import org.betonquest.betonquest.api.identifier.ItemIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.Placeholders;
-import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -42,7 +41,7 @@ import java.util.Objects;
 /**
  * Inventory GUI for conversations.
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.CommentRequired", "PMD.CouplingBetweenObjects", "NullAway.Init"})
+@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods", "PMD.CouplingBetweenObjects"})
 public class InventoryConvIO implements Listener, ConversationIO {
 
     private static final Map<String, ItemStack> SKULL_CACHE = new HashMap<>();
@@ -65,20 +64,10 @@ public class InventoryConvIO implements Listener, ConversationIO {
 
     private final FixedComponentLineWrapper componentLineWrapper;
 
-    /**
-     * The {@link Placeholders} to create and resolve placeholders.
-     */
-    private final Placeholders placeholders;
-
-    /**
-     * The quest package manager to get quest packages from.
-     */
-    private final QuestPackageManager packManager;
-
     @Nullable
     protected Component response;
 
-    protected Map<Integer, Pair<Component, Argument<ItemID>>> options = new HashMap<>();
+    protected Map<Integer, Pair<Component, Argument<ItemIdentifier>>> options = new HashMap<>();
 
     protected int playerOptionsCount;
 
@@ -114,26 +103,20 @@ public class InventoryConvIO implements Listener, ConversationIO {
      * @param conv                 the conversation this IO is part of
      * @param onlineProfile        the online profile of the player participating in the conversation
      * @param log                  the custom logger for the conversation
-     * @param placeholders         the {@link Placeholders} to create and resolve placeholders
-     * @param packManager          the quest package manager to get quest packages from
      * @param colors               the colors used in the conversation
      * @param showNumber           whether to show the number of the conversation
      * @param showNPCText          whether to show the NPC text
      * @param printMessages        whether to print messages
      * @param componentLineWrapper the component line wrapper
      */
-    @SuppressWarnings("PMD.ExcessiveParameterList")
     public InventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile, final BetonQuestLogger log,
-                           final Placeholders placeholders, final QuestPackageManager packManager, final ConversationColors colors,
-                           final boolean showNumber, final boolean showNPCText, final boolean printMessages,
-                           final FixedComponentLineWrapper componentLineWrapper) {
+                           final ConversationColors colors, final boolean showNumber, final boolean showNPCText,
+                           final boolean printMessages, final FixedComponentLineWrapper componentLineWrapper) {
         this.log = log;
         this.conv = conv;
         this.profile = onlineProfile;
-        this.packManager = packManager;
         this.colors = colors;
         this.componentLineWrapper = componentLineWrapper;
-        this.placeholders = placeholders;
         final TextComponent.Builder answerPrefix = Component.text();
         answerPrefix.append(colors.getPlayer().append(Component.text(profile.getPlayer().getName())))
                 .append(Component.text(": "))
@@ -165,9 +148,10 @@ public class InventoryConvIO implements Listener, ConversationIO {
         playerOptionsCount++;
         final String rawItem = properties.getString("item");
         try {
-            final Argument<ItemID> item = rawItem == null ? null
+            final IdentifierFactory<ItemIdentifier> identifierFactory = betonQuest.getQuestRegistries().identifiers().getFactory(ItemIdentifier.class);
+            final Argument<ItemIdentifier> item = rawItem == null ? null
                     : new DefaultArgument<>(betonQuest.getQuestTypeApi().placeholders(), conv.getPackage(), rawItem,
-                    (value) -> new ItemID(placeholders, packManager, conv.getPackage(), value));
+                    (value) -> identifierFactory.parseIdentifier(conv.getPackage(), value));
             options.put(playerOptionsCount, Pair.of(colors.getOption().append(option), item));
         } catch (final QuestException e) {
             options.put(playerOptionsCount, Pair.of(colors.getOption().append(option), null));
@@ -228,12 +212,12 @@ public class InventoryConvIO implements Listener, ConversationIO {
             // count option numbers, starting with 1
             next++;
             // break if all options are set
-            final Pair<Component, Argument<ItemID>> pair = options.get(next);
+            final Pair<Component, Argument<ItemIdentifier>> pair = options.get(next);
             if (pair == null) {
                 break;
             }
             final Component option = pair.getKey();
-            final Argument<ItemID> itemID = pair.getValue();
+            final Argument<ItemIdentifier> itemID = pair.getValue();
             ItemStack item;
             try {
                 item = itemID == null ? new ItemStack(Material.ENDER_PEARL)
@@ -337,7 +321,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
             final int col = slot % 9 - 2 + 1;
             // each row can have 7 options, add column number to get an option
             final int chosen = row * 7 + col;
-            final Pair<Component, Argument<ItemID>> pair = options.get(chosen);
+            final Pair<Component, Argument<ItemIdentifier>> pair = options.get(chosen);
             if (pair != null) {
                 final Component message = pair.getKey();
                 processingLastClick = true;

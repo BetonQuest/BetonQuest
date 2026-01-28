@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.api.quest.npc.feature;
 
 import org.betonquest.betonquest.api.bukkit.event.npc.NpcInteractEvent;
+import org.betonquest.betonquest.api.identifier.NpcIdentifier;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.npc.Npc;
-import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
 import org.betonquest.betonquest.quest.objective.interact.Interaction;
 import org.bukkit.entity.Player;
@@ -58,7 +58,7 @@ public abstract class NpcInteractCatcher<T> implements Listener {
     protected boolean interactLogic(final Player clicker, final Npc<T> npc, final Interaction interaction,
                                     final boolean cancelled, final boolean isAsync) {
         final OnlineProfile profile = profileProvider.getProfile(clicker);
-        final Set<NpcID> identifier = npcRegistry.getIdentifier(npc, profile);
+        final Set<NpcIdentifier> identifier = npcRegistry.getIdentifier(npc, profile);
         final NpcInteractEvent npcInteractEvent = new NpcInteractEvent(profile, npc, identifier, interaction, isAsync);
         if (cancelled) {
             npcInteractEvent.setCancelled(true);

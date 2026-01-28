@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.instruction.chain;
 
 import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
@@ -128,11 +129,20 @@ public interface InstructionChainParser {
     NumberChainRetriever number();
 
     /**
-     * Returns {@link InstructionChainRetriever} with {@link ArgumentParsers#forEnum(Class)} as parser.
+     * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#forEnum(Class)} as parser.
      *
      * @param enumType the enum type to get a parser for
      * @param <E>      the enum type
-     * @return a new {@link InstructionChainRetriever} carrying all previous settings
+     * @return a new {@link DecoratableChainRetriever} carrying all previous settings
      */
     <E extends Enum<E>> DecoratableChainRetriever<E> enumeration(Class<E> enumType);
+
+    /**
+     * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#forIdentifier(Class)} to parse the argument.
+     *
+     * @param identifierClass the identifier class to parse
+     * @param <I>             the identifier type
+     * @return a new {@link DecoratableChainRetriever} for the argument with the identifier parser
+     */
+    <I extends Identifier> DecoratableChainRetriever<I> identifier(Class<I> identifierClass);
 }

@@ -3,10 +3,11 @@ package org.betonquest.betonquest.kernel.processor.feature;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
+import org.betonquest.betonquest.api.identifier.JournalEntryIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.text.Text;
-import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.kernel.processor.QuestProcessor;
 import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.configuration.ConfigurationSection;
@@ -16,7 +17,7 @@ import java.util.Map;
 /**
  * Loads and stores Journal entries.
  */
-public class JournalEntryProcessor extends QuestProcessor<JournalEntryID, Text> {
+public class JournalEntryProcessor extends QuestProcessor<JournalEntryIdentifier, Text> {
 
     /**
      * Text creator to parse text.
@@ -26,14 +27,15 @@ public class JournalEntryProcessor extends QuestProcessor<JournalEntryID, Text> 
     /**
      * Create a new QuestProcessor to store and execute journal entry logic.
      *
-     * @param log          the custom logger for this class
-     * @param placeholders the {@link Placeholders} to create and resolve placeholders
-     * @param packManager  the quest package manager to get quest packages from
-     * @param textCreator  the text creator to parse text
+     * @param log                           the custom logger for this class
+     * @param placeholders                  the {@link Placeholders} to create and resolve placeholders
+     * @param packManager                   the quest package manager to get quest packages from
+     * @param journalEntryIdentifierFactory the identifier factory to create {@link JournalEntryIdentifier}s for this type
+     * @param textCreator                   the text creator to parse text
      */
     public JournalEntryProcessor(final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager,
-                                 final ParsedSectionTextCreator textCreator) {
-        super(log, placeholders, packManager, "Journal Entry", "journal");
+                                 final IdentifierFactory<JournalEntryIdentifier> journalEntryIdentifierFactory, final ParsedSectionTextCreator textCreator) {
+        super(log, placeholders, packManager, journalEntryIdentifierFactory, "Journal Entry", "journal");
         this.textCreator = textCreator;
     }
 
@@ -52,17 +54,12 @@ public class JournalEntryProcessor extends QuestProcessor<JournalEntryID, Text> 
         }
     }
 
-    @Override
-    protected JournalEntryID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new JournalEntryID(placeholders, packManager, pack, identifier);
-    }
-
     /**
      * Get the loaded {@link Text}s by their ID.
      *
      * @return loaded values map, reflecting changes
      */
-    public Map<JournalEntryID, Text> getValues() {
+    public Map<JournalEntryIdentifier, Text> getValues() {
         return values;
     }
 
@@ -72,7 +69,7 @@ public class JournalEntryProcessor extends QuestProcessor<JournalEntryID, Text> 
      * @param name   the current name
      * @param rename the name it should have now
      */
-    public void renameJournalEntry(final JournalEntryID name, final JournalEntryID rename) {
+    public void renameJournalEntry(final JournalEntryIdentifier name, final JournalEntryIdentifier rename) {
         final Text text = values.remove(name);
         values.put(rename, text);
     }

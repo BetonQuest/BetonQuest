@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.api.quest;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
+import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.action.ActionID;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.objective.Objective;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -24,7 +24,7 @@ public interface QuestTypeApi {
      * @param conditionIDs IDs of the conditions to check
      * @return if all conditions are met
      */
-    boolean conditions(@Nullable Profile profile, Collection<ConditionID> conditionIDs);
+    boolean conditions(@Nullable Profile profile, Collection<ConditionIdentifier> conditionIDs);
 
     /**
      * Checks whether any of the conditions described by conditionIDs are met.
@@ -33,7 +33,7 @@ public interface QuestTypeApi {
      * @param conditionIDs IDs of the conditions to check
      * @return if all conditions are met
      */
-    boolean conditionsAny(@Nullable Profile profile, Collection<ConditionID> conditionIDs);
+    boolean conditionsAny(@Nullable Profile profile, Collection<ConditionIdentifier> conditionIDs);
 
     /**
      * Checks if the condition described by conditionID is met.
@@ -42,7 +42,7 @@ public interface QuestTypeApi {
      * @param profile     the {@link Profile} of the player which should be checked
      * @return if the condition is met
      */
-    boolean condition(@Nullable Profile profile, ConditionID conditionID);
+    boolean condition(@Nullable Profile profile, ConditionIdentifier conditionID);
 
     /**
      * Fires actions for the {@link Profile} if it meets the actions' conditions.
@@ -52,7 +52,7 @@ public interface QuestTypeApi {
      * @param actionIDS IDs of the actions to fire
      * @return true if all actions were run even if there were exceptions during execution
      */
-    boolean actions(@Nullable Profile profile, Collection<ActionID> actionIDS);
+    boolean actions(@Nullable Profile profile, Collection<ActionIdentifier> actionIDS);
 
     /**
      * Fires an action for the {@link Profile} if it meets the action's conditions.
@@ -62,7 +62,7 @@ public interface QuestTypeApi {
      * @param actionID ID of the action to fire
      * @return true if the action was run even if there was an exception during execution
      */
-    boolean action(@Nullable Profile profile, ActionID actionID);
+    boolean action(@Nullable Profile profile, ActionIdentifier actionID);
 
     /**
      * Creates new objective for given player.
@@ -70,7 +70,7 @@ public interface QuestTypeApi {
      * @param profile     the {@link Profile} of the player
      * @param objectiveID ID of the objective
      */
-    void newObjective(Profile profile, ObjectiveID objectiveID);
+    void newObjective(Profile profile, ObjectiveIdentifier objectiveID);
 
     /**
      * Pauses the existing objective for given player.
@@ -78,7 +78,7 @@ public interface QuestTypeApi {
      * @param profile     the {@link Profile} of the player
      * @param objectiveID ID of the objective
      */
-    void pauseObjective(Profile profile, ObjectiveID objectiveID);
+    void pauseObjective(Profile profile, ObjectiveIdentifier objectiveID);
 
     /**
      * Cancels the existing objective for given player.
@@ -86,7 +86,7 @@ public interface QuestTypeApi {
      * @param profile     the {@link Profile} of the player
      * @param objectiveID ID of the objective
      */
-    void cancelObjective(Profile profile, ObjectiveID objectiveID);
+    void cancelObjective(Profile profile, ObjectiveIdentifier objectiveID);
 
     /**
      * Resumes the existing objective for given player.
@@ -95,7 +95,7 @@ public interface QuestTypeApi {
      * @param objectiveID ID of the objective
      * @param instruction data instruction string
      */
-    void resumeObjective(Profile profile, ObjectiveID objectiveID, String instruction);
+    void resumeObjective(Profile profile, ObjectiveIdentifier objectiveID, String instruction);
 
     /**
      * Renames the objective instance.
@@ -103,7 +103,7 @@ public interface QuestTypeApi {
      * @param name   the current name
      * @param rename the name it should have now
      */
-    void renameObjective(ObjectiveID name, ObjectiveID rename);
+    void renameObjective(ObjectiveIdentifier name, ObjectiveIdentifier rename);
 
     /**
      * Returns the list of objectives of this player.
@@ -120,7 +120,7 @@ public interface QuestTypeApi {
      * @return the loaded Objective
      * @throws QuestException if no Objective is loaded for the ID
      */
-    Objective getObjective(ObjectiveID objectiveID) throws QuestException;
+    Objective getObjective(ObjectiveIdentifier objectiveID) throws QuestException;
 
     /**
      * Get the Api for placeholder interaction.

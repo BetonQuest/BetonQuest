@@ -2,12 +2,11 @@ package org.betonquest.betonquest.compatibility.quests;
 
 import me.pikamug.quests.module.BukkitCustomRequirement;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -26,16 +25,6 @@ public class ConditionRequirement extends BukkitCustomRequirement {
     private final BetonQuestLogger log;
 
     /**
-     * The {@link Placeholders} to create and resolve placeholders.
-     */
-    private final Placeholders placeholders;
-
-    /**
-     * The quest package manager to get quest packages from.
-     */
-    private final QuestPackageManager packManager;
-
-    /**
      * Quest Type API.
      */
     private final QuestTypeApi questTypeApi;
@@ -46,22 +35,25 @@ public class ConditionRequirement extends BukkitCustomRequirement {
     private final ProfileProvider profileProvider;
 
     /**
+     * Identifier factory.
+     */
+    private final IdentifierFactory<ConditionIdentifier> identifierFactory;
+
+    /**
      * Create a new 'Quests' Condition Requirement.
      *
-     * @param placeholders    the {@link Placeholders} to create and resolve placeholders
-     * @param log             the custom logger
-     * @param packManager     the quest package manager to get quest packages from
-     * @param questTypeApi    the Quest Type API
-     * @param profileProvider the profile provider instance
+     * @param log               the custom logger
+     * @param questTypeApi      the Quest Type API
+     * @param profileProvider   the profile provider instance
+     * @param identifierFactory the identifier factory
      */
-    public ConditionRequirement(final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager,
-                                final QuestTypeApi questTypeApi, final ProfileProvider profileProvider) {
+    public ConditionRequirement(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final ProfileProvider profileProvider,
+                                final IdentifierFactory<ConditionIdentifier> identifierFactory) {
         super();
         this.log = log;
-        this.placeholders = placeholders;
-        this.packManager = packManager;
         this.questTypeApi = questTypeApi;
         this.profileProvider = profileProvider;
+        this.identifierFactory = identifierFactory;
         setName("BetonQuest condition");
         setAuthor("BetonQuest");
         addStringPrompt("Condition", "Specify BetonQuest condition with the package and the name", null);
@@ -81,7 +73,7 @@ public class ConditionRequirement extends BukkitCustomRequirement {
                 log.warn("Error while running quest reward - Player with UUID '" + uuid + "' not found.");
                 return false;
             }
-            final ConditionID condition = new ConditionID(placeholders, packManager, null, string);
+            final ConditionIdentifier condition = identifierFactory.parseIdentifier(null, string);
             return questTypeApi.condition(profileProvider.getProfile(player), condition);
         } catch (final QuestException e) {
             log.warn("Error while checking quest requirement - BetonQuest condition '" + string + "' not found: " + e.getMessage(), e);

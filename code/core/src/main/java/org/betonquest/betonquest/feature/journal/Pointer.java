@@ -3,8 +3,8 @@ package org.betonquest.betonquest.feature.journal;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.identifier.JournalEntryIdentifier;
 import org.betonquest.betonquest.api.text.TextParser;
-import org.betonquest.betonquest.id.JournalEntryID;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -15,7 +15,7 @@ import java.util.Locale;
  * @param pointer   String pointing to the journal entry.
  * @param timestamp Timestamp indicating date of this entry.
  */
-public record Pointer(JournalEntryID pointer, long timestamp) {
+public record Pointer(JournalEntryIdentifier pointer, long timestamp) {
 
     /**
      * The minimum length to parse hours.

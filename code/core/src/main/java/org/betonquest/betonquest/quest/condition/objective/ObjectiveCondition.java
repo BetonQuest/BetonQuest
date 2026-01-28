@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.quest.condition.objective;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 
 /**
  * Checks if the player has specified objective active.
@@ -20,7 +20,7 @@ public class ObjectiveCondition implements PlayerCondition {
     /**
      * The objective ID.
      */
-    private final Argument<ObjectiveID> objectiveId;
+    private final Argument<ObjectiveIdentifier> objectiveId;
 
     /**
      * Creates a new ObjectiveCondition.
@@ -28,7 +28,7 @@ public class ObjectiveCondition implements PlayerCondition {
      * @param questTypeApi the Quest Type API
      * @param objectiveId  the objective ID
      */
-    public ObjectiveCondition(final QuestTypeApi questTypeApi, final Argument<ObjectiveID> objectiveId) {
+    public ObjectiveCondition(final QuestTypeApi questTypeApi, final Argument<ObjectiveIdentifier> objectiveId) {
         this.questTypeApi = questTypeApi;
         this.objectiveId = objectiveId;
     }

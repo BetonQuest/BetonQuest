@@ -7,11 +7,10 @@ import ch.njol.util.Kleenean;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.Placeholders;
-import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -34,16 +33,6 @@ public class SkriptEffectBQ extends Effect {
     private final BetonQuest plugin;
 
     /**
-     * The {@link Placeholders} to create and resolve placeholders.
-     */
-    private final Placeholders placeholders;
-
-    /**
-     * The quest package manager to get quest packages from.
-     */
-    private final QuestPackageManager packManager;
-
-    /**
      * The action identifier to be fired.
      */
     private Expression<String> action;
@@ -59,9 +48,7 @@ public class SkriptEffectBQ extends Effect {
     public SkriptEffectBQ() {
         super();
         this.plugin = BetonQuest.getInstance();
-        this.placeholders = plugin.getQuestTypeApi().placeholders();
         this.log = plugin.getLoggerFactory().create(getClass());
-        packManager = plugin.getQuestPackageManager();
     }
 
     @SuppressWarnings("unchecked")
@@ -86,8 +73,10 @@ public class SkriptEffectBQ extends Effect {
                 final String actionID = SkriptEffectBQ.this.action.getSingle(event);
                 try {
                     final ProfileProvider profileProvider = plugin.getProfileProvider();
+                    final IdentifierFactory<ActionIdentifier> actionIdentifierFactory =
+                            plugin.getQuestRegistries().identifiers().getFactory(ActionIdentifier.class);
                     plugin.getQuestTypeApi().action(profileProvider.getProfile(player.getSingle(event)),
-                            new ActionID(placeholders, packManager, null, actionID));
+                            actionIdentifierFactory.parseIdentifier(null, actionID));
                 } catch (final QuestException e) {
                     log.warn("Error when running Skript event - could not load '" + actionID + "' action: " + e.getMessage(), e);
                 }

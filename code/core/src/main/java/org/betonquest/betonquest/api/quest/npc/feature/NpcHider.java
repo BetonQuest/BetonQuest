@@ -2,18 +2,19 @@ package org.betonquest.betonquest.api.quest.npc.feature;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
+import org.betonquest.betonquest.api.identifier.NpcIdentifier;
+import org.betonquest.betonquest.api.identifier.factory.IdentifierRegistry;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
+import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.npc.Npc;
-import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
 import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultListArgument;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -31,22 +32,13 @@ import java.util.Set;
 /**
  * Hides (or shows) Npcs based on conditions defined in the {@code hide_npcs} section of a {@link QuestPackage}.
  */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class NpcHider {
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     protected final BetonQuestLogger log;
-
-    /**
-     * The Quest Package Manager to use for the instruction.
-     */
-    private final QuestPackageManager packManager;
-
-    /**
-     * The {@link Placeholders} to create and resolve placeholders.
-     */
-    private final Placeholders placeholders;
 
     /**
      * Processor to get Npcs.
@@ -69,9 +61,19 @@ public class NpcHider {
     private final NpcRegistry npcTypes;
 
     /**
+     * Identifier registry to get identifiers from.
+     */
+    private final IdentifierRegistry identifierRegistry;
+
+    /**
      * Npc ids mapped to their hide conditions.
      */
-    private final Map<NpcID, Set<ConditionID>> npcs;
+    private final Map<NpcIdentifier, Set<ConditionIdentifier>> npcs;
+
+    /**
+     * Instruction API to resolve {@link SectionInstruction}s.
+     */
+    private final InstructionApi instructionApi;
 
     /**
      * The task refreshing npc visibility.
@@ -82,20 +84,21 @@ public class NpcHider {
     /**
      * Create and start a new Npc Hider.
      *
-     * @param log             the custom logger for this class
-     * @param packManager     the quest package manager to get quest packages from
-     * @param placeholders    the {@link Placeholders} to create and resolve placeholders
-     * @param npcProcessor    the processor to get nps
-     * @param questTypeApi    the Quest Type API to check hiding conditions
-     * @param profileProvider the profile provider instance
-     * @param npcTypes        the Npc types to get NpcIds
+     * @param log                the custom logger for this class
+     * @param npcProcessor       the processor to get nps
+     * @param questTypeApi       the Quest Type API to check hiding conditions
+     * @param profileProvider    the profile provider instance
+     * @param npcTypes           the Npc types to get NpcIds
+     * @param identifierRegistry the identifier registry to get identifiers from
+     * @param instructionApi     the instruction api to resolve sections
      */
-    public NpcHider(final BetonQuestLogger log, final QuestPackageManager packManager, final Placeholders placeholders,
-                    final NpcProcessor npcProcessor, final QuestTypeApi questTypeApi,
-                    final ProfileProvider profileProvider, final NpcRegistry npcTypes) {
+    public NpcHider(final BetonQuestLogger log, final NpcProcessor npcProcessor,
+                    final QuestTypeApi questTypeApi, final ProfileProvider profileProvider,
+                    final NpcRegistry npcTypes, final IdentifierRegistry identifierRegistry,
+                    final InstructionApi instructionApi) {
         this.log = log;
-        this.packManager = packManager;
-        this.placeholders = placeholders;
+        this.identifierRegistry = identifierRegistry;
+        this.instructionApi = instructionApi;
         this.npcProcessor = npcProcessor;
         this.questTypeApi = questTypeApi;
         this.profileProvider = profileProvider;
@@ -111,7 +114,8 @@ public class NpcHider {
             }
             for (final String idString : section.getKeys(false)) {
                 try {
-                    loadKey(pack, section, idString);
+                    final SectionInstruction sectionInstruction = instructionApi.createSectionInstruction(pack, section);
+                    loadKey(sectionInstruction, idString);
                 } catch (final QuestException e) {
                     log.warn("Could not load hide_npcs '" + idString + "' in pack '" + pack.getQuestPath() + "': " + e.getMessage(), e);
                 }
@@ -119,16 +123,11 @@ public class NpcHider {
         }
     }
 
-    private void loadKey(final QuestPackage pack, final ConfigurationSection section, final String idString) throws QuestException {
-        final NpcID npcId = new NpcID(placeholders, packManager, pack, idString);
-
-        final String conditionsString = section.getString(idString);
-        if (conditionsString == null) {
-            throw new QuestException("No conditions defined");
-        }
-        final List<ConditionID> conditions = new DefaultListArgument<>(placeholders, pack, conditionsString,
-                string -> new ConditionID(placeholders, packManager, pack, string)).getValue(null);
-
+    private void loadKey(final SectionInstruction instruction, final String idString) throws QuestException {
+        final IdentifierFactory<NpcIdentifier> npcIdentifierFactory = identifierRegistry.getFactory(NpcIdentifier.class);
+        final NpcIdentifier npcId = npcIdentifierFactory.parseIdentifier(instruction.getPackage(), idString);
+        final List<ConditionIdentifier> conditions = instruction.read().value(idString)
+                .identifier(ConditionIdentifier.class).list().get().getValue(null);
         if (npcs.containsKey(npcId)) {
             npcs.get(npcId).addAll(conditions);
         } else {
@@ -166,8 +165,8 @@ public class NpcHider {
      * @param profile the profile to check conditions for
      * @return if the npc is stored and the hide conditions are met
      */
-    public boolean isHidden(final NpcID npcId, final OnlineProfile profile) {
-        final Set<ConditionID> conditions = npcs.get(npcId);
+    public boolean isHidden(final NpcIdentifier npcId, final OnlineProfile profile) {
+        final Set<ConditionIdentifier> conditions = npcs.get(npcId);
         if (conditions == null || conditions.isEmpty()) {
             return false;
         }
@@ -183,11 +182,11 @@ public class NpcHider {
      */
     public boolean isHidden(final Npc<?> npc, final Player player) {
         final OnlineProfile onlineProfile = profileProvider.getProfile(player);
-        final Set<NpcID> identifier = npcTypes.getIdentifier(npc, onlineProfile);
+        final Set<NpcIdentifier> identifier = npcTypes.getIdentifier(npc, onlineProfile);
         if (identifier.isEmpty()) {
             return false;
         }
-        for (final NpcID npcID : identifier) {
+        for (final NpcIdentifier npcID : identifier) {
             if (isHidden(npcID, onlineProfile)) {
                 return true;
             }
@@ -201,8 +200,8 @@ public class NpcHider {
      * @param onlineProfile the online profile of the player
      * @param npcId         the id of the Npc
      */
-    public void applyVisibility(final OnlineProfile onlineProfile, final NpcID npcId) {
-        final Set<ConditionID> conditions = npcs.get(npcId);
+    public void applyVisibility(final OnlineProfile onlineProfile, final NpcIdentifier npcId) {
+        final Set<ConditionIdentifier> conditions = npcs.get(npcId);
         if (conditions == null) {
             return;
         }
@@ -228,7 +227,7 @@ public class NpcHider {
      * @param onlineProfile the online profile of the player
      */
     public void applyVisibility(final OnlineProfile onlineProfile) {
-        for (final NpcID npcId : npcs.keySet()) {
+        for (final NpcIdentifier npcId : npcs.keySet()) {
             applyVisibility(onlineProfile, npcId);
         }
     }
@@ -238,7 +237,7 @@ public class NpcHider {
      *
      * @param npcId the id of the Npc
      */
-    public void applyVisibility(final NpcID npcId) {
+    public void applyVisibility(final NpcIdentifier npcId) {
         for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
             applyVisibility(onlineProfile, npcId);
         }
@@ -249,7 +248,7 @@ public class NpcHider {
      */
     public void applyVisibility() {
         for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
-            for (final NpcID npcId : npcs.keySet()) {
+            for (final NpcIdentifier npcId : npcs.keySet()) {
                 applyVisibility(onlineProfile, npcId);
             }
         }
