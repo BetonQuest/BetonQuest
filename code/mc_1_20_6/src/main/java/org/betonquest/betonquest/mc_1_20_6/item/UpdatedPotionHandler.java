@@ -107,18 +107,17 @@ public class UpdatedPotionHandler extends PotionHandler {
     }
 
     private boolean checkBase(@Nullable final PotionType base) {
-        switch (typeE) {
-            case WHATEVER:
-                return true;
-            case REQUIRED:
+        return switch (typeE) {
+            case WHATEVER -> true;
+            case REQUIRED -> {
                 if (base != type) {
-                    return false;
+                    yield false;
                 }
                 final String key = base.getKey().getKey();
-                return (extendedE != Existence.REQUIRED || key.startsWith(LONG_PREFIX) == extended)
+                yield (extendedE != Existence.REQUIRED || key.startsWith(LONG_PREFIX) == extended)
                         && (upgradedE != Existence.REQUIRED || key.startsWith(STRONG_PREFIX) == upgraded);
-            default:
-                return false;
-        }
+            }
+            default -> false;
+        };
     }
 }
