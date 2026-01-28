@@ -198,20 +198,17 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
     }
 
     private boolean checkBase(@Nullable final PotionData base) {
-        switch (typeE) {
-            case WHATEVER:
-                return true;
-            case REQUIRED:
+        return switch (typeE) {
+            case WHATEVER -> true;
+            case REQUIRED -> {
                 if (base == null || base.getType() != type) {
-                    return false;
+                    yield false;
                 }
-                if (extendedE == Existence.REQUIRED && base.isExtended() != extended) {
-                    return false;
-                }
-                return upgradedE != Existence.REQUIRED || base.isUpgraded() == upgraded;
-            default:
-                return false;
-        }
+                yield (extendedE != Existence.REQUIRED || base.isExtended() == extended)
+                        && (upgradedE != Existence.REQUIRED || base.isUpgraded() == upgraded);
+            }
+            default -> false;
+        };
     }
 
     /**
