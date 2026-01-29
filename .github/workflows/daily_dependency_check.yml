@@ -31,14 +31,9 @@ jobs:
         uses: actions/checkout@v6
       - uses: BetonQuest/Workflows/.github/actions/setup-git-lfs@main
       - uses: BetonQuest/Workflows/.github/actions/setup-mkdocs-material@main
-        with:
-          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
       - name: Build with mkdocs
         run: |
           mkdocs build --strict
-        env:
-          MKDOCS_MATERIAL_INSIDERS_ENABLED: ${{ secrets.MKDOCS_MATERIAL_INSIDERS != '' }}
-          MKDOCS_MATERIAL_INSIDERS_ENABLED_CI: ${{ secrets.MKDOCS_MATERIAL_INSIDERS != '' }}
 
   alert:
     name: Alert to Discord

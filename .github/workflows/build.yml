@@ -86,7 +86,6 @@ jobs:
       - uses: BetonQuest/Workflows/.github/actions/setup-git-lfs@main
       - uses: BetonQuest/Workflows/.github/actions/setup-mkdocs-material@main
         with:
-          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
           MKDOCS_SITE_DIR: 'target/docs'
           PYTHON_CACHE: 'pip'
           PYTHON_CACHE_DEPENDENCY_PATH: 'docs/setup-docs-dependencies.py'
@@ -101,9 +100,6 @@ jobs:
         run: |
           mkdocs build --strict 
           git diff > target/docs/DocsChanges.patch
-        env:
-          MKDOCS_MATERIAL_INSIDERS_ENABLED: ${{ secrets.MKDOCS_MATERIAL_INSIDERS != '' }}
-          MKDOCS_MATERIAL_INSIDERS_ENABLED_CI: ${{ secrets.MKDOCS_MATERIAL_INSIDERS != '' }}
       - name: Upload Docs
         uses: actions/upload-artifact@v6
         with:
@@ -185,7 +181,6 @@ jobs:
       - uses: BetonQuest/Workflows/.github/actions/setup-git-lfs@main
       - uses: BetonQuest/Workflows/.github/actions/setup-mkdocs-material@main
         with:
-          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
           MKDOCS_SITE_DIR: 'target/docs'
           PYTHON_CACHE: 'pip'
           PYTHON_CACHE_DEPENDENCY_PATH: 'docs/setup-docs-dependencies.py'
@@ -235,9 +230,6 @@ jobs:
           
           echo "mike deploy ${FLAGS[@]} ${VERSIONS[@]}"
           mike deploy "${FLAGS[@]}" "${VERSIONS[@]}"
-        env:
-          MKDOCS_MATERIAL_INSIDERS_ENABLED: ${{ secrets.MKDOCS_MATERIAL_INSIDERS != '' }}
-          MKDOCS_MATERIAL_INSIDERS_ENABLED_CI: ${{ secrets.MKDOCS_MATERIAL_INSIDERS != '' }}
       - name: Set version Tag for Quest-Tutorials submodule
         if: "env.VERSION_TYPE == 'release'"
         shell: bash --noprofile --norc -euo pipefail {0}
