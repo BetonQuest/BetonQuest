@@ -29,16 +29,16 @@ public class PasswordObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
-        final String pattern = instruction.string().get().getValue(null);
-        final FlagArgument<Pattern> regex = instruction.bool()
-                .map(ignCase -> ignCase
-                        ? Pattern.compile(pattern, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE) : Pattern.compile(pattern))
-                .getFlag("ignoreCase", Pattern.compile(pattern));
+        final Argument<String> patternString = instruction.string().get();
+        final FlagArgument<Boolean> ignoreCase = instruction.bool().getFlag("ignoreCase", true);
+        final Argument<Pattern> pattern = profile -> ignoreCase.getValue(profile).orElse(false)
+                ? Pattern.compile(patternString.getValue(profile), Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE)
+                : Pattern.compile(patternString.getValue(profile));
         final Argument<String> prefix = instruction.string().get("prefix").orElse(null);
         final String resolvedPrefix = prefix == null ? null : prefix.getValue(null);
         final String passwordPrefix = resolvedPrefix == null || resolvedPrefix.isEmpty() ? resolvedPrefix : resolvedPrefix + ": ";
         final Argument<List<ActionID>> failEvents = instruction.parse(ActionID::new).list().get("fail", Collections.emptyList());
-        final PasswordObjective objective = new PasswordObjective(service, regex, passwordPrefix, failEvents);
+        final PasswordObjective objective = new PasswordObjective(service, pattern, passwordPrefix, failEvents);
         service.request(AsyncPlayerChatEvent.class).priority(EventPriority.LOW).onlineHandler(objective::onChat)
                 .player(AsyncPlayerChatEvent::getPlayer).subscribe(true);
         service.request(PlayerCommandPreprocessEvent.class).priority(EventPriority.LOW).onlineHandler(objective::onCommand)
