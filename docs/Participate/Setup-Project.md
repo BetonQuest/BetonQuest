@@ -114,17 +114,7 @@ Make sure [Python3](https://www.python.org/downloads/) is installed on your loca
 and added to the PATH environment variable. The Python installer allows you to do so with a checkbox called something like
 "Add Python to environment variables".
 
-??? "In case you are a [Material for MkDocs](https://squidfunk.github.io/mkdocs-material) insider (paid premium version)"  
-    You need to set two environment variables to be able to build the docs with MkDocs Material insiders.  
-    
-    Set `MKDOCS_MATERIAL_INSIDERS` to your license key to be able to install the indiders version.
-    
-    When you want to see the insiders version on serve, you need to set `MKDOCS_MATERIAL_INSIDERS_ENABLED` to `true`.
-    
-    Under Windows you can set environment variables with `setx VARIABLE_NAME VALUE /M` in the terminal.
-    Now you need to restart IntelliJ for the changes to take effect. 
-
-Install all other dependencies by entering `python docs/setup-docs-dependencies.py` in the terminal on the project's root directory.
+Install all other dependencies by entering `pip install ./docs` in the terminal on the project's root directory.
 
 ### See your changes live
 Run this command in IntelliJ's integrated terminal (at the bottom) to create a docs preview in your browser:

@@ -113,6 +113,7 @@ markdown_extensions:
       permalink: 🔗
 
 plugins:
+  - typeset
   - search: { }
   - snippets:
       directory: "_snippets"
@@ -125,11 +126,7 @@ plugins:
         - mkdocs_parent.yml
         - setup-docs-dependencies.py
   - group:
-      enabled: !ENV MKDOCS_MATERIAL_INSIDERS_ENABLED
-      plugins:
-        - typeset
-  - group:
-      enabled: !ENV MKDOCS_MATERIAL_INSIDERS_ENABLED_CI
+      enabled: !ENV CI
       plugins:
         - optimize
 
