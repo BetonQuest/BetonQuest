@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class IdentifierTest {
+class DefaultIdentifierFactoryTest {
 
     private static QuestPackage createQuestPackage(final QuestPackageManager manager, final Map<String, QuestPackage> packages, final String name) {
         final QuestPackage pack = mock(QuestPackage.class);

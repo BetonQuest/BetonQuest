@@ -48,8 +48,8 @@ public class RPGMenuCommand extends SimpleCommand {
     @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public RPGMenuCommand(final BetonQuestLogger log, final RPGMenu menu, final IdentifierFactory<MenuIdentifier> identifierFactory) {
         super(log, "rpgmenu", new Permission("betonquest.admin"), 0, "qm", "menu", "menus", "rpgmenus", "rpgm");
-        this.identifierFactory = identifierFactory;
         this.menu = menu;
+        this.identifierFactory = identifierFactory;
         setDescription("Core command of the RPGMenu addon for BetonQuest");
         setUsage("/rpgmenu <open/list>");
     }

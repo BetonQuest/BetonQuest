@@ -24,8 +24,9 @@ public class NpcIdentifierFactory extends DefaultIdentifierFactory<NpcIdentifier
     }
 
     @Override
-    public NpcIdentifier parseIdentifier(@Nullable final QuestPackage source, final String identifier) throws QuestException {
-        final Map.Entry<QuestPackage, String> entry = parse(source, identifier);
-        return new DefaultNpcIdentifier(entry.getKey(), entry.getValue());
+    public NpcIdentifier parseIdentifier(@Nullable final QuestPackage source, final String input) throws QuestException {
+        final Map.Entry<QuestPackage, String> entry = parse(source, input);
+        final DefaultNpcIdentifier identifier = new DefaultNpcIdentifier(entry.getKey(), entry.getValue());
+        return requireInstruction(identifier, DefaultNpcIdentifier.NPC_SECTION);
     }
 }

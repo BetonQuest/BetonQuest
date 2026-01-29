@@ -74,7 +74,7 @@ public class SkriptEffectBQ extends Effect {
                 try {
                     final ProfileProvider profileProvider = plugin.getProfileProvider();
                     final IdentifierFactory<ActionIdentifier> actionIdentifierFactory =
-                            plugin.getQuestRegistries().identifiers().getFactory(ActionIdentifier.class);
+                            plugin.getQuestRegistries().identifier().getFactory(ActionIdentifier.class);
                     plugin.getQuestTypeApi().action(profileProvider.getProfile(player.getSingle(event)),
                             actionIdentifierFactory.parseIdentifier(null, actionID));
                 } catch (final QuestException e) {

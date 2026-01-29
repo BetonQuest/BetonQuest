@@ -11,14 +11,14 @@ import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
  * @param action      The Registry holding registered action types.
  * @param objective   The Registry holding registered objective types.
  * @param placeholder The Registry holding registered placeholder types.
- * @param identifiers The Registry holding registered identifier types.
+ * @param identifier  The Registry holding registered identifier types.
  */
 public record BaseQuestTypeRegistries(
         ConditionTypeRegistry condition,
         ActionTypeRegistry action,
         ObjectiveTypeRegistry objective,
         PlaceholderTypeRegistry placeholder,
-        IdentifierTypeRegistry identifiers
+        IdentifierTypeRegistry identifier
 ) implements QuestTypeRegistries {
 
     /**

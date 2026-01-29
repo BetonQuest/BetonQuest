@@ -46,5 +46,5 @@ public interface QuestTypeRegistries {
      *
      * @return the identifier registry
      */
-    IdentifierRegistry identifiers();
+    IdentifierRegistry identifier();
 }

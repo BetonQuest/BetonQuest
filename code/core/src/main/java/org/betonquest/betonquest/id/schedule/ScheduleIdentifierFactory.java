@@ -26,6 +26,6 @@ public class ScheduleIdentifierFactory extends DefaultIdentifierFactory<Schedule
     @Override
     public ScheduleIdentifier parseIdentifier(@Nullable final QuestPackage source, final String input) throws QuestException {
         final Map.Entry<QuestPackage, String> entry = parse(source, input);
-        return new DefaultScheduleIdentifier(entry.getKey(), entry.getValue());
+        return requireSection(new DefaultScheduleIdentifier(entry.getKey(), entry.getValue()), "schedules");
     }
 }

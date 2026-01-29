@@ -26,6 +26,7 @@ public class QuestCancelerIdentifierFactory extends DefaultIdentifierFactory<Que
     @Override
     public QuestCancelerIdentifier parseIdentifier(@Nullable final QuestPackage source, final String input) throws QuestException {
         final Map.Entry<QuestPackage, String> entry = parse(source, input);
-        return new DefaultQuestCancelerIdentifier(entry.getKey(), entry.getValue());
+        final DefaultQuestCancelerIdentifier identifier = new DefaultQuestCancelerIdentifier(entry.getKey(), entry.getValue());
+        return requireSection(identifier, DefaultQuestCancelerIdentifier.CANCELER_SECTION);
     }
 }

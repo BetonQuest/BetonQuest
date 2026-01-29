@@ -95,7 +95,7 @@ public class PlaceholderProcessor extends TypedQuestProcessor<PlaceholderIdentif
         if (existingPlaceholder != null) {
             return existingPlaceholder;
         }
-        final Instruction instructionVar = instructionApi.createInstruction(placeholderID, placeholderID.readRawInstruction());
+        final Instruction instructionVar = instructionApi.createPlaceholderInstruction(placeholderID, placeholderID.readRawInstruction());
         final TypeFactory<PlaceholderAdapter> placeholderFactory = types.getFactory(instructionVar.current());
         final PlaceholderAdapter placeholder = placeholderFactory.parseInstruction(instructionVar);
         values.put(placeholderID, placeholder);

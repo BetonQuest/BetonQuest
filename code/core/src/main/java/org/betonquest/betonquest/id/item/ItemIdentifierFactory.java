@@ -26,6 +26,7 @@ public class ItemIdentifierFactory extends DefaultIdentifierFactory<ItemIdentifi
     @Override
     public ItemIdentifier parseIdentifier(@Nullable final QuestPackage source, final String input) throws QuestException {
         final Map.Entry<QuestPackage, String> entry = parse(source, input);
-        return new DefaultItemIdentifier(entry.getKey(), entry.getValue());
+        final DefaultItemIdentifier identifier = new DefaultItemIdentifier(entry.getKey(), entry.getValue());
+        return requireInstruction(identifier, DefaultItemIdentifier.ITEM_SECTION);
     }
 }

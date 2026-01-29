@@ -26,6 +26,7 @@ public class ConversationIdentifierFactory extends DefaultIdentifierFactory<Conv
     @Override
     public ConversationIdentifier parseIdentifier(@Nullable final QuestPackage source, final String input) throws QuestException {
         final Map.Entry<QuestPackage, String> entry = parse(source, input);
-        return new DefaultConversationIdentifier(entry.getKey(), entry.getValue());
+        final DefaultConversationIdentifier identifier = new DefaultConversationIdentifier(entry.getKey(), entry.getValue());
+        return requireSection(identifier, DefaultConversationIdentifier.CONVERSATION_SECTION);
     }
 }

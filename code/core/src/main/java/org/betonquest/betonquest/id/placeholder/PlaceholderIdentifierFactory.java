@@ -25,10 +25,7 @@ public class PlaceholderIdentifierFactory extends DefaultIdentifierFactory<Place
 
     @Override
     public PlaceholderIdentifier parseIdentifier(@Nullable final QuestPackage source, final String identifier) throws QuestException {
-        final Map.Entry<QuestPackage, String> entry = parse(source, identifier);
-        final String value = entry.getValue();
-        final String idPart = value.substring(0, value.indexOf('.'));
-        final String instructionPart = value.substring(idPart.length() + 1);
-        return new DefaultPlaceholderIdentifier(entry.getKey(), idPart, instructionPart);
+        final Map.Entry<QuestPackage, String> entry = parse(source, identifier.substring(1, identifier.length() - 1));
+        return new DefaultPlaceholderIdentifier(entry.getKey(), entry.getValue(), identifier);
     }
 }

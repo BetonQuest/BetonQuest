@@ -24,8 +24,9 @@ public class ObjectiveIdentifierFactory extends DefaultIdentifierFactory<Objecti
     }
 
     @Override
-    public ObjectiveIdentifier parseIdentifier(@Nullable final QuestPackage source, final String identifier) throws QuestException {
-        final Map.Entry<QuestPackage, String> entry = parse(source, identifier);
-        return new DefaultObjectiveIdentifier(entry.getKey(), entry.getValue());
+    public ObjectiveIdentifier parseIdentifier(@Nullable final QuestPackage source, final String input) throws QuestException {
+        final Map.Entry<QuestPackage, String> entry = parse(source, input);
+        final DefaultObjectiveIdentifier identifier = new DefaultObjectiveIdentifier(entry.getKey(), entry.getValue());
+        return requireInstruction(identifier, DefaultObjectiveIdentifier.OBJECTIVE_SECTION);
     }
 }

@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.id.item;
 
-import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.DefaultReadableIdentifier;
 import org.betonquest.betonquest.api.identifier.ItemIdentifier;
@@ -20,9 +19,8 @@ public class DefaultItemIdentifier extends DefaultReadableIdentifier implements 
      *
      * @param pack       the package the identifier is related to.
      * @param identifier the identifier of the item.
-     * @throws QuestException if the identifier points to a non-existent section.
      */
-    protected DefaultItemIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
+    protected DefaultItemIdentifier(final QuestPackage pack, final String identifier) {
         super(pack, identifier, ITEM_SECTION);
     }
 }

@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.id.npc;
 
-import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.DefaultReadableIdentifier;
 import org.betonquest.betonquest.api.identifier.NpcIdentifier;
@@ -20,9 +19,8 @@ public class DefaultNpcIdentifier extends DefaultReadableIdentifier implements N
      *
      * @param pack       the package of the npc.
      * @param identifier the identifier of the npc.
-     * @throws QuestException if the identifier points to a non-existent section.
      */
-    protected DefaultNpcIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
+    protected DefaultNpcIdentifier(final QuestPackage pack, final String identifier) {
         super(pack, identifier, NPC_SECTION);
     }
 }

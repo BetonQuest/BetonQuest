@@ -148,7 +148,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         playerOptionsCount++;
         final String rawItem = properties.getString("item");
         try {
-            final IdentifierFactory<ItemIdentifier> identifierFactory = betonQuest.getQuestRegistries().identifiers().getFactory(ItemIdentifier.class);
+            final IdentifierFactory<ItemIdentifier> identifierFactory = betonQuest.getQuestRegistries().identifier().getFactory(ItemIdentifier.class);
             final Argument<ItemIdentifier> item = rawItem == null ? null
                     : new DefaultArgument<>(betonQuest.getQuestTypeApi().placeholders(), conv.getPackage(), rawItem,
                     (value) -> identifierFactory.parseIdentifier(conv.getPackage(), value));

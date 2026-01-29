@@ -165,7 +165,6 @@ class BStatsMetricsTest {
         final Instruction thirdInstruction = new DefaultInstruction(mock(Placeholders.class), mock(QuestPackageManager.class),
                 questPackage, thirdId, mock(ArgumentParsers.class), OTHER_INSTRUCTION);
         when(instructionApi.createInstruction(thirdId, OTHER_INSTRUCTION)).thenReturn(thirdInstruction);
-        types.put(OTHER_INSTRUCTION, null);
 
         new BStatsMetrics(plugin, bstatsMetrics, Map.of("id", metricsSupplier), mock(Compatibility.class), instructionApi);
 
@@ -176,6 +175,8 @@ class BStatsMetricsTest {
 
         assertCollectedChartData("{\"chartId\":\"idCount\",\"data\":{\"values\":{\"test\":1}}}", countChart);
         assertCollectedChartData("{\"chartId\":\"idEnabled\",\"data\":{\"values\":{\"test\":1}}}", enabledChart);
+
+        types.put(OTHER_INSTRUCTION, null);
 
         assertCollectedChartData("{\"chartId\":\"idCount\",\"data\":{\"values\":{\"test\":1}}}", countChart);
         assertCollectedChartData("{\"chartId\":\"idEnabled\",\"data\":{\"values\":{\"test\":1}}}", enabledChart);

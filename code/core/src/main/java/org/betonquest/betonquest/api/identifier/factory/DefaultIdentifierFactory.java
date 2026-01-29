@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.identifier.factory;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.Identifier;
@@ -9,7 +10,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import static org.betonquest.betonquest.api.identifier.Identifier.PACKAGE_NAVIGATOR;
+import static org.betonquest.betonquest.api.identifier.Identifier.PACKAGE_SEPARATOR;
+import static org.betonquest.betonquest.api.identifier.Identifier.SEPARATOR;
+import static org.betonquest.betonquest.api.identifier.Identifier.SEPARATOR_PATTERN;
 
 /**
  * A default implementation of {@link IdentifierFactory} providing the baseline method
@@ -18,26 +23,6 @@ import java.util.regex.Pattern;
  * @param <I> the type of identifier to create
  */
 public abstract class DefaultIdentifierFactory<I extends Identifier> implements IdentifierFactory<I> {
-
-    /**
-     * The string used to separate the package name from the identifier.
-     */
-    public static final String SEPARATOR = ">";
-
-    /**
-     * The string to separate the package address into parts.
-     */
-    public static final String PACKAGE_SEPARATOR = "-";
-
-    /**
-     * The string used to navigate up in the package hierarchy.
-     */
-    public static final String PACKAGE_NAVIGATOR = "_";
-
-    /**
-     * The pattern to find unescaped separators in an identifier.
-     */
-    public static final Pattern SEPARATOR_PATTERN = Pattern.compile("^(?<package>.*?)(?<!\\\\)(?:\\\\\\\\)*" + SEPARATOR + "(?<identifier>.*)$");
 
     /**
      * The quest package manager to resolve relative paths.
@@ -51,6 +36,38 @@ public abstract class DefaultIdentifierFactory<I extends Identifier> implements 
      */
     public DefaultIdentifierFactory(final QuestPackageManager packManager) {
         this.packManager = packManager;
+    }
+
+    /**
+     * Ensures the specified section is defined for the identifier.
+     *
+     * @param resolvedIdentifier the identifier to check
+     * @param section            the section to check for
+     * @return the given identifier
+     * @throws QuestException if the section is not defined
+     */
+    protected I requireSection(final I resolvedIdentifier, final String section) throws QuestException {
+        final MultiConfiguration config = resolvedIdentifier.getPackage().getConfig();
+        if (!config.isConfigurationSection(section + config.options().pathSeparator() + resolvedIdentifier.get())) {
+            throw new QuestException("'%s' does not define a section under section '%s'".formatted(resolvedIdentifier.getFull(), section));
+        }
+        return resolvedIdentifier;
+    }
+
+    /**
+     * Ensures the specified section contains a string instruction.
+     *
+     * @param resolvedIdentifier the identifier to check
+     * @param section            the section to check for
+     * @return the given identifier
+     * @throws QuestException if the section does not contain a string instruction
+     */
+    protected I requireInstruction(final I resolvedIdentifier, final String section) throws QuestException {
+        final MultiConfiguration config = resolvedIdentifier.getPackage().getConfig();
+        if (!config.isString(section + config.options().pathSeparator() + resolvedIdentifier.get())) {
+            throw new QuestException("'%s' does not define a string instruction in section '%s'!".formatted(resolvedIdentifier.getFull(), section));
+        }
+        return resolvedIdentifier;
     }
 
     /**

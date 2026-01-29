@@ -116,7 +116,7 @@ public class BundledCompatibility {
         compatibility.registerPlugin("AuraSkills", new AuraSkillsIntegratorFactory());
         try {
             final IdentifierFactory<PlaceholderIdentifier> placeholderIdentifierFactory =
-                    betonQuestApi.getQuestRegistries().identifiers().getFactory(PlaceholderIdentifier.class);
+                    betonQuestApi.getQuestRegistries().identifier().getFactory(PlaceholderIdentifier.class);
             compatibility.registerPlugin("DecentHolograms", new DecentHologramsIntegratorFactory(loggerFactory,
                     betonQuestApi.getInstructionApi(), placeholderIdentifierFactory));
             compatibility.registerPlugin("HolographicDisplays", new HolographicDisplaysIntegratorFactory(loggerFactory,

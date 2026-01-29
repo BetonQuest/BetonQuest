@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.npc.citizens.action.move;
 
-import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.identifier.NpcIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
@@ -23,7 +23,7 @@ public class CitizensMoveActionFactory implements PlayerActionFactory {
     /**
      * Feature API.
      */
-    private final BetonQuestApi betonQuestApi;
+    private final FeatureApi featureApi;
 
     /**
      * Move instance to handle movement of Citizens NPCs.
@@ -38,15 +38,14 @@ public class CitizensMoveActionFactory implements PlayerActionFactory {
     /**
      * Create a new NPCTeleportActionFactory.
      *
-     * @param betonQuestApi          the BetonQuest API
+     * @param featureApi             the BetonQuest API
+     * @param citizensArgument       the Citizens argument parser to use
      * @param citizensMoveController the move instance to handle movement of Citizens NPCs
-     * @throws QuestException an exception if the identifier factory cannot be retrieved
      */
-    public CitizensMoveActionFactory(final BetonQuestApi betonQuestApi, final CitizensMoveController citizensMoveController) throws QuestException {
-        this.betonQuestApi = betonQuestApi;
+    public CitizensMoveActionFactory(final FeatureApi featureApi, final CitizensArgument citizensArgument, final CitizensMoveController citizensMoveController) {
+        this.featureApi = featureApi;
         this.citizensMoveController = citizensMoveController;
-        this.citizensArgument = new CitizensArgument(betonQuestApi.getInstructionApi(),
-                betonQuestApi.getQuestRegistries().identifiers().getFactory(NpcIdentifier.class));
+        this.citizensArgument = citizensArgument;
     }
 
     @Override
@@ -59,6 +58,6 @@ public class CitizensMoveActionFactory implements PlayerActionFactory {
         final FlagArgument<Boolean> blockConversations = instruction.bool().getFlag("block", true);
         final CitizensMoveController.MoveData moveAction = new CitizensMoveController.MoveData(locations, waitTicks,
                 doneActions, failActions, blockConversations);
-        return new CitizensMoveAction(betonQuestApi.getFeatureApi(), npcId, citizensMoveController, moveAction);
+        return new CitizensMoveAction(featureApi, npcId, citizensMoveController, moveAction);
     }
 }

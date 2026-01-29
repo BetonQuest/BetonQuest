@@ -49,16 +49,18 @@ public abstract class AbstractLocationObjective extends DefaultObjective {
     private final Map<UUID, Boolean> playersInsideRegion;
 
     /**
-     * The constructor takes an Instruction object as a parameter and throws an QuestException.
+     * The constructor takes an Instruction object as a parameter and throws a QuestException.
      * It initializes the entry and exit booleans and the playersInsideRegion map.
      *
      * @param service the ObjectiveFactoryService to be used in the constructor
+     * @param entry   the entry flag for the location objective
+     * @param exit    the exit flag for the location objective
      * @throws QuestException if there is an error while parsing the instruction
      */
-    public AbstractLocationObjective(final ObjectiveService service) throws QuestException {
+    public AbstractLocationObjective(final ObjectiveService service, final FlagArgument<Boolean> entry, final FlagArgument<Boolean> exit) throws QuestException {
         super(service);
-        entry = service.getInstruction().bool().getFlag("entry", true);
-        exit = service.getInstruction().bool().getFlag("exit", true);
+        this.entry = entry;
+        this.exit = exit;
         playersInsideRegion = new HashMap<>();
     }
 

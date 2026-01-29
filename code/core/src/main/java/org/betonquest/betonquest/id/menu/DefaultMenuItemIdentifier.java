@@ -10,6 +10,11 @@ import org.betonquest.betonquest.api.identifier.MenuItemIdentifier;
 public class DefaultMenuItemIdentifier extends DefaultIdentifier implements MenuItemIdentifier {
 
     /**
+     * The section name for menu items.
+     */
+    public static final String MENU_ITEM_SECTION = "menu_items";
+
+    /**
      * Creates a new menu item identifier.
      *
      * @param pack       the package the identifier is related to

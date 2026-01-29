@@ -43,7 +43,7 @@ public class QuestsIntegrator implements Integrator {
         final ProfileProvider profileProvider = api.getProfileProvider();
         try {
             final IdentifierFactory<ActionIdentifier> actionIdentifierFactory =
-                    api.getQuestRegistries().identifiers().getFactory(ActionIdentifier.class);
+                    api.getQuestRegistries().identifier().getFactory(ActionIdentifier.class);
             questsInstance.getCustomRewards().add(new ActionReward(
                     loggerFactory.create(ActionReward.class),
                     questTypeApi, profileProvider, actionIdentifierFactory));
@@ -52,7 +52,7 @@ public class QuestsIntegrator implements Integrator {
         }
         try {
             final IdentifierFactory<ConditionIdentifier> conditionIdentifierFactory =
-                    api.getQuestRegistries().identifiers().getFactory(ConditionIdentifier.class);
+                    api.getQuestRegistries().identifier().getFactory(ConditionIdentifier.class);
             questsInstance.getCustomRequirements().add(new ConditionRequirement(
                     loggerFactory.create(ConditionRequirement.class),
                     questTypeApi, profileProvider, conditionIdentifierFactory));

@@ -31,7 +31,7 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
     private final BetonQuestLogger log;
 
     /**
-     * The identifier factory for placeholders.
+     * The identifier factory for placeholder identifiers.
      */
     private final IdentifierFactory<PlaceholderIdentifier> identifierFactory;
 
@@ -85,7 +85,7 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
             final String group = match.group();
             try {
                 final PlaceholderIdentifier placeholderIdentifier = identifierFactory.parseIdentifier(pack, group);
-                final Instruction instruction = instructionApi.createInstruction(placeholderIdentifier, placeholderIdentifier.readRawInstruction());
+                final Instruction instruction = instructionApi.createPlaceholderInstruction(placeholderIdentifier, placeholderIdentifier.readRawInstruction());
                 return "%betonquest_" + placeholderIdentifier.getPackage().getQuestPath() + ":" + instruction + "%";
             } catch (final QuestException exception) {
                 log.warn("Could not create placeholder '" + group + "': " + exception.getMessage(), exception);

@@ -174,7 +174,7 @@ public class Compatibility implements Listener {
         try {
             hologramProvider.hook(betonQuestApi);
         } catch (final HookException e) {
-            log.warn("Error while enabling some features while post hooking into Holograms: " + e.getMessage(), e);
+            log.error("Error while enabling some features while post hooking into Holograms: " + e.getMessage(), e);
         }
     }
 
@@ -357,7 +357,7 @@ public class Compatibility implements Listener {
                         hookedPlugin.getName(),
                         hookedPlugin.getDescription().getVersion(),
                         exception.getMessage());
-                log.warn(message, exception);
+                log.error(message, exception);
                 log.warn("BetonQuest will work correctly, except for that single integration. "
                         + "You can turn it off by setting 'hook." + name.toLowerCase(Locale.ROOT)
                         + "' to false in config.yml file.");
@@ -406,7 +406,7 @@ public class Compatibility implements Listener {
                 integrator.hook(betonQuestApi);
                 this.integrator = integrator;
             } catch (final HookException | RuntimeException exception) {
-                log.warn("Could not hook into Minecraft %s! %s".formatted(version, exception.getMessage()), exception);
+                log.error("Could not hook into Minecraft %s! %s".formatted(version, exception.getMessage()), exception);
                 log.warn("BetonQuest will work correctly, except for that single version integration.");
             }
             this.attempted = true;

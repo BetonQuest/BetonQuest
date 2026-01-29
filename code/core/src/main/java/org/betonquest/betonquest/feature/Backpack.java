@@ -313,7 +313,7 @@ public class Backpack implements Listener {
             if (buttonString != null && !buttonString.isEmpty()) {
                 present = true;
                 try {
-                    final IdentifierFactory<ItemIdentifier> identifierFactory = BetonQuest.getInstance().getQuestRegistries().identifiers().getFactory(ItemIdentifier.class);
+                    final IdentifierFactory<ItemIdentifier> identifierFactory = BetonQuest.getInstance().getQuestRegistries().identifier().getFactory(ItemIdentifier.class);
                     final ItemIdentifier itemIdentifier = identifierFactory.parseIdentifier(null, buttonString);
                     stack = BetonQuest.getInstance().getFeatureApi().getItem(itemIdentifier, onlineProfile).generate(1);
                 } catch (final QuestException e) {

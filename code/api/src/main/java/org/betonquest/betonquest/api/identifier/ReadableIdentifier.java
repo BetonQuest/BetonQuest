@@ -10,7 +10,7 @@ public interface ReadableIdentifier extends Identifier {
     /**
      * The section the identifier is defined in.
      *
-     * @return the section
+     * @return the name of the section
      */
     String getSection();
 

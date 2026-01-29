@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.common.function.QuestSupplier;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.Identifier;
+import org.betonquest.betonquest.api.identifier.PlaceholderIdentifier;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -61,6 +62,11 @@ public class DefaultInstructionApi implements InstructionApi {
     @Override
     public Instruction createInstruction(final QuestPackage questPackage, final String instruction) throws QuestException {
         return new DefaultInstruction(placeholders.get(), packageManager, questPackage, null, argumentParsers.get(), instruction);
+    }
+
+    @Override
+    public Instruction createPlaceholderInstruction(final PlaceholderIdentifier identifier, final String instruction) throws QuestException {
+        return new PlaceholderInstruction(placeholders.get(), packageManager, identifier.getPackage(), identifier, argumentParsers.get(), instruction);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.id.condition;
 
-import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.identifier.DefaultReadableIdentifier;
@@ -26,9 +25,8 @@ public class DefaultConditionIdentifier extends DefaultReadableIdentifier implem
      * @param pack       the package of the condition.
      * @param identifier the identifier of the condition.
      * @param inverted   if the condition should be interpreted inverted.
-     * @throws QuestException if the identifier points to a non-existent section.
      */
-    protected DefaultConditionIdentifier(final QuestPackage pack, final String identifier, final boolean inverted) throws QuestException {
+    protected DefaultConditionIdentifier(final QuestPackage pack, final String identifier, final boolean inverted) {
         super(pack, identifier, CONDITION_SECTION);
         this.inverted = inverted;
     }

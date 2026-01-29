@@ -26,6 +26,7 @@ public class MenuItemIdentifierFactory extends DefaultIdentifierFactory<MenuItem
     @Override
     public MenuItemIdentifier parseIdentifier(@Nullable final QuestPackage source, final String input) throws QuestException {
         final Map.Entry<QuestPackage, String> entry = parse(source, input);
-        return new DefaultMenuItemIdentifier(entry.getKey(), entry.getValue());
+        final DefaultMenuItemIdentifier identifier = new DefaultMenuItemIdentifier(entry.getKey(), entry.getValue());
+        return requireSection(identifier, DefaultMenuItemIdentifier.MENU_ITEM_SECTION);
     }
 }

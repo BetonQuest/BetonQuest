@@ -20,15 +20,10 @@ public abstract class DefaultReadableIdentifier extends DefaultIdentifier implem
      * @param pack       the package this identifier belongs to
      * @param identifier the identifier without the package name
      * @param section    the section in the configuration where the identifier is defined
-     * @throws QuestException if the identifier is not defined in the configuration
      */
-    protected DefaultReadableIdentifier(final QuestPackage pack, final String identifier, final String section) throws QuestException {
+    protected DefaultReadableIdentifier(final QuestPackage pack, final String identifier, final String section) {
         super(pack, identifier);
         this.section = section;
-        final MultiConfiguration config = pack.getConfig();
-        if (!config.isString(section + config.options().pathSeparator() + super.get())) {
-            throw new QuestException("'%s' is not defined as string in section '%s'".formatted(super.getFull(), section));
-        }
     }
 
     @Override

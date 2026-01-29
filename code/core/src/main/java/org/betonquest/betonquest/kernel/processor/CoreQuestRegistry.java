@@ -65,10 +65,10 @@ public record CoreQuestRegistry(
                                            final BaseQuestTypeRegistries questTypeRegistries, final PluginManager pluginManager,
                                            final BukkitScheduler scheduler, final ProfileProvider profileProvider, final Plugin plugin,
                                            final InstructionApi instructionApi) throws QuestException {
-        final IdentifierFactory<ObjectiveIdentifier> objectiveIdentifierFactory = questTypeRegistries.identifiers().getFactory(ObjectiveIdentifier.class);
-        final IdentifierFactory<ActionIdentifier> actionIdentifierFactory = questTypeRegistries.identifiers().getFactory(ActionIdentifier.class);
-        final IdentifierFactory<ConditionIdentifier> conditionIdentifierFactory = questTypeRegistries.identifiers().getFactory(ConditionIdentifier.class);
-        final IdentifierFactory<PlaceholderIdentifier> placeholderIdentifierFactory = questTypeRegistries.identifiers().getFactory(PlaceholderIdentifier.class);
+        final IdentifierFactory<ObjectiveIdentifier> objectiveIdentifierFactory = questTypeRegistries.identifier().getFactory(ObjectiveIdentifier.class);
+        final IdentifierFactory<ActionIdentifier> actionIdentifierFactory = questTypeRegistries.identifier().getFactory(ActionIdentifier.class);
+        final IdentifierFactory<ConditionIdentifier> conditionIdentifierFactory = questTypeRegistries.identifier().getFactory(ConditionIdentifier.class);
+        final IdentifierFactory<PlaceholderIdentifier> placeholderIdentifierFactory = questTypeRegistries.identifier().getFactory(PlaceholderIdentifier.class);
 
         final PlaceholderProcessor placeholderProcessor = new PlaceholderProcessor(loggerFactory.create(PlaceholderProcessor.class),
                 packManager, questTypeRegistries.placeholder(), scheduler, placeholderIdentifierFactory, instructionApi, plugin);

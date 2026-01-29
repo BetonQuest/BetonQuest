@@ -83,11 +83,6 @@ public class DefaultObjectiveService implements ObjectiveService {
     private final ObjectiveProperties properties;
 
     /**
-     * The objective instruction.
-     */
-    private final Instruction objectiveInstruction;
-
-    /**
      * The default data supplier.
      */
     private QuestFunction<Profile, String> defaultDataSupplier;
@@ -124,7 +119,6 @@ public class DefaultObjectiveService implements ObjectiveService {
         this.objectiveServiceData = parseObjectiveData(objectiveInstruction);
         this.objectiveData = new ProfileKeyMap<>(profileProvider);
         this.defaultDataSupplier = profile -> "";
-        this.objectiveInstruction = objectiveInstruction;
     }
 
     private static ObjectiveServiceData parseObjectiveData(final Instruction instruction) throws QuestException {
@@ -192,11 +186,6 @@ public class DefaultObjectiveService implements ObjectiveService {
     @Override
     public ObjectiveIdentifier getObjectiveID() {
         return objectiveID;
-    }
-
-    @Override
-    public Instruction getInstruction() {
-        return objectiveInstruction;
     }
 
     @Override

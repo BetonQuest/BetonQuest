@@ -10,6 +10,11 @@ import org.betonquest.betonquest.api.identifier.DefaultIdentifier;
 public class DefaultConversationIdentifier extends DefaultIdentifier implements ConversationIdentifier {
 
     /**
+     * The section name for conversations.
+     */
+    public static final String CONVERSATION_SECTION = "conversations";
+
+    /**
      * Creates a new conversation identifier.
      *
      * @param pack       the package the identifier is in

@@ -3,7 +3,6 @@ package org.betonquest.betonquest.api.quest.objective.service;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -109,13 +108,6 @@ public interface ObjectiveService {
      * @return the objective ID
      */
     ObjectiveIdentifier getObjectiveID();
-
-    /**
-     * Retrieves the objective instruction.
-     *
-     * @return the objective instruction
-     */
-    Instruction getInstruction();
 
     /**
      * Retrieves the service data provider containing all additional information about the objective.

@@ -18,7 +18,7 @@ public class DecentHologramsIntegratorFactory implements IntegratorFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Identifier factory to create placeholders.
+     * Identifier factory to create placeholder identifiers.
      */
     private final IdentifierFactory<PlaceholderIdentifier> identifierFactory;
 

@@ -3,10 +3,8 @@ package org.betonquest.betonquest.compatibility.effectlib;
 import de.slikey.effectlib.EffectManager;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
-import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.effectlib.action.ParticleActionFactory;
 import org.betonquest.betonquest.compatibility.effectlib.identifier.ParticleIdentifier;
@@ -37,17 +35,12 @@ public class EffectLibIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final BetonQuestApi api) throws HookException {
+    public void hook(final BetonQuestApi api) {
         manager = new EffectManager(plugin);
-        final ArgumentParsers parsers;
-        try {
-            parsers = plugin.getArgumentParsers();
-        } catch (final QuestException e) {
-            throw new HookException(manager.getOwningPlugin(), "Could not hook into EffectLib.", e);
-        }
+        final ArgumentParsers parsers = plugin.getArgumentParsers();
         final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
         final ParticleIdentifierFactory factory = new ParticleIdentifierFactory(api.getQuestPackageManager());
-        api.getQuestRegistries().identifiers().register(ParticleIdentifier.class, factory);
+        api.getQuestRegistries().identifier().register(ParticleIdentifier.class, factory);
         api.getQuestRegistries().action().register("particle", new ParticleActionFactory(loggerFactory, manager));
         plugin.addProcessor(new EffectLibParticleManager(loggerFactory.create(EffectLibParticleManager.class), loggerFactory,
                 api.getQuestPackageManager(), api.getQuestTypeApi(), api.getFeatureApi(), api.getProfileProvider(),

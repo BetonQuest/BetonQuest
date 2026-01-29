@@ -104,7 +104,7 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
             final String group = match.group();
             try {
                 final PlaceholderIdentifier placeholderIdentifier = identifierFactory.parseIdentifier(pack, group);
-                final Instruction instruction = instructionApi.createInstruction(placeholderIdentifier, placeholderIdentifier.readRawInstruction());
+                final Instruction instruction = instructionApi.createPlaceholderInstruction(placeholderIdentifier, placeholderIdentifier.readRawInstruction());
                 final String prefix = placeholderProcessor.get(placeholderIdentifier).allowsPlayerless() ? "{bqg:" : "{bq:";
                 return prefix + placeholderIdentifier.getPackage().getQuestPath() + ":" + instruction + "}";
             } catch (final QuestException exception) {

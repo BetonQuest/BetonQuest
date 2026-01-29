@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -96,12 +96,13 @@ public class PlayerHider {
 
     private Collection<ConditionIdentifier> getConditions(final Placeholders placeholders, final QuestPackage pack, final String key,
                                                           @Nullable final String rawConditions) throws QuestException {
-        if (rawConditions == null) {
+        if (rawConditions == null || rawConditions.isEmpty()) {
             return new ArrayList<>();
         }
         try {
-            final DefaultInstruction instruction = new DefaultInstruction(placeholders, api.getQuestPackageManager(), pack, null, api.getArgumentParsers(), rawConditions);
-            return instruction.identifier(ConditionIdentifier.class).list().get().getValue(null);
+            final ArgumentParsers parsers = api.getArgumentParsers();
+            return parsers.forIdentifier(ConditionIdentifier.class).list()
+                    .apply(placeholders, api.getQuestPackageManager(), pack, rawConditions);
         } catch (final QuestException e) {
             throw new QuestException("Error while loading conditions for player_hider '" + key + "' in Package '" + pack.getQuestPath() + "': " + e.getMessage(), e);
         }

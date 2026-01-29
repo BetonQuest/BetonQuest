@@ -1916,7 +1916,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     }
 
     private <I extends Identifier> I getIdentifier(final Class<I> identifierClass, @Nullable final QuestPackage questPackage, final String identifier) throws QuestException {
-        final IdentifierFactory<I> identifierFactory = instance.getQuestRegistries().identifiers().getFactory(identifierClass);
+        final IdentifierFactory<I> identifierFactory = instance.getQuestRegistries().identifier().getFactory(identifierClass);
         return identifierFactory.parseIdentifier(questPackage, identifier);
     }
 

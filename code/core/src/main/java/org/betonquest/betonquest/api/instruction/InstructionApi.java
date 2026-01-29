@@ -3,6 +3,7 @@ package org.betonquest.betonquest.api.instruction;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.Identifier;
+import org.betonquest.betonquest.api.identifier.PlaceholderIdentifier;
 import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -30,6 +31,16 @@ public interface InstructionApi {
      * @throws QuestException if the instruction cannot be created.
      */
     Instruction createInstruction(QuestPackage questPackage, String instruction) throws QuestException;
+
+    /**
+     * Creates a placeholder instruction for the given quest package and placeholder.
+     *
+     * @param identifier  the identifier of the placeholder
+     * @param instruction the placeholder to read from
+     * @return a new placeholder instruction for the given quest package and placeholder
+     * @throws QuestException if the placeholder instruction cannot be created
+     */
+    Instruction createPlaceholderInstruction(PlaceholderIdentifier identifier, String instruction) throws QuestException;
 
     /**
      * Creates a section instruction for the given quest package and section.

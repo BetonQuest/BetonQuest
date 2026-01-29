@@ -70,7 +70,7 @@ public class SkriptConditionBQ extends Condition {
         try {
             final ProfileProvider profileProvider = plugin.getProfileProvider();
             final IdentifierFactory<ConditionIdentifier> conditionIdentifierFactory =
-                    plugin.getQuestRegistries().identifiers().getFactory(ConditionIdentifier.class);
+                    plugin.getQuestRegistries().identifier().getFactory(ConditionIdentifier.class);
             return plugin.getQuestTypeApi().condition(profileProvider.getProfile(player.getSingle(event)),
                     conditionIdentifierFactory.parseIdentifier(null, conditionID));
         } catch (final QuestException e) {

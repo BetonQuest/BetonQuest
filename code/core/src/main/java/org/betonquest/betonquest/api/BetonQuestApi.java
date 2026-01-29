@@ -70,9 +70,9 @@ public interface BetonQuestApi {
      * Gets the default argument parsers.
      *
      * @return the argument parsers.
-     * @throws QuestException an exception if called too early.
+     * @throws IllegalStateException if called too early.
      */
-    ArgumentParsers getArgumentParsers() throws QuestException;
+    ArgumentParsers getArgumentParsers();
 
     /**
      * Gets the default instruction api.

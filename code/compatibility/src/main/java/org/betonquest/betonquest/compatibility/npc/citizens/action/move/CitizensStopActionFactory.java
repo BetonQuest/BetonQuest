@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.npc.citizens.action.move;
 
-import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.identifier.NpcIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -20,7 +20,7 @@ public class CitizensStopActionFactory implements PlayerlessActionFactory, Playe
     /**
      * Feature API.
      */
-    private final BetonQuestApi betonQuestApi;
+    private final FeatureApi featureApi;
 
     /**
      * Move Controller where to stop the NPC movement.
@@ -35,15 +35,14 @@ public class CitizensStopActionFactory implements PlayerlessActionFactory, Playe
     /**
      * Create a new NPCTeleportActionFactory.
      *
-     * @param betonQuestApi          the Feature API
+     * @param featureApi             the Feature API
+     * @param citizensArgument       the Citizens argument parser to use
      * @param citizensMoveController the move controller where to stop the NPC movement
-     * @throws QuestException an exception if the identifier factory cannot be retrieved
      */
-    public CitizensStopActionFactory(final BetonQuestApi betonQuestApi, final CitizensMoveController citizensMoveController) throws QuestException {
-        this.betonQuestApi = betonQuestApi;
+    public CitizensStopActionFactory(final FeatureApi featureApi, final CitizensArgument citizensArgument, final CitizensMoveController citizensMoveController) {
+        this.featureApi = featureApi;
         this.citizensMoveController = citizensMoveController;
-        this.citizensArgument = new CitizensArgument(betonQuestApi.getInstructionApi(),
-                betonQuestApi.getQuestRegistries().identifiers().getFactory(NpcIdentifier.class));
+        this.citizensArgument = citizensArgument;
     }
 
     @Override
@@ -58,6 +57,6 @@ public class CitizensStopActionFactory implements PlayerlessActionFactory, Playe
 
     private NullableActionAdapter createCitizensStopAction(final Instruction instruction) throws QuestException {
         final Argument<NpcIdentifier> npcId = instruction.parse(citizensArgument).get();
-        return new NullableActionAdapter(new CitizensStopAction(betonQuestApi.getFeatureApi(), npcId, citizensMoveController));
+        return new NullableActionAdapter(new CitizensStopAction(featureApi, npcId, citizensMoveController));
     }
 }

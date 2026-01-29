@@ -470,7 +470,7 @@ public class Conversation {
         final List<String> rawPointers = nextConvData.getPointers(onlineProfile, option);
         final List<ResolvedOption> pointers = new ArrayList<>();
         final IdentifierFactory<ConversationOptionIdentifier> conversationOptionIdentifierFactory =
-                plugin.getQuestRegistries().identifiers().getFactory(ConversationOptionIdentifier.class);
+                plugin.getQuestRegistries().identifier().getFactory(ConversationOptionIdentifier.class);
         for (final String pointer : rawPointers) {
             final OptionType nextType = option.type() == PLAYER ? NPC : PLAYER;
             pointers.add(nextConvData.resolveOption(conversationOptionIdentifierFactory.parseIdentifier(nextConvData.getPack(), pointer), nextType));
@@ -569,7 +569,7 @@ public class Conversation {
             final List<ResolvedOption> resolvedOptions = new ArrayList<>();
             for (final String startingOption : startingOptions) {
                 final ResolvedOption resolvedOption;
-                final ConversationOptionIdentifier optionIdentifier = conversation.plugin.getQuestRegistries().identifiers()
+                final ConversationOptionIdentifier optionIdentifier = conversation.plugin.getQuestRegistries().identifier()
                         .getFactory(ConversationOptionIdentifier.class).parseIdentifier(conversation.pack, startingOption);
                 resolvedOption = conversation.data.resolveOption(optionIdentifier, NPC);
                 resolvedOptions.add(resolvedOption);

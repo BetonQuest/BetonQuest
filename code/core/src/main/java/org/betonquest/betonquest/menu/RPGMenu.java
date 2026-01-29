@@ -96,13 +96,13 @@ public class RPGMenu {
         questRegistries.objective().register(menu, new MenuObjectiveFactory(loggerFactory, this));
         questRegistries.action().register(menu, new MenuActionFactory(loggerFactory, this));
         questRegistries.placeholder().register(menu, new MenuPlaceholderFactory());
-        final IdentifierFactory<MenuIdentifier> menuIdentifierFactory = questRegistries.identifiers().getFactory(MenuIdentifier.class);
+        final IdentifierFactory<MenuIdentifier> menuIdentifierFactory = questRegistries.identifier().getFactory(MenuIdentifier.class);
         this.pluginCommand = new RPGMenuCommand(loggerFactory.create(RPGMenuCommand.class), this,
                 menuIdentifierFactory);
         pluginCommand.register();
         pluginCommand.syncCraftBukkitCommands();
         this.menuItemProcessor = new MenuItemProcessor(loggerFactory.create(MenuItemProcessor.class), loggerFactory,
-                packManager, textCreator, questRegistries.identifiers().getFactory(MenuItemIdentifier.class),
+                packManager, textCreator, questRegistries.identifier().getFactory(MenuItemIdentifier.class),
                 questTypeApi, pluginConfig, parsers);
         betonQuest.addProcessor(menuItemProcessor);
         this.menuProcessor = new MenuProcessor(loggerFactory.create(MenuProcessor.class), loggerFactory,

@@ -24,8 +24,9 @@ public class ActionIdentifierFactory extends DefaultIdentifierFactory<ActionIden
     }
 
     @Override
-    public ActionIdentifier parseIdentifier(@Nullable final QuestPackage source, final String identifier) throws QuestException {
-        final Map.Entry<QuestPackage, String> entry = parse(source, identifier);
-        return new DefaultActionIdentifier(entry.getKey(), entry.getValue());
+    public ActionIdentifier parseIdentifier(@Nullable final QuestPackage source, final String input) throws QuestException {
+        final Map.Entry<QuestPackage, String> entry = parse(source, input);
+        final DefaultActionIdentifier identifier = new DefaultActionIdentifier(entry.getKey(), entry.getValue());
+        return requireInstruction(identifier, DefaultActionIdentifier.ACTION_SECTION);
     }
 }

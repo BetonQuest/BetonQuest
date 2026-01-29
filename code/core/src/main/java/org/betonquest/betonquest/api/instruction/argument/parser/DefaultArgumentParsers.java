@@ -1,10 +1,8 @@
 package org.betonquest.betonquest.api.instruction.argument.parser;
 
 import net.kyori.adventure.text.Component;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestBiFunction;
-import org.betonquest.betonquest.api.common.function.QuestSupplier;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.identifier.ItemIdentifier;
 import org.betonquest.betonquest.api.identifier.factory.IdentifierRegistry;
@@ -31,11 +29,6 @@ import java.util.UUID;
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public class DefaultArgumentParsers implements ArgumentParsers {
-
-    /**
-     * The default instance of {@link DefaultArgumentParsers}.
-     */
-    public static final QuestSupplier<ArgumentParsers> INSTANCE = () -> BetonQuest.getInstance().getArgumentParsers();
 
     /**
      * The default decoratable instance of {@link BlockSelectorParser}.

@@ -11,6 +11,11 @@ import org.betonquest.betonquest.api.instruction.argument.parser.PackageIdentifi
 public class DefaultCompassIdentifier extends DefaultIdentifier implements CompassIdentifier {
 
     /**
+     * The section name for compasses.
+     */
+    public static final String COMPASS_SECTION = "compass";
+
+    /**
      * Creates a new compass identifier.
      *
      * @param pack       the package the identifier is related to

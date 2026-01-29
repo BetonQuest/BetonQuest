@@ -327,21 +327,12 @@ public class CoreQuestTypes {
     }
 
     /**
-     * Registers the Quest Types.
+     * Registers the all identifier types.
      *
-     * @param questTypeRegistries the registry to register the types in
+     * @param packageManager  the quest package manager
+     * @param identifierTypes the identifier type registry to register the types in
      */
-    public void register(final BaseQuestTypeRegistries questTypeRegistries) {
-        // When adding new types they need to be ordered by name in the corresponding method!
-        registerIdentifier(questTypeRegistries.identifiers());
-        registerConditions(questTypeRegistries.condition());
-        registerActions(questTypeRegistries.action());
-        registerObjectives(questTypeRegistries.objective());
-        registerPlaceholders(questTypeRegistries.placeholder());
-    }
-
-    private void registerIdentifier(final IdentifierTypeRegistry identifierTypes) {
-        final QuestPackageManager packageManager = betonQuest.getQuestPackageManager();
+    public static void registerIdentifierTypes(final QuestPackageManager packageManager, final IdentifierTypeRegistry identifierTypes) {
         identifierTypes.register(ActionIdentifier.class, new ActionIdentifierFactory(packageManager));
         identifierTypes.register(ConditionIdentifier.class, new ConditionIdentifierFactory(packageManager));
         identifierTypes.register(ObjectiveIdentifier.class, new ObjectiveIdentifierFactory(packageManager));
@@ -358,6 +349,19 @@ public class CoreQuestTypes {
         identifierTypes.register(MenuIdentifier.class, new MenuIdentifierFactory(packageManager));
         identifierTypes.register(MenuItemIdentifier.class, new MenuItemIdentifierFactory(packageManager));
         identifierTypes.register(ScheduleIdentifier.class, new ScheduleIdentifierFactory(packageManager));
+    }
+
+    /**
+     * Registers the Quest Types.
+     *
+     * @param questTypeRegistries the registry to register the types in
+     */
+    public void register(final BaseQuestTypeRegistries questTypeRegistries) {
+        // When adding new types they need to be ordered by name in the corresponding method!
+        registerConditions(questTypeRegistries.condition());
+        registerActions(questTypeRegistries.action());
+        registerObjectives(questTypeRegistries.objective());
+        registerPlaceholders(questTypeRegistries.placeholder());
     }
 
     private void registerConditions(final ConditionTypeRegistry conditionTypes) {
