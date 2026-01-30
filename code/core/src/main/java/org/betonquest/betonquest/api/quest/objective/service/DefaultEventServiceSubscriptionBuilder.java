@@ -147,7 +147,7 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
         if (this.profileExtractor != null) {
             throw new IllegalStateException("Cannot set more than one extractor!");
         }
-        this.profileExtractor = (provider, event) -> Optional.ofNullable(provider.getProfile(extractor.apply(event)));
+        this.profileExtractor = (provider, event) -> Optional.ofNullable(extractor.apply(event)).map(provider::getProfile);
         return this;
     }
 
@@ -156,7 +156,7 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
         if (this.profileExtractor != null) {
             throw new IllegalStateException("Cannot set more than one extractor!");
         }
-        this.profileExtractor = (provider, event) -> Optional.ofNullable(provider.getProfile(extractor.apply(event)));
+        this.profileExtractor = (provider, event) -> Optional.ofNullable(extractor.apply(event)).map(provider::getProfile);
         return this;
     }
 
@@ -165,7 +165,7 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
         if (this.profileExtractor != null) {
             throw new IllegalStateException("Cannot set more than one extractor!");
         }
-        this.profileExtractor = (provider, event) -> Optional.ofNullable(provider.getProfile(extractor.apply(event)));
+        this.profileExtractor = (provider, event) -> Optional.ofNullable(extractor.apply(event)).map(provider::getProfile);
         return this;
     }
 
@@ -174,9 +174,8 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
         if (this.profileExtractor != null) {
             throw new IllegalStateException("Cannot set more than one extractor!");
         }
-        this.profileExtractor = (provider, event) ->
-                extractor.apply(event) instanceof final Player player
-                        ? Optional.ofNullable(provider.getProfile(player)) : Optional.empty();
+        this.profileExtractor = (provider, event) -> Optional.ofNullable(extractor.apply(event))
+                .map(entity -> entity instanceof final Player player ? provider.getProfile(player) : null);
         return this;
     }
 
