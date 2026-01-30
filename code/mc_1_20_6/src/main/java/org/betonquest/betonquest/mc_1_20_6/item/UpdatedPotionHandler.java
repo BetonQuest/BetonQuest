@@ -28,6 +28,12 @@ public class UpdatedPotionHandler extends PotionHandler {
     private static final String STRONG_PREFIX = "strong_";
 
     /**
+     * Type key without a prefix.
+     */
+    @Nullable
+    private String baseType;
+
+    /**
      * The empty default Constructor.
      */
     public UpdatedPotionHandler() {
@@ -59,6 +65,7 @@ public class UpdatedPotionHandler extends PotionHandler {
     @Override
     public void set(final String key, final String data) throws QuestException {
         super.set(key, data);
+        baseType = type.getKey().asMinimalString();
         if (EXTENDED.equals(data)) {
             typeSet(LONG_PREFIX);
         } else if (UPGRADED.equals(data)) {
@@ -67,7 +74,7 @@ public class UpdatedPotionHandler extends PotionHandler {
     }
 
     private void typeSet(final String prefix) throws QuestException {
-        final String potionType = prefix + type.getKey().asMinimalString();
+        final String potionType = prefix + baseType;
         try {
             type = PotionType.valueOf(potionType.toUpperCase(Locale.ROOT));
         } catch (final IllegalArgumentException e) {
@@ -95,25 +102,38 @@ public class UpdatedPotionHandler extends PotionHandler {
             return null;
         }
         final String minimalString = type.getKey().asMinimalString();
-        final String effects;
+        final String effect;
         if (minimalString.startsWith(LONG_PREFIX)) {
-            effects = minimalString.substring(LONG_PREFIX.length()) + " extended";
+            effect = minimalString.substring(LONG_PREFIX.length()) + " extended";
         } else if (minimalString.startsWith(STRONG_PREFIX)) {
-            effects = minimalString.substring(STRONG_PREFIX.length()) + " upgraded";
+            effect = minimalString.substring(STRONG_PREFIX.length()) + " upgraded";
         } else {
-            effects = minimalString;
+            effect = minimalString;
         }
-        return "type:" + effects;
+        return "type:" + effect;
     }
 
     private boolean checkBase(@Nullable final PotionType base) {
         return switch (typeE) {
             case WHATEVER -> true;
             case REQUIRED -> {
-                if (base != type) {
+                if (base == null || !base.getKey().getNamespace().equals(type.getKey().getNamespace())) {
                     yield false;
                 }
                 final String key = base.getKey().getKey();
+                final String effect;
+                if (key.startsWith(LONG_PREFIX)) {
+                    effect = key.substring(LONG_PREFIX.length());
+                } else if (key.startsWith(STRONG_PREFIX)) {
+                    effect = key.substring(STRONG_PREFIX.length());
+                } else {
+                    effect = key;
+                }
+
+                if (!effect.equals(baseType)) {
+                    yield false;
+                }
+
                 yield (extendedE != Existence.REQUIRED || key.startsWith(LONG_PREFIX) == extended)
                         && (upgradedE != Existence.REQUIRED || key.startsWith(STRONG_PREFIX) == upgraded);
             }
