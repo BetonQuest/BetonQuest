@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.action.journal;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.JournalEntryIdentifier;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.feature.journal.Pointer;
-import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ class AddEntryJournalChangerTest {
     @Test
     void testChangeJournalAddsPointer(@Mock final Journal journal) throws QuestException {
         final Instant now = Instant.now();
-        final JournalEntryID entryID = mock(JournalEntryID.class);
+        final JournalEntryIdentifier entryID = mock(JournalEntryIdentifier.class);
         final AddEntryJournalChanger changer = new AddEntryJournalChanger(InstantSource.fixed(now), new DefaultArgument<>(entryID));
         final ArgumentCaptor<Pointer> captor = ArgumentCaptor.forClass(Pointer.class);
 

@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.objective.location;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.bukkit.Location;
@@ -32,10 +33,13 @@ public class LocationObjective extends AbstractLocationObjective {
      * @param service the ObjectiveFactoryService to be used
      * @param loc     the target location
      * @param range   the radius defining the area surrounding the target location
+     * @param entry   the entry flag for the location objective
+     * @param exit    the exit flag for the location objective
      * @throws QuestException if there is an error while parsing the instruction
      */
-    public LocationObjective(final ObjectiveService service, final Argument<Location> loc, final Argument<Number> range) throws QuestException {
-        super(service);
+    public LocationObjective(final ObjectiveService service, final Argument<Location> loc, final Argument<Number> range,
+                             final FlagArgument<Boolean> entry, final FlagArgument<Boolean> exit) throws QuestException {
+        super(service, entry, exit);
         this.loc = loc;
         this.range = range;
         service.getProperties().setProperty(LOCATION_PROPERTY, profile -> {

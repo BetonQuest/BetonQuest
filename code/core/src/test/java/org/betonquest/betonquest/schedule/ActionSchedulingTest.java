@@ -7,16 +7,18 @@ import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfigurati
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiSectionConfiguration;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
+import org.betonquest.betonquest.api.identifier.ScheduleIdentifier;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
+import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.Placeholders;
-import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.api.schedule.FictiveTime;
 import org.betonquest.betonquest.api.schedule.Schedule;
-import org.betonquest.betonquest.api.schedule.ScheduleID;
 import org.betonquest.betonquest.api.schedule.Scheduler;
+import org.betonquest.betonquest.id.schedule.ScheduleIdentifierFactory;
 import org.betonquest.betonquest.kernel.registry.feature.ScheduleRegistry;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.schedule.ActionScheduling.ScheduleType;
@@ -57,7 +59,9 @@ class ActionSchedulingTest {
     void setUp(final BetonQuestLoggerFactory loggerFactory) {
         scheduleTypes = new ScheduleRegistry(mock(BetonQuestLogger.class));
         final ArgumentParsers parsers = mock(ArgumentParsers.class);
-        scheduling = new ActionScheduling(loggerFactory, mock(BetonQuestLogger.class), mock(Placeholders.class), mock(QuestPackageManager.class), scheduleTypes, parsers);
+        final QuestPackageManager packManager = mock(QuestPackageManager.class);
+        scheduling = new ActionScheduling(loggerFactory, mock(BetonQuestLogger.class), mock(Placeholders.class),
+                packManager, scheduleTypes, new ScheduleIdentifierFactory(packManager), parsers);
     }
 
     @SuppressWarnings("unchecked")
@@ -194,7 +198,7 @@ class ActionSchedulingTest {
      */
     private static final class MockedSchedule extends Schedule {
 
-        private MockedSchedule(final ScheduleID scheduleID, final List<ActionID> actions, final CatchupStrategy catchup) {
+        private MockedSchedule(final ScheduleIdentifier scheduleID, final List<ActionIdentifier> actions, final CatchupStrategy catchup) {
             super(scheduleID, actions, catchup);
         }
     }
@@ -205,11 +209,11 @@ class ActionSchedulingTest {
     private static final class MockedScheduleFactory extends BaseScheduleFactory<MockedSchedule> {
 
         private MockedScheduleFactory() {
-            super(mock(Placeholders.class), mock(QuestPackageManager.class));
+            super();
         }
 
         @Override
-        public MockedSchedule createNewInstance(final ScheduleID scheduleID, final ConfigurationSection config) {
+        public MockedSchedule createNewInstance(final ScheduleIdentifier scheduleID, final SectionInstruction instruction) {
             return new MockedSchedule(scheduleID, List.of(), CatchupStrategy.NONE);
         }
     }

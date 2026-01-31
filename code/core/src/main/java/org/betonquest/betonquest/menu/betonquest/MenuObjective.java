@@ -3,12 +3,12 @@ package org.betonquest.betonquest.menu.betonquest;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.MenuIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.menu.Menu;
-import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.menu.event.MenuOpenEvent;
 
@@ -35,7 +35,7 @@ public class MenuObjective extends DefaultObjective {
     /**
      * The menu to open.
      */
-    private final Argument<MenuID> menuID;
+    private final Argument<MenuIdentifier> menuID;
 
     /**
      * Construct a new Menu Objective from Instruction.
@@ -46,7 +46,7 @@ public class MenuObjective extends DefaultObjective {
      * @param menuID  the menu id to open
      * @throws QuestException if the menu id does not exist
      */
-    public MenuObjective(final ObjectiveService service, final BetonQuestLogger log, final RPGMenu rpgMenu, final Argument<MenuID> menuID) throws QuestException {
+    public MenuObjective(final ObjectiveService service, final BetonQuestLogger log, final RPGMenu rpgMenu, final Argument<MenuIdentifier> menuID) throws QuestException {
         super(service);
         this.log = log;
         this.rpgMenu = rpgMenu;

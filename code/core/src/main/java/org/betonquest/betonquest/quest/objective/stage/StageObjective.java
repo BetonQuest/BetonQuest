@@ -4,9 +4,9 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveProperties;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 
@@ -143,7 +143,7 @@ public class StageObjective extends DefaultObjective {
         /**
          * The objective ID linked to this stage map.
          */
-        private final ObjectiveID objectiveID;
+        private final ObjectiveIdentifier objectiveID;
 
         /**
          * Creates a new mapping of stages to indices.
@@ -152,7 +152,7 @@ public class StageObjective extends DefaultObjective {
          * @param objectiveID the objective ID
          * @throws QuestException if there are duplicate stages or no stages
          */
-        public StageMap(final List<String> stages, final ObjectiveID objectiveID) throws QuestException {
+        public StageMap(final List<String> stages, final ObjectiveIdentifier objectiveID) throws QuestException {
             this.stages = HashBiMap.create(stages.size());
             this.objectiveID = objectiveID;
             for (int i = 0; i < stages.size(); i++) {

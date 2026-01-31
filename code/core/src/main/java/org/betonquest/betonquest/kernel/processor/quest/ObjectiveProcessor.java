@@ -4,13 +4,16 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.instruction.argument.parser.IdentifierParser;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
+import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
+import org.betonquest.betonquest.api.instruction.argument.parser.PackageIdentifierParser;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveServiceProvider;
@@ -35,7 +38,12 @@ import java.util.Set;
  * Stores Objectives and starts/stops/resumes them.
  */
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.TooManyMethods", "PMD.GodClass"})
-public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
+public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Objective> {
+
+    /**
+     * Instruction API.
+     */
+    protected final InstructionApi instructionApi;
 
     /**
      * Manager to register listener.
@@ -43,14 +51,14 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
     private final PluginManager pluginManager;
 
     /**
-     * Plugin instance to associate registered listener with.
+     * Plugin instance to associate registered listeners with.
      */
     private final Plugin plugin;
 
     /**
      * Loaded global objectives.
      */
-    private final Set<ObjectiveID> globalObjectiveIds;
+    private final Set<ObjectiveIdentifier> globalObjectiveIds;
 
     /**
      * The available objective types.
@@ -65,18 +73,23 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
     /**
      * Create a new Objective Processor to store Objectives and starts/stops/resumes them.
      *
-     * @param log            the custom logger for this class
-     * @param placeholders   the {@link Placeholders} to create and resolve placeholders
-     * @param packManager    the quest package manager to get quest packages from
-     * @param objectiveTypes the available objective types
-     * @param pluginManager  the manager to register listener
-     * @param service        the event service for objectives
-     * @param plugin         the plugin instance to associate registered listener with
+     * @param log                        the custom logger for this class
+     * @param placeholders               the {@link Placeholders} to create and resolve placeholders
+     * @param packManager                the quest package manager to get quest packages from
+     * @param objectiveTypes             the available objective types
+     * @param objectiveIdentifierFactory the factory to create objective identifiers
+     * @param instructionApi             the instruction api
+     * @param pluginManager              the manager to register listener
+     * @param service                    the event service for objectives
+     * @param plugin                     the plugin instance to associate registered listener with
      */
     public ObjectiveProcessor(final BetonQuestLogger log, final Placeholders placeholders,
                               final QuestPackageManager packManager, final ObjectiveTypeRegistry objectiveTypes,
-                              final PluginManager pluginManager, final ObjectiveServiceProvider service, final Plugin plugin) {
-        super(log, placeholders, packManager, "Objective", "objectives");
+                              final IdentifierFactory<ObjectiveIdentifier> objectiveIdentifierFactory,
+                              final PluginManager pluginManager, final ObjectiveServiceProvider service,
+                              final InstructionApi instructionApi, final Plugin plugin) {
+        super(log, placeholders, packManager, objectiveIdentifierFactory, "Objective", "objectives");
+        this.instructionApi = instructionApi;
         this.pluginManager = pluginManager;
         this.objectiveService = service;
         this.types = objectiveTypes;
@@ -90,8 +103,8 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
      * @param objectiveID the id of a global objective
      * @return the tag which marks that the given global objective has already been started for the player
      */
-    public static String getTag(final ObjectiveID objectiveID) {
-        return IdentifierParser.INSTANCE.apply(objectiveID.getPackage(), "global-" + objectiveID.get());
+    public static String getTag(final ObjectiveIdentifier objectiveID) {
+        return PackageIdentifierParser.INSTANCE.apply(objectiveID.getPackage(), "global-" + objectiveID.get());
     }
 
     /**
@@ -123,12 +136,13 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
     }
 
     private void loadKey(final String key, final QuestPackage pack) throws QuestException {
-        final ObjectiveID identifier = getIdentifier(pack, key);
-        final String type = identifier.getInstruction().getPart(0);
+        final ObjectiveIdentifier identifier = getIdentifier(pack, key);
+        final Instruction instruction = instructionApi.createInstruction(identifier, identifier.readRawInstruction());
+        final String type = instruction.getPart(0);
         final ObjectiveFactory factory = types.getFactory(type);
         try {
             final ObjectiveService service = objectiveService.getFactoryService(identifier);
-            final Objective parsed = factory.parseInstruction(identifier.getInstruction(), service);
+            final Objective parsed = factory.parseInstruction(instruction, service);
             values.put(identifier, parsed);
             postCreation(identifier, parsed);
             log.debug(pack, "  " + readable + " '" + identifier + "' loaded");
@@ -162,16 +176,11 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
         super.clear();
     }
 
-    @Override
-    protected ObjectiveID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new ObjectiveID(placeholders, packManager, pack, identifier);
-    }
-
-    private void postCreation(final ObjectiveID identifier, final Objective objective) {
+    private void postCreation(final ObjectiveIdentifier identifier, final Objective objective) {
         boolean global = false;
         try {
-            global = identifier.getInstruction().bool().getFlag("global", true)
-                    .getValue(null).orElse(false);
+            global = instructionApi.createInstruction(identifier, identifier.readRawInstruction()).bool()
+                    .getFlag("global", true).getValue(null).orElse(false);
         } catch (final QuestException e) {
             log.error("Error while loading global flag for objective " + identifier, e);
         }
@@ -185,7 +194,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
         }
     }
 
-    private void newPlayer(final Profile profile, final ObjectiveID objectiveID) {
+    private void newPlayer(final Profile profile, final ObjectiveIdentifier objectiveID) {
         try {
             final Objective objective = get(objectiveID);
             final String defaultInstruction = objective.getService().getDefaultData(profile);
@@ -203,7 +212,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
      * @param profile     the {@link Profile} of the player
      * @param objectiveID ID of the objective
      */
-    public void cancel(final Profile profile, final ObjectiveID objectiveID) {
+    public void cancel(final Profile profile, final ObjectiveIdentifier objectiveID) {
         final Objective objective = values.get(objectiveID);
         if (objective == null) {
             log.error("Objective '%s' could not be cancelled - not found.".formatted(objectiveID));
@@ -226,7 +235,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
      * @param profile     the {@link Profile} of the player
      * @param objectiveID ID of the objective
      */
-    public void pause(final Profile profile, final ObjectiveID objectiveID) {
+    public void pause(final Profile profile, final ObjectiveIdentifier objectiveID) {
         final Objective objective = values.get(objectiveID);
         if (objective == null) {
             log.error("Objective '%s' could not be paused - not found.".formatted(objectiveID));
@@ -249,7 +258,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
      * @param profile     the {@link Profile} of the player
      * @param objectiveID ID of the objective
      */
-    public void start(final Profile profile, final ObjectiveID objectiveID) {
+    public void start(final Profile profile, final ObjectiveIdentifier objectiveID) {
         final Objective objective = values.get(objectiveID);
         if (objective == null) {
             log.error("Tried to start objective '%s' but it is not loaded! Check for errors on /bq reload!".formatted(objectiveID));
@@ -269,7 +278,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
      * @param objectiveID ID of the objective
      * @param instruction data instruction string
      */
-    public void resume(final Profile profile, final ObjectiveID objectiveID, final String instruction) {
+    public void resume(final Profile profile, final ObjectiveIdentifier objectiveID, final String instruction) {
         final Objective objective = values.get(objectiveID);
         if (objective == null) {
             log.warn(objectiveID.getPackage(), "Objective '%s' does not exist".formatted(objectiveID));
@@ -308,7 +317,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
      * @param name   the current name
      * @param rename the name it should have now
      */
-    public void renameObjective(final ObjectiveID name, final ObjectiveID rename) {
+    public void renameObjective(final ObjectiveIdentifier name, final ObjectiveIdentifier rename) {
         final Objective objective = values.remove(name);
         values.put(rename, objective);
         if (objective != null) {
@@ -324,7 +333,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
      */
     public void startAll(final Profile profile, final PlayerDataStorage dataStorage) {
         final PlayerData data = dataStorage.get(profile);
-        for (final ObjectiveID id : globalObjectiveIds) {
+        for (final ObjectiveIdentifier id : globalObjectiveIds) {
             final Objective objective = values.get(id);
             final String tag = getTag(id);
             if (objective == null || data.hasTag(tag)) {
@@ -344,7 +353,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveID, Objective> {
      *
      * @return a new list of all loaded global objectives
      */
-    public List<ObjectiveID> getGlobalObjectives() {
+    public List<ObjectiveIdentifier> getGlobalObjectives() {
         return new ArrayList<>(globalObjectiveIds);
     }
 }

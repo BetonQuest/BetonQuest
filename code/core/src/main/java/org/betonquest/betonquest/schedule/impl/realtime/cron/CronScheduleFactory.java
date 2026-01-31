@@ -5,12 +5,10 @@ import com.cronutils.model.definition.CronDefinition;
 import com.cronutils.model.time.ExecutionTime;
 import com.cronutils.parser.CronParser;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.quest.Placeholders;
+import org.betonquest.betonquest.api.identifier.ScheduleIdentifier;
+import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.schedule.CronSchedule;
-import org.betonquest.betonquest.api.schedule.ScheduleID;
 import org.betonquest.betonquest.schedule.impl.BaseScheduleFactory;
-import org.bukkit.configuration.ConfigurationSection;
 
 /**
  * Schedule Factory that parses common cron schedule data.
@@ -20,17 +18,14 @@ public abstract class CronScheduleFactory extends BaseScheduleFactory<CronSchedu
 
     /**
      * Create a new Cron Schedule Factory to create parse common cron schedule data.
-     *
-     * @param placeholders the {@link Placeholders} to create and resolve placeholders
-     * @param packManager  the quest package manager to get quest packages from
      */
-    public CronScheduleFactory(final Placeholders placeholders, final QuestPackageManager packManager) {
-        super(placeholders, packManager);
+    public CronScheduleFactory() {
+        super();
     }
 
     @Override
-    public CronSchedule createNewInstance(final ScheduleID scheduleID, final ConfigurationSection config) throws QuestException {
-        final ScheduleData scheduleData = parseScheduleData(scheduleID.getPackage(), config);
+    public CronSchedule createNewInstance(final ScheduleIdentifier scheduleID, final SectionInstruction instruction) throws QuestException {
+        final ScheduleData scheduleData = parseScheduleData(instruction);
         try {
             final Cron timeCron = new CronParser(parseCronDefinition()).parse(scheduleData.time()).validate();
             final ExecutionTime executionTime = ExecutionTime.forCron(timeCron);

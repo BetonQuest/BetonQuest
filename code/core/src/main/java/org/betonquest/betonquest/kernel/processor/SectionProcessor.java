@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.Identifier;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
@@ -37,17 +38,19 @@ public abstract class SectionProcessor<I extends Identifier, T> extends QuestPro
     /**
      * Create a new QuestProcessor to store and execute type logic.
      *
-     * @param loggerFactory the logger factory to create new class specific logger
-     * @param log           the custom logger for this class
-     * @param placeholders  the {@link Placeholders} to create and resolve placeholders
-     * @param packManager   the quest package manager to get quest packages from
-     * @param parsers       the {@link ArgumentParsers} to use for parsing arguments
-     * @param readable      the type name used for logging, with the first letter in upper case
-     * @param internal      the section name and/or bstats topic identifier
+     * @param loggerFactory     the logger factory to create new class-specific loggers
+     * @param log               the custom logger for this class
+     * @param placeholders      the {@link Placeholders} to create and resolve placeholders
+     * @param packManager       the quest package manager to get quest packages from
+     * @param parsers           the {@link ArgumentParsers} to use for parsing arguments
+     * @param identifierFactory the identifier factory to create {@link Identifier}s for this type
+     * @param readable          the type name used for logging, with the first letter in uppercase
+     * @param internal          the section name and/or bstats topic identifier
      */
-    public SectionProcessor(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager,
-                            final ArgumentParsers parsers, final String readable, final String internal) {
-        super(log, placeholders, packManager, readable, internal);
+    public SectionProcessor(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final Placeholders placeholders,
+                            final QuestPackageManager packManager, final ArgumentParsers parsers, final IdentifierFactory<I> identifierFactory,
+                            final String readable, final String internal) {
+        super(log, placeholders, packManager, identifierFactory, readable, internal);
         this.loggerFactory = loggerFactory;
         this.parsers = parsers;
     }

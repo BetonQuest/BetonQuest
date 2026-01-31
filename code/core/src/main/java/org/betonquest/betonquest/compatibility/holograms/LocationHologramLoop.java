@@ -1,19 +1,16 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
-import org.betonquest.betonquest.api.instruction.argument.parser.LocationParser;
+import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.kernel.processor.StartTask;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
@@ -32,38 +29,32 @@ public class LocationHologramLoop extends HologramLoop implements StartTask {
     /**
      * Starts a loop, which checks hologram conditions and shows them to players.
      *
-     * @param loggerFactory    logger factory to use
-     * @param log              the logger that will be used for logging
-     * @param placeholders     the {@link Placeholders} to create and resolve placeholders
-     * @param packManager      the quest package manager to get quest packages from
-     * @param hologramProvider the hologram provider to create new holograms
-     * @param plugin           the plugin to start tasks
-     * @param textParser       the text parser used to parse text and colors
-     * @param parsers          the argument parsers
+     * @param loggerFactory     logger factory to use
+     * @param log               the logger that will be used for logging
+     * @param placeholders      the {@link Placeholders} to create and resolve placeholders
+     * @param packManager       the quest package manager to get quest packages from
+     * @param identifierFactory the identifier factory to create {@link HologramIdentifier}s for this type
+     * @param hologramProvider  the hologram provider to create new holograms
+     * @param plugin            the plugin to start tasks
+     * @param textParser        the text parser used to parse text and colors
+     * @param parsers           the argument parsers
      */
     public LocationHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
                                 final Placeholders placeholders, final QuestPackageManager packManager,
+                                final IdentifierFactory<HologramIdentifier> identifierFactory,
                                 final HologramProvider hologramProvider, final Plugin plugin, final TextParser textParser,
                                 final ArgumentParsers parsers) {
-        super(loggerFactory, log, placeholders, packManager, hologramProvider,
-                "Hologram", "holograms", textParser, parsers);
+        super(loggerFactory, log, placeholders, packManager, hologramProvider, "Hologram", "holograms",
+                textParser, parsers, identifierFactory);
         this.plugin = plugin;
     }
 
     @Override
-    protected List<BetonHologram> getHologramsFor(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
-        final Location location = getParsedLocation(pack, section);
+    protected List<BetonHologram> getHologramsFor(final SectionInstruction instruction) throws QuestException {
+        final Location location = instruction.read().value("location").location().get().getValue(null);
         final List<BetonHologram> holograms = new ArrayList<>();
         holograms.add(hologramProvider.createHologram(location));
         return holograms;
-    }
-
-    private Location getParsedLocation(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
-        final String rawLocation = section.getString("location");
-        if (rawLocation == null) {
-            throw new QuestException("Location is not specified");
-        }
-        return new DefaultArgument<>(placeholders, pack, rawLocation, new LocationParser(Bukkit.getServer())).getValue(null);
     }
 
     @Override

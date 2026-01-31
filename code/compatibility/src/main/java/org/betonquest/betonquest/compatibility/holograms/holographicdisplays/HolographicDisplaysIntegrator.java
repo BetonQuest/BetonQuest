@@ -7,12 +7,13 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
+import org.betonquest.betonquest.api.identifier.PlaceholderIdentifier;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.Placeholders;
-import org.betonquest.betonquest.api.quest.placeholder.PlaceholderID;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.betonquest.betonquest.compatibility.holograms.HologramIntegrator;
@@ -39,26 +40,34 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
     private final Plugin plugin;
 
     /**
-     * The quest package manager to get quest packages from.
-     */
-    private final QuestPackageManager packManager;
-
-    /**
      * {@link Placeholders} to create and resolve placeholders.
      */
     private final PlaceholderProcessor placeholderProcessor;
 
     /**
+     * The instruction api to use.
+     */
+    private final InstructionApi instructionApi;
+
+    /**
+     * The identifier factory for placeholders.
+     */
+    private final IdentifierFactory<PlaceholderIdentifier> identifierFactory;
+
+    /**
      * Creates a new HolographicDisplaysIntegrator for HolographicDisplays.
      *
-     * @param log         the custom logger for this class
-     * @param packManager the quest package manager to get quest packages from
+     * @param log               the custom logger for this class
+     * @param instructionApi    the instruction api to use
+     * @param identifierFactory the identifier factory for placeholders
      */
-    public HolographicDisplaysIntegrator(final BetonQuestLogger log, final QuestPackageManager packManager) {
+    public HolographicDisplaysIntegrator(final BetonQuestLogger log, final InstructionApi instructionApi,
+                                         final IdentifierFactory<PlaceholderIdentifier> identifierFactory) {
         super("HolographicDisplays", "3.0.0", "SNAPSHOT-b");
         this.plugin = BetonQuest.getInstance();
+        this.instructionApi = instructionApi;
+        this.identifierFactory = identifierFactory;
         this.log = log;
-        this.packManager = packManager;
         this.placeholderProcessor = BetonQuest.getInstance().getPlaceholderProcessor();
     }
 
@@ -94,10 +103,10 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
         return matcher.replaceAll(match -> {
             final String group = match.group();
             try {
-                final PlaceholderID placeholderID = new PlaceholderID(placeholderProcessor, packManager, pack, group);
-                final Instruction instruction = placeholderID.getInstruction();
-                final String prefix = placeholderProcessor.get(placeholderID).allowsPlayerless() ? "{bqg:" : "{bq:";
-                return prefix + placeholderID.getPackage().getQuestPath() + ":" + instruction + "}";
+                final PlaceholderIdentifier placeholderIdentifier = identifierFactory.parseIdentifier(pack, group);
+                final Instruction instruction = instructionApi.createPlaceholderInstruction(placeholderIdentifier, placeholderIdentifier.readRawInstruction());
+                final String prefix = placeholderProcessor.get(placeholderIdentifier).allowsPlayerless() ? "{bqg:" : "{bq:";
+                return prefix + placeholderIdentifier.getPackage().getQuestPath() + ":" + instruction + "}";
             } catch (final QuestException exception) {
                 log.warn("Could not create placeholder '" + group + "': " + exception.getMessage(), exception);
             }

@@ -20,19 +20,9 @@ import org.betonquest.betonquest.conversation.InventoryConvIO;
 public class InventoryConvIOFactory implements ConversationIOFactory {
 
     /**
-     * Logger Factory to create new class specific loggers.
+     * Logger Factory to create new class-specific loggers.
      */
     private final BetonQuestLoggerFactory loggerFactory;
-
-    /**
-     * The {@link Placeholders} to create and resolve placeholders.
-     */
-    private final Placeholders placeholders;
-
-    /**
-     * The quest package manager to get quest packages from.
-     */
-    private final QuestPackageManager packManager;
 
     /**
      * Configuration to read io options.
@@ -70,8 +60,6 @@ public class InventoryConvIOFactory implements ConversationIOFactory {
                                   final FontRegistry fontRegistry, final ConversationColors colors,
                                   final boolean printMessages) {
         this.loggerFactory = loggerFactory;
-        this.placeholders = placeholders;
-        this.packManager = packManager;
         this.config = config;
         this.fontRegistry = fontRegistry;
         this.colors = colors;
@@ -84,6 +72,6 @@ public class InventoryConvIOFactory implements ConversationIOFactory {
         final boolean showNPCText = config.getBoolean("conversation.io.chest.show_npc_text", true);
         final FixedComponentLineWrapper componentLineWrapper = new FixedComponentLineWrapper(fontRegistry, 270);
         final BetonQuestLogger log = loggerFactory.create(InventoryConvIO.class);
-        return new InventoryConvIO(conversation, onlineProfile, log, placeholders, packManager, colors, showNumber, showNPCText, printMessages, componentLineWrapper);
+        return new InventoryConvIO(conversation, onlineProfile, log, colors, showNumber, showNPCText, printMessages, componentLineWrapper);
     }
 }

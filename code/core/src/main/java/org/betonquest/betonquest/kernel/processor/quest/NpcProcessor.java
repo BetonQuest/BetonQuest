@@ -6,6 +6,10 @@ import org.betonquest.betonquest.api.bukkit.event.npc.NpcInteractEvent;
 import org.betonquest.betonquest.api.bukkit.event.npc.NpcVisibilityUpdateEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.identifier.ConversationIdentifier;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
+import org.betonquest.betonquest.api.identifier.NpcIdentifier;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -14,13 +18,11 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.npc.Npc;
-import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcConversation;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcHider;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.CombatTagger;
-import org.betonquest.betonquest.conversation.ConversationID;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
 import org.betonquest.betonquest.kernel.processor.feature.ConversationStarter;
 import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
@@ -45,7 +47,7 @@ import java.util.UUID;
  * Stores Npcs and starts Npc conversations.
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
-public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
+public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<?>> {
 
     /**
      * The section in which the assignments from Npcs to conversations are stored.
@@ -68,6 +70,11 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
     private final BetonQuest plugin;
 
     /**
+     * The {@link IdentifierFactory} to create {@link ConversationIdentifier}s.
+     */
+    private final IdentifierFactory<ConversationIdentifier> conversationIdentifierFactory;
+
+    /**
      * Stores the last time the player interacted with an NPC.
      */
     private final Map<UUID, Long> npcInteractionLimiter = new HashMap<>();
@@ -76,7 +83,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
      * Stores the conversations assigned to NPCs via the configuration.
      * The key could either be a Npcs name or its ID, depending on the configuration.
      */
-    private final Map<NpcID, ConversationID> assignedConversations = new HashMap<>();
+    private final Map<NpcIdentifier, ConversationIdentifier> assignedConversations = new HashMap<>();
 
     /**
      * Hider for Npcs.
@@ -99,37 +106,44 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
     private int interactionLimit;
 
     /**
-     * If left click interactions should also trigger conversation starts.
+     * If left-click interactions should also trigger conversation starts.
      */
     private boolean acceptNpcLeftClick;
 
     /**
      * Create a new Quest Npc Processor to store them.
      *
-     * @param log             the custom logger for this class
-     * @param loggerFactory   the logger factory used to create logger for the started conversations
-     * @param packManager     the quest package manager to get quest packages from
-     * @param placeholders    the {@link Placeholders} to create and resolve placeholders
-     * @param npcTypes        the available npc types
-     * @param pluginMessage   the {@link PluginMessage} instance
-     * @param plugin          the plugin to load config
-     * @param profileProvider the profile provider instance
-     * @param questTypeApi    the Quest Type API
-     * @param convStarter     the starter for Npc conversations
+     * @param log                           the custom logger for this class
+     * @param loggerFactory                 the logger factory used to create logger for the started conversations
+     * @param packManager                   the quest package manager to get quest packages from
+     * @param npcIdentifierFactory          the identifier factory to create {@link NpcIdentifier}s for this type
+     * @param conversationIdentifierFactory the identifier factory to create {@link ConversationIdentifier}s for this type
+     * @param placeholders                  the {@link Placeholders} to create and resolve placeholders
+     * @param npcTypes                      the available npc types
+     * @param pluginMessage                 the {@link PluginMessage} instance
+     * @param plugin                        the plugin to load config
+     * @param profileProvider               the profile provider instance
+     * @param questTypeApi                  the Quest Type API
+     * @param convStarter                   the starter for Npc conversations
+     * @param instructionApi                the instruction api
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public NpcProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                         final Placeholders placeholders, final QuestPackageManager packManager,
+                        final IdentifierFactory<NpcIdentifier> npcIdentifierFactory,
+                        final IdentifierFactory<ConversationIdentifier> conversationIdentifierFactory,
                         final NpcTypeRegistry npcTypes, final PluginMessage pluginMessage, final BetonQuest plugin,
-                        final ProfileProvider profileProvider, final QuestTypeApi questTypeApi, final ConversationStarter convStarter) {
-        super(log, placeholders, packManager, npcTypes, "Npc", "npcs");
+                        final ProfileProvider profileProvider, final QuestTypeApi questTypeApi, final ConversationStarter convStarter,
+                        final InstructionApi instructionApi) {
+        super(log, placeholders, packManager, npcTypes, npcIdentifierFactory, instructionApi, "Npc", "npcs");
         this.loggerFactory = loggerFactory;
         this.pluginMessage = pluginMessage;
         this.convStarter = convStarter;
         this.plugin = plugin;
+        this.conversationIdentifierFactory = conversationIdentifierFactory;
         plugin.getServer().getPluginManager().registerEvents(new NpcListener(), plugin);
-        this.npcHider = new NpcHider(loggerFactory.create(NpcHider.class), packManager, placeholders, this,
-                questTypeApi, profileProvider, npcTypes);
+        this.npcHider = new NpcHider(loggerFactory.create(NpcHider.class), this,
+                questTypeApi, profileProvider, npcTypes, plugin.getQuestRegistries().identifier(), plugin.getInstructionApi());
         this.busySender = new IngameNotificationSender(log, pluginMessage, null, "NpcProcessor", NotificationLevel.ERROR, "busy");
     }
 
@@ -157,8 +171,8 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
                 log.warn(pack, NPC_SECTION + " value for key '" + key + "' (in " + packName + " package) is not a string");
             } else {
                 try {
-                    final NpcID npcID = new NpcID(placeholders, packManager, pack, key);
-                    final ConversationID conversationID = new ConversationID(packManager, pack, Objects.requireNonNull(section.getString(key)));
+                    final NpcIdentifier npcID = getIdentifier(pack, key);
+                    final ConversationIdentifier conversationID = conversationIdentifierFactory.parseIdentifier(pack, Objects.requireNonNull(section.getString(key)));
                     assignedConversations.put(npcID, conversationID);
                 } catch (final QuestException exception) {
                     log.warn(pack, "Error while loading " + NPC_SECTION + " for key '" + key + "' (in " + packName + " package): " + exception.getMessage(), exception);
@@ -178,12 +192,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
     }
 
     @Override
-    protected NpcID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new NpcID(placeholders, packManager, pack, identifier);
-    }
-
-    @Override
-    protected void postCreation(final NpcID identifier, final NpcWrapper<?> value) {
+    protected void postCreation(final NpcIdentifier identifier, final NpcWrapper<?> value) {
         ((NpcTypeRegistry) types).addIdentifier(identifier);
     }
 
@@ -195,7 +204,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
      * @param npc     the npc which was interacted with
      * @return if a conversation is started and the interact event should be cancelled
      */
-    public boolean interactLogic(final Profile profile, final Set<NpcID> npcIds, final Npc<?> npc) {
+    public boolean interactLogic(final Profile profile, final Set<NpcIdentifier> npcIds, final Npc<?> npc) {
         if (profile.getOnlineProfile().isEmpty()) {
             return false;
         }
@@ -216,10 +225,10 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
     }
 
     @SuppressWarnings("NullAway")
-    private boolean startConversation(final OnlineProfile clicker, final Set<NpcID> identifier, final Npc<?> npc, final OnlineProfile onlineProfile) {
-        ConversationID conversationID = null;
-        NpcID selected = null;
-        for (final NpcID npcID : identifier) {
+    private boolean startConversation(final OnlineProfile clicker, final Set<NpcIdentifier> identifier, final Npc<?> npc, final OnlineProfile onlineProfile) {
+        ConversationIdentifier conversationID = null;
+        NpcIdentifier selected = null;
+        for (final NpcIdentifier npcID : identifier) {
             conversationID = assignedConversations.get(npcID);
             if (conversationID != null) {
                 selected = npcID;
@@ -305,8 +314,8 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
                 npcHider.applyVisibility();
                 return;
             }
-            final Set<NpcID> identifier = ((NpcTypeRegistry) types).getIdentifier(event.getNpc(), null);
-            for (final NpcID npcID : identifier) {
+            final Set<NpcIdentifier> identifier = ((NpcTypeRegistry) types).getIdentifier(event.getNpc(), null);
+            for (final NpcIdentifier npcID : identifier) {
                 npcHider.applyVisibility(npcID);
             }
         }

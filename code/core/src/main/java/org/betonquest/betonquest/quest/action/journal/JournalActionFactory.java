@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.action.journal;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.JournalEntryIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -12,7 +13,6 @@ import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Saver;
-import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.quest.action.DoNothingPlayerlessAction;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.betonquest.betonquest.quest.action.NoNotificationSender;
@@ -98,14 +98,14 @@ public class JournalActionFactory implements PlayerActionFactory, PlayerlessActi
     }
 
     private JournalAction createJournalDeleteAction(final Instruction instruction) throws QuestException {
-        final Argument<JournalEntryID> entryID = instruction.chainForArgument(instruction.getPart(2)).parse(JournalEntryID::new).get();
+        final Argument<JournalEntryIdentifier> entryID = instruction.chainForArgument(instruction.getPart(2)).identifier(JournalEntryIdentifier.class).get();
         final JournalChanger journalChanger = new RemoveEntryJournalChanger(entryID);
         final NotificationSender notificationSender = new NoNotificationSender();
         return new JournalAction(dataStorage, journalChanger, notificationSender);
     }
 
     private JournalAction createJournalAddAction(final Instruction instruction) throws QuestException {
-        final Argument<JournalEntryID> entryID = instruction.chainForArgument(instruction.getPart(2)).parse(JournalEntryID::new).get();
+        final Argument<JournalEntryIdentifier> entryID = instruction.chainForArgument(instruction.getPart(2)).identifier(JournalEntryIdentifier.class).get();
         final JournalChanger journalChanger = new AddEntryJournalChanger(instantSource, entryID);
         final NotificationSender notificationSender = new IngameNotificationSender(loggerFactory.create(JournalAction.class),
                 pluginMessage, instruction.getPackage(), instruction.getID().getFull(), NotificationLevel.INFO, "new_journal_entry");
@@ -119,7 +119,7 @@ public class JournalActionFactory implements PlayerActionFactory, PlayerlessActi
     }
 
     private PlayerlessAction createStaticJournalDeleteAction(final Instruction instruction) throws QuestException {
-        final Argument<JournalEntryID> entryID = instruction.chainForArgument(instruction.getPart(2)).parse(JournalEntryID::new).get();
+        final Argument<JournalEntryIdentifier> entryID = instruction.chainForArgument(instruction.getPart(2)).identifier(JournalEntryIdentifier.class).get();
         return new DeleteJournalPlayerlessAction(dataStorage, saver, profileProvider, entryID);
     }
 }

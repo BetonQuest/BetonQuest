@@ -5,11 +5,11 @@ import eu.decentsoftware.holograms.api.holograms.Hologram;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
+import org.betonquest.betonquest.api.identifier.PlaceholderIdentifier;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.quest.Placeholders;
-import org.betonquest.betonquest.api.quest.placeholder.PlaceholderID;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.betonquest.betonquest.compatibility.holograms.HologramIntegrator;
@@ -31,27 +31,27 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
     private final BetonQuestLogger log;
 
     /**
-     * The {@link Placeholders} to create and resolve placeholders.
+     * The identifier factory for placeholder identifiers.
      */
-    private final Placeholders placeholders;
+    private final IdentifierFactory<PlaceholderIdentifier> identifierFactory;
 
     /**
-     * The quest package manager to get quest packages from.
+     * The instruction api to use.
      */
-    private final QuestPackageManager packManager;
+    private final InstructionApi instructionApi;
 
     /**
      * Creates a new DecentHologramsIntegrator for DecentHolograms.
      *
-     * @param log          the custom logger for this class
-     * @param placeholders the {@link Placeholders} to create and resolve placeholders
-     * @param packManager  the quest package manager to get quest packages from
+     * @param log               the custom logger for this class
+     * @param identifierFactory the identifier factory for placeholders
+     * @param instructionApi    the instruction api to use
      */
-    public DecentHologramsIntegrator(final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager) {
+    public DecentHologramsIntegrator(final BetonQuestLogger log, final IdentifierFactory<PlaceholderIdentifier> identifierFactory, final InstructionApi instructionApi) {
         super("DecentHolograms", "2.7.5");
         this.log = log;
-        this.placeholders = placeholders;
-        this.packManager = packManager;
+        this.identifierFactory = identifierFactory;
+        this.instructionApi = instructionApi;
     }
 
     @Override
@@ -84,9 +84,9 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
         return matcher.replaceAll(match -> {
             final String group = match.group();
             try {
-                final PlaceholderID placeholderID = new PlaceholderID(placeholders, packManager, pack, group);
-                final Instruction instruction = placeholderID.getInstruction();
-                return "%betonquest_" + placeholderID.getPackage().getQuestPath() + ":" + instruction + "%";
+                final PlaceholderIdentifier placeholderIdentifier = identifierFactory.parseIdentifier(pack, group);
+                final Instruction instruction = instructionApi.createPlaceholderInstruction(placeholderIdentifier, placeholderIdentifier.readRawInstruction());
+                return "%betonquest_" + placeholderIdentifier.getPackage().getQuestPath() + ":" + instruction + "%";
             } catch (final QuestException exception) {
                 log.warn("Could not create placeholder '" + group + "': " + exception.getMessage(), exception);
             }

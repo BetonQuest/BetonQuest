@@ -5,12 +5,14 @@ import org.betonquest.betonquest.api.bukkit.event.BukkitEventService;
 import org.betonquest.betonquest.api.bukkit.event.EventServiceSubscriber;
 import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.common.function.QuestBiFunction;
+import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.betonquest.betonquest.kernel.processor.quest.ActionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.ConditionProcessor;
@@ -62,9 +64,14 @@ public class DefaultObjectiveServiceProvider implements ObjectiveServiceProvider
     private final BetonQuestLoggerFactory factory;
 
     /**
+     * The instruction api to use.
+     */
+    private final InstructionApi instructionApi;
+
+    /**
      * The map holding the objectives service data.
      */
-    private final Map<ObjectiveID, DefaultObjectiveService> services;
+    private final Map<ObjectiveIdentifier, DefaultObjectiveService> services;
 
     /**
      * Sole constructor. Creates an objective event service on top of a {@link BukkitEventService}.
@@ -74,11 +81,14 @@ public class DefaultObjectiveServiceProvider implements ObjectiveServiceProvider
      * @param actionProcessor    the action processor
      * @param factory            the logger factory
      * @param profileProvider    the profile provider
+     * @param instructionApi     the instruction api
      */
     public DefaultObjectiveServiceProvider(final Plugin plugin, final ConditionProcessor conditionProcessor, final ActionProcessor actionProcessor,
-                                           final BetonQuestLoggerFactory factory, final ProfileProvider profileProvider) {
+                                           final BetonQuestLoggerFactory factory, final ProfileProvider profileProvider,
+                                           final InstructionApi instructionApi) {
         this.eventService = new DefaultBukkitEventService(plugin, factory);
         this.factory = factory;
+        this.instructionApi = instructionApi;
         this.logger = this.factory.create(DefaultObjectiveServiceProvider.class);
         this.profileProvider = profileProvider;
         this.actionProcessor = actionProcessor;
@@ -93,12 +103,13 @@ public class DefaultObjectiveServiceProvider implements ObjectiveServiceProvider
     }
 
     @Override
-    public ObjectiveService getFactoryService(final ObjectiveID objectiveID) throws QuestException {
+    public ObjectiveService getFactoryService(final ObjectiveIdentifier objectiveID) throws QuestException {
         if (services.containsKey(objectiveID)) {
             return services.get(objectiveID);
         }
-        final DefaultObjectiveService service = new DefaultObjectiveService(objectiveID,
-                actionProcessor, conditionProcessor, this, factory, profileProvider);
+        final Instruction objectiveInstruction = instructionApi.createInstruction(objectiveID, objectiveID.readRawInstruction());
+        final DefaultObjectiveService service = new DefaultObjectiveService(objectiveID, actionProcessor,
+                conditionProcessor, this, factory, profileProvider, objectiveInstruction);
         services.put(objectiveID, service);
         return service;
     }
@@ -110,7 +121,7 @@ public class DefaultObjectiveServiceProvider implements ObjectiveServiceProvider
 
     @Override
     @SuppressWarnings("PMD.AvoidSynchronizedStatement")
-    public void stop(final ObjectiveID objectiveID, final Profile profile, final ObjectiveState newState) throws QuestException {
+    public void stop(final ObjectiveIdentifier objectiveID, final Profile profile, final ObjectiveState newState) throws QuestException {
         synchronized (this) {
             getFactoryService(objectiveID).getData().remove(profile);
             runObjectiveChangeEvent(objectiveID, profile, ObjectiveState.ACTIVE, newState);
@@ -119,7 +130,7 @@ public class DefaultObjectiveServiceProvider implements ObjectiveServiceProvider
 
     @Override
     @SuppressWarnings("PMD.AvoidSynchronizedStatement")
-    public void start(final ObjectiveID objectiveID, final Profile profile, final String instructionString, final ObjectiveState previousState) throws QuestException {
+    public void start(final ObjectiveIdentifier objectiveID, final Profile profile, final String instructionString, final ObjectiveState previousState) throws QuestException {
         synchronized (this) {
             getFactoryService(objectiveID).getData().put(profile, instructionString);
             runObjectiveChangeEvent(objectiveID, profile, previousState, ObjectiveState.ACTIVE);
@@ -127,7 +138,7 @@ public class DefaultObjectiveServiceProvider implements ObjectiveServiceProvider
     }
 
     @Override
-    public <T extends Event> void subscribe(final ObjectiveID objectiveID, final Class<T> eventClass, final NonProfileEventHandler<T> handler,
+    public <T extends Event> void subscribe(final ObjectiveIdentifier objectiveID, final Class<T> eventClass, final NonProfileEventHandler<T> handler,
                                             final EventPriority priority, final boolean ignoreCancelled, final boolean ignoreConditions) throws QuestException {
         if (!eventService.require(eventClass, priority)) {
             throw new QuestException("<%s> Could not subscribe to event '%s'".formatted(objectiveID, eventClass.getSimpleName()));
@@ -139,7 +150,7 @@ public class DefaultObjectiveServiceProvider implements ObjectiveServiceProvider
     }
 
     @Override
-    public <T extends Event> void subscribe(final ObjectiveID objectiveID, final Class<T> eventClass, final ProfileEventHandler<T> handler,
+    public <T extends Event> void subscribe(final ObjectiveIdentifier objectiveID, final Class<T> eventClass, final ProfileEventHandler<T> handler,
                                             final QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor,
                                             final EventPriority priority, final boolean ignoreCancelled, final boolean ignoreConditions) throws QuestException {
         if (!eventService.require(eventClass, priority)) {
@@ -152,7 +163,7 @@ public class DefaultObjectiveServiceProvider implements ObjectiveServiceProvider
     }
 
     @Override
-    public <T extends Event> void subscribe(final ObjectiveID objectiveID, final Class<T> eventClass,
+    public <T extends Event> void subscribe(final ObjectiveIdentifier objectiveID, final Class<T> eventClass,
                                             final OnlineProfileEventHandler<T> handler,
                                             final QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor,
                                             final EventPriority priority, final boolean ignoreCancelled, final boolean ignoreConditions) throws QuestException {
@@ -165,18 +176,18 @@ public class DefaultObjectiveServiceProvider implements ObjectiveServiceProvider
         logger.debug(objectiveID.getPackage(), "Subscribed to event '" + eventClass.getSimpleName() + "' with priority '" + priority.name() + "' and ignoreCancelled '" + ignoreCancelled + "'");
     }
 
-    private void runObjectiveChangeEvent(final ObjectiveID objectiveID, final Profile profile, final ObjectiveState previousState, final ObjectiveState newState) {
+    private void runObjectiveChangeEvent(final ObjectiveIdentifier objectiveID, final Profile profile, final ObjectiveState previousState, final ObjectiveState newState) {
         final boolean isAsync = !Bukkit.isPrimaryThread();
         new PlayerObjectiveChangeEvent(profile, isAsync, objectiveID, newState, previousState).callEvent();
     }
 
-    private <T extends Event> EventServiceSubscriber<T> exceptionHandled(final ObjectiveID objectiveID, final Class<T> eventClass,
+    private <T extends Event> EventServiceSubscriber<T> exceptionHandled(final ObjectiveIdentifier objectiveID, final Class<T> eventClass,
                                                                          final EventServiceSubscriber<T> subscriber) {
         final QuestExceptionHandler exceptionHandler = new QuestExceptionHandler(objectiveID.getPackage(), logger, objectiveID.getFull(), eventClass.getSimpleName());
         return (event, priority) -> exceptionHandler.handle(() -> subscriber.call(event, priority));
     }
 
-    private <T extends Event> EventServiceSubscriber<T> subNonProfile(final ObjectiveID objectiveID, final NonProfileEventHandler<T> eventHandler,
+    private <T extends Event> EventServiceSubscriber<T> subNonProfile(final ObjectiveIdentifier objectiveID, final NonProfileEventHandler<T> eventHandler,
                                                                       final boolean ignoreConditions) {
         return (event, priority) -> {
             final ObjectiveService service = getFactoryService(objectiveID);
@@ -186,7 +197,7 @@ public class DefaultObjectiveServiceProvider implements ObjectiveServiceProvider
         };
     }
 
-    private <T extends Event> EventServiceSubscriber<T> subOnline(final ObjectiveID objectiveID, final OnlineProfileEventHandler<T> handler,
+    private <T extends Event> EventServiceSubscriber<T> subOnline(final ObjectiveIdentifier objectiveID, final OnlineProfileEventHandler<T> handler,
                                                                   final QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor,
                                                                   final boolean ignoreConditions) {
         return (event, prio) -> {
@@ -206,7 +217,7 @@ public class DefaultObjectiveServiceProvider implements ObjectiveServiceProvider
         };
     }
 
-    private <T extends Event> EventServiceSubscriber<T> subOffline(final ObjectiveID objectiveID, final ProfileEventHandler<T> handler,
+    private <T extends Event> EventServiceSubscriber<T> subOffline(final ObjectiveIdentifier objectiveID, final ProfileEventHandler<T> handler,
                                                                    final QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor,
                                                                    final boolean ignoreConditions) {
         return (event, prio) -> {

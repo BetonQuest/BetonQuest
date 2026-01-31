@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.compatibility.mythicmobs.npc;
 
 import io.lumine.mythic.core.mobs.ActiveMob;
-import org.betonquest.betonquest.api.quest.npc.NpcID;
+import org.betonquest.betonquest.api.identifier.NpcIdentifier;
 import org.betonquest.betonquest.compatibility.npc.GenericReverseIdentifier;
 
 /**
- * Allows to get {@link NpcID}s for an {@link ActiveMob}.
+ * Allows to get {@link NpcIdentifier}s for an {@link ActiveMob}.
  */
 public class MythicMobsReverseIdentifier extends GenericReverseIdentifier<ActiveMob> {
 

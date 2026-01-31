@@ -4,6 +4,9 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
+import org.betonquest.betonquest.api.identifier.MenuIdentifier;
+import org.betonquest.betonquest.api.identifier.MenuItemIdentifier;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -76,12 +79,13 @@ public class RPGMenu {
      * @param questTypeApi    the Quest Type API
      * @param profileProvider the profile provider instance
      * @param parsers         the argument parsers to use
+     * @throws QuestException if there is an error while loading the menus
      */
     public RPGMenu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                    final QuestPackageManager packManager, final ConfigAccessor pluginConfig,
                    final PluginMessage pluginMessage, final ParsedSectionTextCreator textCreator,
                    final QuestTypeApi questTypeApi, final ProfileProvider profileProvider,
-                   final ArgumentParsers parsers) {
+                   final ArgumentParsers parsers) throws QuestException {
         this.log = log;
         this.loggerFactory = loggerFactory;
         final BetonQuest betonQuest = BetonQuest.getInstance();
@@ -92,14 +96,17 @@ public class RPGMenu {
         questRegistries.objective().register(menu, new MenuObjectiveFactory(loggerFactory, this));
         questRegistries.action().register(menu, new MenuActionFactory(loggerFactory, this));
         questRegistries.placeholder().register(menu, new MenuPlaceholderFactory());
-        this.pluginCommand = new RPGMenuCommand(loggerFactory.create(RPGMenuCommand.class), this);
+        final IdentifierFactory<MenuIdentifier> menuIdentifierFactory = questRegistries.identifier().getFactory(MenuIdentifier.class);
+        this.pluginCommand = new RPGMenuCommand(loggerFactory.create(RPGMenuCommand.class), this,
+                menuIdentifierFactory);
         pluginCommand.register();
         pluginCommand.syncCraftBukkitCommands();
         this.menuItemProcessor = new MenuItemProcessor(loggerFactory.create(MenuItemProcessor.class), loggerFactory,
-                packManager, textCreator, questTypeApi, pluginConfig, parsers);
+                packManager, textCreator, questRegistries.identifier().getFactory(MenuItemIdentifier.class),
+                questTypeApi, pluginConfig, parsers);
         betonQuest.addProcessor(menuItemProcessor);
         this.menuProcessor = new MenuProcessor(loggerFactory.create(MenuProcessor.class), loggerFactory,
-                packManager, textCreator, questTypeApi, parsers, this, profileProvider);
+                packManager, textCreator, questTypeApi, parsers, this, menuIdentifierFactory, profileProvider);
         betonQuest.addProcessor(menuProcessor);
         this.menuItemListener = new MenuItemListener(loggerFactory.create(MenuItemListener.class), this,
                 menuProcessor, profileProvider, pluginMessage);
@@ -123,7 +130,7 @@ public class RPGMenu {
      *                      null will return true if the player has any menu opened
      * @return true if the player has opened the specified menu, false otherwise
      */
-    public static boolean hasOpenedMenu(final OnlineProfile onlineProfile, @Nullable final MenuID menuID) {
+    public static boolean hasOpenedMenu(final OnlineProfile onlineProfile, @Nullable final MenuIdentifier menuID) {
         final OpenedMenu menu = OpenedMenu.getMenu(onlineProfile);
         return menu != null && (menuID == null || menu.getId().equals(menuID));
     }
@@ -145,7 +152,7 @@ public class RPGMenu {
      * @param menuID        id of the menu
      * @throws QuestException when the menu is not loaded or an error while constructing occurred
      */
-    public void openMenu(final OnlineProfile onlineProfile, final MenuID menuID) throws QuestException {
+    public void openMenu(final OnlineProfile onlineProfile, final MenuIdentifier menuID) throws QuestException {
         final Menu menu = menuProcessor.get(menuID);
         if (new MenuOpenEvent(onlineProfile, menuID).callEvent()) {
             new OpenedMenu(loggerFactory.create(OpenedMenu.class), onlineProfile, menu);
@@ -183,7 +190,7 @@ public class RPGMenu {
      *
      * @return a collection containing all loaded menus
      */
-    public Collection<MenuID> getMenus() {
+    public Collection<MenuIdentifier> getMenus() {
         return menuProcessor.getValues().keySet();
     }
 
@@ -194,7 +201,7 @@ public class RPGMenu {
      * @return menu with the given menuID
      */
     @Nullable
-    public Menu getMenu(final MenuID menuID) {
+    public Menu getMenu(final MenuIdentifier menuID) {
         return menuProcessor.getValues().get(menuID);
     }
 
@@ -205,7 +212,7 @@ public class RPGMenu {
      * @return the menu item
      * @throws QuestException when there is no such object
      */
-    public MenuItem getMenuItem(final MenuItemID menuItemID) throws QuestException {
+    public MenuItem getMenuItem(final MenuItemIdentifier menuItemID) throws QuestException {
         return menuItemProcessor.get(menuItemID);
     }
 }

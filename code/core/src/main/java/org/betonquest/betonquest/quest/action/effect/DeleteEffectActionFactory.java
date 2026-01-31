@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.api.quest.action.online.OnlineActionAdapter;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultListArgument;
+import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.Collections;
@@ -46,7 +46,7 @@ public class DeleteEffectActionFactory implements PlayerActionFactory {
                 return effect;
             }).list().get();
         } else {
-            effects = new DefaultListArgument<>(Collections.emptyList());
+            effects = new DefaultArgument<>(Collections.emptyList());
         }
         return new OnlineActionAdapter(new DeleteEffectAction(effects),
                 loggerFactory.create(DeleteEffectAction.class), instruction.getPackage());

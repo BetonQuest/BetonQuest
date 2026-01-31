@@ -8,8 +8,9 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.Identifier;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
+import org.betonquest.betonquest.api.identifier.MenuIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -33,15 +34,22 @@ public class RPGMenuCommand extends SimpleCommand {
     private final RPGMenu menu;
 
     /**
+     * The identifier factory to create menu identifiers.
+     */
+    private final IdentifierFactory<MenuIdentifier> identifierFactory;
+
+    /**
      * Create a new RPGMenu command.
      *
-     * @param log  the custom logger instance for this class
-     * @param menu the rpg menu this command works on
+     * @param log               the custom logger instance for this class
+     * @param menu              the rpg menu this command works on
+     * @param identifierFactory the identifier factory to create menu identifiers
      */
     @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
-    public RPGMenuCommand(final BetonQuestLogger log, final RPGMenu menu) {
+    public RPGMenuCommand(final BetonQuestLogger log, final RPGMenu menu, final IdentifierFactory<MenuIdentifier> identifierFactory) {
         super(log, "rpgmenu", new Permission("betonquest.admin"), 0, "qm", "menu", "menus", "rpgmenus", "rpgm");
         this.menu = menu;
+        this.identifierFactory = identifierFactory;
         setDescription("Core command of the RPGMenu addon for BetonQuest");
         setUsage("/rpgmenu <open/list>");
     }
@@ -68,7 +76,7 @@ public class RPGMenuCommand extends SimpleCommand {
                     return new ArrayList<>();
                 }
                 final List<String> completions = new ArrayList<>();
-                for (final MenuID id : menu.getMenus()) {
+                for (final MenuIdentifier id : menu.getMenus()) {
                     if (id.getPackage().equals(configPack)) {
                         completions.add(id.toString());
                     }
@@ -87,7 +95,7 @@ public class RPGMenuCommand extends SimpleCommand {
             showHelp(sender);
             return false;
         }
-        MenuID menu = null;
+        MenuIdentifier menu = null;
         switch (args[0].toLowerCase(Locale.ROOT)) {
             case "l":
             case "list":
@@ -97,7 +105,7 @@ public class RPGMenuCommand extends SimpleCommand {
                 //parse menu id
                 if (args.length >= 2) {
                     try {
-                        menu = new MenuID(getPlugin().getQuestPackageManager(), null, args[1]);
+                        menu = identifierFactory.parseIdentifier(null, args[1]);
                     } catch (final QuestException e) {
                         sendMessage(sender, "command_invalid_menu", new VariableReplacement("menu", Component.text(args[1])));
                         return false;
@@ -114,11 +122,11 @@ public class RPGMenuCommand extends SimpleCommand {
             case "list":
                 final TextComponent.Builder builder = Component.text();
                 builder.append(getMessage(sender, "command_list"));
-                final Collection<MenuID> ids = this.menu.getMenus();
+                final Collection<MenuIdentifier> ids = this.menu.getMenus();
                 if (ids.isEmpty()) {
                     builder.append(Component.newline().append(Component.text(" - ").color(NamedTextColor.GRAY)));
                 } else {
-                    for (final MenuID menuID : ids) {
+                    for (final MenuIdentifier menuID : ids) {
                         builder
                                 .append(Component.newline().append(Component.text(menuID.toString()).color(NamedTextColor.GRAY))
                                         .hoverEvent(getMessage(sender, "click_to_open"))

@@ -3,10 +3,10 @@ package org.betonquest.betonquest.quest.objective.npc;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.npc.NpcInteractEvent;
+import org.betonquest.betonquest.api.identifier.NpcIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.quest.objective.interact.Interaction;
 
@@ -20,7 +20,7 @@ public class NpcInteractObjective extends DefaultObjective {
     /**
      * The ID of the NPC to interact with.
      */
-    private final Argument<NpcID> npcId;
+    private final Argument<NpcIdentifier> npcId;
 
     /**
      * Whether to cancel the interaction with the NPC.
@@ -41,7 +41,7 @@ public class NpcInteractObjective extends DefaultObjective {
      * @param interactionType the type of interaction with the NPC
      * @throws QuestException if the instruction is invalid
      */
-    public NpcInteractObjective(final ObjectiveService service, final Argument<NpcID> npcId,
+    public NpcInteractObjective(final ObjectiveService service, final Argument<NpcIdentifier> npcId,
                                 final FlagArgument<Boolean> cancel, final Argument<Interaction> interactionType) throws QuestException {
         super(service);
         this.npcId = npcId;

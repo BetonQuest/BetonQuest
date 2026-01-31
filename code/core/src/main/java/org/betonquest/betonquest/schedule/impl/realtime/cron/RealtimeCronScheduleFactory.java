@@ -1,8 +1,6 @@
 package org.betonquest.betonquest.schedule.impl.realtime.cron;
 
 import com.cronutils.model.definition.CronDefinition;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.schedule.CronSchedule;
 
 /**
@@ -12,12 +10,9 @@ public class RealtimeCronScheduleFactory extends CronScheduleFactory {
 
     /**
      * Create a new Realtime Schedule Factory.
-     *
-     * @param placeholders the {@link Placeholders} to create and resolve placeholders
-     * @param packManager  the quest package manager to get quest packages from
      */
-    public RealtimeCronScheduleFactory(final Placeholders placeholders, final QuestPackageManager packManager) {
-        super(placeholders, packManager);
+    public RealtimeCronScheduleFactory() {
+        super();
     }
 
     @Override

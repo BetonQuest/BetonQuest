@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.action.run;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
 
@@ -32,7 +32,7 @@ public class RunIndependentActionFactory implements PlayerlessActionFactory {
 
     @Override
     public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
-        final Argument<List<ActionID>> actions = instruction.parse(ActionID::new).list().get("actions", Collections.emptyList());
+        final Argument<List<ActionIdentifier>> actions = instruction.identifier(ActionIdentifier.class).list().get("actions", Collections.emptyList());
         return new RunIndependentAction(questTypeApi, actions);
     }
 }

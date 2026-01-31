@@ -1,11 +1,9 @@
 package org.betonquest.betonquest.schedule.impl.realtime.daily;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.quest.Placeholders;
-import org.betonquest.betonquest.api.schedule.ScheduleID;
+import org.betonquest.betonquest.api.identifier.ScheduleIdentifier;
+import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.schedule.impl.BaseScheduleFactory;
-import org.bukkit.configuration.ConfigurationSection;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -23,18 +21,15 @@ public class RealtimeDailyScheduleFactory extends BaseScheduleFactory<RealtimeDa
 
     /**
      * Create a new Realtime Schedule Factory.
-     *
-     * @param placeholders the {@link Placeholders} to create and resolve placeholders
-     * @param packManager  the quest package manager to get quest packages from
      */
-    public RealtimeDailyScheduleFactory(final Placeholders placeholders, final QuestPackageManager packManager) {
-        super(placeholders, packManager);
+    public RealtimeDailyScheduleFactory() {
+        super();
     }
 
     @Override
-    public RealtimeDailySchedule createNewInstance(final ScheduleID scheduleID, final ConfigurationSection config)
+    public RealtimeDailySchedule createNewInstance(final ScheduleIdentifier scheduleID, final SectionInstruction instruction)
             throws QuestException {
-        final ScheduleData scheduleData = parseScheduleData(scheduleID.getPackage(), config);
+        final ScheduleData scheduleData = parseScheduleData(instruction);
         final String time = scheduleData.time();
         final LocalTime localTime;
         try {

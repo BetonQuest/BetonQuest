@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.lib.instruction.section;
 
 import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.section.DecoratableSectionRetriever;
@@ -145,5 +146,10 @@ public class DefaultSectionParser implements SectionParser {
     @Override
     public <E extends Enum<E>> DecoratableSectionRetriever<E> enumeration(final Class<E> enumClass) {
         return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.forEnum(enumClass), SINGLE_VALUE_MODE);
+    }
+
+    @Override
+    public <I extends Identifier> DecoratableSectionRetriever<I> identifier(final Class<I> identifierClass) {
+        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.forIdentifier(identifierClass), SINGLE_VALUE_MODE);
     }
 }

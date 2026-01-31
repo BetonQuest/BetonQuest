@@ -7,11 +7,10 @@ import ch.njol.util.Kleenean;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
+import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.Placeholders;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
@@ -33,16 +32,6 @@ public class SkriptConditionBQ extends Condition {
     private final BetonQuest plugin;
 
     /**
-     * The {@link Placeholders} to create and resolve placeholders.
-     */
-    private final Placeholders placeholders;
-
-    /**
-     * The quest package manager to get quest packages from.
-     */
-    private final QuestPackageManager packManager;
-
-    /**
      * The player for whom the condition is checked.
      */
     private Expression<Player> player;
@@ -58,9 +47,7 @@ public class SkriptConditionBQ extends Condition {
     public SkriptConditionBQ() {
         super();
         this.plugin = BetonQuest.getInstance();
-        this.placeholders = plugin.getQuestTypeApi().placeholders();
         this.log = plugin.getLoggerFactory().create(getClass());
-        this.packManager = plugin.getQuestPackageManager();
     }
 
     @SuppressWarnings("unchecked")
@@ -82,8 +69,10 @@ public class SkriptConditionBQ extends Condition {
         final String conditionID = condition.getSingle(event);
         try {
             final ProfileProvider profileProvider = plugin.getProfileProvider();
+            final IdentifierFactory<ConditionIdentifier> conditionIdentifierFactory =
+                    plugin.getQuestRegistries().identifier().getFactory(ConditionIdentifier.class);
             return plugin.getQuestTypeApi().condition(profileProvider.getProfile(player.getSingle(event)),
-                    new ConditionID(placeholders, packManager, null, conditionID));
+                    conditionIdentifierFactory.parseIdentifier(null, conditionID));
         } catch (final QuestException e) {
             log.warn("Error while checking Skript condition - could not load condition with ID '" + conditionID + "': " + e.getMessage(), e);
             return false;

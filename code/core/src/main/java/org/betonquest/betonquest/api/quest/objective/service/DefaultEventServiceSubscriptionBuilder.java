@@ -3,9 +3,9 @@ package org.betonquest.betonquest.api.quest.objective.service;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestBiFunction;
 import org.betonquest.betonquest.api.common.function.QuestFunction;
+import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -63,7 +63,7 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
      * The objective related to this event.
      */
     @Nullable
-    private ObjectiveID objectiveID;
+    private ObjectiveIdentifier objectiveID;
 
     /**
      * The non-profile event handler.
@@ -110,7 +110,7 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
     }
 
     @Override
-    public EventServiceSubscriptionBuilder<T> source(final ObjectiveID objectiveID) {
+    public EventServiceSubscriptionBuilder<T> source(final ObjectiveIdentifier objectiveID) {
         this.objectiveID = objectiveID;
         return this;
     }

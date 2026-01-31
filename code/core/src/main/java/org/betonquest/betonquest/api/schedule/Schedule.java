@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.schedule;
 
-import org.betonquest.betonquest.api.quest.action.ActionID;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
+import org.betonquest.betonquest.api.identifier.ScheduleIdentifier;
 
 import java.util.Collections;
 import java.util.List;
@@ -23,12 +24,12 @@ public abstract class Schedule {
     /**
      * Identifier of this schedule.
      */
-    protected final ScheduleID scheduleID;
+    protected final ScheduleIdentifier scheduleID;
 
     /**
      * A list of actions that will be run by this schedule.
      */
-    protected final List<ActionID> actions;
+    protected final List<ActionIdentifier> actions;
 
     /**
      * Defines how the scheduler should behave if an execution of the schedule was missed
@@ -38,13 +39,13 @@ public abstract class Schedule {
     protected final CatchupStrategy catchup;
 
     /**
-     * Creates new instance of the schedule.
+     * Creates a new instance of the schedule.
      *
      * @param scheduleID the schedule id
      * @param actions    the actions to execute
      * @param catchup    the catchup strategy
      */
-    public Schedule(final ScheduleID scheduleID, final List<ActionID> actions, final CatchupStrategy catchup) {
+    public Schedule(final ScheduleIdentifier scheduleID, final List<ActionIdentifier> actions, final CatchupStrategy catchup) {
         this.scheduleID = scheduleID;
         this.actions = Collections.unmodifiableList(actions);
         this.catchup = catchup;
@@ -55,7 +56,7 @@ public abstract class Schedule {
      *
      * @return the id
      */
-    public ScheduleID getId() {
+    public ScheduleIdentifier getId() {
         return scheduleID;
     }
 
@@ -64,7 +65,7 @@ public abstract class Schedule {
      *
      * @return unmodifiable list of actions
      */
-    public List<ActionID> getActions() {
+    public List<ActionIdentifier> getActions() {
         return actions;
     }
 

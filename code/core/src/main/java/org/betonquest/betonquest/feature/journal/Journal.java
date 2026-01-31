@@ -14,18 +14,18 @@ import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
+import org.betonquest.betonquest.api.identifier.JournalEntryIdentifier;
+import org.betonquest.betonquest.api.identifier.JournalMainPageIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
-import org.betonquest.betonquest.id.JournalEntryID;
-import org.betonquest.betonquest.id.JournalMainPageID;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.betonquest.betonquest.quest.action.NotificationLevel;
 import org.bukkit.Material;
@@ -213,7 +213,7 @@ public class Journal {
      *
      * @param pointerName the name of the pointer to remove
      */
-    public void removePointer(final JournalEntryID pointerName) {
+    public void removePointer(final JournalEntryIdentifier pointerName) {
         for (final Pointer pointer : pointers) {
             if (pointer.pointer().equals(pointerName)) {
                 final BetonQuest betonQuest = BetonQuest.getInstance();
@@ -260,7 +260,7 @@ public class Journal {
         final boolean displayDatePrefix = !config.getBoolean("journal.format.hide_date");
         for (final Pointer pointer : pointers) {
             final Component datePrefix = displayDatePrefix ? pointer.generateDatePrefix(textParser, config).append(Component.newline()) : Component.empty();
-            final JournalEntryID entryID = pointer.pointer();
+            final JournalEntryIdentifier entryID = pointer.pointer();
             final Text journalEntry;
             try {
                 journalEntry = featureApi.getJournalEntry(entryID);
@@ -291,11 +291,11 @@ public class Journal {
     private Component generateMainPage() {
         final Map<Integer, List<Component>> lines = new HashMap<>();
         final Set<Integer> numbers = new HashSet<>();
-        for (final Map.Entry<JournalMainPageID, JournalMainPageEntry> entry : featureApi.getJournalMainPages().entrySet()) {
+        for (final Map.Entry<JournalMainPageIdentifier, JournalMainPageEntry> entry : featureApi.getJournalMainPages().entrySet()) {
             final JournalMainPageEntry mainPageEntry = entry.getValue();
             Component text;
             try {
-                final List<ConditionID> conditions = mainPageEntry.conditions().getValue(profile);
+                final List<ConditionIdentifier> conditions = mainPageEntry.conditions().getValue(profile);
                 if (!conditions.isEmpty() && !questTypeApi.conditions(profile, conditions)) {
                     continue;
                 }

@@ -2,11 +2,11 @@ package org.betonquest.betonquest.api.quest.objective.service;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestFunction;
+import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.lib.logger.QuestExceptionHandler;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
@@ -22,7 +22,7 @@ public interface ObjectiveService {
      * Requests a new event subscription using an {@link EventServiceSubscriptionBuilder}.
      * <br>
      * Calling this in the context of an {@link ObjectiveFactory} will cause
-     * {@link EventServiceSubscriptionBuilder#source(ObjectiveID)} to be called
+     * {@link EventServiceSubscriptionBuilder#source(ObjectiveIdentifier)} to be called
      * with the objective's source before returning.
      * <br>
      * The request may be completed in one chain of calls requiring at least a handler and ending with
@@ -100,14 +100,14 @@ public interface ObjectiveService {
      *
      * @param newObjectiveID the new objective ID
      */
-    void renameObjective(ObjectiveID newObjectiveID);
+    void renameObjective(ObjectiveIdentifier newObjectiveID);
 
     /**
      * Retrieves the objective ID.
      *
      * @return the objective ID
      */
-    ObjectiveID getObjectiveID();
+    ObjectiveIdentifier getObjectiveID();
 
     /**
      * Retrieves the service data provider containing all additional information about the objective.

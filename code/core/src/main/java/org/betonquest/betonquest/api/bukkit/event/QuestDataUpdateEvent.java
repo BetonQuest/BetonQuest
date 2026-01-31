@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.bukkit.event;
 
+import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.bukkit.event.HandlerList;
 
 /**
@@ -17,7 +17,7 @@ public class QuestDataUpdateEvent extends ProfileEvent {
     /**
      * Objective id.
      */
-    private final ObjectiveID objID;
+    private final ObjectiveIdentifier objID;
 
     /**
      * Objective data string.
@@ -31,7 +31,7 @@ public class QuestDataUpdateEvent extends ProfileEvent {
      * @param objID   the objective id
      * @param data    the string representation of the new objective data
      */
-    public QuestDataUpdateEvent(final Profile profile, final ObjectiveID objID, final String data) {
+    public QuestDataUpdateEvent(final Profile profile, final ObjectiveIdentifier objID, final String data) {
         super(profile);
         this.objID = objID;
         this.data = data;
@@ -51,7 +51,7 @@ public class QuestDataUpdateEvent extends ProfileEvent {
      *
      * @return the id of the objective that changed
      */
-    public ObjectiveID getObjID() {
+    public ObjectiveIdentifier getObjID() {
         return objID;
     }
 

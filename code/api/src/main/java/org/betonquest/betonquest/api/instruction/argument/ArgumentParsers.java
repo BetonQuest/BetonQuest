@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.instruction.argument;
 
 import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.bukkit.Location;
@@ -111,4 +112,13 @@ public interface ArgumentParsers {
      * @return a parser for enums of the given type
      */
     <E extends Enum<E>> DecoratedArgumentParser<E> forEnum(Class<E> enumType);
+
+    /**
+     * Default {@link DecoratedArgumentParser} for an {@link Identifier} type.
+     *
+     * @param identifierType the identifier type to get a parser for
+     * @param <I>            the identifier type
+     * @return a parser for identifiers of the given type
+     */
+    <I extends Identifier> DecoratedArgumentParser<I> forIdentifier(Class<I> identifierType);
 }

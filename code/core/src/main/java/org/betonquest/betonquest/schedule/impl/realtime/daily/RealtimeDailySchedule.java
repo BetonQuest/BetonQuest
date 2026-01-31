@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.schedule.impl.realtime.daily;
 
-import org.betonquest.betonquest.api.quest.action.ActionID;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
+import org.betonquest.betonquest.api.identifier.ScheduleIdentifier;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.api.schedule.Schedule;
-import org.betonquest.betonquest.api.schedule.ScheduleID;
 
 import java.time.Instant;
 import java.time.LocalTime;
@@ -31,7 +31,7 @@ public class RealtimeDailySchedule extends Schedule {
      * @param catchup    the catchup strategy
      * @param timeToRun  the resolved time to run the schedule
      */
-    public RealtimeDailySchedule(final ScheduleID scheduleID, final List<ActionID> actions, final CatchupStrategy catchup,
+    public RealtimeDailySchedule(final ScheduleIdentifier scheduleID, final List<ActionIdentifier> actions, final CatchupStrategy catchup,
                                  final LocalTime timeToRun) {
         super(scheduleID, actions, catchup);
         this.timeToRun = timeToRun;

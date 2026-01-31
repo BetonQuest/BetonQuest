@@ -1,8 +1,11 @@
 package org.betonquest.betonquest.api.instruction.argument.parser;
 
 import net.kyori.adventure.text.Component;
-import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestBiFunction;
+import org.betonquest.betonquest.api.identifier.Identifier;
+import org.betonquest.betonquest.api.identifier.ItemIdentifier;
+import org.betonquest.betonquest.api.identifier.factory.IdentifierRegistry;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.DecoratedArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.NumberArgumentParser;
@@ -11,7 +14,6 @@ import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.text.TextParser;
-import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.lib.instruction.argument.DecoratableArgumentParser;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultNumberArgumentParser;
 import org.bukkit.Location;
@@ -21,18 +23,12 @@ import org.bukkit.World;
 import org.bukkit.util.Vector;
 
 import java.util.UUID;
-import java.util.function.Supplier;
 
 /**
  * This offers default implementations for {@link DecoratedArgumentParser} to parse common types.
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public class DefaultArgumentParsers implements ArgumentParsers {
-
-    /**
-     * The default instance of {@link DefaultArgumentParsers}.
-     */
-    public static final Supplier<ArgumentParsers> INSTANCE = () -> BetonQuest.getInstance().getArgumentParsers();
 
     /**
      * The default decoratable instance of {@link BlockSelectorParser}.
@@ -60,7 +56,7 @@ public class DefaultArgumentParsers implements ArgumentParsers {
     private final DecoratedArgumentParser<ItemWrapper> defaultItemParser;
 
     /**
-     * The default decoratable instance of {@link IdentifierParser}.
+     * The default decoratable instance of {@link PackageIdentifierParser}.
      */
     private final DecoratedArgumentParser<String> defaultPackageIdentifier;
 
@@ -95,20 +91,29 @@ public class DefaultArgumentParsers implements ArgumentParsers {
     private final DecoratedArgumentParser<String> defaultStringParser;
 
     /**
+     * The identifier registry to get identifier factories from.
+     */
+    private final IdentifierRegistry registry;
+
+    /**
      * Creates a new instance of {@link DefaultArgumentParsers}
      * and all default instances of {@link DecoratedArgumentParser}s.
      *
      * @param getItemFunction the feature API function to retrieve items
      * @param textParser      the text parser to use for component parsing
      * @param server          the server to use for world and location parsing
+     * @param registry        the identifier registry to get identifier factories from
+     * @throws QuestException if an error occurs during initialization
      */
-    public DefaultArgumentParsers(final QuestBiFunction<ItemID, Profile, QuestItem> getItemFunction, final TextParser textParser, final Server server) {
+    public DefaultArgumentParsers(final QuestBiFunction<ItemIdentifier, Profile, QuestItem> getItemFunction,
+                                  final TextParser textParser, final Server server, final IdentifierRegistry registry) throws QuestException {
+        this.registry = registry;
         defaultBlockSelectorParser = new DecoratableArgumentParser<>(new BlockSelectorParser());
         defaultComponentParser = new DecoratableArgumentParser<>(new TextParserToComponentParser(textParser));
         defaultNumberParser = new DefaultNumberArgumentParser(new NumberParser());
         defaultLocationParser = new DecoratableArgumentParser<>(new LocationParser(server));
-        defaultItemParser = new DecoratableArgumentParser<>(new ItemParser(getItemFunction));
-        defaultPackageIdentifier = new DecoratableArgumentParser<>(new IdentifierParser());
+        defaultItemParser = new DecoratableArgumentParser<>(new ItemParser(getItemFunction, registry.getFactory(ItemIdentifier.class)));
+        defaultPackageIdentifier = new DecoratableArgumentParser<>(new PackageIdentifierParser());
         defaultNamespacedKeyParser = new DecoratableArgumentParser<>(new NamespacedKeyParser());
         defaultBooleanParser = new DecoratableArgumentParser<>(new BooleanParser());
         defaultUUIDParser = new DecoratableArgumentParser<>(new UUIDParser());
@@ -120,6 +125,11 @@ public class DefaultArgumentParsers implements ArgumentParsers {
     @Override
     public <E extends Enum<E>> DecoratedArgumentParser<E> forEnum(final Class<E> enumType) {
         return new DecoratableArgumentParser<>(new EnumParser<>(enumType));
+    }
+
+    @Override
+    public <I extends Identifier> DecoratedArgumentParser<I> forIdentifier(final Class<I> identifierType) {
+        return new DecoratableArgumentParser<>(new IdentifierParser<>(registry, identifierType));
     }
 
     @Override

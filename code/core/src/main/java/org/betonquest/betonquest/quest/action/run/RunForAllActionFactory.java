@@ -1,14 +1,14 @@
 package org.betonquest.betonquest.quest.action.run;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.action.ActionID;
 import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
-import org.betonquest.betonquest.api.quest.condition.ConditionID;
 
 import java.util.Collections;
 import java.util.List;
@@ -41,9 +41,9 @@ public class RunForAllActionFactory implements PlayerlessActionFactory {
 
     @Override
     public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
-        final Argument<List<ActionID>> actions = instruction.parse(ActionID::new)
+        final Argument<List<ActionIdentifier>> actions = instruction.identifier(ActionIdentifier.class)
                 .list().get("actions", Collections.emptyList());
-        final Argument<List<ConditionID>> conditions = instruction.parse(ConditionID::new)
+        final Argument<List<ConditionIdentifier>> conditions = instruction.identifier(ConditionIdentifier.class)
                 .list().get("where", Collections.emptyList());
         return new RunForAllAction(profileProvider::getOnlineProfiles, questTypeApi, actions, conditions);
     }

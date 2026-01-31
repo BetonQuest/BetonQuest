@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.lib.instruction.argument;
 
 import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.chain.ChainableInstruction;
@@ -113,5 +114,10 @@ public class DefaultInstructionChainParser implements InstructionChainParser {
     @Override
     public <E extends Enum<E>> DecoratableChainRetriever<E> enumeration(final Class<E> enumType) {
         return new DefaultDecoratableChainRetriever<>(instruction, argumentParsers.forEnum(enumType));
+    }
+
+    @Override
+    public <I extends Identifier> DecoratableChainRetriever<I> identifier(final Class<I> identifierClass) {
+        return new DefaultDecoratableChainRetriever<>(instruction, argumentParsers.forIdentifier(identifierClass));
     }
 }

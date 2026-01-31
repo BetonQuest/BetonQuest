@@ -4,12 +4,12 @@ import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.util.DynamicLocation;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.identifier.NpcIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.npc.Npc;
-import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -128,7 +128,7 @@ public class EffectLibRunnable extends BukkitRunnable {
 
     private void runNPCEffects(final EffectConfiguration effect, final OnlineProfile profile) {
         try {
-            for (final NpcID npcId : effect.npcs().getValue(profile)) {
+            for (final NpcIdentifier npcId : effect.npcs().getValue(profile)) {
                 final Npc<?> npc;
                 try {
                     npc = featureApi.getNpc(npcId, profile);
