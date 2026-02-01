@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.placeholderapi;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.placeholder.nullable.NullablePlaceholder;
+import org.betonquest.betonquest.api.quest.placeholder.NullablePlaceholder;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.Nullable;
 

@@ -3,6 +3,7 @@ package org.betonquest.betonquest.api.quest.placeholder.online;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.placeholder.OnlinePlaceholder;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerPlaceholder;
 
 import java.util.Optional;

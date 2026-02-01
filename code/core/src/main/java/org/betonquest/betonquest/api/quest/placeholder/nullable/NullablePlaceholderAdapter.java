@@ -2,6 +2,7 @@ package org.betonquest.betonquest.api.quest.placeholder.nullable;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.placeholder.NullablePlaceholder;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerPlaceholder;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerlessPlaceholder;
 

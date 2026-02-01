@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api.quest.placeholder.online;
+package org.betonquest.betonquest.api.quest.placeholder;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
