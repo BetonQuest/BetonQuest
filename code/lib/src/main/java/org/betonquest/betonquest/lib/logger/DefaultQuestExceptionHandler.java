@@ -75,10 +75,7 @@ public class DefaultQuestExceptionHandler implements QuestExceptionHandler {
         try {
             return qeThrowing.get();
         } catch (final QuestException e) {
-            if (System.currentTimeMillis() - last >= errorRateLimit) {
-                last = System.currentTimeMillis();
-                logger.warn(source, "%sError while handling: ".formatted(sourceDetails) + e.getMessage(), e);
-            }
+            handleException(e);
             return defaultValue;
         }
     }
@@ -88,10 +85,14 @@ public class DefaultQuestExceptionHandler implements QuestExceptionHandler {
         try {
             qeThrowing.run();
         } catch (final QuestException e) {
-            if (System.currentTimeMillis() - last >= errorRateLimit) {
-                last = System.currentTimeMillis();
-                logger.warn(source, "%sError while handling: ".formatted(sourceDetails) + e.getMessage(), e);
-            }
+            handleException(e);
+        }
+    }
+
+    private void handleException(final QuestException exception) {
+        if (System.currentTimeMillis() - last >= errorRateLimit) {
+            last = System.currentTimeMillis();
+            logger.warn(source, "%sError while handling: ".formatted(sourceDetails) + exception.getMessage(), exception);
         }
     }
 }
