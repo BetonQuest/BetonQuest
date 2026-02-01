@@ -25,7 +25,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.npc.Npc;
-import org.betonquest.betonquest.api.quest.npc.feature.NpcHider;
+import org.betonquest.betonquest.api.quest.npc.NpcHider;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.config.PluginMessage;

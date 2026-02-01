@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api.quest.npc.feature;
+package org.betonquest.betonquest.api.quest.npc;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
@@ -12,8 +12,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.npc.Npc;
-import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
 import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;

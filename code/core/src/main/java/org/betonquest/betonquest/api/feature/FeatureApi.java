@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.identifier.QuestCancelerIdentifier;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
-import org.betonquest.betonquest.api.quest.npc.feature.NpcHider;
+import org.betonquest.betonquest.api.quest.npc.NpcHider;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.feature.QuestCanceler;
 import org.betonquest.betonquest.feature.QuestCompass;
