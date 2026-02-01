@@ -5,12 +5,13 @@ import org.betonquest.betonquest.api.common.function.QuestRunnable;
 import org.betonquest.betonquest.api.common.function.QuestSupplier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.LogSource;
+import org.betonquest.betonquest.api.logger.QuestExceptionHandler;
 
 /**
  * Can handle thrown {@link QuestException} and rate limits them so
  * they don't spam console that hard.
  */
-public class QuestExceptionHandler {
+public class DefaultQuestExceptionHandler implements QuestExceptionHandler {
 
     /**
      * The default minimal interval in which errors are logged.
@@ -43,15 +44,15 @@ public class QuestExceptionHandler {
     private long last;
 
     /**
-     * Creates a new {@link QuestExceptionHandler} instance.
+     * Creates a new {@link DefaultQuestExceptionHandler} instance.
      *
      * @param source         the source to use for logging
      * @param logger         the logger to use
      * @param errorRateLimit the minimal interval in which errors are logged
      * @param sourceDetails  additional source details to log
      */
-    public QuestExceptionHandler(final LogSource source, final BetonQuestLogger logger,
-                                 final int errorRateLimit, final String... sourceDetails) {
+    public DefaultQuestExceptionHandler(final LogSource source, final BetonQuestLogger logger,
+                                        final int errorRateLimit, final String... sourceDetails) {
         this.logger = logger;
         this.errorRateLimit = errorRateLimit;
         this.source = source;
@@ -59,46 +60,39 @@ public class QuestExceptionHandler {
     }
 
     /**
-     * Creates a new {@link QuestExceptionHandler} instance with an error rate limit of DEFAULT_ERROR_RATE_LIMIT_MILLIS.
+     * Creates a new {@link DefaultQuestExceptionHandler} instance with an error rate limit of DEFAULT_ERROR_RATE_LIMIT_MILLIS.
      *
      * @param source        the source to use for logging
      * @param logger        the logger to use
      * @param sourceDetails additional source details to log
      */
-    public QuestExceptionHandler(final LogSource source, final BetonQuestLogger logger, final String... sourceDetails) {
+    public DefaultQuestExceptionHandler(final LogSource source, final BetonQuestLogger logger, final String... sourceDetails) {
         this(source, logger, DEFAULT_ERROR_RATE_LIMIT_MILLIS, sourceDetails);
     }
 
-    /**
-     * Runs a task and logs occurring quest exceptions with a rate limit.
-     *
-     * @param qeThrowing   a task that may throw a quest exception
-     * @param defaultValue the default value to return in case of an exception
-     * @param <T>          the type of the result
-     * @return the result of the task or the default value if an exception occurs
-     */
+    @Override
     public <T> T handle(final QuestSupplier<T> qeThrowing, final T defaultValue) {
         try {
             return qeThrowing.get();
         } catch (final QuestException e) {
-            if (System.currentTimeMillis() - last >= errorRateLimit) {
-                last = System.currentTimeMillis();
-                logger.warn(source, "%sError while handling: ".formatted(sourceDetails) + e.getMessage(), e);
-            }
+            handleException(e);
             return defaultValue;
         }
     }
 
-    /**
-     * Runs a task and logs occurring quest exceptions with a rate limit.
-     *
-     * @param qeThrowing a task that may throw a quest exception
-     */
-    @SuppressWarnings("NullAway")
+    @Override
     public void handle(final QuestRunnable qeThrowing) {
-        handle(() -> {
+        try {
             qeThrowing.run();
-            return null;
-        }, null);
+        } catch (final QuestException e) {
+            handleException(e);
+        }
+    }
+
+    private void handleException(final QuestException exception) {
+        if (System.currentTimeMillis() - last >= errorRateLimit) {
+            last = System.currentTimeMillis();
+            logger.warn(source, "%sError while handling: ".formatted(sourceDetails) + exception.getMessage(), exception);
+        }
     }
 }
