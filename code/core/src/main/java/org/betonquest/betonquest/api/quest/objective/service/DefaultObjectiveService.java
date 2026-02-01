@@ -14,6 +14,7 @@ import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.logger.QuestExceptionHandler;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
@@ -60,7 +61,7 @@ public class DefaultObjectiveService implements ObjectiveService {
     /**
      * The exception handler for this service.
      */
-    private final DefaultQuestExceptionHandler questExceptionHandler;
+    private final QuestExceptionHandler questExceptionHandler;
 
     /**
      * The logger for this service.
@@ -135,7 +136,7 @@ public class DefaultObjectiveService implements ObjectiveService {
     }
 
     @Override
-    public DefaultQuestExceptionHandler getExceptionHandler() {
+    public QuestExceptionHandler getExceptionHandler() {
         return questExceptionHandler;
     }
 

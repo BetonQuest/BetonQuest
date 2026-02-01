@@ -15,6 +15,7 @@ import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.logger.QuestExceptionHandler;
 import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.compatibility.holograms.lines.AbstractLine;
@@ -133,7 +134,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramIdentifier, 
             cleanedLines.add(abstractLine);
         }
         final HologramIdentifier identifier = getIdentifier(pack, sectionName);
-        final DefaultQuestExceptionHandler handler = new DefaultQuestExceptionHandler(pack, loggerFactory.create(HologramWrapper.class), identifier.getFull());
+        final QuestExceptionHandler handler = new DefaultQuestExceptionHandler(pack, loggerFactory.create(HologramWrapper.class), identifier.getFull());
         final HologramWrapper hologramWrapper = new HologramWrapper(
                 handler,
                 BetonQuest.getInstance().getQuestTypeApi(),

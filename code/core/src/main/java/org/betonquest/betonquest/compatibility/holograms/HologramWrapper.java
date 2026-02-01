@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.holograms;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.logger.QuestExceptionHandler;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -38,7 +39,7 @@ import java.util.List;
  * @param questPackage    {@link QuestPackage} in which the hologram is specified in.
  * @param maxRange        The maximum range in which the hologram is visible.
  */
-public record HologramWrapper(DefaultQuestExceptionHandler handler, QuestTypeApi questTypeApi,
+public record HologramWrapper(QuestExceptionHandler handler, QuestTypeApi questTypeApi,
                               ProfileProvider profileProvider,
                               int interval, List<BetonHologram> holograms, boolean staticContent,
                               List<ConditionIdentifier> conditionList, List<AbstractLine> cleanedLines,

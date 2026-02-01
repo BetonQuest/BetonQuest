@@ -5,12 +5,13 @@ import org.betonquest.betonquest.api.common.function.QuestRunnable;
 import org.betonquest.betonquest.api.common.function.QuestSupplier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.LogSource;
+import org.betonquest.betonquest.api.logger.QuestExceptionHandler;
 
 /**
  * Can handle thrown {@link QuestException} and rate limits them so
  * they don't spam console that hard.
  */
-public class DefaultQuestExceptionHandler {
+public class DefaultQuestExceptionHandler implements QuestExceptionHandler {
 
     /**
      * The default minimal interval in which errors are logged.
@@ -69,14 +70,7 @@ public class DefaultQuestExceptionHandler {
         this(source, logger, DEFAULT_ERROR_RATE_LIMIT_MILLIS, sourceDetails);
     }
 
-    /**
-     * Runs a task and logs occurring quest exceptions with a rate limit.
-     *
-     * @param qeThrowing   a task that may throw a quest exception
-     * @param defaultValue the default value to return in case of an exception
-     * @param <T>          the type of the result
-     * @return the result of the task or the default value if an exception occurs
-     */
+    @Override
     public <T> T handle(final QuestSupplier<T> qeThrowing, final T defaultValue) {
         try {
             return qeThrowing.get();
@@ -89,12 +83,8 @@ public class DefaultQuestExceptionHandler {
         }
     }
 
-    /**
-     * Runs a task and logs occurring quest exceptions with a rate limit.
-     *
-     * @param qeThrowing a task that may throw a quest exception
-     */
     @SuppressWarnings("NullAway")
+    @Override
     public void handle(final QuestRunnable qeThrowing) {
         handle(() -> {
             qeThrowing.run();

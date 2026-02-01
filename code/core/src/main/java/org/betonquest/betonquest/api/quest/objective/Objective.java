@@ -3,8 +3,8 @@ package org.betonquest.betonquest.api.quest.objective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.QuestExceptionHandler;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
-import org.betonquest.betonquest.lib.logger.DefaultQuestExceptionHandler;
 
 /**
  * Any objective should implement this interface.
@@ -42,7 +42,7 @@ public interface Objective {
      *
      * @return the exception handler
      */
-    default DefaultQuestExceptionHandler getExceptionHandler() {
+    default QuestExceptionHandler getExceptionHandler() {
         return getService().getExceptionHandler();
     }
 

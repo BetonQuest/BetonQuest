@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.EventServiceSubscriber;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.LogSource;
+import org.betonquest.betonquest.api.logger.QuestExceptionHandler;
 import org.betonquest.betonquest.lib.logger.DefaultQuestExceptionHandler;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -148,7 +149,7 @@ public class DefaultEventListenerGroup<T extends Event> implements EventListener
 
     @Override
     public ProxyListener<T> createListener(final Plugin plugin, final Class<T> eventClass, final EventPriority priority) throws QuestException {
-        final DefaultQuestExceptionHandler handler = new DefaultQuestExceptionHandler(LogSource.EMPTY, log, eventClass.getSimpleName(), priority.name());
+        final QuestExceptionHandler handler = new DefaultQuestExceptionHandler(LogSource.EMPTY, log, eventClass.getSimpleName(), priority.name());
         final RegisteredListener registeredListener = new RegisteredListener(NO_OP_LISTENER,
                 (l, e) -> {
                     if (eventClass.isInstance(e)) {

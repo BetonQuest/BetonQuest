@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.logger.QuestExceptionHandler;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -183,7 +184,7 @@ public class DefaultObjectiveServiceProvider implements ObjectiveServiceProvider
 
     private <T extends Event> EventServiceSubscriber<T> exceptionHandled(final ObjectiveIdentifier objectiveID, final Class<T> eventClass,
                                                                          final EventServiceSubscriber<T> subscriber) {
-        final DefaultQuestExceptionHandler exceptionHandler = new DefaultQuestExceptionHandler(objectiveID.getPackage(), logger, objectiveID.getFull(), eventClass.getSimpleName());
+        final QuestExceptionHandler exceptionHandler = new DefaultQuestExceptionHandler(objectiveID.getPackage(), logger, objectiveID.getFull(), eventClass.getSimpleName());
         return (event, priority) -> exceptionHandler.handle(() -> subscriber.call(event, priority));
     }
 
