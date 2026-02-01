@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.identifier.NpcIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
-import org.betonquest.betonquest.api.quest.placeholder.nullable.NullablePlaceholder;
+import org.betonquest.betonquest.api.quest.placeholder.NullablePlaceholder;
 import org.betonquest.betonquest.quest.placeholder.location.LocationFormationMode;
 import org.jetbrains.annotations.Nullable;
 

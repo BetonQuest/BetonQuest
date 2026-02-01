@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.placeholder.math;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.placeholder.nullable.NullablePlaceholder;
+import org.betonquest.betonquest.api.quest.placeholder.NullablePlaceholder;
 import org.betonquest.betonquest.util.math.tokens.Token;
 import org.jetbrains.annotations.Nullable;
 

@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.placeholder.online.OnlinePlaceholder;
+import org.betonquest.betonquest.api.quest.placeholder.OnlinePlaceholder;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -44,7 +44,7 @@ public class ItemDurabilityPlaceholder implements OnlinePlaceholder {
      * @param inPercent   if the output should be multiplied with 100 and with a '%' in the end
      */
     public ItemDurabilityPlaceholder(final Argument<EquipmentSlot> slot, final FlagArgument<Boolean> relative,
-                                  final Argument<Number> digitsAfter, final FlagArgument<Boolean> inPercent) {
+                                     final Argument<Number> digitsAfter, final FlagArgument<Boolean> inPercent) {
         this.slot = slot;
         this.relative = relative;
         this.digitsAfter = digitsAfter;

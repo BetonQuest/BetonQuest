@@ -1,9 +1,7 @@
-package org.betonquest.betonquest.api.quest.placeholder.nullable;
+package org.betonquest.betonquest.api.quest.placeholder;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.placeholder.PlayerPlaceholder;
-import org.betonquest.betonquest.api.quest.placeholder.PlayerlessPlaceholder;
 
 /**
  * An adapter to handle both the {@link PlayerPlaceholder} and {@link PlayerlessPlaceholder}
