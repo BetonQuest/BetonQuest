@@ -20,7 +20,7 @@ public class PlaceholderIdentifierFactory extends DefaultIdentifierFactory<Place
      * @param packManager the quest package manager to resolve relative paths
      */
     public PlaceholderIdentifierFactory(final QuestPackageManager packManager) {
-        super(packManager);
+        super(packManager, "Placeholder");
     }
 
     @Override

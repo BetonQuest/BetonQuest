@@ -20,7 +20,7 @@ public class NpcIdentifierFactory extends DefaultIdentifierFactory<NpcIdentifier
      * @param packManager the quest package manager to resolve relative paths
      */
     public NpcIdentifierFactory(final QuestPackageManager packManager) {
-        super(packManager);
+        super(packManager, "Npc");
     }
 
     @Override

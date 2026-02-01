@@ -20,7 +20,7 @@ public class ConversationIdentifierFactory extends DefaultIdentifierFactory<Conv
      * @param packManager the quest package manager to resolve relative paths
      */
     public ConversationIdentifierFactory(final QuestPackageManager packManager) {
-        super(packManager);
+        super(packManager, "Conversation");
     }
 
     @Override

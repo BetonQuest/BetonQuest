@@ -20,7 +20,7 @@ public class ActionIdentifierFactory extends DefaultIdentifierFactory<ActionIden
      * @param packManager the quest package manager to resolve relative paths
      */
     public ActionIdentifierFactory(final QuestPackageManager packManager) {
-        super(packManager);
+        super(packManager, "Action");
     }
 
     @Override

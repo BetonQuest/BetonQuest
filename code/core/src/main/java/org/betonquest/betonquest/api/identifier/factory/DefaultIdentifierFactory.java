@@ -30,12 +30,20 @@ public abstract class DefaultIdentifierFactory<I extends Identifier> implements 
     private final QuestPackageManager packManager;
 
     /**
+     * The readable type name of the identifier.
+     * Will be used in logging to result in more readable messages for the user.
+     */
+    private final String readableTypeName;
+
+    /**
      * Create a new identifier factory.
      *
-     * @param packManager the quest package manager to resolve relative paths
+     * @param packManager      the quest package manager to resolve relative paths
+     * @param readableTypeName the readable type name of the identifier
      */
-    public DefaultIdentifierFactory(final QuestPackageManager packManager) {
+    public DefaultIdentifierFactory(final QuestPackageManager packManager, final String readableTypeName) {
         this.packManager = packManager;
+        this.readableTypeName = readableTypeName;
     }
 
     /**
@@ -48,8 +56,12 @@ public abstract class DefaultIdentifierFactory<I extends Identifier> implements 
      */
     protected I requireSection(final I resolvedIdentifier, final String section) throws QuestException {
         final MultiConfiguration config = resolvedIdentifier.getPackage().getConfig();
-        if (!config.isConfigurationSection(section + config.options().pathSeparator() + resolvedIdentifier.get())) {
-            throw new QuestException("'%s' does not define a section under section '%s'".formatted(resolvedIdentifier.getFull(), section));
+        final String path = section + config.options().pathSeparator() + resolvedIdentifier.get();
+        if (!config.contains(path)) {
+            throw new QuestException("%s '%s' is not defined in section '%s'".formatted(readableTypeName, resolvedIdentifier.getFull(), section));
+        }
+        if (!config.isConfigurationSection(path)) {
+            throw new QuestException("%s '%s' does not define a section under section '%s'".formatted(readableTypeName, resolvedIdentifier.getFull(), section));
         }
         return resolvedIdentifier;
     }
@@ -64,8 +76,12 @@ public abstract class DefaultIdentifierFactory<I extends Identifier> implements 
      */
     protected I requireInstruction(final I resolvedIdentifier, final String section) throws QuestException {
         final MultiConfiguration config = resolvedIdentifier.getPackage().getConfig();
-        if (!config.isString(section + config.options().pathSeparator() + resolvedIdentifier.get())) {
-            throw new QuestException("'%s' does not define a string instruction in section '%s'!".formatted(resolvedIdentifier.getFull(), section));
+        final String path = section + config.options().pathSeparator() + resolvedIdentifier.get();
+        if (!config.contains(path)) {
+            throw new QuestException("%s '%s' is not defined in section '%s'!".formatted(readableTypeName, resolvedIdentifier.getFull(), section));
+        }
+        if (!config.isString(path)) {
+            throw new QuestException("%s '%s' does not define a string in section '%s'!".formatted(readableTypeName, resolvedIdentifier.getFull(), section));
         }
         return resolvedIdentifier;
     }
@@ -80,12 +96,12 @@ public abstract class DefaultIdentifierFactory<I extends Identifier> implements 
      */
     protected Map.Entry<QuestPackage, String> parse(@Nullable final QuestPackage sourcePackage, final String input) throws QuestException {
         if (input.contains(" ")) {
-            throw new QuestException("Spaces are invalid for identifier '%s'".formatted(input));
+            throw new QuestException("Spaces are invalid for %s identifier '%s'".formatted(readableTypeName, input));
         }
         final RawIdentifier rawIdentifier = splitIdentifier(input);
         if (rawIdentifier.pack() == null) {
             if (sourcePackage == null) {
-                throw new QuestException("ID '%s' has no package specified!".formatted(input));
+                throw new QuestException("%s identifier '%s' has no package specified!".formatted(readableTypeName, input));
             }
             return Map.entry(sourcePackage, rawIdentifier.identifier());
         }
@@ -93,20 +109,20 @@ public abstract class DefaultIdentifierFactory<I extends Identifier> implements 
             final QuestPackage pack = parsePackageFromIdentifier(sourcePackage, rawIdentifier.pack());
             return Map.entry(pack, rawIdentifier.identifier());
         } catch (final QuestException e) {
-            throw new QuestException("ID '%s' could not be parsed: %s".formatted(input, e.getMessage()), e);
+            throw new QuestException("%s identifier '%s' could not be parsed: %s".formatted(readableTypeName, input, e.getMessage()), e);
         }
     }
 
     private RawIdentifier splitIdentifier(final String rawIdentifier) throws QuestException {
         if (rawIdentifier.isEmpty()) {
-            throw new QuestException("ID is empty!");
+            throw new QuestException("%s identifier is empty!".formatted(readableTypeName));
         }
         final Matcher matcher = SEPARATOR_PATTERN.matcher(rawIdentifier);
         if (matcher.matches()) {
             final String pack = matcher.group("package").replace("\\" + SEPARATOR, SEPARATOR);
             final String identifier = matcher.group("identifier").replace("\\" + SEPARATOR, SEPARATOR);
             if (identifier.isEmpty()) {
-                throw new QuestException("ID '%s' has no identifier after the package name!".formatted(rawIdentifier));
+                throw new QuestException("%s identifier '%s' has no identifier after the package name!".formatted(readableTypeName, rawIdentifier));
             }
             return new RawIdentifier(pack, identifier);
         }
