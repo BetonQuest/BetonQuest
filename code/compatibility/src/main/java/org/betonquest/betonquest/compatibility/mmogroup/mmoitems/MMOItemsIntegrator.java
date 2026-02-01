@@ -2,11 +2,11 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 
 import net.Indyuce.mmoitems.MMOItems;
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.item.ItemRegistry;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveRegistry;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.objective.MMOItemsApplyGemObjectiveFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.objective.MMOItemsUpgradeObjectiveFactory;
-import org.betonquest.betonquest.item.ItemRegistry;
 import org.bukkit.plugin.Plugin;
 
 /**
