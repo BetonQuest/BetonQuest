@@ -11,7 +11,7 @@ In total @snippet:constants:totalIntegratedPluginsNumber@ plugins have dedicated
 ## Provided by BetonQuest
 
 BetonQuest hooks into other plugins by itself to provide more actions, conditions and objectives or other features.  
-_AuraSkills, Brewery, BreweryX, Citizens, CraftEngine, DecentHolograms, Denizen, EffectLib, FancyNpcs, FakeBlock,
+_AuraSkills, BetonQuestAddon, Brewery, BreweryX, Citizens, CraftEngine, DecentHolograms, Denizen, EffectLib, FancyNpcs, FakeBlock,
 Heroes, HolographicDisplays, ItemsAdder, JobsReborn, LuckPerms, Magic, mcMMO, MythicLib, MMOCore, MMOItems,
 MythicMobs, Nexo, PacketEvents, PlaceholderAPI, Quests, RedisChat, Shopkeepers, TrainCarts, ProSkillAPI, Skript,
 Vault, WorldEdit, FastAsyncWorldEdit, WorldGuard and ZNPCsPlus._
@@ -71,6 +71,10 @@ actions:
   farming5: "auraskillsxp farming 5"
   farming10: "auraskillsxp farming 10 level"
 ```
+
+## BetonQuestAddon[](https://modrinth.com/plugin/XvDcVrRl)
+
+For comprehensive details and usage guidelines, please refer to the official [BetonQuestAddon Wiki](https://mrjimin.github.io/betonquestaddon-wiki/).
 
 ## Brewery[](https://www.spigotmc.org/resources/3082/) & BreweryX[](https://www.spigotmc.org/resources/114777/)
 

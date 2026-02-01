@@ -1,0 +1,14 @@
+3.0.0.2:
+  - type: KEY_RENAME
+    oldKey: condition_variable_met
+    newKey: condition_placeholder_met
+  - type: KEY_RENAME
+    oldKey: condition_variable_not_met
+    newKey: condition_placeholder_not_met
+3.0.0.1:
+  - type: REMOVE
+    key: menu.command_info_reload
+  - type: REMOVE
+    key: menu.command_reload_successful
+  - type: REMOVE
+    key: menu.command_reload_failed
