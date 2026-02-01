@@ -5,11 +5,11 @@ import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.identifier.NpcIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.quest.condition.NullableConditionAdapter;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
-import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 
 /**
  * Factory to create {@link NpcRegionCondition}s from {@link Instruction}s.

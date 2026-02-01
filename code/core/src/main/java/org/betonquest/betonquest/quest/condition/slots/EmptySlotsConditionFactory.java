@@ -6,9 +6,9 @@ import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.quest.condition.OnlineConditionAdapter;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
-import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
 
 /**
  * Factory for {@link EmptySlotsCondition}s.
