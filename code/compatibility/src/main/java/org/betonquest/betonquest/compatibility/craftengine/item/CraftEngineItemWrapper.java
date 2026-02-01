@@ -6,8 +6,8 @@ import net.momirealms.craftengine.core.item.CustomItem;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.item.QuestItem;
+import org.betonquest.betonquest.api.item.QuestItemWrapper;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.item.QuestItemWrapper;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
@@ -39,7 +39,7 @@ public record CraftEngineItemWrapper(Argument<CustomItem<ItemStack>> customItemA
 
         /**
          * The cached item meta for the custom item.
-        */
+         */
         private final ItemMeta itemMeta;
 
         /**

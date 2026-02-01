@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.compatibility.nexo;
 
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.item.ItemRegistry;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.nexo.item.NexoItemFactory;
 import org.betonquest.betonquest.compatibility.nexo.item.NexoQuestItemSerializer;
-import org.betonquest.betonquest.item.ItemRegistry;
 
 /**
  * Handles integration with Nexo.

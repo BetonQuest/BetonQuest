@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.item;
+package org.betonquest.betonquest.api.item;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.quest.FeatureTypeRegistry;

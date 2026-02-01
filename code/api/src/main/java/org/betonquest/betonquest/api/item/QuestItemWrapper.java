@@ -1,7 +1,6 @@
-package org.betonquest.betonquest.item;
+package org.betonquest.betonquest.api.item;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.jetbrains.annotations.Nullable;
 

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.nexo.item;
 
 import com.nexomc.nexo.api.NexoItems;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.item.QuestItemSerializer;
+import org.betonquest.betonquest.api.item.QuestItemSerializer;
 import org.bukkit.inventory.ItemStack;
 
 /**
