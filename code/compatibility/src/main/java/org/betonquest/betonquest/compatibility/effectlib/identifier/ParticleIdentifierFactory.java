@@ -19,7 +19,7 @@ public class ParticleIdentifierFactory extends DefaultIdentifierFactory<Particle
      * @param packManager the quest package manager to resolve relative paths
      */
     public ParticleIdentifierFactory(final QuestPackageManager packManager) {
-        super(packManager);
+        super(packManager, "Particle");
     }
 
     @Override

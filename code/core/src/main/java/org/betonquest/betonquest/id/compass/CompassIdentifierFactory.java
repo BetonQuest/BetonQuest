@@ -20,7 +20,7 @@ public class CompassIdentifierFactory extends DefaultIdentifierFactory<CompassId
      * @param packManager the quest package manager to resolve relative paths
      */
     public CompassIdentifierFactory(final QuestPackageManager packManager) {
-        super(packManager);
+        super(packManager, "Compass");
     }
 
     @Override

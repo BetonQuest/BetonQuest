@@ -20,7 +20,7 @@ public class JournalEntryIdentifierFactory extends DefaultIdentifierFactory<Jour
      * @param packManager the quest package manager to resolve relative paths
      */
     public JournalEntryIdentifierFactory(final QuestPackageManager packManager) {
-        super(packManager);
+        super(packManager, "JournalEntry");
     }
 
     @Override

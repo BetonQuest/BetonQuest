@@ -20,7 +20,7 @@ public class QuestCancelerIdentifierFactory extends DefaultIdentifierFactory<Que
      * @param packManager the quest package manager to resolve relative paths
      */
     public QuestCancelerIdentifierFactory(final QuestPackageManager packManager) {
-        super(packManager);
+        super(packManager, "Canceler");
     }
 
     @Override

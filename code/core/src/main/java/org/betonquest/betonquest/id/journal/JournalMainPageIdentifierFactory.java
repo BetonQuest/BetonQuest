@@ -20,7 +20,7 @@ public class JournalMainPageIdentifierFactory extends DefaultIdentifierFactory<J
      * @param packManager the quest package manager to resolve relative paths
      */
     public JournalMainPageIdentifierFactory(final QuestPackageManager packManager) {
-        super(packManager);
+        super(packManager, "JournalMainPage");
     }
 
     @Override

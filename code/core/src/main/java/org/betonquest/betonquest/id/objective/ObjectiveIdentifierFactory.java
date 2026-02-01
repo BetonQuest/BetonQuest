@@ -20,7 +20,7 @@ public class ObjectiveIdentifierFactory extends DefaultIdentifierFactory<Objecti
      * @param packManager the quest package manager to resolve relative paths
      */
     public ObjectiveIdentifierFactory(final QuestPackageManager packManager) {
-        super(packManager);
+        super(packManager, "Objective");
     }
 
     @Override

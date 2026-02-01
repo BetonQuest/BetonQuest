@@ -39,8 +39,10 @@ public class ScheduleBaseTest extends AbstractScheduleTest {
         lenient().when(questPackage.getConfig()).thenReturn(mockConfig);
         lenient().when(mockConfig.getString("actions.bell_ring")).thenReturn("folder bell_lever_toggle,bell_lever_toggle period:0.5");
         lenient().when(mockConfig.isString("actions.bell_ring")).thenReturn(true);
+        lenient().when(mockConfig.contains("actions.bell_ring")).thenReturn(true);
         lenient().when(mockConfig.getString("actions.notify_goodNight")).thenReturn("notify &6Good night, sleep well!");
         lenient().when(mockConfig.isString("actions.notify_goodNight")).thenReturn(true);
+        lenient().when(mockConfig.contains("actions.notify_goodNight")).thenReturn(true);
         final ConfigurationOptions configurationOptions = mock(ConfigurationOptions.class);
         lenient().when(configurationOptions.pathSeparator()).thenReturn('.');
         lenient().when(mockConfig.options()).thenReturn(configurationOptions);
