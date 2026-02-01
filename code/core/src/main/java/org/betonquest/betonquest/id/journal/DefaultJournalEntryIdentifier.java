@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.id.journal;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.identifier.DefaultReadableIdentifier;
+import org.betonquest.betonquest.api.identifier.DefaultIdentifier;
 import org.betonquest.betonquest.api.identifier.JournalEntryIdentifier;
 
 /**
  * The default implementation for {@link JournalEntryIdentifier}s.
  */
-public class DefaultJournalEntryIdentifier extends DefaultReadableIdentifier implements JournalEntryIdentifier {
+public class DefaultJournalEntryIdentifier extends DefaultIdentifier implements JournalEntryIdentifier {
 
     /**
      * The section name for journal entries.
@@ -21,6 +21,6 @@ public class DefaultJournalEntryIdentifier extends DefaultReadableIdentifier imp
      * @param identifier the identifier of the journal entry.
      */
     protected DefaultJournalEntryIdentifier(final QuestPackage pack, final String identifier) {
-        super(pack, identifier, JOURNAL_SECTION);
+        super(pack, identifier);
     }
 }

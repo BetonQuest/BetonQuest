@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.identifier.NoID;
 import org.betonquest.betonquest.api.identifier.PlaceholderIdentifier;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.quest.Placeholders;
+import org.betonquest.betonquest.id.placeholder.PlaceholderIdentifierFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -73,5 +74,20 @@ class PlaceholderInstructionTest {
         assertEquals("part1", instruction.nextElement(), "Should return the next part");
         assertTrue(instruction.hasNext(), "Should have more parts");
         assertEquals("part2", instruction.nextElement(), "Should return the next part");
+    }
+
+    @Test
+    void shouldReferenceOtherPack() throws QuestException {
+        final QuestPackageManager packageManager = mock(QuestPackageManager.class);
+        final QuestPackage otherPack = mock(QuestPackage.class);
+        when(packageManager.getPackage("OtherPack")).thenReturn(otherPack);
+        final PlaceholderIdentifierFactory factory = new PlaceholderIdentifierFactory(packageManager);
+        final PlaceholderIdentifier placeholderIdentifier = factory.parseIdentifier(questPackage, "%OtherPack>instruction.part%");
+
+        assertEquals(otherPack, placeholderIdentifier.getPackage(), "Cross package reference should resolve to correct pack");
+        final PlaceholderInstruction instruction = new PlaceholderInstruction(mock(Placeholders.class), packageManager,
+                placeholderIdentifier.getPackage(), new NoID(placeholderIdentifier.getPackage()),
+                mock(ArgumentParsers.class), placeholderIdentifier.readRawInstruction());
+        assertEquals("instruction.part", instruction.toString(), "Instruction should not contain pack");
     }
 }
