@@ -2,16 +2,13 @@ package org.betonquest.betonquest.kernel.processor;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.Placeholders;
-import org.betonquest.betonquest.lib.instruction.section.DefaultSectionInstruction;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,39 +23,30 @@ import java.util.Map;
 public abstract class SectionProcessor<I extends Identifier, T> extends QuestProcessor<I, T> {
 
     /**
-     * The argument parsers to use for parsing arguments.
+     * The {@link Placeholders} to create and resolve placeholders.
      */
-    private final ArgumentParsers parsers;
-
-    /**
-     * The logger factory to create new class-specific loggers.
-     */
-    private final BetonQuestLoggerFactory loggerFactory;
+    private final InstructionApi instructionApi;
 
     /**
      * Create a new QuestProcessor to store and execute type logic.
      *
-     * @param loggerFactory     the logger factory to create new class-specific loggers
      * @param log               the custom logger for this class
-     * @param placeholders      the {@link Placeholders} to create and resolve placeholders
-     * @param packManager       the quest package manager to get quest packages from
-     * @param parsers           the {@link ArgumentParsers} to use for parsing arguments
+     * @param instructionApi    the instruction api to use
      * @param identifierFactory the identifier factory to create {@link Identifier}s for this type
      * @param readable          the type name used for logging, with the first letter in uppercase
      * @param internal          the section name and/or bstats topic identifier
      */
-    public SectionProcessor(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final Placeholders placeholders,
-                            final QuestPackageManager packManager, final ArgumentParsers parsers, final IdentifierFactory<I> identifierFactory,
+    public SectionProcessor(final BetonQuestLogger log, final InstructionApi instructionApi,
+                            final IdentifierFactory<I> identifierFactory,
                             final String readable, final String internal) {
-        super(log, placeholders, packManager, identifierFactory, readable, internal);
-        this.loggerFactory = loggerFactory;
-        this.parsers = parsers;
+        super(log, identifierFactory, readable, internal);
+        this.instructionApi = instructionApi;
     }
 
     @Override
     public void load(final QuestPackage pack) {
-        final DefaultSectionInstruction instruction = new DefaultSectionInstruction(parsers, placeholders, packManager, pack, pack.getConfig(), loggerFactory);
         try {
+            final SectionInstruction instruction = instructionApi.createSectionInstruction(pack, pack.getConfig());
             final Argument<List<Map.Entry<I, T>>> sections = instruction.read().list(internal).namedSections(this::loadSection)
                     .withoutEarlyValidation().getOptional(Collections.emptyList());
             final List<Map.Entry<I, T>> entries = sections.getValue(null);

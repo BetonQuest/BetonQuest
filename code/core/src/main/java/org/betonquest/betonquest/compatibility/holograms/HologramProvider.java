@@ -103,10 +103,10 @@ public class HologramProvider implements Integrator {
         api.getQuestRegistries().identifier().register(HologramIdentifier.class, hologramIdentifierFactory);
         final ArgumentParsers parsers = plugin.getArgumentParsers();
         this.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class),
-                api.getQuestTypeApi().placeholders(), api.getQuestPackageManager(), hologramIdentifierFactory, this, plugin, textParser, parsers);
+                api.getQuestTypeApi().placeholders(), api.getInstructionApi(), api.getQuestPackageManager(), hologramIdentifierFactory, this, plugin, textParser, parsers);
         plugin.addProcessor(locationHologramLoop);
         this.npcHologramLoop = new NpcHologramLoop(loggerFactory, loggerFactory.create(NpcHologramLoop.class),
-                api.getQuestTypeApi().placeholders(), plugin.getQuestPackageManager(), plugin, this,
+                api.getQuestTypeApi().placeholders(), api.getInstructionApi(), plugin.getQuestPackageManager(), plugin, this,
                 parsers, hologramIdentifierFactory, api.getFeatureApi(), api.getFeatureRegistries().npc(), textParser);
         plugin.addProcessor(npcHologramLoop);
         plugin.getServer().getPluginManager().registerEvents(new HologramListener(api.getProfileProvider()), plugin);

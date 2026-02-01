@@ -2,18 +2,16 @@ package org.betonquest.betonquest.compatibility.effectlib;
 
 import de.slikey.effectlib.EffectManager;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.identifier.NpcIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.compatibility.effectlib.identifier.ParticleIdentifier;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
@@ -64,23 +62,20 @@ public class EffectLibParticleManager extends SectionProcessor<ParticleIdentifie
      *
      * @param log               the custom logger for this class
      * @param loggerFactory     the logger factory to create new custom loggers
-     * @param packManager       the quest package manager to get quest packages from
      * @param questTypeApi      the Quest Type API
      * @param featureApi        the Feature API
      * @param profileProvider   the profile provider instance
-     * @param placeholders      the {@link Placeholders} to create and resolve placeholders
+     * @param instructionApi    the instruction api to use
      * @param identifierFactory the identifier factory
      * @param manager           the effect manager starting and controlling particles
      * @param plugin            the plugin to start new tasks with
-     * @param parsers           the argument parsers to use
      */
-    @SuppressWarnings("PMD.ExcessiveParameterList")
     public EffectLibParticleManager(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
-                                    final QuestPackageManager packManager, final QuestTypeApi questTypeApi, final FeatureApi featureApi,
-                                    final ProfileProvider profileProvider, final Placeholders placeholders,
+                                    final QuestTypeApi questTypeApi, final FeatureApi featureApi,
+                                    final ProfileProvider profileProvider, final InstructionApi instructionApi,
                                     final IdentifierFactory<ParticleIdentifier> identifierFactory,
-                                    final EffectManager manager, final Plugin plugin, final ArgumentParsers parsers) {
-        super(loggerFactory, log, placeholders, packManager, parsers, identifierFactory, "Effect", "effectlib");
+                                    final EffectManager manager, final Plugin plugin) {
+        super(log, instructionApi, identifierFactory, "Effect", "effectlib");
         this.loggerFactory = loggerFactory;
         this.questTypeApi = questTypeApi;
         this.featureApi = featureApi;

@@ -2,11 +2,9 @@ package org.betonquest.betonquest.kernel.processor;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.quest.Placeholders;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -24,16 +22,6 @@ public abstract class QuestProcessor<I extends Identifier, T> {
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     protected final BetonQuestLogger log;
-
-    /**
-     * The {@link Placeholders} to create and resolve placeholders.
-     */
-    protected final Placeholders placeholders;
-
-    /**
-     * The quest package manager to get quest packages from.
-     */
-    protected final QuestPackageManager packManager;
 
     /**
      * The identifier factory to create {@link Identifier}s for this type.
@@ -59,17 +47,13 @@ public abstract class QuestProcessor<I extends Identifier, T> {
      * Create a new QuestProcessor to store and execute {@link T} logic.
      *
      * @param log               the custom logger for this class
-     * @param placeholders      the {@link Placeholders} to create and resolve placeholders
-     * @param packManager       the quest package manager to get quest packages from
      * @param identifierFactory the identifier factory to create {@link Identifier}s for this type
      * @param readable          the type name used for logging, with the first letter in upper case
      * @param internal          the section name and/or bstats topic identifier
      */
-    public QuestProcessor(final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager,
+    public QuestProcessor(final BetonQuestLogger log,
                           final IdentifierFactory<I> identifierFactory, final String readable, final String internal) {
         this.log = log;
-        this.placeholders = placeholders;
-        this.packManager = packManager;
         this.identifierFactory = identifierFactory;
         this.values = new HashMap<>();
         this.readable = readable;

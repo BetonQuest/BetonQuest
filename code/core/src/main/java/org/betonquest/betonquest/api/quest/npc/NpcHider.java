@@ -20,7 +20,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -104,19 +103,22 @@ public class NpcHider {
         this.npcs = new HashMap<>();
     }
 
-    private void loadFromConfig(final Collection<QuestPackage> packages) {
-        for (final QuestPackage pack : packages) {
-            final ConfigurationSection section = pack.getConfig().getConfigurationSection("hide_npcs");
-            if (section == null) {
-                continue;
-            }
-            for (final String idString : section.getKeys(false)) {
-                try {
-                    final SectionInstruction sectionInstruction = instructionApi.createSectionInstruction(pack, section);
-                    loadKey(sectionInstruction, idString);
-                } catch (final QuestException e) {
-                    log.warn("Could not load hide_npcs '" + idString + "' in pack '" + pack.getQuestPath() + "': " + e.getMessage(), e);
-                }
+    /**
+     * Load all npc hidings from the QuestPackage.
+     *
+     * @param pack to load from
+     */
+    public void load(final QuestPackage pack) {
+        final ConfigurationSection section = pack.getConfig().getConfigurationSection("hide_npcs");
+        if (section == null) {
+            return;
+        }
+        for (final String idString : section.getKeys(false)) {
+            try {
+                final SectionInstruction sectionInstruction = instructionApi.createSectionInstruction(pack, section);
+                loadKey(sectionInstruction, idString);
+            } catch (final QuestException e) {
+                log.warn("Could not load hide_npcs '" + idString + "' in pack '" + pack.getQuestPath() + "': " + e.getMessage(), e);
             }
         }
     }
@@ -135,17 +137,16 @@ public class NpcHider {
 
     /**
      * Reloads the Npc Hider, restarting runnable etc.
+     * Individual packs need to be loaded with the {@link #load(QuestPackage)}
      *
-     * @param packages       the quest packages to load
      * @param updateInterval the interval in ticks to check refresh hiding
      * @param plugin         the plugin instance to schedule update
      */
-    public void reload(final Collection<QuestPackage> packages, final int updateInterval, final Plugin plugin) {
+    public void reload(final int updateInterval, final Plugin plugin) {
         if (task != null) {
             task.cancel();
         }
         npcs.clear();
-        loadFromConfig(packages);
         task = new BukkitRunnable() {
             @Override
             public void run() {

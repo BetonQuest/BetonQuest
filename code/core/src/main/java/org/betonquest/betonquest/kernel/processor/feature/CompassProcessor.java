@@ -7,11 +7,9 @@ import org.betonquest.betonquest.api.identifier.CompassIdentifier;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.identifier.ItemIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.feature.QuestCompass;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
@@ -34,17 +32,15 @@ public class CompassProcessor extends SectionProcessor<CompassIdentifier, QuestC
     /**
      * Create a new QuestProcessor to store {@link QuestCompass}es.
      *
-     * @param loggerFactory     the logger factory to create new class-specific loggers
      * @param log               the custom logger for this class
      * @param packManager       the quest package manager to get quest packages from
-     * @param placeholders      the {@link Placeholders} to create and resolve placeholders
+     * @param instructionApi    the instruction api to use
      * @param textCreator       the text creator to parse text
      * @param identifierFactory the identifier factory to create {@link CompassIdentifier}s for this type
-     * @param parsers           the {@link ArgumentParsers} to use for parsing arguments
      */
-    public CompassProcessor(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager,
-                            final ParsedSectionTextCreator textCreator, final IdentifierFactory<CompassIdentifier> identifierFactory, final ArgumentParsers parsers) {
-        super(loggerFactory, log, placeholders, packManager, parsers, identifierFactory, "Compass", "compass");
+    public CompassProcessor(final BetonQuestLogger log, final InstructionApi instructionApi, final QuestPackageManager packManager,
+                            final ParsedSectionTextCreator textCreator, final IdentifierFactory<CompassIdentifier> identifierFactory) {
+        super(log, instructionApi, identifierFactory, "Compass", "compass");
         this.textCreator = textCreator;
     }
 

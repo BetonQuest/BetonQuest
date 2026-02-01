@@ -2,13 +2,11 @@ package org.betonquest.betonquest.kernel.processor;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.identifier.ReadableIdentifier;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.TypeFactory;
 import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
 import org.betonquest.betonquest.kernel.registry.FactoryTypeRegistry;
@@ -39,18 +37,16 @@ public abstract class TypedQuestProcessor<I extends ReadableIdentifier, T> exten
      * Create a new QuestProcessor to store and execute type logic.
      *
      * @param log               the custom logger for this class
-     * @param placeholders      the {@link Placeholders} to create and resolve placeholders
-     * @param packManager       the quest package manager to get quest packages from
      * @param types             the available types
      * @param identifierFactory the identifier factory to create {@link ReadableIdentifier}s for this type
      * @param instructionApi    the instruction api
      * @param readable          the type name used for logging, with the first letter in upper case
      * @param internal          the section name and/or bstats topic identifier
      */
-    public TypedQuestProcessor(final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager,
+    public TypedQuestProcessor(final BetonQuestLogger log,
                                final FactoryTypeRegistry<T> types, final IdentifierFactory<I> identifierFactory,
                                final InstructionApi instructionApi, final String readable, final String internal) {
-        super(log, placeholders, packManager, identifierFactory, readable, internal);
+        super(log, identifierFactory, readable, internal);
         this.types = types;
         this.instructionApi = instructionApi;
     }

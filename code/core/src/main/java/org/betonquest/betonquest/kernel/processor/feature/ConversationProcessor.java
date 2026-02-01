@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.identifier.ConversationIdentifier;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -93,16 +93,15 @@ public class ConversationProcessor extends SectionProcessor<ConversationIdentifi
      * @param interceptorRegistry the registry for available Interceptors
      * @param placeholders        the {@link Placeholders} to create and resolve placeholders
      * @param pluginMessage       the plugin message instance to use for ingame notifications
-     * @param parsers             the argument parsers to use
      * @param identifierFactory   the identifier factory to create {@link ConversationIdentifier}s for this type
      */
-    @SuppressWarnings("PMD.ExcessiveParameterList")
     public ConversationProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                                  final BetonQuest plugin, final ParsedSectionTextCreator textCreator,
                                  final ConversationIORegistry convIORegistry, final InterceptorRegistry interceptorRegistry,
-                                 final Placeholders placeholders, final PluginMessage pluginMessage,
-                                 final ArgumentParsers parsers, final IdentifierFactory<ConversationIdentifier> identifierFactory) {
-        super(loggerFactory, log, placeholders, plugin.getQuestPackageManager(), parsers, identifierFactory, "Conversation", "conversations");
+                                 final InstructionApi placeholders, final PluginMessage pluginMessage,
+                                 final IdentifierFactory<ConversationIdentifier> identifierFactory) {
+        super(log, placeholders, identifierFactory, "Conversation", "conversations");
+
         this.loggerFactory = loggerFactory;
         this.activeConversations = new ProfileKeyMap<>(plugin.getProfileProvider(), new ConcurrentHashMap<>());
         this.starter = new ConversationStarter(loggerFactory, loggerFactory.create(ConversationStarter.class),
@@ -144,8 +143,8 @@ public class ConversationProcessor extends SectionProcessor<ConversationIdentifi
                 .validate(delay -> delay.doubleValue() > 0, "Expected a non-negative number for 'interceptor_delay', got '%s' instead.").get();
 
         final ConversationData.PublicData publicData = new ConversationData.PublicData(identifier, quester, stop, finalActions, conversationIO, interceptor, interceptorDelay, invincible);
-        final ConversationData conversationData = new ConversationData(loggerFactory.create(ConversationData.class), packManager,
-                placeholders, plugin.getQuestTypeApi(), instruction, plugin.getFeatureApi().conversationApi(), textCreator, section, publicData);
+        final ConversationData conversationData = new ConversationData(loggerFactory.create(ConversationData.class), plugin.getQuestPackageManager(),
+                plugin.getQuestTypeApi().placeholders(), plugin.getQuestTypeApi(), instruction, plugin.getFeatureApi().conversationApi(), textCreator, section, publicData);
         return Map.entry(identifier, conversationData);
     }
 

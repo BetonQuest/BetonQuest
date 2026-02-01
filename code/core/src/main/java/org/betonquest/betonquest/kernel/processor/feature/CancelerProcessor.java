@@ -11,11 +11,10 @@ import org.betonquest.betonquest.api.identifier.JournalEntryIdentifier;
 import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
 import org.betonquest.betonquest.api.identifier.QuestCancelerIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -73,20 +72,18 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerIdentifier,
      * @param loggerFactory     the logger factory to create new class-specific logger
      * @param api               the BetonQuest API instance
      * @param pluginMessage     the {@link PluginMessage} instance
-     * @param parsers           the argument parsers to use
-     * @param placeholders      the {@link Placeholders} to create and resolve placeholders
+     * @param instructionApi    the instruction api to use
      * @param textCreator       the text creator to parse text
      * @param questTypeApi      the Quest Type API
      * @param playerDataStorage the storage for player data
      * @param identifierFactory the identifier factory to create {@link QuestCancelerIdentifier}s for this type
      */
-    @SuppressWarnings("PMD.ExcessiveParameterList")
     public CancelerProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
-                             final BetonQuestApi api, final PluginMessage pluginMessage, final ArgumentParsers parsers,
-                             final Placeholders placeholders, final ParsedSectionTextCreator textCreator,
+                             final BetonQuestApi api, final PluginMessage pluginMessage,
+                             final InstructionApi instructionApi, final ParsedSectionTextCreator textCreator,
                              final QuestTypeApi questTypeApi, final PlayerDataStorage playerDataStorage,
                              final IdentifierFactory<QuestCancelerIdentifier> identifierFactory) {
-        super(loggerFactory, log, placeholders, api.getQuestPackageManager(), parsers, identifierFactory, "Quest Canceler", "cancel");
+        super(log, instructionApi, identifierFactory, "Quest Canceler", "cancel");
         this.loggerFactory = loggerFactory;
         this.api = api;
         this.pluginMessage = pluginMessage;
@@ -100,7 +97,7 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerIdentifier,
         final QuestPackage pack = instruction.getPackage();
         final Text name = textCreator.parseFromSection(pack, instruction.getSection(), "name");
         final String rawItem = instruction.read().value("item").string().getOptional(pack.getConfig().getString("item.cancel_button")).getValue(null);
-        final ItemIdentifier item = rawItem == null ? null : instruction.getParsers().forIdentifier(ItemIdentifier.class).apply(placeholders, packManager, pack, rawItem);
+        final ItemIdentifier item = rawItem == null ? null : instruction.chainForArgument(rawItem).identifier(ItemIdentifier.class).get().getValue(null);
 
         final Optional<Argument<Location>> location = instruction.read().value("location").location().getOptional();
         final Argument<List<ConditionIdentifier>> conditions = instruction.read().value("conditions").identifier(ConditionIdentifier.class).list().getOptional(Collections.emptyList());

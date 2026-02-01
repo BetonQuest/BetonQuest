@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.holograms;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -32,6 +33,7 @@ public class LocationHologramLoop extends HologramLoop implements StartTask {
      * @param loggerFactory     logger factory to use
      * @param log               the logger that will be used for logging
      * @param placeholders      the {@link Placeholders} to create and resolve placeholders
+     * @param instructionApi    the instruction api to use
      * @param packManager       the quest package manager to get quest packages from
      * @param identifierFactory the identifier factory to create {@link HologramIdentifier}s for this type
      * @param hologramProvider  the hologram provider to create new holograms
@@ -39,12 +41,13 @@ public class LocationHologramLoop extends HologramLoop implements StartTask {
      * @param textParser        the text parser used to parse text and colors
      * @param parsers           the argument parsers
      */
+    @SuppressWarnings("PMD.ExcessiveParameterList")
     public LocationHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                                final Placeholders placeholders, final QuestPackageManager packManager,
+                                final Placeholders placeholders, final InstructionApi instructionApi, final QuestPackageManager packManager,
                                 final IdentifierFactory<HologramIdentifier> identifierFactory,
                                 final HologramProvider hologramProvider, final Plugin plugin, final TextParser textParser,
                                 final ArgumentParsers parsers) {
-        super(loggerFactory, log, placeholders, packManager, hologramProvider, "Hologram", "holograms",
+        super(loggerFactory, log, placeholders, instructionApi, packManager, hologramProvider, "Hologram", "holograms",
                 textParser, parsers, identifierFactory);
         this.plugin = plugin;
     }

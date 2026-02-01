@@ -4,11 +4,9 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.identifier.ScheduleIdentifier;
-import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
@@ -30,17 +28,15 @@ public class ActionScheduling extends SectionProcessor<ScheduleIdentifier, Sched
     /**
      * Creates a new instance of the action scheduling class.
      *
-     * @param loggerFactory     logger factory to use
      * @param log               the logger that will be used for logging
-     * @param placeholders      the {@link Placeholders} to create and resolve placeholders
+     * @param instructionApi    the instruction api to use
      * @param packManager       the quest package manager to get quest packages from
      * @param scheduleTypes     map containing the schedule types, provided by {@link org.betonquest.betonquest.BetonQuest}
      * @param identifierFactory the identifier factory to create {@link ScheduleIdentifier}s for this type
-     * @param parsers           the argument parsers
      */
-    public ActionScheduling(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager,
-                            final ScheduleRegistry scheduleTypes, final IdentifierFactory<ScheduleIdentifier> identifierFactory, final ArgumentParsers parsers) {
-        super(loggerFactory, log, placeholders, packManager, parsers, identifierFactory, "Schedules", "schedules");
+    public ActionScheduling(final BetonQuestLogger log, final InstructionApi instructionApi, final QuestPackageManager packManager,
+                            final ScheduleRegistry scheduleTypes, final IdentifierFactory<ScheduleIdentifier> identifierFactory) {
+        super(log, instructionApi, identifierFactory, "Schedules", "schedules");
         this.scheduleTypes = scheduleTypes;
     }
 

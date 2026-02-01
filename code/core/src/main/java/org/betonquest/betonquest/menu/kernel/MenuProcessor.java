@@ -2,13 +2,13 @@ package org.betonquest.betonquest.menu.kernel;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.identifier.MenuIdentifier;
 import org.betonquest.betonquest.api.identifier.MenuItemIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.chain.InstructionChainParser;
 import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
@@ -60,7 +60,7 @@ public class MenuProcessor extends RPGMenuProcessor<MenuIdentifier, Menu> {
      *
      * @param log               the custom logger for this class
      * @param loggerFactory     the logger factory to class specific loggers with
-     * @param packManager       the quest package manager to get quest packages from
+     * @param instructionApi    the instruction api to use
      * @param textCreator       the text creator to parse text
      * @param questTypeApi      the QuestTypeApi
      * @param parsers           the argument parsers
@@ -69,10 +69,10 @@ public class MenuProcessor extends RPGMenuProcessor<MenuIdentifier, Menu> {
      * @param profileProvider   the Profile Provider
      */
     public MenuProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
-                         final QuestPackageManager packManager, final ParsedSectionTextCreator textCreator,
+                         final InstructionApi instructionApi, final ParsedSectionTextCreator textCreator,
                          final QuestTypeApi questTypeApi, final ArgumentParsers parsers, final RPGMenu rpgMenu,
                          final IdentifierFactory<MenuIdentifier> identifierFactory, final ProfileProvider profileProvider) {
-        super(log, packManager, "Menu", "menus", loggerFactory, textCreator, parsers, identifierFactory, questTypeApi);
+        super(log, instructionApi, "Menu", "menus", loggerFactory, textCreator, parsers, identifierFactory, questTypeApi);
         this.rpgMenu = rpgMenu;
         this.profileProvider = profileProvider;
         this.boundCommands = new HashSet<>();

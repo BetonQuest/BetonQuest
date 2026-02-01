@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.PackageIdentifierParser;
@@ -62,6 +63,16 @@ public abstract class HologramLoop extends SectionProcessor<HologramIdentifier, 
     protected final HologramProvider hologramProvider;
 
     /**
+     * The {@link Placeholders} to create and resolve placeholders.
+     */
+    protected final Placeholders placeholders;
+
+    /**
+     * The quest package manager to get quest packages from.
+     */
+    protected final QuestPackageManager packManager;
+
+    /**
      * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
      */
     private final BetonQuestLoggerFactory loggerFactory;
@@ -86,6 +97,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramIdentifier, 
      *
      * @param loggerFactory     logger factory to use
      * @param log               the logger that will be used for logging
+     * @param instructionApi    the instruction api to use
      * @param packManager       the quest package manager to get quest packages from
      * @param placeholders      the {@link Placeholders} to create and resolve placeholders
      * @param hologramProvider  the hologram provider to create new holograms
@@ -97,12 +109,14 @@ public abstract class HologramLoop extends SectionProcessor<HologramIdentifier, 
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public HologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                        final Placeholders placeholders, final QuestPackageManager packManager,
+                        final Placeholders placeholders, final InstructionApi instructionApi, final QuestPackageManager packManager,
                         final HologramProvider hologramProvider, final String readable, final String internal,
                         final TextParser textParser, final ArgumentParsers parsers, final IdentifierFactory<HologramIdentifier> identifierFactory) {
-        super(loggerFactory, log, placeholders, packManager, parsers, identifierFactory, readable, internal);
+        super(log, instructionApi, identifierFactory, readable, internal);
         this.loggerFactory = loggerFactory;
         this.hologramProvider = hologramProvider;
+        this.placeholders = placeholders;
+        this.packManager = packManager;
         this.textParser = textParser;
         this.itemParser = parsers.item();
     }
