@@ -83,12 +83,15 @@ public class DefaultQuestExceptionHandler implements QuestExceptionHandler {
         }
     }
 
-    @SuppressWarnings("NullAway")
     @Override
     public void handle(final QuestRunnable qeThrowing) {
-        handle(() -> {
+        try {
             qeThrowing.run();
-            return null;
-        }, null);
+        } catch (final QuestException e) {
+            if (System.currentTimeMillis() - last >= errorRateLimit) {
+                last = System.currentTimeMillis();
+                logger.warn(source, "%sError while handling: ".formatted(sourceDetails) + e.getMessage(), e);
+            }
+        }
     }
 }

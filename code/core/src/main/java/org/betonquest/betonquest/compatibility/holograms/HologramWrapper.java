@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.compatibility.holograms.lines.AbstractLine;
-import org.betonquest.betonquest.lib.logger.DefaultQuestExceptionHandler;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,7 +17,7 @@ import java.util.List;
 /**
  * Wrapper class for {@link BetonHologram} that stores data parsed from hologram configuration.
  *
- * @param handler         A {@link DefaultQuestExceptionHandler} instance for this class.
+ * @param handler         A {@link QuestExceptionHandler} instance for this class.
  * @param questTypeApi    The {@link QuestTypeApi} to check for conditions.
  * @param profileProvider The {@link ProfileProvider} instance to get a profile from.
  * @param holograms       A list of actual hologram
