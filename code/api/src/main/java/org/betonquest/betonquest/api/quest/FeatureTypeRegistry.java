@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api.kernel;
+package org.betonquest.betonquest.api.quest;
 
 /**
  * Stores the implementation factories for Quest Types.

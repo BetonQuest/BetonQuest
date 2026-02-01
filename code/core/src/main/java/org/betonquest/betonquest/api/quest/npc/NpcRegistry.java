@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.api.quest.npc;
 
 import org.betonquest.betonquest.api.identifier.NpcIdentifier;
-import org.betonquest.betonquest.api.kernel.FeatureTypeRegistry;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.FeatureTypeRegistry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.feature;
 
-import org.betonquest.betonquest.api.kernel.FeatureRegistry;
+import org.betonquest.betonquest.api.quest.FeatureRegistry;
 import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
 import org.betonquest.betonquest.api.text.TextParserRegistry;
 import org.betonquest.betonquest.conversation.ConversationIOFactory;
