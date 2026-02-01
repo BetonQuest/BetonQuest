@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
+import org.betonquest.betonquest.api.quest.action.NullableAction;
 import org.betonquest.betonquest.util.EntityUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;

@@ -1,7 +1,4 @@
-package org.betonquest.betonquest.api.kernel;
-
-import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
-import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
+package org.betonquest.betonquest.api.quest;
 
 /**
  * Stores the implementation factories for Quest Types.

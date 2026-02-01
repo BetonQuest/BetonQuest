@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.ConversationApi;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
+import org.betonquest.betonquest.api.quest.action.OnlineAction;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.bukkit.Location;
 

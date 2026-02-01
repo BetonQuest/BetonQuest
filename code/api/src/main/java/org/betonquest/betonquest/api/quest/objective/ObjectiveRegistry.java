@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.quest.objective;
 
-import org.betonquest.betonquest.api.kernel.FeatureRegistry;
+import org.betonquest.betonquest.api.quest.FeatureRegistry;
 
 /**
  * Stores the objective factories.

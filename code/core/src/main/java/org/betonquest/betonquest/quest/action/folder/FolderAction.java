@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
+import org.betonquest.betonquest.api.quest.action.NullableAction;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

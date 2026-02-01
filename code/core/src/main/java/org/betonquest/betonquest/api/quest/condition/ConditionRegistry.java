@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.quest.condition;
 
-import org.betonquest.betonquest.api.kernel.CoreQuestRegistry;
+import org.betonquest.betonquest.api.quest.CoreQuestRegistry;
 
 /**
  * Stores the condition factories.

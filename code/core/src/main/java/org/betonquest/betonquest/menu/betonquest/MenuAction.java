@@ -3,7 +3,7 @@ package org.betonquest.betonquest.menu.betonquest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestConsumer;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
+import org.betonquest.betonquest.api.quest.action.OnlineAction;
 
 /**
  * Action to open, close or update menus.

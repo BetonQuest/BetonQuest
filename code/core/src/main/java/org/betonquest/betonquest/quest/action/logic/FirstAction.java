@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
+import org.betonquest.betonquest.api.quest.action.NullableAction;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;

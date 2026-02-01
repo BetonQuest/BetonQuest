@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.kernel.registry;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.kernel.FeatureRegistry;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.quest.FeatureRegistry;
 
 import java.util.List;
 import java.util.Map;

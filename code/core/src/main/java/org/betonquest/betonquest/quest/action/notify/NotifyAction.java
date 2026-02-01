@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.action.notify;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.action.OnlineAction;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
-import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.notify.NotifyIO;
 

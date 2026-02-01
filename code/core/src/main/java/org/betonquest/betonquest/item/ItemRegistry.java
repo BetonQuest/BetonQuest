@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.item;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.kernel.FeatureTypeRegistry;
+import org.betonquest.betonquest.api.quest.FeatureTypeRegistry;
 
 import java.util.Set;
 
