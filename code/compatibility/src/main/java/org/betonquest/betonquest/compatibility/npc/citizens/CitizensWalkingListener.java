@@ -7,7 +7,7 @@ import net.citizensnpcs.api.npc.NPCRegistry;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.bukkit.event.PlayerConversationEndEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerConversationStartEvent;
-import org.betonquest.betonquest.api.quest.npc.feature.NpcConversation;
+import org.betonquest.betonquest.api.quest.npc.NpcConversation;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

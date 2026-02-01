@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import java.util.Optional;
 
 /**
- * Adapter to resolve an {@link org.betonquest.betonquest.api.quest.placeholder.OnlinePlaceholder} via the {@link PlayerPlaceholder} interface.
+ * Adapter to resolve an {@link OnlinePlaceholder} via the {@link PlayerPlaceholder} interface.
  * It supports a fallback if the player is not online.
  */
 public final class OnlinePlaceholderAdapter implements PlayerPlaceholder {
@@ -15,7 +15,7 @@ public final class OnlinePlaceholderAdapter implements PlayerPlaceholder {
     /**
      * Placeholder to resolve with the online profile.
      */
-    private final org.betonquest.betonquest.api.quest.placeholder.OnlinePlaceholder onlinePlaceholder;
+    private final OnlinePlaceholder onlinePlaceholder;
 
     /**
      * Fallback placeholder to resolve if the player is not online.
@@ -28,7 +28,7 @@ public final class OnlinePlaceholderAdapter implements PlayerPlaceholder {
      *
      * @param onlinePlaceholder placeholder to resolve for online players
      */
-    public OnlinePlaceholderAdapter(final org.betonquest.betonquest.api.quest.placeholder.OnlinePlaceholder onlinePlaceholder) {
+    public OnlinePlaceholderAdapter(final OnlinePlaceholder onlinePlaceholder) {
         this(onlinePlaceholder, profile -> {
             throw new QuestException(profile + " is offline, cannot get placeholder value because it's not persistent.");
         });
@@ -41,7 +41,7 @@ public final class OnlinePlaceholderAdapter implements PlayerPlaceholder {
      * @param onlinePlaceholder   placeholder to resolve for online players
      * @param fallbackPlaceholder fallback placeholder to resolve for offline players
      */
-    public OnlinePlaceholderAdapter(final org.betonquest.betonquest.api.quest.placeholder.OnlinePlaceholder onlinePlaceholder, final PlayerPlaceholder fallbackPlaceholder) {
+    public OnlinePlaceholderAdapter(final OnlinePlaceholder onlinePlaceholder, final PlayerPlaceholder fallbackPlaceholder) {
         this.onlinePlaceholder = onlinePlaceholder;
         this.fallbackPlaceholder = fallbackPlaceholder;
     }
