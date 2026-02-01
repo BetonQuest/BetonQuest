@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.menu.kernel;
 
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
@@ -44,7 +44,7 @@ public abstract class RPGMenuProcessor<I extends Identifier, T> extends SectionP
      * Create a new Processor to create and store Menu Items.
      *
      * @param log               the custom logger for this class
-     * @param packManager       the quest package manager to get quest packages from
+     * @param instructionApi    the instruction api to use
      * @param readable          the type name used for logging, with the first letter in upper case
      * @param internal          the section name and/or bstats topic identifier
      * @param loggerFactory     the logger factory to class specific loggers with
@@ -53,11 +53,11 @@ public abstract class RPGMenuProcessor<I extends Identifier, T> extends SectionP
      * @param identifierFactory the identifier factory
      * @param questTypeApi      the QuestTypeApi
      */
-    public RPGMenuProcessor(final BetonQuestLogger log, final QuestPackageManager packManager, final String readable,
+    public RPGMenuProcessor(final BetonQuestLogger log, final InstructionApi instructionApi, final String readable,
                             final String internal, final BetonQuestLoggerFactory loggerFactory,
                             final ParsedSectionTextCreator textCreator, final ArgumentParsers parsers,
                             final IdentifierFactory<I> identifierFactory, final QuestTypeApi questTypeApi) {
-        super(loggerFactory, log, questTypeApi.placeholders(), packManager, parsers, identifierFactory, readable, internal);
+        super(log, instructionApi, identifierFactory, readable, internal);
         this.loggerFactory = loggerFactory;
         this.textCreator = textCreator;
         this.questTypeApi = questTypeApi;

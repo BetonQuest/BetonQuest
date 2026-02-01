@@ -3,10 +3,10 @@ package org.betonquest.betonquest.menu;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.identifier.MenuIdentifier;
 import org.betonquest.betonquest.api.identifier.MenuItemIdentifier;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -72,7 +72,7 @@ public class RPGMenu {
      *
      * @param log             the custom logger for this class
      * @param loggerFactory   the factory to create new custom logger instances
-     * @param packManager     the quest package manager to get quest packages from
+     * @param instructionApi  the instruction api to use
      * @param pluginConfig    the plugin config
      * @param pluginMessage   the plugin message instance
      * @param textCreator     the text creator to parse text
@@ -82,7 +82,7 @@ public class RPGMenu {
      * @throws QuestException if there is an error while loading the menus
      */
     public RPGMenu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
-                   final QuestPackageManager packManager, final ConfigAccessor pluginConfig,
+                   final InstructionApi instructionApi, final ConfigAccessor pluginConfig,
                    final PluginMessage pluginMessage, final ParsedSectionTextCreator textCreator,
                    final QuestTypeApi questTypeApi, final ProfileProvider profileProvider,
                    final ArgumentParsers parsers) throws QuestException {
@@ -102,11 +102,11 @@ public class RPGMenu {
         pluginCommand.register();
         pluginCommand.syncCraftBukkitCommands();
         this.menuItemProcessor = new MenuItemProcessor(loggerFactory.create(MenuItemProcessor.class), loggerFactory,
-                packManager, textCreator, questRegistries.identifier().getFactory(MenuItemIdentifier.class),
+                instructionApi, textCreator, questRegistries.identifier().getFactory(MenuItemIdentifier.class),
                 questTypeApi, pluginConfig, parsers);
         betonQuest.addProcessor(menuItemProcessor);
         this.menuProcessor = new MenuProcessor(loggerFactory.create(MenuProcessor.class), loggerFactory,
-                packManager, textCreator, questTypeApi, parsers, this, menuIdentifierFactory, profileProvider);
+                instructionApi, textCreator, questTypeApi, parsers, this, menuIdentifierFactory, profileProvider);
         betonQuest.addProcessor(menuProcessor);
         this.menuItemListener = new MenuItemListener(loggerFactory.create(MenuItemListener.class), this,
                 menuProcessor, profileProvider, pluginMessage);

@@ -56,7 +56,7 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionIdentifier,
                               final ConditionTypeRegistry conditionTypes, final BukkitScheduler scheduler,
                               final IdentifierFactory<ConditionIdentifier> conditionIdentifierFactory, final Plugin plugin,
                               final InstructionApi instructionApi) {
-        super(log, placeholders, packManager, conditionTypes, conditionIdentifierFactory, instructionApi, "Condition", "conditions");
+        super(log, conditionTypes, conditionIdentifierFactory, instructionApi, "Condition", "conditions");
         this.scheduler = scheduler;
         this.plugin = plugin;
     }

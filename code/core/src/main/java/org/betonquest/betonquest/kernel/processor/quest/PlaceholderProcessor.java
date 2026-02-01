@@ -47,6 +47,11 @@ public class PlaceholderProcessor extends TypedQuestProcessor<PlaceholderIdentif
     };
 
     /**
+     * The quest package manager to get quest packages from.
+     */
+    private final QuestPackageManager packManager;
+
+    /**
      * The Bukkit scheduler to run sync tasks.
      */
     private final BukkitScheduler scheduler;
@@ -71,8 +76,9 @@ public class PlaceholderProcessor extends TypedQuestProcessor<PlaceholderIdentif
                                 final PlaceholderTypeRegistry placeholderTypes, final BukkitScheduler scheduler,
                                 final IdentifierFactory<PlaceholderIdentifier> placeholderIdentifierFactory,
                                 final InstructionApi instructionApi, final Plugin plugin) {
-        super(log, EMPTY_PLACEHOLDER, packManager, placeholderTypes, placeholderIdentifierFactory,
+        super(log, placeholderTypes, placeholderIdentifierFactory,
                 instructionApi, "Placeholders", "placeholders");
+        this.packManager = packManager;
         this.scheduler = scheduler;
         this.plugin = plugin;
     }
@@ -99,7 +105,7 @@ public class PlaceholderProcessor extends TypedQuestProcessor<PlaceholderIdentif
         final TypeFactory<PlaceholderAdapter> placeholderFactory = types.getFactory(instructionVar.current());
         final PlaceholderAdapter placeholder = placeholderFactory.parseInstruction(instructionVar);
         values.put(placeholderID, placeholder);
-        log.debug(pack, "Placeholder " + placeholderID + " loaded");
+        log.debug(placeholder.getPackage(), "Placeholder " + placeholderID + " loaded");
         return placeholder;
     }
 

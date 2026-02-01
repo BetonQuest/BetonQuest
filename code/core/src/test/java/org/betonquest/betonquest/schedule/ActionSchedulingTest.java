@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.identifier.ScheduleIdentifier;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -20,6 +21,7 @@ import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.id.schedule.ScheduleIdentifierFactory;
 import org.betonquest.betonquest.kernel.registry.feature.ScheduleRegistry;
+import org.betonquest.betonquest.lib.instruction.section.DefaultSectionInstruction;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.schedule.ActionScheduling.ScheduleType;
 import org.betonquest.betonquest.schedule.impl.BaseScheduleFactory;
@@ -56,12 +58,15 @@ class ActionSchedulingTest {
     private ScheduleRegistry scheduleTypes;
 
     @BeforeEach
-    void setUp(final BetonQuestLoggerFactory loggerFactory) {
+    void setUp(final BetonQuestLoggerFactory loggerFactory) throws QuestException {
         scheduleTypes = new ScheduleRegistry(mock(BetonQuestLogger.class));
-        final ArgumentParsers parsers = mock(ArgumentParsers.class);
         final QuestPackageManager packManager = mock(QuestPackageManager.class);
-        scheduling = new ActionScheduling(loggerFactory, mock(BetonQuestLogger.class), mock(Placeholders.class),
-                packManager, scheduleTypes, new ScheduleIdentifierFactory(packManager), parsers);
+        final InstructionApi instructionApi = mock(InstructionApi.class);
+        lenient().when(instructionApi.createSectionInstruction(any(), any())).thenAnswer(onMock ->
+                new DefaultSectionInstruction(mock(ArgumentParsers.class), mock(Placeholders.class),
+                        packManager, onMock.getArgument(0), onMock.getArgument(1), loggerFactory));
+        scheduling = new ActionScheduling(mock(BetonQuestLogger.class), instructionApi,
+                packManager, scheduleTypes, new ScheduleIdentifierFactory(packManager));
     }
 
     @SuppressWarnings("unchecked")

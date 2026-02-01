@@ -88,7 +88,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
                               final IdentifierFactory<ObjectiveIdentifier> objectiveIdentifierFactory,
                               final PluginManager pluginManager, final ObjectiveServiceProvider service,
                               final InstructionApi instructionApi, final Plugin plugin) {
-        super(log, placeholders, packManager, objectiveIdentifierFactory, "Objective", "objectives");
+        super(log, objectiveIdentifierFactory, "Objective", "objectives");
         this.instructionApi = instructionApi;
         this.pluginManager = pluginManager;
         this.objectiveService = service;

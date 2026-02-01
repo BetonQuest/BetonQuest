@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.identifier.NpcIdentifier;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.parser.VectorParser;
 import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
@@ -72,6 +73,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
      * @param loggerFactory     logger factory to use
      * @param log               the logger that will be used for logging
      * @param placeholders      the {@link Placeholders} to create and resolve placeholders
+     * @param instructionApi    the instruction api to use
      * @param packManager       the quest package manager to get quest packages from
      * @param plugin            the plugin to schedule tasks
      * @param hologramProvider  the hologram provider to create new holograms
@@ -83,11 +85,11 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public NpcHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                           final Placeholders placeholders, final QuestPackageManager packManager, final Plugin plugin,
+                           final Placeholders placeholders, final InstructionApi instructionApi, final QuestPackageManager packManager, final Plugin plugin,
                            final HologramProvider hologramProvider, final ArgumentParsers parsers,
                            final IdentifierFactory<HologramIdentifier> identifierFactory,
                            final FeatureApi featureApi, final NpcRegistry npcRegistry, final TextParser textParser) {
-        super(loggerFactory, log, placeholders, packManager, hologramProvider,
+        super(loggerFactory, log, placeholders, instructionApi, packManager, hologramProvider,
                 "Npc Hologram", "npc_holograms", textParser, parsers, identifierFactory);
         this.plugin = plugin;
         this.featureApi = featureApi;
@@ -172,7 +174,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
 
     private void updateHologram(final NpcHologram npcHologram) {
         npcHologram.npcHolograms().entrySet().forEach(entry -> {
-            final NpcIdentifier npcID = entry.getKey();
+                    final NpcIdentifier npcID = entry.getKey();
                     final BetonHologram hologram = entry.getValue();
                     final Npc<?> npc;
                     try {
