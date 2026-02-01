@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.action.kill;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
+import org.betonquest.betonquest.api.quest.action.OnlineAction;
 
 /**
  * Kills the player.

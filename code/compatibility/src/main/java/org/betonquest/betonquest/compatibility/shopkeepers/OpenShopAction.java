@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.shopkeepers;
 
 import com.nisovin.shopkeepers.api.shopkeeper.Shopkeeper;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
+import org.betonquest.betonquest.api.quest.action.OnlineAction;
 
 /**
  * This action opens Shopkeeper trade window.

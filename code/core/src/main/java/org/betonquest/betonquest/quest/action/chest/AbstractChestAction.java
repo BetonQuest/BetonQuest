@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.action.chest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
+import org.betonquest.betonquest.api.quest.action.NullableAction;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.InventoryHolder;

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.quest.action;
 
-import org.betonquest.betonquest.api.kernel.CoreQuestRegistry;
+import org.betonquest.betonquest.api.quest.CoreQuestRegistry;
 
 /**
  * Stores the action factories.

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.kernel.registry;
 
-import org.betonquest.betonquest.api.kernel.CoreQuestRegistry;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.quest.CoreQuestRegistry;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
 import org.betonquest.betonquest.api.quest.TypeFactory;

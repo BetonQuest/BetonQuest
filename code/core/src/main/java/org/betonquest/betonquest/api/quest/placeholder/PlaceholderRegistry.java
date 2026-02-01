@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.quest.placeholder;
 
-import org.betonquest.betonquest.api.kernel.CoreQuestRegistry;
+import org.betonquest.betonquest.api.quest.CoreQuestRegistry;
 
 /**
  * Stores the placeholder factories.
