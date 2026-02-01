@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.condition.time.ingame;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
+import org.betonquest.betonquest.api.quest.condition.NullableCondition;
 import org.betonquest.betonquest.quest.condition.time.Time;
 import org.betonquest.betonquest.quest.condition.time.TimeFrame;
 import org.bukkit.World;

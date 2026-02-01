@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.condition.scoreboard;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
+import org.betonquest.betonquest.api.quest.condition.OnlineCondition;
 
 /**
  * A condition that checks if a player has a certain scoreboard tag.

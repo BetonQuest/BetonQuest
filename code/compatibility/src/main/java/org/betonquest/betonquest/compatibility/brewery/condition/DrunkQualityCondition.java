@@ -5,7 +5,7 @@ import com.dre.brewery.api.BreweryApi;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
+import org.betonquest.betonquest.api.quest.condition.OnlineCondition;
 import org.betonquest.betonquest.compatibility.brewery.BreweryUtils;
 
 /**

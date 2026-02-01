@@ -6,7 +6,7 @@ import com.herocraftonline.heroes.characters.Hero;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
+import org.betonquest.betonquest.api.quest.condition.OnlineCondition;
 
 /**
  * Checks an attribute of a player and if greater than or equal to a level.

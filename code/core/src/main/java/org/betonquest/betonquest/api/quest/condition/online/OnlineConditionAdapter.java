@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import java.util.Optional;
 
 /**
- * Adapter to run an {@link OnlineCondition} via the {@link PlayerCondition} interface.
+ * Adapter to run an {@link org.betonquest.betonquest.api.quest.condition.OnlineCondition} via the {@link PlayerCondition} interface.
  * It supports a fallback if the player is not online.
  */
 public final class OnlineConditionAdapter implements PlayerCondition {
@@ -18,7 +18,7 @@ public final class OnlineConditionAdapter implements PlayerCondition {
     /**
      * Condition to check with the online profile.
      */
-    private final OnlineCondition onlineCondition;
+    private final org.betonquest.betonquest.api.quest.condition.OnlineCondition onlineCondition;
 
     /**
      * Fallback condition to check if the player is not online.
@@ -34,7 +34,7 @@ public final class OnlineConditionAdapter implements PlayerCondition {
      * @param log             log to write to if the player is not online
      * @param questPackage    quest package to reference in the log
      */
-    public OnlineConditionAdapter(final OnlineCondition onlineCondition, final BetonQuestLogger log, final QuestPackage questPackage) {
+    public OnlineConditionAdapter(final org.betonquest.betonquest.api.quest.condition.OnlineCondition onlineCondition, final BetonQuestLogger log, final QuestPackage questPackage) {
         this(onlineCondition, profile -> {
             log.debug(
                     questPackage,
@@ -51,7 +51,7 @@ public final class OnlineConditionAdapter implements PlayerCondition {
      * @param onlineCondition   condition to check for online players
      * @param fallbackCondition fallback condition to check for offline players
      */
-    public OnlineConditionAdapter(final OnlineCondition onlineCondition, final PlayerCondition fallbackCondition) {
+    public OnlineConditionAdapter(final org.betonquest.betonquest.api.quest.condition.OnlineCondition onlineCondition, final PlayerCondition fallbackCondition) {
         this.onlineCondition = onlineCondition;
         this.fallbackCondition = fallbackCondition;
     }

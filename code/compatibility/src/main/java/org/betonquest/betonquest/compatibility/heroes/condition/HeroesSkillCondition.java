@@ -5,7 +5,7 @@ import com.herocraftonline.heroes.characters.Hero;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
+import org.betonquest.betonquest.api.quest.condition.OnlineCondition;
 
 /**
  * Checks if the player has access to specified Heroes skill.

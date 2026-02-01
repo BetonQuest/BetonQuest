@@ -5,7 +5,7 @@ import dev.lone.itemsadder.api.CustomStack;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
+import org.betonquest.betonquest.api.quest.condition.NullableCondition;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 

@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.identifier.NpcIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
+import org.betonquest.betonquest.api.quest.condition.NullableCondition;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.compatibility.worldguard.WorldGuardIntegrator;
 import org.bukkit.Location;
