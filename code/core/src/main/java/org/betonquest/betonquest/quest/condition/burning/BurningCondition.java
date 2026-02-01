@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.burning;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
+import org.betonquest.betonquest.api.quest.condition.OnlineCondition;
 
 /**
  * Checks if the player is burning.

@@ -1,5 +1,5 @@
 /**
- * {@link org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition NullableCondition}
+ * {@link org.betonquest.betonquest.api.quest.condition.NullableCondition NullableCondition}
  * implementation of the block condition.
  */
 package org.betonquest.betonquest.quest.condition.block;

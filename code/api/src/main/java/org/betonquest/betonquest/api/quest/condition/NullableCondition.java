@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api.quest.condition.nullable;
+package org.betonquest.betonquest.api.quest.condition;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;

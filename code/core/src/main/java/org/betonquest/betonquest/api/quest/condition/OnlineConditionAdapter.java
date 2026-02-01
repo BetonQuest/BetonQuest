@@ -1,11 +1,10 @@
-package org.betonquest.betonquest.api.quest.condition.online;
+package org.betonquest.betonquest.api.quest.condition;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 
 import java.util.Optional;
 

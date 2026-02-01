@@ -1,10 +1,7 @@
-package org.betonquest.betonquest.api.quest.action.nullable;
+package org.betonquest.betonquest.api.quest.action;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.action.NullableAction;
-import org.betonquest.betonquest.api.quest.action.PlayerAction;
-import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 
 /**
  * An adapter to handle both the {@link PlayerAction} and {@link PlayerlessAction} with one

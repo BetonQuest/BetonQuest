@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.sneak;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
+import org.betonquest.betonquest.api.quest.condition.OnlineCondition;
 
 /**
  * Returns true if the player is sneaking.
