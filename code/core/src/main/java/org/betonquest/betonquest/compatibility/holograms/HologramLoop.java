@@ -23,7 +23,7 @@ import org.betonquest.betonquest.compatibility.holograms.lines.TextLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TopLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TopXObject;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
-import org.betonquest.betonquest.lib.logger.QuestExceptionHandler;
+import org.betonquest.betonquest.lib.logger.DefaultQuestExceptionHandler;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
@@ -133,7 +133,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramIdentifier, 
             cleanedLines.add(abstractLine);
         }
         final HologramIdentifier identifier = getIdentifier(pack, sectionName);
-        final QuestExceptionHandler handler = new QuestExceptionHandler(pack, loggerFactory.create(HologramWrapper.class), identifier.getFull());
+        final DefaultQuestExceptionHandler handler = new DefaultQuestExceptionHandler(pack, loggerFactory.create(HologramWrapper.class), identifier.getFull());
         final HologramWrapper hologramWrapper = new HologramWrapper(
                 handler,
                 BetonQuest.getInstance().getQuestTypeApi(),

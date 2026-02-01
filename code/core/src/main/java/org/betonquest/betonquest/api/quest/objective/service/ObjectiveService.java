@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
-import org.betonquest.betonquest.lib.logger.QuestExceptionHandler;
+import org.betonquest.betonquest.lib.logger.DefaultQuestExceptionHandler;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,7 +39,7 @@ public interface ObjectiveService {
      *
      * @return the exception handler
      */
-    QuestExceptionHandler getExceptionHandler();
+    DefaultQuestExceptionHandler getExceptionHandler();
 
     /**
      * Get the logger specificly for this objective.

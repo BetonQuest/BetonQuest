@@ -22,7 +22,7 @@ import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.kernel.processor.quest.ActionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.ConditionProcessor;
-import org.betonquest.betonquest.lib.logger.QuestExceptionHandler;
+import org.betonquest.betonquest.lib.logger.DefaultQuestExceptionHandler;
 import org.betonquest.betonquest.lib.profile.ProfileKeyMap;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
@@ -60,7 +60,7 @@ public class DefaultObjectiveService implements ObjectiveService {
     /**
      * The exception handler for this service.
      */
-    private final QuestExceptionHandler questExceptionHandler;
+    private final DefaultQuestExceptionHandler questExceptionHandler;
 
     /**
      * The logger for this service.
@@ -115,7 +115,7 @@ public class DefaultObjectiveService implements ObjectiveService {
         this.profileProvider = profileProvider;
         this.logger = factory.create(DefaultObjectiveService.class);
         this.properties = new DefaultObjectiveProperties(this.logger);
-        this.questExceptionHandler = new QuestExceptionHandler(objectiveID.getPackage(), this.logger, objectiveID.getFull());
+        this.questExceptionHandler = new DefaultQuestExceptionHandler(objectiveID.getPackage(), this.logger, objectiveID.getFull());
         this.objectiveServiceData = parseObjectiveData(objectiveInstruction);
         this.objectiveData = new ProfileKeyMap<>(profileProvider);
         this.defaultDataSupplier = profile -> "";
@@ -135,7 +135,7 @@ public class DefaultObjectiveService implements ObjectiveService {
     }
 
     @Override
-    public QuestExceptionHandler getExceptionHandler() {
+    public DefaultQuestExceptionHandler getExceptionHandler() {
         return questExceptionHandler;
     }
 
