@@ -443,7 +443,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         new BStatsMetrics(this, new Metrics(this, BSTATS_METRICS_ID), questRegistry.metricsSupplier(), compatibility, getInstructionApi());
 
         try {
-            rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, questManager, config,
+            rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, getInstructionApi(), config,
                     pluginMessage, textCreator, coreQuestRegistry, profileProvider, getArgumentParsers());
         } catch (final QuestException e) {
             throw new IllegalStateException("Could not load the RPGMenu!", e);

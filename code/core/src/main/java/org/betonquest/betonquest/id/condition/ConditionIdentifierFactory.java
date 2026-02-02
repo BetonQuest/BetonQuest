@@ -20,7 +20,7 @@ public class ConditionIdentifierFactory extends DefaultIdentifierFactory<Conditi
      * @param packManager the quest package manager to resolve relative paths
      */
     public ConditionIdentifierFactory(final QuestPackageManager packManager) {
-        super(packManager);
+        super(packManager, "Condition");
     }
 
     @Override

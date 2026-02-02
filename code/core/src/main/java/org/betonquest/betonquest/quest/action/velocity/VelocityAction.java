@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.action.velocity;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.action.online.OnlineAction;
+import org.betonquest.betonquest.api.quest.action.OnlineAction;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 

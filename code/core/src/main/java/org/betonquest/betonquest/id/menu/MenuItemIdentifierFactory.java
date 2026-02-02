@@ -20,7 +20,7 @@ public class MenuItemIdentifierFactory extends DefaultIdentifierFactory<MenuItem
      * @param packManager the quest package manager to resolve relative paths
      */
     public MenuItemIdentifierFactory(final QuestPackageManager packManager) {
-        super(packManager);
+        super(packManager, "MenuItem");
     }
 
     @Override

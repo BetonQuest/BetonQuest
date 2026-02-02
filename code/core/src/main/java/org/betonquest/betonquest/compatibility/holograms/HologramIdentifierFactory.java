@@ -19,7 +19,7 @@ public class HologramIdentifierFactory extends DefaultIdentifierFactory<Hologram
      * @param packManager the quest package manager to resolve relative paths
      */
     public HologramIdentifierFactory(final QuestPackageManager packManager) {
-        super(packManager);
+        super(packManager, "Hologram");
     }
 
     @Override

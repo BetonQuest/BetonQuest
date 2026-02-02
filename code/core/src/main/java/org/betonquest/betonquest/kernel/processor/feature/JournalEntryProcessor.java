@@ -35,7 +35,7 @@ public class JournalEntryProcessor extends QuestProcessor<JournalEntryIdentifier
      */
     public JournalEntryProcessor(final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager,
                                  final IdentifierFactory<JournalEntryIdentifier> journalEntryIdentifierFactory, final ParsedSectionTextCreator textCreator) {
-        super(log, placeholders, packManager, journalEntryIdentifierFactory, "Journal Entry", "journal");
+        super(log, journalEntryIdentifierFactory, "Journal Entry", "journal");
         this.textCreator = textCreator;
     }
 

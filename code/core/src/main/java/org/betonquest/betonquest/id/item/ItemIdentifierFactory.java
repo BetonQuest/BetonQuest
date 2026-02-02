@@ -20,7 +20,7 @@ public class ItemIdentifierFactory extends DefaultIdentifierFactory<ItemIdentifi
      * @param packManager the quest package manager to resolve relative paths
      */
     public ItemIdentifierFactory(final QuestPackageManager packManager) {
-        super(packManager);
+        super(packManager, "Item");
     }
 
     @Override

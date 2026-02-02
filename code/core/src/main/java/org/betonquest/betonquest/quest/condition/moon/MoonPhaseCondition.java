@@ -4,7 +4,7 @@ import io.papermc.paper.world.MoonPhase;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
+import org.betonquest.betonquest.api.quest.condition.NullableCondition;
 import org.bukkit.World;
 import org.jetbrains.annotations.Nullable;
 

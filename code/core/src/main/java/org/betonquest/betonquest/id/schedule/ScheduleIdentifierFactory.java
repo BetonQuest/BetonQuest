@@ -20,7 +20,7 @@ public class ScheduleIdentifierFactory extends DefaultIdentifierFactory<Schedule
      * @param packManager the quest package manager to resolve relative paths
      */
     public ScheduleIdentifierFactory(final QuestPackageManager packManager) {
-        super(packManager);
+        super(packManager, "Schedule");
     }
 
     @Override

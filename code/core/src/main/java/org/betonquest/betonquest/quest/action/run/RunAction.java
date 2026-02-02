@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.action.run;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.action.nullable.NullableAction;
+import org.betonquest.betonquest.api.quest.action.NullableAction;
 import org.betonquest.betonquest.kernel.processor.adapter.ActionAdapter;
 import org.jetbrains.annotations.Nullable;
 

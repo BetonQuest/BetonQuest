@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.itemsadder;
 
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.item.ItemRegistry;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.api.quest.action.ActionRegistry;
 import org.betonquest.betonquest.api.quest.condition.ConditionRegistry;
@@ -15,7 +16,6 @@ import org.betonquest.betonquest.compatibility.itemsadder.item.ItemsAdderItemFac
 import org.betonquest.betonquest.compatibility.itemsadder.item.ItemsAdderQuestItemSerializer;
 import org.betonquest.betonquest.compatibility.itemsadder.objective.IABlockBreakObjectiveFactory;
 import org.betonquest.betonquest.compatibility.itemsadder.objective.IABlockPlaceObjectiveFactory;
-import org.betonquest.betonquest.item.ItemRegistry;
 import org.betonquest.betonquest.versioning.UpdateStrategy;
 import org.betonquest.betonquest.versioning.Version;
 import org.betonquest.betonquest.versioning.VersionComparator;

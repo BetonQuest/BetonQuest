@@ -31,7 +31,7 @@ class DefaultIdentifierFactoryTest {
     }
 
     private static IdentifierFactory<Identifier> getFactory(final QuestPackageManager manager) {
-        return new DefaultIdentifierFactory<>(manager) {
+        return new DefaultIdentifierFactory<>(manager, "Test") {
             @Override
             public Identifier parseIdentifier(@Nullable final QuestPackage source, final String input) throws QuestException {
                 final Map.Entry<QuestPackage, String> entry = parse(source, input);
@@ -95,13 +95,13 @@ class DefaultIdentifierFactoryTest {
 
             return Stream.of(
                     Arguments.of(manager, pack1, "NonExisting>testAction",
-                            "ID 'NonExisting>testAction' could not be parsed: No package 'NonExisting' found!"),
+                            "Test identifier 'NonExisting>testAction' could not be parsed: No package 'NonExisting' found!"),
                     Arguments.of(manager, pack1Sub1, "_-_-_->testAction",
-                            "ID '_-_-_->testAction' could not be parsed: Relative path '_-_-_-' goes up too many levels!"),
+                            "Test identifier '_-_-_->testAction' could not be parsed: Relative path '_-_-_-' goes up too many levels!"),
                     Arguments.of(manager, pack1Sub1, "_-_->testAction",
-                            "ID '_-_->testAction' could not be parsed: Relative path '_-_-' resolved to '', but this package does not exist!"),
+                            "Test identifier '_-_->testAction' could not be parsed: Relative path '_-_-' resolved to '', but this package does not exist!"),
                     Arguments.of(manager, pack2, "-NonExisting>testAction",
-                            "ID '-NonExisting>testAction' could not be parsed: Relative path '-NonExisting' resolved to 'Test2-NonExisting', but this package does not exist!")
+                            "Test identifier '-NonExisting>testAction' could not be parsed: Relative path '-NonExisting' resolved to 'Test2-NonExisting', but this package does not exist!")
             );
         }
 

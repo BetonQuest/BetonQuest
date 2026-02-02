@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.placeholder.nullable.NullablePlaceholder;
+import org.betonquest.betonquest.api.quest.placeholder.NullablePlaceholder;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

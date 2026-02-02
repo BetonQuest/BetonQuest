@@ -3,12 +3,12 @@ package org.betonquest.betonquest.menu.kernel;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.identifier.MenuItemIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
@@ -44,7 +44,7 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemIdentifier, Menu
      *
      * @param log               the custom logger for this class
      * @param loggerFactory     the logger factory to class specific loggers with
-     * @param packManager       the quest package manager to get quest packages from
+     * @param instructionApi    the instruction api to use
      * @param textCreator       the text creator to parse text
      * @param identifierFactory the identifier factory to create {@link MenuItemIdentifier}s for this type
      * @param questTypeApi      the QuestTypeApi
@@ -52,10 +52,10 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemIdentifier, Menu
      * @param parsers           the argument parsers
      */
     public MenuItemProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
-                             final QuestPackageManager packManager, final ParsedSectionTextCreator textCreator,
+                             final InstructionApi instructionApi, final ParsedSectionTextCreator textCreator,
                              final IdentifierFactory<MenuItemIdentifier> identifierFactory,
                              final QuestTypeApi questTypeApi, final ConfigAccessor config, final ArgumentParsers parsers) {
-        super(log, packManager, "Menu Item", "menu_items", loggerFactory, textCreator, parsers, identifierFactory, questTypeApi);
+        super(log, instructionApi, "Menu Item", "menu_items", loggerFactory, textCreator, parsers, identifierFactory, questTypeApi);
         this.config = config;
     }
 

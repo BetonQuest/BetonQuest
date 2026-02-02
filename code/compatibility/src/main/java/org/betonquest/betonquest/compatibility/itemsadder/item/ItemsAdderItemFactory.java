@@ -2,10 +2,10 @@ package org.betonquest.betonquest.compatibility.itemsadder.item;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.kernel.TypeFactory;
+import org.betonquest.betonquest.api.item.QuestItemWrapper;
+import org.betonquest.betonquest.api.quest.TypeFactory;
 import org.betonquest.betonquest.compatibility.itemsadder.ItemsAdderParser;
 import org.betonquest.betonquest.item.QuestItemTagAdapterWrapper;
-import org.betonquest.betonquest.item.QuestItemWrapper;
 
 /**
  * Factory for creating {@link QuestItemWrapper} from ItemsAdder items.

@@ -2,11 +2,11 @@ package org.betonquest.betonquest.quest.placeholder.constant;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.quest.placeholder.NullablePlaceholderAdapter;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerPlaceholder;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerPlaceholderFactory;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerlessPlaceholder;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerlessPlaceholderFactory;
-import org.betonquest.betonquest.api.quest.placeholder.nullable.NullablePlaceholderAdapter;
 import org.bukkit.configuration.ConfigurationSection;
 
 /**

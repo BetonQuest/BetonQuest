@@ -2,7 +2,7 @@ package org.betonquest.betonquest.menu.betonquest;
 
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.placeholder.online.OnlinePlaceholder;
+import org.betonquest.betonquest.api.quest.placeholder.OnlinePlaceholder;
 import org.betonquest.betonquest.menu.OpenedMenu;
 
 /**

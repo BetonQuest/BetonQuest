@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.item;
 
 import org.betonquest.betonquest.api.common.component.BookPageWrapper;
+import org.betonquest.betonquest.api.item.QuestItemSerializer;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.item.typehandler.BookHandler;
 import org.betonquest.betonquest.item.typehandler.ColorHandler;

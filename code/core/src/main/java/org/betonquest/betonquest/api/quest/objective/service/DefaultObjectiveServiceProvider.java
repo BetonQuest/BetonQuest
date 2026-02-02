@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.logger.QuestExceptionHandler;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -17,7 +18,7 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.betonquest.betonquest.kernel.processor.quest.ActionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.ConditionProcessor;
 import org.betonquest.betonquest.lib.bukkit.event.DefaultBukkitEventService;
-import org.betonquest.betonquest.lib.logger.QuestExceptionHandler;
+import org.betonquest.betonquest.lib.logger.DefaultQuestExceptionHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
@@ -183,7 +184,7 @@ public class DefaultObjectiveServiceProvider implements ObjectiveServiceProvider
 
     private <T extends Event> EventServiceSubscriber<T> exceptionHandled(final ObjectiveIdentifier objectiveID, final Class<T> eventClass,
                                                                          final EventServiceSubscriber<T> subscriber) {
-        final QuestExceptionHandler exceptionHandler = new QuestExceptionHandler(objectiveID.getPackage(), logger, objectiveID.getFull(), eventClass.getSimpleName());
+        final QuestExceptionHandler exceptionHandler = new DefaultQuestExceptionHandler(objectiveID.getPackage(), logger, objectiveID.getFull(), eventClass.getSimpleName());
         return (event, priority) -> exceptionHandler.handle(() -> subscriber.call(event, priority));
     }
 

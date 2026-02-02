@@ -3,9 +3,9 @@ package org.betonquest.betonquest.compatibility.mythicmobs.item;
 import io.lumine.mythic.api.items.ItemManager;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.kernel.TypeFactory;
+import org.betonquest.betonquest.api.item.QuestItemWrapper;
+import org.betonquest.betonquest.api.quest.TypeFactory;
 import org.betonquest.betonquest.item.QuestItemTagAdapterWrapper;
-import org.betonquest.betonquest.item.QuestItemWrapper;
 
 /**
  * Factory to create {@link MythicItemWrapper}s from {@link Instruction}s.

@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.placeholder.sync;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.placeholder.nullable.NullablePlaceholder;
+import org.betonquest.betonquest.api.quest.placeholder.NullablePlaceholder;
 import org.betonquest.betonquest.quest.placeholder.eval.EvalPlaceholder;
 import org.betonquest.betonquest.quest.placeholder.eval.EvalPlaceholderFactory;
 import org.jetbrains.annotations.Nullable;

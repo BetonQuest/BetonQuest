@@ -18,9 +18,9 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.npc.Npc;
+import org.betonquest.betonquest.api.quest.npc.NpcConversation;
+import org.betonquest.betonquest.api.quest.npc.NpcHider;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
-import org.betonquest.betonquest.api.quest.npc.feature.NpcConversation;
-import org.betonquest.betonquest.api.quest.npc.feature.NpcHider;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.CombatTagger;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
@@ -135,7 +135,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
                         final NpcTypeRegistry npcTypes, final PluginMessage pluginMessage, final BetonQuest plugin,
                         final ProfileProvider profileProvider, final QuestTypeApi questTypeApi, final ConversationStarter convStarter,
                         final InstructionApi instructionApi) {
-        super(log, placeholders, packManager, npcTypes, npcIdentifierFactory, instructionApi, "Npc", "npcs");
+        super(log, npcTypes, npcIdentifierFactory, instructionApi, "Npc", "npcs");
         this.loggerFactory = loggerFactory;
         this.pluginMessage = pluginMessage;
         this.convStarter = convStarter;
@@ -151,6 +151,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
     public void load(final QuestPackage pack) {
         super.load(pack);
         loadBindings(pack);
+        npcHider.load(pack);
     }
 
     /**
@@ -188,7 +189,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
         interactionLimit = plugin.getPluginConfig().getInt("npc.interaction_limit", 500);
         acceptNpcLeftClick = plugin.getPluginConfig().getBoolean("npc.accept_left_click");
         final int updateInterval = plugin.getPluginConfig().getInt("hider.npc_update_interval", 5 * 20);
-        npcHider.reload(packManager.getPackages().values(), updateInterval, plugin);
+        npcHider.reload(updateInterval, plugin);
     }
 
     @Override

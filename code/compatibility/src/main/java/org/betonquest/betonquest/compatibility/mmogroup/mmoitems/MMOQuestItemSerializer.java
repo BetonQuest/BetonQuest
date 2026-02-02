@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 
 import io.lumine.mythic.lib.api.item.NBTItem;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.item.QuestItemSerializer;
+import org.betonquest.betonquest.api.item.QuestItemSerializer;
 import org.bukkit.inventory.ItemStack;
 
 /**

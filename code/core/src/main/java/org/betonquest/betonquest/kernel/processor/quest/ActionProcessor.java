@@ -54,7 +54,7 @@ public class ActionProcessor extends TypedQuestProcessor<ActionIdentifier, Actio
                            final IdentifierFactory<ActionIdentifier> actionIdentifierFactory,
                            final ActionTypeRegistry actionTypes, final BukkitScheduler scheduler,
                            final InstructionApi instructionApi, final Plugin plugin) {
-        super(log, placeholders, packManager, actionTypes, actionIdentifierFactory, instructionApi, "Action", "actions");
+        super(log, actionTypes, actionIdentifierFactory, instructionApi, "Action", "actions");
         this.scheduler = scheduler;
         this.plugin = plugin;
     }
