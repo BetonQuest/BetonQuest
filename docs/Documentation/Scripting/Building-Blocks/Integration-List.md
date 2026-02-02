@@ -26,6 +26,7 @@ Some plugins also hook into BetonQuest and provide support by themselves:
 [HonnyCompass](https://github.com/honnisha/HonnyCompass)
 [MythicDungeons](https://www.spigotmc.org/resources/102699/)
 [JourneyBetonQuest](https://modrinth.com/plugin/journeybetonquest)
+[BetonQuestAddon](https://modrinth.com/plugin/XvDcVrRl)
 
 There are also plugins that hook into BetonQuest that require a clientside mod:  
 [BetonQuestGUI](https://github.com/giovanni-bozzano/betonquest-gui-plugin),
@@ -71,10 +72,6 @@ actions:
   farming5: "auraskillsxp farming 5"
   farming10: "auraskillsxp farming 10 level"
 ```
-
-## BetonQuestAddon[](https://modrinth.com/plugin/XvDcVrRl)
-
-For comprehensive details and usage guidelines, please refer to the official [BetonQuestAddon Wiki](https://mrjimin.github.io/betonquestaddon-wiki/).
 
 ## Brewery[](https://www.spigotmc.org/resources/3082/) & BreweryX[](https://www.spigotmc.org/resources/114777/)
 
