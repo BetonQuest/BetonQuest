@@ -11,7 +11,7 @@ In total @snippet:constants:totalIntegratedPluginsNumber@ plugins have dedicated
 ## Provided by BetonQuest
 
 BetonQuest hooks into other plugins by itself to provide more actions, conditions and objectives or other features.  
-_AuraSkills, BetonQuestAddon, Brewery, BreweryX, Citizens, CraftEngine, DecentHolograms, Denizen, EffectLib, FancyNpcs, FakeBlock,
+_AuraSkills, Brewery, BreweryX, Citizens, CraftEngine, DecentHolograms, Denizen, EffectLib, FancyNpcs, FakeBlock,
 Heroes, HolographicDisplays, ItemsAdder, JobsReborn, LuckPerms, Magic, mcMMO, MythicLib, MMOCore, MMOItems,
 MythicMobs, Nexo, PacketEvents, PlaceholderAPI, Quests, RedisChat, Shopkeepers, TrainCarts, ProSkillAPI, Skript,
 Vault, WorldEdit, FastAsyncWorldEdit, WorldGuard and ZNPCsPlus._
