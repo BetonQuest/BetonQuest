@@ -11,8 +11,7 @@ If not, feel free to ask us in the
 There is no such command. BetonQuest is too complex to edit it using commands or chest GUI's.
 
 ## Can you add particles over NPCs' heads like in "Quests" plugin?
-Yes! Check out the [EffectLib](../Documentation/Scripting/Building-Blocks/Integration-List.md#effectlib) compatibility documentation.
-
+Yes! Check out the [EffectLib](../Documentation/Scripting/Building-Blocks/Integrations-List/Visuals/EffectLib.md) compatibility documentation.
 
 ## Can I assign multiple conversation files to one NPC?
 No. You can use [cross-conversation-pointers](../Documentation/Features/Conversations.md#cross-conversation-pointers) though.
@@ -325,5 +324,5 @@ Or you could define separate items for open and finished quests or even to show 
 ## Menus displaying players stats
 You may also use menus to display the stats of a player. Just use [placeholders](Scripting/Building-Blocks/Placeholders-List.md) in the text or for the amount of an item.
 
-For example try displaying a players money using the placeholder from [Vault integration](http://dev.bukkit.org/bukkit-plugins/vault/)
-or use [PlaceholderAPI](../Documentation/Scripting/Building-Blocks/Integration-List.md#placeholderapi) to show placeholders from many other plugins.
+For example, try displaying a players money using the placeholder from [Vault integration](http://dev.bukkit.org/bukkit-plugins/vault/)
+or use [PlaceholderAPI](../Documentation/Scripting/Building-Blocks/Integrations-List/Administration/PlaceholderAPI.md) to show placeholders from many other plugins.

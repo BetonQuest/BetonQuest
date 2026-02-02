@@ -8,7 +8,7 @@ search:
 # Placeholders List
 
 This page lists all the placeholders that are available in BetonQuest.
-Some of them are only useful when exported for use in other plugins through the [support for PlaceHolderAPI](Integration-List.md#placeholderapi).
+Some of them are only useful when exported for use in other plugins through the [support for PlaceHolderAPI](Integrations-List/Administration/PlaceholderAPI.md).
 
 ## Quest types
 
@@ -34,7 +34,7 @@ __Syntax__: `condition.<id>.[papiMode]`
 __Description__: Represents the specified condition as a boolean value.
 
 You can expose BetonQuest's conditions to 3rd party plugins by using the `condition` placeholder together with the 
-[PAPI support](Integration-List.md#placeholderapi).
+[PAPI support](Integrations-List/Administration/PlaceholderAPI.md).
 The placeholder will return `true` or `false` by default. If you add `papiMode` to the instruction it will return `yes` or `no`.    
 You can translate the papiMode's result by changing the values of `condition_placeholder_met` `condition_placeholder_not_met` in 
 the *messages.yml* config.

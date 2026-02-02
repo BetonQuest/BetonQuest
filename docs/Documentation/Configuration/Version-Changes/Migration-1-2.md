@@ -434,7 +434,7 @@ npc_holograms:
     The objectives `mmocorecastskill` and `mmoitemcastability` were merged into the `mmoskill` objective.
     The `mmoskill` objective works exactly like its predecessors, but also supports defining one or more trigger types.
     
-    See the [objective's documentation](../../Scripting/Building-Blocks/Integration-List.md#activate-mythiclib-skill-mmoskill) for more information.
+    See the [objective's documentation](../../Scripting/Building-Blocks/Integrations-List/MMO/MMOLib.md#activate-mythiclib-skill-mmoskill) for more information.
     
     <div class="grid" markdown>
     

@@ -94,7 +94,7 @@ understand in the future. Don't worry though, if you make some mistake in config
 
 ## Binding Conversations to NPCs
 
-Conversations can be assigned to [NPCs](NPCs.md). This is done in the `npc_conversations` section:
+Conversations can be assigned to [NPCs](../Scripting/Building-Blocks/Integrations-List/NPCs/index.md). This is done in the `npc_conversations` section:
 
 ```YAML title="Example"
 npc_conversations:
