@@ -54,7 +54,8 @@ class ConfigPatcherIT extends QuestFixture {
                 Arguments.of("lang/pt-PT.yml", null),
                 Arguments.of("lang/ru-RU.yml", null),
                 Arguments.of("lang/vi-VN.yml", null),
-                Arguments.of("lang/zh-CN.yml", null)
+                Arguments.of("lang/zh-CN.yml", null),
+                Arguments.of("lang/ko-KR.yml", null)
         );
     }
 
