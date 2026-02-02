@@ -128,6 +128,7 @@ class NotifySound {
         return new DefaultArgument<>(placeholders, pack, raw, parser);
     }
 
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     private QuestConsumer<OnlineProfile> getSoundPlayer(
             final Argument<Optional<Sound>> sound, final Argument<String> soundString, @Nullable final Argument<Location> location,
             final Argument<Optional<Vector>> playerOffset, final Argument<Optional<Float>> playerOffsetDistance,
@@ -140,7 +141,11 @@ class NotifySound {
             final Optional<Sound> resolvedSound = sound.getValue(onlineProfile);
             final SoundCategory resolvedCategory = soundCategory.getValue(onlineProfile);
             if (resolvedSound.isEmpty()) {
-                player.playSound(finalLocation, soundString.getValue(onlineProfile), resolvedCategory, resolvedVolume, resolvedPitch);
+                try {
+                    player.playSound(finalLocation, soundString.getValue(onlineProfile), resolvedCategory, resolvedVolume, resolvedPitch);
+                } catch (final RuntimeException exception) {
+                    throw new QuestException(exception.getMessage(), exception);
+                }
             } else {
                 player.playSound(finalLocation, resolvedSound.get(), resolvedCategory, resolvedVolume, resolvedPitch);
             }
