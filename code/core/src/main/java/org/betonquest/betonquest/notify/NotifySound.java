@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.notify;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestConsumer;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
@@ -227,10 +228,12 @@ class NotifySound {
         }
     }
 
+    @SuppressFBWarnings("DCN_NULLPOINTER_EXCEPTION")
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     private Optional<Sound> getSound(final String soundString) {
         try {
             return Optional.of(Sound.valueOf(soundString));
-        } catch (final IllegalArgumentException exception) {
+        } catch (final IllegalArgumentException | NullPointerException exception) {
             return Optional.empty();
         }
     }
