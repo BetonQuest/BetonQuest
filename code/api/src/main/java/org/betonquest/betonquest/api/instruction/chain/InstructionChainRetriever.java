@@ -18,6 +18,14 @@ import java.util.Optional;
 public interface InstructionChainRetriever<T> {
 
     /**
+     * Retrieves the {@link Argument} for the given type and the given settings in the chain.
+     *
+     * @return an optional of the argument
+     */
+    @Contract("-> new")
+    Optional<Argument<T>> getOptional();
+
+    /**
      * Retrieves the argument for the given type and the given settings in the chain.
      *
      * @return the argument

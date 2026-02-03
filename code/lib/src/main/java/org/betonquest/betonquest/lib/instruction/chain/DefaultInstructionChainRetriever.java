@@ -38,6 +38,15 @@ public class DefaultInstructionChainRetriever<T> implements InstructionChainRetr
     }
 
     @Override
+    public Optional<Argument<T>> getOptional() {
+        try {
+            return Optional.of(get());
+        } catch (final QuestException e) {
+            return Optional.empty();
+        }
+    }
+
+    @Override
     public Argument<T> get() throws QuestException {
         return instruction.getNext(argument);
     }
