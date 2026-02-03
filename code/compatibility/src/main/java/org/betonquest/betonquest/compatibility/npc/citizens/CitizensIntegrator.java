@@ -100,9 +100,9 @@ public class CitizensIntegrator implements Integrator {
                 placeholders, api.getQuestPackageManager(), fontRegistry, colors, pluginConfig, true));
 
         final NpcRegistry npcRegistry = featureRegistries.npc();
-        manager.registerEvents(new CitizensInteractCatcher(plugin, plugin.getProfileProvider(), npcRegistry, citizensNpcRegistry,
+        manager.registerEvents(new CitizensInteractCatcher(plugin.getProfileProvider(), npcRegistry, citizensNpcRegistry,
                 citizensMoveController), plugin);
-        npcRegistry.register("citizens", new CitizensNpcFactory(plugin, citizensNpcRegistry));
+        npcRegistry.register("citizens", new CitizensNpcFactory(citizensNpcRegistry));
         npcRegistry.registerIdentifier(new CitizensReverseIdentifier(citizensNpcRegistry));
     }
 

@@ -127,6 +127,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Variables to Placeholders. This change won't harm any user scripts, it's only a conceptual change
 - Events to Actions.
 - `menu` conv io no longer ignores canceled events to process as input
+- `citizens` npc hiding now uses the inbuilt player filter trait
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation
