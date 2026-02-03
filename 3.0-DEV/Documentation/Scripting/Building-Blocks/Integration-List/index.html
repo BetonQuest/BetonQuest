@@ -7913,9 +7913,12 @@ Each spell in this list must have a minimal level defined after a colon.</p>
 <h2 id="mmocore-mmoitems-mythiclib">MMOCore<a href="https://www.spigotmc.org/resources/70575/"></a> &amp; MMOItems<a href="https://www.spigotmc.org/resources/39267/"></a> &amp; MythicLib<a href="https://www.spigotmc.org/resources/90306/"></a><a class="headerlink" href="#mmocore-mmoitems-mythiclib" title="Permanent link">🔗</a></h2>
 <h3 id="items_2">Items<a class="headerlink" href="#items_2" title="Permanent link">🔗</a></h3>
 <p>MMOItems usage is integrated to the <a href="../../../Features/Items/">Items</a> system and thus used for actions and conditions.</p>
-<p>In addition, you can also add <code>quest-item</code> argument to tag them as "QuestItem".</p>
+<p>The <a href="https://docs.phoenixdevt.fr/mmoitems/features/soulbound.html"><code>souldbound</code></a> keyword can be used
+with an optional <code>amount</code>, defaulting to <code>1</code>.<br />
+In addition, you can also add <code>quest-item</code> argument to tag them as "QuestItem".</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">crown</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoitem</span><span class="nv"> </span><span class="s">ARMOR</span><span class="nv"> </span><span class="s">SKELETON_CROWN&quot;</span>
+<span class="w">  </span><span class="nt">boundBoot</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoitem</span><span class="nv"> </span><span class="s">ARMOR</span><span class="nv"> </span><span class="s">TRAVELERS_BOOTS</span><span class="nv"> </span><span class="s">soulbound:100&quot;</span>
 <span class="w">  </span><span class="nt">gem</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoitem</span><span class="nv"> </span><span class="s">GEMS</span><span class="nv"> </span><span class="s">SPEED_GEM</span><span class="nv"> </span><span class="s">quest-item&quot;</span>
 <span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">hasCrown</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hand</span><span class="nv"> </span><span class="s">crown&quot;</span>
