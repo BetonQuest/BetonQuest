@@ -39,6 +39,7 @@ theme:
     - navigation.instant
     - navigation.instant.prefetch
     - navigation.instant.progress
+    - navigation.indexes
     - search.share
     - search.suggest
     - content.tooltips
