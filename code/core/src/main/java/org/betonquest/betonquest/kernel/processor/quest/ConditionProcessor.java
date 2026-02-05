@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Placeholders;
+import org.betonquest.betonquest.api.service.ConditionManager;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
 import org.betonquest.betonquest.kernel.processor.adapter.ConditionAdapter;
 import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
@@ -28,7 +29,7 @@ import java.util.stream.Stream;
 /**
  * Does the logic around Conditions.
  */
-public class ConditionProcessor extends TypedQuestProcessor<ConditionIdentifier, ConditionAdapter> {
+public class ConditionProcessor extends TypedQuestProcessor<ConditionIdentifier, ConditionAdapter> implements ConditionManager {
 
     /**
      * The Bukkit scheduler to run sync tasks.
@@ -144,5 +145,20 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionIdentifier,
                 (isMet ? "TRUE" : "FALSE") + ": " + (conditionID.isInverted() ? "inverted" : "") + " condition "
                         + conditionID + " for " + profile);
         return isMet;
+    }
+
+    @Override
+    public boolean test(@Nullable final Profile profile, final ConditionIdentifier conditionIdentifier) {
+        return check(profile, conditionIdentifier);
+    }
+
+    @Override
+    public boolean testAll(@Nullable final Profile profile, final Collection<ConditionIdentifier> conditionIdentifiers) {
+        return checks(profile, conditionIdentifiers, true);
+    }
+
+    @Override
+    public boolean testAny(@Nullable final Profile profile, final Collection<ConditionIdentifier> conditionIdentifiers) {
+        return checks(profile, conditionIdentifiers, false);
     }
 }

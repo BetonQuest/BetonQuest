@@ -15,6 +15,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Placeholders;
+import org.betonquest.betonquest.api.service.BetonQuestConversations;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.Conversation;
@@ -40,7 +41,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Stores Conversation Data and validates it.
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
-public class ConversationProcessor extends SectionProcessor<ConversationIdentifier, ConversationData> implements ConversationApi {
+public class ConversationProcessor extends SectionProcessor<ConversationIdentifier, ConversationData> implements ConversationApi, BetonQuestConversations {
 
     /**
      * Factory to create class-specific logger.
@@ -179,6 +180,11 @@ public class ConversationProcessor extends SectionProcessor<ConversationIdentifi
     @Override
     public ConversationData getData(final ConversationIdentifier conversationID) throws QuestException {
         return get(conversationID);
+    }
+
+    @Override
+    public boolean canStart(final Profile profile, final ConversationIdentifier conversationIdentifier) throws QuestException {
+        return getData(conversationIdentifier).isReady(profile);
     }
 
     @Override

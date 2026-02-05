@@ -17,6 +17,7 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveServiceProvider;
+import org.betonquest.betonquest.api.service.ObjectiveManager;
 import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
@@ -38,7 +39,7 @@ import java.util.Set;
  * Stores Objectives and starts/stops/resumes them.
  */
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.TooManyMethods", "PMD.GodClass"})
-public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Objective> {
+public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Objective> implements ObjectiveManager {
 
     /**
      * Instruction API.
@@ -212,6 +213,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
      * @param profile     the {@link Profile} of the player
      * @param objectiveID ID of the objective
      */
+    @Override
     public void cancel(final Profile profile, final ObjectiveIdentifier objectiveID) {
         final Objective objective = values.get(objectiveID);
         if (objective == null) {
@@ -229,12 +231,28 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
         }
     }
 
+    @Override
+    public List<Objective> getForProfile(final Profile profile) {
+        return getActive(profile);
+    }
+
+    @Override
+    public Objective getObjective(final ObjectiveIdentifier objectiveIdentifier) throws QuestException {
+        return get(objectiveIdentifier);
+    }
+
+    @Override
+    public void start(final Profile profile, final ObjectiveIdentifier objectiveIdentifier, final String startingState) {
+        resume(profile, objectiveIdentifier, startingState);
+    }
+
     /**
      * Pauses the objective for the given profile.
      *
      * @param profile     the {@link Profile} of the player
      * @param objectiveID ID of the objective
      */
+    @Override
     public void pause(final Profile profile, final ObjectiveIdentifier objectiveID) {
         final Objective objective = values.get(objectiveID);
         if (objective == null) {
@@ -258,6 +276,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
      * @param profile     the {@link Profile} of the player
      * @param objectiveID ID of the objective
      */
+    @Override
     public void start(final Profile profile, final ObjectiveIdentifier objectiveID) {
         final Objective objective = values.get(objectiveID);
         if (objective == null) {

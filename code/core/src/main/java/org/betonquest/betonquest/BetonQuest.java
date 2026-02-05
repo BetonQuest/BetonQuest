@@ -6,6 +6,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.BetonQuestApiService;
 import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.LoadDataEvent;
@@ -29,6 +30,10 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
+import org.betonquest.betonquest.api.service.DefaultBetonQuestApiService;
+import org.betonquest.betonquest.api.service.DefaultBetonQuestInstructions;
+import org.betonquest.betonquest.api.service.DefaultBetonQuestManagers;
+import org.betonquest.betonquest.api.service.DefaultBetonQuestRegistries;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.bstats.BStatsMetrics;
 import org.betonquest.betonquest.command.BackpackCommand;
@@ -102,6 +107,7 @@ import org.betonquest.betonquest.web.updater.source.ReleaseUpdateSource;
 import org.betonquest.betonquest.web.updater.source.implementations.GitHubReleaseSource;
 import org.betonquest.betonquest.web.updater.source.implementations.ReposiliteReleaseAndDevelopmentSource;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.PluginManager;
@@ -407,6 +413,8 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
                 questRegistry, config, conversationColors, textParser, fontRegistry, pluginMessage)
                 .register(featureRegistries);
 
+        setupApi(coreQuestRegistry);
+
         try {
             conversationColors.load();
         } catch (final QuestException e) {
@@ -450,6 +458,19 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         }
 
         log.info("BetonQuest successfully enabled!");
+    }
+
+    private void setupApi(final CoreQuestRegistry processors) {
+        final DefaultBetonQuestInstructions instructions = new DefaultBetonQuestInstructions(this::getPlaceholderProcessor,
+                this::getQuestPackageManager, this::getArgumentParsers, this::getLoggerFactory);
+        final DefaultBetonQuestRegistries registries = new DefaultBetonQuestRegistries(questTypeRegistries::action,
+                questTypeRegistries::condition, questTypeRegistries::objective, featureRegistries::item,
+                featureRegistries::npc, questTypeRegistries::placeholder);
+        final DefaultBetonQuestManagers managers = new DefaultBetonQuestManagers(processors::actions, processors::conditions,
+                processors::objectives, questRegistry::items, questRegistry::npcs);
+        final DefaultBetonQuestApiService service = new DefaultBetonQuestApiService(this::getProfileProvider, this::getQuestPackageManager, this::getLoggerFactory,
+                () -> instructions, questRegistry::conversations, () -> registries, () -> managers);
+        Bukkit.getServicesManager().register(BetonQuestApiService.class, service, this, ServicePriority.Highest);
     }
 
     private void setupFontRegistry() {

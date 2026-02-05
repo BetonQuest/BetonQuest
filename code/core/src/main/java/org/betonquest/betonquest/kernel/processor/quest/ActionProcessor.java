@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Placeholders;
+import org.betonquest.betonquest.api.service.ActionManager;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
 import org.betonquest.betonquest.kernel.processor.adapter.ActionAdapter;
 import org.betonquest.betonquest.kernel.registry.quest.ActionTypeRegistry;
@@ -26,7 +27,7 @@ import java.util.concurrent.Future;
 /**
  * Stores Actions and execute them.
  */
-public class ActionProcessor extends TypedQuestProcessor<ActionIdentifier, ActionAdapter> {
+public class ActionProcessor extends TypedQuestProcessor<ActionIdentifier, ActionAdapter> implements ActionManager {
 
     /**
      * The Bukkit scheduler to run sync tasks.
@@ -134,5 +135,15 @@ public class ActionProcessor extends TypedQuestProcessor<ActionIdentifier, Actio
             log.warn(actionID.getPackage(), "Error while firing '" + actionID + "' action: " + e.getMessage(), e);
             return true;
         }
+    }
+
+    @Override
+    public boolean run(@Nullable final Profile profile, final ActionIdentifier actionIdentifier) {
+        return execute(profile, actionIdentifier);
+    }
+
+    @Override
+    public boolean run(@Nullable final Profile profile, final Collection<ActionIdentifier> actionIdentifiers) {
+        return executes(profile, actionIdentifiers);
     }
 }
