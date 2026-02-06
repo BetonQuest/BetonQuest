@@ -1,10 +1,6 @@
 package org.betonquest.betonquest.compatibility.brewery;
 
-import com.dre.brewery.Brew;
-import com.dre.brewery.recipe.BRecipe;
 import org.betonquest.betonquest.api.QuestException;
-import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Utility class for Brewery.
@@ -12,21 +8,6 @@ import org.jetbrains.annotations.Nullable;
 public final class BreweryUtils {
 
     private BreweryUtils() {
-    }
-
-    /**
-     * Check if an item is a valid brew item for a specific recipe.
-     *
-     * @param item   the {@link ItemStack} to check.
-     * @param recipe the {@link BRecipe} to check against.
-     * @return {@code true} if the item is a valid brew item for the recipe, {@code false} otherwise.
-     */
-    public static boolean isNotValidBrewItem(@Nullable final ItemStack item, final BRecipe recipe) {
-        if (item == null) {
-            return true;
-        }
-        final Brew brewItem = Brew.get(item);
-        return brewItem == null || !recipe.equals(brewItem.getCurrentRecipe());
     }
 
     /**
