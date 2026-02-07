@@ -1,4 +1,4 @@
-## WorldGuard[](http://dev.bukkit.org/bukkit-plugins/worldguard/)
+# WorldGuard[](http://dev.bukkit.org/bukkit-plugins/worldguard/)
 
 ### Conditions
 

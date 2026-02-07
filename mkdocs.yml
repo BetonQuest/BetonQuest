@@ -83,6 +83,7 @@ nav:
                   - 'ItemsAdder': Documentation/Scripting/Building-Blocks/Integrations-List/Items/ItemsAdder.md
                   - 'MMOItems': Documentation/Scripting/Building-Blocks/Integrations-List/Items/MMOItems.md
                   - 'Nexo': Documentation/Scripting/Building-Blocks/Integrations-List/Items/Nexo.md
+                  - 'MythicMobs': Documentation/Scripting/Building-Blocks/Integrations-List/Items/MythicMobs.md
               - 'Holograms':
                   - 'Documentation/Scripting/Building-Blocks/Integrations-List/Holograms/index.md'
                   - 'DecentHolograms': Documentation/Scripting/Building-Blocks/Integrations-List/Holograms/DecentHolograms.md

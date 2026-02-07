@@ -4,19 +4,20 @@ tags:
   - Npcs
 ---
 
+# NPCs
+
 NPCs are an essential part of every RPG for player ingame interactions.
 In BetonQuest, NPCs can be used to start conversations or act as a means for player interactions in various ways,
-as shown in the [`Scripting`](../../../../Scripting/About-Scripting.md) and [`Visual Effects`](../../../../Visual-Effects/NPC-Effects/NPC-Hiding.md)
-section of the documentation.
+as shown in the [Scripting](../../../../Scripting/About-Scripting.md) section of the documentation.
 
 ## Provided Integrations
 
 BetonQuest provides integrations for the following NPC plugins:
 
-- [Citizens](../../../../Scripting/Building-Blocks/Integrations-List/NPCs/Citizens.md)
-- [MythicMobs](../../../../Scripting/Building-Blocks/Integrations-List/NPCs/MythicMobs.md)
-- [FancyNpcs](../../../../Scripting/Building-Blocks/Integrations-List/NPCs/FancyNpcs.md)
-- [ZNPCsPlus](../../../../Scripting/Building-Blocks/Integrations-List/NPCs/ZNPCsPlus.md)
+- [Citizens](./Citizens.md)
+- [MythicMobs](./MythicMobs.md)
+- [FancyNpcs](./FancyNpcs.md)
+- [ZNPCsPlus](./ZNPCsPlus.md)
 
 ## Referring an NPC
 
@@ -155,8 +156,8 @@ It allows you to assign conditions to specific BQ NPCIDs like so:
 
 ??? info inline end "Additional Information"
     Information on the `npcs` section, where you define the NPCs that BetonQuest can use/reference, can be found 
-    [here](../../../../Scripting/Building-Blocks/Integrations-List/NPCs/index.md#provided-integrations).
-    Information on the `conditions` section can be found [here](../../../../Scripting/About-Scripting.md#conditions).
+    [here](#provided-integrations).
+    Information on the `conditions` section can be found [here](../../../About-Scripting.md#conditions).
 
 
 The interval in which conditions are checked can be configured with the [`npc_update_interval`](../../../../Configuration/Plugin-Config.md#npc-npc-settings) setting.

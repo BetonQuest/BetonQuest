@@ -4,14 +4,14 @@ tags:
   - Holograms
 ---
 
-## Holograms
+# Holograms
 
 This feature can be activated by installing any of the following hologram plugins:
 
-| Plugin                                         | Required Version | Additional Dependencies                                                         |
-|------------------------------------------------|------------------|---------------------------------------------------------------------------------|
-| [DecentHolograms](DecentHolograms.md)          | 2.7.5 or above   | [PlaceholderAPI](../Administration/PlaceholderAPI.md) for in-line placeholders. |
-| [Holographic Displays](HolographicDisplays.md) | 3.0.0 or above   | None                                                                            |
+| Plugin                                           | Required Version | Additional Dependencies                                                         |
+|--------------------------------------------------|------------------|---------------------------------------------------------------------------------|
+| [DecentHolograms](./DecentHolograms.md)          | 2.7.5 or above   | [PlaceholderAPI](../Administration/PlaceholderAPI.md) for in-line placeholders. |
+| [Holographic Displays](./HolographicDisplays.md) | 3.0.0 or above   | None                                                                            |
 
 If you have both plugins installed, you can use the [`hologram.default` option in the "_config.yml_"](../../../../Configuration/Plugin-Config.md#hologram-hologram-settings) to set which plugin should be used.
 
@@ -103,7 +103,7 @@ colorfulHonorRank:
 
 Each BetonQuest placeholder can be displayed on a hologram in a text line.
 If you wish to refer to a placeholder that is *not* in the same package as the hologram, then you
-must specify a [package](../../../../Scripting/Packages-&-Templates.md) before the `placeholder`.
+must specify a [package](../../../Packages-&-Templates.md) before the `placeholder`.
 
 ??? warning "HolographicDisplays: Potential lags"
     The HolographicDisplays documentation warns against using too many individual hologram placeholders since they are rendered

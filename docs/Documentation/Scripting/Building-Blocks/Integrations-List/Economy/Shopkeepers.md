@@ -1,4 +1,4 @@
-## Shopkeepers[](http://dev.bukkit.org/bukkit-plugins/shopkeepers/)
+# Shopkeepers[](http://dev.bukkit.org/bukkit-plugins/shopkeepers/)
 
 ### Conditions
 

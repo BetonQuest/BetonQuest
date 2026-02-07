@@ -1,4 +1,4 @@
-## RedisChat[](https://emibergo.gitbook.io/redischat/)
+# RedisChat[](https://emibergo.gitbook.io/redischat/)
 
 ### Chat Interceptor
 

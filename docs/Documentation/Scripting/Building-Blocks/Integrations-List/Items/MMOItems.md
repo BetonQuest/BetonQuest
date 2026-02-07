@@ -22,7 +22,7 @@ actions:
 
 #### Craft item: `craft`
 
-When MMOItems is installed the [`craft`](../../Objectives-List.md#craft-an-item) objective also processes MMOItems
+When MMOItems is installed the [`craft`](../../Objectives-List.md#craft-craft-an-item) objective also processes MMOItems
 "recipe-amounts" crafting and MMOItems station crafting.
 The amount is based on how many items have actually been crafted, not how often a specific recipe has been used!
 Therefore, a recipe that makes four items at once will let the objective progress by four steps.

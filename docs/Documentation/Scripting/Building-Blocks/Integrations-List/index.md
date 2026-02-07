@@ -27,6 +27,7 @@ The categories are just to make it easier for you to find the plugins you're loo
     - [CraftEngine](./Items/CraftEngine.md)
     - [ItemsAdder](./Items/ItemsAdder.md)
     - [MMOItems](./Items/MMOItems.md)
+    - [MythicMobs](./Items/MythicMobs.md)
     - [Nexo](./Items/Nexo.md)
 
 -    [Holograms](./Holograms/index.md)

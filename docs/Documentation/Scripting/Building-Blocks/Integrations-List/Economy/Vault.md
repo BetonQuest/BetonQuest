@@ -1,4 +1,4 @@
-## Vault[](http://dev.bukkit.org/bukkit-plugins/vault/)
+# Vault[](http://dev.bukkit.org/bukkit-plugins/vault/)
 
 ### Conditions
 

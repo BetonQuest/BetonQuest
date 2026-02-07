@@ -3,7 +3,7 @@
 This is an older hologram plugin.
 
 !!! info
-    Holographic Displays integration supports [BetonQuest Hologram](index.md) features.
+    Holographic Displays integration supports [BetonQuest Hologram](./index.md) features.
 
 !!! warning "Potential lags"
     The HolographicDisplays documentation warns against using too many individual hologram placeholders since they are rendered

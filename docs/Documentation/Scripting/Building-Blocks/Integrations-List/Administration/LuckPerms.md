@@ -1,4 +1,4 @@
-## LuckPerms[](https://luckperms.net/)
+# LuckPerms[](https://luckperms.net/)
 
 ### Context Integration
 

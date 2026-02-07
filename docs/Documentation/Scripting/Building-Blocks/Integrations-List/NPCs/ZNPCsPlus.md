@@ -7,4 +7,4 @@ If you have this plugin you can use its NPCs.
 It is a lightweight packet based plugin.
 
 !!! info
-    ZNPCsPlus integration supports all [BetonQuest NPC](index.md) features.
+    ZNPCsPlus integration supports all [BetonQuest NPC](./index.md) features.

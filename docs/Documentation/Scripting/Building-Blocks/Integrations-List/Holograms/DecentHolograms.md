@@ -3,7 +3,7 @@
 Please note that this integration requires [PlaceholderAPI](../Administration/PlaceholderAPI.md).
 
 !!! info
-    DecentHolograms integration supports [BetonQuest Hologram](index.md) features.
+    DecentHolograms integration supports [BetonQuest Hologram](./index.md) features.
 
 !!! warning "Item syntax"
     **When used by external plugins like BetonQuest, DecentHolograms does not support custom model data in items lines!**

@@ -1,4 +1,4 @@
-## PacketEvents[](https://www.spigotmc.org/resources/80279/)
+# PacketEvents[](https://www.spigotmc.org/resources/80279/)
 
 ### Actions
 

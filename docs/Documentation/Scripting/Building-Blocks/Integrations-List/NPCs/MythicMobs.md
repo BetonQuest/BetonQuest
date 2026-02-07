@@ -4,23 +4,8 @@
     **Required MythicMobs version: _5.3.5_ or above**
 
 !!! info
-    MythicMobs integration supports all [BetonQuest NPC](index.md) features.
-
-### Items
-
-Mythic(Mobs) items are integrated to the [BetonQuest Items](../Items/index.md) system.
-
-In addition, you can also add `quest-item` argument to tag them as "QuestItem".
-
-```YAML title="Example"
-items:
-  crown: "mythic KingsCrown"
-  sword: "mythic SkeletonKingSword quest-item"
-conditions:
-  hasCrown: "armor crown"
-actions:
-  giveSword: "give sword"
-```
+    MythicMobs integration supports [BetonQuest Item](../Items/index.md) features as well.
+    For those, please visit the [MythicMobs](../Items/MythicMobs.md) Item page.
 
 ### Objectives
 

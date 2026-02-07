@@ -5,7 +5,7 @@ it's NPCs are way more immersive. Having Citizens also allows you to use NPCKill
 in addition to the normal NPC functionality.
 
 !!! info
-    In addition Citizens integration supports all [BetonQuest NPC](index.md) features.
+    In addition Citizens integration supports all [BetonQuest NPC](./index.md) features.
 
 ### Actions
 

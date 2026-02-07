@@ -1,4 +1,4 @@
-## JobsReborn[](https://www.spigotmc.org/resources/4216/)
+# JobsReborn[](https://www.spigotmc.org/resources/4216/)
 
 ### Conditions
 
