@@ -20,8 +20,8 @@ public interface BetonQuestConversations {
     /**
      * Evaluates whether a conversation can be started by a given {@link Profile}.
      * <br> <br>
-     * A conversation can only be started if any starting option defined for the conversation is valid to start
-     * based on its conditions.
+     * A conversation can only be started if any starting option defined for the conversation
+     * has its conditions fulfilled.
      *
      * @param profile                the profile that wants to start the conversation
      * @param conversationIdentifier the identifier of the conversation to start

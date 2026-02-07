@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * The NpcManager is responsible for handling NPCs known to BetonQuest.
  * <br> <br>
- * Each npc is uniquely identified by a {@link NpcIdentifier} which consists of the user-defined name in the configuration
+ * Each npc is identified by a {@link NpcIdentifier} which consists of the user-defined name in the configuration
  * as well as the {@link QuestPackage} the npc belongs to.
  */
 @FunctionalInterface

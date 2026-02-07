@@ -207,12 +207,6 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
         }
     }
 
-    /**
-     * Cancels the objective for the given profile.
-     *
-     * @param profile     the {@link Profile} of the player
-     * @param objectiveID ID of the objective
-     */
     @Override
     public void cancel(final Profile profile, final ObjectiveIdentifier objectiveID) {
         final Objective objective = values.get(objectiveID);

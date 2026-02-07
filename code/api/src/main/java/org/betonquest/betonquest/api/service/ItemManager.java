@@ -10,14 +10,14 @@ import org.jetbrains.annotations.Nullable;
 /**
  * The ItemManager is responsible for handling items defined in BetonQuest.
  * <br> <br>
- * Each item is uniquely identified by an {@link ItemIdentifier} which consists of the user-defined name in the
+ * Each item is identified by an {@link ItemIdentifier} which consists of the user-defined name in the
  * configuration as well as the {@link QuestPackage} the item belongs to.
  */
 @FunctionalInterface
 public interface ItemManager {
 
     /**
-     * Obtains an {@link QuestItem} by its {@link ItemIdentifier}.
+     * Obtains a {@link QuestItem} by its {@link ItemIdentifier}.
      * <br> <br>
      * The specified {@link Profile} will be used to resolve any placeholders in the item's instruction.
      * If no profile is specified, the item will be resolved without any profile and any related placeholders

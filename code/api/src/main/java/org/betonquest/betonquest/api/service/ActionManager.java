@@ -31,7 +31,7 @@ public interface ActionManager {
      *
      * @param profile          the profile to execute the action for or null if no profile is involved
      * @param actionIdentifier the identifier of the action to be called
-     * @return whether the action was executed successfully
+     * @return false if the action failed to due to non-existence or unfulfilled conditions, true otherwise
      */
     boolean run(@Nullable Profile profile, ActionIdentifier actionIdentifier);
 
@@ -52,7 +52,7 @@ public interface ActionManager {
      *
      * @param profile           the profile to execute the actions for or null if no profile is involved
      * @param actionIdentifiers the identifiers of the actions to be called
-     * @return whether all actions were executed successfully
+     * @return false if any action failed to due to non-existence or unfulfilled conditions, true otherwise
      */
     boolean run(@Nullable Profile profile, Collection<ActionIdentifier> actionIdentifiers);
 }
