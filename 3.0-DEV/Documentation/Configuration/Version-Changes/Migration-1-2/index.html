@@ -6359,7 +6359,7 @@ If you run such a schedule now you will get a warning message in the console sim
 <div class="highlight"><pre><span></span><code>[15:27:10 WARN]: [BetonQuest] Cannot fire non-static event &#39;announcements.ringBell&#39; without a player!
 </code></pre></div>
 </div>
-<p>To fix this wrap the event (now called action) in a <a href="../../../Scripting/Building-Blocks/Actions-List/#run-for-online-players"><code>runForAll</code> event</a>:</p>
+<p>To fix this wrap the event (now called action) in a <a href="../../../Scripting/Building-Blocks/Actions-List/#runforall-run-for-online-players"><code>runForAll</code> event</a>:</p>
 <div class="grid" markdown>
 <div class="highlight"><span class="filename">Old Syntax</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
 <span class="w">  </span><span class="c1"># Events that require a player (non-static events).</span>
@@ -6412,7 +6412,7 @@ The <code>-</code> is important, it means run independent <img alt="😉" class=
 <p><em>The migration is automated. You shouldn't have to do anything.</em></p>
 <hr />
 <p>As you probably noticed, the <code>ClearEntity</code> event (now called action) and the <code>KillMob</code> event (now called actions) did almost the same thing.
-Both got merged into the <a href="../../../Scripting/Building-Blocks/Actions-List/#remove-entities">RemoveEntity event</a>,
+Both got merged into the <a href="../../../Scripting/Building-Blocks/Actions-List/#removeentity-remove-entities">RemoveEntity event</a>,
 while keeping the syntax more or less the same.</p>
 <div class="grid" markdown>
 <div class="highlight"><span class="filename">Old Syntax</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>

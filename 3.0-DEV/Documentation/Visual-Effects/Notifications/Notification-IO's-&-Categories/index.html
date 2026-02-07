@@ -90,7 +90,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#send-a-notification" class="md-skip">
+        <a href="#notify-send-a-notification" class="md-skip">
           Skip to content
         </a>
       
@@ -2700,13 +2700,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#send-a-notification">
+  <a class="md-nav__link" href="#notify-send-a-notification">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Send a notification
+          <span hidden><code>notify</code> -</span> Send a notification
         </span>
 
       
@@ -2723,13 +2723,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#broadcast-a-notification">
+  <a class="md-nav__link" href="#notifyall-broadcast-a-notification">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Broadcast a notification
+          <span hidden><code>notifyall</code> -</span> Broadcast a notification
         </span>
 
       
@@ -5421,13 +5421,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#send-a-notification">
+  <a class="md-nav__link" href="#notify-send-a-notification">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Send a notification
+          <span hidden><code>notify</code> -</span> Send a notification
         </span>
 
       
@@ -5444,13 +5444,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#broadcast-a-notification">
+  <a class="md-nav__link" href="#notifyall-broadcast-a-notification">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Broadcast a notification
+          <span hidden><code>notifyall</code> -</span> Broadcast a notification
         </span>
 
       
@@ -5912,7 +5912,7 @@ Therefore, you can play a sound whenever a notification is shown. (1)</p>
 <p>Most NotifyIO's have unique settings that somehow change how a notification is displayed. The actual message is 
 either defined in the action that triggers the NotifyIO or the appropriate language file 
 in the <em>lang</em> directory for all built-in notifications. </p>
-<h2 id="send-a-notification">Send a notification<a class="headerlink" href="#send-a-notification" title="Permanent link">🔗</a></h2>
+<h2 id="notify-send-a-notification"><span hidden><code>notify</code> -</span> Send a notification<a class="headerlink" href="#notify-send-a-notification" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This event can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>notify &lt;message&gt; [category] [io] [any io specific settings]</code><br />
 <strong>Description</strong>: Send the notification to the player using the specified notifyIO.</p>
@@ -5997,7 +5997,7 @@ You also need to escape the backslash itself, if you use double quotes for some 
 <span class="w">  </span><span class="c1">#Use multiple languages:</span>
 <span class="w">  </span><span class="nt">multilanguage</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">{en-US}</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">english</span><span class="nv"> </span><span class="s">person!</span><span class="nv"> </span><span class="s">{de-de}</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">german</span><span class="nv"> </span><span class="s">person!</span><span class="nv"> </span><span class="s">{es-ES}</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">spanish</span><span class="nv"> </span><span class="s">person!&quot;</span>
 </code></pre></div>
-<h2 id="broadcast-a-notification">Broadcast a notification<a class="headerlink" href="#broadcast-a-notification" title="Permanent link">🔗</a></h2>
+<h2 id="notifyall-broadcast-a-notification"><span hidden><code>notifyall</code> -</span> Broadcast a notification<a class="headerlink" href="#notifyall-broadcast-a-notification" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="<b>Independent</b><br> This event can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"/></svg></span><br />
 <strong>Syntax</strong>: <code>notifyall &lt;message&gt; [category] [io] [any io specific settings]</code><br />
 <strong>Description</strong>: Send the notification to all players using the specified notifyIO.</p>
