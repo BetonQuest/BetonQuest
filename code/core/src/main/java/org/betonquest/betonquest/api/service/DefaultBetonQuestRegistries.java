@@ -15,44 +15,44 @@ import java.util.function.Supplier;
 public class DefaultBetonQuestRegistries implements BetonQuestRegistries {
 
     /**
-     * The {@link ActionRegistry} supplier to retrieve the {@link ActionRegistry} instance.
+     * The {@link ActionRegistry} supplier.
      */
     private final Supplier<ActionRegistry> actionRegistry;
 
     /**
-     * The {@link ConditionRegistry} supplier to retrieve the {@link ConditionRegistry} instance.
+     * The {@link ConditionRegistry} supplier.
      */
     private final Supplier<ConditionRegistry> conditionRegistry;
 
     /**
-     * The {@link ObjectiveRegistry} supplier to retrieve the {@link ObjectiveRegistry} instance.
+     * The {@link ObjectiveRegistry} supplier.
      */
     private final Supplier<ObjectiveRegistry> objectiveRegistry;
 
     /**
-     * The {@link ItemRegistry} supplier to retrieve the {@link ItemRegistry} instance.
+     * The {@link ItemRegistry} supplier.
      */
     private final Supplier<ItemRegistry> itemRegistry;
 
     /**
-     * The {@link NpcRegistry} supplier to retrieve the {@link NpcRegistry} instance.
+     * The {@link NpcRegistry} supplier.
      */
     private final Supplier<NpcRegistry> npcRegistry;
 
     /**
-     * The {@link PlaceholderRegistry} supplier to retrieve the {@link PlaceholderRegistry} instance.
+     * The {@link PlaceholderRegistry} supplier.
      */
     private final Supplier<PlaceholderRegistry> placeholderRegistry;
 
     /**
      * Creates a new instance of the {@link DefaultBetonQuestRegistries}.
      *
-     * @param actionRegistry      the action registry supplier
-     * @param conditionRegistry   the condition registry supplier
-     * @param objectiveRegistry   the objective registry supplier
-     * @param itemRegistry        the item registry supplier
-     * @param npcRegistry         the npc registry supplier
-     * @param placeholderRegistry the placeholder registry supplier
+     * @param actionRegistry      the {@link ActionRegistry} supplier
+     * @param conditionRegistry   the {@link ConditionRegistry} supplier
+     * @param objectiveRegistry   the {@link ObjectiveRegistry} supplier
+     * @param itemRegistry        the {@link ItemRegistry} supplier
+     * @param npcRegistry         the {@link NpcRegistry} supplier
+     * @param placeholderRegistry the {@link PlaceholderRegistry} supplier
      */
     public DefaultBetonQuestRegistries(final Supplier<ActionRegistry> actionRegistry, final Supplier<ConditionRegistry> conditionRegistry,
                                        final Supplier<ObjectiveRegistry> objectiveRegistry, final Supplier<ItemRegistry> itemRegistry,

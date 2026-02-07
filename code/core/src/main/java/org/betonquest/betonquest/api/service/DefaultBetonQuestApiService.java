@@ -13,37 +13,37 @@ import java.util.function.Supplier;
 public class DefaultBetonQuestApiService implements BetonQuestApiService {
 
     /**
-     * The {@link ProfileProvider} supplier to retrieve the {@link ProfileProvider} instance.
+     * The {@link ProfileProvider} supplier.
      */
     private final Supplier<ProfileProvider> profileProvider;
 
     /**
-     * The {@link QuestPackageManager} supplier to retrieve the {@link QuestPackageManager} instance.
+     * The {@link QuestPackageManager} supplier.
      */
     private final Supplier<QuestPackageManager> packageManager;
 
     /**
-     * The {@link BetonQuestLoggerFactory} supplier to retrieve the {@link BetonQuestLoggerFactory} instance.
+     * The {@link BetonQuestLoggerFactory} supplier.
      */
     private final Supplier<BetonQuestLoggerFactory> loggerFactory;
 
     /**
-     * The {@link BetonQuestInstructions} supplier to retrieve the {@link BetonQuestInstructions} instance.
+     * The {@link BetonQuestInstructions} supplier.
      */
     private final Supplier<BetonQuestInstructions> instructions;
 
     /**
-     * The {@link BetonQuestConversations} supplier to retrieve the {@link BetonQuestConversations} instance.
+     * The {@link BetonQuestConversations} supplier.
      */
     private final Supplier<BetonQuestConversations> conversations;
 
     /**
-     * The {@link BetonQuestRegistries} supplier to retrieve the {@link BetonQuestRegistries} instance.
+     * The {@link BetonQuestRegistries} supplier.
      */
     private final Supplier<BetonQuestRegistries> registries;
 
     /**
-     * The {@link BetonQuestManagers} supplier to retrieve the {@link BetonQuestManagers} instance.
+     * The {@link BetonQuestManagers} supplier.
      */
     private final Supplier<BetonQuestManagers> managers;
 
@@ -51,19 +51,12 @@ public class DefaultBetonQuestApiService implements BetonQuestApiService {
      * Creates a new instance of the {@link DefaultBetonQuestApiService}.
      *
      * @param profileProvider the {@link ProfileProvider} supplier
-     *                        to retrieve the {@link ProfileProvider} instance.
      * @param packageManager  the {@link QuestPackageManager} supplier
-     *                        to retrieve the {@link QuestPackageManager} instance.
      * @param loggerFactory   the {@link BetonQuestLoggerFactory} supplier
-     *                        to retrieve the {@link BetonQuestLoggerFactory} instance.
      * @param instructions    the {@link BetonQuestInstructions} supplier
-     *                        to retrieve the {@link BetonQuestInstructions} instance.
      * @param conversations   the {@link BetonQuestConversations} supplier
-     *                        to retrieve the {@link BetonQuestConversations} instance.
      * @param registries      the {@link BetonQuestRegistries} supplier
-     *                        to retrieve the {@link BetonQuestRegistries} instance.
      * @param managers        the {@link BetonQuestManagers} supplier
-     *                        to retrieve the {@link BetonQuestManagers} instance.
      */
     public DefaultBetonQuestApiService(final Supplier<ProfileProvider> profileProvider, final Supplier<QuestPackageManager> packageManager,
                                        final Supplier<BetonQuestLoggerFactory> loggerFactory, final Supplier<BetonQuestInstructions> instructions,

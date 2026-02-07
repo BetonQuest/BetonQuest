@@ -8,38 +8,38 @@ import java.util.function.Supplier;
 public class DefaultBetonQuestManagers implements BetonQuestManagers {
 
     /**
-     * The {@link ActionManager} supplier to retrieve the {@link ActionManager} instance.
+     * The {@link ActionManager} supplier.
      */
     private final Supplier<ActionManager> actionManager;
 
     /**
-     * The {@link ConditionManager} supplier to retrieve the {@link ConditionManager} instance.
+     * The {@link ConditionManager} supplier.
      */
     private final Supplier<ConditionManager> conditionManager;
 
     /**
-     * The {@link ObjectiveManager} supplier to retrieve the {@link ObjectiveManager} instance.
+     * The {@link ObjectiveManager} supplier.
      */
     private final Supplier<ObjectiveManager> objectiveManager;
 
     /**
-     * The {@link ItemManager} supplier to retrieve the {@link ItemManager} instance.
+     * The {@link ItemManager} supplier.
      */
     private final Supplier<ItemManager> itemManager;
 
     /**
-     * The {@link NpcManager} supplier to retrieve the {@link NpcManager} instance.
+     * The {@link NpcManager} supplier.
      */
     private final Supplier<NpcManager> npcManager;
 
     /**
      * Creates a new instance of the {@link DefaultBetonQuestManagers}.
      *
-     * @param actionManager    the action manager supplier
-     * @param conditionManager the condition manager supplier
-     * @param objectiveManager the objective manager supplier
-     * @param itemManager      the item manager supplier
-     * @param npcManager       the npc manager supplier
+     * @param actionManager    the {@link ActionManager} supplier
+     * @param conditionManager the {@link ConditionManager} supplier
+     * @param objectiveManager the {@link ObjectiveManager} supplier
+     * @param itemManager      the {@link ItemManager} supplier
+     * @param npcManager       the {@link NpcManager} supplier
      */
     public DefaultBetonQuestManagers(final Supplier<ActionManager> actionManager, final Supplier<ConditionManager> conditionManager,
                                      final Supplier<ObjectiveManager> objectiveManager, final Supplier<ItemManager> itemManager,

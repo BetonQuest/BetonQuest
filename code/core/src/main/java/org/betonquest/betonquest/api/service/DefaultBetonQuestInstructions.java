@@ -30,32 +30,32 @@ import java.util.function.Supplier;
 public class DefaultBetonQuestInstructions implements BetonQuestInstructions {
 
     /**
-     * The {@link Placeholders} supplier to retrieve the {@link Placeholders} instance.
+     * The {@link Placeholders} supplier.
      */
     private final Supplier<Placeholders> placeholders;
 
     /**
-     * The {@link QuestPackageManager} supplier to retrieve the {@link QuestPackageManager} instance.
+     * The {@link QuestPackageManager} supplier.
      */
     private final Supplier<QuestPackageManager> packageManager;
 
     /**
-     * The {@link ArgumentParsers} supplier to retrieve the {@link ArgumentParsers} instance.
+     * The {@link ArgumentParsers} supplier.
      */
     private final Supplier<ArgumentParsers> argumentParsers;
 
     /**
-     * The {@link BetonQuestLoggerFactory} supplier to retrieve the {@link BetonQuestLoggerFactory} instance.
+     * The {@link BetonQuestLoggerFactory} supplier.
      */
     private final Supplier<BetonQuestLoggerFactory> loggerFactory;
 
     /**
      * Creates a new instance of the {@link DefaultBetonQuestInstructions}.
      *
-     * @param placeholders    the placeholders supplier
-     * @param packageManager  the package manager supplier
-     * @param argumentParsers the argument parsers supplier
-     * @param loggerFactory   the logger factory supplier
+     * @param placeholders    the {@link Placeholders} supplier
+     * @param packageManager  the {@link QuestPackageManager} supplier
+     * @param argumentParsers the {@link ArgumentParsers} supplier
+     * @param loggerFactory   the {@link BetonQuestLoggerFactory} supplier
      */
     public DefaultBetonQuestInstructions(final Supplier<Placeholders> placeholders, final Supplier<QuestPackageManager> packageManager,
                                          final Supplier<ArgumentParsers> argumentParsers, final Supplier<BetonQuestLoggerFactory> loggerFactory) {
