@@ -10,7 +10,7 @@ Some of them are only useful when exported for use in other plugins through the 
 
 ## Quest types
 
-### Objective
+### <span hidden>`objective` -</span> Objective
 
 __Context__: @snippet:placeholder-meta:online-offline@  
 __Syntax__: `objective.<id>.<property>`  
@@ -25,7 +25,7 @@ All properties are described in "Objectives List" chapter.
 %objective.kill_zombies.left%
 ```
 
-### Condition
+### <span hidden>`condition` -</span> Condition
 
 __Context__: @snippet:placeholder-meta:online-offline@  
 __Syntax__: `condition.<id>.[papiMode]`  
@@ -42,7 +42,7 @@ the *messages.yml* config.
 %condition.myCondition.papiMode%
 ``` 
 
-### Constant
+### <span hidden>`constant` -</span> Constant
 
 __Context__: @snippet:placeholder-meta:independent@  
 __Syntax__: `constant.<name>`  
@@ -70,7 +70,7 @@ The proper syntax is `%questPackage>constant.constantName%`.
 
 ## Data types
 
-### Point
+### <span hidden>`point` -</span> Point
 
 __Context__: @snippet:placeholder-meta:online-offline@  
 __Syntax__: `point.<category>.<amount|left>`  
@@ -84,7 +84,7 @@ The first argument is the name of a category and the second argument is either `
 %point.reputation.left:15%
 ```
 
-### Global point
+### <span hidden>`globalpoint` -</span> Global point
 
 __Context__: @snippet:placeholder-meta:independent@  
 __Syntax__: `globalpoint.<category>.<amount|left>`  
@@ -98,7 +98,7 @@ The first argument is the name of a category and the second argument is either `
 %globalpoint.global_knownusers.left:100%
 ```
 
-### Tag
+### <span hidden>`tag` -</span> Tag
 
 __Context__: @snippet:placeholder-meta:online-offline@  
 __Syntax__: `tag.<name>.[papiMode]`  
@@ -113,7 +113,7 @@ in the messages.yml config.
 %tag.test.papiMode%
 ```
 
-### Global tag
+### <span hidden>`globaltag` -</span> Global tag
 
 __Context__: @snippet:placeholder-meta:independent@  
 __Syntax__: `globaltag.<name>.[papiMode]`  
@@ -130,7 +130,7 @@ in the messages.yml config.
 
 ## Others
 
-### Evaluate
+### <span hidden>`eval` -</span> Evaluate
 
 __Context__: @snippet:placeholder-meta:independent@  
 __Syntax__: `eval.<expression>`  
@@ -146,7 +146,7 @@ this means normally you write `\%` and in the next level you need to write `\\\%
 %eval.player.\%eval.objective.\\\%objective.otherStore.targetStore\\\%.displayType\%%
 ```
 
-### Item property
+### <span hidden>`item` -</span> Item property
 
 __Context__: @snippet:placeholder-meta:independent@  
 __Syntax__: `item.<id>.<property>`  
@@ -166,7 +166,7 @@ Both `name` and `lore` supports the `raw` subargument to get the text without fo
 %item.epic_sword.lore:0.raw%
 ```
 
-### Item durability
+### <span hidden>`itemdurability` -</span> Item durability
 
 __Context__: @snippet:placeholder-meta:online@  
 __Syntax__: `itemdurability.<slot>.[relative].[digits|percent]`  
@@ -185,7 +185,7 @@ Additionally, you get the output in `percent` (inclusive the '%' symbol).
 %itemdurability.HEAD.relative.digits:5%
 ```
 
-### Location
+### <span hidden>`location` -</span> Location
 
 __Context__: @snippet:placeholder-meta:online@  
 __Syntax__: `location.<format>.[precision]`  
@@ -214,7 +214,7 @@ the placeholder will resolve.
 %location.ulfLong.5% # -> 325.54268;121.32186;814.45824;myWorldName;12.0;6.0
 ```
 
-### Calculate
+### <span hidden>`math` -</span> Calculate
 
 __Context__: @snippet:placeholder-meta:independent@  
 __Syntax__: `math.calc:<calculation>`  
@@ -247,7 +247,7 @@ When the calculation fails `0` will be returned and the reason logged.
 %math.calc:64\%32%
 ```
 
-### Npc
+### <span hidden>`npc` -</span> Npc
 
 __Context__: @snippet:placeholder-meta:independent@  
 __Syntax__: `npc.<id>.<property>`  
@@ -259,7 +259,7 @@ Arguments:
   
 - `name` - Return Npc name  
 - `full_name` - Return Npc name with formatting  
-- `location` - Return Npc location in the specified format, for details see the [location placeholder](#location).
+- `location` - Return Npc location in the specified format, for details see the [location placeholder](#location-location).
   The general syntax is `%npc.<id>.location.<mode>.<precision>%`.
 
 ```scss title="Example"
@@ -271,7 +271,7 @@ Arguments:
 %npc.mayor.location.ulfLong.5% # -> 325.54268;121.32186;814.45824;npcWorldName;12.0;6.0
 ```
 
-### Player
+### <span hidden>`player` -</span> Player
 
 __Context__: @snippet:placeholder-meta:online-offline@  
 __Syntax__: `player.<format>`  
@@ -287,7 +287,7 @@ The placeholder `%player%` is the same as `%player.name%` and will display the n
 %player.uuid%
 ```
 
-### Quester
+### <span hidden>`quester` -</span> Quester
 
 __Context__: @snippet:placeholder-meta:online-offline@  
 __Syntax__: `quester`  
@@ -299,7 +299,7 @@ If the player is not in a conversation, the placeholder is empty.
 %quester%
 ```
 
-### Random
+### <span hidden>`randomnumber` -</span> Random
 
 __Context__: @snippet:placeholder-meta:independent@  
 __Syntax__: `randomnumber.<whole|decimal>.<min>~<max>`  
@@ -319,13 +319,13 @@ Note that the first value is returned when it is higher than the second.
 %randomnumber.decimal~1.0~{location.y}%
 ```
 
-### Synchronization
+### <span hidden>`sync` -</span> Synchronization
 
 __Context__: @snippet:placeholder-meta:online-offline-independent@  
 __Syntax__: `sync.<expression>`  
 __Description__: Represents the value of the specified placeholder but resolved on the server's main thread.
 
-Its syntax is identical to the [eval placeholder](#evaluate), but you should only use it if syncing is required.
+Its syntax is identical to the [eval placeholder](#eval-evaluate), but you should only use it if syncing is required.
 If you encapsule multiple evaluations with `sync`, all sub-evaluations will be executed on the server's main thread 
 and should be done with `eval` instead.
 
@@ -334,7 +334,7 @@ and should be done with `eval` instead.
 %sync.player.\%eval.objective.\\\%objective.otherStore.targetStore\\\%.displayType\%%
 ```
 
-### Plugin version
+### <span hidden>`version` -</span> Plugin version
 
 __Context__: @snippet:placeholder-meta:independent@  
 __Syntax__: `version.[plugin]`  

@@ -35,7 +35,7 @@ Arguments referring to a package are prefixed in the format `package>` and marke
 * `/bq item <item(ID)> <serializer>` - Creates an item under the item(ID), based on the item you are holding.
 * `/bq give <item(ID)>` - Gives you the item defined under the item(ID).
 * `/bq variable <playerName> <objective(ID)> <list/set/del> [key/filter] [value]` - Manage variables stored in a 
-[`variable`](../Scripting/Building-Blocks/Objectives-List.md#variable-storage) objective.
+[`variable`](../Scripting/Building-Blocks/Objectives-List.md#variable-variable-storage) objective.
 * `/bq purge <playerName>` - Deletes all player's data from the database.
 * `/bq rename <tag/point/globalpoint/objective/entry> <oldName(ID)> <newName(ID)>` - Renames the specified thing in 
   the database.
@@ -191,7 +191,7 @@ The _serializer_ defines the format in which the item is saved (and loaded).
 The '`/bq give QuestPackage>nettlebane`' command will simply give you specified item.
 
 #### Manage variables: `variable`
-This command relates to active [variable objectives](../Scripting/Building-Blocks/Objectives-List.md#variable-storage).
+This command relates to active [variable objectives](../Scripting/Building-Blocks/Objectives-List.md#variable-variable-storage).
 You can list all `key-value` pairs with an optional objective filter.
 Further can such a value be set for a key with `set <key> <value>` or an existing pair removed by using `del <key>`.
 

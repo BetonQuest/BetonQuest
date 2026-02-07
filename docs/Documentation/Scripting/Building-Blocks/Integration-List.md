@@ -653,7 +653,7 @@ actions:
 
 #### Craft item: `craft`
 
-When MMOItems is installed the [`craft`](./Objectives-List.md#craft-an-item) objective also processes MMOItems
+When MMOItems is installed the [`craft`](./Objectives-List.md#craft-craft-an-item) objective also processes MMOItems
 "recipe-amounts" crafting and MMOItems station crafting.
 The amount is based on how many items have actually been crafted, not how often a specific recipe has been used!
 Therefore, a recipe that makes four items at once will let the objective progress by four steps.
@@ -1007,7 +1007,7 @@ If you have this plugin, BetonQuest will add a `betonquest` placeholder to it. Y
 
 ### Placeholder: `betonquest`
 
-You can even use BetonQuests conditions using the [condition placeholder](Placeholders-List.md#condition)!  
+You can even use BetonQuests conditions using the [condition placeholder](Placeholders-List.md#condition-condition)!  
 You can use all BetonQuest placeholders in any other plugin that supports PlaceholderAPI.
 This works using the `%betonquest_package:placeholder%` placeholder. The `package:` part is the name of a package.
 The `placeholder` part is just a [BetonQuest placeholder](Placeholders-List.md) without percentage characters, like `point.beton.amount`.

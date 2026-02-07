@@ -340,7 +340,7 @@ conversations:
 #### 5.3.2 Handing out the armor
 
 Now add an action to reward the player on your own. Tip: You must use the
-[`give`](../../../Documentation/Scripting/Building-Blocks/Actions-List.md#give-items) action to hand out items that are defined
+[`give`](../../../Documentation/Scripting/Building-Blocks/Actions-List.md#give-give-items) action to hand out items that are defined
 in the `items` section of your "_package.yml_" file.
 
 ??? example "SPOILER: Solution"

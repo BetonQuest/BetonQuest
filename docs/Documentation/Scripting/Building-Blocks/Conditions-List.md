@@ -5,7 +5,7 @@ tags:
 ---
 # Conditions List
 
-## Has advancement
+## <span hidden>`advancement` -</span> Has advancement
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `advancement <name>`  
@@ -22,7 +22,7 @@ conditions:
   killedAMob: "advancement minecraft:adventure/kill_a_mob"
 ```
 
-## Conjunction
+## <span hidden>`and` -</span> Conjunction
 
 __Context__: @snippet:condition-meta:independent@  
 __Syntax__: `and <conditions>`  
@@ -35,7 +35,7 @@ conditions:
   hasArmor: "and has_helmet,has_chestplate,has_leggings,has_boots"
 ```
 
-## Is wearing armor
+## <span hidden>`armor` -</span> Is wearing armor
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `armor <item>`  
@@ -46,7 +46,7 @@ conditions:
   armorHelmet: "armor helmet_of_concrete"
 ```
 
-## Is in biome
+## <span hidden>`biome` -</span> Is in biome
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `biome <biome>`  
@@ -59,7 +59,7 @@ conditions:
   inSavannaRock: "biome savanna_rock"
 ```
 
-## Is burning
+## <span hidden>`burning` -</span> Is burning
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `burning`  
@@ -70,7 +70,7 @@ conditions:
   isOnFire: "burning"
 ```
 
-## Check conditions inline
+## <span hidden>`check` -</span> Check conditions inline
 
 __Context__: @snippet:condition-meta:independent@  
 __Syntax__: `check <conditions>`  
@@ -83,7 +83,7 @@ conditions:
   fulfillRequirements: "check ^tag beton ^item emerald:5 ^location 100;200;300;survival_nether;5 ^experience 20"
 ```
 
-## Are items in a chest
+## <span hidden>`chestitem` -</span> Are items in a chest
 
 __Context__: @snippet:condition-meta:independent@  
 __Syntax__: `chestitem <location> <items>`  
@@ -96,7 +96,7 @@ conditions:
   emeraldsInChest: "chestitem 100;200;300;world emerald:5,sword"
 ```
 
-## Is conversation startable
+## <span hidden>`conversation` -</span> Is conversation startable
 
 __Context__: @snippet:condition-meta:online-offline@  
 __Syntax__: `conversation <conversation>`  
@@ -109,7 +109,7 @@ conditions:
   isInInnkeeperConv: "conversation innkeeper"
 ```
 
-## Is day of the week
+## <span hidden>`dayofweek` -</span> Is day of the week
 
 __Context__: @snippet:condition-meta:independent@  
 __Syntax__: `dayofweek <day>`  
@@ -122,7 +122,7 @@ conditions:
   isSunday: "dayofweek sunday"
 ```
 
-## Has potion effect
+## <span hidden>`effect` -</span> Has potion effect
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `effect <effect>`  
@@ -135,7 +135,7 @@ conditions:
   hasSpeed: "effect SPEED"
 ```
 
-## Has empty inventory slots
+## <span hidden>`empty` -</span> Has empty inventory slots
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `empty <amount>`  
@@ -148,7 +148,7 @@ conditions:
   hasFiveEmptySlots: "empty 5"
 ```
 
-## Are entities in area
+## <span hidden>`entities` -</span> Are entities in area
 
 __Context__: @snippet:condition-meta:independent@  
 __Syntax__: `entities <entities> <location> <range> [name] [marked]`  
@@ -165,7 +165,7 @@ conditions:
   daemonsSpawned: "entities ZOMBIE:2 100;200;300;world 10 name:Daemon"
 ```
 
-## Evaluate a condition
+## <span hidden>`eval` -</span> Evaluate a condition
 
 __Context__: @snippet:condition-meta:independent@  
 __Syntax__: `eval <expression>`  
@@ -184,7 +184,7 @@ conditions:
    But the placeholder could also be empty, and it could be higher or equal to 5. This is not possible in a normal
    condition.
 
-## Has experience
+## <span hidden>`experience` -</span> Has experience
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `experience <amount>`  
@@ -199,7 +199,7 @@ conditions:
   hasLevel5dot5: "experience 5.5"
 ```
 
-## Is facing in a direction
+## <span hidden>`facing` -</span> Is facing in a direction
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `facing <direction>`  
@@ -212,7 +212,7 @@ conditions:
   lookingEast: "facing EAST"
 ```
 
-## Is flying
+## <span hidden>`fly` -</span> Is flying
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `fly`  
@@ -223,7 +223,7 @@ conditions:
   isFlying: "fly"
 ```
 
-## Is in gamemode
+## <span hidden>`gamemode` -</span> Is in gamemode
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `gamemode <gamemode>`  
@@ -236,7 +236,7 @@ conditions:
   isInSurvival: "gamemode survival"
 ```
 
-## Has global point
+## <span hidden>`globalpoint` -</span> Has global point
 
 __Context__: @snippet:condition-meta:independent@  
 __Syntax__: `globalpoint <category> <point>`  
@@ -247,7 +247,7 @@ conditions:
   has100Users: "globalpoint global_knownusers 100"
 ```
 
-## Has global tag
+## <span hidden>`globaltag` -</span> Has global tag
 
 __Context__: @snippet:condition-meta:independent@  
 __Syntax__: `globaltag <tag>`  
@@ -258,7 +258,7 @@ conditions:
   areNpcsAggressive: "globaltag global_areNPCsAggressive"
 ```
 
-## Has item in a hand
+## <span hidden>`hand` -</span> Has item in a hand
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `hand <item> [offhand]`  
@@ -273,7 +273,7 @@ conditions:
   holdShieldOffhand: "hand QuestShield offhand"
 ```
 
-## Has health
+## <span hidden>`health` -</span> Has health
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `health <amount>`  
@@ -288,7 +288,7 @@ conditions:
   has5dot6Health: "health 5.6"
 ```
 
-## Is below height
+## <span hidden>`height` -</span> Is below height
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `height <amount>`  
@@ -302,7 +302,7 @@ conditions:
   isBelow16: "height 16"
 ```
 
-## Has hunger
+## <span hidden>`hunger` -</span> Has hunger
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `hunger <amount>`  
@@ -315,7 +315,7 @@ conditions:
   has15orMoreHunger: "hunger 15"
 ```
 
-## Is in conversation
+## <span hidden>`inconversation` -</span> Is in conversation
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `inconversation [conversation]`  
@@ -331,7 +331,7 @@ conditions:
   talksToInnkeeper: "inconversation conversation:innkeeper"
 ```
 
-## Has items
+## <span hidden>`item` -</span> Has items
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `item <items>`  
@@ -346,7 +346,7 @@ conditions:
   emeraldsAndGold: "item emerald:5,gold:10"
 ```
 
-## Has durability
+## <span hidden>`itemdurability` -</span> Has durability
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `itemdurability <slot> <amount> [relative]`  
@@ -363,7 +363,7 @@ conditions:
   chestMoreThan50Percent: "itemdurability CHEST 0.5 relative"
 ```
 
-## Has journal entry
+## <span hidden>`journal` -</span> Has journal entry
 
 __Context__: @snippet:condition-meta:online-offline@  
 __Syntax__: `journal <entry>`  
@@ -376,7 +376,7 @@ conditions:
   journalHasWoodStarted: "journal wood_started"
 ```
 
-## Has language selected
+## <span hidden>`language` -</span> Has language selected
 
 __Context__: @snippet:condition-meta:online-offline@  
 __Syntax__: `language <languages>`  
@@ -387,7 +387,7 @@ conditions:
   hasValidLanguage: "language en-US,de-DE,fr-FR"
 ```
 
-## Is at location
+## <span hidden>`location` -</span> Is at location
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `location <location> <radius>`  
@@ -400,7 +400,7 @@ conditions:
   netherEntrance: "location 100;200;300;survival_nether 5"
 ```
 
-## Is looking at a block
+## <span hidden>`looking` -</span> Is looking at a block
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `looking [location | type]`  
@@ -414,7 +414,7 @@ conditions:
   targetingStone: "looking loc:12.0;14.0;-15.0;world type:STONE"
 ```
 
-## Is in moonphase
+## <span hidden>`moonphase` -</span> Is in moonphase
 
 __Context__: @snippet:condition-meta:independent@  
 __Syntax__: `moonphase <moonphase> [world]`  
@@ -433,7 +433,7 @@ conditions:
   playersFirstJoinMoon: "moonphase %ph.player_first_join_moon%"
 ```
 
-## Has distance to NPC
+## <span hidden>`npcdistance` -</span> Has distance to NPC
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `npcdistance <npc> <distance>`  
@@ -449,7 +449,7 @@ conditions:
   canHearBandit: "npcdistance bandit 22"
 ```
 
-## Is NPC at location
+## <span hidden>`npclocation` -</span> Is NPC at location
 
 __Context__: @snippet:condition-meta:independent@  
 __Syntax__: `npclocation <npc> <location> <distance>`  
@@ -466,7 +466,7 @@ conditions:
   nearTarget: "npclocation merchant 4.0;14.0;-20.0;world 22"
 ```
 
-## Compare numbers
+## <span hidden>`numbercompare` -</span> Compare numbers
 
 __Context__: @snippet:condition-meta:independent@  
 __Syntax__: `numbercompare <number1> <operation> <number2>`  
@@ -479,7 +479,7 @@ conditions:
   hasMoreThan100Points: "numbercompare %ph.other_plugin:points% >= 100"
 ```
 
-## Has objective
+## <span hidden>`objective` -</span> Has objective
 
 __Context__: @snippet:condition-meta:online-offline@  
 __Syntax__: `objective <objective>`  
@@ -492,7 +492,7 @@ conditions:
   hasWoodObjective: "objective wood"
 ```
 
-## Alternative
+## <span hidden>`or` -</span> Alternative
 
 __Context__: @snippet:condition-meta:independent@  
 __Syntax__: `or <conditions>`  
@@ -506,7 +506,7 @@ conditions:
   hasOneRequirement: "or night,rain,!has_armor"
 ```
 
-## Match date
+## <span hidden>`partialdate` -</span> Match date
 
 __Context__: @snippet:condition-meta:independent@  
 __Syntax__: `partialdate <pattern>`  
@@ -523,7 +523,7 @@ conditions:
   isEventDate: "partialdate day:1-5,20 year:2017"
 ```
 
-## Check conditions for party 
+## <span hidden>`party` -</span> Check conditions for party 
 
 __Context__: @snippet:condition-meta:independent@  
 __Syntax__: `party <radius> <conditions> [location] [every] [any] [count]`  
@@ -543,7 +543,7 @@ conditions:
   partyRequirements: "party 10 has_tag1,!has_tag2 every:some_item any:some_location,some_other_item count:5"
 ```
 
-## Has permission
+## <span hidden>`permission` -</span> Has permission
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `permission <permission>`  
@@ -556,7 +556,7 @@ conditions:
   essentialsTpaPermissions: "permission essentials.tpa"
 ```
 
-## Has point
+## <span hidden>`point` -</span> Has point
 
 __Context__: @snippet:condition-meta:online-offline@  
 __Syntax__: `point <category> <amount> [equal]`  
@@ -570,7 +570,7 @@ conditions:
   has20BetonPoints: "point beton 20"
 ```
 
-## Is mounted
+## <span hidden>`ride` -</span> Is mounted
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `ride <entity>`  
@@ -584,7 +584,7 @@ conditions:
   anything: "ride any"
 ```
 
-## Random
+## <span hidden>`random` -</span> Random
 
 __Context__: @snippet:condition-meta:independent@  
 __Syntax__: `random <number>`  
@@ -597,7 +597,7 @@ conditions:
   twelfthPercent: "random 12-100"
 ```
 
-## Has armor rating
+## <span hidden>`rating` -</span> Has armor rating
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `rating <amount>`  
@@ -610,7 +610,7 @@ conditions:
   armorRating10: "rating 10"
 ```
 
-## Is real time
+## <span hidden>`realtime` -</span> Is real time
 
 __Context__: @snippet:condition-meta:independent@  
 __Syntax__: `realtime <timespan>`  
@@ -628,7 +628,7 @@ conditions:
   knoppersTimeReal: "realtime 9:30-10"
 ```
 
-## Has scoreboard score
+## <span hidden>`score` -</span> Has scoreboard score
 
 __Context__: @snippet:condition-meta:online-offline@  
 __Syntax__: `score <score> <amount>`  
@@ -644,13 +644,13 @@ conditions:
   hasAtLeastTenKills: "score kills 10"
 ```
 
-## Has scoreboard tag
+## <span hidden>`scoretag` -</span> Has scoreboard tag
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `scoretag <tag>`  
 __Description__: Whether the player has the specified scoreboard tag.
 
-The kind of tags that are used by vanilla Minecraft and not the [betonquest tags](#has-tag).
+The kind of tags that are used by vanilla Minecraft and not the [betonquest tags](#tag-has-tag).
 
 | Parameter        | Syntax   | Default Value          | Explanation                     |
 |------------------|----------|------------------------|---------------------------------|
@@ -661,7 +661,7 @@ conditions:
   hasVanillaTag: "scoretag vanilla_tag"
 ```
 
-## Is sneaking
+## <span hidden>`sneak` -</span> Is sneaking
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `sneak`  
@@ -674,13 +674,13 @@ conditions:
   isSneaking: "sneak"
 ```
     
-## Compare stage
+## <span hidden>`stage` -</span> Compare stage
 
 __Context__: @snippet:condition-meta:online-offline@  
 __Syntax__: `stage <objective> <comparator> <stage>`  
 __Description__: Compare the player's current stage with the specified stage using its index numbers.
 
-For more take a look at the [stage objective](./Objectives-List.md#complete-stages).  
+For more take a look at the [stage objective](./Objectives-List.md#stage-complete-stages).  
 The valid operations are: `<`, `<=`, `=`, `!=`, `>=`, `>`.
 
 | Parameter         | Syntax     | Default Value          | Explanation                              |
@@ -695,7 +695,7 @@ conditions:
   isDeliverCookiesOrAbove: "stage bakeCookies > cookCookies"
 ```
 
-## Has tag
+## <span hidden>`tag` -</span> Has tag
 
 __Context__: @snippet:condition-meta:online-offline@  
 __Syntax__: `tag <tag>`  
@@ -708,7 +708,7 @@ conditions:
   questCompleted: "tag quest_completed"
 ```
 
-## Matches block
+## <span hidden>`testforblock` -</span> Matches block
 
 __Context__: @snippet:condition-meta:independent@  
 __Syntax__: `testforblock <location> <selector>`  
@@ -721,7 +721,7 @@ conditions:
   stoneSet: "testforblock 100;200;300;world STONE"
 ```
 
-## Is time
+## <span hidden>`time` -</span> Is time
 
 __Context__: @snippet:condition-meta:independent@  
 __Syntax__: `time <timespan> [world]`  
@@ -741,7 +741,7 @@ conditions:
   exactAtTwelveAtPlayersHome: "time 12-12 world:%ph.player_home_world%"
 ```
 
-## Placeholder matches expression
+## <span hidden>`variable` -</span> Placeholder matches expression
 
 __Context__: @snippet:condition-meta:independent@  
 __Syntax__: `variable <placeholder> <regex> [forceSync]`  
@@ -768,7 +768,7 @@ conditions:
    This placeholder is resolved on the main thread. <p>The `someName` part can't be a placeholder!
 4. Works the same as the `denizenPlaceholder` with the only difference it checks for the player the condition is executed with.
 
-## Is weather
+## <span hidden>`weather` -</span> Is weather
 
 __Context__: @snippet:condition-meta:independent@  
 __Syntax__: `weather <weather> [world]`  
@@ -789,7 +789,7 @@ conditions:
   overworldIsRainy: "weather rain world:overworld"
 ```
 
-## Is in world
+## <span hidden>`world` -</span> Is in world
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `world <world>`  

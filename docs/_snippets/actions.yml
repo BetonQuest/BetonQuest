@@ -1,5 +1,5 @@
 cancel: |-
-  ## Call a quest canceler
+  ## <span hidden>`cancel` -</span> Call a quest canceler
 
   __Context__: @snippet:action-meta:online@  
   __Syntax__: `cancel <canceler> [bypass]`  
@@ -19,7 +19,7 @@ cancel: |-
   ```
 
 notify: |-
-  ## Send a notification
+  ## <span hidden>`notify` -</span> Send a notification
 
   __Context__: @snippet:action-meta:online@  
   __Syntax__: `notify <message> [category] [io] [any io specific settings]`  
@@ -82,7 +82,7 @@ notify: |-
   ```
 
 notify-all: |-
-  ## Broadcast a notification
+  ## <span hidden>`notifyall` -</span> Broadcast a notification
 
   __Context__: @snippet:action-meta:independent@  
   __Syntax__: `notifyall <message> [category] [io] [any io specific settings]`  
