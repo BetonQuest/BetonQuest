@@ -2,6 +2,8 @@
 icon: fontawesome/solid/play
 tags:
   - Action
+search:
+  boost: 2
 ---
 # Actions List
 

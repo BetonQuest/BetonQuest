@@ -1,5 +1,7 @@
 ---
 icon: material/upload
+search:
+  boost: 0.8
 ---
 This guide explains how to migrate from the latest BetonQuest 2.X version to BetonQuest 3.X.
 

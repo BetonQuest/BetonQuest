@@ -1,5 +1,7 @@
 ---
 icon: material/upload
+search:
+  boost: 0.8
 ---
 This guide explains how to migrate from BetonQuest 1.12.X or any BetonQuest 2.0.0 dev build to BetonQuest
 2.0.0.

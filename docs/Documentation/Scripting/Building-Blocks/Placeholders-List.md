@@ -2,6 +2,8 @@
 icon: material/variable-box
 tags:
   - Placeholder
+search:
+  boost: 2
 ---
 # Placeholders List
 

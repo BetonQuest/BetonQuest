@@ -2,6 +2,8 @@
 icon: octicons/codescan-checkmark-16
 tags:
   - Objective
+search:
+  boost: 2
 ---
 # Objectives List
 

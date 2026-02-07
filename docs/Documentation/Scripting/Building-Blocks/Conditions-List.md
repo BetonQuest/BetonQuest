@@ -2,6 +2,8 @@
 icon: octicons/question-16
 tags:
   - Condition
+search:
+  boost: 2
 ---
 # Conditions List
 
