@@ -60,6 +60,7 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 - [3.0.0-DEV-494 - Add native `menu` conversation io](#300-dev-494-add-native-menu-conversation-io) :white_sun_cloud:
 - [3.0.0-DEV-511 - Dynamize `top:` Hologram Line](#300-dev-511-dynamize-top-hologram-line) :sun:
 - [3.0.0-DEV-562 - Rename `events` to `actions`](#300-dev-562-rename-events-to-actions) :sun:
+- [3.0.0-DEV-635 - Brewery Item Type](#300-dev-635-brewery-item-type) :thunder_cloud_rain:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :thunder_cloud_rain:
 
@@ -1069,3 +1070,45 @@ BetonQuest "Events" are renamed to "Actions".
     ```
     
     </div>
+
+### 3.0.0-DEV-635 - Brewery Item Type :thunder_cloud_rain:
+
+Brewery is now integrated into the item system.
+
+Instead of using brewery specific item conditions and actions it now uses the standard implementations.
+The following obsolete implementations were removed:
+
+- `hasbrew` condition
+- `givebrew` action
+- `takebrew` action
+
+<div class="grid" markdown>
+
+```YAML title="Old Syntax"
+conditions:
+  brewName: hasbrew 2 "Apple Liquor"
+  brewId: hasbrew 2 apple_liquor mode:id
+actions:
+  giveName: givebrew 1 10 "Apple Liquor"
+  giveId: givebrew 1 10 apple_liquor mode:id
+
+  takeName: takebrew 2 "Apple Liquor"
+  takeId: takebrew 2 apple_liquor mode:id
+```
+
+```YAML title="New Syntax"
+items:
+  brewName: brew "Apple Liquor" 2
+  brewId: brew apple_liquor 2 mode:id
+conditions:
+  brewName: item brewName
+  brewId: item brewId
+actions:
+  giveName: give brewName
+  giveId: give brewId
+
+  takeName: take brewName
+  takeId: take brewId
+```
+
+</div>

@@ -75,6 +75,25 @@ actions:
 
 ## Brewery[](https://www.spigotmc.org/resources/3082/) & BreweryX[](https://www.spigotmc.org/resources/114777/)
 
+Brewery usage is integrated to the [Items](../../Features/Items.md) system and thus used for actions and conditions.
+
+The first argument is the name and the second the quality.
+You can specify the mode to select the brew by either the `name` or its `id`, defaulting to the name.  
+The quality is not used for determining equality, only for generating the brew item.  
+In addition, you can also add `quest-item` argument to tag them as "QuestItem".
+
+```YAML title="Example"
+items:
+  appleLiquor: 'brew "Apple Liquor" 2'
+  hotChocolate: "brew hot_choc 10 mode:id quest-item"
+conditions:
+  hasAppleLiquor: "item appleLiquor"
+  brewId: "hand hotChocolate"
+actions:
+  giveHotChocolate: "give hot_chocolate"
+  takeLiquor: "take appleLiquor"
+```
+
 ### Conditions
 
 #### Drunk: `drunk`
@@ -93,44 +112,6 @@ This condition is true if the player has the given drunk quality. Only argument 
 ```YAML title="Example"
 conditions:
   quality3: "drunkquality 3"
-```
-
-#### Has Brew: `hasbrew`
-
-This condition is true if the player has the given brew with the specified amount in his inventory.
-
-You can specify the mode to select the brew by either the name or its id, defaulting to the name.
-
-```YAML title="Example"
-conditions:
-  hasMyBrew: 'hasbrew 2 "MY BREW"'
-  hasBrew17: "hasbrew 2 brew_17 mode:id"
-```
-
-### Actions
-
-#### Give Brew: `givebrew`
-
-Gives the player the specified drink. The first number is the amount, and the second number is the quality of the drink.
-
-You can specify the mode to select the brew by either the name or its id, defaulting to the name.
-
-```YAML title="Example"
-actions:
-  giveMyBrew: 'givebrew 1 10 "MY BREW"'
-  giveBrew17: "givebrew 1 10 brew_17 mode:id"
-```
-
-#### Take Brew: `takebrew`
-
-Removes the specified drink from the players inventory. An amount needs to be specified.
-
-You can specify the mode to select the brew by either the name or its id, defaulting to the name.
-
-```YAML title="Example"
-actions:
-  takeMyBrew: 'takebrew 2 "MY OTHER BREW"'
-  takeBrew17: "takebrew 2 brew_quest_3"
 ```
 
 ## Citizens[](https://www.spigotmc.org/resources/13811/)

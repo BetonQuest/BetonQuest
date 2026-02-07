@@ -64,6 +64,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `nexo` item type
 - `craftEngine` item type
 - `itemsAdder` item type
+- `brew` item type
 ### Changed
 - Spigot is no longer supported, paper is now required 
 - message.yml file was deleted and instead the lang folder now contains all translations
@@ -143,6 +144,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - legacy multiply with `*` for points
 - dependency PaperLib since its discontinued
 - aliases `/q`, `/j` and `/b` to improve compatibility with other plugins by actively reducing conflicts on command names
+- `Brewery` item condition and actions, in favor of the built-in ones
 ### Fixed
 - Reloading plugin did not reload Menu config
 - potions generated not extended/upgraded since 2.2.1
