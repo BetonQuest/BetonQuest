@@ -66,7 +66,7 @@ class ActionSchedulingTest {
                 new DefaultSectionInstruction(mock(ArgumentParsers.class), mock(Placeholders.class),
                         packManager, onMock.getArgument(0), onMock.getArgument(1), loggerFactory));
         scheduling = new ActionScheduling(mock(BetonQuestLogger.class), instructionApi,
-                packManager, scheduleTypes, new ScheduleIdentifierFactory(packManager));
+                scheduleTypes, new ScheduleIdentifierFactory(packManager));
     }
 
     @SuppressWarnings("unchecked")

@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.placeholder.point;
 import org.apache.commons.lang3.tuple.Triple;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 
 import java.util.Locale;
 
@@ -21,19 +20,12 @@ public abstract class AbstractPointPlaceholderFactory<T> {
     protected final T dataHolder;
 
     /**
-     * The logger instance for this factory.
-     */
-    protected final BetonQuestLogger logger;
-
-    /**
      * Create a new Point placeholder factory.
      *
      * @param dataHolder the data holder
-     * @param logger     the logger instance for this factory
      */
-    public AbstractPointPlaceholderFactory(final T dataHolder, final BetonQuestLogger logger) {
+    public AbstractPointPlaceholderFactory(final T dataHolder) {
         this.dataHolder = dataHolder;
-        this.logger = logger;
     }
 
     /**

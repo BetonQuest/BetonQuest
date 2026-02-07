@@ -3,7 +3,6 @@ package org.betonquest.betonquest.kernel.processor.quest;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -11,7 +10,6 @@ import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.instruction.argument.parser.PackageIdentifierParser;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
@@ -75,8 +73,6 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
      * Create a new Objective Processor to store Objectives and starts/stops/resumes them.
      *
      * @param log                        the custom logger for this class
-     * @param placeholders               the {@link Placeholders} to create and resolve placeholders
-     * @param packManager                the quest package manager to get quest packages from
      * @param objectiveTypes             the available objective types
      * @param objectiveIdentifierFactory the factory to create objective identifiers
      * @param instructionApi             the instruction api
@@ -84,8 +80,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
      * @param service                    the event service for objectives
      * @param plugin                     the plugin instance to associate registered listener with
      */
-    public ObjectiveProcessor(final BetonQuestLogger log, final Placeholders placeholders,
-                              final QuestPackageManager packManager, final ObjectiveTypeRegistry objectiveTypes,
+    public ObjectiveProcessor(final BetonQuestLogger log, final ObjectiveTypeRegistry objectiveTypes,
                               final IdentifierFactory<ObjectiveIdentifier> objectiveIdentifierFactory,
                               final PluginManager pluginManager, final ObjectiveServiceProvider service,
                               final InstructionApi instructionApi, final Plugin plugin) {

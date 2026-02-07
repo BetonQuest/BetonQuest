@@ -3,7 +3,6 @@ package org.betonquest.betonquest.kernel.processor;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.ConversationApi;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.identifier.CompassIdentifier;
@@ -22,7 +21,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcHider;
 import org.betonquest.betonquest.api.text.Text;
@@ -104,9 +102,6 @@ public record QuestRegistry(
                                        final BaseFeatureRegistries otherRegistries, final PluginMessage pluginMessage,
                                        final ParsedSectionTextCreator textCreator, final ProfileProvider profileProvider,
                                        final PlayerDataStorage playerDataStorage, final IdentifierTypeRegistry identifiers) throws QuestException {
-        final Placeholders placeholders = coreQuestRegistry.placeholders();
-        final QuestPackageManager packManager = plugin.getQuestPackageManager();
-
         final IdentifierFactory<ItemIdentifier> itemIdentifierFactory = identifiers.getFactory(ItemIdentifier.class);
         final IdentifierFactory<QuestCancelerIdentifier> cancelerIdentifierIdentifierFactory = identifiers.getFactory(QuestCancelerIdentifier.class);
         final IdentifierFactory<NpcIdentifier> npcIdentifierFactory = identifiers.getFactory(NpcIdentifier.class);
@@ -121,23 +116,23 @@ public record QuestRegistry(
                 itemIdentifierFactory, otherRegistries.item(), instructionApi);
 
         final ActionScheduling actionScheduling = new ActionScheduling(
-                loggerFactory.create(ActionScheduling.class, "Schedules"), instructionApi, packManager,
+                loggerFactory.create(ActionScheduling.class, "Schedules"), instructionApi,
                 otherRegistries.actionScheduling(), scheduleIdentifierFactory);
         final CancelerProcessor cancelers = new CancelerProcessor(loggerFactory.create(CancelerProcessor.class),
                 loggerFactory, plugin, pluginMessage, instructionApi, textCreator, coreQuestRegistry,
                 playerDataStorage, cancelerIdentifierIdentifierFactory);
         final CompassProcessor compasses = new CompassProcessor(loggerFactory.create(CompassProcessor.class),
-                instructionApi, packManager, textCreator, compassIdentifierFactory);
+                instructionApi, textCreator, compassIdentifierFactory);
         final ConversationProcessor conversations = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class),
                 loggerFactory, plugin, textCreator, otherRegistries.conversationIO(), otherRegistries.interceptor(),
                 instructionApi, pluginMessage, conversationIdentifierFactory);
         final JournalEntryProcessor journalEntries = new JournalEntryProcessor(loggerFactory.create(JournalEntryProcessor.class),
-                placeholders, packManager, entryIdentifierIdentifierFactory, textCreator);
+                entryIdentifierIdentifierFactory, textCreator);
         final JournalMainPageProcessor journalMainPages = new JournalMainPageProcessor(
-                loggerFactory.create(JournalMainPageProcessor.class), instructionApi, packManager, textCreator,
+                loggerFactory.create(JournalMainPageProcessor.class), instructionApi, textCreator,
                 journalMainPageIdentifierFactory);
-        final NpcProcessor npcs = new NpcProcessor(loggerFactory.create(NpcProcessor.class), loggerFactory, placeholders,
-                packManager, npcIdentifierFactory, conversationIdentifierFactory, otherRegistries.npc(), pluginMessage,
+        final NpcProcessor npcs = new NpcProcessor(loggerFactory.create(NpcProcessor.class), loggerFactory,
+                npcIdentifierFactory, conversationIdentifierFactory, otherRegistries.npc(), pluginMessage,
                 plugin, profileProvider, coreQuestRegistry, conversations.getStarter(), instructionApi);
         return new QuestRegistry(log, coreQuestRegistry, actionScheduling, cancelers, compasses, conversations,
                 items, journalEntries, journalMainPages, npcs, new ArrayList<>());

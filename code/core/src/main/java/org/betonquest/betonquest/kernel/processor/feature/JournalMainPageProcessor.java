@@ -2,7 +2,6 @@ package org.betonquest.betonquest.kernel.processor.feature;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.identifier.JournalMainPageIdentifier;
@@ -34,11 +33,10 @@ public class JournalMainPageProcessor extends SectionProcessor<JournalMainPageId
      *
      * @param log               the custom logger for this class
      * @param instructionApi    the instruction api to use
-     * @param packManager       the quest package manager to get quest packages from
      * @param textCreator       the text creator to parse text
      * @param identifierFactory the identifier factory to create {@link JournalMainPageIdentifier}s for this type
      */
-    public JournalMainPageProcessor(final BetonQuestLogger log, final InstructionApi instructionApi, final QuestPackageManager packManager,
+    public JournalMainPageProcessor(final BetonQuestLogger log, final InstructionApi instructionApi,
                                     final ParsedSectionTextCreator textCreator, final IdentifierFactory<JournalMainPageIdentifier> identifierFactory) {
         super(log, instructionApi, identifierFactory, "Journal Main Page", "journal_main_page");
         this.textCreator = textCreator;

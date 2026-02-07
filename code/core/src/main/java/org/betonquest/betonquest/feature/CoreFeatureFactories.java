@@ -155,8 +155,8 @@ public class CoreFeatureFactories {
         final ConversationIORegistry conversationIOTypes = registries.conversationIO();
         conversationIOTypes.register("simple", new SimpleConvIOFactory(colors));
         conversationIOTypes.register("tellraw", new TellrawConvIOFactory(colors));
-        conversationIOTypes.register("chest", new InventoryConvIOFactory(loggerFactory, placeholders, packManager, config, fontRegistry, colors, false));
-        conversationIOTypes.register("combined", new InventoryConvIOFactory(loggerFactory, placeholders, packManager, config, fontRegistry, colors, true));
+        conversationIOTypes.register("chest", new InventoryConvIOFactory(loggerFactory, config, fontRegistry, colors, false));
+        conversationIOTypes.register("combined", new InventoryConvIOFactory(loggerFactory, config, fontRegistry, colors, true));
         conversationIOTypes.register("slowtellraw", new SlowTellrawConvIOFactory(fontRegistry, colors));
 
         final InterceptorRegistry interceptorTypes = registries.interceptor();

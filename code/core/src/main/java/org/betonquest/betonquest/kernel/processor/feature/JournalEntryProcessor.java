@@ -2,11 +2,9 @@ package org.betonquest.betonquest.kernel.processor.feature;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.identifier.JournalEntryIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.kernel.processor.QuestProcessor;
 import org.betonquest.betonquest.text.ParsedSectionTextCreator;
@@ -28,12 +26,10 @@ public class JournalEntryProcessor extends QuestProcessor<JournalEntryIdentifier
      * Create a new QuestProcessor to store and execute journal entry logic.
      *
      * @param log                           the custom logger for this class
-     * @param placeholders                  the {@link Placeholders} to create and resolve placeholders
-     * @param packManager                   the quest package manager to get quest packages from
      * @param journalEntryIdentifierFactory the identifier factory to create {@link JournalEntryIdentifier}s for this type
      * @param textCreator                   the text creator to parse text
      */
-    public JournalEntryProcessor(final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager,
+    public JournalEntryProcessor(final BetonQuestLogger log,
                                  final IdentifierFactory<JournalEntryIdentifier> journalEntryIdentifierFactory, final ParsedSectionTextCreator textCreator) {
         super(log, journalEntryIdentifierFactory, "Journal Entry", "journal");
         this.textCreator = textCreator;
