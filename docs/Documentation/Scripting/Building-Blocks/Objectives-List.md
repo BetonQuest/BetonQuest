@@ -2,10 +2,12 @@
 icon: octicons/codescan-checkmark-16
 tags:
   - Objective
+search:
+  boost: 2
 ---
 # Objectives List
 
-## Interact with blocks
+## <span hidden>`action` -</span> Interact with blocks
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `action <action> <block> [location] [range] [cancel] [hand]`  
@@ -33,7 +35,7 @@ objectives:
 The objective contains one property, `location`. It's a string formatted like `X: 100, Y: 200, Z:300`. It does not
 show the radius.
 
-## Shoot an arrow 
+## <span hidden>`arrow` -</span> Shoot an arrow 
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `arrow <location> <radius>`  
@@ -49,7 +51,7 @@ objectives:
   shootTarget: "arrow 100.5;200.5;300.5;world 1.1 actions:reward conditions:correct_player_position"
 ```
 
-## Break or place blocks
+## <span hidden>`block` -</span> Break or place blocks
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `block <block> <amount> [safetyCheck] [notifications] [location] [region] [ignorecancel]`  
@@ -91,7 +93,7 @@ You can use these placeholders to always get positive values:
 | _absoluteTotal_   | 10             | Shows the initial absolute amount of blocks that needed to be broken / placed.                               |
 
 
-## Breed animals
+## <span hidden>`breed` -</span> Breed animals
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `breed <animal> <amount>`  
@@ -111,7 +113,7 @@ objectives:
   10Cows: "breed cow 10 notify:2 actions:reward"
 ```
 
-## Put items into a chest
+## <span hidden>`chestput` -</span> Put items into a chest
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `chestput <location> <items> [items-stay]`  
@@ -130,7 +132,7 @@ objectives:
   apples: "chestput 0;50;100;world apple:42 actions:message multipleaccess:true"
 ```
 
-## Consume an item
+## <span hidden>`consume` -</span> Consume an item
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `consume <item> [amount]`  
@@ -157,7 +159,7 @@ objectives:
 | _total_  | 10             | Shows the initial amount of items that needed to be consumed.                               |
 
 
-## Craft an item
+## <span hidden>`craft` -</span> Craft an item
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `craft <item> [amount]`  
@@ -175,7 +177,7 @@ objectives:
   craftSaddle: "craft saddle 5 actions:reward"
 ```
 
-## Enchant an item
+## <span hidden>`enchant` -</span> Enchant an item
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `enchant <item> <enchants> [requirementMode] [amount]`  
@@ -203,7 +205,7 @@ objectives:
 | _left_   | 4              | Shows the amount of items that still need to be enchanted for the objective to be completed. |
 | _total_  | 10             | Shows the initial amount of items that needed to be enchanted.                               |
 
-## Gain experience
+## <span hidden>`experience` -</span> Gain experience
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `experience <amount>`  
@@ -226,7 +228,7 @@ objectives:
   25Level: "experience 25 actions:reward"
 ```
 
-## Wait real time
+## <span hidden>`delay` -</span> Wait real time
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `delay <time> [unit] [precision]`  
@@ -259,7 +261,7 @@ objectives:
 | _rawSeconds_ | 5482                                  | Shows the amount of seconds until objective completion.                                                                                                        |
 
 
-## Die
+## <span hidden>`die` -</span> Die
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `die [respawn] [cancel]`  
@@ -278,7 +280,7 @@ objectives:
   preventDying: "die cancel respawn:100;200;300;world;90;0 actions:respawned"
 ```
 
-## Fish an item
+## <span hidden>`fish` -</span> Fish an item
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `fish <item> <amount> [hookLocation] [range]`  
@@ -313,25 +315,25 @@ objectives:
 | amount | 6              | The amount of already caught fish.                         |
 | total  | 10             | The initially required amount of fish needed to be caught. |
 
-## Interact with an entity
+## <span hidden>`interact` -</span> Interact with an entity
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `interact <type> <entity> <amount> [name] [realname] [marked] [hand] [cancel] [location] [range]`  
 __Description__: The player has to interact with the specified entities.
 
-| Parameter       | Syntax                                                                                        | Default Value          | Explanation                                                                                                                                 |
-|-----------------|-----------------------------------------------------------------------------------------------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
-| _Click Type_    | `right`, `left` or `any`                                                                      | :octicons-x-circle-16: | What type of click should be handled                                                                                                        |
-| _Entity Type_   | [EntityType type](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html) | :octicons-x-circle-16: | The entity which must be clicked                                                                                                            |
-| _amount_        | number                                                                                        | :octicons-x-circle-16: | The amount of different entities which must be interacted with.                                                                             |
-| _name_          | name:text                                                                                     | Disabled               | Only count named mobs.                                                                                                                      |
-| _realname_      | realname:text                                                                                 | Disabled               | To check for the real name (e.g. if you renamed players to include their rank).                                                             |
-| _marked_        | marked:text                                                                                   | Disabled               | If the clicked entity needs to be marked by the [spawn action](./Actions-List.md#spawn-a-mob) (see its description for marking explanation) |
-| _hand_          | hand:(`hand`,`off_hand`, `any`)                                                               | `hand`                 | The hand the player must use to click the block, `any` can the objective cause to be completed multiple times                               |
-| _Notifications_ | Keyword (_notify_)                                                                            | Disabled               | Displays messages to the player each time they progress the objective. Optionally with the notification interval after colon.               |
-| _Cancel_        | Keyword (_cancel_)                                                                            | Disabled               | if the click shouldn't do what it usually does (i.e. left click won't hurt the entity).                                                     |
-| _Location_      | loc:[Location](../Data-Formats.md#unified-location-formating)                                 | Everywhere             | The location at which the entity must be interacted.                                                                                        |
-| _range_         | range:number                                                                                  | 1                      | The range around the `loc`. Requires defined `loc`.                                                                                         |
+| Parameter       | Syntax                                                                                        | Default Value          | Explanation                                                                                                                                       |
+|-----------------|-----------------------------------------------------------------------------------------------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| _Click Type_    | `right`, `left` or `any`                                                                      | :octicons-x-circle-16: | What type of click should be handled                                                                                                              |
+| _Entity Type_   | [EntityType type](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html) | :octicons-x-circle-16: | The entity which must be clicked                                                                                                                  |
+| _amount_        | number                                                                                        | :octicons-x-circle-16: | The amount of different entities which must be interacted with.                                                                                   |
+| _name_          | name:text                                                                                     | Disabled               | Only count named mobs.                                                                                                                            |
+| _realname_      | realname:text                                                                                 | Disabled               | To check for the real name (e.g. if you renamed players to include their rank).                                                                   |
+| _marked_        | marked:text                                                                                   | Disabled               | If the clicked entity needs to be marked by the [spawn action](./Actions-List.md#spawn-spawn-a-mob) (see its description for marking explanation) |
+| _hand_          | hand:(`hand`,`off_hand`, `any`)                                                               | `hand`                 | The hand the player must use to click the block, `any` can the objective cause to be completed multiple times                                     |
+| _Notifications_ | Keyword (_notify_)                                                                            | Disabled               | Displays messages to the player each time they progress the objective. Optionally with the notification interval after colon.                     |
+| _Cancel_        | Keyword (_cancel_)                                                                            | Disabled               | if the click shouldn't do what it usually does (i.e. left click won't hurt the entity).                                                           |
+| _Location_      | loc:[Location](../Data-Formats.md#unified-location-formating)                                 | Everywhere             | The location at which the entity must be interacted.                                                                                              |
+| _range_         | range:number                                                                                  | 1                      | The range around the `loc`. Requires defined `loc`.                                                                                               |
 
 ```YAML title="Example"
 objectives:
@@ -346,7 +348,7 @@ objectives:
 | left   | 13             | The amount of entities still needed to be interacted with. |
 | total  | 20             | The initially required amount of entities to interact.     |
 
-## Have resource pack state
+## <span hidden>`resourcepack` -</span> Have resource pack state
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `resourcepack <state>`  
@@ -361,7 +363,7 @@ objectives:
   declined: "resourcepack declined actions:declined"
 ```
 
-## Kill a player
+## <span hidden>`kill` -</span> Kill a player
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `kill <amount> [name] [required]`  
@@ -380,7 +382,7 @@ objectives:
   kill5: "kill 5 required:team_B"
 ```
 
-## Reach a location
+## <span hidden>`location` -</span> Reach a location
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `location <location> [range] [entry] [exit]`  
@@ -408,7 +410,7 @@ objectives:
 |------------|-----------------------|------------------------------------------|
 | _location_ | X: 100, Y: 200, Z:300 | The target location of this objective    |
 
-## Login
+## <span hidden>`login` -</span> Login
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `login`  
@@ -423,7 +425,7 @@ objectives:
   welcome: "login actions:welcome_message"
 ```
 
-## Logout
+## <span hidden>`logout` -</span> Logout
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `logout`  
@@ -434,7 +436,7 @@ objectives:
   clean: "logout actions:delete_objective"
 ```
 
-## Interact with an NPC 
+## <span hidden>`npcinteract` -</span> Interact with an NPC 
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `npcinteract <npc> [cancel] [interaction]`  
@@ -452,7 +454,7 @@ objectives:
   punchThief: "npcinteract thief interaction:left actions:poke"
 ```
 
-## Get in range of an NPC
+## <span hidden>`npcrange` -</span> Get in range of an NPC
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `npcrange <npc <action> <range>`  
@@ -476,7 +478,7 @@ objectives:
   goToVillage: "npcrange farmer,guard enter 20 actions:master_inRange"
 ```
 
-## Enter a password
+## <span hidden>`password` -</span> Enter a password
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `password <password> [prefix] [ignoreCase] [fail]`  
@@ -515,10 +517,10 @@ objectives:
   theBetonPasswordSpaced: 'password "beton quest" ignoreCase prefix:secret fail:failAction1,failAction2 actions:message,reward'
 ```
 
-## Pick up an item
+## <span hidden>`pickup` -</span> Pick up an item
 
 __Context__: @snippet:condition-meta:online@  
-__Syntax__: `pickup [items] [amount]`  
+__Syntax__: `pickup <items> [amount]`  
 __Description__: The player has to pick up the specified items.
  
 The first argument must be the internal name of an item defined in the `items` section. This can also be a comma-separated list of multiple items.
@@ -537,7 +539,7 @@ objectives:
   emeraldsAndDiamonds: "pickup emerald,diamond amount:6 actions:reward notify"
 ```
 
-## Reach amount of points
+## <span hidden>`point` -</span> Reach amount of points
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `point <category> <amount> [mode] [operation]`  
@@ -566,7 +568,7 @@ objectives:
 | _amount_ | 100            | Shows the amount of points to reach.                     |
 | _left_   | 8              | Shows the amount of points that still need to be gained. |
 
-## Kill an entity 
+## <span hidden>`mobkill` -</span> Kill an entity 
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `mobkill <type> <amount> [name] [marked]`  
@@ -579,7 +581,7 @@ All entities work, make sure to use their [correct types](https://hub.spigotmc.o
 | _type_    | ENTITY_TYPE,ENTITY_TYPE | :octicons-x-circle-16: | A list of entities, e.g. `ZOMBIE,SKELETON`.                                                                       |
 | _amount_  | Positive Number         | :octicons-x-circle-16: | Amount of mobs to kill in total.                                                                                  |
 | _name_    | name:text               | Disabled               | Only count named mobs.                                                                                            |
-| _marked_  | marked:keyword          | Disabled               | Only count marked mobs. See the [spawn action](Actions-List.md#spawn-a-mob) for more information.                 |
+| _marked_  | marked:keyword          | Disabled               | Only count marked mobs. See the [spawn action](Actions-List.md#spawn-spawn-a-mob) for more information.                 |
 | _notify_  | notify:interval         | Disabled               | Display a message to the player each time they kill a mob. Optionally with the notification interval after colon. |
 
 ```YAML title="Example"
@@ -590,7 +592,7 @@ objectives:
 ```
    
 1. The player must kill a zombie, skeleton or a spider to progress this objective. In total, they must kill 10 entities. Additionally, there will be a notification after each kill.
-2. The player must kill a pig that was spawned with the [spawn action](Actions-List.md#spawn-a-mob) and has a marker. 
+2. The player must kill a pig that was spawned with the [spawn action](Actions-List.md#spawn-spawn-a-mob) and has a marker. 
 3. The player must kill a zombie named "Uber Zombie".
 
 
@@ -604,7 +606,7 @@ objectives:
 
 
 
-## Brew a potion 
+## <span hidden>`brew` -</span> Brew a potion 
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `brew <item> [amount]`  
@@ -625,7 +627,7 @@ objectives:
   weird: "brew weird_concoction 4 actions:add_tag"
 ```
 
-## Shear a sheep 
+## <span hidden>`shear` -</span> Shear a sheep 
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `shear <amount> [name] [color]`  
@@ -647,7 +649,7 @@ objectives:
   jeb2: 'shear 1 "name:jeb 2"'
 ```
 
-## Smelt an item
+## <span hidden>`smelt` -</span> Smelt an item
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `smelt <item> [amount]`  
@@ -667,7 +669,7 @@ objectives:
   smeltIron: "smelt ironIngot 5 actions:reward"
 ```
 
-## Complete stages
+## <span hidden>`stage` -</span> Complete stages
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `stage <stages> [preventCompletion]`  
@@ -675,11 +677,11 @@ __Description__: The player has to complete the specified stages.
 
 The Stage objective is a special objective that can be used to track the progress of a quest or a part of a quest.
 It can be completed in two ways, the first one is by increasing the stage more than there are stages defined
-and the second one is by completing the objective with the [objective action](./Actions-List.md#manage-objectives).
+and the second one is by completing the objective with the [objective action](./Actions-List.md#objective-manage-objectives).
 The behaviour of completing the objective by increasing the stage can be disabled by setting the `preventCompletion` flag.
 
 When the conditions of the stage objective are not met, the stage of the player can not be modified.  
-You can modify the stages with the [stage action](./Actions-List.md#manage-a-stage-objective) and check it's state with the [stage condition](./Conditions-List.md#compare-stage).
+You can modify the stages with the [stage action](./Actions-List.md#stage-manage-a-stage-objective) and check it's state with the [stage condition](./Conditions-List.md#stage-compare-stage).
 
 | Parameter           | Syntax              | Default Value          | Explanation                                                          |
 |---------------------|---------------------|------------------------|----------------------------------------------------------------------|
@@ -702,7 +704,7 @@ objectives:
 | _previous_ | collectIngredients | The previous stage name of the player or empty if the objective is not active. |
 
 
-## Step on a pressure plate
+## <span hidden>`step` -</span> Step on a pressure plate
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `step <location>`  
@@ -720,7 +722,7 @@ objectives:
   step: "step 100;200;300;world actions:done"
 ```
 
-## Receive a tag
+## <span hidden>`tag` -</span> Receive a tag
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `tag <tag>`  
@@ -739,7 +741,7 @@ objectives:
 
 The `name` property of the objective is the tag to receive.
 
-## Tame an animal
+## <span hidden>`tame` -</span> Tame an animal
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `tame <entity> <amount>`
@@ -758,7 +760,7 @@ objectives:
   wolf: "tame WOLF 2 actions:wolfs_tamed"
 ```
 
-## Wait ingame time
+## <span hidden>`timer` -</span> Wait ingame time
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `timer [name] [interval] [amount] [done]`  
@@ -766,7 +768,7 @@ __Description__: The player has to wait for a specified amount of ingame time.
 
 Tracks time in seconds from the start of the objective to the completion of the objective.
 If you simply want to have something like wait for 10 minutes, you can use the `amount` argument.
-If you don't define the amount, the objective will run indefinitely until you complete it with the [objective action](./Actions-List.md#manage-objectives).
+If you don't define the amount, the objective will run indefinitely until you complete it with the [objective action](./Actions-List.md#objective-manage-objectives).
 
 | Parameter  | Syntax          | Default Value | Explanation                                                                         |
 |------------|-----------------|---------------|-------------------------------------------------------------------------------------|
@@ -784,7 +786,7 @@ objectives:
 	track: 'timer "name:This is the Display Name" interval:10 done:done_in actions:done conditions:in_region'
 ```
 
-## Jump
+## <span hidden>`jump` -</span> Jump
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `jump <amount>`  
@@ -801,7 +803,7 @@ objectives:
   jump: "jump 15 actions:legExerciseDone"
 ```
 
-## Ride an entity
+## <span hidden>`ride` -</span> Ride an entity
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `ride <entity>`  
@@ -815,7 +817,7 @@ objectives:
   any: "ride any"
 ```
 
-## Execute a command
+## <span hidden>`command` -</span> Execute a command
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `command <command> [ignoreCase] [exact] [cancel] [failActions]`  
@@ -848,7 +850,7 @@ objectives:
   warp: 'command "/warp %player% farms" ignoreCase exact cancel failActions:failAction1,failAction2 actions:action1,action2'
 ```
 
-## Equip armor
+## <span hidden>`equip` -</span> Equip armor
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `equip <slot> <item>`  
@@ -863,7 +865,7 @@ objectives:
   equipBody: "equip CHEST amazing_armor actions:action1,action2"
 ```
 
-## Variable storage
+## <span hidden>`variable` -</span> Variable storage
 
 __Context__: @snippet:condition-meta:online@  
 __Syntax__: `variable [no-chat]`  

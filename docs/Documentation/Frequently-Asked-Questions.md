@@ -25,7 +25,7 @@ Or use a `run` action in which you specify all tag-deleting actions at once.
 (We will improve this don't worry)
 
 ## How do I start an objective from a conversation?
-Use the [objective action](../Documentation/Scripting/Building-Blocks/Actions-List.md#manage-objectives).
+Use the [objective action](../Documentation/Scripting/Building-Blocks/Actions-List.md#objective-manage-objectives).
 
 ## Why is X thing not working?
 If something stopped working before asking for help please do `/bq reload` and READ THE OUTPUT IN CONSOLE!
@@ -315,7 +315,7 @@ have to add the additional objectives to the conditions.
 ## Creating quest menus
 To create a menu that gives the player an overview of his open quests just define one menu item for each quest.
 Set the [conditions](../Documentation/Features/Menus/Menu.md#the-menu_items-section) for this item, so it is only 
-displayed if the quest is not finished (use the [tag condition](../Documentation/Scripting/Building-Blocks/Conditions-List.md#has-tag)).  
+displayed if the quest is not finished (use the [tag condition](../Documentation/Scripting/Building-Blocks/Conditions-List.md#tag-has-tag)).  
 Then assign all those items to [a row of slots](../Documentation/Features/Menus/Menu.md#the-slots-section) so that they are sorted perfectly.
 
 You can also add click actions to display npc locations, add compass targets, directly open the conversations or cancel the quest.

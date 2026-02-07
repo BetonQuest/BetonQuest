@@ -1,5 +1,7 @@
 ---
 icon: material/upload
+search:
+  boost: 0.8
 ---
 This guide explains how to migrate from BetonQuest 1.12.X or any BetonQuest 2.0.0 dev build to BetonQuest
 2.0.0.
@@ -463,7 +465,7 @@ npc_holograms:
         [15:27:10 WARN]: [BetonQuest] Cannot fire non-static event 'announcements.ringBell' without a player!
         ```
     
-    To fix this wrap the event (now called action) in a [`runForAll` event](../../Scripting/Building-Blocks/Actions-List.md#run-for-online-players):
+    To fix this wrap the event (now called action) in a [`runForAll` event](../../Scripting/Building-Blocks/Actions-List.md#runforall-run-for-online-players):
     
     <div class="grid" markdown>
     
@@ -525,7 +527,7 @@ npc_holograms:
     -------------
     
     As you probably noticed, the `ClearEntity` event (now called action) and the `KillMob` event (now called actions) did almost the same thing.
-    Both got merged into the [RemoveEntity event](../../Scripting/Building-Blocks/Actions-List.md#remove-entities),
+    Both got merged into the [RemoveEntity event](../../Scripting/Building-Blocks/Actions-List.md#removeentity-remove-entities),
     while keeping the syntax more or less the same.
     
     <div class="grid" markdown>

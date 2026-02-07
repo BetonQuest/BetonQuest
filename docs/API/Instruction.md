@@ -33,7 +33,7 @@ It minimally consists of two steps: the argument parsing step and the argument r
 
 To offer an overview before explaing all details, the following examples show excerpts from factories in BetonQuest:
 
-Compare [experience](../Documentation/Scripting/Building-Blocks/Conditions-List.md#has-experience) condition.
+Compare [experience](../Documentation/Scripting/Building-Blocks/Conditions-List.md#experience-has-experience) condition.
 ```JAVA title="ExperienceConditionFactory.java"
 public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<Number> amount = instruction.number().get();
@@ -42,7 +42,7 @@ public PlayerCondition parsePlayer(final Instruction instruction) throws QuestEx
 }
 ```
 
-Compare [itemdurability](../Documentation/Scripting/Building-Blocks/Actions-List.md#manage-item-durability) action.
+Compare [itemdurability](../Documentation/Scripting/Building-Blocks/Actions-List.md#itemdurability-manage-item-durability) action.
 ```JAVA title="ItemDurabilityActionFactory.java"
 public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
     final Argument<EquipmentSlot> slot = instruction.enumeration(EquipmentSlot.class).get();
@@ -55,7 +55,7 @@ public PlayerAction parsePlayer(final Instruction instruction) throws QuestExcep
 }
 ```
 
-Compare [delay](../Documentation/Scripting/Building-Blocks/Objectives-List.md#wait-real-time) objective.
+Compare [delay](../Documentation/Scripting/Building-Blocks/Objectives-List.md#delay-wait-real-time) objective.
 ```java title="DelayObjectiveFactory.java"
 public Objective parseInstruction(final Instruction instruction) throws QuestException {
     final Argument<Number> delay = instruction.number().atLeast(0).get();

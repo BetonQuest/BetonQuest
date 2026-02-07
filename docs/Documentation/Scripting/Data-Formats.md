@@ -16,7 +16,7 @@ Yaw is the left-right rotation, pitch is the up-down rotation.
 A fully defined location may look like this: `100;200;300;world;90;-45`.
 
 Every single element may be a placeholder as well as the entire location itself.
-As an example you can use the [`%location%`](Building-Blocks/Placeholders-List.md#location) placeholder to get a player's current location.
+As an example you can use the [`%location%`](Building-Blocks/Placeholders-List.md#location-location) placeholder to get a player's current location.
 
 ### Vectors
 The vector is a modification of the location. Vectors look like `->(10;2.5;-13)` and are added
@@ -86,8 +86,8 @@ A regex is allowed in any block state value when the block selector is used to m
 A regular expression is a sequence of characters that specifies a search pattern for text. It's used in BetonQuest to
 check if game objects match a user-defined input. For example, [Block Selectors](#block-selectors) use a regex to match
 multiple materials or block states. You can also use regular expressions in the 
-[variable condition](Building-Blocks/Conditions-List.md#placeholder-matches-expression) or the 
-[password objective](Building-Blocks/Objectives-List.md#enter-a-password) to match player names, item names, etc. These expressions are
+[variable condition](Building-Blocks/Conditions-List.md#variable-placeholder-matches-expression) or the 
+[password objective](Building-Blocks/Objectives-List.md#password-enter-a-password) to match player names, item names, etc. These expressions are
 a very powerful tool, but can be confusing at first.
 
 ### Common Use Cases
