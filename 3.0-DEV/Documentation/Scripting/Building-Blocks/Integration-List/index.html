@@ -1961,10 +1961,6 @@
       
       
       
-      
-      
-      
-      
     </ul>
   </nav>
   
@@ -6377,10 +6373,6 @@
       
       
       
-      
-      
-      
-      
     </ul>
   </nav>
   
@@ -7587,6 +7579,21 @@ The <code>level</code> argument is optional and would convert the amount to leve
 <span class="w">  </span><span class="nt">farming10</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;auraskillsxp</span><span class="nv"> </span><span class="s">farming</span><span class="nv"> </span><span class="s">10</span><span class="nv"> </span><span class="s">level&quot;</span>
 </code></pre></div>
 <h2 id="brewery-breweryx">Brewery<a href="https://www.spigotmc.org/resources/3082/"></a> &amp; BreweryX<a href="https://www.spigotmc.org/resources/114777/"></a><a class="headerlink" href="#brewery-breweryx" title="Permanent link">🔗</a></h2>
+<p>Brewery usage is integrated to the <a href="../../../Features/Items/">Items</a> system and thus used for actions and conditions.</p>
+<p>The first argument is the name and the second the quality.
+You can specify the mode to select the brew by either the <code>name</code> or its <code>id</code>, defaulting to the name.<br />
+The quality is not used for determining equality, only for generating the brew item.<br />
+In addition, you can also add <code>quest-item</code> argument to tag them as "QuestItem".</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">appleLiquor</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;brew</span><span class="nv"> </span><span class="s">&quot;Apple</span><span class="nv"> </span><span class="s">Liquor&quot;</span><span class="nv"> </span><span class="s">2&#39;</span>
+<span class="w">  </span><span class="nt">hotChocolate</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;brew</span><span class="nv"> </span><span class="s">hot_choc</span><span class="nv"> </span><span class="s">10</span><span class="nv"> </span><span class="s">mode:id</span><span class="nv"> </span><span class="s">quest-item&quot;</span>
+<span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">hasAppleLiquor</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;item</span><span class="nv"> </span><span class="s">appleLiquor&quot;</span>
+<span class="w">  </span><span class="nt">brewId</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hand</span><span class="nv"> </span><span class="s">hotChocolate&quot;</span>
+<span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">giveHotChocolate</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;give</span><span class="nv"> </span><span class="s">hot_chocolate&quot;</span>
+<span class="w">  </span><span class="nt">takeLiquor</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;take</span><span class="nv"> </span><span class="s">appleLiquor&quot;</span>
+</code></pre></div>
 <h3 id="conditions_1">Conditions<a class="headerlink" href="#conditions_1" title="Permanent link">🔗</a></h3>
 <h4 id="drunk-drunk">Drunk: <code>drunk</code><a class="headerlink" href="#drunk-drunk" title="Permanent link">🔗</a></h4>
 <p>This condition is true if the player is drunken. Only argument is the minimal drunkness (0-100).</p>
@@ -7598,28 +7605,6 @@ The <code>level</code> argument is optional and would convert the amount to leve
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">quality3</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;drunkquality</span><span class="nv"> </span><span class="s">3&quot;</span>
 </code></pre></div>
-<h4 id="has-brew-hasbrew">Has Brew: <code>hasbrew</code><a class="headerlink" href="#has-brew-hasbrew" title="Permanent link">🔗</a></h4>
-<p>This condition is true if the player has the given brew with the specified amount in his inventory.</p>
-<p>You can specify the mode to select the brew by either the name or its id, defaulting to the name.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">hasMyBrew</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;hasbrew</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">&quot;MY</span><span class="nv"> </span><span class="s">BREW&quot;&#39;</span>
-<span class="w">  </span><span class="nt">hasBrew17</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hasbrew</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">brew_17</span><span class="nv"> </span><span class="s">mode:id&quot;</span>
-</code></pre></div>
-<h3 id="actions_1">Actions<a class="headerlink" href="#actions_1" title="Permanent link">🔗</a></h3>
-<h4 id="give-brew-givebrew">Give Brew: <code>givebrew</code><a class="headerlink" href="#give-brew-givebrew" title="Permanent link">🔗</a></h4>
-<p>Gives the player the specified drink. The first number is the amount, and the second number is the quality of the drink.</p>
-<p>You can specify the mode to select the brew by either the name or its id, defaulting to the name.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">giveMyBrew</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;givebrew</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">10</span><span class="nv"> </span><span class="s">&quot;MY</span><span class="nv"> </span><span class="s">BREW&quot;&#39;</span>
-<span class="w">  </span><span class="nt">giveBrew17</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;givebrew</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">10</span><span class="nv"> </span><span class="s">brew_17</span><span class="nv"> </span><span class="s">mode:id&quot;</span>
-</code></pre></div>
-<h4 id="take-brew-takebrew">Take Brew: <code>takebrew</code><a class="headerlink" href="#take-brew-takebrew" title="Permanent link">🔗</a></h4>
-<p>Removes the specified drink from the players inventory. An amount needs to be specified.</p>
-<p>You can specify the mode to select the brew by either the name or its id, defaulting to the name.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">takeMyBrew</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;takebrew</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">&quot;MY</span><span class="nv"> </span><span class="s">OTHER</span><span class="nv"> </span><span class="s">BREW&quot;&#39;</span>
-<span class="w">  </span><span class="nt">takeBrew17</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;takebrew</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">brew_quest_3&quot;</span>
-</code></pre></div>
 <h2 id="citizens">Citizens<a href="https://www.spigotmc.org/resources/13811/"></a><a class="headerlink" href="#citizens" title="Permanent link">🔗</a></h2>
 <p>If you have this plugin you can use it's NPCs. I highly recommend you installing it,
 it's NPCs are way more immersive. Having Citizens also allows you to use NPCKill objective and to have moving NPC's
@@ -7628,7 +7613,7 @@ in addition to the normal NPC functionality.</p>
 <p class="admonition-title">Info</p>
 <p>In addition Citizens integration supports all <a href="../../../Features/NPCs/">BetonQuest NPC</a> features.</p>
 </div>
-<h3 id="actions_2">Actions<a class="headerlink" href="#actions_2" title="Permanent link">🔗</a></h3>
+<h3 id="actions_1">Actions<a class="headerlink" href="#actions_1" title="Permanent link">🔗</a></h3>
 <h4 id="move-npc-npcmove">Move NPC: <code>npcmove</code><a class="headerlink" href="#move-npc-npcmove" title="Permanent link">🔗</a></h4>
 <p>This action will make the NPC move to a specified location. It will not return on its own,
 so you have to set a single path point with <em>/npc path</em> command - it will then return to that point every time.
@@ -7787,7 +7772,7 @@ You can change maximum pathfinding range in Citizens configuration files.</p>
 </code></pre></div>
 <h2 id="denizen">Denizen<a href="http://dev.bukkit.org/bukkit-plugins/denizen/"></a><a class="headerlink" href="#denizen" title="Permanent link">🔗</a></h2>
 <p>Depenizen is also integrated with BetonQuest! Discover available features on the <a href="https://meta.denizenscript.com/Docs/Search/BetonQuest">meta documentation</a>.</p>
-<h3 id="actions_3">Actions<a class="headerlink" href="#actions_3" title="Permanent link">🔗</a></h3>
+<h3 id="actions_2">Actions<a class="headerlink" href="#actions_2" title="Permanent link">🔗</a></h3>
 <h4 id="script-script">Script: <code>script</code><a class="headerlink" href="#script-script" title="Permanent link">🔗</a></h4>
 <p>With this action you can fire Denizen task scripts. Don't confuse it with <code>skript</code> action, these are different. The first and only argument is the name of the script.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
@@ -7833,7 +7818,7 @@ There is also a <a href="https://sandbox.elmakers.com/#betonquestEffectLibTempla
 <li>Controls the horizontal direction of the effect.</li>
 <li>Controls how often the conditions should be checked (in ticks). Optional, default: 100 ticks</li>
 </ol>
-<h3 id="actions_4">Actions<a class="headerlink" href="#actions_4" title="Permanent link">🔗</a></h3>
+<h3 id="actions_3">Actions<a class="headerlink" href="#actions_3" title="Permanent link">🔗</a></h3>
 <h4 id="particle-particle">Particle: <code>particle</code><a class="headerlink" href="#particle-particle" title="Permanent link">🔗</a></h4>
 <p>This action will load an effect defined in <code>effects</code> section
 and display it on player's location. The only argument
@@ -7863,7 +7848,7 @@ It is more lightweight than <a href="#citizens">Citizens</a> but lack some of it
 <h2 id="fakeblock">FakeBlock<a href="https://github.com/toddharrison/BriarCode/tree/main/fake-block"></a><a class="headerlink" href="#fakeblock" title="Permanent link">🔗</a></h2>
 <p>If you have the FakeBlock integration installed, you will be able to view and hide the block groups
 created in FakeBlock on a player-specific basis.</p>
-<h3 id="actions_5">Actions<a class="headerlink" href="#actions_5" title="Permanent link">🔗</a></h3>
+<h3 id="actions_4">Actions<a class="headerlink" href="#actions_4" title="Permanent link">🔗</a></h3>
 <h4 id="show-and-hide-block-groups-fakeblock">Show and hide block groups: <code>fakeblock</code><a class="headerlink" href="#show-and-hide-block-groups-fakeblock" title="Permanent link">🔗</a></h4>
 <p>Shows or hides the block group for the player. The block group can be specified as a comma-separated list.
 The groups are case-sensitive. To show a group the <code>showgroup</code> argument is required. To hide a group the <code>hidegroup</code> argument is required.</p>
@@ -7893,7 +7878,7 @@ Second argument is the required level of the attribute. Must be greater than or 
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">charge</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;heroesskill</span><span class="nv"> </span><span class="s">charge&quot;</span>
 </code></pre></div>
-<h3 id="actions_6">Actions<a class="headerlink" href="#actions_6" title="Permanent link">🔗</a></h3>
+<h3 id="actions_5">Actions<a class="headerlink" href="#actions_5" title="Permanent link">🔗</a></h3>
 <h4 id="heroes-experience-heroesexp">Heroes experience: <code>heroesexp</code><a class="headerlink" href="#heroes-experience-heroesexp" title="Permanent link">🔗</a></h4>
 <p>This action simply gives the player specified amount of Heroes experience. The first argument is either <code>primary</code> or <code>secondary</code> and it means player's class. Second one is the amount of experience to add.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
@@ -7944,7 +7929,7 @@ Second argument is the required level of the attribute. Must be greater than or 
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">iaBlock</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;itemsAdderBlock</span><span class="nv"> </span><span class="s">itemsadder:ruby_ore</span><span class="nv"> </span><span class="s">40;72;3;world&quot;</span>
 </code></pre></div>
-<h3 id="actions_7">Actions<a class="headerlink" href="#actions_7" title="Permanent link">🔗</a></h3>
+<h3 id="actions_6">Actions<a class="headerlink" href="#actions_6" title="Permanent link">🔗</a></h3>
 <h4 id="place-block-itemsadderblock">Place block <code>itemsAdderBlock</code><a class="headerlink" href="#place-block-itemsadderblock" title="Permanent link">🔗</a></h4>
 <p>Changes the block at the given position.</p>
 <table>
@@ -8074,7 +8059,7 @@ You can add a <code>notify</code> keyword if you want to send a notification to 
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">woodcutterLevel5</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nujobs_joblevel</span><span class="nv"> </span><span class="s">Woodcutter</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">10&quot;</span>
 </code></pre></div>
-<h3 id="actions_8">Actions<a class="headerlink" href="#actions_8" title="Permanent link">🔗</a></h3>
+<h3 id="actions_7">Actions<a class="headerlink" href="#actions_7" title="Permanent link">🔗</a></h3>
 <h4 id="add-jobs-experience-nujobs_addexp-jobname-exp">Add Jobs Experience: <code>nujobs_addexp {jobname} {exp}</code><a class="headerlink" href="#add-jobs-experience-nujobs_addexp-jobname-exp" title="Permanent link">🔗</a></h4>
 <p>Gives the player experience</p>
 <h4 id="increase-jobs-level-nujobs_addlevel-jobname-amount">Increase Jobs Level: <code>nujobs_addlevel {jobname} {amount}</code><a class="headerlink" href="#increase-jobs-level-nujobs_addlevel-jobname-amount" title="Permanent link">🔗</a></h4>
@@ -8182,7 +8167,7 @@ Each spell in this list must have a minimal level defined after a colon.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">woodcutting50</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mcmmolevel</span><span class="nv"> </span><span class="s">woodcutting</span><span class="nv"> </span><span class="s">50&quot;</span>
 </code></pre></div>
-<h3 id="actions_9">Actions<a class="headerlink" href="#actions_9" title="Permanent link">🔗</a></h3>
+<h3 id="actions_8">Actions<a class="headerlink" href="#actions_8" title="Permanent link">🔗</a></h3>
 <h4 id="add-mcmmo-experience-mcmmoexp">Add MCMMO Experience: <code>mcmmoexp</code><a class="headerlink" href="#add-mcmmo-experience-mcmmoexp" title="Permanent link">🔗</a></h4>
 <p>This action adds experience points in a specified skill. The first argument is the name of the skill, second one is the amount of experience to add.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
@@ -8315,7 +8300,7 @@ itemType and itemID.</p>
 <span class="w">  </span><span class="nt">castSkillWithMMOCore</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoskill</span><span class="nv"> </span><span class="s">DEEP_WOUND</span><span class="nv"> </span><span class="s">trigger:CAST</span><span class="nv"> </span><span class="s">actions:completeTutorial&quot;</span>
 <span class="w">  </span><span class="nt">itemSkill</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mmoskill</span><span class="nv"> </span><span class="s">DEEP_WOUND</span><span class="nv"> </span><span class="s">trigger:RIGHT_CLICK,LEFT_CLICK</span><span class="nv"> </span><span class="s">actions:giveReward&quot;</span>
 </code></pre></div>
-<h3 id="actions_10">Actions<a class="headerlink" href="#actions_10" title="Permanent link">🔗</a></h3>
+<h3 id="actions_9">Actions<a class="headerlink" href="#actions_9" title="Permanent link">🔗</a></h3>
 <h4 id="give-mmocore-class-experience-mmoclassexperience">Give MMOCore class experience: <code>mmoclassexperience</code><a class="headerlink" href="#give-mmocore-class-experience-mmoclassexperience" title="Permanent link">🔗</a></h4>
 <p>Adds experience to the players class. The amount is a number. The <code>level</code> argument
 is optional and would convert the amount to levels instead of XP points.</p>
@@ -8450,7 +8435,7 @@ You can add a <code>notify</code> keyword if you want to send a notification to 
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">nearKnight</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mythicmobdistance</span><span class="nv"> </span><span class="s">SkeletalKnight</span><span class="nv"> </span><span class="s">7&quot;</span>
 </code></pre></div>
-<h3 id="actions_11">Actions<a class="headerlink" href="#actions_11" title="Permanent link">🔗</a></h3>
+<h3 id="actions_10">Actions<a class="headerlink" href="#actions_10" title="Permanent link">🔗</a></h3>
 <h4 id="spawn-mythicmob-mspawnmob"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a9 9 0 0 0-9 9 8.99 8.99 0 0 0 4 7.47V22h2v-3h2v3h2v-3h2v3h2v-3.54c2.47-1.65 4-4.46 4-7.46a9 9 0 0 0-9-9m-4 9a2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2 2 2 0 0 1 2-2m8 0a2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2 2 2 0 0 1 2-2m-4 3 1.5 3h-3z"/></svg></span> Spawn MythicMob: <code>mspawnmob</code><a class="headerlink" href="#spawn-mythicmob-mspawnmob" title="Permanent link">🔗</a></h4>
 <p><strong>static</strong></p>
 <table>
@@ -8552,7 +8537,7 @@ Additionally, the mob should be configured to never change its AI target using M
 <span class="w">  </span><span class="nt">giveTableLamp</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;give</span><span class="nv"> </span><span class="s">tableLamp:3&quot;</span>
 </code></pre></div>
 <h2 id="packetevents">PacketEvents<a href="https://www.spigotmc.org/resources/80279/"></a><a class="headerlink" href="#packetevents" title="Permanent link">🔗</a></h2>
-<h3 id="actions_12">Actions<a class="headerlink" href="#actions_12" title="Permanent link">🔗</a></h3>
+<h3 id="actions_11">Actions<a class="headerlink" href="#actions_11" title="Permanent link">🔗</a></h3>
 <h4 id="freeze-players-freeze">Freeze players: 'freeze'<a class="headerlink" href="#freeze-players-freeze" title="Permanent link">🔗</a></h4>
 <p>This action allows you to freeze player for the given amount of ticks:</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
@@ -8600,7 +8585,7 @@ If it contains spaces you need to quote it.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">completedQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;quest</span><span class="nv"> </span><span class="s">stone_miner&quot;</span>
 </code></pre></div>
-<h3 id="actions_13">Actions<a class="headerlink" href="#actions_13" title="Permanent link">🔗</a></h3>
+<h3 id="actions_12">Actions<a class="headerlink" href="#actions_12" title="Permanent link">🔗</a></h3>
 <h4 id="quest-quest">Quest: <code>quest</code><a class="headerlink" href="#quest-quest" title="Permanent link">🔗</a></h4>
 <p>This action will start the quest for the player.
 The first argument must be the name of the quest, as defined in <code>name</code> option in the quest.
@@ -8620,7 +8605,7 @@ You can optionally add <code>check-requirements</code> argument if you want the 
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">twoShops</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;shopamount</span><span class="nv"> </span><span class="s">2&quot;</span>
 </code></pre></div>
-<h3 id="actions_14">Actions<a class="headerlink" href="#actions_14" title="Permanent link">🔗</a></h3>
+<h3 id="actions_13">Actions<a class="headerlink" href="#actions_13" title="Permanent link">🔗</a></h3>
 <h4 id="open-shop-window-shopkeeper">Open shop window: <code>shopkeeper</code><a class="headerlink" href="#open-shop-window-shopkeeper" title="Permanent link">🔗</a></h4>
 <p>This action opens a trading window of a Villager. The only argument is the uniqueID of the shop. You can find it in <em>Shopkeepers/saves.yml</em> file, under <code>uniqueID</code> option.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
@@ -8790,7 +8775,7 @@ If the conditions are not met, the time will not be counted.</p>
 <span class="w">  </span><span class="nt">canAffordPlot</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;money</span><span class="nv"> </span><span class="s">10000&quot;</span>
 <span class="w">  </span><span class="nt">isRich</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;money</span><span class="nv"> </span><span class="s">1000000&quot;</span>
 </code></pre></div>
-<h3 id="actions_15">Actions<a class="headerlink" href="#actions_15" title="Permanent link">🔗</a></h3>
+<h3 id="actions_14">Actions<a class="headerlink" href="#actions_14" title="Permanent link">🔗</a></h3>
 <h4 id="vault-money-action-money">Vault Money Action: <code>money</code><a class="headerlink" href="#vault-money-action-money" title="Permanent link">🔗</a></h4>
 <p>Deposits, withdraws or multiplies money in the player's account.</p>
 <table>
@@ -8880,7 +8865,7 @@ Use <code>%money.left:500%</code> for showing the difference between the player'
 <span class="w">  </span><span class="nt">notifyNotEnough</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">You</span><span class="nv"> </span><span class="s">still</span><span class="nv"> </span><span class="s">need</span><span class="nv"> </span><span class="s">%money.left:10000%$</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">buy</span><span class="nv"> </span><span class="s">this</span><span class="nv"> </span><span class="s">plot.&quot;</span>
 </code></pre></div>
 <h2 id="worldedit-or-fastasyncworldedit">WorldEdit<a href="http://dev.bukkit.org/bukkit-plugins/worldedit/"></a> or FastAsyncWorldEdit<a href="https://www.spigotmc.org/resources/13932/"></a><a class="headerlink" href="#worldedit-or-fastasyncworldedit" title="Permanent link">🔗</a></h2>
-<h3 id="actions_16">Actions<a class="headerlink" href="#actions_16" title="Permanent link">🔗</a></h3>
+<h3 id="actions_15">Actions<a class="headerlink" href="#actions_15" title="Permanent link">🔗</a></h3>
 <h4 id="paste-schematic-paste">Paste schematic: <code>paste</code><a class="headerlink" href="#paste-schematic-paste" title="Permanent link">🔗</a></h4>
 <p><strong>persistent</strong>, <strong>static</strong></p>
 <p>This action will paste a schematic at the given location.

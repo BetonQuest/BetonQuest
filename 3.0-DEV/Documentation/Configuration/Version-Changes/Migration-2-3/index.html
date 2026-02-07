@@ -4008,6 +4008,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-635-brewery-item-type">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-635 - Brewery Item Type <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26c8.svg" title=":thunder_cloud_rain:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -6538,6 +6561,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-635-brewery-item-type">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-635 - Brewery Item Type <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26c8.svg" title=":thunder_cloud_rain:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -6716,6 +6762,7 @@ to automatically migrate from "not versioned".
 <li><a href="#300-dev-494-add-native-menu-conversation-io">3.0.0-DEV-494 - Add native <code>menu</code> conversation io</a> <img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f325.svg" title=":white_sun_cloud:" /></li>
 <li><a href="#300-dev-511-dynamize-top-hologram-line">3.0.0-DEV-511 - Dynamize <code>top:</code> Hologram Line</a> <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:" /></li>
 <li><a href="#300-dev-562-rename-events-to-actions">3.0.0-DEV-562 - Rename <code>events</code> to <code>actions</code></a> <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:" /></li>
+<li><a href="#300-dev-635-brewery-item-type">3.0.0-DEV-635 - Brewery Item Type</a> <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /></li>
 </ul>
 <h3 id="300-dev-58-delete-messagesyml">3.0.0-DEV-58 - Delete messages.yml <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /><a class="headerlink" href="#300-dev-58-delete-messagesyml" title="Permanent link">🔗</a></h3>
 <p>The <code>messages.yml</code> file has been removed.
@@ -7524,6 +7571,40 @@ Also, the phrase "events" is replaced with "actions" in the following places:</p
 </code></pre></div>
 </div>
 </details>
+<h3 id="300-dev-635-brewery-item-type">3.0.0-DEV-635 - Brewery Item Type <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /><a class="headerlink" href="#300-dev-635-brewery-item-type" title="Permanent link">🔗</a></h3>
+<p>Brewery is now integrated into the item system.</p>
+<p>Instead of using brewery specific item conditions and actions it now uses the standard implementations.
+The following obsolete implementations were removed:</p>
+<ul>
+<li><code>hasbrew</code> condition</li>
+<li><code>givebrew</code> action</li>
+<li><code>takebrew</code> action</li>
+</ul>
+<div class="grid">
+<div class="highlight"><span class="filename">Old Syntax</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">brewName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hasbrew 2 &quot;Apple Liquor&quot;</span>
+<span class="w">  </span><span class="nt">brewId</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hasbrew 2 apple_liquor mode:id</span>
+<span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">giveName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">givebrew 1 10 &quot;Apple Liquor&quot;</span>
+<span class="w">  </span><span class="nt">giveId</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">givebrew 1 10 apple_liquor mode:id</span>
+
+<span class="w">  </span><span class="nt">takeName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">takebrew 2 &quot;Apple Liquor&quot;</span>
+<span class="w">  </span><span class="nt">takeId</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">takebrew 2 apple_liquor mode:id</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">New Syntax</span><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">brewName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brew &quot;Apple Liquor&quot; 2</span>
+<span class="w">  </span><span class="nt">brewId</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brew apple_liquor 2 mode:id</span>
+<span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">brewName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">item brewName</span>
+<span class="w">  </span><span class="nt">brewId</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">item brewId</span>
+<span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">giveName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">give brewName</span>
+<span class="w">  </span><span class="nt">giveId</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">give brewId</span>
+
+<span class="w">  </span><span class="nt">takeName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">take brewName</span>
+<span class="w">  </span><span class="nt">takeId</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">take brewId</span>
+</code></pre></div>
+</div>
 
 
 
