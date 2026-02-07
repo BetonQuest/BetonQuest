@@ -122,7 +122,7 @@ public class JoinQuitListener implements Listener {
     private void checkResourcepack(final Player player, final OnlineProfile onlineProfile) {
         final PlayerResourcePackStatusEvent.Status resourcePackStatus = player.getResourcePackStatus();
         if (resourcePackStatus != null) {
-            questTypeApi.getActive(onlineProfile).stream()
+            questTypeApi.getForProfile(onlineProfile).stream()
                     .filter(objective -> objective instanceof ResourcepackObjective)
                     .map(objective -> (ResourcepackObjective) objective)
                     .forEach(objective -> objective.getExceptionHandler()
@@ -138,7 +138,7 @@ public class JoinQuitListener implements Listener {
     @EventHandler
     public void onPlayerQuit(final PlayerQuitEvent event) {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
-        for (final Objective objective : questTypeApi.getActive(onlineProfile)) {
+        for (final Objective objective : questTypeApi.getForProfile(onlineProfile)) {
             questTypeApi.pause(onlineProfile, objective.getObjectiveID());
         }
         playerDataStorage.remove(onlineProfile);

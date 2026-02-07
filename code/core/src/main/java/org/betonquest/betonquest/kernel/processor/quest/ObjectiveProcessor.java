@@ -232,26 +232,10 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
     }
 
     @Override
-    public List<Objective> getForProfile(final Profile profile) {
-        return getActive(profile);
-    }
-
-    @Override
     public Objective getObjective(final ObjectiveIdentifier objectiveIdentifier) throws QuestException {
         return get(objectiveIdentifier);
     }
 
-    @Override
-    public void start(final Profile profile, final ObjectiveIdentifier objectiveIdentifier, final String startingState) {
-        resume(profile, objectiveIdentifier, startingState);
-    }
-
-    /**
-     * Pauses the objective for the given profile.
-     *
-     * @param profile     the {@link Profile} of the player
-     * @param objectiveID ID of the objective
-     */
     @Override
     public void pause(final Profile profile, final ObjectiveIdentifier objectiveID) {
         final Objective objective = values.get(objectiveID);
@@ -270,12 +254,6 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
         }
     }
 
-    /**
-     * Creates new objective for the given profile.
-     *
-     * @param profile     the {@link Profile} of the player
-     * @param objectiveID ID of the objective
-     */
     @Override
     public void start(final Profile profile, final ObjectiveIdentifier objectiveID) {
         final Objective objective = values.get(objectiveID);
@@ -290,14 +268,8 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
         newPlayer(profile, objectiveID);
     }
 
-    /**
-     * Resumes the existing objective for the given profile.
-     *
-     * @param profile     the {@link Profile} of the player
-     * @param objectiveID ID of the objective
-     * @param instruction data instruction string
-     */
-    public void resume(final Profile profile, final ObjectiveIdentifier objectiveID, final String instruction) {
+    @Override
+    public void start(final Profile profile, final ObjectiveIdentifier objectiveID, final String instruction) {
         final Objective objective = values.get(objectiveID);
         if (objective == null) {
             log.warn(objectiveID.getPackage(), "Objective '%s' does not exist".formatted(objectiveID));
@@ -314,13 +286,8 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
         }
     }
 
-    /**
-     * Returns the list of objectives of this profile.
-     *
-     * @param profile the {@link Profile} of the player
-     * @return list of this profile's active objectives
-     */
-    public List<Objective> getActive(final Profile profile) {
+    @Override
+    public List<Objective> getForProfile(final Profile profile) {
         final List<Objective> list = new ArrayList<>();
         for (final Objective objective : values.values()) {
             if (objective.getService().containsProfile(profile)) {

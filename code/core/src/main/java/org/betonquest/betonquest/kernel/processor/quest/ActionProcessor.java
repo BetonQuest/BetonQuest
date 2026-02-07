@@ -60,17 +60,10 @@ public class ActionProcessor extends TypedQuestProcessor<ActionIdentifier, Actio
         this.plugin = plugin;
     }
 
-    /**
-     * Fires multiple actions for the {@link Profile} if they meet the actions' conditions.
-     * If the profile is null, the actions will be fired as static actions.
-     *
-     * @param profile   the {@link Profile} for which the actions must be executed or null
-     * @param actionIDS IDs of the actions to fire
-     * @return true if all actions were run even if there was an exception during execution
-     */
-    public boolean executes(@Nullable final Profile profile, final Collection<ActionIdentifier> actionIDS) {
+    @Override
+    public boolean run(@Nullable final Profile profile, final Collection<ActionIdentifier> actionIDS) {
         if (Bukkit.isPrimaryThread()) {
-            return actionIDS.stream().map(actionID -> execute(profile, actionID)).reduce(true, Boolean::logicalAnd);
+            return actionIDS.stream().map(actionID -> run(profile, actionID)).reduce(true, Boolean::logicalAnd);
         }
 
         final List<ActionIdentifier> syncList = new ArrayList<>();
@@ -82,9 +75,9 @@ public class ActionProcessor extends TypedQuestProcessor<ActionIdentifier, Actio
         });
 
         final Future<Boolean> syncFuture = syncList.isEmpty() ? CompletableFuture.completedFuture(true)
-                : scheduler.callSyncMethod(plugin, () -> syncList.stream().map(actionID -> execute(profile, actionID))
+                : scheduler.callSyncMethod(plugin, () -> syncList.stream().map(actionID -> run(profile, actionID))
                 .reduce(true, Boolean::logicalAnd));
-        final boolean asyncResult = asyncList.stream().map(actionID -> execute(profile, actionID)).reduce(true, Boolean::logicalAnd);
+        final boolean asyncResult = asyncList.stream().map(actionID -> run(profile, actionID)).reduce(true, Boolean::logicalAnd);
 
         try {
             return asyncResult && syncFuture.get();
@@ -94,15 +87,8 @@ public class ActionProcessor extends TypedQuestProcessor<ActionIdentifier, Actio
         }
     }
 
-    /**
-     * Fires an action for the {@link Profile} if it meets the action's conditions.
-     * If the profile is null, the action will be fired as a static action.
-     *
-     * @param profile  the {@link Profile} for which the action must be executed or null
-     * @param actionID ID of the action to fire
-     * @return true if the action was run even if there was an exception during execution
-     */
-    public boolean execute(@Nullable final Profile profile, final ActionIdentifier actionID) {
+    @Override
+    public boolean run(@Nullable final Profile profile, final ActionIdentifier actionID) {
         final ActionAdapter action = values.get(actionID);
         if (action == null) {
             log.warn(actionID.getPackage(), "Action " + actionID + " is not defined");
@@ -135,15 +121,5 @@ public class ActionProcessor extends TypedQuestProcessor<ActionIdentifier, Actio
             log.warn(actionID.getPackage(), "Error while firing '" + actionID + "' action: " + e.getMessage(), e);
             return true;
         }
-    }
-
-    @Override
-    public boolean run(@Nullable final Profile profile, final ActionIdentifier actionIdentifier) {
-        return execute(profile, actionIdentifier);
-    }
-
-    @Override
-    public boolean run(@Nullable final Profile profile, final Collection<ActionIdentifier> actionIdentifiers) {
-        return executes(profile, actionIdentifiers);
     }
 }
