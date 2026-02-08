@@ -186,7 +186,7 @@ class ScheduleTypeTest {
     /**
      * Factory to create a Mocked Schedule.
      */
-    private final class MockedScheduleFactory extends BaseScheduleFactory<MockedSchedule> {
+    private static final class MockedScheduleFactory extends BaseScheduleFactory<MockedSchedule> {
 
         private MockedScheduleFactory() {
             super();
@@ -202,7 +202,7 @@ class ScheduleTypeTest {
     /**
      * Factory to create a Throwing Unchecked Schedule.
      */
-    private final class ThrowingUncheckedScheduleFactory extends BaseScheduleFactory<ThrowingUncheckedSchedule> {
+    private static final class ThrowingUncheckedScheduleFactory extends BaseScheduleFactory<ThrowingUncheckedSchedule> {
 
         private ThrowingUncheckedScheduleFactory() {
             super();
