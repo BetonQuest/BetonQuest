@@ -31,7 +31,7 @@ public enum FontIndexFileFormat implements FontIndexReader {
      */
     JSON("json") {
         @Override
-        public Font read(final InputStream inputStream) throws IOException {
+        public Font read(final InputStream inputStream) {
             final JsonObject jsonObject = new Gson().fromJson(new InputStreamReader(inputStream, StandardCharsets.UTF_8), JsonObject.class);
             final Map<Integer, Integer> widths = jsonObject.entrySet().stream()
                     .map(entry -> Map.entry(entry.getKey().codePointAt(0), entry.getValue().getAsInt()))

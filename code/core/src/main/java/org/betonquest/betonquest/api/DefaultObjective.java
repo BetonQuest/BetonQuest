@@ -17,9 +17,8 @@ public abstract class DefaultObjective implements Objective {
      * Creates a new instance of the objective.
      *
      * @param service the {@link ObjectiveService} for this objective
-     * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public DefaultObjective(final ObjectiveService service) throws QuestException {
+    public DefaultObjective(final ObjectiveService service) {
         this.service = service;
     }
 

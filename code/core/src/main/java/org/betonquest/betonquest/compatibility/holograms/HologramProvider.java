@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.text.TextParser;
-import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -95,7 +94,7 @@ public class HologramProvider implements Integrator {
     }
 
     @Override
-    public void hook(final BetonQuestApi api) throws HookException {
+    public void hook(final BetonQuestApi api) {
         final BetonQuest plugin = BetonQuest.getInstance();
         final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
         final TextParser textParser = plugin.getTextParser();

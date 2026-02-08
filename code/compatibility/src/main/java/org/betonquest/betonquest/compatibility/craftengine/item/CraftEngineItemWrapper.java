@@ -63,7 +63,7 @@ public record CraftEngineItemWrapper(Argument<CustomItem<ItemStack>> customItemA
         }
 
         @Override
-        public ItemStack generate(final int stackSize, @Nullable final Profile profile) throws QuestException {
+        public ItemStack generate(final int stackSize, @Nullable final Profile profile) {
             return customItem.buildItemStack(stackSize);
         }
 

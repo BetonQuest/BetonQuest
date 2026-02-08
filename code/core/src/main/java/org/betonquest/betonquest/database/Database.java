@@ -77,7 +77,7 @@ public abstract class Database {
         return con;
     }
 
-    private boolean isConnectionBroken(final Connection connection) throws SQLException {
+    private boolean isConnectionBroken(final Connection connection) {
         try (PreparedStatement statement = connection.prepareStatement("SELECT 1");
              ResultSet result = statement.executeQuery()) {
             return !result.next();
