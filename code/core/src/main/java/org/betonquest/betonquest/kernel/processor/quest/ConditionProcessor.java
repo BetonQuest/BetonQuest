@@ -1,13 +1,11 @@
 package org.betonquest.betonquest.kernel.processor.quest;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.service.ConditionManager;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
 import org.betonquest.betonquest.kernel.processor.adapter.ConditionAdapter;
@@ -45,15 +43,13 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionIdentifier,
      * Create a new Condition Processor to store Conditions and checks them.
      *
      * @param log                        the custom logger for this class
-     * @param placeholders               the {@link Placeholders} to create and resolve placeholders
-     * @param packManager                the quest package manager to get quest packages from
      * @param conditionTypes             the available condition types
      * @param scheduler                  the bukkit scheduler to run sync tasks
      * @param conditionIdentifierFactory the factory to create condition identifiers
      * @param plugin                     the plugin instance
      * @param instructionApi             the instruction api
      */
-    public ConditionProcessor(final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager,
+    public ConditionProcessor(final BetonQuestLogger log,
                               final ConditionTypeRegistry conditionTypes, final BukkitScheduler scheduler,
                               final IdentifierFactory<ConditionIdentifier> conditionIdentifierFactory, final Plugin plugin,
                               final InstructionApi instructionApi) {

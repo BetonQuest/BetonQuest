@@ -3,11 +3,9 @@ package org.betonquest.betonquest.conversation.io;
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.ConversationIO;
@@ -47,16 +45,13 @@ public class InventoryConvIOFactory implements ConversationIOFactory {
     /**
      * Create a new inventory conversation IO factory.
      *
-     * @param placeholders  the {@link Placeholders} to create and resolve placeholders
-     * @param packManager   the quest package manager to get quest packages from
      * @param loggerFactory the logger factory to create new conversation specific loggers
      * @param config        the config to read io options from
      * @param fontRegistry  the font registry to use for the inventory
      * @param colors        the colors to use for the conversation
      * @param printMessages if the IO should also print the messages in the chat
      */
-    public InventoryConvIOFactory(final BetonQuestLoggerFactory loggerFactory, final Placeholders placeholders,
-                                  final QuestPackageManager packManager, final ConfigAccessor config,
+    public InventoryConvIOFactory(final BetonQuestLoggerFactory loggerFactory, final ConfigAccessor config,
                                   final FontRegistry fontRegistry, final ConversationColors colors,
                                   final boolean printMessages) {
         this.loggerFactory = loggerFactory;

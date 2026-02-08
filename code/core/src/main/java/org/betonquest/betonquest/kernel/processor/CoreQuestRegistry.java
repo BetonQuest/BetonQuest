@@ -73,13 +73,13 @@ public record CoreQuestRegistry(
         final PlaceholderProcessor placeholderProcessor = new PlaceholderProcessor(loggerFactory.create(PlaceholderProcessor.class),
                 packManager, questTypeRegistries.placeholder(), scheduler, placeholderIdentifierFactory, instructionApi, plugin);
         final ActionProcessor actionProcessor = new ActionProcessor(loggerFactory.create(ActionProcessor.class),
-                placeholderProcessor, packManager, actionIdentifierFactory, questTypeRegistries.action(), scheduler, instructionApi, plugin);
+                actionIdentifierFactory, questTypeRegistries.action(), scheduler, instructionApi, plugin);
         final ConditionProcessor conditionProcessor = new ConditionProcessor(loggerFactory.create(ConditionProcessor.class),
-                placeholderProcessor, packManager, questTypeRegistries.condition(), scheduler, conditionIdentifierFactory, plugin, instructionApi);
+                questTypeRegistries.condition(), scheduler, conditionIdentifierFactory, plugin, instructionApi);
         final DefaultObjectiveServiceProvider objectiveService = new DefaultObjectiveServiceProvider(plugin, conditionProcessor,
                 actionProcessor, loggerFactory, profileProvider, instructionApi);
         return new CoreQuestRegistry(conditionProcessor, actionProcessor, placeholderProcessor,
-                new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), placeholderProcessor, packManager,
+                new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class),
                         questTypeRegistries.objective(), objectiveIdentifierFactory, pluginManager, objectiveService, instructionApi, plugin));
     }
 

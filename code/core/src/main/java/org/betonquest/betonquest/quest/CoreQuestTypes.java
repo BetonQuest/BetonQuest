@@ -531,7 +531,7 @@ public class CoreQuestTypes {
         placeholderTypes.register("condition", new ConditionPlaceholderFactory(questTypeApi, pluginMessage));
         placeholderTypes.registerCombined("constant", new ConstantPlaceholderFactory());
         placeholderTypes.registerCombined("eval", new EvalPlaceholderFactory());
-        placeholderTypes.register("globalpoint", new GlobalPointPlaceholderFactory(globalData, loggerFactory.create(GlobalPointPlaceholderFactory.class)));
+        placeholderTypes.register("globalpoint", new GlobalPointPlaceholderFactory(globalData));
         placeholderTypes.register("globaltag", new GlobalTagPlaceholderFactory(globalData, pluginMessage));
         placeholderTypes.registerCombined("item", new ItemPlaceholderFactory(betonQuest.getPlayerDataStorage()));
         placeholderTypes.register("itemdurability", new ItemDurabilityPlaceholderFactory());
@@ -539,7 +539,7 @@ public class CoreQuestTypes {
         placeholderTypes.registerCombined("math", new MathPlaceholderFactory(this.placeholders));
         placeholderTypes.registerCombined("npc", new NpcPlaceholderFactory(featureApi));
         placeholderTypes.register("objective", new ObjectivePropertyPlaceholderFactory(questTypeApi));
-        placeholderTypes.register("point", new PointPlaceholderFactory(dataStorage, loggerFactory.create(PointPlaceholderFactory.class)));
+        placeholderTypes.register("point", new PointPlaceholderFactory(dataStorage));
         placeholderTypes.register("player", new PlayerNamePlaceholderFactory());
         placeholderTypes.register("quester", new QuesterPlaceholderFactory(featureApi.conversationApi()));
         placeholderTypes.registerCombined("randomnumber", new RandomNumberPlaceholderFactory());

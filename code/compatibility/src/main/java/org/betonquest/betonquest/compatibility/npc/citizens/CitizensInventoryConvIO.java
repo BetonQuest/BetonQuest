@@ -4,10 +4,8 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.SkinTrait;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.npc.NpcConversation;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
@@ -43,17 +41,14 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
      * @param conv                 the conversation this IO is part of
      * @param onlineProfile        the online profile of the player participating in the conversation
      * @param log                  the custom logger for the conversation
-     * @param placeholders         the {@link Placeholders} to create and resolve placeholders
-     * @param packManager          the quest package manager to get quest packages from
      * @param colors               the colors used in the conversation
      * @param showNumber           whether to show the number of the conversation
      * @param showNPCText          whether to show the NPC text
      * @param printMessages        whether to print messages
      * @param componentLineWrapper the component line wrapper
      */
-    @SuppressWarnings("PMD.ExcessiveParameterList")
     public CitizensInventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile, final BetonQuestLogger log,
-                                   final Placeholders placeholders, final QuestPackageManager packManager, final ConversationColors colors,
+                                   final ConversationColors colors,
                                    final boolean showNumber, final boolean showNPCText, final boolean printMessages,
                                    final FixedComponentLineWrapper componentLineWrapper) {
         super(conv, onlineProfile, log, colors, showNumber, showNPCText, printMessages, componentLineWrapper);

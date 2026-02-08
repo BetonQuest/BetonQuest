@@ -1,13 +1,11 @@
 package org.betonquest.betonquest.kernel.processor.quest;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.service.ActionManager;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
 import org.betonquest.betonquest.kernel.processor.adapter.ActionAdapter;
@@ -42,16 +40,14 @@ public class ActionProcessor extends TypedQuestProcessor<ActionIdentifier, Actio
     /**
      * Create a new Action Processor to store actions and execute them.
      *
-     * @param placeholders            the {@link Placeholders} to create and resolve placeholders
      * @param log                     the custom logger for this class
-     * @param packManager             the quest package manager to get quest packages from
      * @param actionIdentifierFactory the factory to create action identifiers
      * @param actionTypes             the available action types
      * @param scheduler               the bukkit scheduler to run sync tasks
      * @param instructionApi          the instruction api
      * @param plugin                  the plugin instance
      */
-    public ActionProcessor(final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager,
+    public ActionProcessor(final BetonQuestLogger log,
                            final IdentifierFactory<ActionIdentifier> actionIdentifierFactory,
                            final ActionTypeRegistry actionTypes, final BukkitScheduler scheduler,
                            final InstructionApi instructionApi, final Plugin plugin) {

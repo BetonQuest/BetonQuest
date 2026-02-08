@@ -13,7 +13,6 @@ import org.betonquest.betonquest.api.identifier.NpcIdentifier;
 import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.FeatureRegistry;
-import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.api.quest.action.ActionRegistry;
 import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
@@ -90,14 +89,13 @@ public class CitizensIntegrator implements Integrator {
 
         final FeatureRegistries featureRegistries = api.getFeatureRegistries();
         final FeatureRegistry<ConversationIOFactory> conversationIORegistry = featureRegistries.conversationIO();
-        final Placeholders placeholders = api.getQuestTypeApi().placeholders();
         final ConfigAccessor pluginConfig = plugin.getPluginConfig();
         final FontRegistry fontRegistry = plugin.getFontRegistry();
         final ConversationColors colors = plugin.getConversationColors();
         conversationIORegistry.register("chest", new CitizensInventoryConvIOFactory(loggerFactory,
-                placeholders, api.getQuestPackageManager(), fontRegistry, colors, pluginConfig, false));
+                fontRegistry, colors, pluginConfig, false));
         conversationIORegistry.register("combined", new CitizensInventoryConvIOFactory(loggerFactory,
-                placeholders, api.getQuestPackageManager(), fontRegistry, colors, pluginConfig, true));
+                fontRegistry, colors, pluginConfig, true));
 
         final NpcRegistry npcRegistry = featureRegistries.npc();
         manager.registerEvents(new CitizensInteractCatcher(plugin.getProfileProvider(), npcRegistry, citizensNpcRegistry,

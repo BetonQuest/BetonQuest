@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.schedule;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.identifier.ScheduleIdentifier;
 import org.betonquest.betonquest.api.instruction.InstructionApi;
@@ -30,11 +29,10 @@ public class ActionScheduling extends SectionProcessor<ScheduleIdentifier, Sched
      *
      * @param log               the logger that will be used for logging
      * @param instructionApi    the instruction api to use
-     * @param packManager       the quest package manager to get quest packages from
      * @param scheduleTypes     map containing the schedule types, provided by {@link org.betonquest.betonquest.BetonQuest}
      * @param identifierFactory the identifier factory to create {@link ScheduleIdentifier}s for this type
      */
-    public ActionScheduling(final BetonQuestLogger log, final InstructionApi instructionApi, final QuestPackageManager packManager,
+    public ActionScheduling(final BetonQuestLogger log, final InstructionApi instructionApi,
                             final ScheduleRegistry scheduleTypes, final IdentifierFactory<ScheduleIdentifier> identifierFactory) {
         super(log, instructionApi, identifierFactory, "Schedules", "schedules");
         this.scheduleTypes = scheduleTypes;
