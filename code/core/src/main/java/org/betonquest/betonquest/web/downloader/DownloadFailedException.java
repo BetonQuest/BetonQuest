@@ -12,7 +12,7 @@ public class DownloadFailedException extends Exception {
     private static final long serialVersionUID = 149829848798498784L;
 
     /**
-     * {@link Exception#Exception(String, Throwable)}
+     * Constructs a new exception with the specified detail message.
      *
      * @param message the exceptions message.
      */
@@ -21,7 +21,7 @@ public class DownloadFailedException extends Exception {
     }
 
     /**
-     * {@link Exception#Exception(String, Throwable)}
+     * Constructs a new exception with the specified detail message and cause.
      *
      * @param message the exceptions message.
      * @param cause   the Throwable that caused this exception.

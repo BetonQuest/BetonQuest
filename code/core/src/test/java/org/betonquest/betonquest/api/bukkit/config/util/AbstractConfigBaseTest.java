@@ -25,17 +25,17 @@ import static org.mockito.Mockito.*;
 public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
 
     /**
-     * The mocked {@link World} instance for testing
+     * The mocked {@link World} instance for testing.
      */
     protected final World world = mock(World.class, "ValidWorld");
 
     /**
-     * The mocked invalid {@link World} instance for testing
+     * The mocked invalid {@link World} instance for testing.
      */
     protected final World worldInvalid = mock(World.class, "InvalidWorld");
 
     /**
-     * The {@link T} instance for testing
+     * The {@link T} instance for testing.
      */
     protected final T config;
 

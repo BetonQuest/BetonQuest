@@ -11,7 +11,7 @@ public class SkinFormatParseException extends Exception {
     private static final long serialVersionUID = -6313544890230009673L;
 
     /**
-     * {@link Exception#Exception(String)}
+     * Constructs a new exception with the specified detail message.
      *
      * @param message the exception's message.
      */
@@ -20,21 +20,12 @@ public class SkinFormatParseException extends Exception {
     }
 
     /**
-     * {@link Exception#Exception(String, Throwable)}
+     * Constructs a new exception with the specified detail message and cause.
      *
      * @param message the exception's message.
      * @param cause   the throwable that caused this exception.
      */
     public SkinFormatParseException(final String message, final Throwable cause) {
         super(message, cause);
-    }
-
-    /**
-     * {@link Exception#Exception(Throwable)}
-     *
-     * @param cause the throwable that caused this exception.
-     */
-    public SkinFormatParseException(final Throwable cause) {
-        super(cause);
     }
 }

@@ -14,12 +14,12 @@ import java.util.Map;
 public class HandleModificationConfiguration extends HandleModificationConfigurationSection implements Configuration {
 
     /**
-     * The {@link ConfigurationSectionDecorator#original} but as {@link Configuration} instance
+     * The {@link ConfigurationSectionDecorator#original} but as {@link Configuration} instance.
      */
     protected final Configuration original;
 
     /**
-     * The {@link ConfigurationModificationHandler} instance
+     * The {@link ConfigurationModificationHandler} instance.
      */
     protected final ConfigurationModificationHandler handler;
 
