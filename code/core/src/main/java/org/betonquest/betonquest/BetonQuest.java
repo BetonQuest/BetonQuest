@@ -30,6 +30,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
+import org.betonquest.betonquest.api.service.DefaultBetonQuestApi;
 import org.betonquest.betonquest.api.service.DefaultBetonQuestApiService;
 import org.betonquest.betonquest.api.service.DefaultBetonQuestInstructions;
 import org.betonquest.betonquest.api.service.DefaultBetonQuestManagers;
@@ -468,9 +469,12 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
                 featureRegistries::npc, questTypeRegistries::placeholder);
         final DefaultBetonQuestManagers managers = new DefaultBetonQuestManagers(processors::actions, processors::conditions,
                 processors::objectives, questRegistry::items, questRegistry::npcs);
-        final DefaultBetonQuestApiService service = new DefaultBetonQuestApiService(this::getProfileProvider, this::getQuestPackageManager, this::getLoggerFactory,
+        final DefaultBetonQuestApi betonQuestApi = new DefaultBetonQuestApi(this::getProfileProvider, this::getQuestPackageManager, this::getLoggerFactory,
                 () -> instructions, questRegistry::conversations, () -> registries, () -> managers);
-        Bukkit.getServicesManager().register(BetonQuestApiService.class, service, this, ServicePriority.Highest);
+        Bukkit.getServicesManager().register(BetonQuestApiService.class, new DefaultBetonQuestApiService(plugin -> {
+            log.debug("Loading API for plugin " + plugin.getName());
+            return betonQuestApi;
+        }), this, ServicePriority.Highest);
     }
 
     private void setupFontRegistry() {

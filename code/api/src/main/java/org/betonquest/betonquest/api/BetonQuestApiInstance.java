@@ -28,7 +28,7 @@ import java.util.UUID;
 /**
  * The BetonQuest API offers direct access to all methods related to BetonQuest.
  * Accessing and modifying the current state of BetonQuest will primarily be done through this api.
- * Getting an instance of this interface is done through the {@link BetonQuestApiServices}.
+ * Getting an instance of this interface is done through the {@link BetonQuestApiService}.
  * <br> <br>
  * The API is available and ready to use after BetonQuest itself has finished enabling and may therefore be called
  * the earliest while enabling a plugin explicitly depending on BetonQuest (enabling after BetonQuest).

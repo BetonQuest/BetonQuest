@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.service;
 
 import org.betonquest.betonquest.api.BetonQuestApiInstance;
-import org.betonquest.betonquest.api.BetonQuestApiServices;
+import org.betonquest.betonquest.api.BetonQuestApiService;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import java.util.function.Supplier;
 
 /**
- * The default implementation of the {@link BetonQuestApiServices}.
+ * The default implementation of the {@link BetonQuestApiService}.
  */
 public class DefaultBetonQuestApi implements BetonQuestApiInstance {
 
