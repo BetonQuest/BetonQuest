@@ -170,7 +170,7 @@ final class UpdaterConfigTest {
         );
     }
 
-    @SuppressWarnings("PMD.CommentDefaultAccessModifier")
+    /* default */
     static UpdaterConfig getMockedConfig(final BetonQuestLogger logger, final Input input, final Version version) {
         final ConfigAccessor config = mock(ConfigAccessor.class);
         when(config.getBoolean("updater.enabled", true)).thenReturn(input.enabled);
