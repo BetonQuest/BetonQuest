@@ -17,6 +17,7 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveServiceProvider;
+import org.betonquest.betonquest.api.service.ObjectiveManager;
 import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
@@ -38,7 +39,7 @@ import java.util.Set;
  * Stores Objectives and starts/stops/resumes them.
  */
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.TooManyMethods", "PMD.GodClass"})
-public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Objective> {
+public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Objective> implements ObjectiveManager {
 
     /**
      * Instruction API.
@@ -206,12 +207,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
         }
     }
 
-    /**
-     * Cancels the objective for the given profile.
-     *
-     * @param profile     the {@link Profile} of the player
-     * @param objectiveID ID of the objective
-     */
+    @Override
     public void cancel(final Profile profile, final ObjectiveIdentifier objectiveID) {
         final Objective objective = values.get(objectiveID);
         if (objective == null) {
@@ -229,12 +225,12 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
         }
     }
 
-    /**
-     * Pauses the objective for the given profile.
-     *
-     * @param profile     the {@link Profile} of the player
-     * @param objectiveID ID of the objective
-     */
+    @Override
+    public Objective getObjective(final ObjectiveIdentifier objectiveIdentifier) throws QuestException {
+        return get(objectiveIdentifier);
+    }
+
+    @Override
     public void pause(final Profile profile, final ObjectiveIdentifier objectiveID) {
         final Objective objective = values.get(objectiveID);
         if (objective == null) {
@@ -252,12 +248,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
         }
     }
 
-    /**
-     * Creates new objective for the given profile.
-     *
-     * @param profile     the {@link Profile} of the player
-     * @param objectiveID ID of the objective
-     */
+    @Override
     public void start(final Profile profile, final ObjectiveIdentifier objectiveID) {
         final Objective objective = values.get(objectiveID);
         if (objective == null) {
@@ -271,14 +262,8 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
         newPlayer(profile, objectiveID);
     }
 
-    /**
-     * Resumes the existing objective for the given profile.
-     *
-     * @param profile     the {@link Profile} of the player
-     * @param objectiveID ID of the objective
-     * @param instruction data instruction string
-     */
-    public void resume(final Profile profile, final ObjectiveIdentifier objectiveID, final String instruction) {
+    @Override
+    public void start(final Profile profile, final ObjectiveIdentifier objectiveID, final String instruction) {
         final Objective objective = values.get(objectiveID);
         if (objective == null) {
             log.warn(objectiveID.getPackage(), "Objective '%s' does not exist".formatted(objectiveID));
@@ -295,13 +280,8 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
         }
     }
 
-    /**
-     * Returns the list of objectives of this profile.
-     *
-     * @param profile the {@link Profile} of the player
-     * @return list of this profile's active objectives
-     */
-    public List<Objective> getActive(final Profile profile) {
+    @Override
+    public List<Objective> getForProfile(final Profile profile) {
         final List<Objective> list = new ArrayList<>();
         for (final Objective objective : values.values()) {
             if (objective.getService().containsProfile(profile)) {

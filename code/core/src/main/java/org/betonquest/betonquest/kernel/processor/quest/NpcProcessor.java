@@ -21,6 +21,7 @@ import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcConversation;
 import org.betonquest.betonquest.api.quest.npc.NpcHider;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
+import org.betonquest.betonquest.api.service.NpcManager;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.CombatTagger;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
@@ -36,6 +37,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +49,7 @@ import java.util.UUID;
  * Stores Npcs and starts Npc conversations.
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
-public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<?>> {
+public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<?>> implements NpcManager {
 
     /**
      * The section in which the assignments from Npcs to conversations are stored.
@@ -264,6 +266,11 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
      */
     public NpcHider getNpcHider() {
         return npcHider;
+    }
+
+    @Override
+    public Npc<?> get(@Nullable final Profile profile, final NpcIdentifier npcIdentifier) throws QuestException {
+        return get(npcIdentifier).getNpc(profile);
     }
 
     /**

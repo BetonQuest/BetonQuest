@@ -216,7 +216,7 @@ public class DefaultObjectiveService implements ObjectiveService {
         }
         getLogger().debug("Calling actions [%s] for objective '%s' and profile '%s'"
                 .formatted(String.join(",", events.stream().map(Identifier::toString).toList()), objectiveID, profile));
-        actionProcessor.executes(profile, events);
+        actionProcessor.run(profile, events);
     }
 
     @Override

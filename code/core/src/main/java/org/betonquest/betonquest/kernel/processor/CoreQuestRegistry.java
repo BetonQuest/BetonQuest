@@ -141,17 +141,17 @@ public record CoreQuestRegistry(
 
     @Override
     public boolean condition(@Nullable final Profile profile, final ConditionIdentifier conditionID) {
-        return conditions().check(profile, conditionID);
+        return conditions().test(profile, conditionID);
     }
 
     @Override
     public boolean actions(@Nullable final Profile profile, final Collection<ActionIdentifier> actionIDS) {
-        return actions().executes(profile, actionIDS);
+        return actions().run(profile, actionIDS);
     }
 
     @Override
     public boolean action(@Nullable final Profile profile, final ActionIdentifier actionID) {
-        return actions().execute(profile, actionID);
+        return actions().run(profile, actionID);
     }
 
     @Override
@@ -171,7 +171,7 @@ public record CoreQuestRegistry(
 
     @Override
     public void resumeObjective(final Profile profile, final ObjectiveIdentifier objectiveID, final String instruction) {
-        objectives().resume(profile, objectiveID, instruction);
+        objectives().start(profile, objectiveID, instruction);
     }
 
     @Override
@@ -181,7 +181,7 @@ public record CoreQuestRegistry(
 
     @Override
     public List<Objective> getPlayerObjectives(final Profile profile) {
-        return objectives().getActive(profile);
+        return objectives().getForProfile(profile);
     }
 
     @Override

@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.instruction.InstructionApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Placeholders;
+import org.betonquest.betonquest.api.service.ConditionManager;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
 import org.betonquest.betonquest.kernel.processor.adapter.ConditionAdapter;
 import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
@@ -28,7 +29,7 @@ import java.util.stream.Stream;
 /**
  * Does the logic around Conditions.
  */
-public class ConditionProcessor extends TypedQuestProcessor<ConditionIdentifier, ConditionAdapter> {
+public class ConditionProcessor extends TypedQuestProcessor<ConditionIdentifier, ConditionAdapter> implements ConditionManager {
 
     /**
      * The Bukkit scheduler to run sync tasks.
@@ -71,8 +72,8 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionIdentifier,
      */
     public boolean checks(@Nullable final Profile profile, final Collection<ConditionIdentifier> conditionIDs, final boolean matchAll) {
         final Function<Stream<ConditionIdentifier>, Boolean> allOrAnyMatch = matchAll
-                ? stream -> stream.allMatch(id -> check(profile, id))
-                : stream -> stream.anyMatch(id -> check(profile, id));
+                ? stream -> stream.allMatch(id -> test(profile, id))
+                : stream -> stream.anyMatch(id -> test(profile, id));
 
         if (Bukkit.isPrimaryThread()) {
             return allOrAnyMatch.apply(conditionIDs.stream());
@@ -98,14 +99,18 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionIdentifier,
         }
     }
 
-    /**
-     * Checks if the condition described by conditionID is met.
-     *
-     * @param conditionID ID of the condition to check
-     * @param profile     the {@link Profile} of the player which should be checked
-     * @return if the condition is met
-     */
-    public boolean check(@Nullable final Profile profile, final ConditionIdentifier conditionID) {
+    @Override
+    public boolean testAll(@Nullable final Profile profile, final Collection<ConditionIdentifier> conditionIdentifiers) {
+        return checks(profile, conditionIdentifiers, true);
+    }
+
+    @Override
+    public boolean testAny(@Nullable final Profile profile, final Collection<ConditionIdentifier> conditionIdentifiers) {
+        return checks(profile, conditionIdentifiers, false);
+    }
+
+    @Override
+    public boolean test(@Nullable final Profile profile, final ConditionIdentifier conditionID) {
         final ConditionAdapter condition = values.get(conditionID);
         if (condition == null) {
             log.warn(conditionID.getPackage(), "The condition " + conditionID + " is not defined!");
