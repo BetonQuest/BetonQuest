@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.kernel.processor.adapter;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -58,11 +57,6 @@ public class PlaceholderAdapter extends QuestAdapter<PlayerPlaceholder, Playerle
      */
     public Instruction getInstruction() {
         return instruction;
-    }
-
-    @Override
-    public QuestPackage getPackage() {
-        return instruction.getPackage();
     }
 
     @Override
