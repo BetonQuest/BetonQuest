@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 
 /**
- * Checks if the player has specified amount of Vault money
+ * Checks if the player has specified amount of Vault money.
  */
 public class MoneyCondition implements PlayerCondition {
 

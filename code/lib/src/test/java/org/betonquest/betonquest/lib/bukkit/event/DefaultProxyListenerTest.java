@@ -74,7 +74,7 @@ class DefaultProxyListenerTest {
         }
 
         @Test
-        void event_class_extraction() throws QuestException {
+        void event_class_extraction() {
             assertNotNull(proxyListener, "Event should not be null");
             assertEquals(PlayerJumpEvent.class, proxyListener.getEventType(), "Event type should be PlayerJumpEvent");
         }
@@ -116,14 +116,14 @@ class DefaultProxyListenerTest {
         }
 
         @Test
-        void register() throws QuestException {
+        void register() {
             assertFalse(proxyListener.isRegistered(), "Event should not be registered yet");
             proxyListener.register();
             assertTrue(proxyListener.isRegistered(), "Event should be registered");
         }
 
         @Test
-        void unregister() throws QuestException {
+        void unregister() {
             proxyListener.register();
             assertTrue(proxyListener.isRegistered(), "Event should be registered");
             proxyListener.unregister();

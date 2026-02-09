@@ -34,7 +34,7 @@ public class HandleModificationToConfiguration implements ConfigurationModificat
     private final Map<String, List<String>> inlineComments;
 
     /**
-     * Empty constructor
+     * Empty constructor.
      */
     public HandleModificationToConfiguration() {
         section = new MemoryConfiguration();

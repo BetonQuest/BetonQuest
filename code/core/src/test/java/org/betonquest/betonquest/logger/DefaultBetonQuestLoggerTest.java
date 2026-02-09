@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.LogSource;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -187,8 +188,8 @@ class DefaultBetonQuestLoggerTest {
      * @param message   The message to match.
      * @param exception The exception to match.
      */
-    private record RecordMatcher(String source, Level level, String message,
-                                 Exception exception) implements ArgumentMatcher<LogRecord> {
+    private record RecordMatcher(@Nullable String source, Level level, String message,
+                                 @Nullable Exception exception) implements ArgumentMatcher<LogRecord> {
 
         /**
          * Creates a new record matcher.

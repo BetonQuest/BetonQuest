@@ -12,77 +12,77 @@ import static org.junit.jupiter.api.Assertions.*;
 class VersionComparatorTest {
 
     /**
-     * PRE release qualifier
+     * PRE release qualifier.
      */
     public static final String QUALIFIER_PRE = "PRE-";
 
     /**
-     * DEV release qualifier
+     * DEV release qualifier.
      */
     public static final String QUALIFIER_DEV = "DEV-";
 
     /**
-     * A version that represent a MAJOR Version
+     * A version that represent a MAJOR Version.
      */
     private static final Version V_1_0_0 = new Version("1.0.0");
 
     /**
-     * A version that represent a newer MAJOR Version
+     * A version that represent a newer MAJOR Version.
      */
     private static final Version V_2_0_0 = new Version("2.0.0");
 
     /**
-     * A version that represent a newer MINOR Version
+     * A version that represent a newer MINOR Version.
      */
     private static final Version V_1_1_0 = new Version("1.1.0");
 
     /**
-     * A version that represent a newer PATCH Version
+     * A version that represent a newer PATCH Version.
      */
     private static final Version V_1_0_1 = new Version("1.0.1");
 
     /**
-     * A version that represent a DEV Version
+     * A version that represent a DEV Version.
      */
     private static final Version V_1_0_0_DEV_1 = new Version("1.0.0-DEV-1");
 
     /**
-     * A version that represent a newer DEV Version
+     * A version that represent a newer DEV Version.
      */
     private static final Version V_1_0_0_DEV_2 = new Version("1.0.0-DEV-2");
 
     /**
-     * A version that represent a newer MAJOR-DEV Version
+     * A version that represent a newer MAJOR-DEV Version.
      */
     private static final Version V_2_0_0_DEV_1 = new Version("2.0.0-DEV-1");
 
     /**
-     * A version that represent a newer MINOR-DEV Version
+     * A version that represent a newer MINOR-DEV Version.
      */
     private static final Version V_1_1_0_DEV_146 = new Version("1.1.0-DEV-146");
 
     /**
-     * A version that represent a newer PATCH-DEV Version
+     * A version that represent a newer PATCH-DEV Version.
      */
     private static final Version V_1_0_1_DEV_1 = new Version("1.0.1-DEV-1");
 
     /**
-     * A version that represent a local PATCH Version
+     * A version that represent a local PATCH Version.
      */
     private static final Version V_1_0_1_DEV_UNOFFICIAL = new Version("1.0.1-DEV-UNOFFICIAL");
 
     /**
-     * A version that represent a fork PATCH Version
+     * A version that represent a fork PATCH Version.
      */
     private static final Version V_1_0_1_ARTIFACT_1 = new Version("1.0.1-ARTIFACT-1");
 
     /**
-     * A version that represent a PRE release version
+     * A version that represent a PRE release version.
      */
     private static final Version V_2_0_0_PRE_1 = new Version("2.0.0-PRE-1");
 
     /**
-     * A version that represent a version without a qualifier but a build number
+     * A version that represent a version without a qualifier but a build number.
      */
     private static final Version V_1_1_0_99 = new Version("1.1.0-99");
 

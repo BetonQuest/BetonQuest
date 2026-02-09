@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.bukkit.config.util.ConfigurationBaseTest;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -32,6 +33,7 @@ public class FallbackConfigurationTest extends ConfigurationBaseTest {
     /**
      * The values of the default section in the fallback configuration before the test did run.
      */
+    @Nullable
     private Map<String, Object> valuesDefault;
 
     @Override

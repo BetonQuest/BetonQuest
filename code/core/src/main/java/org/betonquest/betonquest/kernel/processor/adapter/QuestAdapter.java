@@ -14,7 +14,6 @@ public class QuestAdapter<P, L> {
     /**
      * Package where the types are from.
      */
-    @Nullable
     protected final QuestPackage pack;
 
     /**
@@ -37,7 +36,7 @@ public class QuestAdapter<P, L> {
      * @param playerless the type working without a profile
      * @throws IllegalArgumentException if there is no type provided
      */
-    public QuestAdapter(@Nullable final QuestPackage pack, @Nullable final P player, @Nullable final L playerless) {
+    public QuestAdapter(final QuestPackage pack, @Nullable final P player, @Nullable final L playerless) {
         if (player == null && playerless == null) {
             throw new IllegalStateException("Cannot create a Wrapper without a value!");
         }
@@ -60,7 +59,6 @@ public class QuestAdapter<P, L> {
      *
      * @return the source pack
      */
-    @Nullable
     public QuestPackage getPackage() {
         return pack;
     }

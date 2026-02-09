@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.api.identifier;
 
-import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 
 /**
@@ -14,9 +13,8 @@ public class NoID extends DefaultIdentifier {
      * Constructs a new NoID.
      *
      * @param pack the quest package to use
-     * @throws QuestException if the ID cannot be created
      */
-    public NoID(final QuestPackage pack) throws QuestException {
+    public NoID(final QuestPackage pack) {
         super(pack, "NoID");
     }
 }

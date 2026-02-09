@@ -59,21 +59,21 @@ public abstract class AbstractTakeAction implements OnlineAction {
         }
     }
 
-    private void checkInventory(final OnlineProfile profile) throws QuestException {
+    private void checkInventory(final OnlineProfile profile) {
         final Player player = profile.getPlayer();
         final ItemStack[] inventory = player.getInventory().getStorageContents();
         final ItemStack[] newInv = takeDesiredAmount(profile, inventory);
         player.getInventory().setStorageContents(newInv);
     }
 
-    private void checkArmor(final OnlineProfile profile) throws QuestException {
+    private void checkArmor(final OnlineProfile profile) {
         final Player player = profile.getPlayer();
         final ItemStack[] armorSlots = player.getInventory().getArmorContents();
         final ItemStack[] newArmor = takeDesiredAmount(profile, armorSlots);
         player.getInventory().setArmorContents(newArmor);
     }
 
-    private void checkOffhand(final OnlineProfile profile) throws QuestException {
+    private void checkOffhand(final OnlineProfile profile) {
         final Player player = profile.getPlayer();
         final ItemStack offhand = player.getInventory().getItemInOffHand();
         final ItemStack[] newOffhand = takeDesiredAmount(profile, offhand);
@@ -87,7 +87,7 @@ public abstract class AbstractTakeAction implements OnlineAction {
         playerData.setBackpack(newBackpack);
     }
 
-    private List<ItemStack> removeDesiredAmount(final Profile profile, final List<ItemStack> items) throws QuestException {
+    private List<ItemStack> removeDesiredAmount(final Profile profile, final List<ItemStack> items) {
         final ItemStack[] itemArray = items.toArray(new ItemStack[0]);
         final ItemStack[] remainingItems = takeDesiredAmount(profile, itemArray);
         return Arrays.stream(remainingItems)

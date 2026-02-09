@@ -45,7 +45,7 @@ class TransformerIntegrationTest extends TransformersFixture {
     class Type {
 
         @Test
-        void flawless_String_to_Boolean() throws InvalidConfigurationException, IOException {
+        void flawless_String_to_Boolean() {
             patch = """
                       2.0.0.1:
                         - type: TYPE_TRANSFORM
@@ -57,7 +57,7 @@ class TransformerIntegrationTest extends TransformersFixture {
         }
 
         @Test
-        void flawless_String_to_Int() throws InvalidConfigurationException, IOException {
+        void flawless_String_to_Int() {
             patch = """
                       2.0.0.1:
                         - type: TYPE_TRANSFORM
@@ -69,7 +69,7 @@ class TransformerIntegrationTest extends TransformersFixture {
         }
 
         @Test
-        void flawless_String_to_Float() throws InvalidConfigurationException, IOException {
+        void flawless_String_to_Float() {
             patch = """
                       2.0.0.1:
                         - type: TYPE_TRANSFORM
@@ -81,7 +81,7 @@ class TransformerIntegrationTest extends TransformersFixture {
         }
 
         @Test
-        void flawless_String_to_Double() throws InvalidConfigurationException, IOException {
+        void flawless_String_to_Double() {
             patch = """
                       2.0.0.1:
                         - type: TYPE_TRANSFORM
@@ -93,7 +93,7 @@ class TransformerIntegrationTest extends TransformersFixture {
         }
 
         @Test
-        void flawless_Boolean_to_String() throws InvalidConfigurationException, IOException {
+        void flawless_Boolean_to_String() {
             patch = """
                       2.0.0.1:
                         - type: TYPE_TRANSFORM
@@ -105,7 +105,7 @@ class TransformerIntegrationTest extends TransformersFixture {
         }
 
         @Test
-        void no_edits_on_invalid() throws InvalidConfigurationException, IOException {
+        void no_edits_on_invalid() {
             patch = """
                       2.0.0.1:
                         - type: TYPE_TRANSFORM
@@ -115,7 +115,7 @@ class TransformerIntegrationTest extends TransformersFixture {
         }
 
         @Test
-        void no_edits_on_unsupported_type() throws InvalidConfigurationException, IOException {
+        void no_edits_on_unsupported_type() {
             patch = """
                       2.0.0.1:
                         - type: TYPE_TRANSFORM
@@ -130,7 +130,7 @@ class TransformerIntegrationTest extends TransformersFixture {
     class Set {
 
         @Test
-        void flawless() throws InvalidConfigurationException, IOException {
+        void flawless() {
             patch = """
                       2.0.0.1:
                         - type: SET
@@ -146,7 +146,7 @@ class TransformerIntegrationTest extends TransformersFixture {
     class KeyRename {
 
         @Test
-        void flawless() throws InvalidConfigurationException, IOException {
+        void flawless() {
             patch = """
                     2.0.0.1:
                         - type: KEY_RENAME
@@ -159,7 +159,7 @@ class TransformerIntegrationTest extends TransformersFixture {
         }
 
         @Test
-        void flawless_on_list() throws InvalidConfigurationException, IOException {
+        void flawless_on_list() {
             patch = """
                     2.0.0.1:
                         - type: KEY_RENAME
@@ -172,7 +172,7 @@ class TransformerIntegrationTest extends TransformersFixture {
         }
 
         @Test
-        void no_edits_on_invalid() throws InvalidConfigurationException, IOException {
+        void no_edits_on_invalid() {
             patch = """
                     2.0.0.1:
                         - type: KEY_RENAME
@@ -186,7 +186,7 @@ class TransformerIntegrationTest extends TransformersFixture {
     class Remove {
 
         @Test
-        void flawless() throws InvalidConfigurationException, IOException {
+        void flawless() {
             patch = """
                     2.0.0.1:
                         - type: REMOVE
@@ -197,7 +197,7 @@ class TransformerIntegrationTest extends TransformersFixture {
         }
 
         @Test
-        void no_edits_on_invalid() throws InvalidConfigurationException, IOException {
+        void no_edits_on_invalid() {
             patch = """
                     2.0.0.1:
                         - type: REMOVE
@@ -210,7 +210,7 @@ class TransformerIntegrationTest extends TransformersFixture {
     class ListEntryRemove {
 
         @Test
-        void flawless() throws InvalidConfigurationException, IOException {
+        void flawless() {
             patch = """
                       2.0.0.1:
                         - type: LIST_ENTRY_REMOVE
@@ -225,7 +225,7 @@ class TransformerIntegrationTest extends TransformersFixture {
         }
 
         @Test
-        void no_edits_on_invalid() throws InvalidConfigurationException, IOException {
+        void no_edits_on_invalid() {
             patch = """
                       2.0.0.1:
                         - type: LIST_ENTRY_REMOVE
@@ -236,7 +236,7 @@ class TransformerIntegrationTest extends TransformersFixture {
         }
 
         @Test
-        void no_edits_on_no_matching_entry() throws InvalidConfigurationException, IOException {
+        void no_edits_on_no_matching_entry() {
             patch = """
                       2.0.0.1:
                         - type: LIST_ENTRY_REMOVE
@@ -250,7 +250,7 @@ class TransformerIntegrationTest extends TransformersFixture {
     class ListEntryRename {
 
         @Test
-        void flawless() throws InvalidConfigurationException, IOException {
+        void flawless() {
             patch = """
                     2.0.0.1:
                       - type: LIST_ENTRY_RENAME
@@ -266,7 +266,7 @@ class TransformerIntegrationTest extends TransformersFixture {
         }
 
         @Test
-        void no_edits_on_invalid() throws InvalidConfigurationException, IOException {
+        void no_edits_on_invalid() {
             patch = """
                     2.0.0.1:
                       - type: LIST_ENTRY_RENAME
@@ -278,7 +278,7 @@ class TransformerIntegrationTest extends TransformersFixture {
         }
 
         @Test
-        void no_edits_on_no_matching_regex() throws InvalidConfigurationException, IOException {
+        void no_edits_on_no_matching_regex() {
             patch = """
                     2.0.0.1:
                       - type: LIST_ENTRY_RENAME
@@ -293,7 +293,7 @@ class TransformerIntegrationTest extends TransformersFixture {
     class ListEntryAdd {
 
         @Test
-        void flawless_add_default() throws InvalidConfigurationException, IOException {
+        void flawless_add_default() {
             patch = """
                     2.0.0.1:
                         - type: LIST_ENTRY_ADD
@@ -307,7 +307,7 @@ class TransformerIntegrationTest extends TransformersFixture {
         }
 
         @Test
-        void flawless_add_last() throws InvalidConfigurationException, IOException {
+        void flawless_add_last() {
             patch = """
                     2.0.0.1:
                         - type: LIST_ENTRY_ADD
@@ -322,7 +322,7 @@ class TransformerIntegrationTest extends TransformersFixture {
         }
 
         @Test
-        void flawless_add_first() throws InvalidConfigurationException, IOException {
+        void flawless_add_first() {
             patch = """
                     2.0.0.1:
                         - type: LIST_ENTRY_ADD
@@ -339,7 +339,7 @@ class TransformerIntegrationTest extends TransformersFixture {
         }
 
         @Test
-        void flawless_add_invalid_position() throws InvalidConfigurationException, IOException {
+        void flawless_add_invalid_position() {
             patch = """
                     2.0.0.1:
                         - type: LIST_ENTRY_ADD
@@ -354,7 +354,7 @@ class TransformerIntegrationTest extends TransformersFixture {
         }
 
         @Test
-        void no_edits_on_invalid() throws InvalidConfigurationException, IOException {
+        void no_edits_on_invalid() {
             patch = """
                     2.0.0.1:
                         - type: LIST_ENTRY_ADD
@@ -373,7 +373,7 @@ class TransformerIntegrationTest extends TransformersFixture {
     class ValueRename {
 
         @Test
-        void flawless() throws InvalidConfigurationException, IOException {
+        void flawless() {
             patch = """
                     2.0.0.1:
                       - type: VALUE_RENAME
@@ -386,7 +386,7 @@ class TransformerIntegrationTest extends TransformersFixture {
         }
 
         @Test
-        void no_edits_on_non_existing() throws InvalidConfigurationException, IOException {
+        void no_edits_on_non_existing() {
             patch = """
                     2.0.0.1:
                       - type: VALUE_RENAME
@@ -397,7 +397,7 @@ class TransformerIntegrationTest extends TransformersFixture {
         }
 
         @Test
-        void no_edits_on_no_matching_regex() throws InvalidConfigurationException, IOException {
+        void no_edits_on_no_matching_regex() {
             patch = """
                     2.0.0.1:
                       - type: VALUE_RENAME

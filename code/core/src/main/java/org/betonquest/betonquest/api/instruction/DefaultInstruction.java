@@ -150,11 +150,7 @@ public class DefaultInstruction implements Instruction {
         if (identifier != null) {
             return identifier;
         }
-        try {
-            return new NoID(pack);
-        } catch (final QuestException e) {
-            throw new IllegalStateException("Could not find instruction: " + e.getMessage(), e);
-        }
+        return new NoID(pack);
     }
 
     @Override

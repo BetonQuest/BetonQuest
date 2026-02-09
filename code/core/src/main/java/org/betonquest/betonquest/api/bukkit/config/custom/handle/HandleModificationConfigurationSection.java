@@ -16,7 +16,7 @@ import java.util.Map;
 public class HandleModificationConfigurationSection extends ConfigurationSectionDecorator {
 
     /**
-     * The {@link ConfigurationSectionModificationHandler} instance
+     * The {@link ConfigurationSectionModificationHandler} instance.
      */
     protected final ConfigurationSectionModificationHandler handler;
 

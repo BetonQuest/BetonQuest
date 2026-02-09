@@ -47,12 +47,12 @@ public class Downloader implements Callable<Boolean> {
     public static final List<String> ALLOWED_OFFSET_PATHS = List.of("QuestPackages", "QuestTemplates");
 
     /**
-     * The http status code 400 - Bad Request
+     * The http status code 400 - Bad Request.
      */
     public static final int RESPONSE_400 = 400;
 
     /**
-     * Directory where downloaded repositories should be cached
+     * Directory where downloaded repositories should be cached.
      */
     private static final String CACHE_DIR = ".cache/downloader/";
 
@@ -79,7 +79,7 @@ public class Downloader implements Callable<Boolean> {
     private final BetonQuestLogger log;
 
     /**
-     * The BetonQuest Data folder that contains all plugin configuration
+     * The BetonQuest Data folder that contains all plugin configuration.
      */
     private final Path dataFolder;
 
@@ -90,7 +90,7 @@ public class Downloader implements Callable<Boolean> {
     private final String namespace;
 
     /**
-     * Git Tag or Git Branch from which the files should be downloaded
+     * Git Tag or Git Branch from which the files should be downloaded.
      */
     private final String ref;
 
@@ -107,7 +107,7 @@ public class Downloader implements Callable<Boolean> {
     private final String sourcePath;
 
     /**
-     * Path relative to the BetonQuest folder where the files should be placed
+     * Path relative to the BetonQuest folder where the files should be placed.
      */
     private final String targetPath;
 
@@ -117,7 +117,7 @@ public class Downloader implements Callable<Boolean> {
     private final boolean recurse;
 
     /**
-     * If files shall be overwritten, otherwise an exception is thrown
+     * If files shall be overwritten, otherwise an exception is thrown.
      */
     private final boolean overwrite;
 
@@ -222,7 +222,7 @@ public class Downloader implements Callable<Boolean> {
     }
 
     /**
-     * Gets the full source path including the offsetPath
+     * Gets the full source path including the offsetPath.
      *
      * @return full source path
      */
@@ -231,7 +231,7 @@ public class Downloader implements Callable<Boolean> {
     }
 
     /**
-     * Gets the full target path including the offsetPath
+     * Gets the full target path including the offsetPath.
      *
      * @return full target path
      */
@@ -471,7 +471,7 @@ public class Downloader implements Callable<Boolean> {
     }
 
     /**
-     * Checks if the entry is a child of the directory specified by {@link #sourcePath}
+     * Checks if the entry is a child of the directory specified by {@link #sourcePath}.
      *
      * @param entry the entry to check
      * @return true if a child of sourcePath, false otherwise

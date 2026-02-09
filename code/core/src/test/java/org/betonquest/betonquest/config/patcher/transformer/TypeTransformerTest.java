@@ -21,31 +21,31 @@ class TypeTransformerTest extends TransformersFixture {
     @Test
     void flawless_String_to_Boolean() throws PatchException {
         TRANSFORMER.transform(new DefaultPatcherOptions(Map.of("key", "section.booleanString", "newType", "boolean")), config);
-        assertEquals(config.get("section.booleanString"), true, "The String was not converted to a boolean.");
+        assertEquals(true, config.get("section.booleanString"), "The String was not converted to a boolean.");
     }
 
     @Test
     void flawless_String_to_Int() throws PatchException {
         TRANSFORMER.transform(new DefaultPatcherOptions(Map.of("key", "section.int", "newType", "integer")), config);
-        assertEquals(config.get("section.int"), 2, "The String was not converted to an integer.");
+        assertEquals(2, config.get("section.int"), "The String was not converted to an integer.");
     }
 
     @Test
     void flawless_String_to_Float() throws PatchException {
         TRANSFORMER.transform(new DefaultPatcherOptions(Map.of("key", "section.float", "newType", "float")), config);
-        assertEquals(config.get("section.float"), 2.5F, "The String was not converted to a float.");
+        assertEquals(2.5F, config.get("section.float"), "The String was not converted to a float.");
     }
 
     @Test
     void flawless_String_to_Double() throws PatchException {
         TRANSFORMER.transform(new DefaultPatcherOptions(Map.of("key", "section.double", "newType", "double")), config);
-        assertEquals(config.get("section.double"), 2.123_456_789_123_456_7D, "The String was not converted to a double.");
+        assertEquals(2.123_456_789_123_456_7D, config.get("section.double"), "The String was not converted to a double.");
     }
 
     @Test
     void flawless_Boolean_to_String() throws PatchException {
         TRANSFORMER.transform(new DefaultPatcherOptions(Map.of("key", "section.boolean", "newType", "string")), config);
-        assertEquals(config.get("section.boolean"), "true", "The boolean was not converted to a string.");
+        assertEquals("true", config.get("section.boolean"), "The boolean was not converted to a string.");
     }
 
     @Test

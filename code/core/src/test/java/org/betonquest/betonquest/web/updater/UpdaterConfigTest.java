@@ -19,42 +19,42 @@ import static org.mockito.Mockito.*;
 final class UpdaterConfigTest {
 
     /**
-     * Invalid {@link UpdateStrategy}
+     * Invalid {@link UpdateStrategy}.
      */
     public static final String INVALID = "INVALID";
 
     /**
-     * {@link UpdateStrategy#MINOR}_DEV {@link UpdateStrategy}
+     * {@link UpdateStrategy#MINOR}_DEV {@link UpdateStrategy}.
      */
     public static final String MINOR_DEV = "MINOR_DEV";
 
     /**
-     * {@link UpdateStrategy#MINOR} {@link UpdateStrategy}
+     * {@link UpdateStrategy#MINOR} {@link UpdateStrategy}.
      */
     public static final String MINOR = "MINOR";
 
     /**
-     * {@link UpdateStrategy#MAJOR}_DEV {@link UpdateStrategy}
+     * {@link UpdateStrategy#MAJOR}_DEV {@link UpdateStrategy}.
      */
     public static final String MAJOR_DEV = "MAJOR_DEV";
 
     /**
-     * {@link UpdateStrategy#MAJOR} {@link UpdateStrategy}
+     * {@link UpdateStrategy#MAJOR} {@link UpdateStrategy}.
      */
     public static final String MAJOR = "MAJOR";
 
     /**
-     * 2.0.0 {@link Version}
+     * 2.0.0 {@link Version}.
      */
     public static final Version VERSION1 = new Version("2.0.0");
 
     /**
-     * 2.0.0-DEV-1 {@link Version}
+     * 2.0.0-DEV-1 {@link Version}.
      */
     public static final Version VERSION2 = new Version("2.0.0-DEV-1");
 
     /**
-     * DEV indicator for versions
+     * DEV indicator for versions.
      */
     private static final String DEV_INDICATOR = "DEV";
 
@@ -170,7 +170,7 @@ final class UpdaterConfigTest {
         );
     }
 
-    @SuppressWarnings("PMD.CommentDefaultAccessModifier")
+    /* default */
     static UpdaterConfig getMockedConfig(final BetonQuestLogger logger, final Input input, final Version version) {
         final ConfigAccessor config = mock(ConfigAccessor.class);
         when(config.getBoolean("updater.enabled", true)).thenReturn(input.enabled);

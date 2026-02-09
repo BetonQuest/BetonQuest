@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.LogSource;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.notify.Notify;
@@ -79,7 +80,7 @@ public class IngameNotificationSender implements NotificationSender {
                 final Component message = pluginMessage.getMessage(profile, messageName, replacements);
                 Notify.get(questPackage, String.join(",", categories)).sendNotify(message, onlineProfile);
             } catch (final QuestException e) {
-                log.warn(questPackage, "The notify system was unable to send the notification message '" + messageName + "' in '" + fullId + "'. Error was: '" + e.getMessage() + "'", e);
+                log.warn(questPackage == null ? LogSource.EMPTY : questPackage, "The notify system was unable to send the notification message '" + messageName + "' in '" + fullId + "'. Error was: '" + e.getMessage() + "'", e);
             }
         });
     }

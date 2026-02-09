@@ -2,7 +2,6 @@ package org.betonquest.betonquest.compatibility.nexo;
 
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.item.ItemRegistry;
-import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.nexo.item.NexoItemFactory;
 import org.betonquest.betonquest.compatibility.nexo.item.NexoQuestItemSerializer;
@@ -20,7 +19,7 @@ public class NexoIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final BetonQuestApi api) throws HookException {
+    public void hook(final BetonQuestApi api) {
         final ItemRegistry itemRegistry = api.getFeatureRegistries().item();
         itemRegistry.register("nexo", new NexoItemFactory());
         itemRegistry.registerSerializer("nexo", new NexoQuestItemSerializer());

@@ -437,7 +437,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         try {
             final ItemIdentifier itemID;
             try {
-                itemID = getIdentifier(ItemIdentifier.class, null, args[1]);
+                itemID = getIdentifier(ItemIdentifier.class, args[1]);
             } catch (final QuestException e) {
                 sendMessage(sender, "error",
                         new VariableReplacement("error", Component.text(e.getMessage())));
@@ -557,7 +557,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "add", "a" -> {
                 final JournalEntryIdentifier entryID;
                 try {
-                    entryID = getIdentifier(JournalEntryIdentifier.class, null, pointerName);
+                    entryID = getIdentifier(JournalEntryIdentifier.class, pointerName);
                 } catch (final QuestException e) {
                     sendMessage(sender, "error",
                             new VariableReplacement("error", Component.text(e.getMessage())));
@@ -590,7 +590,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 log.debug("Removing pointer");
                 final JournalEntryIdentifier entryID;
                 try {
-                    entryID = getIdentifier(JournalEntryIdentifier.class, null, pointerName);
+                    entryID = getIdentifier(JournalEntryIdentifier.class, pointerName);
                 } catch (final QuestException e) {
                     sendMessage(sender, "error",
                             new VariableReplacement("error", Component.text(e.getMessage())));
@@ -861,7 +861,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         final ActionIdentifier actionID;
         try {
-            actionID = getIdentifier(ActionIdentifier.class, null, args[2]);
+            actionID = getIdentifier(ActionIdentifier.class, args[2]);
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
@@ -906,7 +906,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         final ConditionIdentifier conditionID;
         try {
-            conditionID = getIdentifier(ConditionIdentifier.class, null, args[2]);
+            conditionID = getIdentifier(ConditionIdentifier.class, args[2]);
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
@@ -1106,7 +1106,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final ObjectiveIdentifier objectiveID;
         final Objective objective;
         try {
-            objectiveID = getIdentifier(ObjectiveIdentifier.class, null, args[3]);
+            objectiveID = getIdentifier(ObjectiveIdentifier.class, args[3]);
             objective = instance.getQuestTypeApi().getObjective(objectiveID);
         } catch (final QuestException e) {
             sendMessage(sender, "error",
@@ -1217,7 +1217,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 // get ID and package
                 final ObjectiveIdentifier nameID;
                 try {
-                    nameID = getIdentifier(ObjectiveIdentifier.class, null, name);
+                    nameID = getIdentifier(ObjectiveIdentifier.class, name);
                 } catch (final QuestException e) {
                     sendMessage(sender, "error",
                             new VariableReplacement("error", Component.text(e.getMessage())));
@@ -1245,7 +1245,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 // rename objective instance
                 final ObjectiveIdentifier renameID;
                 try {
-                    renameID = getIdentifier(ObjectiveIdentifier.class, null, rename);
+                    renameID = getIdentifier(ObjectiveIdentifier.class, rename);
                 } catch (final QuestException e) {
                     sender.sendMessage("§4There was an unexpected error: " + e.getMessage());
                     log.reportException(e);
@@ -1272,7 +1272,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
                 final JournalEntryIdentifier newEntryID;
                 try {
-                    newEntryID = getIdentifier(JournalEntryIdentifier.class, null, rename);
+                    newEntryID = getIdentifier(JournalEntryIdentifier.class, rename);
                 } catch (final QuestException e) {
                     final String message = "You can't rename into non-existent id!";
                     sendMessage(sender, "error", new VariableReplacement("error", Component.text(message)));
@@ -1282,7 +1282,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
                 final JournalEntryIdentifier oldEntryID;
                 try {
-                    oldEntryID = getIdentifier(JournalEntryIdentifier.class, null, name);
+                    oldEntryID = getIdentifier(JournalEntryIdentifier.class, name);
                 } catch (final QuestException e) {
                     final String message = "Old journal entry " + name + " does not exist, renaming only database entries!";
                     log.warn(message, e);
@@ -1363,7 +1363,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 updateType = UpdateType.REMOVE_ALL_OBJECTIVES;
                 final ObjectiveIdentifier objectiveID;
                 try {
-                    objectiveID = getIdentifier(ObjectiveIdentifier.class, null, name);
+                    objectiveID = getIdentifier(ObjectiveIdentifier.class, name);
                 } catch (final QuestException e) {
                     final String message = "The objective '" + name + "' does not exist, it will still be removed from the database!";
                     sendMessage(sender, "error",
@@ -1381,7 +1381,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 updateType = UpdateType.REMOVE_ALL_ENTRIES;
                 final JournalEntryIdentifier entryID;
                 try {
-                    entryID = getIdentifier(JournalEntryIdentifier.class, null, name);
+                    entryID = getIdentifier(JournalEntryIdentifier.class, name);
                 } catch (final QuestException e) {
                     final String message = "The journal entry '" + name + "' does not exist, it will still be removed from the database!";
                     log.warn(message, e);
@@ -1736,7 +1736,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final ObjectiveIdentifier objectiveID;
         final Objective tmp;
         try {
-            objectiveID = getIdentifier(ObjectiveIdentifier.class, null, args[2]);
+            objectiveID = getIdentifier(ObjectiveIdentifier.class, args[2]);
             tmp = instance.getQuestTypeApi().getObjective(objectiveID);
         } catch (final QuestException e) {
             sendMessage(sender, "error",
@@ -1915,9 +1915,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         return element -> getId.apply(element).regionMatches(true, 0, prefix, 0, prefix.length());
     }
 
-    private <I extends Identifier> I getIdentifier(final Class<I> identifierClass, @Nullable final QuestPackage questPackage, final String identifier) throws QuestException {
+    private <I extends Identifier> I getIdentifier(final Class<I> identifierClass, final String identifier) throws QuestException {
         final IdentifierFactory<I> identifierFactory = instance.getQuestRegistries().identifier().getFactory(identifierClass);
-        return identifierFactory.parseIdentifier(questPackage, identifier);
+        return identifierFactory.parseIdentifier(null, identifier);
     }
 
     /**
