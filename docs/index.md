@@ -248,7 +248,7 @@ more advanced ones such as EffectLib. It also offers support for other quest plu
 quests and create further additions to your quest lines based upon the progress in your old plugin. If just Beton isn't
 enough you can always just hook into Skript or Denizen too.
 
-See the full list of integrations [here](Documentation/Scripting/Building-Blocks/Integration-List.md).
+See the full list of integrations [here](Documentation/Scripting/Building-Blocks/Integrations-List/index.md).
 
 ## Custom Notification System
 

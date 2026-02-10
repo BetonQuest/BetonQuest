@@ -15,7 +15,7 @@ toc_depth: 2
 Page content here...
 ```
 This can be useful for large pages with many headings. 
-For example, it is used for the [Integration List](../../../Documentation/Scripting/Building-Blocks/Integration-List.md)
+For example, it is used for the [Integration List](../../../Documentation/Scripting/Building-Blocks/Integrations-List/index.md)
 to hide the sub-headings of the individual integrations.
 
 ## mkdocs-snippets

@@ -1,11 +1,49 @@
 ---
-icon: material/text
+icon: material/text-recognition
+tags:
+  - Holograms
 ---
 
-## Holograms
+# Holograms
 
-@snippet:integrations:holograms@
+This feature can be activated by installing any of the following hologram plugins:
 
+| Plugin                                           | Required Version | Additional Dependencies                                                         |
+|--------------------------------------------------|------------------|---------------------------------------------------------------------------------|
+| [DecentHolograms](./DecentHolograms.md)          | 2.7.5 or above   | [PlaceholderAPI](../Administration/PlaceholderAPI.md) for in-line placeholders. |
+| [Holographic Displays](./HolographicDisplays.md) | 3.0.0 or above   | None                                                                            |
+
+If you have both plugins installed, you can use the [`hologram.default` option in the "_config.yml_"](../../../../Configuration/Plugin-Config.md#hologram-hologram-settings) to set which plugin should be used.
+
+### NPC Holograms
+```YAML title="Example"
+npc_holograms: #(7)!
+  myHologram: #(8)!
+    lines: #(1)!
+      - "Some text!" 
+    vector: 0;0.5;0 #(2)!
+    follow: true #(3)!
+    conditions: has_some_quest,!finished_some_quest #(4)!
+    check_interval: 20 #(5)!
+    npcs: Mayor,Guard #(6)!
+    max_range: 40 #(9)!
+```
+
+1. The lines of the hologram.
+2. A vector that points from the Npc's location to the hologram's location. Can be used to configure an offset. 
+Optional.
+3. If the hologram follows the Npc. Optional, defaults to `false`.
+4. Conditions that must be true for the hologram to display.
+5. How often the conditions are checked. Optional. 
+6. A list of NpcIDs that the hologram is attached to. 
+7. The section that all holograms must be placed in.
+8. The identifier of the hologram. Must be unique.
+9. Maximum hologram display distance. Optional.
+
+If you have moving NPCs (walking around) then you can have the holograms follow them by setting `follow: true`,
+but this will cause a lot of updates to the holograms and may cause lag if used on a lot of Npcs.
+So only set this to true for holograms with a Npc that actually moves.
+Also, not every Npc supports that feature.
 
 ### Hidden Holograms
 Installing either of these plugins will enable you to create hidden holograms, which will be shown to players only if they meet specified conditions.
@@ -65,13 +103,13 @@ colorfulHonorRank:
 
 Each BetonQuest placeholder can be displayed on a hologram in a text line.
 If you wish to refer to a placeholder that is *not* in the same package as the hologram, then you
-must specify a [package](../../Scripting/Packages-&-Templates.md) before the `placeholder`.
+must specify a [package](../../../Packages-&-Templates.md) before the `placeholder`.
 
-!!! warning "Potential lags"
-    The HolographicDisplays documentations warns against using too many individual hologram placeholders since they are rendered
-    for each player individually. If you are using HolographicDisplays, to save resources, it is recommended to minimise the use of non-static placeholders.
+??? warning "HolographicDisplays: Potential lags"
+    The HolographicDisplays documentation warns against using too many individual hologram placeholders since they are rendered
+    for each player individually. If you are using HolographicDisplays to save resources, it is recommended to minimize the use of non-static placeholders.
 
-The hologram's conditions are checked every 10 seconds, meaning a hologram will respond to a condition being met or un-met
+The hologram's conditions are checked every 10 seconds, meaning a hologram will respond to a condition being met or unmet
 every 10 seconds. If you want to make it faster, decrease `hologram.update_interval` option in "_config.yml_" file and set it to a
 number of ticks you want to pass between updates (one second is 20 ticks). Don't set it to 0 or negative numbers, it will result in an error.
 

@@ -68,7 +68,60 @@ nav:
           - 'Objectives List': Documentation/Scripting/Building-Blocks/Objectives-List.md
           - 'Conditions List': Documentation/Scripting/Building-Blocks/Conditions-List.md
           - 'Placeholders List': Documentation/Scripting/Building-Blocks/Placeholders-List.md
-          - 'Integration List': Documentation/Scripting/Building-Blocks/Integration-List.md
+          - 'Integrations List':
+              - 'Documentation/Scripting/Building-Blocks/Integrations-List/index.md'
+              - 'NPCs':
+                  - 'Documentation/Scripting/Building-Blocks/Integrations-List/NPCs/index.md'
+                  - 'Citizens': Documentation/Scripting/Building-Blocks/Integrations-List/NPCs/Citizens.md
+                  - 'FancyNpcs': Documentation/Scripting/Building-Blocks/Integrations-List/NPCs/FancyNpcs.md
+                  - 'MythicMobs': Documentation/Scripting/Building-Blocks/Integrations-List/NPCs/MythicMobs.md
+                  - 'ZNPCsPlus': Documentation/Scripting/Building-Blocks/Integrations-List/NPCs/ZNPCsPlus.md
+              - 'Items':
+                  - 'Documentation/Scripting/Building-Blocks/Integrations-List/Items/index.md'
+                  - 'Brewery & BreweryX': Documentation/Scripting/Building-Blocks/Integrations-List/Items/Brewery.md
+                  - 'CraftEngine': Documentation/Scripting/Building-Blocks/Integrations-List/Items/CraftEngine.md
+                  - 'ItemsAdder': Documentation/Scripting/Building-Blocks/Integrations-List/Items/ItemsAdder.md
+                  - 'MMOItems': Documentation/Scripting/Building-Blocks/Integrations-List/Items/MMOItems.md
+                  - 'Nexo': Documentation/Scripting/Building-Blocks/Integrations-List/Items/Nexo.md
+                  - 'MythicMobs': Documentation/Scripting/Building-Blocks/Integrations-List/Items/MythicMobs.md
+              - 'Holograms':
+                  - 'Documentation/Scripting/Building-Blocks/Integrations-List/Holograms/index.md'
+                  - 'DecentHolograms': Documentation/Scripting/Building-Blocks/Integrations-List/Holograms/DecentHolograms.md
+                  - 'HolographicDisplays': Documentation/Scripting/Building-Blocks/Integrations-List/Holograms/HolographicDisplays.md
+              - 'Visuals':
+                  - 'Documentation/Scripting/Building-Blocks/Integrations-List/Visuals/index.md'
+                  - 'EffectLib': Documentation/Scripting/Building-Blocks/Integrations-List/Visuals/EffectLib.md
+                  - 'FakeBlock': Documentation/Scripting/Building-Blocks/Integrations-List/Visuals/FakeBlock.md
+              - 'Scripting & Questing':
+                  - 'Documentation/Scripting/Building-Blocks/Integrations-List/Scripting/index.md'
+                  - 'Denizen': Documentation/Scripting/Building-Blocks/Integrations-List/Scripting/Denizen.md
+                  - 'Quests': Documentation/Scripting/Building-Blocks/Integrations-List/Scripting/Quests.md
+                  - 'Skript': Documentation/Scripting/Building-Blocks/Integrations-List/Scripting/Skript.md
+              - 'Economy':
+                  - 'Documentation/Scripting/Building-Blocks/Integrations-List/Economy/index.md'
+                  - 'JobsReborn': Documentation/Scripting/Building-Blocks/Integrations-List/Economy/JobsReborn.md
+                  - 'Shopkeepers': Documentation/Scripting/Building-Blocks/Integrations-List/Economy/Shopkeepers.md
+                  - 'Vault': Documentation/Scripting/Building-Blocks/Integrations-List/Economy/Vault.md
+              - 'MMO':
+                  - 'Documentation/Scripting/Building-Blocks/Integrations-List/MMO/index.md'
+                  - 'AuraSkills': Documentation/Scripting/Building-Blocks/Integrations-List/MMO/AuraSkills.md
+                  - 'Fabled': Documentation/Scripting/Building-Blocks/Integrations-List/MMO/Fabled.md
+                  - 'Heroes': Documentation/Scripting/Building-Blocks/Integrations-List/MMO/Heroes.md
+                  - 'Magic': Documentation/Scripting/Building-Blocks/Integrations-List/MMO/Magic.md
+                  - 'mcMMO': Documentation/Scripting/Building-Blocks/Integrations-List/MMO/McMMO.md
+                  - 'MMOCore': Documentation/Scripting/Building-Blocks/Integrations-List/MMO/MMOCore.md
+                  - 'MMOLib': Documentation/Scripting/Building-Blocks/Integrations-List/MMO/MMOLib.md
+              - 'Administration':
+                  - 'Documentation/Scripting/Building-Blocks/Integrations-List/Administration/index.md'
+                  - 'LuckPerms': Documentation/Scripting/Building-Blocks/Integrations-List/Administration/LuckPerms.md
+                  - 'PacketEvents': Documentation/Scripting/Building-Blocks/Integrations-List/Administration/PacketEvents.md
+                  - 'PlaceholderAPI': Documentation/Scripting/Building-Blocks/Integrations-List/Administration/PlaceholderAPI.md
+                  - 'RedisChat': Documentation/Scripting/Building-Blocks/Integrations-List/Administration/RedisChat.md
+                  - 'WorldEdit & FastAsyncWorldEdit': Documentation/Scripting/Building-Blocks/Integrations-List/Administration/WorldEdit.md
+                  - 'WorldGuard': Documentation/Scripting/Building-Blocks/Integrations-List/Administration/WorldGuard.md
+              - 'Miscellaneous':
+                  - 'Documentation/Scripting/Building-Blocks/Integrations-List/Miscellaneous/index.md'
+                  - 'TrainCarts': Documentation/Scripting/Building-Blocks/Integrations-List/Miscellaneous/TrainCarts.md
           - 'Additional Features':
               - 'Schedules': Documentation/Scripting/Schedules.md
               - 'Parties': Documentation/Scripting/Parties.md
@@ -78,7 +131,6 @@ nav:
       - 'Features':
           - 'Conversations': Documentation/Features/Conversations.md
           - 'Text Formatting': Documentation/Features/Text-Formatting.md
-          - 'NPCs': Documentation/Features/NPCs.md
           - 'Quest Menus':
               - 'Menus': Documentation/Features/Menus/Menu.md
               - 'Menu Example': Documentation/Features/Menus/Example.md
@@ -89,15 +141,9 @@ nav:
               - 'Quest Cancelers': Documentation/Features/Quest-Cancelers.md
 
       - 'Visual Effects':
-          - 'Notifications':
-              - 'Settings': Documentation/Visual-Effects/Notifications/Notification-Settings.md
-              - "IO's & Categories": Documentation/Visual-Effects/Notifications/Notification-IO's-&-Categories.md
-          - 'NPC Effects':
-              - 'NPC Hiding': Documentation/Visual-Effects/NPC-Effects/NPC-Hiding.md
-              - 'NPC Holograms': Documentation/Visual-Effects/NPC-Effects/NPC-Holograms.md
-          - 'Additional Effects':
-              - 'Quest Holograms': Documentation/Visual-Effects/Additional-Effects/Quest-Holograms.md
-              - 'Player Hider': Documentation/Visual-Effects/Additional-Effects/Player-Hider.md
+          - 'Notification Settings': Documentation/Visual-Effects/Notifications/Notification-Settings.md
+          - "Notify IO's & Categories": Documentation/Visual-Effects/Notifications/Notification-IO's-&-Categories.md
+          - 'Player Hider': Documentation/Visual-Effects/Additional-Effects/Player-Hider.md
 
       - 'Configuration':
           - 'Plugin Config': Documentation/Configuration/Plugin-Config.md

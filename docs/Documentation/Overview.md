@@ -32,7 +32,7 @@ It has in depth explanations for all of BetonQuest's features, config options an
  
      Customize your server with quest npcs, holograms, particles and more.
  
-     [:octicons-arrow-right-24: Visual Effects](./Visual-Effects/NPC-Effects/NPC-Hiding.md)
+     [:octicons-arrow-right-24: Visual Effects](./Scripting/Building-Blocks/Integrations-List/NPCs/index.md#npc-hiding-hide_npcs)
 
  
  -   :material-television-guide:  __Quest Menus__

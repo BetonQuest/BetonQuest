@@ -189,7 +189,7 @@ You can keep most of the syntax when you use the Citizens Npc id as their BetonQ
 but changing the "name" makes the difference more clear.
 
 Also, the `citizens_npcs_by_name` configuration option was removed in favor of the
-[`byName`](../../Scripting/Building-Blocks/Integration-List.md#citizens) argument.
+[`byName`](../../Scripting/Building-Blocks/Integrations-List/NPCs/Citizens.md) argument.
 
 <div class="grid" markdown>
 
