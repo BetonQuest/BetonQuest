@@ -21,8 +21,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.quest.npc.DefaultNpcHider;
 import org.betonquest.betonquest.api.quest.npc.Npc;
-import org.betonquest.betonquest.api.quest.npc.NpcHider;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -245,7 +245,7 @@ public record QuestRegistry(
     }
 
     @Override
-    public NpcHider getNpcHider() {
+    public DefaultNpcHider getNpcHider() {
         return npcs().getNpcHider();
     }
 

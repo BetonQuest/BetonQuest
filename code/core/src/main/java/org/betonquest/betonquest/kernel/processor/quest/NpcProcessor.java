@@ -14,9 +14,9 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.quest.npc.DefaultNpcHider;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcConversation;
-import org.betonquest.betonquest.api.quest.npc.NpcHider;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
 import org.betonquest.betonquest.api.service.ConditionManager;
 import org.betonquest.betonquest.api.service.NpcManager;
@@ -88,7 +88,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
     /**
      * Hider for Npcs.
      */
-    private final NpcHider npcHider;
+    private final DefaultNpcHider npcHider;
 
     /**
      * The sender for busy notifications.
@@ -139,7 +139,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
         this.plugin = plugin;
         this.conversationIdentifierFactory = conversationIdentifierFactory;
         plugin.getServer().getPluginManager().registerEvents(new NpcListener(), plugin);
-        this.npcHider = new NpcHider(loggerFactory.create(NpcHider.class), this,
+        this.npcHider = new DefaultNpcHider(loggerFactory.create(DefaultNpcHider.class), this,
                 conditionManager, profileProvider, npcTypes, plugin.getQuestRegistries().identifier(), plugin.getInstructionApi());
         this.busySender = new IngameNotificationSender(log, pluginMessage, null, "NpcProcessor", NotificationLevel.ERROR, "busy");
     }
@@ -259,7 +259,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
      *
      * @return the active npc hider
      */
-    public NpcHider getNpcHider() {
+    public DefaultNpcHider getNpcHider() {
         return npcHider;
     }
 

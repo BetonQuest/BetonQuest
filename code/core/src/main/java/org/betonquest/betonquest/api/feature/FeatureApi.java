@@ -9,8 +9,8 @@ import org.betonquest.betonquest.api.identifier.NpcIdentifier;
 import org.betonquest.betonquest.api.identifier.QuestCancelerIdentifier;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.npc.DefaultNpcHider;
 import org.betonquest.betonquest.api.quest.npc.Npc;
-import org.betonquest.betonquest.api.quest.npc.NpcHider;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.feature.QuestCanceler;
 import org.betonquest.betonquest.feature.QuestCompass;
@@ -93,7 +93,7 @@ public interface FeatureApi {
      *
      * @return the active npc hider
      */
-    NpcHider getNpcHider();
+    DefaultNpcHider getNpcHider();
 
     /**
      * Gets a QuestItem by their id.
