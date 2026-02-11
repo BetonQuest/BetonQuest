@@ -31,6 +31,7 @@ import org.betonquest.betonquest.quest.objective.interact.Interaction;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -266,6 +267,16 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
     @Override
     public Npc<?> get(@Nullable final Profile profile, final NpcIdentifier npcIdentifier) throws QuestException {
         return get(npcIdentifier).getNpc(profile);
+    }
+
+    @Override
+    public boolean isHidden(final NpcIdentifier npcId, final OnlineProfile profile) {
+        return getNpcHider().isHidden(npcId, profile);
+    }
+
+    @Override
+    public boolean isHidden(final Npc<?> npc, final Player player) {
+        return getNpcHider().isHidden(npc, player);
     }
 
     /**
