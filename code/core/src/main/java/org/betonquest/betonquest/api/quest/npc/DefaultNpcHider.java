@@ -11,8 +11,8 @@ import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
+import org.betonquest.betonquest.api.service.ConditionManager;
+import org.betonquest.betonquest.api.service.NpcManager;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -30,7 +30,7 @@ import java.util.Set;
  * Hides (or shows) Npcs based on conditions defined in the {@code hide_npcs} section of a {@link QuestPackage}.
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
-public class NpcHider {
+public class DefaultNpcHider {
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -38,14 +38,14 @@ public class NpcHider {
     protected final BetonQuestLogger log;
 
     /**
-     * Processor to get Npcs.
+     * The npc processor to get nps.
      */
-    private final NpcProcessor npcProcessor;
+    private final NpcManager npcManager;
 
     /**
-     * The Quest Type API to check hiding conditions.
+     * The condition manager to check conditions.
      */
-    private final QuestTypeApi questTypeApi;
+    private final ConditionManager conditionManager;
 
     /**
      * The profile provider instance.
@@ -82,22 +82,22 @@ public class NpcHider {
      * Create and start a new Npc Hider.
      *
      * @param log                the custom logger for this class
-     * @param npcProcessor       the processor to get nps
-     * @param questTypeApi       the Quest Type API to check hiding conditions
+     * @param npcManager         the processor to get nps
+     * @param conditionManager   the condition manager to check conditions
      * @param profileProvider    the profile provider instance
      * @param npcTypes           the Npc types to get NpcIds
      * @param identifierRegistry the identifier registry to get identifiers from
      * @param instructionApi     the instruction api to resolve sections
      */
-    public NpcHider(final BetonQuestLogger log, final NpcProcessor npcProcessor,
-                    final QuestTypeApi questTypeApi, final ProfileProvider profileProvider,
-                    final NpcRegistry npcTypes, final IdentifierRegistry identifierRegistry,
-                    final InstructionApi instructionApi) {
+    public DefaultNpcHider(final BetonQuestLogger log, final NpcManager npcManager,
+                           final ConditionManager conditionManager, final ProfileProvider profileProvider,
+                           final NpcRegistry npcTypes, final IdentifierRegistry identifierRegistry,
+                           final InstructionApi instructionApi) {
         this.log = log;
         this.identifierRegistry = identifierRegistry;
         this.instructionApi = instructionApi;
-        this.npcProcessor = npcProcessor;
-        this.questTypeApi = questTypeApi;
+        this.npcManager = npcManager;
+        this.conditionManager = conditionManager;
         this.profileProvider = profileProvider;
         this.npcTypes = npcTypes;
         this.npcs = new HashMap<>();
@@ -169,7 +169,7 @@ public class NpcHider {
         if (conditions == null || conditions.isEmpty()) {
             return false;
         }
-        return questTypeApi.conditions(profile, conditions);
+        return conditionManager.testAll(profile, conditions);
     }
 
     /**
@@ -206,13 +206,13 @@ public class NpcHider {
         }
         final Npc<?> npc;
         try {
-            npc = npcProcessor.get(npcId).getNpc(onlineProfile);
+            npc = npcManager.get(onlineProfile, npcId);
         } catch (final QuestException exception) {
             log.warn("NPCHider could not update visibility for npc '" + npcId + "': " + exception.getMessage(), exception);
             return;
         }
         if (npc.isSpawned()) {
-            if (conditions.isEmpty() || questTypeApi.conditions(onlineProfile, conditions)) {
+            if (conditions.isEmpty() || conditionManager.testAll(onlineProfile, conditions)) {
                 npc.hide(onlineProfile);
             } else {
                 npc.show(onlineProfile);

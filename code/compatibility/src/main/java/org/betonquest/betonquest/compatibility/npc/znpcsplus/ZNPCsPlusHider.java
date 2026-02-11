@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.npc.znpcsplus;
 
 import lol.pyr.znpcsplus.api.event.NpcSpawnEvent;
-import org.betonquest.betonquest.api.quest.npc.NpcHider;
+import org.betonquest.betonquest.api.quest.npc.DefaultNpcHider;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -14,14 +14,14 @@ public class ZNPCsPlusHider implements Listener {
     /**
      * Hider to check current visibility.
      */
-    private final NpcHider npcHider;
+    private final DefaultNpcHider npcHider;
 
     /**
      * Create a new ZNPCsPlus Hider to force Npc hiding.
      *
      * @param npcHider the npc hider to check if Npc is hidden
      */
-    public ZNPCsPlusHider(final NpcHider npcHider) {
+    public ZNPCsPlusHider(final DefaultNpcHider npcHider) {
         this.npcHider = npcHider;
     }
 

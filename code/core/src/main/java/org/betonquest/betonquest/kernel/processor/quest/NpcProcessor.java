@@ -14,11 +14,11 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.npc.DefaultNpcHider;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcConversation;
-import org.betonquest.betonquest.api.quest.npc.NpcHider;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
+import org.betonquest.betonquest.api.service.ConditionManager;
 import org.betonquest.betonquest.api.service.NpcManager;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.CombatTagger;
@@ -31,6 +31,7 @@ import org.betonquest.betonquest.quest.objective.interact.Interaction;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -88,7 +89,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
     /**
      * Hider for Npcs.
      */
-    private final NpcHider npcHider;
+    private final DefaultNpcHider npcHider;
 
     /**
      * The sender for busy notifications.
@@ -121,7 +122,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
      * @param pluginMessage                 the {@link PluginMessage} instance
      * @param plugin                        the plugin to load config
      * @param profileProvider               the profile provider instance
-     * @param questTypeApi                  the Quest Type API
+     * @param conditionManager              the condition manager
      * @param convStarter                   the starter for Npc conversations
      * @param instructionApi                the instruction api
      */
@@ -130,7 +131,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
                         final IdentifierFactory<NpcIdentifier> npcIdentifierFactory,
                         final IdentifierFactory<ConversationIdentifier> conversationIdentifierFactory,
                         final NpcTypeRegistry npcTypes, final PluginMessage pluginMessage, final BetonQuest plugin,
-                        final ProfileProvider profileProvider, final QuestTypeApi questTypeApi, final ConversationStarter convStarter,
+                        final ProfileProvider profileProvider, final ConditionManager conditionManager, final ConversationStarter convStarter,
                         final InstructionApi instructionApi) {
         super(log, npcTypes, npcIdentifierFactory, instructionApi, "Npc", "npcs");
         this.loggerFactory = loggerFactory;
@@ -139,8 +140,8 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
         this.plugin = plugin;
         this.conversationIdentifierFactory = conversationIdentifierFactory;
         plugin.getServer().getPluginManager().registerEvents(new NpcListener(), plugin);
-        this.npcHider = new NpcHider(loggerFactory.create(NpcHider.class), this,
-                questTypeApi, profileProvider, npcTypes, plugin.getQuestRegistries().identifier(), plugin.getInstructionApi());
+        this.npcHider = new DefaultNpcHider(loggerFactory.create(DefaultNpcHider.class), this,
+                conditionManager, profileProvider, npcTypes, plugin.getQuestRegistries().identifier(), plugin.getInstructionApi());
         this.busySender = new IngameNotificationSender(log, pluginMessage, null, "NpcProcessor", NotificationLevel.ERROR, "busy");
     }
 
@@ -259,13 +260,23 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
      *
      * @return the active npc hider
      */
-    public NpcHider getNpcHider() {
+    public DefaultNpcHider getNpcHider() {
         return npcHider;
     }
 
     @Override
     public Npc<?> get(@Nullable final Profile profile, final NpcIdentifier npcIdentifier) throws QuestException {
         return get(npcIdentifier).getNpc(profile);
+    }
+
+    @Override
+    public boolean isHidden(final NpcIdentifier npcId, final OnlineProfile profile) {
+        return getNpcHider().isHidden(npcId, profile);
+    }
+
+    @Override
+    public boolean isHidden(final Npc<?> npc, final Player player) {
+        return getNpcHider().isHidden(npc, player);
     }
 
     /**

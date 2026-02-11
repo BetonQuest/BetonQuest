@@ -21,8 +21,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.quest.npc.DefaultNpcHider;
 import org.betonquest.betonquest.api.quest.npc.Npc;
-import org.betonquest.betonquest.api.quest.npc.NpcHider;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -133,7 +133,7 @@ public record QuestRegistry(
                 journalMainPageIdentifierFactory);
         final NpcProcessor npcs = new NpcProcessor(loggerFactory.create(NpcProcessor.class), loggerFactory,
                 npcIdentifierFactory, conversationIdentifierFactory, otherRegistries.npc(), pluginMessage,
-                plugin, profileProvider, coreQuestRegistry, conversations.getStarter(), instructionApi);
+                plugin, profileProvider, coreQuestRegistry.conditions(), conversations.getStarter(), instructionApi);
         return new QuestRegistry(log, coreQuestRegistry, actionScheduling, cancelers, compasses, conversations,
                 items, journalEntries, journalMainPages, npcs, new ArrayList<>());
     }
@@ -245,7 +245,7 @@ public record QuestRegistry(
     }
 
     @Override
-    public NpcHider getNpcHider() {
+    public DefaultNpcHider getNpcHider() {
         return npcs().getNpcHider();
     }
 
