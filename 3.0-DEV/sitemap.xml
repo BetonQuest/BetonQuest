@@ -2,490 +2,490 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://betonquest.org/3.0-DEV/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/API/BukkitConfigurations/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/API/Configuration-Files/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/API/Instruction/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/API/Legacy-API/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/API/Logging/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/API/Obtaining-API/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/API/Overview/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/API/Profiles/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/API/Schedules/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/API/TextParsing/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/API/Quest/Actions/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/API/Quest/Conditions/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/API/Quest/NPCs/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/API/Quest/Objectives/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/API/Quest/Quest-API/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/API/Quest/Writing-Implementations/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/CHANGELOG/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Frequently-Asked-Questions/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Overview/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Configuration/Commands-and-Permissions/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Configuration/Font-Config/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Configuration/Plugin-Config/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Configuration/Version-Changes/Migration-1-2/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Configuration/Version-Changes/Migration-2-3/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Configuration/Version-Changes/Updating/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Features/Conversations/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Features/Items/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Features/Journal/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Features/Quest-Cancelers/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Features/Text-Formatting/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Features/Menus/Elements/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Features/Menus/Example/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Features/Menus/Menu/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/About-Scripting/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Data-Formats/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Packages-%26-Templates/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Parties/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Quoting-%26-YAML/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Schedules/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Actions-List/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Conditions-List/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Objectives-List/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Placeholders-List/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Administration/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Administration/LuckPerms/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Administration/PacketEvents/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Administration/PlaceholderAPI/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Administration/RedisChat/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Administration/WorldEdit/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Administration/WorldGuard/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Economy/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Economy/JobsReborn/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Economy/Shopkeepers/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Economy/Vault/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Holograms/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Holograms/DecentHolograms/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Holograms/HolographicDisplays/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Items/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Items/Brewery/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Items/CraftEngine/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Items/ItemsAdder/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Items/MMOItems/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Items/MythicMobs/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Items/Nexo/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/MMO/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/MMO/AuraSkills/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/MMO/Fabled/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/MMO/Heroes/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/MMO/MMOCore/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/MMO/MMOLib/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/MMO/Magic/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/MMO/McMMO/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Miscellaneous/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Miscellaneous/TrainCarts/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/NPCs/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/NPCs/Citizens/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/NPCs/FancyNpcs/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/NPCs/MythicMobs/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/NPCs/ZNPCsPlus/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Scripting/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Scripting/Denizen/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Scripting/Quests/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Scripting/Skript/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Visuals/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Visuals/EffectLib/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integrations-List/Visuals/FakeBlock/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Visual-Effects/Additional-Effects/Player-Hider/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Visual-Effects/Notifications/Notification-IO%27s-%26-Categories/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Visual-Effects/Notifications/Notification-Settings/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Downloads/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Donating-Money/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Overview/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Setup-Project/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Misc/Versioning-and-Releasing/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Process/Create-a-new-Branch/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Process/Maintaining-the-Changelog/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Process/Submitting-Changes/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Process/Code/Adding-a-new-Dependency/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Process/Code/Checking-Requirements/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Process/Code/Workflow/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Process/Code/Writing-JUnit-Tests/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Process/Docs/Customizations/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Process/Docs/Guidelines/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Process/Docs/Principles/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Process/Docs/Workflow/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Process/Docs/Writing-Tutorials/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Overview/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Features/Tracking-Quest-Progress/Overview/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Features/Tracking-Quest-Progress/Tags/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Getting-Started/About/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Getting-Started/Basics/Actions/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Getting-Started/Basics/Conditions/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Getting-Started/Basics/Conversations/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Getting-Started/Basics/Objectives/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Getting-Started/Basics/YAML-Basics/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Getting-Started/Setup-Guide/Installing-BetonQuest/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Getting-Started/Setup-Guide/Setting-up-VSCode/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Getting-Started/Setup-Guide/Setting-up-a-Test-Server/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Syntax/Quest-Packages/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Tools/YAML-Errors/</loc>
-         <lastmod>2026-02-10</lastmod>
+         <lastmod>2026-02-11</lastmod>
     </url>
 </urlset>
