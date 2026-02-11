@@ -27,10 +27,10 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Default implementation of the {@link NpcHider} interface.
+ * Hides (or shows) Npcs based on conditions defined in the {@code hide_npcs} section of a {@link QuestPackage}.
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
-public class DefaultNpcHider implements NpcHider {
+public class DefaultNpcHider {
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -155,7 +155,15 @@ public class DefaultNpcHider implements NpcHider {
         }.runTaskTimer(plugin, 0, updateInterval);
     }
 
-    @Override
+    /**
+     * Checks if the Npc should be invisible to the player.
+     * <p>
+     * This is primary used to cancel Npc spawn events.
+     *
+     * @param npcId   the id of the Npc
+     * @param profile the profile to check conditions for
+     * @return if the npc is stored and the hide conditions are met
+     */
     public boolean isHidden(final NpcIdentifier npcId, final OnlineProfile profile) {
         final Set<ConditionIdentifier> conditions = npcs.get(npcId);
         if (conditions == null || conditions.isEmpty()) {
@@ -164,7 +172,13 @@ public class DefaultNpcHider implements NpcHider {
         return conditionManager.testAll(profile, conditions);
     }
 
-    @Override
+    /**
+     * Allows to check if a Npc should be hidden.
+     *
+     * @param npc    the Npc to check
+     * @param player the player to check conditions with
+     * @return if the Npc is hidden with a Npc Hider
+     */
     public boolean isHidden(final Npc<?> npc, final Player player) {
         final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         final Set<NpcIdentifier> identifier = npcTypes.getIdentifier(npc, onlineProfile);
