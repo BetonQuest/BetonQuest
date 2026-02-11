@@ -133,7 +133,7 @@ public record QuestRegistry(
                 journalMainPageIdentifierFactory);
         final NpcProcessor npcs = new NpcProcessor(loggerFactory.create(NpcProcessor.class), loggerFactory,
                 npcIdentifierFactory, conversationIdentifierFactory, otherRegistries.npc(), pluginMessage,
-                plugin, profileProvider, coreQuestRegistry, conversations.getStarter(), instructionApi);
+                plugin, profileProvider, coreQuestRegistry.conditions(), conversations.getStarter(), instructionApi);
         return new QuestRegistry(log, coreQuestRegistry, actionScheduling, cancelers, compasses, conversations,
                 items, journalEntries, journalMainPages, npcs, new ArrayList<>());
     }

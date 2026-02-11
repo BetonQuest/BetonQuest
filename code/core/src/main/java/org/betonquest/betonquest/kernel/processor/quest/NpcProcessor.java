@@ -14,11 +14,11 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcConversation;
 import org.betonquest.betonquest.api.quest.npc.NpcHider;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
+import org.betonquest.betonquest.api.service.ConditionManager;
 import org.betonquest.betonquest.api.service.NpcManager;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.CombatTagger;
@@ -121,7 +121,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
      * @param pluginMessage                 the {@link PluginMessage} instance
      * @param plugin                        the plugin to load config
      * @param profileProvider               the profile provider instance
-     * @param questTypeApi                  the Quest Type API
+     * @param conditionManager              the condition manager
      * @param convStarter                   the starter for Npc conversations
      * @param instructionApi                the instruction api
      */
@@ -130,7 +130,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
                         final IdentifierFactory<NpcIdentifier> npcIdentifierFactory,
                         final IdentifierFactory<ConversationIdentifier> conversationIdentifierFactory,
                         final NpcTypeRegistry npcTypes, final PluginMessage pluginMessage, final BetonQuest plugin,
-                        final ProfileProvider profileProvider, final QuestTypeApi questTypeApi, final ConversationStarter convStarter,
+                        final ProfileProvider profileProvider, final ConditionManager conditionManager, final ConversationStarter convStarter,
                         final InstructionApi instructionApi) {
         super(log, npcTypes, npcIdentifierFactory, instructionApi, "Npc", "npcs");
         this.loggerFactory = loggerFactory;
@@ -140,7 +140,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
         this.conversationIdentifierFactory = conversationIdentifierFactory;
         plugin.getServer().getPluginManager().registerEvents(new NpcListener(), plugin);
         this.npcHider = new NpcHider(loggerFactory.create(NpcHider.class), this,
-                questTypeApi, profileProvider, npcTypes, plugin.getQuestRegistries().identifier(), plugin.getInstructionApi());
+                conditionManager, profileProvider, npcTypes, plugin.getQuestRegistries().identifier(), plugin.getInstructionApi());
         this.busySender = new IngameNotificationSender(log, pluginMessage, null, "NpcProcessor", NotificationLevel.ERROR, "busy");
     }
 
