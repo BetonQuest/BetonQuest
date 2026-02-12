@@ -28,7 +28,7 @@ conditions:
 
 ### Actions
 
-### Give Skill Xp : `auraskillsxp`
+#### Give Skill Xp : `auraskillsxp`
 
 Adds experience to the players skill. The amount is a number.
 The `level` argument is optional and would convert the amount to levels instead of XP points.
