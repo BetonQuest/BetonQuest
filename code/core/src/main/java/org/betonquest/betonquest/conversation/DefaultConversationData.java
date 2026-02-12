@@ -37,10 +37,10 @@ import static org.betonquest.betonquest.conversation.ConversationOptionType.NPC;
 import static org.betonquest.betonquest.conversation.ConversationOptionType.PLAYER;
 
 /**
- * Default implementation of {@link IConversationData}.
+ * Default implementation of {@link ConversationData}.
  */
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.TooManyMethods"})
-public class DefaultConversationData implements IConversationData {
+public class DefaultConversationData implements ConversationData {
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -405,7 +405,7 @@ public class DefaultConversationData implements IConversationData {
     @Override
     public boolean isReady(final Profile profile) throws QuestException {
         for (final String option : getStartingOptions()) {
-            final IConversationData sourceData;
+            final ConversationData sourceData;
             final String optionName;
             if (option.contains(".")) {
                 final ConversationOptionIdentifier identifier = instruction.chainForArgument(option)

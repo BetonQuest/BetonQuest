@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
  * @param resolver     the resolver that will be used to resolve the conversation option
  */
 public record CrossConversationReference(QuestPackage sourcePack, ConversationIdentifier sourceConv,
-                                         @Nullable String sourceOption, ConversationData.OptionType optionType,
+                                         @Nullable String sourceOption, ConversationOptionType optionType,
                                          ConversationOptionIdentifier resolver) {
 
 }

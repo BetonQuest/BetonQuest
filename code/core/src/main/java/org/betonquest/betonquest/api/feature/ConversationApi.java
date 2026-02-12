@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.identifier.ConversationIdentifier;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.conversation.Conversation;
-import org.betonquest.betonquest.conversation.ConversationData;
+import org.betonquest.betonquest.conversation.DefaultConversationData;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,7 +21,7 @@ public interface ConversationApi {
      * @return the loaded ConversationData
      * @throws QuestException if no ConversationData is loaded for the ID
      */
-    ConversationData getData(ConversationIdentifier conversationID) throws QuestException;
+    DefaultConversationData getData(ConversationIdentifier conversationID) throws QuestException;
 
     /**
      * Creates and starts a conversation.

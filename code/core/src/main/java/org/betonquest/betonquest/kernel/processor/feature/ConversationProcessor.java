@@ -21,6 +21,8 @@ import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationData;
 import org.betonquest.betonquest.conversation.ConversationIOFactory;
+import org.betonquest.betonquest.conversation.ConversationPublicData;
+import org.betonquest.betonquest.conversation.DefaultConversationData;
 import org.betonquest.betonquest.conversation.interceptor.InterceptorFactory;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
@@ -41,7 +43,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Stores Conversation Data and validates it.
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
-public class ConversationProcessor extends SectionProcessor<ConversationIdentifier, ConversationData> implements ConversationApi, BetonQuestConversations {
+public class ConversationProcessor extends SectionProcessor<ConversationIdentifier, DefaultConversationData> implements ConversationApi, BetonQuestConversations {
 
     /**
      * Factory to create class-specific logger.
@@ -123,7 +125,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationIdentifi
     }
 
     @Override
-    protected Map.Entry<ConversationIdentifier, ConversationData> loadSection(final String sectionName, final SectionInstruction instruction) throws QuestException {
+    protected Map.Entry<ConversationIdentifier, DefaultConversationData> loadSection(final String sectionName, final SectionInstruction instruction) throws QuestException {
         final QuestPackage pack = instruction.getPackage();
         final ConfigurationSection section = instruction.getSection();
         final ConversationIdentifier identifier = getIdentifier(pack, sectionName);
@@ -143,8 +145,8 @@ public class ConversationProcessor extends SectionProcessor<ConversationIdentifi
         final Argument<Number> interceptorDelay = instruction.chainForArgument(rawInterceptorDelay).number()
                 .validate(delay -> delay.doubleValue() > 0, "Expected a non-negative number for 'interceptor_delay', got '%s' instead.").get();
 
-        final ConversationData.PublicData publicData = new ConversationData.PublicData(identifier, quester, stop, finalActions, conversationIO, interceptor, interceptorDelay, invincible);
-        final ConversationData conversationData = new ConversationData(loggerFactory.create(ConversationData.class), plugin.getQuestPackageManager(),
+        final ConversationPublicData publicData = new ConversationPublicData(identifier, quester, stop, finalActions, conversationIO, interceptor, interceptorDelay, invincible);
+        final DefaultConversationData conversationData = new DefaultConversationData(loggerFactory.create(DefaultConversationData.class), plugin.getQuestPackageManager(),
                 plugin.getQuestTypeApi().placeholders(), plugin.getQuestTypeApi(), instruction, plugin.getFeatureApi().conversationApi(), textCreator, section, publicData);
         return Map.entry(identifier, conversationData);
     }
@@ -161,7 +163,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationIdentifi
      * <p>
      * This method should be invoked after loading QuestPackages.
      *
-     * @see ConversationData#checkExternalPointers()
+     * @see DefaultConversationData#checkExternalPointers()
      */
     public void checkExternalPointers() {
         values.entrySet().removeIf(entry -> {
@@ -178,7 +180,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationIdentifi
     }
 
     @Override
-    public ConversationData getData(final ConversationIdentifier conversationID) throws QuestException {
+    public DefaultConversationData getData(final ConversationIdentifier conversationID) throws QuestException {
         return get(conversationID);
     }
 
