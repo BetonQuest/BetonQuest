@@ -12,7 +12,6 @@ import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.identifier.ConversationIdentifier;
 import org.betonquest.betonquest.api.identifier.ConversationOptionIdentifier;
-import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.DecoratedArgumentParser;
 import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
@@ -21,7 +20,6 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.text.Text;
-import org.betonquest.betonquest.conversation.interceptor.InterceptorFactory;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.configuration.ConfigurationSection;
@@ -35,14 +33,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static org.betonquest.betonquest.conversation.ConversationData.OptionType.NPC;
-import static org.betonquest.betonquest.conversation.ConversationData.OptionType.PLAYER;
+import static org.betonquest.betonquest.conversation.ConversationOptionType.NPC;
+import static org.betonquest.betonquest.conversation.ConversationOptionType.PLAYER;
 
 /**
- * Represents the data of the conversation.
+ * Default implementation of {@link IConversationData}.
  */
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.TooManyMethods"})
-public class ConversationData {
+public class DefaultConversationData implements IConversationData {
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -87,7 +85,7 @@ public class ConversationData {
     /**
      * The external used data.
      */
-    private final PublicData publicData;
+    private final ConversationPublicData publicData;
 
     /**
      * The NPC options that the conversation can start from.
@@ -121,11 +119,11 @@ public class ConversationData {
      * @throws QuestException when there is a syntax error in the defined conversation or
      *                        when conversation options cannot be resolved or {@code convSection} is null
      */
-    public ConversationData(final BetonQuestLogger log, final QuestPackageManager packManager,
-                            final Placeholders placeholders, final QuestTypeApi questTypeApi,
-                            final SectionInstruction instruction,
-                            final ConversationApi conversationApi, final ParsedSectionTextCreator textCreator,
-                            final ConfigurationSection convSection, final PublicData publicData) throws QuestException {
+    public DefaultConversationData(final BetonQuestLogger log, final QuestPackageManager packManager,
+                                   final Placeholders placeholders, final QuestTypeApi questTypeApi,
+                                   final SectionInstruction instruction,
+                                   final ConversationApi conversationApi, final ParsedSectionTextCreator textCreator,
+                                   final ConfigurationSection convSection, final ConversationPublicData publicData) throws QuestException {
         this.log = log;
         this.packManager = packManager;
         this.placeholders = placeholders;
@@ -145,21 +143,13 @@ public class ConversationData {
                 playerOptions.size()));
     }
 
-    /**
-     * Checks if external pointers point to valid options. This cannot be checked
-     * when constructing {@link ConversationData} objects because conversations that are
-     * being pointed to may not yet exist.
-     * <p>
-     * This method should be called when all conversations are loaded.
-     *
-     * @throws QuestException when a pointer to an external conversation could not be resolved
-     */
+    @Override
     public void checkExternalPointers() throws QuestException {
         for (final CrossConversationReference externalPointer : externalPointers) {
 
             final ResolvedOption resolvedOption = resolveOption(externalPointer.resolver(), externalPointer.optionType());
-            final QuestPackage targetPack = resolvedOption.conversationData().publicData.conversationID().getPackage();
-            final ConversationIdentifier targetConv = resolvedOption.conversationData().publicData.conversationID;
+            final QuestPackage targetPack = resolvedOption.conversationData().getPublicData().conversationID().getPackage();
+            final ConversationIdentifier targetConv = resolvedOption.conversationData().getPublicData().conversationID();
             final String targetOptionName = resolvedOption.name();
 
             // This is null if we refer to the starting options of a conversation
@@ -174,7 +164,7 @@ public class ConversationData {
                 sourceOption = "'" + externalPointer.sourceOption() + "' option";
             }
 
-            final ConversationData conv;
+            final DefaultConversationData conv;
             try {
                 conv = conversationApi.getData(targetConv);
             } catch (final QuestException e) {
@@ -197,31 +187,24 @@ public class ConversationData {
      * Resolves a pointer to an option in a conversation.
      *
      * @param currentOptionName the option string to resolve
-     * @param optionType        the {@link ConversationData.OptionType} of the option
+     * @param optionType        the {@link ConversationOptionType} of the option
      * @return a {@link CrossConversationReference} pointing to the option
      * @throws QuestException when the conversation could not be resolved
      */
     private CrossConversationReference resolvePointer(@Nullable final String currentOptionName,
-                                                      final OptionType optionType, final String option) throws QuestException {
+                                                      final ConversationOptionType optionType, final String option) throws QuestException {
         final ConversationOptionIdentifier identifier = instruction.chainForArgument(option).identifier(ConversationOptionIdentifier.class).get().getValue(null);
-        return new CrossConversationReference(getPack(), publicData.conversationID, currentOptionName, optionType, identifier);
+        return new CrossConversationReference(getPack(), publicData.conversationID(), currentOptionName, optionType, identifier);
     }
 
-    /**
-     * Resolves a pointer to an option in a conversation.
-     *
-     * @param conversationOptionID the option string to resolve
-     * @param optionType           the {@link ConversationData.OptionType} of the option
-     * @return a {@link ResolvedOption} pointing to the option
-     * @throws QuestException when the conversation could not be resolved
-     */
-    public ResolvedOption resolveOption(final ConversationOptionIdentifier conversationOptionID, final ConversationData.OptionType optionType) throws QuestException {
+    @Override
+    public ResolvedOption resolveOption(final ConversationOptionIdentifier conversationOptionID, final ConversationOptionType optionType) throws QuestException {
         final String conversationName = conversationOptionID.getConversationName();
         final String optionName = conversationOptionID.getOptionName();
-        final ConversationIdentifier targetConversationID = conversationName == null ? publicData.conversationID
+        final ConversationIdentifier targetConversationID = conversationName == null ? publicData.conversationID()
                 : instruction.chainForArgument(conversationName).identifier(ConversationIdentifier.class).get().getValue(null);
 
-        final ConversationData newData = conversationApi.getData(targetConversationID);
+        final DefaultConversationData newData = conversationApi.getData(targetConversationID);
         return new ResolvedOption(newData, optionType, optionName);
     }
 
@@ -240,8 +223,8 @@ public class ConversationData {
         }
     }
 
-    private void validateExtends(final ConversationOption option, final OptionType optionType) throws QuestException {
-        final Map<String, ConversationData.ConversationOption> optionMap;
+    private void validateExtends(final ConversationOption option, final ConversationOptionType optionType) throws QuestException {
+        final Map<String, DefaultConversationData.ConversationOption> optionMap;
         if (optionType == PLAYER) {
             optionMap = playerOptions;
         } else {
@@ -253,7 +236,7 @@ public class ConversationData {
             } else {
                 if (!optionMap.containsKey(extend)) {
                     throw new QuestException(String.format("%s %s extends %s, but it does not exist",
-                            optionType.readable, option.getName(), extend));
+                            optionType.getReadable(), option.getName(), extend));
                 }
             }
         }
@@ -321,14 +304,8 @@ public class ConversationData {
         return npcOptions;
     }
 
-    /**
-     * Returns all addresses of options that are available after the provided option is selected.
-     *
-     * @param profile the profile of the player to get the pointers for
-     * @param option  the option to get the pointers for
-     * @return a list of pointer addresses
-     */
     @SuppressWarnings("NullAway")
+    @Override
     public List<String> getPointers(final Profile profile, final ResolvedOption option) {
         final Map<String, ConversationOption> optionMaps;
         if (option.type() == NPC) {
@@ -339,20 +316,12 @@ public class ConversationData {
         return optionMaps.get(option.name()).getPointers(profile);
     }
 
-    /**
-     * Get the public data.
-     *
-     * @return external used data
-     */
-    public PublicData getPublicData() {
+    @Override
+    public ConversationPublicData getPublicData() {
         return publicData;
     }
 
-    /**
-     * Returns a list of all option names that the conversation can start from.
-     *
-     * @return a list of all option names
-     */
+    @Override
     public List<String> getStartingOptions() {
         return new ArrayList<>(startingOptions);
     }
@@ -373,16 +342,8 @@ public class ConversationData {
         return opt != null;
     }
 
-    /**
-     * Gets the text of the specified option in the specified language.
-     * Respects extended options.
-     *
-     * @param profile the profile of the player
-     * @param option  the option
-     * @return the text of the specified option in the specified language
-     */
-    @Nullable
-    public Component getText(@Nullable final Profile profile, final ResolvedOption option) {
+    @Override
+    public @Nullable Component getText(@Nullable final Profile profile, final ResolvedOption option) {
         final ConversationOption opt;
         if (option.type() == NPC) {
             opt = option.conversationData().npcOptions.get(option.name());
@@ -395,14 +356,7 @@ public class ConversationData {
         return opt.getText(profile);
     }
 
-    /**
-     * Gets the properties of the specified option.
-     * This is a section that can contain any properties defined by the conversation.
-     *
-     * @param profile the profile of the player
-     * @param option  the option
-     * @return the properties of the specified option
-     */
+    @Override
     public ConfigurationSection getProperties(@Nullable final Profile profile, final ResolvedOption option) {
         final ConversationOption opt;
         if (option.type() == NPC) {
@@ -416,37 +370,20 @@ public class ConversationData {
         return opt.getProperties(profile);
     }
 
-    /**
-     * Gets the package containing this conversation.
-     *
-     * @return the package containing this conversation
-     */
+    @Override
     public final QuestPackage getPack() {
-        return publicData.conversationID.getPackage();
+        return publicData.conversationID().getPackage();
     }
 
-    /**
-     * Gets the conditions required for the specified option to be selected.
-     *
-     * @param option the conversation option
-     * @param type   the type of the option
-     * @return the conditions required for the specified option to be selected
-     */
     @SuppressWarnings("NullAway")
-    public List<ConditionIdentifier> getConditionIDs(final String option, final OptionType type) {
+    @Override
+    public List<ConditionIdentifier> getConditionIDs(final String option, final ConversationOptionType type) {
         final Map<String, ConversationOption> options = type == NPC ? npcOptions : playerOptions;
         return options.get(option).getConditions();
     }
 
-    /**
-     * Gets the actions that will be executed when the specified option is selected.
-     *
-     * @param profile the profile of the player
-     * @param option  the name of the conversation option
-     * @param type    the type of the option
-     * @return a list of {@link ActionIdentifier}s
-     */
-    public List<ActionIdentifier> getActionIDs(final Profile profile, final ResolvedOption option, final OptionType type) {
+    @Override
+    public List<ActionIdentifier> getActionIDs(final Profile profile, final ResolvedOption option, final ConversationOptionType type) {
         final Map<String, ConversationOption> options;
         if (type == NPC) {
             options = option.conversationData().npcOptions;
@@ -460,23 +397,15 @@ public class ConversationData {
     }
 
     @SuppressWarnings("NullAway")
-    private ConversationOption getOption(@Nullable final String option, final OptionType type) {
+    private ConversationOption getOption(@Nullable final String option, final ConversationOptionType type) {
         return type == NPC ? npcOptions.get(option) : playerOptions.get(option);
     }
 
-    /**
-     * Checks if the conversation can start for the given player. This means it must have at least one option with
-     * conditions that are met by the player.
-     *
-     * @param profile the {@link Profile} of the player
-     * @return True, if the player can star the conversation.
-     * @throws QuestException if an external pointer reference has an invalid format or
-     *                        if an external pointer inside the conversation could not be resolved
-     */
     @SuppressWarnings("NullAway")
+    @Override
     public boolean isReady(final Profile profile) throws QuestException {
         for (final String option : getStartingOptions()) {
-            final ConversationData sourceData;
+            final IConversationData sourceData;
             final String optionName;
             if (option.contains(".")) {
                 final ConversationOptionIdentifier identifier = instruction.chainForArgument(option)
@@ -496,92 +425,6 @@ public class ConversationData {
     }
 
     /**
-     * Types of conversation options.
-     */
-    public enum OptionType {
-
-        /**
-         * Things the NPC says.
-         */
-        NPC("NPC_options", "NPC option"),
-
-        /**
-         * Options selectable by the player.
-         */
-        PLAYER("player_options", "player option");
-
-        /**
-         * The section name.
-         */
-        private final String identifier;
-
-        /**
-         * The name to use in logging.
-         */
-        private final String readable;
-
-        OptionType(final String identifier, final String readable) {
-            this.identifier = identifier;
-            this.readable = readable;
-        }
-
-        /**
-         * Get the section name.
-         *
-         * @return section identifier
-         */
-        public String getIdentifier() {
-            return identifier;
-        }
-
-        /**
-         * Gets the readable type name.
-         *
-         * @return name to use in log messages
-         */
-        public String getReadable() {
-            return readable;
-        }
-    }
-
-    /**
-     * The external used data.
-     *
-     * @param conversationID   The ID of the conversation.
-     * @param quester          A map of the quester's name in different languages.
-     * @param blockMovement    If true, the player will not be able to move during this conversation.
-     * @param finalActions     All actions that will be executed when the conversation ends.
-     * @param convIO           The conversation IO that should be used for this conversation.
-     * @param interceptor      The interceptor that should be used for this conversation.
-     * @param interceptorDelay The delay before the interceptor is ended after the conversation ends.
-     * @param invincible       If true, the player will not be able to damage or be damaged by entities in conversation.
-     */
-    public record PublicData(ConversationIdentifier conversationID, Text quester, Argument<Boolean> blockMovement,
-                             Argument<List<ActionIdentifier>> finalActions, Argument<ConversationIOFactory> convIO,
-                             Argument<InterceptorFactory> interceptor, Argument<Number> interceptorDelay,
-                             boolean invincible) {
-
-        /**
-         * Gets the quester's name in the specified language.
-         * If the name is not translated the default language will be used.
-         * <p>
-         * Returns "Quester" in case of an exception.
-         *
-         * @param log     the logger used when the name could not be resolved
-         * @param profile the profile to resolve the quester's name for
-         * @return the quester's name in the specified language
-         */
-        public Component getQuester(final BetonQuestLogger log, final Profile profile) {
-            try {
-                return quester.asComponent(profile);
-            } catch (final QuestException e) {
-                log.warn("Could not get Quester's name! Using 'Quester' instead, reason: " + e.getMessage(), e);
-                return Component.text("Quester");
-            }
-        }
-    }
-
-    /**
      * Represents a conversation option.
      */
     private class ConversationOption {
@@ -592,9 +435,9 @@ public class ConversationData {
         private final String optionName;
 
         /**
-         * The {@link OptionType} of the option.
+         * The {@link ConversationOptionType} of the option.
          */
-        private final OptionType type;
+        private final ConversationOptionType type;
 
         /**
          * A map of the text of the option in different languages.
@@ -632,11 +475,11 @@ public class ConversationData {
          * Creates a ConversationOption.
          *
          * @param name        the name of the option, as defined in the config
-         * @param type        the {@link OptionType} of the option
+         * @param type        the {@link ConversationOptionType} of the option
          * @param convSection the {@link ConfigurationSection} of the option
          * @throws QuestException if the configuration is invalid
          */
-        protected ConversationOption(final String name, final OptionType type, final ConfigurationSection convSection, final ArgumentParsers parsers) throws QuestException {
+        protected ConversationOption(final String name, final ConversationOptionType type, final ConfigurationSection convSection, final ArgumentParsers parsers) throws QuestException {
             this.optionName = name;
             this.type = type;
             final ConfigurationSection conv = convSection.getConfigurationSection(type.getIdentifier() + "." + name);
@@ -728,13 +571,13 @@ public class ConversationData {
 
         private Component getFormattedText(@Nullable final Profile profile) {
             if (text == null) {
-                log.warn(getPack(), "No text in conversation '" + publicData.conversationID + "'!");
+                log.warn(getPack(), "No text in conversation '" + publicData.conversationID() + "'!");
                 return Component.empty();
             }
             try {
                 return text.asComponent(profile);
             } catch (final QuestException e) {
-                log.warn(getPack(), "Could not resolve message in conversation '" + publicData.conversationID + "': " + e.getMessage(), e);
+                log.warn(getPack(), "Could not resolve message in conversation '" + publicData.conversationID() + "': " + e.getMessage(), e);
                 return Component.empty();
             }
         }
@@ -811,7 +654,7 @@ public class ConversationData {
                         throw new IllegalStateException("Cannot ensure a valid conversation flow with unresolvable pointers.", e);
                     }
 
-                    final ConversationData targetConvData = resolvedExtend.conversationData();
+                    final DefaultConversationData targetConvData = resolvedExtend.conversationData();
                     if (questTypeApi.conditions(profile, targetConvData.getOption(resolvedExtend.name(), type).getConditions())) {
                         pointers.addAll(targetConvData.getOption(resolvedExtend.name(), type).getPointers(profile, optionPath));
                         break;
