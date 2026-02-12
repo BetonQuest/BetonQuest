@@ -343,7 +343,8 @@ public class DefaultConversationData implements ConversationData {
     }
 
     @Override
-    public @Nullable Component getText(@Nullable final Profile profile, final ResolvedOption option) {
+    @Nullable
+    public Component getText(@Nullable final Profile profile, final ResolvedOption option) {
         final ConversationOption opt;
         if (option.type() == NPC) {
             opt = option.conversationData().npcOptions.get(option.name());

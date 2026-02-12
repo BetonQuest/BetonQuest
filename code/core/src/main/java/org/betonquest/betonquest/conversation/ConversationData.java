@@ -45,7 +45,6 @@ public interface ConversationData {
      * @param option  the option to get the pointers for
      * @return a list of pointer addresses
      */
-    @SuppressWarnings("NullAway")
     List<String> getPointers(Profile profile, ResolvedOption option);
 
     /**
@@ -97,7 +96,6 @@ public interface ConversationData {
      * @param type   the type of the option
      * @return the conditions required for the specified option to be selected
      */
-    @SuppressWarnings("NullAway")
     List<ConditionIdentifier> getConditionIDs(String option, ConversationOptionType type);
 
     /**
@@ -119,6 +117,5 @@ public interface ConversationData {
      * @throws QuestException if an external pointer reference has an invalid format or
      *                        if an external pointer inside the conversation could not be resolved
      */
-    @SuppressWarnings("NullAway")
     boolean isReady(Profile profile) throws QuestException;
 }
