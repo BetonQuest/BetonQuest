@@ -47,8 +47,7 @@ public class DropActionFactory implements PlayerActionFactory, PlayerlessActionF
 
     private PlayerlessAction createStaticDropAction(final Instruction instruction) throws QuestException {
         final NullableActionAdapter dropAction = createDropAction(instruction);
-        final boolean location = !instruction.bool().getFlag("location", true).getValue(null).orElse(false);
-        if (location) {
+        if (instruction.location().get("location").isEmpty()) {
             return new OnlineProfileGroupPlayerlessActionAdapter(profileProvider::getOnlineProfiles, dropAction);
         }
         return dropAction;
@@ -56,8 +55,10 @@ public class DropActionFactory implements PlayerActionFactory, PlayerlessActionF
 
     private NullableActionAdapter createDropAction(final Instruction instruction) throws QuestException {
         final Argument<List<ItemWrapper>> items = instruction.item().list().notEmpty().get("items", Collections.emptyList());
-        final String locationPart = instruction.string().get("location", "%location%").getValue(null);
-        final Argument<Location> location = instruction.chainForArgument(locationPart).location().get();
+        final Argument<Location> location = instruction.location().get("location").orElse(
+                profile -> profile.getOnlineProfile()
+                        .orElseThrow(() -> new QuestException("Can't get location of offline player"))
+                        .getPlayer().getLocation());
         return new NullableActionAdapter(new DropAction(items, location));
     }
 }
