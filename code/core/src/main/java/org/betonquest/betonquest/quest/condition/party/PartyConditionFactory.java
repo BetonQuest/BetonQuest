@@ -45,8 +45,10 @@ public class PartyConditionFactory implements PlayerConditionFactory, Playerless
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final String locationRaw = instruction.string().get("location", "%location%").getValue(null);
-        final Argument<Location> location = instruction.chainForArgument(locationRaw).location().get();
+        final Argument<Location> location = instruction.location().get("location").orElse(
+                profile -> profile.getOnlineProfile()
+                        .orElseThrow(() -> new QuestException("Can't get location of offline player"))
+                        .getPlayer().getLocation());
         return new NullableConditionAdapter(parse(instruction, location));
     }
 
