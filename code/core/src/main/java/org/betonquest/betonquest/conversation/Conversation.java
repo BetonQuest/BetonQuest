@@ -15,7 +15,6 @@ import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.conversation.ConversationData.OptionType;
 import org.betonquest.betonquest.conversation.interceptor.Interceptor;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
@@ -38,12 +37,12 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import static org.betonquest.betonquest.conversation.ConversationData.OptionType.NPC;
-import static org.betonquest.betonquest.conversation.ConversationData.OptionType.PLAYER;
+import static org.betonquest.betonquest.conversation.ConversationOptionType.NPC;
+import static org.betonquest.betonquest.conversation.ConversationOptionType.PLAYER;
 
 /**
  * Manages an active conversation between a player and a NPC.
- * Handles the conversation flow based on {@link ConversationData}.
+ * Handles the conversation flow based on {@link DefaultConversationData}.
  */
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.TooManyMethods", "NullAway"})
 public class Conversation {
@@ -472,7 +471,7 @@ public class Conversation {
         final IdentifierFactory<ConversationOptionIdentifier> conversationOptionIdentifierFactory =
                 plugin.getQuestRegistries().identifier().getFactory(ConversationOptionIdentifier.class);
         for (final String pointer : rawPointers) {
-            final OptionType nextType = option.type() == PLAYER ? NPC : PLAYER;
+            final ConversationOptionType nextType = option.type() == PLAYER ? NPC : PLAYER;
             pointers.add(nextConvData.resolveOption(conversationOptionIdentifierFactory.parseIdentifier(nextConvData.getPack(), pointer), nextType));
         }
         return pointers;
