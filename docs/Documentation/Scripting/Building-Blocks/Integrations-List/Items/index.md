@@ -30,36 +30,36 @@ Items may be used in a variety of [conditions](../../Conditions-List.md), [actio
  -   Conditions
 
      ---
-    - [`armor`](../../Conditions-List.md#armor-is-wearing-armor)
-    - [`chestitem`](../../Conditions-List.md#chestitem-are-items-in-a-chest)
-    - [`hand`](../../Conditions-List.md#hand-has-item-in-a-hand)
-    - [`item`](../../Conditions-List.md#item-has-items)
+    - [`armor`](../../Conditions-List.md#armor)
+    - [`chestitem`](../../Conditions-List.md#chestitem)
+    - [`hand`](../../Conditions-List.md#hand)
+    - [`item`](../../Conditions-List.md#item)
 
  -   Placeholders
  
       ---
-     - [`item`](../../Placeholders-List.md#item-item-property)
+     - [`item`](../../Placeholders-List.md#item)
 
  -   Actions
 
      ---
-     - [`chestgive`](../../Actions-List.md#chestgive-put-items-into-a-chest)
-     - [`chesttake`](../../Actions-List.md#chesttake-take-items-from-a-chest)
-     - [`drop`](../../Actions-List.md#drop-drop-items)
-     - [`give`](../../Actions-List.md#give-give-items)
-     - [`spawn`](../../Actions-List.md#spawn-spawn-a-mob)
-     - [`take`](../../Actions-List.md#take-take-items)
+     - [`chestgive`](../../Actions-List.md#chestgive)
+     - [`chesttake`](../../Actions-List.md#chesttake)
+     - [`drop`](../../Actions-List.md#drop)
+     - [`give`](../../Actions-List.md#give)
+     - [`spawn`](../../Actions-List.md#spawn)
+     - [`take`](../../Actions-List.md#take)
 
  -   Objectives
 
      ---
-     - [`brew`](../../Objectives-List.md#brew-brew-a-potion)
-     - [`chestput`](../../Objectives-List.md#chestput-put-items-into-a-chest)
-     - [`consume`](../../Objectives-List.md#consume-consume-an-item)
-     - [`craft`](../../Objectives-List.md#craft-craft-an-item)
-     - [`enchant`](../../Objectives-List.md#enchant-enchant-an-item)
-     - [`equip`](../../Objectives-List.md#equip-equip-armor)
-     - [`fish`](../../Objectives-List.md#fish-fish-an-item)
-     - [`pickup`](../../Objectives-List.md#pickup-pick-up-an-item)
-     - [`smelt`](../../Objectives-List.md#smelt-smelt-an-item)
+     - [`brew`](../../Objectives-List.md#brew)
+     - [`chestput`](../../Objectives-List.md#chestput)
+     - [`consume`](../../Objectives-List.md#consume)
+     - [`craft`](../../Objectives-List.md#craft)
+     - [`enchant`](../../Objectives-List.md#enchant)
+     - [`equip`](../../Objectives-List.md#equip)
+     - [`fish`](../../Objectives-List.md#fish)
+     - [`pickup`](../../Objectives-List.md#pickup)
+     - [`smelt`](../../Objectives-List.md#smelt)
 </div>
