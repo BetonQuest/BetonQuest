@@ -8,7 +8,6 @@ info-independent: >-
   <b>Independent</b><br>
   This condition can be checked without any player.
 
-
 online: >-
   :material-account-check:{ .account .account-online
   title="@snippet:condition-meta:info-online@" }
@@ -19,13 +18,13 @@ independent: >-
   :material-account-off:{ .account .account-independent
   title="@snippet:condition-meta:info-independent@" }
 
-online-offline-independent: |-
+online-offline-independent: >-
   @snippet:condition-meta:online@
   @snippet:condition-meta:offline@
   @snippet:condition-meta:independent@
-online-offline: |-
+online-offline: >-
   @snippet:condition-meta:online@
   @snippet:condition-meta:offline@
-online-independent: |-
+online-independent: >-
   @snippet:condition-meta:online@
   @snippet:condition-meta:independent@

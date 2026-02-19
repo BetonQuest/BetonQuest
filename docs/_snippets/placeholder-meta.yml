@@ -8,24 +8,23 @@ info-independent: >-
   <b>Independent</b><br>
   This placeholder can be resolved without any player.
 
-
 online: >-
   :material-account-check:{ .account .account-online
-  title="@snippet:action-meta:info-online@" }
+  title="@snippet:placeholder-meta:info-online@" }
 offline: >-
   :material-account-cancel:{ .account .account-offline
-  title="@snippet:action-meta:info-offline@" }
+  title="@snippet:placeholder-meta:info-offline@" }
 independent: >-
   :material-account-off:{ .account .account-independent
-  title="@snippet:action-meta:info-independent@" }
+  title="@snippet:placeholder-meta:info-independent@" }
 
-online-offline-independent: |-
-  @snippet:action-meta:online@
-  @snippet:action-meta:offline@
-  @snippet:action-meta:independent@
-online-offline: |-
-  @snippet:action-meta:online@
-  @snippet:action-meta:offline@
-online-independent: |-
-  @snippet:action-meta:online@
-  @snippet:action-meta:independent@
+online-offline-independent: >-
+  @snippet:placeholder-meta:online@
+  @snippet:placeholder-meta:offline@
+  @snippet:placeholder-meta:independent@
+online-offline: >-
+  @snippet:placeholder-meta:online@
+  @snippet:placeholder-meta:offline@
+online-independent: >-
+  @snippet:placeholder-meta:online@
+  @snippet:placeholder-meta:independent@

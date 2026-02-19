@@ -9,7 +9,7 @@ search:
 
 ## `Action`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `action <action> <block> [location] [range] [cancel] [hand]`  
 __Description__: The player has to interact with the specified block.
  
@@ -37,7 +37,7 @@ show the radius.
 
 ## `Arrow`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `arrow <location> <radius>`  
 __Description__: The player has to shoot an arrow into the specified area.
 
@@ -53,7 +53,7 @@ objectives:
 
 ## `Block`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `block <block> <amount> [safetyCheck] [notifications] [location] [region] [ignorecancel]`  
 __Description__: The player has to break or place the specified amount of blocks.
 
@@ -95,7 +95,7 @@ You can use these placeholders to always get positive values:
 
 ## `Breed`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `breed <animal> <amount>`  
 __Description__: The player has to breed animals of the specified type.
 
@@ -115,7 +115,7 @@ objectives:
 
 ## `ChestPut`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `chestput <location> <items> [items-stay]`  
 __Description__: The player has to put the specified items into the specified chest.
 
@@ -134,7 +134,7 @@ objectives:
 
 ## `Consume`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `consume <item> [amount]`  
 __Description__: The player has to consume the specified item. 
 
@@ -161,7 +161,7 @@ objectives:
 
 ## `Craft`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `craft <item> [amount]`  
 __Description__: The player has to craft the specified item.
 
@@ -179,7 +179,7 @@ objectives:
 
 ## `Enchant`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `enchant <item> <enchants> [requirementMode] [amount]`  
 __Description__: The player has to enchant the specified item with the specified enchantment. 
 
@@ -207,7 +207,7 @@ objectives:
 
 ## `Experience`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `experience <amount>`  
 __Description__: The player has to reach at least the specified amount of experience levels.
 
@@ -230,7 +230,7 @@ objectives:
 
 ## `Delay`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `delay <time> [unit] [precision]`  
 __Description__: The player has to wait for certain amount of real time.
 
@@ -263,7 +263,7 @@ objectives:
 
 ## `Die`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `die [respawn] [cancel]`  
 __Description__: The player has to die. 
 
@@ -282,7 +282,7 @@ objectives:
 
 ## `Fish`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `fish <item> <amount> [hookLocation] [range]`  
 __Description__: The player has to catch something with the fishing rod.
 
@@ -317,7 +317,7 @@ objectives:
 
 ## `Interact`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `interact <type> <entity> <amount> [name] [realname] [marked] [hand] [cancel] [location] [range]`  
 __Description__: The player has to interact with the specified entities.
 
@@ -350,7 +350,7 @@ objectives:
 
 ## `ResourcePack`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `resourcepack <state>`  
 __Description__: The player has to have the specified resource pack state.
 
@@ -365,7 +365,7 @@ objectives:
 
 ## `Kill`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `kill <amount> [name] [required]`  
 __Description__: The player has to kill another player.
 
@@ -384,7 +384,7 @@ objectives:
 
 ## `Location`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `location <location> [range] [entry] [exit]`  
 __Description__: The player has to reach the specified location.
 
@@ -412,7 +412,7 @@ objectives:
 
 ## `Login`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `login`  
 __Description__: The player has to log in.
 
@@ -427,7 +427,7 @@ objectives:
 
 ## `Logout`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `logout`  
 __Description__: The player has to log out.
 
@@ -438,7 +438,7 @@ objectives:
 
 ## `NpcInteract`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `npcinteract <npc> [cancel] [interaction]`  
 __Description__: The player has to interact with the specified NPC. 
 
@@ -456,7 +456,7 @@ objectives:
 
 ## `NpcRange`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `npcrange <npc <action> <range>`  
 __Description__: The player has to enter or leave the specified area around the NPC.
 
@@ -480,7 +480,7 @@ objectives:
 
 ## `Password`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `password <password> [prefix] [ignoreCase] [fail]`  
 __Description__: The player has to write the specifed password in chat.
 
@@ -519,7 +519,7 @@ objectives:
 
 ## `Pickup`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `pickup <items> [amount]`  
 __Description__: The player has to pick up the specified items.
  
@@ -541,7 +541,7 @@ objectives:
 
 ## `Point`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `point <category> <amount> [mode] [operation]`  
 __Description__: The player has to have the specified amount of points in the specified category.
 
@@ -570,7 +570,7 @@ objectives:
 
 ## `MobKill`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `mobkill <type> <amount> [name] [marked]`  
 __Description__: The player has to kill the specified living entities.
 
@@ -608,7 +608,7 @@ objectives:
 
 ## `Brew`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `brew <item> [amount]`  
 __Description__: The player has to brew the specified items.
 
@@ -629,7 +629,7 @@ objectives:
 
 ## `Shear`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `shear <amount> [name] [color]`  
 __Description__: The player has to shear the specified amount of sheep.
 
@@ -651,7 +651,7 @@ objectives:
 
 ## `Smelt`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `smelt <item> [amount]`  
 __Description__: The player has to gain the specified item by smelting.
 
@@ -671,7 +671,7 @@ objectives:
 
 ## `Stage`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `stage <stages> [preventCompletion]`  
 __Description__: The player has to complete the specified stages.
 
@@ -706,7 +706,7 @@ objectives:
 
 ## `Step`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `step <location>`  
 __Description__: The player has to step on a pressure plate at the specified location.
 
@@ -724,7 +724,7 @@ objectives:
 
 ## `Tag`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `tag <tag>`  
 __Description__: The player has to receive the specified tag. 
 
@@ -743,7 +743,7 @@ The `name` property of the objective is the tag to receive.
 
 ## `Tame`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `tame <entity> <amount>`
 __Description__: The player has to tame the specified animals.
 
@@ -762,7 +762,7 @@ objectives:
 
 ## `Timer`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `timer [name] [interval] [amount] [done]`  
 __Description__: The player has to wait for a specified amount of ingame time.
 
@@ -788,7 +788,7 @@ objectives:
 
 ## `Jump`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `jump <amount>`  
 __Description__: The player has to jump.
 
@@ -805,7 +805,7 @@ objectives:
 
 ## `Ride`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `ride <entity>`  
 __Description__: The player has to ride the specified [entity](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html).
 
@@ -819,7 +819,7 @@ objectives:
 
 ## `Command`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `command <command> [ignoreCase] [exact] [cancel] [failActions]`  
 __Description__: The player has to execute the specified command.
 
@@ -852,7 +852,7 @@ objectives:
 
 ## `Equip`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `equip <slot> <item>`  
 __Description__: The player has to equip the specified item to the specified slot.
 
@@ -867,7 +867,7 @@ objectives:
 
 ## `Variable`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `variable [no-chat]`  
 __Description__: This objective is unable to complete.
 

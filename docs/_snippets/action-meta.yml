@@ -1,13 +1,12 @@
 info-online: >-
   <b>Online</b><br>
-  This event can only be executed on a player that is online.
+  This action can only be executed on a player that is online.
 info-offline: >-
   <b>Offline</b><br>
-  This event can be executed on a player that is offline.
+  This action can be executed on a player that is offline.
 info-independent: >-
   <b>Independent</b><br>
-  This event can be executed without any player.
-
+  This action can be executed without any player.
 
 online: >-
   :material-account-check:{ .account .account-online
@@ -19,13 +18,13 @@ independent: >-
   :material-account-off:{ .account .account-independent
   title="@snippet:action-meta:info-independent@" }
 
-online-offline-independent: |-
+online-offline-independent: >-
   @snippet:action-meta:online@
   @snippet:action-meta:offline@
   @snippet:action-meta:independent@
-online-offline: |-
+online-offline: >-
   @snippet:action-meta:online@
   @snippet:action-meta:offline@
-online-independent: |-
+online-independent: >-
   @snippet:action-meta:online@
   @snippet:action-meta:independent@
