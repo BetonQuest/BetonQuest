@@ -8315,7 +8315,7 @@
 
 <h1 id="objectives-list">Objectives List<a class="headerlink" href="#objectives-list" title="Permanent link">🔗</a></h1>
 <h2 id="action"><code>Action</code><a class="headerlink" href="#action" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>action &lt;action&gt; &lt;block&gt; [location] [range] [cancel] [hand]</code><br />
 <strong>Description</strong>: The player has to interact with the specified block.</p>
 <p>It works great with the location condition and the item in hand condition to further limit the counted clicks.</p>
@@ -8376,7 +8376,7 @@
 <p>The objective contains one property, <code>location</code>. It's a string formatted like <code>X: 100, Y: 200, Z:300</code>. It does not
 show the radius.</p>
 <h2 id="arrow"><code>Arrow</code><a class="headerlink" href="#arrow" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>arrow &lt;location&gt; &lt;radius&gt;</code><br />
 <strong>Description</strong>: The player has to shoot an arrow into the specified area.</p>
 <p>There are two arguments, location of the target and precision number (radius around location where the arrow must 
@@ -8387,7 +8387,7 @@ give accurate results. Experiment with this objective a bit to make sure you've 
 <span class="w">  </span><span class="nt">shootTarget</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;arrow</span><span class="nv"> </span><span class="s">100.5;200.5;300.5;world</span><span class="nv"> </span><span class="s">1.1</span><span class="nv"> </span><span class="s">actions:reward</span><span class="nv"> </span><span class="s">conditions:correct_player_position&quot;</span>
 </code></pre></div>
 <h2 id="block"><code>Block</code><a class="headerlink" href="#block" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>block &lt;block&gt; &lt;amount&gt; [safetyCheck] [notifications] [location] [region] [ignorecancel]</code><br />
 <strong>Description</strong>: The player has to break or place the specified amount of blocks.</p>
 <table>
@@ -8506,7 +8506,7 @@ give accurate results. Experiment with this objective a bit to make sure you've 
 </tbody>
 </table>
 <h2 id="breed"><code>Breed</code><a class="headerlink" href="#breed" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>breed &lt;animal&gt; &lt;amount&gt;</code><br />
 <strong>Description</strong>: The player has to breed animals of the specified type.</p>
 <p>The first argument is the <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html">animal type</a> 
@@ -8520,7 +8520,7 @@ objective will be completable only for breedable ones.</p>
 <span class="w">  </span><span class="nt">10Cows</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;breed</span><span class="nv"> </span><span class="s">cow</span><span class="nv"> </span><span class="s">10</span><span class="nv"> </span><span class="s">notify:2</span><span class="nv"> </span><span class="s">actions:reward&quot;</span>
 </code></pre></div>
 <h2 id="chestput"><code>ChestPut</code><a class="headerlink" href="#chestput" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>chestput &lt;location&gt; &lt;items&gt; [items-stay]</code><br />
 <strong>Description</strong>: The player has to put the specified items into the specified chest.</p>
 <p>First argument is a location of the chest, second argument is a list of items (from <em>items</em> section),
@@ -8534,7 +8534,7 @@ By default, only one player can look into the chest at the same time. You can ch
 <span class="w">  </span><span class="nt">apples</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;chestput</span><span class="nv"> </span><span class="s">0;50;100;world</span><span class="nv"> </span><span class="s">apple:42</span><span class="nv"> </span><span class="s">actions:message</span><span class="nv"> </span><span class="s">multipleaccess:true&quot;</span>
 </code></pre></div>
 <h2 id="consume"><code>Consume</code><a class="headerlink" href="#consume" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>consume &lt;item&gt; [amount]</code><br />
 <strong>Description</strong>: The player has to consume the specified item. </p>
 <table>
@@ -8594,7 +8594,7 @@ By default, only one player can look into the chest at the same time. You can ch
 </tbody>
 </table>
 <h2 id="craft"><code>Craft</code><a class="headerlink" href="#craft" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>craft &lt;item&gt; [amount]</code><br />
 <strong>Description</strong>: The player has to craft the specified item.</p>
 <p>First argument is ID of the item, as in the <em>items</em> section.
@@ -8606,7 +8606,7 @@ objective, optionally with the notification interval after a colon.</p>
 <span class="w">  </span><span class="nt">craftSaddle</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;craft</span><span class="nv"> </span><span class="s">saddle</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">actions:reward&quot;</span>
 </code></pre></div>
 <h2 id="enchant"><code>Enchant</code><a class="headerlink" href="#enchant" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>enchant &lt;item&gt; &lt;enchants&gt; [requirementMode] [amount]</code><br />
 <strong>Description</strong>: The player has to enchant the specified item with the specified enchantment. </p>
 <table>
@@ -8679,7 +8679,7 @@ objective, optionally with the notification interval after a colon.</p>
 </tbody>
 </table>
 <h2 id="experience"><code>Experience</code><a class="headerlink" href="#experience" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>experience &lt;amount&gt;</code><br />
 <strong>Description</strong>: The player has to reach at least the specified amount of experience levels.</p>
 <p>You can also define decimal numbers, for example <code>experience 1.5</code> will complete when the player reaches 1.5 experience levels or more.
@@ -8696,7 +8696,7 @@ optionally with the notification interval after a colon.</p>
 <span class="w">  </span><span class="nt">25Level</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;experience</span><span class="nv"> </span><span class="s">25</span><span class="nv"> </span><span class="s">actions:reward&quot;</span>
 </code></pre></div>
 <h2 id="delay"><code>Delay</code><a class="headerlink" href="#delay" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>delay &lt;time&gt; [unit] [precision]</code><br />
 <strong>Description</strong>: The player has to wait for certain amount of real time.</p>
 <p>The player must be online and meet all conditions. If the player is not online the objective is completed on the player's
@@ -8768,7 +8768,7 @@ next login.</p>
 </tbody>
 </table>
 <h2 id="die"><code>Die</code><a class="headerlink" href="#die" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>die [respawn] [cancel]</code><br />
 <strong>Description</strong>: The player has to die. </p>
 <p>If you set the <code>respawn</code> location the player will spawn at that location, after pressing respawn,
@@ -8781,7 +8781,7 @@ You can also specify the <code>respawn</code> location to which the player will 
 <span class="w">  </span><span class="nt">preventDying</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;die</span><span class="nv"> </span><span class="s">cancel</span><span class="nv"> </span><span class="s">respawn:100;200;300;world;90;0</span><span class="nv"> </span><span class="s">actions:respawned&quot;</span>
 </code></pre></div>
 <h2 id="fish"><code>Fish</code><a class="headerlink" href="#fish" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>fish &lt;item&gt; &lt;amount&gt; [hookLocation] [range]</code><br />
 <strong>Description</strong>: The player has to catch something with the fishing rod.</p>
 <p>It doesn't have to be a fish, it can also be any other item.</p>
@@ -8864,7 +8864,7 @@ You can also specify the <code>respawn</code> location to which the player will 
 </tbody>
 </table>
 <h2 id="interact"><code>Interact</code><a class="headerlink" href="#interact" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>interact &lt;type&gt; &lt;entity&gt; &lt;amount&gt; [name] [realname] [marked] [hand] [cancel] [location] [range]</code><br />
 <strong>Description</strong>: The player has to interact with the specified entities.</p>
 <table>
@@ -8977,7 +8977,7 @@ You can also specify the <code>respawn</code> location to which the player will 
 </tbody>
 </table>
 <h2 id="resourcepack"><code>ResourcePack</code><a class="headerlink" href="#resourcepack" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>resourcepack &lt;state&gt;</code><br />
 <strong>Description</strong>: The player has to have the specified resource pack state.</p>
 <p>The first argument is the state of the resource pack.
@@ -8987,7 +8987,7 @@ It can be <code>successfully_loaded</code>, <code>declined</code>, <code>failed_
 <span class="w">  </span><span class="nt">declined</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;resourcepack</span><span class="nv"> </span><span class="s">declined</span><span class="nv"> </span><span class="s">actions:declined&quot;</span>
 </code></pre></div>
 <h2 id="kill"><code>Kill</code><a class="headerlink" href="#kill" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>kill &lt;amount&gt; [name] [required]</code><br />
 <strong>Description</strong>: The player has to kill another player.</p>
 <p>The first argument is amount of players to kill.
@@ -9000,7 +9000,7 @@ already killed players and <code>total</code> is the initially required amount t
 <span class="w">  </span><span class="nt">kill5</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;kill</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">required:team_B&quot;</span>
 </code></pre></div>
 <h2 id="location"><code>Location</code><a class="headerlink" href="#location" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>location &lt;location&gt; [range] [entry] [exit]</code><br />
 <strong>Description</strong>: The player has to reach the specified location.</p>
 <p>It is not required to specify <code>entry</code> or <code>exit</code> then the objective also completes
@@ -9064,7 +9064,7 @@ if the player just moves inside the location's range.</p>
 </tbody>
 </table>
 <h2 id="login"><code>Login</code><a class="headerlink" href="#login" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>login</code><br />
 <strong>Description</strong>: The player has to log in.</p>
 <p>If you use <code>global</code> this objective will be also completed directly when a new player joins for the first time.
@@ -9074,14 +9074,14 @@ Don't forget that if you use global and persistent you can still remove the obje
 <span class="w">  </span><span class="nt">welcome</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;login</span><span class="nv"> </span><span class="s">actions:welcome_message&quot;</span>
 </code></pre></div>
 <h2 id="logout"><code>Logout</code><a class="headerlink" href="#logout" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>logout</code><br />
 <strong>Description</strong>: The player has to log out.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">clean</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;logout</span><span class="nv"> </span><span class="s">actions:delete_objective&quot;</span>
 </code></pre></div>
 <h2 id="npcinteract"><code>NpcInteract</code><a class="headerlink" href="#npcinteract" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>npcinteract &lt;npc&gt; [cancel] [interaction]</code><br />
 <strong>Description</strong>: The player has to interact with the specified NPC. </p>
 <table>
@@ -9119,7 +9119,7 @@ Don't forget that if you use global and persistent you can still remove the obje
 <span class="w">  </span><span class="nt">punchThief</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;npcinteract</span><span class="nv"> </span><span class="s">thief</span><span class="nv"> </span><span class="s">interaction:left</span><span class="nv"> </span><span class="s">actions:poke&quot;</span>
 </code></pre></div>
 <h2 id="npcrange"><code>NpcRange</code><a class="headerlink" href="#npcrange" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>npcrange &lt;npc &lt;action&gt; &lt;range&gt;</code><br />
 <strong>Description</strong>: The player has to enter or leave the specified area around the NPC.</p>
 <p>It is also possible to define multiple NPCs separated with <code>,</code>.
@@ -9163,7 +9163,7 @@ This means that <code>enter</code> is not completed when the player gets the obj
 <span class="w">  </span><span class="nt">goToVillage</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;npcrange</span><span class="nv"> </span><span class="s">farmer,guard</span><span class="nv"> </span><span class="s">enter</span><span class="nv"> </span><span class="s">20</span><span class="nv"> </span><span class="s">actions:master_inRange&quot;</span>
 </code></pre></div>
 <h2 id="password"><code>Password</code><a class="headerlink" href="#password" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>password &lt;password&gt; [prefix] [ignoreCase] [fail]</code><br />
 <strong>Description</strong>: The player has to write the specifed password in chat.</p>
 <p>All attempts of a player will be hidden from public chat.
@@ -9201,7 +9201,7 @@ The password consists of a prefix followed by the actual secret word:
 <span class="w">  </span><span class="nt">theBetonPasswordSpaced</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;password</span><span class="nv"> </span><span class="s">&quot;beton</span><span class="nv"> </span><span class="s">quest&quot;</span><span class="nv"> </span><span class="s">ignoreCase</span><span class="nv"> </span><span class="s">prefix:secret</span><span class="nv"> </span><span class="s">fail:failAction1,failAction2</span><span class="nv"> </span><span class="s">actions:message,reward&#39;</span>
 </code></pre></div>
 <h2 id="pickup"><code>Pickup</code><a class="headerlink" href="#pickup" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>pickup &lt;items&gt; [amount]</code><br />
 <strong>Description</strong>: The player has to pick up the specified items.</p>
 <p>The first argument must be the internal name of an item defined in the <code>items</code> section. This can also be a comma-separated list of multiple items.
@@ -9216,7 +9216,7 @@ display a message each time the player advances the objective, optionally with t
 <span class="w">  </span><span class="nt">emeraldsAndDiamonds</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pickup</span><span class="nv"> </span><span class="s">emerald,diamond</span><span class="nv"> </span><span class="s">amount:6</span><span class="nv"> </span><span class="s">actions:reward</span><span class="nv"> </span><span class="s">notify&quot;</span>
 </code></pre></div>
 <h2 id="point"><code>Point</code><a class="headerlink" href="#point" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>point &lt;category&gt; &lt;amount&gt; [mode] [operation]</code><br />
 <strong>Description</strong>: The player has to have the specified amount of points in the specified category.</p>
 <p>If the player is not online the objective is completed on the player's next login.</p>
@@ -9285,7 +9285,7 @@ display a message each time the player advances the objective, optionally with t
 </tbody>
 </table>
 <h2 id="mobkill"><code>MobKill</code><a class="headerlink" href="#mobkill" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>mobkill &lt;type&gt; &lt;amount&gt; [name] [marked]</code><br />
 <strong>Description</strong>: The player has to kill the specified living entities.</p>
 <p>All entities work, make sure to use their <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html">correct types</a>.</p>
@@ -9370,7 +9370,7 @@ display a message each time the player advances the objective, optionally with t
 </tbody>
 </table>
 <h2 id="brew"><code>Brew</code><a class="headerlink" href="#brew" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>brew &lt;item&gt; [amount]</code><br />
 <strong>Description</strong>: The player has to brew the specified items.</p>
 <p>The first argument is a potion ID from the <em>items</em> section. Second argument is amount of potions.
@@ -9384,7 +9384,7 @@ created potions are counted.</p>
 <span class="w">  </span><span class="nt">weird</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;brew</span><span class="nv"> </span><span class="s">weird_concoction</span><span class="nv"> </span><span class="s">4</span><span class="nv"> </span><span class="s">actions:add_tag&quot;</span>
 </code></pre></div>
 <h2 id="shear"><code>Shear</code><a class="headerlink" href="#shear" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>shear &lt;amount&gt; [name] [color]</code><br />
 <strong>Description</strong>: The player has to shear the specified amount of sheep.</p>
 <p>The first, required argument is amount (integer). Optionally, you can add a <code>name:</code> argument to only count specific sheep.
@@ -9400,7 +9400,7 @@ optionally with the notification interval after a colon.</p>
 <span class="w">  </span><span class="nt">jeb2</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;shear</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">&quot;name:jeb</span><span class="nv"> </span><span class="s">2&quot;&#39;</span>
 </code></pre></div>
 <h2 id="smelt"><code>Smelt</code><a class="headerlink" href="#smelt" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>smelt &lt;item&gt; [amount]</code><br />
 <strong>Description</strong>: The player has to gain the specified item by smelting.</p>
 <p>Note that you must define the output item, not the ingredient. The first argument is the name of a <a href="../../../Features/Items/">Quest Item</a>.
@@ -9413,7 +9413,7 @@ optionally with the notification interval after a colon.</p>
 <span class="w">  </span><span class="nt">smeltIron</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;smelt</span><span class="nv"> </span><span class="s">ironIngot</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">actions:reward&quot;</span>
 </code></pre></div>
 <h2 id="stage"><code>Stage</code><a class="headerlink" href="#stage" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>stage &lt;stages&gt; [preventCompletion]</code><br />
 <strong>Description</strong>: The player has to complete the specified stages.</p>
 <p>The Stage objective is a special objective that can be used to track the progress of a quest or a part of a quest.
@@ -9484,7 +9484,7 @@ You can modify the stages with the <a href="../Actions-List/#stage">stage action
 </tbody>
 </table>
 <h2 id="step"><code>Step</code><a class="headerlink" href="#step" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>step &lt;location&gt;</code><br />
 <strong>Description</strong>: The player has to step on a pressure plate at the specified location.</p>
 <p>The type of plate does not matter. The first and only required argument is a location.
@@ -9496,7 +9496,7 @@ formatted like <code>X: 100, Y: 200, Z:300</code>.</p>
 <span class="w">  </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;step</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">actions:done&quot;</span>
 </code></pre></div>
 <h2 id="tag"><code>Tag</code><a class="headerlink" href="#tag" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>tag &lt;tag&gt;</code><br />
 <strong>Description</strong>: The player has to receive the specified tag. </p>
 <p>The only argument is the tag to receive.</p>
@@ -9508,7 +9508,7 @@ formatted like <code>X: 100, Y: 200, Z:300</code>.</p>
 
 <p>The <code>name</code> property of the objective is the tag to receive.</p>
 <h2 id="tame"><code>Tame</code><a class="headerlink" href="#tame" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>tame &lt;entity&gt; &lt;amount&gt;</code>
 <strong>Description</strong>: The player has to tame the specified animals.</p>
 <p>First argument is type, second is amount. The mob must be tamable for the objective to be valid, e.g.: <code>CAT</code>, 
@@ -9521,7 +9521,7 @@ notification interval after a colon.</p>
 <span class="w">  </span><span class="nt">wolf</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tame</span><span class="nv"> </span><span class="s">WOLF</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">actions:wolfs_tamed&quot;</span>
 </code></pre></div>
 <h2 id="timer"><code>Timer</code><a class="headerlink" href="#timer" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>timer [name] [interval] [amount] [done]</code><br />
 <strong>Description</strong>: The player has to wait for a specified amount of ingame time.</p>
 <p>Tracks time in seconds from the start of the objective to the completion of the objective.
@@ -9570,7 +9570,7 @@ normal <code>actions</code> as they are executed after the objective is already 
 <span class="w">    </span><span class="nt">track</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;timer</span><span class="nv"> </span><span class="s">&quot;name:This</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">Display</span><span class="nv"> </span><span class="s">Name&quot;</span><span class="nv"> </span><span class="s">interval:10</span><span class="nv"> </span><span class="s">done:done_in</span><span class="nv"> </span><span class="s">actions:done</span><span class="nv"> </span><span class="s">conditions:in_region&#39;</span>
 </code></pre></div>
 <h2 id="jump"><code>Jump</code><a class="headerlink" href="#jump" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>jump &lt;amount&gt;</code><br />
 <strong>Description</strong>: The player has to jump.</p>
 <p>The only argument is amount. You can use the <code>notify</code> keyword to display a
@@ -9581,7 +9581,7 @@ message each time the player advances the objective, optionally with the notific
 <span class="w">  </span><span class="nt">jump</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;jump</span><span class="nv"> </span><span class="s">15</span><span class="nv"> </span><span class="s">actions:legExerciseDone&quot;</span>
 </code></pre></div>
 <h2 id="ride"><code>Ride</code><a class="headerlink" href="#ride" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>ride &lt;entity&gt;</code><br />
 <strong>Description</strong>: The player has to ride the specified <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html">entity</a>.</p>
 <p><code>any</code> is also a valid input and matches any entity.</p>
@@ -9590,7 +9590,7 @@ message each time the player advances the objective, optionally with the notific
 <span class="w">  </span><span class="nt">any</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ride</span><span class="nv"> </span><span class="s">any&quot;</span>
 </code></pre></div>
 <h2 id="command"><code>Command</code><a class="headerlink" href="#command" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>command &lt;command&gt; [ignoreCase] [exact] [cancel] [failActions]</code><br />
 <strong>Description</strong>: The player has to execute the specified command.</p>
 <p>It can be both an existing or a new, custom command. The first argument is the command text.
@@ -9615,7 +9615,7 @@ command objective matches from the start of the command that was executed, there
 <span class="w">  </span><span class="nt">warp</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;command</span><span class="nv"> </span><span class="s">&quot;/warp</span><span class="nv"> </span><span class="s">%player%</span><span class="nv"> </span><span class="s">farms&quot;</span><span class="nv"> </span><span class="s">ignoreCase</span><span class="nv"> </span><span class="s">exact</span><span class="nv"> </span><span class="s">cancel</span><span class="nv"> </span><span class="s">failActions:failAction1,failAction2</span><span class="nv"> </span><span class="s">actions:action1,action2&#39;</span>
 </code></pre></div>
 <h2 id="equip"><code>Equip</code><a class="headerlink" href="#equip" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>equip &lt;slot&gt; &lt;item&gt;</code><br />
 <strong>Description</strong>: The player has to equip the specified item to the specified slot.</p>
 <p>The item must be any quest item as defined in the <em>items</em> section.
@@ -9625,7 +9625,7 @@ Available slot types: <code>HEAD</code>, <code>CHEST</code>, <code>LEGS</code>, 
 <span class="w">  </span><span class="nt">equipBody</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;equip</span><span class="nv"> </span><span class="s">CHEST</span><span class="nv"> </span><span class="s">amazing_armor</span><span class="nv"> </span><span class="s">actions:action1,action2&quot;</span>
 </code></pre></div>
 <h2 id="variable"><code>Variable</code><a class="headerlink" href="#variable" title="Permanent link">🔗</a></h2>
-<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>variable [no-chat]</code><br />
 <strong>Description</strong>: This objective is unable to complete.</p>
 <p>This objective is different. You cannot complete it, it will also ignore defined actions and conditions. You can start it and that's it.
