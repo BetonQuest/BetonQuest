@@ -3415,13 +3415,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#placeholder-betonquest">
+  <a class="md-nav__link" href="#papi-placeholder-betonquest">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Placeholder: <code>betonquest</code>
+          PAPI Placeholder: <code>betonquest</code>
         </span>
 
       
@@ -3438,13 +3438,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#placeholder-ph">
+  <a class="md-nav__link" href="#placeholders">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Placeholder: <code>ph</code>
+          Placeholders
         </span>
 
       
@@ -3453,6 +3453,36 @@
   </a>
 
   
+  
+  <nav aria-label="Placeholders" class="md-nav">
+    <ul class="md-nav__list">
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#ph">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>Ph</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+    </ul>
+  </nav>
   
 </li>
     
@@ -6572,13 +6602,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#placeholder-betonquest">
+  <a class="md-nav__link" href="#papi-placeholder-betonquest">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Placeholder: <code>betonquest</code>
+          PAPI Placeholder: <code>betonquest</code>
         </span>
 
       
@@ -6595,13 +6625,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#placeholder-ph">
+  <a class="md-nav__link" href="#placeholders">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Placeholder: <code>ph</code>
+          Placeholders
         </span>
 
       
@@ -6610,6 +6640,36 @@
   </a>
 
   
+  
+  <nav aria-label="Placeholders" class="md-nav">
+    <ul class="md-nav__list">
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#ph">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>Ph</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+    </ul>
+  </nav>
   
 </li>
     
@@ -6743,7 +6803,7 @@
 
 <h1 id="placeholderapi">PlaceholderAPI<a href="https://www.spigotmc.org/resources/6245/"></a><a class="headerlink" href="#placeholderapi" title="Permanent link">🔗</a></h1>
 <p>If you have this plugin, BetonQuest will add a <code>betonquest</code> placeholder to it. You will be able to use the <code>ph</code> placeholder.</p>
-<h3 id="placeholder-betonquest">Placeholder: <code>betonquest</code><a class="headerlink" href="#placeholder-betonquest" title="Permanent link">🔗</a></h3>
+<h2 id="papi-placeholder-betonquest">PAPI Placeholder: <code>betonquest</code><a class="headerlink" href="#papi-placeholder-betonquest" title="Permanent link">🔗</a></h2>
 <p>You can even use BetonQuests conditions using the <a href="../../../Placeholders-List/#condition">condition placeholder</a>!<br />
 You can use all BetonQuest placeholders in any other plugin that supports PlaceholderAPI.
 This works using the <code>%betonquest_package:placeholder%</code> placeholder. The <code>package:</code> part is the name of a package.
@@ -6752,9 +6812,12 @@ The <code>placeholder</code> part is just a <a href="../../../Placeholders-List/
 <code>/papi parse &lt;PlayerName&gt; %betonquest_&lt;PackageName&gt;:&lt;PlaceholderType&gt;.&lt;Property&gt;%</code></p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">betonquest_someGreatQuest</span><span class="nd">:objective</span><span class="nc">.killZombies.left</span><span class="err">%</span>
 </code></pre></div>
-<h3 id="placeholder-ph">Placeholder: <code>ph</code><a class="headerlink" href="#placeholder-ph" title="Permanent link">🔗</a></h3>
-<p><strong>persistent</strong>, <strong>static</strong></p>
-<p>You can also use placeholders from other plugins in BetonQuest. Simply insert a placeholder starting with <code>ph</code>, the second argument should be the placeholder without percentage characters.</p>
+<h2 id="placeholders">Placeholders<a class="headerlink" href="#placeholders" title="Permanent link">🔗</a></h2>
+<h3 id="ph"><code>Ph</code><a class="headerlink" href="#ph" title="Permanent link">🔗</a></h3>
+<p><strong>Context</strong>: <span class="twemoji account account-independent" title="<b>Independent</b><br> This placeholder can be resolved without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"/></svg></span><br />
+<strong>Syntax</strong>: <code>ph.&lt;id&gt;</code><br />
+<strong>Description</strong>: Use placeholders from another plugin via PlaceholderAPI.</p>
+<p>Insert a placeholder starting with <code>ph</code> and the second argument should be the placeholder without percentage characters.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">ph</span><span class="nc">.player_item_in_hand</span><span class="err">%</span>
 </code></pre></div>
 

@@ -3495,13 +3495,13 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#paste-schematic-paste">
+  <a class="md-nav__link" href="#paste">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Paste schematic: <code>paste</code>
+          <code>Paste</code>
         </span>
 
       
@@ -6603,13 +6603,13 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#paste-schematic-paste">
+  <a class="md-nav__link" href="#paste">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Paste schematic: <code>paste</code>
+          <code>Paste</code>
         </span>
 
       
@@ -6756,11 +6756,12 @@
 
 
 <h1 id="worldedit-or-fastasyncworldedit">WorldEdit<a href="http://dev.bukkit.org/bukkit-plugins/worldedit/"></a> or FastAsyncWorldEdit<a href="https://www.spigotmc.org/resources/13932/"></a><a class="headerlink" href="#worldedit-or-fastasyncworldedit" title="Permanent link">🔗</a></h1>
-<h3 id="actions">Actions<a class="headerlink" href="#actions" title="Permanent link">🔗</a></h3>
-<h4 id="paste-schematic-paste">Paste schematic: <code>paste</code><a class="headerlink" href="#paste-schematic-paste" title="Permanent link">🔗</a></h4>
-<p><strong>persistent</strong>, <strong>static</strong></p>
-<p>This action will paste a schematic at the given location.
-The first argument is a location and the second one is the name of a schematic file.
+<h2 id="actions">Actions<a class="headerlink" href="#actions" title="Permanent link">🔗</a></h2>
+<h3 id="paste"><code>Paste</code><a class="headerlink" href="#paste" title="Permanent link">🔗</a></h3>
+<p><strong>Context</strong>: <span class="twemoji account account-independent" title="<b>Independent</b><br> This action can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"/></svg></span><br />
+<strong>Syntax</strong>: <code>paste &lt;location&gt; &lt;schematic&gt; [rotation] [noair]</code><br />
+<strong>Description</strong>: Paste the specified schematic at the specified location.</p>
+<p>The first argument is the location, and the second one is the name of a schematic file.
 The file must be located in <code>WorldEdit/schematics</code> or <code>FastAsyncWorldEdit/schematics</code> and must have a name like
 <code>some_building.<ins class="critic">schematic</ins></code>. If WorldEdit saves <code>.schem</code> schematic files, simply append <code>.schem</code> to the
 schematic name in the action's instruction.</p>
