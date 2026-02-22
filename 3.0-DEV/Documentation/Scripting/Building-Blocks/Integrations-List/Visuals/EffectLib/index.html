@@ -2617,13 +2617,13 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#particle-particle">
+  <a class="md-nav__link" href="#particle">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Particle: <code>particle</code>
+          <code>Particle</code>
         </span>
 
       
@@ -6603,13 +6603,13 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#particle-particle">
+  <a class="md-nav__link" href="#particle">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Particle: <code>particle</code>
+          <code>Particle</code>
         </span>
 
       
@@ -6795,14 +6795,14 @@ There is also a <a href="https://sandbox.elmakers.com/#betonquestEffectLibTempla
 <li>Controls the horizontal direction of the effect.</li>
 <li>Controls how often the conditions should be checked (in ticks). Optional, default: 100 ticks</li>
 </ol>
-<h3 id="actions">Actions<a class="headerlink" href="#actions" title="Permanent link">🔗</a></h3>
-<h4 id="particle-particle">Particle: <code>particle</code><a class="headerlink" href="#particle-particle" title="Permanent link">🔗</a></h4>
-<p>This action will load an effect defined in <code>effects</code> section
-and display it on player's location. The only argument
-is the name of the effect. You can optionally add <code>loc:</code> argument
-followed by a location written like <code>100;200;300;world;180;-90</code> to put
-it on that location. If you add <code>private</code> argument the effect will only
-be displayed to the player for which you ran the action.</p>
+<h2 id="actions">Actions<a class="headerlink" href="#actions" title="Permanent link">🔗</a></h2>
+<h3 id="particle"><code>Particle</code><a class="headerlink" href="#particle" title="Permanent link">🔗</a></h3>
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This action can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<strong>Syntax</strong>: <code>particle &lt;effect&gt; [loc] [private]</code><br />
+<strong>Description</strong>: Load an effect defined in <code>effects</code> section and display it on player's location.</p>
+<p>The only argument is the name of the effect. You can optionally add <code>loc:</code> argument
+followed by a location written like <code>100;200;300;world;180;-90</code> to put it on that location.
+If you add <code>private</code> argument the effect will only be displayed to the player for which you ran the action.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">effects</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">beton</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HelixEffect</span>
