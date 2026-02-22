@@ -3182,13 +3182,13 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#wand-wand">
+  <a class="md-nav__link" href="#wand">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Wand: <code>wand</code>
+          <code>Wand</code>
         </span>
 
       
@@ -6603,13 +6603,13 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#wand-wand">
+  <a class="md-nav__link" href="#wand">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Wand: <code>wand</code>
+          <code>Wand</code>
         </span>
 
       
@@ -6756,9 +6756,12 @@
 
 
 <h1 id="magic"><a href="http://dev.bukkit.org/bukkit-plugins/magic/">Magic</a><a class="headerlink" href="#magic" title="Permanent link">🔗</a></h1>
-<h3 id="conditions">Conditions<a class="headerlink" href="#conditions" title="Permanent link">🔗</a></h3>
-<h4 id="wand-wand">Wand: <code>wand</code><a class="headerlink" href="#wand-wand" title="Permanent link">🔗</a></h4>
-<p>This condition can check wands. The first argument is either <code>hand</code>, <code>inventory</code> or <code>lost</code>.
+<h2 id="conditions">Conditions<a class="headerlink" href="#conditions" title="Permanent link">🔗</a></h2>
+<h3 id="wand"><code>Wand</code><a class="headerlink" href="#wand" title="Permanent link">🔗</a></h3>
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<strong>Syntax</strong>: <code>wand &lt;hand|inventory|lost&gt; [name] [amount] [spells]</code><br />
+<strong>Description</strong>: Whether the player has the specified wand.</p>
+<p>The first argument is either <code>hand</code>, <code>inventory</code> or <code>lost</code>.
 If you choose <code>lost</code>, the condition will check if the player has lost a wand.
 If you choose <code>hand</code>, the condition will check if you're holding a wand in your hand.
 <code>inventory</code> will check your whole inventory instead of just the hand.
