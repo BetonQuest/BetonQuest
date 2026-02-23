@@ -9812,8 +9812,8 @@ If the hunger level is below 7, the player cannot sprint.</p>
 <strong>Description</strong>: Check a condition and run one of two actions.</p>
 <p>This action will check a condition, and based on the outcome it will run the first or second action. The instruction
 string is <code>if condition action1 else action2</code>, where <code>condition</code> is a condition ID and <code>action1</code> and <code>action2</code> are action IDs.
- <code>else</code> keyword is mandatory between actions for no practical reason. Keep in mind that this action is <code>persistent</code>
- and <code>static</code> but probably the condition or the actions are not.</p>
+ <code>else</code> keyword is mandatory between actions for no practical reason. Keep in mind that this action is player-independent 
+but probably the condition or the actions are not.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">toggleWeather</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;if</span><span class="nv"> </span><span class="s">sun</span><span class="nv"> </span><span class="s">rain</span><span class="nv"> </span><span class="s">else</span><span class="nv"> </span><span class="s">sun&quot;</span>
 </code></pre></div>

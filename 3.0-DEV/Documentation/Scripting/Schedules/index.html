@@ -6882,21 +6882,13 @@
 For actions run from a schedule this is not the case as there is no specific player involved. <br />
 This means you can only use actions that are player independent, like <code>setblock</code> or <code>globaltag</code>, in schedules.
 The same applies to the conditions used by these actions.</p>
-<p>To determine if an action is player independent (and can be used in schedules), look for the <strong>static</strong> flag in the docs.</p>
-<div class="admonition example annotate">
-<p class="admonition-title">Example</p>
-<p><h2>Set Block: <code>setblock</code></h2></p>
-<p><strong>persistent</strong>, <mark><strong>static</strong></mark> (1)</p>
-<p>Changes the block at the given position.</p>
-</div>
-<ol>
-<li>This flag states that <code>setblock</code> can be used player independent.</li>
-</ol>
+<p>All player-independent actions (and therefore can be used in schedules) are tagged with the <strong>independent</strong> icon 
+<span class="twemoji account account-independent" title="<b>Independent</b><br> This action can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"/></svg></span> listed in the context section in the docs for each action.</p>
 <p>Some actions behave differently when called from a schedule in independent mode.
 For example, <code>tag delete</code> will include offline players.
 A list of all actions that act differently can be found in the <a href="../Building-Blocks/Actions-List/#runindependent"><code>runIndependent</code></a> docs.</p>
-<p>But sometimes you might want your schedule to run a player dependent action, like <code>message</code> or <code>give</code> for all players on the server.
-To do this you can use the <a href="../Building-Blocks/Actions-List/#runforall"><code>runforall</code></a> action. It will run the given actions for all players on the server. 
+<p>But sometimes you might want your schedule to run a player-dependent action, like <code>message</code> or <code>give</code> for all players on the server.
+To do this, you can use the <a href="../Building-Blocks/Actions-List/#runforall"><code>runforall</code></a> action. It will run the given actions for all players on the server. 
 You can even use conditions to filter out players.</p>
 <h2 id="realtime-schedules">Realtime schedules<a class="headerlink" href="#realtime-schedules" title="Permanent link">🔗</a></h2>
 <p>Realtime schedules are, as the name already says, schedules that run at a specific real world time, for example at 12
