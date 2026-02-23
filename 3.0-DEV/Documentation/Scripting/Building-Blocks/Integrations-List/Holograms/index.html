@@ -6803,7 +6803,8 @@ must specify a <a href="../../../Packages-%26-Templates/">package</a> before the
 <details class="warning">
 <summary>HolographicDisplays: Potential lags</summary>
 <p>The HolographicDisplays documentation warns against using too many individual hologram placeholders since they are rendered
-for each player individually. If you are using HolographicDisplays to save resources, it is recommended to minimize the use of non-playerless placeholders.</p>
+for each player individually. If you are using HolographicDisplays to save resources, it is recommended to 
+minimize the use of player-dependent placeholders.</p>
 </details>
 <p>The hologram's conditions are checked every 10 seconds, meaning a hologram will respond to a condition being met or unmet
 every 10 seconds. If you want to make it faster, decrease <code>hologram.update_interval</code> option in "<em>config.yml</em>" file and set it to a
