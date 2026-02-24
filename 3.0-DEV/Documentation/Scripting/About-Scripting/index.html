@@ -1729,13 +1729,13 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#global-objectives">
+  <a class="md-nav__link" href="#auto-once-objectives">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Global objectives
+          Auto-Once objectives
         </span>
 
       
@@ -6787,13 +6787,13 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#global-objectives">
+  <a class="md-nav__link" href="#auto-once-objectives">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Global objectives
+          Auto-Once objectives
         </span>
 
       
@@ -7116,17 +7116,17 @@ an objective you need to use <code>objective delete</code> action.</p>
 <span class="w">  </span><span class="nt">mineDiamonds</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;block</span><span class="nv"> </span><span class="s">DIAMONDS</span><span class="nv"> </span><span class="s">-10</span><span class="nv"> </span><span class="s">actions:reward&#39;</span>
 <span class="w">  </span><span class="nt">die</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;die</span><span class="nv"> </span><span class="s">cancel</span><span class="nv"> </span><span class="s">respawn:100;200;300;world;90;0</span><span class="nv"> </span><span class="s">actions:sendRespawnMessage</span><span class="nv"> </span><span class="s">conditions:hasCustomTotem&#39;</span>
 </code></pre></div>
-<h4 id="global-objectives">Global objectives<a class="headerlink" href="#global-objectives" title="Permanent link">🔗</a></h4>
-<p>If you want an objective to be active for every player right after joining, you can create a global objective.
-This is done by adding <code>global</code> argument to the instruction of the objective.
+<h4 id="auto-once-objectives">Auto-Once objectives<a class="headerlink" href="#auto-once-objectives" title="Permanent link">🔗</a></h4>
+<p>If you want an objective to be active for every player right after joining, you can create a auto-once objective.
+This is done by adding <code>auto-once</code> argument to the instruction of the objective.
 When you then reload BetonQuest it is started for all online players and also will be started for every player who joins.</p>
 <p>Possible use cases would be a quest which starts if a player reaches a specific location or breaks a specific block.</p>
 <p>To prevent the objective from being started every time a player joins, a tag is set for the player whenever the objective
 is started. With this tag, the objective will not be started again.<br />
-These tags follow the syntax <code>&lt;package&gt;.global-&lt;id&gt;</code>, where <code>&lt;id&gt;</code> is the objectives id and <code>&lt;package&gt;</code> the package where
+These tags follow the syntax <code>&lt;package&gt;.auto-once-&lt;id&gt;</code>, where <code>&lt;id&gt;</code> is the objectives id and <code>&lt;package&gt;</code> the package where
 the objective is located.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">startQuestByMining</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;location</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">actions:start_quest_mine_folder</span><span class="nv"> </span><span class="s"><ins class="critic">global</ins>&#39;</span>
+<span class="w">  </span><span class="nt">startQuestByMining</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;location</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">actions:start_quest_mine_folder</span><span class="nv"> </span><span class="s"><ins class="critic">auto-once</ins>&#39;</span>
 </code></pre></div>
 <h4 id="placeholders">Placeholders<a class="headerlink" href="#placeholders" title="Permanent link">🔗</a></h4>
 <div class="admonition warning">

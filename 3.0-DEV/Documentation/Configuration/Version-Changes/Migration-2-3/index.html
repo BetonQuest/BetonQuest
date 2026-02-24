@@ -5489,6 +5489,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-673-auto-once-objectives">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-673 - <code>auto-once</code> Objectives <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -8042,6 +8065,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-673-auto-once-objectives">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-673 - <code>auto-once</code> Objectives <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -8221,6 +8267,7 @@ to automatically migrate from "not versioned".
 <li><a href="#300-dev-511-dynamize-top-hologram-line">3.0.0-DEV-511 - Dynamize <code>top:</code> Hologram Line</a> <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:" /></li>
 <li><a href="#300-dev-562-rename-events-to-actions">3.0.0-DEV-562 - Rename <code>events</code> to <code>actions</code></a> <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:" /></li>
 <li><a href="#300-dev-635-brewery-item-type">3.0.0-DEV-635 - Brewery Item Type</a> <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /></li>
+<li><a href="#300-dev-673-auto-once-objectives">3.0.0-DEV-673 - <code>auto-once</code> Objectives</a> <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:" /></li>
 </ul>
 <h3 id="300-dev-58-delete-messagesyml">3.0.0-DEV-58 - Delete messages.yml <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /><a class="headerlink" href="#300-dev-58-delete-messagesyml" title="Permanent link">🔗</a></h3>
 <p>The <code>messages.yml</code> file has been removed.
@@ -9063,6 +9110,21 @@ The following obsolete implementations were removed:</p>
 <span class="w">  </span><span class="nt">takeId</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">take brewId</span>
 </code></pre></div>
 </div>
+<h3 id="300-dev-673-auto-once-objectives">3.0.0-DEV-673 - <code>auto-once</code> Objectives <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:" /><a class="headerlink" href="#300-dev-673-auto-once-objectives" title="Permanent link">🔗</a></h3>
+<p>The <code>global</code> property of objectives has been renamed to <code>auto-once</code>.</p>
+<details class="info">
+<summary>Automated Migration</summary>
+<p><em>The migration is automated. You shouldn't have to do anything.</em></p>
+<hr />
+<div class="grid" markdown>
+<div class="highlight"><span class="filename">Old Syntax</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">welcome</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">login global persistent actions:welcome_message</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">New Syntax</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">welcome</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">login auto-once persistent actions:welcome_message</span>
+</code></pre></div>
+</div>
+</details>
 
 
 

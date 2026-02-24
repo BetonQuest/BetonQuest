@@ -5330,13 +5330,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#global-quests-all-players-work-together">
+  <a class="md-nav__link" href="#server-wide-quests-all-players-work-together">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Global Quests (all players work together)
+          Server wide Quests (all players work together)
         </span>
 
       
@@ -7582,13 +7582,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#global-quests-all-players-work-together">
+  <a class="md-nav__link" href="#server-wide-quests-all-players-work-together">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Global Quests (all players work together)
+          Server wide Quests (all players work together)
         </span>
 
       
@@ -7965,14 +7965,14 @@ The <code>folder</code> action should be <code>random:1</code> and contain sever
 These actions will set a specific tag. Now when the player starts the conversation and asks about the daily quest the NPC
 should check (using the <code>globaltag</code> condition) which tag is currently set and give the player different quests based on that.
 Of course, the scheduled folder action also needs to remove the current tag before setting a new one.</p>
-<h2 id="global-quests-all-players-work-together">Global Quests (all players work together)<a class="headerlink" href="#global-quests-all-players-work-together" title="Permanent link">🔗</a></h2>
+<h2 id="server-wide-quests-all-players-work-together">Server wide Quests (all players work together)<a class="headerlink" href="#server-wide-quests-all-players-work-together" title="Permanent link">🔗</a></h2>
 <p>There is no easy way to do this (yet). Additionally, every use case differs. Let's assume you have some sort of action
 on your server where your player's need to fish 100 salmons. The quest package is only installed during the action.</p>
 <p>Create an objective that is immediately fired upon the first interaction (this means setting the amount to one for most objectives).
-That objective must be <code>persistent</code> so it restarts immediately upon completion. It also has to be <code>global</code> so every
+That objective must be <code>persistent</code> so it restarts immediately upon completion. It also has to be <code>auto-once</code> so every
 player will receive it upon joining the server.
-<div class="highlight"><pre><span></span><code><span class="c1"># fish a salmon to progress the global quest</span>
-<span class="nt">gQuest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fish SALMON 1 actions:gQuestProgress global persistent</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># fish a salmon to progress the server wide quest</span>
+<span class="nt">gQuest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fish SALMON 1 actions:gQuestProgress auto-once persistent</span>
 </code></pre></div>
 The objective would trigger a folder action that increases a <code>globalpoint</code> counter by one and tries to run the
 actions that are fired upon completion. That globalpoint counter tracks the players combined progress.
@@ -8016,10 +8016,10 @@ remove the action package after the action.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">objectives</label><label for="__tabbed_2_2">actions</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="c1"># Old objective just without global &amp; persistent to make sure no one get&#39;s it automatically</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Old objective just without auto-once &amp; persistent to make sure no one get&#39;s it automatically</span>
 <span class="nt">gQuest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fish SALMON 1 actions:gQuestProgress</span>
 <span class="c1"># Cleanup objective that is immediately completed when someone joins</span>
-<span class="l l-Scalar l-Scalar-Plain">login actions:deleteOldObjective global</span>
+<span class="l l-Scalar l-Scalar-Plain">login actions:deleteOldObjective auto-once</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
@@ -8044,7 +8044,7 @@ Name the NPC "Quester", add one option for each quest etc. Now you need an objec
 It should be <code>action</code> objective, set to right-click on any block.
 Add <code>hand</code> condition to make it accept only clicks with a specific item and make the objective <code>persistent</code> (so players can use it multiple times).
 The item used here should be marked as Quest Item so players can't drop it.
-Now define new global location covering your whole map and using it start the objective and give players the item.
+Now define new auto-once location covering your whole map and using it start the objective and give players the item.
 This way all players (existing and new) will get the quest item, which opens a GUI with quests when right-clicked.</p>
 <h2 id="non-linear-objectives-in-quests">Non-Linear Objectives in Quests<a class="headerlink" href="#non-linear-objectives-in-quests" title="Permanent link">🔗</a></h2>
 <p>If ever you're making a quest that has the player completing multiple objectives at once in order to complete the quest
