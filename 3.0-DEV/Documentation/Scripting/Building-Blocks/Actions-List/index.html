@@ -10425,7 +10425,7 @@ Looking for <a href="#command">execute as console commands</a>?</p>
 It can't contain spaces (though <code>_</code> is fine).
 Multiple tags can be added and deleted separated by commas (without spaces).</p>
 <p>The independent context is only available for the <code>delete</code> operation,
-and delte the tag for all players in the database (even if offline).</p>
+and delete the tag for all players in the database (even if offline).</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">addStartTags</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">quest_started,new_entry&quot;</span>
 </code></pre></div>
@@ -10435,7 +10435,7 @@ and delte the tag for all players in the database (even if offline).</p>
 <strong>Description</strong>: Take items from the player’s inventory or backpack.</p>
 <p>The items itself must be defined in the <code>items</code> section, optionally with an amount after a colon.
 Which inventory types are checked is defined by the <code>invOrder:</code>
-option. You can use <code>Backpack</code>, <code>Inventory</code>, <code>Offhand</code> and <code>Armor</code> there. One after another will be checked if multiple types are defined.</p>
+option. You can use <code>Backpack</code>, <code>Inventory</code>, <code>MainHand</code>,  <code>Offhand</code> and <code>Armor</code> there. One after another will be checked if multiple types are defined.</p>
 <p>Note: If the items aren't quest items don't use <code>take</code> action with player options in conversations!
 The player can drop items before selecting the option and pickup them after the action fires.
 Validate it on the NPC’s reaction!</p>
