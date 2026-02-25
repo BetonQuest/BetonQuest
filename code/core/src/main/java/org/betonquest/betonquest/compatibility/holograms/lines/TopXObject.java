@@ -2,12 +2,11 @@ package org.betonquest.betonquest.compatibility.holograms.lines;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.database.Arguments;
 import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.QueryType;
 import org.bukkit.Bukkit;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -73,17 +72,19 @@ public class TopXObject {
         entries.clear();
         final Connector con = BetonQuest.getInstance().getDBConnector();
 
-        try (ResultSet resultSet = con.querySQL(orderType.getType(), category, limit)) {
-            while (resultSet.next()) {
-                final UUID uuid = UUID.fromString(resultSet.getString("playerID"));
-                final String playerName = Bukkit.getOfflinePlayer(uuid).getName();
-                if (playerName == null) {
-                    log.debug("No player name found for '" + uuid + "' in top line for '" + category + "'");
+        try {
+            con.querySQL(orderType.getType(), new Arguments(category, limit), resultSet -> {
+                while (resultSet.next()) {
+                    final UUID uuid = UUID.fromString(resultSet.getString("playerID"));
+                    final String playerName = Bukkit.getOfflinePlayer(uuid).getName();
+                    if (playerName == null) {
+                        log.debug("No player name found for '" + uuid + "' in top line for '" + category + "'");
+                    }
+                    entries.add(new TopXLine(playerName == null ? "???" : playerName, resultSet.getLong("count")));
                 }
-                entries.add(new TopXLine(playerName == null ? "???" : playerName, resultSet.getLong("count")));
-            }
-        } catch (final SQLException e) {
-            log.error("There was an SQL exception while querying the top " + limit, e);
+            }, "Could not load data.");
+        } catch (final IllegalStateException e) {
+            log.error("Failed to load top '%s' in the category '%s'. %s".formatted(limit, category, e.getMessage()), e);
         }
     }
 

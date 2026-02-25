@@ -89,7 +89,7 @@ public class AsyncSaver extends Thread implements Saver {
                 }
             }
             final Record rec = queue.poll();
-            con.updateSQL(rec.type(), rec.args());
+            con.updateSQL(rec.type(), new Arguments(rec.args()));
         }
     }
 

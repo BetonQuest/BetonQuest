@@ -15,10 +15,8 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * This class is responsible for backing up and restoring the database.
@@ -99,11 +97,13 @@ public final class Backup {
     public void backup(final String version) {
         log.info("Backing up!");
         final long time = System.currentTimeMillis();
-        if (!backupDatabase()) {
+        try {
+            backupDatabase();
+        } catch (final IllegalArgumentException | IllegalStateException e) {
             log.warn("There was an error during backing up the database! This does not affect"
                     + " the configuration backup, nor damage your database. You should backup"
                     + " the database manually if you want to be extra safe, but it's not necessary if"
-                    + " you don't want to downgrade later.");
+                    + " you don't want to downgrade later. Reason: %s".formatted(e.getMessage()), e);
         }
 
         if (!backupFolder.isDirectory() && !backupFolder.mkdir()) {
@@ -123,78 +123,62 @@ public final class Backup {
     /**
      * Backs the database up to the {@code databaseBackupFile} if that file does not exist.
      *
-     * @return true if the backup was successful, false if there was an error
+     * @throws IllegalArgumentException if the file cannot be created
      */
-    public boolean backupDatabase() {
-        return backupDatabase(databaseBackupFile);
+    public void backupDatabase() {
+        backupDatabase(databaseBackupFile);
     }
 
-    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
-    private boolean backupDatabase(final File databaseBackupFile) {
+    private void backupDatabase(final File databaseBackupFile) {
         try {
             if (!databaseBackupFile.createNewFile()) {
-                log.warn("Could not create the backup file!");
-                return false;
+                throw new IllegalArgumentException("Could not create the backup file!");
             }
-            boolean done = true;
             final FileConfigAccessor config = configAccessorFactory.create(databaseBackupFile);
-            // prepare the database and map
-            final Map<String, ResultSet> map = new HashMap<>();
             final String[] tables = {"objectives", "tags", "points", "journals", "player", "backpack", "global_points",
                     "global_tags", "migration", "player_profile", "profile"};
-            // open database connection
-            // load resultsets into the map
             for (final String table : tables) {
                 log.debug("Loading " + table);
                 final String enumName = ("LOAD_ALL_" + table).toUpperCase(Locale.ROOT);
-                map.put(table, con.querySQL(QueryType.valueOf(enumName)));
+                con.querySQL(QueryType.valueOf(enumName), new Arguments(), resultSet -> {
+                    writeBackup(table, resultSet, config);
+                }, "Could not backup %s from database!".formatted(table));
             }
-            // extract data from resultsets into the config file
-            for (final Map.Entry<String, ResultSet> entry : map.entrySet()) {
-                log.debug("Saving " + entry.getKey() + " to the backup file");
-                // prepare resultset and meta
-                try (ResultSet res = entry.getValue()) {
-                    final ResultSetMetaData result = res.getMetaData();
-                    // get the list of column names
-                    final List<String> columns = new ArrayList<>();
-                    final int columnCount = result.getColumnCount();
-                    log.debug("  There are " + columnCount + " columns in this ResultSet");
-                    for (int i = 1; i <= result.getColumnCount(); i++) {
-                        final String columnName = result.getColumnName(i);
-                        log.debug("    Adding column " + columnName);
-                        columns.add(columnName);
-                    }
-                    // counter for counting rows
-                    int counter = 0;
-                    while (res.next()) {
-                        // for each column add a value to a config
-                        for (final String columnName : columns) {
-                            try {
-                                final String value = res.getString(columnName);
-                                config.set(entry.getKey() + "." + counter + "." + columnName, value);
-                            } catch (final SQLException e) {
-                                log.warn("Could not read SQL: " + e.getMessage(), e);
-                                done = false;
-                                // do nothing, as there can be nothing done
-                                // error while loading the string means the
-                                // database entry is broken
-                            }
-                        }
-                        counter++;
-                    }
-                    log.debug("  Saved " + (counter + 1) + " rows");
-                }
-            }
-            // save the config at the end
             config.save();
-            return done;
-        } catch (final IOException | SQLException | InvalidConfigurationException e) {
+        } catch (final IOException | InvalidConfigurationException e) {
             log.warn("There was an error during database backup: " + e.getMessage(), e);
             if (databaseBackupFile.exists() && !databaseBackupFile.delete()) {
                 log.warn("Could not delete the broken backup file!");
             }
-            return false;
         }
+    }
+
+    private void writeBackup(final String table, final ResultSet resultSet, final FileConfigAccessor config) throws SQLException {
+        log.debug("Saving %s to the backup file".formatted(table));
+        final ResultSetMetaData result = resultSet.getMetaData();
+        final List<String> columns = new ArrayList<>();
+        final int columnCount = result.getColumnCount();
+        log.debug("  There are %d columns in this ResultSet".formatted(columnCount));
+
+        for (int i = 1; i <= result.getColumnCount(); i++) {
+            final String columnName = result.getColumnName(i);
+            log.debug("    Adding column %s".formatted(columnName));
+            columns.add(columnName);
+        }
+
+        int counter = 0;
+        while (resultSet.next()) {
+            for (final String columnName : columns) {
+                try {
+                    final String value = resultSet.getString(columnName);
+                    config.set("%s.%d.%s".formatted(table, counter, columnName), value);
+                } catch (final SQLException e) {
+                    throw new IllegalStateException("Could not read SQL: " + e.getMessage(), e);
+                }
+            }
+            counter++;
+        }
+        log.debug("  Saved " + (counter + 1) + " rows");
     }
 
     /**
@@ -217,10 +201,12 @@ public final class Backup {
         }
         final String filename = "old-database-" + backupNumber + ".yml";
         log.info("Backing up old database!");
-        if (!backupDatabase(new File(backupFolder, filename))) {
+        try {
+            backupDatabase(new File(backupFolder, filename));
+        } catch (final IllegalArgumentException | IllegalStateException e) {
             log.warn("There was an error during old database backup process. This means that"
                     + " if the plugin loaded new database (from backup), the old one would be lost "
-                    + "forever. Because of that the loading of backup was aborted!");
+                    + "forever. Because of that the loading of backup was aborted! Reason: %s".formatted(e.getMessage()), e);
             return;
         }
         final ConfigAccessor config;
@@ -235,17 +221,18 @@ public final class Backup {
         // in a different way...)
         con.getDatabase().createTables();
         // drop all tables
-        con.updateSQL(UpdateType.DROP_OBJECTIVES);
-        con.updateSQL(UpdateType.DROP_TAGS);
-        con.updateSQL(UpdateType.DROP_POINTS);
-        con.updateSQL(UpdateType.DROP_JOURNALS);
-        con.updateSQL(UpdateType.DROP_BACKPACK);
-        con.updateSQL(UpdateType.DROP_GLOBAL_POINTS);
-        con.updateSQL(UpdateType.DROP_GLOBAL_TAGS);
-        con.updateSQL(UpdateType.DROP_MIGRATION);
-        con.updateSQL(UpdateType.DROP_PLAYER_PROFILE);
-        con.updateSQL(UpdateType.DROP_PLAYER);
-        con.updateSQL(UpdateType.DROP_PROFILE);
+        final Arguments args = new Arguments();
+        con.updateSQL(UpdateType.DROP_OBJECTIVES, args);
+        con.updateSQL(UpdateType.DROP_TAGS, args);
+        con.updateSQL(UpdateType.DROP_POINTS, args);
+        con.updateSQL(UpdateType.DROP_JOURNALS, args);
+        con.updateSQL(UpdateType.DROP_BACKPACK, args);
+        con.updateSQL(UpdateType.DROP_GLOBAL_POINTS, args);
+        con.updateSQL(UpdateType.DROP_GLOBAL_TAGS, args);
+        con.updateSQL(UpdateType.DROP_MIGRATION, args);
+        con.updateSQL(UpdateType.DROP_PLAYER_PROFILE, args);
+        con.updateSQL(UpdateType.DROP_PLAYER, args);
+        con.updateSQL(UpdateType.DROP_PROFILE, args);
 
         loadDatabaseFromBackup0(config);
     }
@@ -257,88 +244,88 @@ public final class Backup {
         final ConfigurationSection profile = config.getConfigurationSection("profile");
         if (profile != null) {
             for (final String key : profile.getKeys(false)) {
-                con.updateSQL(UpdateType.INSERT_PROFILE,
-                        profile.getString(key + ".profileID"));
+                con.updateSQL(UpdateType.INSERT_PROFILE, new Arguments(
+                        profile.getString(key + ".profileID")));
             }
         }
         final ConfigurationSection player = config.getConfigurationSection("player");
         if (player != null) {
             for (final String key : player.getKeys(false)) {
-                con.updateSQL(UpdateType.INSERT_PLAYER,
+                con.updateSQL(UpdateType.INSERT_PLAYER, new Arguments(
                         player.getString(key + ".playerID"),
                         player.getString(key + ".active_profile"),
                         player.getString(key + ".language"),
-                        player.getString(key + ".conversation"));
+                        player.getString(key + ".conversation")));
             }
         }
         final ConfigurationSection playerProfile = config.getConfigurationSection("player_profile");
         if (playerProfile != null) {
             for (final String key : playerProfile.getKeys(false)) {
-                con.updateSQL(UpdateType.INSERT_PLAYER_PROFILE,
+                con.updateSQL(UpdateType.INSERT_PLAYER_PROFILE, new Arguments(
                         playerProfile.getString(key + ".playerID"),
                         playerProfile.getString(key + ".profileID"),
-                        playerProfile.getString(key + ".name"));
+                        playerProfile.getString(key + ".name")));
             }
         }
         final ConfigurationSection objectives = config.getConfigurationSection("objectives");
         if (objectives != null) {
             for (final String key : objectives.getKeys(false)) {
-                con.updateSQL(UpdateType.INSERT_OBJECTIVE,
+                con.updateSQL(UpdateType.INSERT_OBJECTIVE, new Arguments(
                         objectives.getString(key + ".profileID"),
                         objectives.getString(key + ".objective"),
-                        objectives.getString(key + ".instructions"));
+                        objectives.getString(key + ".instructions")));
             }
         }
         final ConfigurationSection tags = config.getConfigurationSection("tags");
         if (tags != null) {
             for (final String key : tags.getKeys(false)) {
-                con.updateSQL(UpdateType.INSERT_TAG,
+                con.updateSQL(UpdateType.INSERT_TAG, new Arguments(
                         tags.getString(key + ".profileID"),
-                        tags.getString(key + ".tag"));
+                        tags.getString(key + ".tag")));
             }
         }
         final ConfigurationSection points = config.getConfigurationSection("points");
         if (points != null) {
             for (final String key : points.getKeys(false)) {
-                con.updateSQL(UpdateType.INSERT_POINT,
+                con.updateSQL(UpdateType.INSERT_POINT, new Arguments(
                         points.getString(key + ".profileID"),
                         points.getString(key + ".category"),
-                        points.getString(key + ".count"));
+                        points.getString(key + ".count")));
             }
         }
         final ConfigurationSection journals = config.getConfigurationSection("journals");
         if (journals != null) {
             for (final String key : journals.getKeys(false)) {
-                con.updateSQL(UpdateType.INSERT_JOURNAL,
+                con.updateSQL(UpdateType.INSERT_JOURNAL, new Arguments(
                         journals.getString(key + ".id"),
                         journals.getString(key + ".profileID"),
                         journals.getString(key + ".pointer"),
-                        journals.getString(key + ".date"));
+                        journals.getString(key + ".date")));
             }
         }
         final ConfigurationSection backpack = config.getConfigurationSection("backpack");
         if (backpack != null) {
             for (final String key : backpack.getKeys(false)) {
-                con.updateSQL(UpdateType.INSERT_BACKPACK,
+                con.updateSQL(UpdateType.INSERT_BACKPACK, new Arguments(
                         backpack.getString(key + ".id"),
                         backpack.getString(key + ".profileID"),
                         backpack.getString(key + ".serialized"),
-                        backpack.getString(key + ".amount"));
+                        backpack.getString(key + ".amount")));
             }
         }
         final ConfigurationSection globalPoints = config.getConfigurationSection("global_points");
         if (globalPoints != null) {
             for (final String key : globalPoints.getKeys(false)) {
-                con.updateSQL(UpdateType.INSERT_GLOBAL_POINT,
+                con.updateSQL(UpdateType.INSERT_GLOBAL_POINT, new Arguments(
                         globalPoints.getString(key + ".category"),
-                        globalPoints.getString(key + ".count"));
+                        globalPoints.getString(key + ".count")));
             }
         }
         final ConfigurationSection globalTags = config.getConfigurationSection("global_tags");
         if (globalTags != null) {
             for (final String key : globalTags.getKeys(false)) {
-                con.updateSQL(UpdateType.INSERT_GLOBAL_TAG,
-                        globalTags.getString(key + ".tag"));
+                con.updateSQL(UpdateType.INSERT_GLOBAL_TAG, new Arguments(
+                        globalTags.getString(key + ".tag")));
             }
         }
         if (!databaseBackupFile.delete()) {

@@ -27,7 +27,6 @@ class BackupTest {
                 new DefaultConfigAccessorFactory(mock(BetonQuestLoggerFactory.class), mock(BetonQuestLogger.class)),
                 tempDir.toFile(), connector);
         final ResultSet emptyResult = mock(ResultSet.class);
-        when(connector.querySQL(any())).thenReturn(emptyResult);
         final ResultSetMetaData metaData = mock(ResultSetMetaData.class);
         when(emptyResult.getMetaData()).thenReturn(metaData);
         when(metaData.getColumnCount()).thenReturn(0);

@@ -3,8 +3,6 @@ package org.betonquest.betonquest.database;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.database.Saver.Record;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -55,20 +53,20 @@ public class GlobalData implements TagData, PointData {
      * @param connector the connector for database access
      */
     public final void loadAllGlobalData(final Connector connector) {
-        try (ResultSet globalTags = connector.querySQL(QueryType.LOAD_ALL_GLOBAL_TAGS);
-             ResultSet globalPoints = connector.querySQL(QueryType.LOAD_ALL_GLOBAL_POINTS)) {
-            while (globalTags.next()) {
-                this.globalTags.add(globalTags.getString("tag"));
+        connector.querySQL(QueryType.LOAD_ALL_GLOBAL_TAGS, new Arguments(), resultSet -> {
+            while (resultSet.next()) {
+                this.globalTags.add(resultSet.getString("tag"));
             }
-            while (globalPoints.next()) {
-                final String category = globalPoints.getString("category");
-                this.globalPoints.put(category, new Point(category, globalPoints.getInt("count")));
+        }, "Could not load global tags.");
+        connector.querySQL(QueryType.LOAD_ALL_GLOBAL_POINTS, new Arguments(), resultSet -> {
+            while (resultSet.next()) {
+                final String category = resultSet.getString("category");
+                this.globalPoints.put(category, new Point(category, resultSet.getInt("count")));
             }
-            log.debug("There are " + this.globalTags.size() + " global_tags and " + this.globalPoints.size()
-                    + " global_points loaded");
-        } catch (final SQLException e) {
-            log.error("There was an exception with SQL", e);
-        }
+        }, "Could not load global points.");
+
+        log.debug("There are " + this.globalTags.size() + " global_tags and " + this.globalPoints.size()
+                + " global_points loaded");
     }
 
     @Override
