@@ -5,6 +5,8 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.reload.ReloadPhase;
+import org.betonquest.betonquest.api.reload.Reloader;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerDataFactory;
@@ -31,7 +33,7 @@ public class PlayerDataStorageComponent extends AbstractCoreComponent {
     @Override
     public Set<Class<?>> requires() {
         return Set.of(BetonQuestLoggerFactory.class, ConfigAccessor.class, Saver.class, Identifiers.class,
-                ProfileProvider.class, ObjectiveProcessor.class, Server.class);
+                ProfileProvider.class, ObjectiveProcessor.class, Server.class, Reloader.class);
     }
 
     @Override
@@ -53,6 +55,7 @@ public class PlayerDataStorageComponent extends AbstractCoreComponent {
         final ProfileProvider profileProvider = getDependency(ProfileProvider.class);
         final ConfigAccessor config = getDependency(ConfigAccessor.class);
         final Server server = getDependency(Server.class);
+        final Reloader reloader = getDependency(Reloader.class);
 
         final PlayerDataFactory playerDataFactory = new PlayerDataFactory(loggerFactory, saver, server,
                 identifiers, objectiveProcessor, Suppliers.memoize(() -> getDependency(JournalFactory.class)));
@@ -61,5 +64,6 @@ public class PlayerDataStorageComponent extends AbstractCoreComponent {
 
         dependencyProvider.take(PlayerDataFactory.class, playerDataFactory);
         dependencyProvider.take(PlayerDataStorage.class, playerDataStorage);
+        reloader.register(ReloadPhase.PROFILES, () -> playerDataStorage.reloadProfiles(profileProvider.getOnlineProfiles()));
     }
 }

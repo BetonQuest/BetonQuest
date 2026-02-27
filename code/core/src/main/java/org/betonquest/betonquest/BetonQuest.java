@@ -41,6 +41,7 @@ import org.betonquest.betonquest.kernel.component.LogHandlerComponent;
 import org.betonquest.betonquest.kernel.component.MigratorComponent;
 import org.betonquest.betonquest.kernel.component.ProfileProviderComponent;
 import org.betonquest.betonquest.kernel.component.QuestPackageManagerComponent;
+import org.betonquest.betonquest.kernel.component.ReloaderComponent;
 import org.betonquest.betonquest.kernel.component.UpdaterComponent;
 import org.betonquest.betonquest.kernel.component.VersionInfoComponent;
 import org.betonquest.betonquest.kernel.component.types.ActionTypesComponent;
@@ -271,6 +272,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
                 new ProfileProviderComponent(),
                 new ConfigAccessorFactoryComponent(),
                 new MigratorComponent(),
+                new ReloaderComponent(),
                 new RequirementComponentWrapper(new ConfigComponent(), Migrator.class),
                 new LanguageProviderComponent(),
                 new CommandsComponent(this::reload),

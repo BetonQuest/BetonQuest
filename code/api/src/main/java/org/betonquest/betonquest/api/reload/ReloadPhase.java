@@ -8,31 +8,27 @@ package org.betonquest.betonquest.api.reload;
 public enum ReloadPhase {
 
     /**
-     * Earliest phase. Right after the reload is triggered and nothing is reloaded yet.
-     */
-    PRE_RELOAD,
-    /**
-     * Second phase. The configuration is reloaded.
+     * First phase. The configuration will reload.
      */
     CONFIG,
     /**
-     * Third phase. All files in quest packages are reloaded.
+     * Second phase. All files in quest packages will reload.
      */
     PACKAGES,
     /**
-     * Fourth phase. All integrations are reloaded.
+     * Third phase. All integrations will reload.
      */
     INTEGRATION,
     /**
-     * Fifth phase. All instructions have been reloaded, parsed, and instantiated.
+     * Fourth phase. All instructions will reload, parse, and instantiate.
      */
     INSTANCING,
     /**
-     * Sixth phase. The profiles are reloaded.
+     * Fifth phase. The profiles will reload.
      */
     PROFILES,
     /**
-     * Last phase. All internal logic is reloaded.
+     * Last phase. All remaining internal logic will reload.
      */
-    POST_RELOAD
+    POST
 }

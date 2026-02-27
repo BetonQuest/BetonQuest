@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
-import org.betonquest.betonquest.database.PlayerDataFactory;
 import org.betonquest.betonquest.kernel.component.ActionsComponent;
 import org.betonquest.betonquest.kernel.component.ArgumentParsersComponent;
 import org.betonquest.betonquest.kernel.component.BStatsMetricsComponent;
@@ -31,10 +30,7 @@ import org.betonquest.betonquest.kernel.component.TextParserComponent;
 import org.betonquest.betonquest.kernel.component.TextSectionParserComponent;
 import org.betonquest.betonquest.kernel.processor.QuestProcessor;
 import org.betonquest.betonquest.kernel.processor.StartTask;
-import org.betonquest.betonquest.kernel.processor.feature.CancelerProcessor;
-import org.betonquest.betonquest.kernel.processor.feature.CompassProcessor;
 import org.betonquest.betonquest.kernel.processor.feature.ConversationProcessor;
-import org.betonquest.betonquest.kernel.processor.feature.JournalEntryProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.ActionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.ConditionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
@@ -42,7 +38,6 @@ import org.betonquest.betonquest.kernel.processor.quest.ObjectiveProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.PlaceholderProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.kernel.registry.feature.InterceptorRegistry;
-import org.betonquest.betonquest.kernel.registry.feature.ItemTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.feature.NotifyIORegistry;
 import org.betonquest.betonquest.lib.dependency.component.DefaultCoreComponentLoader;
 import org.betonquest.betonquest.menu.RPGMenu;
@@ -244,24 +239,6 @@ public class CoreQuestTypeHandler {
     }
 
     /**
-     * Gets the canceler processor.
-     *
-     * @return the canceler processor
-     */
-    public CancelerProcessor getCancelerProcessor() {
-        return coreComponentLoader.get(CancelerProcessor.class);
-    }
-
-    /**
-     * Gets the compass processor.
-     *
-     * @return the compass processor
-     */
-    public CompassProcessor getCompassProcessor() {
-        return coreComponentLoader.get(CompassProcessor.class);
-    }
-
-    /**
      * Gets the npc processor.
      *
      * @return the npc processor
@@ -289,15 +266,6 @@ public class CoreQuestTypeHandler {
     }
 
     /**
-     * Gets the journal entry processor.
-     *
-     * @return the journal entry processor
-     */
-    public JournalEntryProcessor getJournalEntryProcessor() {
-        return coreComponentLoader.get(JournalEntryProcessor.class);
-    }
-
-    /**
      * Gets the plugin message instance.
      *
      * @return the plugin message instance
@@ -322,15 +290,6 @@ public class CoreQuestTypeHandler {
      */
     public ParsedSectionTextCreator getTextCreator() {
         return coreComponentLoader.get(ParsedSectionTextCreator.class);
-    }
-
-    /**
-     * Gets the player data factory.
-     *
-     * @return the player data factory
-     */
-    public PlayerDataFactory getPlayerDataFactory() {
-        return coreComponentLoader.get(PlayerDataFactory.class);
     }
 
     /**
@@ -367,15 +326,6 @@ public class CoreQuestTypeHandler {
      */
     public NotifyIORegistry getNotifyIORegistry() {
         return coreComponentLoader.get(NotifyIORegistry.class);
-    }
-
-    /**
-     * Gets the item registry.
-     *
-     * @return the item registry
-     */
-    public ItemTypeRegistry getItemRegistry() {
-        return coreComponentLoader.get(ItemTypeRegistry.class);
     }
 
     /**
