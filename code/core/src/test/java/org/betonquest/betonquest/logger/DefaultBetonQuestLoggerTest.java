@@ -27,23 +27,23 @@ class DefaultBetonQuestLoggerTest {
     /**
      * The {@link QuestPackage} name.
      */
-    public static final String PACKAGE_NAME = "CustomTestPackage";
+    private static final String PACKAGE_NAME = "CustomTestPackage";
 
     /**
      * The additional stacktrace message.
      */
-    public static final String STACKTRACE_MESSAGE = "Additional stacktrace:";
+    private static final String STACKTRACE_MESSAGE = "Additional stacktrace:";
 
     /**
      * The report message.
      */
-    public static final String REPORT_MESSAGE = "This is an exception that should never occur. "
+    private static final String REPORT_MESSAGE = "This is an exception that should never occur. "
             + "If you don't know why this occurs please report it to the author.";
 
     /**
      * The {@link IOException} for testing.
      */
-    public static final IOException IO_EXCEPTION = new IOException("Test Exception");
+    private static final IOException IO_EXCEPTION = new IOException("Test Exception");
 
     /**
      * The log message.
@@ -197,7 +197,7 @@ class DefaultBetonQuestLoggerTest {
          * @param level   The level
          * @param message The message
          */
-        public RecordMatcher(final Level level, final String message) {
+        private RecordMatcher(final Level level, final String message) {
             this(null, level, message, null);
         }
 
@@ -208,7 +208,7 @@ class DefaultBetonQuestLoggerTest {
          * @param message   The message
          * @param exception The exception
          */
-        public RecordMatcher(final Level level, final String message, final Exception exception) {
+        private RecordMatcher(final Level level, final String message, final Exception exception) {
             this(null, level, message, exception);
         }
 
@@ -219,7 +219,7 @@ class DefaultBetonQuestLoggerTest {
          * @param level   The level
          * @param message The message
          */
-        public RecordMatcher(final String source, final Level level, final String message) {
+        private RecordMatcher(final String source, final Level level, final String message) {
             this(source, level, message, null);
         }
 

@@ -218,7 +218,7 @@ public class ComponentLineWrapper {
     /**
      * The Offset class is used to store the offset of a line in pixels.
      */
-    private static class Offset {
+    private static final class Offset {
 
         /**
          * The offset to use even if {@link #reset()} is called.
@@ -233,7 +233,7 @@ public class ComponentLineWrapper {
         /**
          * Creates a new Offset instance with the default value of 0.
          */
-        public Offset(final Supplier<Integer> provider) {
+        private Offset(final Supplier<Integer> provider) {
             this.provider = provider;
             this.value = provider.get();
         }
@@ -243,7 +243,7 @@ public class ComponentLineWrapper {
          *
          * @return the current offset
          */
-        public int getOffset() {
+        private int getOffset() {
             return value;
         }
 
@@ -252,14 +252,14 @@ public class ComponentLineWrapper {
          *
          * @param offset the offset to add
          */
-        public void addOffset(final int offset) {
+        private void addOffset(final int offset) {
             this.value += offset;
         }
 
         /**
          * Resets the offset to 0.
          */
-        public void reset() {
+        private void reset() {
             this.value = provider.get();
         }
     }
@@ -267,7 +267,7 @@ public class ComponentLineWrapper {
     /**
      * The ComponentDecorations class is used to store the decorations of a Component.
      */
-    private static class ComponentDecorations {
+    private static final class ComponentDecorations {
 
         /**
          * The map of TextDecoration to its state for the Component.
@@ -279,7 +279,7 @@ public class ComponentLineWrapper {
          *
          * @param component the Component to get the decorations for
          */
-        public ComponentDecorations(final Component component) {
+        private ComponentDecorations(final Component component) {
             this.decorations = component.decorations();
         }
 
@@ -300,7 +300,7 @@ public class ComponentLineWrapper {
          * @param component the child Component to get the decorations for
          * @return a new ComponentDecorations instance containing the decorations of the child Component
          */
-        public ComponentDecorations getChild(final Component component) {
+        private ComponentDecorations getChild(final Component component) {
             return new ComponentDecorations(new EnumMap<>(decorations), component);
         }
 
@@ -309,7 +309,7 @@ public class ComponentLineWrapper {
          *
          * @return a map of TextDecoration to its state
          */
-        public Map<TextDecoration, TextDecoration.State> getDecorations() {
+        private Map<TextDecoration, TextDecoration.State> getDecorations() {
             return decorations;
         }
     }
@@ -317,7 +317,7 @@ public class ComponentLineWrapper {
     /**
      * The ComponentBuilder class is used to build a Component of text by appending Components.
      */
-    private static class ComponentBuilder {
+    private static final class ComponentBuilder {
 
         /**
          * The current Component being built.
@@ -328,7 +328,7 @@ public class ComponentLineWrapper {
         /**
          * Creates a new ComponentBuilder instance.
          */
-        public ComponentBuilder() {
+        private ComponentBuilder() {
         }
 
         /**
@@ -336,7 +336,7 @@ public class ComponentLineWrapper {
          *
          * @param component the Component to append
          */
-        public void append(final Component component) {
+        private void append(final Component component) {
             if (current == null) {
                 current = component;
             } else {
@@ -349,7 +349,7 @@ public class ComponentLineWrapper {
          *
          * @return true if the current component is empty, false otherwise
          */
-        public boolean isEmpty() {
+        private boolean isEmpty() {
             return current == null;
         }
 
@@ -358,7 +358,7 @@ public class ComponentLineWrapper {
          *
          * @return the built Component representing the current builder
          */
-        public Component build() {
+        private Component build() {
             if (current == null) {
                 return Component.empty();
             }

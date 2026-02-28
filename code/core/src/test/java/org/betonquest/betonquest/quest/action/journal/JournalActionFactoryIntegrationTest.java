@@ -41,7 +41,7 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(BetonQuestLoggerService.class)
 @ExtendWith(MockitoExtension.class)
-class JournalActionFactoryIntegrationTest {
+final class JournalActionFactoryIntegrationTest {
 
     /**
      * The current time used in the tests.
@@ -59,12 +59,6 @@ class JournalActionFactoryIntegrationTest {
      */
     @Mock
     private Saver saver;
-
-    /**
-     * Create JournalAction test class.
-     */
-    public JournalActionFactoryIntegrationTest() {
-    }
 
     private QuestPackage setupQuestPackage(final BetonQuestLoggerFactory factory, final BetonQuestLogger logger, final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
         final Path packageDirectory = questPackagesDirectory.resolve("test");

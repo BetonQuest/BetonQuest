@@ -422,12 +422,12 @@ public class MenuConvIO extends ChatConvIO {
     /**
      * Menu specific controls.
      */
-    private class MenuConversationAction implements ConversationAction {
+    private final class MenuConversationAction implements ConversationAction {
 
         /**
          * The empty default constructor.
          */
-        public MenuConversationAction() {
+        private MenuConversationAction() {
         }
 
         @Override

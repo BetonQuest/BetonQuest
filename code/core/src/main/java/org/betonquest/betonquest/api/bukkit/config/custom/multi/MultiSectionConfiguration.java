@@ -375,7 +375,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
     /**
      * A {@link ConfigurationModificationHandler} for a {@link MultiSectionConfiguration}.
      */
-    private static class MultiConfigurationHandler implements ConfigurationModificationHandler {
+    private static final class MultiConfigurationHandler implements ConfigurationModificationHandler {
 
         /**
          * The consumer to call if the set method was called.
@@ -386,10 +386,10 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
         /**
          * Creates a new handler instance.
          */
-        public MultiConfigurationHandler() {
+        private MultiConfigurationHandler() {
         }
 
-        public void setConsumer(final SetConsumer consumer) {
+        private void setConsumer(final SetConsumer consumer) {
             this.consumer = consumer;
         }
 

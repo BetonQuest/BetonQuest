@@ -275,7 +275,7 @@ public class FolderAction implements NullableAction {
     /**
      * Registers the quit listener if the action should be cancelled on logout.
      */
-    private static class QuitListener implements FolderActionCanceler, Listener {
+    public static final class QuitListener implements FolderActionCanceler, Listener {
 
         /**
          * Custom {@link BetonQuestLogger} instance for this class.
@@ -300,8 +300,8 @@ public class FolderAction implements NullableAction {
          * @param pluginManager the plugin manager to register the quit listener
          * @param profile       profile to check for
          */
-        public QuitListener(final Plugin plugin, final BetonQuestLogger log, final PluginManager pluginManager,
-                            final Profile profile) {
+        private QuitListener(final Plugin plugin, final BetonQuestLogger log, final PluginManager pluginManager,
+                             final Profile profile) {
             this.log = log;
             this.profile = profile;
             pluginManager.registerEvents(this, plugin);

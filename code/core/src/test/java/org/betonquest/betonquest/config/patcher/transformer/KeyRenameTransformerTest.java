@@ -16,7 +16,7 @@ class KeyRenameTransformerTest extends TransformersFixture {
     /**
      * The transformer that is tested.
      */
-    public static final KeyRenameTransformer TRANSFORMER = new KeyRenameTransformer();
+    private static final KeyRenameTransformer TRANSFORMER = new KeyRenameTransformer();
 
     @Test
     void flawless() throws PatchException {

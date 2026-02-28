@@ -124,7 +124,7 @@ public class MythicMobsIntegrator implements Integrator {
     /**
      * Handles de-/registration of a listener based on a condition which may change on reload.
      */
-    private final class DynamicListenerRegister implements Listener {
+    public final class DynamicListenerRegister implements Listener {
 
         /**
          * Listener to de-/register.

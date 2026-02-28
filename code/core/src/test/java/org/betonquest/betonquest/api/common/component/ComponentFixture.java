@@ -13,7 +13,7 @@ import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ComponentFixture {
+public class ComponentFixture {
 
     public <T, R> void assertWrap(final T input, final List<R> expected, final Function<T, List<R>> wrapper) {
         final List<R> result = wrapper.apply(input);

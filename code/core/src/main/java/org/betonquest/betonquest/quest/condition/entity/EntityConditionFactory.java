@@ -57,7 +57,7 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
         /**
          * The default instance of {@link EntityAmount}.
          */
-        public static final EntityAmount ENTITY_AMOUNT = new EntityAmount();
+        private static final EntityAmount ENTITY_AMOUNT = new EntityAmount();
 
         @Override
         public Map.Entry<EntityType, Integer> apply(final String string) throws QuestException {

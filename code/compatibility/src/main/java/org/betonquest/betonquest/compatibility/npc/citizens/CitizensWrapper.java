@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Citizens wrapper to get a Npc.
  */
-class CitizensWrapper implements NpcWrapper<NPC> {
+public class CitizensWrapper implements NpcWrapper<NPC> {
 
     /**
      * Source Registry of NPCs to use.

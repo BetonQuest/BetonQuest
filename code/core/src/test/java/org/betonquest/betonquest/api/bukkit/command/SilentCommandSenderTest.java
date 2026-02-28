@@ -43,7 +43,7 @@ class SilentCommandSenderTest {
      *
      * @return the command sender to use
      */
-    public CommandSender getCommandSender() {
+    protected CommandSender getCommandSender() {
         return mock(CommandSender.class);
     }
 
@@ -52,7 +52,7 @@ class SilentCommandSenderTest {
      *
      * @return the silent command sender to test
      */
-    public SilentCommandSender getSilentCommandSender() {
+    protected SilentCommandSender getSilentCommandSender() {
         return new SilentCommandSender(logger, sender);
     }
 

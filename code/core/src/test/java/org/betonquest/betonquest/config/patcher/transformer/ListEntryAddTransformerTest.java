@@ -17,7 +17,7 @@ class ListEntryAddTransformerTest extends TransformersFixture {
     /**
      * The transformer that is tested.
      */
-    public static final ListEntryAddTransformer TRANSFORMER = new ListEntryAddTransformer();
+    private static final ListEntryAddTransformer TRANSFORMER = new ListEntryAddTransformer();
 
     @Test
     void flawless_add_default() throws PatchException {

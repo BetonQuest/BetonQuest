@@ -201,7 +201,7 @@ public class InputEventSession implements ConversationSession, Listener {
      * <p>
      * It needs to be unregistered delayed to prevent holding the key for a short time unmounting the player.
      */
-    private final class Unmount implements Listener {
+    public final class Unmount implements Listener {
 
         private Unmount() {
         }

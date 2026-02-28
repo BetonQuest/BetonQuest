@@ -172,7 +172,7 @@ public class EffectLibRunnable extends BukkitRunnable {
     /**
      * A dynamic location that has a Npc instead a Bukkit Entity.
      */
-    private static class NpcDynamicLocation extends DynamicLocation {
+    private static final class NpcDynamicLocation extends DynamicLocation {
 
         /**
          * The Npc reference.
@@ -184,7 +184,7 @@ public class EffectLibRunnable extends BukkitRunnable {
          *
          * @param npc the npc to get the position
          */
-        public NpcDynamicLocation(final Npc<?> npc) {
+        private NpcDynamicLocation(final Npc<?> npc) {
             super(npc.getEyeLocation().orElse(null));
             this.npcWeakReference = new WeakReference<>(npc);
         }

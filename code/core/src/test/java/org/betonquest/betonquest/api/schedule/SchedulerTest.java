@@ -90,7 +90,7 @@ class SchedulerTest {
          * @param logger        the logger that will be used for logging
          * @param actionManager the action manager
          */
-        public MockedScheduler(final BetonQuestLogger logger, final ActionManager actionManager) {
+        private MockedScheduler(final BetonQuestLogger logger, final ActionManager actionManager) {
             super(logger, actionManager);
         }
 

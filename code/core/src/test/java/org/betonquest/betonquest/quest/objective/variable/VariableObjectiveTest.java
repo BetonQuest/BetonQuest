@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 class VariableObjectiveTest {
 
-    public static Stream<Arguments> serializedVariableObjectiveData() {
+    private static Stream<Arguments> serializedVariableObjectiveData() {
         return Stream.of(
                 Arguments.of("", "any", null),
                 Arguments.of("test:data", "test", "data"),
@@ -65,7 +65,7 @@ class VariableObjectiveTest {
         );
     }
 
-    public static Stream<Arguments> serializableVariableObjectiveData() {
+    private static Stream<Arguments> serializableVariableObjectiveData() {
         return Stream.of(
                 Arguments.of(Collections.emptyMap(), ""),
                 Arguments.of(Collections.singletonMap("test", "data"), "test:data"),
@@ -89,7 +89,7 @@ class VariableObjectiveTest {
         );
     }
 
-    public static Stream<Map<String, String>> variableObjectiveData() {
+    private static Stream<Map<String, String>> variableObjectiveData() {
         return Stream.of(
                 Collections.emptyMap(),
                 Collections.singletonMap("test", "data"),

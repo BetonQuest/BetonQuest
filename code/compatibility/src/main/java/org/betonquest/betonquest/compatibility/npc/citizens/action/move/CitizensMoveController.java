@@ -277,7 +277,7 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
          *
          * @param event the navigation event to handle
          */
-        public void onContinue(final NavigationEvent event) {
+        private void onContinue(final NavigationEvent event) {
             final NPC npc = event.getNPC();
             if (npc.getId() != npcId) {
                 return;

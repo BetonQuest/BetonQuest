@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TokenizerTest {
 
-    public static Stream<Arguments> validInstructions() {
+    private static Stream<Arguments> validInstructions() {
         return Stream.of(
                 Arguments.of("", new String[]{}),
                 Arguments.of(" ", new String[]{}),
@@ -45,7 +45,7 @@ class TokenizerTest {
         );
     }
 
-    public static Stream<String> invalidInstructions() {
+    private static Stream<String> invalidInstructions() {
         return Stream.of(
                 "\"",
                 "\"string",

@@ -39,13 +39,13 @@ class ProfileEventTest {
     /**
      * Test implementation of {@link ProfileEvent}.
      */
-    private static class ProfileEventMock extends ProfileEvent {
+    private static final class ProfileEventMock extends ProfileEvent {
 
-        public ProfileEventMock(final Profile who) {
+        private ProfileEventMock(final Profile who) {
             super(who);
         }
 
-        public ProfileEventMock(final Profile who, final boolean isAsync) {
+        private ProfileEventMock(final Profile who, final boolean isAsync) {
             super(who, isAsync);
         }
 

@@ -3,6 +3,7 @@ package org.betonquest.betonquest.logger.format;
 import org.betonquest.betonquest.api.logger.LogSource;
 import org.betonquest.betonquest.logger.BetonQuestLogRecord;
 import org.bukkit.plugin.Plugin;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.logging.Level;
@@ -20,27 +21,25 @@ class ChatFormatterTest {
     /**
      * The message to send.
      */
-    public static final String MESSAGE = "Message";
+    private static final String MESSAGE = "Message";
 
     /**
      * The formatted sent message.
      */
-    public static final String FORMATTED_MESSAGE = "§f" + MESSAGE + "\"}";
+    private static final String FORMATTED_MESSAGE = "§f" + MESSAGE + "\"}";
 
     /**
      * The mocked plugin instance.
      */
-    private final Plugin plugin;
+    private static Plugin plugin;
 
     /**
      * The mocked plugin instance from an extension.
      */
-    private final Plugin pluginExtension;
+    private static Plugin pluginExtension;
 
-    /**
-     * Default constructor.
-     */
-    public ChatFormatterTest() {
+    @BeforeAll
+    static void setup() {
         plugin = mock(Plugin.class);
         pluginExtension = mock(Plugin.class);
         when(plugin.getName()).thenReturn("BetonQuest");

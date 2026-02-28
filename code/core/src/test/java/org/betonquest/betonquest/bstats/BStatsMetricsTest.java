@@ -49,17 +49,17 @@ class BStatsMetricsTest {
     /**
      * Package path for the test package.
      */
-    public static final String PACKAGE_PATH = "test";
+    private static final String PACKAGE_PATH = "test";
 
     /**
      * Test instruction type and string.
      */
-    public static final String TEST_INSTRUCTION = "test";
+    private static final String TEST_INSTRUCTION = "test";
 
     /**
      * Another test instruction type and string.
      */
-    public static final String OTHER_INSTRUCTION = "other";
+    private static final String OTHER_INSTRUCTION = "other";
 
     /**
      * Mocked Minecraft Bukkit server.
@@ -70,13 +70,6 @@ class BStatsMetricsTest {
      * Logger used by the mock Bukkit server instance.
      */
     private static Logger logger;
-
-    /**
-     * Create the {@link BStatsMetrics}' test class.
-     */
-    public BStatsMetricsTest() {
-
-    }
 
     @BeforeAll
     static void initializeBukkit() {

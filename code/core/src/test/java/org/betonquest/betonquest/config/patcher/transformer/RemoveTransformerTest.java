@@ -16,7 +16,7 @@ class RemoveTransformerTest extends TransformersFixture {
     /**
      * The transformer that is tested.
      */
-    public static final RemoveTransformer TRANSFORMER = new RemoveTransformer();
+    private static final RemoveTransformer TRANSFORMER = new RemoveTransformer();
 
     @Test
     void flawless() throws PatchException {

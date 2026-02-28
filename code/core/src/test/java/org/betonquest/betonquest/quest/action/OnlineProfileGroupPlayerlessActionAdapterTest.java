@@ -30,12 +30,6 @@ class OnlineProfileGroupPlayerlessActionAdapterTest {
     @Mock
     private PlayerAction internalPlayerAction;
 
-    /**
-     * Create test class instance.
-     */
-    public OnlineProfileGroupPlayerlessActionAdapterTest() {
-    }
-
     private static Stream<List<OnlineProfile>> playerListSource() {
         return Stream.of(
                 List.of(createRandomProfile()),

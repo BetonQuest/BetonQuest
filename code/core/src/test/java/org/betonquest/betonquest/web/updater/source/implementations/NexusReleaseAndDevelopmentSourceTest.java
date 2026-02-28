@@ -19,7 +19,7 @@ class NexusReleaseAndDevelopmentSourceTest {
     /**
      * The path to the root page for a specific Nexus.
      */
-    public static final String API_URL = "https://nexus.betonquest.org";
+    private static final String API_URL = "https://nexus.betonquest.org";
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test

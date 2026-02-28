@@ -51,7 +51,7 @@ public class WandConditionFactory implements PlayerConditionFactory {
         /**
          * The default instance of {@link SpellParser}.
          */
-        public static final SpellParser SPELL = new SpellParser();
+        private static final SpellParser SPELL = new SpellParser();
 
         /**
          * Expected length of formatted spells.

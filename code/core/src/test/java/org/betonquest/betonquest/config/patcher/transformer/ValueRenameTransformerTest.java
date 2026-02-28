@@ -16,7 +16,7 @@ class ValueRenameTransformerTest extends TransformersFixture {
     /**
      * The transformer that is tested.
      */
-    public static final ValueRenameTransformer TRANSFORMER = new ValueRenameTransformer();
+    private static final ValueRenameTransformer TRANSFORMER = new ValueRenameTransformer();
 
     @Test
     void flawless() throws PatchException {

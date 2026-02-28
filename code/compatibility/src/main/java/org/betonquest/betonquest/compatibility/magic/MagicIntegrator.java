@@ -58,10 +58,8 @@ public class MagicIntegrator implements Integrator, Listener {
      * @param playerDataStorage The BetonQuest plugin instance.
      * @param profileProvider   The profile provider instance.
      */
-    private record InventoryListener(
-            PlayerDataStorage playerDataStorage,
-            ProfileProvider profileProvider
-    ) implements Listener {
+    public record InventoryListener(PlayerDataStorage playerDataStorage, ProfileProvider profileProvider)
+            implements Listener {
 
         /**
          * Updates the player's journal when the spell inventory closes.

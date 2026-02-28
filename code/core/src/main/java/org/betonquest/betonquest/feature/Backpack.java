@@ -233,7 +233,7 @@ public class Backpack implements Listener {
      * Standard page with quest items.
      */
     @SuppressWarnings("PMD.CyclomaticComplexity")
-    private class BackpackPage extends Display {
+    private final class BackpackPage extends Display {
 
         /**
          * Backpack size.
@@ -301,7 +301,7 @@ public class Backpack implements Listener {
          * @param page number of the page to display, starting from 1
          */
         @SuppressWarnings({"PMD.NPathComplexity", "PMD.CognitiveComplexity"})
-        public BackpackPage(final int page) {
+        private BackpackPage(final int page) {
             super();
             final boolean showJournalInBackpack = config.getBoolean("journal.show_in_backpack");
             this.page = page;
@@ -469,7 +469,7 @@ public class Backpack implements Listener {
     /**
      * The page with quest cancelers.
      */
-    private class Cancelers extends Display {
+    private final class Cancelers extends Display {
 
         /**
          * Maps the slot to a QuestCanceler.
@@ -479,7 +479,7 @@ public class Backpack implements Listener {
         /**
          * Creates a page with quest cancelers and displays it to the player.
          */
-        public Cancelers() {
+        private Cancelers() {
             super();
             final List<QuestCanceler> cancelers = new ArrayList<>();
             for (final Map.Entry<QuestCancelerIdentifier, QuestCanceler> entry : cancelerProcessor.getValues().entrySet()) {
@@ -532,7 +532,7 @@ public class Backpack implements Listener {
     /**
      * Showing the possible locations for the compass.
      */
-    private class Compass extends Display {
+    private final class Compass extends Display {
 
         /**
          * Maps the slot to a compass.
@@ -542,7 +542,7 @@ public class Backpack implements Listener {
         /**
          * Creates a page with selectable compass targets and displays it to the player.
          */
-        public Compass() {
+        private Compass() {
             super();
             int counter = 0;
             for (final Map.Entry<CompassIdentifier, QuestCompass> entry : compassProcessor.getValues().entrySet()) {

@@ -26,12 +26,12 @@ class TokenizerTest {
     /**
      * Precision up to which to check equality of floating point numbers.
      */
-    public static final double REQUIRED_DOUBLE_PRECISION = 1E-7;
+    private static final double REQUIRED_DOUBLE_PRECISION = 1E-7;
 
     /**
      * The profile to use for argument resolution.
      */
-    public static final Profile TEST_PLAYER_PROFILE = mock(Profile.class);
+    private static final Profile TEST_PLAYER_PROFILE = mock(Profile.class);
 
     /**
      * The package name of the package we assume to be inside for argument resolution.

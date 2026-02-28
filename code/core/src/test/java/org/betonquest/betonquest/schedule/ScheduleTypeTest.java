@@ -153,7 +153,7 @@ class ScheduleTypeTest {
     /**
      * Class extending a schedule without any changes.
      */
-    private static class MockedSchedule extends Schedule {
+    private static final class MockedSchedule extends Schedule {
 
         /**
          * Creates new instance of the schedule.
@@ -162,7 +162,7 @@ class ScheduleTypeTest {
          * @param actions    the actions to execute
          * @param catchup    the catchup strategy
          */
-        public MockedSchedule(final ScheduleIdentifier scheduleID, final List<ActionIdentifier> actions, final CatchupStrategy catchup) {
+        private MockedSchedule(final ScheduleIdentifier scheduleID, final List<ActionIdentifier> actions, final CatchupStrategy catchup) {
             super(scheduleID, actions, catchup);
         }
     }
@@ -170,7 +170,7 @@ class ScheduleTypeTest {
     /**
      * Class extending a schedule that throws an unchecked action in its constructor.
      */
-    private static class ThrowingUncheckedSchedule extends Schedule {
+    private static final class ThrowingUncheckedSchedule extends Schedule {
 
         /**
          * Creates new instance of the schedule.
@@ -179,7 +179,7 @@ class ScheduleTypeTest {
          * @param actions    the actions to execute
          * @param catchup    the catchup strategy
          */
-        public ThrowingUncheckedSchedule(final ScheduleIdentifier scheduleID, final List<ActionIdentifier> actions, final CatchupStrategy catchup) {
+        private ThrowingUncheckedSchedule(final ScheduleIdentifier scheduleID, final List<ActionIdentifier> actions, final CatchupStrategy catchup) {
             super(scheduleID, actions, catchup);
             throw new IllegalArgumentException("unchecked");
         }

@@ -264,7 +264,7 @@ public class Display {
     /**
      * A toggleable index line that can change based on a condition.
      */
-    private static class ToggleableIndexLine extends Line.ToggleableIdentified<Integer> {
+    private static final class ToggleableIndexLine extends Line.ToggleableIdentified<Integer> {
 
         /**
          * Creates a new toggleable index line.
@@ -274,7 +274,7 @@ public class Display {
          * @param selector   a function that determines if the line is selected or not based on the identifier
          * @param identifier the identifier for this toggleable line
          */
-        public ToggleableIndexLine(final Component selected, final Component unselected, final Function<Integer, Boolean> selector, final Integer identifier) {
+        private ToggleableIndexLine(final Component selected, final Component unselected, final Function<Integer, Boolean> selector, final Integer identifier) {
             super(selected, unselected, selector, identifier);
         }
     }

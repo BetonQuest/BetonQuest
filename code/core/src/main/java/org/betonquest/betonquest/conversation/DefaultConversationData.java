@@ -427,7 +427,7 @@ public class DefaultConversationData implements ConversationData {
     /**
      * Represents a conversation option.
      */
-    private class ConversationOption {
+    private final class ConversationOption {
 
         /**
          * The name of the option, as defined in the config.
@@ -479,7 +479,7 @@ public class DefaultConversationData implements ConversationData {
          * @param convSection the {@link ConfigurationSection} of the option
          * @throws QuestException if the configuration is invalid
          */
-        protected ConversationOption(final String name, final ConversationOptionType type, final ConfigurationSection convSection, final ArgumentParsers parsers) throws QuestException {
+        private ConversationOption(final String name, final ConversationOptionType type, final ConfigurationSection convSection, final ArgumentParsers parsers) throws QuestException {
             this.optionName = name;
             this.type = type;
             final ConfigurationSection conv = convSection.getConfigurationSection(type.getIdentifier() + "." + name);
@@ -534,7 +534,7 @@ public class DefaultConversationData implements ConversationData {
          *
          * @return the name of this option
          */
-        public String getName() {
+        private String getName() {
             return optionName;
         }
 
@@ -544,7 +544,7 @@ public class DefaultConversationData implements ConversationData {
          * @param profile the profile of the player to get the text for
          * @return the text of this option in the given language
          */
-        public Component getText(@Nullable final Profile profile) {
+        private Component getText(@Nullable final Profile profile) {
             return getText(profile, new ArrayList<>());
         }
 
@@ -587,7 +587,7 @@ public class DefaultConversationData implements ConversationData {
          *
          * @return a list of {@link ConditionIdentifier}s
          */
-        public List<ConditionIdentifier> getConditions() {
+        private List<ConditionIdentifier> getConditions() {
             return new ArrayList<>(conditions);
         }
 
@@ -599,7 +599,7 @@ public class DefaultConversationData implements ConversationData {
          * @param profile the profile of the player to get the actions for
          * @return a list of {@link ActionIdentifier}s
          */
-        public List<ActionIdentifier> getActions(final Profile profile) {
+        private List<ActionIdentifier> getActions(final Profile profile) {
             return getActions(profile, new ArrayList<>());
         }
 
@@ -629,7 +629,7 @@ public class DefaultConversationData implements ConversationData {
          * @param profile the profile of the player to get the pointers for
          * @return a list of option addresses
          */
-        public List<String> getPointers(@Nullable final Profile profile) {
+        private List<String> getPointers(@Nullable final Profile profile) {
             return getPointers(profile, new ArrayList<>());
         }
 
@@ -669,7 +669,7 @@ public class DefaultConversationData implements ConversationData {
          *
          * @return a list of option names
          */
-        public List<String> getExtends() {
+        private List<String> getExtends() {
             return new ArrayList<>(extendLinks);
         }
 
@@ -678,7 +678,7 @@ public class DefaultConversationData implements ConversationData {
          *
          * @return the properties of this option
          */
-        public ConfigurationSection getProperties(@Nullable final Profile profile) {
+        private ConfigurationSection getProperties(@Nullable final Profile profile) {
             return getProperties(profile, new ArrayList<>());
         }
 

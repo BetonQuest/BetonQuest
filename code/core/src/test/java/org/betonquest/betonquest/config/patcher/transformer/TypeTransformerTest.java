@@ -16,7 +16,7 @@ class TypeTransformerTest extends TransformersFixture {
     /**
      * The transformer that is tested.
      */
-    public static final TypeTransformer TRANSFORMER = new TypeTransformer();
+    private static final TypeTransformer TRANSFORMER = new TypeTransformer();
 
     @Test
     void flawless_String_to_Boolean() throws PatchException {

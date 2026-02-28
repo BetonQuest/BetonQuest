@@ -17,7 +17,7 @@ class ListEntryRemoveTransformerTest extends TransformersFixture {
     /**
      * The transformer that is tested.
      */
-    public static final ListEntryRemoveTransformer TRANSFORMER = new ListEntryRemoveTransformer();
+    private static final ListEntryRemoveTransformer TRANSFORMER = new ListEntryRemoveTransformer();
 
     @Test
     void flawless() throws PatchException {

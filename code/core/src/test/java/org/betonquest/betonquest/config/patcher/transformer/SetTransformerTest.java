@@ -16,7 +16,7 @@ class SetTransformerTest extends TransformersFixture {
     /**
      * The transformer that is tested.
      */
-    public static final SetTransformer TRANSFORMER = new SetTransformer();
+    private static final SetTransformer TRANSFORMER = new SetTransformer();
 
     @Test
     void flawless() throws PatchException {

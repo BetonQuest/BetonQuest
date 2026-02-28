@@ -338,13 +338,12 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
     /**
      * Listener for Conversation starting and Hiding with {@link Npc}s.
      */
-    private class NpcListener implements Listener {
+    public final class NpcListener implements Listener {
 
         /**
          * The default Constructor.
          */
-        public NpcListener() {
-
+        private NpcListener() {
         }
 
         /**

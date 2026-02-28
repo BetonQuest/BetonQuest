@@ -22,7 +22,7 @@ class MultiSectionConfigurationKeyConflictExceptionTest {
     /**
      * Config with key3 as value.
      */
-    public static final String CONFIG_STRING_1 = """
+    private static final String CONFIG_STRING_1 = """
             section:
                 key1: value1
                 key3: value3-1
@@ -32,7 +32,7 @@ class MultiSectionConfigurationKeyConflictExceptionTest {
     /**
      * Config with key3 as value.
      */
-    public static final String CONFIG_STRING_2 = """
+    private static final String CONFIG_STRING_2 = """
             section:
                 key2: value2
                 key3: value3-2
@@ -42,7 +42,7 @@ class MultiSectionConfigurationKeyConflictExceptionTest {
     /**
      * Config with key3 as section.
      */
-    public static final String CONFIG_STRING_3 = """
+    private static final String CONFIG_STRING_3 = """
             section:
                 key2: value2
                 key3:

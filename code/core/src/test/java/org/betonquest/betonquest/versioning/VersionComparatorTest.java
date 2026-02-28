@@ -14,12 +14,12 @@ class VersionComparatorTest {
     /**
      * PRE release qualifier.
      */
-    public static final String QUALIFIER_PRE = "PRE-";
+    private static final String QUALIFIER_PRE = "PRE-";
 
     /**
      * DEV release qualifier.
      */
-    public static final String QUALIFIER_DEV = "DEV-";
+    private static final String QUALIFIER_DEV = "DEV-";
 
     /**
      * A version that represent a MAJOR Version.

@@ -245,7 +245,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
     /**
      * Handles additional potion effects.
      */
-    private static class CustomEffectHandler {
+    private static final class CustomEffectHandler {
 
         /**
          * The expected argument count of the formatted effect.
@@ -288,7 +288,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
          * @param custom the serialized potion data
          * @throws QuestException if the data is malformed
          */
-        public CustomEffectHandler(final String custom) throws QuestException {
+        private CustomEffectHandler(final String custom) throws QuestException {
             final String[] parts = HandlerUtil.getNNSplit(custom, "Potion is null!", ":");
             if (parts[0].startsWith("none-")) {
                 customTypeE = Existence.FORBIDDEN;

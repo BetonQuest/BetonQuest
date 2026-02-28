@@ -20,7 +20,7 @@ class PlayerPackageReceiverSelectorTest {
     /**
      * Message for test log records.
      */
-    public static final String MESSAGE = "message";
+    private static final String MESSAGE = "message";
 
     /**
      * Filter for a package.

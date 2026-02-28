@@ -3,6 +3,7 @@ package org.betonquest.betonquest.logger.format;
 import org.betonquest.betonquest.api.logger.LogSource;
 import org.betonquest.betonquest.logger.BetonQuestLogRecord;
 import org.bukkit.plugin.Plugin;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.logging.Level;
@@ -19,12 +20,10 @@ class LogfileFormatterTest {
     /**
      * The mocked plugin instance.
      */
-    private final Plugin plugin;
+    private static Plugin plugin;
 
-    /**
-     * Default constructor.
-     */
-    public LogfileFormatterTest() {
+    @BeforeAll
+    static void setup() {
         plugin = mock(Plugin.class);
         when(plugin.getName()).thenReturn("BetonQuest");
     }
