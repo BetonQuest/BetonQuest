@@ -15,10 +15,10 @@ public interface QuestBiFunction<T, U, R> {
     /**
      * Applies this function to the given arguments.
      *
-     * @param arg  the first function argument
-     * @param arg2 the second function argument
+     * @param firstArg  the first function argument
+     * @param secondArg the second function argument
      * @return the function result
      * @throws QuestException if the function execution fails
      */
-    R apply(T arg, U arg2) throws QuestException;
+    R apply(T firstArg, U secondArg) throws QuestException;
 }
