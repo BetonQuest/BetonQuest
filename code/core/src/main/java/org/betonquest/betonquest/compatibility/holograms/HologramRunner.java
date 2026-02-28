@@ -60,9 +60,9 @@ public final class HologramRunner {
             runner.task = new BukkitRunnable() {
                 @Override
                 public void run() {
-                    for (final HologramWrapper h : runner.holograms) {
-                        h.updateContent();
-                        h.updateVisibility();
+                    for (final HologramWrapper hologramWrapper : runner.holograms) {
+                        hologramWrapper.updateContent();
+                        hologramWrapper.updateVisibility();
                     }
                 }
             }.runTaskTimer(plugin, 0, entry.getKey());

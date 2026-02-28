@@ -229,9 +229,9 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         }
         for (final CustomEffectHandler checker : this.custom) {
             PotionEffect effect = null;
-            for (final PotionEffect e : custom) {
-                if (e.getType().equals(checker.customType)) {
-                    effect = e;
+            for (final PotionEffect potionEffect : custom) {
+                if (potionEffect.getType().equals(checker.customType)) {
+                    effect = potionEffect;
                     break;
                 }
             }

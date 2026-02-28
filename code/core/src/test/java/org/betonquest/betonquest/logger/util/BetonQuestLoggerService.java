@@ -21,6 +21,7 @@ import static org.mockito.Mockito.*;
  * It can also expose the parent {@link Logger} used for the created BetonQuestLogger
  * and a {@link java.util.logging.Handler} that is registered for the parent logger.
  */
+@SuppressWarnings("JavadocPackage")
 public class BetonQuestLoggerService implements BeforeEachCallback, ParameterResolver, AfterEachCallback {
 
     /**

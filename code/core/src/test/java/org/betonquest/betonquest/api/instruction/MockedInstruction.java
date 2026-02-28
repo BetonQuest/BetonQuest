@@ -23,6 +23,7 @@ import static org.mockito.Mockito.*;
 /**
  * Instruction where everything except package and instruction string is mocked.
  */
+@SuppressWarnings("JavadocPackage")
 public class MockedInstruction extends DefaultInstruction {
 
     /**

@@ -24,11 +24,11 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
     /**
      * The sub path for the REST API of Nexus to append on the {@link NexusReleaseAndDevelopmentSource#apiUrl}.
      */
-    public static final String SERVICE_REST_V_1 = "/service/rest/v1";
+    public static final String SERVICE_REST = "/service/rest/v1";
 
     /**
      * The sub path for a REST API call to Nexus to search for shaded jars
-     * to append on a {@link NexusReleaseAndDevelopmentSource#SERVICE_REST_V_1}.
+     * to append on a {@link NexusReleaseAndDevelopmentSource#SERVICE_REST}.
      */
     public static final String SEARCH_URL = "/search/assets?repository=%s&group=%s&name=%s&maven.extension=jar&maven.classifier=%s&sort=version&prerelease=%s";
 
@@ -133,13 +133,13 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
 
         String continuationToken = "";
         while (continuationToken != null) {
-            final String url = apiUrl + SERVICE_REST_V_1 + String.format(SEARCH_URL, repository, groupId, artifactId, classifier, prereleases) + continuationToken;
+            final String url = apiUrl + SERVICE_REST + String.format(SEARCH_URL, repository, groupId, artifactId, classifier, prereleases) + continuationToken;
             final JsonObject nexusResponse = gson.fromJson(contentSource.get(new URL(url)), JsonObject.class);
             final JsonArray items = nexusResponse.get("items").getAsJsonArray();
             for (int index = 0; index < items.size(); index++) {
                 final JsonObject entry = items.get(index).getAsJsonObject();
-                final JsonObject maven2 = entry.get("maven2").getAsJsonObject();
-                final Version version = new Version(maven2.get("version").getAsString());
+                final JsonObject maven = entry.get("maven2").getAsJsonObject();
+                final Version version = new Version(maven.get("version").getAsString());
                 final String downloadUrl = entry.get("downloadUrl").getAsString();
                 if (!consumer.consume(versions, version, downloadUrl)) {
                     return versions;
@@ -151,10 +151,10 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
         return versions;
     }
 
-    private boolean doVersionsEqual(final Version version1, final Version version2) {
-        return version1.getMajorVersion() == version2.getMajorVersion()
-                && version1.getMinorVersion() == version2.getMinorVersion()
-                && version1.getPatchVersion() == version2.getPatchVersion();
+    private boolean doVersionsEqual(final Version first, final Version second) {
+        return first.getMajorVersion() == second.getMajorVersion()
+                && first.getMinorVersion() == second.getMinorVersion()
+                && first.getPatchVersion() == second.getPatchVersion();
     }
 
     /**

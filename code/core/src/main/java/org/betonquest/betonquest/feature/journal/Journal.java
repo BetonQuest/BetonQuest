@@ -338,8 +338,8 @@ public class Journal {
         sorted = numbers.toArray(sorted);
         Arrays.sort(sorted);
         final List<Component> sortedLines = new ArrayList<>();
-        for (final int i : sorted) {
-            final List<Component> linesOrder = lines.get(i);
+        for (final int index : sorted) {
+            final List<Component> linesOrder = lines.get(index);
             linesOrder.sort(Comparator.comparing(component -> PlainTextComponentSerializer.plainText().serialize(component)));
             sortedLines.addAll(linesOrder);
         }

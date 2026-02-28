@@ -112,16 +112,16 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
 
     private void appendFireworkEffect(final StringBuilder builder, final FireworkEffect effect) {
         builder.append(effect.getType()).append(':');
-        for (final Color c : effect.getColors()) {
-            final DyeColor dye = DyeColor.getByFireworkColor(c);
-            builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(';');
+        for (final Color color : effect.getColors()) {
+            final DyeColor dye = DyeColor.getByFireworkColor(color);
+            builder.append(dye == null ? '#' + Integer.toHexString(color.asRGB()) : dye).append(';');
         }
         // remove last semicolon
         builder.setLength(Math.max(builder.length() - 1, 0));
         builder.append(':');
-        for (final Color c : effect.getFadeColors()) {
-            final DyeColor dye = DyeColor.getByFireworkColor(c);
-            builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(';');
+        for (final Color color : effect.getFadeColors()) {
+            final DyeColor dye = DyeColor.getByFireworkColor(color);
+            builder.append(dye == null ? '#' + Integer.toHexString(color.asRGB()) : dye).append(';');
         }
         builder.setLength(Math.max(builder.length() - 1, 0));
         builder.append(':').append(effect.hasTrail()).append(':').append(effect.hasFlicker());
@@ -234,9 +234,9 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
         }
         for (final FireworkEffectHandler checker : effects) {
             FireworkEffect effect = null;
-            for (final FireworkEffect e : list) {
-                if (e.getType() == checker.getType()) {
-                    effect = e;
+            for (final FireworkEffect fireworkEffect : list) {
+                if (fireworkEffect.getType() == checker.getType()) {
+                    effect = fireworkEffect;
                     break;
                 }
             }

@@ -82,22 +82,22 @@ public class Slots {
     /**
      * Checks if all defined slots are valid.
      *
-     * @param slots         an iterable containing all slots objects to check
+     * @param slotsList     an iterable containing all slots objects to check
      * @param inventorySize the size of the inventory in which the slots should be
      * @return true if all slots are valid, throws an exception otherwise
      * @throws QuestException if a defined list of slots is invalid
      */
-    public static boolean checkSlots(final Iterable<Slots> slots, final int inventorySize) throws QuestException {
+    public static boolean checkSlots(final Iterable<Slots> slotsList, final int inventorySize) throws QuestException {
         final boolean[] contained = new boolean[inventorySize]; //initialized with 'false'
-        for (final Slots s : slots) {
-            for (final int slot : s.getSlots()) {
+        for (final Slots slots : slotsList) {
+            for (final int slot : slots.getSlots()) {
                 try {
                     if (contained[slot]) {
-                        throw new QuestException("Slots '" + s + "': slot " + slot + " was already specified");
+                        throw new QuestException("Slots '" + slots + "': slot " + slot + " was already specified");
                     }
                     contained[slot] = true;
                 } catch (final IndexOutOfBoundsException e) {
-                    throw new QuestException("Slots '" + s + "': slot " + slot + " exceeds inventory size", e);
+                    throw new QuestException("Slots '" + slots + "': slot " + slot + " exceeds inventory size", e);
                 }
             }
         }

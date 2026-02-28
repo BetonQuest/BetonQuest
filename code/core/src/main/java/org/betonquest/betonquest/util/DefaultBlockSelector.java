@@ -238,11 +238,11 @@ public class DefaultBlockSelector implements BlockSelector {
         } catch (final PatternSyntaxException exception) {
             throw new QuestException("Invalid Regex: " + exception.getMessage(), exception);
         }
-        for (final Material m : Material.values()) {
-            if (m.isLegacy()) {
+        for (final Material material : Material.values()) {
+            if (material.isLegacy()) {
                 continue;
             }
-            final NamespacedKey namespacedKey = m.getKey();
+            final NamespacedKey namespacedKey = material.getKey();
             final Matcher namespaceMatcher = namespacePattern.matcher(namespacedKey.getNamespace());
             if (!namespaceMatcher.matches()) {
                 continue;
@@ -251,7 +251,7 @@ public class DefaultBlockSelector implements BlockSelector {
             if (!keyMatcher.matches()) {
                 continue;
             }
-            materials.add(m);
+            materials.add(material);
         }
 
         return materials;

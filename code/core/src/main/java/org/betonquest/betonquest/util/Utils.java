@@ -29,6 +29,7 @@ import java.util.stream.Stream;
 /**
  * Various utilities.
  */
+@SuppressWarnings({"LocalFinalVariableName", "CatchParameterName"})
 public final class Utils {
 
     /**

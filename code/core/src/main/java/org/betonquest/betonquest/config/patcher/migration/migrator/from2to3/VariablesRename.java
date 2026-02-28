@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 /**
  * Handles the variables (now named Placeholders) rename migration.
  */
+@SuppressWarnings("LocalFinalVariableName")
 public class VariablesRename implements QuestMigration {
 
     /**

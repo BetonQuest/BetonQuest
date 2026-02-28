@@ -87,13 +87,13 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
         if (meta instanceof final EnchantmentStorageMeta enchantMeta) {
             // why no bulk adding method?!
             final Map<Enchantment, Integer> map = get();
-            for (final Map.Entry<Enchantment, Integer> e : map.entrySet()) {
-                enchantMeta.addStoredEnchant(e.getKey(), e.getValue(), true);
+            for (final Map.Entry<Enchantment, Integer> enchantmentEntry : map.entrySet()) {
+                enchantMeta.addStoredEnchant(enchantmentEntry.getKey(), enchantmentEntry.getValue(), true);
             }
         } else {
             final Map<Enchantment, Integer> map = get();
-            for (final Map.Entry<Enchantment, Integer> e : map.entrySet()) {
-                meta.addEnchant(e.getKey(), e.getValue(), true);
+            for (final Map.Entry<Enchantment, Integer> enchantmentEntry : map.entrySet()) {
+                meta.addEnchant(enchantmentEntry.getKey(), enchantmentEntry.getValue(), true);
             }
         }
     }

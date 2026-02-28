@@ -49,7 +49,7 @@ public class Downloader implements Callable<Boolean> {
     /**
      * The http status code 400 - Bad Request.
      */
-    public static final int RESPONSE_400 = 400;
+    public static final int BAD_REQUEST_RESPONSE_CODE = 400;
 
     /**
      * Directory where downloaded repositories should be cached.
@@ -199,7 +199,7 @@ public class Downloader implements Callable<Boolean> {
         final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.connect();
         final int code = connection.getResponseCode();
-        if (code >= RESPONSE_400) {
+        if (code >= BAD_REQUEST_RESPONSE_CODE) {
             throw switch (code) {
                 case 403 ->
                         new DownloadFailedException("It looks like too many requests were made to the github api, please wait until you have been unblocked.");

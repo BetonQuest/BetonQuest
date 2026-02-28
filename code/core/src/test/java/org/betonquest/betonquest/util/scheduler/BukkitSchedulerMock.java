@@ -28,7 +28,7 @@ import java.util.function.Consumer;
  * A mock for {@link BukkitScheduler}.
  */
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.DoNotUseThreads", "PMD.GodClass", "PMD.CyclomaticComplexity",
-        "PMD.ExcessivePublicCount"})
+        "PMD.ExcessivePublicCount", "JavadocPackage"})
 public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Closeable {
 
     /**

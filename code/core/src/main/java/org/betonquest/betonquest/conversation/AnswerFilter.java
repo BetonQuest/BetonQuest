@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Filters /betonquestanswer commands.
  */
-@SuppressWarnings({"PMD.ExcessiveParameterList", "PMD.TooManyMethods"})
+@SuppressWarnings({"PMD.ExcessiveParameterList", "PMD.TooManyMethods", "ParameterName"})
 public class AnswerFilter implements Filter {
 
     /**
