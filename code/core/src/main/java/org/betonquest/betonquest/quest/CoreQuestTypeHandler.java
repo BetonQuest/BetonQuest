@@ -4,30 +4,6 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.data.PlayerDataStorage;
-import org.betonquest.betonquest.kernel.component.ActionsComponent;
-import org.betonquest.betonquest.kernel.component.ArgumentParsersComponent;
-import org.betonquest.betonquest.kernel.component.BStatsMetricsComponent;
-import org.betonquest.betonquest.kernel.component.BetonQuestApiComponent;
-import org.betonquest.betonquest.kernel.component.CancelersComponent;
-import org.betonquest.betonquest.kernel.component.CompassComponent;
-import org.betonquest.betonquest.kernel.component.CompatibilityComponent;
-import org.betonquest.betonquest.kernel.component.ConditionsComponent;
-import org.betonquest.betonquest.kernel.component.ConversationsComponent;
-import org.betonquest.betonquest.kernel.component.IdentifiersComponent;
-import org.betonquest.betonquest.kernel.component.InstructionsComponent;
-import org.betonquest.betonquest.kernel.component.ItemsComponent;
-import org.betonquest.betonquest.kernel.component.JournalsComponent;
-import org.betonquest.betonquest.kernel.component.NotificationsComponent;
-import org.betonquest.betonquest.kernel.component.NpcsComponent;
-import org.betonquest.betonquest.kernel.component.ObjectivesComponent;
-import org.betonquest.betonquest.kernel.component.PlaceholdersComponent;
-import org.betonquest.betonquest.kernel.component.PlayerDataStorageComponent;
-import org.betonquest.betonquest.kernel.component.PluginMessageComponent;
-import org.betonquest.betonquest.kernel.component.RPGMenuComponent;
-import org.betonquest.betonquest.kernel.component.SchedulesComponent;
-import org.betonquest.betonquest.kernel.component.TextParserComponent;
-import org.betonquest.betonquest.kernel.component.TextSectionParserComponent;
 import org.betonquest.betonquest.kernel.processor.QuestProcessor;
 import org.betonquest.betonquest.kernel.processor.StartTask;
 import org.betonquest.betonquest.kernel.processor.feature.ConversationProcessor;
@@ -89,67 +65,18 @@ public class CoreQuestTypeHandler {
         this.coreComponentLoader = coreComponentLoader;
     }
 
-    private void initCoreTypes() {
-        coreComponentLoader.register(new IdentifiersComponent());
-        coreComponentLoader.register(new ConditionsComponent());
-        coreComponentLoader.register(new ActionsComponent());
-        coreComponentLoader.register(new ObjectivesComponent());
-        coreComponentLoader.register(new PlaceholdersComponent());
-    }
-
-    private void initFeatures() {
-        coreComponentLoader.register(new TextParserComponent());
-        coreComponentLoader.register(new PlayerDataStorageComponent());
-        coreComponentLoader.register(new TextSectionParserComponent());
-        coreComponentLoader.register(new SchedulesComponent());
-        coreComponentLoader.register(new NotificationsComponent());
-        coreComponentLoader.register(new JournalsComponent());
-        coreComponentLoader.register(new PluginMessageComponent());
-        coreComponentLoader.register(new ItemsComponent());
-        coreComponentLoader.register(new CompassComponent());
-        coreComponentLoader.register(new ConversationsComponent());
-        coreComponentLoader.register(new NpcsComponent());
-        coreComponentLoader.register(new CancelersComponent());
-        coreComponentLoader.register(new RPGMenuComponent());
-    }
-
     /**
      * Initializes the quest types in a strict order to maintain dependencies between them.
      */
     public void init() {
-        coreComponentLoader.register(new ArgumentParsersComponent());
-        coreComponentLoader.register(new InstructionsComponent());
-        initCoreTypes();
-        initFeatures();
-        coreComponentLoader.register(new BetonQuestApiComponent());
-        coreComponentLoader.register(new BStatsMetricsComponent());
-        coreComponentLoader.register(new CompatibilityComponent());
         coreComponentLoader.load();
         coreComponentLoader.getAll(QuestProcessor.class).forEach(allProcessors::add);
     }
 
     /**
-     * Clears all loaded data from all processors.
-     */
-    public void clear() {
-        allProcessors.forEach(QuestProcessor::clear);
-        additionalProcessors.forEach(QuestProcessor::clear);
-    }
-
-    /**
-     * Lets all processors load their data from the given quest package.
-     *
-     * @param questPackage the quest package to load from
-     */
-    public void loadPackage(final QuestPackage questPackage) {
-        allProcessors.forEach(processor -> processor.load(questPackage));
-        additionalProcessors.forEach(processor -> processor.load(questPackage));
-    }
-
-    /**
      * Loads the processors with the given quest packages.
      * <br> <br>
-     * Remove previously loaded data entirely using {@link #clear()}.
+     * Removes previously loaded data entirely.
      *
      * @param packages the quest packages to load
      */
@@ -159,12 +86,14 @@ public class CoreQuestTypeHandler {
         Objects.requireNonNull(conversationProcessor, "Conversation processor must be initialized before loading data!");
         Objects.requireNonNull(schedulesProcessor, "Schedule processor must be initialized before loading data!");
 
-        clear();
+        allProcessors.forEach(QuestProcessor::clear);
+        additionalProcessors.forEach(QuestProcessor::clear);
 
         for (final QuestPackage pack : packages) {
             final String packName = pack.getQuestPath();
             log.debug(pack, "Loading stuff in package " + packName);
-            loadPackage(pack);
+            allProcessors.forEach(processor -> processor.load(pack));
+            additionalProcessors.forEach(processor -> processor.load(pack));
             log.debug(pack, "Everything in package " + packName + " loaded");
         }
 
@@ -290,15 +219,6 @@ public class CoreQuestTypeHandler {
      */
     public ParsedSectionTextCreator getTextCreator() {
         return coreComponentLoader.get(ParsedSectionTextCreator.class);
-    }
-
-    /**
-     * Gets the player data storage.
-     *
-     * @return the player data storage
-     */
-    public PlayerDataStorage getPlayerDataStorage() {
-        return coreComponentLoader.get(PlayerDataStorage.class);
     }
 
     /**
