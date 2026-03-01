@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -75,9 +77,16 @@ public class DefaultCoreComponentLoader implements CoreComponentLoader {
 
     @Override
     public <T> T get(final Class<T> type) {
-        final LoadedDependency<?> injectedDependency = loaded.stream()
-                .filter(dependency -> dependency.match(type)).findFirst().orElseThrow();
-        return type.cast(injectedDependency.dependency());
+        return getOptional(type).orElseThrow(() -> new NoSuchElementException("No dependency of type %s found".formatted(type.getSimpleName())));
+    }
+
+    @Override
+    public <T> Optional<T> getOptional(final Class<T> type) {
+        return loaded.stream()
+                .filter(dependency -> dependency.match(type))
+                .map(LoadedDependency::dependency)
+                .map(type::cast)
+                .findFirst();
     }
 
     @Override
