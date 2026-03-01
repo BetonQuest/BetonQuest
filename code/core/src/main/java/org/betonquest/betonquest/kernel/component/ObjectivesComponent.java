@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
 import org.betonquest.betonquest.api.service.objective.ObjectiveRegistry;
 import org.betonquest.betonquest.api.service.objective.Objectives;
 import org.betonquest.betonquest.id.objective.ObjectiveIdentifierFactory;
+import org.betonquest.betonquest.kernel.ProcessorDataLoader;
 import org.betonquest.betonquest.kernel.processor.quest.ActionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.ConditionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.ObjectiveProcessor;
@@ -38,7 +39,8 @@ public class ObjectivesComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(Plugin.class, PluginManager.class,
                 QuestPackageManager.class, BetonQuestLoggerFactory.class, ProfileProvider.class,
-                Identifiers.class, ConditionProcessor.class, ActionProcessor.class, Instructions.class);
+                Identifiers.class, ConditionProcessor.class, ActionProcessor.class, Instructions.class,
+                ProcessorDataLoader.class);
     }
 
     @Override
@@ -57,6 +59,7 @@ public class ObjectivesComponent extends AbstractCoreComponent {
         final PluginManager pluginManager = getDependency(PluginManager.class);
         final ProfileProvider profileProvider = getDependency(ProfileProvider.class);
         final Plugin plugin = getDependency(Plugin.class);
+        final ProcessorDataLoader processorDataLoader = getDependency(ProcessorDataLoader.class);
 
         final DefaultObjectiveServiceProvider objectiveServiceProvider = new DefaultObjectiveServiceProvider(plugin, conditionProcessor, actionProcessor,
                 loggerFactory, profileProvider, instructions);
@@ -71,6 +74,8 @@ public class ObjectivesComponent extends AbstractCoreComponent {
         dependencyProvider.take(ObjectiveTypeRegistry.class, objectiveTypeRegistry);
         dependencyProvider.take(ObjectiveProcessor.class, objectiveProcessor);
         dependencyProvider.take(DefaultObjectives.class, new DefaultObjectives(objectiveProcessor, objectiveTypeRegistry));
+
+        processorDataLoader.addProcessor(objectiveProcessor);
     }
 
     /**

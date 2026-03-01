@@ -21,6 +21,7 @@ import org.betonquest.betonquest.api.service.placeholder.PlaceholderRegistry;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.id.menu.MenuIdentifierFactory;
 import org.betonquest.betonquest.id.menu.MenuItemIdentifierFactory;
+import org.betonquest.betonquest.kernel.ProcessorDataLoader;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.text.ParsedSectionTextCreator;
@@ -44,7 +45,7 @@ public class RPGMenuComponent extends AbstractCoreComponent {
         return Set.of(QuestPackageManager.class, BetonQuestLoggerFactory.class, ConfigAccessor.class,
                 ProfileProvider.class, ArgumentParsers.class, Instructions.class, Identifiers.class,
                 ParsedSectionTextCreator.class, PluginMessage.class, Reloader.class,
-                ActionManager.class, ConditionManager.class,
+                ActionManager.class, ConditionManager.class, ProcessorDataLoader.class,
                 ActionRegistry.class, ConditionRegistry.class, ObjectiveRegistry.class, PlaceholderRegistry.class);
     }
 
@@ -71,6 +72,7 @@ public class RPGMenuComponent extends AbstractCoreComponent {
         final PlaceholderRegistry placeholderRegistry = getDependency(PlaceholderRegistry.class);
         final ArgumentParsers argumentParsers = getDependency(ArgumentParsers.class);
         final Reloader reloader = getDependency(Reloader.class);
+        final ProcessorDataLoader processorDataLoader = getDependency(ProcessorDataLoader.class);
 
         final MenuIdentifierFactory menuIdentifierFactory = new MenuIdentifierFactory(packManager);
         identifiers.register(MenuIdentifier.class, menuIdentifierFactory);
@@ -83,5 +85,8 @@ public class RPGMenuComponent extends AbstractCoreComponent {
 
         dependencyProvider.take(RPGMenu.class, rpgMenu);
         reloader.register(ReloadPhase.PROFILES, rpgMenu::syncCommands);
+
+        processorDataLoader.addProcessor(rpgMenu.getMenuProcessor());
+        processorDataLoader.addProcessor(rpgMenu.getMenuItemProcessor());
     }
 }

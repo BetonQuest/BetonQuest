@@ -115,10 +115,8 @@ public class RPGMenu {
         pluginCommand.syncCraftBukkitCommands();
         this.menuItemProcessor = new MenuItemProcessor(loggerFactory.create(MenuItemProcessor.class), loggerFactory,
                 instructions, textCreator, menuItemIdentifierFactory, pluginConfig, parsers, actionManager, conditionManager);
-        betonQuest.addProcessor(menuItemProcessor);
         this.menuProcessor = new MenuProcessor(loggerFactory.create(MenuProcessor.class), loggerFactory, instructions,
                 textCreator, actionManager, conditionManager, parsers, this, menuIdentifierFactory, profileProvider);
-        betonQuest.addProcessor(menuProcessor);
         this.menuItemListener = new MenuItemListener(loggerFactory.create(MenuItemListener.class), this,
                 menuProcessor, profileProvider, pluginMessage);
         server.getPluginManager().registerEvents(menuItemListener, betonQuest);
@@ -176,6 +174,24 @@ public class RPGMenu {
         menuProcessor.clear();
         this.pluginCommand.unregister();
         this.pluginCommand.syncCraftBukkitCommands();
+    }
+
+    /**
+     * Get the menu processor.
+     *
+     * @return the menu processor
+     */
+    public MenuProcessor getMenuProcessor() {
+        return menuProcessor;
+    }
+
+    /**
+     * Get the menu item processor.
+     *
+     * @return the menu item processor
+     */
+    public MenuItemProcessor getMenuItemProcessor() {
+        return menuItemProcessor;
     }
 
     /**

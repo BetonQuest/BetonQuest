@@ -13,6 +13,7 @@ import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.id.conversation.ConversationIdentifierFactory;
 import org.betonquest.betonquest.id.conversation.ConversationOptionIdentifierFactory;
+import org.betonquest.betonquest.kernel.ProcessorDataLoader;
 import org.betonquest.betonquest.kernel.processor.feature.ConversationProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.ActionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.ConditionProcessor;
@@ -42,7 +43,7 @@ public class ConversationsComponent extends AbstractCoreComponent {
         return Set.of(Plugin.class,
                 QuestPackageManager.class, BetonQuestLoggerFactory.class, ProfileProvider.class, ConfigAccessor.class,
                 PluginMessage.class, ActionProcessor.class, ConditionProcessor.class, Instructions.class, Saver.class,
-                Identifiers.class, ParsedSectionTextCreator.class, PlaceholderProcessor.class);
+                Identifiers.class, ParsedSectionTextCreator.class, PlaceholderProcessor.class, ProcessorDataLoader.class);
     }
 
     @Override
@@ -66,6 +67,7 @@ public class ConversationsComponent extends AbstractCoreComponent {
         final Instructions instructions = getDependency(Instructions.class);
         final Saver saver = getDependency(Saver.class);
         final Identifiers identifiers = getDependency(Identifiers.class);
+        final ProcessorDataLoader processorDataLoader = getDependency(ProcessorDataLoader.class);
 
         final ConversationIdentifierFactory conversationIdentifierFactory = new ConversationIdentifierFactory(questPackageManager);
         identifiers.register(ConversationIdentifier.class, conversationIdentifierFactory);
@@ -82,5 +84,7 @@ public class ConversationsComponent extends AbstractCoreComponent {
         dependencyProvider.take(ConversationIORegistry.class, conversationIORegistry);
         dependencyProvider.take(InterceptorRegistry.class, interceptorRegistry);
         dependencyProvider.take(ConversationProcessor.class, conversationProcessor);
+
+        processorDataLoader.addProcessor(conversationProcessor);
     }
 }

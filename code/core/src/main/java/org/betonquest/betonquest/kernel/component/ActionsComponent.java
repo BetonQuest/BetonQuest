@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.service.action.Actions;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.id.action.ActionIdentifierFactory;
+import org.betonquest.betonquest.kernel.ProcessorDataLoader;
 import org.betonquest.betonquest.kernel.processor.quest.ActionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.ConditionProcessor;
 import org.betonquest.betonquest.kernel.registry.quest.ActionTypeRegistry;
@@ -35,7 +36,7 @@ public class ActionsComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(Plugin.class, BukkitScheduler.class,
                 QuestPackageManager.class, BetonQuestLoggerFactory.class,
-                Identifiers.class, ConditionProcessor.class, Instructions.class);
+                Identifiers.class, ConditionProcessor.class, Instructions.class, ProcessorDataLoader.class);
     }
 
     @Override
@@ -52,6 +53,7 @@ public class ActionsComponent extends AbstractCoreComponent {
         final ConditionProcessor conditionProcessor = getDependency(ConditionProcessor.class);
         final Instructions instructions = getDependency(Instructions.class);
         final Plugin plugin = getDependency(Plugin.class);
+        final ProcessorDataLoader processorDataLoader = getDependency(ProcessorDataLoader.class);
 
         final ActionIdentifierFactory actionIdentifierFactory = new ActionIdentifierFactory(questPackageManager);
         identifiers.register(ActionIdentifier.class, actionIdentifierFactory);
@@ -63,6 +65,8 @@ public class ActionsComponent extends AbstractCoreComponent {
         dependencyProvider.take(ActionTypeRegistry.class, actionTypeRegistry);
         dependencyProvider.take(ActionProcessor.class, actionProcessor);
         dependencyProvider.take(DefaultActions.class, new DefaultActions(actionProcessor, actionTypeRegistry));
+
+        processorDataLoader.addProcessor(actionProcessor);
     }
 
     /**

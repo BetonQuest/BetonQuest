@@ -15,6 +15,7 @@ import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.feature.journal.JournalFactory;
 import org.betonquest.betonquest.id.journal.JournalEntryIdentifierFactory;
 import org.betonquest.betonquest.id.journal.JournalMainPageIdentifierFactory;
+import org.betonquest.betonquest.kernel.ProcessorDataLoader;
 import org.betonquest.betonquest.kernel.processor.feature.JournalEntryProcessor;
 import org.betonquest.betonquest.kernel.processor.feature.JournalMainPageProcessor;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
@@ -39,7 +40,7 @@ public class JournalsComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(QuestPackageManager.class, BetonQuestLoggerFactory.class, ConfigAccessor.class,
                 Identifiers.class, Instructions.class, PluginMessage.class, TextParser.class,
-                ParsedSectionTextCreator.class, FontRegistry.class, ConditionManager.class);
+                ParsedSectionTextCreator.class, FontRegistry.class, ConditionManager.class, ProcessorDataLoader.class);
     }
 
     @Override
@@ -60,6 +61,7 @@ public class JournalsComponent extends AbstractCoreComponent {
         final TextParser textParser = getDependency(TextParser.class);
         final FontRegistry fontRegistry = getDependency(FontRegistry.class);
         final ConditionManager conditionManager = getDependency(ConditionManager.class);
+        final ProcessorDataLoader processorDataLoader = getDependency(ProcessorDataLoader.class);
 
         final JournalEntryIdentifierFactory journalEntryIdentifierFactory = new JournalEntryIdentifierFactory(questPackageManager);
         identifiers.register(JournalEntryIdentifier.class, journalEntryIdentifierFactory);
@@ -78,5 +80,8 @@ public class JournalsComponent extends AbstractCoreComponent {
         dependencyProvider.take(JournalEntryProcessor.class, journalEntryProcessor);
         dependencyProvider.take(JournalMainPageProcessor.class, journalMainPageProcessor);
         dependencyProvider.take(JournalFactory.class, journalFactory);
+
+        processorDataLoader.addProcessor(journalEntryProcessor);
+        processorDataLoader.addProcessor(journalMainPageProcessor);
     }
 }

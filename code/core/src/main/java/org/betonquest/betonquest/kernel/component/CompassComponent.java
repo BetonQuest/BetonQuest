@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.id.compass.CompassIdentifierFactory;
+import org.betonquest.betonquest.kernel.ProcessorDataLoader;
 import org.betonquest.betonquest.kernel.processor.feature.CompassProcessor;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
 import org.betonquest.betonquest.text.ParsedSectionTextCreator;
@@ -28,7 +29,7 @@ public class CompassComponent extends AbstractCoreComponent {
     @Override
     public Set<Class<?>> requires() {
         return Set.of(QuestPackageManager.class, BetonQuestLoggerFactory.class, Identifiers.class, Instructions.class,
-                ParsedSectionTextCreator.class);
+                ParsedSectionTextCreator.class, ProcessorDataLoader.class);
     }
 
     @Override
@@ -43,6 +44,7 @@ public class CompassComponent extends AbstractCoreComponent {
         final Instructions instructions = getDependency(Instructions.class);
         final Identifiers identifiers = getDependency(Identifiers.class);
         final ParsedSectionTextCreator parsedSectionTextCreator = getDependency(ParsedSectionTextCreator.class);
+        final ProcessorDataLoader processorDataLoader = getDependency(ProcessorDataLoader.class);
 
         final CompassIdentifierFactory compassIdentifierFactory = new CompassIdentifierFactory(questPackageManager);
         identifiers.register(CompassIdentifier.class, compassIdentifierFactory);
@@ -51,5 +53,7 @@ public class CompassComponent extends AbstractCoreComponent {
 
         dependencyProvider.take(CompassIdentifierFactory.class, compassIdentifierFactory);
         dependencyProvider.take(CompassProcessor.class, compassProcessor);
+
+        processorDataLoader.addProcessor(compassProcessor);
     }
 }
