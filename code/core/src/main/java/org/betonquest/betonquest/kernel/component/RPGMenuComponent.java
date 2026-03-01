@@ -31,6 +31,7 @@ import java.util.Set;
 /**
  * The implementation of {@link AbstractCoreComponent} for {@link RPGMenu}.
  */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class RPGMenuComponent extends AbstractCoreComponent {
 
     /**

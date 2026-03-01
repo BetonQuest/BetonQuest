@@ -15,7 +15,7 @@ public interface ProcessorDataLoader {
      *
      * @param processor the processor to add
      */
-    void addProcessor(final QuestProcessor<?, ?> processor);
+    void addProcessor(QuestProcessor<?, ?> processor);
 
     /**
      * Triggers the loading of the data in all processors.
@@ -23,5 +23,5 @@ public interface ProcessorDataLoader {
      *
      * @param packages the packages to load
      */
-    void loadData(final Collection<QuestPackage> packages);
+    void loadData(Collection<QuestPackage> packages);
 }

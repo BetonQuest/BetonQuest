@@ -101,7 +101,7 @@ import java.util.Set;
 /**
  * Represents BetonQuest plugin.
  */
-@SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.GodClass", "NullAway.Init"})
+@SuppressWarnings({"PMD.CouplingBetweenObjects", "NullAway.Init"})
 public class BetonQuest extends JavaPlugin implements LanguageProvider {
 
     /**
@@ -140,11 +140,6 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
      */
     @SuppressWarnings("PMD.DoNotUseThreads")
     private AsyncSaver saver;
-
-    /**
-     * The Player Hider instance.
-     */
-    private PlayerHider playerHider;
 
     /**
      * The profile provider instance.
@@ -331,7 +326,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
     }
 
     @Override
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "PMD.AvoidCatchingGenericException"})
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public void onDisable() {
         try {
             coreComponentLoader.get(ActionScheduling.class).clear();
@@ -358,9 +353,8 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         if (connector != null) {
             connector.getDatabase().closeConnection();
         }
-        if (playerHider != null) {
-            playerHider.stop();
-        }
+
+        coreComponentLoader.get(PlayerHider.class).stop();
 
         try {
             coreComponentLoader.get(RPGMenu.class).onDisable();

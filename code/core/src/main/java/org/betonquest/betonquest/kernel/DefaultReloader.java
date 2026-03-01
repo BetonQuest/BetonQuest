@@ -6,8 +6,9 @@ import org.betonquest.betonquest.api.reload.Reloader;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.HashSet;
+import java.util.Map;
 
 /**
  * Default implementation of {@link Reloader}.
@@ -17,7 +18,7 @@ public class DefaultReloader implements Reloader {
     /**
      * Contains all registered {@link Runnable}s.
      */
-    private final HashMap<ReloadPhase, Collection<Runnable>> reloadableMap;
+    private final Map<ReloadPhase, Collection<Runnable>> reloadableMap;
 
     /**
      * The logger to use.
@@ -31,7 +32,7 @@ public class DefaultReloader implements Reloader {
      */
     public DefaultReloader(final BetonQuestLogger log) {
         this.log = log;
-        this.reloadableMap = new HashMap<>();
+        this.reloadableMap = new EnumMap<>(ReloadPhase.class);
     }
 
     @Override

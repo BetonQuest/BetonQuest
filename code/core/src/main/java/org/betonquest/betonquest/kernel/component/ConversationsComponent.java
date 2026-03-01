@@ -29,6 +29,7 @@ import java.util.Set;
 /**
  * The implementation of {@link AbstractCoreComponent} for {@link ConversationProcessor} and conversation classes.
  */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class ConversationsComponent extends AbstractCoreComponent {
 
     /**
