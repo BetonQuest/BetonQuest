@@ -5,14 +5,15 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,14 +35,14 @@ public class PlayerHider {
     private final Map<Collection<ConditionIdentifier>, Collection<ConditionIdentifier>> hiders;
 
     /**
-     * The running hider.
-     */
-    private final BukkitTask bukkitTask;
-
-    /**
      * Plugin instance to show/hide players.
      */
     private final Plugin plugin;
+
+    /**
+     * The logger to use.
+     */
+    private final BetonQuestLogger log;
 
     /**
      * The condition manager instance.
@@ -54,44 +55,73 @@ public class PlayerHider {
     private final ProfileProvider profileProvider;
 
     /**
+     * The running hider.
+     */
+    @Nullable
+    private BukkitTask bukkitTask;
+
+    /**
      * Initialize and start a new {@link PlayerHider}.
      *
-     * @param plugin              the plugin instance
-     * @param conditionManager    the condition manager instance
-     * @param instructions        the instructions instance
-     * @param questPackageManager the quest package manager instance
-     * @param profileProvider     the profile provider instance
-     * @param config              the config to load from
-     * @throws QuestException Thrown if there is a configuration error.
+     * @param plugin           the plugin instance
+     * @param log              the logger to use
+     * @param conditionManager the condition manager instance
+     * @param profileProvider  the profile provider instance
      */
-    public PlayerHider(final Plugin plugin, final ConditionManager conditionManager, final Instructions instructions,
-                       final QuestPackageManager questPackageManager, final ProfileProvider profileProvider, final ConfigAccessor config) throws QuestException {
+    public PlayerHider(final Plugin plugin, final BetonQuestLogger log,
+                       final ConditionManager conditionManager, final ProfileProvider profileProvider) {
         this.plugin = plugin;
+        this.log = log;
         this.conditionManager = conditionManager;
         this.profileProvider = profileProvider;
         hiders = new HashMap<>();
+    }
 
-        for (final QuestPackage pack : questPackageManager.getPackages().values()) {
-            final ConfigurationSection hiderSection = pack.getConfig().getConfigurationSection("player_hider");
-            if (hiderSection == null) {
-                continue;
+    /**
+     * Loads the hiders from the quest packages.
+     *
+     * @param questPackageManager the quest package manager
+     * @param instructions        the instructions instance
+     */
+    public void load(final QuestPackageManager questPackageManager, final Instructions instructions) {
+        hiders.clear();
+        try {
+            for (final QuestPackage pack : questPackageManager.getPackages().values()) {
+                final ConfigurationSection hiderSection = pack.getConfig().getConfigurationSection("player_hider");
+                if (hiderSection == null) {
+                    continue;
+                }
+                for (final String key : hiderSection.getKeys(false)) {
+                    final String rawConditionsSource = hiderSection.getString(key + ".source_player");
+                    final String rawConditionsTarget = hiderSection.getString(key + ".target_player");
+                    hiders.put(getConditions(instructions, pack, key, rawConditionsSource),
+                            getConditions(instructions, pack, key, rawConditionsTarget));
+                }
             }
-            for (final String key : hiderSection.getKeys(false)) {
-                final String rawConditionsSource = hiderSection.getString(key + ".source_player");
-                final String rawConditionsTarget = hiderSection.getString(key + ".target_player");
-                hiders.put(getConditions(instructions, pack, key, rawConditionsSource),
-                        getConditions(instructions, pack, key, rawConditionsTarget));
-            }
+        } catch (final QuestException e) {
+            log.error("Could not load player_hider: %s".formatted(e.getMessage()), e);
         }
+    }
 
+    /**
+     * Starts the {@link PlayerHider}.
+     *
+     * @param scheduler the scheduler to use
+     * @param config    the config accessor
+     */
+    public void start(final BukkitScheduler scheduler, final ConfigAccessor config) {
         final long period = config.getLong("hider.player_update_interval", 20);
-        bukkitTask = Bukkit.getScheduler().runTaskTimer(plugin, this::updateVisibility, 1, period);
+        bukkitTask = scheduler.runTaskTimer(plugin, this::updateVisibility, 1, period);
     }
 
     /**
      * Stops the running {@link PlayerHider}.
      */
     public void stop() {
+        if (bukkitTask == null) {
+            log.debug("Attempted to stop PlayerHider, but it was not running.");
+            return;
+        }
         bukkitTask.cancel();
     }
 
