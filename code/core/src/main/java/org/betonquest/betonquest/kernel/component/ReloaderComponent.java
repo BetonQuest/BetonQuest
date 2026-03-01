@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.kernel.component;
 
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.kernel.DefaultReloader;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
 
@@ -20,7 +21,7 @@ public class ReloaderComponent extends AbstractCoreComponent {
 
     @Override
     public Set<Class<?>> requires() {
-        return Set.of();
+        return Set.of(BetonQuestLoggerFactory.class);
     }
 
     @Override
@@ -30,6 +31,8 @@ public class ReloaderComponent extends AbstractCoreComponent {
 
     @Override
     protected void load(final DependencyProvider dependencyProvider) {
-        dependencyProvider.take(DefaultReloader.class, new DefaultReloader());
+        final BetonQuestLoggerFactory loggerFactory = getDependency(BetonQuestLoggerFactory.class);
+
+        dependencyProvider.take(DefaultReloader.class, new DefaultReloader(loggerFactory.create(DefaultReloader.class)));
     }
 }
