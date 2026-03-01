@@ -30,6 +30,7 @@ import org.betonquest.betonquest.conversation.ConversationPublicData;
 import org.betonquest.betonquest.conversation.DefaultConversationData;
 import org.betonquest.betonquest.conversation.interceptor.InterceptorFactory;
 import org.betonquest.betonquest.database.Saver;
+import org.betonquest.betonquest.kernel.processor.PostLoadTask;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.PlaceholderProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
@@ -52,7 +53,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Stores Conversation Data and validates it.
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
-public class ConversationProcessor extends SectionProcessor<ConversationIdentifier, DefaultConversationData> implements Conversations {
+public class ConversationProcessor extends SectionProcessor<ConversationIdentifier, DefaultConversationData> implements Conversations, PostLoadTask {
 
     /**
      * Factory to create class-specific logger.
@@ -204,7 +205,8 @@ public class ConversationProcessor extends SectionProcessor<ConversationIdentifi
      *
      * @see DefaultConversationData#checkExternalPointers()
      */
-    public void checkExternalPointers() {
+    @Override
+    public void startAll() {
         values.entrySet().removeIf(entry -> {
             final ConversationData convData = entry.getValue();
             try {

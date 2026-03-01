@@ -4,8 +4,8 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.kernel.processor.PostLoadTask;
 import org.betonquest.betonquest.kernel.processor.QuestProcessor;
-import org.betonquest.betonquest.kernel.processor.StartTask;
 import org.betonquest.betonquest.kernel.processor.feature.ConversationProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.ActionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.ConditionProcessor;
@@ -97,18 +97,18 @@ public class CoreQuestTypeHandler {
             log.debug(pack, "Everything in package " + packName + " loaded");
         }
 
-        conversationProcessor.checkExternalPointers();
+//        conversationProcessor.checkExternalPointers();
+
+//        schedulesProcessor.startAll();
+        additionalProcessors.forEach(questProcessor -> {
+            if (questProcessor instanceof final PostLoadTask startTask) {
+                startTask.startAll();
+            }
+        });
 
         log.info("There are " + readableSize()
                 + " (Additional: " + additionalProcessors.stream().map(QuestProcessor::readableSize).collect(Collectors.joining(", ")) + ")"
                 + " loaded from " + packages.size() + " packages.");
-
-        schedulesProcessor.startAll();
-        additionalProcessors.forEach(questProcessor -> {
-            if (questProcessor instanceof final StartTask startTask) {
-                startTask.startAll();
-            }
-        });
     }
 
     /**

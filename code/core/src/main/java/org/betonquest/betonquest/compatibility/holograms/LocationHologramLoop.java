@@ -11,7 +11,7 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.text.TextParser;
-import org.betonquest.betonquest.kernel.processor.StartTask;
+import org.betonquest.betonquest.kernel.processor.PostLoadTask;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Hides and shows holograms to players, based on conditions at a fixed location.
  */
-public class LocationHologramLoop extends HologramLoop implements StartTask {
+public class LocationHologramLoop extends HologramLoop implements PostLoadTask {
 
     /**
      * Plugin to start tasks.
