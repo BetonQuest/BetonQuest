@@ -59,6 +59,6 @@ public class QuestPackageManagerComponent extends AbstractCoreComponent {
         Notify.load(config, questManager.getPackages().values());
 
         dependencyProvider.take(QuestManager.class, questManager);
-        reloader.register(ReloadPhase.PACKAGES, () -> questManager.reload());
+        reloader.register(ReloadPhase.PACKAGES, questManager::reload);
     }
 }
