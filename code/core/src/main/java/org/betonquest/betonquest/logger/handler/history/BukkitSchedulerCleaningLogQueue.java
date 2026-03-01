@@ -14,7 +14,7 @@ import java.util.logging.LogRecord;
  * LogRecord Queue that cleans old records by using a {@link org.bukkit.scheduler.BukkitScheduler} to drop expired
  * records regularly.
  */
-public class BukkitSchedulerCleaningLogQueue extends QueueBackedLogRecordQueue implements LogRecordQueue {
+public class BukkitSchedulerCleaningLogQueue extends QueueBackedLogRecordQueue {
 
     /**
      * Time that new log records are valid for.

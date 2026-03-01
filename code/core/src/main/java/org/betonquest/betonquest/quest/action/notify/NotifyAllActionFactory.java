@@ -3,10 +3,8 @@ package org.betonquest.betonquest.quest.action.notify;
 import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
-import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
 import org.betonquest.betonquest.api.text.TextParser;
@@ -17,7 +15,7 @@ import org.betonquest.betonquest.quest.action.OnlineProfileGroupPlayerlessAction
 /**
  * Factory for the notify all action.
  */
-public class NotifyAllActionFactory extends NotifyActionFactory implements PlayerActionFactory, PlayerlessActionFactory {
+public class NotifyAllActionFactory extends NotifyActionFactory implements PlayerlessActionFactory {
 
     /**
      * The profile provider instance.
@@ -27,14 +25,12 @@ public class NotifyAllActionFactory extends NotifyActionFactory implements Playe
     /**
      * Creates the notify all action factory.
      *
-     * @param loggerFactory    the logger factory to create a logger for the actions
      * @param textParser       the text parser to use for parsing text
      * @param dataStorage      the storage providing player data
      * @param profileProvider  the profile provider instance
      * @param languageProvider the language provider to get the default language
      */
-    public NotifyAllActionFactory(final BetonQuestLoggerFactory loggerFactory,
-                                  final TextParser textParser, final PlayerDataStorage dataStorage,
+    public NotifyAllActionFactory(final TextParser textParser, final PlayerDataStorage dataStorage,
                                   final ProfileProvider profileProvider, final LanguageProvider languageProvider) {
         super(textParser, dataStorage, languageProvider);
         this.profileProvider = profileProvider;

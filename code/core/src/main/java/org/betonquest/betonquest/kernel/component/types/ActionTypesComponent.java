@@ -178,7 +178,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         actionTypes.registerCombined("lightning", new LightningActionFactory());
         actionTypes.registerCombined("log", new LogActionFactory(loggerFactory));
         actionTypes.register("notify", new NotifyActionFactory(textParser, playerDataStorage, languageProvider));
-        actionTypes.registerCombined("notifyall", new NotifyAllActionFactory(loggerFactory, textParser, playerDataStorage, profileProvider, languageProvider));
+        actionTypes.registerCombined("notifyall", new NotifyAllActionFactory(textParser, playerDataStorage, profileProvider, languageProvider));
         actionTypes.registerCombined("npcteleport", new NpcTeleportActionFactory(npcManager));
         actionTypes.registerCombined("objective", new ObjectiveActionFactory(plugin, loggerFactory, profileProvider, saver,
                 objectiveManager, playerDataStorage, playerDataFactory));
