@@ -121,4 +121,13 @@ public abstract class QuestProcessor<I extends Identifier, T> {
     public String readableSize() {
         return size() + " " + readable;
     }
+
+    /**
+     * Gets the readable name of this type.
+     *
+     * @return the readable name
+     */
+    public String getReadableName() {
+        return readable;
+    }
 }
