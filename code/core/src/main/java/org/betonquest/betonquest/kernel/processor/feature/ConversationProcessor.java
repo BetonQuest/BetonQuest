@@ -231,6 +231,15 @@ public class ConversationProcessor extends SectionProcessor<ConversationIdentifi
         return get(conversationID);
     }
 
+    /**
+     * Gets the map of all active conversations.
+     *
+     * @return the map of all active conversations.
+     */
+    public Map<Profile, Conversation> getActiveConversations() {
+        return activeConversations;
+    }
+
     @Override
     public boolean canStart(final Profile profile, final ConversationIdentifier conversationIdentifier) throws QuestException {
         return getData(conversationIdentifier).isReady(profile);
