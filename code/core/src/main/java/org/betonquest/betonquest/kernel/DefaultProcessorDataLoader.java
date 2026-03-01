@@ -6,9 +6,10 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.kernel.processor.PostLoadTask;
 import org.betonquest.betonquest.kernel.processor.QuestProcessor;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashSet;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -24,7 +25,7 @@ public class DefaultProcessorDataLoader implements ProcessorDataLoader {
     /**
      * Contains all additional processors.
      */
-    private final Collection<QuestProcessor<?, ?>> processors;
+    private final List<QuestProcessor<?, ?>> processors;
 
     /**
      * Create a new DefaultAdditionalDataLoader.
@@ -33,7 +34,7 @@ public class DefaultProcessorDataLoader implements ProcessorDataLoader {
      */
     public DefaultProcessorDataLoader(final BetonQuestLogger log) {
         this.log = log;
-        this.processors = new HashSet<>();
+        this.processors = new ArrayList<>();
     }
 
     @Override

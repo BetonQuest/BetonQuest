@@ -53,7 +53,6 @@ public class PlayerHiderComponent extends AbstractCoreComponent {
         final Reloader reloader = getDependency(Reloader.class);
 
         final PlayerHider playerHider = new PlayerHider(plugin, loggerFactory.create(PlayerHider.class), conditionManager, profileProvider);
-        playerHider.load(packManager, instructions);
 
         dependencyProvider.take(PlayerHider.class, playerHider);
         reloader.register(ReloadPhase.PROFILES, () -> {

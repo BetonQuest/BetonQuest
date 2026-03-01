@@ -35,7 +35,7 @@ public class ConditionsComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(Plugin.class, BukkitScheduler.class,
                 QuestPackageManager.class, BetonQuestLoggerFactory.class,
-                Identifiers.class, Instructions.class);
+                Identifiers.class, Instructions.class, ProcessorDataLoader.class);
     }
 
     @Override

@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.service.conversation.Conversations;
+import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.kernel.ProcessorDataLoader;
@@ -32,7 +33,8 @@ public class PostEnableComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(Plugin.class, BukkitScheduler.class, ConfigAccessor.class,
                 Compatibility.class, PlayerDataStorage.class, ProfileProvider.class, QuestPackageManager.class,
-                PlayerHider.class, RPGMenu.class, Conversations.class, ProcessorDataLoader.class);
+                PlayerHider.class, RPGMenu.class, Conversations.class, Instructions.class,
+                ProcessorDataLoader.class);
     }
 
     @Override
@@ -40,6 +42,7 @@ public class PostEnableComponent extends AbstractCoreComponent {
         final Plugin plugin = getDependency(Plugin.class);
         final BukkitScheduler scheduler = getDependency(BukkitScheduler.class);
         final ConfigAccessor config = getDependency(ConfigAccessor.class);
+        final Instructions instructions = getDependency(Instructions.class);
         final Compatibility compatibility = getDependency(Compatibility.class);
         final PlayerDataStorage dataStorage = getDependency(PlayerDataStorage.class);
         final ProfileProvider profileProvider = getDependency(ProfileProvider.class);
@@ -55,6 +58,7 @@ public class PostEnableComponent extends AbstractCoreComponent {
             dataStorage.startObjectives();
             menu.syncCommands();
             dataStorage.initProfiles(profileProvider.getOnlineProfiles(), conversations);
+            playerHider.load(packageManager, instructions);
             playerHider.start(scheduler, config);
         });
     }

@@ -11,17 +11,14 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.dependency.CoreComponentLoader;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.config.QuestManager;
 import org.betonquest.betonquest.config.patcher.migration.Migrator;
 import org.betonquest.betonquest.conversation.AnswerFilter;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.data.PlayerDataStorage;
-import org.betonquest.betonquest.database.AsyncSaver;
 import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.kernel.ProcessorDataLoader;
@@ -96,19 +93,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 /**
  * Represents BetonQuest plugin.
  */
-@SuppressWarnings({"PMD.CouplingBetweenObjects", "NullAway.Init"})
+@SuppressWarnings("NullAway.Init")
 public class BetonQuest extends JavaPlugin implements LanguageProvider {
-
-    /**
-     * All of those classes have to exist to determine the server software to be Paper.
-     */
-    public static final Set<String> PAPER_IDENTIFYING_CLASSES =
-            Set.of("com.destroystokyo.paper.PaperConfig", "io.papermc.paper.configuration.Configuration");
 
     /**
      * The BetonQuest Plugin instance.
@@ -116,60 +107,9 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
     private static BetonQuest instance;
 
     /**
-     * Factory to create new class-specific loggers.
-     */
-    private BetonQuestLoggerFactory loggerFactory;
-
-    /**
      * The custom logger for the plugin.
      */
     private BetonQuestLogger log;
-
-    /**
-     * The plugin configuration file.
-     */
-    private FileConfigAccessor config;
-
-    /**
-     * The used Connector for the Database.
-     */
-    private Connector connector;
-
-    /**
-     * The database saver for Quest Data.
-     */
-    @SuppressWarnings("PMD.DoNotUseThreads")
-    private AsyncSaver saver;
-
-    /**
-     * The profile provider instance.
-     */
-    private ProfileProvider profileProvider;
-
-    /**
-     * The quest manager instance.
-     */
-    private QuestManager questManager;
-
-    /**
-     * The colors for conversations.
-     */
-    private ConversationColors conversationColors;
-
-    /**
-     * The Compatibility instance for hooking into other plugins.
-     */
-    private Compatibility compatibility;
-
-    /**
-     * The PlayerDataStorage instance.
-     */
-    private PlayerDataStorage playerDataStorage;
-
-    /**
-     * The betonQuestApi instance.
-     */
-    private BetonQuestApi betonQuestApi;
 
     /**
      * The core component loader instance.
@@ -192,15 +132,12 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         return instance;
     }
 
-    @SuppressWarnings("PMD.DoNotUseThreads")
     @Override
     public void onEnable() {
         instance = this;
 
-        this.loggerFactory = new CachingBetonQuestLoggerFactory(new DefaultBetonQuestLoggerFactory());
-        if (!isPaper()) {
-            throw new IllegalStateException("Only Paper is supported!");
-        }
+        final BetonQuestLoggerFactory loggerFactory = new CachingBetonQuestLoggerFactory(new DefaultBetonQuestLoggerFactory());
+        this.log = loggerFactory.create(this);
 
         final DefaultCoreComponentLoader coreComponentLoader = new DefaultCoreComponentLoader(loggerFactory.create(DefaultCoreComponentLoader.class));
         coreComponentLoader.init(BetonQuestLoggerFactory.class, loggerFactory);
@@ -210,17 +147,6 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         registerFeatures(coreComponentLoader);
         registerTypesComponents(coreComponentLoader);
         this.coreComponentLoader.load();
-
-        this.profileProvider = coreComponentLoader.get(ProfileProvider.class);
-        this.log = loggerFactory.create(this);
-        this.config = coreComponentLoader.get(FileConfigAccessor.class);
-        this.questManager = coreComponentLoader.get(QuestManager.class);
-        this.betonQuestApi = coreComponentLoader.get(BetonQuestApi.class);
-        this.compatibility = coreComponentLoader.get(Compatibility.class);
-        this.playerDataStorage = coreComponentLoader.get(PlayerDataStorage.class);
-        this.saver = coreComponentLoader.get(AsyncSaver.class);
-        this.connector = coreComponentLoader.get(Connector.class);
-        this.conversationColors = coreComponentLoader.get(ConversationColors.class);
 
         // block betonquestanswer logging (it's just a spam)
         try {
@@ -312,55 +238,21 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         ).forEach(coreComponentLoader::register);
     }
 
-    private boolean isPaper() {
-        return PAPER_IDENTIFYING_CLASSES.stream().anyMatch(this::testClass);
-    }
-
-    private boolean testClass(final String className) {
-        try {
-            Class.forName(className);
-            return true;
-        } catch (final ClassNotFoundException exception) {
-            return false;
-        }
-    }
-
     @Override
-    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public void onDisable() {
-        try {
-            coreComponentLoader.get(ActionScheduling.class).clear();
-        } catch (final Exception ignored) {
-            // Empty
-        }
+        coreComponentLoader.getOptional(ActionScheduling.class).ifPresent(ActionScheduling::clear);
 
-        if (profileProvider != null) {
-            for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
-                final Conversation conv = coreComponentLoader.get(ConversationProcessor.class).getActiveConversation(onlineProfile);
-                if (conv != null) {
-                    conv.suspend();
-                }
-                onlineProfile.getPlayer().closeInventory();
-            }
-        }
+        coreComponentLoader.getOptional(ConversationProcessor.class).map(ConversationProcessor::getActiveConversations).map(Map::values)
+                .ifPresent(conversations -> conversations.forEach(Conversation::suspend));
+        coreComponentLoader.getOptional(ProfileProvider.class).map(ProfileProvider::getOnlineProfiles)
+                .ifPresent(onlineProfiles -> onlineProfiles.forEach(onlineProfile -> onlineProfile.getPlayer().closeInventory()));
 
-        if (saver != null) {
-            saver.end();
-        }
-        if (compatibility != null) {
-            compatibility.disable();
-        }
-        if (connector != null) {
-            connector.getDatabase().closeConnection();
-        }
+        coreComponentLoader.getOptional(Saver.class).ifPresent(Saver::end);
+        coreComponentLoader.getOptional(Compatibility.class).ifPresent(Compatibility::disable);
+        coreComponentLoader.getOptional(Connector.class).ifPresent(connector -> connector.getDatabase().closeConnection());
+        coreComponentLoader.getOptional(PlayerHider.class).ifPresent(PlayerHider::stop);
+        coreComponentLoader.getOptional(RPGMenu.class).ifPresent(RPGMenu::onDisable);
 
-        coreComponentLoader.get(PlayerHider.class).stop();
-
-        try {
-            coreComponentLoader.get(RPGMenu.class).onDisable();
-        } catch (final Exception ignored) {
-            // Empty
-        }
         log.info("BetonQuest successfully disabled!");
     }
 
@@ -388,7 +280,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
      * @return the {@link BetonQuestLoggerFactory} instance
      */
     public BetonQuestLoggerFactory getLoggerFactory() {
-        return loggerFactory;
+        return coreComponentLoader.get(BetonQuestLoggerFactory.class);
     }
 
     /**
@@ -397,7 +289,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
      * @return config file
      */
     public ConfigAccessor getPluginConfig() {
-        return config;
+        return coreComponentLoader.get(FileConfigAccessor.class);
     }
 
     @Override
@@ -411,7 +303,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
      * @return the {@link BetonQuestApi} instance
      */
     public BetonQuestApi getBetonQuestApi() {
-        return betonQuestApi;
+        return coreComponentLoader.get(BetonQuestApi.class);
     }
 
     /**
@@ -429,7 +321,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
      * @return the {@link ProfileProvider} instance
      */
     public ProfileProvider getProfileProvider() {
-        return profileProvider;
+        return coreComponentLoader.get(ProfileProvider.class);
     }
 
     /**
@@ -438,7 +330,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
      * @return the {@link QuestPackageManager} instance
      */
     public QuestPackageManager getQuestPackageManager() {
-        return questManager;
+        return coreComponentLoader.get(QuestPackageManager.class);
     }
 
     /**
@@ -447,7 +339,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
      * @return Connector instance
      */
     public Connector getDBConnector() {
-        return connector;
+        return coreComponentLoader.get(Connector.class);
     }
 
     /**
@@ -465,7 +357,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
      * @return the database saver
      */
     public Saver getSaver() {
-        return saver;
+        return coreComponentLoader.get(Saver.class);
     }
 
     /**
@@ -474,7 +366,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
      * @return storage for currently loaded player data
      */
     public PlayerDataStorage getPlayerDataStorage() {
-        return playerDataStorage;
+        return coreComponentLoader.get(PlayerDataStorage.class);
     }
 
     /**
@@ -483,7 +375,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
      * @return the colors used in conversations
      */
     public ConversationColors getConversationColors() {
-        return conversationColors;
+        return coreComponentLoader.get(ConversationColors.class);
     }
 
     /**
@@ -501,6 +393,6 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
      * @return the compatibility
      */
     protected Compatibility getCompatibility() {
-        return compatibility;
+        return coreComponentLoader.get(Compatibility.class);
     }
 }
