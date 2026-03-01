@@ -8,6 +8,8 @@ import org.betonquest.betonquest.api.identifier.MenuItemIdentifier;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.reload.ReloadPhase;
+import org.betonquest.betonquest.api.reload.Reloader;
 import org.betonquest.betonquest.api.service.action.ActionManager;
 import org.betonquest.betonquest.api.service.action.ActionRegistry;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
@@ -41,7 +43,7 @@ public class RPGMenuComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(QuestPackageManager.class, BetonQuestLoggerFactory.class, ConfigAccessor.class,
                 ProfileProvider.class, ArgumentParsers.class, Instructions.class, Identifiers.class,
-                ParsedSectionTextCreator.class, PluginMessage.class,
+                ParsedSectionTextCreator.class, PluginMessage.class, Reloader.class,
                 ActionManager.class, ConditionManager.class,
                 ActionRegistry.class, ConditionRegistry.class, ObjectiveRegistry.class, PlaceholderRegistry.class);
     }
@@ -68,6 +70,7 @@ public class RPGMenuComponent extends AbstractCoreComponent {
         final ObjectiveRegistry objectiveRegistry = getDependency(ObjectiveRegistry.class);
         final PlaceholderRegistry placeholderRegistry = getDependency(PlaceholderRegistry.class);
         final ArgumentParsers argumentParsers = getDependency(ArgumentParsers.class);
+        final Reloader reloader = getDependency(Reloader.class);
 
         final MenuIdentifierFactory menuIdentifierFactory = new MenuIdentifierFactory(packManager);
         identifiers.register(MenuIdentifier.class, menuIdentifierFactory);
@@ -79,5 +82,6 @@ public class RPGMenuComponent extends AbstractCoreComponent {
                 objectiveRegistry, placeholderRegistry, actionManager, conditionManager);
 
         dependencyProvider.take(RPGMenu.class, rpgMenu);
+        reloader.register(ReloadPhase.PROFILES, rpgMenu::syncCommands);
     }
 }

@@ -64,6 +64,9 @@ public class PlayerDataStorageComponent extends AbstractCoreComponent {
 
         dependencyProvider.take(PlayerDataFactory.class, playerDataFactory);
         dependencyProvider.take(PlayerDataStorage.class, playerDataStorage);
-        reloader.register(ReloadPhase.PROFILES, () -> playerDataStorage.reloadProfiles(profileProvider.getOnlineProfiles()));
+        reloader.register(ReloadPhase.PROFILES, () -> {
+            playerDataStorage.startObjectives();
+            playerDataStorage.reloadProfiles(profileProvider.getOnlineProfiles());
+        });
     }
 }

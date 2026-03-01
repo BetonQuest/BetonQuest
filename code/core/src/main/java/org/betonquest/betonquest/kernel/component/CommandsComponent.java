@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.reload.Reloader;
 import org.betonquest.betonquest.api.service.action.ActionManager;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
@@ -46,18 +47,10 @@ import java.util.Set;
 public class CommandsComponent extends AbstractCoreComponent {
 
     /**
-     * The callback to run a reload.
-     */
-    private final Runnable reloadCallback;
-
-    /**
      * Create a new CommandsComponent.
-     *
-     * @param reloadCallback the callback to run a reload
      */
-    public CommandsComponent(final Runnable reloadCallback) {
+    public CommandsComponent() {
         super();
-        this.reloadCallback = reloadCallback;
     }
 
     @Override
@@ -69,7 +62,7 @@ public class CommandsComponent extends AbstractCoreComponent {
                 ItemTypeRegistry.class, JournalEntryProcessor.class, CompassProcessor.class,
                 CancelerProcessor.class, Identifiers.class, ItemManager.class, ActionManager.class,
                 ConditionManager.class, ObjectiveManager.class, LanguageProvider.class,
-                AccumulatingReceiverSelector.class, HistoryHandler.class);
+                AccumulatingReceiverSelector.class, HistoryHandler.class, Reloader.class);
     }
 
     @Override
@@ -100,13 +93,14 @@ public class CommandsComponent extends AbstractCoreComponent {
         final LanguageProvider languageProvider = getDependency(LanguageProvider.class);
         final AccumulatingReceiverSelector receiverSelector = getDependency(AccumulatingReceiverSelector.class);
         final HistoryHandler debugHistoryHandler = getDependency(HistoryHandler.class);
+        final Reloader reloader = getDependency(Reloader.class);
 
         final PlayerLogWatcher playerLogWatcher = new PlayerLogWatcher(receiverSelector);
         final QuestCommand.ConstructorParams questCommandParams = new QuestCommand.ConstructorParams(loggerFactory,
                 configAccessorFactory, playerDataFactory, playerDataStorage, profileProvider, pluginMessage, updater,
                 compatibility, connector, saver, questPackageManager, config, debugHistoryHandler,
                 playerLogWatcher, identifiers, globalData, journalEntryProcessor,
-                itemRegistry, actionManager, conditionManager, objectiveManager, itemManager, reloadCallback);
+                itemRegistry, actionManager, conditionManager, objectiveManager, itemManager, reloader);
         final QuestCommand questCommand = new QuestCommand(javaPlugin, loggerFactory.create(QuestCommand.class), questCommandParams);
         javaPlugin.getCommand("betonquest").setExecutor(questCommand);
         javaPlugin.getCommand("betonquest").setTabCompleter(questCommand);

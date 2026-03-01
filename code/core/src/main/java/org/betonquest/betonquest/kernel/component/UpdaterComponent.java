@@ -3,6 +3,8 @@ package org.betonquest.betonquest.kernel.component;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.reload.ReloadPhase;
+import org.betonquest.betonquest.api.reload.Reloader;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
 import org.betonquest.betonquest.versioning.Version;
 import org.betonquest.betonquest.web.DownloadSource;
@@ -76,7 +78,7 @@ public class UpdaterComponent extends AbstractCoreComponent {
     @Override
     public Set<Class<?>> requires() {
         return Set.of(Plugin.class, BukkitScheduler.class, PluginDescriptionFile.class,
-                Server.class, ConfigAccessor.class, BetonQuestLoggerFactory.class);
+                Server.class, ConfigAccessor.class, BetonQuestLoggerFactory.class, Reloader.class);
     }
 
     @Override
@@ -92,6 +94,7 @@ public class UpdaterComponent extends AbstractCoreComponent {
         final PluginDescriptionFile descriptionFile = getDependency(PluginDescriptionFile.class);
         final ConfigAccessor config = getDependency(ConfigAccessor.class);
         final BetonQuestLoggerFactory loggerFactory = getDependency(BetonQuestLoggerFactory.class);
+        final Reloader reloader = getDependency(Reloader.class);
 
         final File updateFolder = server.getUpdateFolderFile();
         final File file = new File(updateFolder, pluginFile.getName());
@@ -111,5 +114,6 @@ public class UpdaterComponent extends AbstractCoreComponent {
                 plugin, scheduler, InstantSource.system());
 
         dependencyProvider.take(Updater.class, updater);
+        reloader.register(ReloadPhase.PACKAGES, updater::search);
     }
 }
