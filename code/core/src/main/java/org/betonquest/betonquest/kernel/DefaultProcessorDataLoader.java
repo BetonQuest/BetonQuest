@@ -60,8 +60,8 @@ public class DefaultProcessorDataLoader implements ProcessorDataLoader {
         final String readableSizes = processors.stream()
                 .sorted(Comparator.comparing(QuestProcessor::getReadableName))
                 .map(QuestProcessor::readableSize)
-                .collect(Collectors.joining(","));
-        log.info("There are %s loaded from %s packages.".formatted(readableSizes, packages.size()));
+                .collect(Collectors.joining(", "));
+        log.info("There are [%s] loaded from %s packages.".formatted(readableSizes, packages.size()));
         log.debug("Finished loading processor data");
         new LoadDataEvent(LoadDataEvent.State.POST_LOAD).callEvent();
     }

@@ -35,7 +35,7 @@ public class ActionScheduling extends SectionProcessor<ScheduleIdentifier, Sched
      */
     public ActionScheduling(final BetonQuestLogger log, final Instructions instructionApi,
                             final ScheduleRegistry scheduleTypes, final IdentifierFactory<ScheduleIdentifier> identifierFactory) {
-        super(log, instructionApi, identifierFactory, "Schedules", "schedules");
+        super(log, instructionApi, identifierFactory, "Schedule", "schedules");
         this.scheduleTypes = scheduleTypes;
     }
 

@@ -77,7 +77,7 @@ public class PlaceholderProcessor extends TypedQuestProcessor<PlaceholderIdentif
                                 final IdentifierFactory<PlaceholderIdentifier> placeholderIdentifierFactory,
                                 final Instructions instructionApi, final Plugin plugin) {
         super(log, placeholderTypes, placeholderIdentifierFactory,
-                instructionApi, "Placeholders", "placeholders");
+                instructionApi, "Placeholder", "placeholders");
         this.packManager = packManager;
         this.scheduler = scheduler;
         this.plugin = plugin;
