@@ -30,8 +30,8 @@ public class HavingShopCondition implements PlayerCondition {
     @Override
     public boolean check(final Profile profile) throws QuestException {
         int count = amount.getValue(profile).intValue();
-        for (final Shopkeeper s : ShopkeepersAPI.getShopkeeperRegistry().getAllShopkeepers()) {
-            if (s instanceof final PlayerShopkeeper shopkeeper && profile.getProfileUUID().equals(shopkeeper.getOwnerUUID())) {
+        for (final Shopkeeper shopkeeper : ShopkeepersAPI.getShopkeeperRegistry().getAllShopkeepers()) {
+            if (shopkeeper instanceof final PlayerShopkeeper playerShopkeeper && profile.getProfileUUID().equals(playerShopkeeper.getOwnerUUID())) {
                 count--;
                 if (count == 0) {
                     return true;

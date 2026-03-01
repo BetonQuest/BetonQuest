@@ -44,17 +44,17 @@ public class QuestsAction implements PlayerAction {
     @Override
     public void execute(final Profile profile) throws QuestException {
         final String questName = this.questName.getValue(profile);
-        Quest quest = null;
-        for (final Quest q : quests.getLoadedQuests()) {
-            if (q.getName().replace(' ', '_').equalsIgnoreCase(questName)) {
-                quest = q;
+        Quest foundQuest = null;
+        for (final Quest quest : quests.getLoadedQuests()) {
+            if (quest.getName().replace(' ', '_').equalsIgnoreCase(questName)) {
+                foundQuest = quest;
                 break;
             }
         }
-        if (quest == null) {
+        if (foundQuest == null) {
             throw new QuestException("Quest '" + questName + "' is not defined");
         }
-        quests.getQuester(profile.getProfileUUID()).takeQuest(quest, override.getValue(profile).orElse(false));
+        quests.getQuester(profile.getProfileUUID()).takeQuest(foundQuest, override.getValue(profile).orElse(false));
     }
 
     @Override
