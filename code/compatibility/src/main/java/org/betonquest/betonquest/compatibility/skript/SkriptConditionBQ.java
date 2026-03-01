@@ -6,6 +6,7 @@ import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
@@ -29,7 +30,7 @@ public class SkriptConditionBQ extends Condition {
     /**
      * The BetonQuest instance.
      */
-    private final BetonQuest plugin;
+    private final BetonQuestApi betonQuestApi;
 
     /**
      * The player for whom the condition is checked.
@@ -46,8 +47,8 @@ public class SkriptConditionBQ extends Condition {
      */
     public SkriptConditionBQ() {
         super();
-        this.plugin = BetonQuest.getInstance();
-        this.log = plugin.getLoggerFactory().create(getClass());
+        this.betonQuestApi = BetonQuest.getInstance().getBetonQuestApi();
+        this.log = betonQuestApi.loggerFactory().create(getClass());
     }
 
     @SuppressWarnings("unchecked")
@@ -68,10 +69,10 @@ public class SkriptConditionBQ extends Condition {
     public boolean check(final Event event) {
         final String conditionID = condition.getSingle(event);
         try {
-            final ProfileProvider profileProvider = plugin.getProfileProvider();
+            final ProfileProvider profileProvider = betonQuestApi.profiles();
             final IdentifierFactory<ConditionIdentifier> conditionIdentifierFactory =
-                    plugin.getBetonQuestApi().identifiers().getFactory(ConditionIdentifier.class);
-            return plugin.getCoreQuestTypeHandler().getConditionProcessor().test(profileProvider.getProfile(player.getSingle(event)),
+                    betonQuestApi.identifiers().getFactory(ConditionIdentifier.class);
+            return betonQuestApi.conditions().manager().test(profileProvider.getProfile(player.getSingle(event)),
                     conditionIdentifierFactory.parseIdentifier(null, conditionID));
         } catch (final QuestException e) {
             log.warn("Error while checking Skript condition - could not load condition with ID '" + conditionID + "': " + e.getMessage(), e);

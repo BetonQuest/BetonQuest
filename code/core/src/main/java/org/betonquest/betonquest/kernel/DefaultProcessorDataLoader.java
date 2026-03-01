@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.kernel;
 
+import org.betonquest.betonquest.api.bukkit.event.LoadDataEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.kernel.processor.PostLoadTask;
@@ -42,6 +43,7 @@ public class DefaultProcessorDataLoader implements ProcessorDataLoader {
 
     @Override
     public void loadData(final Collection<QuestPackage> packages) {
+        new LoadDataEvent(LoadDataEvent.State.PRE_LOAD).callEvent();
         log.debug("Loading processor data, clearing processors");
         this.processors.forEach(QuestProcessor::clear);
         packages.forEach(pack -> {
@@ -60,5 +62,6 @@ public class DefaultProcessorDataLoader implements ProcessorDataLoader {
                 .collect(Collectors.joining(","));
         log.info("There are %s loaded from %s packages.".formatted(readableSizes, packages.size()));
         log.debug("Finished loading processor data");
+        new LoadDataEvent(LoadDataEvent.State.POST_LOAD).callEvent();
     }
 }

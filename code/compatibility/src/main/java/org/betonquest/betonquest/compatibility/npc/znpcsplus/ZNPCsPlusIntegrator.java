@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.service.npc.NpcRegistry;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.UnsupportedVersionException;
+import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
 import org.betonquest.betonquest.versioning.UpdateStrategy;
 import org.betonquest.betonquest.versioning.Version;
 import org.betonquest.betonquest.versioning.VersionComparator;
@@ -47,7 +48,7 @@ public class ZNPCsPlusIntegrator implements Integrator {
         final ProfileProvider profileProvider = api.profiles();
         final PluginManager manager = plugin.getServer().getPluginManager();
         manager.registerEvents(new ZNPCsPlusCatcher(profileProvider, npcRegistry), plugin);
-        final ZNPCsPlusHider hider = new ZNPCsPlusHider(BetonQuest.getInstance().getCoreQuestTypeHandler().getNpcProcessor().getNpcHider());
+        final ZNPCsPlusHider hider = new ZNPCsPlusHider(BetonQuest.getInstance().getComponentLoader().get(NpcProcessor.class).getNpcHider());
         manager.registerEvents(hider, plugin);
         npcRegistry.register(PREFIX, new ZNPCsPlusFactory(NpcApiProvider.get().getNpcRegistry()));
         npcRegistry.registerIdentifier(new ZNPCsPlusIdentifier(PREFIX));

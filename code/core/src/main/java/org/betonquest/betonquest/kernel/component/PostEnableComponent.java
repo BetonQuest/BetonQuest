@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.kernel.component;
 
-import org.betonquest.betonquest.api.bukkit.event.LoadDataEvent;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
@@ -52,9 +51,7 @@ public class PostEnableComponent extends AbstractCoreComponent {
 
         scheduler.scheduleSyncDelayedTask(plugin, () -> {
             compatibility.postHook();
-            new LoadDataEvent(LoadDataEvent.State.PRE_LOAD).callEvent();
             processorDataLoader.loadData(packageManager.getPackages().values());
-            new LoadDataEvent(LoadDataEvent.State.POST_LOAD).callEvent();
             dataStorage.startObjectives();
             menu.syncCommands();
             dataStorage.initProfiles(profileProvider.getOnlineProfiles(), conversations);

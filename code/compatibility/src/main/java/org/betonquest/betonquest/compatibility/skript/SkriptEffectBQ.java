@@ -6,6 +6,7 @@ import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
@@ -30,7 +31,7 @@ public class SkriptEffectBQ extends Effect {
     /**
      * The BetonQuest instance.
      */
-    private final BetonQuest plugin;
+    private final BetonQuestApi betonQuestApi;
 
     /**
      * The action identifier to be fired.
@@ -47,8 +48,8 @@ public class SkriptEffectBQ extends Effect {
      */
     public SkriptEffectBQ() {
         super();
-        this.plugin = BetonQuest.getInstance();
-        this.log = plugin.getLoggerFactory().create(getClass());
+        this.betonQuestApi = BetonQuest.getInstance().getBetonQuestApi();
+        this.log = betonQuestApi.loggerFactory().create(getClass());
     }
 
     @SuppressWarnings("unchecked")
@@ -72,15 +73,15 @@ public class SkriptEffectBQ extends Effect {
             public void run() {
                 final String actionID = SkriptEffectBQ.this.action.getSingle(event);
                 try {
-                    final ProfileProvider profileProvider = plugin.getProfileProvider();
+                    final ProfileProvider profileProvider = betonQuestApi.profiles();
                     final IdentifierFactory<ActionIdentifier> actionIdentifierFactory =
-                            plugin.getBetonQuestApi().identifiers().getFactory(ActionIdentifier.class);
-                    plugin.getCoreQuestTypeHandler().getActionProcessor().run(profileProvider.getProfile(player.getSingle(event)),
+                            betonQuestApi.identifiers().getFactory(ActionIdentifier.class);
+                    betonQuestApi.actions().manager().run(profileProvider.getProfile(player.getSingle(event)),
                             actionIdentifierFactory.parseIdentifier(null, actionID));
                 } catch (final QuestException e) {
                     log.warn("Error when running Skript event - could not load '" + actionID + "' action: " + e.getMessage(), e);
                 }
             }
-        }.runTask(plugin);
+        }.runTask(BetonQuest.getInstance());
     }
 }

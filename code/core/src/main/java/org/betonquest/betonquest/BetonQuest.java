@@ -4,8 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.LanguageProvider;
-import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.bukkit.event.LoadDataEvent;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
@@ -26,6 +24,7 @@ import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.AsyncSaver;
 import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.Saver;
+import org.betonquest.betonquest.kernel.ProcessorDataLoader;
 import org.betonquest.betonquest.kernel.component.ActionsComponent;
 import org.betonquest.betonquest.kernel.component.ArgumentParsersComponent;
 import org.betonquest.betonquest.kernel.component.AsyncSaverComponent;
@@ -40,6 +39,7 @@ import org.betonquest.betonquest.kernel.component.ConfigAccessorFactoryComponent
 import org.betonquest.betonquest.kernel.component.ConfigComponent;
 import org.betonquest.betonquest.kernel.component.ConversationColorsComponent;
 import org.betonquest.betonquest.kernel.component.ConversationsComponent;
+import org.betonquest.betonquest.kernel.component.DataLoaderComponent;
 import org.betonquest.betonquest.kernel.component.DatabaseComponent;
 import org.betonquest.betonquest.kernel.component.ExecutionCacheComponent;
 import org.betonquest.betonquest.kernel.component.FontRegistryComponent;
@@ -57,7 +57,9 @@ import org.betonquest.betonquest.kernel.component.NpcsComponent;
 import org.betonquest.betonquest.kernel.component.ObjectivesComponent;
 import org.betonquest.betonquest.kernel.component.PlaceholdersComponent;
 import org.betonquest.betonquest.kernel.component.PlayerDataStorageComponent;
+import org.betonquest.betonquest.kernel.component.PlayerHiderComponent;
 import org.betonquest.betonquest.kernel.component.PluginMessageComponent;
+import org.betonquest.betonquest.kernel.component.PostEnableComponent;
 import org.betonquest.betonquest.kernel.component.ProfileProviderComponent;
 import org.betonquest.betonquest.kernel.component.QuestPackageManagerComponent;
 import org.betonquest.betonquest.kernel.component.RPGMenuComponent;
@@ -78,16 +80,14 @@ import org.betonquest.betonquest.kernel.component.types.PlaceholderTypeComponent
 import org.betonquest.betonquest.kernel.component.types.ScheduleTypesComponent;
 import org.betonquest.betonquest.kernel.component.types.TextParserTypesComponent;
 import org.betonquest.betonquest.kernel.processor.QuestProcessor;
+import org.betonquest.betonquest.kernel.processor.feature.ConversationProcessor;
 import org.betonquest.betonquest.lib.dependency.component.DefaultCoreComponentLoader;
 import org.betonquest.betonquest.lib.dependency.component.RequirementComponentWrapper;
 import org.betonquest.betonquest.lib.logger.CachingBetonQuestLoggerFactory;
 import org.betonquest.betonquest.logger.DefaultBetonQuestLoggerFactory;
 import org.betonquest.betonquest.menu.RPGMenu;
-import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.playerhider.PlayerHider;
-import org.betonquest.betonquest.quest.CoreQuestTypeHandler;
-import org.betonquest.betonquest.schedule.LastExecutionCache;
-import org.betonquest.betonquest.web.updater.Updater;
+import org.betonquest.betonquest.schedule.ActionScheduling;
 import org.bukkit.Server;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
@@ -95,7 +95,6 @@ import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -143,19 +142,9 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
     private AsyncSaver saver;
 
     /**
-     * The plugin updater.
-     */
-    private Updater updater;
-
-    /**
      * The Player Hider instance.
      */
     private PlayerHider playerHider;
-
-    /**
-     * Cache for action schedulers, holding the last execution of an action.
-     */
-    private LastExecutionCache lastExecutionCache;
 
     /**
      * The profile provider instance.
@@ -181,11 +170,6 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
      * The PlayerDataStorage instance.
      */
     private PlayerDataStorage playerDataStorage;
-
-    /**
-     * The core quest type handler instance.
-     */
-    private CoreQuestTypeHandler coreQuestTypeHandler;
 
     /**
      * The betonQuestApi instance.
@@ -226,12 +210,11 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         final DefaultCoreComponentLoader coreComponentLoader = new DefaultCoreComponentLoader(loggerFactory.create(DefaultCoreComponentLoader.class));
         coreComponentLoader.init(BetonQuestLoggerFactory.class, loggerFactory);
         this.coreComponentLoader = coreComponentLoader;
-        this.coreQuestTypeHandler = new CoreQuestTypeHandler(loggerFactory.create(CoreQuestTypeHandler.class), coreComponentLoader);
         initPluginDependencies(coreComponentLoader);
         registerComponents(coreComponentLoader);
         registerFeatures(coreComponentLoader);
         registerTypesComponents(coreComponentLoader);
-        coreQuestTypeHandler.init();
+        this.coreComponentLoader.load();
 
         this.profileProvider = coreComponentLoader.get(ProfileProvider.class);
         this.log = loggerFactory.create(this);
@@ -239,26 +222,10 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         this.questManager = coreComponentLoader.get(QuestManager.class);
         this.betonQuestApi = coreComponentLoader.get(BetonQuestApi.class);
         this.compatibility = coreComponentLoader.get(Compatibility.class);
-        this.updater = coreComponentLoader.get(Updater.class);
-        this.lastExecutionCache = coreComponentLoader.get(LastExecutionCache.class);
         this.playerDataStorage = coreComponentLoader.get(PlayerDataStorage.class);
         this.saver = coreComponentLoader.get(AsyncSaver.class);
         this.connector = coreComponentLoader.get(Connector.class);
         this.conversationColors = coreComponentLoader.get(ConversationColors.class);
-
-        // schedule quest data loading on the first tick, so all other
-        // plugins can register their types
-        getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
-            compatibility.postHook();
-            loadData();
-            playerDataStorage.initProfiles(profileProvider.getOnlineProfiles(), betonQuestApi.conversations());
-
-            try {
-                playerHider = new PlayerHider(this, betonQuestApi.conditions().manager(), betonQuestApi.instructions(), questManager, profileProvider, config);
-            } catch (final QuestException e) {
-                log.error("Could not start PlayerHider! " + e.getMessage(), e);
-            }
-        });
 
         // block betonquestanswer logging (it's just a spam)
         try {
@@ -333,7 +300,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
                 new ReloaderComponent(),
                 new RequirementComponentWrapper(new ConfigComponent(), Migrator.class),
                 new LanguageProviderComponent(),
-                new CommandsComponent(this::reload),
+                new CommandsComponent(),
                 new LogHandlerComponent(),
                 new QuestPackageManagerComponent(),
                 new DatabaseComponent(),
@@ -341,9 +308,12 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
                 new GlobalDataComponent(),
                 new FontRegistryComponent(),
                 new ListenersComponent(),
+                new PlayerHiderComponent(),
                 new UpdaterComponent(this.getFile()),
                 new ConversationColorsComponent(),
-                new ExecutionCacheComponent()
+                new ExecutionCacheComponent(),
+                new DataLoaderComponent(),
+                new PostEnableComponent()
         ).forEach(coreComponentLoader::register);
     }
 
@@ -360,66 +330,18 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         }
     }
 
-    /**
-     * Loads QuestPackages and refreshes player objectives.
-     */
-    public void loadData() {
-        new LoadDataEvent(LoadDataEvent.State.PRE_LOAD).callEvent();
-        coreQuestTypeHandler.loadData(questManager.getPackages().values());
-        new LoadDataEvent(LoadDataEvent.State.POST_LOAD).callEvent();
-        playerDataStorage.startObjectives();
-        coreComponentLoader.get(RPGMenu.class).syncCommands();
-    }
-
-    /**
-     * Reloads the plugin.
-     */
-    public void reload() {
-        log.debug("Reloading configuration");
-        try {
-            config.reload();
-        } catch (final IOException e) {
-            log.warn("Could not reload config! " + e.getMessage(), e);
-        }
-        questManager.reload();
-        try {
-            coreQuestTypeHandler.getPluginMessage().reload();
-        } catch (final IOException | QuestException e) {
-            log.error("Could not reload the plugin messages!", e);
-        }
-        Notify.load(config, questManager.getPackages().values());
-        lastExecutionCache.reload();
-
-        updater.search();
-        conversationColors.load();
-        compatibility.reload();
-        loadData();
-        playerDataStorage.reloadProfiles(profileProvider.getOnlineProfiles());
-
-        playerHider.stop();
-        try {
-            playerHider = new PlayerHider(this, coreQuestTypeHandler.getConditionProcessor(), betonQuestApi.instructions(),
-                    questManager, profileProvider, config);
-        } catch (final QuestException e) {
-            log.error("Could not start PlayerHider! " + e.getMessage(), e);
-        }
-        log.debug("Reload complete");
-    }
-
     @Override
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "PMD.AvoidCatchingGenericException"})
     public void onDisable() {
-        if (coreQuestTypeHandler != null) {
-            try {
-                coreQuestTypeHandler.getScheduleProcessor().clear();
-            } catch (final Exception ignored) {
-                // Empty
-            }
+        try {
+            coreComponentLoader.get(ActionScheduling.class).clear();
+        } catch (final Exception ignored) {
+            // Empty
         }
 
         if (profileProvider != null) {
             for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
-                final Conversation conv = coreQuestTypeHandler == null ? null : coreQuestTypeHandler.getConversationProcessor().getActiveConversation(onlineProfile);
+                final Conversation conv = coreComponentLoader.get(ConversationProcessor.class).getActiveConversation(onlineProfile);
                 if (conv != null) {
                     conv.suspend();
                 }
@@ -440,12 +362,10 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
             playerHider.stop();
         }
 
-        if (coreQuestTypeHandler != null) {
-            try {
-                coreQuestTypeHandler.getRpgMenu().onDisable();
-            } catch (final Exception ignored) {
-                // Empty
-            }
+        try {
+            coreComponentLoader.get(RPGMenu.class).onDisable();
+        } catch (final Exception ignored) {
+            // Empty
         }
         log.info("BetonQuest successfully disabled!");
     }
@@ -456,7 +376,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
      * @param processor the processor to register
      */
     public void addProcessor(final QuestProcessor<?, ?> processor) {
-        coreQuestTypeHandler.getAdditionalProcessors().add(processor);
+        coreComponentLoader.get(ProcessorDataLoader.class).addProcessor(processor);
     }
 
     /**
@@ -492,15 +412,6 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
     }
 
     /**
-     * Returns the {@link CoreQuestTypeHandler} instance.
-     *
-     * @return the {@link CoreQuestTypeHandler} instance
-     */
-    public CoreQuestTypeHandler getCoreQuestTypeHandler() {
-        return coreQuestTypeHandler;
-    }
-
-    /**
      * Returns the {@link BetonQuestApi} instance.
      *
      * @return the {@link BetonQuestApi} instance
@@ -515,7 +426,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
      * @return plugin messages provider
      */
     public PluginMessage getPluginMessage() {
-        return coreQuestTypeHandler.getPluginMessage();
+        return coreComponentLoader.get(PluginMessage.class);
     }
 
     /**
