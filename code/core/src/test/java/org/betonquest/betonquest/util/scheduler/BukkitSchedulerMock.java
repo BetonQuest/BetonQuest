@@ -29,7 +29,7 @@ import java.util.function.Consumer;
  */
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.DoNotUseThreads", "PMD.GodClass", "PMD.CyclomaticComplexity",
         "PMD.ExcessivePublicCount"})
-public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Closeable {
+public class BukkitSchedulerMock implements BukkitScheduler, Closeable {
 
     /**
      * Exception message for deprecated methods.
