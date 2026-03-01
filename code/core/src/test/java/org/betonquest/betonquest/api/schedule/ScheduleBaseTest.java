@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.identifier.ScheduleIdentifier;
 import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
-import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
+import org.betonquest.betonquest.logger.util.BetonQuestLoggerExtension;
 import org.betonquest.betonquest.schedule.impl.BaseScheduleFactory;
 import org.bukkit.configuration.ConfigurationOptions;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ import static org.mockito.Mockito.*;
  * These tests should ensure that the basic parsing of schedules works properly.
  */
 @SuppressWarnings("PMD.JUnit5TestShouldBePackagePrivate")
-@ExtendWith(BetonQuestLoggerService.class)
+@ExtendWith(BetonQuestLoggerExtension.class)
 public class ScheduleBaseTest extends AbstractScheduleTest {
 
     @Override

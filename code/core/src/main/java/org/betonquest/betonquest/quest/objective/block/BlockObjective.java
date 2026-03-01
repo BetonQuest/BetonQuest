@@ -148,23 +148,23 @@ public class BlockObjective extends CountingObjective {
     }
 
     private boolean isInRange(final Location loc, final Profile profile, final Argument<Location> location, final Argument<Location> region) throws QuestException {
-        final Location loc1 = location.getValue(profile);
-        final Location loc2 = region.getValue(profile);
-        return inBetween(loc1, loc2, loc);
+        final Location firstLocation = location.getValue(profile);
+        final Location secondLocation = region.getValue(profile);
+        return inBetween(firstLocation, secondLocation, loc);
     }
 
-    private boolean inBetween(final Location range1, final Location range2, final Location pos) {
-        return inWorld(range1, range2, pos)
-                && betweenCoordinates(range1.getBlockY(), range2.getBlockY(), pos.getBlockY())
-                && betweenCoordinates(range1.getBlockZ(), range2.getBlockZ(), pos.getBlockZ())
-                && betweenCoordinates(range1.getBlockX(), range2.getBlockX(), pos.getBlockX());
+    private boolean inBetween(final Location firstLocation, final Location secondLocation, final Location pos) {
+        return inWorld(firstLocation, secondLocation, pos)
+                && betweenCoordinates(firstLocation.getBlockY(), secondLocation.getBlockY(), pos.getBlockY())
+                && betweenCoordinates(firstLocation.getBlockZ(), secondLocation.getBlockZ(), pos.getBlockZ())
+                && betweenCoordinates(firstLocation.getBlockX(), secondLocation.getBlockX(), pos.getBlockX());
     }
 
-    private boolean betweenCoordinates(final int range1, final int range2, final int pos) {
-        return Integer.min(range1, range2) <= pos && pos <= Integer.max(range1, range2);
+    private boolean betweenCoordinates(final int firstRange, final int secondRange, final int pos) {
+        return Integer.min(firstRange, secondRange) <= pos && pos <= Integer.max(firstRange, secondRange);
     }
 
-    private boolean inWorld(final Location range1, final Location range2, final Location pos) {
-        return range1.getWorld().equals(range2.getWorld()) && range2.getWorld().equals(pos.getWorld());
+    private boolean inWorld(final Location firstLocation, final Location secondLocation, final Location pos) {
+        return firstLocation.getWorld().equals(secondLocation.getWorld()) && secondLocation.getWorld().equals(pos.getWorld());
     }
 }

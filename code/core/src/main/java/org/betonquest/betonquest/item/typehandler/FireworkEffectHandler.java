@@ -175,8 +175,8 @@ public class FireworkEffectHandler {
                         if (effect.getColors().size() != mainColors.size()) {
                             yield false;
                         }
-                        for (final Color c : effect.getColors()) {
-                            if (!mainColors.contains(c)) {
+                        for (final Color color : effect.getColors()) {
+                            if (!mainColors.contains(color)) {
                                 yield false;
                             }
                         }
@@ -194,8 +194,8 @@ public class FireworkEffectHandler {
                         if (effect.getFadeColors().size() != fadeColors.size()) {
                             yield false;
                         }
-                        for (final Color c : effect.getFadeColors()) {
-                            if (!fadeColors.contains(c)) {
+                        for (final Color color : effect.getFadeColors()) {
+                            if (!fadeColors.contains(color)) {
                                 yield false;
                             }
                         }

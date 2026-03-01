@@ -27,8 +27,8 @@ class NexusReleaseAndDevelopmentSourceTest {
         final Path filePathShadedPage1 = Path.of("src/test/resources/web/updater/nexusShadedPageRelease1.json");
         final Path filePathShadedPage2 = Path.of("src/test/resources/web/updater/nexusShadedPageRelease2.json");
         final String searchUrl = "/search/assets?repository=betonquest&group=org.betonquest&name=betonquest&maven.extension=jar&maven.classifier=shaded&sort=version&prerelease=false";
-        final String apiUrlShadedPage1 = API_URL + NexusReleaseAndDevelopmentSource.SERVICE_REST_V_1 + searchUrl;
-        final String apiUrlShadedPage2 = API_URL + NexusReleaseAndDevelopmentSource.SERVICE_REST_V_1 + searchUrl + NexusReleaseAndDevelopmentSource.CONTINUATION_TOKEN + "2";
+        final String apiUrlShadedPage1 = API_URL + NexusReleaseAndDevelopmentSource.SERVICE_REST + searchUrl;
+        final String apiUrlShadedPage2 = API_URL + NexusReleaseAndDevelopmentSource.SERVICE_REST + searchUrl + NexusReleaseAndDevelopmentSource.CONTINUATION_TOKEN + "2";
 
         final ContentSource contentSource = url ->
                 switch (url.toString()) {
@@ -56,8 +56,8 @@ class NexusReleaseAndDevelopmentSourceTest {
         final Path filePathShadedPage1 = Path.of("src/test/resources/web/updater/nexusShadedPageDevelopment1.json");
         final Path filePathShadedPage2 = Path.of("src/test/resources/web/updater/nexusShadedPageDevelopment2.json");
         final String searchUrl = "/search/assets?repository=betonquest&group=org.betonquest&name=betonquest&maven.extension=jar&maven.classifier=shaded&sort=version&prerelease=true";
-        final String apiUrlShadedPage1 = API_URL + NexusReleaseAndDevelopmentSource.SERVICE_REST_V_1 + searchUrl;
-        final String apiUrlShadedPage2 = API_URL + NexusReleaseAndDevelopmentSource.SERVICE_REST_V_1 + searchUrl + NexusReleaseAndDevelopmentSource.CONTINUATION_TOKEN + "2";
+        final String apiUrlShadedPage1 = API_URL + NexusReleaseAndDevelopmentSource.SERVICE_REST + searchUrl;
+        final String apiUrlShadedPage2 = API_URL + NexusReleaseAndDevelopmentSource.SERVICE_REST + searchUrl + NexusReleaseAndDevelopmentSource.CONTINUATION_TOKEN + "2";
 
         final Path filePathPom1 = Path.of("src/test/resources/web/updater/nexusPom1.xml");
         final Path filePathPom2 = Path.of("src/test/resources/web/updater/nexusPom2.xml");

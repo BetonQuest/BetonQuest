@@ -69,11 +69,11 @@ public class BStatsMetrics {
         metrics.addCustomChart(new DrilldownPie("versionBqMc", () -> getDrillDownPie(versionMc, versionPlugin)));
     }
 
-    private Map<String, Map<String, Integer>> getDrillDownPie(final String value1, final String value2) {
+    private Map<String, Map<String, Integer>> getDrillDownPie(final String firstValue, final String secondValue) {
         final Map<String, Map<String, Integer>> map = new HashMap<>();
         final Map<String, Integer> entry = new HashMap<>();
-        entry.put(value1, 1);
-        map.put(value2, entry);
+        entry.put(firstValue, 1);
+        map.put(secondValue, entry);
         return map;
     }
 

@@ -39,8 +39,8 @@ public class QuestsCondition implements PlayerCondition {
     public boolean check(final Profile profile) throws QuestException {
         final String questName = this.questName.getValue(profile);
         final Set<Quest> completedQuests = quests.getQuester(profile.getProfileUUID()).getCompletedQuests();
-        for (final Quest q : completedQuests) {
-            if (q.getName().replace(' ', '_').equalsIgnoreCase(questName)) {
+        for (final Quest quest : completedQuests) {
+            if (quest.getName().replace(' ', '_').equalsIgnoreCase(questName)) {
                 return true;
             }
         }

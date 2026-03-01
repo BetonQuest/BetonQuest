@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.bukkit.config.custom.handle;
 
-import org.betonquest.betonquest.api.bukkit.config.custom.handle.util.HandleModificationToConfiguration;
+import org.betonquest.betonquest.api.bukkit.config.custom.handle.util.HandleModificationToConfigurationFixture;
 import org.betonquest.betonquest.api.bukkit.config.util.ConfigurationBaseTest;
 import org.bukkit.configuration.Configuration;
 import org.junit.jupiter.api.AfterEach;
@@ -19,11 +19,11 @@ public class HandleModificationConfigurationTest extends ConfigurationBaseTest {
     /**
      * The instance of the setter.
      */
-    private HandleModificationToConfiguration setter;
+    private HandleModificationToConfigurationFixture setter;
 
     @Override
     public Configuration getConfig() {
-        setter = new HandleModificationToConfiguration();
+        setter = new HandleModificationToConfigurationFixture();
         return new HandleModificationConfiguration(super.getDefaultConfig(), setter);
     }
 

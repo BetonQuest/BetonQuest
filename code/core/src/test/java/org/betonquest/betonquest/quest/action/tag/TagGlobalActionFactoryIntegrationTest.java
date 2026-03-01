@@ -3,13 +3,13 @@ package org.betonquest.betonquest.quest.action.tag;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.MockedInstruction;
+import org.betonquest.betonquest.api.instruction.InstructionMock;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.config.DefaultConfigAccessorFactory;
 import org.betonquest.betonquest.config.quest.QuestPackageImpl;
 import org.betonquest.betonquest.database.GlobalData;
-import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
+import org.betonquest.betonquest.logger.util.BetonQuestLoggerExtension;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Integration test for {@link TagGlobalActionFactory}.
  */
-@ExtendWith(BetonQuestLoggerService.class)
+@ExtendWith(BetonQuestLoggerExtension.class)
 @ExtendWith(MockitoExtension.class)
 class TagGlobalActionFactoryIntegrationTest {
 
@@ -54,7 +54,7 @@ class TagGlobalActionFactoryIntegrationTest {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new MockedInstruction(questPackage, "globaltag add tag-1,tag-2,tag-3");
+        final Instruction instruction = new InstructionMock(questPackage, "globaltag add tag-1,tag-2,tag-3");
         assertDoesNotThrow(() -> tagFactory.parsePlayer(instruction), "globaltag action operation add could not be created");
     }
 
@@ -63,7 +63,7 @@ class TagGlobalActionFactoryIntegrationTest {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new MockedInstruction(questPackage, "globaltag add tag-1");
+        final Instruction instruction = new InstructionMock(questPackage, "globaltag add tag-1");
         assertDoesNotThrow(() -> tagFactory.parsePlayer(instruction), "globaltag action operation add could not be created");
     }
 
@@ -72,7 +72,7 @@ class TagGlobalActionFactoryIntegrationTest {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new MockedInstruction(questPackage, "globaltag add");
+        final Instruction instruction = new InstructionMock(questPackage, "globaltag add");
         assertThrows(QuestException.class, () -> tagFactory.parsePlayer(instruction), "globaltag action operation add without tags should throw an exception when created");
     }
 
@@ -81,7 +81,7 @@ class TagGlobalActionFactoryIntegrationTest {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new MockedInstruction(questPackage, "globaltag delete tag-1,tag-2,tag-3");
+        final Instruction instruction = new InstructionMock(questPackage, "globaltag delete tag-1,tag-2,tag-3");
         assertDoesNotThrow(() -> tagFactory.parsePlayer(instruction), "globaltag action operation delete could not be created");
     }
 
@@ -90,7 +90,7 @@ class TagGlobalActionFactoryIntegrationTest {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new MockedInstruction(questPackage, "globaltag delete tag-1");
+        final Instruction instruction = new InstructionMock(questPackage, "globaltag delete tag-1");
         assertDoesNotThrow(() -> tagFactory.parsePlayer(instruction), "globaltag action operation delete could not be created");
     }
 
@@ -99,7 +99,7 @@ class TagGlobalActionFactoryIntegrationTest {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new MockedInstruction(questPackage, "globaltag delete");
+        final Instruction instruction = new InstructionMock(questPackage, "globaltag delete");
         assertThrows(QuestException.class, () -> tagFactory.parsePlayer(instruction), "globaltag action operation delete without tags should throw an exception when created");
     }
 
@@ -108,7 +108,7 @@ class TagGlobalActionFactoryIntegrationTest {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new MockedInstruction(questPackage, "globaltag del tag-1,tag-2,tag-3");
+        final Instruction instruction = new InstructionMock(questPackage, "globaltag del tag-1,tag-2,tag-3");
         assertDoesNotThrow(() -> tagFactory.parsePlayer(instruction), "globaltag action operation del could not be created");
     }
 
@@ -117,7 +117,7 @@ class TagGlobalActionFactoryIntegrationTest {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new MockedInstruction(questPackage, "globaltag del tag-1");
+        final Instruction instruction = new InstructionMock(questPackage, "globaltag del tag-1");
         assertDoesNotThrow(() -> tagFactory.parsePlayer(instruction), "globaltag action operation del could not be created");
     }
 
@@ -126,7 +126,7 @@ class TagGlobalActionFactoryIntegrationTest {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new MockedInstruction(questPackage, "globaltag del");
+        final Instruction instruction = new InstructionMock(questPackage, "globaltag del");
         assertThrows(QuestException.class, () -> tagFactory.parsePlayer(instruction), "globaltag action operation del without tags should throw an exception when created");
     }
 
@@ -135,7 +135,7 @@ class TagGlobalActionFactoryIntegrationTest {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new MockedInstruction(questPackage, "globaltag invalid tag-1,tag-2");
+        final Instruction instruction = new InstructionMock(questPackage, "globaltag invalid tag-1,tag-2");
         assertThrows(QuestException.class, () -> tagFactory.parsePlayer(instruction), "globaltag action operation invalid should throw an exception when created");
     }
 
@@ -144,7 +144,7 @@ class TagGlobalActionFactoryIntegrationTest {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new MockedInstruction(questPackage, "globaltag add tag-1,tag-2,tag-3");
+        final Instruction instruction = new InstructionMock(questPackage, "globaltag add tag-1,tag-2,tag-3");
         assertDoesNotThrow(() -> tagFactory.parsePlayerless(instruction), "globaltag action operation add could not be created");
     }
 
@@ -153,7 +153,7 @@ class TagGlobalActionFactoryIntegrationTest {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new MockedInstruction(questPackage, "globaltag add tag-1");
+        final Instruction instruction = new InstructionMock(questPackage, "globaltag add tag-1");
         assertDoesNotThrow(() -> tagFactory.parsePlayerless(instruction), "globaltag action operation add could not be created");
     }
 
@@ -162,7 +162,7 @@ class TagGlobalActionFactoryIntegrationTest {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new MockedInstruction(questPackage, "globaltag add");
+        final Instruction instruction = new InstructionMock(questPackage, "globaltag add");
         assertThrows(QuestException.class, () -> tagFactory.parsePlayerless(instruction), "globaltag action operation add without tags should throw an exception when created");
     }
 
@@ -171,7 +171,7 @@ class TagGlobalActionFactoryIntegrationTest {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new MockedInstruction(questPackage, "globaltag delete tag-1,tag-2,tag-3");
+        final Instruction instruction = new InstructionMock(questPackage, "globaltag delete tag-1,tag-2,tag-3");
         assertDoesNotThrow(() -> tagFactory.parsePlayerless(instruction), "globaltag action operation delete could not be created");
     }
 
@@ -180,7 +180,7 @@ class TagGlobalActionFactoryIntegrationTest {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new MockedInstruction(questPackage, "globaltag delete tag-1");
+        final Instruction instruction = new InstructionMock(questPackage, "globaltag delete tag-1");
         assertDoesNotThrow(() -> tagFactory.parsePlayerless(instruction), "globaltag action operation delete could not be created");
     }
 
@@ -189,7 +189,7 @@ class TagGlobalActionFactoryIntegrationTest {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new MockedInstruction(questPackage, "globaltag delete");
+        final Instruction instruction = new InstructionMock(questPackage, "globaltag delete");
         assertThrows(QuestException.class, () -> tagFactory.parsePlayerless(instruction), "globaltag action operation delete without tags should throw an exception when created");
     }
 
@@ -198,7 +198,7 @@ class TagGlobalActionFactoryIntegrationTest {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new MockedInstruction(questPackage, "globaltag del tag-1,tag-2,tag-3");
+        final Instruction instruction = new InstructionMock(questPackage, "globaltag del tag-1,tag-2,tag-3");
         assertDoesNotThrow(() -> tagFactory.parsePlayerless(instruction), "globaltag action operation del could not be created");
     }
 
@@ -207,7 +207,7 @@ class TagGlobalActionFactoryIntegrationTest {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new MockedInstruction(questPackage, "globaltag del tag-1");
+        final Instruction instruction = new InstructionMock(questPackage, "globaltag del tag-1");
         assertDoesNotThrow(() -> tagFactory.parsePlayerless(instruction), "globaltag action operation del could not be created");
     }
 
@@ -216,7 +216,7 @@ class TagGlobalActionFactoryIntegrationTest {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new MockedInstruction(questPackage, "globaltag del");
+        final Instruction instruction = new InstructionMock(questPackage, "globaltag del");
         assertThrows(QuestException.class, () -> tagFactory.parsePlayerless(instruction), "globaltag action operation del without tags should throw an exception when created");
     }
 
@@ -225,7 +225,7 @@ class TagGlobalActionFactoryIntegrationTest {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new MockedInstruction(questPackage, "globaltag invalid tag-1,tag-2");
+        final Instruction instruction = new InstructionMock(questPackage, "globaltag invalid tag-1,tag-2");
         assertThrows(QuestException.class, () -> tagFactory.parsePlayerless(instruction), "globaltag action operation invalid should throw an exception when created");
     }
 }

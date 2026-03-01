@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.feature.journal.Pointer;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
-import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
+import org.betonquest.betonquest.logger.util.BetonQuestLoggerExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 /**
  * Test {@link AddEntryJournalChanger}.
  */
-@ExtendWith({MockitoExtension.class, BetonQuestLoggerService.class})
+@ExtendWith({MockitoExtension.class, BetonQuestLoggerExtension.class})
 class AddEntryJournalChangerTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")

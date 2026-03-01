@@ -87,7 +87,7 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
         asyncTasks = new ArrayList<>();
     }
 
-    private static Runnable wrapTask(final ScheduledTask task) {
+    private static Runnable wrapTask(final ScheduledTaskMock task) {
         return () -> {
             task.setRunning(true);
             task.run();
@@ -109,9 +109,9 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
      */
     public void performTick() {
         currentTick++;
-        final List<ScheduledTask> oldTasks = scheduledTasks.getCurrentTaskList();
+        final List<ScheduledTaskMock> oldTasks = scheduledTasks.getCurrentTaskList();
 
-        for (final ScheduledTask task : oldTasks) {
+        for (final ScheduledTaskMock task : oldTasks) {
             if (task.getScheduledTick() == currentTick && !task.isCancelled()) {
                 try {
                     executeTask(task);
@@ -126,14 +126,14 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
         }
     }
 
-    private void rescheduleRepeatingTasks(final ScheduledTask task) {
-        if (task instanceof RepeatingTask && !task.isCancelled()) {
-            ((RepeatingTask) task).updateScheduledTick();
+    private void rescheduleRepeatingTasks(final ScheduledTaskMock task) {
+        if (task instanceof RepeatingTaskMock && !task.isCancelled()) {
+            ((RepeatingTaskMock) task).updateScheduledTick();
             scheduledTasks.addTask(task);
         }
     }
 
-    private void executeTask(final ScheduledTask task) throws InterruptedException {
+    private void executeTask(final ScheduledTaskMock task) throws InterruptedException {
         if (task.isSync()) {
             wrapTask(task).run();
         } else {
@@ -206,14 +206,14 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
 
     @Override
     public BukkitTask runTaskLater(final Plugin plugin, final Runnable task, final long delay) {
-        final ScheduledTask scheduledTask = new ScheduledTask(taskId++, plugin, true, currentTick + Math.max(delay, 1), task);
+        final ScheduledTaskMock scheduledTask = new ScheduledTaskMock(taskId++, plugin, true, currentTick + Math.max(delay, 1), task);
         scheduledTasks.addTask(scheduledTask);
         return scheduledTask;
     }
 
     @Override
     public BukkitTask runTaskTimer(final Plugin plugin, final Runnable task, final long delay, final long period) {
-        final RepeatingTask repeatingTask = new RepeatingTask(taskId++, plugin, true, currentTick + Math.max(delay, 1), period, task);
+        final RepeatingTaskMock repeatingTask = new RepeatingTaskMock(taskId++, plugin, true, currentTick + Math.max(delay, 1), period, task);
         scheduledTasks.addTask(repeatingTask);
         return repeatingTask;
     }
@@ -280,7 +280,7 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
 
     @Override
     public void cancelTasks(final Plugin plugin) {
-        for (final ScheduledTask task : scheduledTasks.getCurrentTaskList()) {
+        for (final ScheduledTaskMock task : scheduledTasks.getCurrentTaskList()) {
             if (plugin.equals(task.getOwner())) {
                 task.cancel();
             }
@@ -294,7 +294,7 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
 
     @Override
     public boolean isQueued(final int taskId) {
-        for (final ScheduledTask task : scheduledTasks.getCurrentTaskList()) {
+        for (final ScheduledTaskMock task : scheduledTasks.getCurrentTaskList()) {
             if (task.getTaskId() == taskId) {
                 return !task.isCancelled();
             }
@@ -314,7 +314,7 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
 
     @Override
     public BukkitTask runTaskAsynchronously(final Plugin plugin, final Runnable task) {
-        final ScheduledTask scheduledTask = new ScheduledTask(taskId++, plugin, false, currentTick, task);
+        final ScheduledTaskMock scheduledTask = new ScheduledTaskMock(taskId++, plugin, false, currentTick, task);
         asyncTasks.add(pool.submit(wrapTask(scheduledTask)));
         return scheduledTask;
     }
@@ -331,7 +331,7 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
 
     @Override
     public BukkitTask runTaskLaterAsynchronously(final Plugin plugin, final Runnable task, final long delay) {
-        final ScheduledTask scheduledTask = new ScheduledTask(taskId++, plugin, false, currentTick + delay, task);
+        final ScheduledTaskMock scheduledTask = new ScheduledTaskMock(taskId++, plugin, false, currentTick + delay, task);
         scheduledTasks.addTask(scheduledTask);
         return scheduledTask;
     }
@@ -343,7 +343,7 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
 
     @Override
     public BukkitTask runTaskTimerAsynchronously(final Plugin plugin, final Runnable task, final long delay, final long period) {
-        final RepeatingTask scheduledTask = new RepeatingTask(taskId++, plugin, false, currentTick + delay, period, task);
+        final RepeatingTaskMock scheduledTask = new RepeatingTaskMock(taskId++, plugin, false, currentTick + delay, period, task);
         scheduledTasks.addTask(scheduledTask);
         return scheduledTask;
     }
@@ -429,7 +429,7 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
         /**
          * The list of all tasks.
          */
-        private final Map<Integer, ScheduledTask> tasks;
+        private final Map<Integer, ScheduledTaskMock> tasks;
 
         private TaskList() {
             tasks = new ConcurrentHashMap<>();
@@ -440,7 +440,7 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
          *
          * @param task the task to remove.
          */
-        private void addTask(final ScheduledTask task) {
+        private void addTask(final ScheduledTaskMock task) {
             tasks.put(task.getTaskId(), task);
         }
 
@@ -449,7 +449,7 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
          *
          * @return the task list
          */
-        private List<ScheduledTask> getCurrentTaskList() {
+        private List<ScheduledTaskMock> getCurrentTaskList() {
             return new ArrayList<>(tasks.values());
         }
 
@@ -460,7 +460,7 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
          */
         private void cancelTask(final int taskID) {
             if (tasks.containsKey(taskID)) {
-                final ScheduledTask task = tasks.get(taskID);
+                final ScheduledTaskMock task = tasks.get(taskID);
                 task.cancel();
                 tasks.put(taskID, task);
             }

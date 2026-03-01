@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
  * @deprecated This should be replaced with a real expression parsing lib
  */
 @Deprecated
+@SuppressWarnings({"ParameterName", "MemberName"})
 public class Operation implements Token {
 
     /**

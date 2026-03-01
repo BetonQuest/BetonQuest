@@ -10,6 +10,7 @@ import java.util.Arrays;
  * @deprecated This should be replaced with a real expression parsing lib
  */
 @Deprecated
+@SuppressWarnings("ParameterName")
 public enum Operator {
 
     /**

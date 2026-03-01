@@ -106,11 +106,11 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
      * See <a href="https://wiki.vg/Mojang_API#UUID_to_Profile_and_Skin.2FCape">wiki.vg</a> for unofficial documentation
      * on the skin JSON format.
      *
-     * @param base64Texture base64 encoded skin JSON metadata
+     * @param encodedTexture base64 encoded skin JSON metadata
      * @return the skin URL
      */
-    private URL resolveSkinURL(final String base64Texture) throws SkinFormatParseException {
-        final String decoded = new String(Base64.getDecoder().decode(base64Texture), StandardCharsets.UTF_8);
+    private URL resolveSkinURL(final String encodedTexture) throws SkinFormatParseException {
+        final String decoded = new String(Base64.getDecoder().decode(encodedTexture), StandardCharsets.UTF_8);
         final Matcher matcher = SKIN_JSON_URL_PATTERN.matcher(decoded);
         if (!matcher.find()) {
             throw new SkinFormatParseException("Could not find the skin URL in the skin JSON!");

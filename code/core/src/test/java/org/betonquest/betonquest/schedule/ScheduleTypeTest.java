@@ -25,7 +25,7 @@ import org.betonquest.betonquest.id.action.ActionIdentifierFactory;
 import org.betonquest.betonquest.id.item.ItemIdentifierFactory;
 import org.betonquest.betonquest.kernel.registry.quest.IdentifierTypeRegistry;
 import org.betonquest.betonquest.lib.instruction.section.DefaultSectionInstruction;
-import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
+import org.betonquest.betonquest.logger.util.BetonQuestLoggerExtension;
 import org.betonquest.betonquest.schedule.ActionScheduling.ScheduleType;
 import org.betonquest.betonquest.schedule.impl.BaseScheduleFactory;
 import org.bukkit.Server;
@@ -46,7 +46,7 @@ import static org.mockito.Mockito.*;
  * Tests for {@link ActionScheduling.ScheduleType}.
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
-@ExtendWith({MockitoExtension.class, BetonQuestLoggerService.class})
+@ExtendWith({MockitoExtension.class, BetonQuestLoggerExtension.class})
 class ScheduleTypeTest {
 
     /**

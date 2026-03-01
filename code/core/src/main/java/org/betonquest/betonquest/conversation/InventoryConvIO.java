@@ -45,7 +45,7 @@ import java.util.Objects;
 /**
  * Inventory GUI for conversations.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods", "PMD.CouplingBetweenObjects"})
+@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods", "PMD.CouplingBetweenObjects", "JavadocVariable"})
 public class InventoryConvIO implements Listener, ConversationIO {
 
     private static final Map<String, ItemStack> SKULL_CACHE = new HashMap<>();

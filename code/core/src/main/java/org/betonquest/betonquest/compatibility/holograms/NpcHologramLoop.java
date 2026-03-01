@@ -240,8 +240,10 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
     /**
      * Link a list of NPC IDs to a list of holograms.
      *
-     * @param npcHolograms the list of NPC IDs and there linked holograms.
-     * @param holograms    The holograms.
+     * @param npcHolograms the list of NPC IDs and their linked holograms
+     * @param vector       The vector offset
+     * @param follow       Whether the holograms should follow the NPC
+     * @param holograms    The holograms
      */
     private record NpcHologram(Map<NpcIdentifier, BetonHologram> npcHolograms, List<BetonHologram> holograms,
                                Vector vector, boolean follow) {

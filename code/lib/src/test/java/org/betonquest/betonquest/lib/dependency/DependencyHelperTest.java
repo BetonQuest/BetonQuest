@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.lib.dependency;
 
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Sets;
 import org.betonquest.betonquest.api.dependency.CoreComponent;
 import org.betonquest.betonquest.api.dependency.DependencyGraphNode;
 import org.betonquest.betonquest.api.dependency.LoadedDependency;
@@ -20,6 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -53,15 +56,14 @@ class DependencyHelperTest {
     private static List<Arguments> nodeCombinations(final boolean valid) {
         final List<Arguments> arguments = new ArrayList<>();
         for (int loadedSubList = 1; loadedSubList < LOADED_DEPENDENCIES.size() - 2; loadedSubList++) {
-            SimpleSubSetHelper.kSubSets(LOADED_DEPENDENCIES, loadedSubList).forEach(loadedDependencies -> {
+            Sets.combinations(new HashSet<>(LOADED_DEPENDENCIES), loadedSubList).forEach(loadedDependencies -> {
                 final List<Class<?>> remainingClasses = RANDOM_CLASSES_TO_PICK.stream()
                         .filter(clazz -> loadedDependencies.stream().noneMatch(loaded -> loaded.type().equals(clazz))).toList();
                 final List<DependencyGraphNode> nodes = IntStream.range(0, remainingClasses.size())
                         .boxed().map(i -> node(i + 1 == remainingClasses.size()
                                 ? (valid ? Set.of() : Set.of(remainingClasses.get(0)))
                                 : Set.of(remainingClasses.get(i + 1)), Set.of(remainingClasses.get(i)))).toList();
-                SimpleSubSetHelper.permutations(nodes)
-                        .forEach(nodesPermutation -> arguments.add(Arguments.of(nodesPermutation, loadedDependencies)));
+                Collections2.permutations(nodes).forEach(nodesPermutation -> arguments.add(Arguments.of(nodesPermutation, loadedDependencies)));
             });
         }
         return arguments;
@@ -77,8 +79,8 @@ class DependencyHelperTest {
 
     private static Stream<Arguments> requirementLoadedCombinations() {
         final List<Arguments> arguments = new ArrayList<>();
-        SimpleSubSetHelper.allKSubSets(RANDOM_CLASSES_TO_PICK).forEach(subSet -> {
-            SimpleSubSetHelper.allKSubSets(LOADED_DEPENDENCIES).forEach(loadedSubSet -> {
+        Sets.powerSet(new HashSet<>(RANDOM_CLASSES_TO_PICK)).forEach(subSet -> {
+            Sets.powerSet(new HashSet<>(LOADED_DEPENDENCIES)).forEach(loadedSubSet -> {
                 arguments.add(Arguments.of(subSet, loadedSubSet));
             });
         });

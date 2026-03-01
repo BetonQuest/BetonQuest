@@ -41,14 +41,14 @@ class DefaultCoreComponentLoaderTest {
 
     @Test
     void loading_before_registration_fails() {
-        final RawDummyComponent another = spy(new RawDummyComponent(false));
+        final ComponentMock another = spy(new ComponentMock(false));
         another.loadComponent(mock(DependencyProvider.class));
         assertThrows(IllegalArgumentException.class, () -> loader.register(another));
     }
 
     @Test
     void manually_loading_after_registration_fails_in_load_method_with_warning() {
-        final RawDummyComponent another = spy(new RawDummyComponent(false));
+        final ComponentMock another = spy(new ComponentMock(false));
         loader.register(another);
         another.loadComponent(mock(DependencyProvider.class));
         loader.load();
@@ -80,16 +80,16 @@ class DefaultCoreComponentLoaderTest {
 
     @Test
     void loading_component_to_check_change_in_availability() {
-        final CoreComponent component = spy(new RawDummyComponent(true));
+        final CoreComponent component = spy(new ComponentMock(true));
         loader.register(component);
-        assertThrows(NoSuchElementException.class, () -> loader.get(RawDummyComponent.class), "Component should not be loaded before loading");
+        assertThrows(NoSuchElementException.class, () -> loader.get(ComponentMock.class), "Component should not be loaded before loading");
         loader.load();
-        assertEquals(component, loader.get(RawDummyComponent.class), "Component should be loaded after loading");
+        assertEquals(component, loader.get(ComponentMock.class), "Component should be loaded after loading");
     }
 
     @Test
     void loading_component_to_check_result() {
-        final CoreComponent component = spy(new RawDummyComponent());
+        final CoreComponent component = spy(new ComponentMock());
         loader.register(component);
         loader.load();
         verify(component, times(1)).loadComponent(any());
@@ -98,7 +98,7 @@ class DefaultCoreComponentLoaderTest {
 
     @Test
     void loading_expects_logger_calls() {
-        final CoreComponent component = spy(new RawDummyComponent());
+        final CoreComponent component = spy(new ComponentMock());
         loader.register(component);
         loader.load();
         verify(logger, atLeastOnce()).info(anyString());
@@ -107,7 +107,7 @@ class DefaultCoreComponentLoaderTest {
 
     @Test
     void loading_a_component_with_unavailable_dependency_fails() {
-        final CoreComponent component = spy(new RawDummyComponent(RawDummyComponent.class));
+        final CoreComponent component = spy(new ComponentMock(ComponentMock.class));
         loader.register(component);
         assertThrows(IllegalStateException.class, loader::load, "Should throw an exception because a blocking component that cannot be loaded");
         verify(component, never()).loadComponent(any());
@@ -124,42 +124,42 @@ class DefaultCoreComponentLoaderTest {
 
         private static Stream<Arguments> failDependencies() {
             return Stream.of(
-                    Arguments.of(Set.of(new RawDummyComponent(true, RawDummyComponent.class))),
-                    Arguments.of(Set.of(new RawDummyComponent(), new RawDummyComponent(RawDummyComponent.class))),
-                    Arguments.of(Set.of(new RawDummyComponent(STRING, Set.of(String.class), Boolean.class), new RawDummyComponent(BOOLEAN, Set.of(Boolean.class), String.class))),
-                    Arguments.of(Set.of(new RawDummyComponent(true, Integer.class), new RawDummyComponent(STRING, Set.of(String.class), RawDummyComponent.class),
-                            new RawDummyComponent(BOOLEAN, Set.of(Boolean.class), String.class), new RawDummyComponent(INTEGER, Set.of(Integer.class), Boolean.class))),
-                    Arguments.of(Set.of(new RawDummyComponent(true), new RawDummyComponent(true, RawDummyComponent.class))),
-                    Arguments.of(Set.of(new RawDummyComponent(STRING, Set.of())))
+                    Arguments.of(Set.of(new ComponentMock(true, ComponentMock.class))),
+                    Arguments.of(Set.of(new ComponentMock(), new ComponentMock(ComponentMock.class))),
+                    Arguments.of(Set.of(new ComponentMock(STRING, Set.of(String.class), Boolean.class), new ComponentMock(BOOLEAN, Set.of(Boolean.class), String.class))),
+                    Arguments.of(Set.of(new ComponentMock(true, Integer.class), new ComponentMock(STRING, Set.of(String.class), ComponentMock.class),
+                            new ComponentMock(BOOLEAN, Set.of(Boolean.class), String.class), new ComponentMock(INTEGER, Set.of(Integer.class), Boolean.class))),
+                    Arguments.of(Set.of(new ComponentMock(true), new ComponentMock(true, ComponentMock.class))),
+                    Arguments.of(Set.of(new ComponentMock(STRING, Set.of())))
             );
         }
 
         private static Stream<Arguments> dependencies() {
             return Stream.of(
                     Arguments.of(0, Set.of()),
-                    Arguments.of(1, Set.of(new RawDummyComponent(true))),
-                    Arguments.of(0, Set.of(new RawDummyComponent(false))),
-                    Arguments.of(2, Set.of(new RawDummyComponent(true), new RawDummyComponent(STRING, Set.of(String.class), RawDummyComponent.class))),
-                    Arguments.of(3, Set.of(new RawDummyComponent(true), new RawDummyComponent(STRING, Set.of(String.class), RawDummyComponent.class), new RawDummyComponent(BOOLEAN, Set.of(Boolean.class), String.class))),
-                    Arguments.of(4, Set.of(new RawDummyComponent(true), new RawDummyComponent(STRING, Set.of(String.class), RawDummyComponent.class), new RawDummyComponent(BOOLEAN, Set.of(Boolean.class), String.class),
-                            new RawDummyComponent(INTEGER, Set.of(Integer.class), Boolean.class))),
+                    Arguments.of(1, Set.of(new ComponentMock(true))),
+                    Arguments.of(0, Set.of(new ComponentMock(false))),
+                    Arguments.of(2, Set.of(new ComponentMock(true), new ComponentMock(STRING, Set.of(String.class), ComponentMock.class))),
+                    Arguments.of(3, Set.of(new ComponentMock(true), new ComponentMock(STRING, Set.of(String.class), ComponentMock.class), new ComponentMock(BOOLEAN, Set.of(Boolean.class), String.class))),
+                    Arguments.of(4, Set.of(new ComponentMock(true), new ComponentMock(STRING, Set.of(String.class), ComponentMock.class), new ComponentMock(BOOLEAN, Set.of(Boolean.class), String.class),
+                            new ComponentMock(INTEGER, Set.of(Integer.class), Boolean.class))),
                     Arguments.of(0, aLot(16)),
                     Arguments.of(0, aLot(100)),
                     Arguments.of(0, aLot(1000))
             );
         }
 
-        private static List<RawDummyComponent> aLot(final int amount) {
-            final List<RawDummyComponent> components = new ArrayList<>();
+        private static List<ComponentMock> aLot(final int amount) {
+            final List<ComponentMock> components = new ArrayList<>();
             for (int i = 0; i < amount; i++) {
-                components.add(new RawDummyComponent());
+                components.add(new ComponentMock());
             }
             return components;
         }
 
         @ParameterizedTest
         @MethodSource("dependencies")
-        void test_working_dependencies(final int loadedObjectsCount, final Collection<RawDummyComponent> components) {
+        void test_working_dependencies(final int loadedObjectsCount, final Collection<ComponentMock> components) {
             components.forEach(loader::register);
             loader.load();
             assertEquals(loadedObjectsCount, loader.getAll(Object.class).size(), String.format("Should contain exactly %d components", loadedObjectsCount));
@@ -168,7 +168,7 @@ class DefaultCoreComponentLoaderTest {
 
         @ParameterizedTest
         @MethodSource("failDependencies")
-        void test_failing_dependencies(final Collection<RawDummyComponent> components) {
+        void test_failing_dependencies(final Collection<ComponentMock> components) {
             components.forEach(loader::register);
             assertThrows(IllegalStateException.class, loader::load, "Should throw an exception because a component should fail to load");
             assertFalse(components.stream().allMatch(CoreComponent::isLoaded), "Not all components should be loaded");
@@ -184,8 +184,8 @@ class DefaultCoreComponentLoaderTest {
 
         @BeforeEach
         void setUp() {
-            dummyDependency = spy(new RawDummyComponent(RawDummyComponent.class, BetonQuestLogger.class));
-            dummyComponent = spy(new RawDummyComponent(true));
+            dummyDependency = spy(new ComponentMock(ComponentMock.class, BetonQuestLogger.class));
+            dummyComponent = spy(new ComponentMock(true));
             loader.register(dummyDependency);
             loader.register(dummyComponent);
         }
@@ -214,7 +214,7 @@ class DefaultCoreComponentLoaderTest {
         void loading_correctly_to_check_results() {
             loader.init(BetonQuestLogger.class, logger);
             loader.load();
-            assertEquals(1, loader.getAll(RawDummyComponent.class).size(), "Should contain exactly one component");
+            assertEquals(1, loader.getAll(ComponentMock.class).size(), "Should contain exactly one component");
         }
 
         @Test

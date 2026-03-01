@@ -14,7 +14,7 @@ import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.config.DefaultConfigAccessorFactory;
 import org.betonquest.betonquest.config.quest.QuestPackageImpl;
-import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
+import org.betonquest.betonquest.logger.util.BetonQuestLoggerExtension;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.CustomChart;
 import org.bukkit.Server;
@@ -43,7 +43,7 @@ import static org.mockito.Mockito.*;
 /**
  * Tests for the {@link BStatsMetrics} class.
  */
-@ExtendWith(BetonQuestLoggerService.class)
+@ExtendWith(BetonQuestLoggerExtension.class)
 class BStatsMetricsTest {
 
     /**

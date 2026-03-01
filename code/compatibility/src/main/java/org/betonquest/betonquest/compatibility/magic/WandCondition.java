@@ -89,8 +89,8 @@ public class WandCondition implements OnlineCondition {
                 if (!api.isWand(wandItem)) {
                     yield false;
                 }
-                final Wand wand1 = api.getWand(wandItem);
-                yield checkWand(wand1, profile);
+                final Wand wand = api.getWand(wandItem);
+                yield checkWand(wand, profile);
             }
             case INVENTORY -> {
                 int heldAmount = 0;

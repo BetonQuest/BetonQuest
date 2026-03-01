@@ -77,13 +77,13 @@ public class AsyncSaver extends Thread implements Saver {
                 try {
                     con.getDatabase().getConnection();
                     active = true;
-                } catch (final IllegalStateException e) {
+                } catch (final IllegalStateException illegalStateException) {
                     log.warn("Failed to re-establish connection with the database! Trying again in %s second(s)..."
-                            .formatted(reconnectInterval / 1000), e);
+                            .formatted(reconnectInterval / 1000), illegalStateException);
                     try {
                         sleep(reconnectInterval);
-                    } catch (final InterruptedException e1) {
-                        log.warn("AsyncSaver got interrupted!", e1);
+                    } catch (final InterruptedException interruptedException) {
+                        log.warn("AsyncSaver got interrupted!", interruptedException);
                         return;
                     }
                 }

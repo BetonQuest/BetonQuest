@@ -3,7 +3,7 @@ package org.betonquest.betonquest.logger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.LogSource;
-import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
+import org.betonquest.betonquest.logger.util.BetonQuestLoggerExtension;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.AfterEach;
@@ -68,7 +68,7 @@ class DefaultBetonQuestLoggerTest {
     @BeforeEach
     void setUp() {
         this.handler = mock(Handler.class);
-        final Logger parentLogger = BetonQuestLoggerService.getSilentLogger();
+        final Logger parentLogger = BetonQuestLoggerExtension.getSilentLogger();
         parentLogger.addHandler(handler);
         final Plugin plugin = mock(Plugin.class);
         when(plugin.getName()).thenReturn("TestPlugin");

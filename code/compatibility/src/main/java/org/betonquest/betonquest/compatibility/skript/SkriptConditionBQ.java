@@ -52,9 +52,9 @@ public class SkriptConditionBQ extends Condition {
 
     @SuppressWarnings("unchecked")
     @Override
-    public boolean init(final Expression<?>[] arg0, final int arg1, final Kleenean arg2, final ParseResult arg3) {
-        player = (Expression<Player>) arg0[0];
-        condition = (Expression<String>) arg0[1];
+    public boolean init(final Expression<?>[] expressions, final int matchedPattern, final Kleenean kleenean, final ParseResult parseResult) {
+        player = (Expression<Player>) expressions[0];
+        condition = (Expression<String>) expressions[1];
         return true;
     }
 

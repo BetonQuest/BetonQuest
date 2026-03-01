@@ -22,7 +22,7 @@ import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
 import org.betonquest.betonquest.id.schedule.ScheduleIdentifierFactory;
 import org.betonquest.betonquest.kernel.registry.feature.ScheduleRegistry;
 import org.betonquest.betonquest.lib.instruction.section.DefaultSectionInstruction;
-import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
+import org.betonquest.betonquest.logger.util.BetonQuestLoggerExtension;
 import org.betonquest.betonquest.schedule.ActionScheduling.ScheduleType;
 import org.betonquest.betonquest.schedule.impl.BaseScheduleFactory;
 import org.bukkit.configuration.ConfigurationSection;
@@ -43,7 +43,7 @@ import static org.mockito.Mockito.*;
  * Tests if starting and stopping ActionScheduling works reliable and if loading Schedules works as intended.
  */
 @ExtendWith(MockitoExtension.class)
-@ExtendWith(BetonQuestLoggerService.class)
+@ExtendWith(BetonQuestLoggerExtension.class)
 class ActionSchedulingTest {
 
     /**

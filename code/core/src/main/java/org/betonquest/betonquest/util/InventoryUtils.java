@@ -11,6 +11,7 @@ import java.util.function.Predicate;
 /**
  * This is a utility class for working with inventories and crafting.
  */
+@SuppressWarnings("LocalFinalVariableName")
 public final class InventoryUtils {
 
     private InventoryUtils() {

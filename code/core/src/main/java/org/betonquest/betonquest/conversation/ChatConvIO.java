@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * Base of all chat conversation outputs.
  */
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "JavadocVariable"})
 public abstract class ChatConvIO implements ConversationIO, Listener {
 
     protected final Conversation conv;

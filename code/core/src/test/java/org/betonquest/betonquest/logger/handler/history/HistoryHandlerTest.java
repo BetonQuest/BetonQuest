@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.logger.handler.history;
 
 import org.betonquest.betonquest.logger.handler.ResettableHandler;
-import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
+import org.betonquest.betonquest.logger.util.BetonQuestLoggerExtension;
 import org.betonquest.betonquest.util.WriteOperation;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,7 +38,7 @@ class HistoryHandlerTest {
         final Handler validator = mock(Handler.class);
         final HistoryHandler historyHandler = new HistoryHandler(false, loggingUpdater, logQueue, new ResettableHandler(() -> validator));
 
-        final Logger logger = BetonQuestLoggerService.getSilentLogger();
+        final Logger logger = BetonQuestLoggerExtension.getSilentLogger();
         logger.addHandler(historyHandler);
         logger.log(new LogRecord(Level.INFO, "record1"));
 
@@ -58,7 +58,7 @@ class HistoryHandlerTest {
         final Handler validator = mock(Handler.class);
         final HistoryHandler historyHandler = new HistoryHandler(false, loggingUpdater, logQueue, new ResettableHandler(() -> validator));
 
-        final Logger logger = BetonQuestLoggerService.getSilentLogger();
+        final Logger logger = BetonQuestLoggerExtension.getSilentLogger();
         logger.addHandler(historyHandler);
         historyHandler.startLogging();
         logger.log(new LogRecord(Level.INFO, "record2"));
