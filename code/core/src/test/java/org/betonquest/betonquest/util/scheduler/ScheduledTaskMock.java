@@ -13,7 +13,7 @@ import java.util.concurrent.CancellationException;
  * This class has been taken and modified from
  * <a href="https://github.com/MockBukkit/MockBukkit">https://github.com/MockBukkit/MockBukkit</a>.
  */
-public class ScheduledTask implements BukkitTask {
+public class ScheduledTaskMock implements BukkitTask {
 
     /**
      * The task id of this task.
@@ -64,7 +64,7 @@ public class ScheduledTask implements BukkitTask {
      * @param scheduledTick the tick when to execute the task
      * @param runnable      the runnable to execute
      */
-    public ScheduledTask(final int taskId, final Plugin plugin, final boolean sync, final long scheduledTick, final Runnable runnable) {
+    public ScheduledTaskMock(final int taskId, final Plugin plugin, final boolean sync, final long scheduledTick, final Runnable runnable) {
         this.cancelListeners = new LinkedList<>();
         this.taskId = taskId;
         this.plugin = plugin;
@@ -75,7 +75,7 @@ public class ScheduledTask implements BukkitTask {
     }
 
     /**
-     * Gets if this {@link ScheduledTask} is currently running.
+     * Gets if this {@link ScheduledTaskMock} is currently running.
      *
      * @return weather this is running or not
      */
@@ -84,7 +84,7 @@ public class ScheduledTask implements BukkitTask {
     }
 
     /**
-     * Sets if this {@link ScheduledTask} is currently running.
+     * Sets if this {@link ScheduledTaskMock} is currently running.
      *
      * @param running the current running state
      */

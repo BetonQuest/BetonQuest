@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.lib.dependency.component;
 
+import com.google.common.collect.Sets;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.service.action.Actions;
@@ -8,7 +9,6 @@ import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.objective.Objectives;
 import org.betonquest.betonquest.api.service.placeholder.Placeholders;
 import org.betonquest.betonquest.lib.dependency.DependencyHelper;
-import org.betonquest.betonquest.lib.dependency.SimpleSubSetHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -42,13 +43,13 @@ class RequirementComponentWrapperTest {
     private BetonQuestLogger logger;
 
     private static Stream<Arguments> requirementOptions() {
-        return SimpleSubSetHelper.allKSubSets(RANDOM_CLASSES_TO_PICK).stream().map(Arguments::of);
+        return Sets.powerSet(new HashSet<>(RANDOM_CLASSES_TO_PICK)).stream().filter(set -> !set.isEmpty()).map(Arguments::of);
     }
 
     @BeforeEach
     void setUp() {
         loader = spy(new DefaultCoreComponentLoader(logger));
-        dummyComponent = spy(new RawDummyComponent(false));
+        dummyComponent = spy(new ComponentMock(false));
     }
 
     @Test
@@ -63,7 +64,7 @@ class RequirementComponentWrapperTest {
 
     @Test
     void ensure_dependencyProvider_is_only_called_once() {
-        final RawDummyComponent rawDummyComponent = spy(new RawDummyComponent(provider -> provider.take(String.class, ""), Set.of(String.class)));
+        final ComponentMock rawDummyComponent = spy(new ComponentMock(provider -> provider.take(String.class, ""), Set.of(String.class)));
         final RequirementComponentWrapper wrapped = spy(new RequirementComponentWrapper(rawDummyComponent, RequirementComponentWrapper.class));
         loader.register(wrapped);
         loader.init(RequirementComponentWrapper.class, mock(RequirementComponentWrapper.class));

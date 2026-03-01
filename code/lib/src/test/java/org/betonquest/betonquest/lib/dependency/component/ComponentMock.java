@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 /**
  * Dummy component for testing purposes.
  */
-public class RawDummyComponent extends AbstractCoreComponent {
+public class ComponentMock extends AbstractCoreComponent {
 
     /**
      * The dependencies of this component.
@@ -35,7 +35,7 @@ public class RawDummyComponent extends AbstractCoreComponent {
      *
      * @param dependencies the dependencies of this component
      */
-    public RawDummyComponent(final Class<?>... dependencies) {
+    public ComponentMock(final Class<?>... dependencies) {
         this(false, dependencies);
     }
 
@@ -45,11 +45,11 @@ public class RawDummyComponent extends AbstractCoreComponent {
      * @param injectSelf   whether this component should inject itself into the dependency provider
      * @param dependencies the dependencies of this component
      */
-    public RawDummyComponent(final boolean injectSelf, final Class<?>... dependencies) {
+    public ComponentMock(final boolean injectSelf, final Class<?>... dependencies) {
         super();
         this.dependencies = Set.of(dependencies);
         this.injectSelf = injectSelf;
-        this.provided = injectSelf ? Set.of(RawDummyComponent.class) : Set.of();
+        this.provided = injectSelf ? Set.of(ComponentMock.class) : Set.of();
         this.loadMethod = provider -> {
         };
     }
@@ -61,7 +61,7 @@ public class RawDummyComponent extends AbstractCoreComponent {
      * @param provided     the provided classes
      * @param dependencies the dependencies of this component
      */
-    public RawDummyComponent(final Consumer<DependencyProvider> loadMethod, final Set<Class<?>> provided, final Class<?>... dependencies) {
+    public ComponentMock(final Consumer<DependencyProvider> loadMethod, final Set<Class<?>> provided, final Class<?>... dependencies) {
         super();
         this.provided = provided;
         this.dependencies = Set.of(dependencies);
@@ -83,7 +83,7 @@ public class RawDummyComponent extends AbstractCoreComponent {
     protected void load(final DependencyProvider dependencyProvider) {
         loadMethod.accept(dependencyProvider);
         if (injectSelf) {
-            dependencyProvider.take(RawDummyComponent.class, this);
+            dependencyProvider.take(ComponentMock.class, this);
         }
     }
 }

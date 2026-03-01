@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
  * This class is a builder for {@link Configuration}s for testing.
  */
 @SuppressWarnings("PMD.TooManyMethods")
-public class ConfigurationBuilder {
+public class ConfigurationBuilderFixture {
 
     /**
      * The {@link Configuration} that is being built.
@@ -28,9 +28,9 @@ public class ConfigurationBuilder {
     private final Configuration config;
 
     /**
-     * Creates a new {@link ConfigurationBuilder}.
+     * Creates a new {@link ConfigurationBuilderFixture}.
      */
-    public ConfigurationBuilder() {
+    public ConfigurationBuilderFixture() {
         config = new MemoryConfiguration();
     }
 
@@ -49,9 +49,9 @@ public class ConfigurationBuilder {
     /**
      * Sets up a "ChildSection" for testing.
      *
-     * @return The {@link ConfigurationBuilder} for chaining
+     * @return The {@link ConfigurationBuilderFixture} for chaining
      */
-    public ConfigurationBuilder setupChildSection() {
+    public ConfigurationBuilderFixture setupChildSection() {
         config.set("childSection.nestedChildSection.key", "value");
         return this;
     }
@@ -59,9 +59,9 @@ public class ConfigurationBuilder {
     /**
      * Sets up a "Get" for testing.
      *
-     * @return The {@link ConfigurationBuilder} for chaining
+     * @return The {@link ConfigurationBuilderFixture} for chaining
      */
-    public ConfigurationBuilder setupGet() {
+    public ConfigurationBuilderFixture setupGet() {
         config.set("get", "getValue");
         config.setComments("get", List.of("Test Comment"));
         config.setInlineComments("get", List.of("Test Inline Comment"));
@@ -71,9 +71,9 @@ public class ConfigurationBuilder {
     /**
      * Sets up a "ExistingSet" for testing.
      *
-     * @return The {@link ConfigurationBuilder} for chaining
+     * @return The {@link ConfigurationBuilderFixture} for chaining
      */
-    public ConfigurationBuilder setupExistingSet() {
+    public ConfigurationBuilderFixture setupExistingSet() {
         config.set("existingSet", "setValue");
         return this;
     }
@@ -81,9 +81,9 @@ public class ConfigurationBuilder {
     /**
      * Sets up a "String" for testing.
      *
-     * @return The {@link ConfigurationBuilder} for chaining
+     * @return The {@link ConfigurationBuilderFixture} for chaining
      */
-    public ConfigurationBuilder setupString() {
+    public ConfigurationBuilderFixture setupString() {
         config.set("string", "Custom String");
         return this;
     }
@@ -91,9 +91,9 @@ public class ConfigurationBuilder {
     /**
      * Sets up a "Integer" for testing.
      *
-     * @return The {@link ConfigurationBuilder} for chaining
+     * @return The {@link ConfigurationBuilderFixture} for chaining
      */
-    public ConfigurationBuilder setupInteger() {
+    public ConfigurationBuilderFixture setupInteger() {
         config.set("integer", 12_345);
         return this;
     }
@@ -101,9 +101,9 @@ public class ConfigurationBuilder {
     /**
      * Sets up a "Boolean" for testing.
      *
-     * @return The {@link ConfigurationBuilder} for chaining
+     * @return The {@link ConfigurationBuilderFixture} for chaining
      */
-    public ConfigurationBuilder setupBoolean() {
+    public ConfigurationBuilderFixture setupBoolean() {
         config.set("boolean", true);
         return this;
     }
@@ -111,9 +111,9 @@ public class ConfigurationBuilder {
     /**
      * Sets up a "Double" for testing.
      *
-     * @return The {@link ConfigurationBuilder} for chaining
+     * @return The {@link ConfigurationBuilderFixture} for chaining
      */
-    public ConfigurationBuilder setupDouble() {
+    public ConfigurationBuilderFixture setupDouble() {
         config.set("double", 123.45);
         return this;
     }
@@ -121,9 +121,9 @@ public class ConfigurationBuilder {
     /**
      * Sets up a "Long" for testing.
      *
-     * @return The {@link ConfigurationBuilder} for chaining
+     * @return The {@link ConfigurationBuilderFixture} for chaining
      */
-    public ConfigurationBuilder setupLong() {
+    public ConfigurationBuilderFixture setupLong() {
         config.set("long", Long.MAX_VALUE);
         return this;
     }
@@ -131,9 +131,9 @@ public class ConfigurationBuilder {
     /**
      * Sets up a "List" for testing.
      *
-     * @return The {@link ConfigurationBuilder} for chaining
+     * @return The {@link ConfigurationBuilderFixture} for chaining
      */
-    public ConfigurationBuilder setupList() {
+    public ConfigurationBuilderFixture setupList() {
         config.set("list", List.of("One", 2, 3.0));
         return this;
     }
@@ -141,9 +141,9 @@ public class ConfigurationBuilder {
     /**
      * Sets up a "StringList" for testing.
      *
-     * @return The {@link ConfigurationBuilder} for chaining
+     * @return The {@link ConfigurationBuilderFixture} for chaining
      */
-    public ConfigurationBuilder setupStringList() {
+    public ConfigurationBuilderFixture setupStringList() {
         config.set("stringList", List.of("One", "Two", "Three"));
         return this;
     }
@@ -151,9 +151,9 @@ public class ConfigurationBuilder {
     /**
      * Sets up a "IntegerList" for testing.
      *
-     * @return The {@link ConfigurationBuilder} for chaining
+     * @return The {@link ConfigurationBuilderFixture} for chaining
      */
-    public ConfigurationBuilder setupIntegerList() {
+    public ConfigurationBuilderFixture setupIntegerList() {
         config.set("integerList", List.of(1, 2, 3));
         return this;
     }
@@ -161,9 +161,9 @@ public class ConfigurationBuilder {
     /**
      * Sets up a "BooleanList" for testing.
      *
-     * @return The {@link ConfigurationBuilder} for chaining
+     * @return The {@link ConfigurationBuilderFixture} for chaining
      */
-    public ConfigurationBuilder setupBooleanList() {
+    public ConfigurationBuilderFixture setupBooleanList() {
         config.set("booleanList", List.of(true, false, true));
         return this;
     }
@@ -171,9 +171,9 @@ public class ConfigurationBuilder {
     /**
      * Sets up a "DoubleList" for testing.
      *
-     * @return The {@link ConfigurationBuilder} for chaining
+     * @return The {@link ConfigurationBuilderFixture} for chaining
      */
-    public ConfigurationBuilder setupDoubleList() {
+    public ConfigurationBuilderFixture setupDoubleList() {
         config.set("doubleList", List.of(1.1, 2.2, 3.3));
         return this;
     }
@@ -181,9 +181,9 @@ public class ConfigurationBuilder {
     /**
      * Sets up a "CharacterList" for testing.
      *
-     * @return The {@link ConfigurationBuilder} for chaining
+     * @return The {@link ConfigurationBuilderFixture} for chaining
      */
-    public ConfigurationBuilder setupCharacterList() {
+    public ConfigurationBuilderFixture setupCharacterList() {
         config.set("characterList", List.of('a', 'b', 'c'));
         return this;
     }
@@ -191,9 +191,9 @@ public class ConfigurationBuilder {
     /**
      * Sets up a "MapList" for testing.
      *
-     * @return The {@link ConfigurationBuilder} for chaining
+     * @return The {@link ConfigurationBuilderFixture} for chaining
      */
-    public ConfigurationBuilder setupMapList() {
+    public ConfigurationBuilderFixture setupMapList() {
         config.set("mapList", List.of(Map.of("one", 1, "two", 2), Map.of("three", 3, "four", 4)));
         return this;
     }
@@ -201,9 +201,9 @@ public class ConfigurationBuilder {
     /**
      * Sets up an "Object" for testing.
      *
-     * @return The {@link ConfigurationBuilder} for chaining
+     * @return The {@link ConfigurationBuilderFixture} for chaining
      */
-    public ConfigurationBuilder setupObject() {
+    public ConfigurationBuilderFixture setupObject() {
         config.set("object", new AbstractConfigBaseTest.TestObject("Test", 5, 555));
         return this;
     }
@@ -211,9 +211,9 @@ public class ConfigurationBuilder {
     /**
      * Sets up a "Vector" for testing.
      *
-     * @return The {@link ConfigurationBuilder} for chaining
+     * @return The {@link ConfigurationBuilderFixture} for chaining
      */
-    public ConfigurationBuilder setupVector() {
+    public ConfigurationBuilderFixture setupVector() {
         config.set("vector", new Vector(1, 2, 3));
         return this;
     }
@@ -221,9 +221,9 @@ public class ConfigurationBuilder {
     /**
      * Sets up a "Color" for testing.
      *
-     * @return The {@link ConfigurationBuilder} for chaining
+     * @return The {@link ConfigurationBuilderFixture} for chaining
      */
-    public ConfigurationBuilder setupColor() {
+    public ConfigurationBuilderFixture setupColor() {
         config.set("color", Color.fromRGB(255, 0, 0));
         return this;
     }
@@ -231,9 +231,9 @@ public class ConfigurationBuilder {
     /**
      * Sets up a "Section" for testing.
      *
-     * @return The {@link ConfigurationBuilder} for chaining
+     * @return The {@link ConfigurationBuilderFixture} for chaining
      */
-    public ConfigurationBuilder setupSection() {
+    public ConfigurationBuilderFixture setupSection() {
         config.set("section.key", "value");
         return this;
     }
@@ -242,9 +242,9 @@ public class ConfigurationBuilder {
      * Sets up a "Location" for testing.
      *
      * @param world The world to use
-     * @return The {@link ConfigurationBuilder} for chaining
+     * @return The {@link ConfigurationBuilderFixture} for chaining
      */
-    public ConfigurationBuilder setupLocation(final World world) {
+    public ConfigurationBuilderFixture setupLocation(final World world) {
         config.set("location", new Location(world, 1, 2, 3, 4, 5));
         return this;
     }
@@ -252,10 +252,10 @@ public class ConfigurationBuilder {
     /**
      * Sets up an "Item" for testing.
      *
-     * @return The {@link ConfigurationBuilder} for chaining
+     * @return The {@link ConfigurationBuilderFixture} for chaining
      */
     @SuppressWarnings("PMD.UselessPureMethodCall")
-    public ConfigurationBuilder setupItem() {
+    public ConfigurationBuilderFixture setupItem() {
         final ItemStack value = spy(new ItemStack(Material.BONE, 42));
         doReturn("ItemStack {type=BONE, amount=42}").when(value).toString();
         config.set("item", value);
@@ -266,9 +266,9 @@ public class ConfigurationBuilder {
      * Sets up a "OfflinePlayer" for testing.
      *
      * @param uuid The UUID of the player
-     * @return The {@link ConfigurationBuilder} for chaining
+     * @return The {@link ConfigurationBuilderFixture} for chaining
      */
-    public ConfigurationBuilder setupOfflinePlayer(final UUID uuid) {
+    public ConfigurationBuilderFixture setupOfflinePlayer(final UUID uuid) {
         config.set("offlinePlayer", getMockedOfflinePlayer(uuid));
         return this;
     }

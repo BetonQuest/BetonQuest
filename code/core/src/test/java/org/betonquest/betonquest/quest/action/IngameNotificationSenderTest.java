@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
+import org.betonquest.betonquest.logger.util.BetonQuestLoggerExtension;
 import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.notify.NotifyIO;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.*;
  * Test {@link IngameNotificationSender}.
  */
 @ExtendWith(MockitoExtension.class)
-@ExtendWith(BetonQuestLoggerService.class)
+@ExtendWith(BetonQuestLoggerExtension.class)
 class IngameNotificationSenderTest {
 
     @Test

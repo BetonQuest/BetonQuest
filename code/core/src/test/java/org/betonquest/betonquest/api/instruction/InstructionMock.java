@@ -23,8 +23,7 @@ import static org.mockito.Mockito.*;
 /**
  * Instruction where everything except package and instruction string is mocked.
  */
-@SuppressWarnings("JavadocPackage")
-public class MockedInstruction extends DefaultInstruction {
+public class InstructionMock extends DefaultInstruction {
 
     /**
      * Creates a new mocked instruction.
@@ -33,7 +32,7 @@ public class MockedInstruction extends DefaultInstruction {
      * @param instruction the instruction string
      * @throws QuestException when the instruction could not be created
      */
-    public MockedInstruction(final QuestPackage pack, final String instruction) throws QuestException {
+    public InstructionMock(final QuestPackage pack, final String instruction) throws QuestException {
         super(mock(PlaceholderManager.class), mock(QuestPackageManager.class), pack, null, parsers(), instruction);
     }
 

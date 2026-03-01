@@ -73,7 +73,7 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
     }
 
     private Configuration setupConfig() {
-        return new ConfigurationBuilder()
+        return new ConfigurationBuilderFixture()
                 .setupChildSection()
                 .setupGet()
                 .setupExistingSet()
@@ -105,7 +105,7 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
      * @return The original configuration.
      */
     protected Configuration setupOriginal() {
-        return new ConfigurationBuilder()
+        return new ConfigurationBuilderFixture()
                 .setupChildSection()
                 .setupString()
                 .setupDouble()
@@ -124,7 +124,7 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
      * @return The fallback configuration.
      */
     protected Configuration setupFallback() {
-        return new ConfigurationBuilder()
+        return new ConfigurationBuilderFixture()
                 .setupGet()
                 .setupInteger()
                 .setupLong()
@@ -147,7 +147,7 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
      * @return The part of the multi configuration.
      */
     protected ConfigurationSection setupMultiConfig1() {
-        return new ConfigurationBuilder()
+        return new ConfigurationBuilderFixture()
                 .setupChildSection()
                 .setupString()
                 .setupDouble()
@@ -165,7 +165,7 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
      * @return The part of the multi configuration.
      */
     protected ConfigurationSection setupMultiConfig2() {
-        return new ConfigurationBuilder()
+        return new ConfigurationBuilderFixture()
                 .setupGet()
                 .setupInteger()
                 .setupLong()
@@ -182,7 +182,7 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
      * @return The part of the multi configuration.
      */
     protected ConfigurationSection setupMultiConfig3() {
-        return new ConfigurationBuilder()
+        return new ConfigurationBuilderFixture()
                 .setupExistingSet()
                 .setupBoolean()
                 .setupList()

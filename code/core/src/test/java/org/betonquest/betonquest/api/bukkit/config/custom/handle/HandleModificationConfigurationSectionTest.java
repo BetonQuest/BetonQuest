@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.bukkit.config.custom.handle;
 
-import org.betonquest.betonquest.api.bukkit.config.custom.handle.util.HandleModificationToConfiguration;
+import org.betonquest.betonquest.api.bukkit.config.custom.handle.util.HandleModificationToConfigurationFixture;
 import org.betonquest.betonquest.api.bukkit.config.util.ConfigurationSectionBaseTest;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
@@ -20,11 +20,11 @@ public class HandleModificationConfigurationSectionTest extends ConfigurationSec
     /**
      * The instance of the setter.
      */
-    protected HandleModificationToConfiguration setter;
+    protected HandleModificationToConfigurationFixture setter;
 
     @Override
     public ConfigurationSection getConfig() {
-        setter = new HandleModificationToConfiguration();
+        setter = new HandleModificationToConfigurationFixture();
         return new HandleModificationConfigurationSection(super.getDefaultConfig(), setter);
     }
 

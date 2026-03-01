@@ -16,8 +16,7 @@ import static org.betonquest.betonquest.api.bukkit.config.custom.handle.Configur
 /**
  * Copies all modifications to the target {@link Configuration} to another Configuration.
  */
-@SuppressWarnings("JavadocPackage")
-public class HandleModificationToConfiguration implements ConfigurationModificationHandler {
+public class HandleModificationToConfigurationFixture implements ConfigurationModificationHandler {
 
     /**
      * The {@link Configuration} that stores all modifications.
@@ -37,7 +36,7 @@ public class HandleModificationToConfiguration implements ConfigurationModificat
     /**
      * Empty constructor.
      */
-    public HandleModificationToConfiguration() {
+    public HandleModificationToConfigurationFixture() {
         section = new MemoryConfiguration();
         comments = new HashMap<>();
         inlineComments = new HashMap<>();

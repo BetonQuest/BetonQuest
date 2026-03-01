@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.objective.interact;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
+import org.betonquest.betonquest.logger.util.BetonQuestLoggerExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Test for {@link EntityInteractObjective} and its inner classes.
  */
-@ExtendWith(BetonQuestLoggerService.class)
+@ExtendWith(BetonQuestLoggerExtension.class)
 class EntityInteractObjectiveTest {
 
     /**

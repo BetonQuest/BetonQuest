@@ -20,7 +20,7 @@ import org.betonquest.betonquest.id.action.ActionIdentifierFactory;
 import org.betonquest.betonquest.id.item.ItemIdentifierFactory;
 import org.betonquest.betonquest.kernel.registry.quest.IdentifierTypeRegistry;
 import org.betonquest.betonquest.lib.instruction.section.DefaultSectionInstruction;
-import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
+import org.betonquest.betonquest.logger.util.BetonQuestLoggerExtension;
 import org.bukkit.Server;
 import org.bukkit.configuration.ConfigurationSection;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +35,7 @@ import static org.mockito.Mockito.*;
  * It mocks the {@link ScheduleIdentifier} of the schedule, it's {@link QuestPackage}
  * and the {@link ConfigurationSection} used for parsing the schedules' config.
  */
-@ExtendWith({MockitoExtension.class, BetonQuestLoggerService.class})
+@ExtendWith({MockitoExtension.class, BetonQuestLoggerExtension.class})
 public abstract class AbstractScheduleTest {
 
     /**

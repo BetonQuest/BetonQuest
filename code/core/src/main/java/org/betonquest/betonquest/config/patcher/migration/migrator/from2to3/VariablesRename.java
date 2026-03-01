@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
 /**
  * Handles the variables (now named Placeholders) rename migration.
  */
-@SuppressWarnings("LocalFinalVariableName")
 public class VariablesRename implements QuestMigration {
 
     /**
@@ -60,13 +59,13 @@ public class VariablesRename implements QuestMigration {
 
     @VisibleForTesting
     String replaceGlobalVariables(final String input) {
-        final String result1 = replaceRegex(input, "%math\\.(.*?)%",
+        final String replaceMath = replaceRegex(input, "%math\\.(.*?)%",
                 math -> "%math." + replaceRegex(math, "(?<!\\\\)\\$(.*?)(?<!\\\\)\\$",
                         variable -> "{" + migrateVariable(variable) + "}") + "%");
-        final String result2 = replaceRegex(result1, "(?<!\\\\)\\$(.*?)(?<!\\\\)\\$",
+        final String replaceRemaining = replaceRegex(replaceMath, "(?<!\\\\)\\$(.*?)(?<!\\\\)\\$",
                 variable -> "%" + migrateVariable(variable) + "%");
 
-        return result2.replaceAll("\\\\\\$", "\\$");
+        return replaceRemaining.replaceAll("\\\\\\$", "\\$");
     }
 
     private String replaceRegex(final String input, final String regex, final Function<String, String> transformation) {

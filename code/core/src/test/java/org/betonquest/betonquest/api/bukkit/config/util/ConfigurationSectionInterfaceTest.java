@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.bukkit.config.util;
 
-@SuppressWarnings({"unused", "PMD.CommentRequired", "PMD.UnitTestShouldUseTestAnnotation", "PMD.TooManyMethods", "PMD.ExcessivePublicCount", "MissingJavadocMethod", "MissingJavadocType", "JavadocPackage"})
-public interface ConfigurationSectionTestInterface {
+@SuppressWarnings({"unused", "PMD.CommentRequired", "PMD.UnitTestShouldUseTestAnnotation", "PMD.TooManyMethods", "PMD.ExcessivePublicCount", "MissingJavadocMethod", "MissingJavadocType"})
+public interface ConfigurationSectionInterfaceTest {
 
     void testGetKeysDeepFalse();
 

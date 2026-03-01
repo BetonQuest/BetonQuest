@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.logger;
 
-import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
+import org.betonquest.betonquest.logger.util.BetonQuestLoggerExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -49,7 +49,7 @@ class TopicLoggerTest {
     @BeforeEach
     void setUp() {
         this.handler = mock(Handler.class);
-        final Logger parentLogger = BetonQuestLoggerService.getSilentLogger();
+        final Logger parentLogger = BetonQuestLoggerExtension.getSilentLogger();
         parentLogger.addHandler(handler);
         this.logger = new TopicLogger(parentLogger, TopicLoggerTest.class, LOGGER_TOPIC);
     }

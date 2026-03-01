@@ -5,10 +5,10 @@ import org.bukkit.plugin.Plugin;
 /**
  * A scheduled repeating task for the {@link BukkitSchedulerMock}.
  */
-public class RepeatingTask extends ScheduledTask {
+public class RepeatingTaskMock extends ScheduledTaskMock {
 
     /**
-     * Period to execute the {@link ScheduledTask}.
+     * Period to execute the {@link ScheduledTaskMock}.
      */
     private final long period;
 
@@ -22,7 +22,7 @@ public class RepeatingTask extends ScheduledTask {
      * @param period        the period to execute this task
      * @param runnable      the runnable to execute
      */
-    public RepeatingTask(final int taskId, final Plugin plugin, final boolean sync, final long scheduledTick, final long period, final Runnable runnable) {
+    public RepeatingTaskMock(final int taskId, final Plugin plugin, final boolean sync, final long scheduledTick, final long period, final Runnable runnable) {
         super(taskId, plugin, sync, scheduledTick, runnable);
         this.period = period;
     }

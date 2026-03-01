@@ -28,7 +28,7 @@ class AbstractCoreComponentTest {
 
     @BeforeEach
     void setUp() {
-        component = spy(new RawDummyComponent(BetonQuestLogger.class));
+        component = spy(new ComponentMock(BetonQuestLogger.class));
         loader = new DefaultCoreComponentLoader(logger);
     }
 

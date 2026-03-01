@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.action.journal;
 
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.feature.journal.Journal;
-import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
+import org.betonquest.betonquest.logger.util.BetonQuestLoggerExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -13,7 +13,7 @@ import static org.mockito.Mockito.*;
 /**
  * Test {@link NoOperationJournalChanger}.
  */
-@ExtendWith({MockitoExtension.class, BetonQuestLoggerService.class})
+@ExtendWith({MockitoExtension.class, BetonQuestLoggerExtension.class})
 class NoOperationJournalChangerTest {
 
     @Test

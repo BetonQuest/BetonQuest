@@ -38,10 +38,10 @@ _See [Logging](../../../API/Logging.md) for general information about BetonQuest
 
 === "Legacy Testing"
     If you write a test for a legacy class that requires a `BetonQuestLogger` or a `BetonQuestLoggerFactory` you can use the
-    `BetonQuestLoggerService` like so:
+    `BetonQuestLoggerExtension` like so:
     
     ````java linenums="1" hl_lines="1"
-      @ExtendWith(BetonQuestLoggerService.class)
+      @ExtendWith(BetonQuestLoggerExtension.class)
       public class TestClass {
     ````
     Now you can easily obtain a `BetonQuestLoggerFactory`, a `BetonQuestLogger` and a static mock of the `BetonQuest` instance
@@ -52,14 +52,14 @@ _See [Logging](../../../API/Logging.md) for general information about BetonQuest
 You can now add this optional argument to any test's method signature:
 
 ```java linenums="1" hl_lines="5"
-@ExtendWith(BetonQuestLoggerService.class)
+@ExtendWith(BetonQuestLoggerExtension.class)
 public class TestClass {
 
     @Test
     public void testCustom(LogValidator validator) {
 ```
 
-The `LogValidator` is created and passed to your method by the `BetonQuestLoggerService`.
+The `LogValidator` is created and passed to your method by the `BetonQuestLoggerExtension`.
 It makes it possible to assert that a log message has been logged in the silent parent logger.
 The simplest method is `assertLogEntry(Level level, String message)`, that you can use to check
 that the given message with the given level has been logged. You can also check that there are no additional log 
@@ -71,7 +71,7 @@ messages in the `LogValidator` by calling `assertEmpty()`.
     You can also use these two additional arguments:
     
     ```java linenums="1" hl_lines="5"
-    @ExtendWith(BetonQuestLoggerService.class)
+    @ExtendWith(BetonQuestLoggerExtension.class)
 
     public class TestClass {
         @Test
@@ -81,7 +81,7 @@ messages in the `LogValidator` by calling `assertEmpty()`.
     The `logger` is the silent parent `Logger`.
 
     The `log` is a new instance of the `BetonQuestLogger` that you can use to log things during the test.
-    This logger has a topic that can be accessed via `BetonQuestLoggerService.LOGGER_TOPIC`.
+    This logger has a topic that can be accessed via `BetonQuestLoggerExtension.LOGGER_TOPIC`.
 
 ## Handling BukkitScheduler
 
