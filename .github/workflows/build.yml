@@ -60,7 +60,7 @@ jobs:
           ./mvnw ${CHANGELIST-} -P Test-All -B verify
           git diff > target/code/CodeChanges.patch
       - name: Upload Code
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: BetonQuest-Code
           path: |
@@ -101,7 +101,7 @@ jobs:
           mkdocs build --strict 
           git diff > target/docs/DocsChanges.patch
       - name: Upload Docs
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: BetonQuest-Docs
           path: |
