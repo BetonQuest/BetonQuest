@@ -62,9 +62,7 @@ public class ConfigComponent extends AbstractCoreComponent {
 
     private void reload(final FileConfigAccessor config) {
         try {
-            if (!config.reload()) {
-                throw new IllegalStateException("Could not reload the %s file!".formatted(CONFIG_FILE));
-            }
+            config.reload();
         } catch (final IOException e) {
             throw new IllegalStateException("Failed to reload the %s file!".formatted(CONFIG_FILE), e);
         }

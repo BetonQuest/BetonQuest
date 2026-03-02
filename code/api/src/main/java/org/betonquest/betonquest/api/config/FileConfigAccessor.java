@@ -30,10 +30,10 @@ public interface FileConfigAccessor extends ConfigAccessor {
      * Reloads from the file that is represented by this {@link FileConfigAccessor}.
      * This method does nothing if no configurationFile was provided in the constructor.
      *
-     * @return Only returns true if the file was successfully reloaded.
-     * @throws IOException if the file could not be reloaded.
+     * @throws IOException           if an exception was thrown during the reload.
+     * @throws IllegalStateException if there is no configuration file to be reloaded.
      */
-    boolean reload() throws IOException;
+    void reload() throws IOException;
 
     /**
      * Gets the {@link File}, that is represented by this {@link FileConfigAccessor}.
