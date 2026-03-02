@@ -13,6 +13,7 @@ import org.betonquest.betonquest.compatibility.vault.placeholder.MoneyPlaceholde
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicesManager;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Integrator for <a href="https://github.com/MilkBowl/VaultAPI">Vault</a>.
@@ -25,6 +26,12 @@ public class VaultIntegrator implements Integrator {
     private final BetonQuest plugin;
 
     /**
+     * API to use delayed.
+     */
+    @Nullable
+    private BetonQuestApi api;
+
+    /**
      * Constructor for the Vault Integration.
      */
     public VaultIntegrator() {
@@ -33,6 +40,14 @@ public class VaultIntegrator implements Integrator {
 
     @Override
     public void hook(final BetonQuestApi api) {
+        this.api = api;
+    }
+
+    @Override
+    public void postHook() {
+        if (api == null) {
+            throw new IllegalStateException("Vault integrator has not been hooked!");
+        }
         final BetonQuestLogger log = api.loggerFactory().create(VaultIntegrator.class);
 
         final ServicesManager servicesManager = Bukkit.getServer().getServicesManager();
