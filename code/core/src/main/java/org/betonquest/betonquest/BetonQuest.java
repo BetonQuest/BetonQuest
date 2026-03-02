@@ -49,6 +49,7 @@ import org.betonquest.betonquest.kernel.component.LanguageProviderComponent;
 import org.betonquest.betonquest.kernel.component.ListenersComponent;
 import org.betonquest.betonquest.kernel.component.LogHandlerComponent;
 import org.betonquest.betonquest.kernel.component.MigratorComponent;
+import org.betonquest.betonquest.kernel.component.NotificationCategoriesComponent;
 import org.betonquest.betonquest.kernel.component.NotificationsComponent;
 import org.betonquest.betonquest.kernel.component.NpcsComponent;
 import org.betonquest.betonquest.kernel.component.ObjectivesComponent;
@@ -224,6 +225,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
                 new CommandsComponent(),
                 new LogHandlerComponent(),
                 new QuestPackageManagerComponent(),
+                new NotificationCategoriesComponent(),
                 new DatabaseComponent(),
                 new AsyncSaverComponent(),
                 new GlobalDataComponent(),
