@@ -18,6 +18,7 @@ import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.id.conversation.ConversationIdentifierFactory;
 import org.betonquest.betonquest.id.npc.NpcIdentifierFactory;
+import org.betonquest.betonquest.kernel.ProcessorDataLoader;
 import org.betonquest.betonquest.kernel.processor.feature.ConversationProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
 import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
@@ -44,7 +45,7 @@ public class NpcsComponent extends AbstractCoreComponent {
                 QuestPackageManager.class, BetonQuestLoggerFactory.class, ProfileProvider.class, ConfigAccessor.class,
                 Saver.class, PluginMessage.class, Instructions.class, Identifiers.class,
                 ConversationProcessor.class, ActionManager.class, ConditionManager.class,
-                ConversationIdentifierFactory.class);
+                ConversationIdentifierFactory.class, ProcessorDataLoader.class);
     }
 
     @Override
@@ -67,6 +68,7 @@ public class NpcsComponent extends AbstractCoreComponent {
         final Saver saver = getDependency(Saver.class);
         final Identifiers identifiers = getDependency(Identifiers.class);
         final Plugin plugin = getDependency(Plugin.class);
+        final ProcessorDataLoader processorDataLoader = getDependency(ProcessorDataLoader.class);
 
         final NpcIdentifierFactory npcIdentifierFactory = new NpcIdentifierFactory(questPackageManager);
         identifiers.register(NpcIdentifier.class, npcIdentifierFactory);
@@ -81,6 +83,8 @@ public class NpcsComponent extends AbstractCoreComponent {
         dependencyProvider.take(NpcProcessor.class, npcProcessor);
         dependencyProvider.take(DefaultNpcHider.class, npcProcessor.getNpcHider());
         dependencyProvider.take(DefaultNpcs.class, new DefaultNpcs(npcProcessor, npcTypeRegistry));
+
+        processorDataLoader.addProcessor(npcProcessor);
     }
 
     /**

@@ -4,6 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.kernel.registry.feature.NotifyIORegistry;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
@@ -84,7 +85,7 @@ public final class Notify {
         }
         ios.add("chat");
 
-        return BetonQuest.getInstance().getCoreQuestTypeHandler().getNotifyIORegistry().getFactory(ios).create(pack, categoryData);
+        return BetonQuest.getInstance().getComponentLoader().get(NotifyIORegistry.class).getFactory(ios).create(pack, categoryData);
     }
 
     private static SortedSet<String> getCategories(@Nullable final String category) {

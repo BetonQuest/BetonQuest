@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
+import org.betonquest.betonquest.api.service.npc.NpcManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -123,7 +124,7 @@ public class NpcRangeObjective extends DefaultObjective {
         for (final OnlineProfile onlineProfile : profiles) {
             try {
                 for (final NpcIdentifier npcId : npcIds.getValue(onlineProfile)) {
-                    final Npc<?> npc = BetonQuest.getInstance().getCoreQuestTypeHandler().getNpcProcessor().get(onlineProfile, npcId);
+                    final Npc<?> npc = BetonQuest.getInstance().getComponentLoader().get(NpcManager.class).get(onlineProfile, npcId);
                     if (!npc.isSpawned()) {
                         continue;
                     }

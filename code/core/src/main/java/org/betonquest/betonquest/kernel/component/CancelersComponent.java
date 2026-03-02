@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.id.cancel.QuestCancelerIdentifierFactory;
+import org.betonquest.betonquest.kernel.ProcessorDataLoader;
 import org.betonquest.betonquest.kernel.processor.feature.CancelerProcessor;
 import org.betonquest.betonquest.kernel.processor.feature.ItemProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.ActionProcessor;
@@ -35,7 +36,8 @@ public class CancelersComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(QuestPackageManager.class, BetonQuestLoggerFactory.class, PlayerDataStorage.class,
                 PluginMessage.class, Identifiers.class, Instructions.class, ParsedSectionTextCreator.class,
-                ActionProcessor.class, ConditionProcessor.class, ObjectiveProcessor.class, ItemProcessor.class);
+                ActionProcessor.class, ConditionProcessor.class, ObjectiveProcessor.class, ItemProcessor.class,
+                ProcessorDataLoader.class);
     }
 
     @Override
@@ -56,6 +58,7 @@ public class CancelersComponent extends AbstractCoreComponent {
         final PluginMessage pluginMessage = getDependency(PluginMessage.class);
         final PlayerDataStorage playerDataStorage = getDependency(PlayerDataStorage.class);
         final ParsedSectionTextCreator parsedSectionTextCreator = getDependency(ParsedSectionTextCreator.class);
+        final ProcessorDataLoader processorDataLoader = getDependency(ProcessorDataLoader.class);
 
         final QuestCancelerIdentifierFactory questCancelerIdentifierFactory = new QuestCancelerIdentifierFactory(packManager);
         identifiers.register(QuestCancelerIdentifier.class, questCancelerIdentifierFactory);
@@ -65,5 +68,7 @@ public class CancelersComponent extends AbstractCoreComponent {
 
         dependencyProvider.take(QuestCancelerIdentifierFactory.class, questCancelerIdentifierFactory);
         dependencyProvider.take(CancelerProcessor.class, cancelerProcessor);
+
+        processorDataLoader.addProcessor(cancelerProcessor);
     }
 }

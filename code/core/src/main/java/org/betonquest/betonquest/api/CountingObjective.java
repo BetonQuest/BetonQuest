@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveProperties;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
+import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.betonquest.betonquest.quest.action.NotificationLevel;
 import org.jetbrains.annotations.Nullable;
@@ -207,7 +208,7 @@ public abstract class CountingObjective extends DefaultObjective {
                     directionFactor = targetAmount < 0 ? -1 : 1;
                     lastChange = new AtomicInteger();
                     if (dirty.get()) {
-                        final ObjectiveService service = BetonQuest.getInstance().getCoreQuestTypeHandler().getObjectiveProcessor().getObjective(objID).getService();
+                        final ObjectiveService service = BetonQuest.getInstance().getComponentLoader().get(ObjectiveManager.class).getObjective(objID).getService();
                         update(service);
                     }
                     break;
@@ -386,7 +387,7 @@ public abstract class CountingObjective extends DefaultObjective {
         private CountingData change(final int amount) {
             final ObjectiveService service;
             try {
-                service = BetonQuest.getInstance().getCoreQuestTypeHandler().getObjectiveProcessor().getObjective(objID).getService();
+                service = BetonQuest.getInstance().getComponentLoader().get(ObjectiveManager.class).getObjective(objID).getService();
             } catch (final QuestException e) {
                 throw new IllegalStateException("Could not get objective service for objective '" + objID + "'", e);
             }

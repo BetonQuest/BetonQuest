@@ -4,6 +4,8 @@ import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.reload.ReloadPhase;
+import org.betonquest.betonquest.api.reload.Reloader;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
 import org.betonquest.betonquest.schedule.LastExecutionCache;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -35,7 +37,7 @@ public class ExecutionCacheComponent extends AbstractCoreComponent {
 
     @Override
     public Set<Class<?>> requires() {
-        return Set.of(Plugin.class, BetonQuestLoggerFactory.class, ConfigAccessorFactory.class);
+        return Set.of(Plugin.class, BetonQuestLoggerFactory.class, ConfigAccessorFactory.class, Reloader.class);
     }
 
     @Override
@@ -48,6 +50,7 @@ public class ExecutionCacheComponent extends AbstractCoreComponent {
         final Plugin plugin = getDependency(Plugin.class);
         final BetonQuestLoggerFactory loggerFactory = getDependency(BetonQuestLoggerFactory.class);
         final ConfigAccessorFactory configAccessorFactory = getDependency(ConfigAccessorFactory.class);
+        final Reloader reloader = getDependency(Reloader.class);
 
         final FileConfigAccessor cache;
         try {
@@ -63,5 +66,6 @@ public class ExecutionCacheComponent extends AbstractCoreComponent {
         final LastExecutionCache lastExecutionCache = new LastExecutionCache(loggerFactory.create(LastExecutionCache.class, "Cache"), cache);
 
         dependencyProvider.take(LastExecutionCache.class, lastExecutionCache);
+        reloader.register(ReloadPhase.PACKAGES, lastExecutionCache::reload);
     }
 }

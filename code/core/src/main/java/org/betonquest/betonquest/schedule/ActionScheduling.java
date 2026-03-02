@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
+import org.betonquest.betonquest.kernel.processor.PostLoadTask;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.ScheduleRegistry;
 
@@ -16,7 +17,7 @@ import java.util.Map;
 /**
  * Class responsible for managing schedule types, their schedulers, as well as parsing schedules from config.
  */
-public class ActionScheduling extends SectionProcessor<ScheduleIdentifier, Schedule> {
+public class ActionScheduling extends SectionProcessor<ScheduleIdentifier, Schedule> implements PostLoadTask {
 
     /**
      * Map that contains all types of schedulers,
@@ -34,7 +35,7 @@ public class ActionScheduling extends SectionProcessor<ScheduleIdentifier, Sched
      */
     public ActionScheduling(final BetonQuestLogger log, final Instructions instructionApi,
                             final ScheduleRegistry scheduleTypes, final IdentifierFactory<ScheduleIdentifier> identifierFactory) {
-        super(log, instructionApi, identifierFactory, "Schedules", "schedules");
+        super(log, instructionApi, identifierFactory, "Schedule", "schedules");
         this.scheduleTypes = scheduleTypes;
     }
 
@@ -51,6 +52,7 @@ public class ActionScheduling extends SectionProcessor<ScheduleIdentifier, Sched
      * Start all schedulers and activate all schedules.
      */
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
+    @Override
     public void startAll() {
         log.debug("Starting schedulers...");
         for (final ScheduleType<?, ?> type : scheduleTypes.values()) {

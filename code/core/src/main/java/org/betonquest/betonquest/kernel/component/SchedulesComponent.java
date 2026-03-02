@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.id.schedule.ScheduleIdentifierFactory;
+import org.betonquest.betonquest.kernel.ProcessorDataLoader;
 import org.betonquest.betonquest.kernel.registry.feature.ScheduleRegistry;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
 import org.betonquest.betonquest.schedule.ActionScheduling;
@@ -27,7 +28,8 @@ public class SchedulesComponent extends AbstractCoreComponent {
 
     @Override
     public Set<Class<?>> requires() {
-        return Set.of(QuestPackageManager.class, BetonQuestLoggerFactory.class, Identifiers.class, Instructions.class);
+        return Set.of(QuestPackageManager.class, BetonQuestLoggerFactory.class, Identifiers.class, Instructions.class,
+                ProcessorDataLoader.class);
     }
 
     @Override
@@ -41,6 +43,7 @@ public class SchedulesComponent extends AbstractCoreComponent {
         final BetonQuestLoggerFactory loggerFactory = getDependency(BetonQuestLoggerFactory.class);
         final Instructions instructions = getDependency(Instructions.class);
         final Identifiers identifiers = getDependency(Identifiers.class);
+        final ProcessorDataLoader processorDataLoader = getDependency(ProcessorDataLoader.class);
 
         final ScheduleIdentifierFactory scheduleIdentifierFactory = new ScheduleIdentifierFactory(questPackageManager);
         identifiers.register(ScheduleIdentifier.class, scheduleIdentifierFactory);
@@ -51,5 +54,7 @@ public class SchedulesComponent extends AbstractCoreComponent {
         dependencyProvider.take(ScheduleIdentifierFactory.class, scheduleIdentifierFactory);
         dependencyProvider.take(ScheduleRegistry.class, scheduleRegistry);
         dependencyProvider.take(ActionScheduling.class, scheduleProcessor);
+
+        processorDataLoader.addProcessor(scheduleProcessor);
     }
 }

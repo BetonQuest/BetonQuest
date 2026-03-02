@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderRegistry;
 import org.betonquest.betonquest.api.service.placeholder.Placeholders;
 import org.betonquest.betonquest.id.placeholder.PlaceholderIdentifierFactory;
+import org.betonquest.betonquest.kernel.ProcessorDataLoader;
 import org.betonquest.betonquest.kernel.processor.quest.PlaceholderProcessor;
 import org.betonquest.betonquest.kernel.registry.quest.PlaceholderTypeRegistry;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
@@ -34,7 +35,7 @@ public class PlaceholdersComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(Plugin.class, BukkitScheduler.class,
                 QuestPackageManager.class, BetonQuestLoggerFactory.class,
-                Identifiers.class, Instructions.class);
+                Identifiers.class, Instructions.class, ProcessorDataLoader.class);
     }
 
     @Override
@@ -50,6 +51,7 @@ public class PlaceholdersComponent extends AbstractCoreComponent {
         final Instructions instructions = getDependency(Instructions.class);
         final BukkitScheduler bukkitScheduler = getDependency(BukkitScheduler.class);
         final Plugin plugin = getDependency(Plugin.class);
+        final ProcessorDataLoader processorDataLoader = getDependency(ProcessorDataLoader.class);
 
         final PlaceholderIdentifierFactory placeholderIdentifierFactory = new PlaceholderIdentifierFactory(questPackageManager);
         identifiers.register(PlaceholderIdentifier.class, placeholderIdentifierFactory);
@@ -61,6 +63,8 @@ public class PlaceholdersComponent extends AbstractCoreComponent {
         dependencyProvider.take(PlaceholderTypeRegistry.class, placeholderTypeRegistry);
         dependencyProvider.take(PlaceholderProcessor.class, placeholderProcessor);
         dependencyProvider.take(DefaultPlaceholders.class, new DefaultPlaceholders(placeholderProcessor, placeholderTypeRegistry));
+
+        processorDataLoader.addProcessor(placeholderProcessor);
     }
 
     /**

@@ -4,6 +4,7 @@ import dev.unnm3d.redischat.api.RedisChatAPI;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.compatibility.Integrator;
+import org.betonquest.betonquest.kernel.registry.feature.InterceptorRegistry;
 import org.bukkit.event.Listener;
 
 import java.util.Objects;
@@ -23,7 +24,7 @@ public class RedisChatIntegrator implements Integrator, Listener {
     public void hook(final BetonQuestApi api) {
         final RedisChatAPI redisChatAPI = RedisChatAPI.getAPI();
         Objects.requireNonNull(redisChatAPI, "RedisChatAPI is null");
-        BetonQuest.getInstance().getCoreQuestTypeHandler().getInterceptorRegistry().register("redischat", new RedisChatInterceptorFactory(redisChatAPI));
+        BetonQuest.getInstance().getComponentLoader().get(InterceptorRegistry.class).register("redischat", new RedisChatInterceptorFactory(redisChatAPI));
     }
 
     @Override

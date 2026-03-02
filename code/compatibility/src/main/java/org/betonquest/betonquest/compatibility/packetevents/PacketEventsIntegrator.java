@@ -12,7 +12,10 @@ import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.function.TriFunction;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.dependency.CoreComponentLoader;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.UnsupportedVersionException;
@@ -25,6 +28,8 @@ import org.betonquest.betonquest.compatibility.packetevents.passenger.FakeArmorS
 import org.betonquest.betonquest.conversation.menu.MenuConvIOFactory;
 import org.betonquest.betonquest.conversation.menu.input.ConversationAction;
 import org.betonquest.betonquest.conversation.menu.input.ConversationSession;
+import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
+import org.betonquest.betonquest.kernel.registry.feature.InterceptorRegistry;
 import org.betonquest.betonquest.versioning.MinecraftVersion;
 import org.betonquest.betonquest.versioning.UpdateStrategy;
 import org.betonquest.betonquest.versioning.Version;
@@ -71,17 +76,18 @@ public class PacketEventsIntegrator implements Integrator {
         final PacketEventsAPI<?> packetEventsAPI = PacketEvents.getAPI();
 
         final BetonQuest plugin = BetonQuest.getInstance();
+        final CoreComponentLoader componentLoader = plugin.getComponentLoader();
         final ConfigAccessor pluginConfig = plugin.getPluginConfig();
 
         final TriFunction<Player, ConversationAction, Boolean, ConversationSession> inputFunction = (player, control, setSpeed) ->
                 new FakeArmorStandPassengerController(plugin, packetEventsAPI, player, control, setSpeed);
-        BetonQuest.getInstance().getCoreQuestTypeHandler().getConversationIORegistry().register("packetevents",
-                new MenuConvIOFactory(inputFunction, plugin, plugin.getCoreQuestTypeHandler().getTextParser(),
-                        plugin.getFontRegistry(), pluginConfig, plugin.getConversationColors()));
+        componentLoader.get(ConversationIORegistry.class).register("packetevents",
+                new MenuConvIOFactory(inputFunction, plugin, componentLoader.get(TextParser.class),
+                        componentLoader.get(FontRegistry.class), pluginConfig, plugin.getConversationColors()));
 
         final boolean displayHistory = pluginConfig.getBoolean("conversation.interceptor.display_history");
         final ChatHistory chatHistory = displayHistory ? getPacketChatHistory(packetEventsAPI, pluginManager, plugin) : new NoneChatHistory();
-        BetonQuest.getInstance().getCoreQuestTypeHandler().getInterceptorRegistry().register("packetevents", new PacketEventsInterceptorFactory(packetEventsAPI, chatHistory));
+        componentLoader.get(InterceptorRegistry.class).register("packetevents", new PacketEventsInterceptorFactory(packetEventsAPI, chatHistory));
 
         api.actions().registry().register("freeze", new FreezeActionFactory(plugin, packetEventsAPI));
     }

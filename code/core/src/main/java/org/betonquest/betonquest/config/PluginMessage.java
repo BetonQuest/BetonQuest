@@ -238,15 +238,16 @@ public class PluginMessage {
 
     /**
      * Reloads the configuration.
-     *
-     * @throws IOException    if the configuration could not be reloaded
-     * @throws QuestException if the configuration could not be parsed
      */
-    public void reload() throws IOException, QuestException {
-        for (final FileConfigAccessor config : messages.values()) {
-            config.reload();
+    public void reload() {
+        try {
+            for (final FileConfigAccessor config : messages.values()) {
+                config.reload();
+            }
+            loadedMessages = loadMessages();
+        } catch (final IOException | QuestException e) {
+            log.error("Could not reload the plugin messages!", e);
         }
-        loadedMessages = loadMessages();
     }
 
     /**

@@ -23,6 +23,7 @@ import org.betonquest.betonquest.compatibility.npc.citizens.action.move.Citizens
 import org.betonquest.betonquest.compatibility.npc.citizens.objective.NPCKillObjectiveFactory;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.ConversationIOFactory;
+import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
 
@@ -84,7 +85,7 @@ public class CitizensIntegrator implements Integrator {
         actionRegistry.register("npcmove", new CitizensMoveActionFactory(api.npcs().manager(), citizensArgument, citizensMoveController));
         actionRegistry.registerCombined("npcstop", new CitizensStopActionFactory(api.npcs().manager(), citizensArgument, citizensMoveController));
 
-        final FeatureRegistry<ConversationIOFactory> conversationIORegistry = BetonQuest.getInstance().getCoreQuestTypeHandler().getConversationIORegistry();
+        final FeatureRegistry<ConversationIOFactory> conversationIORegistry = BetonQuest.getInstance().getComponentLoader().get(ConversationIORegistry.class);
         final ConfigAccessor pluginConfig = plugin.getPluginConfig();
         final FontRegistry fontRegistry = plugin.getFontRegistry();
         final ConversationColors colors = plugin.getConversationColors();

@@ -4,6 +4,8 @@ import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.reload.ReloadPhase;
+import org.betonquest.betonquest.api.reload.Reloader;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -28,7 +30,7 @@ public class PluginMessageComponent extends AbstractCoreComponent {
     @Override
     public Set<Class<?>> requires() {
         return Set.of(Plugin.class, BetonQuestLoggerFactory.class, ConfigAccessorFactory.class, LanguageProvider.class,
-                PlayerDataStorage.class, PlaceholderManager.class, TextParser.class);
+                PlayerDataStorage.class, PlaceholderManager.class, TextParser.class, Reloader.class);
     }
 
     @Override
@@ -45,10 +47,12 @@ public class PluginMessageComponent extends AbstractCoreComponent {
         final PlaceholderManager placeholderManager = getDependency(PlaceholderManager.class);
         final TextParser textParser = getDependency(TextParser.class);
         final Plugin plugin = getDependency(Plugin.class);
+        final Reloader reloader = getDependency(Reloader.class);
 
         final PluginMessage pluginMessage = new PluginMessage(loggerFactory.create(PluginMessage.class), plugin, placeholderManager,
                 playerDataStorage, textParser, configAccessorFactory, languageProvider);
 
         dependencyProvider.take(PluginMessage.class, pluginMessage);
+        reloader.register(ReloadPhase.PACKAGES, pluginMessage::reload);
     }
 }

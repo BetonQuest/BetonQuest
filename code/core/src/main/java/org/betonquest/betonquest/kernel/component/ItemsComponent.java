@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.service.item.ItemManager;
 import org.betonquest.betonquest.api.service.item.ItemRegistry;
 import org.betonquest.betonquest.api.service.item.Items;
 import org.betonquest.betonquest.id.item.ItemIdentifierFactory;
+import org.betonquest.betonquest.kernel.ProcessorDataLoader;
 import org.betonquest.betonquest.kernel.processor.feature.ItemProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.ItemTypeRegistry;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
@@ -30,7 +31,8 @@ public class ItemsComponent extends AbstractCoreComponent {
 
     @Override
     public Set<Class<?>> requires() {
-        return Set.of(QuestPackageManager.class, BetonQuestLoggerFactory.class, Identifiers.class, Instructions.class);
+        return Set.of(QuestPackageManager.class, BetonQuestLoggerFactory.class, Identifiers.class, Instructions.class,
+                ProcessorDataLoader.class);
     }
 
     @Override
@@ -44,6 +46,7 @@ public class ItemsComponent extends AbstractCoreComponent {
         final BetonQuestLoggerFactory loggerFactory = getDependency(BetonQuestLoggerFactory.class);
         final Instructions instructions = getDependency(Instructions.class);
         final Identifiers identifiers = getDependency(Identifiers.class);
+        final ProcessorDataLoader processorDataLoader = getDependency(ProcessorDataLoader.class);
 
         final ItemIdentifierFactory itemIdentifierFactory = new ItemIdentifierFactory(questPackageManager);
         identifiers.register(ItemIdentifier.class, itemIdentifierFactory);
@@ -55,6 +58,8 @@ public class ItemsComponent extends AbstractCoreComponent {
         dependencyProvider.take(ItemTypeRegistry.class, itemTypeRegistry);
         dependencyProvider.take(ItemProcessor.class, itemProcessor);
         dependencyProvider.take(DefaultItems.class, new DefaultItems(itemProcessor, itemTypeRegistry));
+
+        processorDataLoader.addProcessor(itemProcessor);
     }
 
     /**

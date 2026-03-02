@@ -150,13 +150,12 @@ public class StandardConfigAccessor extends ConfigurationSectionDecorator implem
     }
 
     @Override
-    public boolean reload() throws IOException {
+    public void reload() throws IOException {
         if (configurationFile == null) {
-            return false;
+            throw new IllegalStateException("Could not reload a configuration file!");
         }
         try {
             readFromFile(configurationFile);
-            return true;
         } catch (InvalidConfigurationException | FileNotFoundException e) {
             throw new IOException(buildExceptionMessage(false, configurationFile.getPath(),
                     "could not be reloaded! Reason: " + e.getMessage()), e);

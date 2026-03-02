@@ -16,7 +16,7 @@ import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.npc.NpcManager;
 import org.betonquest.betonquest.api.service.npc.NpcRegistry;
 import org.betonquest.betonquest.api.text.TextParser;
-import org.betonquest.betonquest.kernel.processor.StartTask;
+import org.betonquest.betonquest.kernel.processor.PostLoadTask;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
@@ -37,7 +37,7 @@ import java.util.Set;
  * Hides and shows holograms to players at a Npcs location. Based on conditions.
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
-public class NpcHologramLoop extends HologramLoop implements Listener, StartTask {
+public class NpcHologramLoop extends HologramLoop implements Listener, PostLoadTask {
 
     /**
      * The task that lets holograms follow NPCs.

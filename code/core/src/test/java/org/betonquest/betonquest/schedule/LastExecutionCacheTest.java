@@ -78,7 +78,7 @@ class LastExecutionCacheTest {
 
     @Test
     void testReloadIOException() throws IOException {
-        when(cacheAccessor.reload()).thenThrow(new IOException("ioexception"));
+        doThrow(new IOException("ioexception")).when(cacheAccessor).reload();
         lastExecutionCache.reload();
         verify(logger, times(1)).error(eq("Could not reload schedule cache: ioexception"), any(IOException.class));
     }

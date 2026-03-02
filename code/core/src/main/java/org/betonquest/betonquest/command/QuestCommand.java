@@ -29,6 +29,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.action.OnlineAction;
 import org.betonquest.betonquest.api.quest.objective.Objective;
+import org.betonquest.betonquest.api.reload.Reloader;
 import org.betonquest.betonquest.api.service.action.ActionManager;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
@@ -205,7 +206,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * The reloader runnable.
      */
-    private final Runnable reloader;
+    private final Reloader reloader;
 
     /**
      * The database saver.
@@ -561,7 +562,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         if (noFilters) {
             logWatcher.addFilter(uuid, "*", Level.WARNING);
         }
-        reloader.run();
+        reloader.reload();
         sendMessage(sender, "reloaded");
         if (noFilters) {
             logWatcher.removeFilter(uuid, "*");
@@ -2057,7 +2058,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                                     JournalEntryProcessor journalEntryProcessor,
                                     ItemTypeRegistry itemTypeRegistry, ActionManager actionManager,
                                     ConditionManager conditionManager,
-                                    ObjectiveManager objectiveManager, ItemManager itemManager, Runnable reloader) {
+                                    ObjectiveManager objectiveManager, ItemManager itemManager, Reloader reloader) {
 
     }
 }

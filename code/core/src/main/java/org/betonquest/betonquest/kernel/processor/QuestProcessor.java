@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -119,6 +120,26 @@ public abstract class QuestProcessor<I extends Identifier, T> {
      * @return the value size with the identifier
      */
     public String readableSize() {
-        return size() + " " + readable;
+        return size() + " " + getReadableName();
+    }
+
+    private boolean sizeOfOnlyOne() {
+        return size() == 1;
+    }
+
+    /**
+     * Gets the readable name of this type.
+     *
+     * @return the readable name
+     */
+    public String getReadableName() {
+        if (sizeOfOnlyOne()) {
+            return readable;
+        }
+        return switch (readable.toLowerCase(Locale.ROOT).charAt(readable.length() - 1)) {
+            case 's', 'x', 'z' -> readable + "es";
+            case 'y' -> readable.substring(0, readable.length() - 1) + "ies";
+            default -> readable + "s";
+        };
     }
 }
