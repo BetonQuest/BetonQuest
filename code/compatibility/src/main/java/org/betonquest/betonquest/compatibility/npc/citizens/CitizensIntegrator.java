@@ -5,7 +5,6 @@ import net.citizensnpcs.api.npc.NPCRegistry;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.identifier.NpcIdentifier;
@@ -85,15 +84,14 @@ public class CitizensIntegrator implements Integrator {
         actionRegistry.register("npcmove", new CitizensMoveActionFactory(api.npcs().manager(), citizensArgument, citizensMoveController));
         actionRegistry.registerCombined("npcstop", new CitizensStopActionFactory(api.npcs().manager(), citizensArgument, citizensMoveController));
 
-        final FeatureRegistry<ConversationIOFactory> conversationIORegistry = BetonQuest.getInstance().getComponentLoader().get(ConversationIORegistry.class);
+        final FeatureRegistry<ConversationIOFactory> conversationIORegistry = plugin.getComponentLoader().get(ConversationIORegistry.class);
         final ConfigAccessor pluginConfig = plugin.getPluginConfig();
-        final FontRegistry fontRegistry = plugin.getFontRegistry();
         final ConversationColors colors = plugin.getConversationColors();
         conversationIORegistry.register("chest", new CitizensInventoryConvIOFactory(loggerFactory,
-                fontRegistry, colors, pluginConfig, plugin, plugin.getServer().getPluginManager(), api.instructions(),
+                api.fonts(), colors, pluginConfig, plugin, plugin.getServer().getPluginManager(), api.instructions(),
                 plugin.getPluginMessage(), api.items().manager(), api.profiles(), api.conversations(), false));
         conversationIORegistry.register("combined", new CitizensInventoryConvIOFactory(loggerFactory,
-                fontRegistry, colors, pluginConfig, plugin, plugin.getServer().getPluginManager(), api.instructions(),
+                api.fonts(), colors, pluginConfig, plugin, plugin.getServer().getPluginManager(), api.instructions(),
                 plugin.getPluginMessage(), api.items().manager(), api.profiles(), api.conversations(), true));
 
         final NpcRegistry npcRegistry = api.npcs().registry();

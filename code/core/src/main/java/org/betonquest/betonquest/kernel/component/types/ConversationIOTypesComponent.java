@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.kernel.component.types;
 
+import org.betonquest.betonquest.api.common.component.font.DefaultFontRegistry;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
@@ -37,7 +38,7 @@ public class ConversationIOTypesComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(Plugin.class, PluginManager.class,
                 BetonQuestLoggerFactory.class, ProfileProvider.class, ConfigAccessor.class,
-                ConversationColors.class, FontRegistry.class, PluginMessage.class, ConversationIORegistry.class,
+                ConversationColors.class, DefaultFontRegistry.class, PluginMessage.class, ConversationIORegistry.class,
                 Conversations.class, ItemManager.class, Instructions.class);
     }
 

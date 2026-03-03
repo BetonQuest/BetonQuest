@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * An interface for a registry for fonts.
  */
-public interface Fonts {
+public interface FontRegistry {
 
     /**
      * Register a font with the given name.

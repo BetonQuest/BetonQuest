@@ -43,7 +43,7 @@ public class BundledMC_1_21_4 implements Integrator {
     public void hook(final BetonQuestApi api) {
         final ItemRegistry item = api.items().registry();
         final TextParser textParser = betonQuest.getComponentLoader().get(TextParser.class);
-        final BookPageWrapper bookPageWrapper = new BookPageWrapper(betonQuest.getFontRegistry(), 114, 14);
+        final BookPageWrapper bookPageWrapper = new BookPageWrapper(api.fonts(), 114, 14);
         item.register("simple", new UpdatedSimpleItemFactory(api.placeholders().manager(),
                 api.packages(), textParser, bookPageWrapper,
                 () -> betonQuest.getPluginConfig().getBoolean("item.quest.lore") ? betonQuest.getPluginMessage() : null));
@@ -52,7 +52,7 @@ public class BundledMC_1_21_4 implements Integrator {
         final TriFunction<Player, ConversationAction, Boolean, ConversationSession> inputFunction = (player, control, setSpeed)
                 -> new InputEventSession(betonQuest, player, control, setSpeed);
         betonQuest.getComponentLoader().get(ConversationIORegistry.class).register("menu", new MenuConvIOFactory(inputFunction,
-                betonQuest, betonQuest.getComponentLoader().get(TextParser.class), betonQuest.getFontRegistry(),
+                betonQuest, betonQuest.getComponentLoader().get(TextParser.class), api.fonts(),
                 betonQuest.getPluginConfig(), betonQuest.getConversationColors()));
 
         api.conditions().registry().register("biome", new UpdatedBiomeConditionFactory());

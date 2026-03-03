@@ -5,6 +5,7 @@ import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.BookPageWrapper;
+import org.betonquest.betonquest.api.common.component.font.DefaultFontRegistry;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -319,7 +320,7 @@ public class SQLite extends Database {
                          "INSERT INTO " + prefix + "backpack_tmp (id, profileID, serialized, amount) VALUES (?, ?, ?, ?)")) {
 
                 final Key defaultkey = Key.key("default");
-                final FontRegistry fontRegistry = new FontRegistry(defaultkey);
+                final FontRegistry fontRegistry = new DefaultFontRegistry(defaultkey);
                 final BookPageWrapper bookPageWrapper = new BookPageWrapper(fontRegistry, 114, 14);
                 final SimpleQuestItemFactory itemFactory = new SimpleQuestItemFactory(PlaceholderProcessor.EMPTY_PLACEHOLDER, Map::of,
                         (message) -> LegacyComponentSerializer.legacySection().deserialize(message.replace("_", " ")),

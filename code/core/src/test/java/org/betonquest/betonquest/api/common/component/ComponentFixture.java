@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.common.component;
 
 import net.kyori.adventure.key.Key;
+import org.betonquest.betonquest.api.common.component.font.DefaultFontRegistry;
 import org.betonquest.betonquest.api.common.component.font.Font;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.lib.font.FontIndexFileFormat;
@@ -22,7 +23,7 @@ public class ComponentFixture {
 
     public FontRegistry getFontRegistry() throws IOException {
         final Key defaultKey = Key.key("default");
-        final FontRegistry fontRegistry = new FontRegistry(defaultKey);
+        final FontRegistry fontRegistry = new DefaultFontRegistry(defaultKey);
         final Path path = Path.of("src/main/resources/fonts/default.font.bin");
         final Font defaultFont = FontIndexFileFormat.BINARY.read(Files.newInputStream(path));
         fontRegistry.registerFont(defaultKey, defaultFont);
