@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api;
 
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
+import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Argument;
@@ -175,4 +176,14 @@ public interface BetonQuestApi {
      * @return the npc api offering functionality to access NPCs
      */
     Npcs npcs();
+
+    /**
+     * Offers access to the font registry.
+     * <br> <br>
+     * The {@link FontRegistry} allows to register custom fonts used internally by BetonQuest for line wrapping.
+     * It also grants access to existing fonts and their specifications.
+     *
+     * @return the font registry offering access to fonts
+     */
+    FontRegistry fonts();
 }
