@@ -28,6 +28,7 @@ import org.betonquest.betonquest.lib.instruction.section.DefaultSectionInstructi
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerExtension;
 import org.betonquest.betonquest.schedule.ActionScheduling.ScheduleType;
 import org.betonquest.betonquest.schedule.impl.BaseScheduleFactory;
+import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.Server;
 import org.bukkit.configuration.ConfigurationOptions;
 import org.bukkit.configuration.ConfigurationSection;
@@ -100,7 +101,7 @@ class ScheduleTypeTest {
         final Identifiers identifierRegistry = new IdentifierTypeRegistry(logger);
         identifierRegistry.register(ActionIdentifier.class, new ActionIdentifierFactory(packManager));
         identifierRegistry.register(ItemIdentifier.class, new ItemIdentifierFactory(packManager));
-        argumentParsers = new DefaultArgumentParsers(mock(ItemManager.class), mock(IdentifierFactory.class), mock(TextParser.class), mock(Server.class), identifierRegistry);
+        argumentParsers = new DefaultArgumentParsers(mock(ItemManager.class), mock(IdentifierFactory.class), mock(TextParser.class), mock(Server.class), identifierRegistry, mock(ParsedSectionTextCreator.class));
 
         lenient().when(section.getString("time")).thenReturn("22:00");
         lenient().when(section.contains("time")).thenReturn(true);

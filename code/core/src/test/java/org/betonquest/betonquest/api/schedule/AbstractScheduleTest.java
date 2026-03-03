@@ -21,6 +21,7 @@ import org.betonquest.betonquest.id.item.ItemIdentifierFactory;
 import org.betonquest.betonquest.kernel.registry.quest.IdentifierTypeRegistry;
 import org.betonquest.betonquest.lib.instruction.section.DefaultSectionInstruction;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerExtension;
+import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.Server;
 import org.bukkit.configuration.ConfigurationSection;
 import org.junit.jupiter.api.BeforeEach;
@@ -87,7 +88,7 @@ public abstract class AbstractScheduleTest {
         final Identifiers identifierRegistry = new IdentifierTypeRegistry(logger);
         identifierRegistry.register(ActionIdentifier.class, new ActionIdentifierFactory(packManager));
         identifierRegistry.register(ItemIdentifier.class, new ItemIdentifierFactory(packManager));
-        this.argumentParsers = new DefaultArgumentParsers(mock(ItemManager.class), mock(IdentifierFactory.class), mock(TextParser.class), mock(Server.class), identifierRegistry);
+        this.argumentParsers = new DefaultArgumentParsers(mock(ItemManager.class), mock(IdentifierFactory.class), mock(TextParser.class), mock(Server.class), identifierRegistry, mock(ParsedSectionTextCreator.class));
 
         prepareConfig();
     }

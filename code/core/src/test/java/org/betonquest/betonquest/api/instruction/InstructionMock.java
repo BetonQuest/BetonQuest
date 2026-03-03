@@ -16,6 +16,7 @@ import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.id.item.ItemIdentifierFactory;
 import org.betonquest.betonquest.id.journal.JournalEntryIdentifierFactory;
 import org.betonquest.betonquest.kernel.registry.quest.IdentifierTypeRegistry;
+import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.Server;
 
 import static org.mockito.Mockito.*;
@@ -40,6 +41,6 @@ public class InstructionMock extends DefaultInstruction {
         final Identifiers identifierRegistry = new IdentifierTypeRegistry(mock(BetonQuestLogger.class));
         identifierRegistry.register(ItemIdentifier.class, new ItemIdentifierFactory(mock(QuestPackageManager.class)));
         identifierRegistry.register(JournalEntryIdentifier.class, new JournalEntryIdentifierFactory(mock(QuestPackageManager.class)));
-        return new DefaultArgumentParsers(mock(ItemManager.class), mock(IdentifierFactory.class), mock(TextParser.class), mock(Server.class), identifierRegistry);
+        return new DefaultArgumentParsers(mock(ItemManager.class), mock(IdentifierFactory.class), mock(TextParser.class), mock(Server.class), identifierRegistry, mock(ParsedSectionTextCreator.class));
     }
 }
