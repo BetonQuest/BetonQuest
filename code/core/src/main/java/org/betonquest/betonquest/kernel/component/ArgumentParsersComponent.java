@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.service.item.ItemManager;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.id.item.ItemIdentifierFactory;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
+import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.Server;
 
 import java.util.Set;
@@ -25,7 +26,8 @@ public class ArgumentParsersComponent extends AbstractCoreComponent {
 
     @Override
     public Set<Class<?>> requires() {
-        return Set.of(Server.class, ItemManager.class, ItemIdentifierFactory.class, TextParser.class, Identifiers.class);
+        return Set.of(Server.class, ItemManager.class, ItemIdentifierFactory.class, TextParser.class, Identifiers.class,
+                ParsedSectionTextCreator.class);
     }
 
     @Override
@@ -40,8 +42,9 @@ public class ArgumentParsersComponent extends AbstractCoreComponent {
         final TextParser textParser = getDependency(TextParser.class);
         final Identifiers identifiers = getDependency(Identifiers.class);
         final Server server = getDependency(Server.class);
+        final ParsedSectionTextCreator parsedSectionTextCreator = getDependency(ParsedSectionTextCreator.class);
 
-        final DefaultArgumentParsers defaultArgumentParsers = new DefaultArgumentParsers(itemManager, itemIdentifierFactory, textParser, server, identifiers);
+        final DefaultArgumentParsers defaultArgumentParsers = new DefaultArgumentParsers(itemManager, itemIdentifierFactory, textParser, server, identifiers, parsedSectionTextCreator);
 
         dependencyProvider.take(DefaultArgumentParsers.class, defaultArgumentParsers);
     }

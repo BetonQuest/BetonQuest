@@ -2,8 +2,10 @@ package org.betonquest.betonquest.api.instruction.argument;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.identifier.Identifier;
+import org.betonquest.betonquest.api.instruction.section.SubSectionArgumentParser;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
+import org.betonquest.betonquest.api.text.Text;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
@@ -103,6 +105,13 @@ public interface ArgumentParsers {
      * @return a parser for numbers
      */
     NumberArgumentParser number();
+
+    /**
+     * Default {@link SubSectionArgumentParser} for {@link Text} in a translation section arrangement.
+     *
+     * @return a parser for the correct translation from a translation section arrangement
+     */
+    SubSectionArgumentParser<Text> translationSection();
 
     /**
      * Default {@link DecoratedArgumentParser} for an {@link Enum} type.
