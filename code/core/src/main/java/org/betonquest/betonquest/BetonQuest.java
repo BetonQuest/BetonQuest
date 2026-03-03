@@ -3,7 +3,7 @@ package org.betonquest.betonquest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.betonquest.betonquest.api.BetonQuestApi;
-import org.betonquest.betonquest.api.common.component.font.DefaultFontRegistry;
+import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
@@ -379,8 +379,8 @@ public class BetonQuest extends JavaPlugin {
      *
      * @return the font registry
      */
-    public DefaultFontRegistry getFontRegistry() {
-        return coreComponentLoader.get(DefaultFontRegistry.class);
+    public FontRegistry getFontRegistry() {
+        return coreComponentLoader.get(FontRegistry.class);
     }
 
     /**

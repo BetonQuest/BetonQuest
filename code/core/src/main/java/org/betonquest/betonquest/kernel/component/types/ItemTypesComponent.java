@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.kernel.component.types;
 
 import org.betonquest.betonquest.api.common.component.BookPageWrapper;
-import org.betonquest.betonquest.api.common.component.font.DefaultFontRegistry;
+import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
@@ -31,7 +31,7 @@ public class ItemTypesComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(QuestPackageManager.class, ConfigAccessor.class,
                 PluginMessage.class, TextParser.class,
-                ItemRegistry.class, DefaultFontRegistry.class, PlaceholderManager.class);
+                ItemRegistry.class, FontRegistry.class, PlaceholderManager.class);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class ItemTypesComponent extends AbstractCoreComponent {
         final PluginMessage pluginMessage = getDependency(PluginMessage.class);
         final TextParser textParser = getDependency(TextParser.class);
         final ItemRegistry itemRegistry = getDependency(ItemRegistry.class);
-        final DefaultFontRegistry fontRegistry = getDependency(DefaultFontRegistry.class);
+        final FontRegistry fontRegistry = getDependency(FontRegistry.class);
         final PlaceholderManager placeholders = getDependency(PlaceholderManager.class);
 
         final BookPageWrapper bookPageWrapper = new BookPageWrapper(fontRegistry, 114, 14);

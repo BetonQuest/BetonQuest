@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.kernel.component;
 
-import org.betonquest.betonquest.api.common.component.font.DefaultFontRegistry;
+import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
@@ -40,7 +40,7 @@ public class JournalsComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(QuestPackageManager.class, BetonQuestLoggerFactory.class, ConfigAccessor.class,
                 Identifiers.class, Instructions.class, PluginMessage.class, TextParser.class,
-                ParsedSectionTextCreator.class, DefaultFontRegistry.class, ConditionManager.class, ProcessorDataLoader.class);
+                ParsedSectionTextCreator.class, FontRegistry.class, ConditionManager.class, ProcessorDataLoader.class);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class JournalsComponent extends AbstractCoreComponent {
         final PluginMessage pluginMessage = getDependency(PluginMessage.class);
         final ConfigAccessor config = getDependency(ConfigAccessor.class);
         final TextParser textParser = getDependency(TextParser.class);
-        final DefaultFontRegistry fontRegistry = getDependency(DefaultFontRegistry.class);
+        final FontRegistry fontRegistry = getDependency(FontRegistry.class);
         final ConditionManager conditionManager = getDependency(ConditionManager.class);
         final ProcessorDataLoader processorDataLoader = getDependency(ProcessorDataLoader.class);
 

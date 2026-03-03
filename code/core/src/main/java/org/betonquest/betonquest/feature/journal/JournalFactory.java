@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.feature.journal;
 
-import org.betonquest.betonquest.api.common.component.font.DefaultFontRegistry;
+import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -56,7 +56,7 @@ public class JournalFactory {
     /**
      * The font registry used to get the width of the characters.
      */
-    private final DefaultFontRegistry fontRegistry;
+    private final FontRegistry fontRegistry;
 
     /**
      * Create a new Factory for Journals.
@@ -73,7 +73,7 @@ public class JournalFactory {
     public JournalFactory(final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage,
                           final ConditionManager conditionManager, final JournalMainPageProcessor mainPageProcessor,
                           final JournalEntryProcessor entryProcessor, final ConfigAccessor config,
-                          final TextParser textParser, final DefaultFontRegistry fontRegistry) {
+                          final TextParser textParser, final FontRegistry fontRegistry) {
         this.loggerFactory = loggerFactory;
         this.pluginMessage = pluginMessage;
         this.conditionManager = conditionManager;

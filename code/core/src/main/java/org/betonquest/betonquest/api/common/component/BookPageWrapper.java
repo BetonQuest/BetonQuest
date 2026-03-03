@@ -2,7 +2,7 @@ package org.betonquest.betonquest.api.common.component;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
-import org.betonquest.betonquest.api.common.component.font.DefaultFontRegistry;
+import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class BookPageWrapper extends FixedComponentLineWrapper {
      * @param maxLineWidth the maximum width of a line in pixels
      * @param maxLines     the maximum number of lines on a page
      */
-    public BookPageWrapper(final DefaultFontRegistry fontRegistry, final int maxLineWidth, final int maxLines) {
+    public BookPageWrapper(final FontRegistry fontRegistry, final int maxLineWidth, final int maxLines) {
         super(fontRegistry, maxLineWidth);
         this.maxLines = maxLines;
     }

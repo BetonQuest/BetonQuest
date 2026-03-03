@@ -4,8 +4,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.apache.commons.lang3.tuple.Pair;
-import org.betonquest.betonquest.api.common.component.font.DefaultFontRegistry;
 import org.betonquest.betonquest.api.common.component.font.Font;
+import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -48,14 +48,14 @@ public class ComponentLineWrapper {
     /**
      * The font registry used to get the width of the characters.
      */
-    private final DefaultFontRegistry fontRegistry;
+    private final FontRegistry fontRegistry;
 
     /**
      * Creates a new ComponentLineWrapper instance.
      *
      * @param fontRegistry the font registry to use
      */
-    public ComponentLineWrapper(final DefaultFontRegistry fontRegistry) {
+    public ComponentLineWrapper(final FontRegistry fontRegistry) {
         this.fontRegistry = fontRegistry;
     }
 

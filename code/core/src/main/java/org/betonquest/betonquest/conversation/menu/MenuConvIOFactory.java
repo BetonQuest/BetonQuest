@@ -3,7 +3,7 @@ package org.betonquest.betonquest.conversation.menu;
 import org.apache.commons.lang3.function.TriFunction;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
-import org.betonquest.betonquest.api.common.component.font.DefaultFontRegistry;
+import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.text.TextParser;
@@ -45,7 +45,7 @@ public class MenuConvIOFactory implements ConversationIOFactory {
     /**
      * The font registry to use in APIs that work with {@link net.kyori.adventure.text.Component}.
      */
-    private final DefaultFontRegistry fontRegistry;
+    private final FontRegistry fontRegistry;
 
     /**
      * The colors used for the conversation.
@@ -68,7 +68,7 @@ public class MenuConvIOFactory implements ConversationIOFactory {
      * @param colors        the colors used for the conversation
      */
     public MenuConvIOFactory(final TriFunction<Player, ConversationAction, Boolean, ConversationSession> inputFunction,
-                             final Plugin plugin, final TextParser textParser, final DefaultFontRegistry fontRegistry,
+                             final Plugin plugin, final TextParser textParser, final FontRegistry fontRegistry,
                              final ConfigAccessor config, final ConversationColors colors) {
         this.inputFunction = inputFunction;
         this.plugin = plugin;
