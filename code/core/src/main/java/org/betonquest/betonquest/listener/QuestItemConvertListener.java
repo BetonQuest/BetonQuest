@@ -1,6 +1,9 @@
 package org.betonquest.betonquest.listener;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -20,12 +23,12 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 
 import static org.betonquest.betonquest.feature.journal.Journal.JOURNAL_KEY;
 import static org.betonquest.betonquest.item.typehandler.QuestHandler.QUEST_ITEM_KEY;
-import static org.betonquest.betonquest.util.Utils.COMPONENT_BI_PREDICATE;
 
 /**
  * Adds the {@link QuestHandler#QUEST_ITEM_KEY} to all "legacy" Quest Items
@@ -103,7 +106,7 @@ public class QuestItemConvertListener implements Listener {
             if (isJournal(meta, journalTitle, journalLines)) {
                 meta.getPersistentDataContainer().set(JOURNAL_KEY, PersistentDataType.BYTE, (byte) 1);
                 stack.setItemMeta(meta);
-            } else if (meta.lore().stream().anyMatch(line -> line.contains(questItemLine, COMPONENT_BI_PREDICATE))) {
+            } else if (meta.lore().stream().anyMatch(line -> line.contains(questItemLine, this::contains))) {
                 meta.getPersistentDataContainer().set(QUEST_ITEM_KEY, PersistentDataType.BYTE, (byte) 1);
                 stack.setItemMeta(meta);
             }
@@ -112,7 +115,7 @@ public class QuestItemConvertListener implements Listener {
 
     private boolean isJournal(final ItemMeta meta, final Component journalTitle, final List<Component> journalLines) {
         return meta instanceof final BookMeta bookMeta && bookMeta.hasTitle()
-                && bookMeta.title().contains(journalTitle, COMPONENT_BI_PREDICATE)
+                && bookMeta.title().contains(journalTitle, this::contains)
                 && Objects.equals(compactList(meta.lore()), compactList(journalLines));
     }
 
@@ -121,5 +124,32 @@ public class QuestItemConvertListener implements Listener {
             return List.of();
         }
         return list.stream().map(Component::compact).toList();
+    }
+
+    private boolean contains(final Component component, final Component part) {
+        if (!(component instanceof final TextComponent componentText) || !(part instanceof final TextComponent partText)) {
+            return false;
+        }
+        if (!componentText.content().equals(partText.content())) {
+            return false;
+        }
+        final Style componentStyle = componentText.style();
+        final Style partStyle = partText.style();
+        if (!Objects.equals(componentStyle.color(), partStyle.color())) {
+            return false;
+        }
+        final Map<TextDecoration, TextDecoration.State> componentDecorations = componentStyle.decorations();
+        final Map<TextDecoration, TextDecoration.State> partDecorations = partStyle.decorations();
+        for (final Map.Entry<TextDecoration, TextDecoration.State> entry : componentDecorations.entrySet()) {
+            final TextDecoration.State componentState = entry.getValue();
+            final TextDecoration.State partState = partDecorations.get(entry.getKey());
+            if (componentState == TextDecoration.State.NOT_SET || partState == TextDecoration.State.NOT_SET) {
+                continue;
+            }
+            if (componentState != partState) {
+                return false;
+            }
+        }
+        return true;
     }
 }
