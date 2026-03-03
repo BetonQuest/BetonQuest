@@ -3,7 +3,6 @@ package org.betonquest.betonquest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.betonquest.betonquest.api.BetonQuestApi;
-import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
@@ -372,15 +371,6 @@ public class BetonQuest extends JavaPlugin {
      */
     public ConversationColors getConversationColors() {
         return coreComponentLoader.get(ConversationColors.class);
-    }
-
-    /**
-     * Get the registry for fonts to calculate width of text.
-     *
-     * @return the font registry
-     */
-    public FontRegistry getFontRegistry() {
-        return coreComponentLoader.get(FontRegistry.class);
     }
 
     /**
