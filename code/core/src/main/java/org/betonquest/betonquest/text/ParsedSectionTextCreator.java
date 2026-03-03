@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Loads value(s) from a key in a section, potentially identified by a language key.
@@ -55,13 +56,13 @@ public class ParsedSectionTextCreator {
      * Loads value(s) from a key in a section, potentially identified by a language key.
      * When there is no section, the value will be identified by the default language.
      *
-     * @param pack    the pack to resolve placeholders
+     * @param pack    the pack to resolve placeholders, but can be null
      * @param section the section to load from
-     * @param path    where the value(s) are stored in the section
+     * @param path    where the value(s) are stored in the section; if null, the given section is used
      * @return the newly created text
      * @throws QuestException if there is no value, the default language is missing or the section format is invalid
      */
-    public Text parseFromSection(final QuestPackage pack, final ConfigurationSection section, final String path)
+    public Text parseFromSection(@Nullable final QuestPackage pack, final ConfigurationSection section, @Nullable final String path)
             throws QuestException {
         return new ParsedSectionText(placeholders, textParser, playerDataStorage,
                 pack, section, path, languageProvider);

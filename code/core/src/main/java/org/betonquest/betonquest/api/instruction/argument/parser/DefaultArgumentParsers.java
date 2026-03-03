@@ -7,13 +7,16 @@ import org.betonquest.betonquest.api.identifier.ItemIdentifier;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.DecoratedArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.NumberArgumentParser;
+import org.betonquest.betonquest.api.instruction.section.SubSectionArgumentParser;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.item.ItemManager;
+import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.lib.instruction.argument.DecoratableArgumentParser;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultNumberArgumentParser;
+import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Server;
@@ -64,6 +67,11 @@ public class DefaultArgumentParsers implements ArgumentParsers {
     private final DecoratedArgumentParser<NamespacedKey> defaultNamespacedKeyParser;
 
     /**
+     * The default instance of {@link TranslationSectionParser}.
+     */
+    private final SubSectionArgumentParser<Text> defaultTranslationSectionParser;
+
+    /**
      * The default decoratable instance of {@link BooleanParser}.
      */
     private final DecoratedArgumentParser<Boolean> defaultBooleanParser;
@@ -102,9 +110,11 @@ public class DefaultArgumentParsers implements ArgumentParsers {
      * @param textParser            the text parser to use for component parsing
      * @param server                the server to use for world and location parsing
      * @param registry              the identifier registry to get identifier factories from
+     * @param textCreator           the text creator to use for translation section parsing
      */
     public DefaultArgumentParsers(final ItemManager itemManager, final IdentifierFactory<ItemIdentifier> itemIdentifierFactory,
-                                  final TextParser textParser, final Server server, final Identifiers registry) {
+                                  final TextParser textParser, final Server server, final Identifiers registry,
+                                  final ParsedSectionTextCreator textCreator) {
         this.registry = registry;
         defaultBlockSelectorParser = new DecoratableArgumentParser<>(new BlockSelectorParser());
         defaultComponentParser = new DecoratableArgumentParser<>(new TextParserToComponentParser(textParser));
@@ -118,6 +128,7 @@ public class DefaultArgumentParsers implements ArgumentParsers {
         defaultVectorParser = new DecoratableArgumentParser<>(new VectorParser());
         defaultWorldParser = new DecoratableArgumentParser<>(new WorldParser(server));
         defaultStringParser = new DecoratableArgumentParser<>(new StringParser());
+        defaultTranslationSectionParser = new TranslationSectionParser(textCreator);
     }
 
     @Override
@@ -173,6 +184,11 @@ public class DefaultArgumentParsers implements ArgumentParsers {
     @Override
     public DecoratedArgumentParser<NamespacedKey> namespacedKey() {
         return defaultNamespacedKeyParser;
+    }
+
+    @Override
+    public SubSectionArgumentParser<Text> translationSection() {
+        return defaultTranslationSectionParser;
     }
 
     @Override
