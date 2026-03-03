@@ -3,7 +3,6 @@ package org.betonquest.betonquest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.betonquest.betonquest.api.BetonQuestApi;
-import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
@@ -100,7 +99,7 @@ import java.util.Map;
  * Represents BetonQuest plugin.
  */
 @SuppressWarnings("NullAway.Init")
-public class BetonQuest extends JavaPlugin implements LanguageProvider {
+public class BetonQuest extends JavaPlugin {
 
     /**
      * The BetonQuest Plugin instance.
@@ -292,11 +291,6 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
      */
     public ConfigAccessor getPluginConfig() {
         return coreComponentLoader.get(FileConfigAccessor.class);
-    }
-
-    @Override
-    public String getDefaultLanguage() {
-        return coreComponentLoader.get(LanguageProvider.class).getDefaultLanguage();
     }
 
     /**
