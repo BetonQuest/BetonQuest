@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.kernel.component.types;
 
-import org.betonquest.betonquest.api.common.component.font.FontRegistry;
+import org.betonquest.betonquest.api.common.component.font.DefaultFontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -37,7 +37,7 @@ public class ConversationIOTypesComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(Plugin.class, PluginManager.class,
                 BetonQuestLoggerFactory.class, ProfileProvider.class, ConfigAccessor.class,
-                ConversationColors.class, FontRegistry.class, PluginMessage.class, ConversationIORegistry.class,
+                ConversationColors.class, DefaultFontRegistry.class, PluginMessage.class, ConversationIORegistry.class,
                 Conversations.class, ItemManager.class, Instructions.class);
     }
 
@@ -49,7 +49,7 @@ public class ConversationIOTypesComponent extends AbstractCoreComponent {
         final ProfileProvider profileProvider = getDependency(ProfileProvider.class);
         final ConversationColors colors = getDependency(ConversationColors.class);
         final ConfigAccessor config = getDependency(ConfigAccessor.class);
-        final FontRegistry fontRegistry = getDependency(FontRegistry.class);
+        final DefaultFontRegistry fontRegistry = getDependency(DefaultFontRegistry.class);
         final ConversationIORegistry conversationIORegistry = getDependency(ConversationIORegistry.class);
         final PluginMessage pluginMessage = getDependency(PluginMessage.class);
         final Conversations conversations = getDependency(Conversations.class);

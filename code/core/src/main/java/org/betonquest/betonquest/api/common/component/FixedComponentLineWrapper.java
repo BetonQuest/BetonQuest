@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.common.component;
 
 import net.kyori.adventure.text.Component;
-import org.betonquest.betonquest.api.common.component.font.FontRegistry;
+import org.betonquest.betonquest.api.common.component.font.DefaultFontRegistry;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -22,7 +22,7 @@ public class FixedComponentLineWrapper extends ComponentLineWrapper {
      * @param fontRegistry the font registry to use
      * @param maxLineWidth the maximum width of a line in pixels
      */
-    public FixedComponentLineWrapper(final FontRegistry fontRegistry, final int maxLineWidth) {
+    public FixedComponentLineWrapper(final DefaultFontRegistry fontRegistry, final int maxLineWidth) {
         super(fontRegistry);
         this.maxLineWidth = maxLineWidth;
     }

@@ -11,7 +11,7 @@ import org.betonquest.betonquest.api.bukkit.event.PlayerJournalAddEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerJournalDeleteEvent;
 import org.betonquest.betonquest.api.common.component.BookPageWrapper;
 import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
-import org.betonquest.betonquest.api.common.component.font.FontRegistry;
+import org.betonquest.betonquest.api.common.component.font.DefaultFontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.identifier.JournalEntryIdentifier;
@@ -137,7 +137,7 @@ public class Journal {
      * @param mainPageProcessor the main page processor
      * @param entryProcessor    the entry processor
      * @param textParser        the {@link TextParser} instance used to parse messages
-     * @param fontRegistry      the {@link FontRegistry} used for font handling
+     * @param fontRegistry      the {@link DefaultFontRegistry} used for font handling
      * @param profile           the {@link OnlineProfile} of the player whose journal is created
      * @param list              list of pointers to journal entries
      * @param config            a {@link ConfigAccessor} that contains the plugin's configuration
@@ -145,7 +145,7 @@ public class Journal {
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public Journal(final BetonQuestLogger log, final PluginMessage pluginMessage, final ConditionManager conditionManager,
                    final JournalMainPageProcessor mainPageProcessor, final JournalEntryProcessor entryProcessor,
-                   final TextParser textParser, final FontRegistry fontRegistry, final Profile profile,
+                   final TextParser textParser, final DefaultFontRegistry fontRegistry, final Profile profile,
                    final List<Pointer> list, final ConfigAccessor config) {
         this.log = log;
         this.pluginMessage = pluginMessage;

@@ -5,7 +5,7 @@ import net.citizensnpcs.api.npc.NPCRegistry;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.common.component.font.FontRegistry;
+import org.betonquest.betonquest.api.common.component.font.DefaultFontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.identifier.NpcIdentifier;
@@ -87,7 +87,7 @@ public class CitizensIntegrator implements Integrator {
 
         final FeatureRegistry<ConversationIOFactory> conversationIORegistry = BetonQuest.getInstance().getComponentLoader().get(ConversationIORegistry.class);
         final ConfigAccessor pluginConfig = plugin.getPluginConfig();
-        final FontRegistry fontRegistry = plugin.getFontRegistry();
+        final DefaultFontRegistry fontRegistry = plugin.getFontRegistry();
         final ConversationColors colors = plugin.getConversationColors();
         conversationIORegistry.register("chest", new CitizensInventoryConvIOFactory(loggerFactory,
                 fontRegistry, colors, pluginConfig, plugin, plugin.getServer().getPluginManager(), api.instructions(),

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.conversation.io;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
-import org.betonquest.betonquest.api.common.component.font.FontRegistry;
+import org.betonquest.betonquest.api.common.component.font.DefaultFontRegistry;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
@@ -17,7 +17,7 @@ public class SlowTellrawConvIOFactory implements ConversationIOFactory {
     /**
      * The font registry to use in APIs that work with {@link net.kyori.adventure.text.Component}.
      */
-    private final FontRegistry fontRegistry;
+    private final DefaultFontRegistry fontRegistry;
 
     /**
      * The colors used for the conversation.
@@ -30,7 +30,7 @@ public class SlowTellrawConvIOFactory implements ConversationIOFactory {
      * @param fontRegistry The font registry used for the conversation.
      * @param colors       The colors used for the conversation.
      */
-    public SlowTellrawConvIOFactory(final FontRegistry fontRegistry, final ConversationColors colors) {
+    public SlowTellrawConvIOFactory(final DefaultFontRegistry fontRegistry, final ConversationColors colors) {
         this.fontRegistry = fontRegistry;
         this.colors = colors;
     }

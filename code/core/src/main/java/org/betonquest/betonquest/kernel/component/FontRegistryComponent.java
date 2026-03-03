@@ -2,8 +2,8 @@ package org.betonquest.betonquest.kernel.component;
 
 import net.kyori.adventure.key.Key;
 import org.apache.commons.lang3.tuple.Pair;
+import org.betonquest.betonquest.api.common.component.font.DefaultFontRegistry;
 import org.betonquest.betonquest.api.common.component.font.Font;
-import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * The implementation of {@link AbstractCoreComponent} for {@link FontRegistry}.
+ * The implementation of {@link AbstractCoreComponent} for {@link DefaultFontRegistry}.
  */
 public class FontRegistryComponent extends AbstractCoreComponent {
 
@@ -34,7 +34,7 @@ public class FontRegistryComponent extends AbstractCoreComponent {
 
     @Override
     public Set<Class<?>> provides() {
-        return Set.of(FontRegistry.class);
+        return Set.of(DefaultFontRegistry.class);
     }
 
     @Override
@@ -42,12 +42,12 @@ public class FontRegistryComponent extends AbstractCoreComponent {
         final Plugin plugin = getDependency(Plugin.class);
         final BetonQuestLoggerFactory loggerFactory = getDependency(BetonQuestLoggerFactory.class);
 
-        final BetonQuestLogger log = loggerFactory.create(FontRegistry.class);
+        final BetonQuestLogger log = loggerFactory.create(DefaultFontRegistry.class);
 
         final Key defaultkey = Key.key("default");
         final File fontFolder = new File(plugin.getDataFolder(), "fonts");
         final FontRetriever fontRetriever = new FontRetriever();
-        final FontRegistry fontRegistry = new FontRegistry(defaultkey);
+        final DefaultFontRegistry fontRegistry = new DefaultFontRegistry(defaultkey);
         plugin.saveResource("fonts/default.font.bin", true);
         final List<Pair<Key, Font>> fonts = fontRetriever.loadFonts(fontFolder.toPath());
         fonts.forEach(pair -> fontRegistry.registerFont(pair.getKey(), pair.getValue()));
@@ -56,6 +56,6 @@ public class FontRegistryComponent extends AbstractCoreComponent {
             throw new IllegalStateException("Could not load fonts!");
         }
 
-        dependencyProvider.take(FontRegistry.class, fontRegistry);
+        dependencyProvider.take(DefaultFontRegistry.class, fontRegistry);
     }
 }

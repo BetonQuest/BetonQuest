@@ -10,7 +10,7 @@ import java.util.Map;
  * The FontRegistry class is responsible for managing a collection of fonts.
  * It allows for the registration and retrieval of fonts by their names.
  */
-public class FontRegistry implements Fonts {
+public class DefaultFontRegistry implements Fonts {
 
     /**
      * The map of registered fonts, where the key is the font name and the value is the Font object.
@@ -28,7 +28,7 @@ public class FontRegistry implements Fonts {
      * @param defaultFont the default font to use if no other font is found, this font still need to be registered,
      *                    with the same name
      */
-    public FontRegistry(final Key defaultFont) {
+    public DefaultFontRegistry(final Key defaultFont) {
         this.defaultFont = defaultFont;
         this.fonts = new HashMap<>();
     }

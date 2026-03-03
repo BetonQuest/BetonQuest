@@ -12,7 +12,7 @@ import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.function.TriFunction;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
-import org.betonquest.betonquest.api.common.component.font.FontRegistry;
+import org.betonquest.betonquest.api.common.component.font.DefaultFontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.dependency.CoreComponentLoader;
 import org.betonquest.betonquest.api.text.TextParser;
@@ -83,7 +83,7 @@ public class PacketEventsIntegrator implements Integrator {
                 new FakeArmorStandPassengerController(plugin, packetEventsAPI, player, control, setSpeed);
         componentLoader.get(ConversationIORegistry.class).register("packetevents",
                 new MenuConvIOFactory(inputFunction, plugin, componentLoader.get(TextParser.class),
-                        componentLoader.get(FontRegistry.class), pluginConfig, plugin.getConversationColors()));
+                        componentLoader.get(DefaultFontRegistry.class), pluginConfig, plugin.getConversationColors()));
 
         final boolean displayHistory = pluginConfig.getBoolean("conversation.interceptor.display_history");
         final ChatHistory chatHistory = displayHistory ? getPacketChatHistory(packetEventsAPI, pluginManager, plugin) : new NoneChatHistory();

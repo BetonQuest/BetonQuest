@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.npc.citizens;
 
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
-import org.betonquest.betonquest.api.common.component.font.FontRegistry;
+import org.betonquest.betonquest.api.common.component.font.DefaultFontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -66,7 +66,7 @@ public class CitizensInventoryConvIOFactory implements ConversationIOFactory {
     /**
      * The font registry to use in APIs that work with {@link net.kyori.adventure.text.Component}.
      */
-    private final FontRegistry fontRegistry;
+    private final DefaultFontRegistry fontRegistry;
 
     /**
      * The colors to use for the conversation.
@@ -100,7 +100,7 @@ public class CitizensInventoryConvIOFactory implements ConversationIOFactory {
      * @param printMessages   if the IO should also print the messages in the chat
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
-    public CitizensInventoryConvIOFactory(final BetonQuestLoggerFactory loggerFactory, final FontRegistry fontRegistry,
+    public CitizensInventoryConvIOFactory(final BetonQuestLoggerFactory loggerFactory, final DefaultFontRegistry fontRegistry,
                                           final ConversationColors colors, final ConfigAccessor config, final Plugin plugin,
                                           final PluginManager pluginManager, final Instructions instructions,
                                           final PluginMessage pluginMessage, final ItemManager itemManager,

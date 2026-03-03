@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.conversation.io;
 
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
-import org.betonquest.betonquest.api.common.component.font.FontRegistry;
+import org.betonquest.betonquest.api.common.component.font.DefaultFontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -37,7 +37,7 @@ public class InventoryConvIOFactory implements ConversationIOFactory {
     /**
      * The font registry to use in APIs that work with {@link net.kyori.adventure.text.Component}.
      */
-    private final FontRegistry fontRegistry;
+    private final DefaultFontRegistry fontRegistry;
 
     /**
      * The colors to use for the conversation.
@@ -131,7 +131,7 @@ public class InventoryConvIOFactory implements ConversationIOFactory {
      * @param profileProvider the profile provider instance
      */
     public record ConstructorParameters(BetonQuestLoggerFactory loggerFactory, ConfigAccessor config,
-                                        FontRegistry fontRegistry, ConversationColors colors, Plugin plugin,
+                                        DefaultFontRegistry fontRegistry, ConversationColors colors, Plugin plugin,
                                         PluginManager pluginManager, PluginMessage pluginMessage,
                                         Instructions instructions, Conversations conversations, ItemManager itemManager,
                                         ProfileProvider profileProvider) {
