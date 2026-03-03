@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 import org.betonquest.betonquest.api.instruction.source.ValueSource;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
+import org.betonquest.betonquest.api.text.Text;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
@@ -122,6 +123,13 @@ public interface SectionParser {
      * @return a new {@link SectionRetriever} for the argument with the namespaced key parser
      */
     DecoratableSectionRetriever<NamespacedKey> namespacedKey();
+
+    /**
+     * Use {@link ArgumentParsers#translationSection()} to parse the argument.
+     *
+     * @return a new {@link SectionRetriever} for the argument with the translation section parser
+     */
+    DecoratableSectionRetriever<Text> translationSection();
 
     /**
      * Use {@link ArgumentParsers#component()} to parse the argument.

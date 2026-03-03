@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.instruction.section.SubSectionArgumentParse
 import org.betonquest.betonquest.api.instruction.source.ValueSource;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
+import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.lib.instruction.section.capsules.EncapsulatedSectionParser;
 import org.betonquest.betonquest.lib.instruction.source.DefaultedSource;
 import org.bukkit.Location;
@@ -116,6 +117,11 @@ public class DefaultSectionParser implements SectionParser {
     @Override
     public DecoratableSectionRetriever<NamespacedKey> namespacedKey() {
         return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.namespacedKey(), SINGLE_VALUE_MODE);
+    }
+
+    @Override
+    public DecoratableSectionRetriever<Text> translationSection() {
+        return section(parsers.translationSection());
     }
 
     @Override
