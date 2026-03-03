@@ -1,10 +1,6 @@
 package org.betonquest.betonquest.util;
 
 import it.unimi.dsi.fastutil.Pair;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.format.Style;
-import net.kyori.adventure.text.format.TextDecoration;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
@@ -21,8 +17,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
-import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -31,36 +25,6 @@ import java.util.stream.Stream;
  */
 @SuppressWarnings({"LocalFinalVariableName", "CatchParameterName"})
 public final class Utils {
-
-    /**
-     * BiPredicate that checks if a {@link Component} contains another one while ironing unset values.
-     */
-    public static final BiPredicate<Component, Component> COMPONENT_BI_PREDICATE = (component1, component2) -> {
-        if (!(component1 instanceof final TextComponent textComponent1) || !(component2 instanceof final TextComponent textComponent2)) {
-            return false;
-        }
-        if (!textComponent1.content().equals(textComponent2.content())) {
-            return false;
-        }
-        final Style style1 = textComponent1.style();
-        final Style style2 = textComponent2.style();
-        if (!Objects.equals(style1.color(), style2.color())) {
-            return false;
-        }
-        final Map<TextDecoration, TextDecoration.State> decorations1 = style1.decorations();
-        final Map<TextDecoration, TextDecoration.State> decorations2 = style2.decorations();
-        for (final Map.Entry<TextDecoration, TextDecoration.State> entry : decorations1.entrySet()) {
-            final TextDecoration.State state1 = entry.getValue();
-            final TextDecoration.State state2 = decorations2.get(entry.getKey());
-            if (state1 == TextDecoration.State.NOT_SET || state2 == TextDecoration.State.NOT_SET) {
-                continue;
-            }
-            if (state1 != state2) {
-                return false;
-            }
-        }
-        return true;
-    };
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
