@@ -13,6 +13,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.reload.Reloader;
 import org.betonquest.betonquest.api.service.action.ActionManager;
 import org.betonquest.betonquest.api.service.action.ActionRegistry;
 import org.betonquest.betonquest.api.service.action.Actions;
@@ -186,4 +187,14 @@ public interface BetonQuestApi {
      * @return the font registry offering access to fonts
      */
     FontRegistry fonts();
+
+    /**
+     * Offers access to the reloader.
+     * <br> <br>
+     * The {@link Reloader} handles all functionality related to reloading BetonQuest.
+     * By hooking functions into the Reloader, you may have your own tools reloaded in sync with BetonQuest.
+     *
+     * @return the reloader offering access to reloading
+     */
+    Reloader reloader();
 }
