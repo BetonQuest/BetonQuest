@@ -109,7 +109,7 @@ public interface ArgumentParsers {
     /**
      * Default {@link SubSectionArgumentParser} for {@link Text} in a translation section arrangement.
      *
-     * @return a parser for the correct translation from a translation section arrangement
+     * @return a parser for the translations {@link Text} instance from a translation section arrangement
      */
     SubSectionArgumentParser<Text> translationSection();
 

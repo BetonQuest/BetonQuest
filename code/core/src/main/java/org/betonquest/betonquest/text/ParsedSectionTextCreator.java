@@ -58,7 +58,7 @@ public class ParsedSectionTextCreator {
      *
      * @param pack    the pack to resolve placeholders, but can be null
      * @param section the section to load from
-     * @param path    where the value(s) are stored in the section, if null, the given section is used
+     * @param path    where the value(s) are stored in the section; if null, the given section is used
      * @return the newly created text
      * @throws QuestException if there is no value, the default language is missing or the section format is invalid
      */
