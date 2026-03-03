@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,17 +34,17 @@ public class ParsedSectionText extends ParsedText {
      * @throws QuestException if there is no value, the default language is missing or the section format is invalid
      */
     public ParsedSectionText(final PlaceholderManager placeholders, final TextParser textParser,
-                             final PlayerDataStorage playerDataStorage, final QuestPackage pack,
-                             final ConfigurationSection section, final String path,
+                             final PlayerDataStorage playerDataStorage, @Nullable final QuestPackage pack,
+                             final ConfigurationSection section, @Nullable final String path,
                              final LanguageProvider languageProvider) throws QuestException {
         super(textParser, parse(placeholders, pack, section, path, languageProvider), playerDataStorage, languageProvider);
     }
 
-    private static Map<String, Argument<String>> parse(final PlaceholderManager placeholders, final QuestPackage pack,
-                                                       final ConfigurationSection section, final String path,
+    private static Map<String, Argument<String>> parse(final PlaceholderManager placeholders, @Nullable final QuestPackage pack,
+                                                       final ConfigurationSection section, @Nullable final String path,
                                                        final LanguageProvider languageProvider) throws QuestException {
         final StringParser stringParser = new StringParser();
-        if (section.isConfigurationSection(path)) {
+        if (path == null || section.isConfigurationSection(path)) {
             return parseSection(placeholders, pack, section, path, stringParser);
         }
         if (section.isList(path)) {
@@ -60,10 +61,10 @@ public class ParsedSectionText extends ParsedText {
         throw new QuestException("The '" + path + "' is missing!");
     }
 
-    private static Map<String, Argument<String>> parseSection(final PlaceholderManager placeholders, final QuestPackage pack,
-                                                              final ConfigurationSection textSection, final String path,
+    private static Map<String, Argument<String>> parseSection(final PlaceholderManager placeholders, @Nullable final QuestPackage pack,
+                                                              final ConfigurationSection textSection, @Nullable final String path,
                                                               final StringParser stringParser) throws QuestException {
-        final ConfigurationSection subSection = textSection.getConfigurationSection(path);
+        final ConfigurationSection subSection = path == null ? textSection : textSection.getConfigurationSection(path);
         if (subSection == null) {
             throw new QuestException("No configuration section for '" + path + "'!");
         }
