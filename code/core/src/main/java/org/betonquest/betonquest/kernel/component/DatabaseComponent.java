@@ -37,7 +37,7 @@ public class DatabaseComponent extends AbstractCoreComponent {
 
     @Override
     public Set<Class<?>> provides() {
-        return Set.of(Connector.class);
+        return Set.of(DatabaseComponent.class, Connector.class);
     }
 
     @Override
@@ -80,6 +80,7 @@ public class DatabaseComponent extends AbstractCoreComponent {
         final Connector connector = new Connector(config.getString("mysql.prefix"), database);
 
         dependencyProvider.take(Connector.class, connector);
+        dependencyProvider.take(DatabaseComponent.class, this);
     }
 
     /**
