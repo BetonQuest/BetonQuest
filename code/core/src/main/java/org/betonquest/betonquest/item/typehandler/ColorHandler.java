@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
@@ -60,7 +59,7 @@ public class ColorHandler implements ItemMetaHandler<LeatherArmorMeta> {
             colorE = Existence.FORBIDDEN;
             return;
         }
-        color = Utils.getColor(data);
+        color = HandlerUtil.getColor(data);
         colorE = Existence.REQUIRED;
     }
 

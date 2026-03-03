@@ -5,9 +5,12 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.parser.BooleanParser;
 import org.betonquest.betonquest.util.Utils;
+import org.bukkit.Color;
+import org.bukkit.DyeColor;
 import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -109,5 +112,37 @@ public final class HandlerUtil {
      */
     public static boolean isKeyOrTrue(final String key, final String data) throws QuestException {
         return key.equals(data) || new BooleanParser().apply(data);
+    }
+
+    /**
+     * Parses the string as RGB or as DyeColor and returns it as Color.
+     *
+     * @param string string to parse as a Color
+     * @return the Color (never null)
+     * @throws QuestException when something goes wrong
+     */
+    public static Color getColor(final String string) throws QuestException {
+        if (string.isEmpty()) {
+            throw new QuestException("Color is not specified");
+        }
+
+        try {
+            if (string.startsWith("#")) {
+                return Color.fromRGB(Integer.parseInt(string.substring(1), 16));
+            }
+            if (string.matches("-?\\d+")) {
+                return Color.fromRGB(Integer.parseInt(string));
+            }
+        } catch (final NumberFormatException e) {
+            throw new QuestException("Color could not be parsed as a number: %s".formatted(string), e);
+        } catch (final IllegalArgumentException e) {
+            throw new QuestException("Colour is not valid: %s".formatted(string), e);
+        }
+
+        try {
+            return DyeColor.valueOf(string.toUpperCase(Locale.ROOT)).getColor();
+        } catch (final IllegalArgumentException e) {
+            throw new QuestException("Dye color does not exist: '%s'".formatted(string), e);
+        }
     }
 }
