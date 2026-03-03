@@ -33,7 +33,7 @@ public class BundledMC_1_20_6 implements Integrator {
     public void hook(final BetonQuestApi api) {
         final ItemRegistry item = api.items().registry();
         final TextParser textParser = betonQuest.getComponentLoader().get(TextParser.class);
-        final BookPageWrapper bookPageWrapper = new BookPageWrapper(betonQuest.getFontRegistry(), 114, 14);
+        final BookPageWrapper bookPageWrapper = new BookPageWrapper(api.fonts(), 114, 14);
         item.register("simple", new UpdatedSimpleItemFactory(api.placeholders().manager(),
                 api.packages(), textParser, bookPageWrapper,
                 () -> betonQuest.getPluginConfig().getBoolean("item.quest.lore") ? betonQuest.getPluginMessage() : null));
