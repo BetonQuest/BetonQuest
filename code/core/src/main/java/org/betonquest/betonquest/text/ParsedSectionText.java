@@ -61,6 +61,7 @@ public class ParsedSectionText extends ParsedText {
         throw new QuestException("The '" + path + "' is missing!");
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     private static Map<String, Argument<String>> parseSection(final PlaceholderManager placeholders, @Nullable final QuestPackage pack,
                                                               final ConfigurationSection textSection, @Nullable final String path,
                                                               final StringParser stringParser) throws QuestException {
