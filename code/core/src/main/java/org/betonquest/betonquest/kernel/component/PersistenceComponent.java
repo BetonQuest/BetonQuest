@@ -15,6 +15,13 @@ import java.util.Set;
  */
 public class PersistenceComponent extends AbstractCoreComponent {
 
+    /**
+     * Create a new PersistenceComponent.
+     */
+    public PersistenceComponent() {
+        super();
+    }
+
     @Override
     public Set<Class<?>> requires() {
         return Set.of(GlobalData.class, PlayerDataStorage.class);
