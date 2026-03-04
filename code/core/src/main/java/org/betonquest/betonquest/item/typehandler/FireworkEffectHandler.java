@@ -2,7 +2,6 @@ package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.parser.BooleanParser;
-import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
@@ -99,7 +98,7 @@ public class FireworkEffectHandler {
         } else {
             mainE = Existence.REQUIRED;
             for (final String color : parts[1].split(";")) {
-                final Color regularColor = Utils.getColor(color);
+                final Color regularColor = HandlerUtil.getColor(color);
                 final DyeColor fireworkColor = DyeColor.getByColor(regularColor);
                 mainColors.add(fireworkColor == null ? regularColor : fireworkColor.getFireworkColor());
             }
@@ -111,7 +110,7 @@ public class FireworkEffectHandler {
         } else {
             fadeE = Existence.REQUIRED;
             for (final String color : parts[2].split(";")) {
-                final Color regularColor = Utils.getColor(color);
+                final Color regularColor = HandlerUtil.getColor(color);
                 final DyeColor fireworkColor = DyeColor.getByColor(regularColor);
                 fadeColors.add(fireworkColor == null ? regularColor : fireworkColor.getFireworkColor());
             }

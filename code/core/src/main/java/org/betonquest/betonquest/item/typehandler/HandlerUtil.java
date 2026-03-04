@@ -5,10 +5,14 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.parser.BooleanParser;
 import org.betonquest.betonquest.util.Utils;
+import org.bukkit.Color;
+import org.bukkit.DyeColor;
 import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Utils for handler "instruction" parsing.
@@ -109,5 +113,47 @@ public final class HandlerUtil {
      */
     public static boolean isKeyOrTrue(final String key, final String data) throws QuestException {
         return key.equals(data) || new BooleanParser().apply(data);
+    }
+
+    /**
+     * Parses a {@link Color} from a string. The color can be a hex value, a number or a dye color.
+     *
+     * @param color the string to parse
+     * @return the parsed color
+     * @throws QuestException when the color could not be parsed
+     */
+    public static Color getColor(final String color) throws QuestException {
+        if (color.isBlank()) {
+            throw new QuestException("Color is not specified");
+        }
+        final Optional<Color> rgbColor = getRgbColor(color);
+        if (rgbColor.isPresent()) {
+            return rgbColor.get();
+        }
+        return getDyeColor(color);
+    }
+
+    private static Optional<Color> getRgbColor(final String string) throws QuestException {
+        try {
+            if (string.startsWith("#")) {
+                return Optional.of(Color.fromRGB(Integer.parseInt(string.substring(1), 16)));
+            }
+            if (string.matches("-?\\d+")) {
+                return Optional.of(Color.fromRGB(Integer.parseInt(string)));
+            }
+            return Optional.empty();
+        } catch (final NumberFormatException e) {
+            throw new QuestException("Color could not be parsed as a number: '%s'".formatted(string), e);
+        } catch (final IllegalArgumentException e) {
+            throw new QuestException("Color is not valid: '%s'".formatted(string), e);
+        }
+    }
+
+    private static Color getDyeColor(final String string) throws QuestException {
+        try {
+            return DyeColor.valueOf(string.toUpperCase(Locale.ROOT)).getColor();
+        } catch (final IllegalArgumentException e) {
+            throw new QuestException("Dye color does not exist: '%s'".formatted(string), e);
+        }
     }
 }
