@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.action.tag;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.data.TagHolder;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.database.TagData;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -28,9 +28,9 @@ public class DeleteTagChanger implements TagChanger {
     }
 
     @Override
-    public void changeTags(final TagData tagData, @Nullable final Profile profile) throws QuestException {
+    public void changeTags(final TagHolder tagData, @Nullable final Profile profile) throws QuestException {
         for (final String tag : tags.getValue(profile)) {
-            tagData.removeTag(tag);
+            tagData.remove(tag);
         }
     }
 }

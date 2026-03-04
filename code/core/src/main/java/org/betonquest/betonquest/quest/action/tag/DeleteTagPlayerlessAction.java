@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.quest.action.tag;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.data.Persistence;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
-import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
 
@@ -17,9 +17,9 @@ import java.util.List;
 public class DeleteTagPlayerlessAction implements PlayerlessAction {
 
     /**
-     * Storage for player data.
+     * Storage for persistent data.
      */
-    private final PlayerDataStorage dataStorage;
+    private final Persistence persistence;
 
     /**
      * The saver to inject into database-using actions.
@@ -39,13 +39,13 @@ public class DeleteTagPlayerlessAction implements PlayerlessAction {
     /**
      * Create a new delete tag playerless action.
      *
-     * @param dataStorage     the storage providing player data
+     * @param persistence     the storage providing persistent data
      * @param saver           database saver to use
      * @param profileProvider the profile provider instance
      * @param tags            the list of tags to delete
      */
-    public DeleteTagPlayerlessAction(final PlayerDataStorage dataStorage, final Saver saver, final ProfileProvider profileProvider, final Argument<List<String>> tags) {
-        this.dataStorage = dataStorage;
+    public DeleteTagPlayerlessAction(final Persistence persistence, final Saver saver, final ProfileProvider profileProvider, final Argument<List<String>> tags) {
+        this.persistence = persistence;
         this.saver = saver;
         this.profileProvider = profileProvider;
         this.tags = tags;
@@ -55,7 +55,7 @@ public class DeleteTagPlayerlessAction implements PlayerlessAction {
     public void execute() throws QuestException {
         for (final String tag : tags.getValue(null)) {
             for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
-                dataStorage.get(onlineProfile).removeTag(tag);
+                persistence.profile(onlineProfile).tags().remove(tag);
             }
             saver.add(new Saver.Record(UpdateType.REMOVE_ALL_TAGS, tag));
         }

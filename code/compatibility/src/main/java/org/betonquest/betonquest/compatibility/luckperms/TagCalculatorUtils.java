@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.compatibility.luckperms;
 
 import net.luckperms.api.context.ContextCalculator;
-import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.database.GlobalData;
-import org.betonquest.betonquest.database.PlayerData;
+import org.betonquest.betonquest.api.data.Persistence;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.bukkit.entity.Player;
 
 import java.util.Set;
@@ -30,16 +30,17 @@ public final class TagCalculatorUtils {
     /**
      * Get an anonymous ContextCalculator. It has to be anonymous to prevent the loading of the class when no LP is installed.
      *
-     * @param globalData the global data
+     * @param persistence     the persistence instance
+     * @param profileProvider the profile provider instance
      * @return a ContextCalculator
      */
-    public static ContextCalculator<Player> getTagContextCalculator(final GlobalData globalData) {
+    public static ContextCalculator<Player> getTagContextCalculator(final Persistence persistence, final ProfileProvider profileProvider) {
         return (player, contextConsumer) -> {
             if (player.isOnline()) {
-                final PlayerData data = BetonQuest.getInstance().getPlayerDataStorage().get(BetonQuest.getInstance().getProfileProvider().getProfile(player));
-                data.getTags().forEach(tag -> contextConsumer.accept(KEY_LOCAL + tag, "true"));
+                final OnlineProfile onlineProfile = profileProvider.getProfile(player);
+                persistence.profile(onlineProfile).tags().get().forEach(tag -> contextConsumer.accept(KEY_LOCAL + tag, "true"));
             }
-            final Set<String> globalDataTags = globalData.getTags();
+            final Set<String> globalDataTags = persistence.global().tags().get();
             globalDataTags.forEach(tag -> contextConsumer.accept(KEY_GLOBAL + tag, "true"));
         };
     }

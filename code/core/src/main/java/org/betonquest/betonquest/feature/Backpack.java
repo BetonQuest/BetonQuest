@@ -546,7 +546,7 @@ public class Backpack implements Listener {
             super();
             int counter = 0;
             for (final Map.Entry<CompassIdentifier, QuestCompass> entry : compassProcessor.getValues().entrySet()) {
-                if (playerData.hasTag(entry.getKey().getTag())) {
+                if (playerData.tags().has(entry.getKey().getTag())) {
                     compasses.put(counter, entry.getValue());
                     counter++;
                 }

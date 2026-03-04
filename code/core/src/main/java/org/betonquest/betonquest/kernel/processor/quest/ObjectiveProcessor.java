@@ -308,7 +308,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
         for (final ObjectiveIdentifier id : autoOnceObjectiveIds) {
             final Objective objective = values.get(id);
             final String tag = getTag(id);
-            if (objective == null || data.hasTag(tag)) {
+            if (objective == null || data.tags().has(tag)) {
                 continue;
             }
             if (objective.getService().containsProfile(profile)) {
@@ -316,7 +316,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
             } else {
                 newPlayer(profile, id);
             }
-            data.addTag(tag);
+            data.tags().add(tag);
         }
     }
 

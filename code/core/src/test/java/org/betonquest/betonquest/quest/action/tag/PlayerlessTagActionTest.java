@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.action.tag;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.database.TagData;
+import org.betonquest.betonquest.api.data.TagHolder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -17,7 +17,7 @@ class PlayerlessTagActionTest {
 
     @Test
     void test_playerless_tag_action(
-            @Mock final TagData data,
+            @Mock final TagHolder data,
             @Mock final TagChanger tagChanger) throws QuestException {
         final PlayerlessTagAction playerlessTagAction = new PlayerlessTagAction(data, tagChanger);
 

@@ -24,12 +24,12 @@ public class TagPlaceholder extends AbstractTagPlaceholder<PlayerDataStorage> im
      * @param papiMode      whether PAPI mode is enabled
      */
     public TagPlaceholder(final PluginMessage pluginMessage, final PlayerDataStorage data, final String tagName,
-                       final QuestPackage questPackage, final FlagArgument<Boolean> papiMode) {
+                          final QuestPackage questPackage, final FlagArgument<Boolean> papiMode) {
         super(pluginMessage, data, tagName, questPackage, papiMode);
     }
 
     @Override
     public String getValue(final Profile profile) throws QuestException {
-        return getValueFor(profile, data.get(profile).getTags());
+        return getValueFor(profile, data.get(profile).tags().get());
     }
 }

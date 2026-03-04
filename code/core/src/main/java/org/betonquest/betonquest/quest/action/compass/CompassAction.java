@@ -2,11 +2,11 @@ package org.betonquest.betonquest.quest.action.compass;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.QuestCompassTargetChangeEvent;
+import org.betonquest.betonquest.api.data.Persistence;
 import org.betonquest.betonquest.api.identifier.CompassIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
-import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.feature.QuestCompass;
 import org.betonquest.betonquest.kernel.processor.feature.CompassProcessor;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
@@ -29,9 +29,9 @@ public class CompassAction implements PlayerAction {
     private final CompassProcessor compassProcessor;
 
     /**
-     * Storage to get the offline player data.
+     * Persistence api to get the offline player data.
      */
-    private final PlayerDataStorage dataStorage;
+    private final Persistence persistence;
 
     /**
      * The action to perform on the compass.
@@ -47,14 +47,14 @@ public class CompassAction implements PlayerAction {
      * Create the compass action.
      *
      * @param compassProcessor the Feature API
-     * @param storage          the storage to get the offline player data
+     * @param persistence      the persistence api to get offline player data
      * @param action           the action to perform
      * @param compassId        the compass point
      */
-    public CompassAction(final CompassProcessor compassProcessor, final PlayerDataStorage storage,
+    public CompassAction(final CompassProcessor compassProcessor, final Persistence persistence,
                          final Argument<CompassTargetOperation> action, final Argument<CompassIdentifier> compassId) {
         this.compassProcessor = compassProcessor;
-        this.dataStorage = storage;
+        this.persistence = persistence;
         this.action = action;
         this.compassId = compassId;
     }
@@ -79,7 +79,7 @@ public class CompassAction implements PlayerAction {
     }
 
     private void changeTag(final TagChanger tagChanger, final Profile profile) throws QuestException {
-        new TagAction(dataStorage::getOffline, tagChanger).execute(profile);
+        new TagAction(offline -> persistence.profile(offline).tags(), tagChanger).execute(profile);
     }
 
     @Override

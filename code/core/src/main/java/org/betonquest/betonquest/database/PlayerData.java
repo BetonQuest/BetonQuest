@@ -19,7 +19,6 @@ import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
 import org.betonquest.betonquest.conversation.PlayerConversationState;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.holders.PlayerDataPointHolder;
-import org.betonquest.betonquest.database.holders.PlayerDataTagHolder;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.feature.journal.JournalFactory;
 import org.betonquest.betonquest.feature.journal.Pointer;
@@ -45,7 +44,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Represents an object storing all profile-related data, which can load and save it.
  */
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.AvoidSynchronizedStatement", "PMD.CouplingBetweenObjects"})
-public class PlayerData implements TagData, PointData, PersistentDataHolder {
+public class PlayerData implements PointData, PersistentDataHolder {
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -240,37 +239,6 @@ public class PlayerData implements TagData, PointData, PersistentDataHolder {
         final byte[] bytes = Base64.getDecoder().decode(serialized);
         final ItemStack item = ItemStack.deserializeBytes(bytes).asQuantity(amount);
         backpack.add(item);
-    }
-
-    @Override
-    public Set<String> getTags() {
-        return Collections.unmodifiableSet(allTags);
-    }
-
-    @Override
-    public boolean hasTag(final String tag) {
-        return allTags.contains(tag);
-    }
-
-    @Override
-    public void addTag(final String tag) {
-        synchronized (allTags) {
-            if (allTags.add(tag)) {
-                saver.add(new Record(UpdateType.ADD_TAGS, profileID, tag));
-                new PlayerTagAddEvent(profile, !server.isPrimaryThread(), tag).callEvent();
-            }
-        }
-    }
-
-    @Override
-    public void removeTag(final String tag) {
-        synchronized (allTags) {
-            if (allTags.contains(tag)) {
-                allTags.remove(tag);
-                saver.add(new Record(UpdateType.REMOVE_TAGS, profileID, tag));
-                new PlayerTagRemoveEvent(profile, !server.isPrimaryThread(), tag).callEvent();
-            }
-        }
     }
 
     @Override
@@ -599,6 +567,49 @@ public class PlayerData implements TagData, PointData, PersistentDataHolder {
 
     @Override
     public TagHolder tags() {
-        return new PlayerDataTagHolder(this);
+        return new PlayerDataTagHolder();
+    }
+
+    /**
+     * An implementation of {@link TagHolder} for {@link PlayerData}.
+     */
+    private class PlayerDataTagHolder implements TagHolder {
+
+        /**
+         * Creates a new instance of PlayerDataTagHolder.
+         */
+        private PlayerDataTagHolder() {
+        }
+
+        @Override
+        public Set<String> get() {
+            return Collections.unmodifiableSet(allTags);
+        }
+
+        @Override
+        public boolean has(final String tag) {
+            return allTags.contains(tag);
+        }
+
+        @Override
+        public void add(final String tag) {
+            synchronized (allTags) {
+                if (allTags.add(tag)) {
+                    saver.add(new Record(UpdateType.ADD_TAGS, profileID, tag));
+                    new PlayerTagAddEvent(profile, !server.isPrimaryThread(), tag).callEvent();
+                }
+            }
+        }
+
+        @Override
+        public void remove(final String tag) {
+            synchronized (allTags) {
+                if (allTags.contains(tag)) {
+                    allTags.remove(tag);
+                    saver.add(new Record(UpdateType.REMOVE_TAGS, profileID, tag));
+                    new PlayerTagRemoveEvent(profile, !server.isPrimaryThread(), tag).callEvent();
+                }
+            }
+        }
     }
 }

@@ -1021,7 +1021,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             log.debug("Listing tags");
             final Predicate<String> shouldDisplay = createListFilter(args, 3, Function.identity());
             sendMessage(sender, "player_tags");
-            playerData.getTags().stream()
+            playerData.tags().get().stream()
                     .filter(shouldDisplay)
                     .sorted()
                     .forEach(tag -> sender.sendMessage("§b- " + tag));
@@ -1038,12 +1038,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         switch (args[2].toLowerCase(Locale.ROOT)) {
             case "add", "a" -> {
                 log.debug("Adding tag");
-                playerData.addTag(tag);
+                playerData.tags().add(tag);
                 sendMessage(sender, "tag_added");
             }
             case "remove", "delete", "del", "r", "d" -> {
                 log.debug("Removing tag");
-                playerData.removeTag(tag);
+                playerData.tags().remove(tag);
                 sendMessage(sender, "tag_removed");
             }
             default -> {
@@ -1062,7 +1062,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             log.debug("Listing global tags");
             final Predicate<String> shouldDisplay = createListFilter(args, 2, Function.identity());
             sendMessage(sender, "global_tags");
-            globalData.getTags().stream()
+            globalData.tags().get().stream()
                     .filter(shouldDisplay)
                     .sorted()
                     .forEach(tag -> sender.sendMessage("§b- " + tag));
@@ -1086,12 +1086,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         switch (args[1].toLowerCase(Locale.ROOT)) {
             case "add", "a" -> {
                 log.debug("Adding global tag " + tag);
-                globalData.addTag(tag);
+                globalData.tags().add(tag);
                 sendMessage(sender, "tag_added");
             }
             case "remove", "delete", "del", "r", "d" -> {
                 log.debug("Removing global tag " + tag);
-                globalData.removeTag(tag);
+                globalData.tags().remove(tag);
                 sendMessage(sender, "tag_removed");
             }
             default -> {
@@ -1254,8 +1254,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 updateType = UpdateType.RENAME_ALL_TAGS;
                 for (final OnlineProfile onlineProfile : onlineProfiles) {
                     final PlayerData playerData = playerDataStorage.get(onlineProfile);
-                    playerData.removeTag(name);
-                    playerData.addTag(rename);
+                    playerData.tags().remove(name);
+                    playerData.tags().add(rename);
                 }
             }
             case "points", "point", "p" -> {
@@ -1269,8 +1269,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                             break;
                         }
                     }
-                    playerData.removePointsCategory(name);
-                    playerData.modifyPoints(rename, points);
+                    playerData.points().remove(name);
+                    playerData.points().add(rename, points);
                 }
             }
             case "globalpoints", "globalpoint", "gpoints", "gpoint", "gp" -> {
@@ -1282,8 +1282,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         break;
                     }
                 }
-                globalData.removePointsCategory(name);
-                globalData.modifyPoints(rename, globalpoints);
+                globalData.points().remove(name);
+                globalData.points().add(rename, globalpoints);
             }
             case "objectives", "objective", "o" -> {
                 updateType = UpdateType.RENAME_ALL_OBJECTIVES;
@@ -1423,14 +1423,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 updateType = UpdateType.REMOVE_ALL_TAGS;
                 for (final OnlineProfile onlineProfile : onlineProfiles) {
                     final PlayerData playerData = playerDataStorage.get(onlineProfile);
-                    playerData.removeTag(name);
+                    playerData.tags().remove(name);
                 }
             }
             case "points", "point", "p" -> {
                 updateType = UpdateType.REMOVE_ALL_POINTS;
                 for (final OnlineProfile onlineProfile : onlineProfiles) {
                     final PlayerData playerData = playerDataStorage.get(onlineProfile);
-                    playerData.removePointsCategory(name);
+                    playerData.points().remove(name);
                 }
             }
             case "objectives", "objective", "o" -> {

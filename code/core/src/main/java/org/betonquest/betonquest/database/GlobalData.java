@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.data.TagHolder;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.holders.GlobalDataPointHolder;
-import org.betonquest.betonquest.database.holders.GlobalDataTagHolder;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,7 +16,7 @@ import java.util.Set;
 /**
  * Represents an object storing all player-related data, which can load and save it.
  */
-public class GlobalData implements TagData, PointData, PersistentDataHolder {
+public class GlobalData implements PointData, PersistentDataHolder {
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -72,29 +71,6 @@ public class GlobalData implements TagData, PointData, PersistentDataHolder {
 
         log.debug("There are " + this.globalTags.size() + " global_tags and " + this.globalPoints.size()
                 + " global_points loaded");
-    }
-
-    @Override
-    public Set<String> getTags() {
-        return globalTags;
-    }
-
-    @Override
-    public boolean hasTag(final String tag) {
-        return globalTags.contains(tag);
-    }
-
-    @Override
-    public void addTag(final String tag) {
-        if (globalTags.add(tag)) {
-            saver.add(new Record(UpdateType.ADD_GLOBAL_TAGS, tag));
-        }
-    }
-
-    @Override
-    public void removeTag(final String tag) {
-        globalTags.remove(tag);
-        saver.add(new Record(UpdateType.REMOVE_GLOBAL_TAGS, tag));
     }
 
     @Override
@@ -159,6 +135,41 @@ public class GlobalData implements TagData, PointData, PersistentDataHolder {
 
     @Override
     public TagHolder tags() {
-        return new GlobalDataTagHolder(this);
+        return new GlobalDataTagHolder();
+    }
+
+    /**
+     * An implementation of {@link TagHolder} for {@link GlobalData}.
+     */
+    private class GlobalDataTagHolder implements TagHolder {
+
+        /**
+         * Creates a new instance of GlobalDataTagHolder.
+         */
+        public GlobalDataTagHolder() {
+        }
+
+        @Override
+        public Set<String> get() {
+            return globalTags;
+        }
+
+        @Override
+        public boolean has(final String tag) {
+            return globalTags.contains(tag);
+        }
+
+        @Override
+        public void add(final String tag) {
+            if (globalTags.add(tag)) {
+                saver.add(new Record(UpdateType.ADD_GLOBAL_TAGS, tag));
+            }
+        }
+
+        @Override
+        public void remove(final String tag) {
+            globalTags.remove(tag);
+            saver.add(new Record(UpdateType.REMOVE_GLOBAL_TAGS, tag));
+        }
     }
 }

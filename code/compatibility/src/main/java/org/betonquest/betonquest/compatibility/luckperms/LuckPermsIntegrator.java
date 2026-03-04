@@ -45,7 +45,7 @@ public class LuckPermsIntegrator implements Integrator {
         final RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
         if (provider != null) {
             luckPermsAPI = provider.getProvider();
-            tagCalculator = TagCalculatorUtils.getTagContextCalculator(globalData);
+            tagCalculator = TagCalculatorUtils.getTagContextCalculator(api.persistence(), api.profiles());
             luckPermsAPI.getContextManager().registerCalculator(tagCalculator);
             api.actions().registry().register("luckperms", new LuckPermsActionFactory(luckPermsAPI));
         }

@@ -33,6 +33,6 @@ public class GlobalTagCondition implements PlayerlessCondition {
 
     @Override
     public boolean check() throws QuestException {
-        return globalData.hasTag(tag.getValue(null));
+        return globalData.tags().has(tag.getValue(null));
     }
 }

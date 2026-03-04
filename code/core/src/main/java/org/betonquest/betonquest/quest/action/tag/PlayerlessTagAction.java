@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.action.tag;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.data.TagHolder;
 import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
-import org.betonquest.betonquest.database.TagData;
 
 /**
  * The playerless tag action, doing what was defined in its instruction.
@@ -10,9 +10,9 @@ import org.betonquest.betonquest.database.TagData;
 public class PlayerlessTagAction implements PlayerlessAction {
 
     /**
-     * The tagData that shall be tagged.
+     * The tagHolder that shall be tagged.
      */
-    private final TagData tagData;
+    private final TagHolder tagHolder;
 
     /**
      * Tags changer that will add or remove the defined tags.
@@ -22,17 +22,17 @@ public class PlayerlessTagAction implements PlayerlessAction {
     /**
      * Create a playerless tag action.
      *
-     * @param tagData    the tagData that shall be tagged.
+     * @param tagHolder  the tagData that shall be tagged.
      * @param tagChanger changes the defined tags
      */
-    public PlayerlessTagAction(final TagData tagData, final TagChanger tagChanger) {
+    public PlayerlessTagAction(final TagHolder tagHolder, final TagChanger tagChanger) {
 
-        this.tagData = tagData;
+        this.tagHolder = tagHolder;
         this.tagChanger = tagChanger;
     }
 
     @Override
     public void execute() throws QuestException {
-        tagChanger.changeTags(tagData, null);
+        tagChanger.changeTags(tagHolder, null);
     }
 }

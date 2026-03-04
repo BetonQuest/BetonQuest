@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.action.tag;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.data.TagHolder;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
-import org.betonquest.betonquest.database.TagData;
 
 import java.util.function.Function;
 
@@ -15,7 +15,7 @@ public class TagAction implements PlayerAction {
     /**
      * Function providing the tagData for the given player.
      */
-    private final Function<Profile, TagData> getTagData;
+    private final Function<Profile, TagHolder> getTagHolder;
 
     /**
      * Tags changer that will add or remove the defined tags.
@@ -25,17 +25,17 @@ public class TagAction implements PlayerAction {
     /**
      * Create a tag action.
      *
-     * @param getTagData function providing the tagData for the given player
-     * @param tagChanger changes the defined tags
+     * @param getTagHolder function providing the tagData for the given player
+     * @param tagChanger   changes the defined tags
      */
-    public TagAction(final Function<Profile, TagData> getTagData, final TagChanger tagChanger) {
-        this.getTagData = getTagData;
+    public TagAction(final Function<Profile, TagHolder> getTagHolder, final TagChanger tagChanger) {
+        this.getTagHolder = getTagHolder;
         this.tagChanger = tagChanger;
     }
 
     @Override
     public void execute(final Profile profile) throws QuestException {
-        final TagData tagData = getTagData.apply(profile);
+        final TagHolder tagData = getTagHolder.apply(profile);
         tagChanger.changeTags(tagData, profile);
     }
 }

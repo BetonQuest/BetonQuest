@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.action.tag;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.data.Persistence;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -8,7 +9,6 @@ import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
-import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.quest.action.ThrowExceptionPlayerlessAction;
 
@@ -21,9 +21,9 @@ import java.util.Locale;
 public class TagPlayerActionFactory implements PlayerActionFactory, PlayerlessActionFactory {
 
     /**
-     * Storage for player data.
+     * Storage for persistent data.
      */
-    private final PlayerDataStorage dataStorage;
+    private final Persistence persistence;
 
     /**
      * The saver to inject into database-using actions.
@@ -38,12 +38,12 @@ public class TagPlayerActionFactory implements PlayerActionFactory, PlayerlessAc
     /**
      * Create the tag player action factory.
      *
-     * @param dataStorage     the storage providing player data
+     * @param persistence     the storage providing player data
      * @param saver           database saver to use
      * @param profileProvider the profile provider instance
      */
-    public TagPlayerActionFactory(final PlayerDataStorage dataStorage, final Saver saver, final ProfileProvider profileProvider) {
-        this.dataStorage = dataStorage;
+    public TagPlayerActionFactory(final Persistence persistence, final Saver saver, final ProfileProvider profileProvider) {
+        this.persistence = persistence;
         this.saver = saver;
         this.profileProvider = profileProvider;
     }
@@ -65,18 +65,18 @@ public class TagPlayerActionFactory implements PlayerActionFactory, PlayerlessAc
         final Argument<List<String>> tags = instruction.packageIdentifier().list().get();
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "add" -> new ThrowExceptionPlayerlessAction("Adding tags requires a player.");
-            case "delete", "del" -> new DeleteTagPlayerlessAction(dataStorage, saver, profileProvider, tags);
+            case "delete", "del" -> new DeleteTagPlayerlessAction(persistence, saver, profileProvider, tags);
             default -> throw new QuestException("Unknown tag action: " + action);
         };
     }
 
     private TagAction createAddTagAction(final Argument<List<String>> tags) {
         final TagChanger tagChanger = new AddTagChanger(tags);
-        return new TagAction(dataStorage::getOffline, tagChanger);
+        return new TagAction(offline -> persistence.profile(offline).tags(), tagChanger);
     }
 
     private TagAction createDeleteTagAction(final Argument<List<String>> tags) {
         final TagChanger tagChanger = new DeleteTagChanger(tags);
-        return new TagAction(dataStorage::getOffline, tagChanger);
+        return new TagAction(offline -> persistence.profile(offline).tags(), tagChanger);
     }
 }
