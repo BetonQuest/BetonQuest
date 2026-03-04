@@ -38,7 +38,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Collectors;
 
 /**
  * Represents an object storing all profile-related data, which can load and save it.
@@ -99,7 +98,7 @@ public class PlayerData implements PersistentDataHolder {
     /**
      * List of points the player has.
      */
-    private final Map<String, Point> allPoints = new ConcurrentHashMap<>();
+    private final Map<String, Integer> allPoints = new ConcurrentHashMap<>();
 
     /**
      * List of not loaded objectiveIDs and their data instructions.
@@ -180,7 +179,7 @@ public class PlayerData implements PersistentDataHolder {
         con.querySQL(QueryType.SELECT_POINTS, args, resultSet -> {
             while (resultSet.next()) {
                 final String category = resultSet.getString("category");
-                allPoints.put(category, new Point(category, resultSet.getInt("count")));
+                allPoints.put(category, resultSet.getInt("count"));
             }
         }, "Could not load points.");
         con.querySQL(QueryType.SELECT_BACKPACK, args, resultSet -> {
@@ -578,8 +577,7 @@ public class PlayerData implements PersistentDataHolder {
 
         @Override
         public Map<String, Integer> get() {
-            return allPoints.entrySet().stream()
-                    .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getCount()));
+            return Collections.unmodifiableMap(allPoints);
         }
 
         @Override
@@ -590,11 +588,7 @@ public class PlayerData implements PersistentDataHolder {
         @Override
         public Optional<Integer> get(final String category) {
             synchronized (allPoints) {
-                final Point point = allPoints.get(category);
-                if (point != null) {
-                    return Optional.of(point.getCount());
-                }
-                return Optional.empty();
+                return Optional.ofNullable(allPoints.get(category));
             }
         }
 
@@ -602,7 +596,7 @@ public class PlayerData implements PersistentDataHolder {
         public void set(final String category, final int points) {
             synchronized (allPoints) {
                 saver.add(new Record(UpdateType.REMOVE_POINTS, profileID, category));
-                allPoints.put(category, new Point(category, points));
+                allPoints.put(category, points);
                 saver.add(new Record(UpdateType.ADD_POINTS, profileID, category, String.valueOf(points)));
                 new PlayerUpdatePointEvent(profile, !server.isPrimaryThread(), category, points).callEvent();
             }
@@ -612,17 +606,16 @@ public class PlayerData implements PersistentDataHolder {
         public void add(final String category, final int points) {
             synchronized (allPoints) {
                 saver.add(new Record(UpdateType.REMOVE_POINTS, profileID, category));
-                final Point point = allPoints.computeIfAbsent(category, cat -> new Point(cat, 0));
-                point.addPoints(points);
-                saver.add(new Record(UpdateType.ADD_POINTS, profileID, category, String.valueOf(point.getCount())));
-                new PlayerUpdatePointEvent(profile, !server.isPrimaryThread(), category, point.getCount()).callEvent();
+                final int newPoints = allPoints.compute(category, (key, value) -> (value == null ? 0 : value) + points);
+                saver.add(new Record(UpdateType.ADD_POINTS, profileID, category, String.valueOf(newPoints)));
+                new PlayerUpdatePointEvent(profile, !server.isPrimaryThread(), category, newPoints).callEvent();
             }
         }
 
         @Override
         public void remove(final String category) {
             synchronized (allPoints) {
-                final Point removed = allPoints.remove(category);
+                final Integer removed = allPoints.remove(category);
                 if (removed != null) {
                     new PlayerUpdatePointEvent(profile, !server.isPrimaryThread(), category, 0).callEvent();
                 }
