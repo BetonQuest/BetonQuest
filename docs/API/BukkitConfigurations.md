@@ -13,29 +13,29 @@ Basically a wrapper for a `ConfigurationSection` simply delegating all calls to 
 In that way, you can override specific methods without having to override all methods for custom implementations.
 Mainly used for internal purposes, but can be used to create even more custom implementations.
 
-- `org.betonquest.betonquest.api.bukkit.config.custom.ConfigurationSectionDecorator`
+- `org.betonquest.betonquest.lib.config.section.ConfigurationSectionDecorator`
 
 ## Handle
 Based on `Decorator`. Handles any modifications to the configuration and wraps all values that are an instance
 of `ConfigurationSection` with the same implementation. This should prevent any modifications to the configuration
 that are not done through the handler. This is the implementation actually used to create more custom implementations.
 
-- `org.betonquest.betonquest.api.bukkit.config.custom.handle.HandleModificationConfiguration`
-- `org.betonquest.betonquest.api.bukkit.config.custom.handle.HandleModificationConfigurationSection`
+- `org.betonquest.betonquest.lib.config.section.handle.HandleModificationConfiguration`
+- `org.betonquest.betonquest.lib.config.section.handle.HandleModificationConfigurationSection`
 
 ## Unmodifiable
 Based on `Handle`. Makes the configuration unmodifiable. This means no values can be added, removed or modified.
 Also, no new Sections can be created. All modifications throw a `UnsupportedOperationException`.
 
-- `org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable.UnmodifiableConfiguration`
-- `org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable.UnmodifiableConfigurationSection`
+- `org.betonquest.betonquest.lib.config.section.unmodifiable.UnmodifiableConfiguration`
+- `org.betonquest.betonquest.lib.config.section.unmodifiable.UnmodifiableConfigurationSection`
 
 ## Lazy
 Based on `Handle`.
 This configuration does only create a MemorySection that is not registered to the parent, until a value is set.
 This means it can be read without creating a new section in the parent configuration.
 
-- `org.betonquest.betonquest.api.bukkit.config.custom.lazy.LazyConfigurationSection`
+- `org.betonquest.betonquest.lib.config.section.lazy.LazyConfigurationSection`
 
 ## Fallback
 This is a configuration buildup from two `ConfigurationSection`'s.
@@ -43,8 +43,8 @@ One is the original where all modifications are done, and the other one is the f
 The fallback configuration is used to look up values that are not contained in the original configuration.
 This is useful for default values or global configurations.
 
-- `org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfiguration`
-- `org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfigurationSection`
+- `org.betonquest.betonquest.lib.config.section.fallback.FallbackConfiguration`
+- `org.betonquest.betonquest.lib.config.section.fallback.FallbackConfigurationSection`
 
 ## Multi
 This is not a ConfigurationSection of bukkit, it is an additional interface.
@@ -54,13 +54,13 @@ allow any conflicting values resulting in a `KeyConflictException`.
 If mismatching states or settings are found in one `ConfigurationSection` a `InvalidSubConfigurationException` is thrown.
 
 - `org.betonquest.betonquest.api.config.section.multi.MultiConfiguration`
-- `org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiSectionConfiguration`
-- `org.betonquest.betonquest.api.bukkit.config.custom.multi.KeyConflictException`
-- `org.betonquest.betonquest.api.bukkit.config.custom.multi.InvalidSubConfigurationException`
+- `org.betonquest.betonquest.lib.config.section.multi.MultiSectionConfiguration`
+- `org.betonquest.betonquest.lib.config.section.multi.KeyConflictException`
+- `org.betonquest.betonquest.lib.config.section.multi.InvalidSubConfigurationException`
 
 ## Multi Fallback
 This is a Fallback configuration that also implements the MultiConfiguration interface.
 In this way, a multi configuration can have the advantage of a fallback configuration to look up values that are not
 contained in the original configuration.
 
-- `org.betonquest.betonquest.api.bukkit.config.custom.multi.fallback.MultiFallbackConfiguration`
+- `org.betonquest.betonquest.lib.config.section.multi.fallback.MultiFallbackConfiguration`
