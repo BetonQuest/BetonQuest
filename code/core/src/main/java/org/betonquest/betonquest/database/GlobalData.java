@@ -1,7 +1,12 @@
 package org.betonquest.betonquest.database;
 
+import org.betonquest.betonquest.api.data.PersistentDataHolder;
+import org.betonquest.betonquest.api.data.PointHolder;
+import org.betonquest.betonquest.api.data.TagHolder;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.database.Saver.Record;
+import org.betonquest.betonquest.database.holders.GlobalDataPointHolder;
+import org.betonquest.betonquest.database.holders.GlobalDataTagHolder;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,7 +17,7 @@ import java.util.Set;
 /**
  * Represents an object storing all player-related data, which can load and save it.
  */
-public class GlobalData implements TagData, PointData {
+public class GlobalData implements TagData, PointData, PersistentDataHolder {
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -145,5 +150,15 @@ public class GlobalData implements TagData, PointData {
         globalPoints.clear();
         // clear the database
         saver.add(new Record(UpdateType.DELETE_GLOBAL_POINTS));
+    }
+
+    @Override
+    public PointHolder points() {
+        return new GlobalDataPointHolder(this);
+    }
+
+    @Override
+    public TagHolder tags() {
+        return new GlobalDataTagHolder(this);
     }
 }

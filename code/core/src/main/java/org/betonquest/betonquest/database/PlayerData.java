@@ -5,6 +5,9 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.PlayerTagAddEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerTagRemoveEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerUpdatePointEvent;
+import org.betonquest.betonquest.api.data.PersistentDataHolder;
+import org.betonquest.betonquest.api.data.PointHolder;
+import org.betonquest.betonquest.api.data.TagHolder;
 import org.betonquest.betonquest.api.identifier.ConversationIdentifier;
 import org.betonquest.betonquest.api.identifier.JournalEntryIdentifier;
 import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
@@ -15,6 +18,8 @@ import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
 import org.betonquest.betonquest.conversation.PlayerConversationState;
 import org.betonquest.betonquest.database.Saver.Record;
+import org.betonquest.betonquest.database.holders.PlayerDataPointHolder;
+import org.betonquest.betonquest.database.holders.PlayerDataTagHolder;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.feature.journal.JournalFactory;
 import org.betonquest.betonquest.feature.journal.Pointer;
@@ -40,7 +45,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Represents an object storing all profile-related data, which can load and save it.
  */
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.AvoidSynchronizedStatement", "PMD.CouplingBetweenObjects"})
-public class PlayerData implements TagData, PointData {
+public class PlayerData implements TagData, PointData, PersistentDataHolder {
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -585,5 +590,15 @@ public class PlayerData implements TagData, PointData {
             target.add(itemStack.clone());
         }
         return target;
+    }
+
+    @Override
+    public PointHolder points() {
+        return new PlayerDataPointHolder(this);
+    }
+
+    @Override
+    public TagHolder tags() {
+        return new PlayerDataTagHolder(this);
     }
 }
