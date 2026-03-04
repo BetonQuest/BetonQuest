@@ -6952,29 +6952,29 @@ easier to work with configurations and to implement some new features.</p>
 In that way, you can override specific methods without having to override all methods for custom implementations.
 Mainly used for internal purposes, but can be used to create even more custom implementations.</p>
 <ul>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.ConfigurationSectionDecorator</code></li>
+<li><code>org.betonquest.betonquest.lib.config.section.ConfigurationSectionDecorator</code></li>
 </ul>
 <h2 id="handle">Handle<a class="headerlink" href="#handle" title="Permanent link">🔗</a></h2>
 <p>Based on <code>Decorator</code>. Handles any modifications to the configuration and wraps all values that are an instance
 of <code>ConfigurationSection</code> with the same implementation. This should prevent any modifications to the configuration
 that are not done through the handler. This is the implementation actually used to create more custom implementations.</p>
 <ul>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.handle.HandleModificationConfiguration</code></li>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.handle.HandleModificationConfigurationSection</code></li>
+<li><code>org.betonquest.betonquest.lib.config.section.handle.HandleModificationConfiguration</code></li>
+<li><code>org.betonquest.betonquest.lib.config.section.handle.HandleModificationConfigurationSection</code></li>
 </ul>
 <h2 id="unmodifiable">Unmodifiable<a class="headerlink" href="#unmodifiable" title="Permanent link">🔗</a></h2>
 <p>Based on <code>Handle</code>. Makes the configuration unmodifiable. This means no values can be added, removed or modified.
 Also, no new Sections can be created. All modifications throw a <code>UnsupportedOperationException</code>.</p>
 <ul>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable.UnmodifiableConfiguration</code></li>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable.UnmodifiableConfigurationSection</code></li>
+<li><code>org.betonquest.betonquest.lib.config.section.unmodifiable.UnmodifiableConfiguration</code></li>
+<li><code>org.betonquest.betonquest.lib.config.section.unmodifiable.UnmodifiableConfigurationSection</code></li>
 </ul>
 <h2 id="lazy">Lazy<a class="headerlink" href="#lazy" title="Permanent link">🔗</a></h2>
 <p>Based on <code>Handle</code>.
 This configuration does only create a MemorySection that is not registered to the parent, until a value is set.
 This means it can be read without creating a new section in the parent configuration.</p>
 <ul>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.lazy.LazyConfigurationSection</code></li>
+<li><code>org.betonquest.betonquest.lib.config.section.lazy.LazyConfigurationSection</code></li>
 </ul>
 <h2 id="fallback">Fallback<a class="headerlink" href="#fallback" title="Permanent link">🔗</a></h2>
 <p>This is a configuration buildup from two <code>ConfigurationSection</code>'s.
@@ -6982,8 +6982,8 @@ One is the original where all modifications are done, and the other one is the f
 The fallback configuration is used to look up values that are not contained in the original configuration.
 This is useful for default values or global configurations.</p>
 <ul>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfiguration</code></li>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfigurationSection</code></li>
+<li><code>org.betonquest.betonquest.lib.config.section.fallback.FallbackConfiguration</code></li>
+<li><code>org.betonquest.betonquest.lib.config.section.fallback.FallbackConfigurationSection</code></li>
 </ul>
 <h2 id="multi">Multi<a class="headerlink" href="#multi" title="Permanent link">🔗</a></h2>
 <p>This is not a ConfigurationSection of bukkit, it is an additional interface.
@@ -6992,17 +6992,17 @@ The MultiSectionConfiguration is an implementation of this interface that implem
 allow any conflicting values resulting in a <code>KeyConflictException</code>.
 If mismatching states or settings are found in one <code>ConfigurationSection</code> a <code>InvalidSubConfigurationException</code> is thrown.</p>
 <ul>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration</code></li>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiSectionConfiguration</code></li>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.multi.KeyConflictException</code></li>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.multi.InvalidSubConfigurationException</code></li>
+<li><code>org.betonquest.betonquest.api.config.section.multi.MultiConfiguration</code></li>
+<li><code>org.betonquest.betonquest.lib.config.section.multi.MultiSectionConfiguration</code></li>
+<li><code>org.betonquest.betonquest.lib.config.section.multi.KeyConflictException</code></li>
+<li><code>org.betonquest.betonquest.lib.config.section.multi.InvalidSubConfigurationException</code></li>
 </ul>
 <h2 id="multi-fallback">Multi Fallback<a class="headerlink" href="#multi-fallback" title="Permanent link">🔗</a></h2>
 <p>This is a Fallback configuration that also implements the MultiConfiguration interface.
 In this way, a multi configuration can have the advantage of a fallback configuration to look up values that are not
 contained in the original configuration.</p>
 <ul>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.multi.fallback.MultiFallbackConfiguration</code></li>
+<li><code>org.betonquest.betonquest.lib.config.section.multi.fallback.MultiFallbackConfiguration</code></li>
 </ul>
 
 
