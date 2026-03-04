@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.config;
 
-import org.betonquest.betonquest.api.bukkit.config.custom.ConfigurationSectionDecorator;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
+import org.betonquest.betonquest.lib.config.section.ConfigurationSectionDecorator;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
