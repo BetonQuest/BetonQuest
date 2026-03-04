@@ -90,7 +90,7 @@ public class PlayerData implements TagData, PointData, PersistentDataHolder {
     /**
      * List of tags the player has.
      */
-    private final Set<String> tags = ConcurrentHashMap.newKeySet();
+    private final Set<String> allTags = ConcurrentHashMap.newKeySet();
 
     /**
      * List of journal entries the player has.
@@ -100,7 +100,7 @@ public class PlayerData implements TagData, PointData, PersistentDataHolder {
     /**
      * List of points the player has.
      */
-    private final Map<String, Point> points = new ConcurrentHashMap<>();
+    private final Map<String, Point> allPoints = new ConcurrentHashMap<>();
 
     /**
      * List of not loaded objectiveIDs and their data instructions.
@@ -170,7 +170,7 @@ public class PlayerData implements TagData, PointData, PersistentDataHolder {
         }, "Could not load objectives.");
         con.querySQL(QueryType.SELECT_TAGS, args, resultSet -> {
             while (resultSet.next()) {
-                tags.add(resultSet.getString("tag"));
+                allTags.add(resultSet.getString("tag"));
             }
         }, "Could not load tags.");
         con.querySQL(QueryType.SELECT_JOURNAL, args, resultSet -> {
@@ -181,7 +181,7 @@ public class PlayerData implements TagData, PointData, PersistentDataHolder {
         con.querySQL(QueryType.SELECT_POINTS, args, resultSet -> {
             while (resultSet.next()) {
                 final String category = resultSet.getString("category");
-                points.put(category, new Point(category, resultSet.getInt("count")));
+                allPoints.put(category, new Point(category, resultSet.getInt("count")));
             }
         }, "Could not load points.");
         con.querySQL(QueryType.SELECT_BACKPACK, args, resultSet -> {
@@ -199,7 +199,7 @@ public class PlayerData implements TagData, PointData, PersistentDataHolder {
         }, "Could not load player data.");
 
         log.debug("Loaded %d objectives, %d tags, %d points, %d journal entries and %d items for %s"
-                .formatted(objectives.size(), tags.size(), points.size(), entries.size(), backpack.size(), profile));
+                .formatted(objectives.size(), allTags.size(), allPoints.size(), entries.size(), backpack.size(), profile));
     }
 
     private void loadJournalPointer(final String pointer, final long date) {
@@ -244,18 +244,18 @@ public class PlayerData implements TagData, PointData, PersistentDataHolder {
 
     @Override
     public Set<String> getTags() {
-        return Collections.unmodifiableSet(tags);
+        return Collections.unmodifiableSet(allTags);
     }
 
     @Override
     public boolean hasTag(final String tag) {
-        return tags.contains(tag);
+        return allTags.contains(tag);
     }
 
     @Override
     public void addTag(final String tag) {
-        synchronized (tags) {
-            if (tags.add(tag)) {
+        synchronized (allTags) {
+            if (allTags.add(tag)) {
                 saver.add(new Record(UpdateType.ADD_TAGS, profileID, tag));
                 new PlayerTagAddEvent(profile, !server.isPrimaryThread(), tag).callEvent();
             }
@@ -264,9 +264,9 @@ public class PlayerData implements TagData, PointData, PersistentDataHolder {
 
     @Override
     public void removeTag(final String tag) {
-        synchronized (tags) {
-            if (tags.contains(tag)) {
-                tags.remove(tag);
+        synchronized (allTags) {
+            if (allTags.contains(tag)) {
+                allTags.remove(tag);
                 saver.add(new Record(UpdateType.REMOVE_TAGS, profileID, tag));
                 new PlayerTagRemoveEvent(profile, !server.isPrimaryThread(), tag).callEvent();
             }
@@ -275,13 +275,13 @@ public class PlayerData implements TagData, PointData, PersistentDataHolder {
 
     @Override
     public Set<Point> getPoints() {
-        return Set.copyOf(points.values());
+        return Set.copyOf(allPoints.values());
     }
 
     @Override
     public Optional<Integer> getPointsFromCategory(final String category) {
-        synchronized (points) {
-            final Point point = points.get(category);
+        synchronized (allPoints) {
+            final Point point = allPoints.get(category);
             if (point != null) {
                 return Optional.of(point.getCount());
             }
@@ -291,9 +291,9 @@ public class PlayerData implements TagData, PointData, PersistentDataHolder {
 
     @Override
     public void modifyPoints(final String category, final int count) {
-        synchronized (points) {
+        synchronized (allPoints) {
             saver.add(new Record(UpdateType.REMOVE_POINTS, profileID, category));
-            final Point point = points.computeIfAbsent(category, cat -> new Point(cat, 0));
+            final Point point = allPoints.computeIfAbsent(category, cat -> new Point(cat, 0));
             point.addPoints(count);
             saver.add(new Record(UpdateType.ADD_POINTS, profileID, category, String.valueOf(point.getCount())));
             new PlayerUpdatePointEvent(profile, !server.isPrimaryThread(), category, point.getCount()).callEvent();
@@ -302,9 +302,9 @@ public class PlayerData implements TagData, PointData, PersistentDataHolder {
 
     @Override
     public void setPoints(final String category, final int count) {
-        synchronized (points) {
+        synchronized (allPoints) {
             saver.add(new Record(UpdateType.REMOVE_POINTS, profileID, category));
-            points.put(category, new Point(category, count));
+            allPoints.put(category, new Point(category, count));
             saver.add(new Record(UpdateType.ADD_POINTS, profileID, category, String.valueOf(count)));
             new PlayerUpdatePointEvent(profile, !server.isPrimaryThread(), category, count).callEvent();
         }
@@ -312,8 +312,8 @@ public class PlayerData implements TagData, PointData, PersistentDataHolder {
 
     @Override
     public void removePointsCategory(final String category) {
-        synchronized (points) {
-            final Point removed = points.remove(category);
+        synchronized (allPoints) {
+            final Point removed = allPoints.remove(category);
             if (removed != null) {
                 new PlayerUpdatePointEvent(profile, !server.isPrimaryThread(), category, 0).callEvent();
             }
@@ -565,8 +565,8 @@ public class PlayerData implements TagData, PointData, PersistentDataHolder {
         }
         // clear all lists
         objectives.clear();
-        tags.clear();
-        points.clear();
+        allTags.clear();
+        allPoints.clear();
         entries.clear();
         if (journal != null) {
             journal.clear();
