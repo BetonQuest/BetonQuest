@@ -29,7 +29,7 @@ public class PersistenceComponent extends AbstractCoreComponent {
 
     @Override
     public Set<Class<?>> provides() {
-        return Set.of(Persistence.class);
+        return Set.of(DefaultPersistence.class);
     }
 
     @Override
