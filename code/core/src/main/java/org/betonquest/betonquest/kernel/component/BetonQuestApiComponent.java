@@ -30,6 +30,7 @@ import java.util.Set;
 /**
  * The implementation of {@link AbstractCoreComponent} for {@link DefaultBetonQuestApi}.
  */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class BetonQuestApiComponent extends AbstractCoreComponent {
 
     /**
