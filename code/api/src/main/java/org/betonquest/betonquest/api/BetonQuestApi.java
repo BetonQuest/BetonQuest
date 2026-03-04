@@ -4,6 +4,8 @@ import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.config.section.multi.MultiConfiguration;
+import org.betonquest.betonquest.api.data.Persistence;
+import org.betonquest.betonquest.api.data.PersistentDataHolder;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
@@ -197,4 +199,14 @@ public interface BetonQuestApi {
      * @return the reloader offering access to reloading
      */
     Reloader reloader();
+
+    /**
+     * Offers access to persistent data within BetonQuest.
+     * <br> <br>
+     * The {@link Persistence} manages all persistent information within BetonQuest and its database.
+     * By accessing specific {@link PersistentDataHolder}s you may read or change persistent data in a specific context.
+     *
+     * @return the persistence offering access to persistent data
+     */
+    Persistence persistence();
 }
