@@ -106,12 +106,12 @@ public class GlobalData implements PersistentDataHolder {
     /**
      * An implementation of {@link TagHolder} for {@link GlobalData}.
      */
-    private class GlobalDataTagHolder implements TagHolder {
+    private final class GlobalDataTagHolder implements TagHolder {
 
         /**
          * Creates a new instance of GlobalDataTagHolder.
          */
-        public GlobalDataTagHolder() {
+        private GlobalDataTagHolder() {
         }
 
         @Override
@@ -141,7 +141,7 @@ public class GlobalData implements PersistentDataHolder {
     /**
      * An implementation of {@link PointHolder} for {@link GlobalData}.
      */
-    private class GlobalDataPointHolder implements PointHolder {
+    private final class GlobalDataPointHolder implements PointHolder {
 
         /**
          * Creates a new instance of GlobalDataPointHolder.

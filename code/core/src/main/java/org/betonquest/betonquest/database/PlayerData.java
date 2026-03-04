@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
 /**
  * Represents an object storing all profile-related data, which can load and save it.
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.AvoidSynchronizedStatement", "PMD.CouplingBetweenObjects"})
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.AvoidSynchronizedStatement", "PMD.CouplingBetweenObjects", "PMD.GodClass"})
 public class PlayerData implements PersistentDataHolder {
 
     /**
@@ -525,7 +525,7 @@ public class PlayerData implements PersistentDataHolder {
     /**
      * An implementation of {@link TagHolder} for {@link PlayerData}.
      */
-    private class PlayerDataTagHolder implements TagHolder {
+    private final class PlayerDataTagHolder implements TagHolder {
 
         /**
          * Creates a new instance of PlayerDataTagHolder.
@@ -568,7 +568,7 @@ public class PlayerData implements PersistentDataHolder {
     /**
      * An implementation of {@link PointHolder} for {@link PlayerData}.
      */
-    private class PlayerDataPointHolder implements PointHolder {
+    private final class PlayerDataPointHolder implements PointHolder {
 
         /**
          * Creates a new instance of ProfilePointHolder.
