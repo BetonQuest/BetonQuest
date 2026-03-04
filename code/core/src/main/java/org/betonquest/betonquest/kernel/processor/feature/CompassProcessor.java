@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.identifier.ItemIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.service.compass.CompassManager;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.feature.DefaultQuestCompass;
@@ -21,7 +22,7 @@ import java.util.Optional;
 /**
  * Loads and stores {@link DefaultQuestCompass}es.
  */
-public class CompassProcessor extends SectionProcessor<CompassIdentifier, DefaultQuestCompass> {
+public class CompassProcessor extends SectionProcessor<CompassIdentifier, DefaultQuestCompass> implements CompassManager {
 
     /**
      * Text creator to parse text.
