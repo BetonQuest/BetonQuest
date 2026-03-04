@@ -45,7 +45,6 @@ import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.PlayerDataFactory;
-import org.betonquest.betonquest.database.Point;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
@@ -712,11 +711,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         // if there are no arguments then list player's points
         if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
             log.debug("Listing points");
-            final Predicate<Point> shouldDisplay = createListFilter(args, 3, Point::getCategory);
+            final Predicate<Map.Entry<String, Integer>> shouldDisplay = createListFilter(args, 3, Map.Entry::getKey);
             sendMessage(sender, "player_points");
-            playerData.getPoints().stream()
+            playerData.points().get().entrySet().stream()
                     .filter(shouldDisplay)
-                    .forEach(point -> sender.sendMessage("§b- " + point.getCategory() + "§e: §a" + point.getCount()));
+                    .forEach(point -> sender.sendMessage("§b- " + point.getKey() + "§e: §a" + point.getValue()));
             return;
         }
         // if there is not enough arguments, display warning
@@ -735,12 +734,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     return;
                 }
                 log.debug("Adding points");
-                playerData.modifyPoints(category, Integer.parseInt(args[4]));
+                playerData.points().add(category, Integer.parseInt(args[4]));
                 sendMessage(sender, "points_added");
             }
             case "remove", "delete", "del", "r", "d" -> {
                 log.debug("Removing points");
-                playerData.removePointsCategory(category);
+                playerData.points().remove(category);
                 sendMessage(sender, "points_removed");
             }
             default -> {
@@ -757,11 +756,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         // if there are no arguments then list all global points
         if (args.length < 2 || "list".equalsIgnoreCase(args[1]) || "l".equalsIgnoreCase(args[1])) {
             log.debug("Listing global points");
-            final Predicate<Point> shouldDisplay = createListFilter(args, 2, Point::getCategory);
+            final Predicate<Map.Entry<String, Integer>> shouldDisplay = createListFilter(args, 2, Map.Entry::getKey);
             sendMessage(sender, "global_points");
-            globalData.getPoints().stream()
+            globalData.points().get().entrySet().stream()
                     .filter(shouldDisplay)
-                    .forEach(point -> sender.sendMessage("§b- " + point.getCategory() + "§e: §a" + point.getCount()));
+                    .forEach(point -> sender.sendMessage("§b- " + point.getKey() + "§e: §a" + point.getValue()));
             return;
         }
         // handle purge
@@ -787,12 +786,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     return;
                 }
                 log.debug("Adding global points");
-                globalData.modifyPoints(category, Integer.parseInt(args[3]));
+                globalData.points().add(category, Integer.parseInt(args[3]));
                 sendMessage(sender, "points_added");
             }
             case "remove", "delete", "del", "r", "d" -> {
                 log.debug("Removing global points");
-                globalData.removePointsCategory(category);
+                globalData.points().remove(category);
                 sendMessage(sender, "points_removed");
             }
             default -> {
@@ -1263,9 +1262,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 for (final OnlineProfile onlineProfile : onlineProfiles) {
                     final PlayerData playerData = playerDataStorage.get(onlineProfile);
                     int points = 0;
-                    for (final Point point : playerData.getPoints()) {
-                        if (point.getCategory().equals(name)) {
-                            points = point.getCount();
+                    for (final Map.Entry<String, Integer> point : playerData.points().get().entrySet()) {
+                        if (point.getKey().equals(name)) {
+                            points = point.getValue();
                             break;
                         }
                     }
@@ -1276,9 +1275,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "globalpoints", "globalpoint", "gpoints", "gpoint", "gp" -> {
                 updateType = UpdateType.RENAME_ALL_GLOBAL_POINTS;
                 int globalpoints = 0;
-                for (final Point globalpoint : globalData.getPoints()) {
-                    if (globalpoint.getCategory().equals(name)) {
-                        globalpoints = globalpoint.getCount();
+                for (final Map.Entry<String, Integer> globalpoint : globalData.points().get().entrySet()) {
+                    if (globalpoint.getKey().equals(name)) {
+                        globalpoints = globalpoint.getValue();
                         break;
                     }
                 }

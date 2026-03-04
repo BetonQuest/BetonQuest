@@ -23,6 +23,6 @@ public class GlobalPointPlaceholder extends AbstractPointPlaceholder<GlobalData>
 
     @Override
     public String getValue() {
-        return getValueFor(data.getPointsFromCategory(category).orElse(0));
+        return getValueFor(data.points().get(category).orElse(0));
     }
 }

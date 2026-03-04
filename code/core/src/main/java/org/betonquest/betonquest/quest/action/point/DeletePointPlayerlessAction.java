@@ -53,7 +53,7 @@ public class DeletePointPlayerlessAction implements PlayerlessAction {
     public void execute() throws QuestException {
         final String category = this.category.getValue(null);
         for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
-            dataStorage.get(onlineProfile).removePointsCategory(category);
+            dataStorage.get(onlineProfile).points().remove(category);
         }
         saver.add(new Saver.Record(UpdateType.REMOVE_ALL_POINTS, category));
     }

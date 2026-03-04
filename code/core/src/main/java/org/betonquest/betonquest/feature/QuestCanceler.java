@@ -167,7 +167,7 @@ public class QuestCanceler {
         log.debug(pack, "Canceling the quest " + cancelerID + " for " + onlineProfile);
         final PlayerData playerData = playerStorage.get(onlineProfile);
         removeSimple(onlineProfile, data.tags, "tag", playerData.tags()::remove);
-        removeSimple(onlineProfile, data.points, "point", playerData::removePointsCategory);
+        removeSimple(onlineProfile, data.points, "point", playerData.points()::remove);
         cancelObjectives(onlineProfile, playerData);
         removeEntries(onlineProfile, playerData);
         executeActions(onlineProfile);

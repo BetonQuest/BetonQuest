@@ -18,7 +18,6 @@ import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
 import org.betonquest.betonquest.conversation.PlayerConversationState;
 import org.betonquest.betonquest.database.Saver.Record;
-import org.betonquest.betonquest.database.holders.PlayerDataPointHolder;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.feature.journal.JournalFactory;
 import org.betonquest.betonquest.feature.journal.Pointer;
@@ -39,12 +38,13 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Represents an object storing all profile-related data, which can load and save it.
  */
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.AvoidSynchronizedStatement", "PMD.CouplingBetweenObjects"})
-public class PlayerData implements PointData, PersistentDataHolder {
+public class PlayerData implements PersistentDataHolder {
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -239,54 +239,6 @@ public class PlayerData implements PointData, PersistentDataHolder {
         final byte[] bytes = Base64.getDecoder().decode(serialized);
         final ItemStack item = ItemStack.deserializeBytes(bytes).asQuantity(amount);
         backpack.add(item);
-    }
-
-    @Override
-    public Set<Point> getPoints() {
-        return Set.copyOf(allPoints.values());
-    }
-
-    @Override
-    public Optional<Integer> getPointsFromCategory(final String category) {
-        synchronized (allPoints) {
-            final Point point = allPoints.get(category);
-            if (point != null) {
-                return Optional.of(point.getCount());
-            }
-            return Optional.empty();
-        }
-    }
-
-    @Override
-    public void modifyPoints(final String category, final int count) {
-        synchronized (allPoints) {
-            saver.add(new Record(UpdateType.REMOVE_POINTS, profileID, category));
-            final Point point = allPoints.computeIfAbsent(category, cat -> new Point(cat, 0));
-            point.addPoints(count);
-            saver.add(new Record(UpdateType.ADD_POINTS, profileID, category, String.valueOf(point.getCount())));
-            new PlayerUpdatePointEvent(profile, !server.isPrimaryThread(), category, point.getCount()).callEvent();
-        }
-    }
-
-    @Override
-    public void setPoints(final String category, final int count) {
-        synchronized (allPoints) {
-            saver.add(new Record(UpdateType.REMOVE_POINTS, profileID, category));
-            allPoints.put(category, new Point(category, count));
-            saver.add(new Record(UpdateType.ADD_POINTS, profileID, category, String.valueOf(count)));
-            new PlayerUpdatePointEvent(profile, !server.isPrimaryThread(), category, count).callEvent();
-        }
-    }
-
-    @Override
-    public void removePointsCategory(final String category) {
-        synchronized (allPoints) {
-            final Point removed = allPoints.remove(category);
-            if (removed != null) {
-                new PlayerUpdatePointEvent(profile, !server.isPrimaryThread(), category, 0).callEvent();
-            }
-            saver.add(new Record(UpdateType.REMOVE_POINTS, profileID, category));
-        }
     }
 
     /**
@@ -562,7 +514,7 @@ public class PlayerData implements PointData, PersistentDataHolder {
 
     @Override
     public PointHolder points() {
-        return new PlayerDataPointHolder(this);
+        return new PlayerDataPointHolder();
     }
 
     @Override
@@ -609,6 +561,72 @@ public class PlayerData implements PointData, PersistentDataHolder {
                     saver.add(new Record(UpdateType.REMOVE_TAGS, profileID, tag));
                     new PlayerTagRemoveEvent(profile, !server.isPrimaryThread(), tag).callEvent();
                 }
+            }
+        }
+    }
+
+    /**
+     * An implementation of {@link PointHolder} for {@link PlayerData}.
+     */
+    private class PlayerDataPointHolder implements PointHolder {
+
+        /**
+         * Creates a new instance of ProfilePointHolder.
+         */
+        private PlayerDataPointHolder() {
+        }
+
+        @Override
+        public Map<String, Integer> get() {
+            return allPoints.entrySet().stream()
+                    .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getCount()));
+        }
+
+        @Override
+        public boolean has(final String category) {
+            return get(category).isPresent();
+        }
+
+        @Override
+        public Optional<Integer> get(final String category) {
+            synchronized (allPoints) {
+                final Point point = allPoints.get(category);
+                if (point != null) {
+                    return Optional.of(point.getCount());
+                }
+                return Optional.empty();
+            }
+        }
+
+        @Override
+        public void set(final String category, final int points) {
+            synchronized (allPoints) {
+                saver.add(new Record(UpdateType.REMOVE_POINTS, profileID, category));
+                allPoints.put(category, new Point(category, points));
+                saver.add(new Record(UpdateType.ADD_POINTS, profileID, category, String.valueOf(points)));
+                new PlayerUpdatePointEvent(profile, !server.isPrimaryThread(), category, points).callEvent();
+            }
+        }
+
+        @Override
+        public void add(final String category, final int points) {
+            synchronized (allPoints) {
+                saver.add(new Record(UpdateType.REMOVE_POINTS, profileID, category));
+                final Point point = allPoints.computeIfAbsent(category, cat -> new Point(cat, 0));
+                point.addPoints(points);
+                saver.add(new Record(UpdateType.ADD_POINTS, profileID, category, String.valueOf(point.getCount())));
+                new PlayerUpdatePointEvent(profile, !server.isPrimaryThread(), category, point.getCount()).callEvent();
+            }
+        }
+
+        @Override
+        public void remove(final String category) {
+            synchronized (allPoints) {
+                final Point removed = allPoints.remove(category);
+                if (removed != null) {
+                    new PlayerUpdatePointEvent(profile, !server.isPrimaryThread(), category, 0).callEvent();
+                }
+                saver.add(new Record(UpdateType.REMOVE_POINTS, profileID, category));
             }
         }
     }

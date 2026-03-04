@@ -51,7 +51,7 @@ public class PointCondition implements PlayerCondition {
 
     @Override
     public boolean check(final Profile profile) throws QuestException {
-        final Optional<Integer> amount = dataStorage.get(profile).getPointsFromCategory(category.getValue(profile));
+        final Optional<Integer> amount = dataStorage.get(profile).points().get(category.getValue(profile));
         return amount.isPresent() && checkPoints(amount.get(), profile);
     }
 

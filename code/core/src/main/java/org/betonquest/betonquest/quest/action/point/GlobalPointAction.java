@@ -5,9 +5,9 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.action.NullableAction;
 import org.betonquest.betonquest.database.GlobalData;
-import org.betonquest.betonquest.database.Point;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -53,10 +53,10 @@ public class GlobalPointAction implements NullableAction {
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
         final String category = this.category.getValue(profile);
-        final Optional<Point> globalPoint = globalData.getPoints().stream()
-                .filter(p -> p.getCategory().equalsIgnoreCase(category))
+        final Optional<Map.Entry<String, Integer>> globalPoint = globalData.points().get().entrySet().stream()
+                .filter(p -> p.getKey().equalsIgnoreCase(category))
                 .findFirst();
-        globalData.setPoints(category, pointType.modify(
-                globalPoint.map(Point::getCount).orElse(0), count.getValue(profile).doubleValue()));
+        globalData.points().set(category, pointType.modify(
+                globalPoint.map(Map.Entry::getValue).orElse(0), count.getValue(profile).doubleValue()));
     }
 }

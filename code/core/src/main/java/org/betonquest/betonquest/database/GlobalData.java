@@ -5,18 +5,18 @@ import org.betonquest.betonquest.api.data.PointHolder;
 import org.betonquest.betonquest.api.data.TagHolder;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.database.Saver.Record;
-import org.betonquest.betonquest.database.holders.GlobalDataPointHolder;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Represents an object storing all player-related data, which can load and save it.
  */
-public class GlobalData implements PointData, PersistentDataHolder {
+public class GlobalData implements PersistentDataHolder {
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -73,41 +73,6 @@ public class GlobalData implements PointData, PersistentDataHolder {
                 + " global_points loaded");
     }
 
-    @Override
-    public Set<Point> getPoints() {
-        return Set.copyOf(globalPoints.values());
-    }
-
-    @Override
-    public Optional<Integer> getPointsFromCategory(final String category) {
-        final Point point = globalPoints.get(category);
-        if (point != null) {
-            return Optional.of(point.getCount());
-        }
-        return Optional.empty();
-    }
-
-    @Override
-    public void modifyPoints(final String category, final int count) {
-        saver.add(new Record(UpdateType.REMOVE_GLOBAL_POINTS, category));
-        final Point point = globalPoints.computeIfAbsent(category, cat -> new Point(category, 0));
-        point.addPoints(count);
-        saver.add(new Record(UpdateType.ADD_GLOBAL_POINTS, category, String.valueOf(point.getCount())));
-    }
-
-    @Override
-    public void setPoints(final String category, final int count) {
-        saver.add(new Record(UpdateType.REMOVE_GLOBAL_POINTS, category));
-        globalPoints.put(category, new Point(category, count));
-        saver.add(new Record(UpdateType.ADD_GLOBAL_POINTS, category, String.valueOf(count)));
-    }
-
-    @Override
-    public void removePointsCategory(final String category) {
-        globalPoints.remove(category);
-        saver.add(new Record(UpdateType.REMOVE_GLOBAL_POINTS, category));
-    }
-
     /**
      * Purges all global tags from the database and from this object.
      */
@@ -130,7 +95,7 @@ public class GlobalData implements PointData, PersistentDataHolder {
 
     @Override
     public PointHolder points() {
-        return new GlobalDataPointHolder(this);
+        return new GlobalDataPointHolder();
     }
 
     @Override
@@ -170,6 +135,59 @@ public class GlobalData implements PointData, PersistentDataHolder {
         public void remove(final String tag) {
             globalTags.remove(tag);
             saver.add(new Record(UpdateType.REMOVE_GLOBAL_TAGS, tag));
+        }
+    }
+
+    /**
+     * An implementation of {@link PointHolder} for {@link GlobalData}.
+     */
+    private class GlobalDataPointHolder implements PointHolder {
+
+        /**
+         * Creates a new instance of GlobalDataPointHolder.
+         */
+        private GlobalDataPointHolder() {
+        }
+
+        @Override
+        public Map<String, Integer> get() {
+            return globalPoints.entrySet().stream()
+                    .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getCount()));
+        }
+
+        @Override
+        public boolean has(final String category) {
+            return get(category).isPresent();
+        }
+
+        @Override
+        public Optional<Integer> get(final String category) {
+            final Point point = globalPoints.get(category);
+            if (point != null) {
+                return Optional.of(point.getCount());
+            }
+            return Optional.empty();
+        }
+
+        @Override
+        public void set(final String category, final int points) {
+            saver.add(new Record(UpdateType.REMOVE_GLOBAL_POINTS, category));
+            globalPoints.put(category, new Point(category, points));
+            saver.add(new Record(UpdateType.ADD_GLOBAL_POINTS, category, String.valueOf(points)));
+        }
+
+        @Override
+        public void add(final String category, final int points) {
+            saver.add(new Record(UpdateType.REMOVE_GLOBAL_POINTS, category));
+            final Point point = globalPoints.computeIfAbsent(category, cat -> new Point(category, 0));
+            point.addPoints(points);
+            saver.add(new Record(UpdateType.ADD_GLOBAL_POINTS, category, String.valueOf(point.getCount())));
+        }
+
+        @Override
+        public void remove(final String category) {
+            globalPoints.remove(category);
+            saver.add(new Record(UpdateType.REMOVE_GLOBAL_POINTS, category));
         }
     }
 }
