@@ -51,6 +51,7 @@ import org.betonquest.betonquest.kernel.component.NotificationCategoriesComponen
 import org.betonquest.betonquest.kernel.component.NotificationsComponent;
 import org.betonquest.betonquest.kernel.component.NpcsComponent;
 import org.betonquest.betonquest.kernel.component.ObjectivesComponent;
+import org.betonquest.betonquest.kernel.component.PersistenceComponent;
 import org.betonquest.betonquest.kernel.component.PlaceholdersComponent;
 import org.betonquest.betonquest.kernel.component.PlayerDataStorageComponent;
 import org.betonquest.betonquest.kernel.component.PlayerHiderComponent;
@@ -231,6 +232,7 @@ public class BetonQuest extends JavaPlugin {
                 new ListenersComponent(),
                 new PlayerHiderComponent(),
                 new UpdaterComponent(this.getFile()),
+                new PersistenceComponent(),
                 new ConversationColorsComponent(),
                 new ExecutionCacheComponent(),
                 new DataLoaderComponent(),
