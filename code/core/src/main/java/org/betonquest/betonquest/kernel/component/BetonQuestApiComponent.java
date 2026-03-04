@@ -103,6 +103,7 @@ public class BetonQuestApiComponent extends AbstractCoreComponent {
      * @param identifiers   the identifier api accessor
      * @param fonts         the font registry
      * @param reloader      the reloader
+     * @param persistence   the persistence api accessor
      */
     /* default */ record DefaultBetonQuestApi(ProfileProvider profiles, QuestPackageManager packages,
                                               BetonQuestLoggerFactory loggerFactory, Instructions instructions,
