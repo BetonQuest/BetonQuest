@@ -9,10 +9,10 @@ import org.jetbrains.annotations.Nullable;
 /**
  * A Quest Compass targeting a location.
  *
- * @param names    the display names by their language
+ * @param name     the display names by their language
  * @param location the compass location
- * @param itemID   possible item id, when it should be displayed in the backpack
+ * @param item     possible item id, when it should be displayed in the backpack
  */
-public record DefaultQuestCompass(Text names, Argument<Location> location, @Nullable ItemIdentifier itemID) {
+public record DefaultQuestCompass(Text name, Argument<Location> location, @Nullable ItemIdentifier item) {
 
 }

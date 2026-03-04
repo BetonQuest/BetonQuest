@@ -579,7 +579,7 @@ public class Backpack implements Listener {
             int index = 0;
             for (final Map.Entry<Integer, DefaultQuestCompass> entry : compasses.entrySet()) {
                 final DefaultQuestCompass comp = entry.getValue();
-                final ItemIdentifier item = comp.itemID();
+                final ItemIdentifier item = comp.item();
                 if (item == null) {
                     continue;
                 }
@@ -592,7 +592,7 @@ public class Backpack implements Listener {
                 }
                 final Component name;
                 try {
-                    name = comp.names().asComponent(onlineProfile);
+                    name = comp.name().asComponent(onlineProfile);
                 } catch (final QuestException e) {
                     log.warn("Could not get name for compass '" + entry.getKey() + "', skipping it: " + e.getMessage(), e);
                     continue;

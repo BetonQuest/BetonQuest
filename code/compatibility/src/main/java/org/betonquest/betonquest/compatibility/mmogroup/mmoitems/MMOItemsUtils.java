@@ -24,7 +24,7 @@ public final class MMOItemsUtils {
      *
      * @param item   any ItemStack.
      * @param type   the type of the MMOItem that shall be checked for
-     * @param itemID the itemID of the MMOItem that shall be checked for
+     * @param itemID the item of the MMOItem that shall be checked for
      * @return whether the input item matches the defined MMOItems
      */
     public static boolean equalsMMOItem(@Nullable final ItemStack item, final Type type, final String itemID) {
