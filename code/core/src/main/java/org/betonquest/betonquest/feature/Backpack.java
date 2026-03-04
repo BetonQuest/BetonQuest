@@ -537,7 +537,7 @@ public class Backpack implements Listener {
         /**
          * Maps the slot to a compass.
          */
-        private final Map<Integer, QuestCompass> compasses = new HashMap<>();
+        private final Map<Integer, DefaultQuestCompass> compasses = new HashMap<>();
 
         /**
          * Creates a page with selectable compass targets and displays it to the player.
@@ -545,7 +545,7 @@ public class Backpack implements Listener {
         private Compass() {
             super();
             int counter = 0;
-            for (final Map.Entry<CompassIdentifier, QuestCompass> entry : compassProcessor.getValues().entrySet()) {
+            for (final Map.Entry<CompassIdentifier, DefaultQuestCompass> entry : compassProcessor.getValues().entrySet()) {
                 if (playerData.tags().has(entry.getKey().getTag())) {
                     compasses.put(counter, entry.getValue());
                     counter++;
@@ -577,9 +577,9 @@ public class Backpack implements Listener {
         private ItemStack[] getContent(final int numberOfRows) {
             final ItemStack[] content = new ItemStack[numberOfRows * 9];
             int index = 0;
-            for (final Map.Entry<Integer, QuestCompass> entry : compasses.entrySet()) {
-                final QuestCompass comp = entry.getValue();
-                final ItemIdentifier item = comp.itemID();
+            for (final Map.Entry<Integer, DefaultQuestCompass> entry : compasses.entrySet()) {
+                final DefaultQuestCompass comp = entry.getValue();
+                final ItemIdentifier item = comp.item();
                 if (item == null) {
                     continue;
                 }
@@ -592,7 +592,7 @@ public class Backpack implements Listener {
                 }
                 final Component name;
                 try {
-                    name = comp.names().asComponent(onlineProfile);
+                    name = comp.name().asComponent(onlineProfile);
                 } catch (final QuestException e) {
                     log.warn("Could not get name for compass '" + entry.getKey() + "', skipping it: " + e.getMessage(), e);
                     continue;
@@ -608,7 +608,7 @@ public class Backpack implements Listener {
 
         @Override
         protected void click(final int slot, final int layerSlot, final ClickType click) {
-            final QuestCompass compass = compasses.get(slot);
+            final DefaultQuestCompass compass = compasses.get(slot);
             if (compass == null) {
                 return;
             }

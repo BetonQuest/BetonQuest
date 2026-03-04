@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.feature;
 
+import org.betonquest.betonquest.api.compass.QuestCompass;
 import org.betonquest.betonquest.api.identifier.ItemIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.text.Text;
@@ -9,10 +10,11 @@ import org.jetbrains.annotations.Nullable;
 /**
  * A Quest Compass targeting a location.
  *
- * @param names    the display names by their language
+ * @param name     the display names by their language
  * @param location the compass location
- * @param itemID   possible item id, when it should be displayed in the backpack
+ * @param item     possible item id, when it should be displayed in the backpack
  */
-public record QuestCompass(Text names, Argument<Location> location, @Nullable ItemIdentifier itemID) {
+public record DefaultQuestCompass(Text name, Argument<Location> location,
+                                  @Nullable ItemIdentifier item) implements QuestCompass {
 
 }
