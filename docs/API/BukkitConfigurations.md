@@ -53,7 +53,7 @@ The MultiSectionConfiguration is an implementation of this interface that implem
 allow any conflicting values resulting in a `KeyConflictException`.
 If mismatching states or settings are found in one `ConfigurationSection` a `InvalidSubConfigurationException` is thrown.
 
-- `org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration`
+- `org.betonquest.betonquest.api.config.section.multi.MultiConfiguration`
 - `org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiSectionConfiguration`
 - `org.betonquest.betonquest.api.bukkit.config.custom.multi.KeyConflictException`
 - `org.betonquest.betonquest.api.bukkit.config.custom.multi.InvalidSubConfigurationException`

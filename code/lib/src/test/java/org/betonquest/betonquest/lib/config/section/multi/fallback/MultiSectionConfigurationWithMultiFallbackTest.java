@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.lib.config.section.multi.fallback;
 
-import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
+import org.betonquest.betonquest.api.config.section.multi.MultiConfiguration;
 import org.betonquest.betonquest.lib.config.section.multi.MultiSectionConfigurationTest;
 import org.bukkit.configuration.Configuration;
 import org.junit.jupiter.api.Tag;

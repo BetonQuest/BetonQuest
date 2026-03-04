@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.config.quest;
 
-import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.section.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.lib.config.section.multi.MultiSectionConfiguration;
 import org.betonquest.betonquest.lib.config.section.multi.fallback.MultiFallbackConfiguration;

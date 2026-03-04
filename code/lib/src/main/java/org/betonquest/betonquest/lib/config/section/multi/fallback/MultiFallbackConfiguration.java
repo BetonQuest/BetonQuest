@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.lib.config.section.multi.fallback;
 
-import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
+import org.betonquest.betonquest.api.config.section.multi.MultiConfiguration;
 import org.betonquest.betonquest.lib.config.section.fallback.FallbackConfiguration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;

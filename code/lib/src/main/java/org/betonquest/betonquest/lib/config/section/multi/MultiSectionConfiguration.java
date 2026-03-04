@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.lib.config.section.multi;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
+import org.betonquest.betonquest.api.config.section.multi.MultiConfiguration;
 import org.betonquest.betonquest.lib.config.section.handle.ConfigurationModificationHandler;
 import org.betonquest.betonquest.lib.config.section.handle.HandleConfigurationOptions;
 import org.betonquest.betonquest.lib.config.section.handle.HandleModificationConfiguration;
