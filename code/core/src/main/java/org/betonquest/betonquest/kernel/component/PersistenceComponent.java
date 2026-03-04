@@ -57,6 +57,7 @@ public class PersistenceComponent extends AbstractCoreComponent {
         }
 
         @Override
+        @SuppressWarnings("PMD.ShortMethodName")
         public PersistentDataHolder of(final Profile profile) {
             return playerDataStorage.get(profile);
         }

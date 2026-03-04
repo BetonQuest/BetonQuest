@@ -3,6 +3,7 @@ package org.betonquest.betonquest.kernel.processor.quest;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.data.TagHolder;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -305,10 +306,11 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
      */
     public void startAll(final Profile profile, final PlayerDataStorage dataStorage) {
         final PlayerData data = dataStorage.get(profile);
+        final TagHolder tagHolder = data.tags();
         for (final ObjectiveIdentifier id : autoOnceObjectiveIds) {
             final Objective objective = values.get(id);
             final String tag = getTag(id);
-            if (objective == null || data.tags().has(tag)) {
+            if (objective == null || tagHolder.has(tag)) {
                 continue;
             }
             if (objective.getService().containsProfile(profile)) {
@@ -316,7 +318,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
             } else {
                 newPlayer(profile, id);
             }
-            data.tags().add(tag);
+            tagHolder.add(tag);
         }
     }
 

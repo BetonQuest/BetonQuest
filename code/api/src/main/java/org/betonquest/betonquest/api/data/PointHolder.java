@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Represents all points attached to a player or a global instance referred to as the holder.
+ * Represents all points attached to something referred to as the holder.
  */
 public interface PointHolder {
 

@@ -3,7 +3,7 @@ package org.betonquest.betonquest.api.data;
 import java.util.Set;
 
 /**
- * Represents all tags attached to a player or a global instance referred to as the owner of this {@link TagHolder}.
+ * Represents all tags attached to something referred to as the holder.
  */
 public interface TagHolder {
 

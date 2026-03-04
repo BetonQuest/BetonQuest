@@ -155,7 +155,7 @@ public class GlobalData implements PersistentDataHolder {
 
         @Override
         public boolean has(final String category) {
-            return get(category).isPresent();
+            return globalPoints.containsKey(category);
         }
 
         @Override

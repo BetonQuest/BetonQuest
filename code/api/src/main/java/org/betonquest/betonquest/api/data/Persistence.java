@@ -20,5 +20,6 @@ public interface Persistence {
      * @param profile the profile to get the data holder for
      * @return the persistent data holder for the profile
      */
+    @SuppressWarnings("PMD.ShortMethodName")
     PersistentDataHolder of(Profile profile);
 }

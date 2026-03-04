@@ -582,7 +582,7 @@ public class PlayerData implements PersistentDataHolder {
 
         @Override
         public boolean has(final String category) {
-            return get(category).isPresent();
+            return allPoints.containsKey(category);
         }
 
         @Override
