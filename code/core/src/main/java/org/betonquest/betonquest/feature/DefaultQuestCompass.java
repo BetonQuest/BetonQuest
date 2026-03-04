@@ -13,6 +13,6 @@ import org.jetbrains.annotations.Nullable;
  * @param location the compass location
  * @param itemID   possible item id, when it should be displayed in the backpack
  */
-public record QuestCompass(Text names, Argument<Location> location, @Nullable ItemIdentifier itemID) {
+public record DefaultQuestCompass(Text names, Argument<Location> location, @Nullable ItemIdentifier itemID) {
 
 }

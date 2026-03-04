@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.identifier.CompassIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
-import org.betonquest.betonquest.feature.QuestCompass;
+import org.betonquest.betonquest.feature.DefaultQuestCompass;
 import org.betonquest.betonquest.kernel.processor.feature.CompassProcessor;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.betonquest.betonquest.quest.action.tag.AddTagChanger;
@@ -66,7 +66,7 @@ public class CompassAction implements PlayerAction {
             case ADD -> changeTag(new AddTagChanger(new DefaultArgument<>(List.of(compassId.getTag()))), profile);
             case DEL -> changeTag(new DeleteTagChanger(new DefaultArgument<>(List.of(compassId.getTag()))), profile);
             case SET -> {
-                final QuestCompass compass = compassProcessor.getValues().get(compassId);
+                final DefaultQuestCompass compass = compassProcessor.getValues().get(compassId);
                 if (compass == null) {
                     throw new QuestException("No compass found for id '" + compassId + "' found.");
                 }
