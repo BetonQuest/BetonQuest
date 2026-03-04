@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.action.tag;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.data.TagHolder;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.database.TagData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -21,13 +21,13 @@ class TagActionTest {
 
     @Test
     void testTagActionUsesAlwaysActualTagData(
-            @Mock final TagData firstData,
-            @Mock final TagData secondData,
+            @Mock final TagHolder firstData,
+            @Mock final TagHolder secondData,
             @Mock final TagChanger tagChanger,
             @Mock final Profile profile1,
             @Mock final Profile profile2
     ) throws QuestException {
-        final Iterator<TagData> data = List.of(firstData, secondData).iterator();
+        final Iterator<TagHolder> data = List.of(firstData, secondData).iterator();
         final TagAction tagAction = new TagAction(player -> data.next(), tagChanger);
 
         tagAction.execute(profile1);

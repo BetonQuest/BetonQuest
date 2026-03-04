@@ -52,7 +52,7 @@ public class GlobalPointCondition implements NullableCondition {
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
-        final Optional<Integer> point = globalData.getPointsFromCategory(category.getValue(profile));
+        final Optional<Integer> point = globalData.points().get(category.getValue(profile));
         return point.isPresent() && checkPoints(point.get(), profile);
     }
 

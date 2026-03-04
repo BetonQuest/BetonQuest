@@ -96,7 +96,7 @@ public final class BundledCompatibility {
         compatibility.registerPlugin("Brewery", new BreweryIntegratorFactory());
         compatibility.registerPlugin("BreweryX", new BreweryIntegratorFactory());
         compatibility.registerPlugin("Jobs", new JobsRebornIntegratorFactory());
-        compatibility.registerPlugin("LuckPerms", new LuckPermsIntegratorFactory(globalData));
+        compatibility.registerPlugin("LuckPerms", new LuckPermsIntegratorFactory());
         compatibility.registerPlugin("AuraSkills", new AuraSkillsIntegratorFactory());
         try {
             final IdentifierFactory<PlaceholderIdentifier> placeholderIdentifierFactory =

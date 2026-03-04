@@ -24,6 +24,6 @@ public class PointPlaceholder extends AbstractPointPlaceholder<PlayerDataStorage
 
     @Override
     public String getValue(final Profile profile) {
-        return getValueFor(data.get(profile).getPointsFromCategory(category).orElse(0));
+        return getValueFor(data.get(profile).points().get(category).orElse(0));
     }
 }

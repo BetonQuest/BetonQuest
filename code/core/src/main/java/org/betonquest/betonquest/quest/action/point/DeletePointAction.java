@@ -36,6 +36,6 @@ public class DeletePointAction implements PlayerAction {
 
     @Override
     public void execute(final Profile profile) throws QuestException {
-        playerDataSource.apply(profile).removePointsCategory(category.getValue(profile));
+        playerDataSource.apply(profile).points().remove(category.getValue(profile));
     }
 }

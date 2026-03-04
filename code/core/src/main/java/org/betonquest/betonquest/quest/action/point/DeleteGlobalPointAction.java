@@ -35,6 +35,6 @@ public class DeleteGlobalPointAction implements NullableAction {
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
-        globalData.removePointsCategory(category.getValue(profile));
+        globalData.points().remove(category.getValue(profile));
     }
 }

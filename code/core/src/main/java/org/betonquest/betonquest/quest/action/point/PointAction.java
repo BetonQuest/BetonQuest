@@ -63,7 +63,7 @@ public class PointAction implements PlayerAction {
         final PlayerData playerData = dataStorage.getOffline(profile);
         final double countDouble = count.getValue(profile).doubleValue();
         final String category = this.category.getValue(profile);
-        playerData.setPoints(category, pointType.modify(playerData.getPointsFromCategory(category).orElse(0), countDouble));
+        playerData.points().set(category, pointType.modify(playerData.points().get(category).orElse(0), countDouble));
         pointSender.sendNotification(profile,
                 new VariableReplacement("amount", Component.text(countDouble)),
                 new VariableReplacement("category", Component.text(category)));

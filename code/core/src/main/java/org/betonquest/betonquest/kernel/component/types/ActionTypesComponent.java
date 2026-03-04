@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.kernel.component.types;
 
 import org.betonquest.betonquest.api.LanguageProvider;
+import org.betonquest.betonquest.api.data.Persistence;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -108,7 +109,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         return Set.of(Plugin.class, PluginManager.class, Server.class, BukkitScheduler.class,
                 BetonQuestLoggerFactory.class, ProfileProvider.class, PlayerDataFactory.class,
                 PlayerDataStorage.class, GlobalData.class, PluginMessage.class, LanguageProvider.class,
-                Saver.class, TextParser.class, Instructions.class,
+                Saver.class, TextParser.class, Instructions.class, Persistence.class,
                 ActionTypeRegistry.class, Conversations.class, ActionManager.class, ConditionManager.class,
                 ObjectiveManager.class, NpcManager.class, CompassProcessor.class, CancelerProcessor.class,
                 DefaultNpcHider.class);
@@ -121,6 +122,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         final PlayerDataFactory playerDataFactory = getDependency(PlayerDataFactory.class);
         final GlobalData globalData = getDependency(GlobalData.class);
         final PlayerDataStorage playerDataStorage = getDependency(PlayerDataStorage.class);
+        final Persistence persistence = getDependency(Persistence.class);
         final PluginMessage pluginMessage = getDependency(PluginMessage.class);
         final LanguageProvider languageProvider = getDependency(LanguageProvider.class);
         final TextParser textParser = getDependency(TextParser.class);
@@ -147,7 +149,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         actionTypes.registerCombined("chestclear", new ChestClearActionFactory());
         actionTypes.registerCombined("chestgive", new ChestGiveActionFactory());
         actionTypes.registerCombined("chesttake", new ChestTakeActionFactory());
-        actionTypes.register("compass", new CompassActionFactory(compassProcessor, playerDataStorage));
+        actionTypes.register("compass", new CompassActionFactory(compassProcessor, persistence));
         actionTypes.registerCombined("command", new CommandActionFactory(loggerFactory, server));
         actionTypes.register("conversation", new ConversationActionFactory(conversations));
         actionTypes.register("damage", new DamageActionFactory());
@@ -197,7 +199,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         actionTypes.registerCombined("spawn", new SpawnMobActionFactory());
         actionTypes.register("stage", new StageActionFactory(objectiveManager));
         actionTypes.register("sudo", new SudoActionFactory(server));
-        actionTypes.registerCombined("tag", new TagPlayerActionFactory(playerDataStorage, saver, profileProvider));
+        actionTypes.registerCombined("tag", new TagPlayerActionFactory(persistence, saver, profileProvider));
         actionTypes.register("take", new TakeActionFactory(loggerFactory, pluginMessage));
         actionTypes.register("teleport", new TeleportActionFactory(conversations));
         actionTypes.registerCombined("time", new TimeActionFactory());

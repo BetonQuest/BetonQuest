@@ -151,7 +151,7 @@ public class DefaultCoreComponentLoader implements CoreComponentLoader {
             @Override
             public <T> void take(final Class<T> type, final T dependency) {
                 if (!activeComponent.provides().contains(type)) {
-                    throw new IllegalStateException("Component %s attempted to inject a dependency that is supposed to be provided by it: %s not in (%s)"
+                    throw new IllegalStateException("Component %s attempted to inject a dependency that is not supposed to be provided by it: %s not in (%s)"
                             .formatted(activeComponent.getClass().getSimpleName(), type.getSimpleName(), activeComponent.provides().stream().map(Class::getSimpleName).collect(Collectors.joining(","))));
                 }
                 if (loaded.stream().anyMatch(known -> known.type().isAssignableFrom(type) || type.isAssignableFrom(known.type()))) {

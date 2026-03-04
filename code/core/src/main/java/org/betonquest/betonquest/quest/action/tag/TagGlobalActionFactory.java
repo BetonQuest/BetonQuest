@@ -55,21 +55,21 @@ public class TagGlobalActionFactory implements PlayerActionFactory, PlayerlessAc
 
     private PlayerlessAction createPlayerlessAddTagAction(final Argument<List<String>> tags) {
         final TagChanger tagChanger = new AddTagChanger(tags);
-        return new PlayerlessTagAction(globalData, tagChanger);
+        return new PlayerlessTagAction(globalData.tags(), tagChanger);
     }
 
     private PlayerlessAction createPlayerlessDeleteTagAction(final Argument<List<String>> tags) {
         final TagChanger tagChanger = new DeleteTagChanger(tags);
-        return new PlayerlessTagAction(globalData, tagChanger);
+        return new PlayerlessTagAction(globalData.tags(), tagChanger);
     }
 
     private PlayerAction createAddTagAction(final Argument<List<String>> tags) {
         final TagChanger tagChanger = new AddTagChanger(tags);
-        return new TagAction(profile -> globalData, tagChanger);
+        return new TagAction(profile -> globalData.tags(), tagChanger);
     }
 
     private PlayerAction createDeleteTagAction(final Argument<List<String>> tags) {
         final TagChanger tagChanger = new DeleteTagChanger(tags);
-        return new TagAction(profile -> globalData, tagChanger);
+        return new TagAction(profile -> globalData.tags(), tagChanger);
     }
 }
