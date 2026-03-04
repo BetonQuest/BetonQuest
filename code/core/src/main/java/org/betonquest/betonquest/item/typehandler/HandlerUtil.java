@@ -118,15 +118,19 @@ public final class HandlerUtil {
     /**
      * Parses a {@link Color} from a string. The color can be a hex value, a number or a dye color.
      *
-     * @param string the string to parse
+     * @param color the string to parse
      * @return the parsed color
      * @throws QuestException when the color could not be parsed
      */
-    public static Color getColor(final String string) throws QuestException {
-        if (string.isEmpty()) {
+    public static Color getColor(final String color) throws QuestException {
+        if (color.isBlank()) {
             throw new QuestException("Color is not specified");
         }
-        return getRgbColor(string).orElse(getDyeColor(string));
+        final Optional<Color> rgbColor = getRgbColor(color);
+        if (rgbColor.isPresent()) {
+            return rgbColor.get();
+        }
+        return getDyeColor(color);
     }
 
     private static Optional<Color> getRgbColor(final String string) throws QuestException {
@@ -137,12 +141,12 @@ public final class HandlerUtil {
             if (string.matches("-?\\d+")) {
                 return Optional.of(Color.fromRGB(Integer.parseInt(string)));
             }
+            return Optional.empty();
         } catch (final NumberFormatException e) {
-            throw new QuestException("Color could not be parsed as a number: %s".formatted(string), e);
+            throw new QuestException("Color could not be parsed as a number: '%s'".formatted(string), e);
         } catch (final IllegalArgumentException e) {
-            throw new QuestException("Color is not valid: %s".formatted(string), e);
+            throw new QuestException("Color is not valid: '%s'".formatted(string), e);
         }
-        return Optional.empty();
     }
 
     private static Color getDyeColor(final String string) throws QuestException {
