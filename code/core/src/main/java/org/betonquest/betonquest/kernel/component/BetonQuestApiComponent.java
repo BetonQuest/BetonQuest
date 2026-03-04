@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.reload.Reloader;
 import org.betonquest.betonquest.api.service.DefaultBetonQuestApiService;
 import org.betonquest.betonquest.api.service.action.Actions;
+import org.betonquest.betonquest.api.service.compass.CompassManager;
 import org.betonquest.betonquest.api.service.condition.Conditions;
 import org.betonquest.betonquest.api.service.conversation.Conversations;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
@@ -46,7 +47,7 @@ public class BetonQuestApiComponent extends AbstractCoreComponent {
                 QuestPackageManager.class, BetonQuestLoggerFactory.class, ProfileProvider.class,
                 Identifiers.class, Instructions.class, Actions.class, Conditions.class, Objectives.class,
                 Placeholders.class, Conversations.class, Items.class, Npcs.class, FontRegistry.class, Reloader.class,
-                Persistence.class);
+                Persistence.class, CompassManager.class);
     }
 
     @Override
@@ -72,11 +73,12 @@ public class BetonQuestApiComponent extends AbstractCoreComponent {
         final FontRegistry fontRegistry = getDependency(FontRegistry.class);
         final Reloader reloader = getDependency(Reloader.class);
         final Persistence persistence = getDependency(Persistence.class);
+        final CompassManager compassManager = getDependency(CompassManager.class);
         final Plugin plugin = getDependency(Plugin.class);
 
         final DefaultBetonQuestApi defaultBetonQuestApi = new DefaultBetonQuestApi(profileProvider, packManager, loggerFactory, instructions,
                 actions, conditions, objectives, placeholders, items, npcs,
-                conversations, identifiers, fontRegistry, reloader, persistence);
+                conversations, identifiers, fontRegistry, reloader, persistence, compassManager);
 
         final BetonQuestLogger serviceLogger = loggerFactory.create(BetonQuestApiService.class);
         servicesManager.register(BetonQuestApiService.class, new DefaultBetonQuestApiService(callerPlugin -> {
@@ -105,6 +107,7 @@ public class BetonQuestApiComponent extends AbstractCoreComponent {
      * @param fonts         the font registry
      * @param reloader      the reloader
      * @param persistence   the persistence api accessor
+     * @param compasses     the compass manager
      */
     /* default */ record DefaultBetonQuestApi(ProfileProvider profiles, QuestPackageManager packages,
                                               BetonQuestLoggerFactory loggerFactory, Instructions instructions,
@@ -112,7 +115,8 @@ public class BetonQuestApiComponent extends AbstractCoreComponent {
                                               Placeholders placeholders, Items items, Npcs npcs,
                                               Conversations conversations, Identifiers identifiers,
                                               FontRegistry fonts, Reloader reloader,
-                                              Persistence persistence) implements BetonQuestApi {
+                                              Persistence persistence,
+                                              CompassManager compasses) implements BetonQuestApi {
 
     }
 }

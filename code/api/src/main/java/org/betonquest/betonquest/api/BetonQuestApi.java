@@ -19,6 +19,7 @@ import org.betonquest.betonquest.api.reload.Reloader;
 import org.betonquest.betonquest.api.service.action.ActionManager;
 import org.betonquest.betonquest.api.service.action.ActionRegistry;
 import org.betonquest.betonquest.api.service.action.Actions;
+import org.betonquest.betonquest.api.service.compass.CompassManager;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.service.condition.ConditionRegistry;
 import org.betonquest.betonquest.api.service.condition.Conditions;
@@ -209,4 +210,13 @@ public interface BetonQuestApi {
      * @return the persistence offering access to persistent data
      */
     Persistence persistence();
+
+    /**
+     * Offers access to the quest compasses.
+     * <br> <br>
+     * The {@link CompassManager} manages all quest compasses and allows to obtain them.
+     *
+     * @return the compass manager
+     */
+    CompassManager compasses();
 }
