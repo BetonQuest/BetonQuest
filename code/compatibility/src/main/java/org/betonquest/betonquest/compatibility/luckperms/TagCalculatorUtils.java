@@ -38,7 +38,7 @@ public final class TagCalculatorUtils {
         return (player, contextConsumer) -> {
             if (player.isOnline()) {
                 final OnlineProfile onlineProfile = profileProvider.getProfile(player);
-                persistence.profile(onlineProfile).tags().get().forEach(tag -> contextConsumer.accept(KEY_LOCAL + tag, "true"));
+                persistence.of(onlineProfile).tags().get().forEach(tag -> contextConsumer.accept(KEY_LOCAL + tag, "true"));
             }
             final Set<String> globalDataTags = persistence.global().tags().get();
             globalDataTags.forEach(tag -> contextConsumer.accept(KEY_GLOBAL + tag, "true"));

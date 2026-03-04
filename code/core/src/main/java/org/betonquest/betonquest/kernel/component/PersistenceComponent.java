@@ -57,7 +57,7 @@ public class PersistenceComponent extends AbstractCoreComponent {
         }
 
         @Override
-        public PersistentDataHolder profile(final Profile profile) {
+        public PersistentDataHolder of(final Profile profile) {
             return playerDataStorage.get(profile);
         }
     }

@@ -79,7 +79,7 @@ public class CompassAction implements PlayerAction {
     }
 
     private void changeTag(final TagChanger tagChanger, final Profile profile) throws QuestException {
-        new TagAction(offline -> persistence.profile(offline).tags(), tagChanger).execute(profile);
+        new TagAction(offline -> persistence.of(offline).tags(), tagChanger).execute(profile);
     }
 
     @Override

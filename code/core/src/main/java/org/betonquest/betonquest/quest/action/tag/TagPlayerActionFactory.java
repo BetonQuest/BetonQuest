@@ -72,11 +72,11 @@ public class TagPlayerActionFactory implements PlayerActionFactory, PlayerlessAc
 
     private TagAction createAddTagAction(final Argument<List<String>> tags) {
         final TagChanger tagChanger = new AddTagChanger(tags);
-        return new TagAction(offline -> persistence.profile(offline).tags(), tagChanger);
+        return new TagAction(offline -> persistence.of(offline).tags(), tagChanger);
     }
 
     private TagAction createDeleteTagAction(final Argument<List<String>> tags) {
         final TagChanger tagChanger = new DeleteTagChanger(tags);
-        return new TagAction(offline -> persistence.profile(offline).tags(), tagChanger);
+        return new TagAction(offline -> persistence.of(offline).tags(), tagChanger);
     }
 }

@@ -55,7 +55,7 @@ public class DeleteTagPlayerlessAction implements PlayerlessAction {
     public void execute() throws QuestException {
         for (final String tag : tags.getValue(null)) {
             for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
-                persistence.profile(onlineProfile).tags().remove(tag);
+                persistence.of(onlineProfile).tags().remove(tag);
             }
             saver.add(new Saver.Record(UpdateType.REMOVE_ALL_TAGS, tag));
         }
