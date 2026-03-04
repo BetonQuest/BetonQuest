@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.config.quest;
 
-import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.section.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.logger.LogSource;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;

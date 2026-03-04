@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.schedule;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.config.section.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.identifier.ItemIdentifier;

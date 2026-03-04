@@ -1,12 +1,9 @@
 package org.betonquest.betonquest.schedule;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.bukkit.config.custom.multi.InvalidSubConfigurationException;
-import org.betonquest.betonquest.api.bukkit.config.custom.multi.KeyConflictException;
-import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
-import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiSectionConfiguration;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.config.section.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.identifier.ScheduleIdentifier;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
@@ -21,6 +18,9 @@ import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
 import org.betonquest.betonquest.id.schedule.ScheduleIdentifierFactory;
 import org.betonquest.betonquest.kernel.registry.feature.ScheduleRegistry;
+import org.betonquest.betonquest.lib.config.section.multi.InvalidSubConfigurationException;
+import org.betonquest.betonquest.lib.config.section.multi.KeyConflictException;
+import org.betonquest.betonquest.lib.config.section.multi.MultiSectionConfiguration;
 import org.betonquest.betonquest.lib.instruction.section.DefaultSectionInstruction;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerExtension;
 import org.betonquest.betonquest.schedule.ActionScheduling.ScheduleType;

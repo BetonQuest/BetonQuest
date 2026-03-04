@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.schedule;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
+import org.betonquest.betonquest.api.config.section.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.identifier.ScheduleIdentifier;
 import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerExtension;

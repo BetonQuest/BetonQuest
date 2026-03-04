@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.api.identifier;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.section.multi.MultiConfiguration;
 
 /**
  * A default implementation of the {@link ReadableIdentifier}.
