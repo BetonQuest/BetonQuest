@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.reload.ReloadPhase;
 import org.betonquest.betonquest.api.reload.Reloader;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
-import org.betonquest.betonquest.versioning.Version;
+import org.betonquest.betonquest.lib.versioning.Version;
 import org.betonquest.betonquest.web.DownloadSource;
 import org.betonquest.betonquest.web.TempFileDownloadSource;
 import org.betonquest.betonquest.web.WebContentSource;

@@ -2,8 +2,8 @@ package org.betonquest.betonquest.web.updater;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.versioning.Version;
-import org.betonquest.betonquest.versioning.VersionComparator;
+import org.betonquest.betonquest.lib.versioning.Version;
+import org.betonquest.betonquest.lib.versioning.VersionComparator;
 import org.betonquest.betonquest.web.updater.source.DevelopmentUpdateSource;
 import org.betonquest.betonquest.web.updater.source.ReleaseUpdateSource;
 import org.jetbrains.annotations.VisibleForTesting;

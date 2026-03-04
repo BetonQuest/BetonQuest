@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.web.updater.source.implementations;
 
-import org.betonquest.betonquest.versioning.Version;
+import org.betonquest.betonquest.lib.versioning.Version;
 import org.betonquest.betonquest.web.ContentSource;
 import org.junit.jupiter.api.Test;
 

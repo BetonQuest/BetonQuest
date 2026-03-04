@@ -15,9 +15,9 @@ import org.betonquest.betonquest.compatibility.itemsadder.item.ItemsAdderItemFac
 import org.betonquest.betonquest.compatibility.itemsadder.item.ItemsAdderQuestItemSerializer;
 import org.betonquest.betonquest.compatibility.itemsadder.objective.IABlockBreakObjectiveFactory;
 import org.betonquest.betonquest.compatibility.itemsadder.objective.IABlockPlaceObjectiveFactory;
-import org.betonquest.betonquest.versioning.UpdateStrategy;
-import org.betonquest.betonquest.versioning.Version;
-import org.betonquest.betonquest.versioning.VersionComparator;
+import org.betonquest.betonquest.lib.versioning.UpdateStrategy;
+import org.betonquest.betonquest.lib.versioning.Version;
+import org.betonquest.betonquest.lib.versioning.VersionComparator;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.database;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.config.DefaultConfigAccessorFactory;
+import org.betonquest.betonquest.lib.config.DefaultConfigAccessorFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 

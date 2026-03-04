@@ -2,7 +2,8 @@ package org.betonquest.betonquest.config.quest;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.config.DefaultConfigAccessorFactory;
+import org.betonquest.betonquest.lib.config.DefaultConfigAccessorFactory;
+import org.betonquest.betonquest.lib.config.quest.Quest;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;

@@ -1,0 +1,24 @@
+package org.betonquest.betonquest.config.migrator.from1to2;
+
+import org.betonquest.betonquest.api.config.section.multi.MultiConfiguration;
+import org.betonquest.betonquest.lib.config.patcher.migration.QuestMigration;
+import org.betonquest.betonquest.lib.config.quest.Quest;
+
+/**
+ * Handles the Ride migration.
+ */
+public class RideUpdates implements QuestMigration {
+
+    /**
+     * Creates a new ride migrator.
+     */
+    public RideUpdates() {
+    }
+
+    @Override
+    public void migrate(final Quest quest) {
+        final MultiConfiguration config = quest.getQuestConfig();
+        replaceStartValueInSection(config, "objectives", "vehicle", "ride");
+        replaceStartValueInSection(config, "conditions", "riding", "ride");
+    }
+}

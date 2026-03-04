@@ -1,0 +1,26 @@
+package org.betonquest.betonquest.lib.config.patcher.transformer;
+
+import org.betonquest.betonquest.api.config.patcher.PatchException;
+import org.betonquest.betonquest.lib.config.patcher.DefaultPatcherOptions;
+import org.junit.jupiter.api.Test;
+
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * Tests for {@link SetTransformer}.
+ */
+class SetTransformerTest extends TransformersFixture {
+
+    /**
+     * The transformer that is tested.
+     */
+    private static final SetTransformer TRANSFORMER = new SetTransformer();
+
+    @Test
+    void flawless() throws PatchException {
+        TRANSFORMER.transform(new DefaultPatcherOptions(Map.of("key", "journalLock", "value", "true")), config);
+        assertEquals("true", config.get("journalLock"), "The value was not set.");
+    }
+}
