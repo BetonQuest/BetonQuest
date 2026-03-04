@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Utils for handler "instruction" parsing.
@@ -115,30 +116,36 @@ public final class HandlerUtil {
     }
 
     /**
-     * Parses the string as RGB or as DyeColor and returns it as Color.
+     * Parses a {@link Color} from a string. The color can be a hex value, a number or a dye color.
      *
-     * @param string string to parse as a Color
-     * @return the Color (never null)
-     * @throws QuestException when something goes wrong
+     * @param string the string to parse
+     * @return the parsed color
+     * @throws QuestException when the color could not be parsed
      */
     public static Color getColor(final String string) throws QuestException {
         if (string.isEmpty()) {
             throw new QuestException("Color is not specified");
         }
+        return getRgbColor(string).orElse(getDyeColor(string));
+    }
 
+    private static Optional<Color> getRgbColor(final String string) throws QuestException {
         try {
             if (string.startsWith("#")) {
-                return Color.fromRGB(Integer.parseInt(string.substring(1), 16));
+                return Optional.of(Color.fromRGB(Integer.parseInt(string.substring(1), 16)));
             }
             if (string.matches("-?\\d+")) {
-                return Color.fromRGB(Integer.parseInt(string));
+                return Optional.of(Color.fromRGB(Integer.parseInt(string)));
             }
         } catch (final NumberFormatException e) {
             throw new QuestException("Color could not be parsed as a number: %s".formatted(string), e);
         } catch (final IllegalArgumentException e) {
-            throw new QuestException("Colour is not valid: %s".formatted(string), e);
+            throw new QuestException("Color is not valid: %s".formatted(string), e);
         }
+        return Optional.empty();
+    }
 
+    private static Color getDyeColor(final String string) throws QuestException {
         try {
             return DyeColor.valueOf(string.toUpperCase(Locale.ROOT)).getColor();
         } catch (final IllegalArgumentException e) {
