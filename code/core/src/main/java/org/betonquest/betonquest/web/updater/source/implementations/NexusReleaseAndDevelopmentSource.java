@@ -3,7 +3,7 @@ package org.betonquest.betonquest.web.updater.source.implementations;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import org.betonquest.betonquest.versioning.Version;
+import org.betonquest.betonquest.lib.versioning.Version;
 import org.betonquest.betonquest.web.ContentSource;
 import org.betonquest.betonquest.web.WebContentSource;
 import org.betonquest.betonquest.web.updater.source.DevelopmentUpdateSource;

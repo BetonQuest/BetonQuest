@@ -1,8 +1,9 @@
 package org.betonquest.betonquest.config.patcher.migration;
 
-import org.betonquest.betonquest.config.quest.Quest;
 import org.betonquest.betonquest.config.quest.QuestFixture;
-import org.betonquest.betonquest.versioning.Version;
+import org.betonquest.betonquest.lib.config.patcher.migration.SettableVersion;
+import org.betonquest.betonquest.lib.config.quest.Quest;
+import org.betonquest.betonquest.lib.versioning.Version;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.junit.jupiter.api.Test;
 

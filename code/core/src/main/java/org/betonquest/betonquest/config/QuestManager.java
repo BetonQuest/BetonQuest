@@ -7,11 +7,11 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.config.section.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.config.patcher.migration.QuestMigrator;
-import org.betonquest.betonquest.config.patcher.migration.VersionMissmatchException;
-import org.betonquest.betonquest.config.quest.Quest;
-import org.betonquest.betonquest.config.quest.QuestPackageImpl;
-import org.betonquest.betonquest.config.quest.QuestTemplate;
+import org.betonquest.betonquest.config.migrator.QuestMigrator;
+import org.betonquest.betonquest.lib.config.patcher.migration.VersionMissmatchException;
+import org.betonquest.betonquest.lib.config.quest.Quest;
+import org.betonquest.betonquest.lib.config.quest.QuestPackageImpl;
+import org.betonquest.betonquest.lib.config.quest.QuestTemplate;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.jetbrains.annotations.Nullable;
 

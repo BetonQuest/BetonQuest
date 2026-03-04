@@ -22,9 +22,9 @@ import org.betonquest.betonquest.compatibility.mythicmobs.npc.MythicMobsInteract
 import org.betonquest.betonquest.compatibility.mythicmobs.npc.MythicMobsNpcFactory;
 import org.betonquest.betonquest.compatibility.mythicmobs.npc.MythicMobsReverseIdentifier;
 import org.betonquest.betonquest.compatibility.mythicmobs.objective.MythicMobKillObjectiveFactory;
-import org.betonquest.betonquest.versioning.UpdateStrategy;
-import org.betonquest.betonquest.versioning.Version;
-import org.betonquest.betonquest.versioning.VersionComparator;
+import org.betonquest.betonquest.lib.versioning.UpdateStrategy;
+import org.betonquest.betonquest.lib.versioning.Version;
+import org.betonquest.betonquest.lib.versioning.VersionComparator;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;

@@ -1,0 +1,24 @@
+package org.betonquest.betonquest.config.migrator.from1to2;
+
+import org.betonquest.betonquest.api.config.section.multi.MultiConfiguration;
+import org.betonquest.betonquest.lib.config.patcher.migration.QuestMigration;
+import org.betonquest.betonquest.lib.config.quest.Quest;
+
+/**
+ * Handles the remove entity migration.
+ */
+public class RemoveEntity implements QuestMigration {
+
+    /**
+     * Creates a new mmo_updates migrator.
+     */
+    public RemoveEntity() {
+    }
+
+    @Override
+    public void migrate(final Quest quest) {
+        final MultiConfiguration config = quest.getQuestConfig();
+        replaceStartValueInSection(config, "events", "clear", "removeentity");
+        replaceStartValueInSection(config, "events", "killmob", "removeentity");
+    }
+}

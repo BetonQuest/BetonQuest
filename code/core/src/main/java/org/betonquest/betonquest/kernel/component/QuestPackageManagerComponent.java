@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.reload.ReloadPhase;
 import org.betonquest.betonquest.api.reload.Reloader;
 import org.betonquest.betonquest.config.QuestManager;
-import org.betonquest.betonquest.config.patcher.migration.QuestMigrator;
+import org.betonquest.betonquest.config.migrator.QuestMigrator;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
