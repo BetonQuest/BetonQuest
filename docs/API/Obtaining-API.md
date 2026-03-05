@@ -52,8 +52,8 @@ We recommend that you inject instances you obtained from the `ServicesManager` i
 You might want to learn about "Dependency Injection" as a programming technique,
 but as a quick start here's a simple example:
 
-This plugin injects an instance of `BetonQuestApi` that was created by the `BetonQuestApiService` into a class 
-implementing some feature.
+This plugin injects an instance of `BetonQuestApi` and `BetonQuestLogger` that was created by the 
+`BetonQuestApiService` into a class implementing some feature.
 
 ```java linenums="1"
 public class MyAddon extends JavaPlugin {
@@ -64,15 +64,19 @@ public class MyAddon extends JavaPlugin {
         final BetonQuestApiService betonQuestApiService 
             = servicesManager.load(BetonQuestApiService.class);
         final BetonQuestApi betonQuestApi = betonQuestApiService.api(this);
-        new MyFeature(betonQuestApi);
+        final BetonQuestLogger betonQuestLogger = betonQuestApi.loggerFactory().create(this);
+        new MyFeature(betonQuestLogger, betonQuestApi);
     }
 }
 
 public class MyFeature {
-    private final BetonQuestApi betonQuestApi
+    private final BetonQuestLogger betonQuestLogger;
+    private final BetonQuestApi betonQuestApi;
 
-    public MyFeature(final BetonQuestApi betonQuestApi) {
+    public MyFeature(final BetonQuestLogger betonQuestLogger,
+                     final BetonQuestApi betonQuestApi) {
         this.betonQuestApi = betonQuestApi;
+        this.betonQuestLogger = betonQuestLogger;
     }
 }
 ```
