@@ -162,13 +162,12 @@ nav:
       - 'Obtaining API': API/Obtaining-API.md
       - 'Quest API':
           - 'Overview': API/Quest/Quest-API.md
-          - 'Writing Implementations': API/Quest/Writing-Implementations.md
-          - 'Conditions': API/Quest/Conditions.md
           - 'Actions': API/Quest/Actions.md
           - 'Objectives': API/Quest/Objectives.md
+          - 'Conditions': API/Quest/Conditions.md
           - 'NPCs': API/Quest/NPCs.md
+          - 'Writing Implementations': API/Quest/Writing-Implementations.md
       - 'Other':
-          - 'Legacy API': API/Legacy-API.md
           - 'Instruction': API/Instruction.md
           - 'Logging': API/Logging.md
           - 'Text Parsing': API/TextParsing.md
