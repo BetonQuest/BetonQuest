@@ -16,7 +16,7 @@
         <link rel="prev" href="../Actions/">
       
       
-        <link rel="next" href="../NPCs/">
+        <link rel="next" href="../Conditions/">
       
       
         
@@ -90,7 +90,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#objectives" class="md-skip">
+        <a href="#introduction" class="md-skip">
           Skip to content
         </a>
       
@@ -5056,73 +5056,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../Writing-Implementations/" class="md-nav__link">
-        
-  
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13h-4v4h-2v-4H7v-2h4V7h2v4h4m2-8H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2"/></svg>
-  
-  <span class="md-ellipsis">
-    
-  
-    Writing Implementations
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../Conditions/" class="md-nav__link">
-        
-  
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 12h9.8l-2.5-2.5 1.4-1.4 4.9 4.9-4.9 4.9-1.4-1.4 2.5-2.5H9zm12 5.4V20H3V6h18v2.6l2 2V4c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2v-4.6z"/></svg>
-  
-  <span class="md-ellipsis">
-    
-  
-    Conditions
-  
-
-    
-  </span>
-  
-  
-    
-  
-  
-    <span class="md-status md-status--new"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../Actions/" class="md-nav__link">
         
   
@@ -5138,6 +5071,13 @@
     
   </span>
   
+  
+    
+  
+  
+    <span class="md-status md-status--new"></span>
+  
+
   
 
       </a>
@@ -5235,13 +5175,151 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#objectives">
+  <a class="md-nav__link" href="#introduction">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Objectives
+          Introduction
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#how-to-create-an-objective">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          How to create an objective
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#how-to-create-a-factory-for-an-objective">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          How to create a factory for an objective
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#how-to-register-an-objective-and-its-factory-with-betonquest">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          How to register an objective and its factory with BetonQuest
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#how-to-access-an-objective">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          How to access an objective
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#how-a-full-example-looks-like">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          How a full example looks like
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#what-limitations-are-there">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          What limitations are there
         </span>
 
       
@@ -5258,6 +5336,43 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Conditions/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 12h9.8l-2.5-2.5 1.4-1.4 4.9 4.9-4.9 4.9-1.4-1.4 2.5-2.5H9zm12 5.4V20H3V6h18v2.6l2 2V4c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2v-4.6z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Conditions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--new"></span>
+  
+
+  
+
+      </a>
     </li>
   
 
@@ -5300,6 +5415,36 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Writing-Implementations/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13h-4v4h-2v-4H7v-2h4V7h2v4h4m2-8H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Writing Implementations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -5316,8 +5461,6 @@
   
     
     
-      
-        
       
         
       
@@ -5380,36 +5523,6 @@
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../Legacy-API/" class="md-nav__link">
-        
-  
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 0a8 8 0 0 1 .701.031C9.444.095 9.99.645 10.16 1.29l.288 1.107c.018.066.079.158.212.224q.347.171.668.386c.123.082.233.09.299.071l1.103-.303c.644-.176 1.392.021 1.82.63q.406.578.704 1.218c.315.675.111 1.422-.364 1.891l-.814.806c-.049.048-.098.147-.088.294q.024.386 0 .772c-.01.147.038.246.088.294l.814.806c.475.469.679 1.216.364 1.891a8 8 0 0 1-.704 1.217c-.428.61-1.176.807-1.82.63l-1.102-.302c-.067-.019-.177-.011-.3.071a6 6 0 0 1-.668.386c-.133.066-.194.158-.211.224l-.29 1.106c-.168.646-.715 1.196-1.458 1.26a8 8 0 0 1-1.402 0c-.743-.064-1.289-.614-1.458-1.26l-.289-1.106c-.018-.066-.079-.158-.212-.224a6 6 0 0 1-.668-.386c-.123-.082-.233-.09-.299-.071l-1.103.303c-.644.176-1.392-.021-1.82-.63a8 8 0 0 1-.704-1.218c-.315-.675-.111-1.422.363-1.891l.815-.806c.05-.048.098-.147.088-.294a6 6 0 0 1 0-.772c.01-.147-.038-.246-.088-.294l-.815-.806C.635 6.045.431 5.298.746 4.623a8 8 0 0 1 .704-1.217c.428-.61 1.176-.807 1.82-.63l1.102.302c.067.019.177.011.3-.071q.321-.215.668-.386c.133-.066.194-.158.211-.224l.29-1.106C6.009.645 6.556.095 7.299.03Q7.646 0 8 0m-.571 1.525c-.036.003-.108.036-.137.146l-.289 1.105c-.147.561-.549.967-.998 1.189q-.26.13-.5.29c-.417.278-.97.423-1.529.27l-1.103-.303c-.109-.03-.175.016-.195.045q-.33.47-.573.99c-.014.031-.021.11.059.19l.815.806c.411.406.562.957.53 1.456a5 5 0 0 0 0 .582c.032.499-.119 1.05-.53 1.456l-.815.806c-.081.08-.073.159-.059.19q.243.52.573.989c.02.03.085.076.195.046l1.102-.303c.56-.153 1.113-.008 1.53.27q.242.16.501.29c.447.222.85.629.997 1.189l.289 1.105c.029.109.101.143.137.146a6.6 6.6 0 0 0 1.142 0c.036-.003.108-.036.137-.146l.289-1.105c.147-.561.549-.967.998-1.189q.26-.13.5-.29c.417-.278.97-.423 1.529-.27l1.103.303c.109.029.175-.016.195-.045q.33-.47.573-.99c.014-.031.021-.11-.059-.19l-.815-.806c-.411-.406-.562-.957-.53-1.456a5 5 0 0 0 0-.582c-.032-.499.119-1.05.53-1.456l.815-.806c.081-.08.073-.159.059-.19a6.5 6.5 0 0 0-.573-.989c-.02-.03-.085-.076-.195-.046l-1.102.303c-.56.153-1.113.008-1.53-.27a4.4 4.4 0 0 0-.501-.29c-.447-.222-.85-.629-.997-1.189l-.289-1.105c-.029-.11-.101-.143-.137-.146a6.6 6.6 0 0 0-1.142 0M11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0M9.5 8a1.5 1.5 0 1 0-3.001.001A1.5 1.5 0 0 0 9.5 8"/></svg>
-  
-  <span class="md-ellipsis">
-    
-  
-    Legacy API
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
             
               
                 
@@ -6539,13 +6652,151 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#objectives">
+  <a class="md-nav__link" href="#introduction">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Objectives
+          Introduction
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#how-to-create-an-objective">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          How to create an objective
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#how-to-create-a-factory-for-an-objective">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          How to create a factory for an objective
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#how-to-register-an-objective-and-its-factory-with-betonquest">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          How to register an objective and its factory with BetonQuest
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#how-to-access-an-objective">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          How to access an objective
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#how-a-full-example-looks-like">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          How a full example looks like
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#what-limitations-are-there">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          What limitations are there
         </span>
 
       
@@ -6652,7 +6903,7 @@
   <h1>Objectives</h1>
 
 <details class="warning">
-<summary>API State: <code>Todo</code></summary>
+<summary>API State: <code>Unfinished</code></summary>
 <p><h3><u>Todo</u></h3>
 This part of the API is only planned.</p>
 <p><strong>Do not use anything of this part of the API yet. It will change in the future.</strong></p>
@@ -6675,7 +6926,39 @@ Only bugs and major conceptual problems would lead to more changes.
 This part of the API will only change over at least one major version and will likely carry deprecation as long as possible.</p>
 <p><strong>This part of the API should be safe to use. We try to keep it compatible with previous versions if changes are needed.</strong></p>
 </details>
-<h2 id="objectives">Objectives<a class="headerlink" href="#objectives" title="Permanent link">🔗</a></h2>
+<details class="abstract">
+<summary>Objective API Classes</summary>
+<ul>
+<li><code>org.betonquest.betonquest.api.service.objective.Objectives</code></li>
+<li><code>org.betonquest.betonquest.api.service.objective.ObjectiveManager</code></li>
+<li><code>org.betonquest.betonquest.api.service.objective.ObjectiveRegistry</code></li>
+<li><code>org.betonquest.betonquest.api.quest.objective.Objective</code></li>
+<li><code>org.betonquest.betonquest.api.quest.objective.ObjectiveFactory</code></li>
+</ul>
+</details>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">🔗</a></h2>
+<p>This page covers the Objective API of BetonQuest.
+You will be introduced to the following:</p>
+<ul>
+<li><a href="#how-to-create-an-objective">How to create an objective</a></li>
+<li><a href="#how-to-create-a-factory-for-an-objective">How to create a factory for an objective</a></li>
+<li><a href="#how-to-register-an-objective-and-its-factory-with-betonquest">How to register an objective and its factory with BetonQuest</a></li>
+<li><a href="#how-to-access-an-objective">How to access an objective</a></li>
+<li><a href="#how-a-full-example-looks-like">How a full example looks like</a></li>
+<li><a href="#what-limitations-are-there">What limitations are there</a></li>
+</ul>
+<p>This page does <strong>not</strong> cover:</p>
+<ul>
+<li><a href="../../Obtaining-API/">How to access the api</a></li>
+<li><a href="../../../Documentation/Scripting/Building-Blocks/Objectives-List/">Which objectives are available</a></li>
+<li>What an objective is</li>
+</ul>
+<h2 id="how-to-create-an-objective">How to create an objective<a class="headerlink" href="#how-to-create-an-objective" title="Permanent link">🔗</a></h2>
+<h2 id="how-to-create-a-factory-for-an-objective">How to create a factory for an objective<a class="headerlink" href="#how-to-create-a-factory-for-an-objective" title="Permanent link">🔗</a></h2>
+<h2 id="how-to-register-an-objective-and-its-factory-with-betonquest">How to register an objective and its factory with BetonQuest<a class="headerlink" href="#how-to-register-an-objective-and-its-factory-with-betonquest" title="Permanent link">🔗</a></h2>
+<h2 id="how-to-access-an-objective">How to access an objective<a class="headerlink" href="#how-to-access-an-objective" title="Permanent link">🔗</a></h2>
+<h2 id="how-a-full-example-looks-like">How a full example looks like<a class="headerlink" href="#how-a-full-example-looks-like" title="Permanent link">🔗</a></h2>
+<h2 id="what-limitations-are-there">What limitations are there<a class="headerlink" href="#what-limitations-are-there" title="Permanent link">🔗</a></h2>
 
 
 

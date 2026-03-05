@@ -90,7 +90,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#obtaining-the-api" class="md-skip">
+        <a href="#bukkits-servicesmanager" class="md-skip">
           Skip to content
         </a>
       
@@ -4986,37 +4986,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#obtaining-the-api">
+  <a class="md-nav__link" href="#bukkits-servicesmanager">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Obtaining the API
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-  <nav aria-label="Obtaining the API" class="md-nav">
-    <ul class="md-nav__list">
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#legacy-api">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Legacy API
+          Bukkit's ServicesManager
         </span>
 
       
@@ -5027,10 +5003,27 @@
   
   
 </li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#obtaining-the-betonquestapiservice">
+    <span class="md-ellipsis">
+
       
       
-    </ul>
-  </nav>
+        <span class="md-typeset">
+          Obtaining the <code>BetonQuestApiService</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
   
 </li>
     
@@ -5039,13 +5032,36 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#the-servicesmanager-hint">
+  <a class="md-nav__link" href="#obtaining-the-betonquestapi">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          The ServicesManager Hint
+          Obtaining the <code>BetonQuestApi</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#the-api-hints">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          The API Hints
         </span>
 
       
@@ -5203,37 +5219,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Quest/Writing-Implementations/" class="md-nav__link">
-        
-  
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13h-4v4h-2v-4H7v-2h4V7h2v4h4m2-8H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2"/></svg>
-  
-  <span class="md-ellipsis">
-    
-  
-    Writing Implementations
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../Quest/Conditions/" class="md-nav__link">
+      <a href="../Quest/Actions/" class="md-nav__link">
         
   
   
@@ -5242,7 +5228,7 @@
   <span class="md-ellipsis">
     
   
-    Conditions
+    Actions
   
 
     
@@ -5270,7 +5256,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Quest/Actions/" class="md-nav__link">
+      <a href="../Quest/Objectives/" class="md-nav__link">
         
   
   
@@ -5279,12 +5265,19 @@
   <span class="md-ellipsis">
     
   
-    Actions
+    Objectives
   
 
     
   </span>
   
+  
+    
+  
+  
+    <span class="md-status md-status--new"></span>
+  
+
   
 
       </a>
@@ -5300,7 +5293,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Quest/Objectives/" class="md-nav__link">
+      <a href="../Quest/Conditions/" class="md-nav__link">
         
   
   
@@ -5309,7 +5302,7 @@
   <span class="md-ellipsis">
     
   
-    Objectives
+    Conditions
   
 
     
@@ -5367,6 +5360,36 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Quest/Writing-Implementations/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13h-4v4h-2v-4H7v-2h4V7h2v4h4m2-8H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Writing Implementations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -5383,8 +5406,6 @@
   
     
     
-      
-        
       
         
       
@@ -5447,36 +5468,6 @@
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../Legacy-API/" class="md-nav__link">
-        
-  
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 0a8 8 0 0 1 .701.031C9.444.095 9.99.645 10.16 1.29l.288 1.107c.018.066.079.158.212.224q.347.171.668.386c.123.082.233.09.299.071l1.103-.303c.644-.176 1.392.021 1.82.63q.406.578.704 1.218c.315.675.111 1.422-.364 1.891l-.814.806c-.049.048-.098.147-.088.294q.024.386 0 .772c-.01.147.038.246.088.294l.814.806c.475.469.679 1.216.364 1.891a8 8 0 0 1-.704 1.217c-.428.61-1.176.807-1.82.63l-1.102-.302c-.067-.019-.177-.011-.3.071a6 6 0 0 1-.668.386c-.133.066-.194.158-.211.224l-.29 1.106c-.168.646-.715 1.196-1.458 1.26a8 8 0 0 1-1.402 0c-.743-.064-1.289-.614-1.458-1.26l-.289-1.106c-.018-.066-.079-.158-.212-.224a6 6 0 0 1-.668-.386c-.123-.082-.233-.09-.299-.071l-1.103.303c-.644.176-1.392-.021-1.82-.63a8 8 0 0 1-.704-1.218c-.315-.675-.111-1.422.363-1.891l.815-.806c.05-.048.098-.147.088-.294a6 6 0 0 1 0-.772c.01-.147-.038-.246-.088-.294l-.815-.806C.635 6.045.431 5.298.746 4.623a8 8 0 0 1 .704-1.217c.428-.61 1.176-.807 1.82-.63l1.102.302c.067.019.177.011.3-.071q.321-.215.668-.386c.133-.066.194-.158.211-.224l.29-1.106C6.009.645 6.556.095 7.299.03Q7.646 0 8 0m-.571 1.525c-.036.003-.108.036-.137.146l-.289 1.105c-.147.561-.549.967-.998 1.189q-.26.13-.5.29c-.417.278-.97.423-1.529.27l-1.103-.303c-.109-.03-.175.016-.195.045q-.33.47-.573.99c-.014.031-.021.11.059.19l.815.806c.411.406.562.957.53 1.456a5 5 0 0 0 0 .582c.032.499-.119 1.05-.53 1.456l-.815.806c-.081.08-.073.159-.059.19q.243.52.573.989c.02.03.085.076.195.046l1.102-.303c.56-.153 1.113-.008 1.53.27q.242.16.501.29c.447.222.85.629.997 1.189l.289 1.105c.029.109.101.143.137.146a6.6 6.6 0 0 0 1.142 0c.036-.003.108-.036.137-.146l.289-1.105c.147-.561.549-.967.998-1.189q.26-.13.5-.29c.417-.278.97-.423 1.529-.27l1.103.303c.109.029.175-.016.195-.045q.33-.47.573-.99c.014-.031.021-.11-.059-.19l-.815-.806c-.411-.406-.562-.957-.53-1.456a5 5 0 0 0 0-.582c-.032-.499.119-1.05.53-1.456l.815-.806c.081-.08.073-.159.059-.19a6.5 6.5 0 0 0-.573-.989c-.02-.03-.085-.076-.195-.046l-1.102.303c-.56.153-1.113.008-1.53-.27a4.4 4.4 0 0 0-.501-.29c-.447-.222-.85-.629-.997-1.189l-.289-1.105c-.029-.11-.101-.143-.137-.146a6.6 6.6 0 0 0-1.142 0M11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0M9.5 8a1.5 1.5 0 1 0-3.001.001A1.5 1.5 0 0 0 9.5 8"/></svg>
-  
-  <span class="md-ellipsis">
-    
-  
-    Legacy API
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
             
               
                 
@@ -6606,37 +6597,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#obtaining-the-api">
+  <a class="md-nav__link" href="#bukkits-servicesmanager">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Obtaining the API
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-  <nav aria-label="Obtaining the API" class="md-nav">
-    <ul class="md-nav__list">
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#legacy-api">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Legacy API
+          Bukkit's ServicesManager
         </span>
 
       
@@ -6647,10 +6614,27 @@
   
   
 </li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#obtaining-the-betonquestapiservice">
+    <span class="md-ellipsis">
+
       
       
-    </ul>
-  </nav>
+        <span class="md-typeset">
+          Obtaining the <code>BetonQuestApiService</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
   
 </li>
     
@@ -6659,13 +6643,36 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#the-servicesmanager-hint">
+  <a class="md-nav__link" href="#obtaining-the-betonquestapi">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          The ServicesManager Hint
+          Obtaining the <code>BetonQuestApi</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#the-api-hints">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          The API Hints
         </span>
 
       
@@ -6800,55 +6807,50 @@ Only bugs and major conceptual problems would lead to more changes.
 This part of the API will only change over at least one major version and will likely carry deprecation as long as possible.</p>
 <p><strong>This part of the API should be safe to use. We try to keep it compatible with previous versions if changes are needed.</strong></p>
 </details>
-<p>To obtain the API or a part of the API there are currently two ways, the new way and the legacy way.</p>
-<h2 id="obtaining-the-api">Obtaining the API<a class="headerlink" href="#obtaining-the-api" title="Permanent link">🔗</a></h2>
-<div class="admonition note">
-<p class="admonition-title">New method</p>
-<p>The new way is the recommended way to get the redesigned parts of the API.<br />
-It is not yet available for all parts of the API, but will be in the future.</p>
-</div>
-<p>The new API is designed to be modular and extensible.
-To obtain a module of the API you use the <code>org.bukkit.plugin.ServicesManager</code>.
-The <code>ServicesManager</code> is Bukkit API that allows plugins to provide services to other plugins:</p>
-<p><div class="highlight"><span class="filename">Get a module</span><pre><span></span><code><span class="n">BetonQuestLoggerFactory</span><span class="w"> </span><span class="n">loggerFactory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getServer</span><span class="p">().</span><span class="na">getServicesManager</span><span class="p">().</span><span class="na">load</span><span class="p">(</span><span class="n">BetonQuestLoggerFactory</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+<p>To obtain the API make yourself familiar with the <code>org.bukkit.plugin.ServicesManager</code>.</p>
+<h2 id="bukkits-servicesmanager">Bukkit's ServicesManager<a class="headerlink" href="#bukkits-servicesmanager" title="Permanent link">🔗</a></h2>
+<p>The ServicesManager is a part of the Bukkit API that allows plugins to provide services to other plugins.
+To avoid a static singleton pattern, the ServicesManager is designed to be used as a dependency injection container.
+BetonQuest is using the ServicesManager to provide its API.</p>
+<h2 id="obtaining-the-betonquestapiservice">Obtaining the <code>BetonQuestApiService</code><a class="headerlink" href="#obtaining-the-betonquestapiservice" title="Permanent link">🔗</a></h2>
+<p>The <code>BetonQuestApiService</code> is the <strong>single source of truth</strong> for BetonQuest that allows other plugins to obtain the API.</p>
+<p><div class="highlight"><span class="filename">Get the API Service</span><pre><span></span><code><span class="kd">final</span><span class="w"> </span><span class="n">ServicesManager</span><span class="w"> </span><span class="n">servicesManager</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getServer</span><span class="p">().</span><span class="na">getServicesManager</span><span class="p">();</span><span class="w"> </span><span class="c1">// or Bukkit.getServicesManager()</span>
+<span class="kd">final</span><span class="w"> </span><span class="n">BetonQuestApiService</span><span class="w"> </span><span class="n">apiService</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">servicesManager</span><span class="p">.</span><span class="na">load</span><span class="p">(</span><span class="n">BetonQuestApiService</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
 </code></pre></div>
-This can only be called after the <code>onEnable</code> method of BetonQuest has been called.
+This can only be called <strong>after</strong> the <code>onEnable</code> method of BetonQuest.
 This is usually the case when your plugin's <code>onEnable</code> method is called by Bukkit,
-assuming you defined a dependency on BetonQuest.</p>
-<p>BetonQuest always registers its default implementation with the <code>Lowest</code> ServicePriority.
-If you want to override a module you can register your own implementation with a higher priority.
-You also need to register your implementation before the <code>onEnable</code> method of BetonQuest is called,
-so usually in the <code>onLoad</code> method of your plugin:
-<div class="highlight"><span class="filename">Register a module</span><pre><span></span><code><span class="n">getServer</span><span class="p">().</span><span class="na">getServicesManager</span><span class="p">().</span><span class="na">register</span><span class="p">(</span><span class="n">BetonQuestLoggerFactory</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">MyLoggerFactory</span><span class="p">(),</span><span class="w"> </span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="n">ServicePriority</span><span class="p">.</span><span class="na">Normal</span><span class="p">);</span>
+assuming you defined a <em>dependency</em> on BetonQuest.
+The <code>BetonQuestApiService</code> registers its default implementation with the <code>Highest</code> ServicePriority, since it is not 
+meant to be overridden.</p>
+<details>
+<summary>The unrecommended way in case of an emergency</summary>
+<p>If for some reason you need to obtain the API service in fewer steps, you can use a static method in 
+<code>BetonQuestApiService</code>, which essentially does the same thing as the code above, but under the hood:
+<div class="highlight"><span class="filename">Static method to obtain the API</span><pre><span></span><code><span class="kd">final</span><span class="w"> </span><span class="n">BetonQuestApiService</span><span class="w"> </span><span class="n">apiService</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BetonQuestApiService</span><span class="p">.</span><span class="na">get</span><span class="p">();</span>
 </code></pre></div></p>
-<h3 id="legacy-api">Legacy API<a class="headerlink" href="#legacy-api" title="Permanent link">🔗</a></h3>
-<div class="admonition note">
-<p class="admonition-title">Old method</p>
-<p>The legacy API is how you could interact with BetonQuest in the past before the API was redesigned.
-For most systems that we haven't been able to improve, it is still the only option.<br />
-While it will still be available for the foreseeable future,
-you should not use it when writing new code working with API that has already been redesigned.</p>
-</div>
-<p>The old API uses the <code>BetonQuest</code> class as the entry point.
-Most methods are static and can be accessed directly.
-For those methods that need to be called on a <code>BetonQuest</code> instance
-you can obtain it by calling the static <code>BetonQuest.getInstance()</code> method. </p>
-<p>All the old API is documented on the <a href="../Legacy-API/">Legacy API</a> page.</p>
-<h2 id="the-servicesmanager-hint">The ServicesManager Hint<a class="headerlink" href="#the-servicesmanager-hint" title="Permanent link">🔗</a></h2>
-<p>The following hint can be found on many API pages:</p>
+</details>
+<h2 id="obtaining-the-betonquestapi">Obtaining the <code>BetonQuestApi</code><a class="headerlink" href="#obtaining-the-betonquestapi" title="Permanent link">🔗</a></h2>
+<p>The <code>BetonQuestApiService</code> provides a method to obtain the actual API instance:
+<div class="highlight"><span class="filename">Obtain the API instance</span><pre><span></span><code><span class="kd">final</span><span class="w"> </span><span class="n">Plugin</span><span class="w"> </span><span class="n">yourPluginInstance</span><span class="p">;</span>
+<span class="kd">final</span><span class="w"> </span><span class="n">BetonQuestApiService</span><span class="w"> </span><span class="n">apiService</span><span class="p">;</span>
+<span class="kd">final</span><span class="w"> </span><span class="n">BetonQuestApi</span><span class="w"> </span><span class="n">betonQuestApi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">apiService</span><span class="p">.</span><span class="na">api</span><span class="p">(</span><span class="n">yourPluginInstance</span><span class="p">);</span>
+</code></pre></div></p>
+<h2 id="the-api-hints">The API Hints<a class="headerlink" href="#the-api-hints" title="Permanent link">🔗</a></h2>
+<p>The following hint can be found on many API pages (usually as collapsed):</p>
 <div class="admonition abstract">
-<p class="admonition-title"><a href="./">ServicesManager</a> API Classes</p>
+<p class="admonition-title">Logging API Classes</p>
 <ul>
+<li><code>org.betonquest.betonquest.api.logger.BetonQuestLogger</code></li>
 <li><code>org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory</code></li>
 </ul>
 </div>
-<p>It lists all interfaces that are related to the API described on that page.
-Every one of them can be obtained by using the <code>ServicesManager</code> as described below.</p>
+<p>It lists all interfaces that are used from the API on that page.</p>
 <h2 id="working-with-the-api">Working with the API<a class="headerlink" href="#working-with-the-api" title="Permanent link">🔗</a></h2>
 <p>We recommend that you inject instances you obtained from the <code>ServicesManager</code> into your classes when they need them.
 You might want to learn about "Dependency Injection" as a programming technique,
 but as a quick start here's a simple example:</p>
-<p>This plugin injects an instance of <code>BetonQuestLogger</code> that was created by a <code>BetonQuestLoggerFactory</code> into a class implementing some feature.</p>
+<p>This plugin injects an instance of <code>BetonQuestApi</code> and <code>BetonQuestLogger</code> that was created by the 
+<code>BetonQuestApiService</code> into a class implementing some feature.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
@@ -6865,21 +6867,33 @@ but as a quick start here's a simple example:</p>
 <span class="normal">14</span>
 <span class="normal">15</span>
 <span class="normal">16</span>
-<span class="normal">17</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">MyAddon</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">JavaPlugin</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">BetonQuestLoggerFactory</span><span class="w"> </span><span class="n">loggerFactory</span><span class="p">;</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">MyAddon</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">JavaPlugin</span><span class="w"> </span><span class="p">{</span>
 
 <span class="w">    </span><span class="nd">@Override</span>
 <span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onEnable</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">loggerFactory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Bukkit</span><span class="p">.</span><span class="na">getServicesManager</span><span class="p">().</span><span class="na">load</span><span class="p">(</span><span class="n">BetonQuestLoggerFactory</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
-<span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="n">MyFeature</span><span class="p">(</span><span class="n">loggerFactory</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="n">MyFeature</span><span class="p">.</span><span class="na">class</span><span class="p">));</span>
+<span class="w">        </span><span class="kd">final</span><span class="w"> </span><span class="n">ServicesManager</span><span class="w"> </span><span class="n">servicesManager</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getServer</span><span class="p">().</span><span class="na">getServicesManager</span><span class="p">();</span>
+<span class="w">        </span><span class="kd">final</span><span class="w"> </span><span class="n">BetonQuestApiService</span><span class="w"> </span><span class="n">betonQuestApiService</span><span class="w"> </span>
+<span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="n">servicesManager</span><span class="p">.</span><span class="na">load</span><span class="p">(</span><span class="n">BetonQuestApiService</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+<span class="w">        </span><span class="kd">final</span><span class="w"> </span><span class="n">BetonQuestApi</span><span class="w"> </span><span class="n">betonQuestApi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">betonQuestApiService</span><span class="p">.</span><span class="na">api</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+<span class="w">        </span><span class="kd">final</span><span class="w"> </span><span class="n">BetonQuestLogger</span><span class="w"> </span><span class="n">betonQuestLogger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">betonQuestApi</span><span class="p">.</span><span class="na">loggerFactory</span><span class="p">().</span><span class="na">create</span><span class="p">(</span><span class="n">MyFeature</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+<span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="n">MyFeature</span><span class="p">(</span><span class="n">betonQuestLogger</span><span class="p">,</span><span class="w"> </span><span class="n">betonQuestApi</span><span class="p">);</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 
 <span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">MyFeature</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">BetonQuestLogger</span><span class="w"> </span><span class="n">log</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">BetonQuestLogger</span><span class="w"> </span><span class="n">betonQuestLogger</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">BetonQuestApi</span><span class="w"> </span><span class="n">betonQuestApi</span><span class="p">;</span>
 
-<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">MyFeature</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">BetonQuestLogger</span><span class="w"> </span><span class="n">log</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">log</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">MyFeature</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">BetonQuestLogger</span><span class="w"> </span><span class="n">betonQuestLogger</span><span class="p">,</span>
+<span class="w">                     </span><span class="kd">final</span><span class="w"> </span><span class="n">BetonQuestApi</span><span class="w"> </span><span class="n">betonQuestApi</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">betonQuestLogger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">betonQuestLogger</span><span class="p">;</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">betonQuestApi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">betonQuestApi</span><span class="p">;</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></td></tr></table></div>
