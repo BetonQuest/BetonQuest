@@ -3,11 +3,13 @@ package org.betonquest.betonquest.api.service.compass;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.compass.QuestCompass;
 import org.betonquest.betonquest.api.identifier.CompassIdentifier;
+import org.betonquest.betonquest.api.profile.Profile;
+
+import java.util.Map;
 
 /**
  * The compass manager is responsible for managing the quest compasses.
  */
-@FunctionalInterface
 public interface CompassManager {
 
     /**
@@ -18,4 +20,12 @@ public interface CompassManager {
      * @throws QuestException if the compass could not be accessed
      */
     QuestCompass get(CompassIdentifier identifier) throws QuestException;
+
+    /**
+     * Get the active compasses for the given profile.
+     *
+     * @param profile the profile to get the compasses for
+     * @return all active compasses for the profile
+     */
+    Map<CompassIdentifier, QuestCompass> forProfile(Profile profile);
 }
