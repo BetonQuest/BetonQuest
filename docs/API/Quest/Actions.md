@@ -1,33 +1,46 @@
 ---
 icon: material/application-export
+status: new
 ---
 @snippet:api-state:unfinished@
 
-## Listening to BetonQuest (Bukkit) events
+??? abstract "Action API Classes"
+    * `org.betonquest.betonquest.api.service.action.Actions`
+    * `org.betonquest.betonquest.api.service.action.ActionManager`
+    * `org.betonquest.betonquest.api.service.action.ActionRegistry`
+    * `org.betonquest.betonquest.api.quest.action.PlayerActionFactory`
+    * `org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory`
+    * `org.betonquest.betonquest.api.quest.action.PlayerAction`
+    * `org.betonquest.betonquest.api.quest.action.PlayerlessAction`
+    * `org.betonquest.betonquest.api.quest.action.NullableAction`
+    * `org.betonquest.betonquest.api.quest.action.OnlineAction`
 
-BetonQuest exposes some of its features as Bukkit events.  
-You can find these events in `org.betonquest.betonquest.api.bukkit.event` package.
-[Use them as you would use any other Bukkit event](https://bukkit.fandom.com/wiki/Event_API_Reference#The_Basics).
+## Introduction
 
-The event API itself is stable as the API state tells, but some events will change from time to time or get renamed/replaced.
-If you need any additional events, create a discussion or pull request on GitHub.
+This page covers the Actions API of BetonQuest.
+You will be introduced to the following:
 
-## Event List
+- [How to create an action](#how-to-create-an-action)
+- [How to create a factory for an action](#how-to-create-a-factory-for-an-action)
+- [How to register an action and its factory with BetonQuest](#how-to-register-an-action-and-its-factory-with-betonquest)
+- [How to run an action](#how-to-run-an-action)
+- [How a full example looks like](#how-a-full-example-looks-like)
+- [What limitations are there](#what-limitations-are-there)
 
-| Event                         | Description                                                                                                   |
-|-------------------------------|---------------------------------------------------------------------------------------------------------------|
-| ConversationOptionEvent       | Signals that a profile has selected an option in a conversation.                                              |
-| LoadDataEvent                 | Fires before and after BetonQuest loading or reloading all events, conditions, objectives, conversations etc. |
-| PlayerConversationEndEvent    | Fires when a profile ends a conversation.                                                                     |
-| PlayerConversationStartEvent  | Fires when profile starts a conversation.                                                                     |
-| PlayerJournalAddEvent         | Fires when new content is added to a profile's journal.                                                       |
-| PlayerJournalDeleteEvent      | Fires when content is removed from a profile's journal.                                                       |
-| PlayerObjectiveChangeEvent    | Fires when a profile's objectives change.                                                                     |
-| PlayerTagAddEvent             | Fired when a tag is added to a profile.                                                                       |
-| PlayerTagRemoveEvent          | Fired when a tag is removed from a profile.                                                                   |
-| PlayerUpdatePointEvent        | Fired when a profile's points are updated.                                                                    |
-| ProfileEvent (abstract)       | Represents a profile related event.                                                                           |
-| QuestCompassTargetChangeEvent | Fired when the compass calls the setCompassTarget method.                                                     |
-| QuestDataUpdateEvent          | Fired when the quest data updates.                                                                            |
-| Npc/NpcInteractEvent          | Event for interaction with BetonQuest Npcs.                                                                   |
-| Npc/NpcVisibilityUpdateEvent  | Event to call if a Npc is externally modified and its BetonQuest features needs recalibration.                |
+This page does **not** cover:
+
+- [How to access the api](../Obtaining-API.md)
+- [Which actions are available](../../Documentation/Scripting/Building-Blocks/Actions-List.md)
+- What an action is
+
+## How to create an action
+
+## How to create a factory for an action
+
+## How to register an action and its factory with BetonQuest
+
+## How to run an action
+
+## How a full example looks like
+
+## What limitations are there

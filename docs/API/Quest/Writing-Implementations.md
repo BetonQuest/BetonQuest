@@ -17,7 +17,6 @@ The following concepts are defined as "Quest Types", as they build the core of B
 - `Placeholder`
 
 The API is located in the `org.betonquest.betonquest.api.quest` package.
-From the list above the `Objective` is still part of the [LegacyAPI](../Legacy-API.md#writing-objectives).
 The sub-packages contain the core quest types that are registered in their respective `QuestTypeRegistry` using
 the `register` method.
 
@@ -109,4 +108,3 @@ The separation is as follows:
 These can be accessed through the `getQuestRegistries()` and `getFeatureRegistries()` methods on the plugin.
 
 For writing new features, you currently need to reference existing code.
-See also [Legacy creating ConversationIO](../Legacy-API.md#creating-additional-conversation-inputoutput-methods).
