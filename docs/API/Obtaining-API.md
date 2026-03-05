@@ -35,7 +35,7 @@ The `BetonQuestApiService` provides a method to obtain the actual API instance:
 ```java title="Obtain the API instance"
 final Plugin yourPluginInstance;
 final BetonQuestApiService apiService;
-final BetonQuestApi betonQuestAPI = apiService.api(yourPluginInstance);
+final BetonQuestApi betonQuestApi = apiService.api(yourPluginInstance);
 ```
 
 ## The API Hints
@@ -64,7 +64,7 @@ public class MyAddon extends JavaPlugin {
         final BetonQuestApiService betonQuestApiService 
             = servicesManager.load(BetonQuestApiService.class);
         final BetonQuestApi betonQuestApi = betonQuestApiService.api(this);
-        final BetonQuestLogger betonQuestLogger = betonQuestApi.loggerFactory().create(this);
+        final BetonQuestLogger betonQuestLogger = betonQuestApi.loggerFactory().create(MyFeature.class);
         new MyFeature(betonQuestLogger, betonQuestApi);
     }
 }
@@ -75,8 +75,8 @@ public class MyFeature {
 
     public MyFeature(final BetonQuestLogger betonQuestLogger,
                      final BetonQuestApi betonQuestApi) {
-        this.betonQuestApi = betonQuestApi;
         this.betonQuestLogger = betonQuestLogger;
+        this.betonQuestApi = betonQuestApi;
     }
 }
 ```
