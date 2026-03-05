@@ -5,13 +5,14 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.QuestCompassTargetChangeEvent;
+import org.betonquest.betonquest.api.compass.QuestCompass;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.api.identifier.CompassIdentifier;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.identifier.ItemIdentifier;
 import org.betonquest.betonquest.api.identifier.QuestCancelerIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.service.compass.CompassManager;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.item.ItemManager;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -19,7 +20,6 @@ import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.item.typehandler.QuestHandler;
 import org.betonquest.betonquest.kernel.processor.feature.CancelerProcessor;
-import org.betonquest.betonquest.kernel.processor.feature.CompassProcessor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -66,9 +66,9 @@ public class Backpack implements Listener {
     private final CancelerProcessor cancelerProcessor;
 
     /**
-     * The {@link CompassProcessor} to access the compass targets.
+     * The {@link CompassManager} to access the compass targets.
      */
-    private final CompassProcessor compassProcessor;
+    private final CompassManager compassManager;
 
     /**
      * The {@link ItemManager} to access the items.
@@ -112,7 +112,7 @@ public class Backpack implements Listener {
      * @param log               the BetonQuest logger
      * @param playerData        the storage handler for the player data
      * @param cancelerProcessor the {@link CancelerProcessor} to access the cancelers
-     * @param compassProcessor  the {@link CompassProcessor} to access the compass targets
+     * @param compassManager    the {@link CompassManager} to access the compass targets
      * @param config            the plugin configuration file
      * @param pluginMessage     the {@link PluginMessage} instance
      * @param onlineProfile     the {@link OnlineProfile} of the player
@@ -122,12 +122,12 @@ public class Backpack implements Listener {
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public Backpack(final Plugin plugin, final BetonQuestLogger log, final PlayerData playerData,
-                    final CancelerProcessor cancelerProcessor, final CompassProcessor compassProcessor,
+                    final CancelerProcessor cancelerProcessor, final CompassManager compassManager,
                     final ConfigAccessor config, final PluginMessage pluginMessage, final OnlineProfile onlineProfile,
                     final ItemManager itemManager, final Identifiers identifiers, final DisplayType type) {
         this.plugin = plugin;
         this.cancelerProcessor = cancelerProcessor;
-        this.compassProcessor = compassProcessor;
+        this.compassManager = compassManager;
         this.itemManager = itemManager;
         this.identifiers = identifiers;
         this.config = config;
@@ -149,7 +149,7 @@ public class Backpack implements Listener {
      * @param betonQuestLogger  the BetonQuest logger
      * @param playerData        the storage handler for the player data
      * @param cancelerProcessor the {@link CancelerProcessor} to access the cancelers
-     * @param compassProcessor  the {@link CompassProcessor} to access the compass targets
+     * @param compassManager    the {@link CompassManager} to access the compass targets
      * @param itemManager       the {@link ItemManager} to access the items
      * @param config            the plugin configuration file
      * @param pluginMessage     the {@link PluginMessage} instance
@@ -158,10 +158,10 @@ public class Backpack implements Listener {
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public Backpack(final Plugin plugin, final BetonQuestLogger betonQuestLogger, final PlayerData playerData,
-                    final CancelerProcessor cancelerProcessor, final CompassProcessor compassProcessor,
+                    final CancelerProcessor cancelerProcessor, final CompassManager compassManager,
                     final ItemManager itemManager, final ConfigAccessor config, final PluginMessage pluginMessage,
                     final Identifiers identifiers, final OnlineProfile onlineProfile) {
-        this(plugin, betonQuestLogger, playerData, cancelerProcessor, compassProcessor, config, pluginMessage,
+        this(plugin, betonQuestLogger, playerData, cancelerProcessor, compassManager, config, pluginMessage,
                 onlineProfile, itemManager, identifiers, DisplayType.DEFAULT);
     }
 
@@ -537,7 +537,7 @@ public class Backpack implements Listener {
         /**
          * Maps the slot to a compass.
          */
-        private final Map<Integer, DefaultQuestCompass> compasses = new HashMap<>();
+        private final Map<Integer, QuestCompass> compasses = new HashMap<>();
 
         /**
          * Creates a page with selectable compass targets and displays it to the player.
@@ -545,11 +545,9 @@ public class Backpack implements Listener {
         private Compass() {
             super();
             int counter = 0;
-            for (final Map.Entry<CompassIdentifier, DefaultQuestCompass> entry : compassProcessor.getValues().entrySet()) {
-                if (playerData.tags().has(entry.getKey().getTag())) {
-                    compasses.put(counter, entry.getValue());
-                    counter++;
-                }
+            for (final QuestCompass compass : compassManager.forProfile(onlineProfile).values()) {
+                compasses.put(counter, compass);
+                counter++;
             }
 
             final int size = compasses.size();
@@ -577,8 +575,8 @@ public class Backpack implements Listener {
         private ItemStack[] getContent(final int numberOfRows) {
             final ItemStack[] content = new ItemStack[numberOfRows * 9];
             int index = 0;
-            for (final Map.Entry<Integer, DefaultQuestCompass> entry : compasses.entrySet()) {
-                final DefaultQuestCompass comp = entry.getValue();
+            for (final Map.Entry<Integer, QuestCompass> entry : compasses.entrySet()) {
+                final QuestCompass comp = entry.getValue();
                 final ItemIdentifier item = comp.item();
                 if (item == null) {
                     continue;
@@ -608,7 +606,7 @@ public class Backpack implements Listener {
 
         @Override
         protected void click(final int slot, final int layerSlot, final ClickType click) {
-            final DefaultQuestCompass compass = compasses.get(slot);
+            final QuestCompass compass = compasses.get(slot);
             if (compass == null) {
                 return;
             }

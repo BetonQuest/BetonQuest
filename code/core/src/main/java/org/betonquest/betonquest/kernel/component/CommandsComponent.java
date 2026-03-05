@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.reload.Reloader;
 import org.betonquest.betonquest.api.service.action.ActionManager;
+import org.betonquest.betonquest.api.service.compass.CompassManager;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.item.ItemManager;
@@ -27,7 +28,6 @@ import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.database.PlayerDataFactory;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.kernel.processor.feature.CancelerProcessor;
-import org.betonquest.betonquest.kernel.processor.feature.CompassProcessor;
 import org.betonquest.betonquest.kernel.processor.feature.JournalEntryProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.ItemTypeRegistry;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
@@ -59,7 +59,7 @@ public class CommandsComponent extends AbstractCoreComponent {
                 ProfileProvider.class, PlayerDataFactory.class, PlayerDataStorage.class,
                 GlobalData.class, ConfigAccessor.class, PluginMessage.class, Updater.class,
                 Compatibility.class, QuestPackageManager.class, Connector.class, Saver.class,
-                ItemTypeRegistry.class, JournalEntryProcessor.class, CompassProcessor.class,
+                ItemTypeRegistry.class, JournalEntryProcessor.class, CompassManager.class,
                 CancelerProcessor.class, Identifiers.class, ItemManager.class, ActionManager.class,
                 ConditionManager.class, ObjectiveManager.class, LanguageProvider.class,
                 AccumulatingReceiverSelector.class, HistoryHandler.class, Reloader.class);
@@ -83,7 +83,7 @@ public class CommandsComponent extends AbstractCoreComponent {
         final Saver saver = getDependency(Saver.class);
         final ItemTypeRegistry itemRegistry = getDependency(ItemTypeRegistry.class);
         final JournalEntryProcessor journalEntryProcessor = getDependency(JournalEntryProcessor.class);
-        final CompassProcessor compassProcessor = getDependency(CompassProcessor.class);
+        final CompassManager compassManager = getDependency(CompassManager.class);
         final CancelerProcessor cancelerProcessor = getDependency(CancelerProcessor.class);
         final Identifiers identifiers = getDependency(Identifiers.class);
         final ItemManager itemManager = getDependency(ItemManager.class);
@@ -107,13 +107,13 @@ public class CommandsComponent extends AbstractCoreComponent {
         javaPlugin.getCommand("journal").setExecutor(new JournalCommand(playerDataStorage, profileProvider));
         javaPlugin.getCommand("backpack").setExecutor(new BackpackCommand(javaPlugin, loggerFactory, loggerFactory.create(BackpackCommand.class),
                 config, pluginMessage, profileProvider, playerDataStorage, cancelerProcessor,
-                compassProcessor, itemManager, identifiers));
+                compassManager, itemManager, identifiers));
         javaPlugin.getCommand("cancelquest").setExecutor(new CancelQuestCommand(javaPlugin, config, pluginMessage, profileProvider,
-                loggerFactory, playerDataStorage, cancelerProcessor, compassProcessor,
+                loggerFactory, playerDataStorage, cancelerProcessor, compassManager,
                 identifiers, itemManager));
         javaPlugin.getCommand("compass").setExecutor(new CompassCommand(javaPlugin, loggerFactory,
                 config, pluginMessage, profileProvider, playerDataStorage, cancelerProcessor,
-                compassProcessor, itemManager, identifiers));
+                compassManager, itemManager, identifiers));
         final LangCommand langCommand = new LangCommand(loggerFactory.create(LangCommand.class), playerDataStorage, pluginMessage, profileProvider, languageProvider);
         javaPlugin.getCommand("questlang").setExecutor(langCommand);
         javaPlugin.getCommand("questlang").setTabCompleter(langCommand);

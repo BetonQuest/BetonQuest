@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.service.compass.CompassManager;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.item.ItemManager;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -11,7 +12,6 @@ import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.feature.Backpack;
 import org.betonquest.betonquest.feature.Backpack.DisplayType;
 import org.betonquest.betonquest.kernel.processor.feature.CancelerProcessor;
-import org.betonquest.betonquest.kernel.processor.feature.CompassProcessor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -60,9 +60,9 @@ public class CancelQuestCommand implements CommandExecutor {
     private final CancelerProcessor cancelerProcessor;
 
     /**
-     * The compass processor.
+     * The compass manager.
      */
-    private final CompassProcessor compassProcessor;
+    private final CompassManager compassManager;
 
     /**
      * The identifier registry.
@@ -84,7 +84,7 @@ public class CancelQuestCommand implements CommandExecutor {
      * @param loggerFactory     the logger factory
      * @param playerDataStorage the player data storage
      * @param cancelerProcessor the canceler processor
-     * @param compassProcessor  the compass processor
+     * @param compassManager    the compass manager
      * @param identifiers       the identifier registry
      * @param itemManager       the item manager
      */
@@ -92,7 +92,7 @@ public class CancelQuestCommand implements CommandExecutor {
     public CancelQuestCommand(final Plugin plugin, final ConfigAccessor config, final PluginMessage pluginMessage,
                               final ProfileProvider profileProvider, final BetonQuestLoggerFactory loggerFactory,
                               final PlayerDataStorage playerDataStorage, final CancelerProcessor cancelerProcessor,
-                              final CompassProcessor compassProcessor, final Identifiers identifiers, final ItemManager itemManager) {
+                              final CompassManager compassManager, final Identifiers identifiers, final ItemManager itemManager) {
         this.plugin = plugin;
         this.config = config;
         this.pluginMessage = pluginMessage;
@@ -100,7 +100,7 @@ public class CancelQuestCommand implements CommandExecutor {
         this.loggerFactory = loggerFactory;
         this.playerDataStorage = playerDataStorage;
         this.cancelerProcessor = cancelerProcessor;
-        this.compassProcessor = compassProcessor;
+        this.compassManager = compassManager;
         this.identifiers = identifiers;
         this.itemManager = itemManager;
     }
@@ -111,7 +111,7 @@ public class CancelQuestCommand implements CommandExecutor {
             if (sender instanceof Player) {
                 final OnlineProfile onlineProfile = profileProvider.getProfile((Player) sender);
                 new Backpack(plugin, loggerFactory.create(Backpack.class), playerDataStorage.get(onlineProfile), cancelerProcessor,
-                        compassProcessor, config, pluginMessage, onlineProfile, itemManager, identifiers, DisplayType.CANCEL);
+                        compassManager, config, pluginMessage, onlineProfile, itemManager, identifiers, DisplayType.CANCEL);
             }
             return true;
         }

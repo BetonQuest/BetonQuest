@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.npc.DefaultNpcHider;
 import org.betonquest.betonquest.api.service.action.ActionManager;
+import org.betonquest.betonquest.api.service.compass.CompassManager;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.service.conversation.Conversations;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
@@ -19,7 +20,6 @@ import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.database.PlayerDataFactory;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.kernel.processor.feature.CancelerProcessor;
-import org.betonquest.betonquest.kernel.processor.feature.CompassProcessor;
 import org.betonquest.betonquest.kernel.registry.quest.ActionTypeRegistry;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
 import org.betonquest.betonquest.quest.action.burn.BurnActionFactory;
@@ -111,7 +111,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
                 PlayerDataStorage.class, GlobalData.class, PluginMessage.class, LanguageProvider.class,
                 Saver.class, TextParser.class, Instructions.class, Persistence.class,
                 ActionTypeRegistry.class, Conversations.class, ActionManager.class, ConditionManager.class,
-                ObjectiveManager.class, NpcManager.class, CompassProcessor.class, CancelerProcessor.class,
+                ObjectiveManager.class, NpcManager.class, CompassManager.class, CancelerProcessor.class,
                 DefaultNpcHider.class);
     }
 
@@ -138,7 +138,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         final ConditionManager conditionManager = getDependency(ConditionManager.class);
         final ObjectiveManager objectiveManager = getDependency(ObjectiveManager.class);
         final NpcManager npcManager = getDependency(NpcManager.class);
-        final CompassProcessor compassProcessor = getDependency(CompassProcessor.class);
+        final CompassManager compassManager = getDependency(CompassManager.class);
         final CancelerProcessor cancelerProcessor = getDependency(CancelerProcessor.class);
         final DefaultNpcHider npcHider = getDependency(DefaultNpcHider.class);
 
@@ -149,7 +149,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         actionTypes.registerCombined("chestclear", new ChestClearActionFactory());
         actionTypes.registerCombined("chestgive", new ChestGiveActionFactory());
         actionTypes.registerCombined("chesttake", new ChestTakeActionFactory());
-        actionTypes.register("compass", new CompassActionFactory(compassProcessor, persistence));
+        actionTypes.register("compass", new CompassActionFactory(compassManager, persistence));
         actionTypes.registerCombined("command", new CommandActionFactory(loggerFactory, server));
         actionTypes.register("conversation", new ConversationActionFactory(conversations));
         actionTypes.register("damage", new DamageActionFactory());
