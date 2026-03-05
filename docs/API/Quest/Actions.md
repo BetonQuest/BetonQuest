@@ -1,12 +1,13 @@
 ---
 icon: material/application-export
+status: new
 ---
-@snippet:api-state:draft@
+@snippet:api-state:unfinished@
 
 ??? abstract "Action API Classes"
-    * `org.betonquest.betonquest.api.service.action.Action.Actions`
-    * `org.betonquest.betonquest.api.service.action.Action.ActionManager`
-    * `org.betonquest.betonquest.api.service.action.Action.ActionRegistry`
+    * `org.betonquest.betonquest.api.service.action.Actions`
+    * `org.betonquest.betonquest.api.service.action.ActionManager`
+    * `org.betonquest.betonquest.api.service.action.ActionRegistry`
     * `org.betonquest.betonquest.api.quest.action.PlayerActionFactory`
     * `org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory`
     * `org.betonquest.betonquest.api.quest.action.PlayerAction`
@@ -22,6 +23,7 @@ You will be introduced to the following:
 - [How to create an action](#how-to-create-an-action)
 - [How to create a factory for an action](#how-to-create-a-factory-for-an-action)
 - [How to register an action and its factory with BetonQuest](#how-to-register-an-action-and-its-factory-with-betonquest)
+- [How to run an action](#how-to-run-an-action)
 - [How a full example looks like](#how-a-full-example-looks-like)
 - [What limitations are there](#what-limitations-are-there)
 
@@ -30,13 +32,14 @@ This page does **not** cover:
 - [How to access the api](../Obtaining-API.md)
 - [Which actions are available](../../Documentation/Scripting/Building-Blocks/Actions-List.md)
 - What an action is
-- How to use an action
 
 ## How to create an action
 
 ## How to create a factory for an action
 
 ## How to register an action and its factory with BetonQuest
+
+## How to run an action
 
 ## How a full example looks like
 
