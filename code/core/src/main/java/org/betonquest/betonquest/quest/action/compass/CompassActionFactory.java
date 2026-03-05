@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
-import org.betonquest.betonquest.kernel.processor.feature.CompassProcessor;
+import org.betonquest.betonquest.api.service.compass.CompassManager;
 
 /**
  * The compass action factory.
@@ -15,9 +15,9 @@ import org.betonquest.betonquest.kernel.processor.feature.CompassProcessor;
 public class CompassActionFactory implements PlayerActionFactory {
 
     /**
-     * The compass processor.
+     * The compass manager.
      */
-    private final CompassProcessor compassProcessor;
+    private final CompassManager compassManager;
 
     /**
      * Storage to get persistent offline player data.
@@ -27,11 +27,11 @@ public class CompassActionFactory implements PlayerActionFactory {
     /**
      * Create the compass action factory.
      *
-     * @param compassProcessor the Feature API
-     * @param persistence      the storage to access persistent offline player data
+     * @param compassManager   the compass manager
+     * @param persistence the storage to access persistent offline player data
      */
-    public CompassActionFactory(final CompassProcessor compassProcessor, final Persistence persistence) {
-        this.compassProcessor = compassProcessor;
+    public CompassActionFactory(final CompassManager compassManager, final Persistence persistence) {
+        this.compassManager = compassManager;
         this.persistence = persistence;
     }
 
@@ -39,6 +39,6 @@ public class CompassActionFactory implements PlayerActionFactory {
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<CompassTargetOperation> action = instruction.enumeration(CompassTargetOperation.class).get();
         final Argument<CompassIdentifier> compassId = instruction.identifier(CompassIdentifier.class).get();
-        return new CompassAction(compassProcessor, persistence, action, compassId);
+        return new CompassAction(compassManager, persistence, action, compassId);
     }
 }
