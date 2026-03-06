@@ -84,7 +84,7 @@ public class ObjectiveTypeComponent extends AbstractCoreComponent {
         objectiveTypes.register("arrow", new ArrowShootObjectiveFactory(plugin));
         objectiveTypes.register("block", new BlockObjectiveFactory(loggerFactory, pluginMessage));
         objectiveTypes.register("breed", new BreedObjectiveFactory());
-        objectiveTypes.register("brew", new BrewObjectiveFactory(profileProvider));
+        objectiveTypes.register("brew", new BrewObjectiveFactory(plugin, profileProvider));
         objectiveTypes.register("chestput", new ChestPutObjectiveFactory(loggerFactory, pluginMessage));
         objectiveTypes.register("command", new CommandObjectiveFactory(actionManager));
         objectiveTypes.register("consume", new ConsumeObjectiveFactory());
