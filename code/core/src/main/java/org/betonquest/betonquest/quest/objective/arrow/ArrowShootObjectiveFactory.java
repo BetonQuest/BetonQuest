@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.plugin.Plugin;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -17,16 +18,24 @@ import org.jspecify.annotations.Nullable;
 public class ArrowShootObjectiveFactory implements ObjectiveFactory {
 
     /**
-     * Creates a new instance of the ArrowShootObjectiveFactory.
+     * The plugin instance.
      */
-    public ArrowShootObjectiveFactory() {
+    private final Plugin plugin;
+
+    /**
+     * Creates a new instance of the ArrowShootObjectiveFactory.
+     *
+     * @param plugin the plugin instance
+     */
+    public ArrowShootObjectiveFactory(final Plugin plugin) {
+        this.plugin = plugin;
     }
 
     @Override
     public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
         final Argument<Location> location = instruction.location().get();
         final Argument<Number> range = instruction.number().get();
-        final ArrowShootObjective objective = new ArrowShootObjective(service, location, range);
+        final ArrowShootObjective objective = new ArrowShootObjective(service, plugin, location, range);
         service.request(ProjectileHitEvent.class).onlineHandler(objective::onArrowHit)
                 .player(this::fromEvent).subscribe(true);
         return objective;

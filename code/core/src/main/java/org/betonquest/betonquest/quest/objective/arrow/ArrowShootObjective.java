@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.objective.arrow;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
@@ -10,12 +9,18 @@ import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  * Requires the player to shoot a target with a bow.
  */
 public class ArrowShootObjective extends DefaultObjective {
+
+    /**
+     * Plugin instance to run tasks.
+     */
+    private final Plugin plugin;
 
     /**
      * Location where the arrow should hit.
@@ -31,12 +36,14 @@ public class ArrowShootObjective extends DefaultObjective {
      * Constructor for the ArrowShootObjective.
      *
      * @param service  the objective service
+     * @param plugin   the plugin instance to run tasks
      * @param location the location where the arrow should hit
      * @param range    the range around the location where the arrow should hit
      * @throws QuestException if there is an error in the instruction
      */
-    public ArrowShootObjective(final ObjectiveService service, final Argument<Location> location, final Argument<Number> range) throws QuestException {
+    public ArrowShootObjective(final ObjectiveService service, final Plugin plugin, final Argument<Location> location, final Argument<Number> range) throws QuestException {
         super(service);
+        this.plugin = plugin;
         this.location = location;
         this.range = range;
     }
@@ -66,6 +73,6 @@ public class ArrowShootObjective extends DefaultObjective {
                     getService().complete(onlineProfile);
                 }
             }
-        }.runTask(BetonQuest.getInstance());
+        }.runTask(plugin);
     }
 }
