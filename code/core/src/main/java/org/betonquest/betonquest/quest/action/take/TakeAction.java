@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.quest.action.NotificationSender;
 import org.bukkit.inventory.ItemStack;
 
@@ -36,12 +37,14 @@ public class TakeAction extends AbstractTakeAction {
     /**
      * Constructs a new TakeAction.
      *
+     * @param playerDataStorage  the player data storage
      * @param questItems         the items to be removed
      * @param checkOrder         the order in which the checks should be performed
      * @param notificationSender the notification sender to use
      */
-    public TakeAction(final Argument<List<ItemWrapper>> questItems, final Argument<List<CheckType>> checkOrder, final NotificationSender notificationSender) {
-        super(checkOrder, notificationSender);
+    public TakeAction(final PlayerDataStorage playerDataStorage, final Argument<List<ItemWrapper>> questItems,
+                      final Argument<List<CheckType>> checkOrder, final NotificationSender notificationSender) {
+        super(playerDataStorage, checkOrder, notificationSender);
         this.questItems = questItems;
     }
 

@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.quest.action.take;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.action.OnlineAction;
+import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.quest.action.NotificationSender;
 import org.bukkit.entity.Player;
@@ -34,12 +34,20 @@ public abstract class AbstractTakeAction implements OnlineAction {
     protected final NotificationSender notificationSender;
 
     /**
+     * The storage for player data.
+     */
+    private final PlayerDataStorage playerDataStorage;
+
+    /**
      * Create the abstract take action.
      *
+     * @param playerDataStorage  the storage for player data
      * @param checkOrder         the order in which the checks should be performed
      * @param notificationSender the notification sender to use
      */
-    public AbstractTakeAction(final Argument<List<CheckType>> checkOrder, final NotificationSender notificationSender) {
+    public AbstractTakeAction(final PlayerDataStorage playerDataStorage, final Argument<List<CheckType>> checkOrder,
+                              final NotificationSender notificationSender) {
+        this.playerDataStorage = playerDataStorage;
         this.checkOrder = checkOrder;
         this.notificationSender = notificationSender;
     }
@@ -84,7 +92,7 @@ public abstract class AbstractTakeAction implements OnlineAction {
     }
 
     private void checkBackpack(final OnlineProfile profile) {
-        final PlayerData playerData = BetonQuest.getInstance().getPlayerDataStorage().get(profile);
+        final PlayerData playerData = playerDataStorage.get(profile);
         final List<ItemStack> backpack = playerData.getBackpack();
         final List<ItemStack> newBackpack = removeDesiredAmount(profile, backpack);
         playerData.setBackpack(newBackpack);
