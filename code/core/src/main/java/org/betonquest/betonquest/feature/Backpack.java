@@ -2,7 +2,6 @@ package org.betonquest.betonquest.feature;
 
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.tuple.Pair;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.compass.QuestCompass;
@@ -358,7 +357,7 @@ public class Backpack implements Listener {
 
             inv.setContents(content);
             onlineProfile.getPlayer().openInventory(inv);
-            Bukkit.getPluginManager().registerEvents(Backpack.this, BetonQuest.getInstance());
+            Bukkit.getPluginManager().registerEvents(Backpack.this, plugin);
         }
 
         private Pair<ItemStack, Boolean> button(final String button, final Material fallback) {
