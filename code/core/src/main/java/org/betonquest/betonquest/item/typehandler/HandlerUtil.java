@@ -4,7 +4,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.parser.BooleanParser;
-import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.intellij.lang.annotations.Language;
@@ -33,8 +32,11 @@ public final class HandlerUtil {
      * @return non empty string array
      * @throws QuestException if the argument is null or empty
      */
-    public static String[] getNNSplit(@Nullable final String argument, final String message, @Language("RegExp") final String splitSymbol) throws QuestException {
-        final String[] split = Utils.getNN(argument, message).split(splitSymbol);
+    public static String[] getSplit(@Nullable final String argument, final String message, @Language("RegExp") final String splitSymbol) throws QuestException {
+        if (argument == null) {
+            throw new QuestException(message);
+        }
+        final String[] split = argument.split(splitSymbol);
         if (split.length == 0) {
             throw new QuestException("Missing values!");
         }

@@ -5,7 +5,6 @@ import net.momirealms.craftengine.core.item.CustomItem;
 import net.momirealms.craftengine.core.util.Key;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
-import org.betonquest.betonquest.util.Utils;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -27,6 +26,10 @@ public class CraftEngineParser implements SimpleArgumentParser<CustomItem<ItemSt
 
     @Override
     public CustomItem<ItemStack> apply(final String string) throws QuestException {
-        return Utils.getNN(CraftEngineItems.byId(Key.of(string)), "Invalid CraftEngine Item: " + string);
+        final CustomItem<ItemStack> itemStackCustomItem = CraftEngineItems.byId(Key.of(string));
+        if (itemStackCustomItem == null) {
+            throw new QuestException("Invalid CraftEngine Item '%s'!".formatted(string));
+        }
+        return itemStackCustomItem;
     }
 }

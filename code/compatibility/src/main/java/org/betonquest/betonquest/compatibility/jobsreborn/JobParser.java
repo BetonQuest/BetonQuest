@@ -4,7 +4,6 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.Job;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
-import org.betonquest.betonquest.util.Utils;
 
 /**
  * Parses a string to a job.
@@ -24,6 +23,10 @@ public class JobParser implements SimpleArgumentParser<Job> {
 
     @Override
     public Job apply(final String string) throws QuestException {
-        return Utils.getNN(Jobs.getJob(string), "Jobs Reborn job '" + string + "' does not exist");
+        final Job job = Jobs.getJob(string);
+        if (job == null) {
+            throw new QuestException("Jobs Reborn job '%s' does not exist!".formatted(string));
+        }
+        return job;
     }
 }

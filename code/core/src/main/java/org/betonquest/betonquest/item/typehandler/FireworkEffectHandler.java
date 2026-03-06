@@ -71,7 +71,7 @@ public class FireworkEffectHandler {
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
     public void set(final String string) throws QuestException {
-        final String[] parts = HandlerUtil.getNNSplit(string, "Effect is missing", ":");
+        final String[] parts = HandlerUtil.getSplit(string, "Effect is missing!", ":");
         // if "whatever" then all type checking is unnecessary
         if (!"?".equals(parts[0])) {
             if (parts[0].toLowerCase(Locale.ROOT).startsWith("none-")) {

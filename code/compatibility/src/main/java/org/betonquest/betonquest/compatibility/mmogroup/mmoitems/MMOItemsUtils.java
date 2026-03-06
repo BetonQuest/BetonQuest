@@ -4,7 +4,6 @@ import io.lumine.mythic.lib.api.item.NBTItem;
 import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.util.Utils;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,6 +45,10 @@ public final class MMOItemsUtils {
      * @throws QuestException if no item type with that id is present
      */
     public static Type getMMOItemType(final String itemType) throws QuestException {
-        return Utils.getNN(MMOItems.plugin.getTypes().get(itemType), "The item type '" + itemType + "' does not exist.");
+        final Type type = MMOItems.plugin.getTypes().get(itemType);
+        if (type == null) {
+            throw new QuestException("The item type '%s' does not exist!".formatted(itemType));
+        }
+        return type;
     }
 }

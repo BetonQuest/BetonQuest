@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.util.Utils;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
@@ -184,7 +183,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
      * @throws QuestException when an effect is invalid
      */
     protected void setCustom(final String custom) throws QuestException {
-        final String[] parts = HandlerUtil.getNNSplit(custom, "Potion is null!", ",");
+        final String[] parts = HandlerUtil.getSplit(custom, "Potion is null!", ",");
         if (Existence.NONE_KEY.equalsIgnoreCase(parts[0])) {
             customE = Existence.FORBIDDEN;
             return;
@@ -289,7 +288,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
          * @throws QuestException if the data is malformed
          */
         private CustomEffectHandler(final String custom) throws QuestException {
-            final String[] parts = HandlerUtil.getNNSplit(custom, "Potion is null!", ":");
+            final String[] parts = HandlerUtil.getSplit(custom, "Potion is null!", ":");
             if (parts[0].startsWith("none-")) {
                 customTypeE = Existence.FORBIDDEN;
                 customType = getType(parts[0].substring("none-".length()));
@@ -316,7 +315,11 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         }
 
         private PotionEffectType getType(final String name) throws QuestException {
-            return Utils.getNN(PotionEffectType.getByName(name), "Unknown effect type: " + name);
+            final PotionEffectType effectType = PotionEffectType.getByName(name);
+            if (effectType == null) {
+                throw new QuestException("Unknown effect type '%s'!".formatted(name));
+            }
+            return effectType;
         }
 
         private boolean check(@Nullable final PotionEffect effect) {

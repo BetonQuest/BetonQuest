@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.util.Utils;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -107,7 +106,7 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     private void set(final String enchants) throws QuestException {
-        final String[] parts = HandlerUtil.getNNSplit(enchants, "Enchantment is null!", ",");
+        final String[] parts = HandlerUtil.getSplit(enchants, "Enchantments are null!", ",");
         if (Existence.NONE_KEY.equalsIgnoreCase(parts[0])) {
             checkersE = Existence.FORBIDDEN;
             return;
@@ -182,7 +181,7 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
         private final int level;
 
         private SingleEnchantmentHandler(final String enchant) throws QuestException {
-            final String[] parts = HandlerUtil.getNNSplit(enchant, "", ":");
+            final String[] parts = HandlerUtil.getSplit(enchant, "Enchantment is null!", ":");
             if (parts[0].startsWith("none-")) {
                 existence = Existence.FORBIDDEN;
                 type = getType(parts[0].substring("none-".length()));
@@ -202,7 +201,11 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
 
         @SuppressWarnings("deprecation")
         private Enchantment getType(final String name) throws QuestException {
-            return Utils.getNN(Enchantment.getByName(name.toUpperCase(Locale.ROOT)), "Unknown enchantment type: " + name);
+            final Enchantment enchantment = Enchantment.getByName(name.toUpperCase(Locale.ROOT));
+            if (enchantment == null) {
+                throw new QuestException("Unknown enchantment type '%s'!".formatted(name));
+            }
+            return enchantment;
         }
 
         private boolean check(@Nullable final Integer level) {

@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.util.Utils;
 
 /**
  * Checks if the player has a certain stat level in AuraSkills.
@@ -60,7 +59,10 @@ public class AuraSkillsStatsCondition implements PlayerCondition {
         }
 
         final NamespacedId namespacedId = NamespacedId.fromDefault(name.getValue(profile));
-        final Stat stat = Utils.getNN(auraSkillsApi.getGlobalRegistry().getStat(namespacedId), "Invalid stat name");
+        final Stat stat = auraSkillsApi.getGlobalRegistry().getStat(namespacedId);
+        if (stat == null) {
+            throw new QuestException("Stat '%s' does not exist!".formatted(namespacedId));
+        }
         final double actualLevel = user.getStatLevel(stat);
         final double targetLevel = this.targetLevel.getValue(profile).doubleValue();
 

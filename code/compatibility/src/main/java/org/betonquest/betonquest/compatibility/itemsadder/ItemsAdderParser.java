@@ -3,7 +3,6 @@ package org.betonquest.betonquest.compatibility.itemsadder;
 import dev.lone.itemsadder.api.CustomStack;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
-import org.betonquest.betonquest.util.Utils;
 
 /**
  * Parses strings into {@link CustomStack} instances.
@@ -24,6 +23,10 @@ public class ItemsAdderParser implements SimpleArgumentParser<CustomStack> {
 
     @Override
     public CustomStack apply(final String string) throws QuestException {
-        return Utils.getNN(CustomStack.getInstance(string), "Invalid ItemsAdder Item: " + string);
+        final CustomStack stack = CustomStack.getInstance(string);
+        if (stack == null) {
+            throw new QuestException("Invalid ItemsAdder Item '%s'!".formatted(string));
+        }
+        return stack;
     }
 }

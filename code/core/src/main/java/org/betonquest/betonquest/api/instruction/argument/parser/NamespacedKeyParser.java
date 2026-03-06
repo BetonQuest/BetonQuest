@@ -2,7 +2,6 @@ package org.betonquest.betonquest.api.instruction.argument.parser;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
-import org.betonquest.betonquest.util.Utils;
 import org.bukkit.NamespacedKey;
 
 /**
@@ -18,6 +17,10 @@ public class NamespacedKeyParser implements SimpleArgumentParser<NamespacedKey> 
 
     @Override
     public NamespacedKey apply(final String string) throws QuestException {
-        return Utils.getNN(NamespacedKey.fromString(string), "Invalid NamespacedKey: " + string);
+        final NamespacedKey key = NamespacedKey.fromString(string);
+        if (key == null) {
+            throw new QuestException("Invalid NamespacedKey '%s'!".formatted(string));
+        }
+        return key;
     }
 }

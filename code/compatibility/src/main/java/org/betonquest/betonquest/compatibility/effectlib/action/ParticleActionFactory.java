@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.action.OnlineActionAdapter;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
-import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -34,9 +33,14 @@ public class ParticleActionFactory implements PlayerActionFactory {
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final String string = instruction.string().get().getValue(null);
-        final ConfigurationSection parameters = Utils.getNN(instruction.getPackage().getConfig().getConfigurationSection("effects." + string),
-                "Effect '" + string + "' does not exist!");
-        final String rawEffectClass = Utils.getNN(parameters.getString("class"), "Effect '" + string + "' is incorrectly defined");
+        final ConfigurationSection parameters = instruction.getPackage().getConfig().getConfigurationSection("effects." + string);
+        if (parameters == null) {
+            throw new QuestException("Effect '%s' does not exist!".formatted(string));
+        }
+        final String rawEffectClass = parameters.getString("class");
+        if (rawEffectClass == null) {
+            throw new QuestException("Effect '%s' does not have a class!".formatted(string));
+        }
         final String effectClass = instruction.chainForArgument(rawEffectClass).string().get().getValue(null);
         final Argument<Location> loc = instruction.location().get("loc").orElse(null);
         final FlagArgument<Boolean> privateParticle = instruction.bool().getFlag("private", true);
