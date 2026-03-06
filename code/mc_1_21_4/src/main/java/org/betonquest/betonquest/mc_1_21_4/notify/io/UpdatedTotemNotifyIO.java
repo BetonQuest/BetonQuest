@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.betonquest.betonquest.notify.NotifyIO;
-import org.betonquest.betonquest.util.Utils;
 import org.bukkit.EntityEffect;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -51,7 +50,13 @@ public class UpdatedTotemNotifyIO extends NotifyIO {
     public UpdatedTotemNotifyIO(final PlaceholderManager placeholders, @Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
         super(placeholders, pack, data);
         itemModel = data.containsKey("itemmodel") ? new DefaultArgument<>(placeholders, pack, data.getOrDefault("itemmodel", ""),
-                input -> Utils.getNN(NamespacedKey.fromString(input), "The item-model '" + input + "' could not be parsed!")) : null;
+                input -> {
+                    final NamespacedKey key = NamespacedKey.fromString(input);
+                    if (key == null) {
+                        throw new QuestException("The item-model '%s' could not be parsed!".formatted(input));
+                    }
+                    return key;
+                }) : null;
         customModelData = getNumberData("custommodeldata", 0);
     }
 

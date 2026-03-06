@@ -207,7 +207,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
     }
 
     private void setEffects(final String string) throws QuestException {
-        final String[] parts = HandlerUtil.getNNSplit(string, "Firework effects missing", ",");
+        final String[] parts = HandlerUtil.getSplit(string, "Firework effects are missing!", ",");
         if (Existence.NONE_KEY.equalsIgnoreCase(parts[0])) {
             effectsE = Existence.FORBIDDEN;
             return;

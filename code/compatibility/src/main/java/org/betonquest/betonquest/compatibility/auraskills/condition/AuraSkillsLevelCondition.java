@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.util.Utils;
+import org.betonquest.betonquest.compatibility.auraskills.AuraSkillsIntegrator;
 
 /**
  * Checks whether a player has the required skill level.
@@ -60,7 +60,7 @@ public class AuraSkillsLevelCondition implements PlayerCondition {
         }
 
         final NamespacedId namespacedId = NamespacedId.fromDefault(name.getValue(profile));
-        final Skill skill = Utils.getNN(auraSkillsApi.getGlobalRegistry().getSkill(namespacedId), "Invalid skill name");
+        final Skill skill = AuraSkillsIntegrator.getNonNullSkill(auraSkillsApi, namespacedId);
         final int actualLevel = user.getSkillLevel(skill);
         final int targetLevel = this.targetLevel.getValue(profile).intValue();
 

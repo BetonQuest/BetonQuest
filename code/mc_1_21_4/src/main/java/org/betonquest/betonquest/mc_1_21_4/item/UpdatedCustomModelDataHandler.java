@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.parser.BooleanParser;
 import org.betonquest.betonquest.item.typehandler.Existence;
 import org.betonquest.betonquest.item.typehandler.ItemMetaHandler;
-import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -103,6 +102,7 @@ public class UpdatedCustomModelDataHandler implements ItemMetaHandler<ItemMeta> 
     }
 
     @Override
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public void set(final String key, final String data) throws QuestException {
         switch (key) {
             case "custom-model-data" -> {
@@ -116,7 +116,10 @@ public class UpdatedCustomModelDataHandler implements ItemMetaHandler<ItemMeta> 
             case "no-custom-model-data" -> this.existence = Existence.FORBIDDEN;
             case "item-model" -> {
                 this.modelE = Existence.REQUIRED;
-                this.model = Utils.getNN(NamespacedKey.fromString(data), "The item-model '" + data + "' could not be parsed!");
+                this.model = NamespacedKey.fromString(data);
+                if (this.model == null) {
+                    throw new QuestException("The item-model '%s' could not be parsed!".formatted(data));
+                }
             }
             case "no-item-model" -> this.modelE = Existence.FORBIDDEN;
             default -> throw new QuestException("Unknown custom model data key: " + key);

@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.action.OnlineActionAdapter;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
-import org.betonquest.betonquest.util.Utils;
 
 import java.util.UUID;
 
@@ -27,8 +26,10 @@ public class OpenShopActionFactory implements PlayerActionFactory {
         final String string = instruction.string().get().getValue(null);
         final Shopkeeper shopkeeper;
         try {
-            shopkeeper = Utils.getNN(ShopkeepersAPI.getShopkeeperRegistry().getShopkeeperByUniqueId(UUID.fromString(string)),
-                    "Shopkeeper with this UUID does not exist: '" + string + "'");
+            shopkeeper = ShopkeepersAPI.getShopkeeperRegistry().getShopkeeperByUniqueId(UUID.fromString(string));
+            if (shopkeeper == null) {
+                throw new QuestException("Shopkeeper with the UUID '%s' does not exist!".formatted(string));
+            }
         } catch (final IllegalArgumentException e) {
             throw new QuestException("Could not parse UUID: '" + string + "'", e);
         }

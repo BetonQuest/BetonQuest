@@ -4,7 +4,6 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerlessPlaceholder;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerlessPlaceholderFactory;
-import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
@@ -32,8 +31,10 @@ public class VersionPlaceholderFactory implements PlayerlessPlaceholderFactory {
         final Plugin plugin;
         if (instruction.hasNext()) {
             final String pluginName = String.join(".", instruction.getValueParts());
-            plugin = Utils.getNN(Bukkit.getPluginManager().getPlugin(pluginName),
-                    "Plugin " + pluginName + "does not exist!");
+            plugin = Bukkit.getPluginManager().getPlugin(pluginName);
+            if (plugin == null) {
+                throw new QuestException("Could not find plugin '%s'!".formatted(pluginName));
+            }
         } else {
             plugin = this.fallBackPlugin;
         }

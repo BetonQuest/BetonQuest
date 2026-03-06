@@ -1,13 +1,11 @@
 package org.betonquest.betonquest.util;
 
 import it.unimi.dsi.fastutil.Pair;
-import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.List;
@@ -55,23 +53,5 @@ public final class Utils {
         } catch (final IllegalArgumentException e) {
             return Double.MAX_VALUE;
         }
-    }
-
-    /**
-     * Checks the argument for null and throws when it is actual not present.
-     * <p>
-     * Primary used in constructors to check against nullable values.
-     *
-     * @param argument to check for null
-     * @param message  of the exception when the argument is null
-     * @param <A>      type of the argument
-     * @return the argument, if not null
-     * @throws QuestException if the argument is null
-     */
-    public static <A> A getNN(@Nullable final A argument, final String message) throws QuestException {
-        if (argument == null) {
-            throw new QuestException(message);
-        }
-        return argument;
     }
 }

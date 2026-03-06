@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
-import org.betonquest.betonquest.util.Utils;
+import org.betonquest.betonquest.compatibility.auraskills.AuraSkillsIntegrator;
 
 /**
  * Gives experience to a player in a skill.
@@ -60,7 +60,7 @@ public class AuraSkillsExperienceAction implements PlayerAction {
         }
 
         final NamespacedId namespacedId = NamespacedId.fromDefault(name.getValue(profile));
-        final Skill skill = Utils.getNN(auraSkillsApi.getGlobalRegistry().getSkill(namespacedId), "Invalid skill name");
+        final Skill skill = AuraSkillsIntegrator.getNonNullSkill(auraSkillsApi, namespacedId);
         final int amount = this.amount.getValue(profile).intValue();
         if (!level.getValue(profile).orElse(false)) {
             user.addSkillXpRaw(skill, amount);

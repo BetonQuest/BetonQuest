@@ -4,7 +4,6 @@ import com.nexomc.nexo.api.NexoItems;
 import com.nexomc.nexo.items.ItemBuilder;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
-import org.betonquest.betonquest.util.Utils;
 
 /**
  * Parses strings into {@link ItemBuilder} instances.
@@ -25,6 +24,10 @@ public class NexoParser implements SimpleArgumentParser<ItemBuilder> {
 
     @Override
     public ItemBuilder apply(final String string) throws QuestException {
-        return Utils.getNN(NexoItems.itemFromId(string), "Invalid Nexo Item: " + string);
+        final ItemBuilder item = NexoItems.itemFromId(string);
+        if (item == null) {
+            throw new QuestException("Invalid Nexo Item '%s'!".formatted(string));
+        }
+        return item;
     }
 }

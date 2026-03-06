@@ -28,7 +28,6 @@ import org.betonquest.betonquest.item.typehandler.PotionHandler;
 import org.betonquest.betonquest.item.typehandler.QuestHandler;
 import org.betonquest.betonquest.item.typehandler.UnbreakableHandler;
 import org.betonquest.betonquest.util.DefaultBlockSelector;
-import org.betonquest.betonquest.util.Utils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -174,7 +173,10 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
             final String argumentName = getArgumentName(part.toLowerCase(Locale.ROOT));
             final String data = getArgumentData(part);
 
-            final ItemMetaHandler<?> handler = Utils.getNN(keyToHandler.get(argumentName), "Unknown argument: " + argumentName);
+            final ItemMetaHandler<?> handler = keyToHandler.get(argumentName);
+            if (handler == null) {
+                throw new QuestException("Unknown argument '%s'!".formatted(argumentName));
+            }
             handler.set(argumentName, data);
         }
     }
