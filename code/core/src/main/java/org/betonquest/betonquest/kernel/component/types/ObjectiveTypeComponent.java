@@ -46,6 +46,7 @@ import org.betonquest.betonquest.quest.objective.step.StepObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.tame.TameObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.timer.TimerObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.variable.VariableObjectiveFactory;
+import org.bukkit.plugin.Plugin;
 
 import java.util.Set;
 
@@ -65,7 +66,7 @@ public class ObjectiveTypeComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(BetonQuestLoggerFactory.class, ProfileProvider.class,
                 PluginMessage.class, PlayerDataStorage.class,
-                ObjectiveTypeRegistry.class, ActionManager.class, ConditionManager.class);
+                ObjectiveTypeRegistry.class, ActionManager.class, ConditionManager.class, Plugin.class);
     }
 
     @Override
@@ -77,12 +78,13 @@ public class ObjectiveTypeComponent extends AbstractCoreComponent {
         final ObjectiveTypeRegistry objectiveTypes = getDependency(ObjectiveTypeRegistry.class);
         final ActionManager actionManager = getDependency(ActionManager.class);
         final ConditionManager conditionManager = getDependency(ConditionManager.class);
+        final Plugin plugin = getDependency(Plugin.class);
 
         objectiveTypes.register("action", new ActionObjectiveFactory());
-        objectiveTypes.register("arrow", new ArrowShootObjectiveFactory());
+        objectiveTypes.register("arrow", new ArrowShootObjectiveFactory(plugin));
         objectiveTypes.register("block", new BlockObjectiveFactory(loggerFactory, pluginMessage));
         objectiveTypes.register("breed", new BreedObjectiveFactory());
-        objectiveTypes.register("brew", new BrewObjectiveFactory(profileProvider));
+        objectiveTypes.register("brew", new BrewObjectiveFactory(plugin, profileProvider));
         objectiveTypes.register("chestput", new ChestPutObjectiveFactory(loggerFactory, pluginMessage));
         objectiveTypes.register("command", new CommandObjectiveFactory(actionManager));
         objectiveTypes.register("consume", new ConsumeObjectiveFactory());

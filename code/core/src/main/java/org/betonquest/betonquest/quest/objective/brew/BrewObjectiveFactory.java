@@ -11,11 +11,17 @@ import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.plugin.Plugin;
 
 /**
  * Factory for creating {@link BrewObjective} instances from {@link Instruction}s.
  */
 public class BrewObjectiveFactory implements ObjectiveFactory {
+
+    /**
+     * The plugin instance.
+     */
+    private final Plugin plugin;
 
     /**
      * Profile provider to get the profile of the player.
@@ -25,9 +31,11 @@ public class BrewObjectiveFactory implements ObjectiveFactory {
     /**
      * Creates a new instance of the BrewObjectiveFactory.
      *
+     * @param plugin          the plugin instance
      * @param profileProvider the profile provider to get the profile of the player
      */
-    public BrewObjectiveFactory(final ProfileProvider profileProvider) {
+    public BrewObjectiveFactory(final Plugin plugin, final ProfileProvider profileProvider) {
+        this.plugin = plugin;
         this.profileProvider = profileProvider;
     }
 
@@ -35,7 +43,7 @@ public class BrewObjectiveFactory implements ObjectiveFactory {
     public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
         final Argument<ItemWrapper> potion = instruction.item().get();
         final Argument<Number> targetAmount = instruction.number().atLeast(0).get();
-        final BrewObjective objective = new BrewObjective(service, targetAmount, profileProvider, potion);
+        final BrewObjective objective = new BrewObjective(service, targetAmount, plugin, profileProvider, potion);
         service.request(InventoryClickEvent.class).priority(EventPriority.LOWEST).onlineHandler(objective::onIngredientPut)
                 .entity(InventoryClickEvent::getWhoClicked).subscribe(false);
         service.request(BrewEvent.class).priority(EventPriority.MONITOR)

@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.objective.brew;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
@@ -11,7 +10,6 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.lib.profile.ProfileValueMap;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.BrewingStand;
 import org.bukkit.event.inventory.BrewEvent;
@@ -20,6 +18,8 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.BrewerInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Map;
 import java.util.Set;
@@ -29,6 +29,11 @@ import java.util.stream.Collectors;
  * Requires the player to manually brew a potion.
  */
 public class BrewObjective extends CountingObjective {
+
+    /**
+     * The plugin instance.
+     */
+    private final Plugin plugin;
 
     /**
      * The potion item to brew.
@@ -45,13 +50,15 @@ public class BrewObjective extends CountingObjective {
      *
      * @param service         the objective service
      * @param targetAmount    the target amount of potions to brew
+     * @param plugin          the plugin instance
      * @param profileProvider the profile provider to get the profile of the player
      * @param potion          the potion item to brew
      * @throws QuestException if there is an error in the instruction
      */
-    public BrewObjective(final ObjectiveService service, final Argument<Number> targetAmount,
+    public BrewObjective(final ObjectiveService service, final Argument<Number> targetAmount, final Plugin plugin,
                          final ProfileProvider profileProvider, final Argument<ItemWrapper> potion) throws QuestException {
         super(service, targetAmount, "potions_to_brew");
+        this.plugin = plugin;
         this.potion = potion;
         this.locations = new ProfileValueMap<>(profileProvider);
     }
@@ -69,15 +76,18 @@ public class BrewObjective extends CountingObjective {
         }
 
         final ItemStack[] contentBefore = topInventory.getContents();
-        Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
-            final ItemStack[] contentAfter = topInventory.getContents();
-            if (itemsAdded(contentBefore, contentAfter)) {
-                final BrewingStand brewingStand = (BrewingStand) topInventory.getHolder();
-                if (brewingStand != null) {
-                    locations.put(brewingStand.getLocation(), onlineProfile);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                final ItemStack[] contentAfter = topInventory.getContents();
+                if (itemsAdded(contentBefore, contentAfter)) {
+                    final BrewingStand brewingStand = (BrewingStand) topInventory.getHolder();
+                    if (brewingStand != null) {
+                        locations.put(brewingStand.getLocation(), onlineProfile);
+                    }
                 }
             }
-        });
+        }.runTask(plugin);
     }
 
     @SuppressWarnings("PMD.UseVarargs")
@@ -108,28 +118,31 @@ public class BrewObjective extends CountingObjective {
         final QuestItem potion = this.potion.getValue(profile).getItem(profile);
         final boolean[] alreadyDone = getMatchingPotions(potion, event.getContents());
 
-        Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
-            final boolean[] newlyDone = getMatchingPotions(potion, event.getContents(), alreadyDone);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                final boolean[] newlyDone = getMatchingPotions(potion, event.getContents(), alreadyDone);
 
-            int progress = 0;
-            for (final boolean brewed : newlyDone) {
-                if (brewed) {
-                    progress++;
+                int progress = 0;
+                for (final boolean brewed : newlyDone) {
+                    if (brewed) {
+                        progress++;
+                    }
+                }
+
+                if (progress > 0) {
+                    getCountingData(profile).progress(progress);
+                    final boolean completed = completeIfDoneOrNotify(profile);
+                    if (completed) {
+                        final Set<Location> removals = locations.entrySet().stream()
+                                .filter(location -> profile.equals(location.getValue()))
+                                .map(Map.Entry::getKey)
+                                .collect(Collectors.toSet());
+                        removals.forEach(locations::remove);
+                    }
                 }
             }
-
-            if (progress > 0) {
-                getCountingData(profile).progress(progress);
-                final boolean completed = completeIfDoneOrNotify(profile);
-                if (completed) {
-                    final Set<Location> removals = locations.entrySet().stream()
-                            .filter(location -> profile.equals(location.getValue()))
-                            .map(Map.Entry::getKey)
-                            .collect(Collectors.toSet());
-                    removals.forEach(locations::remove);
-                }
-            }
-        });
+        }.runTask(plugin);
     }
 
     /**

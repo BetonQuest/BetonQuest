@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.action.OnlineActionAdapter;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.quest.action.NotificationSender;
 
 import java.util.List;
@@ -19,13 +20,21 @@ import java.util.List;
 public class TakeActionFactory extends AbstractTakeActionFactory {
 
     /**
+     * The storage for player data.
+     */
+    private final PlayerDataStorage playerDataStorage;
+
+    /**
      * Create the take action factory.
      *
-     * @param loggerFactory the logger factory to create a logger for the actions
-     * @param pluginMessage the {@link PluginMessage} instance
+     * @param loggerFactory     the logger factory to create a logger for the actions
+     * @param playerDataStorage the storage providing player data
+     * @param pluginMessage     the {@link PluginMessage} instance
      */
-    public TakeActionFactory(final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage) {
+    public TakeActionFactory(final BetonQuestLoggerFactory loggerFactory, final PlayerDataStorage playerDataStorage,
+                             final PluginMessage pluginMessage) {
         super(loggerFactory, pluginMessage);
+        this.playerDataStorage = playerDataStorage;
     }
 
     @Override
@@ -34,6 +43,6 @@ public class TakeActionFactory extends AbstractTakeActionFactory {
         final Argument<List<CheckType>> checkOrder = getCheckOrder(instruction);
         final Argument<List<ItemWrapper>> questItems = instruction.item().list().get();
         final NotificationSender notificationSender = getNotificationSender(instruction, log);
-        return new OnlineActionAdapter(new TakeAction(questItems, checkOrder, notificationSender));
+        return new OnlineActionAdapter(new TakeAction(playerDataStorage, questItems, checkOrder, notificationSender));
     }
 }

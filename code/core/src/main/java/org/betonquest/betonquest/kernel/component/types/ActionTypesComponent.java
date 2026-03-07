@@ -200,7 +200,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         actionTypes.register("stage", new StageActionFactory(objectiveManager));
         actionTypes.register("sudo", new SudoActionFactory(server));
         actionTypes.registerCombined("tag", new TagPlayerActionFactory(persistence, saver, profileProvider));
-        actionTypes.register("take", new TakeActionFactory(loggerFactory, pluginMessage));
+        actionTypes.register("take", new TakeActionFactory(loggerFactory, playerDataStorage, pluginMessage));
         actionTypes.register("teleport", new TeleportActionFactory(conversations));
         actionTypes.registerCombined("time", new TimeActionFactory());
         actionTypes.register("updatevisibility", new UpdateVisibilityNowActionFactory(npcHider));
