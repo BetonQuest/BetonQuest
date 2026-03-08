@@ -28,7 +28,7 @@ public class ComponentLineWrapper {
     /**
      * The newline string to split text components by new lines.
      */
-    private static final Pattern NEW_LINE = Pattern.compile("\n");
+    private static final Pattern NEW_LINE = Pattern.compile("\\n");
 
     /**
      * The leading space pattern to split text components by leading spaces.
