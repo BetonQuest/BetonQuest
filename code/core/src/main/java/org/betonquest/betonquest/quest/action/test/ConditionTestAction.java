@@ -57,8 +57,13 @@ public class ConditionTestAction implements NullableAction {
     /**
      * The message to log on test failure.
      * <br> <br>
-     * May contain "%s" four times to inline the "test identifier", "the condition checked",
-     * "expected value" and "actual value" - in that order.
+     * May contain placeholders replaced by {@link String#formatted(Object...)}.
+     * <ul>
+     *     <li>%1$s - the identifier of the test action itself</li>
+     *     <li>%2$s - the identifier of the condition to validate</li>
+     *     <li>%3$s - the expected value of the condition</li>
+     *     <li>%4$s - the actual value of the condition</li>
+     * </ul>
      * If not defined, use the default message as defined in {@link ConditionTestActionFactory#DEFAULT_MESSAGE_ON_FAILURE}.
      */
     private final Argument<String> messageOnFailure;
@@ -66,7 +71,11 @@ public class ConditionTestAction implements NullableAction {
     /**
      * The message to log on test success.
      * <br> <br>
-     * May contain "%s" two times to inline the "test identifier" and "the condition checked" - in that order.
+     * May contain placeholders replaced by {@link String#formatted(Object...)}.
+     * <ul>
+     *     <li>%1$s - the identifier of the test action itself</li>
+     *     <li>%2$s - the identifier of the condition to validate</li>
+     * </ul>
      * If not defined, use the default message as defined in {@link ConditionTestActionFactory#DEFAULT_MESSAGE_ON_SUCCESS}.
      */
     private final Argument<String> messageOnSuccess;

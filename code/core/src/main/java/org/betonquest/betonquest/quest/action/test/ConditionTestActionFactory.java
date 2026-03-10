@@ -29,7 +29,7 @@ public class ConditionTestActionFactory implements PlayerActionFactory, Playerle
     public static final String DEFAULT_MESSAGE_ON_SUCCESS = "Test '%s' on condition '%s' succeeded.";
 
     /**
-     * If the independent flag is set by not defined, this is the default value.
+     * The value of the independent flag if it set but no explicit value is defined.
      */
     public static final boolean DEFAULT_FLAGGED_TEST_INDEPENDENTLY = true;
 
