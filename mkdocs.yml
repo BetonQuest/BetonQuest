@@ -161,7 +161,7 @@ nav:
       - 'Overview': API/Overview.md
       - 'Obtaining API': API/Obtaining-API.md
       - 'Quest API':
-          - 'Overview': API/Quest/Quest-API.md
+          - 'Overview': API/Quest/Overview.md
           - 'Actions': API/Quest/Actions.md
           - 'Objectives': API/Quest/Objectives.md
           - 'Conditions': API/Quest/Conditions.md
