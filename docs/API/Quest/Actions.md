@@ -21,7 +21,7 @@ This page covers the Actions API of BetonQuest.
 
 !!! warning "You should have viewed these pages"
     - [How to access the api](../Obtaining-API.md)
-    - [How to use the factory system](Quest-API.md)
+    - [How to use the factory system](./Quest-API.md)
     - [How to work with Instructions](../Instruction.md)
 
 <div class="grid" markdown>
@@ -438,6 +438,7 @@ public class MyFeature {
     final Profile profile; //(2)!
     betonQuestApi.actions().manager().run(profile, action); //(3)!
   }
+  
 }
 ```
 
@@ -455,6 +456,7 @@ public class MyFeature {
     final ActionIdentifier action; //(1)!
     betonQuestApi.actions().manager().run(null, action); //(2)!
   }
+  
 }
 ```
 
@@ -471,6 +473,7 @@ public class MyFeature {
     final Set<ActionIdentifier> actions; //(1)!
     betonQuestApi.actions().manager().run(null, actions); //(2)!
   }
+  
 }
 ```
 
