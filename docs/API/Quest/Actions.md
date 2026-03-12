@@ -21,7 +21,7 @@ This page covers the Actions API of BetonQuest.
 
 !!! warning "You should have viewed these pages"
     - [How to access the api](../Obtaining-API.md)
-    - [How to use the factory system](./Quest-API.md)
+    - [How to use the factory system](./Overview.md)
     - [How to work with Instructions](../Instruction.md)
 
 <div class="grid" markdown>
