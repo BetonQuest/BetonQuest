@@ -78,6 +78,6 @@ You can browse the Javadocs here:
 
 ---
 
-<div class="grid" markdown style="text-align: center;">
-[Obtain the API :octicons-arrow-right-16:](./Obtaining-API.md){ .md-button .md-button--primary style="width: 49%;" }
+<div markdown style="text-align: right;">
+[Obtain the API :octicons-arrow-right-16:](./Obtaining-API.md){ .md-button .md-button--primary }
 </div>
