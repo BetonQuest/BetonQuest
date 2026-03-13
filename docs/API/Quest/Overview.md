@@ -2,7 +2,7 @@
 icon: material/application-export
 status: new
 ---
-@snippet:api-state:todo@
+@snippet:api-state:unfinished@
 
 # Overview
 
@@ -25,7 +25,7 @@ This page intends to give an elaborate overall introduction to the API and all i
 ## API Structure
 
 The API is structured to be intuitive to navigate and grants you access to all its features with short stream-like paths 
-while retaining the ability to inject parts into your own classes to comply with the rule of Demeter.  
+while retaining the ability to inject parts into your own classes to comply with the [Law of Demeter](https://en.wikipedia.org/wiki/Law_of_Demeter).  
 The tree-like capsulation of features ensures a narrowing scope as you move down the path.
 
 <div class="grid" markdown style="grid-template-columns: 2fr 1fr;">
@@ -80,7 +80,7 @@ The tree-like capsulation of features ensures a narrowing scope as you move down
     === "Full"
         ```mermaid
         ---
-        title: BetonQuestApi
+        title: Overview
         ---
         flowchart LR
             Service("BetonQuestApiService")
@@ -118,7 +118,7 @@ The tree-like capsulation of features ensures a narrowing scope as you move down
 !!! info "Explanation"
     === "Step 1"
         On the previous page, we learned [how to obtain the API](../Obtaining-API.md).  
-        <br>This step is equivalent to ``betonQuestApiService.api(yourPlugin)``
+        <br>The highlighted step is equivalent to ``betonQuestApiService.api(yourPlugin)``
     === "Step 2"
         Once the API is obtained, we can access the features of the API.
         Among these features are the `profiles()`, `loggerFactory()`, `actions()` and many more.  
@@ -129,10 +129,10 @@ The tree-like capsulation of features ensures a narrowing scope as you move down
         Some features have their own sub-features that essentially split up the feature into smaller parts.
         Most factory-type features have a `manager()` and a `registry()` sub-feature.
         Learn more about how BetonQuest uses factories in the [concepts section](#api-concepts) below.  
-        <br>The highlighted step is equivalent to ``actions().manager()``
+        <br>The highlighted step is equivalent to ``actions.manager()``
     === "Full"
         The API is structured in a way that it is easy to navigate and therefore allowing you to access all features 
-        with short paths while retaining the ability to inject parts into your own classes to comply with the rule of 
+        with short paths while retaining the ability to inject parts into your own classes to comply with the Law of 
         Demeter.  
         <br>The highlighted steps are equivalent to ``betonQuestApiService.api(yourPlugin).actions().manager()``
 
@@ -143,6 +143,10 @@ The tree-like capsulation of features ensures a narrowing scope as you move down
 ---
 
 <div class="grid" markdown style="text-align: center;">
-[:octicons-arrow-left-16: Obtain the API](../Obtaining-API.md){ .md-button .md-button--primary style="width: 49%;" }
-[Learn about the Instruction :octicons-arrow-right-16:](../Instruction.md){ .md-button .md-button--primary style="width: 49%;" }
+<div markdown style="text-align: left;">
+[:octicons-arrow-left-16: Obtain the API](../Obtaining-API.md){ .md-button .md-button--primary }
+</div>
+<div markdown style="text-align: right;">
+[Learn about Instructions :octicons-arrow-right-16:](../Instruction.md){ .md-button .md-button--primary }
+</div>
 </div>
