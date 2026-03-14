@@ -220,4 +220,11 @@ You've learned what actions are and how to create them. You can now give a playe
 even teleport him through the whole town! More actions can be found in the [actions list](../../../Documentation/Scripting/Building-Blocks/Actions-List.md).
 Next you will learn how to give tasks to the player using **objectives**. 
 ---
-[:octicons-arrow-right-16: Objectives Tutorial](./Objectives.md){ .md-button .md-button--primary}
+<div class="grid" markdown style="text-align: center;">
+<div markdown style="text-align: left;">
+[:octicons-arrow-left-16: Conversations](../Basics/Conversations.md){ .md-button .md-button--primary }
+</div>
+<div markdown style="text-align: right;">
+[Objectives :octicons-arrow-right-16:](./Objectives.md){ .md-button .md-button--primary}
+</div>
+</div>

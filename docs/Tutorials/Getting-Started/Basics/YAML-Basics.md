@@ -44,6 +44,11 @@ Tabs are not supported. Use spaces instead.
 You shouldn't name anything `yes`, `no`, `on`, `off`, `null`, `true` or `false` as those names are reserved keywords in YAML.  
  
 ---
-
-
-[:octicons-arrow-right-16: Next Step: Conversations](../Basics/Conversations.md){ .md-button .md-button--primary }
+<div class="grid" markdown style="text-align: center;">
+<div markdown style="text-align: left;">
+[:octicons-arrow-left-16: Setting up Visual Studio Code](../Setup-Guide/Setting-up-VSCode.md){ .md-button .md-button--primary }
+</div>
+<div markdown style="text-align: right;">
+[Conversations :octicons-arrow-right-16:](../Basics/Conversations.md){ .md-button .md-button--primary }
+</div>
+</div>

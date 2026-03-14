@@ -31,5 +31,12 @@ This page will guide you through the installation process for all plugins that a
 **Once you have installed these, restart your server!**
 
 ---
-[:octicons-arrow-right-16: Next Step: Setting up Visual Studio Code](./Setting-up-VSCode.md){ .md-button .md-button--primary }
+<div class="grid" markdown style="text-align: center;">
+<div markdown style="text-align: left;">
+[:octicons-arrow-left-16: Setting up a test server](./Setting-up-a-Test-Server.md){ .md-button .md-button--primary }
+</div>
+<div markdown style="text-align: right;">
+[Setting up Visual Studio Code :octicons-arrow-right-16:](./Setting-up-VSCode.md){ .md-button .md-button--primary }
+</div>
+</div>
 

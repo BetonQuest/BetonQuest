@@ -107,4 +107,11 @@ Now that we have created a proper setup for writing quests, we will talk a bit a
 for quests!
 
 ---
-[:octicons-arrow-right-16: Next Step: YAML Basics](../Basics/YAML-Basics.md){ .md-button .md-button--primary }
+<div class="grid" markdown style="text-align: center;">
+<div markdown style="text-align: left;">
+[:octicons-arrow-left-16: Install Dependencies](./Installing-BetonQuest.md){ .md-button .md-button--primary }
+</div>
+<div markdown style="text-align: right;">
+[YAML Basics :octicons-arrow-right-16:](../Basics/YAML-Basics.md){ .md-button .md-button--primary }
+</div>
+</div>
