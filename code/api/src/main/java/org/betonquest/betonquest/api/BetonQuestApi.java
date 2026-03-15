@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.api;
 
+import org.betonquest.betonquest.api.bukkit.BukkitManager;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
@@ -219,4 +220,11 @@ public interface BetonQuestApi {
      * @return the compass manager
      */
     CompassManager compasses();
+
+    /**
+     * Offers access to shortcuts for the Bukkit API.
+     *
+     * @return the bukkit manager
+     */
+    BukkitManager bukkit();
 }

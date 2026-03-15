@@ -2,6 +2,7 @@ package org.betonquest.betonquest.kernel.component;
 
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.BetonQuestApiService;
+import org.betonquest.betonquest.api.bukkit.BukkitManager;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.data.Persistence;
@@ -80,9 +81,10 @@ public class BetonQuestApiComponent extends AbstractCoreComponent {
         final BetonQuestLogger serviceLogger = loggerFactory.create(BetonQuestApiService.class);
         final Function<Plugin, BetonQuestApi> defaultBetonQuestApiGenerator = callerPlugin -> {
             serviceLogger.debug("Loading API for plugin %s version %s".formatted(callerPlugin.getName(), callerPlugin.getDescription().getVersion()));
+            final BukkitManager bukkitManager = listener -> callerPlugin.getServer().getPluginManager().registerEvents(listener, callerPlugin);
             return new DefaultBetonQuestApi(callerPlugin, profileProvider, packManager, loggerFactory, instructions,
-                    actions, conditions, objectives, placeholders, items, npcs,
-                    conversations, identifiers, fontRegistry, reloader, persistence, compassManager);
+                    actions, conditions, objectives, placeholders, items, npcs, conversations, identifiers,
+                    fontRegistry, reloader, persistence, compassManager, bukkitManager);
         };
         servicesManager.register(BetonQuestApiService.class, new DefaultBetonQuestApiService(defaultBetonQuestApiGenerator), plugin, ServicePriority.Highest);
 
@@ -109,6 +111,7 @@ public class BetonQuestApiComponent extends AbstractCoreComponent {
      * @param reloader       the reloader
      * @param persistence    the persistence api accessor
      * @param compasses      the compass manager
+     * @param bukkit         the bukkit manager
      */
     /* default */ record DefaultBetonQuestApi(Plugin attachedPlugin, ProfileProvider profiles,
                                               QuestPackageManager packages,
@@ -117,8 +120,8 @@ public class BetonQuestApiComponent extends AbstractCoreComponent {
                                               Placeholders placeholders, Items items, Npcs npcs,
                                               Conversations conversations, Identifiers identifiers,
                                               FontRegistry fonts, Reloader reloader,
-                                              Persistence persistence,
-                                              CompassManager compasses) implements BetonQuestApi {
+                                              Persistence persistence, CompassManager compasses,
+                                              BukkitManager bukkit) implements BetonQuestApi {
 
     }
 }
