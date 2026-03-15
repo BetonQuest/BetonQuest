@@ -6,6 +6,7 @@ import io.lumine.mythic.core.items.ItemExecutor;
 import io.lumine.mythic.core.mobs.MobExecutor;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.bukkit.BukkitManager;
 import org.betonquest.betonquest.api.bukkit.event.LoadDataEvent;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.service.item.ItemRegistry;
@@ -30,7 +31,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -65,10 +65,10 @@ public class MythicMobsIntegrator implements Integrator {
         final BukkitAPIHelper apiHelper = mythicBukkit.getAPIHelper();
         final MobExecutor mobExecutor = mythicBukkit.getMobManager();
 
-        final PluginManager manager = plugin.getServer().getPluginManager();
+        final BukkitManager bukkitManager = api.bukkit();
         mythicHider = new MythicHider(api.profiles(), plugin);
         mythicHider.reload(plugin.getPluginConfig().getInt("hider.npc_update_interval", 5 * 20));
-        manager.registerEvents(mythicHider, plugin);
+        bukkitManager.registerEvents(mythicHider);
 
         final BetonQuestLoggerFactory loggerFactory = api.loggerFactory();
         api.conditions().registry().register("mythicmobdistance", new MythicMobDistanceConditionFactory(mobExecutor, new MythicMobParser(mobExecutor)));
@@ -80,7 +80,7 @@ public class MythicMobsIntegrator implements Integrator {
         final NpcRegistry npcRegistry = api.npcs().registry();
         final Listener interactCatcher = new MythicMobsInteractCatcher(api.profiles(), npcRegistry, mobExecutor, mythicHider);
         final MythicMobsNpcFactory npcFactory = new MythicMobsNpcFactory(mobExecutor, mythicHider);
-        manager.registerEvents(new DynamicListenerRegister(interactCatcher, npcFactory), plugin);
+        bukkitManager.registerEvents(new DynamicListenerRegister(bukkitManager, interactCatcher, npcFactory));
         npcRegistry.register("mythicmobs", npcFactory);
         npcRegistry.registerIdentifier(new MythicMobsReverseIdentifier());
 
@@ -124,7 +124,12 @@ public class MythicMobsIntegrator implements Integrator {
     /**
      * Handles de-/registration of a listener based on a condition which may change on reload.
      */
-    public final class DynamicListenerRegister implements Listener {
+    public static final class DynamicListenerRegister implements Listener {
+
+        /**
+         * Bukkit manager to register the listener.
+         */
+        private final BukkitManager bukkitManager;
 
         /**
          * Listener to de-/register.
@@ -141,7 +146,8 @@ public class MythicMobsIntegrator implements Integrator {
          */
         private boolean registered;
 
-        private DynamicListenerRegister(final Listener listener, final MythicMobsNpcFactory npcFactory) {
+        private DynamicListenerRegister(final BukkitManager bukkitManager, final Listener listener, final MythicMobsNpcFactory npcFactory) {
+            this.bukkitManager = bukkitManager;
             this.listener = listener;
             this.npcFactory = npcFactory;
         }
@@ -160,7 +166,7 @@ public class MythicMobsIntegrator implements Integrator {
             final boolean shouldBeRegistered = npcFactory.createdAnIdentifier();
             if (shouldBeRegistered) {
                 if (!registered) {
-                    plugin.getServer().getPluginManager().registerEvents(listener, plugin);
+                    bukkitManager.registerEvents(listener);
                     registered = true;
                 }
             } else if (registered) {

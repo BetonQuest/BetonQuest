@@ -10,7 +10,6 @@ import org.betonquest.betonquest.compatibility.heroes.action.HeroesExperienceAct
 import org.betonquest.betonquest.compatibility.heroes.condition.HeroesAttributeConditionFactory;
 import org.betonquest.betonquest.compatibility.heroes.condition.HeroesClassConditionFactory;
 import org.betonquest.betonquest.compatibility.heroes.condition.HeroesSkillConditionFactory;
-import org.bukkit.plugin.Plugin;
 
 /**
  * Integrator for Heroes.
@@ -18,17 +17,9 @@ import org.bukkit.plugin.Plugin;
 public class HeroesIntegrator implements Integrator {
 
     /**
-     * Plugin to register listener with.
-     */
-    private final Plugin plugin;
-
-    /**
      * Creates a new Integrator.
-     *
-     * @param plugin the plugin to register listener with
      */
-    public HeroesIntegrator(final Plugin plugin) {
-        this.plugin = plugin;
+    public HeroesIntegrator() {
     }
 
     @Override
@@ -43,7 +34,7 @@ public class HeroesIntegrator implements Integrator {
 
         api.actions().registry().register("heroesexp", new HeroesExperienceActionFactory(characterManager));
 
-        plugin.getServer().getPluginManager().registerEvents(new HeroesMobKillListener(api.profiles()), plugin);
+        api.bukkit().registerEvents(new HeroesMobKillListener(api.profiles()));
     }
 
     @Override
