@@ -27,6 +27,7 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.ServicesManager;
 
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * The implementation of {@link AbstractCoreComponent} for {@link DefaultBetonQuestApi}.
@@ -76,40 +77,41 @@ public class BetonQuestApiComponent extends AbstractCoreComponent {
         final CompassManager compassManager = getDependency(CompassManager.class);
         final Plugin plugin = getDependency(Plugin.class);
 
-        final DefaultBetonQuestApi defaultBetonQuestApi = new DefaultBetonQuestApi(profileProvider, packManager, loggerFactory, instructions,
-                actions, conditions, objectives, placeholders, items, npcs,
-                conversations, identifiers, fontRegistry, reloader, persistence, compassManager);
-
         final BetonQuestLogger serviceLogger = loggerFactory.create(BetonQuestApiService.class);
-        servicesManager.register(BetonQuestApiService.class, new DefaultBetonQuestApiService(callerPlugin -> {
+        final Function<Plugin, BetonQuestApi> defaultBetonQuestApiGenerator = callerPlugin -> {
             serviceLogger.debug("Loading API for plugin %s version %s".formatted(callerPlugin.getName(), callerPlugin.getDescription().getVersion()));
-            return defaultBetonQuestApi;
-        }), plugin, ServicePriority.Highest);
+            return new DefaultBetonQuestApi(callerPlugin, profileProvider, packManager, loggerFactory, instructions,
+                    actions, conditions, objectives, placeholders, items, npcs,
+                    conversations, identifiers, fontRegistry, reloader, persistence, compassManager);
+        };
+        servicesManager.register(BetonQuestApiService.class, new DefaultBetonQuestApiService(defaultBetonQuestApiGenerator), plugin, ServicePriority.Highest);
 
-        dependencyProvider.take(DefaultBetonQuestApi.class, defaultBetonQuestApi);
+        dependencyProvider.take(DefaultBetonQuestApi.class, (DefaultBetonQuestApi) defaultBetonQuestApiGenerator.apply(plugin));
     }
 
     /**
      * The default implementation of the {@link BetonQuestApi}.
      *
-     * @param profiles      the profile provider handling profiles for players
-     * @param packages      the package manager for quest packages
-     * @param loggerFactory the logger factory to create loggers for individual services
-     * @param instructions  the instruction api accessor
-     * @param actions       the actions api accessor
-     * @param conditions    the conditions api accessor
-     * @param objectives    the objectives api accessor
-     * @param placeholders  the placeholders api accessor
-     * @param items         the item api accessor
-     * @param npcs          the npc api accessor
-     * @param conversations the conversation api accessor
-     * @param identifiers   the identifier api accessor
-     * @param fonts         the font registry
-     * @param reloader      the reloader
-     * @param persistence   the persistence api accessor
-     * @param compasses     the compass manager
+     * @param attachedPlugin the plugin this api instance is created for
+     * @param profiles       the profile provider handling profiles for players
+     * @param packages       the package manager for quest packages
+     * @param loggerFactory  the logger factory to create loggers for individual services
+     * @param instructions   the instruction api accessor
+     * @param actions        the actions api accessor
+     * @param conditions     the conditions api accessor
+     * @param objectives     the objectives api accessor
+     * @param placeholders   the placeholders api accessor
+     * @param items          the item api accessor
+     * @param npcs           the npc api accessor
+     * @param conversations  the conversation api accessor
+     * @param identifiers    the identifier api accessor
+     * @param fonts          the font registry
+     * @param reloader       the reloader
+     * @param persistence    the persistence api accessor
+     * @param compasses      the compass manager
      */
-    /* default */ record DefaultBetonQuestApi(ProfileProvider profiles, QuestPackageManager packages,
+    /* default */ record DefaultBetonQuestApi(Plugin attachedPlugin, ProfileProvider profiles,
+                                              QuestPackageManager packages,
                                               BetonQuestLoggerFactory loggerFactory, Instructions instructions,
                                               Actions actions, Conditions conditions, Objectives objectives,
                                               Placeholders placeholders, Items items, Npcs npcs,
