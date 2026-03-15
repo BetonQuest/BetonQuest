@@ -10,7 +10,7 @@
         <meta name="author" content="BetonQuest Organisation">
       
       
-        <link rel="canonical" href="https://betonquest.org/3.0-DEV/API/Quest/Quest-API/">
+        <link rel="canonical" href="https://betonquest.org/3.0-DEV/API/Quest/Overview/">
       
       
         <link rel="prev" href="../../Obtaining-API/">
@@ -90,7 +90,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#quest-api-overview" class="md-skip">
+        <a href="#overview" class="md-skip">
           Skip to content
         </a>
       
@@ -5025,6 +5025,8 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
           
@@ -5088,6 +5090,8 @@
 
   
   
+  
+  
 
   
   <label class="md-nav__title" for="__toc">
@@ -5101,13 +5105,36 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#quest-api-overview">
+  <a class="md-nav__link" href="#api-structure">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Quest API Overview
+          API Structure
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#api-concepts">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          API Concepts
         </span>
 
       
@@ -6501,6 +6528,8 @@
 
   
   
+  
+  
 
   
   <label class="md-nav__title" for="__toc">
@@ -6514,13 +6543,36 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#quest-api-overview">
+  <a class="md-nav__link" href="#api-structure">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Quest API Overview
+          API Structure
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#api-concepts">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          API Concepts
         </span>
 
       
@@ -6616,7 +6668,7 @@
 
 
   
-    <a href="https://github.com/BetonQuest/BetonQuest/edit/main/docs/API/Quest/Quest-API.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/BetonQuest/BetonQuest/edit/main/docs/API/Quest/Overview.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -6624,10 +6676,8 @@
   
 
 
-  <h1>Overview</h1>
-
 <details class="warning">
-<summary>API State: <code>Todo</code></summary>
+<summary>API State: <code>Unfinished</code></summary>
 <p><h3><u>Todo</u></h3>
 This part of the API is only planned.</p>
 <p><strong>Do not use anything of this part of the API yet. It will change in the future.</strong></p>
@@ -6650,7 +6700,158 @@ Only bugs and major conceptual problems would lead to more changes.
 This part of the API will only change over at least one major version and will likely carry deprecation as long as possible.</p>
 <p><strong>This part of the API should be safe to use. We try to keep it compatible with previous versions if changes are needed.</strong></p>
 </details>
-<h2 id="quest-api-overview">Quest API Overview<a class="headerlink" href="#quest-api-overview" title="Permanent link">🔗</a></h2>
+<h1 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">🔗</a></h1>
+<p>This page intends to give an elaborate overall introduction to the API and all its basic concepts.</p>
+<div class="grid">
+<div class="admonition abstract">
+<p class="admonition-title">What this page covers</p>
+<ul>
+<li><a href="#api-structure">How the API is structured</a></li>
+<li><a href="#api-concepts">What basic concepts are used in the API</a></li>
+</ul>
+</div>
+<div class="admonition info">
+<p class="admonition-title">What this page does not cover</p>
+<ul>
+<li>What an API is</li>
+<li>How an implementation example might look like</li>
+<li><a href="../../Obtaining-API/">How to obtain the API</a></li>
+<li><a href="../../Overview/">How to integrate the API into your project</a></li>
+</ul>
+</div>
+</div>
+<h2 id="api-structure">API Structure<a class="headerlink" href="#api-structure" title="Permanent link">🔗</a></h2>
+<p>The API is structured to be intuitive to navigate and grants you access to all its features with short stream-like paths 
+while retaining the ability to inject parts into your own classes to comply with the <a href="https://en.wikipedia.org/wiki/Law_of_Demeter">Law of Demeter</a>.<br />
+The tree-like capsulation of features ensures a narrowing scope as you move down the path.</p>
+<div class="grid" style="grid-template-columns: 2fr 1fr;">
+<div class="admonition abstract">
+<p class="admonition-title">Chart</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Step 1</label><label for="__tabbed_1_2">Step 2</label><label for="__tabbed_1_3">Step 3</label><label for="__tabbed_1_4">Full</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<pre class="mermaid"><code>---
+title: Obtain BetonQuestApi
+---
+flowchart LR
+    Service("BetonQuestApiService")
+    API@{ shape: procs, label: "BetonQuestApi"}
+    Service target@--&gt; API
+    target@{ animate: true }</code></pre>
+</div>
+<div class="tabbed-block">
+<pre class="mermaid"><code>---
+title: Access BetonQuestApi Features
+---
+flowchart LR   
+    API@{ shape: procs, label: "BetonQuestApi"}
+    subgraph two [Features]
+        direction LR
+        profiles("profiles()")
+        loggerFactory("loggerFactory()")
+        actions("actions()")
+        more@{ shape: procs, label: "and more..."}
+    end
+    API --&gt; profiles
+    API --&gt; loggerFactory
+    API target@--&gt; actions
+    API --&gt; more
+    target@{ animate: true }</code></pre>
+</div>
+<div class="tabbed-block">
+<pre class="mermaid"><code>---
+title: Access Feature Details
+---
+flowchart LR
+    actions("actions()") 
+    subgraph three [Feature Details]
+            direction LR
+            manager("manager()")
+            registry("registry()")
+    end
+    actions target@--&gt; manager
+    actions --&gt; registry
+    target@{ animate: true }</code></pre>
+</div>
+<div class="tabbed-block">
+<pre class="mermaid"><code>---
+title: Overview
+---
+flowchart LR
+    Service("BetonQuestApiService")
+    subgraph one [API]
+        direction LR
+        API@{ shape: procs, label: "BetonQuestApi"}
+    subgraph two [Features]
+        direction LR
+        profiles("profiles()")
+        loggerFactory("loggerFactory()")
+        actions("actions()")
+        more@{ shape: procs, label: "and more..."}
+
+        subgraph three [Feature Details]
+                direction LR
+                manager("manager()")
+                registry("registry()")
+        end
+        actions target3@--&gt; manager
+        actions --&gt; registry
+
+    end
+    API --&gt; profiles
+    API --&gt; loggerFactory
+    API target2@--&gt; actions
+    API --&gt; more
+    end
+    Service target1@--&gt; API
+    target1@{ animate: true }
+    target2@{ animate: true }
+    target3@{ animate: true }</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Explanation</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:4"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><input id="__tabbed_2_4" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Step 1</label><label for="__tabbed_2_2">Step 2</label><label for="__tabbed_2_3">Step 3</label><label for="__tabbed_2_4">Full</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>On the previous page, we learned <a href="../../Obtaining-API/">how to obtain the API</a>.<br />
+<br>The highlighted step is equivalent to <code>betonQuestApiService.api(yourPlugin)</code></p>
+</div>
+<div class="tabbed-block">
+<p>Once the API is obtained, we can access the features of the API.
+Among these features are the <code>profiles()</code>, <code>loggerFactory()</code>, <code>actions()</code> and many more.<br />
+<br>They are partially discussed in more detail in the <a href="#api-concepts">concepts section</a> below.<br />
+Some features have their own pages, which are linked in the sidebar by their name.<br />
+<br>The highlighted step is equivalent to <code>betonQuestApi.actions()</code></p>
+</div>
+<div class="tabbed-block">
+<p>Some features have their own sub-features that essentially split up the feature into smaller parts.
+Most factory-type features have a <code>manager()</code> and a <code>registry()</code> sub-feature.
+Learn more about how BetonQuest uses factories in the <a href="#api-concepts">concepts section</a> below.<br />
+<br>The highlighted step is equivalent to <code>actions.manager()</code></p>
+</div>
+<div class="tabbed-block">
+<p>The API is structured in a way that it is easy to navigate and therefore allowing you to access all features 
+with short paths while retaining the ability to inject parts into your own classes to comply with the Law of 
+Demeter.<br />
+<br>The highlighted steps are equivalent to <code>betonQuestApiService.api(yourPlugin).actions().manager()</code></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2 id="api-concepts">API Concepts<a class="headerlink" href="#api-concepts" title="Permanent link">🔗</a></h2>
+<hr />
+<div class="grid" style="text-align: center;">
+<div style="text-align: left;">
+<p><a class="md-button md-button--primary" href="../../Obtaining-API/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M7.78 12.53a.75.75 0 0 1-1.06 0L2.47 8.28a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.042.018.75.75 0 0 1 .018 1.042L4.81 7h7.44a.75.75 0 0 1 0 1.5H4.81l2.97 2.97a.75.75 0 0 1 0 1.06"/></svg></span> Obtain the API</a></p>
+</div>
+<div style="text-align: right;">
+<p><a class="md-button md-button--primary" href="../../Instruction/">Learn about Instructions <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8.22 2.97a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l2.97-2.97H3.75a.75.75 0 0 1 0-1.5h7.44L8.22 4.03a.75.75 0 0 1 0-1.06"/></svg></span></a></p>
+</div>
+</div>
 
 
 
