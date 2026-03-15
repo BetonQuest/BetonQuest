@@ -220,4 +220,11 @@ You've learned what objectives are and how to create them. You can now give a pl
 objective to have a more advanced quest! More objectives can be found in the [objectives list](../../../Documentation/Scripting/Building-Blocks/Objectives-List.md).
 In the next tutorial you will learn how **conditions** work and how to use them to make the Blacksmith react to the completed objective.
 ---
-[:octicons-arrow-right-16: Conditions Tutorial ](./Conditions.md){ .md-button .md-button--primary}
+<div class="grid" markdown style="text-align: center;">
+<div markdown style="text-align: left;">
+[:octicons-arrow-left-16: Actions](../Basics/Actions.md){ .md-button .md-button--primary }
+</div>
+<div markdown style="text-align: right;">
+[Conditions :octicons-arrow-right-16:](./Conditions.md){ .md-button .md-button--primary}
+</div>
+</div>
