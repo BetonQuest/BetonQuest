@@ -244,4 +244,11 @@ options by jumping (++space++ by default).
 You've learned how to create simple conversations in which the player can choose different paths.
 In the next part of the basics tutorial you will learn how Jack the mayor can give food to the player using **actions**!
 ---
-[:octicons-arrow-right-16: Actions ](./Actions.md){ .md-button .md-button--primary}
+<div class="grid" markdown style="text-align: center;">
+<div markdown style="text-align: left;">
+[:octicons-arrow-left-16: YAML Basics](../Basics/YAML-Basics.md){ .md-button .md-button--primary }
+</div>
+<div markdown style="text-align: right;">
+[Actions :octicons-arrow-right-16:](./Actions.md){ .md-button .md-button--primary}
+</div>
+</div>

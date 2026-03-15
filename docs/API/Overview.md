@@ -77,5 +77,7 @@ You can browse the Javadocs here:
         ```
 
 ---
-## Next Steps
-Now you should read how to [Obtain the API](Obtaining-API.md).
+
+<div markdown style="text-align: right;">
+[Obtain the API :octicons-arrow-right-16:](./Obtaining-API.md){ .md-button .md-button--primary }
+</div>

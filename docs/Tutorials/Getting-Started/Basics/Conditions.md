@@ -434,3 +434,6 @@ in actions.
 You've learned what conditions are and how to they are used in objectives, conversations and actions.
 More conditions can be found in the [conditions list](../../../Documentation/Scripting/Building-Blocks/Conditions-List.md).
 ---
+<div markdown style="text-align: left;">
+[:octicons-arrow-left-16: Objectives](./Objectives.md){ .md-button .md-button--primary}
+</div>
