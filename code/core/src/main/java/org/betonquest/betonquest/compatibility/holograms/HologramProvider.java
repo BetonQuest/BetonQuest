@@ -107,7 +107,7 @@ public class HologramProvider implements Integrator {
                 api.instructions(), api.packages(), plugin, this, BetonQuest.getInstance().getPluginConfig(),
                 hologramIdentifierFactory, api.conditions().manager(), api.npcs().manager(), api.npcs().registry(), textParser, api.profiles());
         plugin.addProcessor(npcHologramLoop);
-        plugin.getServer().getPluginManager().registerEvents(new HologramListener(api.profiles()), plugin);
+        api.bukkit().registerEvents(new HologramListener(api.profiles()));
     }
 
     @Override

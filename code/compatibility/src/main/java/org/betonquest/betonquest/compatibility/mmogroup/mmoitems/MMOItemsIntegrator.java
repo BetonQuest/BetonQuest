@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.service.objective.ObjectiveRegistry;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.objective.MMOItemsApplyGemObjectiveFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.objective.MMOItemsUpgradeObjectiveFactory;
-import org.bukkit.plugin.Plugin;
 
 /**
  * Integrator for MMO Items.
@@ -15,18 +14,10 @@ import org.bukkit.plugin.Plugin;
 public class MMOItemsIntegrator implements Integrator {
 
     /**
-     * Plugin to register listener with.
-     */
-    private final Plugin plugin;
-
-    /**
      * Creates a new Integrator.
-     *
-     * @param plugin the plugin to register listener with
      */
-    public MMOItemsIntegrator(final Plugin plugin) {
+    public MMOItemsIntegrator() {
 
-        this.plugin = plugin;
     }
 
     @Override
@@ -38,7 +29,7 @@ public class MMOItemsIntegrator implements Integrator {
         final ItemRegistry itemRegistry = api.items().registry();
         itemRegistry.register("mmoitem", new MMOQuestItemFactory(MMOItems.plugin));
         itemRegistry.registerSerializer("mmoitem", new MMOQuestItemSerializer());
-        plugin.getServer().getPluginManager().registerEvents(new MMOItemsCraftObjectiveAdder(api.profiles()), plugin);
+        api.bukkit().registerEvents(new MMOItemsCraftObjectiveAdder(api.profiles()));
     }
 
     @Override
