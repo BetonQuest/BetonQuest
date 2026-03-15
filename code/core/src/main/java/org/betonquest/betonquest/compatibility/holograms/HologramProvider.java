@@ -7,16 +7,12 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.reload.ReloadPhase;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.kernel.ProcessorDataLoader;
 import org.bukkit.Location;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.HandlerList;
 
 import java.util.Comparator;
 import java.util.List;
@@ -46,6 +42,11 @@ public final class HologramProvider {
      * The current {@link NpcHologramLoop}.
      */
     private NpcHologramLoop npcHologramLoop;
+
+    /**
+     * The current listener.
+     */
+    private HologramListener listener;
 
     private HologramProvider(final BetonQuestApi betonQuestApi, final ConfigAccessor config, final BetonHologramFactory integration) {
         this.hologramFactory = integration;
@@ -129,7 +130,8 @@ public final class HologramProvider {
                 connector, api.instructions(), plugin, this, config,
                 hologramIdentifierFactory, api.conditions().manager(), api.npcs().manager(), api.npcs().registry(), textParser, api.profiles());
         processorDataLoader.addProcessor(npcHologramLoop);
-        api.bukkit().registerEvents(new HologramListener(api.profiles()));
+        this.listener = new HologramListener(api.profiles(), npcHologramLoop);
+        api.bukkit().registerEvents(listener);
         api.reloader().register(ReloadPhase.INTEGRATION, HologramRunner::cancel);
     }
 
@@ -140,45 +142,6 @@ public final class HologramProvider {
         HologramRunner.cancel();
         locationHologramLoop.clear();
         npcHologramLoop.close();
-    }
-
-    /**
-     * A listener class for bukkit events that holograms use.
-     */
-    public static class HologramListener implements Listener {
-
-        /**
-         * The profile provider instance.
-         */
-        private final ProfileProvider profileProvider;
-
-        /**
-         * Creates a new HologramListener.
-         *
-         * @param profileProvider the profile provider instance
-         */
-        public HologramListener(final ProfileProvider profileProvider) {
-            this.profileProvider = profileProvider;
-        }
-
-        /**
-         * Refreshes Holograms when a player joins the server.
-         *
-         * @param event The event.
-         */
-        @EventHandler
-        public void onPlayerJoin(final PlayerJoinEvent event) {
-            HologramRunner.refresh(profileProvider.getProfile(event.getPlayer()));
-        }
-
-        /**
-         * Refreshes Holograms when a player leaves the server.
-         *
-         * @param event The event.
-         */
-        @EventHandler
-        public void onPlayerQuit(final PlayerQuitEvent event) {
-            HologramRunner.remove(event.getPlayer());
-        }
+        HandlerList.unregisterAll(listener);
     }
 }
