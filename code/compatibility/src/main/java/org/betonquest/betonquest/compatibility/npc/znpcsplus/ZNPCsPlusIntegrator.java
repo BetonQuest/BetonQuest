@@ -14,7 +14,6 @@ import org.betonquest.betonquest.lib.versioning.Version;
 import org.betonquest.betonquest.lib.versioning.VersionComparator;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
 
 /**
  * Integrator implementation for the
@@ -28,17 +27,9 @@ public class ZNPCsPlusIntegrator implements Integrator {
     public static final String PREFIX = "ZNPCsPlus";
 
     /**
-     * Plugin to register listener with.
-     */
-    private final Plugin plugin;
-
-    /**
      * The default Constructor.
-     *
-     * @param plugin the plugin to register listener with
      */
-    public ZNPCsPlusIntegrator(final Plugin plugin) {
-        this.plugin = plugin;
+    public ZNPCsPlusIntegrator() {
     }
 
     @Override
@@ -46,10 +37,9 @@ public class ZNPCsPlusIntegrator implements Integrator {
         validateVersion();
         final NpcRegistry npcRegistry = api.npcs().registry();
         final ProfileProvider profileProvider = api.profiles();
-        final PluginManager manager = plugin.getServer().getPluginManager();
-        manager.registerEvents(new ZNPCsPlusCatcher(profileProvider, npcRegistry), plugin);
+        api.bukkit().registerEvents(new ZNPCsPlusCatcher(profileProvider, npcRegistry));
         final ZNPCsPlusHider hider = new ZNPCsPlusHider(BetonQuest.getInstance().getComponentLoader().get(NpcProcessor.class).getNpcHider());
-        manager.registerEvents(hider, plugin);
+        api.bukkit().registerEvents(hider);
         npcRegistry.register(PREFIX, new ZNPCsPlusFactory(NpcApiProvider.get().getNpcRegistry()));
         npcRegistry.registerIdentifier(new ZNPCsPlusIdentifier(PREFIX));
     }

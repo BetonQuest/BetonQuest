@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.service.condition.ConditionRegistry;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.fabled.condition.FabledClassConditionFactory;
 import org.betonquest.betonquest.compatibility.fabled.condition.FabledLevelConditionFactory;
-import org.bukkit.plugin.Plugin;
 
 /**
  * Integrator for Fabled.
@@ -13,17 +12,9 @@ import org.bukkit.plugin.Plugin;
 public class FabledIntegrator implements Integrator {
 
     /**
-     * Plugin to register listener with.
-     */
-    private final Plugin plugin;
-
-    /**
      * Creates a new Integrator.
-     *
-     * @param plugin the plugin to register listener with
      */
-    public FabledIntegrator(final Plugin plugin) {
-        this.plugin = plugin;
+    public FabledIntegrator() {
     }
 
     @Override
@@ -31,7 +22,7 @@ public class FabledIntegrator implements Integrator {
         final ConditionRegistry conditionRegistry = api.conditions().registry();
         conditionRegistry.register("fabledclass", new FabledClassConditionFactory());
         conditionRegistry.register("fabledlevel", new FabledLevelConditionFactory());
-        plugin.getServer().getPluginManager().registerEvents(new FabledKillListener(api.profiles()), plugin);
+        api.bukkit().registerEvents(new FabledKillListener(api.profiles()));
     }
 
     @Override

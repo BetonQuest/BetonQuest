@@ -12,6 +12,7 @@ import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.function.TriFunction;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.bukkit.BukkitManager;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.dependency.CoreComponentLoader;
@@ -86,15 +87,15 @@ public class PacketEventsIntegrator implements Integrator {
                         componentLoader.get(FontRegistry.class), pluginConfig, plugin.getConversationColors()));
 
         final boolean displayHistory = pluginConfig.getBoolean("conversation.interceptor.display_history");
-        final ChatHistory chatHistory = displayHistory ? getPacketChatHistory(packetEventsAPI, pluginManager, plugin) : new NoneChatHistory();
+        final ChatHistory chatHistory = displayHistory ? getPacketChatHistory(packetEventsAPI, api.bukkit()) : new NoneChatHistory();
         componentLoader.get(InterceptorRegistry.class).register("packetevents", new PacketEventsInterceptorFactory(packetEventsAPI, chatHistory));
 
         api.actions().registry().register("freeze", new FreezeActionFactory(plugin, packetEventsAPI));
     }
 
-    private PacketChatHistory getPacketChatHistory(final PacketEventsAPI<?> packetEventsAPI, final PluginManager pluginManager, final BetonQuest plugin) {
+    private PacketChatHistory getPacketChatHistory(final PacketEventsAPI<?> packetEventsAPI, final BukkitManager bukkitManager) {
         final PacketChatHistory chatHistory = new PacketChatHistory(packetEventsAPI, 100);
-        pluginManager.registerEvents(chatHistory, plugin);
+        bukkitManager.registerEvents(chatHistory);
         packetEventsAPI.getEventManager().registerListener(chatHistory, PacketListenerPriority.MONITOR);
         return chatHistory;
     }

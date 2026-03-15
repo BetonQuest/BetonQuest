@@ -5,6 +5,7 @@ import net.citizensnpcs.api.npc.NPCRegistry;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.bukkit.BukkitManager;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.identifier.NpcIdentifier;
@@ -24,7 +25,6 @@ import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.ConversationIOFactory;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.bukkit.event.HandlerList;
-import org.bukkit.plugin.PluginManager;
 
 /**
  * Integrator for Citizens.
@@ -69,8 +69,8 @@ public class CitizensIntegrator implements Integrator {
 
         final NPCRegistry citizensNpcRegistry = CitizensAPI.getNPCRegistry();
         final CitizensWalkingListener citizensWalkingListener = new CitizensWalkingListener(plugin, citizensNpcRegistry);
-        final PluginManager manager = plugin.getServer().getPluginManager();
-        manager.registerEvents(citizensWalkingListener, plugin);
+        final BukkitManager bukkitManager = api.bukkit();
+        bukkitManager.registerEvents(citizensWalkingListener);
 
         final BetonQuestLoggerFactory loggerFactory = api.loggerFactory();
         citizensMoveController = new CitizensMoveController(loggerFactory.create(CitizensMoveController.class),
@@ -78,7 +78,7 @@ public class CitizensIntegrator implements Integrator {
 
         final Instructions instructionApi = api.instructions();
         final ActionRegistry actionRegistry = api.actions().registry();
-        manager.registerEvents(citizensMoveController, plugin);
+        bukkitManager.registerEvents(citizensMoveController);
         final CitizensArgument citizensArgument = new CitizensArgument(instructionApi, npcIdentifierFactory);
         api.objectives().registry().register("npckill", new NPCKillObjectiveFactory(citizensArgument, instructionApi, citizensNpcRegistry));
         actionRegistry.register("npcmove", new CitizensMoveActionFactory(api.npcs().manager(), citizensArgument, citizensMoveController));
@@ -95,8 +95,8 @@ public class CitizensIntegrator implements Integrator {
                 plugin.getPluginMessage(), api.items().manager(), api.profiles(), api.conversations(), true));
 
         final NpcRegistry npcRegistry = api.npcs().registry();
-        manager.registerEvents(new CitizensInteractCatcher(plugin.getProfileProvider(), npcRegistry, citizensNpcRegistry,
-                citizensMoveController), plugin);
+        bukkitManager.registerEvents(new CitizensInteractCatcher(plugin.getProfileProvider(), npcRegistry, citizensNpcRegistry,
+                citizensMoveController));
         npcRegistry.register("citizens", new CitizensNpcFactory(citizensNpcRegistry));
         npcRegistry.registerIdentifier(new CitizensReverseIdentifier(citizensNpcRegistry));
     }
