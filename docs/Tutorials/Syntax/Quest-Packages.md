@@ -109,8 +109,8 @@ Then play around with this system to get a feel for it.
           JonesNpc: "Jones"
           
         {==items==}:
-          oakLog: "minecraft:oak_log"
-          jonesAxe: "IRON_AXE name:§7Jones_Hardened_Axe enchants:DIG_SPEED:2,DURABILITY:4"
+          oakLog: "simple minecraft:oak_log"
+          jonesAxe: "simple IRON_AXE name:§7Jones_Hardened_Axe enchants:DIG_SPEED:2,DURABILITY:4"
         ```
     === "jones.yml"
         ```YAML
@@ -209,8 +209,8 @@ It's the exact same quest but in just one file:
        JonesNpc: "Jones"
        
      {==items==}:
-       oakLog: "minecraft:oak_log"
-       jewelry: "minecraft:diamond"
+       oakLog: "simple minecraft:oak_log"
+       jewelry: "simple minecraft:diamond"
 
      {==conversations==}:
        Jones:

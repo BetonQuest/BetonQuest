@@ -231,8 +231,8 @@ actions:
 
 ## `Drop`
 
-__Context__: @snippet:action-meta:independent@  
-__Syntax__: `drop <items> <location>`  
+__Context__: @snippet:action-meta:online-independent@  
+__Syntax__: `drop <items> [location]`  
 __Description__: Drop the specified items at the specified location.
 
 The action takes two parameters: `items` and `location`. Items is a list of [items](../../Features/Items.md) to be
@@ -241,8 +241,8 @@ Every item can optionally be followed by a colon to define an amount `<item>:<am
 The optional location defines where the items will be dropped. It must be specified in the [unified location format](../Data-Formats.md#unified-location-formating).
 If no location is given then the items will be dropped at the player's current location.
 
-If the drop action is used in a schedule then the items will be dropped at the given location.
-If no location is given then the items will be dropped for **every** player at their respective locations.
+If the drop action is used without a player, like in a schedule,
+and no location is given then the items will be dropped for **every** player at their respective locations.
 
 ```YAML title="Example"
 actions:
