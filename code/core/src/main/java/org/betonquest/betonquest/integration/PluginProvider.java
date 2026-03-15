@@ -62,4 +62,13 @@ public interface PluginProvider {
     default Optional<Version> version() {
         return plugin().map(plugin -> new Version(plugin.getDescription().getVersion()));
     }
+
+    /**
+     * Returns the plugin's name.
+     *
+     * @return the plugin's name if the plugin is present, empty otherwise
+     */
+    default Optional<String> name() {
+        return plugin().map(Plugin::getName);
+    }
 }
