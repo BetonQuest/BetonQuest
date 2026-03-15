@@ -13,6 +13,11 @@ import java.util.Optional;
 public interface PluginProvider {
 
     /**
+     * Empty {@link PluginProvider} instance.
+     */
+    PluginProvider EMPTY = Optional::empty;
+
+    /**
      * Creates a new {@link PluginProvider} instance for the given plugin.
      *
      * @param plugin the plugin instance

@@ -12,6 +12,12 @@ import org.jetbrains.annotations.Nullable;
 public class DefaultIntegrationService implements IntegrationService {
 
     @Override
+    public Integrations integrator(@Nullable final String minimalPluginVersion) {
+        final Version version = minimalPluginVersion == null ? null : new Version(minimalPluginVersion);
+        return new DefaultIntegrations(this, PluginProvider.EMPTY, version);
+    }
+
+    @Override
     public Integrations integrator(final String pluginName, @Nullable final String minimalPluginVersion) {
         final Version version = minimalPluginVersion == null ? null : new Version(minimalPluginVersion);
         return new DefaultIntegrations(this, PluginProvider.of(pluginName), version);
