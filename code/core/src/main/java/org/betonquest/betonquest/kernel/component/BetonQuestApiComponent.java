@@ -54,7 +54,7 @@ public class BetonQuestApiComponent extends AbstractCoreComponent {
 
     @Override
     public Set<Class<?>> provides() {
-        return Set.of(DefaultBetonQuestApi.class);
+        return Set.of(DefaultBetonQuestApiService.class, DefaultBetonQuestApi.class);
     }
 
     @Override
@@ -86,8 +86,10 @@ public class BetonQuestApiComponent extends AbstractCoreComponent {
                     actions, conditions, objectives, placeholders, items, npcs, conversations, identifiers,
                     fontRegistry, reloader, persistence, compassManager, bukkitManager);
         };
-        servicesManager.register(BetonQuestApiService.class, new DefaultBetonQuestApiService(defaultBetonQuestApiGenerator), plugin, ServicePriority.Highest);
+        final DefaultBetonQuestApiService defaultBetonQuestApiService = new DefaultBetonQuestApiService(defaultBetonQuestApiGenerator);
+        servicesManager.register(BetonQuestApiService.class, defaultBetonQuestApiService, plugin, ServicePriority.Highest);
 
+        dependencyProvider.take(DefaultBetonQuestApiService.class, defaultBetonQuestApiService);
         dependencyProvider.take(DefaultBetonQuestApi.class, (DefaultBetonQuestApi) defaultBetonQuestApiGenerator.apply(plugin));
     }
 

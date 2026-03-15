@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.dependency.CoreComponentLoader;
+import org.betonquest.betonquest.api.integration.IntegrationService;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -19,6 +20,8 @@ import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.Saver;
+import org.betonquest.betonquest.integration.DefaultIntegrationService;
+import org.betonquest.betonquest.integration.IntegrationManager;
 import org.betonquest.betonquest.kernel.ProcessorDataLoader;
 import org.betonquest.betonquest.kernel.component.ActionsComponent;
 import org.betonquest.betonquest.kernel.component.ArgumentParsersComponent;
@@ -41,6 +44,7 @@ import org.betonquest.betonquest.kernel.component.FontRegistryComponent;
 import org.betonquest.betonquest.kernel.component.GlobalDataComponent;
 import org.betonquest.betonquest.kernel.component.IdentifiersComponent;
 import org.betonquest.betonquest.kernel.component.InstructionsComponent;
+import org.betonquest.betonquest.kernel.component.IntegrationComponent;
 import org.betonquest.betonquest.kernel.component.ItemsComponent;
 import org.betonquest.betonquest.kernel.component.JournalsComponent;
 import org.betonquest.betonquest.kernel.component.LanguageProviderComponent;
@@ -88,6 +92,7 @@ import org.betonquest.betonquest.schedule.ActionScheduling;
 import org.bukkit.Server;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -133,19 +138,28 @@ public class BetonQuest extends JavaPlugin {
     }
 
     @Override
-    public void onEnable() {
-        instance = this;
-
+    public void onLoad() {
         final BetonQuestLoggerFactory loggerFactory = new CachingBetonQuestLoggerFactory(new DefaultBetonQuestLoggerFactory());
         this.log = loggerFactory.create(this);
 
-        final DefaultCoreComponentLoader coreComponentLoader = new DefaultCoreComponentLoader(loggerFactory.create(DefaultCoreComponentLoader.class));
-        coreComponentLoader.init(BetonQuestLoggerFactory.class, loggerFactory);
-        this.coreComponentLoader = coreComponentLoader;
+        final IntegrationManager integrationManager = new IntegrationManager(loggerFactory.create(IntegrationManager.class), loggerFactory);
+        final DefaultIntegrationService integrationService = new DefaultIntegrationService(integrationManager);
+        this.getServer().getServicesManager().register(IntegrationService.class, integrationService, this, ServicePriority.Highest);
+
+        this.coreComponentLoader = new DefaultCoreComponentLoader(loggerFactory.create(DefaultCoreComponentLoader.class));
+        this.coreComponentLoader.init(BetonQuestLoggerFactory.class, loggerFactory);
+        this.coreComponentLoader.init(IntegrationManager.class, integrationManager);
+
         initPluginDependencies(coreComponentLoader);
         registerComponents(coreComponentLoader);
         registerFeatures(coreComponentLoader);
         registerTypesComponents(coreComponentLoader);
+    }
+
+    @Override
+    public void onEnable() {
+        instance = this;
+
         this.coreComponentLoader.load();
 
         // block betonquestanswer logging (it's just a spam)
@@ -191,6 +205,7 @@ public class BetonQuest extends JavaPlugin {
                 new BetonQuestApiComponent(),
                 new BStatsMetricsComponent(),
                 new CompatibilityComponent(),
+                new IntegrationComponent(),
                 new IdentifiersComponent(),
                 new ConditionsComponent(),
                 new ActionsComponent(),
@@ -250,6 +265,7 @@ public class BetonQuest extends JavaPlugin {
                 .ifPresent(onlineProfiles -> onlineProfiles.forEach(onlineProfile -> onlineProfile.getPlayer().closeInventory()));
 
         coreComponentLoader.getOptional(Saver.class).ifPresent(Saver::end);
+        coreComponentLoader.getOptional(IntegrationManager.class).ifPresent(IntegrationManager::disable);
         coreComponentLoader.getOptional(Compatibility.class).ifPresent(Compatibility::disable);
         coreComponentLoader.getOptional(Connector.class).ifPresent(connector -> connector.getDatabase().closeConnection());
         coreComponentLoader.getOptional(PlayerHider.class).ifPresent(PlayerHider::stop);
