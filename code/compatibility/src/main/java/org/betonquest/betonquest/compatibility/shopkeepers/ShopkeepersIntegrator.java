@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.compatibility.shopkeepers;
 
 import org.betonquest.betonquest.api.BetonQuestApi;
-import org.betonquest.betonquest.api.integration.Integration;
+import org.betonquest.betonquest.lib.integration.IntegrationTemplate;
 
 /**
  * Integrator for Shopkeepers.
  */
-public class ShopkeepersIntegrator implements Integration {
+public class ShopkeepersIntegrator extends IntegrationTemplate {
 
     /**
      * The minimum required version of Shopkeepers.
@@ -17,13 +17,15 @@ public class ShopkeepersIntegrator implements Integration {
      * The default constructor.
      */
     public ShopkeepersIntegrator() {
-
+        super();
     }
 
     @Override
     public void enable(final BetonQuestApi api) {
-        api.conditions().registry().register("shopamount", new HavingShopConditionFactory());
-        api.actions().registry().register("shopkeeper", new OpenShopActionFactory());
+        playerCondition("amount", new HavingShopConditionFactory());
+        playerAction("keeper", new OpenShopActionFactory());
+
+        registerFeatures(api, "shop");
     }
 
     @Override
