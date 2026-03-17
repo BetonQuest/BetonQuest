@@ -390,13 +390,4 @@ public class BetonQuest extends JavaPlugin {
     public ConversationColors getConversationColors() {
         return coreComponentLoader.get(ConversationColors.class);
     }
-
-    /**
-     * Get the Compatibility to add plugins and initialize it.
-     *
-     * @return the compatibility
-     */
-    protected Compatibility getCompatibility() {
-        return coreComponentLoader.get(Compatibility.class);
-    }
 }
