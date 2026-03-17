@@ -2,12 +2,12 @@ package org.betonquest.betonquest.compatibility.skript;
 
 import ch.njol.skript.Skript;
 import org.betonquest.betonquest.api.BetonQuestApi;
-import org.betonquest.betonquest.compatibility.Integrator;
+import org.betonquest.betonquest.api.integration.Integration;
 
 /**
  * Integrator for the Skript plugin.
  */
-public class SkriptIntegrator implements Integrator {
+public class SkriptIntegrator implements Integration {
 
     /**
      * The default constructor.
@@ -16,7 +16,7 @@ public class SkriptIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final BetonQuestApi api) {
+    public void enable(final BetonQuestApi api) {
         Skript.registerCondition(SkriptConditionBQ.class, "%player% (meet|meets) [betonquest] condition %string%");
         Skript.registerEffect(SkriptEffectBQ.class, "fire [betonquest] action %string% for %player%");
         Skript.registerEvent("betonquest", SkriptEventBQ.class, BQSkriptAction.CustomEventForSkript.class,
@@ -26,12 +26,12 @@ public class SkriptIntegrator implements Integrator {
     }
 
     @Override
-    public void reload() {
+    public void postEnable(final BetonQuestApi api) {
         // Empty
     }
 
     @Override
-    public void close() {
+    public void disable() {
         // Empty
     }
 }

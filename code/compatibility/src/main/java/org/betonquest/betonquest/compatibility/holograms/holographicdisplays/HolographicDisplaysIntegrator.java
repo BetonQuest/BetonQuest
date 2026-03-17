@@ -13,7 +13,6 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
-import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.betonquest.betonquest.compatibility.holograms.HologramIntegrator;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
@@ -27,6 +26,11 @@ import java.util.regex.Matcher;
  * Integrates with HolographicDisplays.
  */
 public class HolographicDisplaysIntegrator extends HologramIntegrator {
+
+    /**
+     * The minimum required version of HolographicDisplays.
+     */
+    public static final String REQUIRED_VERSION = "3.0.0";
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -64,7 +68,7 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
     public HolographicDisplaysIntegrator(final BetonQuestLogger log, final Instructions instructionApi,
                                          final IdentifierFactory<PlaceholderIdentifier> identifierFactory,
                                          final PlaceholderProcessor placeholderProcessor) {
-        super("HolographicDisplays", "3.0.0", "SNAPSHOT-b");
+        super("HolographicDisplays");
         this.plugin = BetonQuest.getInstance();
         this.instructionApi = instructionApi;
         this.identifierFactory = identifierFactory;
@@ -80,8 +84,7 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
     }
 
     @Override
-    public void hook(final BetonQuestApi api) throws HookException {
-        super.hook(api);
+    public void enable(final BetonQuestApi api) {
         final HolographicDisplaysAPI holoApi = HolographicDisplaysAPI.get(plugin);
         final BetonQuestLoggerFactory loggerFactory = api.loggerFactory();
         holoApi.registerIndividualPlaceholder("bq", new HologramPlaceholder(

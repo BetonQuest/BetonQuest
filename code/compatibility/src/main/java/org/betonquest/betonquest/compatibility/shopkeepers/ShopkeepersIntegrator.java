@@ -1,19 +1,17 @@
 package org.betonquest.betonquest.compatibility.shopkeepers;
 
 import org.betonquest.betonquest.api.BetonQuestApi;
-import org.betonquest.betonquest.compatibility.HookException;
-import org.betonquest.betonquest.compatibility.Integrator;
-import org.betonquest.betonquest.compatibility.UnsupportedVersionException;
-import org.betonquest.betonquest.lib.versioning.UpdateStrategy;
-import org.betonquest.betonquest.lib.versioning.Version;
-import org.betonquest.betonquest.lib.versioning.VersionComparator;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
+import org.betonquest.betonquest.api.integration.Integration;
 
 /**
  * Integrator for Shopkeepers.
  */
-public class ShopkeepersIntegrator implements Integrator {
+public class ShopkeepersIntegrator implements Integration {
+
+    /**
+     * The minimum required version of Shopkeepers.
+     */
+    public static final String REQUIRED_VERSION = "2.2.0";
 
     /**
      * The default constructor.
@@ -23,24 +21,18 @@ public class ShopkeepersIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final BetonQuestApi api) throws HookException {
-        final Plugin shopkeepers = Bukkit.getPluginManager().getPlugin("Shopkeepers");
-        final Version shopkeepersVersion = new Version(shopkeepers.getDescription().getVersion());
-        final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR);
-        if (comparator.isOlderThan(shopkeepersVersion, new Version("2.2.0"))) {
-            throw new UnsupportedVersionException(shopkeepers, "2.2.0");
-        }
+    public void enable(final BetonQuestApi api) {
         api.conditions().registry().register("shopamount", new HavingShopConditionFactory());
         api.actions().registry().register("shopkeeper", new OpenShopActionFactory());
     }
 
     @Override
-    public void reload() {
+    public void postEnable(final BetonQuestApi api) {
         // Empty
     }
 
     @Override
-    public void close() {
+    public void disable() {
         // Empty
     }
 }

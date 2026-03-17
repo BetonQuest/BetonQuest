@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.compatibility.brewery;
 
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.service.condition.ConditionRegistry;
 import org.betonquest.betonquest.api.service.item.ItemRegistry;
-import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.brewery.condition.DrunkConditionFactory;
 import org.betonquest.betonquest.compatibility.brewery.condition.DrunkQualityConditionFactory;
 import org.betonquest.betonquest.compatibility.brewery.item.BrewItemFactory;
@@ -12,7 +12,7 @@ import org.betonquest.betonquest.compatibility.brewery.item.BrewQuestItemSeriali
 /**
  * Integrator for the Brewery plugin.
  */
-public class BreweryIntegrator implements Integrator {
+public class BreweryIntegrator implements Integration {
 
     /**
      * Create a new Brewery Integrator.
@@ -21,7 +21,7 @@ public class BreweryIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final BetonQuestApi api) {
+    public void enable(final BetonQuestApi api) {
         final ConditionRegistry conditionRegistry = api.conditions().registry();
         conditionRegistry.register("drunk", new DrunkConditionFactory());
         conditionRegistry.register("drunkquality", new DrunkQualityConditionFactory());
@@ -32,12 +32,12 @@ public class BreweryIntegrator implements Integrator {
     }
 
     @Override
-    public void reload() {
+    public void postEnable(final BetonQuestApi api) {
         // Empty
     }
 
     @Override
-    public void close() {
+    public void disable() {
         // Empty
     }
 }

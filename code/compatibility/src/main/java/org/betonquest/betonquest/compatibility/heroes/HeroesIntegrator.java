@@ -4,8 +4,8 @@ import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.characters.CharacterManager;
 import com.herocraftonline.heroes.characters.classes.HeroClassManager;
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.service.condition.ConditionRegistry;
-import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.heroes.action.HeroesExperienceActionFactory;
 import org.betonquest.betonquest.compatibility.heroes.condition.HeroesAttributeConditionFactory;
 import org.betonquest.betonquest.compatibility.heroes.condition.HeroesClassConditionFactory;
@@ -14,7 +14,7 @@ import org.betonquest.betonquest.compatibility.heroes.condition.HeroesSkillCondi
 /**
  * Integrator for Heroes.
  */
-public class HeroesIntegrator implements Integrator {
+public class HeroesIntegrator implements Integration {
 
     /**
      * Creates a new Integrator.
@@ -23,7 +23,7 @@ public class HeroesIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final BetonQuestApi api) {
+    public void enable(final BetonQuestApi api) {
         final CharacterManager characterManager = Heroes.getInstance().getCharacterManager();
         final HeroClassManager classManager = Heroes.getInstance().getClassManager();
 
@@ -38,12 +38,12 @@ public class HeroesIntegrator implements Integrator {
     }
 
     @Override
-    public void reload() {
+    public void postEnable(final BetonQuestApi api) {
         // Empty
     }
 
     @Override
-    public void close() {
+    public void disable() {
         // Empty
     }
 }

@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.compatibility.denizen;
 
 import org.betonquest.betonquest.api.BetonQuestApi;
-import org.betonquest.betonquest.compatibility.Integrator;
+import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.compatibility.denizen.action.DenizenTaskScriptActionFactory;
 
 /**
  * Integrator for Denizen.
  */
-public class DenizenIntegrator implements Integrator {
+public class DenizenIntegrator implements Integration {
 
     /**
      * The default constructor.
@@ -16,17 +16,17 @@ public class DenizenIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final BetonQuestApi api) {
+    public void enable(final BetonQuestApi api) {
         api.actions().registry().register("script", new DenizenTaskScriptActionFactory());
     }
 
     @Override
-    public void reload() {
+    public void postEnable(final BetonQuestApi api) {
         // Empty
     }
 
     @Override
-    public void close() {
+    public void disable() {
         // Empty
     }
 }

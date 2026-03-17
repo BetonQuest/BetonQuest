@@ -3,8 +3,8 @@ package org.betonquest.betonquest.compatibility.effectlib;
 import de.slikey.effectlib.EffectManager;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.effectlib.action.ParticleActionFactory;
 import org.betonquest.betonquest.compatibility.effectlib.identifier.ParticleIdentifier;
 import org.betonquest.betonquest.compatibility.effectlib.identifier.ParticleIdentifierFactory;
@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Integrator for <a href="https://github.com/elBukkit/EffectLib/">EffectLib</a>.
  */
-public class EffectLibIntegrator implements Integrator {
+public class EffectLibIntegrator implements Integration {
 
     /**
      * BetonQuest plugin.
@@ -34,7 +34,7 @@ public class EffectLibIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final BetonQuestApi api) {
+    public void enable(final BetonQuestApi api) {
         manager = new EffectManager(plugin);
         final BetonQuestLoggerFactory loggerFactory = api.loggerFactory();
         final ParticleIdentifierFactory factory = new ParticleIdentifierFactory(api.packages());
@@ -45,12 +45,12 @@ public class EffectLibIntegrator implements Integrator {
     }
 
     @Override
-    public void reload() {
+    public void postEnable(final BetonQuestApi api) {
         // Empty
     }
 
     @Override
-    public void close() {
+    public void disable() {
         if (manager != null) {
             manager.dispose();
         }

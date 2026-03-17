@@ -3,17 +3,22 @@ package org.betonquest.betonquest.compatibility.luckperms;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.context.ContextCalculator;
 import org.betonquest.betonquest.api.BetonQuestApi;
-import org.betonquest.betonquest.compatibility.Integrator;
+import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.compatibility.luckperms.permission.LuckPermsActionFactory;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicesManager;
 
 /**
  * Integrates LuckPerms to BetonQuest.
  */
 @SuppressWarnings("NullAway.Init")
-public class LuckPermsIntegrator implements Integrator {
+public class LuckPermsIntegrator implements Integration {
+
+    /**
+     * Bukkit services manager.
+     */
+    private final ServicesManager servicesManager;
 
     /**
      * The {@link LuckPerms} API.
@@ -27,13 +32,16 @@ public class LuckPermsIntegrator implements Integrator {
 
     /**
      * Creates the {@link LuckPermsIntegrator} instance.
+     *
+     * @param servicesManager the Bukkit services manager
      */
-    public LuckPermsIntegrator() {
+    public LuckPermsIntegrator(final ServicesManager servicesManager) {
+        this.servicesManager = servicesManager;
     }
 
     @Override
-    public void hook(final BetonQuestApi api) {
-        final RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
+    public void enable(final BetonQuestApi api) {
+        final RegisteredServiceProvider<LuckPerms> provider = servicesManager.getRegistration(LuckPerms.class);
         if (provider != null) {
             luckPermsAPI = provider.getProvider();
             tagCalculator = TagCalculatorUtils.getTagContextCalculator(api.persistence(), api.profiles());
@@ -43,12 +51,12 @@ public class LuckPermsIntegrator implements Integrator {
     }
 
     @Override
-    public void reload() {
+    public void postEnable(final BetonQuestApi api) {
         // Empty
     }
 
     @Override
-    public void close() {
+    public void disable() {
         luckPermsAPI.getContextManager().unregisterCalculator(tagCalculator);
     }
 }
