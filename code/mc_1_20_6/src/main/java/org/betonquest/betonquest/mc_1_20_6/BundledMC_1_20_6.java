@@ -3,9 +3,9 @@ package org.betonquest.betonquest.mc_1_20_6;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.common.component.BookPageWrapper;
+import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.service.item.ItemRegistry;
 import org.betonquest.betonquest.api.text.TextParser;
-import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.mc_1_20_6.item.UpdatedSimpleItemFactory;
 import org.betonquest.betonquest.mc_1_20_6.item.UpdatedSimpleQuestItemSerializer;
 
@@ -13,7 +13,7 @@ import org.betonquest.betonquest.mc_1_20_6.item.UpdatedSimpleQuestItemSerializer
  * Allows to register features with Minecraft 1.20.6.
  */
 @SuppressWarnings("PMD.ClassNamingConventions")
-public class BundledMC_1_20_6 implements Integrator {
+public class BundledMC_1_20_6 implements Integration {
 
     /**
      * BetonQuest class to get relevant object from.
@@ -30,7 +30,7 @@ public class BundledMC_1_20_6 implements Integrator {
     }
 
     @Override
-    public void hook(final BetonQuestApi api) {
+    public void enable(final BetonQuestApi api) {
         final ItemRegistry item = api.items().registry();
         final TextParser textParser = betonQuest.getComponentLoader().get(TextParser.class);
         final BookPageWrapper bookPageWrapper = new BookPageWrapper(api.fonts(), 114, 14);
@@ -41,12 +41,12 @@ public class BundledMC_1_20_6 implements Integrator {
     }
 
     @Override
-    public void reload() {
+    public void postEnable(final BetonQuestApi betonQuestApi) {
         // Empty
     }
 
     @Override
-    public void close() {
+    public void disable() {
         // Empty
     }
 }

@@ -2,12 +2,14 @@ package org.betonquest.betonquest.compatibility.holograms;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
+import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.reload.ReloadPhase;
 import org.betonquest.betonquest.api.text.TextParser;
-import org.betonquest.betonquest.compatibility.Integrator;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,7 +23,7 @@ import java.util.regex.Pattern;
 /**
  * Class which provides Hologram creation.
  */
-public class HologramProvider implements Integrator {
+public class HologramProvider implements Integration {
 
     /**
      * Pattern to match a placeholder in a string.
@@ -93,7 +95,7 @@ public class HologramProvider implements Integrator {
     }
 
     @Override
-    public void hook(final BetonQuestApi api) {
+    public void postEnable(final BetonQuestApi api) {
         final BetonQuest plugin = BetonQuest.getInstance();
         final BetonQuestLoggerFactory loggerFactory = api.loggerFactory();
         final TextParser textParser = plugin.getComponentLoader().get(TextParser.class);
@@ -108,15 +110,16 @@ public class HologramProvider implements Integrator {
                 hologramIdentifierFactory, api.conditions().manager(), api.npcs().manager(), api.npcs().registry(), textParser, api.profiles());
         plugin.addProcessor(npcHologramLoop);
         api.bukkit().registerEvents(new HologramListener(api.profiles()));
+        api.reloader().register(ReloadPhase.INTEGRATION, HologramRunner::cancel);
     }
 
     @Override
-    public void reload() {
-        HologramRunner.cancel();
+    public void enable(final BetonQuestApi betonQuestApi) throws QuestException {
+        throw new QuestException("The hologram provider can't be used in the enable phase!");
     }
 
     @Override
-    public void close() {
+    public void disable() {
         HologramRunner.cancel();
         if (locationHologramLoop != null) {
             locationHologramLoop.clear();

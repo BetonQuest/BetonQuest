@@ -1,10 +1,6 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmocore;
 
 import org.betonquest.betonquest.api.BetonQuestApi;
-import org.betonquest.betonquest.api.service.action.ActionRegistry;
-import org.betonquest.betonquest.api.service.condition.ConditionRegistry;
-import org.betonquest.betonquest.api.service.objective.ObjectiveRegistry;
-import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.action.MMOCoreAttributePointsActionFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.action.MMOCoreAttributeReallocationPointsActionFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.action.MMOCoreClassExperienceActionFactory;
@@ -17,46 +13,47 @@ import org.betonquest.betonquest.compatibility.mmogroup.mmocore.condition.MMOCor
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.objective.MMOCoreBreakCustomBlockObjectiveFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.objective.MMOCoreChangeClassObjectiveFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.objective.MMOCoreProfessionObjectiveFactory;
+import org.betonquest.betonquest.lib.integration.IntegrationTemplate;
 
 /**
  * Integrator for MMO CORE.
  */
-public class MMOCoreIntegrator implements Integrator {
+public class MMOCoreIntegrator extends IntegrationTemplate {
 
     /**
      * The default constructor.
      */
     public MMOCoreIntegrator() {
+        super();
     }
 
     @Override
-    public void hook(final BetonQuestApi api) {
-        final ConditionRegistry conditionRegistry = api.conditions().registry();
-        conditionRegistry.register("mmoclass", new MMOCoreClassConditionFactory());
-        conditionRegistry.register("mmoattribute", new MMOCoreAttributeConditionFactory());
-        conditionRegistry.register("mmoprofession", new MMOCoreProfessionLevelConditionFactory());
+    public void enable(final BetonQuestApi api) {
+        playerCondition("class", new MMOCoreClassConditionFactory());
+        playerCondition("attribute", new MMOCoreAttributeConditionFactory());
+        playerCondition("profession", new MMOCoreProfessionLevelConditionFactory());
 
-        final ObjectiveRegistry objectiveRegistry = api.objectives().registry();
-        objectiveRegistry.register("mmoprofessionlevelup", new MMOCoreProfessionObjectiveFactory());
-        objectiveRegistry.register("mmochangeclass", new MMOCoreChangeClassObjectiveFactory());
-        objectiveRegistry.register("mmocorebreakblock", new MMOCoreBreakCustomBlockObjectiveFactory());
+        objective("professionlevelup", new MMOCoreProfessionObjectiveFactory());
+        objective("changeclass", new MMOCoreChangeClassObjectiveFactory());
+        objective("corebreakblock", new MMOCoreBreakCustomBlockObjectiveFactory());
 
-        final ActionRegistry actionRegistry = api.actions().registry();
-        actionRegistry.register("mmoclassexperience", new MMOCoreClassExperienceActionFactory());
-        actionRegistry.register("mmoprofessionexperience", new MMOCoreProfessionExperienceActionFactory());
-        actionRegistry.register("mmocoreclasspoints", new MMOCoreClassPointsActionFactory());
-        actionRegistry.register("mmocoreattributepoints", new MMOCoreAttributePointsActionFactory());
-        actionRegistry.register("mmocoreattributereallocationpoints", new MMOCoreAttributeReallocationPointsActionFactory());
-        actionRegistry.register("mmocoreskillpoints", new MMOCoreSkillPointsActionFactory());
+        playerAction("classexperience", new MMOCoreClassExperienceActionFactory());
+        playerAction("professionexperience", new MMOCoreProfessionExperienceActionFactory());
+        playerAction("coreclasspoints", new MMOCoreClassPointsActionFactory());
+        playerAction("coreattributepoints", new MMOCoreAttributePointsActionFactory());
+        playerAction("coreattributereallocationpoints", new MMOCoreAttributeReallocationPointsActionFactory());
+        playerAction("coreskillpoints", new MMOCoreSkillPointsActionFactory());
+
+        registerFeatures(api, "mmo");
     }
 
     @Override
-    public void reload() {
+    public void postEnable(final BetonQuestApi api) {
         // Empty
     }
 
     @Override
-    public void close() {
+    public void disable() {
         // Empty
     }
 }

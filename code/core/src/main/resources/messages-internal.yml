@@ -64,8 +64,10 @@ command_version_output:
     {update}
     <newline><gold>Server version: </gold><gray>{server}</gray>
     <newline><gold>Hooked into: </gold><gray>{hooked}</gray>
+    {external_hooks}
     {copy}
   hook: '@[minimessage]{plugin} <gray>({version})</gray>'
+  external_hook: '@[minimessage]<newline><gold>Hook from</gold> <yellow>{plugin}</yellow>: <gray>{hooked}</gray>'
   update: '@[minimessage]<newline><green>    <hover:show_text:''Click to download!''>(Version ''<dark_green>{version}</dark_green>'' is available. Click to download!)</hover></green>'
   copy: '@[minimessage]<newline><yellow><hover:show_text:''Click to copy!''>Click to copy everything to clipboard!</hover></yellow>'
 command_purge: '@[legacy]deletes all data about the player'

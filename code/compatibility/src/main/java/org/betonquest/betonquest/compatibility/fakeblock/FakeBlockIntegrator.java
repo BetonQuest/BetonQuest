@@ -3,21 +3,16 @@ package org.betonquest.betonquest.compatibility.fakeblock;
 import com.briarcraft.fakeblock.api.service.GroupService;
 import com.briarcraft.fakeblock.api.service.PlayerGroupService;
 import org.betonquest.betonquest.api.BetonQuestApi;
-import org.betonquest.betonquest.compatibility.HookException;
-import org.betonquest.betonquest.compatibility.Integrator;
-import org.betonquest.betonquest.compatibility.UnsupportedVersionException;
+import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.compatibility.fakeblock.action.FakeBlockActionFactory;
-import org.betonquest.betonquest.lib.versioning.UpdateStrategy;
-import org.betonquest.betonquest.lib.versioning.Version;
-import org.betonquest.betonquest.lib.versioning.VersionComparator;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 /**
  * Integrates with FakeBlock.
  */
-public class FakeBlockIntegrator implements Integrator {
+public class FakeBlockIntegrator implements Integration {
 
     /**
      * The minimum required version of FakeBlock.
@@ -25,22 +20,13 @@ public class FakeBlockIntegrator implements Integrator {
     public static final String REQUIRED_VERSION = "2.0.1";
 
     /**
-     * Plugin.
-     */
-    private final Plugin plugin;
-
-    /**
      * Create the FakeBlock integration.
-     *
-     * @param plugin the plugin
      */
-    public FakeBlockIntegrator(final Plugin plugin) {
-        this.plugin = plugin;
+    public FakeBlockIntegrator() {
     }
 
     @Override
-    public void hook(final BetonQuestApi api) throws HookException {
-        checkRequiredVersion();
+    public void enable(final BetonQuestApi api) throws QuestException {
 
         final RegisteredServiceProvider<GroupService> groupService = getServiceProvider(GroupService.class);
         final RegisteredServiceProvider<PlayerGroupService> playerGroupService = getServiceProvider(PlayerGroupService.class);
@@ -48,32 +34,21 @@ public class FakeBlockIntegrator implements Integrator {
         api.actions().registry().register("fakeblock", new FakeBlockActionFactory(groupService, playerGroupService));
     }
 
-    private void checkRequiredVersion() throws UnsupportedVersionException {
-        final Plugin fakeBlockPlugin = Bukkit.getPluginManager().getPlugin("fake-block");
-        if (fakeBlockPlugin != null) {
-            final Version version = new Version(fakeBlockPlugin.getDescription().getVersion());
-            final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR);
-            if (comparator.isOlderThan(version, new Version(REQUIRED_VERSION))) {
-                throw new UnsupportedVersionException(plugin, REQUIRED_VERSION);
-            }
-        }
-    }
-
-    private <T> RegisteredServiceProvider<T> getServiceProvider(final Class<T> service) throws HookException {
-        final RegisteredServiceProvider<T> provider = plugin.getServer().getServicesManager().getRegistration(service);
+    private <T> RegisteredServiceProvider<T> getServiceProvider(final Class<T> service) throws QuestException {
+        final RegisteredServiceProvider<T> provider = Bukkit.getServer().getServicesManager().getRegistration(service);
         if (provider == null) {
-            throw new HookException(plugin, "Could not find service provider for " + service.getName());
+            throw new QuestException("Could not find service provider for " + service.getName());
         }
         return provider;
     }
 
     @Override
-    public void reload() {
+    public void postEnable(final BetonQuestApi api) {
         // Empty
     }
 
     @Override
-    public void close() {
+    public void disable() {
         // Empty
     }
 }

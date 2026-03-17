@@ -1,43 +1,41 @@
 package org.betonquest.betonquest.compatibility.brewery;
 
 import org.betonquest.betonquest.api.BetonQuestApi;
-import org.betonquest.betonquest.api.service.condition.ConditionRegistry;
-import org.betonquest.betonquest.api.service.item.ItemRegistry;
-import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.brewery.condition.DrunkConditionFactory;
 import org.betonquest.betonquest.compatibility.brewery.condition.DrunkQualityConditionFactory;
 import org.betonquest.betonquest.compatibility.brewery.item.BrewItemFactory;
 import org.betonquest.betonquest.compatibility.brewery.item.BrewQuestItemSerializer;
+import org.betonquest.betonquest.lib.integration.IntegrationTemplate;
 
 /**
  * Integrator for the Brewery plugin.
  */
-public class BreweryIntegrator implements Integrator {
+public class BreweryIntegrator extends IntegrationTemplate {
 
     /**
      * Create a new Brewery Integrator.
      */
     public BreweryIntegrator() {
+        super();
     }
 
     @Override
-    public void hook(final BetonQuestApi api) {
-        final ConditionRegistry conditionRegistry = api.conditions().registry();
-        conditionRegistry.register("drunk", new DrunkConditionFactory());
-        conditionRegistry.register("drunkquality", new DrunkQualityConditionFactory());
+    public void enable(final BetonQuestApi api) {
+        playerCondition("drunk", new DrunkConditionFactory());
+        playerCondition("drunkquality", new DrunkQualityConditionFactory());
 
-        final ItemRegistry item = api.items().registry();
-        item.register("brew", new BrewItemFactory());
-        item.registerSerializer("brew", new BrewQuestItemSerializer());
+        item("brew", new BrewItemFactory(), new BrewQuestItemSerializer());
+
+        registerFeatures(api);
     }
 
     @Override
-    public void reload() {
+    public void postEnable(final BetonQuestApi api) {
         // Empty
     }
 
     @Override
-    public void close() {
+    public void disable() {
         // Empty
     }
 }

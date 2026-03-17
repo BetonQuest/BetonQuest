@@ -6,7 +6,7 @@ import com.sk89q.worldguard.internal.platform.WorldGuardPlatform;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.betonquest.betonquest.api.BetonQuestApi;
-import org.betonquest.betonquest.compatibility.Integrator;
+import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.compatibility.worldguard.npc.NpcRegionConditionFactory;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Integrator for WorldGuard.
  */
-public class WorldGuardIntegrator implements Integrator {
+public class WorldGuardIntegrator implements Integration {
 
     /**
      * The default constructor.
@@ -45,19 +45,19 @@ public class WorldGuardIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final BetonQuestApi api) {
+    public void enable(final BetonQuestApi api) {
         api.conditions().registry().register("region", new RegionConditionFactory());
         api.objectives().registry().register("region", new RegionObjectiveFactory());
         api.conditions().registry().registerCombined("npcregion", new NpcRegionConditionFactory(api.npcs().manager()));
     }
 
     @Override
-    public void reload() {
+    public void postEnable(final BetonQuestApi api) {
         // Empty
     }
 
     @Override
-    public void close() {
+    public void disable() {
         // Empty
     }
 }

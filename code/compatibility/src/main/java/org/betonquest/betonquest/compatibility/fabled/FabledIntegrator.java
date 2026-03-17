@@ -1,37 +1,39 @@
 package org.betonquest.betonquest.compatibility.fabled;
 
 import org.betonquest.betonquest.api.BetonQuestApi;
-import org.betonquest.betonquest.api.service.condition.ConditionRegistry;
-import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.fabled.condition.FabledClassConditionFactory;
 import org.betonquest.betonquest.compatibility.fabled.condition.FabledLevelConditionFactory;
+import org.betonquest.betonquest.lib.integration.IntegrationTemplate;
 
 /**
  * Integrator for Fabled.
  */
-public class FabledIntegrator implements Integrator {
+public class FabledIntegrator extends IntegrationTemplate {
 
     /**
      * Creates a new Integrator.
      */
     public FabledIntegrator() {
+        super();
     }
 
     @Override
-    public void hook(final BetonQuestApi api) {
-        final ConditionRegistry conditionRegistry = api.conditions().registry();
-        conditionRegistry.register("fabledclass", new FabledClassConditionFactory());
-        conditionRegistry.register("fabledlevel", new FabledLevelConditionFactory());
+    public void enable(final BetonQuestApi api) {
+        playerCondition("class", new FabledClassConditionFactory());
+        playerCondition("level", new FabledLevelConditionFactory());
+
+        registerFeatures(api, "fabled");
+
         api.bukkit().registerEvents(new FabledKillListener(api.profiles()));
     }
 
     @Override
-    public void reload() {
+    public void postEnable(final BetonQuestApi betonQuestApi) {
         // Empty
     }
 
     @Override
-    public void close() {
+    public void disable() {
         // Empty
     }
 }

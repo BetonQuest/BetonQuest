@@ -1,120 +1,160 @@
 package org.betonquest.betonquest.compatibility;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.identifier.PlaceholderIdentifier;
+import org.betonquest.betonquest.api.integration.Integration;
+import org.betonquest.betonquest.api.integration.IntegrationService;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
-import org.betonquest.betonquest.compatibility.auraskills.AuraSkillsIntegratorFactory;
-import org.betonquest.betonquest.compatibility.brewery.BreweryIntegratorFactory;
-import org.betonquest.betonquest.compatibility.craftengine.CraftEngineIntegratorFactory;
-import org.betonquest.betonquest.compatibility.denizen.DenizenIntegratorFactory;
-import org.betonquest.betonquest.compatibility.effectlib.EffectLibIntegratorFactory;
-import org.betonquest.betonquest.compatibility.fabled.FabledIntegratorFactory;
-import org.betonquest.betonquest.compatibility.fakeblock.FakeBlockIntegratorFactory;
-import org.betonquest.betonquest.compatibility.heroes.HeroesIntegratorFactory;
-import org.betonquest.betonquest.compatibility.holograms.decentholograms.DecentHologramsIntegratorFactory;
-import org.betonquest.betonquest.compatibility.holograms.holographicdisplays.HolographicDisplaysIntegratorFactory;
-import org.betonquest.betonquest.compatibility.itemsadder.ItemsAdderIntegratorFactory;
-import org.betonquest.betonquest.compatibility.jobsreborn.JobsRebornIntegratorFactory;
-import org.betonquest.betonquest.compatibility.luckperms.LuckPermsIntegratorFactory;
-import org.betonquest.betonquest.compatibility.magic.MagicIntegratorFactory;
-import org.betonquest.betonquest.compatibility.mcmmo.McMMOIntegratorFactory;
-import org.betonquest.betonquest.compatibility.mmogroup.mmocore.MMOCoreIntegratorFactory;
-import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.MMOItemsIntegratorFactory;
-import org.betonquest.betonquest.compatibility.mmogroup.mmolib.MythicLibIntegratorFactory;
-import org.betonquest.betonquest.compatibility.mythicmobs.MythicMobsIntegratorFactory;
-import org.betonquest.betonquest.compatibility.nexo.NexoIntegratorFactory;
-import org.betonquest.betonquest.compatibility.npc.citizens.CitizensIntegratorFactory;
+import org.betonquest.betonquest.compatibility.auraskills.AuraSkillsIntegrator;
+import org.betonquest.betonquest.compatibility.brewery.BreweryIntegrator;
+import org.betonquest.betonquest.compatibility.craftengine.CraftEngineIntegrator;
+import org.betonquest.betonquest.compatibility.denizen.DenizenIntegrator;
+import org.betonquest.betonquest.compatibility.effectlib.EffectLibIntegrator;
+import org.betonquest.betonquest.compatibility.fabled.FabledIntegrator;
+import org.betonquest.betonquest.compatibility.fakeblock.FakeBlockIntegrator;
+import org.betonquest.betonquest.compatibility.heroes.HeroesIntegrator;
+import org.betonquest.betonquest.compatibility.holograms.decentholograms.DecentHologramsIntegrator;
+import org.betonquest.betonquest.compatibility.holograms.holographicdisplays.HolographicDisplaysIntegrator;
+import org.betonquest.betonquest.compatibility.itemsadder.ItemsAdderIntegrator;
+import org.betonquest.betonquest.compatibility.jobsreborn.JobsRebornIntegrator;
+import org.betonquest.betonquest.compatibility.luckperms.LuckPermsIntegrator;
+import org.betonquest.betonquest.compatibility.magic.MagicIntegrator;
+import org.betonquest.betonquest.compatibility.mcmmo.McMMOIntegrator;
+import org.betonquest.betonquest.compatibility.mmogroup.mmocore.MMOCoreIntegrator;
+import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.MMOItemsIntegrator;
+import org.betonquest.betonquest.compatibility.mmogroup.mmolib.MythicLibIntegrator;
+import org.betonquest.betonquest.compatibility.mythicmobs.MythicMobsIntegrator;
+import org.betonquest.betonquest.compatibility.nexo.NexoIntegrator;
+import org.betonquest.betonquest.compatibility.npc.citizens.CitizensIntegrator;
 import org.betonquest.betonquest.compatibility.npc.fancynpcs.FancyNpcsIntegrator;
-import org.betonquest.betonquest.compatibility.npc.fancynpcs.FancyNpcsIntegratorFactory;
 import org.betonquest.betonquest.compatibility.npc.znpcsplus.ZNPCsPlusIntegrator;
-import org.betonquest.betonquest.compatibility.npc.znpcsplus.ZNPCsPlusIntegratorFactory;
-import org.betonquest.betonquest.compatibility.packetevents.PacketEventsIntegratorFactory;
-import org.betonquest.betonquest.compatibility.placeholderapi.PlaceholderAPIIntegratorFactory;
-import org.betonquest.betonquest.compatibility.quests.QuestsIntegratorFactory;
-import org.betonquest.betonquest.compatibility.redischat.RedisChatIntegratorFactory;
-import org.betonquest.betonquest.compatibility.shopkeepers.ShopkeepersIntegratorFactory;
-import org.betonquest.betonquest.compatibility.skript.SkriptIntegratorFactory;
-import org.betonquest.betonquest.compatibility.traincarts.TrainCartsIntegratorFactory;
-import org.betonquest.betonquest.compatibility.vault.VaultIntegratorFactory;
-import org.betonquest.betonquest.compatibility.worldedit.WorldEditIntegratorFactory;
-import org.betonquest.betonquest.compatibility.worldguard.WorldGuardIntegratorFactory;
-import org.betonquest.betonquest.database.GlobalData;
+import org.betonquest.betonquest.compatibility.packetevents.PacketEventsIntegrator;
+import org.betonquest.betonquest.compatibility.placeholderapi.PlaceholderAPIIntegrator;
+import org.betonquest.betonquest.compatibility.quests.QuestsIntegrator;
+import org.betonquest.betonquest.compatibility.redischat.RedisChatIntegrator;
+import org.betonquest.betonquest.compatibility.shopkeepers.ShopkeepersIntegrator;
+import org.betonquest.betonquest.compatibility.skript.SkriptIntegrator;
+import org.betonquest.betonquest.compatibility.traincarts.TrainCartsIntegrator;
+import org.betonquest.betonquest.compatibility.vault.VaultIntegrator;
+import org.betonquest.betonquest.compatibility.worldedit.WorldEditIntegrator;
+import org.betonquest.betonquest.compatibility.worldguard.WorldGuardIntegrator;
 import org.betonquest.betonquest.kernel.processor.quest.PlaceholderProcessor;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Locale;
+import java.util.function.Supplier;
 
 /**
- * Allows registering the 3rd party compatibility.
+ * Allows registering the 3rd party compatibility provided by BetonQuest.
  */
 public final class BundledCompatibility {
 
     /**
-     * Default constructor.
+     * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private BundledCompatibility() {
+    private final BetonQuestLogger log;
+
+    /**
+     * Config for checking if an Integrator should be registered.
+     */
+    private final ConfigAccessor config;
+
+    /**
+     * Source plugin instance.
+     */
+    private final Plugin plugin;
+
+    /**
+     * Service instance to register the integrations to.
+     */
+    private final IntegrationService integrationService;
+
+    /**
+     * Creates a new Bundled Compatibility instance to register enabled integrations.
+     *
+     * @param log                the custom logger for this class
+     * @param config             the config to check if an Integrator should be activated/hooked
+     * @param plugin             the plugin instance
+     * @param integrationService the service instance to register the integrations to
+     */
+    public BundledCompatibility(final BetonQuestLogger log, final ConfigAccessor config, final Plugin plugin, final IntegrationService integrationService) {
+        this.log = log;
+        this.config = config;
+        this.plugin = plugin;
+        this.integrationService = integrationService;
+    }
+
+    private void register(final String name, @Nullable final String version,
+                          final Supplier<Integration> integrationSupplier) {
+        final boolean isEnabled = config.getBoolean("hook." + name.toLowerCase(Locale.ROOT));
+        if (!isEnabled) {
+            log.debug("Did not register hook %s because it is disabled".formatted(name));
+            return;
+        }
+        integrationService.withPolicy(name, version).register(plugin, integrationSupplier);
     }
 
     /**
-     * Registers the compatible factories.
+     * Registers the compatible and enabled integrations.
      *
      * @param loggerFactory        the logger factory to use
-     * @param logger               the logger to use
-     * @param compatibility        the compatibility instance to register the factories to
      * @param instructions         the instructions instance
      * @param identifiers          the identifiers instance
-     * @param globalData           the global data instance
      * @param placeholderProcessor the placeholder processor to use
-     * @param plugin               the plugin instance
      */
-    public static void registerCompatiblePlugins(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger,
-                                                 final Compatibility compatibility, final Instructions instructions,
-                                                 final Identifiers identifiers, final GlobalData globalData,
-                                                 final PlaceholderProcessor placeholderProcessor, final Plugin plugin) {
-        compatibility.registerPlugin("MythicMobs", new MythicMobsIntegratorFactory());
-        compatibility.registerPlugin("Citizens", new CitizensIntegratorFactory());
-        compatibility.registerPlugin("Vault", new VaultIntegratorFactory());
-        compatibility.registerPlugin("Skript", new SkriptIntegratorFactory());
-        compatibility.registerPlugin("WorldGuard", new WorldGuardIntegratorFactory());
-        compatibility.registerPlugin("WorldEdit", new WorldEditIntegratorFactory());
-        compatibility.registerPlugin("FastAsyncWorldEdit", new WorldEditIntegratorFactory());
-        compatibility.registerPlugin("mcMMO", new McMMOIntegratorFactory());
-        compatibility.registerPlugin("MythicLib", new MythicLibIntegratorFactory());
-        compatibility.registerPlugin("MMOCore", new MMOCoreIntegratorFactory());
-        compatibility.registerPlugin("MMOItems", new MMOItemsIntegratorFactory());
-        compatibility.registerPlugin("EffectLib", new EffectLibIntegratorFactory());
-        compatibility.registerPlugin("Heroes", new HeroesIntegratorFactory());
-        compatibility.registerPlugin("Magic", new MagicIntegratorFactory());
-        compatibility.registerPlugin("Denizen", new DenizenIntegratorFactory());
-        compatibility.registerPlugin("Fabled", new FabledIntegratorFactory());
-        compatibility.registerPlugin("Quests", new QuestsIntegratorFactory());
-        compatibility.registerPlugin("Shopkeepers", new ShopkeepersIntegratorFactory());
-        compatibility.registerPlugin("PlaceholderAPI", new PlaceholderAPIIntegratorFactory(plugin.getDescription()));
-        compatibility.registerPlugin("packetevents", new PacketEventsIntegratorFactory());
-        compatibility.registerPlugin("Brewery", new BreweryIntegratorFactory());
-        compatibility.registerPlugin("BreweryX", new BreweryIntegratorFactory());
-        compatibility.registerPlugin("Jobs", new JobsRebornIntegratorFactory());
-        compatibility.registerPlugin("LuckPerms", new LuckPermsIntegratorFactory());
-        compatibility.registerPlugin("AuraSkills", new AuraSkillsIntegratorFactory());
+    public void registerCompatiblePlugins(final BetonQuestLoggerFactory loggerFactory,
+                                          final Instructions instructions, final Identifiers identifiers,
+                                          final PlaceholderProcessor placeholderProcessor) {
+        register("MythicMobs", MythicMobsIntegrator.REQUIRED_VERSION, MythicMobsIntegrator::new);
+        register("Citizens", null, CitizensIntegrator::new);
+        register("Vault", null, VaultIntegrator::new);
+        register("Skript", null, SkriptIntegrator::new);
+        register("WorldGuard", null, WorldGuardIntegrator::new);
+        register("WorldEdit", null, WorldEditIntegrator::new);
+        register("FastAsyncWorldEdit", null, WorldEditIntegrator::new);
+        register("mcMMO", null, McMMOIntegrator::new);
+        register("MythicLib", null, MythicLibIntegrator::new);
+        register("MMOCore", null, MMOCoreIntegrator::new);
+        register("MMOItems", null, MMOItemsIntegrator::new);
+        register("EffectLib", null, EffectLibIntegrator::new);
+        register("Heroes", null, HeroesIntegrator::new);
+        register("Magic", null, MagicIntegrator::new);
+        register("Denizen", null, DenizenIntegrator::new);
+        register("Fabled", null, FabledIntegrator::new);
+        register("Quests", null, QuestsIntegrator::new);
+        register("Shopkeepers", ShopkeepersIntegrator.REQUIRED_VERSION, ShopkeepersIntegrator::new);
+        register("PlaceholderAPI", null, () -> new PlaceholderAPIIntegrator(plugin.getDescription()));
+        register("packetevents", PacketEventsIntegrator.REQUIRED_VERSION, PacketEventsIntegrator::new);
+        register("Brewery", null, BreweryIntegrator::new);
+        register("BreweryX", null, BreweryIntegrator::new);
+        register("Jobs", null, JobsRebornIntegrator::new);
+        register("LuckPerms", null, LuckPermsIntegrator::new);
+        register("AuraSkills", null, AuraSkillsIntegrator::new);
         try {
             final IdentifierFactory<PlaceholderIdentifier> placeholderIdentifierFactory =
                     identifiers.getFactory(PlaceholderIdentifier.class);
-            compatibility.registerPlugin("DecentHolograms", new DecentHologramsIntegratorFactory(loggerFactory,
-                    instructions, placeholderIdentifierFactory));
-            compatibility.registerPlugin("HolographicDisplays", new HolographicDisplaysIntegratorFactory(loggerFactory,
-                    instructions, placeholderIdentifierFactory, placeholderProcessor));
+            register("DecentHolograms", DecentHologramsIntegrator.REQUIRED_VERSION,
+                    () -> new DecentHologramsIntegrator(loggerFactory.create(DecentHologramsIntegrator.class),
+                            placeholderIdentifierFactory, instructions));
+            register("HolographicDisplays", HolographicDisplaysIntegrator.REQUIRED_VERSION,
+                    () -> new HolographicDisplaysIntegrator(loggerFactory.create(HolographicDisplaysIntegrator.class),
+                            instructions, placeholderIdentifierFactory, placeholderProcessor));
         } catch (final QuestException e) {
-            logger.warn("Could not register DecentHolograms and HolographicDisplays compatibility.", e);
+            log.warn("Could not register DecentHolograms and HolographicDisplays compatibility.", e);
         }
-        compatibility.registerPlugin("fake-block", new FakeBlockIntegratorFactory(plugin));
-        compatibility.registerPlugin("RedisChat", new RedisChatIntegratorFactory());
-        compatibility.registerPlugin("Train_Carts", new TrainCartsIntegratorFactory());
-        compatibility.registerPlugin(FancyNpcsIntegrator.PREFIX, new FancyNpcsIntegratorFactory());
-        compatibility.registerPlugin(ZNPCsPlusIntegrator.PREFIX, new ZNPCsPlusIntegratorFactory());
-        compatibility.registerPlugin("Nexo", new NexoIntegratorFactory());
-        compatibility.registerPlugin("CraftEngine", new CraftEngineIntegratorFactory());
-        compatibility.registerPlugin("ItemsAdder", new ItemsAdderIntegratorFactory());
+        register("fake-block", FakeBlockIntegrator.REQUIRED_VERSION, FakeBlockIntegrator::new);
+        register("RedisChat", null, RedisChatIntegrator::new);
+        register("Train_Carts", null, TrainCartsIntegrator::new);
+        register(FancyNpcsIntegrator.PREFIX, null, FancyNpcsIntegrator::new);
+        register(ZNPCsPlusIntegrator.PREFIX, ZNPCsPlusIntegrator.REQUIRED_VERSION, ZNPCsPlusIntegrator::new);
+        register("Nexo", null, NexoIntegrator::new);
+        register("CraftEngine", null, CraftEngineIntegrator::new);
+        register("ItemsAdder", ItemsAdderIntegrator.REQUIRED_VERSION, ItemsAdderIntegrator::new);
     }
 }

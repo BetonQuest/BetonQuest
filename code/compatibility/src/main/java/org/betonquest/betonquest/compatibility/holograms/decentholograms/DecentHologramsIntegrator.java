@@ -10,7 +10,6 @@ import org.betonquest.betonquest.api.identifier.PlaceholderIdentifier;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
-import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.betonquest.betonquest.compatibility.holograms.HologramIntegrator;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
@@ -24,6 +23,11 @@ import java.util.regex.Matcher;
  * Integrates with DecentHolograms.
  */
 public class DecentHologramsIntegrator extends HologramIntegrator {
+
+    /**
+     * The minimum required version of DecentHolograms.
+     */
+    public static final String REQUIRED_VERSION = "2.7.5";
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -49,7 +53,7 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
      */
     public DecentHologramsIntegrator(final BetonQuestLogger log, final IdentifierFactory<PlaceholderIdentifier> identifierFactory,
                                      final Instructions instructionApi) {
-        super("DecentHolograms", "2.7.5");
+        super("DecentHolograms", REQUIRED_VERSION);
         this.log = log;
         this.identifierFactory = identifierFactory;
         this.instructionApi = instructionApi;
@@ -63,8 +67,7 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
     }
 
     @Override
-    public void hook(final BetonQuestApi api) throws HookException {
-        super.hook(api);
+    public void enable(final BetonQuestApi api) throws QuestException {
         if (!Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             log.warn("Holograms from DecentHolograms will not be able to use BetonQuest placeholders in text lines "
                     + "without PlaceholderAPI plugin! Install it to use holograms with placeholders!");
