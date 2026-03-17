@@ -4,9 +4,9 @@ import com.elmakers.mine.bukkit.api.event.SpellInventoryEvent;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -17,7 +17,7 @@ import java.util.Objects;
 /**
  * Integrator for the Magic plugin.
  */
-public class MagicIntegrator implements Integrator, Listener {
+public class MagicIntegrator implements Integration {
 
     /**
      * Creates a new Integrator.
@@ -26,19 +26,19 @@ public class MagicIntegrator implements Integrator, Listener {
     }
 
     @Override
-    public void hook(final BetonQuestApi api) {
+    public void enable(final BetonQuestApi api) {
         final MagicAPI magicApi = Objects.requireNonNull((MagicAPI) Bukkit.getPluginManager().getPlugin("Magic"));
         api.conditions().registry().register("wand", new WandConditionFactory(magicApi));
         api.bukkit().registerEvents(new InventoryListener(BetonQuest.getInstance().getPlayerDataStorage(), api.profiles()));
     }
 
     @Override
-    public void reload() {
+    public void postEnable(final BetonQuestApi api) {
         // Empty
     }
 
     @Override
-    public void close() {
+    public void disable() {
         // Empty
     }
 

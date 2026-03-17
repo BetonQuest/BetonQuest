@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmolib;
 
 import org.betonquest.betonquest.api.BetonQuestApi;
-import org.betonquest.betonquest.compatibility.Integrator;
+import org.betonquest.betonquest.api.integration.Integration;
 
 /**
  * Integrates MythicLib.
  * MythicLib not affiliated with MythicCraft. It is part of Phoenix developments' MMO plugin suite.
  */
-public class MythicLibIntegrator implements Integrator {
+public class MythicLibIntegrator implements Integration {
 
     /**
      * Creates a new MythicLib integrator.
@@ -16,18 +16,18 @@ public class MythicLibIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final BetonQuestApi api) {
+    public void enable(final BetonQuestApi api) {
         api.conditions().registry().register("mmostat", new MythicLibStatConditionFactory());
         api.objectives().registry().register("mmoskill", new MythicLibSkillObjectiveFactory());
     }
 
     @Override
-    public void reload() {
+    public void postEnable(final BetonQuestApi api) {
         // Empty
     }
 
     @Override
-    public void close() {
+    public void disable() {
         // Empty
     }
 }

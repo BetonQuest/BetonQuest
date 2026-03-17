@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmocore;
 
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.service.action.ActionRegistry;
 import org.betonquest.betonquest.api.service.condition.ConditionRegistry;
 import org.betonquest.betonquest.api.service.objective.ObjectiveRegistry;
-import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.action.MMOCoreAttributePointsActionFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.action.MMOCoreAttributeReallocationPointsActionFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.action.MMOCoreClassExperienceActionFactory;
@@ -21,7 +21,7 @@ import org.betonquest.betonquest.compatibility.mmogroup.mmocore.objective.MMOCor
 /**
  * Integrator for MMO CORE.
  */
-public class MMOCoreIntegrator implements Integrator {
+public class MMOCoreIntegrator implements Integration {
 
     /**
      * The default constructor.
@@ -30,7 +30,7 @@ public class MMOCoreIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final BetonQuestApi api) {
+    public void enable(final BetonQuestApi api) {
         final ConditionRegistry conditionRegistry = api.conditions().registry();
         conditionRegistry.register("mmoclass", new MMOCoreClassConditionFactory());
         conditionRegistry.register("mmoattribute", new MMOCoreAttributeConditionFactory());
@@ -51,12 +51,12 @@ public class MMOCoreIntegrator implements Integrator {
     }
 
     @Override
-    public void reload() {
+    public void postEnable(final BetonQuestApi api) {
         // Empty
     }
 
     @Override
-    public void close() {
+    public void disable() {
         // Empty
     }
 }

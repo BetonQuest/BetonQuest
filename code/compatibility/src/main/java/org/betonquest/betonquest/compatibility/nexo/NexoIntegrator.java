@@ -1,15 +1,15 @@
 package org.betonquest.betonquest.compatibility.nexo;
 
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.service.item.ItemRegistry;
-import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.nexo.item.NexoItemFactory;
 import org.betonquest.betonquest.compatibility.nexo.item.NexoQuestItemSerializer;
 
 /**
  * Handles integration with Nexo.
  */
-public class NexoIntegrator implements Integrator {
+public class NexoIntegrator implements Integration {
 
     /**
      * The empty default constructor.
@@ -19,19 +19,19 @@ public class NexoIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final BetonQuestApi api) {
+    public void enable(final BetonQuestApi api) {
         final ItemRegistry itemRegistry = api.items().registry();
         itemRegistry.register("nexo", new NexoItemFactory());
         itemRegistry.registerSerializer("nexo", new NexoQuestItemSerializer());
     }
 
     @Override
-    public void reload() {
+    public void postEnable(final BetonQuestApi api) {
         // Empty
     }
 
     @Override
-    public void close() {
+    public void disable() {
         // Empty
     }
 }

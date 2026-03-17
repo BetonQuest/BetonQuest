@@ -9,13 +9,12 @@ import org.betonquest.betonquest.api.bukkit.BukkitManager;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.identifier.NpcIdentifier;
+import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.FeatureRegistry;
 import org.betonquest.betonquest.api.service.action.ActionRegistry;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.npc.NpcRegistry;
-import org.betonquest.betonquest.compatibility.HookException;
-import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.npc.citizens.action.move.CitizensMoveAction;
 import org.betonquest.betonquest.compatibility.npc.citizens.action.move.CitizensMoveActionFactory;
 import org.betonquest.betonquest.compatibility.npc.citizens.action.move.CitizensMoveController;
@@ -29,7 +28,7 @@ import org.bukkit.event.HandlerList;
 /**
  * Integrator for Citizens.
  */
-public class CitizensIntegrator implements Integrator {
+public class CitizensIntegrator implements Integration {
 
     /**
      * Handles NPC movement of the {@link CitizensMoveAction}.
@@ -59,13 +58,8 @@ public class CitizensIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final BetonQuestApi api) throws HookException {
-        final IdentifierFactory<NpcIdentifier> npcIdentifierFactory;
-        try {
-            npcIdentifierFactory = api.identifiers().getFactory(NpcIdentifier.class);
-        } catch (final QuestException e) {
-            throw new HookException(plugin, "Could not load npc identifier factory while hooking into citizens.", e);
-        }
+    public void enable(final BetonQuestApi api) throws QuestException {
+        final IdentifierFactory<NpcIdentifier> npcIdentifierFactory = api.identifiers().getFactory(NpcIdentifier.class);
 
         final NPCRegistry citizensNpcRegistry = CitizensAPI.getNPCRegistry();
         final CitizensWalkingListener citizensWalkingListener = new CitizensWalkingListener(plugin, citizensNpcRegistry);
@@ -102,12 +96,12 @@ public class CitizensIntegrator implements Integrator {
     }
 
     @Override
-    public void reload() {
+    public void postEnable(final BetonQuestApi api) {
         // Empty
     }
 
     @Override
-    public void close() {
+    public void disable() {
         HandlerList.unregisterAll(citizensMoveController);
     }
 }

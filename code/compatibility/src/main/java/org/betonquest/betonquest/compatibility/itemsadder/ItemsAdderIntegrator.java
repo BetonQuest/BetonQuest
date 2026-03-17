@@ -1,13 +1,11 @@
 package org.betonquest.betonquest.compatibility.itemsadder;
 
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.service.action.ActionRegistry;
 import org.betonquest.betonquest.api.service.condition.ConditionRegistry;
 import org.betonquest.betonquest.api.service.item.ItemRegistry;
 import org.betonquest.betonquest.api.service.objective.ObjectiveRegistry;
-import org.betonquest.betonquest.compatibility.HookException;
-import org.betonquest.betonquest.compatibility.Integrator;
-import org.betonquest.betonquest.compatibility.UnsupportedVersionException;
 import org.betonquest.betonquest.compatibility.itemsadder.action.IAPlayAnimationActionFactory;
 import org.betonquest.betonquest.compatibility.itemsadder.action.IASetBlockAtActionFactory;
 import org.betonquest.betonquest.compatibility.itemsadder.condition.IABlockConditionFactory;
@@ -15,16 +13,16 @@ import org.betonquest.betonquest.compatibility.itemsadder.item.ItemsAdderItemFac
 import org.betonquest.betonquest.compatibility.itemsadder.item.ItemsAdderQuestItemSerializer;
 import org.betonquest.betonquest.compatibility.itemsadder.objective.IABlockBreakObjectiveFactory;
 import org.betonquest.betonquest.compatibility.itemsadder.objective.IABlockPlaceObjectiveFactory;
-import org.betonquest.betonquest.lib.versioning.UpdateStrategy;
-import org.betonquest.betonquest.lib.versioning.Version;
-import org.betonquest.betonquest.lib.versioning.VersionComparator;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 
 /**
  * Handles integration with ItemsAdder.
  */
-public class ItemsAdderIntegrator implements Integrator {
+public class ItemsAdderIntegrator implements Integration {
+
+    /**
+     * The minimum required version of ItemsAdder.
+     */
+    public static final String REQUIRED_VERSION = "4.0.10";
 
     /**
      * The prefix of implementations.
@@ -39,8 +37,7 @@ public class ItemsAdderIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final BetonQuestApi api) throws HookException {
-        validateVersion();
+    public void enable(final BetonQuestApi api) {
 
         final ItemRegistry itemRegistry = api.items().registry();
         itemRegistry.register(ITEMS_ADDER, new ItemsAdderItemFactory());
@@ -59,26 +56,12 @@ public class ItemsAdderIntegrator implements Integrator {
     }
 
     @Override
-    public void reload() {
+    public void postEnable(final BetonQuestApi api) {
         // Empty
     }
 
     @Override
-    public void close() {
+    public void disable() {
         // Empty
-    }
-
-    /**
-     * Aborts the hooking process if the installed version of ItemsAdder is invalid.
-     *
-     * @throws UnsupportedVersionException if the installed version of ItemsAdder is < 4.0.10.
-     */
-    private void validateVersion() throws UnsupportedVersionException {
-        final Plugin itemsAdder = Bukkit.getPluginManager().getPlugin("ItemsAdder");
-        final Version itemsAdderVersion = new Version(itemsAdder.getDescription().getVersion());
-        final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR);
-        if (comparator.isOlderThan(itemsAdderVersion, new Version("4.0.10"))) {
-            throw new UnsupportedVersionException(itemsAdder, "4.0.10+");
-        }
     }
 }

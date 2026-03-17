@@ -16,10 +16,8 @@ import org.betonquest.betonquest.api.bukkit.BukkitManager;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.dependency.CoreComponentLoader;
+import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.text.TextParser;
-import org.betonquest.betonquest.compatibility.HookException;
-import org.betonquest.betonquest.compatibility.Integrator;
-import org.betonquest.betonquest.compatibility.UnsupportedVersionException;
 import org.betonquest.betonquest.compatibility.packetevents.action.FreezeActionFactory;
 import org.betonquest.betonquest.compatibility.packetevents.interceptor.PacketEventsInterceptorFactory;
 import org.betonquest.betonquest.compatibility.packetevents.interceptor.history.ChatHistory;
@@ -32,13 +30,7 @@ import org.betonquest.betonquest.conversation.menu.input.ConversationSession;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.kernel.registry.feature.InterceptorRegistry;
 import org.betonquest.betonquest.lib.versioning.MinecraftVersion;
-import org.betonquest.betonquest.lib.versioning.UpdateStrategy;
-import org.betonquest.betonquest.lib.versioning.Version;
-import org.betonquest.betonquest.lib.versioning.VersionComparator;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
 
 import java.util.UUID;
 import java.util.function.Function;
@@ -46,7 +38,12 @@ import java.util.function.Function;
 /**
  * Integrator for PacketEvents.
  */
-public class PacketEventsIntegrator implements Integrator {
+public class PacketEventsIntegrator implements Integration {
+
+    /**
+     * The minimum required version of packetevents.
+     */
+    public static final String REQUIRED_VERSION = "2.9.5";
 
     /**
      * Function to create chat message packets based on server version.
@@ -65,15 +62,7 @@ public class PacketEventsIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final BetonQuestApi api) throws HookException {
-        final PluginManager pluginManager = Bukkit.getPluginManager();
-        final Plugin packetEvents = pluginManager.getPlugin("packetevents");
-        final Version packetEventsVersion = new Version(packetEvents.getDescription().getVersion());
-        final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR);
-        if (comparator.isOlderThan(packetEventsVersion, new Version("2.9.5"))) {
-            throw new UnsupportedVersionException(packetEvents, "2.9.5");
-        }
-
+    public void enable(final BetonQuestApi api) {
         final PacketEventsAPI<?> packetEventsAPI = PacketEvents.getAPI();
 
         final BetonQuest plugin = BetonQuest.getInstance();
@@ -101,12 +90,12 @@ public class PacketEventsIntegrator implements Integrator {
     }
 
     @Override
-    public void reload() {
+    public void postEnable(final BetonQuestApi api) {
         // Empty
     }
 
     @Override
-    public void close() {
+    public void disable() {
         // Empty
     }
 }

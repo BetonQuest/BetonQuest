@@ -2,10 +2,10 @@ package org.betonquest.betonquest.compatibility.jobsreborn;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.service.action.ActionRegistry;
 import org.betonquest.betonquest.api.service.condition.ConditionRegistry;
 import org.betonquest.betonquest.api.service.objective.ObjectiveRegistry;
-import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.jobsreborn.action.AddExpActionFactory;
 import org.betonquest.betonquest.compatibility.jobsreborn.action.AddLevelActionFactory;
 import org.betonquest.betonquest.compatibility.jobsreborn.action.DelLevelActionFactory;
@@ -24,7 +24,7 @@ import org.betonquest.betonquest.compatibility.jobsreborn.objective.PaymentObjec
 /**
  * Integrator for JobsReborn.
  */
-public class JobsRebornIntegrator implements Integrator {
+public class JobsRebornIntegrator implements Integration {
 
     /**
      * The BetonQuest plugin instance.
@@ -39,7 +39,7 @@ public class JobsRebornIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final BetonQuestApi api) {
+    public void enable(final BetonQuestApi api) {
         final ConditionRegistry conditionRegistry = api.conditions().registry();
         conditionRegistry.register("nujobs_canlevel", new CanLevelConditionFactory());
         conditionRegistry.register("nujobs_hasjob", new HasJobConditionFactory());
@@ -62,12 +62,12 @@ public class JobsRebornIntegrator implements Integrator {
     }
 
     @Override
-    public void reload() {
+    public void postEnable(final BetonQuestApi api) {
         // Empty
     }
 
     @Override
-    public void close() {
+    public void disable() {
         // Empty
     }
 }

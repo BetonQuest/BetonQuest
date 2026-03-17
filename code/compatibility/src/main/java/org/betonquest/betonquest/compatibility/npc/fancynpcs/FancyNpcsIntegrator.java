@@ -2,15 +2,15 @@ package org.betonquest.betonquest.compatibility.npc.fancynpcs;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.service.npc.NpcRegistry;
-import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
 
 /**
  * Integrator implementation for the FancyNpcs plugin.
  */
-public class FancyNpcsIntegrator implements Integrator {
+public class FancyNpcsIntegrator implements Integration {
 
     /**
      * The prefix used before any registered name for distinguishing.
@@ -24,7 +24,7 @@ public class FancyNpcsIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final BetonQuestApi api) {
+    public void enable(final BetonQuestApi api) {
         final NpcRegistry npcRegistry = api.npcs().registry();
         final ProfileProvider profileProvider = api.profiles();
         api.bukkit().registerEvents(new FancyCatcher(profileProvider, npcRegistry));
@@ -35,12 +35,12 @@ public class FancyNpcsIntegrator implements Integrator {
     }
 
     @Override
-    public void reload() {
+    public void postEnable(final BetonQuestApi api) {
         // Empty
     }
 
     @Override
-    public void close() {
+    public void disable() {
         // Empty
     }
 }

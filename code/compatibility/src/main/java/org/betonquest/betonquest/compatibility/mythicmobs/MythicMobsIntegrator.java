@@ -6,14 +6,14 @@ import io.lumine.mythic.core.items.ItemExecutor;
 import io.lumine.mythic.core.mobs.MobExecutor;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.BukkitManager;
 import org.betonquest.betonquest.api.bukkit.event.LoadDataEvent;
+import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.reload.ReloadPhase;
 import org.betonquest.betonquest.api.service.item.ItemRegistry;
 import org.betonquest.betonquest.api.service.npc.NpcRegistry;
-import org.betonquest.betonquest.compatibility.HookException;
-import org.betonquest.betonquest.compatibility.Integrator;
-import org.betonquest.betonquest.compatibility.UnsupportedVersionException;
 import org.betonquest.betonquest.compatibility.mythicmobs.action.MythicCastSkillActionFactory;
 import org.betonquest.betonquest.compatibility.mythicmobs.action.MythicSpawnMobActionFactory;
 import org.betonquest.betonquest.compatibility.mythicmobs.condition.MythicMobDistanceConditionFactory;
@@ -23,20 +23,20 @@ import org.betonquest.betonquest.compatibility.mythicmobs.npc.MythicMobsInteract
 import org.betonquest.betonquest.compatibility.mythicmobs.npc.MythicMobsNpcFactory;
 import org.betonquest.betonquest.compatibility.mythicmobs.npc.MythicMobsReverseIdentifier;
 import org.betonquest.betonquest.compatibility.mythicmobs.objective.MythicMobKillObjectiveFactory;
-import org.betonquest.betonquest.lib.versioning.UpdateStrategy;
-import org.betonquest.betonquest.lib.versioning.Version;
-import org.betonquest.betonquest.lib.versioning.VersionComparator;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Integrator for MythicMobs.
  */
-public class MythicMobsIntegrator implements Integrator {
+public class MythicMobsIntegrator implements Integration {
+
+    /**
+     * The minimum required version of MythicMobs.
+     */
+    public static final String REQUIRED_VERSION = "5.0.0";
 
     /**
      * The BetonQuest plugin instance.
@@ -58,9 +58,7 @@ public class MythicMobsIntegrator implements Integrator {
 
     @SuppressWarnings("PMD.CloseResource")
     @Override
-    public void hook(final BetonQuestApi api) throws HookException {
-        validateVersion();
-
+    public void enable(final BetonQuestApi api) {
         final MythicBukkit mythicBukkit = MythicBukkit.inst();
         final BukkitAPIHelper apiHelper = mythicBukkit.getAPIHelper();
         final MobExecutor mobExecutor = mythicBukkit.getMobManager();
@@ -88,33 +86,22 @@ public class MythicMobsIntegrator implements Integrator {
         final ItemExecutor itemManager = mythicBukkit.getItemManager();
         itemRegistry.register("mythic", new MythicItemFactory(itemManager));
         itemRegistry.registerSerializer("mythic", new MythicQuestItemSerializer(itemManager));
-    }
-
-    /**
-     * Aborts the hooking process if the installed version of MythicMobs is invalid.
-     *
-     * @throws UnsupportedVersionException if the installed version of MythicMobs is < 5.0.0.
-     */
-    private void validateVersion() throws UnsupportedVersionException {
-        final Plugin mythicMobs = Bukkit.getPluginManager().getPlugin("MythicMobs");
-        final String versionWithCommit = mythicMobs.getDescription().getVersion();
-        final String[] parts = versionWithCommit.split("-");
-        final Version mythicMobsVersion = new Version(parts[0]);
-        final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR, "-");
-        if (comparator.isOlderThan(mythicMobsVersion, new Version("5.0.0"))) {
-            throw new UnsupportedVersionException(mythicMobs, "5.0.0+");
-        }
+        api.reloader().register(ReloadPhase.INTEGRATION, this::reload);
     }
 
     @Override
-    public void reload() {
+    public void postEnable(final BetonQuestApi betonQuestApi) throws QuestException {
+        // Empty
+    }
+
+    private void reload() {
         if (mythicHider != null) {
             mythicHider.reload(plugin.getPluginConfig().getInt("hider.npc_update_interval", 5 * 20));
         }
     }
 
     @Override
-    public void close() {
+    public void disable() {
         if (mythicHider != null) {
             mythicHider.stop();
             HandlerList.unregisterAll(mythicHider);
