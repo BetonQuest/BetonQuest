@@ -1,32 +1,33 @@
 package org.betonquest.betonquest.compatibility.traincarts;
 
 import org.betonquest.betonquest.api.BetonQuestApi;
-import org.betonquest.betonquest.api.integration.Integration;
-import org.betonquest.betonquest.api.service.objective.ObjectiveRegistry;
 import org.betonquest.betonquest.compatibility.traincarts.conditions.TrainCartsRideConditionFactory;
 import org.betonquest.betonquest.compatibility.traincarts.objectives.TrainCartsExitObjectiveFactory;
 import org.betonquest.betonquest.compatibility.traincarts.objectives.TrainCartsLocationObjectiveFactory;
 import org.betonquest.betonquest.compatibility.traincarts.objectives.TrainCartsRideObjectiveFactory;
+import org.betonquest.betonquest.lib.integration.IntegrationTemplate;
 
 /**
  * The TrainCarts integration.
  */
-public class TrainCartsIntegrator implements Integration {
+public class TrainCartsIntegrator extends IntegrationTemplate {
 
     /**
      * Create the TrainCarts integration.
      */
     public TrainCartsIntegrator() {
+        super();
     }
 
     @Override
     public void enable(final BetonQuestApi api) {
-        final ObjectiveRegistry objectiveRegistry = api.objectives().registry();
-        objectiveRegistry.register("traincartslocation", new TrainCartsLocationObjectiveFactory());
-        objectiveRegistry.register("traincartsride", new TrainCartsRideObjectiveFactory());
-        objectiveRegistry.register("traincartsexit", new TrainCartsExitObjectiveFactory());
+        objective("location", new TrainCartsLocationObjectiveFactory());
+        objective("ride", new TrainCartsRideObjectiveFactory());
+        objective("exit", new TrainCartsExitObjectiveFactory());
 
-        api.conditions().registry().register("traincartsride", new TrainCartsRideConditionFactory());
+        playerCondition("ride", new TrainCartsRideConditionFactory());
+
+        registerFeatures(api, "traincarts");
     }
 
     @Override
