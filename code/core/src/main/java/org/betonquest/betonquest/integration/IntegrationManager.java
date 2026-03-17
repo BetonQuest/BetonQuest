@@ -218,7 +218,8 @@ public class IntegrationManager {
          * @return true if the integration is ready to be enabled, false otherwise
          */
         private boolean isReadyToEnabled() {
-            return (integratedPluginProvider == PluginProvider.EMPTY || integratedPluginProvider.plugin().map(Plugin::isEnabled).orElse(false))
+            return !enabled.get()
+                    && (integratedPluginProvider == PluginProvider.EMPTY || integratedPluginProvider.plugin().map(Plugin::isEnabled).orElse(false))
                     && integratorPlugin.isEnabled();
         }
 
