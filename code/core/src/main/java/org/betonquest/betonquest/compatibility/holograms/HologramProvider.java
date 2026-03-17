@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.holograms;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.integration.Integration;
@@ -94,7 +95,7 @@ public class HologramProvider implements Integration {
     }
 
     @Override
-    public void enable(final BetonQuestApi api) {
+    public void postEnable(final BetonQuestApi api) {
         final BetonQuest plugin = BetonQuest.getInstance();
         final BetonQuestLoggerFactory loggerFactory = api.loggerFactory();
         final TextParser textParser = plugin.getComponentLoader().get(TextParser.class);
@@ -113,8 +114,8 @@ public class HologramProvider implements Integration {
     }
 
     @Override
-    public void postEnable(final BetonQuestApi betonQuestApi) {
-        // Empty
+    public void enable(final BetonQuestApi betonQuestApi) throws QuestException {
+        throw new QuestException("The hologram provider can't be used in the enable phase!");
     }
 
     @Override
