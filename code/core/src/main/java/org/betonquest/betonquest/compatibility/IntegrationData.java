@@ -1,22 +1,31 @@
 package org.betonquest.betonquest.compatibility;
 
+import org.betonquest.betonquest.api.integration.Integration;
+import org.bukkit.plugin.Plugin;
+
 /**
  * Data of hooking into Plugins or Minecraft versions.
  */
 public interface IntegrationData {
 
     /**
-     * Gets if the integration successfully hooked.
+     * Gets the plugin that provides the integration.
      *
-     * @return if the integration was successful
+     * @return the plugin that registered the integration
      */
-    boolean isIntegrated();
+    Plugin integratorPlugin();
+
+    /**
+     * Gets the integration of the data.
+     *
+     * @return the created integration
+     */
+    Integration getIntegration();
 
     /**
      * Gets the target name to display.
      *
      * @return the name of the hooked
-     * @throws IllegalStateException when not {@link #isIntegrated()}
      */
     String getName();
 
@@ -24,7 +33,6 @@ public interface IntegrationData {
      * Gets the version to show in the compatibility.
      *
      * @return the version string of the hooked
-     * @throws IllegalStateException when not {@link #isIntegrated()}
      */
     String getVersion();
 }

@@ -37,7 +37,6 @@ import org.betonquest.betonquest.api.service.item.ItemManager;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.IntegrationData;
-import org.betonquest.betonquest.compatibility.IntegrationSource;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Backup;
@@ -1575,14 +1574,24 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private void displayVersionInfo(final CommandSender sender, final String commandAlias) throws QuestException {
         final String updateCommand = "/" + commandAlias + " update";
 
-        final Component hooked = displayVersionInfoHooked(compatibility.getBetonQuestSource());
+        final Component hooked = displayVersionInfoHooked(compatibility.getBetonQuest());
+
+        final TextComponent.Builder externalHooked = Component.text();
+        for (final Map.Entry<String, List<IntegrationData>> entry : compatibility.getExternal().entrySet()) {
+            final VariableComponent external = new VariableComponent(pluginMessage.getMessage(null, "command_version_output.external_hook",
+                    new VariableReplacement("plugin", Component.text(entry.getKey())),
+                    new VariableReplacement("hooked", displayVersionInfoHooked(entry.getValue()))));
+            externalHooked.append(external.resolve());
+        }
+
         final Component update = displayVersionInfoUpdate(updater);
         final Component copy = displayVersionInfoCopy(sender);
 
         final VariableComponent baseContent = new VariableComponent(pluginMessage.getMessage(null, "command_version_output.info",
                 new VariableReplacement("version", Component.text(plugin.getDescription().getVersion())),
                 new VariableReplacement("server", Component.text(Bukkit.getServer().getVersion())),
-                new VariableReplacement("hooked", hooked)));
+                new VariableReplacement("hooked", hooked),
+                new VariableReplacement("external_hooks", externalHooked.build())));
         final Component copyContent = baseContent.resolve(
                 new VariableReplacement("update", Component.empty()),
                 new VariableReplacement("copy", Component.empty()));
@@ -1592,12 +1601,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         sender.sendMessage(info);
     }
 
-    private Component displayVersionInfoHooked(final IntegrationSource source) throws QuestException {
+    private Component displayVersionInfoHooked(final List<IntegrationData> dataList) throws QuestException {
         final TextComponent.Builder hookedBuilder = Component.text();
-        for (final IntegrationData data : source.getDataList()) {
-            if (!data.isIntegrated()) {
-                continue;
-            }
+        for (final IntegrationData data : dataList) {
             if (!hookedBuilder.children().isEmpty()) {
                 hookedBuilder.append(Component.text(", "));
             }

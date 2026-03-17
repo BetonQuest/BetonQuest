@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.common.function.QuestRunnable;
 import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.compatibility.IntegrationData;
 import org.betonquest.betonquest.lib.versioning.MinecraftVersion;
 import org.betonquest.betonquest.lib.versioning.UpdateStrategy;
 import org.betonquest.betonquest.lib.versioning.Version;
@@ -63,6 +64,15 @@ public class IntegrationManager {
         this.integrations = new ArrayList<>();
         this.enabledIntegrations = new ArrayList<>();
         this.currentState = ManagerState.PRE_ENABLE;
+    }
+
+    /**
+     * Gets all enabled integrations.
+     *
+     * @return all enabled integrations with their metadata
+     */
+    public List<? extends IntegrationData> getEnabledIntegrations() {
+        return enabledIntegrations;
     }
 
     /**
@@ -193,7 +203,12 @@ public class IntegrationManager {
                                       PluginProvider integratedPluginProvider,
                                       Plugin integratorPlugin,
                                       @Nullable Version minimalVersion,
-                                      AtomicBoolean enabled) {
+                                      AtomicBoolean enabled) implements IntegrationData {
+
+        /**
+         * The 'unspecified' string to use when no plugin name is available.
+         */
+        private static final String UNSPECIFIED = "unspecified";
 
         /**
          * Checks if the integration is ready to be enabled.
@@ -218,7 +233,7 @@ public class IntegrationManager {
             if (integratedPluginProvider == PluginProvider.EMPTY) {
                 return Bukkit.getName() + (minimalVersion == null ? "" : " (" + minimalVersion + ")");
             }
-            return integratedPluginProvider.name().orElse("unspecified") + (integratedPluginProvider.version().isEmpty() ? "" : " (" + integratedPluginProvider.version().get() + ")");
+            return integratedPluginProvider.name().orElse(UNSPECIFIED) + (integratedPluginProvider.version().isEmpty() ? "" : " (" + integratedPluginProvider.version().get() + ")");
         }
 
         /**
@@ -297,6 +312,22 @@ public class IntegrationManager {
          */
         private void disable() {
             callSafely("disable", () -> integration.get().disable());
+        }
+
+        @Override
+        public Integration getIntegration() {
+            return integration.get();
+        }
+
+        @Override
+        public String getName() {
+            return isVanillaIntegration() ? "Minecraft" : integratedPluginProvider.name().orElse(UNSPECIFIED);
+        }
+
+        @Override
+        public String getVersion() {
+            return isVanillaIntegration() ? minimalVersion == null ? UNSPECIFIED : minimalVersion.getVersion()
+                    : integratedPluginProvider.plugin().orElseThrow().getDescription().getVersion();
         }
     }
 }
