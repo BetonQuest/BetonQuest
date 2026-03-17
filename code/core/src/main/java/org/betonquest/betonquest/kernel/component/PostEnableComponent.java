@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.kernel.component;
 
+import org.betonquest.betonquest.api.BetonQuestApiService;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
@@ -8,6 +9,7 @@ import org.betonquest.betonquest.api.service.conversation.Conversations;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.data.PlayerDataStorage;
+import org.betonquest.betonquest.integration.IntegrationManager;
 import org.betonquest.betonquest.kernel.ProcessorDataLoader;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
 import org.betonquest.betonquest.menu.RPGMenu;
@@ -34,7 +36,7 @@ public class PostEnableComponent extends AbstractCoreComponent {
         return Set.of(Plugin.class, BukkitScheduler.class, ConfigAccessor.class,
                 Compatibility.class, PlayerDataStorage.class, ProfileProvider.class, QuestPackageManager.class,
                 PlayerHider.class, RPGMenu.class, Conversations.class, Instructions.class,
-                ProcessorDataLoader.class);
+                ProcessorDataLoader.class, IntegrationManager.class, BetonQuestApiService.class);
     }
 
     @Override
@@ -51,9 +53,12 @@ public class PostEnableComponent extends AbstractCoreComponent {
         final Conversations conversations = getDependency(Conversations.class);
         final QuestPackageManager packageManager = getDependency(QuestPackageManager.class);
         final ProcessorDataLoader processorDataLoader = getDependency(ProcessorDataLoader.class);
+        final IntegrationManager integrationManager = getDependency(IntegrationManager.class);
+        final BetonQuestApiService betonQuestApiService = getDependency(BetonQuestApiService.class);
 
         scheduler.scheduleSyncDelayedTask(plugin, () -> {
             compatibility.postHook();
+            integrationManager.postEnable(betonQuestApiService);
             processorDataLoader.loadData(packageManager.getPackages().values());
             dataStorage.startObjectives();
             menu.syncCommands();
