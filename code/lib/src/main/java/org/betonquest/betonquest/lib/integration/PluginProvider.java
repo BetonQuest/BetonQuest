@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.integration;
+package org.betonquest.betonquest.lib.integration;
 
 import org.betonquest.betonquest.lib.versioning.Version;
 import org.bukkit.Bukkit;

@@ -28,24 +28,24 @@ public class DefaultIntegrationService implements IntegrationService {
     @Override
     public IntegrationPolicy withPolicy(@Nullable final String minimalMinecraftVersion) {
         final Version version = minimalMinecraftVersion == null ? null : new Version(minimalMinecraftVersion);
-        return new DefaultIntegrationPolicy(integrationManager, PluginProvider.EMPTY, version);
+        return new DefaultIntegrationPolicy(integrationManager, org.betonquest.betonquest.lib.integration.PluginProvider.EMPTY, version);
     }
 
     @Override
     public IntegrationPolicy withPolicy(final String pluginName, @Nullable final String minimalPluginVersion) {
         final Version version = minimalPluginVersion == null ? null : new Version(minimalPluginVersion);
-        return new DefaultIntegrationPolicy(integrationManager, PluginProvider.forName(pluginName), version);
+        return new DefaultIntegrationPolicy(integrationManager, org.betonquest.betonquest.lib.integration.PluginProvider.forName(pluginName), version);
     }
 
     @Override
     public IntegrationPolicy withPolicy(final Class<? extends Plugin> pluginClass, @Nullable final String minimalPluginVersion) {
         final Version version = minimalPluginVersion == null ? null : new Version(minimalPluginVersion);
-        return new DefaultIntegrationPolicy(integrationManager, PluginProvider.forClass(pluginClass), version);
+        return new DefaultIntegrationPolicy(integrationManager, org.betonquest.betonquest.lib.integration.PluginProvider.forClass(pluginClass), version);
     }
 
     @Override
     public IntegrationPolicy withPolicy(final Plugin integratedPlugin, @Nullable final String minimalPluginVersion) {
         final Version version = minimalPluginVersion == null ? null : new Version(minimalPluginVersion);
-        return new DefaultIntegrationPolicy(integrationManager, PluginProvider.forInstance(integratedPlugin), version);
+        return new DefaultIntegrationPolicy(integrationManager, org.betonquest.betonquest.lib.integration.PluginProvider.forInstance(integratedPlugin), version);
     }
 }

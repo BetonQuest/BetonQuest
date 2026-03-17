@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.lib.integration.PluginProvider;
 import org.betonquest.betonquest.lib.versioning.Version;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerExtension;
 import org.bukkit.Bukkit;

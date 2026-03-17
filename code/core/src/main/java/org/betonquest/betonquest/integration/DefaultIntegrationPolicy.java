@@ -20,9 +20,9 @@ public class DefaultIntegrationPolicy implements IntegrationPolicy {
     private final IntegrationManager manager;
 
     /**
-     * The {@link PluginProvider} instance.
+     * The {@link org.betonquest.betonquest.lib.integration.PluginProvider} instance.
      */
-    private final PluginProvider pluginProvider;
+    private final org.betonquest.betonquest.lib.integration.PluginProvider pluginProvider;
 
     /**
      * The optional minimal version of the plugin.
@@ -34,10 +34,10 @@ public class DefaultIntegrationPolicy implements IntegrationPolicy {
      * Creates a new DefaultIntegrations instance.
      *
      * @param manager        The {@link IntegrationManager} instance.
-     * @param pluginProvider The {@link PluginProvider} instance.
+     * @param pluginProvider The {@link org.betonquest.betonquest.lib.integration.PluginProvider} instance.
      * @param minimalVersion The optional minimal version of the plugin.
      */
-    public DefaultIntegrationPolicy(final IntegrationManager manager, final PluginProvider pluginProvider, @Nullable final Version minimalVersion) {
+    public DefaultIntegrationPolicy(final IntegrationManager manager, final org.betonquest.betonquest.lib.integration.PluginProvider pluginProvider, @Nullable final Version minimalVersion) {
         this.manager = manager;
         this.pluginProvider = pluginProvider;
         this.minimalVersion = minimalVersion;

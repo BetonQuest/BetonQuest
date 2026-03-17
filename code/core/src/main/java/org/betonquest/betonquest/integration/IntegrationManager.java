@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.common.function.QuestRunnable;
 import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.lib.integration.PluginProvider;
 import org.betonquest.betonquest.lib.versioning.MinecraftVersion;
 import org.betonquest.betonquest.lib.versioning.UpdateStrategy;
 import org.betonquest.betonquest.lib.versioning.Version;
