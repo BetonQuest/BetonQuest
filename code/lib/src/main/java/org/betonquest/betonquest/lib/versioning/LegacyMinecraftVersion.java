@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
  * Represents the Minecraft version.
  */
 @SuppressWarnings("PMD.UselessOverridingMethod")
-public class MinecraftVersion extends Version {
+public class LegacyMinecraftVersion extends LegacyVersion {
 
     /**
      * The version comparator.
@@ -17,9 +17,9 @@ public class MinecraftVersion extends Version {
 
     /**
      * Creates a new MinecraftVersion instance using {@link Bukkit#getServer()}
-     * and {@link MinecraftVersion#MinecraftVersion(Server)}.
+     * and {@link LegacyMinecraftVersion#LegacyMinecraftVersion(Server)}.
      */
-    public MinecraftVersion() {
+    public LegacyMinecraftVersion() {
         this(Bukkit.getServer());
     }
 
@@ -30,7 +30,7 @@ public class MinecraftVersion extends Version {
      *
      * @param server the server instance the retrieve the version from
      */
-    public MinecraftVersion(final Server server) {
+    public LegacyMinecraftVersion(final Server server) {
         this(server.getMinecraftVersion(), new VersionComparator(UpdateStrategy.PATCH));
     }
 
@@ -40,7 +40,7 @@ public class MinecraftVersion extends Version {
      * @param versionString     the version string
      * @param versionComparator the version comparator
      */
-    public MinecraftVersion(final String versionString, final VersionComparator versionComparator) {
+    public LegacyMinecraftVersion(final String versionString, final VersionComparator versionComparator) {
         super(versionString);
         this.versionComparator = versionComparator;
     }
@@ -52,7 +52,7 @@ public class MinecraftVersion extends Version {
      * @return true if this version is newer than the other version
      */
     public boolean isNewerThan(final String other) {
-        final Version otherVersion = new Version(other);
+        final LegacyVersion otherVersion = new LegacyVersion(other);
         return super.isNewerThan(versionComparator, otherVersion);
     }
 
@@ -64,7 +64,7 @@ public class MinecraftVersion extends Version {
      * @return true if this version is compatible with the other version
      */
     public boolean isCompatibleWith(final String other) {
-        final Version otherVersion = new Version(other);
+        final LegacyVersion otherVersion = new LegacyVersion(other);
         return super.isCompatibleWith(versionComparator, otherVersion);
     }
 
@@ -75,7 +75,7 @@ public class MinecraftVersion extends Version {
      * @return true if this version is older than the other version
      */
     public boolean isOlderThan(final String other) {
-        final Version otherVersion = new Version(other);
+        final LegacyVersion otherVersion = new LegacyVersion(other);
         return super.isOlderThan(versionComparator, otherVersion);
     }
 

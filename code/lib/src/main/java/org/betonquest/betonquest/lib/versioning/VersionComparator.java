@@ -10,9 +10,9 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Compares two {@link Version}s. This comparator can also be used to sort lists of {@link Version}s.
+ * Compares two {@link LegacyVersion}s. This comparator can also be used to sort lists of {@link LegacyVersion}s.
  */
-public class VersionComparator implements Comparator<Version>, Serializable {
+public class VersionComparator implements Comparator<LegacyVersion>, Serializable {
 
     @Serial
     private static final long serialVersionUID = 1641779671214600158L;
@@ -60,7 +60,7 @@ public class VersionComparator implements Comparator<Version>, Serializable {
      * @param other   the other version
      * @return true if the other version is newer than current
      */
-    public boolean isOlderThan(final Version current, final Version other) {
+    public boolean isOlderThan(final LegacyVersion current, final LegacyVersion other) {
         return current.isOlderThan(this, other);
     }
 
@@ -71,7 +71,7 @@ public class VersionComparator implements Comparator<Version>, Serializable {
      * @param other   the other version to compare to
      * @return true if this version is newer than the other version
      */
-    public boolean isNewerThan(final Version current, final Version other) {
+    public boolean isNewerThan(final LegacyVersion current, final LegacyVersion other) {
         return current.isNewerThan(this, other);
     }
 
@@ -83,7 +83,7 @@ public class VersionComparator implements Comparator<Version>, Serializable {
      * @param other   the other version to compare to
      * @return true if this version is compatible with the other version
      */
-    public boolean isCompatibleWith(final Version current, final Version other) {
+    public boolean isCompatibleWith(final LegacyVersion current, final LegacyVersion other) {
         return current.isCompatibleWith(this, other);
     }
 
@@ -96,7 +96,7 @@ public class VersionComparator implements Comparator<Version>, Serializable {
      */
     @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override
-    public int compare(@Nullable final Version current, @Nullable final Version other) {
+    public int compare(@Nullable final LegacyVersion current, @Nullable final LegacyVersion other) {
         if (current == null && other == null) {
             return 0;
         }
@@ -120,7 +120,7 @@ public class VersionComparator implements Comparator<Version>, Serializable {
         return compareVersions(current, other);
     }
 
-    private int compareVersions(final Version current, final Version other) {
+    private int compareVersions(final LegacyVersion current, final LegacyVersion other) {
         final int currentQualifier = current.hasQualifier() ? qualifiers.contains(current.getQualifier())
                 ? qualifiers.indexOf(current.getQualifier()) : Integer.MIN_VALUE : Integer.MAX_VALUE;
         final int otherQualifier = other.hasQualifier() ? qualifiers.contains(other.getQualifier())

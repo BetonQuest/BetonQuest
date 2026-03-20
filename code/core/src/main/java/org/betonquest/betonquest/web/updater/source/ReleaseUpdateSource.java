@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.web.updater.source;
 
-import org.betonquest.betonquest.lib.versioning.Version;
+import org.betonquest.betonquest.lib.versioning.LegacyVersion;
 
 import java.io.IOException;
 import java.util.Map;
@@ -12,7 +12,7 @@ import java.util.Map;
 public interface ReleaseUpdateSource {
 
     /**
-     * Gets a {@link Map} of {@link Version}s and {@link String}s from the given URL.
+     * Gets a {@link Map} of {@link LegacyVersion}s and {@link String}s from the given URL.
      * Every entry represent a version that is available to download.
      * The key is the version, while the value is the string URL where to download it from.
      *
@@ -20,5 +20,5 @@ public interface ReleaseUpdateSource {
      * @return the map of possible downloadable release versions
      * @throws IOException is thrown if any problem occurred while reading the version information.
      */
-    Map<Version, String> getReleaseVersions(Version currentVersion) throws IOException;
+    Map<LegacyVersion, String> getReleaseVersions(LegacyVersion currentVersion) throws IOException;
 }

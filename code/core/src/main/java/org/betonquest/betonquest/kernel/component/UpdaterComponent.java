@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.reload.ReloadPhase;
 import org.betonquest.betonquest.api.reload.Reloader;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
-import org.betonquest.betonquest.lib.versioning.Version;
+import org.betonquest.betonquest.lib.versioning.LegacyVersion;
 import org.betonquest.betonquest.web.DownloadSource;
 import org.betonquest.betonquest.web.TempFileDownloadSource;
 import org.betonquest.betonquest.web.WebContentSource;
@@ -108,7 +108,7 @@ public class UpdaterComponent extends AbstractCoreComponent {
         final UpdateSourceHandler updateSourceHandler = new UpdateSourceHandler(loggerFactory.create(UpdateSourceHandler.class),
                 releaseHandlers, developmentHandlers);
 
-        final Version pluginVersion = new Version(descriptionFile.getVersion());
+        final LegacyVersion pluginVersion = new LegacyVersion(descriptionFile.getVersion());
         final UpdaterConfig updaterConfig = new UpdaterConfig(loggerFactory.create(UpdaterConfig.class), config, pluginVersion, DEV_INDICATOR);
         final Updater updater = new Updater(loggerFactory.create(Updater.class), updaterConfig, pluginVersion, updateSourceHandler, updateDownloader,
                 plugin, scheduler, InstantSource.system());

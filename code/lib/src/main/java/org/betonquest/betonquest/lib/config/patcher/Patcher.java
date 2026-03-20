@@ -7,8 +7,8 @@ import org.betonquest.betonquest.api.config.patcher.PatchTransformer;
 import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegistry;
 import org.betonquest.betonquest.api.config.patcher.PatcherOptions;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.lib.versioning.LegacyVersion;
 import org.betonquest.betonquest.lib.versioning.UpdateStrategy;
-import org.betonquest.betonquest.lib.versioning.Version;
 import org.betonquest.betonquest.lib.versioning.VersionComparator;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 public class Patcher {
 
     /**
-     * Comparator for {@link Version} with the qualifier CONFIG.
+     * Comparator for {@link LegacyVersion} with the qualifier CONFIG.
      */
     private static final VersionComparator VERSION_COMPARATOR = new VersionComparator(UpdateStrategy.MAJOR, "CONFIG-");
 
@@ -53,7 +53,7 @@ public class Patcher {
     /**
      * The 'version' indicating no version set, but already present as file.
      */
-    private static final Version ZERO_VERSION = new Version("0.0.0-CONFIG-0");
+    private static final LegacyVersion ZERO_VERSION = new LegacyVersion("0.0.0-CONFIG-0");
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -73,7 +73,7 @@ public class Patcher {
     /**
      * Contains all versions that are patchable.
      */
-    private final NavigableMap<Version, List<Map<?, ?>>> patches;
+    private final NavigableMap<LegacyVersion, List<Map<?, ?>>> patches;
 
     /**
      * Creates a new Patcher.
@@ -118,7 +118,7 @@ public class Patcher {
             throw new InvalidConfigurationException("The patch file at '" + currentKey + "' has an invalid version format.");
         }
         final String result = matcher.group(1) + "-CONFIG-" + matcher.group(2);
-        final Version discoveredVersion = new Version(result);
+        final LegacyVersion discoveredVersion = new LegacyVersion(result);
         patches.put(discoveredVersion, mapList);
     }
 
@@ -140,7 +140,7 @@ public class Patcher {
             log.debug(logPrefix + "gets the latest version '" + patches.lastKey() + "' set.");
             setConfigVersion(config, patches.lastKey());
         } else {
-            final Version version = getConfigVersion(configVersionString);
+            final LegacyVersion version = getConfigVersion(configVersionString);
             if (version != null && !VERSION_COMPARATOR.isOlderThan(version, patches.lastEntry().getKey())) {
                 log.debug(logPrefix + "is already up to date.");
             } else {
@@ -156,10 +156,10 @@ public class Patcher {
         }
     }
 
-    private void patch(@Nullable final Version version, final Configuration config) {
+    private void patch(@Nullable final LegacyVersion version, final Configuration config) {
         boolean noErrors = true;
-        final NavigableMap<Version, List<Map<?, ?>>> actualPatches = version == null ? patches : patches.tailMap(version, false);
-        for (final Map.Entry<Version, List<Map<?, ?>>> patch : actualPatches.entrySet()) {
+        final NavigableMap<LegacyVersion, List<Map<?, ?>>> actualPatches = version == null ? patches : patches.tailMap(version, false);
+        for (final Map.Entry<LegacyVersion, List<Map<?, ?>>> patch : actualPatches.entrySet()) {
             log.info("Applying patches to update to '" + patch.getKey() + "'...");
             setConfigVersion(config, patch.getKey());
             if (!applyPatch(config, patch.getValue())) {
@@ -176,11 +176,11 @@ public class Patcher {
     }
 
     @Nullable
-    private Version getConfigVersion(@Nullable final String configVersion) {
+    private LegacyVersion getConfigVersion(@Nullable final String configVersion) {
         if (configVersion == null || configVersion.isEmpty()) {
             return null;
         }
-        return new Version(configVersion);
+        return new LegacyVersion(configVersion);
     }
 
     private boolean applyPatch(final ConfigurationSection config, final List<Map<?, ?>> patchData) {
@@ -210,7 +210,7 @@ public class Patcher {
         return patchTransformer;
     }
 
-    private void setConfigVersion(final ConfigurationSection config, final Version newVersion) {
+    private void setConfigVersion(final ConfigurationSection config, final LegacyVersion newVersion) {
         config.set(CONFIG_VERSION_PATH, newVersion.getVersion());
         config.setInlineComments(CONFIG_VERSION_PATH, List.of(VERSION_CONFIG_COMMENT));
     }

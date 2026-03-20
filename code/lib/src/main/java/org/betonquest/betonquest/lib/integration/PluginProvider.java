@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.lib.integration;
 
-import org.betonquest.betonquest.lib.versioning.Version;
+import org.betonquest.betonquest.lib.versioning.LegacyVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -79,16 +79,16 @@ public interface PluginProvider {
     Optional<Plugin> plugin();
 
     /**
-     * Returns the plugin's version as a {@link Version} object.
+     * Returns the plugin's version as a {@link LegacyVersion} object.
      * <p>
      * This method extracts the version string from the plugin's description and parses it
-     * into a {@link Version} object for easier version comparison.
+     * into a {@link LegacyVersion} object for easier version comparison.
      *
      * @return an {@link Optional} containing the plugin version if the plugin is present,
      * empty otherwise
      */
-    default Optional<Version> version() {
-        return plugin().map(plugin -> new Version(plugin.getDescription().getVersion()));
+    default Optional<LegacyVersion> version() {
+        return plugin().map(plugin -> new LegacyVersion(plugin.getDescription().getVersion()));
     }
 
     /**

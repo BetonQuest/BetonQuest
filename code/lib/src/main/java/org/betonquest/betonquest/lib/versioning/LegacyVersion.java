@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
  * A qualifier or a qualifier with a build number is read in this class and can be compared.
  */
 @SuppressWarnings("NullAway")
-public class Version {
+public class LegacyVersion {
 
     /**
      * Regex for the qualifier and the build number.
@@ -47,7 +47,7 @@ public class Version {
      * @param versionString The raw version string
      */
     @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
-    public Version(final String versionString) {
+    public LegacyVersion(final String versionString) {
         this.artifactVersion = new DefaultArtifactVersion(versionString);
 
         String qualifier = null;
@@ -151,7 +151,7 @@ public class Version {
         if (other == null || getClass() != other.getClass()) {
             return false;
         }
-        final Version version = (Version) other;
+        final LegacyVersion version = (LegacyVersion) other;
         return artifactVersion.equals(version.artifactVersion) && Objects.equals(qualifier, version.qualifier) && Objects.equals(buildNumber, version.buildNumber);
     }
 
@@ -172,7 +172,7 @@ public class Version {
      * @param other      the other version to compare to
      * @return true if this version is newer than the other version
      */
-    public boolean isNewerThan(final Comparator<Version> comparator, final Version other) {
+    public boolean isNewerThan(final Comparator<LegacyVersion> comparator, final LegacyVersion other) {
         return comparator.compare(this, other) > 0;
     }
 
@@ -184,7 +184,7 @@ public class Version {
      * @param other      the other version to compare to
      * @return true if this version is compatible with the other version
      */
-    public boolean isCompatibleWith(final Comparator<Version> comparator, final Version other) {
+    public boolean isCompatibleWith(final Comparator<LegacyVersion> comparator, final LegacyVersion other) {
         return comparator.compare(this, other) >= 0;
     }
 
@@ -195,7 +195,7 @@ public class Version {
      * @param other      the other version to compare to
      * @return true if this version is older than the other version
      */
-    public boolean isOlderThan(final Comparator<Version> comparator, final Version other) {
+    public boolean isOlderThan(final Comparator<LegacyVersion> comparator, final LegacyVersion other) {
         return comparator.compare(this, other) < 0;
     }
 }

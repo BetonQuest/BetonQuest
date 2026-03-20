@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.web.updater;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.lib.versioning.LegacyVersion;
 import org.betonquest.betonquest.lib.versioning.UpdateStrategy;
-import org.betonquest.betonquest.lib.versioning.Version;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Locale;
@@ -41,7 +41,7 @@ public class UpdaterConfig {
     /**
      * The current installed version.
      */
-    private final Version current;
+    private final LegacyVersion current;
 
     /**
      * True if the updater is enabled.
@@ -73,10 +73,10 @@ public class UpdaterConfig {
      *
      * @param log          the logger that will be used for logging
      * @param config       the {@link ConfigurationSection} that contains the updater settings
-     * @param current      the current {@link Version} of the plugin
+     * @param current      the current {@link LegacyVersion} of the plugin
      * @param devIndicator the string qualifier that represents dev versions
      */
-    public UpdaterConfig(final BetonQuestLogger log, final ConfigurationSection config, final Version current, final String devIndicator) {
+    public UpdaterConfig(final BetonQuestLogger log, final ConfigurationSection config, final LegacyVersion current, final String devIndicator) {
         this.log = log;
         this.config = config;
         this.current = current;
