@@ -7,9 +7,9 @@ import org.betonquest.betonquest.api.common.function.QuestRunnable;
 import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.lib.versioning.MinecraftVersion;
+import org.betonquest.betonquest.lib.versioning.LegacyMinecraftVersion;
+import org.betonquest.betonquest.lib.versioning.LegacyVersion;
 import org.betonquest.betonquest.lib.versioning.UpdateStrategy;
-import org.betonquest.betonquest.lib.versioning.Version;
 import org.betonquest.betonquest.lib.versioning.VersionComparator;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -92,7 +92,7 @@ public class IntegrationManager {
      * @throws IllegalStateException if called after {@link #postEnable(BetonQuestApiService)}
      */
     public void register(final Supplier<Integration> integration, final PluginProvider integratedPluginProvider,
-                         final Plugin integratorPlugin, @Nullable final Version minimalVersion) {
+                         final Plugin integratorPlugin, @Nullable final LegacyVersion minimalVersion) {
         final IntegrationWrapper integrationWrapper = new IntegrationWrapper(loggerFactory.create(IntegrationWrapper.class),
                 Suppliers.memoize(integration::get), integratedPluginProvider, integratorPlugin, minimalVersion, new AtomicBoolean(false));
         if (currentState == ManagerState.POST_ENABLED) {
@@ -192,7 +192,7 @@ public class IntegrationManager {
     private record IntegrationWrapper(BetonQuestLogger logger, Supplier<Integration> integration,
                                       PluginProvider integratedPluginProvider,
                                       Plugin integratorPlugin,
-                                      @Nullable Version minimalVersion,
+                                      @Nullable LegacyVersion minimalVersion,
                                       AtomicBoolean enabled) {
 
         /**
@@ -243,7 +243,7 @@ public class IntegrationManager {
             if (minimalVersion == null) {
                 return true;
             }
-            final Version actualVersion = isVanillaIntegration() ? new MinecraftVersion() : integratedPluginProvider.version().orElseThrow();
+            final LegacyVersion actualVersion = isVanillaIntegration() ? new LegacyMinecraftVersion() : integratedPluginProvider.version().orElseThrow();
             final boolean compatible = actualVersion.isCompatibleWith(new VersionComparator(UpdateStrategy.MAJOR), minimalVersion);
             if (!compatible) {
                 logger.debug("Integration provided by plugin '%s' is not compatible with the current version. [%s < %s]"

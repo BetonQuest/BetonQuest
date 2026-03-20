@@ -4,7 +4,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.lib.versioning.Version;
+import org.betonquest.betonquest.lib.versioning.LegacyVersion;
 import org.betonquest.betonquest.util.scheduler.BukkitSchedulerMock;
 import org.bukkit.entity.Player;
 import org.junit.jupiter.api.Test;
@@ -31,12 +31,12 @@ class UpdaterTest {
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testUpdateAvailable() {
-        final Version version = new Version("2.0.0-DEV-3");
+        final LegacyVersion version = new LegacyVersion("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final BetonQuest plugin = mock(BetonQuest.class);
         final InstantSource instantSource = InstantSource.system();
 
-        when(handler.searchUpdate(any(), any(), any())).thenReturn(Pair.of(new Version("2.0.0-DEV-5"), "https://betonquest.org"));
+        when(handler.searchUpdate(any(), any(), any())).thenReturn(Pair.of(new LegacyVersion("2.0.0-DEV-5"), "https://betonquest.org"));
 
         final UpdaterConfigTest.Input patchDev = new UpdaterConfigTest.Input(null, true, false, "PATCH_DEV", false);
         final UpdaterConfig updaterConfig = UpdaterConfigTest.getMockedConfig(logger, patchDev, version);
@@ -55,12 +55,12 @@ class UpdaterTest {
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testNoUpdateAvailable() {
-        final Version version = new Version("2.0.0-DEV-3");
+        final LegacyVersion version = new LegacyVersion("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final BetonQuest plugin = mock(BetonQuest.class);
         final InstantSource instantSource = InstantSource.system();
 
-        when(handler.searchUpdate(any(), any(), any())).thenReturn(Pair.of(new Version("2.0.0-DEV-3"), null));
+        when(handler.searchUpdate(any(), any(), any())).thenReturn(Pair.of(new LegacyVersion("2.0.0-DEV-3"), null));
 
         final UpdaterConfigTest.Input patchDev = new UpdaterConfigTest.Input(null, true, false, "PATCH_DEV", false);
         final UpdaterConfig updaterConfig = UpdaterConfigTest.getMockedConfig(logger, patchDev, version);
@@ -77,13 +77,13 @@ class UpdaterTest {
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testUpdate() {
-        final Version version = new Version("2.0.0-DEV-3");
+        final LegacyVersion version = new LegacyVersion("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final UpdateDownloader downloader = mock(UpdateDownloader.class);
         final BetonQuest plugin = mock(BetonQuest.class);
         final InstantSource instantSource = InstantSource.system();
 
-        final Version newVersion = new Version("2.0.0-DEV-5");
+        final LegacyVersion newVersion = new LegacyVersion("2.0.0-DEV-5");
         when(handler.searchUpdate(any(), eq(version), any())).thenReturn(Pair.of(newVersion, "https://betonquest.org"));
         when(handler.searchUpdate(any(), eq(newVersion), any())).thenReturn(Pair.of(newVersion, null));
 
@@ -120,13 +120,13 @@ class UpdaterTest {
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testUpdateAutomatic() {
-        final Version version = new Version("2.0.0-DEV-3");
+        final LegacyVersion version = new LegacyVersion("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final UpdateDownloader downloader = mock(UpdateDownloader.class);
         final BetonQuest plugin = mock(BetonQuest.class);
         final InstantSource instantSource = InstantSource.system();
 
-        final Version newVersion = new Version("2.0.0-DEV-5");
+        final LegacyVersion newVersion = new LegacyVersion("2.0.0-DEV-5");
         when(handler.searchUpdate(any(), eq(version), any())).thenReturn(Pair.of(newVersion, "https://betonquest.org"));
         when(handler.searchUpdate(any(), eq(newVersion), any())).thenReturn(Pair.of(newVersion, null));
 
@@ -159,12 +159,12 @@ class UpdaterTest {
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testUpdateAvailableSearchAgain() {
-        final Version version = new Version("2.0.0-DEV-3");
+        final LegacyVersion version = new LegacyVersion("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final BetonQuest plugin = mock(BetonQuest.class);
         final InstantSource instantSource = InstantSource.system();
 
-        when(handler.searchUpdate(any(), any(), any())).thenReturn(Pair.of(new Version("2.0.0-DEV-5"), "https://betonquest.org"));
+        when(handler.searchUpdate(any(), any(), any())).thenReturn(Pair.of(new LegacyVersion("2.0.0-DEV-5"), "https://betonquest.org"));
 
         final UpdaterConfigTest.Input patchDev = new UpdaterConfigTest.Input(null, true, false, "PATCH_DEV", false);
         final UpdaterConfig updaterConfig = UpdaterConfigTest.getMockedConfig(logger, patchDev, version);
@@ -191,12 +191,12 @@ class UpdaterTest {
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testUpdateWithInvalidUrl() {
-        final Version version = new Version("2.0.0-DEV-3");
+        final LegacyVersion version = new LegacyVersion("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final BetonQuest plugin = mock(BetonQuest.class);
         final InstantSource instantSource = InstantSource.system();
 
-        final Version newVersion = new Version("2.0.0-DEV-5");
+        final LegacyVersion newVersion = new LegacyVersion("2.0.0-DEV-5");
         when(handler.searchUpdate(any(), eq(version), any())).thenReturn(Pair.of(newVersion, "betonquest"));
         when(handler.searchUpdate(any(), eq(newVersion), any())).thenReturn(Pair.of(newVersion, null));
 
@@ -220,15 +220,15 @@ class UpdaterTest {
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testUpdateSearchAgain() {
-        final Version version = new Version("2.0.0-DEV-3");
+        final LegacyVersion version = new LegacyVersion("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final UpdateDownloader downloader = mock(UpdateDownloader.class);
         final BetonQuest plugin = mock(BetonQuest.class);
         final InstantSource instantSource = InstantSource.system();
 
-        final Version newVersion = new Version("2.0.0-DEV-5");
+        final LegacyVersion newVersion = new LegacyVersion("2.0.0-DEV-5");
         when(handler.searchUpdate(any(), eq(version), any())).thenReturn(Pair.of(newVersion, "https://betonquest.org/5"));
-        when(handler.searchUpdate(any(), eq(newVersion), any())).thenReturn(Pair.of(new Version("2.0.0-DEV-6"), "https://betonquest.org/6"));
+        when(handler.searchUpdate(any(), eq(newVersion), any())).thenReturn(Pair.of(new LegacyVersion("2.0.0-DEV-6"), "https://betonquest.org/6"));
 
         final UpdaterConfigTest.Input patchDev = new UpdaterConfigTest.Input(null, true, true, "PATCH_DEV", false);
         final UpdaterConfig updaterConfig = UpdaterConfigTest.getMockedConfig(logger, patchDev, version);
@@ -255,13 +255,13 @@ class UpdaterTest {
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testUpdateWithoutAvailable() {
-        final Version version = new Version("2.0.0-DEV-3");
+        final LegacyVersion version = new LegacyVersion("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final UpdateDownloader downloader = mock(UpdateDownloader.class);
         final BetonQuest plugin = mock(BetonQuest.class);
         final InstantSource instantSource = InstantSource.system();
 
-        when(handler.searchUpdate(any(), any(), any())).thenReturn(Pair.of(new Version("2.0.0-DEV-3"), null));
+        when(handler.searchUpdate(any(), any(), any())).thenReturn(Pair.of(new LegacyVersion("2.0.0-DEV-3"), null));
 
         final UpdaterConfigTest.Input patchDev = new UpdaterConfigTest.Input(null, true, false, "PATCH_DEV", false);
         final UpdaterConfig updaterConfig = UpdaterConfigTest.getMockedConfig(logger, patchDev, version);
@@ -286,13 +286,13 @@ class UpdaterTest {
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testUpdateAlreadyDownloaded() {
-        final Version version = new Version("2.0.0-DEV-3");
+        final LegacyVersion version = new LegacyVersion("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final UpdateDownloader downloader = mock(UpdateDownloader.class);
         final BetonQuest plugin = mock(BetonQuest.class);
         final InstantSource instantSource = InstantSource.system();
 
-        when(handler.searchUpdate(any(), any(), any())).thenReturn(Pair.of(new Version("2.0.0-DEV-3"), null));
+        when(handler.searchUpdate(any(), any(), any())).thenReturn(Pair.of(new LegacyVersion("2.0.0-DEV-3"), null));
         when(downloader.alreadyDownloaded()).thenReturn(true);
 
         final UpdaterConfigTest.Input patchDev = new UpdaterConfigTest.Input(null, true, false, "PATCH_DEV", false);
@@ -318,7 +318,7 @@ class UpdaterTest {
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testUpdateWithDisabled() {
-        final Version version = new Version("2.0.0-DEV-3");
+        final LegacyVersion version = new LegacyVersion("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final BetonQuest plugin = mock(BetonQuest.class);
         final InstantSource instantSource = InstantSource.system();

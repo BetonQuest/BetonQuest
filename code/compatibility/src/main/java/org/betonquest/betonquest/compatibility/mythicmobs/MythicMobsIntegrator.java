@@ -23,8 +23,8 @@ import org.betonquest.betonquest.compatibility.mythicmobs.npc.MythicMobsInteract
 import org.betonquest.betonquest.compatibility.mythicmobs.npc.MythicMobsNpcFactory;
 import org.betonquest.betonquest.compatibility.mythicmobs.npc.MythicMobsReverseIdentifier;
 import org.betonquest.betonquest.compatibility.mythicmobs.objective.MythicMobKillObjectiveFactory;
+import org.betonquest.betonquest.lib.versioning.LegacyVersion;
 import org.betonquest.betonquest.lib.versioning.UpdateStrategy;
-import org.betonquest.betonquest.lib.versioning.Version;
 import org.betonquest.betonquest.lib.versioning.VersionComparator;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -99,9 +99,9 @@ public class MythicMobsIntegrator implements Integrator {
         final Plugin mythicMobs = Bukkit.getPluginManager().getPlugin("MythicMobs");
         final String versionWithCommit = mythicMobs.getDescription().getVersion();
         final String[] parts = versionWithCommit.split("-");
-        final Version mythicMobsVersion = new Version(parts[0]);
+        final LegacyVersion mythicMobsVersion = new LegacyVersion(parts[0]);
         final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR, "-");
-        if (comparator.isOlderThan(mythicMobsVersion, new Version("5.0.0"))) {
+        if (comparator.isOlderThan(mythicMobsVersion, new LegacyVersion("5.0.0"))) {
             throw new UnsupportedVersionException(mythicMobs, "5.0.0+");
         }
     }

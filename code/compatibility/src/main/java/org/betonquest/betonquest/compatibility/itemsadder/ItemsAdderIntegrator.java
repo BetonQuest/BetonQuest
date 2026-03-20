@@ -15,8 +15,8 @@ import org.betonquest.betonquest.compatibility.itemsadder.item.ItemsAdderItemFac
 import org.betonquest.betonquest.compatibility.itemsadder.item.ItemsAdderQuestItemSerializer;
 import org.betonquest.betonquest.compatibility.itemsadder.objective.IABlockBreakObjectiveFactory;
 import org.betonquest.betonquest.compatibility.itemsadder.objective.IABlockPlaceObjectiveFactory;
+import org.betonquest.betonquest.lib.versioning.LegacyVersion;
 import org.betonquest.betonquest.lib.versioning.UpdateStrategy;
-import org.betonquest.betonquest.lib.versioning.Version;
 import org.betonquest.betonquest.lib.versioning.VersionComparator;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -75,9 +75,9 @@ public class ItemsAdderIntegrator implements Integrator {
      */
     private void validateVersion() throws UnsupportedVersionException {
         final Plugin itemsAdder = Bukkit.getPluginManager().getPlugin("ItemsAdder");
-        final Version itemsAdderVersion = new Version(itemsAdder.getDescription().getVersion());
+        final LegacyVersion itemsAdderVersion = new LegacyVersion(itemsAdder.getDescription().getVersion());
         final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR);
-        if (comparator.isOlderThan(itemsAdderVersion, new Version("4.0.10"))) {
+        if (comparator.isOlderThan(itemsAdderVersion, new LegacyVersion("4.0.10"))) {
             throw new UnsupportedVersionException(itemsAdder, "4.0.10+");
         }
     }

@@ -9,8 +9,8 @@ import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.UnsupportedVersionException;
 import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
+import org.betonquest.betonquest.lib.versioning.LegacyVersion;
 import org.betonquest.betonquest.lib.versioning.UpdateStrategy;
-import org.betonquest.betonquest.lib.versioning.Version;
 import org.betonquest.betonquest.lib.versioning.VersionComparator;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -46,9 +46,9 @@ public class ZNPCsPlusIntegrator implements Integrator {
 
     private void validateVersion() throws UnsupportedVersionException {
         final Plugin plugin = Bukkit.getPluginManager().getPlugin(PREFIX);
-        final Version currentVersion = new Version(plugin.getDescription().getVersion());
+        final LegacyVersion currentVersion = new LegacyVersion(plugin.getDescription().getVersion());
         final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR, "SNAPSHOT-");
-        if (comparator.isOlderThan(new Version("2.1.0-SNAPSHOT"), currentVersion)) {
+        if (comparator.isOlderThan(new LegacyVersion("2.1.0-SNAPSHOT"), currentVersion)) {
             throw new UnsupportedVersionException(plugin, "2.1.0-SNAPSHOT+");
         }
     }

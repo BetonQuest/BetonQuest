@@ -3,7 +3,7 @@ package org.betonquest.betonquest.web.updater.source.implementations;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import org.betonquest.betonquest.lib.versioning.Version;
+import org.betonquest.betonquest.lib.versioning.LegacyVersion;
 import org.betonquest.betonquest.web.ContentSource;
 import org.betonquest.betonquest.web.WebContentSource;
 import org.betonquest.betonquest.web.updater.source.DevelopmentUpdateSource;
@@ -102,7 +102,7 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
     }
 
     @Override
-    public Map<Version, String> getReleaseVersions(final Version currentVersion) throws IOException {
+    public Map<LegacyVersion, String> getReleaseVersions(final LegacyVersion currentVersion) throws IOException {
         return getVersions((versionStringMap, version, downloadUrl) -> {
             if (doVersionsEqual(version, currentVersion)) {
                 return false;
@@ -113,7 +113,7 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
     }
 
     @Override
-    public Map<Version, String> getDevelopmentVersions(final Version currentVersion) throws IOException {
+    public Map<LegacyVersion, String> getDevelopmentVersions(final LegacyVersion currentVersion) throws IOException {
         return getVersions((versions, version, downloadUrl) -> {
             if (versions.keySet().stream().anyMatch(v -> doVersionsEqual(version, v))) {
                 return true;
@@ -121,15 +121,15 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
             final String pomXml = contentSource.get(new URL(downloadUrl.replace("-shaded.jar", ".pom")));
             final Matcher matcher = POM_PATTERN.matcher(pomXml);
             if (matcher.find()) {
-                final Version pomVersion = new Version(matcher.group("version"));
+                final LegacyVersion pomVersion = new LegacyVersion(matcher.group("version"));
                 versions.put(pomVersion, downloadUrl);
             }
             return !doVersionsEqual(version, currentVersion);
         }, true);
     }
 
-    private Map<Version, String> getVersions(final VersionConsumer consumer, final boolean prereleases) throws IOException {
-        final Map<Version, String> versions = new HashMap<>();
+    private Map<LegacyVersion, String> getVersions(final VersionConsumer consumer, final boolean prereleases) throws IOException {
+        final Map<LegacyVersion, String> versions = new HashMap<>();
 
         String continuationToken = "";
         while (continuationToken != null) {
@@ -139,7 +139,7 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
             for (int index = 0; index < items.size(); index++) {
                 final JsonObject entry = items.get(index).getAsJsonObject();
                 final JsonObject maven = entry.get("maven2").getAsJsonObject();
-                final Version version = new Version(maven.get("version").getAsString());
+                final LegacyVersion version = new LegacyVersion(maven.get("version").getAsString());
                 final String downloadUrl = entry.get("downloadUrl").getAsString();
                 if (!consumer.consume(versions, version, downloadUrl)) {
                     return versions;
@@ -151,7 +151,7 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
         return versions;
     }
 
-    private boolean doVersionsEqual(final Version first, final Version second) {
+    private boolean doVersionsEqual(final LegacyVersion first, final LegacyVersion second) {
         return first.getMajorVersion() == second.getMajorVersion()
                 && first.getMinorVersion() == second.getMinorVersion()
                 && first.getPatchVersion() == second.getPatchVersion();
@@ -171,6 +171,6 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
          * @param downloadUrl the downloadUrl
          * @return true if the search should be continued, false otherwise
          */
-        boolean consume(Map<Version, String> versions, Version version, String downloadUrl) throws IOException;
+        boolean consume(Map<LegacyVersion, String> versions, LegacyVersion version, String downloadUrl) throws IOException;
     }
 }

@@ -5,9 +5,9 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.compatibility.holograms.HologramIntegrator;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
-import org.betonquest.betonquest.lib.versioning.MinecraftVersion;
+import org.betonquest.betonquest.lib.versioning.LegacyMinecraftVersion;
+import org.betonquest.betonquest.lib.versioning.LegacyVersion;
 import org.betonquest.betonquest.lib.versioning.UpdateStrategy;
-import org.betonquest.betonquest.lib.versioning.Version;
 import org.betonquest.betonquest.lib.versioning.VersionComparator;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -56,7 +56,7 @@ public class Compatibility implements Listener {
      * Integrations requiring a specific Minecraft version.
      * The key is the version string, the value data containing all integration factories and instances from it.
      */
-    private final NavigableMap<Version, List<VanillaIntegrationData>> vanillaData = new TreeMap<>(new VersionComparator(UpdateStrategy.MAJOR));
+    private final NavigableMap<LegacyVersion, List<VanillaIntegrationData>> vanillaData = new TreeMap<>(new VersionComparator(UpdateStrategy.MAJOR));
 
     /**
      * A map of plugin names and their integration data.
@@ -96,7 +96,7 @@ public class Compatibility implements Listener {
      * Integrate plugins.
      */
     public void init() {
-        vanillaData.headMap(new MinecraftVersion(), true).forEach((version, dataList) -> {
+        vanillaData.headMap(new LegacyMinecraftVersion(), true).forEach((version, dataList) -> {
             log.info("Integrating into Minecraft " + version);
             dataList.forEach(VanillaIntegrationData::integrate);
         });
@@ -245,7 +245,7 @@ public class Compatibility implements Listener {
     public void registerVanilla(final String version, final IntegratorFactory integrator) {
         final VanillaIntegrationData data = new VanillaIntegrationData(version, integrator);
         betonQuestSource.dataList.add(data);
-        vanillaData.computeIfAbsent(new Version(version), ignored -> new ArrayList<>()).add(data);
+        vanillaData.computeIfAbsent(new LegacyVersion(version), ignored -> new ArrayList<>()).add(data);
     }
 
     /**

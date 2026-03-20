@@ -3,7 +3,7 @@ package org.betonquest.betonquest.config.patcher.migration;
 import org.betonquest.betonquest.config.quest.QuestFixture;
 import org.betonquest.betonquest.lib.config.patcher.migration.SettableVersion;
 import org.betonquest.betonquest.lib.config.quest.Quest;
-import org.betonquest.betonquest.lib.versioning.Version;
+import org.betonquest.betonquest.lib.versioning.LegacyVersion;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +34,7 @@ class SettableVersionTest extends QuestFixture {
 
     @Test
     void test_version_present() throws IOException, InvalidConfigurationException {
-        final Version presentVersion = new Version("2.3.4-QUEST-5");
+        final LegacyVersion presentVersion = new LegacyVersion("2.3.4-QUEST-5");
         original.set(PACKAGE_VERSION, presentVersion.getVersion());
         final Quest quest = setupQuest();
         final SettableVersion version = new SettableVersion("1.2.3-QUEST-4");

@@ -31,9 +31,9 @@ import org.betonquest.betonquest.conversation.menu.input.ConversationAction;
 import org.betonquest.betonquest.conversation.menu.input.ConversationSession;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.kernel.registry.feature.InterceptorRegistry;
-import org.betonquest.betonquest.lib.versioning.MinecraftVersion;
+import org.betonquest.betonquest.lib.versioning.LegacyMinecraftVersion;
+import org.betonquest.betonquest.lib.versioning.LegacyVersion;
 import org.betonquest.betonquest.lib.versioning.UpdateStrategy;
-import org.betonquest.betonquest.lib.versioning.Version;
 import org.betonquest.betonquest.lib.versioning.VersionComparator;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -53,7 +53,7 @@ public class PacketEventsIntegrator implements Integrator {
      */
     // TODO version switch:
     //  Remove this code when only 1.19.0+ is supported
-    public static final Function<Component, PacketWrapper<?>> MESSAGE_FUNCTION = new MinecraftVersion().isCompatibleWith("1.19.0")
+    public static final Function<Component, PacketWrapper<?>> MESSAGE_FUNCTION = new LegacyMinecraftVersion().isCompatibleWith("1.19.0")
             ? message -> new WrapperPlayServerSystemChatMessage(false, message)
             : message -> new WrapperPlayServerChatMessage(new ChatMessage_v1_16(message,
             ChatTypes.CHAT, new UUID(0L, 0L)));
@@ -68,9 +68,9 @@ public class PacketEventsIntegrator implements Integrator {
     public void hook(final BetonQuestApi api) throws HookException {
         final PluginManager pluginManager = Bukkit.getPluginManager();
         final Plugin packetEvents = pluginManager.getPlugin("packetevents");
-        final Version packetEventsVersion = new Version(packetEvents.getDescription().getVersion());
+        final LegacyVersion packetEventsVersion = new LegacyVersion(packetEvents.getDescription().getVersion());
         final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR);
-        if (comparator.isOlderThan(packetEventsVersion, new Version("2.9.5"))) {
+        if (comparator.isOlderThan(packetEventsVersion, new LegacyVersion("2.9.5"))) {
             throw new UnsupportedVersionException(packetEvents, "2.9.5");
         }
 
