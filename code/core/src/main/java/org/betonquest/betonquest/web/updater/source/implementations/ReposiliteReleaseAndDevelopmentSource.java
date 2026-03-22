@@ -3,7 +3,7 @@ package org.betonquest.betonquest.web.updater.source.implementations;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import org.betonquest.betonquest.lib.versioning.Version;
+import org.betonquest.betonquest.lib.versioning.LegacyVersion;
 import org.betonquest.betonquest.web.ContentSource;
 import org.betonquest.betonquest.web.WebContentSource;
 import org.betonquest.betonquest.web.updater.source.DevelopmentUpdateSource;
@@ -78,17 +78,17 @@ public class ReposiliteReleaseAndDevelopmentSource implements ReleaseUpdateSourc
     }
 
     @Override
-    public Map<Version, String> getReleaseVersions(final Version currentVersion) throws IOException {
+    public Map<LegacyVersion, String> getReleaseVersions(final LegacyVersion currentVersion) throws IOException {
         return getVersions(currentVersion, RELEASE_FILTER);
     }
 
     @Override
-    public Map<Version, String> getDevelopmentVersions(final Version currentVersion) throws IOException {
+    public Map<LegacyVersion, String> getDevelopmentVersions(final LegacyVersion currentVersion) throws IOException {
         return getVersions(currentVersion, SNAPSHOT_FILTER);
     }
 
-    private Map<Version, String> getVersions(final Version currentVersion, final String filter) throws IOException {
-        final Map<Version, String> versions = new HashMap<>();
+    private Map<LegacyVersion, String> getVersions(final LegacyVersion currentVersion, final String filter) throws IOException {
+        final Map<LegacyVersion, String> versions = new HashMap<>();
         final String url = reposiliteUrl + String.format(SEARCH_URL, pomMapperId, getAdjustedVersion(currentVersion)) + filter;
         final JsonArray items = gson.fromJson(contentSource.get(new URL(url)), JsonArray.class);
         items.forEach(item -> {
@@ -113,13 +113,13 @@ public class ReposiliteReleaseAndDevelopmentSource implements ReleaseUpdateSourc
                 return;
             }
             final String pluginVersion = entries.get("pluginVersion").getAsString();
-            versions.put(new Version(pluginVersion),
+            versions.put(new LegacyVersion(pluginVersion),
                     reposiliteUrl + "/" + repository + "/" + downloadPath.replace(".jar", "-shaded.jar"));
         });
         return versions;
     }
 
-    private String getAdjustedVersion(final Version currentVersion) {
+    private String getAdjustedVersion(final LegacyVersion currentVersion) {
         if (!currentVersion.hasQualifier() && !currentVersion.hasBuildNumber()) {
             return currentVersion.toString();
         }

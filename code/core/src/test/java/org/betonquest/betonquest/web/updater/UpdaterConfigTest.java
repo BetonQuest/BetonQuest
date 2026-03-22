@@ -2,8 +2,8 @@ package org.betonquest.betonquest.web.updater;
 
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.lib.versioning.LegacyVersion;
 import org.betonquest.betonquest.lib.versioning.UpdateStrategy;
-import org.betonquest.betonquest.lib.versioning.Version;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -44,14 +44,14 @@ final class UpdaterConfigTest {
     private static final String MAJOR = "MAJOR";
 
     /**
-     * 2.0.0 {@link Version}.
+     * 2.0.0 {@link LegacyVersion}.
      */
-    private static final Version VERSION1 = new Version("2.0.0");
+    private static final LegacyVersion VERSION1 = new LegacyVersion("2.0.0");
 
     /**
-     * 2.0.0-DEV-1 {@link Version}.
+     * 2.0.0-DEV-1 {@link LegacyVersion}.
      */
-    private static final Version VERSION2 = new Version("2.0.0-DEV-1");
+    private static final LegacyVersion VERSION2 = new LegacyVersion("2.0.0-DEV-1");
 
     /**
      * DEV indicator for versions.
@@ -171,7 +171,7 @@ final class UpdaterConfigTest {
     }
 
     /* default */
-    static UpdaterConfig getMockedConfig(final BetonQuestLogger logger, final Input input, final Version version) {
+    static UpdaterConfig getMockedConfig(final BetonQuestLogger logger, final Input input, final LegacyVersion version) {
         final ConfigAccessor config = mock(ConfigAccessor.class);
         when(config.getBoolean("updater.enabled", true)).thenReturn(input.enabled);
         when(config.getBoolean("updater.ingame_notification", true)).thenReturn(input.ingameNotification);
@@ -206,7 +206,7 @@ final class UpdaterConfigTest {
      * @param strategy           strategy
      * @param automatic          automatic
      */
-    /* default */ record Input(Version version, boolean enabled, boolean ingameNotification, String strategy,
+    /* default */ record Input(LegacyVersion version, boolean enabled, boolean ingameNotification, String strategy,
                                boolean automatic) {
 
     }

@@ -6,8 +6,8 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.UnsupportedVersionException;
+import org.betonquest.betonquest.lib.versioning.LegacyVersion;
 import org.betonquest.betonquest.lib.versioning.UpdateStrategy;
-import org.betonquest.betonquest.lib.versioning.Version;
 import org.betonquest.betonquest.lib.versioning.VersionComparator;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -107,9 +107,9 @@ public abstract class HologramIntegrator implements Integrator, Comparable<Holog
     public void hook(final BetonQuestApi api) throws HookException {
         plugin = Bukkit.getPluginManager().getPlugin(pluginName);
         if (plugin != null) {
-            final Version version = new Version(plugin.getDescription().getVersion());
+            final LegacyVersion version = new LegacyVersion(plugin.getDescription().getVersion());
             final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR, qualifiers);
-            if (comparator.isOlderThan(version, new Version(requiredVersion))) {
+            if (comparator.isOlderThan(version, new LegacyVersion(requiredVersion))) {
                 throw new UnsupportedVersionException(plugin, requiredVersion);
             }
         }

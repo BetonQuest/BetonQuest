@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
-import org.betonquest.betonquest.lib.versioning.MinecraftVersion;
+import org.betonquest.betonquest.lib.versioning.LegacyMinecraftVersion;
 import org.betonquest.betonquest.notify.NotifyIO;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -48,7 +48,7 @@ public class AdvancementNotifyIO extends NotifyIO {
     /**
      * Minecraft version instance.
      */
-    private final MinecraftVersion version;
+    private final LegacyMinecraftVersion version;
 
     /**
      * Create a new Advancement Notify IO.
@@ -64,7 +64,7 @@ public class AdvancementNotifyIO extends NotifyIO {
         this.plugin = plugin;
         frame = data.getOrDefault("frame", "challenge").toLowerCase(Locale.ROOT);
         icon = data.getOrDefault("icon", "minecraft:map").toLowerCase(Locale.ROOT);
-        this.version = new MinecraftVersion(plugin.getServer());
+        this.version = new LegacyMinecraftVersion(plugin.getServer());
     }
 
     private void notifyPlayerObject(final JsonElement message, final OnlineProfile onlineProfile) {

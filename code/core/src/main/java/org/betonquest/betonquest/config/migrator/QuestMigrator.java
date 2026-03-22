@@ -31,8 +31,8 @@ import org.betonquest.betonquest.lib.config.patcher.migration.QuestMigration;
 import org.betonquest.betonquest.lib.config.patcher.migration.SettableVersion;
 import org.betonquest.betonquest.lib.config.patcher.migration.VersionMissmatchException;
 import org.betonquest.betonquest.lib.config.quest.Quest;
+import org.betonquest.betonquest.lib.versioning.LegacyVersion;
 import org.betonquest.betonquest.lib.versioning.UpdateStrategy;
-import org.betonquest.betonquest.lib.versioning.Version;
 import org.betonquest.betonquest.lib.versioning.VersionComparator;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -50,7 +50,7 @@ import java.util.TreeMap;
 public class QuestMigrator {
 
     /**
-     * Comparator for {@link Version} with the qualifier QUEST.
+     * Comparator for {@link LegacyVersion} with the qualifier QUEST.
      */
     private static final VersionComparator VERSION_COMPARATOR = new VersionComparator(UpdateStrategy.MAJOR, "QUEST-");
 
@@ -94,11 +94,11 @@ public class QuestMigrator {
      */
     @VisibleForTesting
     QuestMigrator(final BetonQuestLogger log, final List<QuestMigration> legacyMigrations,
-                  final Map<Version, QuestMigration> migrations, final Version fallbackVersion) {
+                  final Map<LegacyVersion, QuestMigration> migrations, final LegacyVersion fallbackVersion) {
         this.log = log;
         this.legacyMigrations = legacyMigrations;
         this.migrations = new TreeMap<>(VERSION_COMPARATOR);
-        for (final Map.Entry<Version, QuestMigration> entry : migrations.entrySet()) {
+        for (final Map.Entry<LegacyVersion, QuestMigration> entry : migrations.entrySet()) {
             this.migrations.put(new SettableVersion(entry.getKey().getVersion()), entry.getValue());
         }
         this.fallbackVersion = new SettableVersion(fallbackVersion.getVersion());

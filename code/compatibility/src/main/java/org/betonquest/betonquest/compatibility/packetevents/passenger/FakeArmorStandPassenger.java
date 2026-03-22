@@ -19,7 +19,7 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSe
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateAttributes;
 import net.kyori.adventure.text.Component;
-import org.betonquest.betonquest.lib.versioning.MinecraftVersion;
+import org.betonquest.betonquest.lib.versioning.LegacyMinecraftVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -64,7 +64,7 @@ public class FakeArmorStandPassenger implements PacketListener, Listener {
     /**
      * The Minecraft version.
      */
-    private final MinecraftVersion version;
+    private final LegacyMinecraftVersion version;
 
     /**
      * The armor stand entity ID.
@@ -89,7 +89,7 @@ public class FakeArmorStandPassenger implements PacketListener, Listener {
         this.packetEventsAPI = packetEventsAPI;
         this.player = player;
         this.armorStandId = Bukkit.getUnsafe().nextEntityId();
-        this.version = new MinecraftVersion(plugin.getServer());
+        this.version = new LegacyMinecraftVersion(plugin.getServer());
     }
 
     /**

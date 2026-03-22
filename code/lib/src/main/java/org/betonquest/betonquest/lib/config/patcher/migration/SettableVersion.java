@@ -3,7 +3,7 @@ package org.betonquest.betonquest.lib.config.patcher.migration;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.section.multi.MultiConfiguration;
 import org.betonquest.betonquest.lib.config.quest.Quest;
-import org.betonquest.betonquest.lib.versioning.Version;
+import org.betonquest.betonquest.lib.versioning.LegacyVersion;
 import org.bukkit.configuration.InvalidConfigurationException;
 
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * A version which can also place it inside a Quest.
  */
-public class SettableVersion extends Version {
+public class SettableVersion extends LegacyVersion {
 
     /**
      * Creates a new Version.

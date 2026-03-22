@@ -2,7 +2,7 @@ package org.betonquest.betonquest.web.updater;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.lib.versioning.Version;
+import org.betonquest.betonquest.lib.versioning.LegacyVersion;
 import org.betonquest.betonquest.lib.versioning.VersionComparator;
 import org.betonquest.betonquest.web.updater.source.DevelopmentUpdateSource;
 import org.betonquest.betonquest.web.updater.source.ReleaseUpdateSource;
@@ -61,14 +61,14 @@ public class UpdateSourceHandler {
      * Development builds are only searched, if the {@link UpdaterConfig} is configured for it.
      *
      * @param config       The {@link UpdaterConfig} containing all settings
-     * @param current      The current {@link Version}
+     * @param current      The current {@link LegacyVersion}
      * @param devIndicator The version qualifier for a dev build
      * @return a par of the latest version and the corresponding download url
      */
     @VisibleForTesting
-    Pair<Version, String> searchUpdate(final UpdaterConfig config, final Version current, final String devIndicator) {
+    Pair<LegacyVersion, String> searchUpdate(final UpdaterConfig config, final LegacyVersion current, final String devIndicator) {
         final VersionComparator comparator = new VersionComparator(config.getStrategy(), devIndicator + "-");
-        Pair<Version, String> latest = Pair.of(current, null);
+        Pair<LegacyVersion, String> latest = Pair.of(current, null);
         latest = searchUpdateFor(latest, releaseHandlerList, comparator, releaseUpdateSource -> releaseUpdateSource.getReleaseVersions(current));
         if (config.isDevDownloadEnabled() && !(latest.getValue() != null && config.isForcedStrategy())) {
             latest = searchUpdateFor(latest, developmentHandlerList, comparator, developmentUpdateSource -> developmentUpdateSource.getDevelopmentVersions(current));
@@ -76,13 +76,13 @@ public class UpdateSourceHandler {
         return latest;
     }
 
-    private <T> Pair<Version, String>
-    searchUpdateFor(final Pair<Version, String> latest, final List<T> updateSources, final VersionComparator comparator,
+    private <T> Pair<LegacyVersion, String>
+    searchUpdateFor(final Pair<LegacyVersion, String> latest, final List<T> updateSources, final VersionComparator comparator,
                     final UpdateSourceConsumer<T> consumer) {
-        Pair<Version, String> currentLatest = latest;
+        Pair<LegacyVersion, String> currentLatest = latest;
         for (final T updateSource : updateSources) {
             try {
-                for (final Map.Entry<Version, String> entry : consumer.consume(updateSource).entrySet()) {
+                for (final Map.Entry<LegacyVersion, String> entry : consumer.consume(updateSource).entrySet()) {
                     if (comparator.isOlderThan(latest.getKey(), entry.getKey())) {
                         currentLatest = Pair.of(entry.getKey(), entry.getValue());
                     }
@@ -114,6 +114,6 @@ public class UpdateSourceHandler {
          * @return the function result
          * @throws IOException when there is something wrong during this operation.
          */
-        Map<Version, String> consume(T updateSource) throws IOException;
+        Map<LegacyVersion, String> consume(T updateSource) throws IOException;
     }
 }
