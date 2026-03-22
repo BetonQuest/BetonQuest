@@ -6,7 +6,8 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.lib.versioning.Version;
+import org.betonquest.betonquest.lib.integration.PluginProvider;
+import org.betonquest.betonquest.lib.integration.policy.Policies;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerExtension;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -23,6 +24,7 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Set;
 import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,13 +34,13 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class IntegrationManagerTest {
 
-    private static final Version PLUGIN_VERSION = new Version("2.0.0");
+    private static final String PLUGIN_VERSION = "2.0.0";
 
-    private static final Version INVALID_PLUGIN_VERSION = new Version("3.0.0");
+    private static final String INVALID_PLUGIN_VERSION = "3.0.0";
 
-    private static final Version MINECRAFT_VERSION = new Version("1.18.2");
+    private static final String MINECRAFT_VERSION = "1.18.2";
 
-    private static final Version INVALID_MINECRAFT_VERSION = new Version("1.20.4");
+    private static final String INVALID_MINECRAFT_VERSION = "1.20.4";
 
     private static ServicesManager servicesManager;
 
@@ -75,7 +77,7 @@ class IntegrationManagerTest {
     static void setupOnce() {
         servicesManager = mock(ServicesManager.class);
         final Server server = mock(Server.class);
-        lenient().when(server.getMinecraftVersion()).thenReturn(MINECRAFT_VERSION.toString());
+        lenient().when(server.getMinecraftVersion()).thenReturn(MINECRAFT_VERSION);
         bukkit = mockStatic(Bukkit.class);
         bukkit.when(Bukkit::getServicesManager).thenReturn(servicesManager);
         bukkit.when(Bukkit::getServer).thenReturn(server);
@@ -96,52 +98,52 @@ class IntegrationManagerTest {
         lenient().when(betonQuestApiService.api(any())).thenReturn(betonQuestApi);
         lenient().when(integratingPlugin.isEnabled()).thenReturn(true);
         lenient().when(integratingPlugin.getDescription()).thenReturn(descriptionFile);
-        lenient().when(descriptionFile.getVersion()).thenReturn(PLUGIN_VERSION.toString());
+        lenient().when(descriptionFile.getVersion()).thenReturn(PLUGIN_VERSION);
         pluginProvider = PluginProvider.forInstance(integratingPlugin);
     }
 
     @Test
     void valid_register_without_enable() throws QuestException {
         lenient().when(integratingPlugin.isEnabled()).thenReturn(false);
-        integrationManager.register(integrationSupplier, PluginProvider.EMPTY, integratingPlugin, null);
-        integrationManager.register(integrationSupplier, pluginProvider, integratingPlugin, null);
+        integrationManager.register(integrationSupplier, integratingPlugin, Set.of());
+        integrationManager.register(integrationSupplier, integratingPlugin, Set.of(Policies.requirePlugin(pluginProvider)));
         integrationManager.enable(betonQuestApiService);
         verify(integration, never()).enable(betonQuestApi);
     }
 
     @Test
     void valid_register_with_automatic_enable_in_enabled_manager_state() throws QuestException {
-        integrationManager.register(integrationSupplier, PluginProvider.EMPTY, integratingPlugin, null);
+        integrationManager.register(integrationSupplier, integratingPlugin, Set.of());
         integrationManager.enable(betonQuestApiService);
         verify(integration, times(1)).enable(betonQuestApi);
-        integrationManager.register(integrationSupplier, pluginProvider, integratingPlugin, null);
+        integrationManager.register(integrationSupplier, integratingPlugin, Set.of(Policies.requirePlugin(pluginProvider)));
         verify(integration, times(2)).enable(betonQuestApi);
     }
 
     @Test
     void valid_register_with_valid_version_should_enable() throws QuestException {
-        integrationManager.register(integrationSupplier, pluginProvider, integratingPlugin, PLUGIN_VERSION);
+        integrationManager.register(integrationSupplier, integratingPlugin, Set.of(Policies.minimalPluginVersion(pluginProvider, PLUGIN_VERSION)));
         integrationManager.enable(betonQuestApiService);
         verify(integration, times(1)).enable(betonQuestApi);
     }
 
     @Test
     void valid_register_with_invalid_version_should_not_enable() throws QuestException {
-        integrationManager.register(integrationSupplier, pluginProvider, integratingPlugin, INVALID_PLUGIN_VERSION);
+        integrationManager.register(integrationSupplier, integratingPlugin, Set.of(Policies.minimalPluginVersion(pluginProvider, INVALID_PLUGIN_VERSION)));
         integrationManager.enable(betonQuestApiService);
         verify(integration, never()).enable(betonQuestApi);
     }
 
     @Test
     void valid_register_with_valid_minecraft_version_should_enable() throws QuestException {
-        integrationManager.register(integrationSupplier, PluginProvider.EMPTY, integratingPlugin, MINECRAFT_VERSION);
+        integrationManager.register(integrationSupplier, integratingPlugin, Set.of(Policies.minimalVanillaVersion(MINECRAFT_VERSION)));
         integrationManager.enable(betonQuestApiService);
         verify(integration, times(1)).enable(betonQuestApi);
     }
 
     @Test
     void valid_register_with_invalid_minecraft_version_should_not_enable() throws QuestException {
-        integrationManager.register(integrationSupplier, PluginProvider.EMPTY, integratingPlugin, INVALID_MINECRAFT_VERSION);
+        integrationManager.register(integrationSupplier, integratingPlugin, Set.of(Policies.minimalVanillaVersion(INVALID_MINECRAFT_VERSION)));
         integrationManager.enable(betonQuestApiService);
         verify(integration, never()).enable(betonQuestApi);
     }
@@ -151,7 +153,7 @@ class IntegrationManagerTest {
 
         @BeforeEach
         void setUp() {
-            integrationManager.register(integrationSupplier, pluginProvider, integratingPlugin, null);
+            integrationManager.register(integrationSupplier, integratingPlugin, Set.of(Policies.requirePlugin(pluginProvider)));
         }
 
         @Test
@@ -230,7 +232,7 @@ class IntegrationManagerTest {
 
                 @Test
                 void post_enable_should_prevent_new_registrations() {
-                    assertThrows(IllegalStateException.class, () -> integrationManager.register(integrationSupplier, pluginProvider, integratingPlugin, null));
+                    assertThrows(IllegalStateException.class, () -> integrationManager.register(integrationSupplier, integratingPlugin, Set.of(Policies.requirePlugin(pluginProvider))));
                     integrationManager.enable(betonQuestApiService);
                     verify(logger, times(1)).warn(anyString());
                 }
