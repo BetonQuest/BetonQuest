@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.lib.integration.policy;
 
 import org.betonquest.betonquest.api.integration.policy.Policy;
+import org.betonquest.betonquest.api.version.Version;
 
 /**
  * The VersionedPolicy interface represents a specialized type of {@link Policy} that enforces rules
@@ -17,13 +18,13 @@ public interface VersionedPolicy extends Policy {
     String name();
 
     /**
-     * Retrieves the version identifier associated with the policy.
+     * Retrieves the {@link Version} associated with the policy.
      * The version is typically used to enforce or evaluate conditions
      * based on versioning constraints.
      *
-     * @return the version identifier as a string
+     * @return the version identifier
      */
-    String version();
+    Version version();
 
     /**
      * Retrieves the version comparison strategy used to determine compatibility between versions.

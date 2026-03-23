@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.lib.integration.policy;
 
+import org.betonquest.betonquest.api.version.Version;
+import org.betonquest.betonquest.lib.version.VersionComparisonStrategies;
 import org.betonquest.betonquest.lib.versioning.UpdateStrategy;
-import org.betonquest.betonquest.lib.versioning.Version;
-import org.betonquest.betonquest.lib.versioning.VersionComparator;
 
 import java.util.function.BiPredicate;
 
@@ -23,14 +23,12 @@ public enum VersionCompareStrategy implements BiPredicate<Version, Version> {
     MINIMAL(">=") {
         @Override
         public boolean test(final Version actual, final Version required) {
-            return new VersionComparator(UpdateStrategy.MAJOR).isCompatibleWith(actual, required);
+            return actual.isCompatibleWith(VersionComparisonStrategies.DEFAULT, required);
         }
     },
     /**
      * A version comparison strategy that checks for an exact match between two versions.
      * This strategy considers two versions as compatible only if all their parsed components are strictly equal.
-     *
-     * @see Version#equals(Object)
      */
     EXACT("=") {
         @Override
@@ -48,7 +46,7 @@ public enum VersionCompareStrategy implements BiPredicate<Version, Version> {
     MAXIMAL("<=") {
         @Override
         public boolean test(final Version actual, final Version required) {
-            return new VersionComparator(UpdateStrategy.MAJOR).isCompatibleWith(required, actual);
+            return required.isCompatibleWith(VersionComparisonStrategies.DEFAULT, actual);
         }
     };
 

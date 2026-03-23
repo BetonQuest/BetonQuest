@@ -6,8 +6,11 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.version.Version;
 import org.betonquest.betonquest.lib.integration.PluginProvider;
 import org.betonquest.betonquest.lib.integration.policy.Policies;
+import org.betonquest.betonquest.lib.version.DefaultVersionType;
+import org.betonquest.betonquest.lib.version.VersionParser;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerExtension;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -34,9 +37,9 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class IntegrationManagerTest {
 
-    private static final String PLUGIN_VERSION = "2.0.0";
+    private static final Version PLUGIN_VERSION = VersionParser.parse(DefaultVersionType.SIMPLE_SEMANTIC_VERSION, "2.0.0");
 
-    private static final String INVALID_PLUGIN_VERSION = "3.0.0";
+    private static final Version INVALID_PLUGIN_VERSION = VersionParser.parse(DefaultVersionType.SIMPLE_SEMANTIC_VERSION, "3.0.0");
 
     private static final String MINECRAFT_VERSION = "1.18.2";
 
@@ -82,6 +85,7 @@ class IntegrationManagerTest {
         bukkit.when(Bukkit::getServicesManager).thenReturn(servicesManager);
         bukkit.when(Bukkit::getServer).thenReturn(server);
         bukkit.when(Bukkit::getName).thenReturn("Test");
+        bukkit.when(Bukkit::getMinecraftVersion).thenReturn(MINECRAFT_VERSION);
     }
 
     @AfterAll
@@ -98,7 +102,7 @@ class IntegrationManagerTest {
         lenient().when(betonQuestApiService.api(any())).thenReturn(betonQuestApi);
         lenient().when(integratingPlugin.isEnabled()).thenReturn(true);
         lenient().when(integratingPlugin.getDescription()).thenReturn(descriptionFile);
-        lenient().when(descriptionFile.getVersion()).thenReturn(PLUGIN_VERSION);
+        lenient().when(descriptionFile.getVersion()).thenReturn(PLUGIN_VERSION.toString());
         pluginProvider = PluginProvider.forInstance(integratingPlugin);
     }
 

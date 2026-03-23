@@ -41,6 +41,8 @@ import org.betonquest.betonquest.compatibility.worldguard.WorldGuardIntegrator;
 import org.betonquest.betonquest.kernel.ProcessorDataLoader;
 import org.betonquest.betonquest.kernel.processor.quest.PlaceholderProcessor;
 import org.betonquest.betonquest.lib.integration.policy.Policies;
+import org.betonquest.betonquest.lib.version.DefaultVersionType;
+import org.betonquest.betonquest.lib.version.VersionParser;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicesManager;
 
@@ -89,7 +91,7 @@ public final class BundledCompatibility {
     }
 
     private void register(final String name, final Supplier<Integration> integrationSupplier, final String versionString) {
-        register(name, integrationSupplier, Policies.minimalPluginVersion(name, versionString));
+        register(name, integrationSupplier, Policies.minimalPluginVersion(name, VersionParser.parse(DefaultVersionType.SIMPLE_SEMANTIC_VERSION, versionString)));
     }
 
     private void register(final String name, final Supplier<Integration> integrationSupplier, final Policy... polices) {

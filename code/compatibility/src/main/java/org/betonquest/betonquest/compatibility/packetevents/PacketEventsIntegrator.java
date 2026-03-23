@@ -29,7 +29,7 @@ import org.betonquest.betonquest.conversation.menu.input.ConversationAction;
 import org.betonquest.betonquest.conversation.menu.input.ConversationSession;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.kernel.registry.feature.InterceptorRegistry;
-import org.betonquest.betonquest.lib.versioning.MinecraftVersion;
+import org.betonquest.betonquest.lib.version.MinecraftVersion;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -50,7 +50,7 @@ public class PacketEventsIntegrator implements Integration {
      */
     // TODO version switch:
     //  Remove this code when only 1.19.0+ is supported
-    public static final Function<Component, PacketWrapper<?>> MESSAGE_FUNCTION = new MinecraftVersion().isCompatibleWith("1.19.0")
+    public static final Function<Component, PacketWrapper<?>> MESSAGE_FUNCTION = MinecraftVersion.isCompatibleWith("1.19.0")
             ? message -> new WrapperPlayServerSystemChatMessage(false, message)
             : message -> new WrapperPlayServerChatMessage(new ChatMessage_v1_16(message,
             ChatTypes.CHAT, new UUID(0L, 0L)));
