@@ -1,12 +1,13 @@
 package org.betonquest.betonquest.integration;
 
+import com.google.common.collect.Sets;
 import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.integration.IntegrationBuilder;
 import org.betonquest.betonquest.api.integration.IntegrationPolicy;
-import org.betonquest.betonquest.lib.versioning.Version;
+import org.betonquest.betonquest.api.integration.policy.Policy;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.Nullable;
 
+import java.util.Set;
 import java.util.function.Supplier;
 
 /**
@@ -20,27 +21,25 @@ public class DefaultIntegrationPolicy implements IntegrationPolicy {
     private final IntegrationManager manager;
 
     /**
-     * The {@link PluginProvider} instance.
+     * All policies for this instance.
      */
-    private final PluginProvider pluginProvider;
-
-    /**
-     * The optional minimal version of the plugin.
-     */
-    @Nullable
-    private final Version minimalVersion;
+    private final Set<Policy> policies;
 
     /**
      * Creates a new DefaultIntegrations instance.
      *
-     * @param manager        The {@link IntegrationManager} instance.
-     * @param pluginProvider The {@link PluginProvider} instance.
-     * @param minimalVersion The optional minimal version of the plugin.
+     * @param manager  the {@link IntegrationManager} instance
+     * @param policies the policies to register
      */
-    public DefaultIntegrationPolicy(final IntegrationManager manager, final PluginProvider pluginProvider, @Nullable final Version minimalVersion) {
+    public DefaultIntegrationPolicy(final IntegrationManager manager, final Set<Policy> policies) {
         this.manager = manager;
-        this.pluginProvider = pluginProvider;
-        this.minimalVersion = minimalVersion;
+        this.policies = policies;
+    }
+
+    @Override
+    public IntegrationPolicy withPolicies(final Policy... policies) {
+        final Set<Policy> combinedPolicies = Sets.union(this.policies, Set.of(policies));
+        return new DefaultIntegrationPolicy(manager, combinedPolicies);
     }
 
     @Override
@@ -50,6 +49,6 @@ public class DefaultIntegrationPolicy implements IntegrationPolicy {
 
     @Override
     public void register(final Plugin integratingPlugin, final Supplier<Integration> integration) {
-        manager.register(integration, pluginProvider, integratingPlugin, minimalVersion);
+        manager.register(integration, integratingPlugin, policies);
     }
 }

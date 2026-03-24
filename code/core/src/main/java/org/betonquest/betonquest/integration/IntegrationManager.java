@@ -5,19 +5,20 @@ import org.betonquest.betonquest.api.BetonQuestApiService;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestRunnable;
 import org.betonquest.betonquest.api.integration.Integration;
+import org.betonquest.betonquest.api.integration.policy.Policy;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.lib.versioning.MinecraftVersion;
-import org.betonquest.betonquest.lib.versioning.UpdateStrategy;
-import org.betonquest.betonquest.lib.versioning.Version;
-import org.betonquest.betonquest.lib.versioning.VersionComparator;
+import org.betonquest.betonquest.lib.integration.PluginProvider;
+import org.betonquest.betonquest.lib.integration.policy.PluginPolicy;
+import org.betonquest.betonquest.lib.integration.policy.VersionedPolicy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
@@ -68,9 +69,9 @@ public class IntegrationManager {
     /**
      * Registers a new integration with the manager.
      * <p>
-     * This method registers an integration that will be enabled when the corresponding plugin
-     * or minecraft version becomes available. For vanilla (minecraft-version based) integrations,
-     * explicitly use {@link PluginProvider#EMPTY} as the {@code integratedPluginProvider}.
+     * This method registers an integration that will be enabled when its policy requirements are met.
+     * Policies define the conditions under which the integration should be enabled, such as the presence
+     * of a specific plugin, minecraft version, or other custom requirements.
      * <p>
      * Integrations must be registered before the server finishes enabling plugins. Attempting to
      * register an integration after {@link #postEnable(BetonQuestApiService)} has been called will
@@ -78,26 +79,18 @@ public class IntegrationManager {
      * <p>
      * If an integration is registered while the manager is already in the {@code ENABLED} state,
      * it will be enabled immediately if its requirements are met.
-     * <p>
-     * The {@code minimalVersion} parameter specifies the minimal compatible version requirement.
-     * For plugin-based integrations, it represents the minimal version of the integrated plugin.
-     * For vanilla integrations, it represents the minimal minecraft version required.
-     * Pass {@code null} if there is no version requirement.
      *
-     * @param integration              the supplier for the integration to register
-     * @param integratedPluginProvider the plugin provider of the plugin the integration is made for,
-     *                                 or {@link PluginProvider#EMPTY} for minecraft-version based integrations
-     * @param integratorPlugin         the plugin that is registering this integration
-     * @param minimalVersion           the minimal compatible version requirement, or {@code null} if none
+     * @param integration         the supplier for the integration to register
+     * @param integrationProvider the plugin providing the integration
+     * @param policies            the policies defining requirements for the integration
      * @throws IllegalStateException if called after {@link #postEnable(BetonQuestApiService)}
      */
-    public void register(final Supplier<Integration> integration, final PluginProvider integratedPluginProvider,
-                         final Plugin integratorPlugin, @Nullable final Version minimalVersion) {
+    public void register(final Supplier<Integration> integration, final Plugin integrationProvider, final Set<Policy> policies) {
         final IntegrationWrapper integrationWrapper = new IntegrationWrapper(loggerFactory.create(IntegrationWrapper.class),
-                Suppliers.memoize(integration::get), integratedPluginProvider, integratorPlugin, minimalVersion, new AtomicBoolean(false));
+                Suppliers.memoize(integration::get), integrationProvider, policies, new AtomicBoolean(false));
         if (currentState == ManagerState.POST_ENABLED) {
             throw new IllegalStateException("Integrations can only be registered before the server is done enabling plugins. Attempted: Plugin '%s' for '%s'"
-                    .formatted(integratorPlugin.getName(), integrationWrapper.integratedPluginVersionName()));
+                    .formatted(integrationProvider.getName(), integrationWrapper.integratedPluginVersionName()));
         }
         integrations.add(integrationWrapper);
         if (currentState == ManagerState.ENABLED) {
@@ -127,7 +120,7 @@ public class IntegrationManager {
         for (final IntegrationWrapper wrapper : wrappers) {
             if (!wrapper.isCompatible()) {
                 log.warn("Could not enable an integration provided by plugin '%s' for '%s': Version requirement not met."
-                        .formatted(wrapper.integratorPlugin.getName(), wrapper.integratedPluginVersionName()));
+                        .formatted(wrapper.integrationProvider().getName(), wrapper.integratedPluginVersionName()));
                 continue;
             }
             if (wrapper.enable(service)) {
@@ -179,21 +172,15 @@ public class IntegrationManager {
      * This provides methods to determine the compatibility of the integration and to manage its lifecycle.
      * The lifecycle consists of enabling, post-enabling, and tearing down the integration.
      *
-     * @param logger                   the logger to use
-     * @param integration              the integration supplier to encapsulate
-     * @param integratedPluginProvider the plugin provider of the plugin the integration is made for
-     *                                 or {@link PluginProvider#EMPTY}
-     * @param integratorPlugin         the plugin that registered the integration
-     * @param minimalVersion           the minimal compatible version to check against
-     *                                 or null if no version check is required
-     * @param enabled                  the atomic boolean to track whether the enabled state is set to prevent
-     *                                 repeatedly enabling the integration
+     * @param logger              the logger to use
+     * @param integration         the integration supplier to encapsulate
+     * @param integrationProvider the plugin providing the integration
+     * @param policies            the policies defining the requirements for the integration to be enabled
+     * @param enabled             the atomic boolean to track whether the enabled state is set to prevent
+     *                            repeatedly enabling the integration
      */
     private record IntegrationWrapper(BetonQuestLogger logger, Supplier<Integration> integration,
-                                      PluginProvider integratedPluginProvider,
-                                      Plugin integratorPlugin,
-                                      @Nullable Version minimalVersion,
-                                      AtomicBoolean enabled) {
+                                      Plugin integrationProvider, Set<Policy> policies, AtomicBoolean enabled) {
 
         /**
          * Checks if the integration is ready to be enabled.
@@ -203,8 +190,13 @@ public class IntegrationManager {
          * @return true if the integration is ready to be enabled, false otherwise
          */
         private boolean isReadyToEnabled() {
-            return (integratedPluginProvider == PluginProvider.EMPTY || integratedPluginProvider.plugin().map(Plugin::isEnabled).orElse(false))
-                    && integratorPlugin.isEnabled();
+            return integrationProvider.isEnabled() && policies.stream()
+                    .filter(PluginPolicy.class::isInstance)
+                    .map(PluginPolicy.class::cast)
+                    .map(PluginPolicy::pluginProvider)
+                    .map(PluginProvider::plugin)
+                    .flatMap(Optional::stream)
+                    .allMatch(Plugin::isEnabled);
         }
 
         /**
@@ -215,23 +207,10 @@ public class IntegrationManager {
          * @return the name and version the integration is made for
          */
         private String integratedPluginVersionName() {
-            if (integratedPluginProvider == PluginProvider.EMPTY) {
-                return Bukkit.getName() + (minimalVersion == null ? "" : " (" + minimalVersion + ")");
-            }
-            return integratedPluginProvider.name().orElse("unspecified") + (integratedPluginProvider.version().isEmpty() ? "" : " (" + integratedPluginProvider.version().get() + ")");
-        }
-
-        /**
-         * Checks if the integration is a minecraft-version based integration.
-         * <p>
-         * Essentially, this checks if the integrated plugin provider is {@link PluginProvider#EMPTY}.
-         * While an empty plugin provider is considered an illegal state, this explicit instance is used to
-         * differentiate between vanilla and plugin-based integrations.
-         *
-         * @return true if the integration is a vanilla integration, false otherwise
-         */
-        private boolean isVanillaIntegration() {
-            return integratedPluginProvider == PluginProvider.EMPTY;
+            return policies.stream().filter(VersionedPolicy.class::isInstance)
+                    .map(VersionedPolicy.class::cast)
+                    .map(policy -> "%s (%s)".formatted(policy.name(), policy.version()))
+                    .findFirst().orElse("unspecified");
         }
 
         /**
@@ -240,16 +219,14 @@ public class IntegrationManager {
          * @return true if the integration is compatible, false otherwise
          */
         private boolean isCompatible() {
-            if (minimalVersion == null) {
-                return true;
+            for (final Policy policy : policies) {
+                if (!policy.validate()) {
+                    logger.warn("Integration provided by '%s' is not compatible due to policy: %s"
+                            .formatted(integrationProvider.getName(), policy.description()));
+                    return false;
+                }
             }
-            final Version actualVersion = isVanillaIntegration() ? new MinecraftVersion() : integratedPluginProvider.version().orElseThrow();
-            final boolean compatible = actualVersion.isCompatibleWith(new VersionComparator(UpdateStrategy.MAJOR), minimalVersion);
-            if (!compatible) {
-                logger.debug("Integration provided by plugin '%s' is not compatible with the current version. [%s < %s]"
-                        .formatted(integratorPlugin.getName(), actualVersion, minimalVersion));
-            }
-            return compatible;
+            return true;
         }
 
         /**
@@ -262,14 +239,14 @@ public class IntegrationManager {
             try {
                 runnable.run();
                 logger.debug("Integration provided by plugin '%s' for '%s' %sd."
-                        .formatted(integratorPlugin.getName(), integratedPluginVersionName(), phase));
+                        .formatted(integrationProvider.getName(), integratedPluginVersionName(), phase));
                 return true;
             } catch (final QuestException e) {
                 logger.warn("Could not %s integration provided by plugin '%s' for '%s': %s"
-                        .formatted(phase, integratorPlugin.getName(), integratedPluginVersionName(), e.getMessage()), e);
+                        .formatted(phase, integrationProvider.getName(), integratedPluginVersionName(), e.getMessage()), e);
             } catch (final Throwable e) {
                 logger.error("Could not %s integration provided by plugin '%s' for '%s' because of an unexpected error: %s"
-                        .formatted(phase, integratorPlugin.getName(), integratedPluginVersionName(), e.getMessage()), e);
+                        .formatted(phase, integrationProvider.getName(), integratedPluginVersionName(), e.getMessage()), e);
             }
             return false;
         }
@@ -280,7 +257,7 @@ public class IntegrationManager {
          * @param service the service to obtain the plugin's api
          */
         private boolean enable(final BetonQuestApiService service) {
-            return !enabled.getAndSet(true) && callSafely("enable", () -> integration.get().enable(service.api(integratorPlugin)));
+            return !enabled.getAndSet(true) && callSafely("enable", () -> integration.get().enable(service.api(integrationProvider)));
         }
 
         /**
@@ -289,7 +266,7 @@ public class IntegrationManager {
          * @param service the service to obtain the plugin's api
          */
         private void postEnable(final BetonQuestApiService service) {
-            callSafely("post-enable", () -> integration.get().postEnable(service.api(integratorPlugin)));
+            callSafely("post-enable", () -> integration.get().postEnable(service.api(integrationProvider)));
         }
 
         /**
