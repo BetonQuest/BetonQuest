@@ -21,7 +21,6 @@ import org.bukkit.plugin.Plugin;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
@@ -132,7 +131,7 @@ public class IntegrationManager {
                 .formatted(wrappers.size(), integrations.size(), enabledIntegrations.size()));
         for (final IntegrationWrapper wrapper : wrappers) {
             if (!wrapper.isCompatible()) {
-                log.warn("Could not enable an integration provided by plugin '%s' for '%s': Version requirement not met."
+                log.warn("Could not enable an integration provided by plugin '%s' for '%s'."
                         .formatted(wrapper.integrationProvider.getName(), wrapper.integratedPluginVersionName()));
                 continue;
             }
@@ -214,8 +213,7 @@ public class IntegrationManager {
                     .map(PluginPolicy.class::cast)
                     .map(PluginPolicy::pluginProvider)
                     .map(PluginProvider::plugin)
-                    .flatMap(Optional::stream)
-                    .allMatch(Plugin::isEnabled);
+                    .allMatch(plugin -> plugin.map(Plugin::isEnabled).orElse(false));
         }
 
         /**
