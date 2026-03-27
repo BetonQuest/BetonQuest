@@ -1,30 +1,37 @@
 package org.betonquest.betonquest.compatibility;
 
+import org.apache.commons.lang3.tuple.Triple;
+import org.betonquest.betonquest.api.integration.Integration;
+import org.bukkit.plugin.Plugin;
+
+import java.util.List;
+
 /**
  * Data of hooking into Plugins or Minecraft versions.
  */
 public interface IntegrationData {
 
     /**
-     * Gets if the integration successfully hooked.
+     * Gets the plugin that provides the integration.
      *
-     * @return if the integration was successful
+     * @return the plugin that registered the integration
      */
-    boolean isIntegrated();
+    Plugin integrationProvider();
 
     /**
-     * Gets the target name to display.
+     * Gets the integration of the data.
      *
-     * @return the name of the hooked
-     * @throws IllegalStateException when not {@link #isIntegrated()}
+     * @return the created integration
      */
-    String getName();
+    Integration getIntegration();
 
     /**
-     * Gets the version to show in the compatibility.
+     * Gets the integration's hook information.
+     * The first value is the name,
+     * the second is the version to display,
+     * and the third is the extended description.
      *
-     * @return the version string of the hooked
-     * @throws IllegalStateException when not {@link #isIntegrated()}
+     * @return the information
      */
-    String getVersion();
+    List<Triple<String, String, String>> getDisplayInfo();
 }

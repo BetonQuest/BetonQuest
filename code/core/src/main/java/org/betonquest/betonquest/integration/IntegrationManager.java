@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.integration;
 
 import com.google.common.base.Suppliers;
+import org.apache.commons.lang3.tuple.Triple;
 import org.betonquest.betonquest.api.BetonQuestApiService;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestRunnable;
@@ -8,8 +9,11 @@ import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.integration.policy.Policy;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.compatibility.IntegrationData;
 import org.betonquest.betonquest.lib.integration.PluginProvider;
 import org.betonquest.betonquest.lib.integration.policy.PluginPolicy;
+import org.betonquest.betonquest.lib.integration.policy.VanillaPolicy;
+import org.betonquest.betonquest.lib.integration.policy.VersionedPluginPolicy;
 import org.betonquest.betonquest.lib.integration.policy.VersionedPolicy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -17,7 +21,6 @@ import org.bukkit.plugin.Plugin;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
@@ -64,6 +67,15 @@ public class IntegrationManager {
         this.integrations = new ArrayList<>();
         this.enabledIntegrations = new ArrayList<>();
         this.currentState = ManagerState.PRE_ENABLE;
+    }
+
+    /**
+     * Gets all enabled integrations.
+     *
+     * @return all enabled integrations with their metadata
+     */
+    public List<? extends IntegrationData> getEnabledIntegrations() {
+        return enabledIntegrations;
     }
 
     /**
@@ -119,8 +131,8 @@ public class IntegrationManager {
                 .formatted(wrappers.size(), integrations.size(), enabledIntegrations.size()));
         for (final IntegrationWrapper wrapper : wrappers) {
             if (!wrapper.isCompatible()) {
-                log.warn("Could not enable an integration provided by plugin '%s' for '%s': Version requirement not met."
-                        .formatted(wrapper.integrationProvider().getName(), wrapper.integratedPluginVersionName()));
+                log.warn("Could not enable an integration provided by plugin '%s' for '%s'."
+                        .formatted(wrapper.integrationProvider.getName(), wrapper.integratedPluginVersionName()));
                 continue;
             }
             if (wrapper.enable(service)) {
@@ -180,7 +192,13 @@ public class IntegrationManager {
      *                            repeatedly enabling the integration
      */
     private record IntegrationWrapper(BetonQuestLogger logger, Supplier<Integration> integration,
-                                      Plugin integrationProvider, Set<Policy> policies, AtomicBoolean enabled) {
+                                      Plugin integrationProvider, Set<Policy> policies, AtomicBoolean enabled)
+            implements IntegrationData {
+
+        /**
+         * The 'unspecified' string to use when no plugin name is available.
+         */
+        private static final String UNSPECIFIED = "unspecified";
 
         /**
          * Checks if the integration is ready to be enabled.
@@ -195,8 +213,7 @@ public class IntegrationManager {
                     .map(PluginPolicy.class::cast)
                     .map(PluginPolicy::pluginProvider)
                     .map(PluginProvider::plugin)
-                    .flatMap(Optional::stream)
-                    .allMatch(Plugin::isEnabled);
+                    .allMatch(plugin -> plugin.map(Plugin::isEnabled).orElse(false));
         }
 
         /**
@@ -210,7 +227,7 @@ public class IntegrationManager {
             return policies.stream().filter(VersionedPolicy.class::isInstance)
                     .map(VersionedPolicy.class::cast)
                     .map(policy -> "%s (%s)".formatted(policy.name(), policy.version()))
-                    .findFirst().orElse("unspecified");
+                    .findFirst().orElse(UNSPECIFIED);
         }
 
         /**
@@ -274,6 +291,38 @@ public class IntegrationManager {
          */
         private void disable() {
             callSafely("disable", () -> integration.get().disable());
+        }
+
+        @Override
+        public Integration getIntegration() {
+            return integration.get();
+        }
+
+        @Override
+        public List<Triple<String, String, String>> getDisplayInfo() {
+            final List<Triple<String, String, String>> list = new ArrayList<>();
+            for (final Policy policy : policies) {
+                if (policy instanceof final VersionedPluginPolicy pluginPolicy) {
+                    list.add(Triple.of(
+                            pluginPolicy.pluginProvider().name().orElse(UNSPECIFIED),
+                            pluginPolicy.versionCompareStrategy().getRepresentation() + pluginPolicy.version(),
+                            pluginPolicy.description()
+                    ));
+                } else if (policy instanceof final PluginPolicy pluginPolicy) {
+                    list.add(Triple.of(
+                            pluginPolicy.pluginProvider().name().orElse(UNSPECIFIED),
+                            pluginPolicy.pluginProvider().version().map(Object::toString).orElse(UNSPECIFIED),
+                            pluginPolicy.description()
+                    ));
+                } else if (policy instanceof final VanillaPolicy vanillaPolicy) {
+                    list.add(Triple.of(
+                            vanillaPolicy.name(),
+                            vanillaPolicy.versionCompareStrategy().getRepresentation() + vanillaPolicy.version(),
+                            vanillaPolicy.description()
+                    ));
+                }
+            }
+            return list;
         }
     }
 }

@@ -20,7 +20,7 @@ public enum VersionCompareStrategy implements BiPredicate<Version, Version> {
      * <p>
      * It does the opposite of {@link #MAXIMAL}.
      */
-    MINIMAL {
+    MINIMAL(">=") {
         @Override
         public boolean test(final Version actual, final Version required) {
             return new VersionComparator(UpdateStrategy.MAJOR).isCompatibleWith(actual, required);
@@ -32,7 +32,7 @@ public enum VersionCompareStrategy implements BiPredicate<Version, Version> {
      *
      * @see Version#equals(Object)
      */
-    EXACT {
+    EXACT("=") {
         @Override
         public boolean test(final Version actual, final Version required) {
             return actual.equals(required);
@@ -45,10 +45,28 @@ public enum VersionCompareStrategy implements BiPredicate<Version, Version> {
      * <p>
      * It does the opposite of {@link #MINIMAL}.
      */
-    MAXIMAL {
+    MAXIMAL("<=") {
         @Override
         public boolean test(final Version actual, final Version required) {
             return new VersionComparator(UpdateStrategy.MAJOR).isCompatibleWith(required, actual);
         }
+    };
+
+    /**
+     * The readable short form of the strategy.
+     */
+    private final String representation;
+
+    VersionCompareStrategy(final String representation) {
+        this.representation = representation;
+    }
+
+    /**
+     * Gets the readable short form of the strategy.
+     *
+     * @return short format string
+     */
+    public String getRepresentation() {
+        return representation;
     }
 }

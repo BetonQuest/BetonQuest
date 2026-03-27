@@ -1,11 +1,13 @@
 package org.betonquest.betonquest.command;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.apache.commons.lang3.tuple.Triple;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableComponent;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
@@ -37,7 +39,6 @@ import org.betonquest.betonquest.api.service.item.ItemManager;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.IntegrationData;
-import org.betonquest.betonquest.compatibility.IntegrationSource;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Backup;
@@ -1575,14 +1576,24 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private void displayVersionInfo(final CommandSender sender, final String commandAlias) throws QuestException {
         final String updateCommand = "/" + commandAlias + " update";
 
-        final Component hooked = displayVersionInfoHooked(compatibility.getBetonQuestSource());
+        final Component hooked = displayVersionInfoHooked(compatibility.getBetonQuest());
+
+        final TextComponent.Builder externalHooked = Component.text();
+        for (final Map.Entry<String, List<IntegrationData>> entry : compatibility.getExternal().entrySet()) {
+            final VariableComponent external = new VariableComponent(pluginMessage.getMessage(null, "command_version_output.external_hook",
+                    new VariableReplacement("plugin", Component.text(entry.getKey())),
+                    new VariableReplacement("hooked", displayVersionInfoHooked(entry.getValue()))));
+            externalHooked.append(external.resolve());
+        }
+
         final Component update = displayVersionInfoUpdate(updater);
         final Component copy = displayVersionInfoCopy(sender);
 
         final VariableComponent baseContent = new VariableComponent(pluginMessage.getMessage(null, "command_version_output.info",
                 new VariableReplacement("version", Component.text(plugin.getDescription().getVersion())),
                 new VariableReplacement("server", Component.text(Bukkit.getServer().getVersion())),
-                new VariableReplacement("hooked", hooked)));
+                new VariableReplacement("hooked", hooked),
+                new VariableReplacement("external_hooks", externalHooked.build())));
         final Component copyContent = baseContent.resolve(
                 new VariableReplacement("update", Component.empty()),
                 new VariableReplacement("copy", Component.empty()));
@@ -1592,18 +1603,32 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         sender.sendMessage(info);
     }
 
-    private Component displayVersionInfoHooked(final IntegrationSource source) throws QuestException {
+    private Component displayVersionInfoHooked(final List<IntegrationData> dataList) throws QuestException {
         final TextComponent.Builder hookedBuilder = Component.text();
-        for (final IntegrationData data : source.getDataList()) {
-            if (!data.isIntegrated()) {
+        for (final IntegrationData data : dataList) {
+            final List<Triple<String, String, String>> triples = data.getDisplayInfo();
+            if (triples.isEmpty()) {
                 continue;
             }
             if (!hookedBuilder.children().isEmpty()) {
                 hookedBuilder.append(Component.text(", "));
             }
-            hookedBuilder.append(pluginMessage.getMessage(null, "command_version_output.hook",
-                    new VariableReplacement("plugin", Component.text(data.getName())),
-                    new VariableReplacement("version", Component.text(data.getVersion()))));
+            final List<Component> components = new ArrayList<>();
+            for (final Triple<String, String, String> triple : triples) {
+                final Component message = pluginMessage.getMessage(null, "command_version_output.hook",
+                        new VariableReplacement("plugin", Component.text(triple.getLeft())),
+                        new VariableReplacement("version", Component.text(triple.getMiddle())));
+                components.add(message.hoverEvent(HoverEvent.showText(Component.text(triple.getRight()))));
+            }
+            if (components.size() == 1) {
+                hookedBuilder.append(components.get(0));
+            } else {
+                final JoinConfiguration joinConfiguration = JoinConfiguration.builder()
+                        .prefix(Component.text("["))
+                        .separator(Component.text(", "))
+                        .suffix(Component.text("]")).build();
+                hookedBuilder.append(Component.join(joinConfiguration, components));
+            }
         }
         return hookedBuilder.build();
     }

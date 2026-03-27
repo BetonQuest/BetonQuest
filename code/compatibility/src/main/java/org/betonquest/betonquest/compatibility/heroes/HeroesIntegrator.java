@@ -4,46 +4,47 @@ import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.characters.CharacterManager;
 import com.herocraftonline.heroes.characters.classes.HeroClassManager;
 import org.betonquest.betonquest.api.BetonQuestApi;
-import org.betonquest.betonquest.api.service.condition.ConditionRegistry;
-import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.heroes.action.HeroesExperienceActionFactory;
 import org.betonquest.betonquest.compatibility.heroes.condition.HeroesAttributeConditionFactory;
 import org.betonquest.betonquest.compatibility.heroes.condition.HeroesClassConditionFactory;
 import org.betonquest.betonquest.compatibility.heroes.condition.HeroesSkillConditionFactory;
+import org.betonquest.betonquest.lib.integration.IntegrationTemplate;
 
 /**
  * Integrator for Heroes.
  */
-public class HeroesIntegrator implements Integrator {
+public class HeroesIntegrator extends IntegrationTemplate {
 
     /**
      * Creates a new Integrator.
      */
     public HeroesIntegrator() {
+        super();
     }
 
     @Override
-    public void hook(final BetonQuestApi api) {
+    public void enable(final BetonQuestApi api) {
         final CharacterManager characterManager = Heroes.getInstance().getCharacterManager();
         final HeroClassManager classManager = Heroes.getInstance().getClassManager();
 
-        final ConditionRegistry conditionRegistry = api.conditions().registry();
-        conditionRegistry.register("heroesattribute", new HeroesAttributeConditionFactory(characterManager));
-        conditionRegistry.register("heroesclass", new HeroesClassConditionFactory(characterManager, classManager));
-        conditionRegistry.register("heroesskill", new HeroesSkillConditionFactory(characterManager));
+        playerCondition("attribute", new HeroesAttributeConditionFactory(characterManager));
+        playerCondition("class", new HeroesClassConditionFactory(characterManager, classManager));
+        playerCondition("skill", new HeroesSkillConditionFactory(characterManager));
 
-        api.actions().registry().register("heroesexp", new HeroesExperienceActionFactory(characterManager));
+        playerAction("exp", new HeroesExperienceActionFactory(characterManager));
+
+        registerFeatures(api, "heroes");
 
         api.bukkit().registerEvents(new HeroesMobKillListener(api.profiles()));
     }
 
     @Override
-    public void reload() {
+    public void postEnable(final BetonQuestApi api) {
         // Empty
     }
 
     @Override
-    public void close() {
+    public void disable() {
         // Empty
     }
 }

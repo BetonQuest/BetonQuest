@@ -4,53 +4,43 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.vault.action.MoneyActionFactory;
 import org.betonquest.betonquest.compatibility.vault.action.PermissionActionFactory;
 import org.betonquest.betonquest.compatibility.vault.condition.MoneyConditionFactory;
 import org.betonquest.betonquest.compatibility.vault.placeholder.MoneyPlaceholderFactory;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicesManager;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Integrator for <a href="https://github.com/MilkBowl/VaultAPI">Vault</a>.
  */
-public class VaultIntegrator implements Integrator {
+public class VaultIntegrator implements Integration {
 
     /**
-     * BetonQuest Plugin for registering.
+     * Bukkit services manager.
      */
-    private final BetonQuest plugin;
-
-    /**
-     * API to use delayed.
-     */
-    @Nullable
-    private BetonQuestApi api;
+    private final ServicesManager servicesManager;
 
     /**
      * Constructor for the Vault Integration.
+     *
+     * @param servicesManager the Bukkit services manager
      */
-    public VaultIntegrator() {
-        plugin = BetonQuest.getInstance();
+    public VaultIntegrator(final ServicesManager servicesManager) {
+        this.servicesManager = servicesManager;
     }
 
     @Override
-    public void hook(final BetonQuestApi api) {
-        this.api = api;
+    public void enable(final BetonQuestApi api) {
+        // Empty
     }
 
     @Override
-    public void postHook() {
-        if (api == null) {
-            throw new IllegalStateException("Vault integrator has not been hooked!");
-        }
+    public void postEnable(final BetonQuestApi api) {
         final BetonQuestLogger log = api.loggerFactory().create(VaultIntegrator.class);
 
-        final ServicesManager servicesManager = Bukkit.getServer().getServicesManager();
         final RegisteredServiceProvider<Economy> economyProvider = servicesManager.getRegistration(Economy.class);
         if (economyProvider == null) {
             log.warn("There is no economy plugin on the server!");
@@ -58,7 +48,7 @@ public class VaultIntegrator implements Integrator {
             final Economy economy = economyProvider.getProvider();
 
             api.actions().registry().register("money", new MoneyActionFactory(economy, api.loggerFactory(),
-                    plugin.getPluginMessage()));
+                    BetonQuest.getInstance().getPluginMessage()));
             api.conditions().registry().register("money", new MoneyConditionFactory(economy));
             api.placeholders().registry().register("money", new MoneyPlaceholderFactory(economy));
         }
@@ -73,12 +63,7 @@ public class VaultIntegrator implements Integrator {
     }
 
     @Override
-    public void reload() {
-        // Empty
-    }
-
-    @Override
-    public void close() {
+    public void disable() {
         // Empty
     }
 }
