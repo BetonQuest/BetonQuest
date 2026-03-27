@@ -5144,6 +5144,135 @@
 
   
   
+  <nav aria-label="API Concepts" class="md-nav">
+    <ul class="md-nav__list">
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#identifiers">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Identifiers
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#factories-registries-managers">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Factories, Registries, Managers
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+  <nav aria-label="Factories, Registries, Managers" class="md-nav">
+    <ul class="md-nav__list">
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#implementation-factory">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Implementation &amp; Factory
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#registry">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Registry
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#manager">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Manager
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+    </ul>
+  </nav>
+  
+</li>
+      
+      
+    </ul>
+  </nav>
+  
 </li>
     
     
@@ -6582,6 +6711,135 @@
 
   
   
+  <nav aria-label="API Concepts" class="md-nav">
+    <ul class="md-nav__list">
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#identifiers">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Identifiers
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#factories-registries-managers">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Factories, Registries, Managers
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+  <nav aria-label="Factories, Registries, Managers" class="md-nav">
+    <ul class="md-nav__list">
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#implementation-factory">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Implementation &amp; Factory
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#registry">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Registry
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#manager">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Manager
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+    </ul>
+  </nav>
+  
+</li>
+      
+      
+    </ul>
+  </nav>
+  
 </li>
     
     
@@ -6829,7 +7087,7 @@ Some features have their own pages, which are linked in the sidebar by their nam
 <div class="tabbed-block">
 <p>Some features have their own sub-features that essentially split up the feature into smaller parts.
 Most factory-type features have a <code>manager()</code> and a <code>registry()</code> sub-feature.
-Learn more about how BetonQuest uses factories in the <a href="#api-concepts">concepts section</a> below.<br />
+Learn more about how BetonQuest uses factories in the <a href="#factories-registries-managers">concepts section</a> below.<br />
 <br>The highlighted step is equivalent to <code>actions.manager()</code></p>
 </div>
 <div class="tabbed-block">
@@ -6843,6 +7101,132 @@ Demeter.<br />
 </div>
 </div>
 <h2 id="api-concepts">API Concepts<a class="headerlink" href="#api-concepts" title="Permanent link">🔗</a></h2>
+<p>The following sections will give you a more in-depth overview of the API's concepts and ideas.
+This section is <em>not necessary</em> to use the API, but it will help you <em>understand</em> the API's structure and how it works.</p>
+<h3 id="identifiers">Identifiers<a class="headerlink" href="#identifiers" title="Permanent link">🔗</a></h3>
+<p>An identifier refers to a specific element in a quest package, consisting of the path to the containing package and the element's name.</p>
+<p>Unlike <a href="../../../Documentation/Scripting/Packages-%26-Templates/#working-across-packages">identifiers used in packages</a>, 
+API identifiers always contain the full absolute package path (no relative context exists) and are always type-specific.
+An <code>ActionIdentifier</code> may have the same string representation as an <code>ObjectiveIdentifier</code>, but they refer to different types and cannot be used interchangeably.
+This type safety prevents accidentally passing an action identifier where a condition identifier is expected, providing compile-time validation.</p>
+<p>Identifiers serve as the primary mechanism for locating and executing quest components at runtime. 
+The corresponding <a href="#manager">manager</a> performs a lookup to retrieve the instance created during quest package loading. 
+This relationship maintains consistency across server restarts and quest package reloads, 
+as the same identifier always resolves to functionally identical instances when recreated from the same <a href="../../Instruction/">instruction</a>.</p>
+<h3 id="factories-registries-managers">Factories, Registries, Managers<a class="headerlink" href="#factories-registries-managers" title="Permanent link">🔗</a></h3>
+<p>The <a href="https://refactoring.guru/design-patterns/abstract-factory" target="_blank">factory design pattern</a> is used in the API to create objects without having to know their concrete classes.
+In BetonQuest, this concept is further enhanced by <a href="../../Instruction/">instructions</a> for configurability and to ensure that identical objects can be recreated consistently.
+Each instruction defines how to create a specific instance, and the factory uses this instruction to produce the actual object.
+This allows BetonQuest to reload quest packages and recreate identical object instances from the same instructions, maintaining consistency across server restarts.</p>
+<p>The following explanation uses <code>object</code> as a placeholder, since the concepts apply to actions, conditions, objectives, and other 
+factory-based features throughout the API.</p>
+<p>To create a new <code>object</code>, four components are required in the process:</p>
+<ol>
+<li><strong>Implementation</strong> – The concrete <code>object</code> class that performs the actual game logic</li>
+<li><strong>Factory</strong> – Creates instances of the <code>object</code> from instructions and validates its parameters</li>
+<li><strong>Registry</strong> – Stores and looks up <code>object</code> factories by their type key (e.g., <code>block</code>, <code>give</code>, <code>notify</code>)</li>
+<li><strong>Manager</strong> – Maintains created <code>object</code> instances, accessible by their identifier for execution during server runtime</li>
+</ol>
+<h4 id="implementation-factory">Implementation &amp; Factory<a class="headerlink" href="#implementation-factory" title="Permanent link">🔗</a></h4>
+<p>During BetonQuest's loading phase, an <code>object</code> instance is created <em>for each</em> instruction found in the quest package.
+Each factory is identified by the instruction's first element (its type key) and is responsible for creating an <code>object</code> instance from that instruction.</p>
+<p>The factory performs several critical tasks:</p>
+<ul>
+<li><strong>Parsing</strong>: Extracts and validates all parameters from the instruction string</li>
+<li><strong>Validation</strong>: Ensures all required parameters are present and correctly formatted</li>
+<li><strong>Instantiation</strong>: Creates the concrete <code>object</code> implementation with the parsed configuration</li>
+<li><strong>Error handling</strong>: Provides clear error messages if the instruction is malformed (mostly abstracting away by the <a href="../../Instruction/">instruction</a> implementation)</li>
+</ul>
+<p>The instruction's identifier is associated with the created <code>object</code> instance, establishing a bidirectional relationship.
+When an <code>object</code> needs to be invoked — whether by an action, an objective, or any other component — the identifier is used to 
+locate and execute the correct <code>object</code> instance from the manager.</p>
+<p>This separation between factory (creation logic) and implementation (execution logic) allows for clean code organization
+and makes it easier to add new <code>object</code> types without modifying existing code.</p>
+<pre class="mermaid"><code>---
+title: Instancing
+---
+flowchart LR
+    Instruction -. associated by Identifier .- Instance
+    Instruction["Instruction #1"] target1@-- parse(#1) --&gt; Factory
+    Factory target3@-- #1 --&gt; Instance["Instance #1"]
+
+    Instruction2["Instruction #2"] target2@-- parse(#2) --&gt; Factory
+    Factory target4@-- #2--&gt; Instance2["Instance #2"]
+    Instruction2 -. associated by Identifier .- Instance2
+
+    target1@{ animate: true, animation: slow, curve: linear }
+    target2@{ animate: true, animation: slow, curve: linear }
+    target3@{ animate: true, animation: slow, curve: linear }
+    target4@{ animate: true, animation: slow, curve: linear }</code></pre>
+<h4 id="registry">Registry<a class="headerlink" href="#registry" title="Permanent link">🔗</a></h4>
+<p>A registry functions as a structured map that maintains associations between instruction type keys and their corresponding <strong>factories</strong>.
+Each registry is type-specific: the <code>object</code> registry maintains all available <code>object</code> factories, the condition registry maintains all condition factories, etc.</p>
+<p>The registry serves as the central lookup mechanism for factories:</p>
+<ul>
+<li><strong>Registration</strong>: Plugins register their custom <code>object</code> factories with unique type keys during initialization and pre-package loading</li>
+<li><strong>Lookup</strong>: During quest package loading, BetonQuest queries the registry using the instruction's type key to find the appropriate factory</li>
+<li><strong>Validation</strong>: The registry can validate that a requested factory exists before attempting to create instances</li>
+</ul>
+<p>To introduce a new <code>object</code> type, its factory must be registered with the <code>object</code> registry using a unique type key.
+During BetonQuest's loading phase, the system queries the registry to locate the appropriate factory for each instruction type, 
+instantiates the corresponding objects, and stores these instances in the manager for later retrieval and execution.</p>
+<p>The registry pattern ensures loose coupling between the core system and individual <code>object</code> implementations, allowing BetonQuest
+to support both built-in and plugin-provided <code>object</code>s through the same unified interface.</p>
+<pre class="mermaid"><code>---
+title: Registration and Lookup
+---
+flowchart LR
+    Factory["Factory"] target1@-- register(key) --&gt; Registry
+    Registry target2@-- lookup(key) --&gt; Factory2["Factory"]
+
+    target1@{ animate: true, animation: slow }
+    target2@{ animate: true, animation: slow }</code></pre>
+<h4 id="manager">Manager<a class="headerlink" href="#manager" title="Permanent link">🔗</a></h4>
+<p>A manager is essentially a map of known <strong>instances</strong> for each identifier grouped by a certain type of instruction.
+All active and loaded instances are stored in the manager, providing runtime access to them.</p>
+<p>The manager's responsibilities include:</p>
+<ul>
+<li><strong>Storage</strong>: Maintains a collection of all created instances</li>
+<li><strong>Retrieval</strong>: Provides fast lookup of instances by identifier</li>
+<li><strong>Lifecycle</strong>: Manages the lifecycle of instances, handling cleanup when quest packages are reloaded</li>
+</ul>
+<p>When a quest package is loaded, the manager is populated with instances created by factories. 
+When a quest package is unloaded or reloaded, the manager removes all associated instances to prevent memory leaks
+and ensure the new versions are used.</p>
+<pre class="mermaid"><code>---
+title: Instance Storage
+---
+flowchart LR
+    Registry target1@-- lookup --&gt; Factory
+    subgraph one [Instancing]
+        direction LR
+        Factory -.-&gt; Junction
+        Junction target2@-- parse --&gt; Instance
+        Instruction -.-&gt; Junction
+    end
+
+    Instance target3@-- store --&gt; Manager
+
+    target1@{ animate: true, animation: slow }
+    target2@{ animate: true, animation: slow }
+    target3@{ animate: true, animation: slow }
+    Instruction@{ shape: hex }
+    Junction@{ shape: f-circ }</code></pre>
+<p>Hence, to run, for example, an action using its identifier, the manager will be able to find the correct action 
+instance and execute it.</p>
+<pre class="mermaid"><code>---
+title: Instance Access
+---
+flowchart LR
+    Start target1@-- run(identifier) --&gt; Manager
+    subgraph one [Hidden]
+        direction LR
+        Manager target2@-- lookup(identifier).run() --&gt; Instance
+    end
+
+    target1@{ animate: true, animation: slow }
+    target2@{ animate: true, animation: slow }
+    Start@{ shape: sm-circ }</code></pre>
 <hr />
 <div class="grid" style="text-align: center;">
 <div style="text-align: left;">
