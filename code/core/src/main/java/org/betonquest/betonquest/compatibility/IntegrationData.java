@@ -12,6 +12,15 @@ import java.util.List;
 public interface IntegrationData {
 
     /**
+     * Gets the name the integration is made for along with its version.
+     * If the integration is made for the server itself without specifying a plugin,
+     * the current server implementation is named instead.
+     *
+     * @return the names and versions the integration is made for
+     */
+    String integratedPluginVersionName();
+
+    /**
      * Gets the plugin that provides the integration.
      *
      * @return the plugin that registered the integration
