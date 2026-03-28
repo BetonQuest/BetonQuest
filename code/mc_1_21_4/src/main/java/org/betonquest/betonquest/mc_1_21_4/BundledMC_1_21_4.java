@@ -15,6 +15,7 @@ import org.betonquest.betonquest.kernel.registry.feature.NotifyIORegistry;
 import org.betonquest.betonquest.mc_1_21_4.conversation.InputEventSession;
 import org.betonquest.betonquest.mc_1_21_4.item.UpdatedSimpleItemFactory;
 import org.betonquest.betonquest.mc_1_21_4.item.UpdatedSimpleQuestItemSerializer;
+import org.betonquest.betonquest.mc_1_21_4.listener.BundleListener;
 import org.betonquest.betonquest.mc_1_21_4.notify.io.UpdatedTotemNotifyIOFactory;
 import org.betonquest.betonquest.mc_1_21_4.quest.condition.biome.UpdatedBiomeConditionFactory;
 import org.bukkit.entity.Player;
@@ -58,6 +59,7 @@ public class BundledMC_1_21_4 implements Integration {
         api.conditions().registry().register("biome", new UpdatedBiomeConditionFactory());
 
         betonQuest.getComponentLoader().get(NotifyIORegistry.class).register("totem", new UpdatedTotemNotifyIOFactory(api.placeholders().manager()));
+        api.bukkit().registerEvents(new BundleListener());
     }
 
     @Override
