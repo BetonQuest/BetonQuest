@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.lib.integration.policy;
 
 import org.betonquest.betonquest.api.version.Version;
+import org.betonquest.betonquest.lib.version.BetonQuestUpdateStrategy;
 import org.betonquest.betonquest.lib.version.VersionComparisonStrategies;
-import org.betonquest.betonquest.lib.versioning.UpdateStrategy;
 
 import java.util.function.BiPredicate;
 
@@ -16,7 +16,7 @@ public enum VersionCompareStrategy implements BiPredicate<Version, Version> {
     /**
      * A version comparison strategy that considers a minimal compatibility requirement.
      * This strategy checks whether the given {@code actual} version is compatible
-     * with the {@code required} version using the {@link UpdateStrategy#MAJOR}.
+     * with the {@code required} version using the {@link BetonQuestUpdateStrategy#MAJOR}.
      * <p>
      * It does the opposite of {@link #MAXIMAL}.
      */
@@ -39,7 +39,7 @@ public enum VersionCompareStrategy implements BiPredicate<Version, Version> {
     /**
      * A version comparison strategy that considers a minimal compatibility requirement.
      * This strategy checks whether the given {@code requird} version is compatible
-     * with the {@code actual} version using the {@link UpdateStrategy#MAJOR}.
+     * with the {@code actual} version using the {@link BetonQuestUpdateStrategy#MAJOR}.
      * <p>
      * It does the opposite of {@link #MINIMAL}.
      */

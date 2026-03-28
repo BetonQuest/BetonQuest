@@ -2,8 +2,9 @@ package org.betonquest.betonquest.web.updater;
 
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.lib.versioning.LegacyVersion;
-import org.betonquest.betonquest.lib.versioning.UpdateStrategy;
+import org.betonquest.betonquest.api.version.Version;
+import org.betonquest.betonquest.lib.version.BetonQuestUpdateStrategy;
+import org.betonquest.betonquest.lib.version.BetonQuestVersion;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -19,39 +20,39 @@ import static org.mockito.Mockito.*;
 final class UpdaterConfigTest {
 
     /**
-     * Invalid {@link UpdateStrategy}.
+     * Invalid {@link BetonQuestUpdateStrategy}.
      */
     private static final String INVALID = "INVALID";
 
     /**
-     * {@link UpdateStrategy#MINOR}_DEV {@link UpdateStrategy}.
+     * {@link BetonQuestUpdateStrategy#MINOR}_DEV {@link BetonQuestUpdateStrategy}.
      */
     private static final String MINOR_DEV = "MINOR_DEV";
 
     /**
-     * {@link UpdateStrategy#MINOR} {@link UpdateStrategy}.
+     * {@link BetonQuestUpdateStrategy#MINOR} {@link BetonQuestUpdateStrategy}.
      */
     private static final String MINOR = "MINOR";
 
     /**
-     * {@link UpdateStrategy#MAJOR}_DEV {@link UpdateStrategy}.
+     * {@link BetonQuestUpdateStrategy#MAJOR}_DEV {@link BetonQuestUpdateStrategy}.
      */
     private static final String MAJOR_DEV = "MAJOR_DEV";
 
     /**
-     * {@link UpdateStrategy#MAJOR} {@link UpdateStrategy}.
+     * {@link BetonQuestUpdateStrategy#MAJOR} {@link BetonQuestUpdateStrategy}.
      */
     private static final String MAJOR = "MAJOR";
 
     /**
-     * 2.0.0 {@link LegacyVersion}.
+     * 2.0.0 {@link Version}.
      */
-    private static final LegacyVersion VERSION1 = new LegacyVersion("2.0.0");
+    private static final Version VERSION1 = BetonQuestVersion.parse("2.0.0");
 
     /**
-     * 2.0.0-DEV-1 {@link LegacyVersion}.
+     * 2.0.0-DEV-1 {@link Version}.
      */
-    private static final LegacyVersion VERSION2 = new LegacyVersion("2.0.0-DEV-1");
+    private static final Version VERSION2 = BetonQuestVersion.parse("2.0.0-DEV-1");
 
     /**
      * DEV indicator for versions.
@@ -62,116 +63,116 @@ final class UpdaterConfigTest {
         return Stream.of(
                 Arguments.of(
                         new Input(VERSION1, true, true, MAJOR, true),
-                        new Expected(true, UpdateStrategy.MAJOR, false, true, true, false)),
+                        new Expected(true, BetonQuestUpdateStrategy.MAJOR, false, true, true, false)),
                 Arguments.of(
                         new Input(VERSION1, true, true, MAJOR, false),
-                        new Expected(true, UpdateStrategy.MAJOR, false, false, true, false)),
+                        new Expected(true, BetonQuestUpdateStrategy.MAJOR, false, false, true, false)),
                 Arguments.of(
                         new Input(VERSION1, true, true, MAJOR_DEV, true),
-                        new Expected(true, UpdateStrategy.MAJOR, true, true, true, false)),
+                        new Expected(true, BetonQuestUpdateStrategy.MAJOR, true, true, true, false)),
                 Arguments.of(
                         new Input(VERSION1, true, true, MAJOR_DEV, false),
-                        new Expected(true, UpdateStrategy.MAJOR, true, false, true, false)),
+                        new Expected(true, BetonQuestUpdateStrategy.MAJOR, true, false, true, false)),
                 Arguments.of(
                         new Input(VERSION1, true, false, MAJOR, true),
-                        new Expected(true, UpdateStrategy.MAJOR, false, true, false, false)),
+                        new Expected(true, BetonQuestUpdateStrategy.MAJOR, false, true, false, false)),
                 Arguments.of(
                         new Input(VERSION1, true, false, MAJOR, false),
-                        new Expected(true, UpdateStrategy.MAJOR, false, false, false, false)),
+                        new Expected(true, BetonQuestUpdateStrategy.MAJOR, false, false, false, false)),
                 Arguments.of(
                         new Input(VERSION1, true, false, MAJOR_DEV, true),
-                        new Expected(true, UpdateStrategy.MAJOR, true, true, false, false)),
+                        new Expected(true, BetonQuestUpdateStrategy.MAJOR, true, true, false, false)),
                 Arguments.of(
                         new Input(VERSION1, true, false, MAJOR_DEV, false),
-                        new Expected(true, UpdateStrategy.MAJOR, true, false, false, false)),
+                        new Expected(true, BetonQuestUpdateStrategy.MAJOR, true, false, false, false)),
                 Arguments.of(
                         new Input(VERSION1, false, true, MAJOR, true),
-                        new Expected(false, UpdateStrategy.MAJOR, false, true, true, false)),
+                        new Expected(false, BetonQuestUpdateStrategy.MAJOR, false, true, true, false)),
                 Arguments.of(
                         new Input(VERSION1, false, true, MAJOR, false),
-                        new Expected(false, UpdateStrategy.MAJOR, false, false, true, false)),
+                        new Expected(false, BetonQuestUpdateStrategy.MAJOR, false, false, true, false)),
                 Arguments.of(
                         new Input(VERSION1, false, true, MAJOR_DEV, true),
-                        new Expected(false, UpdateStrategy.MAJOR, true, true, true, false)),
+                        new Expected(false, BetonQuestUpdateStrategy.MAJOR, true, true, true, false)),
                 Arguments.of(
                         new Input(VERSION1, false, true, MAJOR_DEV, false),
-                        new Expected(false, UpdateStrategy.MAJOR, true, false, true, false)),
+                        new Expected(false, BetonQuestUpdateStrategy.MAJOR, true, false, true, false)),
                 Arguments.of(
                         new Input(VERSION1, false, false, MAJOR, true),
-                        new Expected(false, UpdateStrategy.MAJOR, false, true, false, false)),
+                        new Expected(false, BetonQuestUpdateStrategy.MAJOR, false, true, false, false)),
                 Arguments.of(
                         new Input(VERSION1, false, false, MAJOR, false),
-                        new Expected(false, UpdateStrategy.MAJOR, false, false, false, false)),
+                        new Expected(false, BetonQuestUpdateStrategy.MAJOR, false, false, false, false)),
                 Arguments.of(
                         new Input(VERSION1, false, false, MAJOR_DEV, true),
-                        new Expected(false, UpdateStrategy.MAJOR, true, true, false, false)),
+                        new Expected(false, BetonQuestUpdateStrategy.MAJOR, true, true, false, false)),
                 Arguments.of(
                         new Input(VERSION1, false, false, MAJOR_DEV, false),
-                        new Expected(false, UpdateStrategy.MAJOR, true, false, false, false)),
+                        new Expected(false, BetonQuestUpdateStrategy.MAJOR, true, false, false, false)),
                 Arguments.of(
                         new Input(VERSION2, true, true, MINOR, true),
-                        new Expected(true, UpdateStrategy.MINOR, true, false, true, true)),
+                        new Expected(true, BetonQuestUpdateStrategy.MINOR, true, false, true, true)),
                 Arguments.of(
                         new Input(VERSION2, true, true, MINOR, false),
-                        new Expected(true, UpdateStrategy.MINOR, true, false, true, true)),
+                        new Expected(true, BetonQuestUpdateStrategy.MINOR, true, false, true, true)),
                 Arguments.of(
                         new Input(VERSION2, true, true, MINOR_DEV, true),
-                        new Expected(true, UpdateStrategy.MINOR, true, true, true, false)),
+                        new Expected(true, BetonQuestUpdateStrategy.MINOR, true, true, true, false)),
                 Arguments.of(
                         new Input(VERSION2, true, true, MINOR_DEV, false),
-                        new Expected(true, UpdateStrategy.MINOR, true, false, true, false)),
+                        new Expected(true, BetonQuestUpdateStrategy.MINOR, true, false, true, false)),
                 Arguments.of(
                         new Input(VERSION2, true, false, MINOR, true),
-                        new Expected(true, UpdateStrategy.MINOR, true, false, false, true)),
+                        new Expected(true, BetonQuestUpdateStrategy.MINOR, true, false, false, true)),
                 Arguments.of(
                         new Input(VERSION2, true, false, MINOR, false),
-                        new Expected(true, UpdateStrategy.MINOR, true, false, false, true)),
+                        new Expected(true, BetonQuestUpdateStrategy.MINOR, true, false, false, true)),
                 Arguments.of(
                         new Input(VERSION2, true, false, MINOR_DEV, true),
-                        new Expected(true, UpdateStrategy.MINOR, true, true, false, false)),
+                        new Expected(true, BetonQuestUpdateStrategy.MINOR, true, true, false, false)),
                 Arguments.of(
                         new Input(VERSION2, true, false, MINOR_DEV, false),
-                        new Expected(true, UpdateStrategy.MINOR, true, false, false, false)),
+                        new Expected(true, BetonQuestUpdateStrategy.MINOR, true, false, false, false)),
                 Arguments.of(
                         new Input(VERSION2, true, false, INVALID, false),
-                        new Expected(true, UpdateStrategy.MINOR, true, false, false, true)),
+                        new Expected(true, BetonQuestUpdateStrategy.MINOR, true, false, false, true)),
                 Arguments.of(
                         new Input(VERSION2, false, true, MINOR, true),
-                        new Expected(false, UpdateStrategy.MINOR, true, false, true, true)),
+                        new Expected(false, BetonQuestUpdateStrategy.MINOR, true, false, true, true)),
                 Arguments.of(
                         new Input(VERSION2, false, true, MINOR, false),
-                        new Expected(false, UpdateStrategy.MINOR, true, false, true, true)),
+                        new Expected(false, BetonQuestUpdateStrategy.MINOR, true, false, true, true)),
                 Arguments.of(
                         new Input(VERSION2, false, true, MINOR_DEV, true),
-                        new Expected(false, UpdateStrategy.MINOR, true, true, true, false)),
+                        new Expected(false, BetonQuestUpdateStrategy.MINOR, true, true, true, false)),
                 Arguments.of(
                         new Input(VERSION2, false, true, MINOR_DEV, false),
-                        new Expected(false, UpdateStrategy.MINOR, true, false, true, false)),
+                        new Expected(false, BetonQuestUpdateStrategy.MINOR, true, false, true, false)),
                 Arguments.of(
                         new Input(VERSION2, false, false, MINOR, true),
-                        new Expected(false, UpdateStrategy.MINOR, true, false, false, true)),
+                        new Expected(false, BetonQuestUpdateStrategy.MINOR, true, false, false, true)),
                 Arguments.of(
                         new Input(VERSION2, false, false, MINOR, false),
-                        new Expected(false, UpdateStrategy.MINOR, true, false, false, true)),
+                        new Expected(false, BetonQuestUpdateStrategy.MINOR, true, false, false, true)),
                 Arguments.of(
                         new Input(VERSION2, false, false, MINOR_DEV, true),
-                        new Expected(false, UpdateStrategy.MINOR, true, true, false, false)),
+                        new Expected(false, BetonQuestUpdateStrategy.MINOR, true, true, false, false)),
                 Arguments.of(
                         new Input(VERSION2, false, false, MINOR_DEV, false),
-                        new Expected(false, UpdateStrategy.MINOR, true, false, false, false)),
+                        new Expected(false, BetonQuestUpdateStrategy.MINOR, true, false, false, false)),
                 Arguments.of(
                         new Input(VERSION2, false, false, INVALID, false),
-                        new Expected(false, UpdateStrategy.MINOR, true, false, false, true)),
+                        new Expected(false, BetonQuestUpdateStrategy.MINOR, true, false, false, true)),
                 // Special cases
                 Arguments.of(
                         new Input(VERSION2, true, false, "PATCH", false),
-                        new Expected(true, UpdateStrategy.PATCH, true, false, false, true))
+                        new Expected(true, BetonQuestUpdateStrategy.PATCH, true, false, false, true))
 
         );
     }
 
     /* default */
-    static UpdaterConfig getMockedConfig(final BetonQuestLogger logger, final Input input, final LegacyVersion version) {
+    static UpdaterConfig getMockedConfig(final BetonQuestLogger logger, final Input input, final Version version) {
         final ConfigAccessor config = mock(ConfigAccessor.class);
         when(config.getBoolean("updater.enabled", true)).thenReturn(input.enabled);
         when(config.getBoolean("updater.ingame_notification", true)).thenReturn(input.ingameNotification);
@@ -206,7 +207,7 @@ final class UpdaterConfigTest {
      * @param strategy           strategy
      * @param automatic          automatic
      */
-    /* default */ record Input(LegacyVersion version, boolean enabled, boolean ingameNotification, String strategy,
+    /* default */ record Input(Version version, boolean enabled, boolean ingameNotification, String strategy,
                                boolean automatic) {
 
     }
@@ -221,7 +222,8 @@ final class UpdaterConfigTest {
      * @param ingameNotification ingameNotification
      * @param forcedStrategy     forcedStrategy
      */
-    private record Expected(boolean enabled, UpdateStrategy strategy, boolean devDownloadEnabled, boolean automatic,
+    private record Expected(boolean enabled, BetonQuestUpdateStrategy strategy, boolean devDownloadEnabled,
+                            boolean automatic,
                             boolean ingameNotification, boolean forcedStrategy) {
 
     }

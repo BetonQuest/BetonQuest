@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.web.updater.source.implementations;
 
-import org.betonquest.betonquest.lib.versioning.LegacyVersion;
+import org.betonquest.betonquest.api.version.Version;
+import org.betonquest.betonquest.lib.version.BetonQuestVersion;
 import org.betonquest.betonquest.web.ContentSource;
 import org.betonquest.betonquest.web.WebContentSource;
 import org.junit.jupiter.api.Nested;
@@ -36,12 +37,12 @@ class GitHubReleaseSourceTest {
             throw new IOException("Unexpected URL: " + url);
         };
         final GitHubReleaseSource releaseSource = new GitHubReleaseSource(apiUrl, contentSource);
-        final Map<LegacyVersion, String> versions = releaseSource.getReleaseVersions(new LegacyVersion("1.12.0"));
+        final Map<Version, String> versions = releaseSource.getReleaseVersions(BetonQuestVersion.parse("1.12.0"));
 
         assertEquals(2, versions.size(), "Expected two versions from getReleaseVersions");
-        final String url1 = versions.get(new LegacyVersion("1.12.0"));
+        final String url1 = versions.get(BetonQuestVersion.parse("1.12.0"));
         assertEquals(apiUrlReleases + "/download/v1.12.0/BetonQuest.jar", url1, "The download URL is not correct");
-        final String url2 = versions.get(new LegacyVersion("1.12.1"));
+        final String url2 = versions.get(BetonQuestVersion.parse("1.12.1"));
         assertEquals(apiUrlReleases + "/download/v1.12.1/BetonQuest.jar", url2, "The download URL is not correct");
     }
 

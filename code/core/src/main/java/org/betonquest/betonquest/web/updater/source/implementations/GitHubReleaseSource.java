@@ -3,7 +3,8 @@ package org.betonquest.betonquest.web.updater.source.implementations;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import org.betonquest.betonquest.lib.versioning.LegacyVersion;
+import org.betonquest.betonquest.api.version.Version;
+import org.betonquest.betonquest.lib.version.BetonQuestVersion;
 import org.betonquest.betonquest.web.ContentSource;
 import org.betonquest.betonquest.web.WebContentSource;
 import org.betonquest.betonquest.web.updater.source.ReleaseUpdateSource;
@@ -74,14 +75,14 @@ public class GitHubReleaseSource implements ReleaseUpdateSource {
     }
 
     @Override
-    public Map<LegacyVersion, String> getReleaseVersions(final LegacyVersion currentVersion) throws IOException {
-        final Map<LegacyVersion, String> versions = new HashMap<>();
+    public Map<Version, String> getReleaseVersions(final Version currentVersion) throws IOException {
+        final Map<Version, String> versions = new HashMap<>();
         Integer page = 1;
         while (page != null) {
             final JsonArray releaseArray = gson.fromJson(contentSource.get(new URL(apiUrl + RELEASES_URL + PAGE + page)), JsonArray.class);
             for (int index = 0; index < releaseArray.size(); index++) {
                 final JsonObject release = releaseArray.get(index).getAsJsonObject();
-                final LegacyVersion version = new LegacyVersion(release.get("tag_name").getAsString().substring(1));
+                final Version version = BetonQuestVersion.parse(release.get("tag_name").getAsString().substring(1));
                 final JsonArray assetsArray = release.get("assets").getAsJsonArray();
                 for (int i = 0; i < assetsArray.size(); i++) {
                     final JsonObject asset = assetsArray.get(i).getAsJsonObject();

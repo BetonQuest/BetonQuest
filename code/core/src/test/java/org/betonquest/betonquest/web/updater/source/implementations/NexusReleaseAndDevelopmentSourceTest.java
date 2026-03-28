@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.web.updater.source.implementations;
 
-import org.betonquest.betonquest.lib.versioning.LegacyVersion;
+import org.betonquest.betonquest.api.version.Version;
+import org.betonquest.betonquest.lib.version.BetonQuestVersion;
 import org.betonquest.betonquest.web.ContentSource;
 import org.junit.jupiter.api.Test;
 
@@ -39,13 +40,13 @@ class NexusReleaseAndDevelopmentSourceTest {
         final NexusReleaseAndDevelopmentSource source = new NexusReleaseAndDevelopmentSource(API_URL, "betonquest",
                 "org.betonquest", "betonquest", "shaded", contentSource);
 
-        final Map<LegacyVersion, String> versions = source.getReleaseVersions(new LegacyVersion("1.12.4"));
+        final Map<Version, String> versions = source.getReleaseVersions(BetonQuestVersion.parse("1.12.4"));
 
         assertEquals(2, versions.size(), "Expected two versions from getReleaseVersions");
-        final String url2 = versions.get(new LegacyVersion("1.12.5"));
+        final String url2 = versions.entrySet().stream().filter(entry -> "1.12.5".equals(entry.getKey().toString())).findFirst().map(Map.Entry::getValue).orElse(null);
         assertEquals(API_URL + "/repository/betonquest/org/betonquest/betonquest/1.12.5/betonquest-1.12.5-shaded.jar", url2,
                 "The download URL is not correct");
-        final String url3 = versions.get(new LegacyVersion("1.12.6"));
+        final String url3 = versions.entrySet().stream().filter(entry -> "1.12.6".equals(entry.getKey().toString())).findFirst().map(Map.Entry::getValue).orElse(null);
         assertEquals(API_URL + "/repository/betonquest/org/betonquest/betonquest/1.12.6/betonquest-1.12.6-shaded.jar", url3,
                 "The download URL is not correct");
     }
@@ -75,12 +76,11 @@ class NexusReleaseAndDevelopmentSourceTest {
         final NexusReleaseAndDevelopmentSource source = new NexusReleaseAndDevelopmentSource(API_URL, "betonquest",
                 "org.betonquest", "betonquest", "shaded", contentSource);
 
-        final Map<LegacyVersion, String> versions = source.getDevelopmentVersions(new LegacyVersion("1.12.0"));
-
+        final Map<Version, String> versions = source.getDevelopmentVersions(BetonQuestVersion.parse("1.12.0"));
         assertEquals(2, versions.size(), "Expected two versions from getReleaseVersions");
-        final String url1 = versions.get(new LegacyVersion("2.0.0-DEV-495"));
+        final String url1 = versions.entrySet().stream().filter(entry -> "2.0.0-DEV-495".equals(entry.getKey().toString())).findFirst().map(Map.Entry::getValue).orElse(null);
         assertEquals(apiUrlPom1.replace(".pom", "-shaded.jar"), url1, "The download URL is not correct");
-        final String url2 = versions.get(new LegacyVersion("1.12.7-DEV-379"));
+        final String url2 = versions.entrySet().stream().filter(entry -> "1.12.7-DEV-379".equals(entry.getKey().toString())).findFirst().map(Map.Entry::getValue).orElse(null);
         assertEquals(apiUrlPom2.replace(".pom", "-shaded.jar"), url2, "The download URL is not correct");
     }
 }

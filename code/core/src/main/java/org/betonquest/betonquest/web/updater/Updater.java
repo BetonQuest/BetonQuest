@@ -3,7 +3,7 @@ package org.betonquest.betonquest.web.updater;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.lib.versioning.LegacyVersion;
+import org.betonquest.betonquest.api.version.Version;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -83,10 +83,10 @@ public class Updater {
     private final Map<UUID, Instant> lastNotification;
 
     /**
-     * The latest version, the key is a {@link LegacyVersion} and the value is the URL for the download.
+     * The latest version, the key is a {@link Version} and the value is the URL for the download.
      * If the URL is empty, the version is the current installed one or the already downloaded one.
      */
-    private Pair<LegacyVersion, String> latest;
+    private Pair<Version, String> latest;
 
     /**
      * The last timestamp, when an update was searched.
@@ -112,7 +112,7 @@ public class Updater {
      * @param scheduler           the {@link BukkitScheduler} instance
      * @param instantSource       the {@link InstantSource} instance
      */
-    public Updater(final BetonQuestLogger log, final UpdaterConfig config, final LegacyVersion currentVersion,
+    public Updater(final BetonQuestLogger log, final UpdaterConfig config, final Version currentVersion,
                    final UpdateSourceHandler updateSourceHandler, final UpdateDownloader updateDownloader,
                    final Plugin plugin, final BukkitScheduler scheduler, final InstantSource instantSource) {
         this.log = log;
@@ -160,7 +160,7 @@ public class Updater {
     }
 
     private boolean searchUpdate() {
-        final Pair<LegacyVersion, String> newLatest = updateSourceHandler.searchUpdate(config, latest.getKey(), config.getDevIndicator());
+        final Pair<Version, String> newLatest = updateSourceHandler.searchUpdate(config, latest.getKey());
         if (newLatest.getValue() == null) {
             return false;
         }
@@ -196,7 +196,7 @@ public class Updater {
         if (latest.getValue() == null) {
             throw new IllegalStateException("There is no newer version available!");
         }
-        return latest.getKey().getVersion();
+        return latest.getKey().toString();
     }
 
     /**

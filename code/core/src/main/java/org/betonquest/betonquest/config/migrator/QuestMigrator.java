@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.config.migrator;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.version.Version;
 import org.betonquest.betonquest.config.migrator.from1to2.AuraSkillsRename;
 import org.betonquest.betonquest.config.migrator.from1to2.EffectLib;
 import org.betonquest.betonquest.config.migrator.from1to2.EventScheduling;
@@ -27,18 +28,17 @@ import org.betonquest.betonquest.config.migrator.from2to3.PickRandomPercentage;
 import org.betonquest.betonquest.config.migrator.from2to3.RemoveLegacyPointModification;
 import org.betonquest.betonquest.config.migrator.from2to3.RemoveStringList;
 import org.betonquest.betonquest.config.migrator.from2to3.VariablesRename;
+import org.betonquest.betonquest.lib.config.patcher.migration.BetonQuestMigratorVersion;
 import org.betonquest.betonquest.lib.config.patcher.migration.QuestMigration;
-import org.betonquest.betonquest.lib.config.patcher.migration.SettableVersion;
 import org.betonquest.betonquest.lib.config.patcher.migration.VersionMissmatchException;
 import org.betonquest.betonquest.lib.config.quest.Quest;
-import org.betonquest.betonquest.lib.versioning.LegacyVersion;
-import org.betonquest.betonquest.lib.versioning.UpdateStrategy;
-import org.betonquest.betonquest.lib.versioning.VersionComparator;
+import org.betonquest.betonquest.lib.version.VersionComparisonStrategies;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.jetbrains.annotations.VisibleForTesting;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
@@ -48,11 +48,6 @@ import java.util.TreeMap;
  * Migrates {@link Quest}s by Versions.
  */
 public class QuestMigrator {
-
-    /**
-     * Comparator for {@link LegacyVersion} with the qualifier QUEST.
-     */
-    private static final VersionComparator VERSION_COMPARATOR = new VersionComparator(UpdateStrategy.MAJOR, "QUEST-");
 
     /**
      * The path to the quest's version in the package.
@@ -77,12 +72,12 @@ public class QuestMigrator {
     /**
      * The migrations by their version.
      */
-    private final NavigableMap<SettableVersion, QuestMigration> migrations;
+    private final NavigableMap<BetonQuestMigratorVersion, QuestMigration> migrations;
 
     /**
      * The newest package version.
      */
-    private final SettableVersion fallbackVersion;
+    private final BetonQuestMigratorVersion fallbackVersion;
 
     /**
      * Create a new Quest Migrator with custom migrations.
@@ -94,14 +89,14 @@ public class QuestMigrator {
      */
     @VisibleForTesting
     QuestMigrator(final BetonQuestLogger log, final List<QuestMigration> legacyMigrations,
-                  final Map<LegacyVersion, QuestMigration> migrations, final LegacyVersion fallbackVersion) {
+                  final Map<Version, QuestMigration> migrations, final Version fallbackVersion) {
         this.log = log;
         this.legacyMigrations = legacyMigrations;
-        this.migrations = new TreeMap<>(VERSION_COMPARATOR);
-        for (final Map.Entry<LegacyVersion, QuestMigration> entry : migrations.entrySet()) {
-            this.migrations.put(new SettableVersion(entry.getKey().getVersion()), entry.getValue());
+        this.migrations = new TreeMap<>(Comparator.comparing(BetonQuestMigratorVersion::wrappedVersion));
+        for (final Map.Entry<Version, QuestMigration> entry : migrations.entrySet()) {
+            this.migrations.put(new BetonQuestMigratorVersion(entry.getKey()), entry.getValue());
         }
-        this.fallbackVersion = new SettableVersion(fallbackVersion.getVersion());
+        this.fallbackVersion = new BetonQuestMigratorVersion(fallbackVersion);
     }
 
     /**
@@ -115,7 +110,7 @@ public class QuestMigrator {
     public QuestMigrator(final BetonQuestLogger log, final PluginDescriptionFile pluginDescription) {
         this.log = log;
         this.legacyMigrations = getLegacy();
-        this.migrations = new TreeMap<>(VERSION_COMPARATOR);
+        this.migrations = new TreeMap<>(Comparator.comparing(BetonQuestMigratorVersion::wrappedVersion));
         migrations.put(questVersion("3.0.0", 1), new LanguageRename());
         migrations.put(questVersion("3.0.0", 2), new NpcRename());
         migrations.put(questVersion("3.0.0", 3), new AddSimpleTypeToQuestItem());
@@ -136,8 +131,9 @@ public class QuestMigrator {
         this.fallbackVersion = questVersion(pluginDescription.getVersion(), 0);
     }
 
-    private SettableVersion questVersion(final String semanticVersion, final int number) {
-        return new SettableVersion(semanticVersion + "-QUEST-" + number);
+    private BetonQuestMigratorVersion questVersion(final String semanticVersion, final int number) {
+        final String numericVersionPart = semanticVersion.contains("-") ? semanticVersion.substring(0, semanticVersion.indexOf('-')) : semanticVersion;
+        return new BetonQuestMigratorVersion("%s-QUEST-%d".formatted(numericVersionPart, number));
     }
 
     private List<QuestMigration> getLegacy() {
@@ -166,7 +162,7 @@ public class QuestMigrator {
     public void migrate(final Quest quest) throws IOException, InvalidConfigurationException, VersionMissmatchException {
         log.debug("Attempting to migrate package '" + quest.getQuestPath() + "'");
         final String versionString = quest.getQuestConfig().getString(QUEST_VERSION_PATH);
-        final SettableVersion lastVersionToSet = migrations.isEmpty() ? fallbackVersion : migrations.lastKey();
+        final BetonQuestMigratorVersion lastVersionToSet = migrations.isEmpty() ? fallbackVersion : migrations.lastKey();
         if (versionString == null) {
             log.debug("  No version present, just setting to '" + lastVersionToSet + "'");
             lastVersionToSet.setVersion(quest, QUEST_VERSION_PATH);
@@ -174,7 +170,7 @@ public class QuestMigrator {
             return;
         }
 
-        final Map<SettableVersion, QuestMigration> actualMigrations;
+        final Map<BetonQuestMigratorVersion, QuestMigration> actualMigrations;
         if (LEGACY.equalsIgnoreCase(versionString)) {
             log.debug("  Legacy identifier set, applying legacy and versioned migrations");
             for (final QuestMigration legacyMigration : legacyMigrations) {
@@ -187,12 +183,12 @@ public class QuestMigrator {
             }
             actualMigrations = migrations;
         } else {
-            final SettableVersion otherVersion = new SettableVersion(versionString);
+            final BetonQuestMigratorVersion otherVersion = new BetonQuestMigratorVersion(versionString);
             if (lastVersionToSet.equals(otherVersion)) {
                 log.debug("  Version '" + otherVersion + "' is up to date");
                 return;
             }
-            if (VERSION_COMPARATOR.isOlderThan(lastVersionToSet, otherVersion)) {
+            if (lastVersionToSet.wrappedVersion().isOlderThan(VersionComparisonStrategies.DEFAULT, otherVersion.wrappedVersion())) {
                 throw new VersionMissmatchException("The version '" + otherVersion
                         + "' is newer than the latest known version '" + lastVersionToSet + "'!\n"
                         + "Quests with newer versions will probably cause issues. If you know that won't be the case"
@@ -209,7 +205,7 @@ public class QuestMigrator {
             return;
         }
 
-        for (final Map.Entry<SettableVersion, QuestMigration> entry : actualMigrations.entrySet()) {
+        for (final Map.Entry<BetonQuestMigratorVersion, QuestMigration> entry : actualMigrations.entrySet()) {
             try {
                 entry.getValue().migrate(quest);
             } catch (final Exception e) {

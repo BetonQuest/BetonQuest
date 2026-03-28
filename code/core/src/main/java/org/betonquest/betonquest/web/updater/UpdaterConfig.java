@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.web.updater;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.lib.versioning.LegacyVersion;
-import org.betonquest.betonquest.lib.versioning.UpdateStrategy;
+import org.betonquest.betonquest.api.version.Version;
+import org.betonquest.betonquest.lib.version.BetonQuestUpdateStrategy;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Locale;
@@ -19,7 +19,7 @@ public class UpdaterConfig {
     private static final String UPDATE_SECTION = "updater.";
 
     /**
-     * The separator between the {@link UpdateStrategy} and a given dev indicator.
+     * The separator between the {@link BetonQuestUpdateStrategy} and a given dev indicator.
      */
     private static final String DEV_SEPARATOR = "_";
 
@@ -41,7 +41,7 @@ public class UpdaterConfig {
     /**
      * The current installed version.
      */
-    private final LegacyVersion current;
+    private final Version current;
 
     /**
      * True if the updater is enabled.
@@ -59,9 +59,9 @@ public class UpdaterConfig {
     private boolean automatic;
 
     /**
-     * The configured {@link UpdateStrategy}.
+     * The configured {@link BetonQuestUpdateStrategy}.
      */
-    private UpdateStrategy strategy = UpdateStrategy.MINOR;
+    private BetonQuestUpdateStrategy strategy = BetonQuestUpdateStrategy.MINOR;
 
     /**
      * True if the update for development versions are enabled.
@@ -73,10 +73,10 @@ public class UpdaterConfig {
      *
      * @param log          the logger that will be used for logging
      * @param config       the {@link ConfigurationSection} that contains the updater settings
-     * @param current      the current {@link LegacyVersion} of the plugin
+     * @param current      the current {@link Version} of the plugin
      * @param devIndicator the string qualifier that represents dev versions
      */
-    public UpdaterConfig(final BetonQuestLogger log, final ConfigurationSection config, final LegacyVersion current, final String devIndicator) {
+    public UpdaterConfig(final BetonQuestLogger log, final ConfigurationSection config, final Version current, final String devIndicator) {
         this.log = log;
         this.config = config;
         this.current = current;
@@ -96,7 +96,7 @@ public class UpdaterConfig {
         final String updateStrategy = getUpdateStrategy(updateStrategyRaw);
         devDownloadEnabled = !updateStrategyRaw.equals(updateStrategy);
         try {
-            strategy = UpdateStrategy.valueOf(updateStrategy);
+            strategy = BetonQuestUpdateStrategy.valueOf(updateStrategy);
         } catch (final IllegalArgumentException exception) {
             log.error("Could not parse 'update.strategy' in 'config.yml'!", exception);
         }
@@ -128,11 +128,11 @@ public class UpdaterConfig {
     }
 
     /**
-     * Get the configured {@link UpdateStrategy}.
+     * Get the configured {@link BetonQuestUpdateStrategy}.
      *
-     * @return the {@link UpdateStrategy}
+     * @return the {@link BetonQuestUpdateStrategy}
      */
-    public UpdateStrategy getStrategy() {
+    public BetonQuestUpdateStrategy getStrategy() {
         return strategy;
     }
 
@@ -164,15 +164,15 @@ public class UpdaterConfig {
     }
 
     /**
-     * Get weather the {@link UpdateStrategy} is forced by the plugin.
+     * Get weather the {@link BetonQuestUpdateStrategy} is forced by the plugin.
      *
-     * @return true if the {@link UpdateStrategy} forced by the plugin
+     * @return true if the {@link BetonQuestUpdateStrategy} forced by the plugin
      */
     public boolean isForcedStrategy() {
-        return isCurrentVersionDev() ? !devDownloadEnabled : current.hasQualifier();
+        return isCurrentVersionDev() ? !devDownloadEnabled : current.tokens().size() < 6;
     }
 
     private boolean isCurrentVersionDev() {
-        return (devIndicator + "-").equals(current.getQualifier());
+        return current.getNamedElement("type").map("DEV"::equals).orElse(false);
     }
 }

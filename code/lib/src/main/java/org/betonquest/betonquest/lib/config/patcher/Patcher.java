@@ -7,9 +7,11 @@ import org.betonquest.betonquest.api.config.patcher.PatchTransformer;
 import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegistry;
 import org.betonquest.betonquest.api.config.patcher.PatcherOptions;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.lib.versioning.LegacyVersion;
-import org.betonquest.betonquest.lib.versioning.UpdateStrategy;
-import org.betonquest.betonquest.lib.versioning.VersionComparator;
+import org.betonquest.betonquest.api.version.Version;
+import org.betonquest.betonquest.api.version.VersionType;
+import org.betonquest.betonquest.lib.version.DefaultVersionType;
+import org.betonquest.betonquest.lib.version.VersionComparisonStrategies;
+import org.betonquest.betonquest.lib.version.VersionParser;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -31,9 +33,15 @@ import java.util.regex.Pattern;
 public class Patcher {
 
     /**
-     * Comparator for {@link LegacyVersion} with the qualifier CONFIG.
+     * The version type for the config version.
      */
-    private static final VersionComparator VERSION_COMPARATOR = new VersionComparator(UpdateStrategy.MAJOR, "CONFIG-");
+    private static final VersionType CONFIG_VERSION_TYPE = DefaultVersionType.builder()
+            .number("major")
+            .dot().number("minor")
+            .dot().number("patch")
+            .dash().exact("type", "CONFIG")
+            .dash().finite().number("build")
+            .build();
 
     /**
      * The comment at the version entry in the config.
@@ -53,7 +61,7 @@ public class Patcher {
     /**
      * The 'version' indicating no version set, but already present as file.
      */
-    private static final LegacyVersion ZERO_VERSION = new LegacyVersion("0.0.0-CONFIG-0");
+    private static final Version ZERO_VERSION = VersionParser.parse(CONFIG_VERSION_TYPE, "0.0.0-CONFIG-0");
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -73,7 +81,7 @@ public class Patcher {
     /**
      * Contains all versions that are patchable.
      */
-    private final NavigableMap<LegacyVersion, List<Map<?, ?>>> patches;
+    private final NavigableMap<Version, List<Map<?, ?>>> patches;
 
     /**
      * Creates a new Patcher.
@@ -90,7 +98,7 @@ public class Patcher {
         this.log = log;
         this.resourceAccessor = resourceAccessor;
         this.transformerRegistry = transformerRegistry;
-        this.patches = new TreeMap<>(VERSION_COMPARATOR);
+        this.patches = new TreeMap<>(VersionComparisonStrategies.DEFAULT);
         buildVersionIndex(patchConfig, "");
     }
 
@@ -118,7 +126,7 @@ public class Patcher {
             throw new InvalidConfigurationException("The patch file at '" + currentKey + "' has an invalid version format.");
         }
         final String result = matcher.group(1) + "-CONFIG-" + matcher.group(2);
-        final LegacyVersion discoveredVersion = new LegacyVersion(result);
+        final Version discoveredVersion = VersionParser.parse(CONFIG_VERSION_TYPE, result);
         patches.put(discoveredVersion, mapList);
     }
 
@@ -140,8 +148,8 @@ public class Patcher {
             log.debug(logPrefix + "gets the latest version '" + patches.lastKey() + "' set.");
             setConfigVersion(config, patches.lastKey());
         } else {
-            final LegacyVersion version = getConfigVersion(configVersionString);
-            if (version != null && !VERSION_COMPARATOR.isOlderThan(version, patches.lastEntry().getKey())) {
+            final Version version = getConfigVersion(configVersionString);
+            if (version != null && !version.isOlderThan(VersionComparisonStrategies.DEFAULT, patches.lastEntry().getKey())) {
                 log.debug(logPrefix + "is already up to date.");
             } else {
                 final String displayVersion = version == null ? "'legacy' version" : "version '" + version + "'";
@@ -156,10 +164,10 @@ public class Patcher {
         }
     }
 
-    private void patch(@Nullable final LegacyVersion version, final Configuration config) {
+    private void patch(@Nullable final Version version, final Configuration config) {
         boolean noErrors = true;
-        final NavigableMap<LegacyVersion, List<Map<?, ?>>> actualPatches = version == null ? patches : patches.tailMap(version, false);
-        for (final Map.Entry<LegacyVersion, List<Map<?, ?>>> patch : actualPatches.entrySet()) {
+        final NavigableMap<Version, List<Map<?, ?>>> actualPatches = version == null ? patches : patches.tailMap(version, false);
+        for (final Map.Entry<Version, List<Map<?, ?>>> patch : actualPatches.entrySet()) {
             log.info("Applying patches to update to '" + patch.getKey() + "'...");
             setConfigVersion(config, patch.getKey());
             if (!applyPatch(config, patch.getValue())) {
@@ -176,11 +184,11 @@ public class Patcher {
     }
 
     @Nullable
-    private LegacyVersion getConfigVersion(@Nullable final String configVersion) {
+    private Version getConfigVersion(@Nullable final String configVersion) {
         if (configVersion == null || configVersion.isEmpty()) {
             return null;
         }
-        return new LegacyVersion(configVersion);
+        return VersionParser.parse(CONFIG_VERSION_TYPE, configVersion);
     }
 
     private boolean applyPatch(final ConfigurationSection config, final List<Map<?, ?>> patchData) {
@@ -210,8 +218,8 @@ public class Patcher {
         return patchTransformer;
     }
 
-    private void setConfigVersion(final ConfigurationSection config, final LegacyVersion newVersion) {
-        config.set(CONFIG_VERSION_PATH, newVersion.getVersion());
+    private void setConfigVersion(final ConfigurationSection config, final Version newVersion) {
+        config.set(CONFIG_VERSION_PATH, newVersion.toString());
         config.setInlineComments(CONFIG_VERSION_PATH, List.of(VERSION_CONFIG_COMMENT));
     }
 }

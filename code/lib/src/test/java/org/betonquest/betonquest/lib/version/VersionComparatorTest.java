@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.lib.version;
 
 import org.betonquest.betonquest.api.version.Version;
-import org.betonquest.betonquest.lib.versioning.LegacyVersion;
 import org.junit.jupiter.api.Test;
 
 import java.util.Comparator;
@@ -9,7 +8,7 @@ import java.util.Comparator;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This test should only ensure, that the {@link LegacyVersion} does not break anything or select wrong versions
+ * This test should only ensure, that the {@link Version} does not break anything or select wrong versions
  * and push them into the production server.
  */
 @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")

@@ -1,9 +1,10 @@
 package org.betonquest.betonquest.config.patcher.migration;
 
+import org.betonquest.betonquest.api.version.Version;
 import org.betonquest.betonquest.config.quest.QuestFixture;
-import org.betonquest.betonquest.lib.config.patcher.migration.SettableVersion;
+import org.betonquest.betonquest.lib.config.patcher.migration.BetonQuestMigratorVersion;
 import org.betonquest.betonquest.lib.config.quest.Quest;
-import org.betonquest.betonquest.lib.versioning.LegacyVersion;
+import org.betonquest.betonquest.lib.version.VersionParser;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.junit.jupiter.api.Test;
 
@@ -23,10 +24,10 @@ class SettableVersionTest extends QuestFixture {
     @Test
     void test_no_version_present() throws IOException, InvalidConfigurationException {
         final Quest quest = setupQuest();
-        final SettableVersion version = new SettableVersion("1.2.3-QUEST-4");
+        final BetonQuestMigratorVersion version = new BetonQuestMigratorVersion("1.2.3-QUEST-4");
         version.setVersion(quest, PACKAGE_VERSION);
         quest.saveAll();
-        expected.set(PACKAGE_VERSION, version.getVersion());
+        expected.set(PACKAGE_VERSION, version.wrappedVersion().toString());
         expected.setInlineComments(PACKAGE_VERSION,
                 List.of("Don't change this! The plugin's automatic quest updater handles it."));
         checkAssertion(quest, "package.yml");
@@ -34,13 +35,13 @@ class SettableVersionTest extends QuestFixture {
 
     @Test
     void test_version_present() throws IOException, InvalidConfigurationException {
-        final LegacyVersion presentVersion = new LegacyVersion("2.3.4-QUEST-5");
-        original.set(PACKAGE_VERSION, presentVersion.getVersion());
+        final Version presentVersion = VersionParser.parse(BetonQuestMigratorVersion.QUEST_PACKAGE_VERSION_TYPE, "2.3.4-QUEST-5");
+        original.set(PACKAGE_VERSION, presentVersion.toString());
         final Quest quest = setupQuest();
-        final SettableVersion version = new SettableVersion("1.2.3-QUEST-4");
+        final BetonQuestMigratorVersion version = new BetonQuestMigratorVersion("1.2.3-QUEST-4");
         version.setVersion(quest, PACKAGE_VERSION);
         quest.saveAll();
-        expected.set(PACKAGE_VERSION, version.getVersion());
+        expected.set(PACKAGE_VERSION, version.wrappedVersion().toString());
         expected.setInlineComments(PACKAGE_VERSION,
                 List.of("Don't change this! The plugin's automatic quest updater handles it."));
         checkAssertion(quest, "package.yml");
