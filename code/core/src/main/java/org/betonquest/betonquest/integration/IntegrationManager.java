@@ -14,7 +14,6 @@ import org.betonquest.betonquest.lib.integration.PluginProvider;
 import org.betonquest.betonquest.lib.integration.policy.PluginPolicy;
 import org.betonquest.betonquest.lib.integration.policy.VanillaPolicy;
 import org.betonquest.betonquest.lib.integration.policy.VersionedPluginPolicy;
-import org.betonquest.betonquest.lib.integration.policy.VersionedPolicy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
@@ -24,6 +23,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * The {@link IntegrationManager} handles all registered integrations.
@@ -216,18 +216,17 @@ public class IntegrationManager {
                     .allMatch(plugin -> plugin.map(Plugin::isEnabled).orElse(false));
         }
 
-        /**
-         * Gets the name the integration is made for along with its version.
-         * If the integration is made for the server itself without specifying a plugin,
-         * the current server implementation is named instead.
-         *
-         * @return the name and version the integration is made for
-         */
-        private String integratedPluginVersionName() {
-            return policies.stream().filter(VersionedPolicy.class::isInstance)
-                    .map(VersionedPolicy.class::cast)
-                    .map(policy -> "%s (%s)".formatted(policy.name(), policy.version()))
-                    .findFirst().orElse(UNSPECIFIED);
+        @Override
+        public String integratedPluginVersionName() {
+            final List<Triple<String, String, String>> list = getDisplayInfo();
+            final int singleElement = 1;
+            if (list.size() == singleElement) {
+                final Triple<String, String, String> triple = list.get(0);
+                return "%s (%s)".formatted(triple.getLeft(), triple.getMiddle());
+            }
+            return list.stream()
+                    .map(triple -> "%s (%s)".formatted(triple.getLeft(), triple.getMiddle()))
+                    .collect(Collectors.joining(", ", "[", "]"));
         }
 
         /**

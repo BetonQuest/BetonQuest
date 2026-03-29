@@ -105,17 +105,7 @@ public class Compatibility implements Listener {
     private void logSourceAndCollectHologramIntegrators(final List<IntegrationData> dataList, final String name,
                                                         final List<HologramIntegrator> hologramIntegrators) {
         final String hooks = dataList.stream()
-                .map(IntegrationData::getDisplayInfo)
-                .map(list -> {
-                    final int singleElement = 1;
-                    if (list.size() == singleElement) {
-                        final Triple<String, String, String> triple = list.get(0);
-                        return "%s (%s)".formatted(triple.getLeft(), triple.getMiddle());
-                    }
-                    return list.stream()
-                            .map(triple -> "%s (%s)".formatted(triple.getLeft(), triple.getMiddle()))
-                            .collect(Collectors.joining(", ", "[", "]"));
-                })
+                .map(IntegrationData::integratedPluginVersionName)
                 .collect(Collectors.joining(", "));
         if (!hooks.isEmpty()) {
             log.info("Enabled compatibility%sfor %s!".formatted(name, hooks));
