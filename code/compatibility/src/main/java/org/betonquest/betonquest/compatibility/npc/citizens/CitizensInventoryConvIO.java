@@ -2,7 +2,6 @@ package org.betonquest.betonquest.compatibility.npc.citizens;
 
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.SkinTrait;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -43,6 +42,11 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
     private static final Pattern SKIN_JSON_URL_PATTERN = Pattern.compile("\"SKIN\" ?: ?\\{\\n *\"url\" ?: ?\"(?<url>.*)\"");
 
     /**
+     * Plugin instance used for scheduling.
+     */
+    private final Plugin plugin;
+
+    /**
      * Creates a new CitizensInventoryConvIO instance.
      *
      * @param conv                 the conversation this IO is part of
@@ -70,6 +74,7 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
                                    final FixedComponentLineWrapper componentLineWrapper) {
         super(conv, onlineProfile, log, plugin, pluginManager, instructions, pluginMessage, itemManager, profileProvider,
                 conversations, colors, showNumber, showNPCText, printMessages, componentLineWrapper);
+        this.plugin = plugin;
     }
 
     @Override
@@ -81,7 +86,7 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
             }
 
             try {
-                final SkinTrait skinTrait = Bukkit.getScheduler().callSyncMethod(BetonQuest.getInstance(), () -> npc.getOrAddTrait(SkinTrait.class)).get();
+                final SkinTrait skinTrait = Bukkit.getScheduler().callSyncMethod(plugin, () -> npc.getOrAddTrait(SkinTrait.class)).get();
                 final String texture = skinTrait.getTexture();
                 if (texture != null) {
 

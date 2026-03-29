@@ -3,7 +3,6 @@ package org.betonquest.betonquest.compatibility.holograms.holographicdisplays;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.hologram.PlaceholderSetting;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
@@ -61,15 +60,16 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
      * Creates a new HolographicDisplaysIntegrator for HolographicDisplays.
      *
      * @param log                  the custom logger for this class
+     * @param plugin               the plugin instance to create holograms
      * @param instructionApi       the instruction api to use
      * @param identifierFactory    the identifier factory for placeholders
      * @param placeholderProcessor the placeholder manager to use
      */
-    public HolographicDisplaysIntegrator(final BetonQuestLogger log, final Instructions instructionApi,
+    public HolographicDisplaysIntegrator(final BetonQuestLogger log, final Plugin plugin, final Instructions instructionApi,
                                          final IdentifierFactory<PlaceholderIdentifier> identifierFactory,
                                          final PlaceholderProcessor placeholderProcessor) {
         super("HolographicDisplays");
-        this.plugin = BetonQuest.getInstance();
+        this.plugin = plugin;
         this.instructionApi = instructionApi;
         this.identifierFactory = identifierFactory;
         this.log = log;

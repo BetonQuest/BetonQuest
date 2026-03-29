@@ -3,7 +3,6 @@ package org.betonquest.betonquest.compatibility.mythicmobs.objective;
 import io.lumine.mythic.bukkit.BukkitAdapter;
 import io.lumine.mythic.bukkit.events.MythicMobDeathEvent;
 import io.lumine.mythic.core.mobs.ActiveMob;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
@@ -30,7 +29,7 @@ public class MythicMobKillObjective extends CountingObjective {
     /**
      * The marked key.
      */
-    private final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
+    private final NamespacedKey key = new NamespacedKey("betonquest", "betonquest-marked");
 
     /**
      * The identifiers of all mobs that this objective should count.

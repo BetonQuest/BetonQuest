@@ -1,12 +1,10 @@
 package org.betonquest.betonquest.compatibility.npc.znpcsplus;
 
 import lol.pyr.znpcsplus.api.NpcApiProvider;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.service.npc.NpcRegistry;
-import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
 
 /**
  * Integrator implementation for the
@@ -35,8 +33,7 @@ public class ZNPCsPlusIntegrator implements Integration {
         final NpcRegistry npcRegistry = api.npcs().registry();
         final ProfileProvider profileProvider = api.profiles();
         api.bukkit().registerEvents(new ZNPCsPlusCatcher(profileProvider, npcRegistry));
-        final ZNPCsPlusHider hider = new ZNPCsPlusHider(BetonQuest.getInstance().getComponentLoader().get(NpcProcessor.class).getNpcHider());
-        api.bukkit().registerEvents(hider);
+        api.bukkit().registerEvents(new ZNPCsPlusHider(api.npcs().manager()));
         npcRegistry.register(PREFIX, new ZNPCsPlusFactory(NpcApiProvider.get().getNpcRegistry()));
         npcRegistry.registerIdentifier(new ZNPCsPlusIdentifier(PREFIX));
     }

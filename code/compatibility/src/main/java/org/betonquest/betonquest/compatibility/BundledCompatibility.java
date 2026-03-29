@@ -122,7 +122,7 @@ public final class BundledCompatibility {
     public void registerCompatiblePlugins(final BetonQuestLoggerFactory loggerFactory, final ServicesManager servicesManager,
                                           final Instructions instructions, final Identifiers identifiers,
                                           final PlaceholderProcessor placeholderProcessor) {
-        register("MythicMobs", () -> new MythicMobsIntegrator(), MythicMobsIntegrator.REQUIRED_VERSION);
+        register("MythicMobs", () -> new MythicMobsIntegrator(plugin, config), MythicMobsIntegrator.REQUIRED_VERSION);
         register("Citizens", () -> new CitizensIntegrator());
         register("Vault", () -> new VaultIntegrator(servicesManager));
         register("Skript", () -> new SkriptIntegrator());
@@ -156,7 +156,7 @@ public final class BundledCompatibility {
                     DecentHologramsIntegrator.REQUIRED_VERSION);
             register("HolographicDisplays",
                     () -> new HolographicDisplaysIntegrator(loggerFactory.create(HolographicDisplaysIntegrator.class),
-                            instructions, placeholderIdentifierFactory, placeholderProcessor),
+                            plugin, instructions, placeholderIdentifierFactory, placeholderProcessor),
                     HolographicDisplaysIntegrator.REQUIRED_VERSION);
         } catch (final QuestException e) {
             log.warn("Could not register DecentHolograms and HolographicDisplays compatibility.", e);
