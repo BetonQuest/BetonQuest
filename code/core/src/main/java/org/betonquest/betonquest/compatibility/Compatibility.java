@@ -3,8 +3,10 @@ package org.betonquest.betonquest.compatibility;
 import com.google.gson.internal.LinkedTreeMap;
 import org.apache.commons.lang3.tuple.Triple;
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.compatibility.holograms.HologramIntegrator;
+import org.betonquest.betonquest.compatibility.holograms.HologramIntegration;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
 import org.betonquest.betonquest.integration.IntegrationManager;
 import org.bukkit.event.Listener;
@@ -42,6 +44,11 @@ public class Compatibility implements Listener {
     private final IntegrationManager integrationManager;
 
     /**
+     * Config to load the priorities.
+     */
+    private final ConfigAccessor config;
+
+    /**
      * The instance of the HologramProvider.
      */
     @Nullable
@@ -53,12 +60,14 @@ public class Compatibility implements Listener {
      * @param log                the custom logger for this class
      * @param betonQuestApi      the BetonQuest API used to hook plugins
      * @param integrationManager the manager for loaded integrations
+     * @param config             the config to load the priorities
      */
     public Compatibility(final BetonQuestLogger log, final BetonQuestApi betonQuestApi,
-                         final IntegrationManager integrationManager) {
+                         final IntegrationManager integrationManager, final ConfigAccessor config) {
         this.log = log;
         this.betonQuestApi = betonQuestApi;
         this.integrationManager = integrationManager;
+        this.config = config;
     }
 
     /**
@@ -103,7 +112,7 @@ public class Compatibility implements Listener {
     }
 
     private void logSourceAndCollectHologramIntegrators(final List<IntegrationData> dataList, final String name,
-                                                        final List<HologramIntegrator> hologramIntegrators) {
+                                                        final List<HologramIntegration> hologramIntegrations) {
         final String hooks = dataList.stream()
                 .map(IntegrationData::integratedPluginVersionName)
                 .collect(Collectors.joining(", "));
@@ -112,9 +121,9 @@ public class Compatibility implements Listener {
         }
         dataList.stream()
                 .map(IntegrationData::getIntegration)
-                .filter(HologramIntegrator.class::isInstance)
-                .map(HologramIntegrator.class::cast)
-                .forEach(hologramIntegrators::add);
+                .filter(HologramIntegration.class::isInstance)
+                .map(HologramIntegration.class::cast)
+                .forEach(hologramIntegrations::add);
     }
 
     /**
@@ -124,13 +133,17 @@ public class Compatibility implements Listener {
     public void logAndInitHologramProvider() {
         final Map<String, List<IntegrationData>> map = getIntegrationsByPluginName();
         final List<IntegrationData> betonQuest = map.remove(BETONQUEST);
-        final List<HologramIntegrator> hologramIntegrators = new ArrayList<>();
+        final List<HologramIntegration> hologramIntegrations = new ArrayList<>();
         if (betonQuest != null) {
-            logSourceAndCollectHologramIntegrators(betonQuest, " ", hologramIntegrators);
+            logSourceAndCollectHologramIntegrators(betonQuest, " ", hologramIntegrations);
         }
         map.forEach((name, data) -> logSourceAndCollectHologramIntegrators(data,
-                " from plugin '%s' ".formatted(name), hologramIntegrators));
-        hologramProvider = HologramProvider.init(betonQuestApi, hologramIntegrators);
+                " from plugin '%s' ".formatted(name), hologramIntegrations));
+        try {
+            hologramProvider = HologramProvider.init(betonQuestApi, config, hologramIntegrations);
+        } catch (final QuestException e) {
+            log.warn("Failed to load hologram provider: " + e.getMessage(), e);
+        }
     }
 
     /**

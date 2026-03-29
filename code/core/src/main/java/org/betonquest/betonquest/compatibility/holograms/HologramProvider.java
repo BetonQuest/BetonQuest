@@ -2,6 +2,8 @@ package org.betonquest.betonquest.compatibility.holograms;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -12,16 +14,15 @@ import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
 
 /**
  * Class which provides Hologram creation.
  */
-public class HologramProvider {
+public final class HologramProvider {
 
     /**
      * Pattern to match a placeholder in a string.
@@ -29,9 +30,9 @@ public class HologramProvider {
     public static final Pattern PLACEHOLDER_VALIDATOR = Pattern.compile("%[^ %\\s]+%");
 
     /**
-     * The hooked integrator.
+     * The selected factory.
      */
-    private final HologramIntegrator integrator;
+    private final BetonHologramFactory integrator;
 
     /**
      * The current {@link LocationHologramLoop}.
@@ -43,25 +44,47 @@ public class HologramProvider {
      */
     private NpcHologramLoop npcHologramLoop;
 
-    private HologramProvider(final BetonQuestApi betonQuestApi, final HologramIntegrator integration) {
+    private HologramProvider(final BetonQuestApi betonQuestApi, final BetonHologramFactory integration) {
         this.integrator = integration;
         load(betonQuestApi);
     }
 
     /**
-     * Creates a new HologramProvider from hooked {@link HologramIntegrator}.
+     * Creates a new HologramProvider from hooked {@link HologramIntegration}.
      *
      * @param betonQuestApi the {@link BetonQuestApi} instance providing access to BetonQuest's API
+     * @param config        the config to load the priorities
      * @param integrations  The list of integrators to consider.
-     * @return the initialized provider or null, if there are no integrations given
+     * @return the initialized provider
+     * @throws QuestException if there are no integrations given or a hologram factory could not be gotten
      */
-    @Nullable
-    public static HologramProvider init(final BetonQuestApi betonQuestApi, final List<HologramIntegrator> integrations) {
-        Collections.sort(integrations);
+    public static HologramProvider init(final BetonQuestApi betonQuestApi, final ConfigAccessor config, final List<HologramIntegration> integrations) throws QuestException {
         if (integrations.isEmpty()) {
-            return null;
+            throw new QuestException("There are no integrations to load.");
         }
-        return new HologramProvider(betonQuestApi, integrations.get(0));
+        integrations.sort(Comparator.comparingInt(value -> getPriority(config, value)));
+        final BetonHologramFactory factory = integrations.get(0).getHologramFactory(betonQuestApi);
+        return new HologramProvider(betonQuestApi, factory);
+    }
+
+    /**
+     * Get the priority of this integrator based on the plugin name.
+     *
+     * @return The priority of this integrator ranging from 1 to the amount of HologramIntegrators, or 0 if a config option
+     * did not exist or if the plugin was not found.
+     */
+    private static int getPriority(final ConfigAccessor config, final HologramIntegration integration) {
+        final String pluginName = integration.getPluginName();
+        final String defaultHolograms = config.getString("hologram.default");
+        if (defaultHolograms != null) {
+            final String[] split = defaultHolograms.split(",");
+            for (int i = 0; i < split.length; i++) {
+                if (split[i].equalsIgnoreCase(pluginName)) {
+                    return split.length - i;
+                }
+            }
+        }
+        return 0;
     }
 
     /**
