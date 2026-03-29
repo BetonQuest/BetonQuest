@@ -26,6 +26,7 @@ import org.betonquest.betonquest.menu.command.MenuBoundCommand;
 import org.betonquest.betonquest.menu.command.SimpleCommand;
 import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -108,10 +109,8 @@ public class MenuProcessor extends RPGMenuProcessor<MenuIdentifier, Menu> {
                 .map(list -> loadSlots(instruction::chainForArgument, list))
                 .validate(list -> Slots.checkSlots(list, heightValue * 9))
                 .get();
-        final Argument<ItemWrapper> boundItem = instruction.read().value("bind").item().getOptional(null);
-
         final Menu.MenuData menuData = new Menu.MenuData(title, heightValue, slots, openConditions, openActions, closeActions);
-        final Menu menu = new Menu(log, identifier, actionManager, conditionManager, menuData, section.isSet("bind") ? boundItem : null);
+        final Menu menu = new Menu(log, identifier, actionManager, conditionManager, menuData, getItems(instruction));
         final Argument<String> command = instruction.read().value("command").string().getOptional("");
         final String commandValue = command.getValue(null);
         if (!commandValue.isEmpty()) {
@@ -141,5 +140,28 @@ public class MenuProcessor extends RPGMenuProcessor<MenuIdentifier, Menu> {
                 rpgMenu, profileProvider, menu, shortened);
         this.boundCommands.add(boundCommand);
         boundCommand.register();
+    }
+
+    @Nullable
+    private Argument<ItemWrapper> getItem(final SectionInstruction instruction, final String path) throws QuestException {
+        if (instruction.getSection().isSet(path)) {
+            return instruction.read().value(path).item().get();
+        }
+        return null;
+    }
+
+    @Nullable
+    private Menu.BoundItems getItems(final SectionInstruction instruction) throws QuestException {
+        if (!instruction.getSection().isSet("bind")) {
+            return null;
+        }
+        if (instruction.getSection().isConfigurationSection("bind")) {
+            return new Menu.BoundItems(
+                    getItem(instruction, "bind.left"),
+                    getItem(instruction, "bind.sneakLeft"),
+                    getItem(instruction, "bind.right"),
+                    getItem(instruction, "bind.sneakRight"));
+        }
+        return new Menu.BoundItems(getItem(instruction, "bind"));
     }
 }

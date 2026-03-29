@@ -15,6 +15,7 @@ import org.betonquest.betonquest.quest.action.NotificationLevel;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Opens the menu when its bound item is interacted with.
@@ -75,9 +76,10 @@ public class MenuItemListener implements Listener {
         MenuIdentifier menuID = null;
         boolean denied = false;
         final OnlineProfile profile = profileProvider.getProfile(event.getPlayer());
+        final boolean sneaking = event.getPlayer().isSneaking();
         for (final Menu menu : menuProcessor.getValues().values()) {
             try {
-                final Argument<ItemWrapper> boundItem = menu.getBoundItem();
+                final Argument<ItemWrapper> boundItem = getItem(event, menu, sneaking);
                 if (boundItem == null || !boundItem.getValue(profile).matches(event.getItem(), profile)) {
                     continue;
                 }
@@ -105,5 +107,21 @@ public class MenuItemListener implements Listener {
         } catch (final QuestException e) {
             log.error(menuID.getPackage(), "Could not open menu '" + menuID + "': " + e.getMessage(), e);
         }
+    }
+
+    @Nullable
+    private Argument<ItemWrapper> getItem(final PlayerInteractEvent event, final Menu menu, final boolean sneaking) {
+        final Menu.BoundItems boundItems = menu.getBoundItems();
+        if (boundItems == null) {
+            return null;
+        }
+
+        return switch (event.getAction()) {
+            case LEFT_CLICK_BLOCK, LEFT_CLICK_AIR -> sneaking
+                    ? boundItems.sneakLeftClick() : boundItems.leftClick();
+            case RIGHT_CLICK_BLOCK, RIGHT_CLICK_AIR -> sneaking
+                    ? boundItems.sneakRightClick() : boundItems.rightClick();
+            default -> null;
+        };
     }
 }

@@ -36,13 +36,34 @@ These are general settings for customizing a menu.
 
 #### Optional Settings
 
-| <div style="width:130px">Setting Name</div> | Example                                     | Description                                                                                                                                           |
-|:-------------------------------------------:|---------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
-|              `open_conditions`              | `open_conditions: "unlockedMenu,!sneaking"` | One or multiple conditions (separated by a `,`) which all have to be true to open the menu with a bound item or a bound command.                      |
-|               `open_actions`                | `open_actions: "menuOpenSound"`             | One or multiple actions (separated by a `,`) which will be fired when the menu is opened.                                                             |
-|               `close_actions`               | `close_actions: "menuCloseSound"`           | One or multiple actions (separated by a `,`) which will be fired when the menu is closed.                                                             |  
-|                   `bind`                    | `bind: "openMenuItem"`                      | Clicking with this [quest item](../../Features/Items.md) in hand will open the menu. You can create this item in the `items` section of your package. |
-|                  `command`                  | `command: "/quests"`                        | This command can be executed to open the menu.                                                                                                        |
+| <div style="width:130px">Setting Name</div> | Example                                     | Description                                                                                                                                                                                   |
+|:-------------------------------------------:|---------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|              `open_conditions`              | `open_conditions: "unlockedMenu,!sneaking"` | One or multiple conditions (separated by a `,`) which all have to be true to open the menu with a bound item or a bound command.                                                              |
+|               `open_actions`                | `open_actions: "menuOpenSound"`             | One or multiple actions (separated by a `,`) which will be fired when the menu is opened.                                                                                                     |
+|               `close_actions`               | `close_actions: "menuCloseSound"`           | One or multiple actions (separated by a `,`) which will be fired when the menu is closed.                                                                                                     |
+|                   `bind`                    | `bind: "openMenuItem"`                      | Clicking with this [quest item](../../Features/Items.md) in hand will open the menu. You can create this item in the `items` section of your package. Defining different clicks is supported. |
+|                  `command`                  | `command: "/quests"`                        | This command can be executed to open the menu.                                                                                                                                                |
+
+#### The bind setting
+Different types of clicks can be distinguished:
+
+``` YAML title="Bind Setting Example"
+menus:
+  myMenuName:
+    bind:
+      left: "leftItem" #(1)!
+      sneakLeft: "sneakyItem" #(2)!
+      right: "anyItem" #(3)!
+      sneakRight: "secretItem" #(4)!
+  secondMenu:
+    bind: "openMenuItem" #(5)!
+```
+
+1. Open when left-clicking with the item.
+2. Open when sneaking + left-clicking with the item.
+3. Open when right-clicking with the item.
+4. Open when sneaking + right-clicking with the item.
+5. Open with any click with the item. 
 
 ## The `menu_items` section
 The items section contains all items which should be displayed in the menu, defined as individual sections of the config.
