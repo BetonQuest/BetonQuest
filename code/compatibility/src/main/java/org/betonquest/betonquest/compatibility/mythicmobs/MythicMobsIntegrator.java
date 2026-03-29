@@ -4,11 +4,11 @@ import io.lumine.mythic.bukkit.BukkitAPIHelper;
 import io.lumine.mythic.bukkit.MythicBukkit;
 import io.lumine.mythic.core.items.ItemExecutor;
 import io.lumine.mythic.core.mobs.MobExecutor;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.BukkitManager;
 import org.betonquest.betonquest.api.bukkit.event.LoadDataEvent;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.reload.ReloadPhase;
@@ -26,6 +26,7 @@ import org.betonquest.betonquest.compatibility.mythicmobs.objective.MythicMobKil
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -39,9 +40,14 @@ public class MythicMobsIntegrator implements Integration {
     public static final String REQUIRED_VERSION = "5.0.0";
 
     /**
-     * The BetonQuest plugin instance.
+     * The plugin instance.
      */
-    private final BetonQuest plugin;
+    private final Plugin plugin;
+
+    /**
+     * Config to load update interval from.
+     */
+    private final ConfigAccessor config;
 
     /**
      * Active MythicHider instance.
@@ -50,10 +56,14 @@ public class MythicMobsIntegrator implements Integration {
     private MythicHider mythicHider;
 
     /**
-     * The default constructor.
+     * Creates a new MythicMobsIntegrator.
+     *
+     * @param plugin the plugin instance
+     * @param config the config to load update interval from
      */
-    public MythicMobsIntegrator() {
-        plugin = BetonQuest.getInstance();
+    public MythicMobsIntegrator(final Plugin plugin, final ConfigAccessor config) {
+        this.plugin = plugin;
+        this.config = config;
     }
 
     @SuppressWarnings("PMD.CloseResource")
@@ -65,7 +75,7 @@ public class MythicMobsIntegrator implements Integration {
 
         final BukkitManager bukkitManager = api.bukkit();
         mythicHider = new MythicHider(api.profiles(), plugin);
-        mythicHider.reload(plugin.getPluginConfig().getInt("hider.npc_update_interval", 5 * 20));
+        mythicHider.reload(config.getInt("hider.npc_update_interval", 5 * 20));
         bukkitManager.registerEvents(mythicHider);
 
         final BetonQuestLoggerFactory loggerFactory = api.loggerFactory();
@@ -96,7 +106,7 @@ public class MythicMobsIntegrator implements Integration {
 
     private void reload() {
         if (mythicHider != null) {
-            mythicHider.reload(plugin.getPluginConfig().getInt("hider.npc_update_interval", 5 * 20));
+            mythicHider.reload(config.getInt("hider.npc_update_interval", 5 * 20));
         }
     }
 

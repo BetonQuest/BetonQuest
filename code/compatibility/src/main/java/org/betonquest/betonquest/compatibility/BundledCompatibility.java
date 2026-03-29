@@ -1,16 +1,10 @@
 package org.betonquest.betonquest.compatibility;
 
-import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.api.identifier.IdentifierFactory;
-import org.betonquest.betonquest.api.identifier.PlaceholderIdentifier;
 import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.integration.IntegrationService;
 import org.betonquest.betonquest.api.integration.policy.Policy;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.service.identifier.Identifiers;
-import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.compatibility.auraskills.AuraSkillsIntegrator;
 import org.betonquest.betonquest.compatibility.brewery.BreweryIntegrator;
 import org.betonquest.betonquest.compatibility.craftengine.CraftEngineIntegrator;
@@ -113,16 +107,12 @@ public final class BundledCompatibility {
      * Registers the compatible and enabled integrations.
      *
      * @param servicesManager      the Bukkit services manager
-     * @param loggerFactory        the logger factory to use
-     * @param instructions         the instructions instance
-     * @param identifiers          the identifiers instance
      * @param placeholderProcessor the placeholder processor to use
      */
     @SuppressWarnings("Convert2MethodRef") //ClassNotFoundException on load up if certain integrations are absent
-    public void registerCompatiblePlugins(final BetonQuestLoggerFactory loggerFactory, final ServicesManager servicesManager,
-                                          final Instructions instructions, final Identifiers identifiers,
+    public void registerCompatiblePlugins(final ServicesManager servicesManager,
                                           final PlaceholderProcessor placeholderProcessor) {
-        register("MythicMobs", () -> new MythicMobsIntegrator(), MythicMobsIntegrator.REQUIRED_VERSION);
+        register("MythicMobs", () -> new MythicMobsIntegrator(plugin, config), MythicMobsIntegrator.REQUIRED_VERSION);
         register("Citizens", () -> new CitizensIntegrator());
         register("Vault", () -> new VaultIntegrator(servicesManager));
         register("Skript", () -> new SkriptIntegrator());
@@ -147,20 +137,11 @@ public final class BundledCompatibility {
         register("Jobs", () -> new JobsRebornIntegrator());
         register("LuckPerms", () -> new LuckPermsIntegrator(servicesManager));
         register("AuraSkills", () -> new AuraSkillsIntegrator());
-        try {
-            final IdentifierFactory<PlaceholderIdentifier> placeholderIdentifierFactory =
-                    identifiers.getFactory(PlaceholderIdentifier.class);
-            register("DecentHolograms",
-                    () -> new DecentHologramsIntegrator(loggerFactory.create(DecentHologramsIntegrator.class),
-                            placeholderIdentifierFactory, instructions),
-                    DecentHologramsIntegrator.REQUIRED_VERSION);
-            register("HolographicDisplays",
-                    () -> new HolographicDisplaysIntegrator(loggerFactory.create(HolographicDisplaysIntegrator.class),
-                            instructions, placeholderIdentifierFactory, placeholderProcessor),
-                    HolographicDisplaysIntegrator.REQUIRED_VERSION);
-        } catch (final QuestException e) {
-            log.warn("Could not register DecentHolograms and HolographicDisplays compatibility.", e);
-        }
+        register("DecentHolograms", () -> new DecentHologramsIntegrator(),
+                DecentHologramsIntegrator.REQUIRED_VERSION);
+        register("HolographicDisplays",
+                () -> new HolographicDisplaysIntegrator(plugin, placeholderProcessor),
+                HolographicDisplaysIntegrator.REQUIRED_VERSION);
         register("fake-block", () -> new FakeBlockIntegrator(servicesManager), FakeBlockIntegrator.REQUIRED_VERSION);
         register("RedisChat", () -> new RedisChatIntegrator());
         register("Train_Carts", () -> new TrainCartsIntegrator());

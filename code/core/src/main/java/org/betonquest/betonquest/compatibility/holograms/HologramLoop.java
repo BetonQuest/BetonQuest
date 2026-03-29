@@ -4,7 +4,6 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableComponent;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.instruction.Argument;
@@ -62,11 +61,6 @@ public abstract class HologramLoop extends SectionProcessor<HologramIdentifier, 
     protected final HologramProvider hologramProvider;
 
     /**
-     * The quest package manager to get quest packages from.
-     */
-    protected final QuestPackageManager packManager;
-
-    /**
      * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
      */
     private final BetonQuestLoggerFactory loggerFactory;
@@ -107,7 +101,6 @@ public abstract class HologramLoop extends SectionProcessor<HologramIdentifier, 
      * @param loggerFactory     logger factory to use
      * @param log               the logger that will be used for logging
      * @param instructionApi    the instruction api to use
-     * @param packManager       the quest package manager to get quest packages from
      * @param hologramProvider  the hologram provider to create new holograms
      * @param readable          the type name used for logging, with the first letter in upper case
      * @param internal          the section name and/or bstats topic identifier
@@ -119,7 +112,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramIdentifier, 
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public HologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                        final Instructions instructionApi, final QuestPackageManager packManager,
+                        final Instructions instructionApi,
                         final HologramProvider hologramProvider, final String readable, final String internal,
                         final TextParser textParser, final IdentifierFactory<HologramIdentifier> identifierFactory,
                         final ConfigAccessor configAccessor, final ConditionManager conditionManager,
@@ -128,7 +121,6 @@ public abstract class HologramLoop extends SectionProcessor<HologramIdentifier, 
         this.loggerFactory = loggerFactory;
         this.hologramProvider = hologramProvider;
         this.instructionApi = instructionApi;
-        this.packManager = packManager;
         this.textParser = textParser;
         this.configAccessor = configAccessor;
         this.conditionManager = conditionManager;

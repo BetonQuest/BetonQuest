@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.kernel.component;
 
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.Compatibility;
@@ -23,7 +24,7 @@ public class CompatibilityComponent extends AbstractCoreComponent {
 
     @Override
     public Set<Class<?>> requires() {
-        return Set.of(BetonQuestLoggerFactory.class, BetonQuestApi.class, IntegrationManager.class);
+        return Set.of(BetonQuestLoggerFactory.class, BetonQuestApi.class, IntegrationManager.class, ConfigAccessor.class);
     }
 
     @Override
@@ -36,8 +37,9 @@ public class CompatibilityComponent extends AbstractCoreComponent {
         final BetonQuestLoggerFactory loggerFactory = getDependency(BetonQuestLoggerFactory.class);
         final BetonQuestApi betonQuestApi = getDependency(BetonQuestApi.class);
         final IntegrationManager integrationManager = getDependency(IntegrationManager.class);
+        final ConfigAccessor config = getDependency(ConfigAccessor.class);
 
-        final Compatibility compatibility = new Compatibility(loggerFactory.create(Compatibility.class), betonQuestApi, integrationManager);
+        final Compatibility compatibility = new Compatibility(loggerFactory.create(Compatibility.class), betonQuestApi, integrationManager, config);
 
         dependencyProvider.take(Compatibility.class, compatibility);
     }

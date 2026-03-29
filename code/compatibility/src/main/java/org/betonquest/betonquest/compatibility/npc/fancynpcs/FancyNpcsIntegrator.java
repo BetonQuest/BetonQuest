@@ -1,11 +1,9 @@
 package org.betonquest.betonquest.compatibility.npc.fancynpcs;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.service.npc.NpcRegistry;
-import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
 
 /**
  * Integrator implementation for the FancyNpcs plugin.
@@ -28,8 +26,7 @@ public class FancyNpcsIntegrator implements Integration {
         final NpcRegistry npcRegistry = api.npcs().registry();
         final ProfileProvider profileProvider = api.profiles();
         api.bukkit().registerEvents(new FancyCatcher(profileProvider, npcRegistry));
-        final FancyHider hider = new FancyHider(BetonQuest.getInstance().getComponentLoader().get(NpcProcessor.class).getNpcHider());
-        api.bukkit().registerEvents(hider);
+        api.bukkit().registerEvents(new FancyHider(api.npcs().manager()));
         npcRegistry.register(PREFIX, new FancyFactory());
         npcRegistry.registerIdentifier(new FancyIdentifier(PREFIX));
     }

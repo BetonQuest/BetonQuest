@@ -53,8 +53,7 @@ public class BetonQuestPlugin extends BetonQuest {
         integrationService.withPolicies(Policies.minimalVanillaVersion("1.21.4")).register(this,
                 () -> new BundledMC_1_21_4(this));
         new BundledCompatibility(getLoggerFactory().create(BundledCompatibility.class), getPluginConfig(), this, integrationService)
-                .registerCompatiblePlugins(getLoggerFactory(), getServer().getServicesManager(),
-                        getBetonQuestApi().instructions(), getBetonQuestApi().identifiers(), getComponentLoader().get(PlaceholderProcessor.class));
+                .registerCompatiblePlugins(getServer().getServicesManager(), getComponentLoader().get(PlaceholderProcessor.class));
     }
 
     private boolean isPaper() {
