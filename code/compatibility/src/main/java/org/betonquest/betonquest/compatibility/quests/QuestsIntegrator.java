@@ -7,8 +7,10 @@ import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.integration.Integration;
+import org.betonquest.betonquest.api.integration.policy.Policy;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.lib.integration.policy.Policies;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
@@ -23,6 +25,22 @@ public class QuestsIntegrator implements Integration {
      * The default constructor.
      */
     public QuestsIntegrator() {
+    }
+
+    /**
+     * Checks for existence of the 'Quests' class from PikaMug, because there is a different plugin with the same name.
+     *
+     * @return whether the correct 'Quests' plugin is installed or not
+     */
+    public static Policy classPolicy() {
+        return Policies.simpleCondition(() -> {
+            try {
+                Class.forName("me.pikamug.quests.Quests");
+                return true;
+            } catch (final ClassNotFoundException ignored) {
+                return false;
+            }
+        }, "The PikaMug Quests plugin is not installed, but a different one with the same name!");
     }
 
     @Override

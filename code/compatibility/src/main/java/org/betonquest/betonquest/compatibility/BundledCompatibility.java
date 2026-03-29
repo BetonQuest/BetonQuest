@@ -48,7 +48,6 @@ import org.betonquest.betonquest.kernel.processor.quest.PlaceholderProcessor;
 import org.betonquest.betonquest.lib.integration.policy.Policies;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicesManager;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 import java.util.function.Supplier;
@@ -94,15 +93,20 @@ public final class BundledCompatibility {
         this.integrationService = integrationService;
     }
 
-    private void register(final String name, @Nullable final String version,
-                          final Supplier<Integration> integrationSupplier) {
+    private void register(final String name, final Supplier<Integration> integrationSupplier, final String versionString) {
+        register(name, integrationSupplier, Policies.minimalPluginVersion(name, versionString));
+    }
+
+    private void register(final String name, final Supplier<Integration> integrationSupplier, final Policy... polices) {
         final boolean isEnabled = config.getBoolean("hook." + name.toLowerCase(Locale.ROOT));
         if (!isEnabled) {
             log.debug("Did not register hook %s because it is disabled".formatted(name));
             return;
         }
-        final Policy policy = version == null ? Policies.requirePlugin(name) : Policies.minimalPluginVersion(name, version);
-        integrationService.withPolicies(policy).register(plugin, integrationSupplier);
+        integrationService
+                .withPolicies(Policies.requirePlugin(name))
+                .withPolicies(polices)
+                .register(plugin, integrationSupplier);
     }
 
     /**
@@ -118,50 +122,52 @@ public final class BundledCompatibility {
     public void registerCompatiblePlugins(final BetonQuestLoggerFactory loggerFactory, final ServicesManager servicesManager,
                                           final Instructions instructions, final Identifiers identifiers,
                                           final PlaceholderProcessor placeholderProcessor) {
-        register("MythicMobs", MythicMobsIntegrator.REQUIRED_VERSION, () -> new MythicMobsIntegrator());
-        register("Citizens", null, () -> new CitizensIntegrator());
-        register("Vault", null, () -> new VaultIntegrator(servicesManager));
-        register("Skript", null, () -> new SkriptIntegrator());
-        register("WorldGuard", null, () -> new WorldGuardIntegrator());
-        register("WorldEdit", null, () -> new WorldEditIntegrator());
-        register("FastAsyncWorldEdit", null, () -> new WorldEditIntegrator());
-        register("mcMMO", null, () -> new McMMOIntegrator());
-        register("MythicLib", null, () -> new MythicLibIntegrator());
-        register("MMOCore", null, () -> new MMOCoreIntegrator());
-        register("MMOItems", null, () -> new MMOItemsIntegrator());
-        register("EffectLib", null, () -> new EffectLibIntegrator());
-        register("Heroes", null, () -> new HeroesIntegrator());
-        register("Magic", null, () -> new MagicIntegrator());
-        register("Denizen", null, () -> new DenizenIntegrator());
-        register("Fabled", null, () -> new FabledIntegrator());
-        register("Quests", null, () -> new QuestsIntegrator());
-        register("Shopkeepers", ShopkeepersIntegrator.REQUIRED_VERSION, () -> new ShopkeepersIntegrator());
-        register("PlaceholderAPI", null, () -> new PlaceholderAPIIntegrator(plugin.getDescription()));
-        register("packetevents", PacketEventsIntegrator.REQUIRED_VERSION, () -> new PacketEventsIntegrator());
-        register("Brewery", null, () -> new BreweryIntegrator());
-        register("BreweryX", null, () -> new BreweryIntegrator());
-        register("Jobs", null, () -> new JobsRebornIntegrator());
-        register("LuckPerms", null, () -> new LuckPermsIntegrator(servicesManager));
-        register("AuraSkills", null, () -> new AuraSkillsIntegrator());
+        register("MythicMobs", () -> new MythicMobsIntegrator(), MythicMobsIntegrator.REQUIRED_VERSION);
+        register("Citizens", () -> new CitizensIntegrator());
+        register("Vault", () -> new VaultIntegrator(servicesManager));
+        register("Skript", () -> new SkriptIntegrator());
+        register("WorldGuard", () -> new WorldGuardIntegrator());
+        register("WorldEdit", () -> new WorldEditIntegrator());
+        register("FastAsyncWorldEdit", () -> new WorldEditIntegrator());
+        register("mcMMO", () -> new McMMOIntegrator());
+        register("MythicLib", () -> new MythicLibIntegrator());
+        register("MMOCore", () -> new MMOCoreIntegrator());
+        register("MMOItems", () -> new MMOItemsIntegrator());
+        register("EffectLib", () -> new EffectLibIntegrator());
+        register("Heroes", () -> new HeroesIntegrator());
+        register("Magic", () -> new MagicIntegrator());
+        register("Denizen", () -> new DenizenIntegrator());
+        register("Fabled", () -> new FabledIntegrator());
+        register("Quests", () -> new QuestsIntegrator(), QuestsIntegrator.classPolicy());
+        register("Shopkeepers", () -> new ShopkeepersIntegrator(), ShopkeepersIntegrator.REQUIRED_VERSION);
+        register("PlaceholderAPI", () -> new PlaceholderAPIIntegrator(plugin.getDescription()));
+        register("packetevents", () -> new PacketEventsIntegrator(), PacketEventsIntegrator.REQUIRED_VERSION);
+        register("Brewery", () -> new BreweryIntegrator());
+        register("BreweryX", () -> new BreweryIntegrator());
+        register("Jobs", () -> new JobsRebornIntegrator());
+        register("LuckPerms", () -> new LuckPermsIntegrator(servicesManager));
+        register("AuraSkills", () -> new AuraSkillsIntegrator());
         try {
             final IdentifierFactory<PlaceholderIdentifier> placeholderIdentifierFactory =
                     identifiers.getFactory(PlaceholderIdentifier.class);
-            register("DecentHolograms", DecentHologramsIntegrator.REQUIRED_VERSION,
+            register("DecentHolograms",
                     () -> new DecentHologramsIntegrator(loggerFactory.create(DecentHologramsIntegrator.class),
-                            placeholderIdentifierFactory, instructions));
-            register("HolographicDisplays", HolographicDisplaysIntegrator.REQUIRED_VERSION,
+                            placeholderIdentifierFactory, instructions),
+                    DecentHologramsIntegrator.REQUIRED_VERSION);
+            register("HolographicDisplays",
                     () -> new HolographicDisplaysIntegrator(loggerFactory.create(HolographicDisplaysIntegrator.class),
-                            instructions, placeholderIdentifierFactory, placeholderProcessor));
+                            instructions, placeholderIdentifierFactory, placeholderProcessor),
+                    HolographicDisplaysIntegrator.REQUIRED_VERSION);
         } catch (final QuestException e) {
             log.warn("Could not register DecentHolograms and HolographicDisplays compatibility.", e);
         }
-        register("fake-block", FakeBlockIntegrator.REQUIRED_VERSION, () -> new FakeBlockIntegrator(servicesManager));
-        register("RedisChat", null, () -> new RedisChatIntegrator());
-        register("Train_Carts", null, () -> new TrainCartsIntegrator());
-        register(FancyNpcsIntegrator.PREFIX, null, () -> new FancyNpcsIntegrator());
-        register(ZNPCsPlusIntegrator.PREFIX, ZNPCsPlusIntegrator.REQUIRED_VERSION, () -> new ZNPCsPlusIntegrator());
-        register("Nexo", null, () -> new NexoIntegrator());
-        register("CraftEngine", null, () -> new CraftEngineIntegrator());
-        register("ItemsAdder", ItemsAdderIntegrator.REQUIRED_VERSION, () -> new ItemsAdderIntegrator());
+        register("fake-block", () -> new FakeBlockIntegrator(servicesManager), FakeBlockIntegrator.REQUIRED_VERSION);
+        register("RedisChat", () -> new RedisChatIntegrator());
+        register("Train_Carts", () -> new TrainCartsIntegrator());
+        register(FancyNpcsIntegrator.PREFIX, () -> new FancyNpcsIntegrator());
+        register(ZNPCsPlusIntegrator.PREFIX, () -> new ZNPCsPlusIntegrator(), ZNPCsPlusIntegrator.REQUIRED_VERSION);
+        register("Nexo", () -> new NexoIntegrator());
+        register("CraftEngine", () -> new CraftEngineIntegrator());
+        register("ItemsAdder", () -> new ItemsAdderIntegrator(), ItemsAdderIntegrator.REQUIRED_VERSION);
     }
 }
