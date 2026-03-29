@@ -130,8 +130,7 @@ public class Compatibility implements Listener {
         }
         map.forEach((name, data) -> logSourceAndCollectHologramIntegrators(data,
                 " from plugin '%s' ".formatted(name), hologramIntegrators));
-        hologramProvider = new HologramProvider(hologramIntegrators);
-        hologramProvider.postEnable(betonQuestApi);
+        hologramProvider = HologramProvider.init(betonQuestApi, hologramIntegrators);
     }
 
     /**

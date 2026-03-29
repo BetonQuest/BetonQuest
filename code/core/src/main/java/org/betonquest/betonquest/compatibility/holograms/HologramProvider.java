@@ -2,10 +2,8 @@ package org.betonquest.betonquest.compatibility.holograms;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
-import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
-import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.reload.ReloadPhase;
@@ -23,7 +21,7 @@ import java.util.regex.Pattern;
 /**
  * Class which provides Hologram creation.
  */
-public class HologramProvider implements Integration {
+public class HologramProvider {
 
     /**
      * Pattern to match a placeholder in a string.
@@ -33,37 +31,37 @@ public class HologramProvider implements Integration {
     /**
      * The hooked integrator.
      */
-    @Nullable
     private final HologramIntegrator integrator;
 
     /**
      * The current {@link LocationHologramLoop}.
      */
-    @Nullable
     private LocationHologramLoop locationHologramLoop;
 
     /**
      * The current {@link NpcHologramLoop}.
      */
-    @Nullable
     private NpcHologramLoop npcHologramLoop;
+
+    private HologramProvider(final BetonQuestApi betonQuestApi, final HologramIntegrator integration) {
+        this.integrator = integration;
+        load(betonQuestApi);
+    }
 
     /**
      * Creates a new HologramProvider from hooked {@link HologramIntegrator}.
      *
-     * @param integrations The list of integrators to consider.
+     * @param betonQuestApi the {@link BetonQuestApi} instance providing access to BetonQuest's API
+     * @param integrations  The list of integrators to consider.
+     * @return the initialized provider or null, if there are no integrations given
      */
-    public HologramProvider(final List<HologramIntegrator> integrations) {
-        this.integrator = init(integrations);
-    }
-
     @Nullable
-    private HologramIntegrator init(final List<HologramIntegrator> integrations) {
+    public static HologramProvider init(final BetonQuestApi betonQuestApi, final List<HologramIntegrator> integrations) {
         Collections.sort(integrations);
         if (integrations.isEmpty()) {
             return null;
         }
-        return integrations.get(0);
+        return new HologramProvider(betonQuestApi, integrations.get(0));
     }
 
     /**
@@ -73,9 +71,6 @@ public class HologramProvider implements Integration {
      * @return The hologram.
      */
     public BetonHologram createHologram(final Location location) {
-        if (integrator == null) {
-            throw new IllegalStateException("Integrator has not been initialized!");
-        }
         return integrator.createHologram(location);
     }
 
@@ -88,47 +83,34 @@ public class HologramProvider implements Integration {
      * @return the parsed and formatted full string.
      */
     public String parsePlaceholder(final QuestPackage pack, final String text) {
-        if (integrator == null) {
-            throw new IllegalStateException("Integrator has not been initialized!");
-        }
         return integrator.parsePlaceholder(pack, text);
     }
 
-    @Override
-    public void postEnable(final BetonQuestApi api) {
+    private void load(final BetonQuestApi api) {
         final BetonQuest plugin = BetonQuest.getInstance();
         final BetonQuestLoggerFactory loggerFactory = api.loggerFactory();
         final TextParser textParser = plugin.getComponentLoader().get(TextParser.class);
         final IdentifierFactory<HologramIdentifier> hologramIdentifierFactory = new HologramIdentifierFactory(api.packages());
         api.identifiers().register(HologramIdentifier.class, hologramIdentifierFactory);
         this.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class),
-                api.instructions(), api.packages(), hologramIdentifierFactory, BetonQuest.getInstance().getPluginConfig(),
+                api.instructions(), hologramIdentifierFactory, plugin.getPluginConfig(),
                 this, plugin, textParser, api.conditions().manager(), api.profiles());
         plugin.addProcessor(locationHologramLoop);
         this.npcHologramLoop = new NpcHologramLoop(loggerFactory, loggerFactory.create(NpcHologramLoop.class),
-                api.instructions(), api.packages(), plugin, this, BetonQuest.getInstance().getPluginConfig(),
+                api.instructions(), plugin, this, plugin.getPluginConfig(),
                 hologramIdentifierFactory, api.conditions().manager(), api.npcs().manager(), api.npcs().registry(), textParser, api.profiles());
         plugin.addProcessor(npcHologramLoop);
         api.bukkit().registerEvents(new HologramListener(api.profiles()));
         api.reloader().register(ReloadPhase.INTEGRATION, HologramRunner::cancel);
     }
 
-    @Override
-    public void enable(final BetonQuestApi betonQuestApi) throws QuestException {
-        throw new QuestException("The hologram provider can't be used in the enable phase!");
-    }
-
-    @Override
+    /**
+     * Disables the hologram loops when BetonQuest is shutting down.
+     */
     public void disable() {
         HologramRunner.cancel();
-        if (locationHologramLoop != null) {
-            locationHologramLoop.clear();
-            locationHologramLoop = null;
-        }
-        if (npcHologramLoop != null) {
-            npcHologramLoop.close();
-            npcHologramLoop = null;
-        }
+        locationHologramLoop.clear();
+        npcHologramLoop.close();
     }
 
     /**
