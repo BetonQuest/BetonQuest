@@ -85,6 +85,7 @@ public class MenuItemListener implements Listener {
                 }
             } catch (final QuestException e) {
                 log.warn(menu.getMenuID().getPackage(), "Exception while getting Menu Interaction Item: " + e.getMessage(), e);
+                continue;
             }
             menuID = menu.getMenuID();
             log.debug(menuID.getPackage(), profile + " used bound item of menu " + menuID);
