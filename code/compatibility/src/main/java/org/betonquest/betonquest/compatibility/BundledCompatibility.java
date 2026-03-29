@@ -117,7 +117,8 @@ public final class BundledCompatibility {
     public void registerCompatiblePlugins(final BetonQuestLoggerFactory loggerFactory, final ServicesManager servicesManager,
                                           final Instructions instructions, final Identifiers identifiers,
                                           final PlaceholderProcessor placeholderProcessor) {
-        register("MythicMobs", MythicMobsIntegrator.REQUIRED_VERSION, MythicMobsIntegrator::new);
+        //noinspection Convert2MethodRef - will cause ClassNotFoundException on startup.
+        register("MythicMobs", MythicMobsIntegrator.REQUIRED_VERSION, () -> new MythicMobsIntegrator());
         register("Citizens", null, CitizensIntegrator::new);
         register("Vault", null, () -> new VaultIntegrator(servicesManager));
         register("Skript", null, SkriptIntegrator::new);
