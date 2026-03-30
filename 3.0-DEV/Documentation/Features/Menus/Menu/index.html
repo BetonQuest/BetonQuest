@@ -4124,6 +4124,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#the-bind-setting">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          The bind setting
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -6894,6 +6917,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#the-bind-setting">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          The bind setting
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -7282,7 +7328,7 @@ The name which can be used to identify each menu will be the name of another sec
 <tr>
 <td style="text-align: center;"><code>bind</code></td>
 <td><code>bind: "openMenuItem"</code></td>
-<td>Clicking with this <a href="../../Items/">quest item</a> in hand will open the menu. You can create this item in the <code>items</code> section of your package.</td>
+<td>Clicking with this <a href="../../Items/">quest item</a> in hand will open the menu. You can create this item in the <code>items</code> section of your package. Defining different clicks is supported.</td>
 </tr>
 <tr>
 <td style="text-align: center;"><code>command</code></td>
@@ -7291,6 +7337,25 @@ The name which can be used to identify each menu will be the name of another sec
 </tr>
 </tbody>
 </table>
+<h4 id="the-bind-setting">The bind setting<a class="headerlink" href="#the-bind-setting" title="Permanent link">🔗</a></h4>
+<p>Different types of clicks can be distinguished:</p>
+<div class="highlight"><span class="filename">Bind Setting Example</span><pre><span></span><code><span class="nt">menus</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">myMenuName</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">bind</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">left</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;leftItem&quot;</span><span class="w"> </span><span class="c1">#(1)!</span>
+<span class="w">      </span><span class="nt">sneakLeft</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;sneakyItem&quot;</span><span class="w"> </span><span class="c1">#(2)!</span>
+<span class="w">      </span><span class="nt">right</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;anyItem&quot;</span><span class="w"> </span><span class="c1">#(3)!</span>
+<span class="w">      </span><span class="nt">sneakRight</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;secretItem&quot;</span><span class="w"> </span><span class="c1">#(4)!</span>
+<span class="w">  </span><span class="nt">secondMenu</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">bind</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;openMenuItem&quot;</span><span class="w"> </span><span class="c1">#(5)!</span>
+</code></pre></div>
+<ol>
+<li>Open when left-clicking with the item.</li>
+<li>Open when sneaking + left-clicking with the item.</li>
+<li>Open when right-clicking with the item.</li>
+<li>Open when sneaking + right-clicking with the item.</li>
+<li>Open with any click with the item. </li>
+</ol>
 <h2 id="the-menu_items-section">The <code>menu_items</code> section<a class="headerlink" href="#the-menu_items-section" title="Permanent link">🔗</a></h2>
 <p>The items section contains all items which should be displayed in the menu, defined as individual sections of the config.</p>
 <p>A basic item section looks like this:
