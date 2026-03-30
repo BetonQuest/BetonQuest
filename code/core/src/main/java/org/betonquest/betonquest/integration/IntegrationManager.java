@@ -131,8 +131,6 @@ public class IntegrationManager {
                 .formatted(wrappers.size(), integrations.size(), enabledIntegrations.size()));
         for (final IntegrationWrapper wrapper : wrappers) {
             if (!wrapper.isCompatible()) {
-                log.warn("Could not enable an integration provided by plugin '%s' for '%s'."
-                        .formatted(wrapper.integrationProvider.getName(), wrapper.integratedPluginVersionName()));
                 continue;
             }
             if (wrapper.enable(service)) {
@@ -150,6 +148,9 @@ public class IntegrationManager {
      * @param service the service to obtain the plugin's api
      */
     public void postEnable(final BetonQuestApiService service) {
+        integrations.stream().filter(wrapper -> !enabledIntegrations.contains(wrapper))
+                .filter(IntegrationWrapper::isReadyToEnabled)
+                .forEach(IntegrationWrapper::logCompatibilityIssues);
         currentState = ManagerState.POST_ENABLED;
         enabledIntegrations.forEach(wrapper -> wrapper.postEnable(service));
     }
@@ -237,12 +238,22 @@ public class IntegrationManager {
         private boolean isCompatible() {
             for (final Policy policy : policies) {
                 if (!policy.validate()) {
-                    logger.warn("Integration provided by '%s' is not compatible due to policy: %s"
-                            .formatted(integrationProvider.getName(), policy.description()));
                     return false;
                 }
             }
             return true;
+        }
+
+        /**
+         * Logs any compatibility issues that may exist derived from the integration's policies.
+         */
+        private void logCompatibilityIssues() {
+            for (final Policy policy : policies) {
+                if (!policy.validate()) {
+                    logger.warn("Integration provided by '%s' is not compatible due to policy: %s"
+                            .formatted(integrationProvider.getName(), policy.description()));
+                }
+            }
         }
 
         /**
