@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.service.npc.NpcRegistry;
 import org.betonquest.betonquest.quest.objective.interact.Interaction;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.plugin.Plugin;
 
 /**
  * Catches interaction with FancyNpcs.
@@ -18,13 +19,20 @@ import org.bukkit.event.EventPriority;
 public class FancyCatcher extends NpcInteractCatcher<Npc> {
 
     /**
+     * The plugin instance to run tasks on.
+     */
+    private final Plugin plugin;
+
+    /**
      * Initializes the Fancy catcher.
      *
+     * @param plugin          the plugin instance to run tasks on
      * @param profileProvider the profile provider instance
      * @param npcRegistry     the registry to identify the clicked Npc
      */
-    public FancyCatcher(final ProfileProvider profileProvider, final NpcRegistry npcRegistry) {
+    public FancyCatcher(final Plugin plugin, final ProfileProvider profileProvider, final NpcRegistry npcRegistry) {
         super(profileProvider, npcRegistry);
+        this.plugin = plugin;
     }
 
     /**
@@ -43,7 +51,7 @@ public class FancyCatcher extends NpcInteractCatcher<Npc> {
             return;
         }
 
-        if (interactLogic(event.getPlayer(), new FancyAdapter(event.getNpc()), interaction,
+        if (interactLogic(event.getPlayer(), new FancyAdapter(plugin, event.getNpc()), interaction,
                 false, event.isAsynchronous())) {
             event.setCancelled(true);
         }
@@ -57,7 +65,7 @@ public class FancyCatcher extends NpcInteractCatcher<Npc> {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onLocationChange(final NpcModifyEvent event) {
         if (event.getModification() == NpcModifyEvent.NpcModification.LOCATION) {
-            new NpcVisibilityUpdateEvent(new FancyAdapter(event.getNpc())).callEvent();
+            new NpcVisibilityUpdateEvent(new FancyAdapter(plugin, event.getNpc())).callEvent();
         }
     }
 }

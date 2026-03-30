@@ -150,7 +150,7 @@ public final class BundledCompatibility {
         register("fake-block", () -> new FakeBlockIntegrator(servicesManager), FakeBlockIntegrator.REQUIRED_VERSION);
         register("RedisChat", () -> new RedisChatIntegrator());
         register("Train_Carts", () -> new TrainCartsIntegrator());
-        register(FancyNpcsIntegrator.PREFIX, () -> new FancyNpcsIntegrator());
+        register(FancyNpcsIntegrator.PREFIX, () -> new FancyNpcsIntegrator(plugin));
         register(ZNPCsPlusIntegrator.PREFIX, () -> new ZNPCsPlusIntegrator(), ZNPCsPlusIntegrator.REQUIRED_VERSION);
         register("Nexo", () -> new NexoIntegrator());
         register("CraftEngine", () -> new CraftEngineIntegrator());

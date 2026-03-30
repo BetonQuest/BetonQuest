@@ -5,11 +5,17 @@ import org.betonquest.betonquest.api.service.npc.NpcManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 
 /**
  * Prevents respawning of hidden Npcs.
  */
 public class FancyHider implements Listener {
+
+    /**
+     * The plugin instance to run tasks on.
+     */
+    private final Plugin plugin;
 
     /**
      * Manager to check current visibility.
@@ -19,9 +25,11 @@ public class FancyHider implements Listener {
     /**
      * Create a new Fancy Hider to force Npc hiding.
      *
+     * @param plugin     the plugin instance to run tasks on
      * @param npcManager the npc manager to check if Npc is hidden
      */
-    public FancyHider(final NpcManager npcManager) {
+    public FancyHider(final Plugin plugin, final NpcManager npcManager) {
+        this.plugin = plugin;
         this.npcManager = npcManager;
     }
 
@@ -32,7 +40,7 @@ public class FancyHider implements Listener {
      */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onSpawn(final NpcSpawnEvent event) {
-        if (npcManager.isHidden(new FancyAdapter(event.getNpc()), event.getPlayer())) {
+        if (npcManager.isHidden(new FancyAdapter(plugin, event.getNpc()), event.getPlayer())) {
             event.setCancelled(true);
         }
     }
