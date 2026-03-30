@@ -31,7 +31,10 @@ public interface IntegrationPolicy {
     IntegrationBuilder builder();
 
     /**
-     * Registers an integration.
+     * Registers an integration for the given plugin.
+     * <p>
+     * <b>Important:</b> Avoid using this method with a method reference for the integration supplier.
+     * There is a risk of causing unexpected {@link ClassNotFoundException}s when a method reference is used.
      *
      * @param integratingPlugin the plugin registering the integration
      * @param integration       the supplier providing the integration to register
