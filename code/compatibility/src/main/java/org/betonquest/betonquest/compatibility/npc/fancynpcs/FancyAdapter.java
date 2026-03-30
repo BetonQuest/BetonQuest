@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.compatibility.npc.fancynpcs;
 
 import de.oliver.fancynpcs.api.Npc;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import java.util.Optional;
 
@@ -15,6 +15,11 @@ import java.util.Optional;
 public class FancyAdapter implements org.betonquest.betonquest.api.quest.npc.Npc<Npc> {
 
     /**
+     * The plugin instance to run tasks on.
+     */
+    private final Plugin plugin;
+
+    /**
      * The FancyNpcs NPC instance.
      */
     private final Npc npc;
@@ -22,9 +27,11 @@ public class FancyAdapter implements org.betonquest.betonquest.api.quest.npc.Npc
     /**
      * Create a new FancyNpcs NPC Adapter.
      *
-     * @param npc the FancyNpcs NPC instance
+     * @param plugin the plugin instance to run tasks on
+     * @param npc    the FancyNpcs NPC instance
      */
-    public FancyAdapter(final Npc npc) {
+    public FancyAdapter(final Plugin plugin, final Npc npc) {
+        this.plugin = plugin;
         this.npc = npc;
     }
 
@@ -49,7 +56,7 @@ public class FancyAdapter implements org.betonquest.betonquest.api.quest.npc.Npc
 
     @Override
     public void show(final OnlineProfile onlineProfile) {
-        Bukkit.getScheduler().runTaskAsynchronously(BetonQuest.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             final Player player = onlineProfile.getPlayer();
             final Boolean isVisible = npc.getIsVisibleForPlayer().get(player.getUniqueId());
             if (isVisible == null || !isVisible) {
@@ -60,7 +67,7 @@ public class FancyAdapter implements org.betonquest.betonquest.api.quest.npc.Npc
 
     @Override
     public void hide(final OnlineProfile onlineProfile) {
-        Bukkit.getScheduler().runTaskAsynchronously(BetonQuest.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             final Player player = onlineProfile.getPlayer();
             final Boolean isVisible = npc.getIsVisibleForPlayer().get(player.getUniqueId());
             if (isVisible == null || isVisible) {

@@ -7,12 +7,18 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * FancyNpcs wrapper to get a Npc.
  */
 public class FancyWrapper implements NpcWrapper<Npc> {
+
+    /**
+     * The plugin instance to run tasks on.
+     */
+    private final Plugin plugin;
 
     /**
      * FancyNpcs Npc Manager.
@@ -32,11 +38,13 @@ public class FancyWrapper implements NpcWrapper<Npc> {
     /**
      * Create a new FancyNpcs Npc Wrapper.
      *
+     * @param plugin     the plugin instance to run tasks on
      * @param npcManager the Npc Manager to get Npcs from
      * @param npcId      the npc identifier
      * @param byName     whether to use the identifier as name or id
      */
-    public FancyWrapper(final NpcManager npcManager, final Argument<String> npcId, final FlagArgument<Boolean> byName) {
+    public FancyWrapper(final Plugin plugin, final NpcManager npcManager, final Argument<String> npcId, final FlagArgument<Boolean> byName) {
+        this.plugin = plugin;
         this.npcManager = npcManager;
         this.npcId = npcId;
         this.byName = byName;
@@ -62,6 +70,6 @@ public class FancyWrapper implements NpcWrapper<Npc> {
         if (npc == null) {
             throw new QuestException("Fancy Npc with " + (byName.getValue(profile).orElse(false) ? "name" : "id") + " " + npcId + " not found");
         }
-        return new FancyAdapter(npc);
+        return new FancyAdapter(plugin, npc);
     }
 }

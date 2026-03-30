@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.npc.NpcFactory;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
+import org.bukkit.plugin.Plugin;
 
 /**
  * Factory to get FancyNpcs Npcs.
@@ -14,14 +15,22 @@ import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
 public class FancyFactory implements NpcFactory {
 
     /**
-     * The empty default constructor.
+     * The plugin instance to run tasks on.
      */
-    public FancyFactory() {
+    private final Plugin plugin;
+
+    /**
+     * The empty default constructor.
+     *
+     * @param plugin the plugin instance to run tasks on
+     */
+    public FancyFactory(final Plugin plugin) {
+        this.plugin = plugin;
     }
 
     @Override
     public NpcWrapper<Npc> parseInstruction(final Instruction instruction) throws QuestException {
         final NpcManager npcManager = FancyNpcsPlugin.get().getNpcManager();
-        return new FancyWrapper(npcManager, instruction.string().get(), instruction.bool().getFlag("byName", true));
+        return new FancyWrapper(plugin, npcManager, instruction.string().get(), instruction.bool().getFlag("byName", true));
     }
 }
