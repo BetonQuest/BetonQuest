@@ -28,19 +28,14 @@ public class QuestsIntegrator implements Integration {
     }
 
     /**
-     * Checks for existence of the 'Quests' class from PikaMug, because there is a different plugin with the same name.
+     * Checks for the existence of the 'Quests' class from PikaMug,
+     * because there is a different plugin with the same name.
      *
      * @return whether the correct 'Quests' plugin is installed or not
      */
     public static Policy classPolicy() {
-        return Policies.simpleCondition(() -> {
-            try {
-                Class.forName("me.pikamug.quests.Quests");
-                return true;
-            } catch (final ClassNotFoundException ignored) {
-                return false;
-            }
-        }, "The PikaMug Quests plugin is not installed, but a different one with the same name!");
+        return Policies.requireClass("me.pikamug.quests.Quests",
+                "The PikaMug Quests plugin is not installed, but a different one with the same name!");
     }
 
     @Override

@@ -9,7 +9,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.Contract;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 /**
@@ -56,22 +55,6 @@ public interface PluginProvider {
     @Contract(pure = true, value = "_ -> new")
     static PluginProvider forName(final String pluginName) {
         return () -> Optional.ofNullable(Bukkit.getPluginManager().getPlugin(pluginName));
-    }
-
-    /**
-     * Creates a new {@link PluginProvider} instance that looks up a plugin by its class type.
-     * <p>
-     * This factory method searches through all loaded plugins to find one that is an instance
-     * of the specified class.
-     * The lookup is performed each time {@link #plugin()} is called, allowing for dynamic plugin loading.
-     *
-     * @param pluginClass the class type of the plugin to look up
-     * @return a new {@link PluginProvider} instance that returns the plugin of the given class type,
-     * or empty if no matching plugin is found
-     */
-    @Contract(pure = true, value = "_ -> new")
-    static PluginProvider forClass(final Class<? extends Plugin> pluginClass) {
-        return () -> Arrays.stream(Bukkit.getPluginManager().getPlugins()).filter(pluginClass::isInstance).findFirst();
     }
 
     /**

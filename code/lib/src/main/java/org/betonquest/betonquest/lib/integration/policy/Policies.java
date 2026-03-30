@@ -52,6 +52,50 @@ public final class Policies {
     }
 
     /**
+     * Creates a policy requiring a class to be present in the classpath.
+     *
+     * @param className the fully qualified name of the class to check for presence
+     * @return a policy that checks for the presence of the class
+     */
+    public static Policy requireClass(final String className) {
+        return requireClass(className, "Class '%s' is required.".formatted(className));
+    }
+
+    /**
+     * Creates a policy requiring a class to be present in the classpath.
+     *
+     * @param className the fully qualified name of the class to check for presence
+     * @param message   the message to display when the class is not present
+     * @return a policy that checks for the presence of the class
+     */
+    public static Policy requireClass(final String className, final String message) {
+        return simpleCondition(() -> {
+            try {
+                Class.forName(className);
+                return true;
+            } catch (final ClassNotFoundException ignored) {
+                return false;
+            }
+        }, message);
+    }
+
+    /**
+     * Creates policies requiring multiple classes to be present in the classpath.
+     * <p>
+     * Creates a single policy for each class.
+     *
+     * @param classes the fully qualified names of the classes to check for presence
+     * @return a policy that checks for the presence of the class
+     */
+    public static Policy[] requireClasses(final String... classes) {
+        final Policy[] policies = new Policy[classes.length];
+        for (int i = 0; i < classes.length; i++) {
+            policies[i] = requireClass(classes[i]);
+        }
+        return policies;
+    }
+
+    /**
      * Creates a policy requiring a minimum Minecraft version.
      *
      * @param version the minimum Minecraft version required
@@ -92,16 +136,6 @@ public final class Policies {
     }
 
     /**
-     * Creates a policy requiring a plugin by main class.
-     *
-     * @param pluginClass the main class of the required plugin
-     * @return a policy that checks for the plugin's presence
-     */
-    public static Policy requirePlugin(final Class<? extends Plugin> pluginClass) {
-        return new UnversionedPluginPolicy(PluginProvider.forClass(pluginClass), "Plugin with main class '%s' is required.".formatted(pluginClass.getName()));
-    }
-
-    /**
      * Creates a policy requiring a plugin by instance.
      *
      * @param plugin the required plugin
@@ -131,18 +165,6 @@ public final class Policies {
     public static Policy minimalPluginVersion(final String plugin, final Version version) {
         return new VersionedPluginPolicy(PluginProvider.forName(plugin), version, VersionCompareStrategy.MINIMAL,
                 "Plugin '%s' version '%s' and above is required.".formatted(plugin, version));
-    }
-
-    /**
-     * Creates a policy requiring a minimum plugin version by plugin class.
-     *
-     * @param pluginClass the main class of the plugin
-     * @param version     the minimum version required
-     * @return a policy that checks for the minimum plugin version
-     */
-    public static Policy minimalPluginVersion(final Class<? extends Plugin> pluginClass, final Version version) {
-        return new VersionedPluginPolicy(PluginProvider.forClass(pluginClass), version, VersionCompareStrategy.MINIMAL,
-                "Plugin with main class '%s' version '%s' and above is required.".formatted(pluginClass.getName(), version));
     }
 
     /**
@@ -182,18 +204,6 @@ public final class Policies {
     }
 
     /**
-     * Creates a policy requiring an exact plugin version by plugin class.
-     *
-     * @param pluginClass the main class of the plugin
-     * @param version     the exact version required
-     * @return a policy that checks for the exact plugin version
-     */
-    public static Policy exactPluginVersion(final Class<? extends Plugin> pluginClass, final Version version) {
-        return new VersionedPluginPolicy(PluginProvider.forClass(pluginClass), version, VersionCompareStrategy.EXACT,
-                "Plugin with main class '%s' version '%s' is required.".formatted(pluginClass.getName(), version));
-    }
-
-    /**
      * Creates a policy requiring an exact plugin version by plugin instance.
      *
      * @param plugin  the plugin instance
@@ -227,18 +237,6 @@ public final class Policies {
     public static Policy maximalPluginVersion(final String plugin, final Version version) {
         return new VersionedPluginPolicy(PluginProvider.forName(plugin), version, VersionCompareStrategy.MAXIMAL,
                 "Plugin '%s' version '%s' and below is required.".formatted(plugin, version));
-    }
-
-    /**
-     * Creates a policy requiring a maximum plugin version by plugin class.
-     *
-     * @param pluginClass the main class of the plugin
-     * @param version     the maximum version allowed
-     * @return a policy that checks for the maximum plugin version
-     */
-    public static Policy maximalPluginVersion(final Class<? extends Plugin> pluginClass, final Version version) {
-        return new VersionedPluginPolicy(PluginProvider.forClass(pluginClass), version, VersionCompareStrategy.MAXIMAL,
-                "Plugin with main class '%s' version '%s' and below is required.".formatted(pluginClass.getName(), version));
     }
 
     /**
@@ -291,21 +289,6 @@ public final class Policies {
         return new Policy[]{
                 minimalPluginVersion(plugin, minVersion),
                 maximalPluginVersion(plugin, maxVersion)
-        };
-    }
-
-    /**
-     * Creates policies for a plugin version range by plugin class.
-     *
-     * @param pluginClass the main class of the plugin
-     * @param minVersion  the minimum plugin version
-     * @param maxVersion  the maximum plugin version
-     * @return an array of policies that check for the version range
-     */
-    public static Policy[] pluginVersionRange(final Class<? extends Plugin> pluginClass, final Version minVersion, final Version maxVersion) {
-        return new Policy[]{
-                minimalPluginVersion(pluginClass, minVersion),
-                maximalPluginVersion(pluginClass, maxVersion)
         };
     }
 
