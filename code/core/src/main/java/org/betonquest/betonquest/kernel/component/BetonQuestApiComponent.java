@@ -23,6 +23,7 @@ import org.betonquest.betonquest.api.service.npc.Npcs;
 import org.betonquest.betonquest.api.service.objective.Objectives;
 import org.betonquest.betonquest.api.service.placeholder.Placeholders;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.ServicesManager;
@@ -81,7 +82,7 @@ public class BetonQuestApiComponent extends AbstractCoreComponent {
         final BetonQuestLogger serviceLogger = loggerFactory.create(BetonQuestApiService.class);
         final Function<Plugin, BetonQuestApi> defaultBetonQuestApiGenerator = callerPlugin -> {
             serviceLogger.debug("Loading API for plugin %s version %s".formatted(callerPlugin.getName(), callerPlugin.getDescription().getVersion()));
-            final BukkitManager bukkitManager = listener -> callerPlugin.getServer().getPluginManager().registerEvents(listener, callerPlugin);
+            final BukkitManager bukkitManager = new DefaultBukkitManager(callerPlugin);
             return new DefaultBetonQuestApi(callerPlugin, profileProvider, packManager, loggerFactory, instructions,
                     actions, conditions, objectives, placeholders, items, npcs, conversations, identifiers,
                     fontRegistry, reloader, persistence, compassManager, bukkitManager);
@@ -91,6 +92,19 @@ public class BetonQuestApiComponent extends AbstractCoreComponent {
 
         dependencyProvider.take(DefaultBetonQuestApiService.class, defaultBetonQuestApiService);
         dependencyProvider.take(DefaultBetonQuestApi.class, (DefaultBetonQuestApi) defaultBetonQuestApiGenerator.apply(plugin));
+    }
+
+    /**
+     * The default implementation of the {@link BukkitManager}.
+     *
+     * @param plugin the plugin this manager and the api is created for
+     */
+    /* default */ record DefaultBukkitManager(Plugin plugin) implements BukkitManager {
+
+        @Override
+        public void registerEvents(final Listener listener) {
+            plugin.getServer().getPluginManager().registerEvents(listener, plugin);
+        }
     }
 
     /**
