@@ -89,14 +89,27 @@ public final class BundledCompatibility {
         this.integrationService = integrationService;
     }
 
-    private void register(final String name, final Supplier<Integration> integrationSupplier, final String versionString) {
-        register(name, integrationSupplier, Policies.minimalPluginVersion(name, VersionParser.parse(DefaultVersionType.SIMPLE_SEMANTIC_VERSION, versionString)));
-    }
-
-    private void register(final String name, final Supplier<Integration> integrationSupplier, final Policy... polices) {
+    private boolean shouldNotRegister(final String name) {
         final boolean isEnabled = config.getBoolean("hook." + name.toLowerCase(Locale.ROOT));
         if (!isEnabled) {
             log.debug("Did not register hook %s because it is disabled".formatted(name));
+            return true;
+        }
+        return false;
+    }
+
+    private void register(final String name, final Supplier<Integration> integrationSupplier, final String versionString) {
+        if (shouldNotRegister(name)) {
+            return;
+        }
+        integrationService
+                .withPolicies(Policies.minimalPluginVersion(name,
+                        VersionParser.parse(DefaultVersionType.SIMPLE_SEMANTIC_VERSION, versionString)))
+                .register(plugin, integrationSupplier);
+    }
+
+    private void register(final String name, final Supplier<Integration> integrationSupplier, final Policy... polices) {
+        if (shouldNotRegister(name)) {
             return;
         }
         integrationService
