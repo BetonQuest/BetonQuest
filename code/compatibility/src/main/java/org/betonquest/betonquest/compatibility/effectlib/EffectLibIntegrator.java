@@ -1,13 +1,14 @@
 package org.betonquest.betonquest.compatibility.effectlib;
 
 import de.slikey.effectlib.EffectManager;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.effectlib.action.ParticleActionFactory;
 import org.betonquest.betonquest.compatibility.effectlib.identifier.ParticleIdentifier;
 import org.betonquest.betonquest.compatibility.effectlib.identifier.ParticleIdentifierFactory;
+import org.betonquest.betonquest.kernel.ProcessorDataLoader;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -16,9 +17,14 @@ import org.jetbrains.annotations.Nullable;
 public class EffectLibIntegrator implements Integration {
 
     /**
-     * BetonQuest plugin.
+     * The plugin instance.
      */
-    private final BetonQuest plugin;
+    private final Plugin plugin;
+
+    /**
+     * The processor data loader.
+     */
+    private final ProcessorDataLoader processorDataLoader;
 
     /**
      * Effect manager starting and controlling effects.
@@ -28,9 +34,13 @@ public class EffectLibIntegrator implements Integration {
 
     /**
      * The default Constructor.
+     *
+     * @param plugin              the plugin instance
+     * @param processorDataLoader the processor data loader
      */
-    public EffectLibIntegrator() {
-        plugin = BetonQuest.getInstance();
+    public EffectLibIntegrator(final Plugin plugin, final ProcessorDataLoader processorDataLoader) {
+        this.plugin = plugin;
+        this.processorDataLoader = processorDataLoader;
     }
 
     @Override
@@ -40,7 +50,7 @@ public class EffectLibIntegrator implements Integration {
         final ParticleIdentifierFactory factory = new ParticleIdentifierFactory(api.packages());
         api.identifiers().register(ParticleIdentifier.class, factory);
         api.actions().registry().register("particle", new ParticleActionFactory(manager));
-        plugin.addProcessor(new EffectLibParticleManager(loggerFactory.create(EffectLibParticleManager.class), loggerFactory,
+        processorDataLoader.addProcessor(new EffectLibParticleManager(loggerFactory.create(EffectLibParticleManager.class), loggerFactory,
                 api.profiles(), api.instructions(), factory, api.npcs().manager(), api.conditions().manager(), manager, plugin));
     }
 

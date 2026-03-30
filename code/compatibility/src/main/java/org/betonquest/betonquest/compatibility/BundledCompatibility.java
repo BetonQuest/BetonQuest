@@ -38,6 +38,7 @@ import org.betonquest.betonquest.compatibility.traincarts.TrainCartsIntegrator;
 import org.betonquest.betonquest.compatibility.vault.VaultIntegrator;
 import org.betonquest.betonquest.compatibility.worldedit.WorldEditIntegrator;
 import org.betonquest.betonquest.compatibility.worldguard.WorldGuardIntegrator;
+import org.betonquest.betonquest.kernel.ProcessorDataLoader;
 import org.betonquest.betonquest.kernel.processor.quest.PlaceholderProcessor;
 import org.betonquest.betonquest.lib.integration.policy.Policies;
 import org.bukkit.plugin.Plugin;
@@ -108,10 +109,12 @@ public final class BundledCompatibility {
      *
      * @param servicesManager      the Bukkit services manager
      * @param placeholderProcessor the placeholder processor to use
+     * @param processorDataLoader  the processor data loader to use
      */
     @SuppressWarnings("Convert2MethodRef") //ClassNotFoundException on load up if certain integrations are absent
     public void registerCompatiblePlugins(final ServicesManager servicesManager,
-                                          final PlaceholderProcessor placeholderProcessor) {
+                                          final PlaceholderProcessor placeholderProcessor,
+                                          final ProcessorDataLoader processorDataLoader) {
         register("MythicMobs", () -> new MythicMobsIntegrator(plugin, config), MythicMobsIntegrator.REQUIRED_VERSION);
         register("Citizens", () -> new CitizensIntegrator());
         register("Vault", () -> new VaultIntegrator(servicesManager));
@@ -123,7 +126,7 @@ public final class BundledCompatibility {
         register("MythicLib", () -> new MythicLibIntegrator());
         register("MMOCore", () -> new MMOCoreIntegrator());
         register("MMOItems", () -> new MMOItemsIntegrator());
-        register("EffectLib", () -> new EffectLibIntegrator());
+        register("EffectLib", () -> new EffectLibIntegrator(plugin, processorDataLoader));
         register("Heroes", () -> new HeroesIntegrator());
         register("Magic", () -> new MagicIntegrator());
         register("Denizen", () -> new DenizenIntegrator());
