@@ -3,7 +3,6 @@ package org.betonquest.betonquest;
 import org.betonquest.betonquest.api.integration.IntegrationService;
 import org.betonquest.betonquest.compatibility.BundledCompatibility;
 import org.betonquest.betonquest.kernel.ProcessorDataLoader;
-import org.betonquest.betonquest.kernel.processor.quest.PlaceholderProcessor;
 import org.betonquest.betonquest.lib.integration.policy.Policies;
 import org.betonquest.betonquest.mc_1_20_6.BundledMC_1_20_6;
 import org.betonquest.betonquest.mc_1_21_4.BundledMC_1_21_4;
@@ -54,8 +53,7 @@ public class BetonQuestPlugin extends BetonQuest {
         integrationService.withPolicies(Policies.minimalVanillaVersion("1.21.4")).register(this,
                 () -> new BundledMC_1_21_4(this));
         new BundledCompatibility(getLoggerFactory().create(BundledCompatibility.class), getPluginConfig(), this, integrationService)
-                .registerCompatiblePlugins(getServer().getServicesManager(), getComponentLoader().get(PlaceholderProcessor.class),
-                        getComponentLoader().get(ProcessorDataLoader.class));
+                .registerCompatiblePlugins(getServer().getServicesManager(), getComponentLoader().get(ProcessorDataLoader.class));
     }
 
     private boolean isPaper() {

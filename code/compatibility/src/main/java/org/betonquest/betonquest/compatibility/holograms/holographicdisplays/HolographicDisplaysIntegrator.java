@@ -7,9 +7,9 @@ import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.identifier.PlaceholderIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologramFactory;
 import org.betonquest.betonquest.compatibility.holograms.HologramIntegration;
-import org.betonquest.betonquest.kernel.processor.quest.PlaceholderProcessor;
 import org.bukkit.plugin.Plugin;
 
 /**
@@ -28,30 +28,23 @@ public class HolographicDisplaysIntegrator implements HologramIntegration {
     private final Plugin plugin;
 
     /**
-     * The placeholder manager to use.
-     */
-    private final PlaceholderProcessor placeholderProcessor;
-
-    /**
      * Creates a new HolographicDisplaysIntegrator for HolographicDisplays.
      *
-     * @param plugin               the plugin instance to create holograms
-     * @param placeholderProcessor the placeholder manager to use
+     * @param plugin the plugin instance to create holograms
      */
-    public HolographicDisplaysIntegrator(final Plugin plugin,
-                                         final PlaceholderProcessor placeholderProcessor) {
+    public HolographicDisplaysIntegrator(final Plugin plugin) {
         this.plugin = plugin;
-        this.placeholderProcessor = placeholderProcessor;
     }
 
     @Override
     public void enable(final BetonQuestApi api) {
         final HolographicDisplaysAPI holoApi = HolographicDisplaysAPI.get(plugin);
         final BetonQuestLoggerFactory loggerFactory = api.loggerFactory();
+        final PlaceholderManager placeholderManager = api.placeholders().manager();
         holoApi.registerIndividualPlaceholder("bq", new HologramPlaceholder(
-                loggerFactory.create(HologramPlaceholder.class), placeholderProcessor, api.profiles()));
+                loggerFactory.create(HologramPlaceholder.class), placeholderManager, api.profiles()));
         holoApi.registerGlobalPlaceholder("bqg", new HologramGlobalPlaceholder(
-                loggerFactory.create(HologramGlobalPlaceholder.class), placeholderProcessor));
+                loggerFactory.create(HologramGlobalPlaceholder.class), placeholderManager));
     }
 
     @Override
@@ -74,6 +67,6 @@ public class HolographicDisplaysIntegrator implements HologramIntegration {
         final BetonQuestLogger log = api.loggerFactory().create(HolographicDisplaysHologramFactory.class);
         final IdentifierFactory<PlaceholderIdentifier> placeholderIdentifierFactory =
                 api.identifiers().getFactory(PlaceholderIdentifier.class);
-        return new HolographicDisplaysHologramFactory(log, plugin, api.instructions(), placeholderIdentifierFactory, placeholderProcessor);
+        return new HolographicDisplaysHologramFactory(log, plugin, api.instructions(), placeholderIdentifierFactory);
     }
 }
