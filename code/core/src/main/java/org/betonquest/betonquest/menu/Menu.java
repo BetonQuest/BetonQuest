@@ -52,7 +52,7 @@ public class Menu {
      * Item this menu is bound to or is empty if none is bound.
      */
     @Nullable
-    private final Argument<ItemWrapper> boundItem;
+    private final Menu.BoundItems boundItems;
 
     /**
      * Creates a new Menu.
@@ -62,17 +62,17 @@ public class Menu {
      * @param actionManager    the Action Manager
      * @param conditionManager the Condition Manager
      * @param menuData         the Menu Data
-     * @param boundItem        the optional bound Item
+     * @param boundItems       the optional bound Items
      */
     public Menu(final BetonQuestLogger log, final MenuIdentifier menuID,
                 final ActionManager actionManager, final ConditionManager conditionManager,
-                final MenuData menuData, @Nullable final Argument<ItemWrapper> boundItem) {
+                final MenuData menuData, @Nullable final Menu.BoundItems boundItems) {
         this.log = log;
         this.actionManager = actionManager;
         this.conditionManager = conditionManager;
         this.menuID = menuID;
         this.data = menuData;
-        this.boundItem = boundItem;
+        this.boundItems = boundItems;
     }
 
     /**
@@ -172,13 +172,13 @@ public class Menu {
     }
 
     /**
-     * Get the item which interaction opens this menu.
+     * Get the items which interaction opens this menu.
      *
      * @return the bound item, if any
      */
     @Nullable
-    public Argument<ItemWrapper> getBoundItem() {
-        return boundItem;
+    public Menu.BoundItems getBoundItems() {
+        return boundItems;
     }
 
     /**
@@ -224,5 +224,28 @@ public class Menu {
                            Argument<List<ActionIdentifier>> openActions,
                            Argument<List<ActionIdentifier>> closeActions) {
 
+    }
+
+    /**
+     * Contains the items that should open the menu on a click.
+     *
+     * @param leftClick       for the left click
+     * @param sneakLeftClick  for the left click while sneaking
+     * @param rightClick      for the right click
+     * @param sneakRightClick for the right click while sneaking
+     */
+    public record BoundItems(@Nullable Argument<ItemWrapper> leftClick,
+                             @Nullable Argument<ItemWrapper> sneakLeftClick,
+                             @Nullable Argument<ItemWrapper> rightClick,
+                             @Nullable Argument<ItemWrapper> sneakRightClick) {
+
+        /**
+         * Fills all click types with the same list.
+         *
+         * @param click the actions to execute on any click
+         */
+        public BoundItems(@Nullable final Argument<ItemWrapper> click) {
+            this(click, click, click, click);
+        }
     }
 }
