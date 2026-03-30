@@ -24,8 +24,9 @@ public record DefaultVersionType(List<VersionToken> tokens) implements VersionTy
      * The {@link DefaultVersionType} for simple semantic versioning.
      */
     public static final DefaultVersionType SIMPLE_SEMANTIC_VERSION = builder()
-            .number("major")
-            .dot().number("minor")
+            .finite().number("major")
+            .opt()
+            .dot().finite().number("minor", 0)
             .opt()
             .dot().finite().number("patch", 0)
             .opt()
