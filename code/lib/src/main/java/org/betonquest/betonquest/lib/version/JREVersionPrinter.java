@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.lib.versioning.java;
+package org.betonquest.betonquest.lib.version;
 
 import java.util.Properties;
 import java.util.stream.Collectors;

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.lib.integration.policy;
 
-import org.betonquest.betonquest.lib.versioning.MinecraftVersion;
-import org.betonquest.betonquest.lib.versioning.Version;
+import org.betonquest.betonquest.api.version.Version;
+import org.betonquest.betonquest.lib.version.MinecraftVersion;
 
 /**
  * Represents a vanilla policy enforcing specific versioning rules based on a provided version and comparison strategy.
@@ -13,12 +13,12 @@ import org.betonquest.betonquest.lib.versioning.Version;
  * @param versionCompareStrategy the strategy to compare versions
  * @param description            the description of the policy
  */
-public record VanillaPolicy(String version, VersionCompareStrategy versionCompareStrategy,
+public record VanillaPolicy(Version version, VersionCompareStrategy versionCompareStrategy,
                             String description) implements VersionedPolicy {
 
     @Override
     public boolean validate() {
-        return versionCompareStrategy.test(new MinecraftVersion(), new Version(version));
+        return versionCompareStrategy.test(MinecraftVersion.current(), version);
     }
 
     @Override

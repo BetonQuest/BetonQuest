@@ -3,7 +3,7 @@ package org.betonquest.betonquest.web.updater;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.lib.versioning.Version;
+import org.betonquest.betonquest.api.version.Version;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -160,7 +160,7 @@ public class Updater {
     }
 
     private boolean searchUpdate() {
-        final Pair<Version, String> newLatest = updateSourceHandler.searchUpdate(config, latest.getKey(), config.getDevIndicator());
+        final Pair<Version, String> newLatest = updateSourceHandler.searchUpdate(config, latest.getKey());
         if (newLatest.getValue() == null) {
             return false;
         }
@@ -196,7 +196,7 @@ public class Updater {
         if (latest.getValue() == null) {
             throw new IllegalStateException("There is no newer version available!");
         }
-        return latest.getKey().getVersion();
+        return latest.getKey().toString();
     }
 
     /**

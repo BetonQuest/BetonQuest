@@ -1,7 +1,9 @@
 package org.betonquest.betonquest.lib.integration.policy;
 
 import org.betonquest.betonquest.api.integration.policy.Policy;
+import org.betonquest.betonquest.api.version.Version;
 import org.betonquest.betonquest.lib.integration.PluginProvider;
+import org.betonquest.betonquest.lib.version.MinecraftVersion;
 import org.bukkit.plugin.Plugin;
 
 import java.util.function.Supplier;
@@ -56,7 +58,7 @@ public final class Policies {
      * @return a policy that checks for the minimum Minecraft version
      */
     public static Policy minimalVanillaVersion(final String version) {
-        return new VanillaPolicy(version, VersionCompareStrategy.MINIMAL, "Minecraft version '%s' and above is required.".formatted(version));
+        return new VanillaPolicy(MinecraftVersion.parse(version), VersionCompareStrategy.MINIMAL, "Minecraft version '%s' and above is required.".formatted(version));
     }
 
     /**
@@ -66,7 +68,7 @@ public final class Policies {
      * @return a policy that checks for the exact Minecraft version
      */
     public static Policy exactVanillaVersion(final String version) {
-        return new VanillaPolicy(version, VersionCompareStrategy.EXACT, "Minecraft version '%s' is required.".formatted(version));
+        return new VanillaPolicy(MinecraftVersion.parse(version), VersionCompareStrategy.EXACT, "Minecraft version '%s' is required.".formatted(version));
     }
 
     /**
@@ -76,7 +78,7 @@ public final class Policies {
      * @return a policy that checks for the maximum Minecraft version
      */
     public static Policy maximalVanillaVersion(final String version) {
-        return new VanillaPolicy(version, VersionCompareStrategy.MAXIMAL, "Minecraft version '%s' or below is required.".formatted(version));
+        return new VanillaPolicy(MinecraftVersion.parse(version), VersionCompareStrategy.MAXIMAL, "Minecraft version '%s' or below is required.".formatted(version));
     }
 
     /**
@@ -126,7 +128,7 @@ public final class Policies {
      * @param version the minimum version required
      * @return a policy that checks for the minimum plugin version
      */
-    public static Policy minimalPluginVersion(final String plugin, final String version) {
+    public static Policy minimalPluginVersion(final String plugin, final Version version) {
         return new VersionedPluginPolicy(PluginProvider.forName(plugin), version, VersionCompareStrategy.MINIMAL,
                 "Plugin '%s' version '%s' and above is required.".formatted(plugin, version));
     }
@@ -138,7 +140,7 @@ public final class Policies {
      * @param version     the minimum version required
      * @return a policy that checks for the minimum plugin version
      */
-    public static Policy minimalPluginVersion(final Class<? extends Plugin> pluginClass, final String version) {
+    public static Policy minimalPluginVersion(final Class<? extends Plugin> pluginClass, final Version version) {
         return new VersionedPluginPolicy(PluginProvider.forClass(pluginClass), version, VersionCompareStrategy.MINIMAL,
                 "Plugin with main class '%s' version '%s' and above is required.".formatted(pluginClass.getName(), version));
     }
@@ -150,7 +152,7 @@ public final class Policies {
      * @param version the minimum version required
      * @return a policy that checks for the minimum plugin version
      */
-    public static Policy minimalPluginVersion(final Plugin plugin, final String version) {
+    public static Policy minimalPluginVersion(final Plugin plugin, final Version version) {
         return new VersionedPluginPolicy(PluginProvider.forInstance(plugin), version, VersionCompareStrategy.MINIMAL,
                 "Plugin '%s' version '%s' and above is required.".formatted(plugin.getName(), version));
     }
@@ -162,7 +164,7 @@ public final class Policies {
      * @param version        the minimum version required
      * @return a policy that checks for the minimum plugin version
      */
-    public static Policy minimalPluginVersion(final PluginProvider pluginProvider, final String version) {
+    public static Policy minimalPluginVersion(final PluginProvider pluginProvider, final Version version) {
         return new VersionedPluginPolicy(pluginProvider, version, VersionCompareStrategy.MINIMAL,
                 "Plugin '%s' version '%s' and above is required.".formatted(pluginProvider.name().orElse(UNKNOWN_PLUGIN_NAME), version));
     }
@@ -174,7 +176,7 @@ public final class Policies {
      * @param version the exact version required
      * @return a policy that checks for the exact plugin version
      */
-    public static Policy exactPluginVersion(final String plugin, final String version) {
+    public static Policy exactPluginVersion(final String plugin, final Version version) {
         return new VersionedPluginPolicy(PluginProvider.forName(plugin), version, VersionCompareStrategy.EXACT,
                 "Plugin '%s' version '%s' is required.".formatted(plugin, version));
     }
@@ -186,7 +188,7 @@ public final class Policies {
      * @param version     the exact version required
      * @return a policy that checks for the exact plugin version
      */
-    public static Policy exactPluginVersion(final Class<? extends Plugin> pluginClass, final String version) {
+    public static Policy exactPluginVersion(final Class<? extends Plugin> pluginClass, final Version version) {
         return new VersionedPluginPolicy(PluginProvider.forClass(pluginClass), version, VersionCompareStrategy.EXACT,
                 "Plugin with main class '%s' version '%s' is required.".formatted(pluginClass.getName(), version));
     }
@@ -198,7 +200,7 @@ public final class Policies {
      * @param version the exact version required
      * @return a policy that checks for the exact plugin version
      */
-    public static Policy exactPluginVersion(final Plugin plugin, final String version) {
+    public static Policy exactPluginVersion(final Plugin plugin, final Version version) {
         return new VersionedPluginPolicy(PluginProvider.forInstance(plugin), version, VersionCompareStrategy.EXACT,
                 "Plugin '%s' version '%s' is required.".formatted(plugin.getName(), version));
     }
@@ -210,7 +212,7 @@ public final class Policies {
      * @param version        the exact version required
      * @return a policy that checks for the exact plugin version
      */
-    public static Policy exactPluginVersion(final PluginProvider pluginProvider, final String version) {
+    public static Policy exactPluginVersion(final PluginProvider pluginProvider, final Version version) {
         return new VersionedPluginPolicy(pluginProvider, version, VersionCompareStrategy.EXACT,
                 "Plugin '%s' version '%s' is required.".formatted(pluginProvider.name().orElse(UNKNOWN_PLUGIN_NAME), version));
     }
@@ -222,7 +224,7 @@ public final class Policies {
      * @param version the maximum version allowed
      * @return a policy that checks for the maximum plugin version
      */
-    public static Policy maximalPluginVersion(final String plugin, final String version) {
+    public static Policy maximalPluginVersion(final String plugin, final Version version) {
         return new VersionedPluginPolicy(PluginProvider.forName(plugin), version, VersionCompareStrategy.MAXIMAL,
                 "Plugin '%s' version '%s' and below is required.".formatted(plugin, version));
     }
@@ -234,7 +236,7 @@ public final class Policies {
      * @param version     the maximum version allowed
      * @return a policy that checks for the maximum plugin version
      */
-    public static Policy maximalPluginVersion(final Class<? extends Plugin> pluginClass, final String version) {
+    public static Policy maximalPluginVersion(final Class<? extends Plugin> pluginClass, final Version version) {
         return new VersionedPluginPolicy(PluginProvider.forClass(pluginClass), version, VersionCompareStrategy.MAXIMAL,
                 "Plugin with main class '%s' version '%s' and below is required.".formatted(pluginClass.getName(), version));
     }
@@ -246,7 +248,7 @@ public final class Policies {
      * @param version the maximum version allowed
      * @return a policy that checks for the maximum plugin version
      */
-    public static Policy maximalPluginVersion(final Plugin plugin, final String version) {
+    public static Policy maximalPluginVersion(final Plugin plugin, final Version version) {
         return new VersionedPluginPolicy(PluginProvider.forInstance(plugin), version, VersionCompareStrategy.MAXIMAL,
                 "Plugin '%s' version '%s' and below is required.".formatted(plugin.getName(), version));
     }
@@ -258,7 +260,7 @@ public final class Policies {
      * @param version        the maximum version allowed
      * @return a policy that checks for the maximum plugin version
      */
-    public static Policy maximalPluginVersion(final PluginProvider pluginProvider, final String version) {
+    public static Policy maximalPluginVersion(final PluginProvider pluginProvider, final Version version) {
         return new VersionedPluginPolicy(pluginProvider, version, VersionCompareStrategy.MAXIMAL,
                 "Plugin '%s' version '%s' and below is required.".formatted(pluginProvider.name().orElse(UNKNOWN_PLUGIN_NAME), version));
     }
@@ -285,7 +287,7 @@ public final class Policies {
      * @param maxVersion the maximum plugin version
      * @return an array of policies that check for the version range
      */
-    public static Policy[] pluginVersionRange(final String plugin, final String minVersion, final String maxVersion) {
+    public static Policy[] pluginVersionRange(final String plugin, final Version minVersion, final Version maxVersion) {
         return new Policy[]{
                 minimalPluginVersion(plugin, minVersion),
                 maximalPluginVersion(plugin, maxVersion)
@@ -300,7 +302,7 @@ public final class Policies {
      * @param maxVersion  the maximum plugin version
      * @return an array of policies that check for the version range
      */
-    public static Policy[] pluginVersionRange(final Class<? extends Plugin> pluginClass, final String minVersion, final String maxVersion) {
+    public static Policy[] pluginVersionRange(final Class<? extends Plugin> pluginClass, final Version minVersion, final Version maxVersion) {
         return new Policy[]{
                 minimalPluginVersion(pluginClass, minVersion),
                 maximalPluginVersion(pluginClass, maxVersion)
@@ -315,7 +317,7 @@ public final class Policies {
      * @param maxVersion the maximum plugin version
      * @return an array of policies that check for the version range
      */
-    public static Policy[] pluginVersionRange(final Plugin plugin, final String minVersion, final String maxVersion) {
+    public static Policy[] pluginVersionRange(final Plugin plugin, final Version minVersion, final Version maxVersion) {
         return new Policy[]{
                 minimalPluginVersion(plugin, minVersion),
                 maximalPluginVersion(plugin, maxVersion)
@@ -330,7 +332,7 @@ public final class Policies {
      * @param maxVersion     the maximum plugin version
      * @return an array of policies that check for the version range
      */
-    public static Policy[] pluginVersionRange(final PluginProvider pluginProvider, final String minVersion, final String maxVersion) {
+    public static Policy[] pluginVersionRange(final PluginProvider pluginProvider, final Version minVersion, final Version maxVersion) {
         return new Policy[]{
                 minimalPluginVersion(pluginProvider, minVersion),
                 maximalPluginVersion(pluginProvider, maxVersion)

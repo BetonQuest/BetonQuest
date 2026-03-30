@@ -7,9 +7,11 @@ import org.betonquest.betonquest.api.config.patcher.PatchTransformer;
 import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegistry;
 import org.betonquest.betonquest.api.config.patcher.PatcherOptions;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.lib.versioning.UpdateStrategy;
-import org.betonquest.betonquest.lib.versioning.Version;
-import org.betonquest.betonquest.lib.versioning.VersionComparator;
+import org.betonquest.betonquest.api.version.Version;
+import org.betonquest.betonquest.api.version.VersionType;
+import org.betonquest.betonquest.lib.version.DefaultVersionType;
+import org.betonquest.betonquest.lib.version.VersionComparisonStrategies;
+import org.betonquest.betonquest.lib.version.VersionParser;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -31,9 +33,15 @@ import java.util.regex.Pattern;
 public class Patcher {
 
     /**
-     * Comparator for {@link Version} with the qualifier CONFIG.
+     * The version type for the config version.
      */
-    private static final VersionComparator VERSION_COMPARATOR = new VersionComparator(UpdateStrategy.MAJOR, "CONFIG-");
+    private static final VersionType CONFIG_VERSION_TYPE = DefaultVersionType.builder()
+            .number("major")
+            .dot().number("minor")
+            .dot().number("patch")
+            .dash().exact("type", "CONFIG")
+            .dash().finite().number("build")
+            .build();
 
     /**
      * The comment at the version entry in the config.
@@ -53,7 +61,7 @@ public class Patcher {
     /**
      * The 'version' indicating no version set, but already present as file.
      */
-    private static final Version ZERO_VERSION = new Version("0.0.0-CONFIG-0");
+    private static final Version ZERO_VERSION = VersionParser.parse(CONFIG_VERSION_TYPE, "0.0.0-CONFIG-0");
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -90,7 +98,7 @@ public class Patcher {
         this.log = log;
         this.resourceAccessor = resourceAccessor;
         this.transformerRegistry = transformerRegistry;
-        this.patches = new TreeMap<>(VERSION_COMPARATOR);
+        this.patches = new TreeMap<>(VersionComparisonStrategies.DEFAULT);
         buildVersionIndex(patchConfig, "");
     }
 
@@ -118,7 +126,7 @@ public class Patcher {
             throw new InvalidConfigurationException("The patch file at '" + currentKey + "' has an invalid version format.");
         }
         final String result = matcher.group(1) + "-CONFIG-" + matcher.group(2);
-        final Version discoveredVersion = new Version(result);
+        final Version discoveredVersion = VersionParser.parse(CONFIG_VERSION_TYPE, result);
         patches.put(discoveredVersion, mapList);
     }
 
@@ -141,7 +149,7 @@ public class Patcher {
             setConfigVersion(config, patches.lastKey());
         } else {
             final Version version = getConfigVersion(configVersionString);
-            if (version != null && !VERSION_COMPARATOR.isOlderThan(version, patches.lastEntry().getKey())) {
+            if (version != null && !version.isOlderThan(VersionComparisonStrategies.DEFAULT, patches.lastEntry().getKey())) {
                 log.debug(logPrefix + "is already up to date.");
             } else {
                 final String displayVersion = version == null ? "'legacy' version" : "version '" + version + "'";
@@ -180,7 +188,7 @@ public class Patcher {
         if (configVersion == null || configVersion.isEmpty()) {
             return null;
         }
-        return new Version(configVersion);
+        return VersionParser.parse(CONFIG_VERSION_TYPE, configVersion);
     }
 
     private boolean applyPatch(final ConfigurationSection config, final List<Map<?, ?>> patchData) {
@@ -211,7 +219,7 @@ public class Patcher {
     }
 
     private void setConfigVersion(final ConfigurationSection config, final Version newVersion) {
-        config.set(CONFIG_VERSION_PATH, newVersion.getVersion());
+        config.set(CONFIG_VERSION_PATH, newVersion.toString());
         config.setInlineComments(CONFIG_VERSION_PATH, List.of(VERSION_CONFIG_COMMENT));
     }
 }

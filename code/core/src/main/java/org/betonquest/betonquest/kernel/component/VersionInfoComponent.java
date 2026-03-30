@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
-import org.betonquest.betonquest.lib.versioning.java.JREVersionPrinter;
+import org.betonquest.betonquest.lib.version.JREVersionPrinter;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import java.util.Set;

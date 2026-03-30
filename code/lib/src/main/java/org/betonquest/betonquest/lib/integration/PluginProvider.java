@@ -1,9 +1,13 @@
 package org.betonquest.betonquest.lib.integration;
 
-import org.betonquest.betonquest.lib.versioning.Version;
+import org.betonquest.betonquest.api.version.Version;
+import org.betonquest.betonquest.api.version.VersionType;
+import org.betonquest.betonquest.lib.version.DefaultVersionType;
+import org.betonquest.betonquest.lib.version.VersionParser;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import org.jetbrains.annotations.Contract;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -34,6 +38,7 @@ public interface PluginProvider {
      * @param plugin the plugin instance to wrap
      * @return a new {@link PluginProvider} instance that returns the given plugin
      */
+    @Contract(pure = true, value = "_ -> new")
     static PluginProvider forInstance(final Plugin plugin) {
         return () -> Optional.of(plugin);
     }
@@ -48,6 +53,7 @@ public interface PluginProvider {
      * @return a new {@link PluginProvider} instance that returns the plugin with the given name,
      * or empty if the plugin is not found
      */
+    @Contract(pure = true, value = "_ -> new")
     static PluginProvider forName(final String pluginName) {
         return () -> Optional.ofNullable(Bukkit.getPluginManager().getPlugin(pluginName));
     }
@@ -63,6 +69,7 @@ public interface PluginProvider {
      * @return a new {@link PluginProvider} instance that returns the plugin of the given class type,
      * or empty if no matching plugin is found
      */
+    @Contract(pure = true, value = "_ -> new")
     static PluginProvider forClass(final Class<? extends Plugin> pluginClass) {
         return () -> Arrays.stream(Bukkit.getPluginManager().getPlugins()).filter(pluginClass::isInstance).findFirst();
     }
@@ -88,7 +95,7 @@ public interface PluginProvider {
      * empty otherwise
      */
     default Optional<Version> version() {
-        return plugin().map(plugin -> new Version(plugin.getDescription().getVersion()));
+        return plugin().map(plugin -> VersionParser.parse(DefaultVersionType.SIMPLE_SEMANTIC_VERSION, plugin.getDescription().getVersion()));
     }
 
     /**
@@ -102,5 +109,27 @@ public interface PluginProvider {
      */
     default Optional<String> name() {
         return plugin().map(Plugin::getName);
+    }
+
+    /**
+     * Returns a new {@link PluginProvider} instance that uses the given {@link DefaultVersionType}
+     * to parse the plugins version.
+     *
+     * @param versionType the version type to use for parsing the version of the plugin
+     * @return a new {@link PluginProvider} instance that uses the given version type
+     */
+    @Contract(pure = true, value = "_ -> new")
+    default PluginProvider withVersionType(final VersionType versionType) {
+        return new PluginProvider() {
+            @Override
+            public Optional<Plugin> plugin() {
+                return PluginProvider.this.plugin();
+            }
+
+            @Override
+            public Optional<Version> version() {
+                return plugin().map(plugin -> VersionParser.parse(versionType, plugin.getDescription().getVersion()));
+            }
+        };
     }
 }

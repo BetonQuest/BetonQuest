@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.web.updater.source;
 
-import org.betonquest.betonquest.lib.versioning.Version;
+import org.betonquest.betonquest.api.version.Version;
 
 import java.io.IOException;
 import java.util.Map;

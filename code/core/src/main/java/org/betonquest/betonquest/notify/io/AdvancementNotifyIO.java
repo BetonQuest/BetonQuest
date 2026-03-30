@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
-import org.betonquest.betonquest.lib.versioning.MinecraftVersion;
+import org.betonquest.betonquest.lib.version.MinecraftVersion;
 import org.betonquest.betonquest.notify.NotifyIO;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -46,11 +46,6 @@ public class AdvancementNotifyIO extends NotifyIO {
     private final String icon;
 
     /**
-     * Minecraft version instance.
-     */
-    private final MinecraftVersion version;
-
-    /**
      * Create a new Advancement Notify IO.
      *
      * @param placeholders the {@link PlaceholderManager} to create and resolve placeholders
@@ -64,7 +59,6 @@ public class AdvancementNotifyIO extends NotifyIO {
         this.plugin = plugin;
         frame = data.getOrDefault("frame", "challenge").toLowerCase(Locale.ROOT);
         icon = data.getOrDefault("icon", "minecraft:map").toLowerCase(Locale.ROOT);
-        this.version = new MinecraftVersion(plugin.getServer());
     }
 
     private void notifyPlayerObject(final JsonElement message, final OnlineProfile onlineProfile) {
@@ -170,7 +164,7 @@ public class AdvancementNotifyIO extends NotifyIO {
 
     private JsonObject getIcon() {
         final JsonObject icon = new JsonObject();
-        if (version.isCompatibleWith("1.20.5")) {
+        if (MinecraftVersion.isCompatibleWith("1.20.5")) {
             icon.addProperty("id", this.icon);
         } else {
             icon.addProperty("item", this.icon);

@@ -3,7 +3,10 @@ package org.betonquest.betonquest.web.updater.source.implementations;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import org.betonquest.betonquest.lib.versioning.Version;
+import org.betonquest.betonquest.api.version.Version;
+import org.betonquest.betonquest.api.version.VersionType;
+import org.betonquest.betonquest.lib.version.DefaultVersionType;
+import org.betonquest.betonquest.lib.version.VersionParser;
 import org.betonquest.betonquest.web.ContentSource;
 import org.betonquest.betonquest.web.WebContentSource;
 import org.betonquest.betonquest.web.updater.source.DevelopmentUpdateSource;
@@ -20,6 +23,22 @@ import java.util.regex.Pattern;
  * This is a {@link WebContentSource} for the Nexus repository.
  */
 public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, DevelopmentUpdateSource {
+
+    /**
+     * The {@link VersionType} for Nexus.
+     */
+    public static final VersionType NEXUS_MAVEN_VERSION_TYPE = DefaultVersionType.builder()
+            .number("major")
+            .dot().number("minor")
+            .dot().finite().number("patch")
+            .opt()
+            .dash().number("date")
+            .dot().number("time")
+            .dash().finite().number("build")
+            .opt()
+            .dash().exact("dev", "DEV")
+            .dash().finite().number("build")
+            .build();
 
     /**
      * The sub path for the REST API of Nexus to append on the {@link NexusReleaseAndDevelopmentSource#apiUrl}.
@@ -121,7 +140,7 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
             final String pomXml = contentSource.get(new URL(downloadUrl.replace("-shaded.jar", ".pom")));
             final Matcher matcher = POM_PATTERN.matcher(pomXml);
             if (matcher.find()) {
-                final Version pomVersion = new Version(matcher.group("version"));
+                final Version pomVersion = VersionParser.parse(NEXUS_MAVEN_VERSION_TYPE, matcher.group("version"));
                 versions.put(pomVersion, downloadUrl);
             }
             return !doVersionsEqual(version, currentVersion);
@@ -139,7 +158,7 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
             for (int index = 0; index < items.size(); index++) {
                 final JsonObject entry = items.get(index).getAsJsonObject();
                 final JsonObject maven = entry.get("maven2").getAsJsonObject();
-                final Version version = new Version(maven.get("version").getAsString());
+                final Version version = VersionParser.parse(NEXUS_MAVEN_VERSION_TYPE, maven.get("version").getAsString());
                 final String downloadUrl = entry.get("downloadUrl").getAsString();
                 if (!consumer.consume(versions, version, downloadUrl)) {
                     return versions;
@@ -152,9 +171,9 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
     }
 
     private boolean doVersionsEqual(final Version first, final Version second) {
-        return first.getMajorVersion() == second.getMajorVersion()
-                && first.getMinorVersion() == second.getMinorVersion()
-                && first.getPatchVersion() == second.getPatchVersion();
+        return first.getNamedElement("major").orElse("0").equals(second.getNamedElement("major").orElse("0"))
+                && first.getNamedElement("minor").orElse("0").equals(second.getNamedElement("minor").orElse("0"))
+                && first.getNamedElement("patch").orElse("0").equals(second.getNamedElement("patch").orElse("0"));
     }
 
     /**

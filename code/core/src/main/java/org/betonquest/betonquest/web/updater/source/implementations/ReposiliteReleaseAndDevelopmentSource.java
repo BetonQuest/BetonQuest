@@ -3,7 +3,8 @@ package org.betonquest.betonquest.web.updater.source.implementations;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import org.betonquest.betonquest.lib.versioning.Version;
+import org.betonquest.betonquest.api.version.Version;
+import org.betonquest.betonquest.lib.version.BetonQuestVersion;
 import org.betonquest.betonquest.web.ContentSource;
 import org.betonquest.betonquest.web.WebContentSource;
 import org.betonquest.betonquest.web.updater.source.DevelopmentUpdateSource;
@@ -113,17 +114,19 @@ public class ReposiliteReleaseAndDevelopmentSource implements ReleaseUpdateSourc
                 return;
             }
             final String pluginVersion = entries.get("pluginVersion").getAsString();
-            versions.put(new Version(pluginVersion),
+            versions.put(BetonQuestVersion.parse(pluginVersion),
                     reposiliteUrl + "/" + repository + "/" + downloadPath.replace(".jar", "-shaded.jar"));
         });
         return versions;
     }
 
     private String getAdjustedVersion(final Version currentVersion) {
-        if (!currentVersion.hasQualifier() && !currentVersion.hasBuildNumber()) {
+        if (currentVersion.getNamedElement("type").isEmpty()) {
             return currentVersion.toString();
         }
-        return currentVersion.getMajorVersion() + "." + currentVersion.getMinorVersion() + "." + currentVersion.getPatchVersion()
+        return currentVersion.getNamedElement("major").orElse("0")
+                + "." + currentVersion.getNamedElement("minor").orElse("0")
+                + "." + currentVersion.getNamedElement("patch").orElse("0")
                 + "-SNAPSHOT";
     }
 }

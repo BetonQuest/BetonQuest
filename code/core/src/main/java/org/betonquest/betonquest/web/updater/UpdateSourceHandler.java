@@ -2,8 +2,8 @@ package org.betonquest.betonquest.web.updater;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.lib.versioning.Version;
-import org.betonquest.betonquest.lib.versioning.VersionComparator;
+import org.betonquest.betonquest.api.version.Version;
+import org.betonquest.betonquest.lib.version.BetonQuestUpdateStrategy;
 import org.betonquest.betonquest.web.updater.source.DevelopmentUpdateSource;
 import org.betonquest.betonquest.web.updater.source.ReleaseUpdateSource;
 import org.jetbrains.annotations.VisibleForTesting;
@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * This {@link UpdateSourceHandler} handles all {@link ReleaseUpdateSource} and {@link DevelopmentUpdateSource}
  * instances and searches for updates in them.
- * When calling {@link #searchUpdateFor(Pair, List, VersionComparator, UpdateSourceConsumer)},
+ * When calling {@link #searchUpdateFor(Pair, List, BetonQuestUpdateStrategy, UpdateSourceConsumer)},
  * it will provide the latest version and the URL to download it from.
  */
 public class UpdateSourceHandler {
@@ -60,30 +60,29 @@ public class UpdateSourceHandler {
      * and then in the list of {@link DevelopmentUpdateSource} instances.
      * Development builds are only searched, if the {@link UpdaterConfig} is configured for it.
      *
-     * @param config       The {@link UpdaterConfig} containing all settings
-     * @param current      The current {@link Version}
-     * @param devIndicator The version qualifier for a dev build
+     * @param config  The {@link UpdaterConfig} containing all settings
+     * @param current The current {@link Version}
      * @return a par of the latest version and the corresponding download url
      */
     @VisibleForTesting
-    Pair<Version, String> searchUpdate(final UpdaterConfig config, final Version current, final String devIndicator) {
-        final VersionComparator comparator = new VersionComparator(config.getStrategy(), devIndicator + "-");
+    Pair<Version, String> searchUpdate(final UpdaterConfig config, final Version current) {
+        final BetonQuestUpdateStrategy updateStrategy = config.getStrategy();
         Pair<Version, String> latest = Pair.of(current, null);
-        latest = searchUpdateFor(latest, releaseHandlerList, comparator, releaseUpdateSource -> releaseUpdateSource.getReleaseVersions(current));
+        latest = searchUpdateFor(latest, releaseHandlerList, updateStrategy, releaseUpdateSource -> releaseUpdateSource.getReleaseVersions(current));
         if (config.isDevDownloadEnabled() && !(latest.getValue() != null && config.isForcedStrategy())) {
-            latest = searchUpdateFor(latest, developmentHandlerList, comparator, developmentUpdateSource -> developmentUpdateSource.getDevelopmentVersions(current));
+            latest = searchUpdateFor(latest, developmentHandlerList, updateStrategy, developmentUpdateSource -> developmentUpdateSource.getDevelopmentVersions(current));
         }
         return latest;
     }
 
     private <T> Pair<Version, String>
-    searchUpdateFor(final Pair<Version, String> latest, final List<T> updateSources, final VersionComparator comparator,
+    searchUpdateFor(final Pair<Version, String> latest, final List<T> updateSources, final BetonQuestUpdateStrategy updateStrategy,
                     final UpdateSourceConsumer<T> consumer) {
         Pair<Version, String> currentLatest = latest;
         for (final T updateSource : updateSources) {
             try {
                 for (final Map.Entry<Version, String> entry : consumer.consume(updateSource).entrySet()) {
-                    if (comparator.isOlderThan(latest.getKey(), entry.getKey())) {
+                    if (latest.getKey().isOlderThan(updateStrategy.getComparator(false), entry.getKey())) {
                         currentLatest = Pair.of(entry.getKey(), entry.getValue());
                     }
                 }
