@@ -13,7 +13,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.config.migrator.Migrator;
 import org.betonquest.betonquest.conversation.AnswerFilter;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
@@ -22,68 +21,12 @@ import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.integration.DefaultIntegrationService;
 import org.betonquest.betonquest.integration.IntegrationManager;
+import org.betonquest.betonquest.kernel.BetonQuestComponents;
 import org.betonquest.betonquest.kernel.ProcessorDataLoader;
-import org.betonquest.betonquest.kernel.component.ActionsComponent;
-import org.betonquest.betonquest.kernel.component.ArgumentParsersComponent;
-import org.betonquest.betonquest.kernel.component.AsyncSaverComponent;
-import org.betonquest.betonquest.kernel.component.BStatsMetricsComponent;
-import org.betonquest.betonquest.kernel.component.BetonQuestApiComponent;
-import org.betonquest.betonquest.kernel.component.CancelersComponent;
-import org.betonquest.betonquest.kernel.component.CommandsComponent;
-import org.betonquest.betonquest.kernel.component.CompassComponent;
-import org.betonquest.betonquest.kernel.component.CompatibilityComponent;
-import org.betonquest.betonquest.kernel.component.ConditionsComponent;
-import org.betonquest.betonquest.kernel.component.ConfigAccessorFactoryComponent;
-import org.betonquest.betonquest.kernel.component.ConfigComponent;
-import org.betonquest.betonquest.kernel.component.ConversationColorsComponent;
-import org.betonquest.betonquest.kernel.component.ConversationsComponent;
-import org.betonquest.betonquest.kernel.component.DataLoaderComponent;
 import org.betonquest.betonquest.kernel.component.DatabaseComponent;
-import org.betonquest.betonquest.kernel.component.ExecutionCacheComponent;
-import org.betonquest.betonquest.kernel.component.FontRegistryComponent;
-import org.betonquest.betonquest.kernel.component.GlobalDataComponent;
-import org.betonquest.betonquest.kernel.component.IdentifiersComponent;
-import org.betonquest.betonquest.kernel.component.InstructionsComponent;
-import org.betonquest.betonquest.kernel.component.IntegrationComponent;
-import org.betonquest.betonquest.kernel.component.ItemsComponent;
-import org.betonquest.betonquest.kernel.component.JournalsComponent;
-import org.betonquest.betonquest.kernel.component.LanguageProviderComponent;
-import org.betonquest.betonquest.kernel.component.ListenersComponent;
-import org.betonquest.betonquest.kernel.component.LogHandlerComponent;
-import org.betonquest.betonquest.kernel.component.MigratorComponent;
-import org.betonquest.betonquest.kernel.component.NotificationCategoriesComponent;
-import org.betonquest.betonquest.kernel.component.NotificationsComponent;
-import org.betonquest.betonquest.kernel.component.NpcsComponent;
-import org.betonquest.betonquest.kernel.component.ObjectivesComponent;
-import org.betonquest.betonquest.kernel.component.PersistenceComponent;
-import org.betonquest.betonquest.kernel.component.PlaceholdersComponent;
-import org.betonquest.betonquest.kernel.component.PlayerDataStorageComponent;
-import org.betonquest.betonquest.kernel.component.PlayerHiderComponent;
-import org.betonquest.betonquest.kernel.component.PluginMessageComponent;
-import org.betonquest.betonquest.kernel.component.PostEnableComponent;
-import org.betonquest.betonquest.kernel.component.ProfileProviderComponent;
-import org.betonquest.betonquest.kernel.component.QuestPackageManagerComponent;
-import org.betonquest.betonquest.kernel.component.RPGMenuComponent;
-import org.betonquest.betonquest.kernel.component.ReloaderComponent;
-import org.betonquest.betonquest.kernel.component.SchedulesComponent;
-import org.betonquest.betonquest.kernel.component.TextParserComponent;
-import org.betonquest.betonquest.kernel.component.TextSectionParserComponent;
-import org.betonquest.betonquest.kernel.component.UpdaterComponent;
-import org.betonquest.betonquest.kernel.component.VersionInfoComponent;
-import org.betonquest.betonquest.kernel.component.types.ActionTypesComponent;
-import org.betonquest.betonquest.kernel.component.types.ConditionTypesComponent;
-import org.betonquest.betonquest.kernel.component.types.ConversationIOTypesComponent;
-import org.betonquest.betonquest.kernel.component.types.InterceptorTypesComponent;
-import org.betonquest.betonquest.kernel.component.types.ItemTypesComponent;
-import org.betonquest.betonquest.kernel.component.types.NotifyIOTypesComponent;
-import org.betonquest.betonquest.kernel.component.types.ObjectiveTypeComponent;
-import org.betonquest.betonquest.kernel.component.types.PlaceholderTypeComponent;
-import org.betonquest.betonquest.kernel.component.types.ScheduleTypesComponent;
-import org.betonquest.betonquest.kernel.component.types.TextParserTypesComponent;
 import org.betonquest.betonquest.kernel.processor.QuestProcessor;
 import org.betonquest.betonquest.kernel.processor.feature.ConversationProcessor;
 import org.betonquest.betonquest.lib.dependency.component.DefaultCoreComponentLoader;
-import org.betonquest.betonquest.lib.dependency.component.RequirementComponentWrapper;
 import org.betonquest.betonquest.lib.logger.CachingBetonQuestLoggerFactory;
 import org.betonquest.betonquest.logger.DefaultBetonQuestLoggerFactory;
 import org.betonquest.betonquest.menu.RPGMenu;
@@ -97,7 +40,6 @@ import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -151,9 +93,7 @@ public class BetonQuest extends JavaPlugin {
         this.coreComponentLoader.init(IntegrationManager.class, integrationManager);
 
         initPluginDependencies(coreComponentLoader);
-        registerComponents(coreComponentLoader);
-        registerFeatures(coreComponentLoader);
-        registerTypesComponents(coreComponentLoader);
+        BetonQuestComponents.createDefaults(this.getFile()).forEach(coreComponentLoader::register);
     }
 
     @Override
@@ -181,78 +121,6 @@ public class BetonQuest extends JavaPlugin {
         coreComponentLoader.init(BukkitScheduler.class, getServer().getScheduler());
         coreComponentLoader.init(PluginDescriptionFile.class, getDescription());
         coreComponentLoader.init(ServicesManager.class, getServer().getServicesManager());
-    }
-
-    private void registerTypesComponents(final CoreComponentLoader coreComponentLoader) {
-        List.of(
-                new ActionTypesComponent(),
-                new ConditionTypesComponent(),
-                new ObjectiveTypeComponent(),
-                new PlaceholderTypeComponent(),
-                new ConversationIOTypesComponent(),
-                new InterceptorTypesComponent(),
-                new ItemTypesComponent(),
-                new NotifyIOTypesComponent(),
-                new ScheduleTypesComponent(),
-                new TextParserTypesComponent()
-        ).forEach(coreComponentLoader::register);
-    }
-
-    private void registerFeatures(final CoreComponentLoader coreComponentLoader) {
-        List.of(
-                new ArgumentParsersComponent(),
-                new InstructionsComponent(),
-                new BetonQuestApiComponent(),
-                new BStatsMetricsComponent(),
-                new CompatibilityComponent(),
-                new IntegrationComponent(),
-                new IdentifiersComponent(),
-                new ConditionsComponent(),
-                new ActionsComponent(),
-                new ObjectivesComponent(),
-                new PlaceholdersComponent(),
-                new TextParserComponent(),
-                new PlayerDataStorageComponent(),
-                new TextSectionParserComponent(),
-                new SchedulesComponent(),
-                new NotificationsComponent(),
-                new JournalsComponent(),
-                new PluginMessageComponent(),
-                new ItemsComponent(),
-                new CompassComponent(),
-                new ConversationsComponent(),
-                new NpcsComponent(),
-                new CancelersComponent(),
-                new RPGMenuComponent()
-        ).forEach(coreComponentLoader::register);
-    }
-
-    private void registerComponents(final CoreComponentLoader coreComponentLoader) {
-        List.of(
-                new VersionInfoComponent(),
-                new ProfileProviderComponent(),
-                new ConfigAccessorFactoryComponent(),
-                new MigratorComponent(),
-                new ReloaderComponent(),
-                new RequirementComponentWrapper(new ConfigComponent(), Migrator.class),
-                new LanguageProviderComponent(),
-                new CommandsComponent(),
-                new LogHandlerComponent(),
-                new QuestPackageManagerComponent(),
-                new NotificationCategoriesComponent(),
-                new DatabaseComponent(),
-                new AsyncSaverComponent(),
-                new GlobalDataComponent(),
-                new FontRegistryComponent(),
-                new ListenersComponent(),
-                new PlayerHiderComponent(),
-                new UpdaterComponent(this.getFile()),
-                new PersistenceComponent(),
-                new ConversationColorsComponent(),
-                new ExecutionCacheComponent(),
-                new DataLoaderComponent(),
-                new PostEnableComponent()
-        ).forEach(coreComponentLoader::register);
     }
 
     @Override
