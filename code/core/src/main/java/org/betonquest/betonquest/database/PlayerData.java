@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.database;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.PlayerTagAddEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerTagRemoveEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerUpdatePointEvent;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.data.PersistentDataHolder;
 import org.betonquest.betonquest.api.data.PointHolder;
 import org.betonquest.betonquest.api.data.TagHolder;
@@ -61,19 +61,29 @@ public class PlayerData implements PersistentDataHolder {
     private final Server server;
 
     /**
-     * The objective manager.
+     * The database connector.
      */
-    private final ObjectiveManager objectiveManager;
-
-    /**
-     * Factory to create a new Journal.
-     */
-    private final JournalFactory journalFactory;
+    private final Connector connector;
 
     /**
      * Identifier registry to resolve identifiers.
      */
     private final Identifiers identifierRegistry;
+
+    /**
+     * The objective manager.
+     */
+    private final ObjectiveManager objectiveManager;
+
+    /**
+     * The config accessor to get the plugin config.
+     */
+    private final ConfigAccessor config;
+
+    /**
+     * Factory to create a new Journal.
+     */
+    private final JournalFactory journalFactory;
 
     /**
      * The profile this data belongs to.
@@ -134,19 +144,23 @@ public class PlayerData implements PersistentDataHolder {
      * @param log                the custom logger for this class
      * @param saver              the saver to persist data changes
      * @param server             the server to determine if an event should be stated as async
+     * @param connector          the database connector to use
      * @param identifierRegistry the identifier registry to resolve identifiers
      * @param objectiveManager   the objective manager
+     * @param config             the config accessor to get the plugin config
      * @param journalFactory     the factory to create a new journal
      * @param profile            the profile to load the data for
      */
-    public PlayerData(final BetonQuestLogger log, final Saver saver, final Server server,
+    public PlayerData(final BetonQuestLogger log, final Saver saver, final Server server, final Connector connector,
                       final Identifiers identifierRegistry, final ObjectiveManager objectiveManager,
-                      final JournalFactory journalFactory, final Profile profile) {
+                      final ConfigAccessor config, final JournalFactory journalFactory, final Profile profile) {
         this.log = log;
-        this.identifierRegistry = identifierRegistry;
-        this.objectiveManager = objectiveManager;
         this.saver = saver;
         this.server = server;
+        this.connector = connector;
+        this.identifierRegistry = identifierRegistry;
+        this.objectiveManager = objectiveManager;
+        this.config = config;
         this.journalFactory = journalFactory;
         this.profile = profile;
         this.profileID = profile.getProfileUUID().toString();
@@ -158,36 +172,35 @@ public class PlayerData implements PersistentDataHolder {
     }
 
     private void loadAllPlayerData() {
-        final Connector con = BetonQuest.getInstance().getDBConnector();
         final Arguments args = new Arguments(profileID);
 
-        con.querySQL(QueryType.SELECT_OBJECTIVES, args, resultSet -> {
+        connector.querySQL(QueryType.SELECT_OBJECTIVES, args, resultSet -> {
             while (resultSet.next()) {
                 objectives.put(resultSet.getString("objective"), resultSet.getString("instructions"));
             }
         }, "Could not load objectives.");
-        con.querySQL(QueryType.SELECT_TAGS, args, resultSet -> {
+        connector.querySQL(QueryType.SELECT_TAGS, args, resultSet -> {
             while (resultSet.next()) {
                 allTags.add(resultSet.getString("tag"));
             }
         }, "Could not load tags.");
-        con.querySQL(QueryType.SELECT_JOURNAL, args, resultSet -> {
+        connector.querySQL(QueryType.SELECT_JOURNAL, args, resultSet -> {
             while (resultSet.next()) {
                 loadJournalPointer(resultSet.getString("pointer"), resultSet.getTimestamp("date").getTime());
             }
         }, "Could not load journal entries.");
-        con.querySQL(QueryType.SELECT_POINTS, args, resultSet -> {
+        connector.querySQL(QueryType.SELECT_POINTS, args, resultSet -> {
             while (resultSet.next()) {
                 final String category = resultSet.getString("category");
                 allPoints.put(category, resultSet.getInt("count"));
             }
         }, "Could not load points.");
-        con.querySQL(QueryType.SELECT_BACKPACK, args, resultSet -> {
+        connector.querySQL(QueryType.SELECT_BACKPACK, args, resultSet -> {
             while (resultSet.next()) {
                 addItemToBackpack(resultSet);
             }
         }, "Could not load backpack.");
-        con.querySQL(QueryType.SELECT_PLAYER, args, resultSet -> {
+        connector.querySQL(QueryType.SELECT_PLAYER, args, resultSet -> {
             if (resultSet.next()) {
                 profileLanguage = resultSet.getString("language");
                 loadActiveConversation(resultSet);
@@ -229,7 +242,7 @@ public class PlayerData implements PersistentDataHolder {
         saver.add(new Record(UpdateType.ADD_PLAYER, profile.getPlayer().getUniqueId().toString(),
                 profileID, "default"));
         saver.add(new Record(UpdateType.ADD_PLAYER_PROFILE, profile.getPlayer().getUniqueId().toString(),
-                profileID, BetonQuest.getInstance().getPluginConfig().getString("profile.initial_name", "default")));
+                profileID, config.getString("profile.initial_name", "default")));
     }
 
     private void addItemToBackpack(final ResultSet backpackResults) throws SQLException {

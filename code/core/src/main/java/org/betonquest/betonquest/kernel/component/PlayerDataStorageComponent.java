@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.reload.ReloadPhase;
 import org.betonquest.betonquest.api.reload.Reloader;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.data.PlayerDataStorage;
+import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.PlayerDataFactory;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.feature.journal.JournalFactory;
@@ -32,8 +33,8 @@ public class PlayerDataStorageComponent extends AbstractCoreComponent {
 
     @Override
     public Set<Class<?>> requires() {
-        return Set.of(BetonQuestLoggerFactory.class, ConfigAccessor.class, Saver.class, Identifiers.class,
-                ProfileProvider.class, ObjectiveProcessor.class, Server.class, Reloader.class);
+        return Set.of(BetonQuestLoggerFactory.class, ConfigAccessor.class, Saver.class, Connector.class,
+                Identifiers.class, ProfileProvider.class, ObjectiveProcessor.class, Server.class, Reloader.class);
     }
 
     @Override
@@ -51,14 +52,15 @@ public class PlayerDataStorageComponent extends AbstractCoreComponent {
         final BetonQuestLoggerFactory loggerFactory = getDependency(BetonQuestLoggerFactory.class);
         final Identifiers identifiers = getDependency(Identifiers.class);
         final Saver saver = getDependency(Saver.class);
+        final Connector connector = getDependency(Connector.class);
         final ObjectiveProcessor objectiveProcessor = getDependency(ObjectiveProcessor.class);
         final ProfileProvider profileProvider = getDependency(ProfileProvider.class);
         final ConfigAccessor config = getDependency(ConfigAccessor.class);
         final Server server = getDependency(Server.class);
         final Reloader reloader = getDependency(Reloader.class);
 
-        final PlayerDataFactory playerDataFactory = new PlayerDataFactory(loggerFactory, saver, server,
-                identifiers, objectiveProcessor, Suppliers.memoize(() -> getDependency(JournalFactory.class)));
+        final PlayerDataFactory playerDataFactory = new PlayerDataFactory(loggerFactory, saver, server, connector,
+                identifiers, objectiveProcessor, config, Suppliers.memoize(() -> getDependency(JournalFactory.class)));
         final PlayerDataStorage playerDataStorage = new PlayerDataStorage(loggerFactory.create(PlayerDataStorage.class), config,
                 playerDataFactory, objectiveProcessor, profileProvider);
 
