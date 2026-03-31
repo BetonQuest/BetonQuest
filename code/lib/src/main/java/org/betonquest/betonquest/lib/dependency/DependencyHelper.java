@@ -36,6 +36,19 @@ public final class DependencyHelper {
     }
 
     /**
+     * Filters the remaining dependency classes from the given required and loaded classes.
+     *
+     * @param required the required classes
+     * @param loaded   the loaded classes
+     * @return the remaining dependency classes
+     */
+    public static Set<Class<?>> remainingDependencyClasses(final Collection<Class<?>> required, final Collection<Class<?>> loaded) {
+        return required.stream()
+                .filter(requirement -> loaded.stream().noneMatch(requirement::isAssignableFrom))
+                .collect(Collectors.toSet());
+    }
+
+    /**
      * Checks if the given dependency is required by the given required dependencies.
      * An instance is required if it is assignable to any of the required dependencies.
      *
@@ -81,9 +94,17 @@ public final class DependencyHelper {
         final List<T> orderedNodes = new ArrayList<>(nodes.size());
         final DependencyGraph<T> graph = buildDependencyGraph(nodes, loadedDependencies);
         final List<T> queue = graph.getNodesWithZeroInDegree();
+        final Set<Class<?>> currentlyLoadedDependencies = loadedDependencies.stream().map(LoadedDependency::type).collect(Collectors.toSet());
+
         while (!queue.isEmpty()) {
             final T current = queue.remove(0);
+            final Set<Class<?>> missingDependencies = remainingDependencyClasses(current.requires(), currentlyLoadedDependencies);
+            if (!missingDependencies.isEmpty()) {
+                throw new IllegalStateException("Node '%s' is missing dependencies: [%s]"
+                        .formatted(current.getClass().getSimpleName(), missingDependencies.stream().map(Class::getSimpleName).collect(Collectors.joining(", "))));
+            }
             orderedNodes.add(current);
+            currentlyLoadedDependencies.addAll(current.provides());
             for (final T dependent : Objects.requireNonNull(graph.dependents().get(current))) {
                 graph.decrementInDegree(dependent);
                 if (Objects.requireNonNull(graph.inDegree().get(dependent)) == 0) {
@@ -97,10 +118,6 @@ public final class DependencyHelper {
                     .map(node -> node.getClass().getSimpleName())
                     .collect(Collectors.joining(" -> "));
             throw new IllegalStateException("Cyclic dependency detected among nodes: " + cycleDescription);
-        }
-        if (!remainingDependencies(orderedNodes.get(0).requires(), loadedDependencies).isEmpty()) {
-            throw new IllegalStateException("Nodes are missing dependencies entirely: %s"
-                    .formatted(remainingDependencies(orderedNodes.get(0).requires(), loadedDependencies).stream().map(Class::getSimpleName).collect(Collectors.joining(", "))));
         }
         return orderedNodes;
     }

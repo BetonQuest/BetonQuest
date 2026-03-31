@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.dependency.LoadedDependency;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.service.action.Actions;
 import org.betonquest.betonquest.api.service.condition.Conditions;
+import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.objective.Objectives;
 import org.betonquest.betonquest.api.service.placeholder.Placeholders;
@@ -118,6 +119,15 @@ class DependencyHelperTest {
         assertThrows(IllegalStateException.class, () -> DependencyHelper.topologicalOrder(List.of(node), List.of()), "Should throw an exception because a node is blocking");
     }
 
+    @Test
+    void find_deeper_blocking_node() {
+        final DependencyGraphNode node = node(Set.of(Identifiers.class), Set.of(Conditions.class));
+        final DependencyGraphNode node2 = node(Set.of(Conditions.class), Set.of(Objectives.class));
+        final DependencyGraphNode node3 = node(Set.of(Objectives.class, Identifiers.class, Actions.class), Set.of());
+        assertThrows(IllegalStateException.class, () -> DependencyHelper.topologicalOrder(List.of(node3, node2, node),
+                List.of(new DefaultLoadedDependency<>(Identifiers.class, mock(Identifiers.class)))), "Should throw an exception because a node is blocking");
+    }
+
     @ParameterizedTest
     @MethodSource("validNodeCombinations")
     void find_correct_loadable_topological_order_for_nodes(final Collection<DependencyGraphNode> nodes, final Collection<LoadedDependency<?>> loadedDependencies) {
@@ -149,7 +159,9 @@ class DependencyHelperTest {
     @MethodSource("requirementLoadedCombinations")
     void remaining_requirements_are_disjoint_from_loaded_dependency(final Collection<Class<?>> requirements, final Collection<LoadedDependency<?>> loadedDependencies) {
         final Set<Class<?>> classes = DependencyHelper.remainingDependencies(requirements, loadedDependencies);
+        final Set<Class<?>> remainingClasses = DependencyHelper.remainingDependencyClasses(requirements, loadedDependencies.stream().map(LoadedDependency::type).collect(Collectors.toSet()));
         final boolean classesDisjointFromLoaded = Collections.disjoint(classes, loadedDependencies.stream().map(LoadedDependency::type).collect(Collectors.toSet()));
+        assertEquals(classes, remainingClasses, "Both methods should return the same result: %s vs. %s");
         assertTrue(classesDisjointFromLoaded, "Remaining requirements should be disjoint from loaded: %s vs. %s"
                 .formatted(classes.stream().map(Class::getSimpleName).toList(), loadedDependencies.stream().map(LoadedDependency::type).map(Class::getSimpleName).toList()));
     }
