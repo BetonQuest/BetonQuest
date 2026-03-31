@@ -18,7 +18,7 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 
 /**
- * Hologram Creator implementation for DecentHolograms.
+ * Hologram Factory implementation for DecentHolograms.
  */
 public class DecentHologramsHologramFactory implements BetonHologramFactory {
 
@@ -38,7 +38,7 @@ public class DecentHologramsHologramFactory implements BetonHologramFactory {
     private final Instructions instructionApi;
 
     /**
-     * Creates a new DecentHologramsIntegrator for DecentHolograms.
+     * Creates a new {@link BetonHologramFactory} for DecentHolograms.
      *
      * @param log               the custom logger for this class
      * @param identifierFactory the identifier factory for placeholders
