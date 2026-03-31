@@ -87,6 +87,7 @@ nav:
               - 'Holograms':
                   - 'Documentation/Scripting/Building-Blocks/Integrations-List/Holograms/index.md'
                   - 'DecentHolograms': Documentation/Scripting/Building-Blocks/Integrations-List/Holograms/DecentHolograms.md
+                  - 'FancyHolograms': Documentation/Scripting/Building-Blocks/Integrations-List/Holograms/FancyHolograms.md
                   - 'HolographicDisplays': Documentation/Scripting/Building-Blocks/Integrations-List/Holograms/HolographicDisplays.md
               - 'Visuals':
                   - 'Documentation/Scripting/Building-Blocks/Integrations-List/Visuals/index.md'

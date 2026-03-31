@@ -42,6 +42,7 @@ softdepend:
   - CraftEngine
   - ItemsAdder
   - Nexo
+  - FancyHolograms
 commands:
   journal:
     description: Adds journal to your inventory

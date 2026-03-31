@@ -80,7 +80,7 @@ npc:
   accept_left_click: false
   interaction_limit: 500
 hologram:
-  default: DecentHolograms,HolographicDisplays
+  default: DecentHolograms,FancyHolograms,HolographicDisplays
   update_interval: 200
 hider:
   player_update_interval: 20
@@ -154,3 +154,4 @@ hook:
   craftengine: true
   itemsadder: true
   nexo: true
+  fancyholograms: true
