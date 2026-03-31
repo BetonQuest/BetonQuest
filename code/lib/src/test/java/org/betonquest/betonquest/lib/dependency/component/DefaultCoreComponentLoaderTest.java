@@ -205,9 +205,9 @@ class DefaultCoreComponentLoaderTest {
         }
 
         @Test
-        void loading_without_initial_logger_should_still_load_components_before_that() {
+        void loading_without_initial_logger_does_not_load_components_before_that() {
             assertThrows(IllegalStateException.class, loader::load, "Should throw an exception because a component should fail to load without logger");
-            assertEquals(1, loader.getAll(CoreComponent.class).size(), "Should contain exactly one component");
+            assertEquals(0, loader.getAll(CoreComponent.class).size(), "Should contain no components");
         }
 
         @Test
