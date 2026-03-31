@@ -23,7 +23,7 @@ document$.subscribe(async () => {
   await showBuilds();
 
   async function showBuilds() {
-    getBuilds("?snapshots=false").then(builds =>
+    await getBuilds("?snapshots=false").then(builds =>
       loadBuilds("release-build", builds));
     getBuilds("?releases=false&limit=100", true).then(builds =>
       loadBuilds("development-build", builds));
