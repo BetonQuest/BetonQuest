@@ -13,7 +13,6 @@ import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologramFactory;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
-import org.betonquest.betonquest.kernel.processor.quest.PlaceholderProcessor;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
@@ -28,11 +27,6 @@ public class HolographicDisplaysHologramFactory implements BetonHologramFactory 
      * The plugin instance to create Holograms.
      */
     private final Plugin plugin;
-
-    /**
-     * The placeholder manager to use.
-     */
-    private final PlaceholderProcessor placeholderProcessor;
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -52,20 +46,17 @@ public class HolographicDisplaysHologramFactory implements BetonHologramFactory 
     /**
      * Creates a new HolographicDisplaysIntegrator for HolographicDisplays.
      *
-     * @param log                  the custom logger for this class
-     * @param plugin               the plugin instance to create holograms
-     * @param instructionApi       the instruction api to use
-     * @param identifierFactory    the identifier factory for placeholders
-     * @param placeholderProcessor the placeholder manager to use
+     * @param log               the custom logger for this class
+     * @param plugin            the plugin instance to create holograms
+     * @param instructionApi    the instruction api to use
+     * @param identifierFactory the identifier factory for placeholders
      */
     public HolographicDisplaysHologramFactory(final BetonQuestLogger log, final Plugin plugin, final Instructions instructionApi,
-                                              final IdentifierFactory<PlaceholderIdentifier> identifierFactory,
-                                              final PlaceholderProcessor placeholderProcessor) {
+                                              final IdentifierFactory<PlaceholderIdentifier> identifierFactory) {
         this.plugin = plugin;
         this.instructionApi = instructionApi;
         this.identifierFactory = identifierFactory;
         this.log = log;
-        this.placeholderProcessor = placeholderProcessor;
     }
 
     @Override
@@ -91,8 +82,7 @@ public class HolographicDisplaysHologramFactory implements BetonHologramFactory 
             try {
                 final PlaceholderIdentifier placeholderIdentifier = identifierFactory.parseIdentifier(pack, group);
                 final Instruction instruction = instructionApi.createPlaceholder(placeholderIdentifier, placeholderIdentifier.readRawInstruction());
-                final String prefix = placeholderProcessor.get(placeholderIdentifier).allowsPlayerless() ? "{bqg:" : "{bq:";
-                return prefix + placeholderIdentifier.getPackage().getQuestPath() + ":" + instruction + "}";
+                return "{bq:" + placeholderIdentifier.getPackage().getQuestPath() + ":" + instruction + "}";
             } catch (final QuestException exception) {
                 log.warn("Could not create placeholder '" + group + "': " + exception.getMessage(), exception);
             }

@@ -39,7 +39,6 @@ import org.betonquest.betonquest.compatibility.vault.VaultIntegrator;
 import org.betonquest.betonquest.compatibility.worldedit.WorldEditIntegrator;
 import org.betonquest.betonquest.compatibility.worldguard.WorldGuardIntegrator;
 import org.betonquest.betonquest.kernel.ProcessorDataLoader;
-import org.betonquest.betonquest.kernel.processor.quest.PlaceholderProcessor;
 import org.betonquest.betonquest.lib.integration.policy.Policies;
 import org.betonquest.betonquest.lib.version.DefaultVersionType;
 import org.betonquest.betonquest.lib.version.VersionParser;
@@ -90,14 +89,27 @@ public final class BundledCompatibility {
         this.integrationService = integrationService;
     }
 
-    private void register(final String name, final Supplier<Integration> integrationSupplier, final String versionString) {
-        register(name, integrationSupplier, Policies.minimalPluginVersion(name, VersionParser.parse(DefaultVersionType.SIMPLE_SEMANTIC_VERSION, versionString)));
-    }
-
-    private void register(final String name, final Supplier<Integration> integrationSupplier, final Policy... polices) {
+    private boolean shouldNotRegister(final String name) {
         final boolean isEnabled = config.getBoolean("hook." + name.toLowerCase(Locale.ROOT));
         if (!isEnabled) {
             log.debug("Did not register hook %s because it is disabled".formatted(name));
+            return true;
+        }
+        return false;
+    }
+
+    private void register(final String name, final Supplier<Integration> integrationSupplier, final String versionString) {
+        if (shouldNotRegister(name)) {
+            return;
+        }
+        integrationService
+                .withPolicies(Policies.minimalPluginVersion(name,
+                        VersionParser.parse(DefaultVersionType.SIMPLE_SEMANTIC_VERSION, versionString)))
+                .register(plugin, integrationSupplier);
+    }
+
+    private void register(final String name, final Supplier<Integration> integrationSupplier, final Policy... polices) {
+        if (shouldNotRegister(name)) {
             return;
         }
         integrationService
@@ -109,14 +121,11 @@ public final class BundledCompatibility {
     /**
      * Registers the compatible and enabled integrations.
      *
-     * @param servicesManager      the Bukkit services manager
-     * @param placeholderProcessor the placeholder processor to use
-     * @param processorDataLoader  the processor data loader to use
+     * @param servicesManager     the Bukkit services manager
+     * @param processorDataLoader the processor data loader to use
      */
     @SuppressWarnings("Convert2MethodRef") //ClassNotFoundException on load up if certain integrations are absent
-    public void registerCompatiblePlugins(final ServicesManager servicesManager,
-                                          final PlaceholderProcessor placeholderProcessor,
-                                          final ProcessorDataLoader processorDataLoader) {
+    public void registerCompatiblePlugins(final ServicesManager servicesManager, final ProcessorDataLoader processorDataLoader) {
         register("MythicMobs", () -> new MythicMobsIntegrator(plugin, config), MythicMobsIntegrator.REQUIRED_VERSION);
         register("Citizens", () -> new CitizensIntegrator());
         register("Vault", () -> new VaultIntegrator(servicesManager));
@@ -144,8 +153,7 @@ public final class BundledCompatibility {
         register("AuraSkills", () -> new AuraSkillsIntegrator());
         register("DecentHolograms", () -> new DecentHologramsIntegrator(),
                 DecentHologramsIntegrator.REQUIRED_VERSION);
-        register("HolographicDisplays",
-                () -> new HolographicDisplaysIntegrator(plugin, placeholderProcessor),
+        register("HolographicDisplays", () -> new HolographicDisplaysIntegrator(plugin),
                 HolographicDisplaysIntegrator.REQUIRED_VERSION);
         register("fake-block", () -> new FakeBlockIntegrator(servicesManager), FakeBlockIntegrator.REQUIRED_VERSION);
         register("RedisChat", () -> new RedisChatIntegrator());
