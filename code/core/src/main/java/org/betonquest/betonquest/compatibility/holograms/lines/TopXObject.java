@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.holograms.lines;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.database.Arguments;
 import org.betonquest.betonquest.database.Connector;
@@ -20,6 +19,11 @@ public class TopXObject {
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
+
+    /**
+     * The database connector.
+     */
+    private final Connector connector;
 
     /**
      * Number of lines stored in maximum.
@@ -45,14 +49,17 @@ public class TopXObject {
      * Creates new instance of TopXObject.
      *
      * @param log       the logger that will be used for logging
+     * @param connector the database connector
      * @param limit     Number of lines
      * @param category  Name of point
      * @param orderType Direction of order
      */
-    public TopXObject(final BetonQuestLogger log, final int limit, final String category, final OrderType orderType) {
+    public TopXObject(final BetonQuestLogger log, final Connector connector, final int limit, final String category,
+                      final OrderType orderType) {
         this.log = log;
-        this.category = category;
+        this.connector = connector;
         this.limit = limit;
+        this.category = category;
         this.orderType = orderType;
     }
 
@@ -70,10 +77,9 @@ public class TopXObject {
      */
     public void queryDB() {
         entries.clear();
-        final Connector con = BetonQuest.getInstance().getDBConnector();
 
         try {
-            con.querySQL(orderType.getType(), new Arguments(category, limit), resultSet -> {
+            connector.querySQL(orderType.getType(), new Arguments(category, limit), resultSet -> {
                 while (resultSet.next()) {
                     final UUID uuid = UUID.fromString(resultSet.getString("playerID"));
                     final String playerName = Bukkit.getOfflinePlayer(uuid).getName();

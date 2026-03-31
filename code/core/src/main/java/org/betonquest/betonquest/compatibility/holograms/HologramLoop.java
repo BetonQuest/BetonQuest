@@ -22,6 +22,7 @@ import org.betonquest.betonquest.compatibility.holograms.lines.ItemLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TextLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TopLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TopXObject;
+import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.lib.logger.DefaultQuestExceptionHandler;
 import org.bukkit.configuration.ConfigurationSection;
@@ -66,14 +67,19 @@ public abstract class HologramLoop extends SectionProcessor<HologramIdentifier, 
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * The text parser used to parse text and colors.
-     */
-    private final TextParser textParser;
-
-    /**
      * The BetonQuest instruction API.
      */
     private final Instructions instructionApi;
+
+    /**
+     * The connector to use for database access.
+     */
+    private final Connector connector;
+
+    /**
+     * The text parser used to parse text and colors.
+     */
+    private final TextParser textParser;
 
     /**
      * The BetonQuest config accessor.
@@ -81,14 +87,14 @@ public abstract class HologramLoop extends SectionProcessor<HologramIdentifier, 
     private final ConfigAccessor configAccessor;
 
     /**
-     * The profile provider.
-     */
-    private final ProfileProvider profileProvider;
-
-    /**
      * The condition manager.
      */
     private final ConditionManager conditionManager;
+
+    /**
+     * The profile provider.
+     */
+    private final ProfileProvider profileProvider;
 
     /**
      * Default refresh Interval for Holograms.
@@ -100,6 +106,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramIdentifier, 
      *
      * @param loggerFactory     logger factory to use
      * @param log               the logger that will be used for logging
+     * @param connector         the connector to use for database access
      * @param instructionApi    the instruction api to use
      * @param hologramProvider  the hologram provider to create new holograms
      * @param readable          the type name used for logging, with the first letter in upper case
@@ -112,15 +119,16 @@ public abstract class HologramLoop extends SectionProcessor<HologramIdentifier, 
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public HologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                        final Instructions instructionApi,
-                        final HologramProvider hologramProvider, final String readable, final String internal,
-                        final TextParser textParser, final IdentifierFactory<HologramIdentifier> identifierFactory,
+                        final Instructions instructionApi, final IdentifierFactory<HologramIdentifier> identifierFactory,
+                        final String readable, final String internal, final Connector connector,
+                        final HologramProvider hologramProvider, final TextParser textParser,
                         final ConfigAccessor configAccessor, final ConditionManager conditionManager,
                         final ProfileProvider profileProvider) {
         super(log, instructionApi, identifierFactory, readable, internal);
         this.loggerFactory = loggerFactory;
-        this.hologramProvider = hologramProvider;
         this.instructionApi = instructionApi;
+        this.connector = connector;
+        this.hologramProvider = hologramProvider;
         this.textParser = textParser;
         this.configAccessor = configAccessor;
         this.conditionManager = conditionManager;
@@ -224,7 +232,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramIdentifier, 
                 log.debug(pack, "Hologram '" + name + "' in pack '" + pack + "' does not contain placeholder '" + placeholder + "'.");
             }
         }
-        return new TopLine(loggerFactory, pointName, orderType, limit, new VariableComponent(textParser.parse(formattingGroup)));
+        return new TopLine(loggerFactory, connector, pointName, orderType, limit, new VariableComponent(textParser.parse(formattingGroup)));
     }
 
     private TopXObject.OrderType orderType(final String type) throws QuestException {

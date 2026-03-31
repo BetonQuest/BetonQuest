@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.text.TextParser;
+import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.kernel.processor.PostLoadTask;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
@@ -32,6 +33,7 @@ public class LocationHologramLoop extends HologramLoop implements PostLoadTask {
      *
      * @param loggerFactory     the logger factory to use
      * @param log               the logger that will be used for logging
+     * @param connector         the connector to use for database access
      * @param instructionApi    the instruction api to use
      * @param identifierFactory the identifier factory to create {@link HologramIdentifier}s for this type
      * @param configAccessor    the betonquest config accessor
@@ -43,12 +45,12 @@ public class LocationHologramLoop extends HologramLoop implements PostLoadTask {
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public LocationHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                                final Instructions instructionApi,
+                                final Connector connector, final Instructions instructionApi,
                                 final IdentifierFactory<HologramIdentifier> identifierFactory, final ConfigAccessor configAccessor,
                                 final HologramProvider hologramProvider, final Plugin plugin, final TextParser textParser,
                                 final ConditionManager conditionManager, final ProfileProvider profileProvider) {
-        super(loggerFactory, log, instructionApi, hologramProvider, "Hologram", "holograms",
-                textParser, identifierFactory, configAccessor, conditionManager, profileProvider);
+        super(loggerFactory, log, instructionApi, identifierFactory, "Hologram", "holograms",
+                connector, hologramProvider, textParser, configAccessor, conditionManager, profileProvider);
         this.plugin = plugin;
     }
 

@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.common.component.VariableComponent;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
+import org.betonquest.betonquest.database.Connector;
 
 import static net.kyori.adventure.text.Component.text;
 
@@ -37,18 +38,19 @@ public class TopLine extends AbstractLine {
      * Creates a new instance of ItemLine. Automatically creates and stores {@link TopXObject} from received data.
      *
      * @param loggerFactory logger factory to use
+     * @param connector     the database connector
      * @param category      name of point with package
      * @param orderType     direction of order
      * @param limit         maximum number of lines displayed
      * @param formatted     formatted top line string to display
      */
-    public TopLine(final BetonQuestLoggerFactory loggerFactory, final String category, final TopXObject.OrderType orderType,
-                   final int limit, final VariableComponent formatted) {
+    public TopLine(final BetonQuestLoggerFactory loggerFactory, final Connector connector, final String category,
+                   final TopXObject.OrderType orderType, final int limit, final VariableComponent formatted) {
         super(false, limit);
         this.category = category;
         this.orderType = orderType;
         this.formatted = formatted;
-        this.topXObject = new TopXObject(loggerFactory.create(TopXObject.class), limit, category, orderType);
+        this.topXObject = new TopXObject(loggerFactory.create(TopXObject.class), connector, limit, category, orderType);
     }
 
     /**

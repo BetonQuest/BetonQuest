@@ -15,6 +15,7 @@ import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.npc.NpcManager;
 import org.betonquest.betonquest.api.service.npc.NpcRegistry;
 import org.betonquest.betonquest.api.text.TextParser;
+import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.kernel.processor.PostLoadTask;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -69,6 +70,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, PostLoadT
      *
      * @param loggerFactory     logger factory to use
      * @param log               the logger that will be used for logging
+     * @param connector         the connector to use for database access
      * @param instructions      the instruction api to use
      * @param plugin            the plugin to schedule tasks
      * @param hologramProvider  the hologram provider to create new holograms
@@ -82,13 +84,13 @@ public class NpcHologramLoop extends HologramLoop implements Listener, PostLoadT
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public NpcHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                           final Instructions instructions, final Plugin plugin,
+                           final Connector connector, final Instructions instructions, final Plugin plugin,
                            final HologramProvider hologramProvider, final ConfigAccessor configAccessor,
                            final IdentifierFactory<HologramIdentifier> identifierFactory, final ConditionManager conditionManager,
                            final NpcManager npcManager, final NpcRegistry npcRegistry, final TextParser textParser,
                            final ProfileProvider profileProvider) {
-        super(loggerFactory, log, instructions, hologramProvider, "Npc Hologram",
-                "npc_holograms", textParser, identifierFactory, configAccessor, conditionManager, profileProvider);
+        super(loggerFactory, log, instructions, identifierFactory, "Npc Hologram", "npc_holograms",
+                connector, hologramProvider, textParser, configAccessor, conditionManager, profileProvider);
         this.plugin = plugin;
         this.npcManager = npcManager;
         this.npcRegistry = npcRegistry;
