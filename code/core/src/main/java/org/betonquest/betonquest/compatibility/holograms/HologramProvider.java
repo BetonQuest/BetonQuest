@@ -64,7 +64,8 @@ public final class HologramProvider {
             throw new QuestException("There are no integrations to load.");
         }
         integrations.sort(Comparator.comparingInt(value -> getPriority(config, value)));
-        final BetonHologramFactory factory = integrations.get(0).getHologramFactory(betonQuestApi);
+        final HologramIntegration selected = integrations.get(integrations.size() - 1);
+        final BetonHologramFactory factory = selected.getHologramFactory(betonQuestApi);
         return new HologramProvider(betonQuestApi, factory);
     }
 
