@@ -347,15 +347,6 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * Returns the connector for the database.
-     *
-     * @return Connector instance
-     */
-    public Connector getDBConnector() {
-        return coreComponentLoader.get(Connector.class);
-    }
-
-    /**
      * Checks if MySQL is used or not.
      *
      * @return if MySQL is used (false means that SQLite is being used)
