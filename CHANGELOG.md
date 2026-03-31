@@ -132,7 +132,6 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `menu` conv io no longer ignores canceled events to process as input
 - `citizens` npc hiding now uses the inbuilt player filter trait
 - `global` property for objectives renamed to `auto-once`
-- `QuestItem`s and `Journal`s can no longer be put into bundles (MC 1.21.4+)
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation
@@ -184,6 +183,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - conversations could cause deadlocks when too many conditions are checked
 - `itemdurability` variable parsed differently than intended in docs
 - database connection is now more stable and reconnect probably works better now
+- `QuestItem`s and `Journal`s could be put into bundles (MC 1.21.4+)
 ### Security
 
 ## [2.2.1] - 2025-01-12
