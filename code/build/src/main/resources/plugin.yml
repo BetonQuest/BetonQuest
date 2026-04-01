@@ -39,6 +39,9 @@ softdepend:
   - Train_Carts
   - FancyNpcs
   - ZNPCsPlus
+  - CraftEngine
+  - ItemsAdder
+  - Nexo
 commands:
   journal:
     description: Adds journal to your inventory

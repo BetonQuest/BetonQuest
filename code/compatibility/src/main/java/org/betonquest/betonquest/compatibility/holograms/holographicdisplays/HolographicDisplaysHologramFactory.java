@@ -19,7 +19,7 @@ import org.bukkit.plugin.Plugin;
 import java.util.regex.Matcher;
 
 /**
- * Hologram Creator implementation for HolographicDisplays.
+ * Hologram Factory implementation for HolographicDisplays.
  */
 public class HolographicDisplaysHologramFactory implements BetonHologramFactory {
 
@@ -44,7 +44,7 @@ public class HolographicDisplaysHologramFactory implements BetonHologramFactory 
     private final IdentifierFactory<PlaceholderIdentifier> identifierFactory;
 
     /**
-     * Creates a new HolographicDisplaysIntegrator for HolographicDisplays.
+     * Creates a new {@link BetonHologramFactory} for HolographicDisplays.
      *
      * @param log               the custom logger for this class
      * @param plugin            the plugin instance to create holograms

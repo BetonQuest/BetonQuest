@@ -68,8 +68,7 @@ public record HologramWrapper(QuestExceptionHandler handler, ConditionManager co
     public void updateVisibilityForPlayer(final OnlineProfile profile) {
         final boolean conditionsMet = conditionManager.testAll(profile, conditionList);
         for (final BetonHologram hologram : holograms) {
-            final boolean playerOutOfRange = isPlayerOutOfRange(profile, hologram);
-            if (conditionsMet && !playerOutOfRange) {
+            if (conditionsMet && !isPlayerOutOfRange(profile, hologram)) {
                 hologram.show(profile.getPlayer());
             } else {
                 hologram.hide(profile.getPlayer());

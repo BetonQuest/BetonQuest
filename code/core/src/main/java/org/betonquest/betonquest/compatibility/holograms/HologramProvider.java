@@ -33,7 +33,7 @@ public final class HologramProvider {
     /**
      * The selected factory.
      */
-    private final BetonHologramFactory integrator;
+    private final BetonHologramFactory hologramFactory;
 
     /**
      * The current {@link LocationHologramLoop}.
@@ -46,7 +46,7 @@ public final class HologramProvider {
     private NpcHologramLoop npcHologramLoop;
 
     private HologramProvider(final BetonQuestApi betonQuestApi, final BetonHologramFactory integration) {
-        this.integrator = integration;
+        this.hologramFactory = integration;
         load(betonQuestApi);
     }
 
@@ -64,7 +64,8 @@ public final class HologramProvider {
             throw new QuestException("There are no integrations to load.");
         }
         integrations.sort(Comparator.comparingInt(value -> getPriority(config, value)));
-        final BetonHologramFactory factory = integrations.get(0).getHologramFactory(betonQuestApi);
+        final HologramIntegration selected = integrations.get(integrations.size() - 1);
+        final BetonHologramFactory factory = selected.getHologramFactory(betonQuestApi);
         return new HologramProvider(betonQuestApi, factory);
     }
 
@@ -95,7 +96,7 @@ public final class HologramProvider {
      * @return The hologram.
      */
     public BetonHologram createHologram(final Location location) {
-        return integrator.createHologram(location);
+        return hologramFactory.createHologram(location);
     }
 
     /**
@@ -107,7 +108,7 @@ public final class HologramProvider {
      * @return the parsed and formatted full string.
      */
     public String parsePlaceholder(final QuestPackage pack, final String text) {
-        return integrator.parsePlaceholder(pack, text);
+        return hologramFactory.parsePlaceholder(pack, text);
     }
 
     private void load(final BetonQuestApi api) {
