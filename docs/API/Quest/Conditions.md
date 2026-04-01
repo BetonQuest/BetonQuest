@@ -18,20 +18,28 @@ status: new
 ## Introduction
 
 This page covers the Conditions API of BetonQuest.
-You will be introduced to the following:
 
-- [How to create a condition](#how-to-create-a-condition)
-- [How to create a factory for a condition](#how-to-create-a-factory-for-a-condition)
-- [How to register a condition and its factory with BetonQuest](#how-to-register-a-condition-and-its-factory-with-betonquest)
-- [How to test a condition](#how-to-test-a-condition)
-- [How a full example looks like](#how-a-full-example-looks-like)
-- [What limitations are there](#what-limitations-are-there)
-- 
-This page does **not** cover:
+!!! warning "You should have viewed these pages"
+    - [How to access the api](../Obtaining-API.md)
+    - [How to use the factory system](./Overview.md)
+    - [How to work with Instructions](../Instruction.md)
 
-- [How to access the api](../Obtaining-API.md)
-- [Which conditions are available](../../Documentation/Scripting/Building-Blocks/Conditions-List.md)
-- What a condition is
+<div class="grid" markdown>
+
+!!! abstract "What this page covers"
+    - [How to create a condition](#how-to-create-a-condition)
+    - [How to create a factory for a condition](#how-to-create-a-factory-for-a-condition)
+    - [How to register a condition and its factory with BetonQuest](#how-to-register-a-condition-and-its-factory-with-betonquest)
+    - [How to test a condition](#how-to-test-a-condition)
+    - [How a full example looks like](#how-a-full-example-looks-like)
+    - [Additional notes](#additional-notes)
+
+!!! info "What this page does not cover"
+    - What a condition is
+    - [Which conditions are available](../../Documentation/Scripting/Building-Blocks/Conditions-List.md)
+    - [How work with conditions in scripting](../../Tutorials/Getting-Started/Basics/Conditions.md)
+
+</div>
 
 ## How to create a condition
 
@@ -43,4 +51,4 @@ This page does **not** cover:
 
 ## How a full example looks like
 
-## What limitations are there
+## Additional notes
