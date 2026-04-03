@@ -16,6 +16,7 @@ import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.Comparator;
 import java.util.List;
@@ -168,6 +169,16 @@ public final class HologramProvider {
         @EventHandler
         public void onPlayerJoin(final PlayerJoinEvent event) {
             HologramRunner.refresh(profileProvider.getProfile(event.getPlayer()));
+        }
+
+        /**
+         * Refreshes Holograms when a player leaves the server.
+         *
+         * @param event The event.
+         */
+        @EventHandler
+        public void onPlayerQuit(final PlayerQuitEvent event) {
+            HologramRunner.remove(event.getPlayer());
         }
     }
 }

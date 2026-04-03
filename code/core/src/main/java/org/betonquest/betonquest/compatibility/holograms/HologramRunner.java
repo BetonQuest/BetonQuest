@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -82,6 +83,21 @@ public final class HologramRunner {
     public static void refresh(final OnlineProfile profile) {
         for (final HologramRunner hologramRunner : RUNNERS.values()) {
             hologramRunner.refreshRunner(profile);
+        }
+    }
+
+    /**
+     * Hides all holograms for the given player.
+     *
+     * @param player the player to hide all holograms  for
+     */
+    public static void remove(final Player player) {
+        for (final HologramRunner hologramRunner : RUNNERS.values()) {
+            for (final HologramWrapper wrapper : hologramRunner.holograms) {
+                for (final BetonHologram hologram : wrapper.holograms()) {
+                    hologram.hide(player);
+                }
+            }
         }
     }
 
