@@ -4,9 +4,11 @@ import org.apache.commons.lang3.function.TriFunction;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.common.component.BookPageWrapper;
+import org.betonquest.betonquest.api.dependency.CoreComponentLoader;
 import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.service.item.ItemRegistry;
 import org.betonquest.betonquest.api.text.TextParser;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.menu.MenuConvIOFactory;
 import org.betonquest.betonquest.conversation.menu.input.ConversationAction;
 import org.betonquest.betonquest.conversation.menu.input.ConversationSession;
@@ -43,7 +45,8 @@ public class BundledMC_1_21_4 implements Integration {
     @Override
     public void enable(final BetonQuestApi api) {
         final ItemRegistry item = api.items().registry();
-        final TextParser textParser = betonQuest.getComponentLoader().get(TextParser.class);
+        final CoreComponentLoader componentLoader = betonQuest.getComponentLoader();
+        final TextParser textParser = componentLoader.get(TextParser.class);
         final BookPageWrapper bookPageWrapper = new BookPageWrapper(api.fonts(), 114, 14);
         item.register("simple", new UpdatedSimpleItemFactory(api.placeholders().manager(),
                 api.packages(), textParser, bookPageWrapper,
@@ -52,13 +55,14 @@ public class BundledMC_1_21_4 implements Integration {
 
         final TriFunction<Player, ConversationAction, Boolean, ConversationSession> inputFunction = (player, control, setSpeed)
                 -> new InputEventSession(betonQuest, player, control, setSpeed);
-        betonQuest.getComponentLoader().get(ConversationIORegistry.class).register("menu", new MenuConvIOFactory(inputFunction,
-                betonQuest, betonQuest.getComponentLoader().get(TextParser.class), api.fonts(),
-                betonQuest.getPluginConfig(), betonQuest.getConversationColors()));
+        componentLoader.get(ConversationIORegistry.class).register("menu", new MenuConvIOFactory(
+                api.loggerFactory(), betonQuest.getPluginConfig(), betonQuest,
+                componentLoader.get(PluginMessage.class), inputFunction, componentLoader.get(TextParser.class),
+                api.fonts(), betonQuest.getConversationColors()));
 
         api.conditions().registry().register("biome", new UpdatedBiomeConditionFactory());
 
-        betonQuest.getComponentLoader().get(NotifyIORegistry.class).register("totem", new UpdatedTotemNotifyIOFactory(api.placeholders().manager()));
+        componentLoader.get(NotifyIORegistry.class).register("totem", new UpdatedTotemNotifyIOFactory(api.placeholders().manager()));
         api.bukkit().registerEvents(new BundleListener());
     }
 

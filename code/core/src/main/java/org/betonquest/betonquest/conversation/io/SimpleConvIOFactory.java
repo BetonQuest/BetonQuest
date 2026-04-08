@@ -1,15 +1,39 @@
 package org.betonquest.betonquest.conversation.io;
 
+import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.ConversationIO;
 import org.betonquest.betonquest.conversation.ConversationIOFactory;
+import org.bukkit.plugin.Plugin;
 
 /**
  * Simple chat-based conversation output.
  */
 public class SimpleConvIOFactory implements ConversationIOFactory {
+
+    /**
+     * The logger factory to create new logger instances.
+     */
+    private final BetonQuestLoggerFactory factory;
+
+    /**
+     * The plugin configuration accessor.
+     */
+    private final ConfigAccessor config;
+
+    /**
+     * The plugin instance.
+     */
+    private final Plugin plugin;
+
+    /**
+     * The plugin message instance.
+     */
+    private final PluginMessage message;
 
     /**
      * The colors used for the conversation.
@@ -19,14 +43,23 @@ public class SimpleConvIOFactory implements ConversationIOFactory {
     /**
      * Create a new Simple conversation IO factory.
      *
-     * @param colors the colors used for the conversation
+     * @param factory the logger factory to create new logger instances
+     * @param config  the plugin configuration accessor
+     * @param plugin  the plugin instance
+     * @param message the plugin message instance
+     * @param colors  the colors used for the conversation
      */
-    public SimpleConvIOFactory(final ConversationColors colors) {
+    public SimpleConvIOFactory(final BetonQuestLoggerFactory factory, final ConfigAccessor config, final Plugin plugin,
+                               final PluginMessage message, final ConversationColors colors) {
+        this.factory = factory;
+        this.config = config;
+        this.plugin = plugin;
+        this.message = message;
         this.colors = colors;
     }
 
     @Override
     public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) {
-        return new SimpleConvIO(conversation, onlineProfile, colors);
+        return new SimpleConvIO(factory.create(SimpleConvIO.class), config, plugin, message, conversation, onlineProfile, colors);
     }
 }

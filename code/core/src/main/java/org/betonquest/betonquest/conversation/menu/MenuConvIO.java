@@ -3,7 +3,10 @@ package org.betonquest.betonquest.conversation.menu;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.function.TriFunction;
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.ChatConvIO;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
@@ -36,7 +39,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * An {@link ChatConvIO} implementation that use player ingame movements to control the conversation.
  */
-@SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods", "PMD.CouplingBetweenObjects"})
+@SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods", "PMD.CouplingBetweenObjects", "PMD.ExcessiveParameterList"})
 public class MenuConvIO extends ChatConvIO {
 
     /**
@@ -96,20 +99,25 @@ public class MenuConvIO extends ChatConvIO {
     /**
      * Creates a new MenuConvIO instance.
      *
+     * @param log                  the logger that will be used for logging
+     * @param config               the plugin configuration accessor
+     * @param plugin               the plugin instance
+     * @param message              the plugin message instance
      * @param inputFunction        the function to create the input object with actions
      * @param conv                 the conversation this IO is part of
      * @param onlineProfile        the online profile of the player participating in the conversation
      * @param colors               the colors used in the conversation
      * @param settings             the settings for the conversation IO
      * @param componentLineWrapper the component line wrapper to use for the conversation
-     * @param plugin               the plugin instance to run tasks
      * @param controls             the used controls
      */
-    public MenuConvIO(final TriFunction<Player, ConversationAction, Boolean, ConversationSession> inputFunction, final Conversation conv,
-                      final OnlineProfile onlineProfile, final ConversationColors colors,
+    public MenuConvIO(final BetonQuestLogger log, final ConfigAccessor config, final Plugin plugin,
+                      final PluginMessage message,
+                      final TriFunction<Player, ConversationAction, Boolean, ConversationSession> inputFunction,
+                      final Conversation conv, final OnlineProfile onlineProfile, final ConversationColors colors,
                       final MenuConvIOSettings settings, final FixedComponentLineWrapper componentLineWrapper,
-                      final Plugin plugin, final Map<CONTROL, ACTION> controls) {
-        super(conv, onlineProfile, colors);
+                      final Map<CONTROL, ACTION> controls) {
+        super(log, config, plugin, message, conv, onlineProfile, colors);
         this.plugin = plugin;
         this.settings = settings;
         this.componentLineWrapper = componentLineWrapper;

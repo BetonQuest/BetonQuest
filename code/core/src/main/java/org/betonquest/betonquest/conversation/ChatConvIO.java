@@ -1,10 +1,11 @@
 package org.betonquest.betonquest.conversation;
 
 import net.kyori.adventure.text.Component;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -14,6 +15,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -32,18 +34,19 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 
     protected final ConversationColors colors;
 
-    /**
-     * The BetonQuest instance.
-     */
-    private final BetonQuest plugin;
+    private final BetonQuestLogger log;
+
+    private final ConfigAccessor config;
+
+    private final Plugin plugin;
+
+    private final PluginMessage message;
 
     private final double maxNpcDistance;
 
-    private final BetonQuestLogger log;
+    protected Map<Integer, Component> options;
 
     protected int optionsCount;
-
-    protected Map<Integer, Component> options;
 
     protected Component npcText;
 
@@ -52,20 +55,27 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     /**
      * Creates a new ChatConvIO instance.
      *
+     * @param log           the logger that will be used for logging
+     * @param config        the plugin configuration accessor
+     * @param plugin        the plugin instance
+     * @param message       the plugin message instance
      * @param conv          the conversation this IO is part of
      * @param onlineProfile the online profile of the player participating in the conversation
      * @param colors        the colors used in the conversation
      */
     @SuppressWarnings("NullAway.Init")
-    public ChatConvIO(final Conversation conv, final OnlineProfile onlineProfile, final ConversationColors colors) {
-        this.plugin = BetonQuest.getInstance();
-        this.log = plugin.getLoggerFactory().create(ChatConvIO.class);
+    public ChatConvIO(final BetonQuestLogger log, final ConfigAccessor config, final Plugin plugin,
+                      final PluginMessage message, final Conversation conv, final OnlineProfile onlineProfile,
+                      final ConversationColors colors) {
+        this.log = log;
+        this.config = config;
+        this.plugin = plugin;
+        this.message = message;
         this.options = new HashMap<>();
         this.conv = conv;
         this.onlineProfile = onlineProfile;
         this.colors = colors;
-
-        maxNpcDistance = plugin.getPluginConfig().getDouble("conversation.stop.distance");
+        this.maxNpcDistance = config.getDouble("conversation.stop.distance");
     }
 
     @Override
@@ -115,9 +125,9 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         newLocation.setPitch(pitch);
         newLocation.setYaw(yaw);
         event.getPlayer().teleport(newLocation);
-        if (plugin.getPluginConfig().getBoolean("conversation.stop.notify")) {
+        if (config.getBoolean("conversation.stop.notify")) {
             try {
-                conv.sendMessage(plugin.getPluginMessage().getMessage(onlineProfile, "pullback"));
+                conv.sendMessage(message.getMessage(onlineProfile, "pullback"));
             } catch (final QuestException e) {
                 log.warn("Failed to get pullback message: " + e.getMessage(), e);
             }

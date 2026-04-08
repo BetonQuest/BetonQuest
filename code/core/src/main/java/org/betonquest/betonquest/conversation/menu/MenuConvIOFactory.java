@@ -5,8 +5,10 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.text.TextParser;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.ConversationIO;
@@ -28,14 +30,29 @@ import java.util.Map;
 public class MenuConvIOFactory implements ConversationIOFactory {
 
     /**
-     * Function to create the input object with actions.
+     * The logger factory to create new logger instances.
      */
-    private final TriFunction<Player, ConversationAction, Boolean, ConversationSession> inputFunction;
+    private final BetonQuestLoggerFactory factory;
+
+    /**
+     * The config accessor to the plugin's configuration.
+     */
+    private final ConfigAccessor config;
 
     /**
      * Plugin instance to run tasks.
      */
     private final Plugin plugin;
+
+    /**
+     * The plugin message instance.
+     */
+    private final PluginMessage message;
+
+    /**
+     * Function to create the input object with actions.
+     */
+    private final TriFunction<Player, ConversationAction, Boolean, ConversationSession> inputFunction;
 
     /**
      * the text parser to parse the configuration text.
@@ -53,28 +70,28 @@ public class MenuConvIOFactory implements ConversationIOFactory {
     private final ConversationColors colors;
 
     /**
-     * The config accessor to the plugin's configuration.
-     */
-    private final ConfigAccessor config;
-
-    /**
      * Create a new Menu conversation IO factory.
      *
+     * @param factory       the logger factory to create new logger instances
+     * @param config        the plugin configuration accessor
+     * @param plugin        the plugin instance
+     * @param message       the plugin message instance
      * @param inputFunction the function to create the input object with actions
-     * @param plugin        the plugin instance to run tasks
      * @param textParser    the text parser to parse the configuration text
      * @param fontRegistry  the font registry used for the conversation
-     * @param config        the config accessor to the plugin's configuration
      * @param colors        the colors used for the conversation
      */
-    public MenuConvIOFactory(final TriFunction<Player, ConversationAction, Boolean, ConversationSession> inputFunction,
-                             final Plugin plugin, final TextParser textParser, final FontRegistry fontRegistry,
-                             final ConfigAccessor config, final ConversationColors colors) {
-        this.inputFunction = inputFunction;
+    public MenuConvIOFactory(final BetonQuestLoggerFactory factory, final ConfigAccessor config, final Plugin plugin,
+                             final PluginMessage message,
+                             final TriFunction<Player, ConversationAction, Boolean, ConversationSession> inputFunction,
+                             final TextParser textParser, final FontRegistry fontRegistry, final ConversationColors colors) {
+        this.factory = factory;
+        this.config = config;
         this.plugin = plugin;
+        this.message = message;
+        this.inputFunction = inputFunction;
         this.textParser = textParser;
         this.fontRegistry = fontRegistry;
-        this.config = config;
         this.colors = colors;
     }
 
@@ -82,7 +99,8 @@ public class MenuConvIOFactory implements ConversationIOFactory {
     public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) throws QuestException {
         final MenuConvIOSettings settings = MenuConvIOSettings.fromConfigurationSection(textParser, config.getConfigurationSection("conversation.io.menu"));
         final FixedComponentLineWrapper componentLineWrapper = new FixedComponentLineWrapper(fontRegistry, settings.lineLength());
-        return new MenuConvIO(inputFunction, conversation, onlineProfile, colors, settings, componentLineWrapper, plugin, getControls(settings));
+        return new MenuConvIO(factory.create(MenuConvIO.class), config, plugin, message, inputFunction, conversation, onlineProfile, colors, settings,
+                componentLineWrapper, getControls(settings));
     }
 
     private Map<MenuConvIO.CONTROL, MenuConvIO.ACTION> getControls(final MenuConvIOSettings settings) throws QuestException {
