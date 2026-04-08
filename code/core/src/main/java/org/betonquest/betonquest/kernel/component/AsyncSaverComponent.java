@@ -45,7 +45,7 @@ public class AsyncSaverComponent extends AbstractCoreComponent {
 
         final AsyncSaver saver = new AsyncSaver(loggerFactory.create(AsyncSaver.class, "Database"), config.getLong("mysql.reconnect_interval"), connector);
         saver.start();
-        new Backup(loggerFactory.create(Backup.class), configAccessorFactory, plugin.getDataFolder(), connector)
+        new Backup(loggerFactory, loggerFactory.create(Backup.class), configAccessorFactory, plugin.getDataFolder(), connector)
                 .loadDatabaseFromBackup();
 
         dependencyProvider.take(AsyncSaver.class, saver);

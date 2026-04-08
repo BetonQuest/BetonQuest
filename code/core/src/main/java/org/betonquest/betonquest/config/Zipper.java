@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.config;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 
 import java.io.File;
@@ -23,27 +22,45 @@ public final class Zipper {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuest.getInstance().getLoggerFactory().create(Zipper.class, "Zipper");
+    private final BetonQuestLogger log;
 
-    private Zipper() {
+    /**
+     * The source file or directory.
+     */
+    private final File source;
+
+    /**
+     * The regex expressions that should be skipped during the zip process.
+     */
+    private final String[] skipEntries;
+
+    /**
+     * Create a new Zipper instance.
+     *
+     * @param log         the custom logger for this class
+     * @param source      the source file or directory
+     * @param skipEntries the regex expressions that should be skipped during the zip process
+     */
+    public Zipper(final BetonQuestLogger log, final File source, final String... skipEntries) {
+        this.log = log;
+        this.source = source;
+        this.skipEntries = skipEntries.clone();
     }
 
     /**
      * Zip a source file or directory to the given outputZip path.
      * You can optionally define skipEntries, which are regex expressions,
-     * which define what get skipped from being zipped.
+     * which define what gets skipped from being zipped.
      *
-     * @param source      the source file or directory
-     * @param outputZip   the output zip file without the ending .zip
-     * @param skipEntries regex expressions that should be skipped during zip process
+     * @param outputZip the output zip file without the ending .zip
      */
-    public static void zip(final File source, final String outputZip, final String... skipEntries) {
-        final List<Path> files = generateFileList(source, skipEntries);
+    public void zip(final String outputZip) {
+        final List<Path> files = generateFileList(source);
         final Path outputZipFile = getOutputPath(outputZip);
-        zipFiles(source, files, outputZipFile);
+        zipFiles(files, outputZipFile);
     }
 
-    private static List<Path> generateFileList(final File node, final String... skipEntries) {
+    private List<Path> generateFileList(final File node) {
         final List<Path> fileList = new ArrayList<>();
         for (final String skip : skipEntries) {
             if (node.getName().matches(skip)) {
@@ -58,10 +75,10 @@ public final class Zipper {
         if (node.isDirectory()) {
             final File[] subNote = node.listFiles();
             if (subNote == null) {
-                LOG.warn("Directory '" + node.getPath() + "' could not be read!");
+                log.warn("Directory '" + node.getPath() + "' could not be read!");
             } else {
                 for (final File filename : subNote) {
-                    fileList.addAll(generateFileList(filename, skipEntries));
+                    fileList.addAll(generateFileList(filename));
                 }
             }
         }
@@ -69,7 +86,7 @@ public final class Zipper {
         return fileList;
     }
 
-    private static Path getOutputPath(final String outputZip) {
+    private Path getOutputPath(final String outputZip) {
         Path output;
         int counter = 0;
         do {
@@ -80,7 +97,7 @@ public final class Zipper {
         return output;
     }
 
-    private static void zipFiles(final File source, final List<Path> files, final Path zipFile) {
+    private void zipFiles(final List<Path> files, final Path zipFile) {
         final byte[] buffer = new byte[1024];
 
         try (OutputStream fos = Files.newOutputStream(zipFile);
@@ -99,11 +116,11 @@ public final class Zipper {
             }
             zos.closeEntry();
         } catch (final IOException e) {
-            LOG.warn("Couldn't zip the files in directory '" + source.getPath() + "'!", e);
+            log.warn("Couldn't zip the files in directory '" + source.getPath() + "'!", e);
         }
     }
 
-    private static String generateZipEntry(final File source, final Path file) {
+    private String generateZipEntry(final File source, final Path file) {
         return source.toURI().relativize(file.toUri()).getPath();
     }
 }
