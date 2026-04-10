@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.jobsreborn.objective;
 
 import com.gamingmesh.jobs.api.JobsPaymentEvent;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.config.Translations;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -10,7 +11,6 @@ import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.betonquest.betonquest.quest.action.NotificationLevel;
 

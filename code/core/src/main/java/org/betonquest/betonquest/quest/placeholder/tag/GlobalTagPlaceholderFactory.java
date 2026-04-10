@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.quest.placeholder.tag;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.config.Translations;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerlessPlaceholder;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerlessPlaceholderFactory;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.database.GlobalData;
 
 /**

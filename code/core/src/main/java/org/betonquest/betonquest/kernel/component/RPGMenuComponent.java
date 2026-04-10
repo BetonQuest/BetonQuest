@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.kernel.component;
 
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.Translations;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.identifier.MenuIdentifier;
@@ -19,7 +20,6 @@ import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.objective.ObjectiveRegistry;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderRegistry;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.id.menu.MenuIdentifierFactory;
 import org.betonquest.betonquest.id.menu.MenuItemIdentifierFactory;
 import org.betonquest.betonquest.kernel.ProcessorDataLoader;

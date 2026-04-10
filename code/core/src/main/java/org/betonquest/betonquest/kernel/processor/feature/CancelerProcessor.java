@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.kernel.processor.feature;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.config.Translations;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
@@ -20,7 +21,6 @@ import org.betonquest.betonquest.api.service.item.ItemManager;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.feature.QuestCanceler;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;

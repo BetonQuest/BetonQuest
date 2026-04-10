@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.quest.npc;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.config.Translations;
 import org.betonquest.betonquest.api.identifier.ConversationIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -8,7 +9,6 @@ import org.betonquest.betonquest.api.service.action.ActionManager;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.kernel.processor.feature.ConversationProcessor;

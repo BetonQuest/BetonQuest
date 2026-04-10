@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.kernel.component.types;
 
 import org.betonquest.betonquest.api.LanguageProvider;
+import org.betonquest.betonquest.api.config.Translations;
 import org.betonquest.betonquest.api.data.Persistence;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -15,7 +16,6 @@ import org.betonquest.betonquest.api.service.npc.NpcManager;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.database.PlayerDataFactory;

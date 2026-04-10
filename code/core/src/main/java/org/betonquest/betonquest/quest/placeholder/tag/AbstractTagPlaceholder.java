@@ -2,12 +2,12 @@ package org.betonquest.betonquest.quest.placeholder.tag;
 
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.config.Translations;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.argument.parser.PackageIdentifierParser;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.config.Translations;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;

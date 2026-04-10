@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.kernel.component;
 
+import org.betonquest.betonquest.api.config.Translations;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.identifier.QuestCancelerIdentifier;
@@ -7,7 +8,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.id.cancel.QuestCancelerIdentifierFactory;
 import org.betonquest.betonquest.kernel.ProcessorDataLoader;

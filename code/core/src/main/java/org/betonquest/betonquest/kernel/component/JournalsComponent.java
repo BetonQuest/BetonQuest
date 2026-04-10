@@ -2,6 +2,7 @@ package org.betonquest.betonquest.kernel.component;
 
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.Translations;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.identifier.JournalEntryIdentifier;
@@ -12,7 +13,6 @@ import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.feature.journal.JournalFactory;
 import org.betonquest.betonquest.id.journal.JournalEntryIdentifierFactory;
 import org.betonquest.betonquest.id.journal.JournalMainPageIdentifierFactory;

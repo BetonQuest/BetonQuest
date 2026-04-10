@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.menu.kernel;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.config.Translations;
 import org.betonquest.betonquest.api.identifier.MenuIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.menu.Menu;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;

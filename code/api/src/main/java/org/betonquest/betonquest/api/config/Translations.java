@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.config;
+package org.betonquest.betonquest.api.config;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
@@ -9,12 +9,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Set;
 
 /**
- * Interface Translations
+ * Offers access to the messages in configurations and its translations as well as available languages.
  */
 public interface Translations {
 
     /**
-     * Retrieves the languages available in the messages configuration.
+     * Retrieves the languages available in the message configurations.
      *
      * @return the {@link Set} of languages
      */
@@ -26,7 +26,7 @@ public interface Translations {
      * @param profile      the profile to get the message for
      * @param message      name of the message to retrieve
      * @param replacements array of placeholders to replace
-     * @return message with replaced placeholders in the profile's language or the default language or in english
+     * @return message with replaced placeholders in the profile's language or the default language or in English
      * @throws IllegalArgumentException if the message could not be found in the configuration
      * @throws QuestException           if the message could not be parsed
      */
