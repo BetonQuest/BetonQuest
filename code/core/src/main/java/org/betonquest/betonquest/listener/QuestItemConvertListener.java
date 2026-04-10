@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.item.typehandler.QuestHandler;
 import org.bukkit.event.EventHandler;
@@ -49,7 +49,7 @@ public class QuestItemConvertListener implements Listener {
     /**
      * Plugin message to get the quest item and journal lines.
      */
-    private final PluginMessage pluginMessage;
+    private final Translations translations;
 
     /**
      * Profile provider to get profiles for message resolving.
@@ -61,14 +61,14 @@ public class QuestItemConvertListener implements Listener {
      *
      * @param log             the custom logger for this class
      * @param migrateSupplier the supplier for if the ItemStacks in inventories should be updated
-     * @param pluginMessage   the plugin message to get the quest item and journal lines
+     * @param translations    the plugin message to get the quest item and journal lines
      * @param profileProvider the profile provider to get profiles for message resolving
      */
     public QuestItemConvertListener(final BetonQuestLogger log, final Supplier<Boolean> migrateSupplier,
-                                    final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
+                                    final Translations translations, final ProfileProvider profileProvider) {
         this.log = log;
         this.migrateSupplier = migrateSupplier;
-        this.pluginMessage = pluginMessage;
+        this.translations = translations;
         this.profileProvider = profileProvider;
     }
 
@@ -87,9 +87,9 @@ public class QuestItemConvertListener implements Listener {
         final Component journalTitle;
         final List<Component> journalLines;
         try {
-            questItemLine = pluginMessage.getMessage(null, "quest_item");
-            journalTitle = pluginMessage.getMessage(profile, "journal_title");
-            journalLines = ComponentLineWrapper.splitNewLine(pluginMessage.getMessage(profile, "journal_title"));
+            questItemLine = translations.getMessage(null, "quest_item");
+            journalTitle = translations.getMessage(profile, "journal_title");
+            journalLines = ComponentLineWrapper.splitNewLine(translations.getMessage(profile, "journal_title"));
         } catch (final QuestException e) {
             log.warn("Can't migrate items on player join, failed to load message for profile '" + profile + "': "
                     + e.getMessage(), e);

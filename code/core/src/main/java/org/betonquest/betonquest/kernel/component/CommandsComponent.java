@@ -22,6 +22,7 @@ import org.betonquest.betonquest.command.LangCommand;
 import org.betonquest.betonquest.command.QuestCommand;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.GlobalData;
@@ -75,7 +76,7 @@ public class CommandsComponent extends AbstractCoreComponent {
         final GlobalData globalData = getDependency(GlobalData.class);
         final ConfigAccessor config = getDependency(ConfigAccessor.class);
         final PlayerDataStorage playerDataStorage = getDependency(PlayerDataStorage.class);
-        final PluginMessage pluginMessage = getDependency(PluginMessage.class);
+        final Translations translations = getDependency(PluginMessage.class);
         final Updater updater = getDependency(Updater.class);
         final Compatibility compatibility = getDependency(Compatibility.class);
         final QuestPackageManager questPackageManager = getDependency(QuestPackageManager.class);
@@ -97,7 +98,7 @@ public class CommandsComponent extends AbstractCoreComponent {
 
         final PlayerLogWatcher playerLogWatcher = new PlayerLogWatcher(receiverSelector);
         final QuestCommand.ConstructorParams questCommandParams = new QuestCommand.ConstructorParams(loggerFactory,
-                configAccessorFactory, playerDataFactory, playerDataStorage, profileProvider, pluginMessage, updater,
+                configAccessorFactory, playerDataFactory, playerDataStorage, profileProvider, translations, updater,
                 compatibility, connector, saver, questPackageManager, config, debugHistoryHandler,
                 playerLogWatcher, identifiers, globalData, journalEntryProcessor,
                 itemRegistry, actionManager, conditionManager, objectiveManager, itemManager, reloader);
@@ -106,15 +107,15 @@ public class CommandsComponent extends AbstractCoreComponent {
         javaPlugin.getCommand("betonquest").setTabCompleter(questCommand);
         javaPlugin.getCommand("journal").setExecutor(new JournalCommand(playerDataStorage, profileProvider));
         javaPlugin.getCommand("backpack").setExecutor(new BackpackCommand(javaPlugin, loggerFactory, loggerFactory.create(BackpackCommand.class),
-                config, pluginMessage, profileProvider, playerDataStorage, cancelerProcessor,
+                config, translations, profileProvider, playerDataStorage, cancelerProcessor,
                 compassManager, itemManager, identifiers));
-        javaPlugin.getCommand("cancelquest").setExecutor(new CancelQuestCommand(javaPlugin, config, pluginMessage, profileProvider,
+        javaPlugin.getCommand("cancelquest").setExecutor(new CancelQuestCommand(javaPlugin, config, translations, profileProvider,
                 loggerFactory, playerDataStorage, cancelerProcessor, compassManager,
                 identifiers, itemManager));
         javaPlugin.getCommand("compass").setExecutor(new CompassCommand(javaPlugin, loggerFactory,
-                config, pluginMessage, profileProvider, playerDataStorage, cancelerProcessor,
+                config, translations, profileProvider, playerDataStorage, cancelerProcessor,
                 compassManager, itemManager, identifiers));
-        final LangCommand langCommand = new LangCommand(loggerFactory.create(LangCommand.class), playerDataStorage, pluginMessage, profileProvider, languageProvider);
+        final LangCommand langCommand = new LangCommand(loggerFactory.create(LangCommand.class), playerDataStorage, translations, profileProvider, languageProvider);
         javaPlugin.getCommand("questlang").setExecutor(langCommand);
         javaPlugin.getCommand("questlang").setTabCompleter(langCommand);
         javaPlugin.getCommand("betonquestanswer").setTabCompleter((sender, command, label, args) -> List.of());

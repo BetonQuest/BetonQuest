@@ -15,6 +15,7 @@ import org.betonquest.betonquest.api.service.npc.NpcManager;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.database.PlayerDataFactory;
@@ -123,7 +124,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         final GlobalData globalData = getDependency(GlobalData.class);
         final PlayerDataStorage playerDataStorage = getDependency(PlayerDataStorage.class);
         final Persistence persistence = getDependency(Persistence.class);
-        final PluginMessage pluginMessage = getDependency(PluginMessage.class);
+        final Translations translations = getDependency(PluginMessage.class);
         final LanguageProvider languageProvider = getDependency(LanguageProvider.class);
         final TextParser textParser = getDependency(TextParser.class);
         final Saver saver = getDependency(Saver.class);
@@ -165,14 +166,14 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         actionTypes.registerCombined("folder", new FolderActionFactory(plugin, loggerFactory, pluginManager,
                 actionManager, conditionManager));
         actionTypes.registerCombined("first", new FirstActionFactory(actionManager));
-        actionTypes.register("give", new GiveActionFactory(loggerFactory, playerDataStorage, pluginMessage));
+        actionTypes.register("give", new GiveActionFactory(loggerFactory, playerDataStorage, translations));
         actionTypes.register("givejournal", new GiveJournalActionFactory(playerDataStorage));
         actionTypes.registerCombined("globaltag", new TagGlobalActionFactory(globalData));
         actionTypes.registerCombined("globalpoint", new GlobalPointActionFactory(globalData));
         actionTypes.register("hunger", new HungerActionFactory());
         actionTypes.registerCombined("if", new IfElseActionFactory(actionManager, conditionManager));
         actionTypes.register("itemdurability", new ItemDurabilityActionFactory());
-        actionTypes.registerCombined("journal", new JournalActionFactory(loggerFactory, pluginMessage, playerDataStorage,
+        actionTypes.registerCombined("journal", new JournalActionFactory(loggerFactory, translations, playerDataStorage,
                 InstantSource.system(), saver, profileProvider));
         actionTypes.register("kill", new KillActionFactory());
         actionTypes.register("language", new LanguageActionFactory(playerDataStorage));
@@ -188,7 +189,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         actionTypes.register("party", new PartyActionFactory(profileProvider, actionManager, conditionManager));
         actionTypes.registerCombined("pickrandom", new PickRandomActionFactory(actionManager));
         actionTypes.register("point", new PointActionFactory(loggerFactory, playerDataStorage,
-                pluginMessage));
+                translations));
         actionTypes.registerCombined("removeentity", new RemoveEntityActionFactory());
         actionTypes.registerCombined("run", new RunActionFactory(instructions, actionTypes));
         actionTypes.register("runForAll", new RunForAllActionFactory(profileProvider, actionManager, conditionManager));
@@ -200,7 +201,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         actionTypes.register("stage", new StageActionFactory(objectiveManager));
         actionTypes.register("sudo", new SudoActionFactory(server));
         actionTypes.registerCombined("tag", new TagPlayerActionFactory(persistence, saver, profileProvider));
-        actionTypes.register("take", new TakeActionFactory(loggerFactory, playerDataStorage, pluginMessage));
+        actionTypes.register("take", new TakeActionFactory(loggerFactory, playerDataStorage, translations));
         actionTypes.register("teleport", new TeleportActionFactory(conversations));
         actionTypes.registerCombined("time", new TimeActionFactory());
         actionTypes.register("updatevisibility", new UpdateVisibilityNowActionFactory(npcHider));

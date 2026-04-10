@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.service.conversation.Conversations;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.item.ItemManager;
-import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.ConversationIO;
@@ -41,7 +41,7 @@ public class CitizensInventoryConvIOFactory implements ConversationIOFactory {
     /**
      * The plugin message instance to use.
      */
-    private final PluginMessage pluginMessage;
+    private final Translations translations;
 
     /**
      * The item manager to use.
@@ -93,7 +93,7 @@ public class CitizensInventoryConvIOFactory implements ConversationIOFactory {
      * @param plugin          the plugin to use for the conversation
      * @param pluginManager   the plugin manager to use for the conversation
      * @param instructions    the instruction api to use for the conversation
-     * @param pluginMessage   the plugin message instance to use for the conversation
+     * @param translations    the plugin message instance to use for the conversation
      * @param itemManager     the item manager to use for the conversation
      * @param profileProvider the profile provider to use for the conversation
      * @param conversations   the conversations instance
@@ -103,7 +103,7 @@ public class CitizensInventoryConvIOFactory implements ConversationIOFactory {
     public CitizensInventoryConvIOFactory(final BetonQuestLoggerFactory loggerFactory, final FontRegistry fontRegistry,
                                           final ConversationColors colors, final ConfigAccessor config, final Plugin plugin,
                                           final PluginManager pluginManager, final Instructions instructions,
-                                          final PluginMessage pluginMessage, final ItemManager itemManager,
+                                          final Translations translations, final ItemManager itemManager,
                                           final ProfileProvider profileProvider, final Conversations conversations,
                                           final boolean printMessages) {
         this.loggerFactory = loggerFactory;
@@ -114,7 +114,7 @@ public class CitizensInventoryConvIOFactory implements ConversationIOFactory {
         this.plugin = plugin;
         this.pluginManager = pluginManager;
         this.instructions = instructions;
-        this.pluginMessage = pluginMessage;
+        this.translations = translations;
         this.itemManager = itemManager;
         this.profileProvider = profileProvider;
         this.conversations = conversations;
@@ -127,7 +127,7 @@ public class CitizensInventoryConvIOFactory implements ConversationIOFactory {
         final FixedComponentLineWrapper componentLineWrapper = new FixedComponentLineWrapper(fontRegistry, 270);
         final BetonQuestLogger log = loggerFactory.create(CitizensInventoryConvIO.class);
         return new CitizensInventoryConvIO(conversation, onlineProfile, log, colors, plugin, pluginManager,
-                instructions, pluginMessage, itemManager, profileProvider, conversations, showNumber, showNPCText,
+                instructions, translations, itemManager, profileProvider, conversations, showNumber, showNPCText,
                 printMessages, componentLineWrapper);
     }
 }

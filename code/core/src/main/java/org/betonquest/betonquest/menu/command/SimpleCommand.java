@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
@@ -207,10 +207,10 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
      * @return the resolved message component
      */
     protected Component getMessage(final CommandSender sender, final String message, final VariableReplacement... replacements) {
-        final PluginMessage pluginMessage = getPlugin().getPluginMessage();
+        final Translations translations = getPlugin().getPluginMessage();
         final OnlineProfile profile = sender instanceof final Player player ? getPlugin().getProfileProvider().getProfile(player) : null;
         try {
-            return pluginMessage.getMessage(profile, "menu." + message, replacements);
+            return translations.getMessage(profile, "menu." + message, replacements);
         } catch (final QuestException e) {
             log.warn("Failed to get message '" + message + "': " + e.getMessage(), e);
             return Component.text("Failed to get message '" + message + "': " + e.getMessage());

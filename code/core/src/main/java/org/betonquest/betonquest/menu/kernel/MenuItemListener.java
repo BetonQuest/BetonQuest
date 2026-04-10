@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.menu.Menu;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
@@ -54,15 +54,15 @@ public class MenuItemListener implements Listener {
      * @param rpgMenu         the rpg menu instance to open menus
      * @param menuProcessor   the menu processor to get menus
      * @param profileProvider the Profile Provider
-     * @param pluginMessage   the Plugin Message instance
+     * @param translations    the Plugin Message instance
      */
     public MenuItemListener(final BetonQuestLogger log, final RPGMenu rpgMenu, final MenuProcessor menuProcessor,
-                            final ProfileProvider profileProvider, final PluginMessage pluginMessage) {
+                            final ProfileProvider profileProvider, final Translations translations) {
         this.log = log;
         this.rpgMenu = rpgMenu;
         this.menuProcessor = menuProcessor;
         this.profileProvider = profileProvider;
-        this.noPermissionSender = new IngameNotificationSender(log, pluginMessage, null,
+        this.noPermissionSender = new IngameNotificationSender(log, translations, null,
                 "Menu Bound Item Listener", NotificationLevel.ERROR, "no_permission");
     }
 

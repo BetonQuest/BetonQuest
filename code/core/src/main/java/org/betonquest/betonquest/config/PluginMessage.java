@@ -46,7 +46,7 @@ import java.util.stream.Stream;
  * Loads and sends messages from the plugins messages.yml file and messages-internal.yml file.
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
-public class PluginMessage {
+public class PluginMessage implements Translations {
 
     /**
      * The scheme for a JAR file.
@@ -227,11 +227,7 @@ public class PluginMessage {
         return loadedMessages;
     }
 
-    /**
-     * Retrieves the languages available in the messages configuration.
-     *
-     * @return the {@link Set} of languages
-     */
+    @Override
     public final Set<String> getLanguages() {
         return messages.keySet();
     }
@@ -250,16 +246,7 @@ public class PluginMessage {
         }
     }
 
-    /**
-     * Retrieves the message from the configuration in the profile's language and replaces the placeholders.
-     *
-     * @param profile      the profile to get the message for
-     * @param message      name of the message to retrieve
-     * @param replacements array of placeholders to replace
-     * @return message with replaced placeholders in the profile's language or the default language or in english
-     * @throws IllegalArgumentException if the message could not be found in the configuration
-     * @throws QuestException           if the message could not be parsed
-     */
+    @Override
     public Component getMessage(@Nullable final Profile profile, final String message, final VariableReplacement... replacements) throws QuestException {
         final Text component = loadedMessages.get(message);
         if (component == null) {

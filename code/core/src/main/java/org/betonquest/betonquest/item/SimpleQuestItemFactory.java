@@ -12,7 +12,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.TypeFactory;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
 import org.betonquest.betonquest.api.text.TextParser;
-import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.item.typehandler.BookHandler;
 import org.betonquest.betonquest.item.typehandler.ColorHandler;
 import org.betonquest.betonquest.item.typehandler.CustomModelDataHandler;
@@ -59,7 +59,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
     /**
      * Supplier for the PluginMessage.
      */
-    protected final Supplier<PluginMessage> questItemLoreSupplier;
+    protected final Supplier<Translations> questItemLoreSupplier;
 
     /**
      * The {@link PlaceholderManager} to create and resolve placeholders.
@@ -76,7 +76,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
      * @param questItemLoreSupplier supplies the plugin message instance if the "quest item" lore line should be added
      */
     public SimpleQuestItemFactory(final PlaceholderManager placeholders, final QuestPackageManager packManager, final TextParser textParser,
-                                  final BookPageWrapper bookPageWrapper, final Supplier<PluginMessage> questItemLoreSupplier) {
+                                  final BookPageWrapper bookPageWrapper, final Supplier<Translations> questItemLoreSupplier) {
         this.placeholders = placeholders;
         this.packManager = packManager;
         this.textParser = textParser;
@@ -112,9 +112,9 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
         final NameHandler name = new NameHandler(textParser);
         final LoreHandler lore = new LoreHandler(textParser);
 
-        final PluginMessage pluginMessage = questItemLoreSupplier.get();
+        final Translations translations = questItemLoreSupplier.get();
         final List<ItemMetaHandler<?>> handlers = List.of(
-                new QuestHandler(pluginMessage == null ? QuestHandler.LoreConsumer.EMPTY : new QuestHandler.Lore(pluginMessage)),
+                new QuestHandler(translations == null ? QuestHandler.LoreConsumer.EMPTY : new QuestHandler.Lore(translations)),
                 new DurabilityHandler(),
                 new CustomModelDataHandler(),
                 new UnbreakableHandler(),

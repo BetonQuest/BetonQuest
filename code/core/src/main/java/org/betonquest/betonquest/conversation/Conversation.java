@@ -18,6 +18,7 @@ import org.betonquest.betonquest.api.service.action.ActionManager;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.conversation.interceptor.Interceptor;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.Saver.Record;
@@ -173,7 +174,7 @@ public class Conversation {
      * Starts a new conversation between player and npc at the specified location.
      *
      * @param log                   the logger that will be used for logging
-     * @param pluginMessage         the {@link PluginMessage} instance
+     * @param translations          the {@link PluginMessage} instance
      * @param onlineProfile         the {@link OnlineProfile} of the player
      * @param conversationID        ID of the conversation
      * @param actionManager         the {@link ActionManager} instance
@@ -186,7 +187,7 @@ public class Conversation {
      * @throws QuestException when required conversation objects could not be created
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
-    public Conversation(final BetonQuestLogger log, final PluginMessage pluginMessage, final OnlineProfile onlineProfile,
+    public Conversation(final BetonQuestLogger log, final Translations translations, final OnlineProfile onlineProfile,
                         final ConversationIdentifier conversationID, final ActionManager actionManager,
                         final ConditionManager conditionManager, final ConversationProcessor conversationProcessor,
                         final Identifiers identifiers, final Saver saver,
@@ -203,8 +204,8 @@ public class Conversation {
         this.saver = saver;
         this.pack = conversationID.getPackage();
         this.center = center;
-        this.startSender = new IngameNotificationSender(log, pluginMessage, pack, conversationID.getFull(), NotificationLevel.INFO, "conversation_start");
-        this.endSender = new IngameNotificationSender(log, pluginMessage, pack, conversationID.getFull(), NotificationLevel.INFO, "conversation_end");
+        this.startSender = new IngameNotificationSender(log, translations, pack, conversationID.getFull(), NotificationLevel.INFO, "conversation_start");
+        this.endSender = new IngameNotificationSender(log, translations, pack, conversationID.getFull(), NotificationLevel.INFO, "conversation_end");
 
         this.data = conversationProcessor.getData(conversationID);
         this.inOut = data.getPublicData().convIO().getValue(onlineProfile).parse(this, onlineProfile);

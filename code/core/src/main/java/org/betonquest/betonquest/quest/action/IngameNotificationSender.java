@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.LogSource;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.notify.Notify;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,7 +25,7 @@ public class IngameNotificationSender implements NotificationSender {
     /**
      * The {@link PluginMessage} instance.
      */
-    private final PluginMessage pluginMessage;
+    private final Translations translations;
 
     /**
      * Message name to fetch the localized message from the messages.yml config files.
@@ -51,19 +52,19 @@ public class IngameNotificationSender implements NotificationSender {
      * Create the info-category notification sender.
      *
      * @param log                  the logger that will be used for logging
-     * @param pluginMessage        the {@link PluginMessage} instance
+     * @param translations         the {@link PluginMessage} instance
      * @param questPackage         quest package to send the message from
      * @param fullId               full ID of the message sending object
      * @param level                the notification level
      * @param messageName          identifier of the message to send
      * @param additionalCategories categories to send the message to
      */
-    public IngameNotificationSender(final BetonQuestLogger log, final PluginMessage pluginMessage,
+    public IngameNotificationSender(final BetonQuestLogger log, final Translations translations,
                                     @Nullable final QuestPackage questPackage, final String fullId,
                                     final NotificationLevel level, final String messageName,
                                     final String... additionalCategories) {
         this.log = log;
-        this.pluginMessage = pluginMessage;
+        this.translations = translations;
         this.messageName = messageName;
         this.questPackage = questPackage;
         this.fullId = fullId;
@@ -77,7 +78,7 @@ public class IngameNotificationSender implements NotificationSender {
     public void sendNotification(final Profile profile, final VariableReplacement... replacements) {
         profile.getOnlineProfile().ifPresent(onlineProfile -> {
             try {
-                final Component message = pluginMessage.getMessage(profile, messageName, replacements);
+                final Component message = translations.getMessage(profile, messageName, replacements);
                 Notify.get(questPackage, String.join(",", categories)).sendNotify(message, onlineProfile);
             } catch (final QuestException e) {
                 log.warn(questPackage == null ? LogSource.EMPTY : questPackage, "The notify system was unable to send the notification message '" + messageName + "' in '" + fullId + "'. Error was: '" + e.getMessage() + "'", e);

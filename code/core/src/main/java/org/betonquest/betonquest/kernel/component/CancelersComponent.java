@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.id.cancel.QuestCancelerIdentifierFactory;
 import org.betonquest.betonquest.kernel.ProcessorDataLoader;
@@ -55,7 +56,7 @@ public class CancelersComponent extends AbstractCoreComponent {
         final ConditionProcessor conditionProcessor = getDependency(ConditionProcessor.class);
         final ObjectiveProcessor objectiveProcessor = getDependency(ObjectiveProcessor.class);
         final ItemProcessor itemProcessor = getDependency(ItemProcessor.class);
-        final PluginMessage pluginMessage = getDependency(PluginMessage.class);
+        final Translations translations = getDependency(PluginMessage.class);
         final PlayerDataStorage playerDataStorage = getDependency(PlayerDataStorage.class);
         final ParsedSectionTextCreator parsedSectionTextCreator = getDependency(ParsedSectionTextCreator.class);
         final ProcessorDataLoader processorDataLoader = getDependency(ProcessorDataLoader.class);
@@ -63,7 +64,7 @@ public class CancelersComponent extends AbstractCoreComponent {
         final QuestCancelerIdentifierFactory questCancelerIdentifierFactory = new QuestCancelerIdentifierFactory(packManager);
         identifiers.register(QuestCancelerIdentifier.class, questCancelerIdentifierFactory);
         final CancelerProcessor cancelerProcessor = new CancelerProcessor(loggerFactory.create(CancelerProcessor.class),
-                loggerFactory, pluginMessage, instructions, actionProcessor, conditionProcessor,
+                loggerFactory, translations, instructions, actionProcessor, conditionProcessor,
                 objectiveProcessor, itemProcessor, parsedSectionTextCreator, playerDataStorage, questCancelerIdentifierFactory);
 
         dependencyProvider.take(QuestCancelerIdentifierFactory.class, questCancelerIdentifierFactory);

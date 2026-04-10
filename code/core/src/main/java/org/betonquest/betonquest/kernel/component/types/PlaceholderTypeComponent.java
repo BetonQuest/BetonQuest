@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.service.npc.NpcManager;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.kernel.registry.quest.PlaceholderTypeRegistry;
@@ -56,7 +57,7 @@ public class PlaceholderTypeComponent extends AbstractCoreComponent {
     protected void load(final DependencyProvider dependencyProvider) {
         final Plugin plugin = getDependency(Plugin.class);
         final PlaceholderTypeRegistry placeholderTypes = getDependency(PlaceholderTypeRegistry.class);
-        final PluginMessage pluginMessage = getDependency(PluginMessage.class);
+        final Translations translations = getDependency(PluginMessage.class);
         final GlobalData globalData = getDependency(GlobalData.class);
         final PlayerDataStorage dataStorage = getDependency(PlayerDataStorage.class);
         final Conversations conversations = getDependency(Conversations.class);
@@ -65,11 +66,11 @@ public class PlaceholderTypeComponent extends AbstractCoreComponent {
         final PlaceholderManager placeholderManager = getDependency(PlaceholderManager.class);
         final NpcManager npcManager = getDependency(NpcManager.class);
 
-        placeholderTypes.register("condition", new ConditionPlaceholderFactory(conditionManager, pluginMessage));
+        placeholderTypes.register("condition", new ConditionPlaceholderFactory(conditionManager, translations));
         placeholderTypes.registerCombined("constant", new ConstantPlaceholderFactory());
         placeholderTypes.registerCombined("eval", new EvalPlaceholderFactory());
         placeholderTypes.register("globalpoint", new GlobalPointPlaceholderFactory(globalData));
-        placeholderTypes.register("globaltag", new GlobalTagPlaceholderFactory(globalData, pluginMessage));
+        placeholderTypes.register("globaltag", new GlobalTagPlaceholderFactory(globalData, translations));
         placeholderTypes.registerCombined("item", new ItemPlaceholderFactory(dataStorage));
         placeholderTypes.register("itemdurability", new ItemDurabilityPlaceholderFactory());
         placeholderTypes.register("location", new LocationPlaceholderFactory());
@@ -81,7 +82,7 @@ public class PlaceholderTypeComponent extends AbstractCoreComponent {
         placeholderTypes.register("quester", new QuesterPlaceholderFactory(conversations));
         placeholderTypes.registerCombined("randomnumber", new RandomNumberPlaceholderFactory());
         placeholderTypes.registerCombined("sync", new SyncPlaceholderFactory());
-        placeholderTypes.register("tag", new TagPlaceholderFactory(dataStorage, pluginMessage));
+        placeholderTypes.register("tag", new TagPlaceholderFactory(dataStorage, translations));
         placeholderTypes.register("version", new VersionPlaceholderFactory(plugin));
     }
 }

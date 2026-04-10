@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.service.conversation.Conversations;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.item.ItemManager;
-import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.ConversationIO;
@@ -57,7 +57,7 @@ public class InventoryConvIOFactory implements ConversationIOFactory {
     /**
      * The plugin message instance to use.
      */
-    private final PluginMessage pluginMessage;
+    private final Translations translations;
 
     /**
      * The instructions instance to use.
@@ -97,7 +97,7 @@ public class InventoryConvIOFactory implements ConversationIOFactory {
         this.colors = parameters.colors();
         this.plugin = parameters.plugin();
         this.pluginManager = parameters.pluginManager();
-        this.pluginMessage = parameters.pluginMessage();
+        this.translations = parameters.translations();
         this.instructions = parameters.instructions();
         this.conversations = parameters.conversations();
         this.itemManager = parameters.itemManager();
@@ -111,7 +111,7 @@ public class InventoryConvIOFactory implements ConversationIOFactory {
         final boolean showNPCText = config.getBoolean("conversation.io.chest.show_npc_text", true);
         final FixedComponentLineWrapper componentLineWrapper = new FixedComponentLineWrapper(fontRegistry, 270);
         final BetonQuestLogger log = loggerFactory.create(InventoryConvIO.class);
-        return new InventoryConvIO(conversation, onlineProfile, log, plugin, pluginManager, instructions, pluginMessage,
+        return new InventoryConvIO(conversation, onlineProfile, log, plugin, pluginManager, instructions, translations,
                 itemManager, profileProvider, conversations, colors, showNumber, showNPCText, printMessages, componentLineWrapper);
     }
 
@@ -124,7 +124,7 @@ public class InventoryConvIOFactory implements ConversationIOFactory {
      * @param colors          the colors to use for the conversation
      * @param plugin          the plugin instance
      * @param pluginManager   the plugin manager instance
-     * @param pluginMessage   the plugin message instance
+     * @param translations    the plugin message instance
      * @param instructions    the instructions instance
      * @param conversations   the conversations instance
      * @param itemManager     the item manager instance
@@ -132,7 +132,7 @@ public class InventoryConvIOFactory implements ConversationIOFactory {
      */
     public record ConstructorParameters(BetonQuestLoggerFactory loggerFactory, ConfigAccessor config,
                                         FontRegistry fontRegistry, ConversationColors colors, Plugin plugin,
-                                        PluginManager pluginManager, PluginMessage pluginMessage,
+                                        PluginManager pluginManager, Translations translations,
                                         Instructions instructions, Conversations conversations, ItemManager itemManager,
                                         ProfileProvider profileProvider) {
 

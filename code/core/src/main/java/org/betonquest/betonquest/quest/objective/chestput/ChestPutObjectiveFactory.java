@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.betonquest.betonquest.quest.action.NotificationLevel;
 import org.betonquest.betonquest.quest.action.chest.ChestTakeAction;
@@ -33,17 +34,17 @@ public class ChestPutObjectiveFactory implements ObjectiveFactory {
     /**
      * The {@link PluginMessage} instance.
      */
-    private final PluginMessage pluginMessage;
+    private final Translations translations;
 
     /**
      * Creates a new instance of the ChestPutObjectiveFactory.
      *
      * @param loggerFactory the logger factory to create a logger for the objectives
-     * @param pluginMessage the {@link PluginMessage} instance
+     * @param translations  the {@link PluginMessage} instance
      */
-    public ChestPutObjectiveFactory(final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage) {
+    public ChestPutObjectiveFactory(final BetonQuestLoggerFactory loggerFactory, final Translations translations) {
         this.loggerFactory = loggerFactory;
-        this.pluginMessage = pluginMessage;
+        this.translations = translations;
     }
 
     @Override
@@ -56,7 +57,7 @@ public class ChestPutObjectiveFactory implements ObjectiveFactory {
                 .getValue(null).orElse(false);
         final ChestTakeAction chestTakeAction = itemsStay ? null : new ChestTakeAction(loc, items);
         final BetonQuestLogger log = loggerFactory.create(ChestPutObjective.class);
-        final IngameNotificationSender occupiedSender = new IngameNotificationSender(log, pluginMessage, instruction.getPackage(),
+        final IngameNotificationSender occupiedSender = new IngameNotificationSender(log, translations, instruction.getPackage(),
                 instruction.getID().getFull(), NotificationLevel.INFO, "chest_occupied");
         final ChestPutObjective objective = new ChestPutObjective(service, chestItemCondition, chestTakeAction,
                 loc, occupiedSender, multipleAccess);

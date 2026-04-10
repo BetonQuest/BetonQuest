@@ -15,6 +15,7 @@ import org.betonquest.betonquest.api.service.npc.NpcManager;
 import org.betonquest.betonquest.api.service.npc.NpcRegistry;
 import org.betonquest.betonquest.api.service.npc.Npcs;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.id.conversation.ConversationIdentifierFactory;
 import org.betonquest.betonquest.id.npc.NpcIdentifierFactory;
@@ -63,7 +64,7 @@ public class NpcsComponent extends AbstractCoreComponent {
         final ActionManager actionManager = getDependency(ActionManager.class);
         final ConditionManager conditionManager = getDependency(ConditionManager.class);
         final ConversationIdentifierFactory conversationIdentifierFactory = getDependency(ConversationIdentifierFactory.class);
-        final PluginMessage pluginMessage = getDependency(PluginMessage.class);
+        final Translations translations = getDependency(PluginMessage.class);
         final ConfigAccessor config = getDependency(ConfigAccessor.class);
         final Saver saver = getDependency(Saver.class);
         final Identifiers identifiers = getDependency(Identifiers.class);
@@ -74,7 +75,7 @@ public class NpcsComponent extends AbstractCoreComponent {
         identifiers.register(NpcIdentifier.class, npcIdentifierFactory);
         final NpcTypeRegistry npcTypeRegistry = new NpcTypeRegistry(loggerFactory.create(NpcTypeRegistry.class), instructions);
         final NpcProcessor npcProcessor = new NpcProcessor(loggerFactory.create(NpcProcessor.class), loggerFactory, plugin,
-                npcIdentifierFactory, conversationIdentifierFactory, npcTypeRegistry, pluginMessage,
+                npcIdentifierFactory, conversationIdentifierFactory, npcTypeRegistry, translations,
                 profileProvider, actionManager, conditionManager, conversationProcessor.getStarter(), instructions,
                 identifiers, saver, config, conversationProcessor);
 

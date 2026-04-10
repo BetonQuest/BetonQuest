@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.service.compass.CompassManager;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.item.ItemManager;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.feature.Backpack;
 import org.betonquest.betonquest.feature.Backpack.DisplayType;
@@ -32,7 +33,7 @@ public class CancelQuestCommand implements CommandExecutor {
     /**
      * The {@link PluginMessage} instance.
      */
-    private final PluginMessage pluginMessage;
+    private final Translations translations;
 
     /**
      * The profile provider instance.
@@ -79,7 +80,7 @@ public class CancelQuestCommand implements CommandExecutor {
      *
      * @param plugin            the plugin instance
      * @param config            the plugin configuration file
-     * @param pluginMessage     the {@link PluginMessage} instance
+     * @param translations      the {@link PluginMessage} instance
      * @param profileProvider   the profile provider instance
      * @param loggerFactory     the logger factory
      * @param playerDataStorage the player data storage
@@ -89,13 +90,13 @@ public class CancelQuestCommand implements CommandExecutor {
      * @param itemManager       the item manager
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
-    public CancelQuestCommand(final Plugin plugin, final ConfigAccessor config, final PluginMessage pluginMessage,
+    public CancelQuestCommand(final Plugin plugin, final ConfigAccessor config, final Translations translations,
                               final ProfileProvider profileProvider, final BetonQuestLoggerFactory loggerFactory,
                               final PlayerDataStorage playerDataStorage, final CancelerProcessor cancelerProcessor,
                               final CompassManager compassManager, final Identifiers identifiers, final ItemManager itemManager) {
         this.plugin = plugin;
         this.config = config;
-        this.pluginMessage = pluginMessage;
+        this.translations = translations;
         this.profileProvider = profileProvider;
         this.loggerFactory = loggerFactory;
         this.playerDataStorage = playerDataStorage;
@@ -111,7 +112,7 @@ public class CancelQuestCommand implements CommandExecutor {
             if (sender instanceof Player) {
                 final OnlineProfile onlineProfile = profileProvider.getProfile((Player) sender);
                 new Backpack(plugin, loggerFactory.create(Backpack.class), playerDataStorage.get(onlineProfile), cancelerProcessor,
-                        compassManager, config, pluginMessage, onlineProfile, itemManager, identifiers, DisplayType.CANCEL);
+                        compassManager, config, translations, onlineProfile, itemManager, identifiers, DisplayType.CANCEL);
             }
             return true;
         }

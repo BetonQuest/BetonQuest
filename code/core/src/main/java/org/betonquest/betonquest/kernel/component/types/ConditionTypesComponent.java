@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.npc.NpcManager;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
@@ -103,7 +104,7 @@ public class ConditionTypesComponent extends AbstractCoreComponent {
         final ProfileProvider profileProvider = getDependency(ProfileProvider.class);
         final GlobalData globalData = getDependency(GlobalData.class);
         final PlayerDataStorage dataStorage = getDependency(PlayerDataStorage.class);
-        final PluginMessage pluginMessage = getDependency(PluginMessage.class);
+        final Translations translations = getDependency(PluginMessage.class);
         final LanguageProvider languageProvider = getDependency(LanguageProvider.class);
         final Instructions instructions = getDependency(Instructions.class);
         final ConditionTypeRegistry conditionTypes = getDependency(ConditionTypeRegistry.class);
@@ -139,7 +140,7 @@ public class ConditionTypesComponent extends AbstractCoreComponent {
         conditionTypes.register("item", new ItemConditionFactory(dataStorage));
         conditionTypes.register("itemdurability", new ItemDurabilityConditionFactory());
         conditionTypes.register("journal", new JournalConditionFactory(dataStorage));
-        conditionTypes.register("language", new LanguageConditionFactory(dataStorage, languageProvider, pluginMessage));
+        conditionTypes.register("language", new LanguageConditionFactory(dataStorage, languageProvider, translations));
         conditionTypes.register("location", new LocationConditionFactory());
         conditionTypes.register("looking", new LookingAtConditionFactory());
         conditionTypes.registerCombined("moonphase", new MoonPhaseConditionFactory());

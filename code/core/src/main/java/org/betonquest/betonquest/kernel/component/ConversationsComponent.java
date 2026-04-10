@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.id.conversation.ConversationIdentifierFactory;
 import org.betonquest.betonquest.id.conversation.ConversationOptionIdentifierFactory;
@@ -62,7 +63,7 @@ public class ConversationsComponent extends AbstractCoreComponent {
         final PlaceholderProcessor placeholderProcessor = getDependency(PlaceholderProcessor.class);
         final ProfileProvider profileProvider = getDependency(ProfileProvider.class);
         final ConfigAccessor config = getDependency(ConfigAccessor.class);
-        final PluginMessage pluginMessage = getDependency(PluginMessage.class);
+        final Translations translations = getDependency(PluginMessage.class);
         final ActionProcessor actionProcessor = getDependency(ActionProcessor.class);
         final ConditionProcessor conditionProcessor = getDependency(ConditionProcessor.class);
         final Instructions instructions = getDependency(Instructions.class);
@@ -78,7 +79,7 @@ public class ConversationsComponent extends AbstractCoreComponent {
         final InterceptorRegistry interceptorRegistry = new InterceptorRegistry(loggerFactory.create(InterceptorRegistry.class));
         final ConversationProcessor conversationProcessor = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class),
                 loggerFactory, plugin, parsedSectionTextCreator, questPackageManager, placeholderProcessor, profileProvider, config, conversationIORegistry, interceptorRegistry,
-                instructions, pluginMessage, actionProcessor, conditionProcessor, conversationIdentifierFactory, identifiers, saver);
+                instructions, translations, actionProcessor, conditionProcessor, conversationIdentifierFactory, identifiers, saver);
 
         dependencyProvider.take(ConversationIdentifierFactory.class, conversationIdentifierFactory);
         dependencyProvider.take(ConversationOptionIdentifierFactory.class, conversationOptionIdentifierFactory);

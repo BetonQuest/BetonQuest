@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.service.action.ActionManager;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.kernel.processor.feature.ConversationProcessor;
@@ -29,7 +30,7 @@ public class NpcConversation<T> extends Conversation {
      * Starts a new conversation between player and npc at given location.
      *
      * @param log                   the logger that will be used for logging
-     * @param pluginMessage         the {@link PluginMessage} instance
+     * @param translations          the {@link PluginMessage} instance
      * @param onlineProfile         the profile of the player
      * @param conversationID        the ID of the conversation
      * @param center                the location where the conversation has been started
@@ -43,12 +44,12 @@ public class NpcConversation<T> extends Conversation {
      * @throws QuestException when required conversation objects could not be created
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
-    public NpcConversation(final BetonQuestLogger log, final PluginMessage pluginMessage, final OnlineProfile onlineProfile,
+    public NpcConversation(final BetonQuestLogger log, final Translations translations, final OnlineProfile onlineProfile,
                            final ConversationIdentifier conversationID, final Location center,
                            final ActionManager actionManager, final ConditionManager conditionManager,
                            final ConversationProcessor conversationProcessor, final Identifiers identifiers, final Saver saver,
                            final Runnable endCallable, final Npc<T> npc) throws QuestException {
-        super(log, pluginMessage, onlineProfile, conversationID, actionManager, conditionManager, conversationProcessor, identifiers, saver, center, endCallable);
+        super(log, translations, onlineProfile, conversationID, actionManager, conditionManager, conversationProcessor, identifiers, saver, center, endCallable);
         this.npc = npc;
     }
 

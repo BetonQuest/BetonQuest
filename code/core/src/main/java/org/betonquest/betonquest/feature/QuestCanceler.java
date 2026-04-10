@@ -21,6 +21,7 @@ import org.betonquest.betonquest.api.service.item.ItemManager;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
@@ -111,7 +112,7 @@ public class QuestCanceler {
      * @param itemManager      the item manager
      * @param playerStorage    the player data storage
      * @param cancelerID       the log identifier
-     * @param pluginMessage    the {@link PluginMessage} instance
+     * @param translations     the {@link PluginMessage} instance
      * @param names            the names used for displaying in different languages
      * @param item             the custom item used for displaying
      * @param pack             the {@link QuestPackage} of the canceler
@@ -119,7 +120,7 @@ public class QuestCanceler {
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public QuestCanceler(final BetonQuestLogger log, final ActionManager actionManager, final ConditionManager conditionManager, final ObjectiveManager objectiveManager,
-                         final ItemManager itemManager, final PlayerDataStorage playerStorage, final QuestCancelerIdentifier cancelerID, final PluginMessage pluginMessage,
+                         final ItemManager itemManager, final PlayerDataStorage playerStorage, final QuestCancelerIdentifier cancelerID, final Translations translations,
                          final Text names, @Nullable final ItemIdentifier item, final QuestPackage pack, final CancelData cancelData) {
         this.log = log;
         this.actionManager = actionManager;
@@ -132,7 +133,7 @@ public class QuestCanceler {
         this.item = item;
         this.data = cancelData;
         this.pack = pack;
-        this.notificationSender = new IngameNotificationSender(log, pluginMessage, pack, cancelerID.getFull(), NotificationLevel.INFO, "quest_canceled");
+        this.notificationSender = new IngameNotificationSender(log, translations, pack, cancelerID.getFull(), NotificationLevel.INFO, "quest_canceled");
     }
 
     /**

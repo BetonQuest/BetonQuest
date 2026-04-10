@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.service.conversation.Conversations;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.item.ItemManager;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.io.InventoryConvIOFactory;
 import org.betonquest.betonquest.conversation.io.SimpleConvIOFactory;
@@ -52,7 +53,7 @@ public class ConversationIOTypesComponent extends AbstractCoreComponent {
         final ConfigAccessor config = getDependency(ConfigAccessor.class);
         final FontRegistry fontRegistry = getDependency(FontRegistry.class);
         final ConversationIORegistry conversationIORegistry = getDependency(ConversationIORegistry.class);
-        final PluginMessage pluginMessage = getDependency(PluginMessage.class);
+        final Translations translations = getDependency(PluginMessage.class);
         final Conversations conversations = getDependency(Conversations.class);
         final ItemManager itemManager = getDependency(ItemManager.class);
         final Instructions instructions = getDependency(Instructions.class);
@@ -60,7 +61,7 @@ public class ConversationIOTypesComponent extends AbstractCoreComponent {
         conversationIORegistry.register("simple", new SimpleConvIOFactory(loggerFactory, config, plugin, pluginMessage, colors));
         conversationIORegistry.register("tellraw", new TellrawConvIOFactory(loggerFactory, config, plugin, pluginMessage, colors));
         final InventoryConvIOFactory.ConstructorParameters inventoryConvParams = new InventoryConvIOFactory.ConstructorParameters(
-                loggerFactory, config, fontRegistry, colors, plugin, pluginManager, pluginMessage, instructions, conversations, itemManager, profileProvider);
+                loggerFactory, config, fontRegistry, colors, plugin, pluginManager, translations, instructions, conversations, itemManager, profileProvider);
         conversationIORegistry.register("chest", new InventoryConvIOFactory(inventoryConvParams, false));
         conversationIORegistry.register("combined", new InventoryConvIOFactory(inventoryConvParams, true));
         conversationIORegistry.register("slowtellraw", new SlowTellrawConvIOFactory(loggerFactory, config, plugin, pluginMessage, fontRegistry, colors));

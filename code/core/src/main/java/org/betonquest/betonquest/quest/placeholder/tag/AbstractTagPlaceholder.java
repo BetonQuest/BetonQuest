@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.argument.parser.PackageIdentifierParser;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
@@ -42,20 +43,20 @@ public abstract class AbstractTagPlaceholder<T> {
     /**
      * The {@link PluginMessage} instance.
      */
-    private final PluginMessage pluginMessage;
+    private final Translations translations;
 
     /**
      * Constructs a new GlobalTagPlaceholder.
      *
-     * @param pluginMessage the {@link PluginMessage} instance
-     * @param data          the data holder
-     * @param tagName       the tag to check for
-     * @param questPackage  the quest package to check for the tag
-     * @param papiMode      whether to return true/false or the configured messages
+     * @param translations the {@link PluginMessage} instance
+     * @param data         the data holder
+     * @param tagName      the tag to check for
+     * @param questPackage the quest package to check for the tag
+     * @param papiMode     whether to return true/false or the configured messages
      */
-    public AbstractTagPlaceholder(final PluginMessage pluginMessage, final T data, final String tagName,
+    public AbstractTagPlaceholder(final Translations translations, final T data, final String tagName,
                                   final QuestPackage questPackage, final FlagArgument<Boolean> papiMode) {
-        this.pluginMessage = pluginMessage;
+        this.translations = translations;
         this.data = data;
         this.tagName = tagName;
         this.questPackage = questPackage;
@@ -73,8 +74,8 @@ public abstract class AbstractTagPlaceholder<T> {
     public String getValueFor(@Nullable final Profile profile, final Set<String> tags) throws QuestException {
         final boolean papiMode = this.papiMode.getValue(profile).orElse(false);
         if (tags.contains(PackageIdentifierParser.INSTANCE.apply(questPackage, tagName))) {
-            return papiMode ? LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage(profile, "condition_placeholder_met")) : "true";
+            return papiMode ? LegacyComponentSerializer.legacySection().serialize(translations.getMessage(profile, "condition_placeholder_met")) : "true";
         }
-        return papiMode ? LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage(profile, "condition_placeholder_not_met")) : "false";
+        return papiMode ? LegacyComponentSerializer.legacySection().serialize(translations.getMessage(profile, "condition_placeholder_not_met")) : "false";
     }
 }

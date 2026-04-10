@@ -4,7 +4,7 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestBiConsumer;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -136,13 +136,13 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
     /**
      * Adds the quest item lore to the item meta.
      *
-     * @param pluginMessage the plugin message instance to get the lore line
+     * @param translations the plugin message instance to get the lore line
      */
-    public record Lore(PluginMessage pluginMessage) implements LoreConsumer {
+    public record Lore(Translations translations) implements LoreConsumer {
 
         @Override
         public void accept(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
-            final Component loreLine = pluginMessage.getMessage(profile, "quest_item");
+            final Component loreLine = translations.getMessage(profile, "quest_item");
             if (meta.hasLore()) {
                 final List<Component> lore = new ArrayList<>(meta.lore());
                 lore.add(loreLine);

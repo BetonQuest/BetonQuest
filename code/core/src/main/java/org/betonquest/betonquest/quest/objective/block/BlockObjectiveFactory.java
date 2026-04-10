@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.betonquest.betonquest.quest.action.NotificationLevel;
 import org.bukkit.Location;
@@ -31,17 +32,17 @@ public class BlockObjectiveFactory implements ObjectiveFactory {
     /**
      * The {@link PluginMessage} instance.
      */
-    private final PluginMessage pluginMessage;
+    private final Translations translations;
 
     /**
      * Creates a new instance of the BlockObjectiveFactory.
      *
      * @param loggerFactory the logger factory to create a logger for the objectives
-     * @param pluginMessage the {@link PluginMessage} instance
+     * @param translations  the {@link PluginMessage} instance
      */
-    public BlockObjectiveFactory(final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage) {
+    public BlockObjectiveFactory(final BetonQuestLoggerFactory loggerFactory, final Translations translations) {
         this.loggerFactory = loggerFactory;
-        this.pluginMessage = pluginMessage;
+        this.translations = translations;
     }
 
     @Override
@@ -54,9 +55,9 @@ public class BlockObjectiveFactory implements ObjectiveFactory {
         final Argument<Location> region = instruction.location().get("region").orElse(null);
         final FlagArgument<Boolean> ignoreCancel = instruction.bool().getFlag("ignorecancel", true);
         final BetonQuestLogger log = loggerFactory.create(BlockObjective.class);
-        final IngameNotificationSender blockBreakSender = new IngameNotificationSender(log, pluginMessage, instruction.getPackage(),
+        final IngameNotificationSender blockBreakSender = new IngameNotificationSender(log, translations, instruction.getPackage(),
                 instruction.getID().getFull(), NotificationLevel.INFO, "blocks_to_break");
-        final IngameNotificationSender blockPlaceSender = new IngameNotificationSender(log, pluginMessage, instruction.getPackage(),
+        final IngameNotificationSender blockPlaceSender = new IngameNotificationSender(log, translations, instruction.getPackage(),
                 instruction.getID().getFull(), NotificationLevel.INFO, "blocks_to_place");
         final BlockObjective objective = new BlockObjective(service, targetAmount, selector, exactMatch, noSafety,
                 location, region, ignoreCancel, blockBreakSender, blockPlaceSender);

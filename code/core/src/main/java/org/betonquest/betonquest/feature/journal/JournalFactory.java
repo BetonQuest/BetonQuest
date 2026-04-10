@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.kernel.processor.feature.JournalEntryProcessor;
 import org.betonquest.betonquest.kernel.processor.feature.JournalMainPageProcessor;
 
@@ -26,7 +27,7 @@ public class JournalFactory {
     /**
      * The {@link PluginMessage} instance.
      */
-    private final PluginMessage pluginMessage;
+    private final Translations translations;
 
     /**
      * The Condition Manager.
@@ -62,7 +63,7 @@ public class JournalFactory {
      * Create a new Factory for Journals.
      *
      * @param loggerFactory     the logger Factory to create new class specific logger
-     * @param pluginMessage     the {@link PluginMessage} instance
+     * @param translations      the {@link PluginMessage} instance
      * @param conditionManager  the Condition Manager
      * @param entryProcessor    the {@link JournalEntryProcessor} to process journal entries
      * @param mainPageProcessor the {@link JournalMainPageProcessor} to process the main page
@@ -70,12 +71,12 @@ public class JournalFactory {
      * @param textParser        the text parser to use for parsing text
      * @param fontRegistry      the font registry to get the width of the characters
      */
-    public JournalFactory(final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage,
+    public JournalFactory(final BetonQuestLoggerFactory loggerFactory, final Translations translations,
                           final ConditionManager conditionManager, final JournalMainPageProcessor mainPageProcessor,
                           final JournalEntryProcessor entryProcessor, final ConfigAccessor config,
                           final TextParser textParser, final FontRegistry fontRegistry) {
         this.loggerFactory = loggerFactory;
-        this.pluginMessage = pluginMessage;
+        this.translations = translations;
         this.conditionManager = conditionManager;
         this.mainPageProcessor = mainPageProcessor;
         this.entryProcessor = entryProcessor;
@@ -93,6 +94,6 @@ public class JournalFactory {
      */
     public Journal createJournal(final Profile profile, final List<Pointer> pointers) {
         final BetonQuestLogger log = loggerFactory.create(Journal.class);
-        return new Journal(log, pluginMessage, conditionManager, mainPageProcessor, entryProcessor, textParser, fontRegistry, profile, pointers, config);
+        return new Journal(log, translations, conditionManager, mainPageProcessor, entryProcessor, textParser, fontRegistry, profile, pointers, config);
     }
 }

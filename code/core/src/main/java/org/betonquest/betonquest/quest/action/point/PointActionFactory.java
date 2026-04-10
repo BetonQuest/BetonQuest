@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.betonquest.betonquest.quest.action.NoNotificationSender;
@@ -31,20 +32,20 @@ public class PointActionFactory implements PlayerActionFactory {
     /**
      * The {@link PluginMessage} instance.
      */
-    private final PluginMessage pluginMessage;
+    private final Translations translations;
 
     /**
      * Create the points action factory.
      *
      * @param loggerFactory the logger factory to create a logger for the actions
      * @param dataStorage   the storage providing player data
-     * @param pluginMessage the {@link PluginMessage} instance
+     * @param translations  the {@link PluginMessage} instance
      */
     public PointActionFactory(final BetonQuestLoggerFactory loggerFactory, final PlayerDataStorage dataStorage,
-                              final PluginMessage pluginMessage) {
+                              final Translations translations) {
         this.loggerFactory = loggerFactory;
         this.dataStorage = dataStorage;
-        this.pluginMessage = pluginMessage;
+        this.translations = translations;
     }
 
     @Override
@@ -57,7 +58,7 @@ public class PointActionFactory implements PlayerActionFactory {
         final boolean notify = instruction.bool().getFlag("notify", true)
                 .getValue(null).orElse(false);
         if (notify) {
-            pointSender = new IngameNotificationSender(loggerFactory.create(PointAction.class), pluginMessage,
+            pointSender = new IngameNotificationSender(loggerFactory.create(PointAction.class), translations,
                     instruction.getPackage(), instruction.getID().getFull(), NotificationLevel.INFO, type.getNotifyCategory());
         } else {
             pointSender = new NoNotificationSender();

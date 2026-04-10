@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerPlaceholder;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 
 /**
  * Get the "fulfillment" status of a quest condition.
@@ -18,7 +19,7 @@ public class ConditionPlaceholder implements PlayerPlaceholder {
     /**
      * The {@link PluginMessage} instance.
      */
-    private final PluginMessage pluginMessage;
+    private final Translations translations;
 
     /**
      * Condition to check.
@@ -38,14 +39,14 @@ public class ConditionPlaceholder implements PlayerPlaceholder {
     /**
      * Create a new Condition placeholder.
      *
-     * @param pluginMessage    the {@link PluginMessage} instance
+     * @param translations     the {@link PluginMessage} instance
      * @param conditionId      the condition to get the "fulfillment" status
      * @param conditionManager the condition manager
      * @param papiMode         if the return value should be in PAPI mode as defined in the documentation
      */
-    public ConditionPlaceholder(final PluginMessage pluginMessage, final Argument<ConditionIdentifier> conditionId,
+    public ConditionPlaceholder(final Translations translations, final Argument<ConditionIdentifier> conditionId,
                                 final ConditionManager conditionManager, final FlagArgument<Boolean> papiMode) {
-        this.pluginMessage = pluginMessage;
+        this.translations = translations;
         this.conditionId = conditionId;
         this.conditionManager = conditionManager;
         this.papiMode = papiMode;
@@ -55,8 +56,8 @@ public class ConditionPlaceholder implements PlayerPlaceholder {
     public String getValue(final Profile profile) throws QuestException {
         final boolean papiMode = this.papiMode.getValue(profile).orElse(false);
         if (conditionManager.test(profile, conditionId.getValue(profile))) {
-            return papiMode ? LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage(profile, "condition_placeholder_met")) : "true";
+            return papiMode ? LegacyComponentSerializer.legacySection().serialize(translations.getMessage(profile, "condition_placeholder_met")) : "true";
         }
-        return papiMode ? LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage(profile, "condition_placeholder_not_met")) : "false";
+        return papiMode ? LegacyComponentSerializer.legacySection().serialize(translations.getMessage(profile, "condition_placeholder_not_met")) : "false";
     }
 }

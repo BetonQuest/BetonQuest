@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.betonquest.betonquest.quest.action.NoNotificationSender;
 import org.betonquest.betonquest.quest.action.NotificationLevel;
@@ -27,17 +28,17 @@ public abstract class AbstractTakeActionFactory implements PlayerActionFactory {
     /**
      * The {@link PluginMessage} instance.
      */
-    private final PluginMessage pluginMessage;
+    private final Translations translations;
 
     /**
      * Create the abstract take action factory.
      *
      * @param loggerFactory the logger factory to create a logger for the actions
-     * @param pluginMessage the {@link PluginMessage} instance
+     * @param translations  the {@link PluginMessage} instance
      */
-    public AbstractTakeActionFactory(final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage) {
+    public AbstractTakeActionFactory(final BetonQuestLoggerFactory loggerFactory, final Translations translations) {
         this.loggerFactory = loggerFactory;
-        this.pluginMessage = pluginMessage;
+        this.translations = translations;
     }
 
     /**
@@ -63,7 +64,7 @@ public abstract class AbstractTakeActionFactory implements PlayerActionFactory {
     protected NotificationSender getNotificationSender(final Instruction instruction, final BetonQuestLogger log) throws QuestException {
         final boolean notify = instruction.bool().getFlag("notify", true)
                 .getValue(null).orElse(false);
-        return notify ? new IngameNotificationSender(log, pluginMessage, instruction.getPackage(),
+        return notify ? new IngameNotificationSender(log, translations, instruction.getPackage(),
                 instruction.getID().getFull(), NotificationLevel.INFO, "items_taken")
                 : new NoNotificationSender();
     }

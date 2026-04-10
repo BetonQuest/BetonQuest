@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
@@ -35,7 +36,7 @@ public class JournalActionFactory implements PlayerActionFactory, PlayerlessActi
     /**
      * The {@link PluginMessage} instance.
      */
-    private final PluginMessage pluginMessage;
+    private final Translations translations;
 
     /**
      * BetonQuest instance to provide to actions.
@@ -61,15 +62,15 @@ public class JournalActionFactory implements PlayerActionFactory, PlayerlessActi
      * Create the journal action factory.
      *
      * @param loggerFactory   the logger factory to create a logger for the actions
-     * @param pluginMessage   the {@link PluginMessage} instance
+     * @param translations    the {@link PluginMessage} instance
      * @param dataStorage     storage for used player data
      * @param instantSource   instant source to pass on
      * @param saver           database saver to use
      * @param profileProvider the profile provider
      */
-    public JournalActionFactory(final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage, final PlayerDataStorage dataStorage, final InstantSource instantSource, final Saver saver, final ProfileProvider profileProvider) {
+    public JournalActionFactory(final BetonQuestLoggerFactory loggerFactory, final Translations translations, final PlayerDataStorage dataStorage, final InstantSource instantSource, final Saver saver, final ProfileProvider profileProvider) {
         this.loggerFactory = loggerFactory;
-        this.pluginMessage = pluginMessage;
+        this.translations = translations;
         this.dataStorage = dataStorage;
         this.instantSource = instantSource;
         this.saver = saver;
@@ -109,7 +110,7 @@ public class JournalActionFactory implements PlayerActionFactory, PlayerlessActi
         final Argument<JournalEntryIdentifier> entryID = instruction.chainForArgument(instruction.getPart(2)).identifier(JournalEntryIdentifier.class).get();
         final JournalChanger journalChanger = new AddEntryJournalChanger(instantSource, entryID);
         final NotificationSender notificationSender = new IngameNotificationSender(loggerFactory.create(JournalAction.class),
-                pluginMessage, instruction.getPackage(), instruction.getID().getFull(), NotificationLevel.INFO, "new_journal_entry");
+                translations, instruction.getPackage(), instruction.getID().getFull(), NotificationLevel.INFO, "new_journal_entry");
         return new JournalAction(dataStorage, journalChanger, notificationSender);
     }
 

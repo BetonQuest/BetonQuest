@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerPlaceholder;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 
 /**
@@ -17,15 +18,15 @@ public class TagPlaceholder extends AbstractTagPlaceholder<PlayerDataStorage> im
     /**
      * Constructs a new TagPlaceholder.
      *
-     * @param pluginMessage the {@link PluginMessage} instance
-     * @param data          the data holder
-     * @param tagName       the name of the tag
-     * @param questPackage  the quest package
-     * @param papiMode      whether PAPI mode is enabled
+     * @param translations the {@link PluginMessage} instance
+     * @param data         the data holder
+     * @param tagName      the name of the tag
+     * @param questPackage the quest package
+     * @param papiMode     whether PAPI mode is enabled
      */
-    public TagPlaceholder(final PluginMessage pluginMessage, final PlayerDataStorage data, final String tagName,
+    public TagPlaceholder(final Translations translations, final PlayerDataStorage data, final String tagName,
                           final QuestPackage questPackage, final FlagArgument<Boolean> papiMode) {
-        super(pluginMessage, data, tagName, questPackage, papiMode);
+        super(translations, data, tagName, questPackage, papiMode);
     }
 
     @Override

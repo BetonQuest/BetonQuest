@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
 import org.betonquest.betonquest.api.text.TextParser;
-import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.item.SimpleQuestItem;
 import org.betonquest.betonquest.item.SimpleQuestItemFactory;
 import org.betonquest.betonquest.item.typehandler.BookHandler;
@@ -45,7 +45,7 @@ public class UpdatedSimpleItemFactory extends SimpleQuestItemFactory {
      * @param questItemLoreSupplier supplies the plugin message instance if the "quest item" lore line should be added
      */
     public UpdatedSimpleItemFactory(final PlaceholderManager placeholders, final QuestPackageManager packManager, final TextParser textParser,
-                                    final BookPageWrapper bookPageWrapper, final Supplier<PluginMessage> questItemLoreSupplier) {
+                                    final BookPageWrapper bookPageWrapper, final Supplier<Translations> questItemLoreSupplier) {
         super(placeholders, packManager, textParser, bookPageWrapper, questItemLoreSupplier);
     }
 
@@ -56,9 +56,9 @@ public class UpdatedSimpleItemFactory extends SimpleQuestItemFactory {
         final NameHandler name = new UpdatedNameHandler(textParser);
         final LoreHandler lore = new LoreHandler(textParser);
 
-        final PluginMessage pluginMessage = questItemLoreSupplier.get();
+        final Translations translations = questItemLoreSupplier.get();
         final List<ItemMetaHandler<?>> handlers = List.of(
-                new QuestHandler(pluginMessage == null ? QuestHandler.LoreConsumer.EMPTY : new QuestHandler.Lore(pluginMessage)),
+                new QuestHandler(translations == null ? QuestHandler.LoreConsumer.EMPTY : new QuestHandler.Lore(translations)),
                 new DurabilityHandler(),
                 new UpdatedCustomModelDataHandler(),
                 new UnbreakableHandler(),

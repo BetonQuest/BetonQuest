@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.service.conversation.Conversations;
 import org.betonquest.betonquest.api.service.item.ItemManager;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.conversation.CombatTagger;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.id.item.ItemIdentifierFactory;
@@ -52,7 +53,7 @@ public class ListenersComponent extends AbstractCoreComponent {
         final ProfileProvider profileProvider = getDependency(ProfileProvider.class);
         final FileConfigAccessor config = getDependency(FileConfigAccessor.class);
         final PlayerDataStorage playerDataStorage = getDependency(PlayerDataStorage.class);
-        final PluginMessage pluginMessage = getDependency(PluginMessage.class);
+        final Translations translations = getDependency(PluginMessage.class);
         final ItemIdentifierFactory itemIdentifierFactory = getDependency(ItemIdentifierFactory.class);
         final ObjectiveProcessor objectiveProcessor = getDependency(ObjectiveProcessor.class);
         final ItemManager itemManager = getDependency(ItemManager.class);
@@ -65,7 +66,7 @@ public class ListenersComponent extends AbstractCoreComponent {
                 new CustomDropListener(loggerFactory.create(CustomDropListener.class), plugin, itemManager, itemIdentifierFactory),
                 new QuestItemHandler(config, playerDataStorage, profileProvider),
                 new QuestItemConvertListener(loggerFactory.create(QuestItemConvertListener.class),
-                        () -> config.getBoolean("item.quest.update_legacy_on_join"), pluginMessage, profileProvider),
+                        () -> config.getBoolean("item.quest.update_legacy_on_join"), translations, profileProvider),
                 new JoinQuitListener(config, objectiveProcessor, playerDataStorage,
                         conversations, profileProvider, updater)
         ).forEach(listener -> pluginManager.registerEvents(listener, plugin));

@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.service.compass.CompassManager;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.item.ItemManager;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.feature.Backpack;
 import org.betonquest.betonquest.kernel.processor.feature.CancelerProcessor;
@@ -47,7 +48,7 @@ public class BackpackCommand implements CommandExecutor {
     /**
      * The {@link PluginMessage} instance.
      */
-    private final PluginMessage pluginMessage;
+    private final Translations translations;
 
     /**
      * The profile provider instance.
@@ -86,7 +87,7 @@ public class BackpackCommand implements CommandExecutor {
      * @param loggerFactory     the logger factory
      * @param log               the logger that will be used for logging
      * @param config            the plugin configuration file
-     * @param pluginMessage     the {@link PluginMessage} instance
+     * @param translations      the {@link PluginMessage} instance
      * @param profileProvider   the profile provider instance
      * @param playerDataStorage the player data storage
      * @param cancelerProcessor the canceler processor
@@ -96,14 +97,14 @@ public class BackpackCommand implements CommandExecutor {
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public BackpackCommand(final Plugin plugin, final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                           final ConfigAccessor config, final PluginMessage pluginMessage, final ProfileProvider profileProvider,
+                           final ConfigAccessor config, final Translations translations, final ProfileProvider profileProvider,
                            final PlayerDataStorage playerDataStorage, final CancelerProcessor cancelerProcessor, final CompassManager compassManager,
                            final ItemManager itemManager, final Identifiers identifiers) {
         this.plugin = plugin;
         this.loggerFactory = loggerFactory;
         this.log = log;
         this.config = config;
-        this.pluginMessage = pluginMessage;
+        this.translations = translations;
         this.profileProvider = profileProvider;
         this.playerDataStorage = playerDataStorage;
         this.cancelerProcessor = cancelerProcessor;
@@ -120,7 +121,7 @@ public class BackpackCommand implements CommandExecutor {
                 final OnlineProfile onlineProfile = profileProvider.getProfile((Player) sender);
                 log.debug("Executing /backpack command for " + onlineProfile);
                 new Backpack(plugin, loggerFactory.create(Backpack.class), playerDataStorage.get(onlineProfile),
-                        cancelerProcessor, compassManager, itemManager, config, pluginMessage, identifiers, onlineProfile);
+                        cancelerProcessor, compassManager, itemManager, config, translations, identifiers, onlineProfile);
             }
             return true;
         }

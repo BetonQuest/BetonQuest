@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.Translations;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 
 import java.util.List;
@@ -29,26 +30,26 @@ public class LanguageConditionFactory implements PlayerConditionFactory {
     /**
      * The {@link PluginMessage} instance.
      */
-    private final PluginMessage pluginMessage;
+    private final Translations translations;
 
     /**
      * Create a language condition factory.
      *
      * @param dataStorage      the storage for used player data
      * @param languageProvider the language provider to get the default language
-     * @param pluginMessage    the {@link PluginMessage} instance
+     * @param translations     the {@link PluginMessage} instance
      */
     public LanguageConditionFactory(final PlayerDataStorage dataStorage, final LanguageProvider languageProvider,
-                                    final PluginMessage pluginMessage) {
+                                    final Translations translations) {
         this.dataStorage = dataStorage;
         this.languageProvider = languageProvider;
-        this.pluginMessage = pluginMessage;
+        this.translations = translations;
     }
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<List<String>> languages = instruction.string().validate(
-                        language -> pluginMessage.getLanguages().contains(language),
+                        language -> translations.getLanguages().contains(language),
                         "Language '%s' does not exist.")
                 .list().get();
         return new LanguageCondition(dataStorage, languageProvider, languages);
