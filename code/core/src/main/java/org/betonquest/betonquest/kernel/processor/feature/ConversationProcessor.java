@@ -124,7 +124,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationIdentifi
      * @param convIORegistry       the registry for available ConversationIOs
      * @param interceptorRegistry  the registry for available Interceptors
      * @param placeholders         the {@link PlaceholderManager} to create and resolve placeholders
-     * @param translations         the plugin message instance to use for ingame notifications
+     * @param translations         the Translations instance to use for ingame notifications
      * @param actionManager        the action manager
      * @param conditionManager     the condition manager
      * @param identifierFactory    the identifier factory to create {@link ConversationIdentifier}s for this type

@@ -20,7 +20,6 @@ import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.item.ItemManager;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
 import org.betonquest.betonquest.api.text.Text;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.feature.QuestCanceler;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
@@ -44,7 +43,7 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerIdentifier,
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Translations} instance.
      */
     private final Translations translations;
 
@@ -83,7 +82,7 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerIdentifier,
      *
      * @param log               the custom logger for this class
      * @param loggerFactory     the logger factory to create a new class-specific logger
-     * @param translations      the {@link PluginMessage} instance
+     * @param translations      the {@link Translations} instance
      * @param instructionApi    the instruction api to use
      * @param actionManager     the action manager
      * @param conditionManager  the condition manager

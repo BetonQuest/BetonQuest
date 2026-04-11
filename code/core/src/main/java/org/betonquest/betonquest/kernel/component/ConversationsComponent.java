@@ -10,7 +10,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.id.conversation.ConversationIdentifierFactory;
 import org.betonquest.betonquest.id.conversation.ConversationOptionIdentifierFactory;
@@ -44,7 +43,7 @@ public class ConversationsComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(Plugin.class,
                 QuestPackageManager.class, BetonQuestLoggerFactory.class, ProfileProvider.class, ConfigAccessor.class,
-                PluginMessage.class, ActionProcessor.class, ConditionProcessor.class, Instructions.class, Saver.class,
+                Translations.class, ActionProcessor.class, ConditionProcessor.class, Instructions.class, Saver.class,
                 Identifiers.class, ParsedSectionTextCreator.class, PlaceholderProcessor.class, ProcessorDataLoader.class);
     }
 
@@ -63,7 +62,7 @@ public class ConversationsComponent extends AbstractCoreComponent {
         final PlaceholderProcessor placeholderProcessor = getDependency(PlaceholderProcessor.class);
         final ProfileProvider profileProvider = getDependency(ProfileProvider.class);
         final ConfigAccessor config = getDependency(ConfigAccessor.class);
-        final Translations translations = getDependency(PluginMessage.class);
+        final Translations translations = getDependency(Translations.class);
         final ActionProcessor actionProcessor = getDependency(ActionProcessor.class);
         final ConditionProcessor conditionProcessor = getDependency(ConditionProcessor.class);
         final Instructions instructions = getDependency(Instructions.class);

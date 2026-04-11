@@ -136,7 +136,7 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
     /**
      * Adds the quest item lore to the item meta.
      *
-     * @param translations the plugin message instance to get the lore line
+     * @param translations the Translations instance to get the lore line
      */
     public record Lore(Translations translations) implements LoreConsumer {
 

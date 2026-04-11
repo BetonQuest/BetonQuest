@@ -223,7 +223,7 @@ public interface BetonQuestApi {
     CompassManager compasses();
 
     /**
-     * Offers access to the translations and available languages.
+     * Offers access to the translations of plugin messages and available languages.
      *
      * @return the translations
      */

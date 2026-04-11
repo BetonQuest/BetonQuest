@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerPlaceholder;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerPlaceholderFactory;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
-import org.betonquest.betonquest.config.PluginMessage;
 
 /**
  * Factory to create {@link ConditionPlaceholder}s from {@link Instruction}s.
@@ -17,7 +16,7 @@ import org.betonquest.betonquest.config.PluginMessage;
 public class ConditionPlaceholderFactory implements PlayerPlaceholderFactory {
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Translations} instance.
      */
     private final Translations translations;
 
@@ -30,7 +29,7 @@ public class ConditionPlaceholderFactory implements PlayerPlaceholderFactory {
      * Create the Condition Placeholder Factory.
      *
      * @param conditionManager the condition manager
-     * @param translations     the {@link PluginMessage} instance
+     * @param translations     the {@link Translations} instance
      */
     public ConditionPlaceholderFactory(final ConditionManager conditionManager, final Translations translations) {
         this.conditionManager = conditionManager;

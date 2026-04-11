@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerPlaceholder;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
-import org.betonquest.betonquest.config.PluginMessage;
 
 /**
  * Get the "fulfillment" status of a quest condition.
@@ -17,7 +16,7 @@ import org.betonquest.betonquest.config.PluginMessage;
 public class ConditionPlaceholder implements PlayerPlaceholder {
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Translations} instance.
      */
     private final Translations translations;
 
@@ -39,7 +38,7 @@ public class ConditionPlaceholder implements PlayerPlaceholder {
     /**
      * Create a new Condition placeholder.
      *
-     * @param translations     the {@link PluginMessage} instance
+     * @param translations     the {@link Translations} instance
      * @param conditionId      the condition to get the "fulfillment" status
      * @param conditionManager the condition manager
      * @param papiMode         if the return value should be in PAPI mode as defined in the documentation

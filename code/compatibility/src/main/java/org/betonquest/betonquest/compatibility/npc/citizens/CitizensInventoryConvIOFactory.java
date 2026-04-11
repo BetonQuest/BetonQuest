@@ -39,7 +39,7 @@ public class CitizensInventoryConvIOFactory implements ConversationIOFactory {
     private final Instructions instructions;
 
     /**
-     * The plugin message instance to use.
+     * The Translations instance to use.
      */
     private final Translations translations;
 
@@ -93,7 +93,7 @@ public class CitizensInventoryConvIOFactory implements ConversationIOFactory {
      * @param plugin          the plugin to use for the conversation
      * @param pluginManager   the plugin manager to use for the conversation
      * @param instructions    the instruction api to use for the conversation
-     * @param translations    the plugin message instance to use for the conversation
+     * @param translations    the Translations instance to use for the conversation
      * @param itemManager     the item manager to use for the conversation
      * @param profileProvider the profile provider to use for the conversation
      * @param conversations   the conversations instance

@@ -15,7 +15,6 @@ import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.npc.NpcManager;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
 import org.betonquest.betonquest.api.text.TextParser;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.database.PlayerDataFactory;
@@ -109,7 +108,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(Plugin.class, PluginManager.class, Server.class, BukkitScheduler.class,
                 BetonQuestLoggerFactory.class, ProfileProvider.class, PlayerDataFactory.class,
-                PlayerDataStorage.class, GlobalData.class, PluginMessage.class, LanguageProvider.class,
+                PlayerDataStorage.class, GlobalData.class, Translations.class, LanguageProvider.class,
                 Saver.class, TextParser.class, Instructions.class, Persistence.class,
                 ActionTypeRegistry.class, Conversations.class, ActionManager.class, ConditionManager.class,
                 ObjectiveManager.class, NpcManager.class, CompassManager.class, CancelerProcessor.class,
@@ -124,7 +123,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         final GlobalData globalData = getDependency(GlobalData.class);
         final PlayerDataStorage playerDataStorage = getDependency(PlayerDataStorage.class);
         final Persistence persistence = getDependency(Persistence.class);
-        final Translations translations = getDependency(PluginMessage.class);
+        final Translations translations = getDependency(Translations.class);
         final LanguageProvider languageProvider = getDependency(LanguageProvider.class);
         final TextParser textParser = getDependency(TextParser.class);
         final Saver saver = getDependency(Saver.class);

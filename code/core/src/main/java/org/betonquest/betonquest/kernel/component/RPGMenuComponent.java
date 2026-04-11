@@ -19,7 +19,6 @@ import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.objective.ObjectiveRegistry;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderRegistry;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.id.menu.MenuIdentifierFactory;
 import org.betonquest.betonquest.id.menu.MenuItemIdentifierFactory;
 import org.betonquest.betonquest.kernel.ProcessorDataLoader;
@@ -46,7 +45,7 @@ public class RPGMenuComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(QuestPackageManager.class, BetonQuestLoggerFactory.class, ConfigAccessor.class,
                 ProfileProvider.class, ArgumentParsers.class, Instructions.class, Identifiers.class,
-                ParsedSectionTextCreator.class, PluginMessage.class, Reloader.class,
+                ParsedSectionTextCreator.class, Translations.class, Reloader.class,
                 ActionManager.class, ConditionManager.class, ProcessorDataLoader.class,
                 ActionRegistry.class, ConditionRegistry.class, ObjectiveRegistry.class, PlaceholderRegistry.class);
     }
@@ -63,7 +62,7 @@ public class RPGMenuComponent extends AbstractCoreComponent {
         final Instructions instructions = getDependency(Instructions.class);
         final Identifiers identifiers = getDependency(Identifiers.class);
         final ParsedSectionTextCreator parsedSectionTextCreator = getDependency(ParsedSectionTextCreator.class);
-        final Translations translations = getDependency(PluginMessage.class);
+        final Translations translations = getDependency(Translations.class);
         final ConfigAccessor config = getDependency(ConfigAccessor.class);
         final ProfileProvider profileProvider = getDependency(ProfileProvider.class);
         final ActionManager actionManager = getDependency(ActionManager.class);

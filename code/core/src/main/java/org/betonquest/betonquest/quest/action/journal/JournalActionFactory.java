@@ -11,7 +11,6 @@ import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
@@ -34,7 +33,7 @@ public class JournalActionFactory implements PlayerActionFactory, PlayerlessActi
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Translations} instance.
      */
     private final Translations translations;
 
@@ -62,7 +61,7 @@ public class JournalActionFactory implements PlayerActionFactory, PlayerlessActi
      * Create the journal action factory.
      *
      * @param loggerFactory   the logger factory to create a logger for the actions
-     * @param translations    the {@link PluginMessage} instance
+     * @param translations    the {@link Translations} instance
      * @param dataStorage     storage for used player data
      * @param instantSource   instant source to pass on
      * @param saver           database saver to use

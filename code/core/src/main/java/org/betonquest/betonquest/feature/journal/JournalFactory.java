@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.text.TextParser;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.kernel.processor.feature.JournalEntryProcessor;
 import org.betonquest.betonquest.kernel.processor.feature.JournalMainPageProcessor;
 
@@ -25,7 +24,7 @@ public class JournalFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Translations} instance.
      */
     private final Translations translations;
 
@@ -63,7 +62,7 @@ public class JournalFactory {
      * Create a new Factory for Journals.
      *
      * @param loggerFactory     the logger Factory to create new class specific logger
-     * @param translations      the {@link PluginMessage} instance
+     * @param translations      the {@link Translations} instance
      * @param conditionManager  the Condition Manager
      * @param entryProcessor    the {@link JournalEntryProcessor} to process journal entries
      * @param mainPageProcessor the {@link JournalMainPageProcessor} to process the main page

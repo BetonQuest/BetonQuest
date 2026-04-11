@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.betonquest.betonquest.quest.action.NoNotificationSender;
 import org.betonquest.betonquest.quest.action.NotificationLevel;
@@ -26,7 +25,7 @@ public abstract class AbstractTakeActionFactory implements PlayerActionFactory {
     protected final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Translations} instance.
      */
     private final Translations translations;
 
@@ -34,7 +33,7 @@ public abstract class AbstractTakeActionFactory implements PlayerActionFactory {
      * Create the abstract take action factory.
      *
      * @param loggerFactory the logger factory to create a logger for the actions
-     * @param translations  the {@link PluginMessage} instance
+     * @param translations  the {@link Translations} instance
      */
     public AbstractTakeActionFactory(final BetonQuestLoggerFactory loggerFactory, final Translations translations) {
         this.loggerFactory = loggerFactory;

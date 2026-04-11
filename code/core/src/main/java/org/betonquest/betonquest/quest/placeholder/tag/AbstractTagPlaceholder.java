@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.argument.parser.PackageIdentifierParser;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
@@ -41,14 +40,14 @@ public abstract class AbstractTagPlaceholder<T> {
     protected final FlagArgument<Boolean> papiMode;
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Translations} instance.
      */
     private final Translations translations;
 
     /**
      * Constructs a new GlobalTagPlaceholder.
      *
-     * @param translations the {@link PluginMessage} instance
+     * @param translations the {@link Translations} instance
      * @param data         the data holder
      * @param tagName      the tag to check for
      * @param questPackage the quest package to check for the tag

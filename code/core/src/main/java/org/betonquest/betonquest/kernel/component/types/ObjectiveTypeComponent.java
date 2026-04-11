@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.service.action.ActionManager;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.kernel.registry.quest.ObjectiveTypeRegistry;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
@@ -66,7 +65,7 @@ public class ObjectiveTypeComponent extends AbstractCoreComponent {
     @Override
     public Set<Class<?>> requires() {
         return Set.of(BetonQuestLoggerFactory.class, ProfileProvider.class,
-                PluginMessage.class, PlayerDataStorage.class,
+                Translations.class, PlayerDataStorage.class,
                 ObjectiveTypeRegistry.class, ActionManager.class, ConditionManager.class, Plugin.class);
     }
 
@@ -74,7 +73,7 @@ public class ObjectiveTypeComponent extends AbstractCoreComponent {
     protected void load(final DependencyProvider dependencyProvider) {
         final BetonQuestLoggerFactory loggerFactory = getDependency(BetonQuestLoggerFactory.class);
         final ProfileProvider profileProvider = getDependency(ProfileProvider.class);
-        final Translations translations = getDependency(PluginMessage.class);
+        final Translations translations = getDependency(Translations.class);
         final PlayerDataStorage dataStorage = getDependency(PlayerDataStorage.class);
         final ObjectiveTypeRegistry objectiveTypes = getDependency(ObjectiveTypeRegistry.class);
         final ActionManager actionManager = getDependency(ActionManager.class);

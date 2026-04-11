@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.action.OnlineActionAdapter;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.quest.action.NotificationSender;
 
@@ -30,7 +29,7 @@ public class TakeActionFactory extends AbstractTakeActionFactory {
      *
      * @param loggerFactory     the logger factory to create a logger for the actions
      * @param playerDataStorage the storage providing player data
-     * @param translations      the {@link PluginMessage} instance
+     * @param translations      the {@link Translations} instance
      */
     public TakeActionFactory(final BetonQuestLoggerFactory loggerFactory, final PlayerDataStorage playerDataStorage,
                              final Translations translations) {

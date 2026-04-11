@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.service.compass.CompassManager;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.item.ItemManager;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.feature.Backpack;
 import org.betonquest.betonquest.feature.Backpack.DisplayType;
@@ -41,7 +40,7 @@ public class CompassCommand implements CommandExecutor {
     private final ConfigAccessor config;
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Translations} instance.
      */
     private final Translations translations;
 
@@ -81,7 +80,7 @@ public class CompassCommand implements CommandExecutor {
      * @param plugin            the plugin instance
      * @param loggerFactory     the logger factory
      * @param config            the plugin configuration accessor
-     * @param translations      the {@link PluginMessage} instance
+     * @param translations      the {@link Translations} instance
      * @param profileProvider   the profile provider instance
      * @param playerDataStorage the player data storage
      * @param cancelerProcessor the canceler processor

@@ -11,7 +11,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.betonquest.betonquest.quest.action.NotificationLevel;
 
@@ -31,7 +30,7 @@ public class MoneyActionFactory implements PlayerActionFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Translations} instance.
      */
     private final Translations translations;
 
@@ -40,7 +39,7 @@ public class MoneyActionFactory implements PlayerActionFactory {
      *
      * @param economy       the economy where the balance will be modified
      * @param loggerFactory the logger factory to create new logger instances.
-     * @param translations  the {@link PluginMessage} instance
+     * @param translations  the {@link Translations} instance
      */
     public MoneyActionFactory(final Economy economy, final BetonQuestLoggerFactory loggerFactory, final Translations translations) {
         this.economy = economy;

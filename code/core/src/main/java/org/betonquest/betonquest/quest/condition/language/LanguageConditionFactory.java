@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 
 import java.util.List;
@@ -28,7 +27,7 @@ public class LanguageConditionFactory implements PlayerConditionFactory {
     private final LanguageProvider languageProvider;
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Translations} instance.
      */
     private final Translations translations;
 
@@ -37,7 +36,7 @@ public class LanguageConditionFactory implements PlayerConditionFactory {
      *
      * @param dataStorage      the storage for used player data
      * @param languageProvider the language provider to get the default language
-     * @param translations     the {@link PluginMessage} instance
+     * @param translations     the {@link Translations} instance
      */
     public LanguageConditionFactory(final PlayerDataStorage dataStorage, final LanguageProvider languageProvider,
                                     final Translations translations) {

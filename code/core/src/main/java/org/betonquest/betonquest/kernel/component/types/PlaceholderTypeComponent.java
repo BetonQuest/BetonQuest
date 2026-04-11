@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.service.conversation.Conversations;
 import org.betonquest.betonquest.api.service.npc.NpcManager;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.kernel.registry.quest.PlaceholderTypeRegistry;
@@ -48,7 +47,7 @@ public class PlaceholderTypeComponent extends AbstractCoreComponent {
 
     @Override
     public Set<Class<?>> requires() {
-        return Set.of(Plugin.class, PluginMessage.class, GlobalData.class, PlayerDataStorage.class,
+        return Set.of(Plugin.class, Translations.class, GlobalData.class, PlayerDataStorage.class,
                 PlaceholderTypeRegistry.class, Conversations.class, ConditionManager.class,
                 ObjectiveManager.class, PlaceholderManager.class, NpcManager.class);
     }
@@ -57,7 +56,7 @@ public class PlaceholderTypeComponent extends AbstractCoreComponent {
     protected void load(final DependencyProvider dependencyProvider) {
         final Plugin plugin = getDependency(Plugin.class);
         final PlaceholderTypeRegistry placeholderTypes = getDependency(PlaceholderTypeRegistry.class);
-        final Translations translations = getDependency(PluginMessage.class);
+        final Translations translations = getDependency(Translations.class);
         final GlobalData globalData = getDependency(GlobalData.class);
         final PlayerDataStorage dataStorage = getDependency(PlayerDataStorage.class);
         final Conversations conversations = getDependency(Conversations.class);

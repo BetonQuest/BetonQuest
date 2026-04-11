@@ -54,7 +54,7 @@ public class ConversationListener implements Listener {
      * @param log                   the custom logger to use for error logging
      * @param conversationProcessor the conversation processor to get active conversations
      * @param profileProvider       the profile provider instance
-     * @param translations          the plugin message instance to use for ingame notifications
+     * @param translations          the Translations instance to use for ingame notifications
      * @param config                the config to load values from
      */
     public ConversationListener(final BetonQuestLogger log, final ConversationProcessor conversationProcessor,

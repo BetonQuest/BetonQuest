@@ -23,7 +23,6 @@ import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.npc.NpcManager;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.CombatTagger;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
@@ -67,7 +66,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Translations} instance.
      */
     private final Translations translations;
 
@@ -161,7 +160,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
      * @param npcIdentifierFactory          the identifier factory to create {@link NpcIdentifier}s for this type
      * @param conversationIdentifierFactory the identifier factory to create {@link ConversationIdentifier}s for this type
      * @param npcTypes                      the available npc types
-     * @param translations                  the {@link PluginMessage} instance
+     * @param translations                  the {@link Translations} instance
      * @param profileProvider               the profile provider instance
      * @param actionManager                 the action manager
      * @param conditionManager              the condition manager

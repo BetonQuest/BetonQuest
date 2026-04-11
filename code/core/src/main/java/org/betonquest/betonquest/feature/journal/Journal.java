@@ -23,7 +23,6 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.api.text.TextParser;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.kernel.processor.feature.JournalEntryProcessor;
@@ -69,7 +68,7 @@ public class Journal {
     private final BetonQuestLogger log;
 
     /**
-     * The plugin message instance used for getting messages.
+     * The Translations instance used for getting messages.
      */
     private final Translations translations;
 
@@ -133,7 +132,7 @@ public class Journal {
      * Creates a new Journal instance from List of Pointers.
      *
      * @param log               the custom {@link BetonQuestLogger} instance for this class
-     * @param translations      the {@link PluginMessage} instance
+     * @param translations      the {@link Translations} instance
      * @param conditionManager  the Condition Manager
      * @param mainPageProcessor the main page processor
      * @param entryProcessor    the entry processor

@@ -11,7 +11,6 @@ import org.betonquest.betonquest.api.quest.npc.NpcConversation;
 import org.betonquest.betonquest.api.service.conversation.Conversations;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.item.ItemManager;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.InventoryConvIO;
@@ -59,7 +58,7 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
      * @param profileProvider      the profile provider instance
      * @param pluginManager        the plugin manager instance
      * @param plugin               the plugin instance
-     * @param translations         the {@link PluginMessage} instance
+     * @param translations         the {@link Translations} instance
      * @param conversations        the conversations instance
      * @param showNumber           whether to show the number of the conversation
      * @param showNPCText          whether to show the NPC text

@@ -15,7 +15,6 @@ import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.npc.NpcManager;
 import org.betonquest.betonquest.api.service.npc.NpcRegistry;
 import org.betonquest.betonquest.api.service.npc.Npcs;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.id.conversation.ConversationIdentifierFactory;
 import org.betonquest.betonquest.id.npc.NpcIdentifierFactory;
@@ -44,7 +43,7 @@ public class NpcsComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(Plugin.class,
                 QuestPackageManager.class, BetonQuestLoggerFactory.class, ProfileProvider.class, ConfigAccessor.class,
-                Saver.class, PluginMessage.class, Instructions.class, Identifiers.class,
+                Saver.class, Translations.class, Instructions.class, Identifiers.class,
                 ConversationProcessor.class, ActionManager.class, ConditionManager.class,
                 ConversationIdentifierFactory.class, ProcessorDataLoader.class);
     }
@@ -64,7 +63,7 @@ public class NpcsComponent extends AbstractCoreComponent {
         final ActionManager actionManager = getDependency(ActionManager.class);
         final ConditionManager conditionManager = getDependency(ConditionManager.class);
         final ConversationIdentifierFactory conversationIdentifierFactory = getDependency(ConversationIdentifierFactory.class);
-        final Translations translations = getDependency(PluginMessage.class);
+        final Translations translations = getDependency(Translations.class);
         final ConfigAccessor config = getDependency(ConfigAccessor.class);
         final Saver saver = getDependency(Saver.class);
         final Identifiers identifiers = getDependency(Identifiers.class);

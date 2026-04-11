@@ -18,7 +18,6 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.service.action.ActionManager;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.interceptor.Interceptor;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.Saver.Record;
@@ -174,7 +173,7 @@ public class Conversation {
      * Starts a new conversation between player and npc at the specified location.
      *
      * @param log                   the logger that will be used for logging
-     * @param translations          the {@link PluginMessage} instance
+     * @param translations          the {@link Translations} instance
      * @param onlineProfile         the {@link OnlineProfile} of the player
      * @param conversationID        ID of the conversation
      * @param actionManager         the {@link ActionManager} instance

@@ -47,7 +47,7 @@ public class QuestItemConvertListener implements Listener {
     private final Supplier<Boolean> migrateSupplier;
 
     /**
-     * Plugin message to get the quest item and journal lines.
+     * Translations to get the quest item and journal lines.
      */
     private final Translations translations;
 
@@ -61,7 +61,7 @@ public class QuestItemConvertListener implements Listener {
      *
      * @param log             the custom logger for this class
      * @param migrateSupplier the supplier for if the ItemStacks in inventories should be updated
-     * @param translations    the plugin message to get the quest item and journal lines
+     * @param translations    the Translations to get the quest item and journal lines
      * @param profileProvider the profile provider to get profiles for message resolving
      */
     public QuestItemConvertListener(final BetonQuestLogger log, final Supplier<Boolean> migrateSupplier,

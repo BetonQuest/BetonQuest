@@ -15,7 +15,6 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.service.compass.CompassManager;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.item.ItemManager;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.item.typehandler.QuestHandler;
@@ -81,7 +80,7 @@ public class Backpack implements Listener {
     private final Identifiers identifiers;
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Translations} instance.
      */
     private final Translations translations;
 
@@ -114,7 +113,7 @@ public class Backpack implements Listener {
      * @param cancelerProcessor the {@link CancelerProcessor} to access the cancelers
      * @param compassManager    the {@link CompassManager} to access the compass targets
      * @param config            the plugin configuration file
-     * @param translations      the {@link PluginMessage} instance
+     * @param translations      the {@link Translations} instance
      * @param onlineProfile     the {@link OnlineProfile} of the player
      * @param itemManager       the {@link ItemManager} to access the items
      * @param identifiers       the identifier factory
@@ -152,7 +151,7 @@ public class Backpack implements Listener {
      * @param compassManager    the {@link CompassManager} to access the compass targets
      * @param itemManager       the {@link ItemManager} to access the items
      * @param config            the plugin configuration file
-     * @param translations      the {@link PluginMessage} instance
+     * @param translations      the {@link Translations} instance
      * @param identifiers       the identifier factory
      * @param onlineProfile     the {@link OnlineProfile} of the player
      */

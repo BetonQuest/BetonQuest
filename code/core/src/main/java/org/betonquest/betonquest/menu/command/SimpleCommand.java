@@ -188,7 +188,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     }
 
     /**
-     * Sends the resolved message from plugin message string.
+     * Sends the resolved message from Translations string.
      *
      * @param sender       the sender to get resolve the message and send it to
      * @param message      the message string to resolve
@@ -199,7 +199,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     }
 
     /**
-     * Get the resolved message from plugin message string.
+     * Get the resolved message from Translations string.
      *
      * @param sender       the sender to get resolve the message
      * @param message      the message string to resolve

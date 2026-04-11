@@ -78,7 +78,7 @@ public class RPGMenu {
      * @param loggerFactory             the factory to create new custom logger instances
      * @param instructions              the instruction api to use
      * @param pluginConfig              the plugin config
-     * @param translations              the plugin message instance
+     * @param translations              the Translations instance
      * @param textCreator               the text creator to parse text
      * @param profileProvider           the profile provider instance
      * @param parsers                   the argument parsers to use

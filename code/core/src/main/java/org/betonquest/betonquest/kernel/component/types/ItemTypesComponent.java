@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.service.item.ItemRegistry;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
 import org.betonquest.betonquest.api.text.TextParser;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.item.SimpleQuestItemFactory;
 import org.betonquest.betonquest.item.SimpleQuestItemSerializer;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
@@ -31,7 +30,7 @@ public class ItemTypesComponent extends AbstractCoreComponent {
     @Override
     public Set<Class<?>> requires() {
         return Set.of(QuestPackageManager.class, ConfigAccessor.class,
-                PluginMessage.class, TextParser.class,
+                Translations.class, TextParser.class,
                 ItemRegistry.class, FontRegistry.class, PlaceholderManager.class);
     }
 
@@ -39,7 +38,7 @@ public class ItemTypesComponent extends AbstractCoreComponent {
     protected void load(final DependencyProvider dependencyProvider) {
         final QuestPackageManager packManager = getDependency(QuestPackageManager.class);
         final ConfigAccessor config = getDependency(ConfigAccessor.class);
-        final Translations translations = getDependency(PluginMessage.class);
+        final Translations translations = getDependency(Translations.class);
         final TextParser textParser = getDependency(TextParser.class);
         final ItemRegistry itemRegistry = getDependency(ItemRegistry.class);
         final FontRegistry fontRegistry = getDependency(FontRegistry.class);

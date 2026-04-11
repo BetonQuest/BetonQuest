@@ -12,7 +12,6 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.service.action.ActionManager;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.database.Saver;
 import org.bukkit.Location;
@@ -53,7 +52,7 @@ public class ConversationStarter {
      * @param log                   the logger for this class
      * @param activeConversations   the list of conversations to add started
      * @param plugin                the plugin to start tasks
-     * @param translations          the {@link PluginMessage} instance
+     * @param translations          the {@link Translations} instance
      * @param actionManager         the action manager
      * @param conditionManager      the condition manager
      * @param conversationProcessor the conversation processor

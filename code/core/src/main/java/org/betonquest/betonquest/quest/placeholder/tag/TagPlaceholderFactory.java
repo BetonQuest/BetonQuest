@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.config.Translations;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerPlaceholder;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerPlaceholderFactory;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 
 /**
@@ -14,7 +13,7 @@ import org.betonquest.betonquest.data.PlayerDataStorage;
 public class TagPlaceholderFactory extends AbstractTagPlaceholderFactory<PlayerDataStorage> implements PlayerPlaceholderFactory {
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Translations} instance.
      */
     private final Translations translations;
 
@@ -22,7 +21,7 @@ public class TagPlaceholderFactory extends AbstractTagPlaceholderFactory<PlayerD
      * Creates a new TagPlaceholderFactory.
      *
      * @param dataHolder   the data holder
-     * @param translations the {@link PluginMessage} instance
+     * @param translations the {@link Translations} instance
      */
     public TagPlaceholderFactory(final PlayerDataStorage dataHolder, final Translations translations) {
         super(dataHolder);

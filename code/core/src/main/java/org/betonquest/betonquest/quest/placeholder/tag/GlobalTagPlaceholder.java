@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.config.Translations;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerlessPlaceholder;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.GlobalData;
 
 /**
@@ -17,7 +16,7 @@ public class GlobalTagPlaceholder extends AbstractTagPlaceholder<GlobalData> imp
     /**
      * Constructs a new GlobalTagPlaceholder.
      *
-     * @param translations the {@link PluginMessage} instance
+     * @param translations the {@link Translations} instance
      * @param data         the data holder
      * @param tagName      the tag to check for
      * @param questPackage the quest package to check for the tag

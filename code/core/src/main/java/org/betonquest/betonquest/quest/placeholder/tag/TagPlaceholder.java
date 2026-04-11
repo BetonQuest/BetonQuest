@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerPlaceholder;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 
 /**
@@ -18,7 +17,7 @@ public class TagPlaceholder extends AbstractTagPlaceholder<PlayerDataStorage> im
     /**
      * Constructs a new TagPlaceholder.
      *
-     * @param translations the {@link PluginMessage} instance
+     * @param translations the {@link Translations} instance
      * @param data         the data holder
      * @param tagName      the name of the tag
      * @param questPackage the quest package

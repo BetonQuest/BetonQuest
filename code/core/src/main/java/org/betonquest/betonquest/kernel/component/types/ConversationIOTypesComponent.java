@@ -10,7 +10,6 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.service.conversation.Conversations;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.item.ItemManager;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.io.InventoryConvIOFactory;
 import org.betonquest.betonquest.conversation.io.SimpleConvIOFactory;
@@ -39,7 +38,7 @@ public class ConversationIOTypesComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(Plugin.class, PluginManager.class,
                 BetonQuestLoggerFactory.class, ProfileProvider.class, ConfigAccessor.class,
-                ConversationColors.class, DefaultFontRegistry.class, PluginMessage.class, ConversationIORegistry.class,
+                ConversationColors.class, DefaultFontRegistry.class, Translations.class, ConversationIORegistry.class,
                 Conversations.class, ItemManager.class, Instructions.class);
     }
 
@@ -53,7 +52,7 @@ public class ConversationIOTypesComponent extends AbstractCoreComponent {
         final ConfigAccessor config = getDependency(ConfigAccessor.class);
         final FontRegistry fontRegistry = getDependency(FontRegistry.class);
         final ConversationIORegistry conversationIORegistry = getDependency(ConversationIORegistry.class);
-        final Translations translations = getDependency(PluginMessage.class);
+        final Translations translations = getDependency(Translations.class);
         final Conversations conversations = getDependency(Conversations.class);
         final ItemManager itemManager = getDependency(ItemManager.class);
         final Instructions instructions = getDependency(Instructions.class);

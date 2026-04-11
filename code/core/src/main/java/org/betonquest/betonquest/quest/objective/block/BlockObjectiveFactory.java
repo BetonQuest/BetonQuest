@@ -11,7 +11,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.betonquest.betonquest.quest.action.NotificationLevel;
 import org.bukkit.Location;
@@ -30,7 +29,7 @@ public class BlockObjectiveFactory implements ObjectiveFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Translations} instance.
      */
     private final Translations translations;
 
@@ -38,7 +37,7 @@ public class BlockObjectiveFactory implements ObjectiveFactory {
      * Creates a new instance of the BlockObjectiveFactory.
      *
      * @param loggerFactory the logger factory to create a logger for the objectives
-     * @param translations  the {@link PluginMessage} instance
+     * @param translations  the {@link Translations} instance
      */
     public BlockObjectiveFactory(final BetonQuestLoggerFactory loggerFactory, final Translations translations) {
         this.loggerFactory = loggerFactory;

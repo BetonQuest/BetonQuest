@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.config.Translations;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerlessPlaceholder;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerlessPlaceholderFactory;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.GlobalData;
 
 /**
@@ -14,7 +13,7 @@ import org.betonquest.betonquest.database.GlobalData;
 public class GlobalTagPlaceholderFactory extends AbstractTagPlaceholderFactory<GlobalData> implements PlayerlessPlaceholderFactory {
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Translations} instance.
      */
     private final Translations translations;
 
@@ -22,7 +21,7 @@ public class GlobalTagPlaceholderFactory extends AbstractTagPlaceholderFactory<G
      * Create a new GlobalTagPlaceholderFactory.
      *
      * @param dataHolder   the data holder
-     * @param translations the {@link PluginMessage} instance
+     * @param translations the {@link Translations} instance
      */
     public GlobalTagPlaceholderFactory(final GlobalData dataHolder, final Translations translations) {
         super(dataHolder);

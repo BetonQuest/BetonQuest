@@ -55,7 +55,7 @@ public class InventoryConvIOFactory implements ConversationIOFactory {
     private final PluginManager pluginManager;
 
     /**
-     * The plugin message instance to use.
+     * The Translations instance to use.
      */
     private final Translations translations;
 
@@ -124,7 +124,7 @@ public class InventoryConvIOFactory implements ConversationIOFactory {
      * @param colors          the colors to use for the conversation
      * @param plugin          the plugin instance
      * @param pluginManager   the plugin manager instance
-     * @param translations    the plugin message instance
+     * @param translations    the Translations instance
      * @param instructions    the instructions instance
      * @param conversations   the conversations instance
      * @param itemManager     the item manager instance

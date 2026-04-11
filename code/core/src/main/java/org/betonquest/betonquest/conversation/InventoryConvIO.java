@@ -122,7 +122,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
      * @param plugin               the plugin instance
      * @param pluginManager        the plugin manager instance
      * @param instructions         the instructions instance
-     * @param translations         the plugin message instance
+     * @param translations         the Translations instance
      * @param itemManager          the item manager instance
      * @param profileProvider      the profile provider instance
      * @param conversations        the conversations instance

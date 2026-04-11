@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.action.OnlineActionAdapter;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.betonquest.betonquest.quest.action.NoNotificationSender;
@@ -31,7 +30,7 @@ public class GiveActionFactory implements PlayerActionFactory {
     private final PlayerDataStorage dataStorage;
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Translations} instance.
      */
     private final Translations translations;
 
@@ -40,7 +39,7 @@ public class GiveActionFactory implements PlayerActionFactory {
      *
      * @param loggerFactory the logger factory to create a logger for the actions
      * @param dataStorage   the storage providing player backpack
-     * @param translations  the {@link PluginMessage} instance
+     * @param translations  the {@link Translations} instance
      */
     public GiveActionFactory(final BetonQuestLoggerFactory loggerFactory, final PlayerDataStorage dataStorage,
                              final Translations translations) {

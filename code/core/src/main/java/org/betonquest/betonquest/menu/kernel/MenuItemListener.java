@@ -54,7 +54,7 @@ public class MenuItemListener implements Listener {
      * @param rpgMenu         the rpg menu instance to open menus
      * @param menuProcessor   the menu processor to get menus
      * @param profileProvider the Profile Provider
-     * @param translations    the Plugin Message instance
+     * @param translations    the Translations instance
      */
     public MenuItemListener(final BetonQuestLogger log, final RPGMenu rpgMenu, final MenuProcessor menuProcessor,
                             final ProfileProvider profileProvider, final Translations translations) {

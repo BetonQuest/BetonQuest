@@ -21,7 +21,6 @@ import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.service.item.ItemManager;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
 import org.betonquest.betonquest.api.text.Text;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
@@ -112,7 +111,7 @@ public class QuestCanceler {
      * @param itemManager      the item manager
      * @param playerStorage    the player data storage
      * @param cancelerID       the log identifier
-     * @param translations     the {@link PluginMessage} instance
+     * @param translations     the {@link Translations} instance
      * @param names            the names used for displaying in different languages
      * @param item             the custom item used for displaying
      * @param pack             the {@link QuestPackage} of the canceler

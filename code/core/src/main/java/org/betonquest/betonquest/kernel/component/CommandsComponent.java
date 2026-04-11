@@ -22,7 +22,6 @@ import org.betonquest.betonquest.command.JournalCommand;
 import org.betonquest.betonquest.command.LangCommand;
 import org.betonquest.betonquest.command.QuestCommand;
 import org.betonquest.betonquest.compatibility.Compatibility;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.GlobalData;
@@ -58,7 +57,7 @@ public class CommandsComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(JavaPlugin.class, BetonQuestLoggerFactory.class, ConfigAccessorFactory.class,
                 ProfileProvider.class, PlayerDataFactory.class, PlayerDataStorage.class,
-                GlobalData.class, ConfigAccessor.class, PluginMessage.class, Updater.class,
+                GlobalData.class, ConfigAccessor.class, Translations.class, Updater.class,
                 Compatibility.class, QuestPackageManager.class, Connector.class, Saver.class,
                 ItemTypeRegistry.class, JournalEntryProcessor.class, CompassManager.class,
                 CancelerProcessor.class, Identifiers.class, ItemManager.class, ActionManager.class,
@@ -76,7 +75,7 @@ public class CommandsComponent extends AbstractCoreComponent {
         final GlobalData globalData = getDependency(GlobalData.class);
         final ConfigAccessor config = getDependency(ConfigAccessor.class);
         final PlayerDataStorage playerDataStorage = getDependency(PlayerDataStorage.class);
-        final Translations translations = getDependency(PluginMessage.class);
+        final Translations translations = getDependency(Translations.class);
         final Updater updater = getDependency(Updater.class);
         final Compatibility compatibility = getDependency(Compatibility.class);
         final QuestPackageManager questPackageManager = getDependency(QuestPackageManager.class);

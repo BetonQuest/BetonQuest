@@ -40,7 +40,6 @@ import org.betonquest.betonquest.api.service.item.ItemManager;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.IntegrationData;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Backup;
 import org.betonquest.betonquest.database.Connector;
@@ -140,7 +139,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private final PlayerDataFactory playerDataFactory;
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Translations} instance.
      */
     private final Translations translations;
 
@@ -2054,7 +2053,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param playerDataFactory       the player data factory
      * @param playerDataStorage       the player data storage
      * @param profileProvider         the profile provider
-     * @param translations            the plugin message
+     * @param translations            the Translations
      * @param updater                 the updater
      * @param compatibility           the compatibility
      * @param connector               the connector

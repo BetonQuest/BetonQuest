@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.identifier.QuestCancelerIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.id.cancel.QuestCancelerIdentifierFactory;
 import org.betonquest.betonquest.kernel.ProcessorDataLoader;
@@ -36,7 +35,7 @@ public class CancelersComponent extends AbstractCoreComponent {
     @Override
     public Set<Class<?>> requires() {
         return Set.of(QuestPackageManager.class, BetonQuestLoggerFactory.class, PlayerDataStorage.class,
-                PluginMessage.class, Identifiers.class, Instructions.class, ParsedSectionTextCreator.class,
+                Translations.class, Identifiers.class, Instructions.class, ParsedSectionTextCreator.class,
                 ActionProcessor.class, ConditionProcessor.class, ObjectiveProcessor.class, ItemProcessor.class,
                 ProcessorDataLoader.class);
     }
@@ -56,7 +55,7 @@ public class CancelersComponent extends AbstractCoreComponent {
         final ConditionProcessor conditionProcessor = getDependency(ConditionProcessor.class);
         final ObjectiveProcessor objectiveProcessor = getDependency(ObjectiveProcessor.class);
         final ItemProcessor itemProcessor = getDependency(ItemProcessor.class);
-        final Translations translations = getDependency(PluginMessage.class);
+        final Translations translations = getDependency(Translations.class);
         final PlayerDataStorage playerDataStorage = getDependency(PlayerDataStorage.class);
         final ParsedSectionTextCreator parsedSectionTextCreator = getDependency(ParsedSectionTextCreator.class);
         final ProcessorDataLoader processorDataLoader = getDependency(ProcessorDataLoader.class);

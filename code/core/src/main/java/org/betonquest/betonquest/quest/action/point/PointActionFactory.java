@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.betonquest.betonquest.quest.action.NoNotificationSender;
@@ -30,7 +29,7 @@ public class PointActionFactory implements PlayerActionFactory {
     private final PlayerDataStorage dataStorage;
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Translations} instance.
      */
     private final Translations translations;
 
@@ -39,7 +38,7 @@ public class PointActionFactory implements PlayerActionFactory {
      *
      * @param loggerFactory the logger factory to create a logger for the actions
      * @param dataStorage   the storage providing player data
-     * @param translations  the {@link PluginMessage} instance
+     * @param translations  the {@link Translations} instance
      */
     public PointActionFactory(final BetonQuestLoggerFactory loggerFactory, final PlayerDataStorage dataStorage,
                               final Translations translations) {

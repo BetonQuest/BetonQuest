@@ -42,7 +42,7 @@ public class UpdatedSimpleItemFactory extends SimpleQuestItemFactory {
      * @param packManager           the quest package manager to get quest packages from
      * @param textParser            the text parser used to parse text
      * @param bookPageWrapper       the book page wrapper used to split pages
-     * @param questItemLoreSupplier supplies the plugin message instance if the "quest item" lore line should be added
+     * @param questItemLoreSupplier supplies the Translations instance if the "quest item" lore line should be added
      */
     public UpdatedSimpleItemFactory(final PlaceholderManager placeholders, final QuestPackageManager packManager, final TextParser textParser,
                                     final BookPageWrapper bookPageWrapper, final Supplier<Translations> questItemLoreSupplier) {

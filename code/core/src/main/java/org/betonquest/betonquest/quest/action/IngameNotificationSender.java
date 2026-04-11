@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.LogSource;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.notify.Notify;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,7 +22,7 @@ public class IngameNotificationSender implements NotificationSender {
     private final BetonQuestLogger log;
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Translations} instance.
      */
     private final Translations translations;
 
@@ -52,7 +51,7 @@ public class IngameNotificationSender implements NotificationSender {
      * Create the info-category notification sender.
      *
      * @param log                  the logger that will be used for logging
-     * @param translations         the {@link PluginMessage} instance
+     * @param translations         the {@link Translations} instance
      * @param questPackage         quest package to send the message from
      * @param fullId               full ID of the message sending object
      * @param level                the notification level

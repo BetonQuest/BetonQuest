@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.service.conversation.Conversations;
 import org.betonquest.betonquest.api.service.item.ItemManager;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.CombatTagger;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.id.item.ItemIdentifierFactory;
@@ -41,7 +40,7 @@ public class ListenersComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(Plugin.class, PluginManager.class,
                 BetonQuestLoggerFactory.class, ProfileProvider.class, FileConfigAccessor.class,
-                PlayerDataStorage.class, PluginMessage.class,
+                PlayerDataStorage.class, Translations.class,
                 ItemIdentifierFactory.class, ObjectiveProcessor.class, ItemManager.class, Conversations.class, Updater.class);
     }
 
@@ -53,7 +52,7 @@ public class ListenersComponent extends AbstractCoreComponent {
         final ProfileProvider profileProvider = getDependency(ProfileProvider.class);
         final FileConfigAccessor config = getDependency(FileConfigAccessor.class);
         final PlayerDataStorage playerDataStorage = getDependency(PlayerDataStorage.class);
-        final Translations translations = getDependency(PluginMessage.class);
+        final Translations translations = getDependency(Translations.class);
         final ItemIdentifierFactory itemIdentifierFactory = getDependency(ItemIdentifierFactory.class);
         final ObjectiveProcessor objectiveProcessor = getDependency(ObjectiveProcessor.class);
         final ItemManager itemManager = getDependency(ItemManager.class);

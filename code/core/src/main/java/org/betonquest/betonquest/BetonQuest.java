@@ -13,7 +13,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.compatibility.Compatibility;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.AnswerFilter;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
@@ -178,12 +177,12 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * Get the plugin messages provider.
+     * Get the Translations provider.
      *
-     * @return plugin messages provider
+     * @return the Translations provider
      */
     public Translations getPluginMessage() {
-        return coreComponentLoader.get(PluginMessage.class);
+        return coreComponentLoader.get(Translations.class);
     }
 
     /**

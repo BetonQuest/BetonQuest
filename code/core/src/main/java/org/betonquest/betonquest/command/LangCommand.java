@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.config.Translations;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
@@ -41,7 +40,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
     private final PlayerDataStorage dataStorage;
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Translations} instance.
      */
     private final Translations translations;
 
@@ -65,7 +64,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
      *
      * @param log              the logger that will be used for logging
      * @param dataStorage      the storage providing player data
-     * @param translations     the {@link PluginMessage} instance
+     * @param translations     the {@link Translations} instance
      * @param profileProvider  the profile provider instance
      * @param languageProvider the language provider instance
      */

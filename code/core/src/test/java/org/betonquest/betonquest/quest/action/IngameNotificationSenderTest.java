@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerExtension;
 import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.notify.NotifyIO;
@@ -74,7 +73,7 @@ class IngameNotificationSenderTest {
     }
 
     private Translations getPluginMessage() throws QuestException {
-        final Translations translations = mock(PluginMessage.class);
+        final Translations translations = mock(Translations.class);
         final Component message = mock(Component.class);
         when(translations.getMessage(any(Profile.class), eq("message-name"))).thenReturn(message);
         return translations;

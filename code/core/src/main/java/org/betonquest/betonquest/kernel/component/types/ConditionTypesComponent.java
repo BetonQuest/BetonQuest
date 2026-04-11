@@ -10,7 +10,6 @@ import org.betonquest.betonquest.api.service.conversation.Conversations;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.npc.NpcManager;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
@@ -91,7 +90,7 @@ public class ConditionTypesComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(Plugin.class, Server.class,
                 BetonQuestLoggerFactory.class, ProfileProvider.class, GlobalData.class, PlayerDataStorage.class,
-                PluginMessage.class, LanguageProvider.class, Instructions.class,
+                Translations.class, LanguageProvider.class, Instructions.class,
                 ConditionTypeRegistry.class, Conversations.class, ConditionManager.class, ObjectiveManager.class,
                 NpcManager.class);
     }
@@ -104,7 +103,7 @@ public class ConditionTypesComponent extends AbstractCoreComponent {
         final ProfileProvider profileProvider = getDependency(ProfileProvider.class);
         final GlobalData globalData = getDependency(GlobalData.class);
         final PlayerDataStorage dataStorage = getDependency(PlayerDataStorage.class);
-        final Translations translations = getDependency(PluginMessage.class);
+        final Translations translations = getDependency(Translations.class);
         final LanguageProvider languageProvider = getDependency(LanguageProvider.class);
         final Instructions instructions = getDependency(Instructions.class);
         final ConditionTypeRegistry conditionTypes = getDependency(ConditionTypeRegistry.class);
