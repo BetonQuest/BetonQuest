@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.config.Zipper;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -24,6 +25,11 @@ import java.util.Locale;
 public final class Backup {
 
     /**
+     * The logger factory to use.
+     */
+    private final BetonQuestLoggerFactory factory;
+
+    /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
@@ -39,7 +45,7 @@ public final class Backup {
     private final File root;
 
     /**
-     * Connector to access database.
+     * Connector to access a database.
      */
     private final Connector con;
 
@@ -58,19 +64,21 @@ public final class Backup {
      * It will use the "database-backup.yml" for a single database backup and the "Backups" folder for a full backup
      * inside the given root folder.
      *
+     * @param factory               the logger factory to use
      * @param log                   the custom {@link BetonQuestLogger} instance for this class
      * @param configAccessorFactory the factory that will be used to create {@link ConfigAccessor}s
      * @param root                  the directory to back up and load to
      * @param connector             the connector used for database access
      */
-    public Backup(final BetonQuestLogger log, final ConfigAccessorFactory configAccessorFactory, final File root,
+    public Backup(final BetonQuestLoggerFactory factory, final BetonQuestLogger log, final ConfigAccessorFactory configAccessorFactory, final File root,
                   final Connector connector) {
-        this(log, configAccessorFactory, root, connector, new File(root, "database-backup.yml"), new File(root, "Backups"));
+        this(factory, log, configAccessorFactory, root, connector, new File(root, "database-backup.yml"), new File(root, "Backups"));
     }
 
     /**
      * Creates a new Object to store and load backups.
      *
+     * @param factory               the logger factory to use
      * @param log                   the custom {@link BetonQuestLogger} instance for this class
      * @param configAccessorFactory the factory that will be used to create {@link ConfigAccessor}s
      * @param root                  the directory to back up and load to
@@ -78,8 +86,9 @@ public final class Backup {
      * @param databaseBackupFile    the file to store/load a single database backup
      * @param backupFolder          the folder to store/load the full backup
      */
-    public Backup(final BetonQuestLogger log, final ConfigAccessorFactory configAccessorFactory, final File root,
+    public Backup(final BetonQuestLoggerFactory factory, final BetonQuestLogger log, final ConfigAccessorFactory configAccessorFactory, final File root,
                   final Connector connector, final File databaseBackupFile, final File backupFolder) {
+        this.factory = factory;
         this.log = log;
         this.configAccessorFactory = configAccessorFactory;
         this.root = root;
@@ -111,7 +120,8 @@ public final class Backup {
         }
 
         final String outputPath = backupFolder.getAbsolutePath() + File.separator + "backup-" + version;
-        Zipper.zip(root, outputPath, "^backup.*", "^database\\.db$", "^logs$");
+        new Zipper(factory.create(Zipper.class, "Zipper"), root, "^backup.*", "^database\\.db$", "^logs$")
+                .zip(outputPath);
         if (!databaseBackupFile.delete()) {
             log.warn("Could not delete database backup file!");
         }
@@ -140,9 +150,9 @@ public final class Backup {
             for (final String table : tables) {
                 log.debug("Loading " + table);
                 final String enumName = ("LOAD_ALL_" + table).toUpperCase(Locale.ROOT);
-                con.querySQL(QueryType.valueOf(enumName), new Arguments(), resultSet -> {
-                    writeBackup(table, resultSet, config);
-                }, "Could not backup %s from database!".formatted(table));
+                con.querySQL(QueryType.valueOf(enumName), new Arguments(),
+                        resultSet -> writeBackup(table, resultSet, config),
+                        "Could not backup %s from database!".formatted(table));
             }
             config.save();
         } catch (final IOException | InvalidConfigurationException e) {
@@ -217,8 +227,7 @@ public final class Backup {
             return;
         }
         // create tables if they don't exist, so we can be 100% sure
-        // that we can drop them without an error (should've been done
-        // in a different way...)
+        // that we can drop them without an error
         con.getDatabase().createTables();
         // drop all tables
         final Arguments args = new Arguments();

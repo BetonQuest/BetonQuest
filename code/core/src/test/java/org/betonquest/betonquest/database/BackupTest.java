@@ -3,7 +3,9 @@ package org.betonquest.betonquest.database;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.lib.config.DefaultConfigAccessorFactory;
+import org.betonquest.betonquest.logger.util.BetonQuestLoggerExtension;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.nio.file.Path;
@@ -17,13 +19,14 @@ import static org.mockito.Mockito.*;
 /**
  * Tests the backup class.
  */
+@ExtendWith(BetonQuestLoggerExtension.class)
 class BackupTest {
 
     @SuppressWarnings("PMD.CloseResource")
     @Test
-    void enum_existence(@TempDir final Path tempDir) throws SQLException {
+    void enum_existence(@TempDir final Path tempDir, final BetonQuestLoggerFactory factory, final BetonQuestLogger logger) throws SQLException {
         final Connector connector = mock(Connector.class);
-        final Backup backup = new Backup(mock(BetonQuestLogger.class),
+        final Backup backup = new Backup(factory, logger,
                 new DefaultConfigAccessorFactory(mock(BetonQuestLoggerFactory.class), mock(BetonQuestLogger.class)),
                 tempDir.toFile(), connector);
         final ResultSet emptyResult = mock(ResultSet.class);

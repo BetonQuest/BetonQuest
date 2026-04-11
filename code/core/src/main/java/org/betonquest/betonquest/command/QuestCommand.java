@@ -371,7 +371,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                             sendMessage(sender, "offline");
                             break;
                         }
-                        new Backup(loggerFactory.create(Backup.class), configAccessorFactory, plugin.getDataFolder(),
+                        new Backup(loggerFactory, loggerFactory.create(Backup.class), configAccessorFactory, plugin.getDataFolder(),
                                 connector).backup(plugin.getDescription().getVersion());
                         break;
                     case "debug":
