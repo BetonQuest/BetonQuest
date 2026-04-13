@@ -25,6 +25,7 @@ import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.kernel.processor.feature.ConversationProcessor;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.betonquest.betonquest.quest.action.NotificationLevel;
+import org.betonquest.betonquest.quest.action.NotificationSender;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -590,7 +591,7 @@ public class Conversation {
          *
          * @throws QuestException when starting options could not be resolved
          */
-        public void start() throws QuestException {
+        public void start(final NotificationSender didNotStartSender) throws QuestException {
             if (conversation.state.isStarted()) {
                 return;
             }
@@ -603,6 +604,15 @@ public class Conversation {
 
                 final OnlineProfile onlineProfile = conversation.onlineProfile;
 
+                final List<ResolvedOption> resolvedOptions = resolveOptions(startingOptions);
+                if (resolvedOptions.isEmpty()) {
+                    conversation.log.debug(conversation.pack, "No starting option found for conversation '%s', aborting start".formatted(conversation.identifier));
+                    didNotStartSender.sendNotification(onlineProfile, new VariableReplacement("npc",
+                            conversation.data.getPublicData().getQuester(conversation.log, onlineProfile)));
+                    conversation.endCallable.run();
+                    return;
+                }
+
                 conversation.startSender.sendNotification(onlineProfile,
                         new VariableReplacement("npc", conversation.data.getPublicData().getQuester(conversation.log, onlineProfile)));
                 conversation.state = ConversationState.ACTIVE;
@@ -610,7 +620,7 @@ public class Conversation {
                 conversation.inOut.begin();
                 conversation.interceptor.begin();
 
-                conversation.selectOption(resolveOptions(startingOptions), force);
+                conversation.selectOption(resolvedOptions, force);
                 conversation.printNPCText();
                 new ConversationOptionEvent(onlineProfile, conversation, conversation.nextNPCOption, conversation.nextNPCOption).callEvent();
             } finally {
