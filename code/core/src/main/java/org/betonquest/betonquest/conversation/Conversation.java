@@ -269,6 +269,7 @@ public class Conversation {
         inOut.clear();
         final ResolvedOption playerOption = availablePlayerOptions.get(number);
         if (playerOption == null) {
+            endCallable.run();
             throw new IllegalStateException("No selectable player option found in conversation " + identifier);
         }
         new PlayerActionRunner(playerOption).runTask(plugin);
@@ -693,6 +694,7 @@ public class Conversation {
                         Conversation.this.nextNPCOption).callEvent();
             } catch (final QuestException e) {
                 log.reportException(pack, e);
+                endCallable.run();
                 throw new IllegalStateException("Cannot ensure a valid conversation flow with unresolvable pointers.", e);
             } finally {
                 lock.readLock().unlock();
@@ -728,6 +730,7 @@ public class Conversation {
                 printOptions(resolvePointers(npcOption));
             } catch (final QuestException e) {
                 log.reportException(pack, e);
+                endCallable.run();
                 throw new IllegalStateException("Cannot ensure a valid conversation flow with unresolvable options.", e);
             } finally {
                 lock.readLock().unlock();
