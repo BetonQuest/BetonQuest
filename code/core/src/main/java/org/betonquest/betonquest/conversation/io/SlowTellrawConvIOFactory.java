@@ -21,7 +21,7 @@ public class SlowTellrawConvIOFactory implements ConversationIOFactory {
     /**
      * The logger factory to create new logger instances.
      */
-    private final BetonQuestLoggerFactory factory;
+    private final BetonQuestLoggerFactory loggerFactory;
 
     /**
      * The plugin configuration accessor.
@@ -51,16 +51,16 @@ public class SlowTellrawConvIOFactory implements ConversationIOFactory {
     /**
      * Create a new SlowTellraw conversation IO factory.
      *
-     * @param factory      the logger factory to create new logger instances
-     * @param config       the plugin configuration accessor
-     * @param plugin       the plugin instance
-     * @param message      the plugin message instance
-     * @param fontRegistry The font registry used for the conversation.
-     * @param colors       The colors used for the conversation.
+     * @param loggerFactory the logger factory to create new logger instances
+     * @param config        the plugin configuration accessor
+     * @param plugin        the plugin instance
+     * @param message       the plugin message instance
+     * @param fontRegistry  The font registry used for the conversation.
+     * @param colors        The colors used for the conversation.
      */
-    public SlowTellrawConvIOFactory(final BetonQuestLoggerFactory factory, final ConfigAccessor config, final Plugin plugin,
+    public SlowTellrawConvIOFactory(final BetonQuestLoggerFactory loggerFactory, final ConfigAccessor config, final Plugin plugin,
                                     final PluginMessage message, final FontRegistry fontRegistry, final ConversationColors colors) {
-        this.factory = factory;
+        this.loggerFactory = loggerFactory;
         this.config = config;
         this.plugin = plugin;
         this.message = message;
@@ -75,6 +75,6 @@ public class SlowTellrawConvIOFactory implements ConversationIOFactory {
         if (messageDelay <= 0) {
             throw new QuestException("Invalid message delay of %d for SlowTellraw Conversation IO!".formatted(messageDelay));
         }
-        return new SlowTellrawConvIO(factory.create(SlowTellrawConvIO.class), config, plugin, message, conversation, onlineProfile, messageDelay, componentLineWrapper, colors);
+        return new SlowTellrawConvIO(loggerFactory.create(SlowTellrawConvIO.class), config, plugin, message, conversation, onlineProfile, messageDelay, componentLineWrapper, colors);
     }
 }

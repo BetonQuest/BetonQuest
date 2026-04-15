@@ -32,7 +32,7 @@ public class MenuConvIOFactory implements ConversationIOFactory {
     /**
      * The logger factory to create new logger instances.
      */
-    private final BetonQuestLoggerFactory factory;
+    private final BetonQuestLoggerFactory loggerFactory;
 
     /**
      * The config accessor to the plugin's configuration.
@@ -72,7 +72,7 @@ public class MenuConvIOFactory implements ConversationIOFactory {
     /**
      * Create a new Menu conversation IO factory.
      *
-     * @param factory       the logger factory to create new logger instances
+     * @param loggerFactory the logger factory to create new logger instances
      * @param config        the plugin configuration accessor
      * @param plugin        the plugin instance
      * @param message       the plugin message instance
@@ -81,11 +81,11 @@ public class MenuConvIOFactory implements ConversationIOFactory {
      * @param fontRegistry  the font registry used for the conversation
      * @param colors        the colors used for the conversation
      */
-    public MenuConvIOFactory(final BetonQuestLoggerFactory factory, final ConfigAccessor config, final Plugin plugin,
+    public MenuConvIOFactory(final BetonQuestLoggerFactory loggerFactory, final ConfigAccessor config, final Plugin plugin,
                              final PluginMessage message,
                              final TriFunction<Player, ConversationAction, Boolean, ConversationSession> inputFunction,
                              final TextParser textParser, final FontRegistry fontRegistry, final ConversationColors colors) {
-        this.factory = factory;
+        this.loggerFactory = loggerFactory;
         this.config = config;
         this.plugin = plugin;
         this.message = message;
@@ -99,7 +99,7 @@ public class MenuConvIOFactory implements ConversationIOFactory {
     public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) throws QuestException {
         final MenuConvIOSettings settings = MenuConvIOSettings.fromConfigurationSection(textParser, config.getConfigurationSection("conversation.io.menu"));
         final FixedComponentLineWrapper componentLineWrapper = new FixedComponentLineWrapper(fontRegistry, settings.lineLength());
-        return new MenuConvIO(factory.create(MenuConvIO.class), config, plugin, message, inputFunction, conversation, onlineProfile, colors, settings,
+        return new MenuConvIO(loggerFactory.create(MenuConvIO.class), config, plugin, message, inputFunction, conversation, onlineProfile, colors, settings,
                 componentLineWrapper, getControls(settings));
     }
 

@@ -62,7 +62,7 @@ public class DefaultObjectiveServiceProvider implements ObjectiveServiceProvider
     /**
      * The logger factory to inject into other services.
      */
-    private final BetonQuestLoggerFactory factory;
+    private final BetonQuestLoggerFactory loggerFactory;
 
     /**
      * The instruction api to use.
@@ -80,17 +80,17 @@ public class DefaultObjectiveServiceProvider implements ObjectiveServiceProvider
      * @param plugin             the plugin instance
      * @param conditionProcessor the condition processor
      * @param actionProcessor    the action processor
-     * @param factory            the logger factory
+     * @param loggerFactory      the logger factory
      * @param profileProvider    the profile provider
      * @param instructionApi     the instruction api
      */
     public DefaultObjectiveServiceProvider(final Plugin plugin, final ConditionProcessor conditionProcessor, final ActionProcessor actionProcessor,
-                                           final BetonQuestLoggerFactory factory, final ProfileProvider profileProvider,
+                                           final BetonQuestLoggerFactory loggerFactory, final ProfileProvider profileProvider,
                                            final Instructions instructionApi) {
-        this.eventService = new DefaultBukkitEventService(plugin, factory);
-        this.factory = factory;
+        this.eventService = new DefaultBukkitEventService(plugin, loggerFactory);
+        this.loggerFactory = loggerFactory;
         this.instructionApi = instructionApi;
-        this.logger = this.factory.create(DefaultObjectiveServiceProvider.class);
+        this.logger = this.loggerFactory.create(DefaultObjectiveServiceProvider.class);
         this.profileProvider = profileProvider;
         this.actionProcessor = actionProcessor;
         this.conditionProcessor = conditionProcessor;
@@ -110,7 +110,7 @@ public class DefaultObjectiveServiceProvider implements ObjectiveServiceProvider
         }
         final Instruction objectiveInstruction = instructionApi.create(objectiveID, objectiveID.readRawInstruction());
         final DefaultObjectiveService service = new DefaultObjectiveService(objectiveID, actionProcessor,
-                conditionProcessor, this, factory, profileProvider, objectiveInstruction);
+                conditionProcessor, this, loggerFactory, profileProvider, objectiveInstruction);
         services.put(objectiveID, service);
         return service;
     }

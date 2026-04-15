@@ -27,7 +27,7 @@ public final class Backup {
     /**
      * The logger factory to use.
      */
-    private final BetonQuestLoggerFactory factory;
+    private final BetonQuestLoggerFactory loggerFactory;
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -64,21 +64,21 @@ public final class Backup {
      * It will use the "database-backup.yml" for a single database backup and the "Backups" folder for a full backup
      * inside the given root folder.
      *
-     * @param factory               the logger factory to use
+     * @param loggerFactory         the logger factory to use
      * @param log                   the custom {@link BetonQuestLogger} instance for this class
      * @param configAccessorFactory the factory that will be used to create {@link ConfigAccessor}s
      * @param root                  the directory to back up and load to
      * @param connector             the connector used for database access
      */
-    public Backup(final BetonQuestLoggerFactory factory, final BetonQuestLogger log, final ConfigAccessorFactory configAccessorFactory, final File root,
+    public Backup(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final ConfigAccessorFactory configAccessorFactory, final File root,
                   final Connector connector) {
-        this(factory, log, configAccessorFactory, root, connector, new File(root, "database-backup.yml"), new File(root, "Backups"));
+        this(loggerFactory, log, configAccessorFactory, root, connector, new File(root, "database-backup.yml"), new File(root, "Backups"));
     }
 
     /**
      * Creates a new Object to store and load backups.
      *
-     * @param factory               the logger factory to use
+     * @param loggerFactory         the logger factory to use
      * @param log                   the custom {@link BetonQuestLogger} instance for this class
      * @param configAccessorFactory the factory that will be used to create {@link ConfigAccessor}s
      * @param root                  the directory to back up and load to
@@ -86,9 +86,9 @@ public final class Backup {
      * @param databaseBackupFile    the file to store/load a single database backup
      * @param backupFolder          the folder to store/load the full backup
      */
-    public Backup(final BetonQuestLoggerFactory factory, final BetonQuestLogger log, final ConfigAccessorFactory configAccessorFactory, final File root,
+    public Backup(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final ConfigAccessorFactory configAccessorFactory, final File root,
                   final Connector connector, final File databaseBackupFile, final File backupFolder) {
-        this.factory = factory;
+        this.loggerFactory = loggerFactory;
         this.log = log;
         this.configAccessorFactory = configAccessorFactory;
         this.root = root;
@@ -120,7 +120,7 @@ public final class Backup {
         }
 
         final String outputPath = backupFolder.getAbsolutePath() + File.separator + "backup-" + version;
-        new Zipper(factory.create(Zipper.class, "Zipper"), root, "^backup.*", "^database\\.db$", "^logs$")
+        new Zipper(loggerFactory.create(Zipper.class, "Zipper"), root, "^backup.*", "^database\\.db$", "^logs$")
                 .zip(outputPath);
         if (!databaseBackupFile.delete()) {
             log.warn("Could not delete database backup file!");

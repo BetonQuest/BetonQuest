@@ -18,7 +18,7 @@ public class TellrawConvIOFactory implements ConversationIOFactory {
     /**
      * The logger factory to create new logger instances.
      */
-    private final BetonQuestLoggerFactory factory;
+    private final BetonQuestLoggerFactory loggerFactory;
 
     /**
      * The plugin configuration accessor.
@@ -43,15 +43,15 @@ public class TellrawConvIOFactory implements ConversationIOFactory {
     /**
      * Create a new Tellraw conversation IO factory.
      *
-     * @param factory the logger factory to create new logger instances
-     * @param config  the plugin configuration accessor
-     * @param plugin  the plugin instance
-     * @param message the plugin message instance
-     * @param colors  the colors used for the conversation
+     * @param loggerFactory the logger factory to create new logger instances
+     * @param config        the plugin configuration accessor
+     * @param plugin        the plugin instance
+     * @param message       the plugin message instance
+     * @param colors        the colors used for the conversation
      */
-    public TellrawConvIOFactory(final BetonQuestLoggerFactory factory, final ConfigAccessor config, final Plugin plugin,
+    public TellrawConvIOFactory(final BetonQuestLoggerFactory loggerFactory, final ConfigAccessor config, final Plugin plugin,
                                 final PluginMessage message, final ConversationColors colors) {
-        this.factory = factory;
+        this.loggerFactory = loggerFactory;
         this.config = config;
         this.plugin = plugin;
         this.message = message;
@@ -60,6 +60,6 @@ public class TellrawConvIOFactory implements ConversationIOFactory {
 
     @Override
     public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) {
-        return new TellrawConvIO(factory.create(TellrawConvIO.class), config, plugin, message, conversation, onlineProfile, colors);
+        return new TellrawConvIO(loggerFactory.create(TellrawConvIO.class), config, plugin, message, conversation, onlineProfile, colors);
     }
 }

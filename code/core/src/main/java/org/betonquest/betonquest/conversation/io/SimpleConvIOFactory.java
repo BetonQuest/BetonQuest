@@ -18,7 +18,7 @@ public class SimpleConvIOFactory implements ConversationIOFactory {
     /**
      * The logger factory to create new logger instances.
      */
-    private final BetonQuestLoggerFactory factory;
+    private final BetonQuestLoggerFactory loggerFactory;
 
     /**
      * The plugin configuration accessor.
@@ -43,15 +43,15 @@ public class SimpleConvIOFactory implements ConversationIOFactory {
     /**
      * Create a new Simple conversation IO factory.
      *
-     * @param factory the logger factory to create new logger instances
-     * @param config  the plugin configuration accessor
-     * @param plugin  the plugin instance
-     * @param message the plugin message instance
-     * @param colors  the colors used for the conversation
+     * @param loggerFactory the logger factory to create new logger instances
+     * @param config        the plugin configuration accessor
+     * @param plugin        the plugin instance
+     * @param message       the plugin message instance
+     * @param colors        the colors used for the conversation
      */
-    public SimpleConvIOFactory(final BetonQuestLoggerFactory factory, final ConfigAccessor config, final Plugin plugin,
+    public SimpleConvIOFactory(final BetonQuestLoggerFactory loggerFactory, final ConfigAccessor config, final Plugin plugin,
                                final PluginMessage message, final ConversationColors colors) {
-        this.factory = factory;
+        this.loggerFactory = loggerFactory;
         this.config = config;
         this.plugin = plugin;
         this.message = message;
@@ -60,6 +60,6 @@ public class SimpleConvIOFactory implements ConversationIOFactory {
 
     @Override
     public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) {
-        return new SimpleConvIO(factory.create(SimpleConvIO.class), config, plugin, message, conversation, onlineProfile, colors);
+        return new SimpleConvIO(loggerFactory.create(SimpleConvIO.class), config, plugin, message, conversation, onlineProfile, colors);
     }
 }
