@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.conversation.io;
 
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.ConversationIO;
@@ -31,9 +31,9 @@ public class TellrawConvIOFactory implements ConversationIOFactory {
     private final Plugin plugin;
 
     /**
-     * The plugin message instance.
+     * The Localizations instance.
      */
-    private final PluginMessage message;
+    private final Localizations localizations;
 
     /**
      * The colors used for the conversation.
@@ -46,20 +46,20 @@ public class TellrawConvIOFactory implements ConversationIOFactory {
      * @param loggerFactory the logger factory to create new logger instances
      * @param config        the plugin configuration accessor
      * @param plugin        the plugin instance
-     * @param message       the plugin message instance
+     * @param localizations the Localizations instance
      * @param colors        the colors used for the conversation
      */
     public TellrawConvIOFactory(final BetonQuestLoggerFactory loggerFactory, final ConfigAccessor config, final Plugin plugin,
-                                final PluginMessage message, final ConversationColors colors) {
+                                final Localizations localizations, final ConversationColors colors) {
         this.loggerFactory = loggerFactory;
         this.config = config;
         this.plugin = plugin;
-        this.message = message;
+        this.localizations = localizations;
         this.colors = colors;
     }
 
     @Override
     public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) {
-        return new TellrawConvIO(loggerFactory.create(TellrawConvIO.class), config, plugin, message, conversation, onlineProfile, colors);
+        return new TellrawConvIO(loggerFactory.create(TellrawConvIO.class), config, plugin, localizations, conversation, onlineProfile, colors);
     }
 }

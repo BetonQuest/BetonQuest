@@ -3,9 +3,9 @@ package org.betonquest.betonquest.conversation.io;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.bukkit.event.EventHandler;
@@ -54,7 +54,7 @@ public class SlowTellrawConvIO extends TellrawConvIO {
      * @param log                  the logger that will be used for logging
      * @param config               the plugin configuration accessor
      * @param plugin               the plugin instance
-     * @param message              the plugin message instance
+     * @param localizations        the Localizations instance
      * @param conv                 the conversation this IO is part of
      * @param onlineProfile        the online profile of the player participating in the conversation
      * @param messageDelay         the delay in ticks between messages sent in the conversation
@@ -62,10 +62,10 @@ public class SlowTellrawConvIO extends TellrawConvIO {
      * @param colors               the colors used in the conversation
      */
     public SlowTellrawConvIO(final BetonQuestLogger log, final ConfigAccessor config, final Plugin plugin,
-                             final PluginMessage message, final Conversation conv, final OnlineProfile onlineProfile,
+                             final Localizations localizations, final Conversation conv, final OnlineProfile onlineProfile,
                              final int messageDelay, final FixedComponentLineWrapper componentLineWrapper,
                              final ConversationColors colors) {
-        super(log, config, plugin, message, conv, onlineProfile, colors);
+        super(log, config, plugin, localizations, conv, onlineProfile, colors);
         this.plugin = plugin;
         this.componentLineWrapper = componentLineWrapper;
         this.messageDelay = messageDelay;
