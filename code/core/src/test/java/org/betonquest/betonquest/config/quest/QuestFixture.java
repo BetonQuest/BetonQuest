@@ -46,12 +46,12 @@ public class QuestFixture {
      * Mocked Logger Factory.
      */
     @Mock
-    protected BetonQuestLoggerFactory factory;
+    protected BetonQuestLoggerFactory loggerFactory;
 
     protected Quest setupQuest() throws IOException, InvalidConfigurationException {
         final File packageConfigFile = questDirectory.resolve("package.yml").toFile();
         original.save(packageConfigFile);
-        return new Quest(logger, new DefaultConfigAccessorFactory(factory, logger), "test", questDirectory.toFile(), List.of(packageConfigFile));
+        return new Quest(logger, new DefaultConfigAccessorFactory(loggerFactory, logger), "test", questDirectory.toFile(), List.of(packageConfigFile));
     }
 
     protected Quest setupQuest(final String alternativePath)
@@ -60,7 +60,7 @@ public class QuestFixture {
         new YamlConfiguration().save(packageConfigFile);
         final File alternativeFile = questDirectory.resolve(alternativePath).toFile();
         original.save(alternativeFile);
-        return new Quest(logger, new DefaultConfigAccessorFactory(factory, logger), "test", questDirectory.toFile(),
+        return new Quest(logger, new DefaultConfigAccessorFactory(loggerFactory, logger), "test", questDirectory.toFile(),
                 List.of(packageConfigFile, alternativeFile));
     }
 

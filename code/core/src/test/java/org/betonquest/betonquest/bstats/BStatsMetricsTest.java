@@ -87,7 +87,7 @@ class BStatsMetricsTest {
         when(server.getPluginManager()).thenReturn(pluginManager);
     }
 
-    private QuestPackage setupQuestPackage(final BetonQuestLoggerFactory factory, final BetonQuestLogger logger, final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+    private QuestPackage setupQuestPackage(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
         final Path packageDirectory = questPackagesDirectory.resolve("test");
         if (!packageDirectory.toFile().mkdir()) {
             throw new IOException("Failed to create test package directory.");
@@ -96,7 +96,7 @@ class BStatsMetricsTest {
         if (!packageConfigFile.createNewFile()) {
             throw new IOException("Failed to create test package main configuration file.");
         }
-        return new QuestPackageImpl(logger, new DefaultConfigAccessorFactory(factory, logger), PACKAGE_PATH, packageConfigFile, Collections.emptyList());
+        return new QuestPackageImpl(logger, new DefaultConfigAccessorFactory(loggerFactory, logger), PACKAGE_PATH, packageConfigFile, Collections.emptyList());
     }
 
     @Test
@@ -116,11 +116,11 @@ class BStatsMetricsTest {
 
     @Test
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    void testCustomChartCallableGetsUpdates(final BetonQuestLoggerFactory factory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void testCustomChartCallableGetsUpdates(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         setupLogger();
         final Plugin plugin = mock(Plugin.class);
 
-        final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
+        final QuestPackage questPackage = setupQuestPackage(loggerFactory, logger, questPackagesDirectory);
 
         final PluginDescriptionFile description = new PluginDescriptionFile("BetonQuest", "2.0.0", "org.betonquest.betonquest.BetonQuest");
         when(plugin.getDescription()).thenReturn(description);

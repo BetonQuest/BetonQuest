@@ -100,21 +100,21 @@ public class DefaultObjectiveService implements ObjectiveService {
      * @param actionProcessor      the event processor to use
      * @param conditionProcessor   the condition processor to use
      * @param objectiveService     the event service to request events from
-     * @param factory              the logger factory to use
+     * @param loggerFactory        the logger factory to use
      * @param profileProvider      the profile provider to use
      * @param objectiveInstruction the objective instruction to parse
      * @throws QuestException if the objective service data of the instruction could not be parsed
      */
     public DefaultObjectiveService(final ObjectiveIdentifier objectiveID, final ActionProcessor actionProcessor,
                                    final ConditionProcessor conditionProcessor, final ObjectiveServiceProvider objectiveService,
-                                   final BetonQuestLoggerFactory factory, final ProfileProvider profileProvider,
+                                   final BetonQuestLoggerFactory loggerFactory, final ProfileProvider profileProvider,
                                    final Instruction objectiveInstruction) throws QuestException {
         this.objectiveID = objectiveID;
         this.objectiveService = objectiveService;
         this.actionProcessor = actionProcessor;
         this.conditionProcessor = conditionProcessor;
         this.profileProvider = profileProvider;
-        this.logger = factory.create(DefaultObjectiveService.class);
+        this.logger = loggerFactory.create(DefaultObjectiveService.class);
         this.properties = new DefaultObjectiveProperties(this.logger);
         this.questExceptionHandler = new DefaultQuestExceptionHandler(objectiveID.getPackage(), this.logger, objectiveID.getFull());
         this.objectiveServiceData = parseObjectiveData(objectiveInstruction);

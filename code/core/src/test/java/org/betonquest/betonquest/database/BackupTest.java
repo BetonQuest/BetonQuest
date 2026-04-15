@@ -24,9 +24,9 @@ class BackupTest {
 
     @SuppressWarnings("PMD.CloseResource")
     @Test
-    void enum_existence(@TempDir final Path tempDir, final BetonQuestLoggerFactory factory, final BetonQuestLogger logger) throws SQLException {
+    void enum_existence(@TempDir final Path tempDir, final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger) throws SQLException {
         final Connector connector = mock(Connector.class);
-        final Backup backup = new Backup(factory, logger,
+        final Backup backup = new Backup(loggerFactory, logger,
                 new DefaultConfigAccessorFactory(mock(BetonQuestLoggerFactory.class), mock(BetonQuestLogger.class)),
                 tempDir.toFile(), connector);
         final ResultSet emptyResult = mock(ResultSet.class);

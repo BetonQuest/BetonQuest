@@ -4,7 +4,10 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.ChatConvIO;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
@@ -14,6 +17,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,12 +46,18 @@ public class TellrawConvIO extends ChatConvIO {
     /**
      * Creates a new TellrawConvIO instance.
      *
+     * @param log           the logger that will be used for logging
+     * @param config        the plugin configuration accessor
+     * @param plugin        the plugin instance
+     * @param message       the plugin message instance
      * @param conv          the conversation this IO is part of
      * @param onlineProfile the online profile of the player participating in the conversation
      * @param colors        the colors used in the conversation
      */
-    public TellrawConvIO(final Conversation conv, final OnlineProfile onlineProfile, final ConversationColors colors) {
-        super(conv, onlineProfile, colors);
+    public TellrawConvIO(final BetonQuestLogger log, final ConfigAccessor config, final Plugin plugin,
+                         final PluginMessage message, final Conversation conv, final OnlineProfile onlineProfile,
+                         final ConversationColors colors) {
+        super(log, config, plugin, message, conv, onlineProfile, colors);
         hashes = new ArrayList<>();
     }
 

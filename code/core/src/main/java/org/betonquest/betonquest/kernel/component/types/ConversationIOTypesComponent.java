@@ -57,12 +57,12 @@ public class ConversationIOTypesComponent extends AbstractCoreComponent {
         final ItemManager itemManager = getDependency(ItemManager.class);
         final Instructions instructions = getDependency(Instructions.class);
 
-        conversationIORegistry.register("simple", new SimpleConvIOFactory(colors));
-        conversationIORegistry.register("tellraw", new TellrawConvIOFactory(colors));
+        conversationIORegistry.register("simple", new SimpleConvIOFactory(loggerFactory, config, plugin, pluginMessage, colors));
+        conversationIORegistry.register("tellraw", new TellrawConvIOFactory(loggerFactory, config, plugin, pluginMessage, colors));
         final InventoryConvIOFactory.ConstructorParameters inventoryConvParams = new InventoryConvIOFactory.ConstructorParameters(
                 loggerFactory, config, fontRegistry, colors, plugin, pluginManager, pluginMessage, instructions, conversations, itemManager, profileProvider);
         conversationIORegistry.register("chest", new InventoryConvIOFactory(inventoryConvParams, false));
         conversationIORegistry.register("combined", new InventoryConvIOFactory(inventoryConvParams, true));
-        conversationIORegistry.register("slowtellraw", new SlowTellrawConvIOFactory(fontRegistry, colors));
+        conversationIORegistry.register("slowtellraw", new SlowTellrawConvIOFactory(loggerFactory, config, plugin, pluginMessage, fontRegistry, colors));
     }
 }
