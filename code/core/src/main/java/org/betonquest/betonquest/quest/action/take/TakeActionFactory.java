@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.action.take;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
@@ -29,11 +29,11 @@ public class TakeActionFactory extends AbstractTakeActionFactory {
      *
      * @param loggerFactory     the logger factory to create a logger for the actions
      * @param playerDataStorage the storage providing player data
-     * @param translations      the {@link Translations} instance
+     * @param localizations     the {@link Localizations} instance
      */
     public TakeActionFactory(final BetonQuestLoggerFactory loggerFactory, final PlayerDataStorage playerDataStorage,
-                             final Translations translations) {
-        super(loggerFactory, translations);
+                             final Localizations localizations) {
+        super(loggerFactory, localizations);
         this.playerDataStorage = playerDataStorage;
     }
 

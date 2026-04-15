@@ -9,9 +9,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Set;
 
 /**
- * Offers access to the messages in configurations and its translations as well as available languages.
+ * Offers access to the messages in configurations and its localizations as well as available languages.
  */
-public interface Translations {
+public interface Localizations {
 
     /**
      * Retrieves the languages available in the message configurations.

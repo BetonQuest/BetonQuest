@@ -6,7 +6,7 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.identifier.ItemIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -70,7 +70,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
 
     private final Instructions instructions;
 
-    private final Translations translations;
+    private final Localizations localizations;
 
     private final ItemManager itemManager;
 
@@ -122,7 +122,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
      * @param plugin               the plugin instance
      * @param pluginManager        the plugin manager instance
      * @param instructions         the instructions instance
-     * @param translations         the Translations instance
+     * @param localizations        the Localizations instance
      * @param itemManager          the item manager instance
      * @param profileProvider      the profile provider instance
      * @param conversations        the conversations instance
@@ -135,7 +135,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public InventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile, final BetonQuestLogger log,
                            final Plugin plugin, final PluginManager pluginManager, final Instructions instructions,
-                           final Translations translations, final ItemManager itemManager,
+                           final Localizations localizations, final ItemManager itemManager,
                            final ProfileProvider profileProvider, final Conversations conversations,
                            final ConversationColors colors, final boolean showNumber, final boolean showNPCText,
                            final boolean printMessages, final FixedComponentLineWrapper componentLineWrapper) {
@@ -144,7 +144,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         this.plugin = plugin;
         this.pluginManager = pluginManager;
         this.instructions = instructions;
-        this.translations = translations;
+        this.localizations = localizations;
         this.itemManager = itemManager;
         this.profileProvider = profileProvider;
         this.conversations = conversations;
@@ -198,7 +198,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
             conv.endConversation();
             Bukkit.getScheduler().runTask(plugin, () -> profile.getPlayer().closeInventory());
             try {
-                conv.sendMessage(translations.getMessage(profile, "conversation_spectator"));
+                conv.sendMessage(localizations.getMessage(profile, "conversation_spectator"));
             } catch (final QuestException e) {
                 log.warn("Failed to get conversation_spectator message: " + e.getMessage(), e);
             }

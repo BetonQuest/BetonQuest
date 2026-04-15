@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.command;
 
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -40,9 +40,9 @@ public class CompassCommand implements CommandExecutor {
     private final ConfigAccessor config;
 
     /**
-     * The {@link Translations} instance.
+     * The {@link Localizations} instance.
      */
-    private final Translations translations;
+    private final Localizations localizations;
 
     /**
      * The profile provider instance.
@@ -80,7 +80,7 @@ public class CompassCommand implements CommandExecutor {
      * @param plugin            the plugin instance
      * @param loggerFactory     the logger factory
      * @param config            the plugin configuration accessor
-     * @param translations      the {@link Translations} instance
+     * @param localizations     the {@link Localizations} instance
      * @param profileProvider   the profile provider instance
      * @param playerDataStorage the player data storage
      * @param cancelerProcessor the canceler processor
@@ -90,13 +90,13 @@ public class CompassCommand implements CommandExecutor {
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public CompassCommand(final Plugin plugin, final BetonQuestLoggerFactory loggerFactory,
-                          final ConfigAccessor config, final Translations translations, final ProfileProvider profileProvider,
+                          final ConfigAccessor config, final Localizations localizations, final ProfileProvider profileProvider,
                           final PlayerDataStorage playerDataStorage, final CancelerProcessor cancelerProcessor, final CompassManager compassManager,
                           final ItemManager itemManager, final Identifiers identifiers) {
         this.plugin = plugin;
         this.loggerFactory = loggerFactory;
         this.config = config;
-        this.translations = translations;
+        this.localizations = localizations;
         this.profileProvider = profileProvider;
         this.playerDataStorage = playerDataStorage;
         this.cancelerProcessor = cancelerProcessor;
@@ -111,7 +111,7 @@ public class CompassCommand implements CommandExecutor {
             if (sender instanceof Player) {
                 final OnlineProfile onlineProfile = profileProvider.getProfile((Player) sender);
                 new Backpack(plugin, loggerFactory.create(Backpack.class), playerDataStorage.get(onlineProfile), cancelerProcessor,
-                        compassManager, config, translations, onlineProfile, itemManager, identifiers, DisplayType.COMPASS);
+                        compassManager, config, localizations, onlineProfile, itemManager, identifiers, DisplayType.COMPASS);
             }
             return true;
         }

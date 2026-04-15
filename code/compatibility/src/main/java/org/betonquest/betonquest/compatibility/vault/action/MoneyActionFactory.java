@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.vault.action;
 
 import net.milkbowl.vault.economy.Economy;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
@@ -30,21 +30,21 @@ public class MoneyActionFactory implements PlayerActionFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * The {@link Translations} instance.
+     * The {@link Localizations} instance.
      */
-    private final Translations translations;
+    private final Localizations localizations;
 
     /**
      * Create a new Factory to create Vault Money Actions.
      *
      * @param economy       the economy where the balance will be modified
      * @param loggerFactory the logger factory to create new logger instances.
-     * @param translations  the {@link Translations} instance
+     * @param localizations the {@link Localizations} instance
      */
-    public MoneyActionFactory(final Economy economy, final BetonQuestLoggerFactory loggerFactory, final Translations translations) {
+    public MoneyActionFactory(final Economy economy, final BetonQuestLoggerFactory loggerFactory, final Localizations localizations) {
         this.economy = economy;
         this.loggerFactory = loggerFactory;
-        this.translations = translations;
+        this.localizations = localizations;
     }
 
     @Override
@@ -58,8 +58,8 @@ public class MoneyActionFactory implements PlayerActionFactory {
             final QuestPackage pack = instruction.getPackage();
             final String fullID = instruction.getID().getFull();
             final BetonQuestLogger log = loggerFactory.create(MoneyAction.class);
-            givenSender = new IngameNotificationSender(log, translations, pack, fullID, NotificationLevel.INFO, "money_given");
-            takenSender = new IngameNotificationSender(log, translations, pack, fullID, NotificationLevel.INFO, "money_taken");
+            givenSender = new IngameNotificationSender(log, localizations, pack, fullID, NotificationLevel.INFO, "money_given");
+            takenSender = new IngameNotificationSender(log, localizations, pack, fullID, NotificationLevel.INFO, "money_taken");
         } else {
             givenSender = null;
             takenSender = null;

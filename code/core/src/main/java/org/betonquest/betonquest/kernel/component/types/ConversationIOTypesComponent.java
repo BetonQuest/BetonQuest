@@ -3,7 +3,7 @@ package org.betonquest.betonquest.kernel.component.types;
 import org.betonquest.betonquest.api.common.component.font.DefaultFontRegistry;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -38,7 +38,7 @@ public class ConversationIOTypesComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(Plugin.class, PluginManager.class,
                 BetonQuestLoggerFactory.class, ProfileProvider.class, ConfigAccessor.class,
-                ConversationColors.class, DefaultFontRegistry.class, Translations.class, ConversationIORegistry.class,
+                ConversationColors.class, DefaultFontRegistry.class, Localizations.class, ConversationIORegistry.class,
                 Conversations.class, ItemManager.class, Instructions.class);
     }
 
@@ -52,7 +52,7 @@ public class ConversationIOTypesComponent extends AbstractCoreComponent {
         final ConfigAccessor config = getDependency(ConfigAccessor.class);
         final FontRegistry fontRegistry = getDependency(FontRegistry.class);
         final ConversationIORegistry conversationIORegistry = getDependency(ConversationIORegistry.class);
-        final Translations translations = getDependency(Translations.class);
+        final Localizations localizations = getDependency(Localizations.class);
         final Conversations conversations = getDependency(Conversations.class);
         final ItemManager itemManager = getDependency(ItemManager.class);
         final Instructions instructions = getDependency(Instructions.class);
@@ -60,7 +60,7 @@ public class ConversationIOTypesComponent extends AbstractCoreComponent {
         conversationIORegistry.register("simple", new SimpleConvIOFactory(loggerFactory, config, plugin, pluginMessage, colors));
         conversationIORegistry.register("tellraw", new TellrawConvIOFactory(loggerFactory, config, plugin, pluginMessage, colors));
         final InventoryConvIOFactory.ConstructorParameters inventoryConvParams = new InventoryConvIOFactory.ConstructorParameters(
-                loggerFactory, config, fontRegistry, colors, plugin, pluginManager, translations, instructions, conversations, itemManager, profileProvider);
+                loggerFactory, config, fontRegistry, colors, plugin, pluginManager, localizations, instructions, conversations, itemManager, profileProvider);
         conversationIORegistry.register("chest", new InventoryConvIOFactory(inventoryConvParams, false));
         conversationIORegistry.register("combined", new InventoryConvIOFactory(inventoryConvParams, true));
         conversationIORegistry.register("slowtellraw", new SlowTellrawConvIOFactory(loggerFactory, config, plugin, pluginMessage, fontRegistry, colors));

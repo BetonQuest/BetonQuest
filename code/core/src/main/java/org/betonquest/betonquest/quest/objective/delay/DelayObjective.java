@@ -6,7 +6,7 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
@@ -117,15 +117,15 @@ public class DelayObjective extends DefaultObjective {
     }
 
     private Component parseLeftProperty(final Profile profile) throws QuestException {
-        final Translations translations = BetonQuest.getInstance().getPluginMessage();
-        final Component daysWord = translations.getMessage(profile, "days");
-        final Component daysWordSingular = translations.getMessage(profile, "days_singular");
-        final Component hoursWord = translations.getMessage(profile, "hours");
-        final Component hoursWordSingular = translations.getMessage(profile, "hours_singular");
-        final Component minutesWord = translations.getMessage(profile, "minutes");
-        final Component minutesWordSingular = translations.getMessage(profile, "minutes_singular");
-        final Component secondsWord = translations.getMessage(profile, "seconds");
-        final Component secondsWordSingular = translations.getMessage(profile, "seconds_singular");
+        final Localizations localizations = BetonQuest.getInstance().getPluginMessage();
+        final Component daysWord = localizations.getMessage(profile, "days");
+        final Component daysWordSingular = localizations.getMessage(profile, "days_singular");
+        final Component hoursWord = localizations.getMessage(profile, "hours");
+        final Component hoursWordSingular = localizations.getMessage(profile, "hours_singular");
+        final Component minutesWord = localizations.getMessage(profile, "minutes");
+        final Component minutesWordSingular = localizations.getMessage(profile, "minutes_singular");
+        final Component secondsWord = localizations.getMessage(profile, "seconds");
+        final Component secondsWordSingular = localizations.getMessage(profile, "seconds_singular");
 
         final long endTimestamp = getTargetTimestamp(profile);
         final LocalDateTime end = LocalDateTime.ofInstant(Instant.ofEpochMilli(endTimestamp), ZoneId.systemDefault());

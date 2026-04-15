@@ -6,7 +6,7 @@ import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -47,9 +47,9 @@ public class QuestItemConvertListener implements Listener {
     private final Supplier<Boolean> migrateSupplier;
 
     /**
-     * Translations to get the quest item and journal lines.
+     * Localizations to get the quest item and journal lines.
      */
-    private final Translations translations;
+    private final Localizations localizations;
 
     /**
      * Profile provider to get profiles for message resolving.
@@ -61,14 +61,14 @@ public class QuestItemConvertListener implements Listener {
      *
      * @param log             the custom logger for this class
      * @param migrateSupplier the supplier for if the ItemStacks in inventories should be updated
-     * @param translations    the Translations to get the quest item and journal lines
+     * @param localizations   the Localizations to get the quest item and journal lines
      * @param profileProvider the profile provider to get profiles for message resolving
      */
     public QuestItemConvertListener(final BetonQuestLogger log, final Supplier<Boolean> migrateSupplier,
-                                    final Translations translations, final ProfileProvider profileProvider) {
+                                    final Localizations localizations, final ProfileProvider profileProvider) {
         this.log = log;
         this.migrateSupplier = migrateSupplier;
-        this.translations = translations;
+        this.localizations = localizations;
         this.profileProvider = profileProvider;
     }
 
@@ -87,9 +87,9 @@ public class QuestItemConvertListener implements Listener {
         final Component journalTitle;
         final List<Component> journalLines;
         try {
-            questItemLine = translations.getMessage(null, "quest_item");
-            journalTitle = translations.getMessage(profile, "journal_title");
-            journalLines = ComponentLineWrapper.splitNewLine(translations.getMessage(profile, "journal_title"));
+            questItemLine = localizations.getMessage(null, "quest_item");
+            journalTitle = localizations.getMessage(profile, "journal_title");
+            journalLines = ComponentLineWrapper.splitNewLine(localizations.getMessage(profile, "journal_title"));
         } catch (final QuestException e) {
             log.warn("Can't migrate items on player join, failed to load message for profile '" + profile + "': "
                     + e.getMessage(), e);

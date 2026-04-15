@@ -18,7 +18,7 @@ public class NotifyAction implements OnlineAction {
     private final NotifyIO notifyIO;
 
     /**
-     * The translations to use.
+     * The localizations to use.
      */
     private final Text text;
 

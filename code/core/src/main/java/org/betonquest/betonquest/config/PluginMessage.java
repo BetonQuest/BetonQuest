@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -47,7 +47,7 @@ import java.util.stream.Stream;
  * Loads and sends messages from the plugins messages.yml file and messages-internal.yml file.
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
-public class PluginMessage implements Translations {
+public class PluginMessage implements Localizations {
 
     /**
      * The scheme for a JAR file.

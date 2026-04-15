@@ -32,7 +32,7 @@ public class NotifyActionFactory implements PlayerActionFactory {
     private static final Pattern KEY_VALUE_PATTERN = Pattern.compile("(?<key>[a-zA-Z]+?):(?<value>\\S+)");
 
     /**
-     * A pattern for the notation of multiple translations in a single action.
+     * A pattern for the notation of multiple localizations in a single action.
      */
     private static final Pattern LANGUAGE_PATTERN = Pattern.compile("\\{(?<lang>" + LANG_KEY + ")}\\s(?<text>.*?)(?=\\s+\\{" + LANG_KEY + "}\\s|$)");
 
@@ -90,7 +90,7 @@ public class NotifyActionFactory implements PlayerActionFactory {
     }
 
     private Text getLanguages(final Instruction instruction, final String texts) throws QuestException {
-        final Map<String, Argument<String>> translations = new HashMap<>();
+        final Map<String, Argument<String>> localizations = new HashMap<>();
         final Matcher languageMatcher = LANGUAGE_PATTERN.matcher(texts);
 
         while (languageMatcher.find()) {
@@ -98,20 +98,20 @@ public class NotifyActionFactory implements PlayerActionFactory {
             final String text = languageMatcher.group("text")
                     .replace("\\{", "{")
                     .replace("\\:", ":");
-            translations.put(lang, instruction.chainForArgument(text).string().get());
+            localizations.put(lang, instruction.chainForArgument(text).string().get());
         }
 
         final String defaultLanguageKey = languageProvider.getDefaultLanguage();
-        if (translations.isEmpty()) {
+        if (localizations.isEmpty()) {
             final String text = texts
                     .replace("\\{", "{")
                     .replace("\\:", ":");
-            translations.put(defaultLanguageKey, instruction.chainForArgument(text).string().get());
+            localizations.put(defaultLanguageKey, instruction.chainForArgument(text).string().get());
         }
-        if (!translations.containsKey(defaultLanguageKey)) {
+        if (!localizations.containsKey(defaultLanguageKey)) {
             throw new QuestException("No text defined for default language '" + defaultLanguageKey + "'!");
         }
-        return new ParsedText(textParser, translations, playerDataStorage, languageProvider);
+        return new ParsedText(textParser, localizations, playerDataStorage, languageProvider);
     }
 
     private Map<String, String> getData(final Matcher keyValueMatcher) {

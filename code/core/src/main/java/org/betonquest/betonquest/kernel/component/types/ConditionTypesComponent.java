@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.kernel.component.types;
 
 import org.betonquest.betonquest.api.LanguageProvider;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -90,7 +90,7 @@ public class ConditionTypesComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(Plugin.class, Server.class,
                 BetonQuestLoggerFactory.class, ProfileProvider.class, GlobalData.class, PlayerDataStorage.class,
-                Translations.class, LanguageProvider.class, Instructions.class,
+                Localizations.class, LanguageProvider.class, Instructions.class,
                 ConditionTypeRegistry.class, Conversations.class, ConditionManager.class, ObjectiveManager.class,
                 NpcManager.class);
     }
@@ -103,7 +103,7 @@ public class ConditionTypesComponent extends AbstractCoreComponent {
         final ProfileProvider profileProvider = getDependency(ProfileProvider.class);
         final GlobalData globalData = getDependency(GlobalData.class);
         final PlayerDataStorage dataStorage = getDependency(PlayerDataStorage.class);
-        final Translations translations = getDependency(Translations.class);
+        final Localizations localizations = getDependency(Localizations.class);
         final LanguageProvider languageProvider = getDependency(LanguageProvider.class);
         final Instructions instructions = getDependency(Instructions.class);
         final ConditionTypeRegistry conditionTypes = getDependency(ConditionTypeRegistry.class);
@@ -139,7 +139,7 @@ public class ConditionTypesComponent extends AbstractCoreComponent {
         conditionTypes.register("item", new ItemConditionFactory(dataStorage));
         conditionTypes.register("itemdurability", new ItemDurabilityConditionFactory());
         conditionTypes.register("journal", new JournalConditionFactory(dataStorage));
-        conditionTypes.register("language", new LanguageConditionFactory(dataStorage, languageProvider, translations));
+        conditionTypes.register("language", new LanguageConditionFactory(dataStorage, languageProvider, localizations));
         conditionTypes.register("location", new LocationConditionFactory());
         conditionTypes.register("looking", new LookingAtConditionFactory());
         conditionTypes.registerCombined("moonphase", new MoonPhaseConditionFactory());

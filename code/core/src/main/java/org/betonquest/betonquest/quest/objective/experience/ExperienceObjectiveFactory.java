@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.objective.experience;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -28,19 +28,19 @@ public class ExperienceObjectiveFactory implements ObjectiveFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * The {@link Translations} instance.
+     * The {@link Localizations} instance.
      */
-    private final Translations translations;
+    private final Localizations localizations;
 
     /**
      * Creates a new instance of the ExperienceObjectiveFactory.
      *
      * @param loggerFactory the logger factory to create a logger for the objectives
-     * @param translations  the {@link Translations} instance
+     * @param localizations the {@link Localizations} instance
      */
-    public ExperienceObjectiveFactory(final BetonQuestLoggerFactory loggerFactory, final Translations translations) {
+    public ExperienceObjectiveFactory(final BetonQuestLoggerFactory loggerFactory, final Localizations localizations) {
         this.loggerFactory = loggerFactory;
-        this.translations = translations;
+        this.localizations = localizations;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class ExperienceObjectiveFactory implements ObjectiveFactory {
         final Argument<Number> amount = instruction.number().get();
         final BetonQuestLogger log = loggerFactory.create(ExperienceObjective.class);
         final IngameNotificationSender levelSender = new IngameNotificationSender(log,
-                translations, instruction.getPackage(), instruction.getID().getFull(),
+                localizations, instruction.getPackage(), instruction.getID().getFull(),
                 NotificationLevel.INFO, "level_to_gain");
         final ExperienceObjective objective = new ExperienceObjective(service, amount, levelSender);
         service.request(PlayerLevelChangeEvent.class).priority(EventPriority.MONITOR).onlineHandler(objective::onLevelChangeEvent)

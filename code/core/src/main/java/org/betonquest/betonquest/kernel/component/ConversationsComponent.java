@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.kernel.component;
 
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.identifier.ConversationIdentifier;
@@ -43,7 +43,7 @@ public class ConversationsComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(Plugin.class,
                 QuestPackageManager.class, BetonQuestLoggerFactory.class, ProfileProvider.class, ConfigAccessor.class,
-                Translations.class, ActionProcessor.class, ConditionProcessor.class, Instructions.class, Saver.class,
+                Localizations.class, ActionProcessor.class, ConditionProcessor.class, Instructions.class, Saver.class,
                 Identifiers.class, ParsedSectionTextCreator.class, PlaceholderProcessor.class, ProcessorDataLoader.class);
     }
 
@@ -62,7 +62,7 @@ public class ConversationsComponent extends AbstractCoreComponent {
         final PlaceholderProcessor placeholderProcessor = getDependency(PlaceholderProcessor.class);
         final ProfileProvider profileProvider = getDependency(ProfileProvider.class);
         final ConfigAccessor config = getDependency(ConfigAccessor.class);
-        final Translations translations = getDependency(Translations.class);
+        final Localizations localizations = getDependency(Localizations.class);
         final ActionProcessor actionProcessor = getDependency(ActionProcessor.class);
         final ConditionProcessor conditionProcessor = getDependency(ConditionProcessor.class);
         final Instructions instructions = getDependency(Instructions.class);
@@ -78,7 +78,7 @@ public class ConversationsComponent extends AbstractCoreComponent {
         final InterceptorRegistry interceptorRegistry = new InterceptorRegistry(loggerFactory.create(InterceptorRegistry.class));
         final ConversationProcessor conversationProcessor = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class),
                 loggerFactory, plugin, parsedSectionTextCreator, questPackageManager, placeholderProcessor, profileProvider, config, conversationIORegistry, interceptorRegistry,
-                instructions, translations, actionProcessor, conditionProcessor, conversationIdentifierFactory, identifiers, saver);
+                instructions, localizations, actionProcessor, conditionProcessor, conversationIdentifierFactory, identifiers, saver);
 
         dependencyProvider.take(ConversationIdentifierFactory.class, conversationIdentifierFactory);
         dependencyProvider.take(ConversationOptionIdentifierFactory.class, conversationOptionIdentifierFactory);

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.kernel.component.types;
 
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.service.conversation.Conversations;
@@ -47,7 +47,7 @@ public class PlaceholderTypeComponent extends AbstractCoreComponent {
 
     @Override
     public Set<Class<?>> requires() {
-        return Set.of(Plugin.class, Translations.class, GlobalData.class, PlayerDataStorage.class,
+        return Set.of(Plugin.class, Localizations.class, GlobalData.class, PlayerDataStorage.class,
                 PlaceholderTypeRegistry.class, Conversations.class, ConditionManager.class,
                 ObjectiveManager.class, PlaceholderManager.class, NpcManager.class);
     }
@@ -56,7 +56,7 @@ public class PlaceholderTypeComponent extends AbstractCoreComponent {
     protected void load(final DependencyProvider dependencyProvider) {
         final Plugin plugin = getDependency(Plugin.class);
         final PlaceholderTypeRegistry placeholderTypes = getDependency(PlaceholderTypeRegistry.class);
-        final Translations translations = getDependency(Translations.class);
+        final Localizations localizations = getDependency(Localizations.class);
         final GlobalData globalData = getDependency(GlobalData.class);
         final PlayerDataStorage dataStorage = getDependency(PlayerDataStorage.class);
         final Conversations conversations = getDependency(Conversations.class);
@@ -65,11 +65,11 @@ public class PlaceholderTypeComponent extends AbstractCoreComponent {
         final PlaceholderManager placeholderManager = getDependency(PlaceholderManager.class);
         final NpcManager npcManager = getDependency(NpcManager.class);
 
-        placeholderTypes.register("condition", new ConditionPlaceholderFactory(conditionManager, translations));
+        placeholderTypes.register("condition", new ConditionPlaceholderFactory(conditionManager, localizations));
         placeholderTypes.registerCombined("constant", new ConstantPlaceholderFactory());
         placeholderTypes.registerCombined("eval", new EvalPlaceholderFactory());
         placeholderTypes.register("globalpoint", new GlobalPointPlaceholderFactory(globalData));
-        placeholderTypes.register("globaltag", new GlobalTagPlaceholderFactory(globalData, translations));
+        placeholderTypes.register("globaltag", new GlobalTagPlaceholderFactory(globalData, localizations));
         placeholderTypes.registerCombined("item", new ItemPlaceholderFactory(dataStorage));
         placeholderTypes.register("itemdurability", new ItemDurabilityPlaceholderFactory());
         placeholderTypes.register("location", new LocationPlaceholderFactory());
@@ -81,7 +81,7 @@ public class PlaceholderTypeComponent extends AbstractCoreComponent {
         placeholderTypes.register("quester", new QuesterPlaceholderFactory(conversations));
         placeholderTypes.registerCombined("randomnumber", new RandomNumberPlaceholderFactory());
         placeholderTypes.registerCombined("sync", new SyncPlaceholderFactory());
-        placeholderTypes.register("tag", new TagPlaceholderFactory(dataStorage, translations));
+        placeholderTypes.register("tag", new TagPlaceholderFactory(dataStorage, localizations));
         placeholderTypes.register("version", new VersionPlaceholderFactory(plugin));
     }
 }

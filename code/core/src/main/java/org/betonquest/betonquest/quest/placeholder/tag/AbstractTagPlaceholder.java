@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.placeholder.tag;
 
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.argument.parser.PackageIdentifierParser;
@@ -40,22 +40,22 @@ public abstract class AbstractTagPlaceholder<T> {
     protected final FlagArgument<Boolean> papiMode;
 
     /**
-     * The {@link Translations} instance.
+     * The {@link Localizations} instance.
      */
-    private final Translations translations;
+    private final Localizations localizations;
 
     /**
      * Constructs a new GlobalTagPlaceholder.
      *
-     * @param translations the {@link Translations} instance
-     * @param data         the data holder
-     * @param tagName      the tag to check for
-     * @param questPackage the quest package to check for the tag
-     * @param papiMode     whether to return true/false or the configured messages
+     * @param localizations the {@link Localizations} instance
+     * @param data          the data holder
+     * @param tagName       the tag to check for
+     * @param questPackage  the quest package to check for the tag
+     * @param papiMode      whether to return true/false or the configured messages
      */
-    public AbstractTagPlaceholder(final Translations translations, final T data, final String tagName,
+    public AbstractTagPlaceholder(final Localizations localizations, final T data, final String tagName,
                                   final QuestPackage questPackage, final FlagArgument<Boolean> papiMode) {
-        this.translations = translations;
+        this.localizations = localizations;
         this.data = data;
         this.tagName = tagName;
         this.questPackage = questPackage;
@@ -73,8 +73,8 @@ public abstract class AbstractTagPlaceholder<T> {
     public String getValueFor(@Nullable final Profile profile, final Set<String> tags) throws QuestException {
         final boolean papiMode = this.papiMode.getValue(profile).orElse(false);
         if (tags.contains(PackageIdentifierParser.INSTANCE.apply(questPackage, tagName))) {
-            return papiMode ? LegacyComponentSerializer.legacySection().serialize(translations.getMessage(profile, "condition_placeholder_met")) : "true";
+            return papiMode ? LegacyComponentSerializer.legacySection().serialize(localizations.getMessage(profile, "condition_placeholder_met")) : "true";
         }
-        return papiMode ? LegacyComponentSerializer.legacySection().serialize(translations.getMessage(profile, "condition_placeholder_not_met")) : "false";
+        return papiMode ? LegacyComponentSerializer.legacySection().serialize(localizations.getMessage(profile, "condition_placeholder_not_met")) : "false";
     }
 }

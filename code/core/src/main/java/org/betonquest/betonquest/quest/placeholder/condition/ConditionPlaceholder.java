@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.placeholder.condition;
 
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
@@ -16,9 +16,9 @@ import org.betonquest.betonquest.api.service.condition.ConditionManager;
 public class ConditionPlaceholder implements PlayerPlaceholder {
 
     /**
-     * The {@link Translations} instance.
+     * The {@link Localizations} instance.
      */
-    private final Translations translations;
+    private final Localizations localizations;
 
     /**
      * Condition to check.
@@ -38,14 +38,14 @@ public class ConditionPlaceholder implements PlayerPlaceholder {
     /**
      * Create a new Condition placeholder.
      *
-     * @param translations     the {@link Translations} instance
+     * @param localizations    the {@link Localizations} instance
      * @param conditionId      the condition to get the "fulfillment" status
      * @param conditionManager the condition manager
      * @param papiMode         if the return value should be in PAPI mode as defined in the documentation
      */
-    public ConditionPlaceholder(final Translations translations, final Argument<ConditionIdentifier> conditionId,
+    public ConditionPlaceholder(final Localizations localizations, final Argument<ConditionIdentifier> conditionId,
                                 final ConditionManager conditionManager, final FlagArgument<Boolean> papiMode) {
-        this.translations = translations;
+        this.localizations = localizations;
         this.conditionId = conditionId;
         this.conditionManager = conditionManager;
         this.papiMode = papiMode;
@@ -55,8 +55,8 @@ public class ConditionPlaceholder implements PlayerPlaceholder {
     public String getValue(final Profile profile) throws QuestException {
         final boolean papiMode = this.papiMode.getValue(profile).orElse(false);
         if (conditionManager.test(profile, conditionId.getValue(profile))) {
-            return papiMode ? LegacyComponentSerializer.legacySection().serialize(translations.getMessage(profile, "condition_placeholder_met")) : "true";
+            return papiMode ? LegacyComponentSerializer.legacySection().serialize(localizations.getMessage(profile, "condition_placeholder_met")) : "true";
         }
-        return papiMode ? LegacyComponentSerializer.legacySection().serialize(translations.getMessage(profile, "condition_placeholder_not_met")) : "false";
+        return papiMode ? LegacyComponentSerializer.legacySection().serialize(localizations.getMessage(profile, "condition_placeholder_not_met")) : "false";
     }
 }

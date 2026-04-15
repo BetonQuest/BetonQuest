@@ -2,7 +2,7 @@ package org.betonquest.betonquest.feature.journal;
 
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -24,9 +24,9 @@ public class JournalFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * The {@link Translations} instance.
+     * The {@link Localizations} instance.
      */
-    private final Translations translations;
+    private final Localizations localizations;
 
     /**
      * The Condition Manager.
@@ -62,7 +62,7 @@ public class JournalFactory {
      * Create a new Factory for Journals.
      *
      * @param loggerFactory     the logger Factory to create new class specific logger
-     * @param translations      the {@link Translations} instance
+     * @param localizations     the {@link Localizations} instance
      * @param conditionManager  the Condition Manager
      * @param entryProcessor    the {@link JournalEntryProcessor} to process journal entries
      * @param mainPageProcessor the {@link JournalMainPageProcessor} to process the main page
@@ -70,12 +70,12 @@ public class JournalFactory {
      * @param textParser        the text parser to use for parsing text
      * @param fontRegistry      the font registry to get the width of the characters
      */
-    public JournalFactory(final BetonQuestLoggerFactory loggerFactory, final Translations translations,
+    public JournalFactory(final BetonQuestLoggerFactory loggerFactory, final Localizations localizations,
                           final ConditionManager conditionManager, final JournalMainPageProcessor mainPageProcessor,
                           final JournalEntryProcessor entryProcessor, final ConfigAccessor config,
                           final TextParser textParser, final FontRegistry fontRegistry) {
         this.loggerFactory = loggerFactory;
-        this.translations = translations;
+        this.localizations = localizations;
         this.conditionManager = conditionManager;
         this.mainPageProcessor = mainPageProcessor;
         this.entryProcessor = entryProcessor;
@@ -93,6 +93,6 @@ public class JournalFactory {
      */
     public Journal createJournal(final Profile profile, final List<Pointer> pointers) {
         final BetonQuestLogger log = loggerFactory.create(Journal.class);
-        return new Journal(log, translations, conditionManager, mainPageProcessor, entryProcessor, textParser, fontRegistry, profile, pointers, config);
+        return new Journal(log, localizations, conditionManager, mainPageProcessor, entryProcessor, textParser, fontRegistry, profile, pointers, config);
     }
 }

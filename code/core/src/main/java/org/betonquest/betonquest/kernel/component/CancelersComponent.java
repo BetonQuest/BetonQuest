@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.kernel.component;
 
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.identifier.QuestCancelerIdentifier;
@@ -35,7 +35,7 @@ public class CancelersComponent extends AbstractCoreComponent {
     @Override
     public Set<Class<?>> requires() {
         return Set.of(QuestPackageManager.class, BetonQuestLoggerFactory.class, PlayerDataStorage.class,
-                Translations.class, Identifiers.class, Instructions.class, ParsedSectionTextCreator.class,
+                Localizations.class, Identifiers.class, Instructions.class, ParsedSectionTextCreator.class,
                 ActionProcessor.class, ConditionProcessor.class, ObjectiveProcessor.class, ItemProcessor.class,
                 ProcessorDataLoader.class);
     }
@@ -55,7 +55,7 @@ public class CancelersComponent extends AbstractCoreComponent {
         final ConditionProcessor conditionProcessor = getDependency(ConditionProcessor.class);
         final ObjectiveProcessor objectiveProcessor = getDependency(ObjectiveProcessor.class);
         final ItemProcessor itemProcessor = getDependency(ItemProcessor.class);
-        final Translations translations = getDependency(Translations.class);
+        final Localizations localizations = getDependency(Localizations.class);
         final PlayerDataStorage playerDataStorage = getDependency(PlayerDataStorage.class);
         final ParsedSectionTextCreator parsedSectionTextCreator = getDependency(ParsedSectionTextCreator.class);
         final ProcessorDataLoader processorDataLoader = getDependency(ProcessorDataLoader.class);
@@ -63,7 +63,7 @@ public class CancelersComponent extends AbstractCoreComponent {
         final QuestCancelerIdentifierFactory questCancelerIdentifierFactory = new QuestCancelerIdentifierFactory(packManager);
         identifiers.register(QuestCancelerIdentifier.class, questCancelerIdentifierFactory);
         final CancelerProcessor cancelerProcessor = new CancelerProcessor(loggerFactory.create(CancelerProcessor.class),
-                loggerFactory, translations, instructions, actionProcessor, conditionProcessor,
+                loggerFactory, localizations, instructions, actionProcessor, conditionProcessor,
                 objectiveProcessor, itemProcessor, parsedSectionTextCreator, playerDataStorage, questCancelerIdentifierFactory);
 
         dependencyProvider.take(QuestCancelerIdentifierFactory.class, questCancelerIdentifierFactory);

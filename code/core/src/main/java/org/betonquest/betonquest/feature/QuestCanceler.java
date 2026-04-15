@@ -3,7 +3,7 @@ package org.betonquest.betonquest.feature;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
@@ -111,7 +111,7 @@ public class QuestCanceler {
      * @param itemManager      the item manager
      * @param playerStorage    the player data storage
      * @param cancelerID       the log identifier
-     * @param translations     the {@link Translations} instance
+     * @param localizations    the {@link Localizations} instance
      * @param names            the names used for displaying in different languages
      * @param item             the custom item used for displaying
      * @param pack             the {@link QuestPackage} of the canceler
@@ -119,7 +119,7 @@ public class QuestCanceler {
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public QuestCanceler(final BetonQuestLogger log, final ActionManager actionManager, final ConditionManager conditionManager, final ObjectiveManager objectiveManager,
-                         final ItemManager itemManager, final PlayerDataStorage playerStorage, final QuestCancelerIdentifier cancelerID, final Translations translations,
+                         final ItemManager itemManager, final PlayerDataStorage playerStorage, final QuestCancelerIdentifier cancelerID, final Localizations localizations,
                          final Text names, @Nullable final ItemIdentifier item, final QuestPackage pack, final CancelData cancelData) {
         this.log = log;
         this.actionManager = actionManager;
@@ -132,7 +132,7 @@ public class QuestCanceler {
         this.item = item;
         this.data = cancelData;
         this.pack = pack;
-        this.notificationSender = new IngameNotificationSender(log, translations, pack, cancelerID.getFull(), NotificationLevel.INFO, "quest_canceled");
+        this.notificationSender = new IngameNotificationSender(log, localizations, pack, cancelerID.getFull(), NotificationLevel.INFO, "quest_canceled");
     }
 
     /**

@@ -3,7 +3,7 @@ package org.betonquest.betonquest.menu;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.identifier.MenuIdentifier;
 import org.betonquest.betonquest.api.identifier.MenuItemIdentifier;
@@ -78,7 +78,7 @@ public class RPGMenu {
      * @param loggerFactory             the factory to create new custom logger instances
      * @param instructions              the instruction api to use
      * @param pluginConfig              the plugin config
-     * @param translations              the Translations instance
+     * @param localizations             the Localizations instance
      * @param textCreator               the text creator to parse text
      * @param profileProvider           the profile provider instance
      * @param parsers                   the argument parsers to use
@@ -94,7 +94,7 @@ public class RPGMenu {
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public RPGMenu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                    final Instructions instructions, final ConfigAccessor pluginConfig,
-                   final Translations translations, final ParsedSectionTextCreator textCreator,
+                   final Localizations localizations, final ParsedSectionTextCreator textCreator,
                    final ProfileProvider profileProvider, final ArgumentParsers parsers,
                    final IdentifierFactory<MenuIdentifier> menuIdentifierFactory,
                    final IdentifierFactory<MenuItemIdentifier> menuItemIdentifierFactory,
@@ -118,7 +118,7 @@ public class RPGMenu {
         this.menuProcessor = new MenuProcessor(loggerFactory.create(MenuProcessor.class), loggerFactory, instructions,
                 textCreator, actionManager, conditionManager, parsers, this, menuIdentifierFactory, profileProvider);
         this.menuItemListener = new MenuItemListener(loggerFactory.create(MenuItemListener.class), this,
-                menuProcessor, profileProvider, translations);
+                menuProcessor, profileProvider, localizations);
         server.getPluginManager().registerEvents(menuItemListener, betonQuest);
     }
 

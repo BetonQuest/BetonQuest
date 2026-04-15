@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 public interface QuestCompass {
 
     /**
-     * The display name of the compass as a {@link Text} allowing for multiple translations.
+     * The display name of the compass as a {@link Text} allowing for multiple localizations.
      *
      * @return the display name
      */

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.api;
 
 import org.betonquest.betonquest.api.bukkit.BukkitManager;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.config.section.multi.MultiConfiguration;
@@ -223,11 +223,11 @@ public interface BetonQuestApi {
     CompassManager compasses();
 
     /**
-     * Offers access to the translations of plugin messages and available languages.
+     * Offers access to the localization of plugin messages and available languages.
      *
-     * @return the translations
+     * @return the plugin message localization
      */
-    Translations translations();
+    Localizations localizations();
 
     /**
      * Offers access to shortcuts for the Bukkit API.

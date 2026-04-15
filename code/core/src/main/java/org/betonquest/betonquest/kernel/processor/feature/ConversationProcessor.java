@@ -3,7 +3,7 @@ package org.betonquest.betonquest.kernel.processor.feature;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.ActionIdentifier;
@@ -124,7 +124,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationIdentifi
      * @param convIORegistry       the registry for available ConversationIOs
      * @param interceptorRegistry  the registry for available Interceptors
      * @param placeholders         the {@link PlaceholderManager} to create and resolve placeholders
-     * @param translations         the Translations instance to use for ingame notifications
+     * @param localizations        the Localizations instance to use for ingame notifications
      * @param actionManager        the action manager
      * @param conditionManager     the condition manager
      * @param identifierFactory    the identifier factory to create {@link ConversationIdentifier}s for this type
@@ -137,7 +137,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationIdentifi
                                  final QuestPackageManager questPackageManager, final PlaceholderProcessor placeholderProcessor,
                                  final ProfileProvider profileProvider, final ConfigAccessor configAccessor,
                                  final ConversationIORegistry convIORegistry, final InterceptorRegistry interceptorRegistry,
-                                 final Instructions placeholders, final Translations translations,
+                                 final Instructions placeholders, final Localizations localizations,
                                  final ActionManager actionManager, final ConditionManager conditionManager,
                                  final IdentifierFactory<ConversationIdentifier> identifierFactory,
                                  final Identifiers identifiers, final Saver saver) {
@@ -145,7 +145,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationIdentifi
         this.loggerFactory = loggerFactory;
         this.activeConversations = new ProfileKeyMap<>(profileProvider, new ConcurrentHashMap<>());
         this.starter = new ConversationStarter(loggerFactory, loggerFactory.create(ConversationStarter.class),
-                activeConversations, plugin, translations, actionManager, conditionManager, this, identifiers, saver);
+                activeConversations, plugin, localizations, actionManager, conditionManager, this, identifiers, saver);
         this.textCreator = textCreator;
         this.questPackageManager = questPackageManager;
         this.placeholderProcessor = placeholderProcessor;
@@ -154,7 +154,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationIdentifi
         this.configAccessor = configAccessor;
         this.conditionManager = conditionManager;
         this.listener = new ConversationListener(loggerFactory.create(ConversationListener.class), this, profileProvider,
-                translations, configAccessor);
+                localizations, configAccessor);
         plugin.getServer().getPluginManager().registerEvents(listener, plugin);
     }
 

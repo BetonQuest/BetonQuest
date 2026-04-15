@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.language;
 
 import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -27,28 +27,28 @@ public class LanguageConditionFactory implements PlayerConditionFactory {
     private final LanguageProvider languageProvider;
 
     /**
-     * The {@link Translations} instance.
+     * The {@link Localizations} instance.
      */
-    private final Translations translations;
+    private final Localizations localizations;
 
     /**
      * Create a language condition factory.
      *
      * @param dataStorage      the storage for used player data
      * @param languageProvider the language provider to get the default language
-     * @param translations     the {@link Translations} instance
+     * @param localizations    the {@link Localizations} instance
      */
     public LanguageConditionFactory(final PlayerDataStorage dataStorage, final LanguageProvider languageProvider,
-                                    final Translations translations) {
+                                    final Localizations localizations) {
         this.dataStorage = dataStorage;
         this.languageProvider = languageProvider;
-        this.translations = translations;
+        this.localizations = localizations;
     }
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<List<String>> languages = instruction.string().validate(
-                        language -> translations.getLanguages().contains(language),
+                        language -> localizations.getLanguages().contains(language),
                         "Language '%s' does not exist.")
                 .list().get();
         return new LanguageCondition(dataStorage, languageProvider, languages);

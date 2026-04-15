@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.command;
 
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -30,9 +30,9 @@ public class CancelQuestCommand implements CommandExecutor {
     private final ConfigAccessor config;
 
     /**
-     * The {@link Translations} instance.
+     * The {@link Localizations} instance.
      */
-    private final Translations translations;
+    private final Localizations localizations;
 
     /**
      * The profile provider instance.
@@ -79,7 +79,7 @@ public class CancelQuestCommand implements CommandExecutor {
      *
      * @param plugin            the plugin instance
      * @param config            the plugin configuration file
-     * @param translations      the {@link Translations} instance
+     * @param localizations     the {@link Localizations} instance
      * @param profileProvider   the profile provider instance
      * @param loggerFactory     the logger factory
      * @param playerDataStorage the player data storage
@@ -89,13 +89,13 @@ public class CancelQuestCommand implements CommandExecutor {
      * @param itemManager       the item manager
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
-    public CancelQuestCommand(final Plugin plugin, final ConfigAccessor config, final Translations translations,
+    public CancelQuestCommand(final Plugin plugin, final ConfigAccessor config, final Localizations localizations,
                               final ProfileProvider profileProvider, final BetonQuestLoggerFactory loggerFactory,
                               final PlayerDataStorage playerDataStorage, final CancelerProcessor cancelerProcessor,
                               final CompassManager compassManager, final Identifiers identifiers, final ItemManager itemManager) {
         this.plugin = plugin;
         this.config = config;
-        this.translations = translations;
+        this.localizations = localizations;
         this.profileProvider = profileProvider;
         this.loggerFactory = loggerFactory;
         this.playerDataStorage = playerDataStorage;
@@ -111,7 +111,7 @@ public class CancelQuestCommand implements CommandExecutor {
             if (sender instanceof Player) {
                 final OnlineProfile onlineProfile = profileProvider.getProfile((Player) sender);
                 new Backpack(plugin, loggerFactory.create(Backpack.class), playerDataStorage.get(onlineProfile), cancelerProcessor,
-                        compassManager, config, translations, onlineProfile, itemManager, identifiers, DisplayType.CANCEL);
+                        compassManager, config, localizations, onlineProfile, itemManager, identifiers, DisplayType.CANCEL);
             }
             return true;
         }

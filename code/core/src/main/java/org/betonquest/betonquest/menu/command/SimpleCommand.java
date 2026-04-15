@@ -4,7 +4,7 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.Bukkit;
@@ -188,7 +188,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     }
 
     /**
-     * Sends the resolved message from Translations string.
+     * Sends the resolved message from Localizations string.
      *
      * @param sender       the sender to get resolve the message and send it to
      * @param message      the message string to resolve
@@ -199,7 +199,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     }
 
     /**
-     * Get the resolved message from Translations string.
+     * Get the resolved message from Localizations string.
      *
      * @param sender       the sender to get resolve the message
      * @param message      the message string to resolve
@@ -207,10 +207,10 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
      * @return the resolved message component
      */
     protected Component getMessage(final CommandSender sender, final String message, final VariableReplacement... replacements) {
-        final Translations translations = getPlugin().getPluginMessage();
+        final Localizations localizations = getPlugin().getPluginMessage();
         final OnlineProfile profile = sender instanceof final Player player ? getPlugin().getProfileProvider().getProfile(player) : null;
         try {
-            return translations.getMessage(profile, "menu." + message, replacements);
+            return localizations.getMessage(profile, "menu." + message, replacements);
         } catch (final QuestException e) {
             log.warn("Failed to get message '" + message + "': " + e.getMessage(), e);
             return Component.text("Failed to get message '" + message + "': " + e.getMessage());

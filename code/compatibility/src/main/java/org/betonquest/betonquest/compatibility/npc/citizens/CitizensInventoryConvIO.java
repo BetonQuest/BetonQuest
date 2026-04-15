@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.npc.citizens;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.SkinTrait;
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -58,7 +58,7 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
      * @param profileProvider      the profile provider instance
      * @param pluginManager        the plugin manager instance
      * @param plugin               the plugin instance
-     * @param translations         the {@link Translations} instance
+     * @param localizations        the {@link Localizations} instance
      * @param conversations        the conversations instance
      * @param showNumber           whether to show the number of the conversation
      * @param showNPCText          whether to show the NPC text
@@ -68,11 +68,11 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public CitizensInventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile, final BetonQuestLogger log,
                                    final ConversationColors colors, final Plugin plugin, final PluginManager pluginManager,
-                                   final Instructions instructions, final Translations translations, final ItemManager itemManager,
+                                   final Instructions instructions, final Localizations localizations, final ItemManager itemManager,
                                    final ProfileProvider profileProvider, final Conversations conversations,
                                    final boolean showNumber, final boolean showNPCText, final boolean printMessages,
                                    final FixedComponentLineWrapper componentLineWrapper) {
-        super(conv, onlineProfile, log, plugin, pluginManager, instructions, translations, itemManager, profileProvider,
+        super(conv, onlineProfile, log, plugin, pluginManager, instructions, localizations, itemManager, profileProvider,
                 conversations, colors, showNumber, showNPCText, printMessages, componentLineWrapper);
         this.plugin = plugin;
     }

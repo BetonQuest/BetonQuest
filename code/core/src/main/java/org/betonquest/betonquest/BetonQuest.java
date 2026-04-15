@@ -5,7 +5,7 @@ import org.apache.logging.log4j.core.Logger;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.dependency.CoreComponentLoader;
 import org.betonquest.betonquest.api.integration.IntegrationService;
@@ -177,12 +177,12 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * Get the Translations provider.
+     * Get the Localizations provider.
      *
-     * @return the Translations provider
+     * @return the Localizations provider
      */
-    public Translations getPluginMessage() {
-        return coreComponentLoader.get(Translations.class);
+    public Localizations getPluginMessage() {
+        return coreComponentLoader.get(Localizations.class);
     }
 
     /**

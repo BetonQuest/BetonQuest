@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.quest.npc;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.identifier.ConversationIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -29,7 +29,7 @@ public class NpcConversation<T> extends Conversation {
      * Starts a new conversation between player and npc at given location.
      *
      * @param log                   the logger that will be used for logging
-     * @param translations          the {@link Translations} instance
+     * @param localizations         the {@link Localizations} instance
      * @param onlineProfile         the profile of the player
      * @param conversationID        the ID of the conversation
      * @param center                the location where the conversation has been started
@@ -43,12 +43,12 @@ public class NpcConversation<T> extends Conversation {
      * @throws QuestException when required conversation objects could not be created
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
-    public NpcConversation(final BetonQuestLogger log, final Translations translations, final OnlineProfile onlineProfile,
+    public NpcConversation(final BetonQuestLogger log, final Localizations localizations, final OnlineProfile onlineProfile,
                            final ConversationIdentifier conversationID, final Location center,
                            final ActionManager actionManager, final ConditionManager conditionManager,
                            final ConversationProcessor conversationProcessor, final Identifiers identifiers, final Saver saver,
                            final Runnable endCallable, final Npc<T> npc) throws QuestException {
-        super(log, translations, onlineProfile, conversationID, actionManager, conditionManager, conversationProcessor, identifiers, saver, center, endCallable);
+        super(log, localizations, onlineProfile, conversationID, actionManager, conditionManager, conversationProcessor, identifiers, saver, center, endCallable);
         this.npc = npc;
     }
 

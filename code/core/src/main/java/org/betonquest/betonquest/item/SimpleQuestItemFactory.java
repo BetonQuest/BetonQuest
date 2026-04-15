@@ -2,7 +2,7 @@ package org.betonquest.betonquest.item;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.BookPageWrapper;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -57,9 +57,9 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
     protected final BookPageWrapper bookPageWrapper;
 
     /**
-     * Supplier for the Translations.
+     * Supplier for the Localizations.
      */
-    protected final Supplier<Translations> questItemLoreSupplier;
+    protected final Supplier<Localizations> questItemLoreSupplier;
 
     /**
      * The {@link PlaceholderManager} to create and resolve placeholders.
@@ -73,10 +73,10 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
      * @param packManager           the quest package manager to get quest packages from
      * @param textParser            the text parser used to parse text
      * @param bookPageWrapper       the book page wrapper used to split pages
-     * @param questItemLoreSupplier supplies the Translations instance if the "quest item" lore line should be added
+     * @param questItemLoreSupplier supplies the Localizations instance if the "quest item" lore line should be added
      */
     public SimpleQuestItemFactory(final PlaceholderManager placeholders, final QuestPackageManager packManager, final TextParser textParser,
-                                  final BookPageWrapper bookPageWrapper, final Supplier<Translations> questItemLoreSupplier) {
+                                  final BookPageWrapper bookPageWrapper, final Supplier<Localizations> questItemLoreSupplier) {
         this.placeholders = placeholders;
         this.packManager = packManager;
         this.textParser = textParser;
@@ -112,9 +112,9 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
         final NameHandler name = new NameHandler(textParser);
         final LoreHandler lore = new LoreHandler(textParser);
 
-        final Translations translations = questItemLoreSupplier.get();
+        final Localizations localizations = questItemLoreSupplier.get();
         final List<ItemMetaHandler<?>> handlers = List.of(
-                new QuestHandler(translations == null ? QuestHandler.LoreConsumer.EMPTY : new QuestHandler.Lore(translations)),
+                new QuestHandler(localizations == null ? QuestHandler.LoreConsumer.EMPTY : new QuestHandler.Lore(localizations)),
                 new DurabilityHandler(),
                 new CustomModelDataHandler(),
                 new UnbreakableHandler(),

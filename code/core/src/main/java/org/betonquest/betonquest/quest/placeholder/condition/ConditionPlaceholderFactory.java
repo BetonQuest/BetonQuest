@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.placeholder.condition;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
@@ -16,9 +16,9 @@ import org.betonquest.betonquest.api.service.condition.ConditionManager;
 public class ConditionPlaceholderFactory implements PlayerPlaceholderFactory {
 
     /**
-     * The {@link Translations} instance.
+     * The {@link Localizations} instance.
      */
-    private final Translations translations;
+    private final Localizations localizations;
 
     /**
      * The condition manager.
@@ -29,17 +29,17 @@ public class ConditionPlaceholderFactory implements PlayerPlaceholderFactory {
      * Create the Condition Placeholder Factory.
      *
      * @param conditionManager the condition manager
-     * @param translations     the {@link Translations} instance
+     * @param localizations    the {@link Localizations} instance
      */
-    public ConditionPlaceholderFactory(final ConditionManager conditionManager, final Translations translations) {
+    public ConditionPlaceholderFactory(final ConditionManager conditionManager, final Localizations localizations) {
         this.conditionManager = conditionManager;
-        this.translations = translations;
+        this.localizations = localizations;
     }
 
     @Override
     public PlayerPlaceholder parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<ConditionIdentifier> conditionId = instruction.identifier(ConditionIdentifier.class).get();
         final FlagArgument<Boolean> papiMode = instruction.bool().getFlag("papiMode", true);
-        return new ConditionPlaceholder(translations, conditionId, conditionManager, papiMode);
+        return new ConditionPlaceholder(localizations, conditionId, conditionManager, papiMode);
     }
 }

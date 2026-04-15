@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.kernel.component.types;
 
 import org.betonquest.betonquest.api.LanguageProvider;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.data.Persistence;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -108,7 +108,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(Plugin.class, PluginManager.class, Server.class, BukkitScheduler.class,
                 BetonQuestLoggerFactory.class, ProfileProvider.class, PlayerDataFactory.class,
-                PlayerDataStorage.class, GlobalData.class, Translations.class, LanguageProvider.class,
+                PlayerDataStorage.class, GlobalData.class, Localizations.class, LanguageProvider.class,
                 Saver.class, TextParser.class, Instructions.class, Persistence.class,
                 ActionTypeRegistry.class, Conversations.class, ActionManager.class, ConditionManager.class,
                 ObjectiveManager.class, NpcManager.class, CompassManager.class, CancelerProcessor.class,
@@ -123,7 +123,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         final GlobalData globalData = getDependency(GlobalData.class);
         final PlayerDataStorage playerDataStorage = getDependency(PlayerDataStorage.class);
         final Persistence persistence = getDependency(Persistence.class);
-        final Translations translations = getDependency(Translations.class);
+        final Localizations localizations = getDependency(Localizations.class);
         final LanguageProvider languageProvider = getDependency(LanguageProvider.class);
         final TextParser textParser = getDependency(TextParser.class);
         final Saver saver = getDependency(Saver.class);
@@ -165,14 +165,14 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         actionTypes.registerCombined("folder", new FolderActionFactory(plugin, loggerFactory, pluginManager,
                 actionManager, conditionManager));
         actionTypes.registerCombined("first", new FirstActionFactory(actionManager));
-        actionTypes.register("give", new GiveActionFactory(loggerFactory, playerDataStorage, translations));
+        actionTypes.register("give", new GiveActionFactory(loggerFactory, playerDataStorage, localizations));
         actionTypes.register("givejournal", new GiveJournalActionFactory(playerDataStorage));
         actionTypes.registerCombined("globaltag", new TagGlobalActionFactory(globalData));
         actionTypes.registerCombined("globalpoint", new GlobalPointActionFactory(globalData));
         actionTypes.register("hunger", new HungerActionFactory());
         actionTypes.registerCombined("if", new IfElseActionFactory(actionManager, conditionManager));
         actionTypes.register("itemdurability", new ItemDurabilityActionFactory());
-        actionTypes.registerCombined("journal", new JournalActionFactory(loggerFactory, translations, playerDataStorage,
+        actionTypes.registerCombined("journal", new JournalActionFactory(loggerFactory, localizations, playerDataStorage,
                 InstantSource.system(), saver, profileProvider));
         actionTypes.register("kill", new KillActionFactory());
         actionTypes.register("language", new LanguageActionFactory(playerDataStorage));
@@ -188,7 +188,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         actionTypes.register("party", new PartyActionFactory(profileProvider, actionManager, conditionManager));
         actionTypes.registerCombined("pickrandom", new PickRandomActionFactory(actionManager));
         actionTypes.register("point", new PointActionFactory(loggerFactory, playerDataStorage,
-                translations));
+                localizations));
         actionTypes.registerCombined("removeentity", new RemoveEntityActionFactory());
         actionTypes.registerCombined("run", new RunActionFactory(instructions, actionTypes));
         actionTypes.register("runForAll", new RunForAllActionFactory(profileProvider, actionManager, conditionManager));
@@ -200,7 +200,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         actionTypes.register("stage", new StageActionFactory(objectiveManager));
         actionTypes.register("sudo", new SudoActionFactory(server));
         actionTypes.registerCombined("tag", new TagPlayerActionFactory(persistence, saver, profileProvider));
-        actionTypes.register("take", new TakeActionFactory(loggerFactory, playerDataStorage, translations));
+        actionTypes.register("take", new TakeActionFactory(loggerFactory, playerDataStorage, localizations));
         actionTypes.register("teleport", new TeleportActionFactory(conversations));
         actionTypes.registerCombined("time", new TimeActionFactory());
         actionTypes.register("updatevisibility", new UpdateVisibilityNowActionFactory(npcHider));

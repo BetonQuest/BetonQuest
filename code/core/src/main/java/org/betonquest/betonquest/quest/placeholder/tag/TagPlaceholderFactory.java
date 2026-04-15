@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.placeholder.tag;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerPlaceholder;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerPlaceholderFactory;
@@ -13,24 +13,24 @@ import org.betonquest.betonquest.data.PlayerDataStorage;
 public class TagPlaceholderFactory extends AbstractTagPlaceholderFactory<PlayerDataStorage> implements PlayerPlaceholderFactory {
 
     /**
-     * The {@link Translations} instance.
+     * The {@link Localizations} instance.
      */
-    private final Translations translations;
+    private final Localizations localizations;
 
     /**
      * Creates a new TagPlaceholderFactory.
      *
-     * @param dataHolder   the data holder
-     * @param translations the {@link Translations} instance
+     * @param dataHolder    the data holder
+     * @param localizations the {@link Localizations} instance
      */
-    public TagPlaceholderFactory(final PlayerDataStorage dataHolder, final Translations translations) {
+    public TagPlaceholderFactory(final PlayerDataStorage dataHolder, final Localizations localizations) {
         super(dataHolder);
-        this.translations = translations;
+        this.localizations = localizations;
     }
 
     @Override
     public PlayerPlaceholder parsePlayer(final Instruction instruction) throws QuestException {
-        return new TagPlaceholder(translations, dataHolder, instruction.nextElement(), instruction.getPackage(),
+        return new TagPlaceholder(localizations, dataHolder, instruction.nextElement(), instruction.getPackage(),
                 instruction.bool().getFlag("papiMode", true));
     }
 }

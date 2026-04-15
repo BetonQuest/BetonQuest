@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.action.take;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -25,19 +25,19 @@ public abstract class AbstractTakeActionFactory implements PlayerActionFactory {
     protected final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * The {@link Translations} instance.
+     * The {@link Localizations} instance.
      */
-    private final Translations translations;
+    private final Localizations localizations;
 
     /**
      * Create the abstract take action factory.
      *
      * @param loggerFactory the logger factory to create a logger for the actions
-     * @param translations  the {@link Translations} instance
+     * @param localizations the {@link Localizations} instance
      */
-    public AbstractTakeActionFactory(final BetonQuestLoggerFactory loggerFactory, final Translations translations) {
+    public AbstractTakeActionFactory(final BetonQuestLoggerFactory loggerFactory, final Localizations localizations) {
         this.loggerFactory = loggerFactory;
-        this.translations = translations;
+        this.localizations = localizations;
     }
 
     /**
@@ -63,7 +63,7 @@ public abstract class AbstractTakeActionFactory implements PlayerActionFactory {
     protected NotificationSender getNotificationSender(final Instruction instruction, final BetonQuestLogger log) throws QuestException {
         final boolean notify = instruction.bool().getFlag("notify", true)
                 .getValue(null).orElse(false);
-        return notify ? new IngameNotificationSender(log, translations, instruction.getPackage(),
+        return notify ? new IngameNotificationSender(log, localizations, instruction.getPackage(),
                 instruction.getID().getFull(), NotificationLevel.INFO, "items_taken")
                 : new NoNotificationSender();
     }

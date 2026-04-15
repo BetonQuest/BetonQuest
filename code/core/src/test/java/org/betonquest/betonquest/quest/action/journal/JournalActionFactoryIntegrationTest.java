@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.action.journal;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.InstructionMock;
@@ -77,7 +77,7 @@ final class JournalActionFactoryIntegrationTest {
 
     private ActionAdapterFactory createJournalActionFactory(final BetonQuestLogger logger) {
         final ProfileProvider profileProvider = new UUIDProfileProvider(mock(Server.class));
-        final JournalActionFactory journalActionFactory = new JournalActionFactory(new SingletonLoggerFactory(logger), mock(Translations.class), dataStorage, InstantSource.fixed(now), saver, profileProvider);
+        final JournalActionFactory journalActionFactory = new JournalActionFactory(new SingletonLoggerFactory(logger), mock(Localizations.class), dataStorage, InstantSource.fixed(now), saver, profileProvider);
         return new ActionAdapterFactory(mock(BetonQuestLoggerFactory.class), mock(ConditionManager.class), journalActionFactory, journalActionFactory);
     }
 

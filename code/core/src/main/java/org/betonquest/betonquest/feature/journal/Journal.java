@@ -13,7 +13,7 @@ import org.betonquest.betonquest.api.common.component.BookPageWrapper;
 import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.identifier.JournalEntryIdentifier;
 import org.betonquest.betonquest.api.identifier.JournalMainPageIdentifier;
@@ -68,9 +68,9 @@ public class Journal {
     private final BetonQuestLogger log;
 
     /**
-     * The Translations instance used for getting messages.
+     * The Localizations instance used for getting messages.
      */
-    private final Translations translations;
+    private final Localizations localizations;
 
     /**
      * The Condition Manager.
@@ -132,7 +132,7 @@ public class Journal {
      * Creates a new Journal instance from List of Pointers.
      *
      * @param log               the custom {@link BetonQuestLogger} instance for this class
-     * @param translations      the {@link Translations} instance
+     * @param localizations     the {@link Localizations} instance
      * @param conditionManager  the Condition Manager
      * @param mainPageProcessor the main page processor
      * @param entryProcessor    the entry processor
@@ -143,12 +143,12 @@ public class Journal {
      * @param config            a {@link ConfigAccessor} that contains the plugin's configuration
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
-    public Journal(final BetonQuestLogger log, final Translations translations, final ConditionManager conditionManager,
+    public Journal(final BetonQuestLogger log, final Localizations localizations, final ConditionManager conditionManager,
                    final JournalMainPageProcessor mainPageProcessor, final JournalEntryProcessor entryProcessor,
                    final TextParser textParser, final FontRegistry fontRegistry, final Profile profile,
                    final List<Pointer> list, final ConfigAccessor config) {
         this.log = log;
-        this.translations = translations;
+        this.localizations = localizations;
         this.conditionManager = conditionManager;
         this.mainPageProcessor = mainPageProcessor;
         this.entryProcessor = entryProcessor;
@@ -158,7 +158,7 @@ public class Journal {
         this.profile = profile;
         this.pointers = list;
         this.config = config;
-        this.inventoryFullBackpackSender = new IngameNotificationSender(log, translations, null,
+        this.inventoryFullBackpackSender = new IngameNotificationSender(log, localizations, null,
                 "Journal", NotificationLevel.ERROR, "inventory_full_backpack");
     }
 
@@ -412,10 +412,10 @@ public class Journal {
 
         final BookMeta meta = (BookMeta) item.getItemMeta();
         meta.getPersistentDataContainer().set(JOURNAL_KEY, PersistentDataType.BYTE, (byte) 1);
-        meta.title(translations.getMessage(profile, "journal_title"));
+        meta.title(localizations.getMessage(profile, "journal_title"));
         meta.setAuthor(profile.getPlayer().getName());
         meta.setCustomModelData(config.getInt("journal.custom_model_data"));
-        meta.lore(ComponentLineWrapper.splitNewLine(translations.getMessage(profile, "journal_lore")));
+        meta.lore(ComponentLineWrapper.splitNewLine(localizations.getMessage(profile, "journal_lore")));
 
         final List<Component> finalList = new ArrayList<>();
         if (config.getBoolean("journal.format.one_entry_per_page")) {

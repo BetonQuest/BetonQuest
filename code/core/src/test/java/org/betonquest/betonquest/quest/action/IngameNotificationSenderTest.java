@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.action;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.config.Translations;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -31,9 +31,9 @@ class IngameNotificationSenderTest {
     @Test
     void testSendNotifyIsCalled(final BetonQuestLogger logger, @Mock final QuestPackage questPackage) throws QuestException {
         final Profile profile = getMockedProfile();
-        final Translations translations = getPluginMessage();
+        final Localizations localizations = getPluginMessage();
 
-        final NotificationSender sender = new IngameNotificationSender(logger, translations, questPackage, "full.id", NotificationLevel.INFO, "message-name");
+        final NotificationSender sender = new IngameNotificationSender(logger, localizations, questPackage, "full.id", NotificationLevel.INFO, "message-name");
 
         try (MockedStatic<Notify> notify = mockStatic(Notify.class)) {
             final NotifyIO notifyIO = mock(NotifyIO.class);
@@ -50,9 +50,9 @@ class IngameNotificationSenderTest {
     @Test
     void testSendNotifyHandlesError(final BetonQuestLogger logger, @Mock final QuestPackage questPackage) throws QuestException {
         final Profile profile = getMockedProfile();
-        final Translations translations = getPluginMessage();
+        final Localizations localizations = getPluginMessage();
 
-        final NotificationSender sender = new IngameNotificationSender(logger, translations, questPackage, "full.id", NotificationLevel.INFO, "message-name");
+        final NotificationSender sender = new IngameNotificationSender(logger, localizations, questPackage, "full.id", NotificationLevel.INFO, "message-name");
 
         try (MockedStatic<Notify> notify = mockStatic(Notify.class)) {
             final NotifyIO notifyIO = mock(NotifyIO.class);
@@ -72,10 +72,10 @@ class IngameNotificationSenderTest {
         return profile;
     }
 
-    private Translations getPluginMessage() throws QuestException {
-        final Translations translations = mock(Translations.class);
+    private Localizations getPluginMessage() throws QuestException {
+        final Localizations localizations = mock(Localizations.class);
         final Component message = mock(Component.class);
-        when(translations.getMessage(any(Profile.class), eq("message-name"))).thenReturn(message);
-        return translations;
+        when(localizations.getMessage(any(Profile.class), eq("message-name"))).thenReturn(message);
+        return localizations;
     }
 }
