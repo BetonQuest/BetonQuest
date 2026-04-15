@@ -53,7 +53,7 @@ public abstract class CountingObjective extends DefaultObjective {
         final BetonQuestLoggerFactory loggerFactory = instance.getLoggerFactory();
         this.targetAmount = targetAmount;
         countSender = notifyMessageName == null ? null : new IngameNotificationSender(loggerFactory.create(CountingObjective.class),
-                instance.getPluginMessage(), service.getObjectiveID().getPackage(), service.getObjectiveID().getFull(),
+                instance.getBetonQuestApi().localizations(), service.getObjectiveID().getPackage(), service.getObjectiveID().getFull(),
                 NotificationLevel.INFO, notifyMessageName);
         service.setDefaultData(this::getDefaultDataInstruction);
         final ObjectiveProperties properties = service.getProperties();

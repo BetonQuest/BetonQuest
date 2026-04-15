@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.dependency.CoreComponentLoader;
 import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.service.item.ItemRegistry;
 import org.betonquest.betonquest.api.text.TextParser;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.menu.MenuConvIOFactory;
 import org.betonquest.betonquest.conversation.menu.input.ConversationAction;
 import org.betonquest.betonquest.conversation.menu.input.ConversationSession;
@@ -50,14 +49,14 @@ public class BundledMC_1_21_4 implements Integration {
         final BookPageWrapper bookPageWrapper = new BookPageWrapper(api.fonts(), 114, 14);
         item.register("simple", new UpdatedSimpleItemFactory(api.placeholders().manager(),
                 api.packages(), textParser, bookPageWrapper,
-                () -> betonQuest.getPluginConfig().getBoolean("item.quest.lore") ? betonQuest.getPluginMessage() : null));
+                () -> betonQuest.getPluginConfig().getBoolean("item.quest.lore") ? api.localizations() : null));
         item.registerSerializer("simple", new UpdatedSimpleQuestItemSerializer(textParser, bookPageWrapper));
 
         final TriFunction<Player, ConversationAction, Boolean, ConversationSession> inputFunction = (player, control, setSpeed)
                 -> new InputEventSession(betonQuest, player, control, setSpeed);
         componentLoader.get(ConversationIORegistry.class).register("menu", new MenuConvIOFactory(
                 api.loggerFactory(), betonQuest.getPluginConfig(), betonQuest,
-                componentLoader.get(PluginMessage.class), inputFunction, componentLoader.get(TextParser.class),
+                api.localizations(), inputFunction, componentLoader.get(TextParser.class),
                 api.fonts(), betonQuest.getConversationColors()));
 
         api.conditions().registry().register("biome", new UpdatedBiomeConditionFactory());

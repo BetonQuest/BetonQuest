@@ -2,7 +2,6 @@ package org.betonquest.betonquest.compatibility.vault;
 
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -48,7 +47,7 @@ public class VaultIntegrator implements Integration {
             final Economy economy = economyProvider.getProvider();
 
             api.actions().registry().register("money", new MoneyActionFactory(economy, api.loggerFactory(),
-                    BetonQuest.getInstance().getPluginMessage()));
+                    api.localizations()));
             api.conditions().registry().register("money", new MoneyConditionFactory(economy));
             api.placeholders().registry().register("money", new MoneyPlaceholderFactory(economy));
         }

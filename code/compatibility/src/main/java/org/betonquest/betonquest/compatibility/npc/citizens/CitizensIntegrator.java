@@ -83,10 +83,10 @@ public class CitizensIntegrator implements Integration {
         final ConversationColors colors = plugin.getConversationColors();
         conversationIORegistry.register("chest", new CitizensInventoryConvIOFactory(loggerFactory,
                 api.fonts(), colors, pluginConfig, plugin, plugin.getServer().getPluginManager(), api.instructions(),
-                plugin.getPluginMessage(), api.items().manager(), api.profiles(), api.conversations(), false));
+                api.localizations(), api.items().manager(), api.profiles(), api.conversations(), false));
         conversationIORegistry.register("combined", new CitizensInventoryConvIOFactory(loggerFactory,
                 api.fonts(), colors, pluginConfig, plugin, plugin.getServer().getPluginManager(), api.instructions(),
-                plugin.getPluginMessage(), api.items().manager(), api.profiles(), api.conversations(), true));
+                api.localizations(), api.items().manager(), api.profiles(), api.conversations(), true));
 
         final NpcRegistry npcRegistry = api.npcs().registry();
         bukkitManager.registerEvents(new CitizensInteractCatcher(api.profiles(), npcRegistry, citizensNpcRegistry,

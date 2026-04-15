@@ -2,6 +2,7 @@ package org.betonquest.betonquest.menu.command;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.config.Localizations;
@@ -207,8 +208,9 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
      * @return the resolved message component
      */
     protected Component getMessage(final CommandSender sender, final String message, final VariableReplacement... replacements) {
-        final Localizations localizations = getPlugin().getPluginMessage();
-        final OnlineProfile profile = sender instanceof final Player player ? getPlugin().getBetonQuestApi().profiles().getProfile(player) : null;
+        final BetonQuestApi api = getPlugin().getBetonQuestApi();
+        final Localizations localizations = api.localizations();
+        final OnlineProfile profile = sender instanceof final Player player ? api.profiles().getProfile(player) : null;
         try {
             return localizations.getMessage(profile, "menu." + message, replacements);
         } catch (final QuestException e) {
