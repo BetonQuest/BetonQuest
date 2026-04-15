@@ -22,9 +22,7 @@ import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.integration.DefaultIntegrationService;
 import org.betonquest.betonquest.integration.IntegrationManager;
 import org.betonquest.betonquest.kernel.BetonQuestComponents;
-import org.betonquest.betonquest.kernel.ProcessorDataLoader;
 import org.betonquest.betonquest.kernel.component.DatabaseComponent;
-import org.betonquest.betonquest.kernel.processor.QuestProcessor;
 import org.betonquest.betonquest.kernel.processor.feature.ConversationProcessor;
 import org.betonquest.betonquest.lib.dependency.component.DefaultCoreComponentLoader;
 import org.betonquest.betonquest.lib.logger.CachingBetonQuestLoggerFactory;
@@ -140,15 +138,6 @@ public class BetonQuest extends JavaPlugin {
         coreComponentLoader.getOptional(RPGMenu.class).ifPresent(RPGMenu::onDisable);
 
         log.info("BetonQuest successfully disabled!");
-    }
-
-    /**
-     * Adds a Processor to re-/load data on BetonQuest re-/load.
-     *
-     * @param processor the processor to register
-     */
-    public void addProcessor(final QuestProcessor<?, ?> processor) {
-        coreComponentLoader.get(ProcessorDataLoader.class).addProcessor(processor);
     }
 
     /**

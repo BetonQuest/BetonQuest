@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.reload.ReloadPhase;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.database.Connector;
+import org.betonquest.betonquest.kernel.ProcessorDataLoader;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -116,16 +117,17 @@ public final class HologramProvider {
         final BetonQuestLoggerFactory loggerFactory = api.loggerFactory();
         final TextParser textParser = plugin.getComponentLoader().get(TextParser.class);
         final Connector connector = plugin.getComponentLoader().get(Connector.class);
+        final ProcessorDataLoader processorDataLoader = plugin.getComponentLoader().get(ProcessorDataLoader.class);
         final IdentifierFactory<HologramIdentifier> hologramIdentifierFactory = new HologramIdentifierFactory(api.packages());
         api.identifiers().register(HologramIdentifier.class, hologramIdentifierFactory);
         this.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class),
                 connector, api.instructions(), hologramIdentifierFactory, plugin.getPluginConfig(),
                 this, plugin, textParser, api.conditions().manager(), api.profiles());
-        plugin.addProcessor(locationHologramLoop);
+        processorDataLoader.addProcessor(locationHologramLoop);
         this.npcHologramLoop = new NpcHologramLoop(loggerFactory, loggerFactory.create(NpcHologramLoop.class),
                 connector, api.instructions(), plugin, this, plugin.getPluginConfig(),
                 hologramIdentifierFactory, api.conditions().manager(), api.npcs().manager(), api.npcs().registry(), textParser, api.profiles());
-        plugin.addProcessor(npcHologramLoop);
+        processorDataLoader.addProcessor(npcHologramLoop);
         api.bukkit().registerEvents(new HologramListener(api.profiles()));
         api.reloader().register(ReloadPhase.INTEGRATION, HologramRunner::cancel);
     }
