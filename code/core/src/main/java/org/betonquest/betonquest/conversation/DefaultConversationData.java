@@ -153,6 +153,9 @@ public class DefaultConversationData implements ConversationData {
 
             // This is null if we refer to the starting options of a conversation
             if (targetOptionName == null) {
+                if (resolvedOption.type() == PLAYER) {
+                    throw new QuestException("Cannot create a cross-conversation %s without a specific option".formatted(PLAYER.getReadable()));
+                }
                 continue;
             }
 
