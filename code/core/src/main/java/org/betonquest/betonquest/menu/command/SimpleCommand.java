@@ -208,7 +208,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
      */
     protected Component getMessage(final CommandSender sender, final String message, final VariableReplacement... replacements) {
         final Localizations localizations = getPlugin().getPluginMessage();
-        final OnlineProfile profile = sender instanceof final Player player ? getPlugin().getProfileProvider().getProfile(player) : null;
+        final OnlineProfile profile = sender instanceof final Player player ? getPlugin().getBetonQuestApi().profiles().getProfile(player) : null;
         try {
             return localizations.getMessage(profile, "menu." + message, replacements);
         } catch (final QuestException e) {

@@ -89,7 +89,7 @@ public class CitizensIntegrator implements Integration {
                 plugin.getPluginMessage(), api.items().manager(), api.profiles(), api.conversations(), true));
 
         final NpcRegistry npcRegistry = api.npcs().registry();
-        bukkitManager.registerEvents(new CitizensInteractCatcher(plugin.getProfileProvider(), npcRegistry, citizensNpcRegistry,
+        bukkitManager.registerEvents(new CitizensInteractCatcher(api.profiles(), npcRegistry, citizensNpcRegistry,
                 citizensMoveController));
         npcRegistry.register("citizens", new CitizensNpcFactory(citizensNpcRegistry));
         npcRegistry.registerIdentifier(new CitizensReverseIdentifier(citizensNpcRegistry));

@@ -162,7 +162,7 @@ public class RPGMenuCommand extends SimpleCommand {
                 }
                 //open the menu and send feedback
                 try {
-                    this.menu.openMenu(getPlugin().getProfileProvider().getProfile(player), menu);
+                    this.menu.openMenu(getPlugin().getBetonQuestApi().profiles().getProfile(player), menu);
                     sendMessage(sender, "command_open_successful", new VariableReplacement("menu", Component.text(menu.toString())));
                     return true;
                 } catch (final QuestException e) {

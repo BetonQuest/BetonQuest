@@ -27,7 +27,7 @@ public class CombatTagger implements Listener {
      * <p>
      * The Runnable removes the entry from the same map after the delay.
      */
-    private static final Map<Profile, BukkitRunnable> TAGGERS = new ProfileKeyMap<>(BetonQuest.getInstance().getProfileProvider());
+    private static Map<Profile, BukkitRunnable> taggers = Map.of();
 
     /**
      * The profile provider instance.
@@ -45,9 +45,11 @@ public class CombatTagger implements Listener {
      * @param profileProvider the profile provider instance
      * @param delay           the delay in seconds after a player profile is untagged from "in combat"
      */
+    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public CombatTagger(final ProfileProvider profileProvider, final int delay) {
         this.profileProvider = profileProvider;
         this.delay = delay;
+        taggers = new ProfileKeyMap<>(profileProvider);
     }
 
     /**
@@ -57,7 +59,7 @@ public class CombatTagger implements Listener {
      * @return true if the profile is tagged, false otherwise
      */
     public static boolean isTagged(final Profile profile) {
-        return TAGGERS.containsKey(profile);
+        return taggers.containsKey(profile);
     }
 
     /**
@@ -75,17 +77,17 @@ public class CombatTagger implements Listener {
             profiles.add(profileProvider.getProfile((Player) event.getDamager()));
         }
         for (final Profile profile : profiles) {
-            final BukkitRunnable run = TAGGERS.get(profile);
+            final BukkitRunnable run = taggers.get(profile);
             if (run != null) {
                 run.cancel();
             }
-            TAGGERS.put(profile, new BukkitRunnable() {
+            taggers.put(profile, new BukkitRunnable() {
                 @Override
                 public void run() {
-                    TAGGERS.remove(profile);
+                    taggers.remove(profile);
                 }
             });
-            TAGGERS.get(profile).runTaskLater(BetonQuest.getInstance(), delay * 20L);
+            taggers.get(profile).runTaskLater(BetonQuest.getInstance(), delay * 20L);
         }
     }
 
@@ -97,7 +99,7 @@ public class CombatTagger implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onDeath(final PlayerDeathEvent event) {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getEntity());
-        final BukkitRunnable runnable = TAGGERS.remove(onlineProfile);
+        final BukkitRunnable runnable = taggers.remove(onlineProfile);
         if (runnable != null) {
             runnable.cancel();
         }

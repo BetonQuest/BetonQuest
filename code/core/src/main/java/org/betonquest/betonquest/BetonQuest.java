@@ -186,15 +186,6 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * Returns the {@link ProfileProvider} instance.
-     *
-     * @return the {@link ProfileProvider} instance
-     */
-    public ProfileProvider getProfileProvider() {
-        return coreComponentLoader.get(ProfileProvider.class);
-    }
-
-    /**
      * Returns the {@link QuestPackageManager} instance.
      *
      * @return the {@link QuestPackageManager} instance
