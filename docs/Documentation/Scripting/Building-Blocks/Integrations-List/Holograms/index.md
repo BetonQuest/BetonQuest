@@ -8,12 +8,15 @@ tags:
 
 This feature can be activated by installing any of the following hologram plugins:
 
-| Plugin                                           | Required Version | Additional Dependencies                                                         |
-|--------------------------------------------------|------------------|---------------------------------------------------------------------------------|
-| [DecentHolograms](./DecentHolograms.md)          | 2.7.5 or above   | [PlaceholderAPI](../Administration/PlaceholderAPI.md) for in-line placeholders. |
-| [Holographic Displays](./HolographicDisplays.md) | 3.0.0 or above   | None                                                                            |
+| Plugin                                           | Required Version                | Additional Dependencies                                                         |
+|--------------------------------------------------|---------------------------------|---------------------------------------------------------------------------------|
+| [DecentHolograms](./DecentHolograms.md)          | 2.7.5 or above                  | [PlaceholderAPI](../Administration/PlaceholderAPI.md) for in-line placeholders. |
+| [FancyHolograms](./FancyHolograms.md)            | 2.8.0 or above, but below 3.0.0 | [PlaceholderAPI](../Administration/PlaceholderAPI.md) for in-line placeholders. |
+| [Holographic Displays](./HolographicDisplays.md) | 3.0.0 or above                  | None                                                                            |
 
-If you have both plugins installed, you can use the [`hologram.default` option in the "_config.yml_"](../../../../Configuration/Plugin-Config.md#hologram-hologram-settings) to set which plugin should be used.
+If you have more than one installed, you can use the
+[`hologram.default` option in the "_config.yml_"](../../../../Configuration/Plugin-Config.md#hologram-hologram-settings)
+to set which plugin should be used.
 
 ### NPC Holograms
 ```YAML title="Example"

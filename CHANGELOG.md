@@ -67,6 +67,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `brew` item type
 - `mainhand` selection order to `take` action
 - menu `bind` item for specific clicks
+- `FancyHolograms` as compatible Hologram plugin
 ### Changed
 - Spigot is no longer supported, paper is now required 
 - message.yml file was deleted and instead the lang folder now contains all translations

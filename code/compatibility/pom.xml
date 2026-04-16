@@ -44,6 +44,7 @@
     <ShopkeepersAPI.version>2.22.3</ShopkeepersAPI.version>
     <TrainCarts.version>1.20.6-v1</TrainCarts.version>
     <FancyNpcs.version>2.4.2</FancyNpcs.version>
+    <FancyHolograms.version>2.8.0</FancyHolograms.version>
     <znpcsplus-api.version>2.1.0-SNAPSHOT</znpcsplus-api.version>
     <Skript.version>2.9.1</Skript.version>
     <fake-block-api.version>v2.0.0</fake-block-api.version>
@@ -261,6 +262,13 @@
       <groupId>de.oliver</groupId>
       <artifactId>FancyNpcs</artifactId>
       <version>${FancyNpcs.version}</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>de.oliver</groupId>
+      <artifactId>FancyHolograms</artifactId>
+      <version>${FancyHolograms.version}</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>

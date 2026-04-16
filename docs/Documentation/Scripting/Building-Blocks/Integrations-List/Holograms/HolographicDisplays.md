@@ -1,4 +1,4 @@
-# [HolographicDisplays](https://dev.bukkit.org/projects/holographic-displays).
+# [HolographicDisplays](https://dev.bukkit.org/projects/holographic-displays)
 
 This is an older hologram plugin.
 
