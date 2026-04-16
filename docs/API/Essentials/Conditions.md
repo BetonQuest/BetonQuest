@@ -322,7 +322,8 @@ Instead of creating new condition types and their factories, we can also use exi
 This is useful if we want to reuse loaded conditions in another condition or just for a feature inside an addon.
 Loaded conditions are generally referenced by an `ConditionIdentifier` consisting of their name and the package they are defined in.
 `ConditionIdentifier`s are unique since you cannot have two conditions with the same name in the same package.
-They can be obtained from an `Instruction` using the `identifier(ConditionIdentifier.class)` type declaring method (See [Instruction](../Tools/Instruction.md#argument-parsing)).
+They can be obtained from an `Instruction` using the `identifier(ConditionIdentifier.class)` type declaring method (See [Instruction](../Tools/Instruction.md#argument-parsing))
+or directly manually via the API (See [API Overview](../Essentials/Overview.md#identifiers)).
 
 You can test a condition as follows:
 
