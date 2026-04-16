@@ -160,21 +160,22 @@ nav:
   - 'API':
       - 'Overview': API/Overview.md
       - 'Obtaining API': API/Obtaining-API.md
-      - 'Quest API':
-          - 'Overview': API/Quest/Overview.md
-          - 'Actions': API/Quest/Actions.md
-          - 'Objectives': API/Quest/Objectives.md
-          - 'Conditions': API/Quest/Conditions.md
-          - 'NPCs': API/Quest/NPCs.md
-          - 'Writing Implementations': API/Quest/Writing-Implementations.md
-      - 'Other':
-          - 'Instruction': API/Instruction.md
-          - 'Logging': API/Logging.md
-          - 'Text Parsing': API/TextParsing.md
-          - 'Profiles': API/Profiles.md
-          - 'Configuration Files': API/Configuration-Files.md
+      - 'Concepts':
+          - 'Overview': API/Essentials/Overview.md
+          - 'Actions': API/Essentials/Actions.md
+          - 'Objectives': API/Essentials/Objectives.md
+          - 'Conditions': API/Essentials/Conditions.md
+          - 'NPCs': API/Essentials/NPCs.md
+      - 'Tools':
+          - 'Instruction': API/Tools/Instruction.md
+          - 'Logging': API/Tools/Logging.md
+          - 'Text Parsing': API/Tools/TextParsing.md
+          - 'Profiles': API/Tools/Profiles.md
+          - 'Configuration Accessor': API/Configuration-Files.md
           - 'Bukkit Configurations': API/BukkitConfigurations.md
-          - 'Schedules': API/Schedules.md
+      - 'Legacy':
+          - 'Writing Implementations': API/Legacy/Writing-Implementations.md
+          - 'Schedules': API/Legacy/Schedules.md
   - 'Participate':
       - 'Overview': Participate/Overview.md
       - 'Donate Money': Participate/Donating-Money.md

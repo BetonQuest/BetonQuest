@@ -88,6 +88,6 @@ public class MyFeature {
 [:octicons-arrow-left-16: Introduction](./Overview.md){ .md-button .md-button--primary }
 </div>
 <div markdown style="text-align: right;">
-[Learn about API concepts :octicons-arrow-right-16:](./Quest/Overview.md){ .md-button .md-button--primary }
+[Learn about API concepts :octicons-arrow-right-16:](./Essentials/Overview.md){ .md-button .md-button--primary }
 </div>
 </div>

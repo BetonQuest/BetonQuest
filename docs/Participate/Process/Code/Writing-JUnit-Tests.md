@@ -28,7 +28,7 @@ and the underscores will be replaced by spaces.
 
 ## Handling Logging
 
-_See [Logging](../../../API/Logging.md) for general information about BetonQuest's logging._
+_See [Logging](../../../API/Tools/Logging.md) for general information about BetonQuest's logging._
 
 === "Testing"    
     You can mock the `BetonQuestLogger` directly.

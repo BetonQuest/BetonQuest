@@ -22,7 +22,7 @@ This page covers the Actions API of BetonQuest.
 !!! warning "You should have viewed these pages"
     - [How to access the api](../Obtaining-API.md)
     - [How to use the factory system](./Overview.md)
-    - [How to work with Instructions](../Instruction.md)
+    - [How to work with Instructions](../Tools/Instruction.md)
 
 <div class="grid" markdown>
 
@@ -359,7 +359,7 @@ public class MyBanActionFactory implements PlayerActionFactory, PlayerlessAction
 
 If we want to have optional parameters in our action, for example, the expiration time of a ban, we have to get the 
 `Argument` from the instruction with an optional parameter name.  
-A more detailed explanation of this can be found in the documentation for [Instructions](../Instruction.md).
+A more detailed explanation of this can be found in the documentation for [Instructions](../Tools/Instruction.md).
 
 
 ??? example
@@ -425,7 +425,7 @@ Instead of creating new action types and their factories, we can also use existi
 This is useful if we want to reuse a loaded action in another action or just for a feature inside an addon.
 Loaded action instances are generally referenced by an `ActionIdentifier` consisting of their name and the package they are defined in.
 `ActionIdentifier`s are unique since you cannot have two actions with the same name in the same package.
-They can be obtained from an `Instruction` using the `identifier(ActionIdentifier.class)` type declaring method (See [Instruction](../Instruction.md#argument-parsing)).
+They can be obtained from an `Instruction` using the `identifier(ActionIdentifier.class)` type declaring method (See [Instruction](../Tools/Instruction.md#argument-parsing)).
 
 You can run an action as follows:
 
