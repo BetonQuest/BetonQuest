@@ -1,10 +1,8 @@
 package org.betonquest.betonquest.item.typehandler;
 
-import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.common.function.QuestBiConsumer;
-import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.LoreConsumer;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -12,8 +10,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -115,41 +111,5 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
             case REQUIRED -> meta.getPersistentDataContainer().has(QUEST_ITEM_KEY);
             case FORBIDDEN -> !meta.getPersistentDataContainer().has(QUEST_ITEM_KEY);
         };
-    }
-
-    /**
-     * A BiConsumer on ItemMeta and nullable Profile.
-     */
-    @FunctionalInterface
-    public interface LoreConsumer extends QuestBiConsumer<ItemMeta, Profile> {
-
-        /**
-         * Consumer that does nothing.
-         */
-        LoreConsumer EMPTY = (meta, profile) -> {
-        };
-
-        @Override
-        void accept(ItemMeta meta, @Nullable Profile profile) throws QuestException;
-    }
-
-    /**
-     * Adds the quest item lore to the item meta.
-     *
-     * @param localizations the Localizations instance to get the lore line
-     */
-    public record Lore(Localizations localizations) implements LoreConsumer {
-
-        @Override
-        public void accept(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
-            final Component loreLine = localizations.getMessage(profile, "quest_item");
-            if (meta.hasLore()) {
-                final List<Component> lore = new ArrayList<>(meta.lore());
-                lore.add(loreLine);
-                meta.lore(lore);
-            } else {
-                meta.lore(List.of(loreLine));
-            }
-        }
     }
 }

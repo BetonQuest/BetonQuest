@@ -114,7 +114,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
 
         final Localizations localizations = questItemLoreSupplier.get();
         final List<ItemMetaHandler<?>> handlers = List.of(
-                new QuestHandler(localizations == null ? QuestHandler.LoreConsumer.EMPTY : new QuestHandler.Lore(localizations)),
+                new QuestHandler(localizations == null ? LoreConsumer.EMPTY : new LoreConsumer.Lore(localizations)),
                 new DurabilityHandler(),
                 new CustomModelDataHandler(),
                 new UnbreakableHandler(),

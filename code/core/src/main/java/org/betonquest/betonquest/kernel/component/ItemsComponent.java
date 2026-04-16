@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.kernel.component;
 
+import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.identifier.ItemIdentifier;
@@ -32,7 +34,7 @@ public class ItemsComponent extends AbstractCoreComponent {
     @Override
     public Set<Class<?>> requires() {
         return Set.of(QuestPackageManager.class, BetonQuestLoggerFactory.class, Identifiers.class, Instructions.class,
-                ProcessorDataLoader.class);
+                ProcessorDataLoader.class, Localizations.class, ConfigAccessor.class);
     }
 
     @Override
@@ -47,10 +49,13 @@ public class ItemsComponent extends AbstractCoreComponent {
         final Instructions instructions = getDependency(Instructions.class);
         final Identifiers identifiers = getDependency(Identifiers.class);
         final ProcessorDataLoader processorDataLoader = getDependency(ProcessorDataLoader.class);
+        final Localizations localizations = getDependency(Localizations.class);
+        final ConfigAccessor config = getDependency(ConfigAccessor.class);
 
         final ItemIdentifierFactory itemIdentifierFactory = new ItemIdentifierFactory(questPackageManager);
         identifiers.register(ItemIdentifier.class, itemIdentifierFactory);
-        final ItemTypeRegistry itemTypeRegistry = new ItemTypeRegistry(loggerFactory.create(ItemTypeRegistry.class));
+        final ItemTypeRegistry itemTypeRegistry = new ItemTypeRegistry(loggerFactory.create(ItemTypeRegistry.class),
+                localizations, config);
         final ItemProcessor itemProcessor = new ItemProcessor(loggerFactory.create(ItemProcessor.class),
                 itemIdentifierFactory, itemTypeRegistry, instructions);
 

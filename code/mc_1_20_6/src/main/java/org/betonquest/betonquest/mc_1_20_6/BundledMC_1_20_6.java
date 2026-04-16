@@ -36,7 +36,7 @@ public class BundledMC_1_20_6 implements Integration {
         final BookPageWrapper bookPageWrapper = new BookPageWrapper(api.fonts(), 114, 14);
         item.register("simple", new UpdatedSimpleItemFactory(api.placeholders().manager(),
                 api.packages(), textParser, bookPageWrapper,
-                () -> betonQuest.getPluginConfig().getBoolean("item.quest.lore") ? api.localizations() : null));
+                () -> betonQuest.getPluginConfig().getBoolean("item.quest.lore") ? api.localizations() : null), true);
         item.registerSerializer("simple", new UpdatedSimpleQuestItemSerializer(textParser, bookPageWrapper));
     }
 
