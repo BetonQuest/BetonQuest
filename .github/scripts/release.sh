@@ -2,33 +2,71 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-printNewSection() {
-  echo
-  echo
-}
-
 printHelp() {
   printNewSection
   echo 'HELP'
-  echo '    This script guides you through all steps.'
-  echo '    It can do the following based on the currently checked out commit:'
+  echo '    This script guides you through all release steps.'
+  echo '    You can either setup a new version and/or release it on the currently checked out commit:'
   echo
   echo '    Release'
-  echo '        Create a version tag with the current pom.xml version.'
-  echo '        This tag is than pushed to a selected remote repository.'
+  echo '        Create all required version tags for their current pom.xml versions.'
+  echo '        The created tags are than pushed to a selected remote repository.'
   echo '    Setup'
   echo '        Request a new version. This version is then set in the pom.xml.'
   echo '        The CHANGELOG.md file will be updated and the timestamp of the previous release is added.'
   echo '        Then the changes are pushed to a selected remote repository and branch.'
   echo '        Additionally a Pull Request is created for the selected remote repository and branch.'
+  echo '    Bump'
+  echo '        Bump the version of lazy versioned modules to the current version of BetonQuest.'
+  echo '        Selected either API & Library or just the Library to bump.'
   echo
-  echo '    A value in (parentheses) before an input value is the default value if no input was given.'
+  echo '    A value in (parentheses) before an input value is the default value if no input is given.'
 }
 
-deletePreviousLines() {
-  for (( i=0; i<$1; ++i)); do
-    echo -en '\033[1A\033[2K'
-  done
+selectAction() {
+  printNewSection
+  echo 'Action:'
+  echo '    1. Release and Setup'
+  echo '    2. Release'
+  echo '    3. Setup'
+  echo '    4. Bump'
+  echo
+  echo '    ? Select the action you want to execute'
+  echo -n '    Selection: '
+
+  read -r ACTION
+  case "$ACTION" in
+    1|'Release and Setup'|'RS')
+        ACTION_TYPE='Release and Setup'
+        ACTION_DO_RELEASE=true
+        ACTION_DO_SETUP=true
+        ACTION_DO_BUMP=false
+        ;;
+    2|'Release'|'R')
+        ACTION_TYPE='Release'
+        ACTION_DO_RELEASE=true
+        ACTION_DO_SETUP=false
+        ACTION_DO_BUMP=false
+        ;;
+    3|'Setup'|'S')
+        ACTION_TYPE='Setup'
+        ACTION_DO_RELEASE=false
+        ACTION_DO_SETUP=true
+        ACTION_DO_BUMP=false
+        ;;
+    4|'Bump'|'B')
+        ACTION_TYPE='Bump'
+        ACTION_DO_RELEASE=false
+        ACTION_DO_SETUP=false
+        ACTION_DO_BUMP=true
+        ;;
+    *)  printNewSection
+        echo 'You need to select a valid action!'
+        exit 1
+        ;;
+  esac
+  deletePreviousLines 7
+  echo "Action: $ACTION_TYPE"
 }
 
 goToRootDirectory() {
@@ -41,96 +79,16 @@ goToRootDirectory() {
   fi
 }
 
-checkRequirements() {
-  checkGit
-  checkMaven
-  checkGitHubCLI
-}
-
-checkGit() {
-  if ! git --version &> /dev/null
-  then
-    printNewSection
-    echo 'Git is not installed or it is not added to the path!'
-    exit 1
-  fi
-}
-
-checkMaven() {
-  if ! ./mvnw --version &> /dev/null
-  then
-    printNewSection
-    echo 'Maven is not installed or it is not added to the path!'
-    exit 1
-  fi
-}
-
-checkGitHubCLI() {
-  if ! gh --version &> /dev/null
-  then
-    GH_CLI_SUPPORT=false
-    printNewSection
-    echo 'GitHub CLI is either not installed or not added to the path.'
-    echo 'Some features of this script will not work:'
-    echo '  - The date of the last release cannot be resolved automatically'
-    echo '  - The Pull Request cannot be created automatically'
-  else
-    if ! gh auth status &> /dev/null
-    then
-      GH_CLI_SUPPORT=false
-      printNewSection
-      echo 'GitHub CLI is installed but you are not logged in.'
-      echo 'Some features of this script will not work:'
-      echo '  - The date of the last release cannot be resolved automatically'
-      echo '  - The Pull Request cannot be created automatically'
-    else
-      GH_CLI_SUPPORT=true
-    fi
-  fi
-}
-
-selectAction() {
-  printNewSection
-  echo 'Action:'
-  echo '    1. Release and Setup'
-  echo '    2. Release'
-  echo '    3. Setup'
-  echo
-  echo '    ? Enter the action you want to execute'
-  echo -n '    Selection: '
-
-  read -r ACTION
-  case "$ACTION" in
-    1|'Release and Setup'|'RS')
-        ACTION_TYPE='Release and Setup'
-        ACTION_DO_RELEASE=true
-        ACTION_DO_SETUP=true
-        ;;
-    2|'Release'|'R')
-        ACTION_TYPE='Release'
-        ACTION_DO_RELEASE=true
-        ACTION_DO_SETUP=false
-        ;;
-    3|'Setup'|'S')
-        ACTION_TYPE='Setup'
-        ACTION_DO_RELEASE=false
-        ACTION_DO_SETUP=true
-        ;;
-    *)  printNewSection
-        echo 'You need to select a valid action!'
-        exit 1
-        ;;
-  esac
-  deletePreviousLines 7
-  echo "Action: $ACTION_TYPE"
-}
-
 version() {
   printNewSection
   echo 'Version:'
   versionCurrent
   if [ "$ACTION_DO_SETUP" = true ]; then
-    versionNew
+    promptNewVersion
+    promptShouldBumpVersion
+    if [ "$ACTION_DO_BUMP" = true ]; then
+      ACTION_TYPE="$ACTION_TYPE with Bump"
+    fi
   fi
 }
 
@@ -139,32 +97,23 @@ versionCurrent() {
   echo "    Current: $CURRENT_VERSION"
 }
 
-versionNew() {
-  echo -n '    New: '
-  read -r NEW_VERSION
-  if [ -z "$NEW_VERSION" ]; then
-    printNewSection
-    echo 'You need to enter a new version!'
-    exit 1
-  fi
-}
-
 releasePrepare() {
   printNewSection
   echo 'Release:'
-  releaseSelectRemote
+  promptReleaseRemote
+  releasePrepareModule "api"
+  releasePrepareModule "lib"
 }
 
-releaseSelectRemote() {
-  echo
-  echo '    ? Enter the name (not URL) of the Git remote repository you want to create the release in'
-  echo -n '    Remote repository (upstream): '
-  read -r RELEASE_REMOTE_REPOSITORY
-  if [ -z "$RELEASE_REMOTE_REPOSITORY" ]; then
-    RELEASE_REMOTE_REPOSITORY='upstream'
+releasePrepareModule() {
+  local module="$1"
+  CURRENT_MODULE_VERSION="$(./mvnw --raw-streams help:evaluate -Dexpression=revision -q -DforceStdout --projects ":$module")"
+  if [ "$(git tag -l "v$CURRENT_MODULE_VERSION-$module")" ]; then
+    echo "    $module: up to date"
+  else
+    echo "    $module: $CURRENT_MODULE_VERSION"
+    printf -v "CURRENT_MODULE_VERSION_$module" '%s' "v$CURRENT_MODULE_VERSION-$module"
   fi
-  deletePreviousLines 3
-  echo "    Remote repository: $RELEASE_REMOTE_REPOSITORY"
 }
 
 releasePublish() {
@@ -172,9 +121,22 @@ releasePublish() {
 
   echo '    Creating version tag...'
   git tag "v$CURRENT_VERSION" HEAD 2>&1 > /dev/null | sed 's/^/        /'
+  TAGS_TO_PUSH="v$CURRENT_VERSION"
+
+  if [ -n "$CURRENT_MODULE_VERSION_api" ]; then
+    echo '    Creating version tag for api...'
+    git tag "$CURRENT_MODULE_VERSION_api" HEAD 2>&1 > /dev/null | sed 's/^/        /'
+    TAGS_TO_PUSH="$TAGS_TO_PUSH $CURRENT_MODULE_VERSION_api"
+  fi
+
+  if [ -n "$CURRENT_MODULE_VERSION_lib" ]; then
+    echo '    Creating version tag for lib...'
+    git tag "$CURRENT_MODULE_VERSION_lib" HEAD 2>&1 > /dev/null | sed 's/^/        /'
+    TAGS_TO_PUSH="$TAGS_TO_PUSH $CURRENT_MODULE_VERSION_lib"
+  fi
 
   echo '    Pushing version tag...'
-  git push "$RELEASE_REMOTE_REPOSITORY" "v$CURRENT_VERSION" 2>&1 > /dev/null | sed 's/^/        /'
+  git push "$RELEASE_REMOTE_REPOSITORY" "$TAGS_TO_PUSH" 2>&1 > /dev/null | sed 's/^/        /'
 
   echo '    DONE'
 }
@@ -182,91 +144,72 @@ releasePublish() {
 setupPrepare() {
   printNewSection
   echo 'Setup:'
-  setupSelectRemote
-  setupSelectBranch
-  setupSelectTime
+  promptSetupRemote
+  promptSetupBranch "$NEW_VERSION"
+  setupPrepareSelectTimeDefaultValue
+  promptReleaseTime "$CURRENT_VERSION" "$DEFAULT_RELEASE_TIME_MESSAGE" "$DEFAULT_RELEASE_TIME"
 }
 
-setupSelectRemote() {
-  echo
-  echo '    ? Enter the name (not URL) of the Git remote repository you want to create the setup in'
-  echo -n '    Remote repository (origin): '
-  read -r SETUP_REMOTE_REPOSITORY
-  if [ -z "$SETUP_REMOTE_REPOSITORY" ]; then
-    SETUP_REMOTE_REPOSITORY='origin'
-  fi
-  deletePreviousLines 3
-  echo "    Remote repository: $SETUP_REMOTE_REPOSITORY"
-}
-
-setupSelectBranch() {
-  echo
-  echo '    ? Enter the name of the remote branch you want to create the setup in'
-  DEFAULT_BRANCH="VersionBump-$NEW_VERSION"
-  echo -n "    Remote branch ($DEFAULT_BRANCH): "
-  read -r SETUP_REMOTE_BRANCH
-  if [ -z "$SETUP_REMOTE_BRANCH" ]; then
-    SETUP_REMOTE_BRANCH="$DEFAULT_BRANCH"
-  fi
-  deletePreviousLines 3
-  echo "    Remote branch: $SETUP_REMOTE_BRANCH"
-}
-
-setupSelectTime() {
-  setupSelectTimeDefaultValue
-  echo
-  echo "    ? Enter the time when the release '$CURRENT_VERSION' was created $DEFAULT_TIME_MESSAGE"
-  echo -n "    Timestamp $CURRENT_VERSION ($DEFAULT_TIME): "
-  read -r SETUP_TIME
-  if [ -z "$SETUP_TIME" ]; then
-    SETUP_TIME="$DEFAULT_TIME"
-  fi
-  deletePreviousLines 3
-  echo "    Timestamp $CURRENT_VERSION: $SETUP_TIME"
-}
-
-setupSelectTimeDefaultValue() {
-  DEFAULT_TIME="$(date +%Y-%m-%d)"
-  DEFAULT_TIME_MESSAGE=''
+setupPrepareSelectTimeDefaultValue() {
+  DEFAULT_RELEASE_TIME="$(date +%Y-%m-%d)"
+  DEFAULT_RELEASE_TIME_MESSAGE=''
   if [ "$GH_CLI_SUPPORT" ]; then
     set +e
     GH_RELEASE_DATE="$(gh release view "v$CURRENT_VERSION" --json publishedAt >&1 2> /dev/null)"
     set -e
     GH_RELEASE_KEY="${GH_RELEASE_DATE:0:16}"
     if [ "$GH_RELEASE_KEY" == '{\"publishedAt\":\"' ]; then
-      DEFAULT_TIME=${GH_RELEASE_DATE:16:10}
-      DEFAULT_TIME_MESSAGE='(the default time was extracted from the release tag)'
+      DEFAULT_RELEASE_TIME=${GH_RELEASE_DATE:16:10}
+      DEFAULT_RELEASE_TIME_MESSAGE='(the default time was extracted from the release tag)'
     fi
   fi
 }
 
-setupPublish() {
+setupCommit() {
   echo 'Setup'
 
-  echo '    Updating pom.xml file...'
-  ./mvnw versions:set-property -DgenerateBackupPoms=false -Dproperty=revision -DnewVersion="$NEW_VERSION" 2>&1 > /dev/null | sed 's/^/        /'
+  echo '    Updating BetonQuest pom.xml file...'
+  ./mvnw versions:set-property -DgenerateBackupPoms=false -Dproperty=revision -DnewVersion="$NEW_VERSION" --projects -:lib,-:api 2>&1 > /dev/null | sed 's/^/        /'
 
   echo '    Updating CHANGELOG.md file...'
   NEW_CHANGELOG="## \[Unreleased\] - \${maven.build.timestamp}\n### Added\n### Changed\n### Deprecated\n### Removed\n### Fixed\n### Security\n"
-  sed -i "s~## \[Unreleased\] - \${maven\.build\.timestamp}~$NEW_CHANGELOG\n## \[$CURRENT_VERSION\] - $SETUP_TIME~g" CHANGELOG.md 2>&1 > /dev/null | sed 's/^/        /'
+  sed -i "s~## \[Unreleased\] - \${maven\.build\.timestamp}~$NEW_CHANGELOG\n## \[$CURRENT_VERSION\] - $RELEASE_TIME~g" CHANGELOG.md 2>&1 > /dev/null | sed 's/^/        /'
 
   echo '    Committing changed files...'
-  git commit --all --message="Version bump to $NEW_VERSION" 2>&1 > /dev/null | sed 's/^/        /'
+  git commit --all --message="Bump version of BetonQuest to $NEW_VERSION" 2>&1 > /dev/null | sed 's/^/        /'
+}
 
-  echo '    Pushing committed changes...'
-  git push "$SETUP_REMOTE_REPOSITORY" "HEAD:$SETUP_REMOTE_BRANCH" 2>&1 > /dev/null | sed 's/^/        /'
+bumpCommit() {
+    echo 'Bump'
 
-  echo '    Creating Pull Request...'
-  setupPublishCreatePullRequest
+    echo "    Updating pom.xml files for mudules $BUMP_MODULES..."
+    FORMATTED_BUMP_MODULES=":${BUMP_MODULES//,/,:}"
+    ./mvnw versions:set-property -DgenerateBackupPoms=false -Dproperty=revision -DnewVersion="$NEW_VERSION" --projects "$FORMATTED_BUMP_MODULES" 2>&1 > /dev/null | sed 's/^/        /'
 
-  echo '    Resetting current branch...'
-  git reset --hard HEAD~1 2>&1 > /dev/null | sed 's/^/        /'
+    if [ ! "$(git status --porcelain)" ]; then
+      echo 'No version to bump to was found!'
+      exit 1
+    fi
 
-  echo '    DONE'
+    echo '    Committing changed files...'
+    git commit --all --message="Bump version of $BUMP_MODULES to $NEW_VERSION" 2>&1 > /dev/null | sed 's/^/        /'
+}
+
+finalizeAndPublish() {
+    echo '    Pushing committed changes...'
+    git push "$SETUP_REMOTE_REPOSITORY" "HEAD:$SETUP_REMOTE_BRANCH" 2>&1 > /dev/null | sed 's/^/        /'
+
+    echo '    Creating Pull Request...'
+    setupPublishCreatePullRequest
+
+    echo '    Resetting current branch...'
+    git reset --hard HEAD~1 2>&1 > /dev/null | sed 's/^/        /'
+
+    echo '    DONE'
 }
 
 setupPublishCreatePullRequest() {
-  if [ $GH_CLI_SUPPORT ]; then
+  if [ "$GH_CLI_SUPPORT" ]; then
     CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
     if [ "$CURRENT_BRANCH" != 'HEAD' ]; then
       setupPublishCreatePullRequestSlug
@@ -289,7 +232,7 @@ setupPublishCreatePullRequest() {
 }
 
 setupPublishCreatePullRequestSlug() {
-  SETUP_REMOTE_SLUG="$(git config --get remote.${SETUP_REMOTE_REPOSITORY}.url | grep -o '[^:/]\+/[^/.]\+\.git$' | grep -o '^[^/]\+')"
+  SETUP_REMOTE_SLUG="$(git config --get "remote.${SETUP_REMOTE_REPOSITORY}.url" | grep -o '[^:/]\+/[^/.]\+\.git$' | grep -o '^[^/]\+')"
   if [ -z "$SETUP_REMOTE_SLUG" ]; then
     printNewSection
     echo 'No GitHub remote slug could be extracted from remotes!'
@@ -297,12 +240,52 @@ setupPublishCreatePullRequestSlug() {
   fi
 }
 
+bumpPrepare() {
+  printNewSection
+  echo 'Bump:'
+  echo '    1. api'
+  echo '    2. lib'
+  echo '    3. api & lib'
+  echo
+  echo '    ? Select the module(s) you want to bump'
+  echo -n '    Selection: '
+
+  read -r ACTION
+  case "$ACTION" in
+    1|'api')
+        BUMP_MODULES='api'
+        ;;
+    2|'lib')
+        BUMP_MODULES='lib'
+        ;;
+    3|'api & lib')
+        BUMP_MODULES='api,lib'
+        ;;
+    *)  printNewSection
+        echo 'You need to select a valid module to bump!'
+        exit 1
+        ;;
+  esac
+  deletePreviousLines 6
+  echo "Bump: $BUMP_MODULES"
+
+  if [ -z "$NEW_VERSION" ]; then
+    NEW_VERSION="$CURRENT_VERSION"
+    promptSetupRemote
+    promptSetupBranch "$NEW_VERSION"
+  fi
+}
+
 #
 # Start of script
 #
 
-printHelp
 goToRootDirectory
+
+source "./.github/scripts/release_utils.sh"
+source "./.github/scripts/release_prompts.sh"
+
+printHelp
 checkRequirements
 selectAction
 
@@ -313,6 +296,9 @@ fi
 if [ "$ACTION_DO_SETUP" = true ]; then
   setupPrepare
 fi
+if [ "$ACTION_DO_BUMP" = true ]; then
+  bumpPrepare
+fi
 
 printNewSection
 echo "Create $ACTION_TYPE..."
@@ -320,7 +306,14 @@ if [ "$ACTION_DO_RELEASE" = true ]; then
   releasePublish
 fi
 if [ "$ACTION_DO_SETUP" = true ]; then
-  setupPublish
+  setupCommit
+fi
+if [ "$ACTION_DO_BUMP" = true ]; then
+  bumpCommit
+fi
+
+if [ "$ACTION_DO_SETUP" = true ] ||  [ "$ACTION_DO_BUMP" = true ]; then
+  finalizeAndPublish
 fi
 
 printNewSection
