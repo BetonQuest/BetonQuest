@@ -4,11 +4,11 @@ icon: octicons/clock-16
 # Schedules
 @snippet:api-state:unfinished@
 
-If the native [schedule](../Documentation/Scripting/Schedules.md) types are not enough for you, this API enables you to create your own type.
+If the native [schedule](../../Documentation/Scripting/Schedules.md) types are not enough for you, this API enables you to create your own type.
 
 ## API Overview
-![](../_media/content/API/Schedules/Schedule-dark.svg#only-dark)
-![](../_media/content/API/Schedules/Schedule-light.svg#only-light)
+![](../../_media/content/API/Schedules/Schedule-dark.svg#only-dark)
+![](../../_media/content/API/Schedules/Schedule-light.svg#only-light)
 
 ## Creating a new schedule type
 To implement a new schedule type you have to create both the Schedule and the Scheduler class.
@@ -106,7 +106,7 @@ public class MyCustomScheduler extends Scheduler<MyCustomSchedule>/* (1)! */ {
     public void stop() {
         super.stop();// (7)!
         
-        for (BukkitTask task : tasks) {
+        for (final BukkitTask task : tasks) {
             task.cancel();// (8)! 
         }
     }

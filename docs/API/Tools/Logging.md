@@ -3,7 +3,7 @@ icon: material/text-box-outline
 ---
 @snippet:api-state:draft@
 
-!!! abstract "[ServicesManager](Obtaining-API.md) API Classes"
+!!! abstract "[ServicesManager](../Obtaining-API.md) API Classes"
     * `org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory`
 ---
 
@@ -48,7 +48,7 @@ BetonQuestLoggerFactory loggerFactory; //(1)!
 BetonQuestLogger logger = loggerFactory.create(MyFeature.class);
 ```
 
-1. Obtained via the ServicesManager, see the [Obtaining API](Obtaining-API.md) page.
+1. Obtained via the ServicesManager, see the [Obtaining API](../Obtaining-API.md) page.
 
 
 !!! hint "Getting the logger in a class that extends `Plugin`"

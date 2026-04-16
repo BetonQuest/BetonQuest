@@ -155,12 +155,12 @@ This type safety prevents accidentally passing an action identifier where a cond
 Identifiers serve as the primary mechanism for locating and executing quest components at runtime. 
 The corresponding [manager](#manager) performs a lookup to retrieve the instance created during quest package loading. 
 This relationship maintains consistency across server restarts and quest package reloads, 
-as the same identifier always resolves to functionally identical instances when recreated from the same [instruction](../Instruction.md).
+as the same identifier always resolves to functionally identical instances when recreated from the same [instruction](../Tools/Instruction.md).
 
 ### Factories, Registries, Managers
 
 The [factory design pattern](https://refactoring.guru/design-patterns/abstract-factory){:target="_blank"} is used in the API to create objects without having to know their concrete classes.
-In BetonQuest, this concept is further enhanced by [instructions](../Instruction.md) for configurability and to ensure that identical objects can be recreated consistently.
+In BetonQuest, this concept is further enhanced by [instructions](../Tools/Instruction.md) for configurability and to ensure that identical objects can be recreated consistently.
 Each instruction defines how to create a specific instance, and the factory uses this instruction to produce the actual object.
 This allows BetonQuest to reload quest packages and recreate identical object instances from the same instructions, maintaining consistency across server restarts.
 
@@ -184,7 +184,7 @@ The factory performs several critical tasks:
 - **Parsing**: Extracts and validates all parameters from the instruction string
 - **Validation**: Ensures all required parameters are present and correctly formatted
 - **Instantiation**: Creates the concrete `object` implementation with the parsed configuration
-- **Error handling**: Provides clear error messages if the instruction is malformed (mostly abstracting away by the [instruction](../Instruction.md) implementation)
+- **Error handling**: Provides clear error messages if the instruction is malformed (mostly abstracting away by the [instruction](../Tools/Instruction.md) implementation)
 
 The instruction's identifier is associated with the created `object` instance, establishing a bidirectional relationship.
 When an `object` needs to be invoked — whether by an action, an objective, or any other component — the identifier is used to 
@@ -306,6 +306,6 @@ flowchart LR
 [:octicons-arrow-left-16: Obtain the API](../Obtaining-API.md){ .md-button .md-button--primary }
 </div>
 <div markdown style="text-align: right;">
-[Learn about Instructions :octicons-arrow-right-16:](../Instruction.md){ .md-button .md-button--primary }
+[Learn about Instructions :octicons-arrow-right-16:](../Tools/Instruction.md){ .md-button .md-button--primary }
 </div>
 </div>
