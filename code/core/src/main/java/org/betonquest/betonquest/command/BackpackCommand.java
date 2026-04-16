@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.command;
 
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -8,7 +9,6 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.service.compass.CompassManager;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.item.ItemManager;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.feature.Backpack;
 import org.betonquest.betonquest.kernel.processor.feature.CancelerProcessor;
@@ -45,9 +45,9 @@ public class BackpackCommand implements CommandExecutor {
     private final ConfigAccessor config;
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Localizations} instance.
      */
-    private final PluginMessage pluginMessage;
+    private final Localizations localizations;
 
     /**
      * The profile provider instance.
@@ -86,7 +86,7 @@ public class BackpackCommand implements CommandExecutor {
      * @param loggerFactory     the logger factory
      * @param log               the logger that will be used for logging
      * @param config            the plugin configuration file
-     * @param pluginMessage     the {@link PluginMessage} instance
+     * @param localizations     the {@link Localizations} instance
      * @param profileProvider   the profile provider instance
      * @param playerDataStorage the player data storage
      * @param cancelerProcessor the canceler processor
@@ -96,14 +96,14 @@ public class BackpackCommand implements CommandExecutor {
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public BackpackCommand(final Plugin plugin, final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                           final ConfigAccessor config, final PluginMessage pluginMessage, final ProfileProvider profileProvider,
+                           final ConfigAccessor config, final Localizations localizations, final ProfileProvider profileProvider,
                            final PlayerDataStorage playerDataStorage, final CancelerProcessor cancelerProcessor, final CompassManager compassManager,
                            final ItemManager itemManager, final Identifiers identifiers) {
         this.plugin = plugin;
         this.loggerFactory = loggerFactory;
         this.log = log;
         this.config = config;
-        this.pluginMessage = pluginMessage;
+        this.localizations = localizations;
         this.profileProvider = profileProvider;
         this.playerDataStorage = playerDataStorage;
         this.cancelerProcessor = cancelerProcessor;
@@ -120,7 +120,7 @@ public class BackpackCommand implements CommandExecutor {
                 final OnlineProfile onlineProfile = profileProvider.getProfile((Player) sender);
                 log.debug("Executing /backpack command for " + onlineProfile);
                 new Backpack(plugin, loggerFactory.create(Backpack.class), playerDataStorage.get(onlineProfile),
-                        cancelerProcessor, compassManager, itemManager, config, pluginMessage, identifiers, onlineProfile);
+                        cancelerProcessor, compassManager, itemManager, config, localizations, identifiers, onlineProfile);
             }
             return true;
         }

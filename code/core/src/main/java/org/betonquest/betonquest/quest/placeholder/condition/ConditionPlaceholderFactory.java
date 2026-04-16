@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.placeholder.condition;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
@@ -8,7 +9,6 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerPlaceholder;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerPlaceholderFactory;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
-import org.betonquest.betonquest.config.PluginMessage;
 
 /**
  * Factory to create {@link ConditionPlaceholder}s from {@link Instruction}s.
@@ -16,9 +16,9 @@ import org.betonquest.betonquest.config.PluginMessage;
 public class ConditionPlaceholderFactory implements PlayerPlaceholderFactory {
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Localizations} instance.
      */
-    private final PluginMessage pluginMessage;
+    private final Localizations localizations;
 
     /**
      * The condition manager.
@@ -29,17 +29,17 @@ public class ConditionPlaceholderFactory implements PlayerPlaceholderFactory {
      * Create the Condition Placeholder Factory.
      *
      * @param conditionManager the condition manager
-     * @param pluginMessage    the {@link PluginMessage} instance
+     * @param localizations    the {@link Localizations} instance
      */
-    public ConditionPlaceholderFactory(final ConditionManager conditionManager, final PluginMessage pluginMessage) {
+    public ConditionPlaceholderFactory(final ConditionManager conditionManager, final Localizations localizations) {
         this.conditionManager = conditionManager;
-        this.pluginMessage = pluginMessage;
+        this.localizations = localizations;
     }
 
     @Override
     public PlayerPlaceholder parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<ConditionIdentifier> conditionId = instruction.identifier(ConditionIdentifier.class).get();
         final FlagArgument<Boolean> papiMode = instruction.bool().getFlag("papiMode", true);
-        return new ConditionPlaceholder(pluginMessage, conditionId, conditionManager, papiMode);
+        return new ConditionPlaceholder(localizations, conditionId, conditionManager, papiMode);
     }
 }

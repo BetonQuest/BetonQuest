@@ -13,6 +13,7 @@ import org.betonquest.betonquest.api.common.component.VariableComponent;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.config.section.multi.MultiConfiguration;
@@ -39,7 +40,6 @@ import org.betonquest.betonquest.api.service.item.ItemManager;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.IntegrationData;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Backup;
 import org.betonquest.betonquest.database.Connector;
@@ -139,9 +139,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private final PlayerDataFactory playerDataFactory;
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Localizations} instance.
      */
-    private final PluginMessage pluginMessage;
+    private final Localizations localizations;
 
     /**
      * The plugin configuration accessor.
@@ -250,7 +250,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         this.playerDataFactory = constructorParams.playerDataFactory();
         this.playerDataStorage = constructorParams.playerDataStorage();
         this.profileProvider = constructorParams.profileProvider();
-        this.pluginMessage = constructorParams.pluginMessage();
+        this.localizations = constructorParams.localizations();
         this.config = constructorParams.configAccessor();
         this.compatibility = constructorParams.compatibility();
         this.updater = constructorParams.updater();
@@ -522,9 +522,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             final OnlineAction give = new GiveAction(
                     new DefaultArgument<>(List.of(new Item(itemManager, itemID, new DefaultArgument<>(1)))),
                     new NoNotificationSender(),
-                    new IngameNotificationSender(log, pluginMessage, itemID.getPackage(), itemID.getFull(), NotificationLevel.ERROR,
+                    new IngameNotificationSender(log, localizations, itemID.getPackage(), itemID.getFull(), NotificationLevel.ERROR,
                             "inventory_full_backpack", "inventory_full"),
-                    new IngameNotificationSender(log, pluginMessage, itemID.getPackage(), itemID.getFull(), NotificationLevel.ERROR,
+                    new IngameNotificationSender(log, localizations, itemID.getPackage(), itemID.getFull(), NotificationLevel.ERROR,
                             "inventory_full_drop", "inventory_full"),
                     profile -> Optional.empty(), playerDataStorage);
             give.execute(profileProvider.getProfile((Player) sender));
@@ -1561,7 +1561,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
         for (final Map.Entry<String, String> entry : commandMap.entrySet()) {
             final Component command = Component.text("/" + alias + " " + entry.getValue()).color(NamedTextColor.RED);
-            final Component hint = pluginMessage.getMessage(profile, "command_" + entry.getKey()).color(NamedTextColor.AQUA);
+            final Component hint = localizations.getMessage(profile, "command_" + entry.getKey()).color(NamedTextColor.AQUA);
 
             builder.append(Component.newline());
             if (profile == null) {
@@ -1580,7 +1580,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
         final TextComponent.Builder externalHooked = Component.text();
         for (final Map.Entry<String, List<IntegrationData>> entry : compatibility.getExternal().entrySet()) {
-            final VariableComponent external = new VariableComponent(pluginMessage.getMessage(null, "command_version_output.external_hook",
+            final VariableComponent external = new VariableComponent(localizations.getMessage(null, "command_version_output.external_hook",
                     new VariableReplacement("plugin", Component.text(entry.getKey())),
                     new VariableReplacement("hooked", displayVersionInfoHooked(entry.getValue()))));
             externalHooked.append(external.resolve());
@@ -1589,7 +1589,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final Component update = displayVersionInfoUpdate(updater);
         final Component copy = displayVersionInfoCopy(sender);
 
-        final VariableComponent baseContent = new VariableComponent(pluginMessage.getMessage(null, "command_version_output.info",
+        final VariableComponent baseContent = new VariableComponent(localizations.getMessage(null, "command_version_output.info",
                 new VariableReplacement("version", Component.text(plugin.getDescription().getVersion())),
                 new VariableReplacement("server", Component.text(Bukkit.getServer().getVersion())),
                 new VariableReplacement("hooked", hooked),
@@ -1615,7 +1615,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             }
             final List<Component> components = new ArrayList<>();
             for (final Triple<String, String, String> triple : triples) {
-                final Component message = pluginMessage.getMessage(null, "command_version_output.hook",
+                final Component message = localizations.getMessage(null, "command_version_output.hook",
                         new VariableReplacement("plugin", Component.text(triple.getLeft())),
                         new VariableReplacement("version", Component.text(triple.getMiddle())));
                 components.add(message.hoverEvent(HoverEvent.showText(Component.text(triple.getRight()))));
@@ -1637,7 +1637,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         if (!updater.isUpdateAvailable()) {
             return Component.empty();
         }
-        return pluginMessage.getMessage(null, "command_version_output.update",
+        return localizations.getMessage(null, "command_version_output.update",
                 new VariableReplacement("version", Component.text(updater.getUpdateVersion())));
     }
 
@@ -1645,7 +1645,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         if (sender instanceof ConsoleCommandSender) {
             return Component.empty();
         }
-        return pluginMessage.getMessage(null, "command_version_output.copy");
+        return localizations.getMessage(null, "command_version_output.copy");
     }
 
     @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
@@ -1995,7 +1995,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private void sendMessage(final CommandSender sender, final String messageName, final VariableReplacement... replacements) {
         final OnlineProfile profile = sender instanceof final Player player ? profileProvider.getProfile(player) : null;
         try {
-            sender.sendMessage(pluginMessage.getMessage(profile, messageName, replacements));
+            sender.sendMessage(localizations.getMessage(profile, messageName, replacements));
         } catch (final QuestException e) {
             log.warn("Failed to send message '" + messageName + "': " + e.getMessage(), e);
             sender.sendMessage("Failed to send message '" + messageName + "': " + e.getMessage());
@@ -2053,7 +2053,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param playerDataFactory       the player data factory
      * @param playerDataStorage       the player data storage
      * @param profileProvider         the profile provider
-     * @param pluginMessage           the plugin message
+     * @param localizations           the Localizations
      * @param updater                 the updater
      * @param compatibility           the compatibility
      * @param connector               the connector
@@ -2074,7 +2074,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      */
     public record ConstructorParams(BetonQuestLoggerFactory loggerFactory, ConfigAccessorFactory configAccessorFactory,
                                     PlayerDataFactory playerDataFactory, PlayerDataStorage playerDataStorage,
-                                    ProfileProvider profileProvider, PluginMessage pluginMessage, Updater updater,
+                                    ProfileProvider profileProvider, Localizations localizations, Updater updater,
                                     Compatibility compatibility, Connector connector, Saver saver,
                                     QuestPackageManager questPackageManager, ConfigAccessor configAccessor,
                                     LogPublishingController logPublishingController, PlayerLogWatcher playerLogWatcher,

@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.vault.action;
 
 import net.milkbowl.vault.economy.Economy;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
@@ -10,7 +11,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.betonquest.betonquest.quest.action.NotificationLevel;
 
@@ -30,21 +30,21 @@ public class MoneyActionFactory implements PlayerActionFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Localizations} instance.
      */
-    private final PluginMessage pluginMessage;
+    private final Localizations localizations;
 
     /**
      * Create a new Factory to create Vault Money Actions.
      *
      * @param economy       the economy where the balance will be modified
      * @param loggerFactory the logger factory to create new logger instances.
-     * @param pluginMessage the {@link PluginMessage} instance
+     * @param localizations the {@link Localizations} instance
      */
-    public MoneyActionFactory(final Economy economy, final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage) {
+    public MoneyActionFactory(final Economy economy, final BetonQuestLoggerFactory loggerFactory, final Localizations localizations) {
         this.economy = economy;
         this.loggerFactory = loggerFactory;
-        this.pluginMessage = pluginMessage;
+        this.localizations = localizations;
     }
 
     @Override
@@ -58,8 +58,8 @@ public class MoneyActionFactory implements PlayerActionFactory {
             final QuestPackage pack = instruction.getPackage();
             final String fullID = instruction.getID().getFull();
             final BetonQuestLogger log = loggerFactory.create(MoneyAction.class);
-            givenSender = new IngameNotificationSender(log, pluginMessage, pack, fullID, NotificationLevel.INFO, "money_given");
-            takenSender = new IngameNotificationSender(log, pluginMessage, pack, fullID, NotificationLevel.INFO, "money_taken");
+            givenSender = new IngameNotificationSender(log, localizations, pack, fullID, NotificationLevel.INFO, "money_given");
+            takenSender = new IngameNotificationSender(log, localizations, pack, fullID, NotificationLevel.INFO, "money_taken");
         } else {
             givenSender = null;
             takenSender = null;

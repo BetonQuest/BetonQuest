@@ -3,9 +3,9 @@ package org.betonquest.betonquest.conversation;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -40,7 +40,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 
     private final Plugin plugin;
 
-    private final PluginMessage message;
+    private final Localizations localizations;
 
     private final double maxNpcDistance;
 
@@ -58,19 +58,19 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
      * @param log           the logger that will be used for logging
      * @param config        the plugin configuration accessor
      * @param plugin        the plugin instance
-     * @param message       the plugin message instance
+     * @param localizations the Localizations instance
      * @param conv          the conversation this IO is part of
      * @param onlineProfile the online profile of the player participating in the conversation
      * @param colors        the colors used in the conversation
      */
     @SuppressWarnings("NullAway.Init")
     public ChatConvIO(final BetonQuestLogger log, final ConfigAccessor config, final Plugin plugin,
-                      final PluginMessage message, final Conversation conv, final OnlineProfile onlineProfile,
+                      final Localizations localizations, final Conversation conv, final OnlineProfile onlineProfile,
                       final ConversationColors colors) {
         this.log = log;
         this.config = config;
         this.plugin = plugin;
-        this.message = message;
+        this.localizations = localizations;
         this.options = new HashMap<>();
         this.conv = conv;
         this.onlineProfile = onlineProfile;
@@ -127,7 +127,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         event.getPlayer().teleport(newLocation);
         if (config.getBoolean("conversation.stop.notify")) {
             try {
-                conv.sendMessage(message.getMessage(onlineProfile, "pullback"));
+                conv.sendMessage(localizations.getMessage(onlineProfile, "pullback"));
             } catch (final QuestException e) {
                 log.warn("Failed to get pullback message: " + e.getMessage(), e);
             }

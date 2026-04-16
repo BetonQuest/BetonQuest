@@ -3,6 +3,7 @@ package org.betonquest.betonquest.kernel.component;
 import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -21,7 +22,6 @@ import org.betonquest.betonquest.command.JournalCommand;
 import org.betonquest.betonquest.command.LangCommand;
 import org.betonquest.betonquest.command.QuestCommand;
 import org.betonquest.betonquest.compatibility.Compatibility;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.GlobalData;
@@ -57,7 +57,7 @@ public class CommandsComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(JavaPlugin.class, BetonQuestLoggerFactory.class, ConfigAccessorFactory.class,
                 ProfileProvider.class, PlayerDataFactory.class, PlayerDataStorage.class,
-                GlobalData.class, ConfigAccessor.class, PluginMessage.class, Updater.class,
+                GlobalData.class, ConfigAccessor.class, Localizations.class, Updater.class,
                 Compatibility.class, QuestPackageManager.class, Connector.class, Saver.class,
                 ItemTypeRegistry.class, JournalEntryProcessor.class, CompassManager.class,
                 CancelerProcessor.class, Identifiers.class, ItemManager.class, ActionManager.class,
@@ -75,7 +75,7 @@ public class CommandsComponent extends AbstractCoreComponent {
         final GlobalData globalData = getDependency(GlobalData.class);
         final ConfigAccessor config = getDependency(ConfigAccessor.class);
         final PlayerDataStorage playerDataStorage = getDependency(PlayerDataStorage.class);
-        final PluginMessage pluginMessage = getDependency(PluginMessage.class);
+        final Localizations localizations = getDependency(Localizations.class);
         final Updater updater = getDependency(Updater.class);
         final Compatibility compatibility = getDependency(Compatibility.class);
         final QuestPackageManager questPackageManager = getDependency(QuestPackageManager.class);
@@ -97,7 +97,7 @@ public class CommandsComponent extends AbstractCoreComponent {
 
         final PlayerLogWatcher playerLogWatcher = new PlayerLogWatcher(receiverSelector);
         final QuestCommand.ConstructorParams questCommandParams = new QuestCommand.ConstructorParams(loggerFactory,
-                configAccessorFactory, playerDataFactory, playerDataStorage, profileProvider, pluginMessage, updater,
+                configAccessorFactory, playerDataFactory, playerDataStorage, profileProvider, localizations, updater,
                 compatibility, connector, saver, questPackageManager, config, debugHistoryHandler,
                 playerLogWatcher, identifiers, globalData, journalEntryProcessor,
                 itemRegistry, actionManager, conditionManager, objectiveManager, itemManager, reloader);
@@ -106,15 +106,15 @@ public class CommandsComponent extends AbstractCoreComponent {
         javaPlugin.getCommand("betonquest").setTabCompleter(questCommand);
         javaPlugin.getCommand("journal").setExecutor(new JournalCommand(playerDataStorage, profileProvider));
         javaPlugin.getCommand("backpack").setExecutor(new BackpackCommand(javaPlugin, loggerFactory, loggerFactory.create(BackpackCommand.class),
-                config, pluginMessage, profileProvider, playerDataStorage, cancelerProcessor,
+                config, localizations, profileProvider, playerDataStorage, cancelerProcessor,
                 compassManager, itemManager, identifiers));
-        javaPlugin.getCommand("cancelquest").setExecutor(new CancelQuestCommand(javaPlugin, config, pluginMessage, profileProvider,
+        javaPlugin.getCommand("cancelquest").setExecutor(new CancelQuestCommand(javaPlugin, config, localizations, profileProvider,
                 loggerFactory, playerDataStorage, cancelerProcessor, compassManager,
                 identifiers, itemManager));
         javaPlugin.getCommand("compass").setExecutor(new CompassCommand(javaPlugin, loggerFactory,
-                config, pluginMessage, profileProvider, playerDataStorage, cancelerProcessor,
+                config, localizations, profileProvider, playerDataStorage, cancelerProcessor,
                 compassManager, itemManager, identifiers));
-        final LangCommand langCommand = new LangCommand(loggerFactory.create(LangCommand.class), playerDataStorage, pluginMessage, profileProvider, languageProvider);
+        final LangCommand langCommand = new LangCommand(loggerFactory.create(LangCommand.class), playerDataStorage, localizations, profileProvider, languageProvider);
         javaPlugin.getCommand("questlang").setExecutor(langCommand);
         javaPlugin.getCommand("questlang").setTabCompleter(langCommand);
         javaPlugin.getCommand("betonquestanswer").setTabCompleter((sender, command, label, args) -> List.of());

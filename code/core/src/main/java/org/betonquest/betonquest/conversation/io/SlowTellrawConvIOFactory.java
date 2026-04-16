@@ -4,9 +4,9 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.ConversationIO;
@@ -34,9 +34,9 @@ public class SlowTellrawConvIOFactory implements ConversationIOFactory {
     private final Plugin plugin;
 
     /**
-     * The plugin message instance.
+     * The Localizations instance.
      */
-    private final PluginMessage message;
+    private final Localizations localizations;
 
     /**
      * The font registry to use in APIs that work with {@link net.kyori.adventure.text.Component}.
@@ -54,16 +54,16 @@ public class SlowTellrawConvIOFactory implements ConversationIOFactory {
      * @param loggerFactory the logger factory to create new logger instances
      * @param config        the plugin configuration accessor
      * @param plugin        the plugin instance
-     * @param message       the plugin message instance
+     * @param localizations the Localizations instance
      * @param fontRegistry  The font registry used for the conversation.
      * @param colors        The colors used for the conversation.
      */
     public SlowTellrawConvIOFactory(final BetonQuestLoggerFactory loggerFactory, final ConfigAccessor config, final Plugin plugin,
-                                    final PluginMessage message, final FontRegistry fontRegistry, final ConversationColors colors) {
+                                    final Localizations localizations, final FontRegistry fontRegistry, final ConversationColors colors) {
         this.loggerFactory = loggerFactory;
         this.config = config;
         this.plugin = plugin;
-        this.message = message;
+        this.localizations = localizations;
         this.fontRegistry = fontRegistry;
         this.colors = colors;
     }
@@ -75,6 +75,6 @@ public class SlowTellrawConvIOFactory implements ConversationIOFactory {
         if (messageDelay <= 0) {
             throw new QuestException("Invalid message delay of %d for SlowTellraw Conversation IO!".formatted(messageDelay));
         }
-        return new SlowTellrawConvIO(loggerFactory.create(SlowTellrawConvIO.class), config, plugin, message, conversation, onlineProfile, messageDelay, componentLineWrapper, colors);
+        return new SlowTellrawConvIO(loggerFactory.create(SlowTellrawConvIO.class), config, plugin, localizations, conversation, onlineProfile, messageDelay, componentLineWrapper, colors);
     }
 }

@@ -2,6 +2,7 @@ package org.betonquest.betonquest.kernel.component;
 
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.identifier.JournalEntryIdentifier;
@@ -11,7 +12,6 @@ import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.text.TextParser;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.feature.journal.JournalFactory;
 import org.betonquest.betonquest.id.journal.JournalEntryIdentifierFactory;
 import org.betonquest.betonquest.id.journal.JournalMainPageIdentifierFactory;
@@ -39,7 +39,7 @@ public class JournalsComponent extends AbstractCoreComponent {
     @Override
     public Set<Class<?>> requires() {
         return Set.of(QuestPackageManager.class, BetonQuestLoggerFactory.class, ConfigAccessor.class,
-                Identifiers.class, Instructions.class, PluginMessage.class, TextParser.class,
+                Identifiers.class, Instructions.class, Localizations.class, TextParser.class,
                 ParsedSectionTextCreator.class, FontRegistry.class, ConditionManager.class, ProcessorDataLoader.class);
     }
 
@@ -56,7 +56,7 @@ public class JournalsComponent extends AbstractCoreComponent {
         final Identifiers identifiers = getDependency(Identifiers.class);
         final Instructions instructions = getDependency(Instructions.class);
         final ParsedSectionTextCreator parsedSectionTextCreator = getDependency(ParsedSectionTextCreator.class);
-        final PluginMessage pluginMessage = getDependency(PluginMessage.class);
+        final Localizations localizations = getDependency(Localizations.class);
         final ConfigAccessor config = getDependency(ConfigAccessor.class);
         final TextParser textParser = getDependency(TextParser.class);
         final FontRegistry fontRegistry = getDependency(FontRegistry.class);
@@ -73,7 +73,7 @@ public class JournalsComponent extends AbstractCoreComponent {
         final JournalMainPageProcessor journalMainPageProcessor = new JournalMainPageProcessor(loggerFactory.create(JournalMainPageProcessor.class),
                 instructions, parsedSectionTextCreator, journalMainPageIdentifierFactory);
 
-        final JournalFactory journalFactory = new JournalFactory(loggerFactory, pluginMessage, conditionManager, journalMainPageProcessor, journalEntryProcessor, config, textParser, fontRegistry);
+        final JournalFactory journalFactory = new JournalFactory(loggerFactory, localizations, conditionManager, journalMainPageProcessor, journalEntryProcessor, config, textParser, fontRegistry);
 
         dependencyProvider.take(JournalEntryIdentifierFactory.class, journalEntryIdentifierFactory);
         dependencyProvider.take(JournalMainPageIdentifierFactory.class, journalMainPageIdentifierFactory);

@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.kernel.component;
 
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.identifier.QuestCancelerIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.id.cancel.QuestCancelerIdentifierFactory;
 import org.betonquest.betonquest.kernel.ProcessorDataLoader;
@@ -35,7 +35,7 @@ public class CancelersComponent extends AbstractCoreComponent {
     @Override
     public Set<Class<?>> requires() {
         return Set.of(QuestPackageManager.class, BetonQuestLoggerFactory.class, PlayerDataStorage.class,
-                PluginMessage.class, Identifiers.class, Instructions.class, ParsedSectionTextCreator.class,
+                Localizations.class, Identifiers.class, Instructions.class, ParsedSectionTextCreator.class,
                 ActionProcessor.class, ConditionProcessor.class, ObjectiveProcessor.class, ItemProcessor.class,
                 ProcessorDataLoader.class);
     }
@@ -55,7 +55,7 @@ public class CancelersComponent extends AbstractCoreComponent {
         final ConditionProcessor conditionProcessor = getDependency(ConditionProcessor.class);
         final ObjectiveProcessor objectiveProcessor = getDependency(ObjectiveProcessor.class);
         final ItemProcessor itemProcessor = getDependency(ItemProcessor.class);
-        final PluginMessage pluginMessage = getDependency(PluginMessage.class);
+        final Localizations localizations = getDependency(Localizations.class);
         final PlayerDataStorage playerDataStorage = getDependency(PlayerDataStorage.class);
         final ParsedSectionTextCreator parsedSectionTextCreator = getDependency(ParsedSectionTextCreator.class);
         final ProcessorDataLoader processorDataLoader = getDependency(ProcessorDataLoader.class);
@@ -63,7 +63,7 @@ public class CancelersComponent extends AbstractCoreComponent {
         final QuestCancelerIdentifierFactory questCancelerIdentifierFactory = new QuestCancelerIdentifierFactory(packManager);
         identifiers.register(QuestCancelerIdentifier.class, questCancelerIdentifierFactory);
         final CancelerProcessor cancelerProcessor = new CancelerProcessor(loggerFactory.create(CancelerProcessor.class),
-                loggerFactory, pluginMessage, instructions, actionProcessor, conditionProcessor,
+                loggerFactory, localizations, instructions, actionProcessor, conditionProcessor,
                 objectiveProcessor, itemProcessor, parsedSectionTextCreator, playerDataStorage, questCancelerIdentifierFactory);
 
         dependencyProvider.take(QuestCancelerIdentifierFactory.class, questCancelerIdentifierFactory);

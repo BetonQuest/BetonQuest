@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.kernel.processor.feature;
 
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.betonquest.betonquest.quest.action.NotificationLevel;
@@ -54,16 +54,16 @@ public class ConversationListener implements Listener {
      * @param log                   the custom logger to use for error logging
      * @param conversationProcessor the conversation processor to get active conversations
      * @param profileProvider       the profile provider instance
-     * @param pluginMessage         the plugin message instance to use for ingame notifications
+     * @param localizations         the Localizations instance to use for ingame notifications
      * @param config                the config to load values from
      */
     public ConversationListener(final BetonQuestLogger log, final ConversationProcessor conversationProcessor,
-                                final ProfileProvider profileProvider, final PluginMessage pluginMessage,
+                                final ProfileProvider profileProvider, final Localizations localizations,
                                 final ConfigAccessor config) {
         this.conversationProcessor = conversationProcessor;
         this.profileProvider = profileProvider;
         this.config = config;
-        this.blockedSender = new IngameNotificationSender(log, pluginMessage, null,
+        this.blockedSender = new IngameNotificationSender(log, localizations, null,
                 "Conversation Command Blocked", NotificationLevel.ERROR, "command_blocked");
     }
 

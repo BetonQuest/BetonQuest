@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.placeholder.tag;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerlessPlaceholder;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerlessPlaceholderFactory;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.GlobalData;
 
 /**
@@ -13,24 +13,24 @@ import org.betonquest.betonquest.database.GlobalData;
 public class GlobalTagPlaceholderFactory extends AbstractTagPlaceholderFactory<GlobalData> implements PlayerlessPlaceholderFactory {
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Localizations} instance.
      */
-    private final PluginMessage pluginMessage;
+    private final Localizations localizations;
 
     /**
      * Create a new GlobalTagPlaceholderFactory.
      *
      * @param dataHolder    the data holder
-     * @param pluginMessage the {@link PluginMessage} instance
+     * @param localizations the {@link Localizations} instance
      */
-    public GlobalTagPlaceholderFactory(final GlobalData dataHolder, final PluginMessage pluginMessage) {
+    public GlobalTagPlaceholderFactory(final GlobalData dataHolder, final Localizations localizations) {
         super(dataHolder);
-        this.pluginMessage = pluginMessage;
+        this.localizations = localizations;
     }
 
     @Override
     public PlayerlessPlaceholder parsePlayerless(final Instruction instruction) throws QuestException {
-        return new GlobalTagPlaceholder(pluginMessage, dataHolder, instruction.nextElement(), instruction.getPackage(),
+        return new GlobalTagPlaceholder(localizations, dataHolder, instruction.nextElement(), instruction.getPackage(),
                 instruction.bool().getFlag("papiMode", true));
     }
 }

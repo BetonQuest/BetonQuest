@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.action.journal;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.identifier.JournalEntryIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -10,7 +11,6 @@ import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
@@ -33,9 +33,9 @@ public class JournalActionFactory implements PlayerActionFactory, PlayerlessActi
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Localizations} instance.
      */
-    private final PluginMessage pluginMessage;
+    private final Localizations localizations;
 
     /**
      * BetonQuest instance to provide to actions.
@@ -61,15 +61,15 @@ public class JournalActionFactory implements PlayerActionFactory, PlayerlessActi
      * Create the journal action factory.
      *
      * @param loggerFactory   the logger factory to create a logger for the actions
-     * @param pluginMessage   the {@link PluginMessage} instance
+     * @param localizations   the {@link Localizations} instance
      * @param dataStorage     storage for used player data
      * @param instantSource   instant source to pass on
      * @param saver           database saver to use
      * @param profileProvider the profile provider
      */
-    public JournalActionFactory(final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage, final PlayerDataStorage dataStorage, final InstantSource instantSource, final Saver saver, final ProfileProvider profileProvider) {
+    public JournalActionFactory(final BetonQuestLoggerFactory loggerFactory, final Localizations localizations, final PlayerDataStorage dataStorage, final InstantSource instantSource, final Saver saver, final ProfileProvider profileProvider) {
         this.loggerFactory = loggerFactory;
-        this.pluginMessage = pluginMessage;
+        this.localizations = localizations;
         this.dataStorage = dataStorage;
         this.instantSource = instantSource;
         this.saver = saver;
@@ -109,7 +109,7 @@ public class JournalActionFactory implements PlayerActionFactory, PlayerlessActi
         final Argument<JournalEntryIdentifier> entryID = instruction.chainForArgument(instruction.getPart(2)).identifier(JournalEntryIdentifier.class).get();
         final JournalChanger journalChanger = new AddEntryJournalChanger(instantSource, entryID);
         final NotificationSender notificationSender = new IngameNotificationSender(loggerFactory.create(JournalAction.class),
-                pluginMessage, instruction.getPackage(), instruction.getID().getFull(), NotificationLevel.INFO, "new_journal_entry");
+                localizations, instruction.getPackage(), instruction.getID().getFull(), NotificationLevel.INFO, "new_journal_entry");
         return new JournalAction(dataStorage, journalChanger, notificationSender);
     }
 

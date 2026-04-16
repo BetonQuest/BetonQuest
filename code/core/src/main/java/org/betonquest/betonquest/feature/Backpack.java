@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.compass.QuestCompass;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.identifier.ItemIdentifier;
 import org.betonquest.betonquest.api.identifier.QuestCancelerIdentifier;
@@ -14,7 +15,6 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.service.compass.CompassManager;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.item.ItemManager;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.item.typehandler.QuestHandler;
@@ -80,9 +80,9 @@ public class Backpack implements Listener {
     private final Identifiers identifiers;
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Localizations} instance.
      */
-    private final PluginMessage pluginMessage;
+    private final Localizations localizations;
 
     /**
      * The {@link OnlineProfile} of the player.
@@ -113,7 +113,7 @@ public class Backpack implements Listener {
      * @param cancelerProcessor the {@link CancelerProcessor} to access the cancelers
      * @param compassManager    the {@link CompassManager} to access the compass targets
      * @param config            the plugin configuration file
-     * @param pluginMessage     the {@link PluginMessage} instance
+     * @param localizations     the {@link Localizations} instance
      * @param onlineProfile     the {@link OnlineProfile} of the player
      * @param itemManager       the {@link ItemManager} to access the items
      * @param identifiers       the identifier factory
@@ -122,7 +122,7 @@ public class Backpack implements Listener {
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public Backpack(final Plugin plugin, final BetonQuestLogger log, final PlayerData playerData,
                     final CancelerProcessor cancelerProcessor, final CompassManager compassManager,
-                    final ConfigAccessor config, final PluginMessage pluginMessage, final OnlineProfile onlineProfile,
+                    final ConfigAccessor config, final Localizations localizations, final OnlineProfile onlineProfile,
                     final ItemManager itemManager, final Identifiers identifiers, final DisplayType type) {
         this.plugin = plugin;
         this.cancelerProcessor = cancelerProcessor;
@@ -130,7 +130,7 @@ public class Backpack implements Listener {
         this.itemManager = itemManager;
         this.identifiers = identifiers;
         this.config = config;
-        this.pluginMessage = pluginMessage;
+        this.localizations = localizations;
         this.log = log;
         this.onlineProfile = onlineProfile;
         this.playerData = playerData;
@@ -151,16 +151,16 @@ public class Backpack implements Listener {
      * @param compassManager    the {@link CompassManager} to access the compass targets
      * @param itemManager       the {@link ItemManager} to access the items
      * @param config            the plugin configuration file
-     * @param pluginMessage     the {@link PluginMessage} instance
+     * @param localizations     the {@link Localizations} instance
      * @param identifiers       the identifier factory
      * @param onlineProfile     the {@link OnlineProfile} of the player
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public Backpack(final Plugin plugin, final BetonQuestLogger betonQuestLogger, final PlayerData playerData,
                     final CancelerProcessor cancelerProcessor, final CompassManager compassManager,
-                    final ItemManager itemManager, final ConfigAccessor config, final PluginMessage pluginMessage,
+                    final ItemManager itemManager, final ConfigAccessor config, final Localizations localizations,
                     final Identifiers identifiers, final OnlineProfile onlineProfile) {
-        this(plugin, betonQuestLogger, playerData, cancelerProcessor, compassManager, config, pluginMessage,
+        this(plugin, betonQuestLogger, playerData, cancelerProcessor, compassManager, config, localizations,
                 onlineProfile, itemManager, identifiers, DisplayType.DEFAULT);
     }
 
@@ -346,7 +346,7 @@ public class Backpack implements Listener {
 
             final Inventory inv;
             try {
-                Component backpackTitle = pluginMessage.getMessage(onlineProfile, "backpack_title");
+                Component backpackTitle = localizations.getMessage(onlineProfile, "backpack_title");
                 backpackTitle = backpackTitle.append(Component.text(pages == 0 || pages == 1 ? "" : " (" + page + "/" + pages + ")"));
                 inv = Bukkit.createInventory(null, INVENTORY_SIZE, backpackTitle);
             } catch (final QuestException e) {
@@ -378,7 +378,7 @@ public class Backpack implements Listener {
                 stack = new ItemStack(fallback);
             }
             try {
-                final Component name = pluginMessage.getMessage(onlineProfile, button);
+                final Component name = localizations.getMessage(onlineProfile, button);
                 stack.editMeta(meta -> meta.displayName(name));
             } catch (final QuestException e) {
                 log.warn("Could not set display name for " + button + " button: " + e.getMessage(), e);
@@ -499,7 +499,7 @@ public class Backpack implements Listener {
             }
             final Inventory inv;
             try {
-                inv = Bukkit.createInventory(null, numberOfRows * 9, pluginMessage.getMessage(onlineProfile, "cancel_page"));
+                inv = Bukkit.createInventory(null, numberOfRows * 9, localizations.getMessage(onlineProfile, "cancel_page"));
             } catch (final QuestException e) {
                 log.warn("Could not create cancel inventory: " + e.getMessage(), e);
                 onlineProfile.getPlayer().closeInventory();
@@ -559,7 +559,7 @@ public class Backpack implements Listener {
             }
             final Inventory inv;
             try {
-                inv = Bukkit.createInventory(null, numberOfRows * 9, pluginMessage.getMessage(onlineProfile, "compass_page"));
+                inv = Bukkit.createInventory(null, numberOfRows * 9, localizations.getMessage(onlineProfile, "compass_page"));
             } catch (final QuestException e) {
                 log.warn("Could not create compass inventory: " + e.getMessage(), e);
                 onlineProfile.getPlayer().closeInventory();

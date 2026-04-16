@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.kernel.processor.feature;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
@@ -19,7 +20,6 @@ import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.item.ItemManager;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
 import org.betonquest.betonquest.api.text.Text;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.feature.QuestCanceler;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
@@ -43,9 +43,9 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerIdentifier,
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Localizations} instance.
      */
-    private final PluginMessage pluginMessage;
+    private final Localizations localizations;
 
     /**
      * Text creator to parse text.
@@ -82,7 +82,7 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerIdentifier,
      *
      * @param log               the custom logger for this class
      * @param loggerFactory     the logger factory to create a new class-specific logger
-     * @param pluginMessage     the {@link PluginMessage} instance
+     * @param localizations     the {@link Localizations} instance
      * @param instructionApi    the instruction api to use
      * @param actionManager     the action manager
      * @param conditionManager  the condition manager
@@ -94,13 +94,13 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerIdentifier,
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public CancelerProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
-                             final PluginMessage pluginMessage, final Instructions instructionApi,
+                             final Localizations localizations, final Instructions instructionApi,
                              final ActionManager actionManager, final ConditionManager conditionManager, final ObjectiveManager objectiveManager,
                              final ItemManager itemManager, final ParsedSectionTextCreator textCreator, final PlayerDataStorage playerDataStorage,
                              final IdentifierFactory<QuestCancelerIdentifier> identifierFactory) {
         super(log, instructionApi, identifierFactory, "Quest Canceler", "cancel");
         this.loggerFactory = loggerFactory;
-        this.pluginMessage = pluginMessage;
+        this.localizations = localizations;
         this.actionManager = actionManager;
         this.conditionManager = conditionManager;
         this.objectiveManager = objectiveManager;
@@ -128,7 +128,7 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerIdentifier,
         final BetonQuestLogger logger = loggerFactory.create(QuestCanceler.class);
         final QuestCancelerIdentifier identifier = getIdentifier(pack, sectionName);
         final QuestCanceler questCanceler = new QuestCanceler(logger, actionManager, conditionManager, objectiveManager,
-                itemManager, playerDataStorage, identifier, pluginMessage, name, item, pack, cancelData);
+                itemManager, playerDataStorage, identifier, localizations, name, item, pack, cancelData);
         return Map.entry(identifier, questCanceler);
     }
 }

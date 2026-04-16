@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.quest.action.point;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.betonquest.betonquest.quest.action.NoNotificationSender;
@@ -29,22 +29,22 @@ public class PointActionFactory implements PlayerActionFactory {
     private final PlayerDataStorage dataStorage;
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Localizations} instance.
      */
-    private final PluginMessage pluginMessage;
+    private final Localizations localizations;
 
     /**
      * Create the points action factory.
      *
      * @param loggerFactory the logger factory to create a logger for the actions
      * @param dataStorage   the storage providing player data
-     * @param pluginMessage the {@link PluginMessage} instance
+     * @param localizations the {@link Localizations} instance
      */
     public PointActionFactory(final BetonQuestLoggerFactory loggerFactory, final PlayerDataStorage dataStorage,
-                              final PluginMessage pluginMessage) {
+                              final Localizations localizations) {
         this.loggerFactory = loggerFactory;
         this.dataStorage = dataStorage;
-        this.pluginMessage = pluginMessage;
+        this.localizations = localizations;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class PointActionFactory implements PlayerActionFactory {
         final boolean notify = instruction.bool().getFlag("notify", true)
                 .getValue(null).orElse(false);
         if (notify) {
-            pointSender = new IngameNotificationSender(loggerFactory.create(PointAction.class), pluginMessage,
+            pointSender = new IngameNotificationSender(loggerFactory.create(PointAction.class), localizations,
                     instruction.getPackage(), instruction.getID().getFull(), NotificationLevel.INFO, type.getNotifyCategory());
         } else {
             pointSender = new NoNotificationSender();

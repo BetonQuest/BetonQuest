@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.kernel.component;
 
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.identifier.NpcIdentifier;
@@ -14,7 +15,6 @@ import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.npc.NpcManager;
 import org.betonquest.betonquest.api.service.npc.NpcRegistry;
 import org.betonquest.betonquest.api.service.npc.Npcs;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.id.conversation.ConversationIdentifierFactory;
 import org.betonquest.betonquest.id.npc.NpcIdentifierFactory;
@@ -43,7 +43,7 @@ public class NpcsComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(Plugin.class,
                 QuestPackageManager.class, BetonQuestLoggerFactory.class, ProfileProvider.class, ConfigAccessor.class,
-                Saver.class, PluginMessage.class, Instructions.class, Identifiers.class,
+                Saver.class, Localizations.class, Instructions.class, Identifiers.class,
                 ConversationProcessor.class, ActionManager.class, ConditionManager.class,
                 ConversationIdentifierFactory.class, ProcessorDataLoader.class);
     }
@@ -63,7 +63,7 @@ public class NpcsComponent extends AbstractCoreComponent {
         final ActionManager actionManager = getDependency(ActionManager.class);
         final ConditionManager conditionManager = getDependency(ConditionManager.class);
         final ConversationIdentifierFactory conversationIdentifierFactory = getDependency(ConversationIdentifierFactory.class);
-        final PluginMessage pluginMessage = getDependency(PluginMessage.class);
+        final Localizations localizations = getDependency(Localizations.class);
         final ConfigAccessor config = getDependency(ConfigAccessor.class);
         final Saver saver = getDependency(Saver.class);
         final Identifiers identifiers = getDependency(Identifiers.class);
@@ -74,7 +74,7 @@ public class NpcsComponent extends AbstractCoreComponent {
         identifiers.register(NpcIdentifier.class, npcIdentifierFactory);
         final NpcTypeRegistry npcTypeRegistry = new NpcTypeRegistry(loggerFactory.create(NpcTypeRegistry.class), instructions);
         final NpcProcessor npcProcessor = new NpcProcessor(loggerFactory.create(NpcProcessor.class), loggerFactory, plugin,
-                npcIdentifierFactory, conversationIdentifierFactory, npcTypeRegistry, pluginMessage,
+                npcIdentifierFactory, conversationIdentifierFactory, npcTypeRegistry, localizations,
                 profileProvider, actionManager, conditionManager, conversationProcessor.getStarter(), instructions,
                 identifiers, saver, config, conversationProcessor);
 

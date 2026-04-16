@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.objective.chestput;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
@@ -9,7 +10,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.betonquest.betonquest.quest.action.NotificationLevel;
 import org.betonquest.betonquest.quest.action.chest.ChestTakeAction;
@@ -31,19 +31,19 @@ public class ChestPutObjectiveFactory implements ObjectiveFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Localizations} instance.
      */
-    private final PluginMessage pluginMessage;
+    private final Localizations localizations;
 
     /**
      * Creates a new instance of the ChestPutObjectiveFactory.
      *
      * @param loggerFactory the logger factory to create a logger for the objectives
-     * @param pluginMessage the {@link PluginMessage} instance
+     * @param localizations the {@link Localizations} instance
      */
-    public ChestPutObjectiveFactory(final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage) {
+    public ChestPutObjectiveFactory(final BetonQuestLoggerFactory loggerFactory, final Localizations localizations) {
         this.loggerFactory = loggerFactory;
-        this.pluginMessage = pluginMessage;
+        this.localizations = localizations;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class ChestPutObjectiveFactory implements ObjectiveFactory {
                 .getValue(null).orElse(false);
         final ChestTakeAction chestTakeAction = itemsStay ? null : new ChestTakeAction(loc, items);
         final BetonQuestLogger log = loggerFactory.create(ChestPutObjective.class);
-        final IngameNotificationSender occupiedSender = new IngameNotificationSender(log, pluginMessage, instruction.getPackage(),
+        final IngameNotificationSender occupiedSender = new IngameNotificationSender(log, localizations, instruction.getPackage(),
                 instruction.getID().getFull(), NotificationLevel.INFO, "chest_occupied");
         final ChestPutObjective objective = new ChestPutObjective(service, chestItemCondition, chestTakeAction,
                 loc, occupiedSender, multipleAccess);

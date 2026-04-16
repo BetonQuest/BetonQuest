@@ -2,13 +2,13 @@ package org.betonquest.betonquest.mc_1_21_4.item;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.BookPageWrapper;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
 import org.betonquest.betonquest.api.text.TextParser;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.item.SimpleQuestItem;
 import org.betonquest.betonquest.item.SimpleQuestItemFactory;
 import org.betonquest.betonquest.item.typehandler.BookHandler;
@@ -42,10 +42,10 @@ public class UpdatedSimpleItemFactory extends SimpleQuestItemFactory {
      * @param packManager           the quest package manager to get quest packages from
      * @param textParser            the text parser used to parse text
      * @param bookPageWrapper       the book page wrapper used to split pages
-     * @param questItemLoreSupplier supplies the plugin message instance if the "quest item" lore line should be added
+     * @param questItemLoreSupplier supplies the Localizations instance if the "quest item" lore line should be added
      */
     public UpdatedSimpleItemFactory(final PlaceholderManager placeholders, final QuestPackageManager packManager, final TextParser textParser,
-                                    final BookPageWrapper bookPageWrapper, final Supplier<PluginMessage> questItemLoreSupplier) {
+                                    final BookPageWrapper bookPageWrapper, final Supplier<Localizations> questItemLoreSupplier) {
         super(placeholders, packManager, textParser, bookPageWrapper, questItemLoreSupplier);
     }
 
@@ -56,9 +56,9 @@ public class UpdatedSimpleItemFactory extends SimpleQuestItemFactory {
         final NameHandler name = new UpdatedNameHandler(textParser);
         final LoreHandler lore = new LoreHandler(textParser);
 
-        final PluginMessage pluginMessage = questItemLoreSupplier.get();
+        final Localizations localizations = questItemLoreSupplier.get();
         final List<ItemMetaHandler<?>> handlers = List.of(
-                new QuestHandler(pluginMessage == null ? QuestHandler.LoreConsumer.EMPTY : new QuestHandler.Lore(pluginMessage)),
+                new QuestHandler(localizations == null ? QuestHandler.LoreConsumer.EMPTY : new QuestHandler.Lore(localizations)),
                 new DurabilityHandler(),
                 new UpdatedCustomModelDataHandler(),
                 new UnbreakableHandler(),

@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.kernel.component;
 
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.identifier.MenuIdentifier;
@@ -18,7 +19,6 @@ import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.objective.ObjectiveRegistry;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderRegistry;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.id.menu.MenuIdentifierFactory;
 import org.betonquest.betonquest.id.menu.MenuItemIdentifierFactory;
 import org.betonquest.betonquest.kernel.ProcessorDataLoader;
@@ -45,7 +45,7 @@ public class RPGMenuComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(QuestPackageManager.class, BetonQuestLoggerFactory.class, ConfigAccessor.class,
                 ProfileProvider.class, ArgumentParsers.class, Instructions.class, Identifiers.class,
-                ParsedSectionTextCreator.class, PluginMessage.class, Reloader.class,
+                ParsedSectionTextCreator.class, Localizations.class, Reloader.class,
                 ActionManager.class, ConditionManager.class, ProcessorDataLoader.class,
                 ActionRegistry.class, ConditionRegistry.class, ObjectiveRegistry.class, PlaceholderRegistry.class);
     }
@@ -62,7 +62,7 @@ public class RPGMenuComponent extends AbstractCoreComponent {
         final Instructions instructions = getDependency(Instructions.class);
         final Identifiers identifiers = getDependency(Identifiers.class);
         final ParsedSectionTextCreator parsedSectionTextCreator = getDependency(ParsedSectionTextCreator.class);
-        final PluginMessage pluginMessage = getDependency(PluginMessage.class);
+        final Localizations localizations = getDependency(Localizations.class);
         final ConfigAccessor config = getDependency(ConfigAccessor.class);
         final ProfileProvider profileProvider = getDependency(ProfileProvider.class);
         final ActionManager actionManager = getDependency(ActionManager.class);
@@ -80,7 +80,7 @@ public class RPGMenuComponent extends AbstractCoreComponent {
         final MenuItemIdentifierFactory menuItemIdentifierFactory = new MenuItemIdentifierFactory(packManager);
         identifiers.register(MenuItemIdentifier.class, menuItemIdentifierFactory);
         final RPGMenu rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, instructions, config,
-                pluginMessage, parsedSectionTextCreator, profileProvider, argumentParsers,
+                localizations, parsedSectionTextCreator, profileProvider, argumentParsers,
                 menuIdentifierFactory, menuItemIdentifierFactory, actionRegistry, conditionRegistry,
                 objectiveRegistry, placeholderRegistry, actionManager, conditionManager);
 

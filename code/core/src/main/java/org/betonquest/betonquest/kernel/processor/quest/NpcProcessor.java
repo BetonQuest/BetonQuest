@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.npc.NpcInteractEvent;
 import org.betonquest.betonquest.api.bukkit.event.npc.NpcVisibilityUpdateEvent;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.ConversationIdentifier;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
@@ -22,7 +23,6 @@ import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.npc.NpcManager;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.CombatTagger;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
@@ -66,9 +66,9 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * The {@link PluginMessage} instance.
+     * The {@link Localizations} instance.
      */
-    private final PluginMessage pluginMessage;
+    private final Localizations localizations;
 
     /**
      * The plugin instance.
@@ -160,7 +160,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
      * @param npcIdentifierFactory          the identifier factory to create {@link NpcIdentifier}s for this type
      * @param conversationIdentifierFactory the identifier factory to create {@link ConversationIdentifier}s for this type
      * @param npcTypes                      the available npc types
-     * @param pluginMessage                 the {@link PluginMessage} instance
+     * @param localizations                 the {@link Localizations} instance
      * @param profileProvider               the profile provider instance
      * @param actionManager                 the action manager
      * @param conditionManager              the condition manager
@@ -175,7 +175,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
     public NpcProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                         final Plugin plugin, final IdentifierFactory<NpcIdentifier> npcIdentifierFactory,
                         final IdentifierFactory<ConversationIdentifier> conversationIdentifierFactory,
-                        final NpcTypeRegistry npcTypes, final PluginMessage pluginMessage,
+                        final NpcTypeRegistry npcTypes, final Localizations localizations,
                         final ProfileProvider profileProvider, final ActionManager actionManager,
                         final ConditionManager conditionManager, final ConversationStarter convStarter,
                         final Instructions instructionApi, final Identifiers identifiers, final Saver saver,
@@ -183,7 +183,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
         super(log, npcTypes, npcIdentifierFactory, instructionApi, "Npc", "npcs");
         this.loggerFactory = loggerFactory;
         this.plugin = plugin;
-        this.pluginMessage = pluginMessage;
+        this.localizations = localizations;
         this.convStarter = convStarter;
         this.conversationIdentifierFactory = conversationIdentifierFactory;
         this.actionManager = actionManager;
@@ -196,7 +196,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
         plugin.getServer().getPluginManager().registerEvents(new NpcListener(), plugin);
         this.npcHider = new DefaultNpcHider(loggerFactory.create(DefaultNpcHider.class), this,
                 conditionManager, profileProvider, npcTypes, identifiers, instructionApi);
-        this.busySender = new IngameNotificationSender(log, pluginMessage, null, "NpcProcessor", NotificationLevel.ERROR, "busy");
+        this.busySender = new IngameNotificationSender(log, localizations, null, "NpcProcessor", NotificationLevel.ERROR, "busy");
     }
 
     @Override
@@ -305,7 +305,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
         final Location center = npc.getLocation().orElseGet(() -> onlineProfile.getPlayer().getLocation());
         convStarter.startConversation(onlineProfile, conversationID, center, null,
                 (onlineProfile1, id, center1, run)
-                        -> new NpcConversation<>(loggerFactory.create(NpcConversation.class), pluginMessage,
+                        -> new NpcConversation<>(loggerFactory.create(NpcConversation.class), localizations,
                         onlineProfile1, id, center1, actionManager, conditionManager, conversationProcessor,
                         identifiers, saver, run, npc));
         return true;
