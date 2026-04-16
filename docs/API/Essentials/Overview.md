@@ -157,6 +157,20 @@ The corresponding [manager](#manager) performs a lookup to retrieve the instance
 This relationship maintains consistency across server restarts and quest package reloads, 
 as the same identifier always resolves to functionally identical instances when recreated from the same [instruction](../Tools/Instruction.md).
 
+To obtain a new identifier instance without parsing it from an instruction, you can resolve it directly through the API.
+Note that direct identifier resolution is only possible when the package is loaded and contains the referenced object.
+
+??? example "Code Example"
+    The following example demonstrates how to obtain an `ActionIdentifier` for the action `openGate` in the package `daily`.
+    ```java
+    final QuestPackage questPackage = betonQuestApi.packages().getPackage("daily");
+    final ActionIdentifier actionId = betonQuestApi.identifiers().getFactory(ActionIdentifier.class)
+        .parseIdentifier(questPackage, "openGate"); //(1)!
+    ```
+    
+    1. The `questPackage` is nullable. If it is null, the string has to contain the absolute package path. If it is 
+    not null, the string can be relative to the package's path.
+
 ### Factories, Registries, Managers
 
 The [factory design pattern](https://refactoring.guru/design-patterns/abstract-factory){:target="_blank"} is used in the API to create objects without having to know their concrete classes.

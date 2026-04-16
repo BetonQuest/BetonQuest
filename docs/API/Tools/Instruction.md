@@ -86,6 +86,28 @@ The instruction chain may be accessed conveniently, starting directly from any `
  | `.identifier(Class<Identifier>)`     | Default parser for `org.betonquest.betonquest.api.identifier.Identifier` types such as `ActionIdentifier` or `ObjectiveIdentifier`.                                                                    |
  | `.parse(Parser<P>)`                  | Using a custom parser matching the functional interfaces `InstructionArgumentParser` or `SimpleArgumentParser`                                                                                         |  
 
+??? example "Usage Examples"
+    ```java title="UsageExamples"
+    final Argument<Number> value = instruction.number().get();
+    final Argument<String> string = instruction.string().get();
+    final Argument<Boolean> bool = instruction.bool().get();
+    final Argument<Location> location = instruction.location().get();
+    final Argument<World> world = instruction.world().get();
+    final Argument<ItemWrapper> item = instruction.item().get();
+    final Argument<BlockSelector> blockSelector = instruction.blockSelector().get();
+    final Argument<Vector> vector = instruction.vector().get();
+    final Argument<UUID> uuid = instruction.uuid().get();
+    final Argument<Component> component = instruction.component().get();
+    final Argument<String> packageIdentifier = instruction.packageIdentifier().get();
+    final Argument<NamespacedKey> namespacedKey = instruction.namespacedKey().get();
+    final Argument<EntityType> entityType = instruction.enumeration(EntityType.class).get(); //(1)!
+    final Argument<ActionIdentifier> actionIdentifier 
+        = instruction.identifier(ActionIdentifier.class).get(); //(2)!
+    ```
+    
+    1. The `instruction.enumeration(Enum<E>)` parser is used to parse an enum of the given type. Does work with any enum type.
+    2. The `instruction.identifier(Class<Identifier>)` parser is used to parse an identifier of the given type. Does work with any identifier type.
+
 ### Argument Retrieval
 The argument retrieval step is required after the argument parsing and represents the wrapping into a `Argument<T>` 
 instance to be carried on into actions, conditions and objectives.

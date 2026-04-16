@@ -425,7 +425,8 @@ Instead of creating new action types and their factories, we can also use existi
 This is useful if we want to reuse a loaded action in another action or just for a feature inside an addon.
 Loaded action instances are generally referenced by an `ActionIdentifier` consisting of their name and the package they are defined in.
 `ActionIdentifier`s are unique since you cannot have two actions with the same name in the same package.
-They can be obtained from an `Instruction` using the `identifier(ActionIdentifier.class)` type declaring method (See [Instruction](../Tools/Instruction.md#argument-parsing)).
+They can be obtained from an `Instruction` using the `identifier(ActionIdentifier.class)` type declaring method (See [Instruction](../Tools/Instruction.md#argument-parsing)) 
+or directly manually via the API (See [API Overview](../Essentials/Overview.md#identifiers)).
 
 You can run an action as follows:
 
