@@ -125,7 +125,7 @@ public class ConversationStarter {
                     new Conversation.Starter(conversation, startingOption).start();
                 }
             } catch (final QuestException e) {
-                log.error(pack, "Cannot continue starting conversation without options: " + e, e);
+                log.error(pack, "Cannot start conversation '%s': %s".formatted(conversationID, e), e);
                 activeConversations.remove(onlineProfile);
             }
         });
