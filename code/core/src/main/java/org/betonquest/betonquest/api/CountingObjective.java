@@ -49,11 +49,11 @@ public abstract class CountingObjective extends DefaultObjective {
     public CountingObjective(final ObjectiveService service, final Argument<Number> targetAmount,
                              @Nullable final String notifyMessageName) throws QuestException {
         super(service);
-        final BetonQuest instance = BetonQuest.getInstance();
-        final BetonQuestLoggerFactory loggerFactory = instance.getLoggerFactory();
+        final BetonQuestApi api = BetonQuest.getInstance().getBetonQuestApi();
+        final BetonQuestLoggerFactory loggerFactory = api.loggerFactory();
         this.targetAmount = targetAmount;
         countSender = notifyMessageName == null ? null : new IngameNotificationSender(loggerFactory.create(CountingObjective.class),
-                instance.getBetonQuestApi().localizations(), service.getObjectiveID().getPackage(), service.getObjectiveID().getFull(),
+                api.localizations(), service.getObjectiveID().getPackage(), service.getObjectiveID().getFull(),
                 NotificationLevel.INFO, notifyMessageName);
         service.setDefaultData(this::getDefaultDataInstruction);
         final ObjectiveProperties properties = service.getProperties();
@@ -197,7 +197,7 @@ public abstract class CountingObjective extends DefaultObjective {
          */
         public CountingData(final String instruction, final Profile profile, final ObjectiveIdentifier objID) throws QuestException {
             super(instruction, profile, objID);
-            this.log = BetonQuest.getInstance().getLoggerFactory().create(CountingObjective.CountingData.class);
+            this.log = BetonQuest.getInstance().getBetonQuestApi().loggerFactory().create(CountingObjective.CountingData.class);
             final String countingInstruction = instruction.split(";", 2)[0];
             final String[] instructionParts = countingInstruction.split("/");
             switch (instructionParts.length) {

@@ -52,7 +52,7 @@ public class BetonQuest extends JavaPlugin {
     /**
      * The custom logger for the plugin.
      */
-    private BetonQuestLogger log;
+    protected BetonQuestLogger log;
 
     /**
      * The core component loader instance.
@@ -145,15 +145,6 @@ public class BetonQuest extends JavaPlugin {
      */
     public CoreComponentLoader getComponentLoader() {
         return coreComponentLoader;
-    }
-
-    /**
-     * Returns the {@link BetonQuestLoggerFactory} instance.
-     *
-     * @return the {@link BetonQuestLoggerFactory} instance
-     */
-    public BetonQuestLoggerFactory getLoggerFactory() {
-        return coreComponentLoader.get(BetonQuestLoggerFactory.class);
     }
 
     /**
