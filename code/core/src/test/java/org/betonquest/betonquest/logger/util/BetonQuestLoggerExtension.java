@@ -1,9 +1,11 @@
 package org.betonquest.betonquest.logger.util;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.lib.logger.SingletonLoggerFactory;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -34,6 +36,11 @@ public class BetonQuestLoggerExtension implements BeforeEachCallback, ParameterR
     private BetonQuestLoggerFactory loggerFactory;
 
     /**
+     * The instance of the API.
+     */
+    private BetonQuestApi betonQuestApi;
+
+    /**
      * The MockedStatic instance of {@link BetonQuestLogger} class.
      */
     private MockedStatic<BetonQuest> staticBetonQuest;
@@ -59,8 +66,10 @@ public class BetonQuestLoggerExtension implements BeforeEachCallback, ParameterR
     public void beforeEach(final ExtensionContext context) {
         this.logger = mock(BetonQuestLogger.class);
         this.loggerFactory = new SingletonLoggerFactory(logger);
+        this.betonQuestApi = mock(BetonQuestApi.class);
         final BetonQuest betonQuest = mock(BetonQuest.class);
-        lenient().when(betonQuest.getLoggerFactory()).thenReturn(loggerFactory);
+        lenient().when(betonQuestApi.loggerFactory()).thenReturn(loggerFactory);
+        lenient().when(betonQuest.getBetonQuestApi()).thenReturn(betonQuestApi);
         staticBetonQuest = mockStatic(BetonQuest.class);
         staticBetonQuest.when(BetonQuest::getInstance).thenReturn(betonQuest);
     }
@@ -79,9 +88,13 @@ public class BetonQuestLoggerExtension implements BeforeEachCallback, ParameterR
     }
 
     @Override
+    @Nullable
     public Object resolveParameter(final ParameterContext parameterContext, final ExtensionContext extensionContext) {
         if (isStaticBetonQuest(parameterContext)) {
             return staticBetonQuest;
+        }
+        if (parameterContext.getParameter().getType() == BetonQuestApi.class) {
+            return betonQuestApi;
         }
         if (parameterContext.getParameter().getType() == BetonQuestLogger.class) {
             return logger;

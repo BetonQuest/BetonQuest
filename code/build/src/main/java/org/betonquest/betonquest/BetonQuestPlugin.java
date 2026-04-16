@@ -41,7 +41,7 @@ public class BetonQuestPlugin extends BetonQuest {
         try {
             super.onEnable();
         } catch (final IllegalStateException exception) {
-            getLoggerFactory().create(this).error("Disabling BetonQuest due to an error: " + exception.getMessage(), exception);
+            log.error("Disabling BetonQuest due to an error: " + exception.getMessage(), exception);
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
@@ -52,7 +52,7 @@ public class BetonQuestPlugin extends BetonQuest {
                 () -> new BundledMC_1_20_6(this));
         integrationService.withPolicies(Policies.minimalVanillaVersion("1.21.4")).register(this,
                 () -> new BundledMC_1_21_4(this));
-        new BundledCompatibility(getLoggerFactory().create(BundledCompatibility.class), getPluginConfig(), this, integrationService)
+        new BundledCompatibility(getBetonQuestApi().loggerFactory().create(BundledCompatibility.class), getPluginConfig(), this, integrationService)
                 .registerCompatiblePlugins(getServer().getServicesManager(), getComponentLoader().get(ProcessorDataLoader.class));
     }
 

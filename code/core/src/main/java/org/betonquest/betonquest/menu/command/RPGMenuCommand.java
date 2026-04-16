@@ -68,10 +68,10 @@ public class RPGMenuCommand extends SimpleCommand {
             case "open":
             case "o":
                 if (!args[1].contains(Identifier.SEPARATOR)) {
-                    return new ArrayList<>(getPlugin().getQuestPackageManager().getPackages().keySet());
+                    return new ArrayList<>(getPlugin().getBetonQuestApi().packages().getPackages().keySet());
                 }
                 final String pack = args[1].substring(0, args[1].indexOf(Identifier.SEPARATOR));
-                final QuestPackage configPack = getPlugin().getQuestPackageManager().getPackages().get(pack);
+                final QuestPackage configPack = getPlugin().getBetonQuestApi().packages().getPackages().get(pack);
                 if (configPack == null) {
                     return new ArrayList<>();
                 }
@@ -162,7 +162,7 @@ public class RPGMenuCommand extends SimpleCommand {
                 }
                 //open the menu and send feedback
                 try {
-                    this.menu.openMenu(getPlugin().getProfileProvider().getProfile(player), menu);
+                    this.menu.openMenu(getPlugin().getBetonQuestApi().profiles().getProfile(player), menu);
                     sendMessage(sender, "command_open_successful", new VariableReplacement("menu", Component.text(menu.toString())));
                     return true;
                 } catch (final QuestException e) {

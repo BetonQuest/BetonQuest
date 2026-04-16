@@ -92,7 +92,7 @@ public class PasswordObjective extends DefaultObjective {
         final String prefix;
         try {
             prefix = passwordPrefix == null
-                    ? LegacyComponentSerializer.legacySection().serialize(BetonQuest.getInstance().getPluginMessage().getMessage(onlineProfile, "password"))
+                    ? LegacyComponentSerializer.legacySection().serialize(BetonQuest.getInstance().getBetonQuestApi().localizations().getMessage(onlineProfile, "password"))
                     : passwordPrefix;
         } catch (final QuestException e) {
             throw new QuestException("Failed to get password prefix: " + e.getMessage(), e);

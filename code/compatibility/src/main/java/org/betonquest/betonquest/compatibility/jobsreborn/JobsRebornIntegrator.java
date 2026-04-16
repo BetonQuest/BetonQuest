@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.jobsreborn;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.compatibility.jobsreborn.action.AddExpActionFactory;
 import org.betonquest.betonquest.compatibility.jobsreborn.action.AddLevelActionFactory;
@@ -47,7 +46,7 @@ public class JobsRebornIntegrator extends IntegrationTemplate {
         objective("joinjob", new JoinJobObjectiveFactory());
         objective("leavejob", new LeaveJobObjectiveFactory());
         objective("levelup", new LevelUpObjectiveFactory());
-        objective("payment", new PaymentObjectiveFactory(api.loggerFactory(), BetonQuest.getInstance().getPluginMessage()));
+        objective("payment", new PaymentObjectiveFactory(api.loggerFactory(), api.localizations()));
 
         registerFeatures(api, "nujobs_");
     }

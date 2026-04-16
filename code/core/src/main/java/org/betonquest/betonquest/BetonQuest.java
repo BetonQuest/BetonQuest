@@ -5,8 +5,6 @@ import org.apache.logging.log4j.core.Logger;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
-import org.betonquest.betonquest.api.config.Localizations;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.dependency.CoreComponentLoader;
 import org.betonquest.betonquest.api.integration.IntegrationService;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -54,7 +52,7 @@ public class BetonQuest extends JavaPlugin {
     /**
      * The custom logger for the plugin.
      */
-    private BetonQuestLogger log;
+    protected BetonQuestLogger log;
 
     /**
      * The core component loader instance.
@@ -150,15 +148,6 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * Returns the {@link BetonQuestLoggerFactory} instance.
-     *
-     * @return the {@link BetonQuestLoggerFactory} instance
-     */
-    public BetonQuestLoggerFactory getLoggerFactory() {
-        return coreComponentLoader.get(BetonQuestLoggerFactory.class);
-    }
-
-    /**
      * Get the plugin configuration file.
      *
      * @return config file
@@ -174,33 +163,6 @@ public class BetonQuest extends JavaPlugin {
      */
     public BetonQuestApi getBetonQuestApi() {
         return coreComponentLoader.get(BetonQuestApi.class);
-    }
-
-    /**
-     * Get the Localizations provider.
-     *
-     * @return the Localizations provider
-     */
-    public Localizations getPluginMessage() {
-        return coreComponentLoader.get(Localizations.class);
-    }
-
-    /**
-     * Returns the {@link ProfileProvider} instance.
-     *
-     * @return the {@link ProfileProvider} instance
-     */
-    public ProfileProvider getProfileProvider() {
-        return coreComponentLoader.get(ProfileProvider.class);
-    }
-
-    /**
-     * Returns the {@link QuestPackageManager} instance.
-     *
-     * @return the {@link QuestPackageManager} instance
-     */
-    public QuestPackageManager getQuestPackageManager() {
-        return coreComponentLoader.get(QuestPackageManager.class);
     }
 
     /**

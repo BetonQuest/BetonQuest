@@ -117,7 +117,7 @@ public class DelayObjective extends DefaultObjective {
     }
 
     private Component parseLeftProperty(final Profile profile) throws QuestException {
-        final Localizations localizations = BetonQuest.getInstance().getPluginMessage();
+        final Localizations localizations = BetonQuest.getInstance().getBetonQuestApi().localizations();
         final Component daysWord = localizations.getMessage(profile, "days");
         final Component daysWordSingular = localizations.getMessage(profile, "days_singular");
         final Component hoursWord = localizations.getMessage(profile, "hours");

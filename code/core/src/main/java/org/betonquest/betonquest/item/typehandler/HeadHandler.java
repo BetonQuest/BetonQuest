@@ -202,7 +202,7 @@ public class HeadHandler implements ItemMetaHandler<SkullMeta> {
         }
         if (owner != null) {
             final OfflinePlayer player = Bukkit.getOfflinePlayer(owner);
-            return BetonQuest.getInstance().getProfileProvider().getProfile(player);
+            return BetonQuest.getInstance().getBetonQuestApi().profiles().getProfile(player);
         }
         return null;
     }
