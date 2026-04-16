@@ -7210,6 +7210,20 @@ This type safety prevents accidentally passing an action identifier where a cond
 The corresponding <a href="#manager">manager</a> performs a lookup to retrieve the instance created during quest package loading. 
 This relationship maintains consistency across server restarts and quest package reloads, 
 as the same identifier always resolves to functionally identical instances when recreated from the same <a href="../../Tools/Instruction/">instruction</a>.</p>
+<p>To obtain a new identifier instance without parsing it from an instruction, you can resolve it directly through the API.
+Note that direct identifier resolution is only possible when the package is loaded and contains the referenced object.</p>
+<details class="example">
+<summary>Code Example</summary>
+<p>The following example demonstrates how to obtain an <code>ActionIdentifier</code> for the action <code>openGate</code> in the package <code>daily</code>.
+<div class="highlight"><pre><span></span><code><span class="kd">final</span><span class="w"> </span><span class="n">QuestPackage</span><span class="w"> </span><span class="n">questPackage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">betonQuestApi</span><span class="p">.</span><span class="na">packages</span><span class="p">().</span><span class="na">getPackage</span><span class="p">(</span><span class="s">&quot;daily&quot;</span><span class="p">);</span>
+<span class="kd">final</span><span class="w"> </span><span class="n">ActionIdentifier</span><span class="w"> </span><span class="n">actionId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">betonQuestApi</span><span class="p">.</span><span class="na">identifiers</span><span class="p">().</span><span class="na">getFactory</span><span class="p">(</span><span class="n">ActionIdentifier</span><span class="p">.</span><span class="na">class</span><span class="p">)</span>
+<span class="w">    </span><span class="p">.</span><span class="na">parseIdentifier</span><span class="p">(</span><span class="n">questPackage</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;openGate&quot;</span><span class="p">);</span><span class="w"> </span><span class="c1">//(1)!</span>
+</code></pre></div></p>
+<ol>
+<li>The <code>questPackage</code> is nullable. If it is null, the string has to contain the absolute package path. If it is 
+not null, the string can be relative to the package's path.</li>
+</ol>
+</details>
 <h3 id="factories-registries-managers">Factories, Registries, Managers<a class="headerlink" href="#factories-registries-managers" title="Permanent link">🔗</a></h3>
 <p>The <a href="https://refactoring.guru/design-patterns/abstract-factory" target="_blank">factory design pattern</a> is used in the API to create objects without having to know their concrete classes.
 In BetonQuest, this concept is further enhanced by <a href="../../Tools/Instruction/">instructions</a> for configurability and to ensure that identical objects can be recreated consistently.

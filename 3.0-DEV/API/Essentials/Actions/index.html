@@ -8079,7 +8079,8 @@ Given the api is already obtained, we can access the action registry and registe
 This is useful if we want to reuse a loaded action in another action or just for a feature inside an addon.
 Loaded action instances are generally referenced by an <code>ActionIdentifier</code> consisting of their name and the package they are defined in.
 <code>ActionIdentifier</code>s are unique since you cannot have two actions with the same name in the same package.
-They can be obtained from an <code>Instruction</code> using the <code>identifier(ActionIdentifier.class)</code> type declaring method (See <a href="../../Tools/Instruction/#argument-parsing">Instruction</a>).</p>
+They can be obtained from an <code>Instruction</code> using the <code>identifier(ActionIdentifier.class)</code> type declaring method (See <a href="../../Tools/Instruction/#argument-parsing">Instruction</a>) 
+or directly manually via the API (See <a href="../Overview/#identifiers">API Overview</a>).</p>
 <p>You can run an action as follows:</p>
 <div class="highlight"><span class="filename">Run an action</span><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">MyFeature</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">BetonQuestApi</span><span class="w"> </span><span class="n">betonQuestApi</span><span class="p">;</span>
