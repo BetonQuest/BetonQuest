@@ -208,7 +208,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
             return;
         }
         if (!objective.getService().containsProfile(profile)) {
-            log.error("Objective '%s' could not be cancelled - profile '%s' does not have it.".formatted(objectiveID, profile));
+            log.debug("Objective '%s' could not be cancelled - profile '%s' does not have it.".formatted(objectiveID, profile));
             return;
         }
         try {
@@ -231,7 +231,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
             return;
         }
         if (!objective.getService().containsProfile(profile)) {
-            log.error("Objective '%s' could not be paused - profile '%s' does not have it.".formatted(objectiveID, profile));
+            log.debug("Objective '%s' could not be paused - profile '%s' does not have it.".formatted(objectiveID, profile));
             return;
         }
         try {
