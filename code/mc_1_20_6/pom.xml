@@ -16,7 +16,7 @@
   <description>Provides the Minecraft 1.20.6 Compatibility of BetonQuest</description>
 
   <properties>
-    <revision>1.0.0</revision>
+    <revision>3.0.0</revision>
     <changelist>-SNAPSHOT</changelist>
     <pit.report.skip>true</pit.report.skip>
 
