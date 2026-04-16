@@ -10,13 +10,13 @@
         <meta name="author" content="BetonQuest Organisation">
       
       
-        <link rel="canonical" href="https://betonquest.org/3.0-DEV/API/Quest/Conditions/">
+        <link rel="canonical" href="https://betonquest.org/3.0-DEV/API/Tools/Logging/">
       
       
-        <link rel="prev" href="../Objectives/">
+        <link rel="prev" href="../Instruction/">
       
       
-        <link rel="next" href="../NPCs/">
+        <link rel="next" href="../TextParsing/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Conditions - BetonQuest</title>
+        <title>Logging - BetonQuest</title>
       
     
     
@@ -90,7 +90,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#introduction" class="md-skip">
+        <a href="#why-a-custom-logger" class="md-skip">
           Skip to content
         </a>
       
@@ -141,7 +141,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Conditions
+              Logging
             
           </span>
         </div>
@@ -4833,6 +4833,8 @@
       
         
       
+        
+      
     
     
     
@@ -4945,14 +4947,10 @@
                 
   
   
-    
-  
   
   
     
     
-      
-        
       
         
       
@@ -4976,11 +4974,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
         
           
           <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
@@ -4990,7 +4988,7 @@
   <span class="md-ellipsis">
     
   
-    Quest API
+    Concepts
   
 
     
@@ -5001,12 +4999,12 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4_3">
             <span class="md-nav__icon md-icon"></span>
             
   
-    Quest API
+    Concepts
   
 
           </label>
@@ -5019,7 +5017,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Overview/" class="md-nav__link">
+      <a href="../../Essentials/Overview/" class="md-nav__link">
         
   
   
@@ -5056,7 +5054,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Actions/" class="md-nav__link">
+      <a href="../../Essentials/Actions/" class="md-nav__link">
         
   
   
@@ -5093,7 +5091,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Objectives/" class="md-nav__link">
+      <a href="../../Essentials/Objectives/" class="md-nav__link">
         
   
   
@@ -5127,44 +5125,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 12h9.8l-2.5-2.5 1.4-1.4 4.9 4.9-4.9 4.9-1.4-1.4 2.5-2.5H9zm12 5.4V20H3V6h18v2.6l2 2V4c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2v-4.6z"/></svg>
-  
-  <span class="md-ellipsis">
-    
-  
-    Conditions
-  
-
-    
-  </span>
-  
-  
-    
-  
-  
-    <span class="md-status md-status--new"></span>
-  
-
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../Essentials/Conditions/" class="md-nav__link">
         
   
   
@@ -5186,6 +5150,209 @@
     <span class="md-status md-status--new"></span>
   
 
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Essentials/NPCs/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 12h9.8l-2.5-2.5 1.4-1.4 4.9 4.9-4.9 4.9-1.4-1.4 2.5-2.5H9zm12 5.4V20H3V6h18v2.6l2 2V4c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2v-4.6z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    NPCs
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--new"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tools
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tools
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Instruction/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 5v2H3V5zM3 17h9v-2H3zm0-5h18v-2H3zm15 2a2 2 0 1 1 0 4c-1.11 0-2-.89-2-2s.9-2 2-2m-4 8v-1c0-1.1 1.79-2 4-2s4 .9 4 2v1z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Instruction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 3c-1.11 0-2 .89-2 2v14c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm0 2h14v14H5zm2 2v2h10V7zm0 4v2h10v-2zm0 4v2h7v-2z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Logging
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 3c-1.11 0-2 .89-2 2v14c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm0 2h14v14H5zm2 2v2h10V7zm0 4v2h10v-2zm0 4v2h7v-2z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Logging
+  
+
+    
+  </span>
+  
   
 
       </a>
@@ -5212,13 +5379,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#introduction">
+  <a class="md-nav__link" href="#why-a-custom-logger">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Introduction
+          Why a custom Logger?
         </span>
 
       
@@ -5228,30 +5395,7 @@
 
   
   
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#how-to-create-a-condition">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          How to create a condition
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-  <nav aria-label="How to create a condition" class="md-nav">
+  <nav aria-label="Why a custom Logger?" class="md-nav">
     <ul class="md-nav__list">
       
       
@@ -5259,105 +5403,13 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#approach-1-a-naive-implementation">
+  <a class="md-nav__link" href="#advantages">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Approach #1: A naive implementation
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#approach-2-adding-parameters">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Approach #2: Adding parameters
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#approach-3-using-the-argument-container">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Approach #3: Using the Argument container
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#approach-4-for-offline-players-and-multiple-names">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Approach #4: For offline players and multiple names
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#more-interfaces-summary">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          More interfaces &amp; Summary
+          Advantages
         </span>
 
       
@@ -5380,13 +5432,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#how-to-create-a-factory-for-a-condition">
+  <a class="md-nav__link" href="#obtaining-a-betonquestlogger">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          How to create a factory for a condition
+          Obtaining a BetonQuestLogger
         </span>
 
       
@@ -5396,7 +5448,53 @@
 
   
   
-  <nav aria-label="How to create a factory for a condition" class="md-nav">
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#logging-with-topics">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Logging with Topics
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#using-the-betonquestlogger">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Using the BetonQuestLogger
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+  <nav aria-label="Using the BetonQuestLogger" class="md-nav">
     <ul class="md-nav__list">
       
       
@@ -5404,250 +5502,13 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#approach-1-a-simple-factory">
+  <a class="md-nav__link" href="#method-overview">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Approach #1: A simple factory
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#approach-2-without-placeholder-support">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Approach #2: Without placeholder support
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#approach-3-with-placeholder-support-using-argument">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Approach #3: With placeholder support using <code>Argument</code>
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#approach-4-offline-player-support-and-a-list-of-names">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Approach #4: Offline player support and a list of names
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#optional-parameters">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Optional parameters
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#summary">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Summary
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-    </ul>
-  </nav>
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#how-to-register-a-condition-and-its-factory-with-betonquest">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          How to register a condition and its factory with BetonQuest
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#how-to-test-a-condition">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          How to test a condition
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#how-a-full-example-looks-like">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          How a full example looks like
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#additional-notes">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Additional notes
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-  <nav aria-label="Additional notes" class="md-nav">
-    <ul class="md-nav__list">
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#force-synchronous-condition-testing">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Force synchronous condition testing
+          Method Overview
         </span>
 
       
@@ -5682,213 +5543,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../NPCs/" class="md-nav__link">
-        
-  
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 12h9.8l-2.5-2.5 1.4-1.4 4.9 4.9-4.9 4.9-1.4-1.4 2.5-2.5H9zm12 5.4V20H3V6h18v2.6l2 2V4c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2v-4.6z"/></svg>
-  
-  <span class="md-ellipsis">
-    
-  
-    NPCs
-  
-
-    
-  </span>
-  
-  
-    
-  
-  
-    <span class="md-status md-status--new"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../Writing-Implementations/" class="md-nav__link">
-        
-  
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13h-4v4h-2v-4H7v-2h4V7h2v4h4m2-8H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2"/></svg>
-  
-  <span class="md-ellipsis">
-    
-  
-    Writing Implementations
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-    
-    
-    
-      
-      
-        
-          
-          
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Other
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Other
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../Instruction/" class="md-nav__link">
-        
-  
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 5v2H3V5zM3 17h9v-2H3zm0-5h18v-2H3zm15 2a2 2 0 1 1 0 4c-1.11 0-2-.89-2-2s.9-2 2-2m-4 8v-1c0-1.1 1.79-2 4-2s4 .9 4 2v1z"/></svg>
-  
-  <span class="md-ellipsis">
-    
-  
-    Instruction
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../Logging/" class="md-nav__link">
-        
-  
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 3c-1.11 0-2 .89-2 2v14c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm0 2h14v14H5zm2 2v2h10V7zm0 4v2h10v-2zm0 4v2h7v-2z"/></svg>
-  
-  <span class="md-ellipsis">
-    
-  
-    Logging
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../TextParsing/" class="md-nav__link">
+      <a href="../TextParsing/" class="md-nav__link">
         
   
   
@@ -5925,7 +5580,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Profiles/" class="md-nav__link">
+      <a href="../Profiles/" class="md-nav__link">
         
   
   
@@ -5971,7 +5626,7 @@
   <span class="md-ellipsis">
     
   
-    Configuration Files
+    Configuration Accessor
   
 
     
@@ -6015,6 +5670,75 @@
 
               
             
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Legacy
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Legacy
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
               
                 
   
@@ -6022,7 +5746,37 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Schedules/" class="md-nav__link">
+      <a href="../../Legacy/Writing-Implementations/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13h-4v4h-2v-4H7v-2h4V7h2v4h4m2-8H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Writing Implementations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Legacy/Schedules/" class="md-nav__link">
         
   
   
@@ -6949,13 +6703,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#introduction">
+  <a class="md-nav__link" href="#why-a-custom-logger">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Introduction
+          Why a custom Logger?
         </span>
 
       
@@ -6965,30 +6719,7 @@
 
   
   
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#how-to-create-a-condition">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          How to create a condition
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-  <nav aria-label="How to create a condition" class="md-nav">
+  <nav aria-label="Why a custom Logger?" class="md-nav">
     <ul class="md-nav__list">
       
       
@@ -6996,105 +6727,13 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#approach-1-a-naive-implementation">
+  <a class="md-nav__link" href="#advantages">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Approach #1: A naive implementation
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#approach-2-adding-parameters">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Approach #2: Adding parameters
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#approach-3-using-the-argument-container">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Approach #3: Using the Argument container
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#approach-4-for-offline-players-and-multiple-names">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Approach #4: For offline players and multiple names
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#more-interfaces-summary">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          More interfaces &amp; Summary
+          Advantages
         </span>
 
       
@@ -7117,13 +6756,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#how-to-create-a-factory-for-a-condition">
+  <a class="md-nav__link" href="#obtaining-a-betonquestlogger">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          How to create a factory for a condition
+          Obtaining a BetonQuestLogger
         </span>
 
       
@@ -7133,7 +6772,53 @@
 
   
   
-  <nav aria-label="How to create a factory for a condition" class="md-nav">
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#logging-with-topics">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Logging with Topics
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#using-the-betonquestlogger">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Using the BetonQuestLogger
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+  <nav aria-label="Using the BetonQuestLogger" class="md-nav">
     <ul class="md-nav__list">
       
       
@@ -7141,250 +6826,13 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#approach-1-a-simple-factory">
+  <a class="md-nav__link" href="#method-overview">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Approach #1: A simple factory
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#approach-2-without-placeholder-support">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Approach #2: Without placeholder support
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#approach-3-with-placeholder-support-using-argument">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Approach #3: With placeholder support using <code>Argument</code>
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#approach-4-offline-player-support-and-a-list-of-names">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Approach #4: Offline player support and a list of names
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#optional-parameters">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Optional parameters
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#summary">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Summary
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-    </ul>
-  </nav>
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#how-to-register-a-condition-and-its-factory-with-betonquest">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          How to register a condition and its factory with BetonQuest
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#how-to-test-a-condition">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          How to test a condition
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#how-a-full-example-looks-like">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          How a full example looks like
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#additional-notes">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Additional notes
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-  <nav aria-label="Additional notes" class="md-nav">
-    <ul class="md-nav__list">
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#force-synchronous-condition-testing">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Force synchronous condition testing
+          Method Overview
         </span>
 
       
@@ -7464,10 +6912,10 @@
     
     
       <li class="md-path__item">
-        <a href="../Overview/" class="md-path__link">
+        <a href="../Instruction/" class="md-path__link">
           
   <span class="md-ellipsis">
-    Quest API
+    Tools
   </span>
 
         </a>
@@ -7486,7 +6934,7 @@
 
 
   
-    <a href="https://github.com/BetonQuest/BetonQuest/edit/main/docs/API/Quest/Conditions.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/BetonQuest/BetonQuest/edit/main/docs/API/Tools/Logging.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -7494,10 +6942,10 @@
   
 
 
-  <h1>Conditions</h1>
+  <h1>Logging</h1>
 
 <details class="warning">
-<summary>API State: <code>Unfinished</code></summary>
+<summary>API State: <code>Draft</code></summary>
 <p><h3><u>Todo</u></h3>
 This part of the API is only planned.</p>
 <p><strong>Do not use anything of this part of the API yet. It will change in the future.</strong></p>
@@ -7520,420 +6968,151 @@ Only bugs and major conceptual problems would lead to more changes.
 This part of the API will only change over at least one major version and will likely carry deprecation as long as possible.</p>
 <p><strong>This part of the API should be safe to use. We try to keep it compatible with previous versions if changes are needed.</strong></p>
 </details>
-<details class="abstract">
-<summary>Condition API Classes</summary>
-<ul>
-<li><code>org.betonquest.betonquest.api.service.condition.Conditions</code></li>
-<li><code>org.betonquest.betonquest.api.service.condition.ConditionManager</code></li>
-<li><code>org.betonquest.betonquest.api.service.condition.ConditionRegistry</code></li>
-<li><code>org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory</code></li>
-<li><code>org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory</code></li>
-<li><code>org.betonquest.betonquest.api.quest.condition.PlayerCondition</code></li>
-<li><code>org.betonquest.betonquest.api.quest.condition.PlayerlessCondition</code></li>
-<li><code>org.betonquest.betonquest.api.quest.condition.NullableCondition</code></li>
-<li><code>org.betonquest.betonquest.api.quest.condition.OnlineCondition</code></li>
-</ul>
-</details>
-<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">🔗</a></h2>
-<p>This page covers the Conditions API of BetonQuest.</p>
-<div class="admonition warning">
-<p class="admonition-title">You should have viewed these pages</p>
-<ul>
-<li><a href="../../Obtaining-API/">How to access the api</a></li>
-<li><a href="../Overview/">How to use the factory system</a></li>
-<li><a href="../../Instruction/">How to work with Instructions</a></li>
-</ul>
-</div>
-<div class="grid">
 <div class="admonition abstract">
-<p class="admonition-title">What this page covers</p>
+<p class="admonition-title"><a href="../../Obtaining-API/">ServicesManager</a> API Classes</p>
 <ul>
-<li><a href="#how-to-create-a-condition">How to create a condition</a></li>
-<li><a href="#how-to-create-a-factory-for-a-condition">How to create a factory for a condition</a></li>
-<li><a href="#how-to-register-a-condition-and-its-factory-with-betonquest">How to register a condition and its factory with BetonQuest</a></li>
-<li><a href="#how-to-test-a-condition">How to test a condition</a></li>
-<li><a href="#how-a-full-example-looks-like">How a full example looks like</a></li>
-<li><a href="#additional-notes">Additional notes</a></li>
+<li><code>org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory</code></li>
 </ul>
 </div>
-<div class="admonition info">
-<p class="admonition-title">What this page does not cover</p>
-<ul>
-<li>What a condition is</li>
-<li><a href="../../../Documentation/Scripting/Building-Blocks/Conditions-List/">Which conditions are available</a></li>
-<li><a href="../../../Tutorials/Getting-Started/Basics/Conditions/">How to work with conditions in scripting</a></li>
-</ul>
+<hr />
+<p>This page shows you everything you need to know about the BetonQuest logger, no matter if you are working on BetonQuest 
+itself or an integration / addon.</p>
+<h2 id="why-a-custom-logger">Why a custom Logger?<a class="headerlink" href="#why-a-custom-logger" title="Permanent link">🔗</a></h2>
+<p>The main advantage is that it is <strong>easier to use</strong>.
+It provides an easy interface that enables custom logging features and respects our logging conventions. 
+This helps to provide a great user experience and keeps the log consistent.</p>
+<h3 id="advantages">Advantages<a class="headerlink" href="#advantages" title="Permanent link">🔗</a></h3>
+<p>These features were mainly made for BetonQuest, but are also very useful for 3<sup>rd</sup> party integrations. </p>
+<details class="info">
+<summary>In-Game Logging</summary>
+<p>Users can see all log messages send, using the BetonQuestLogger in-game.
+Additionally, these messages can be filtered by quest package and log level.</p>
+</details>
+<details class="info">
+<summary>Debug Logging</summary>
+<p>BetonQuest has its own <code>log</code> folder in which a <code>latest.log</code> file is written if debug logging is enabled.
+It contains our own log messages and messages from 3<sup>rd</sup> party integrations.
+Additional debug messages are logged next to everything that is displayed on the console already.
+You can send debug log messages directly to that log when you use the BetonQuestLogger in your addon.
+This will make it a lot easier to see how your plugin integrates with BetonQuest's mechanics if a bug occurs.</p>
+</details>
+<details class="info">
+<summary>Log History</summary>
+<p>It happens very often that a user experiences a bug while debug logging is not enabled.
+We keep the last <code>x</code> configured minutes of the debug log history saved in memory.
+Therefore, the history will be written to <code>latest.log</code> once you enable "Debug Logging" via command. </p>
+</details>
+<details class="info">
+<summary>Logger Topics</summary>
+<p>The BetonQuestLogger supports topics, which give your log messages a prefix like <code>(Database)</code>.
+You can use a topic for each class or for each BetonQuestLogger instance.
+Topics are supposed to give important log messages extra attention by making them stand out.
+The naming convention is to use <em>PascalCase</em> for topics.</p>
+</details>
+<h2 id="obtaining-a-betonquestlogger">Obtaining a BetonQuestLogger<a class="headerlink" href="#obtaining-a-betonquestlogger" title="Permanent link">🔗</a></h2>
+<p>Use the <code>BetonQuestLoggerFactory.create()</code> method to obtain a new BetonQuestLogger instance:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">BetonQuestLoggerFactory</span><span class="w"> </span><span class="n">loggerFactory</span><span class="p">;</span><span class="w"> </span><span class="c1">//(1)!</span>
+<span class="n">BetonQuestLogger</span><span class="w"> </span><span class="n">logger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">loggerFactory</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="n">MyFeature</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+</code></pre></div></td></tr></table></div></p>
+<ol>
+<li>Obtained via the ServicesManager, see the <a href="../../Obtaining-API/">Obtaining API</a> page.</li>
+</ol>
+<div class="admonition hint">
+<p class="admonition-title">Getting the logger in a class that extends <code>Plugin</code></p>
+<p>A class extends <code>Plugin</code> can not get an injected <code>BetonQuestLogger</code> instance,
+and can also not use the above <code>create</code> method.
+Therefore, you need to create the logger instance in the <code>onEnable()</code> method instead like this:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">BetonQuestAddon</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">JavaPlugin</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">BetonQuestLoggerFactory</span><span class="w"> </span><span class="n">betonQuestLoggerFactory</span><span class="p">;</span><span class="w"> </span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">BetonQuestLogger</span><span class="w"> </span><span class="n">log</span><span class="p">;</span>
+
+<span class="w">    </span><span class="nd">@Override</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onEnable</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">betonQuestLoggerFactory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Bukkit</span><span class="p">.</span><span class="na">getServicesManager</span><span class="p">().</span><span class="na">load</span><span class="p">(</span><span class="n">BetonQuestLoggerFactory</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+<span class="w">        </span><span class="n">log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">betonQuestLoggerFactory</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
 </div>
-</div>
-<h2 id="how-to-create-a-condition">How to create a condition<a class="headerlink" href="#how-to-create-a-condition" title="Permanent link">🔗</a></h2>
-<p>Creating a condition will be explained in the following sections using multiple examples.
-The example classes aim to be as simple but versatile as possible.</p>
-<h3 id="approach-1-a-naive-implementation">Approach #1: A naive implementation<a class="headerlink" href="#approach-1-a-naive-implementation" title="Permanent link">🔗</a></h3>
-<p>The most basic implementation of a condition is a class that implements the <code>OnlineCondition</code> interface.
-Any condition using this interface requires a player to be online.
-Likewise, the <code>PlayerCondition</code> interface requires a player that may be offline and the <code>PlayerlessCondition</code> interface requires no player.
-You are free to implement any logic you want in the <code>check</code> method, which should return <code>true</code> if the condition is met.</p>
-<p>In the first example we want to look for a very specific name by checking if the player's name is equal to the name we want.</p>
-<div class="highlight"><span class="filename">Approach #1: IsBiggestFanCondition.java</span><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">IsBiggestFanCondition</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">OnlineCondition</span><span class="w"> </span><span class="p">{</span>
-
-<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">IsBiggestFanCondition</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="p">}</span>
-
-<span class="w">    </span><span class="nd">@Override</span>
-<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">check</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">OnlineProfile</span><span class="w"> </span><span class="n">profile</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">profile</span><span class="p">.</span><span class="na">getPlayer</span><span class="p">().</span><span class="na">getName</span><span class="p">().</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;_Xx_BQ_Lover_xX_&quot;</span><span class="p">);</span>
-<span class="w">    </span><span class="p">}</span>
-
-<span class="p">}</span>
-</code></pre></div>
-<h3 id="approach-2-adding-parameters">Approach #2: Adding parameters<a class="headerlink" href="#approach-2-adding-parameters" title="Permanent link">🔗</a></h3>
-<p>Since there is more than one name to check, we can pass the name to the constructor and use it in the <code>check</code> method.</p>
-<div class="highlight"><span class="filename">Approach #2: IsBiggestFanCondition.java</span><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">IsBiggestFanCondition</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">OnlineCondition</span><span class="w"> </span><span class="p">{</span>
-
-<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
-
-<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">IsBiggestFanCondition</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-
-<span class="w">    </span><span class="nd">@Override</span>
-<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">check</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">OnlineProfile</span><span class="w"> </span><span class="n">profile</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">profile</span><span class="p">.</span><span class="na">getPlayer</span><span class="p">().</span><span class="na">getName</span><span class="p">().</span><span class="na">equals</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
-<span class="w">    </span><span class="p">}</span>
-
-<span class="p">}</span>
-</code></pre></div>
-<p>This will allow the name to be passed to the condition. 
-However, the name will be only plainly configurable this way. 
-To make it more versatile, allowing placeholders to be used in the name, we have to utilize the Argument container.</p>
-<h3 id="approach-3-using-the-argument-container">Approach #3: Using the Argument container<a class="headerlink" href="#approach-3-using-the-argument-container" title="Permanent link">🔗</a></h3>
-<p>The <code>Argument</code> container allows us to pass arguments to the condition in such a way that they can be resolved for the profile.</p>
-<div class="highlight"><span class="filename">Approach #3: IsBiggestFanCondition.java</span><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">IsBiggestFanCondition</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">OnlineCondition</span><span class="w"> </span><span class="p">{</span>
-
-<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Argument</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
-
-<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">IsBiggestFanCondition</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">Argument</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-
-<span class="w">    </span><span class="nd">@Override</span>
-<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">check</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">OnlineProfile</span><span class="w"> </span><span class="n">profile</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">QuestException</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">profile</span><span class="p">.</span><span class="na">getPlayer</span><span class="p">().</span><span class="na">getName</span><span class="p">().</span><span class="na">equals</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">name</span><span class="p">.</span><span class="na">getValue</span><span class="p">(</span><span class="n">profile</span><span class="p">));</span>
-<span class="w">    </span><span class="p">}</span>
-
-<span class="p">}</span>
-</code></pre></div>
-<p>Now the name is fully configurable and can contain placeholders, but it still requires the player to be online to be checked.
-We also might want to check the player's name against a list of names.</p>
-<h3 id="approach-4-for-offline-players-and-multiple-names">Approach #4: For offline players and multiple names<a class="headerlink" href="#approach-4-for-offline-players-and-multiple-names" title="Permanent link">🔗</a></h3>
-<p>To make the condition work for both online and offline players alike, we have to implement the <code>PlayerCondition</code> 
-interface instead of the <code>OnlineCondition</code> interface.
-We also have to pass a list of names to the constructor to check against a list of names instead of a single name.</p>
-<div class="highlight"><span class="filename">Approach #4: IsBiggestFanCondition.java</span><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">IsBiggestFanCondition</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">PlayerCondition</span><span class="w"> </span><span class="p">{</span>
-
-<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Argument</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">names</span><span class="p">;</span>
-
-<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">IsBiggestFanCondition</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">Argument</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">names</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="na">names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">names</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-
-<span class="w">    </span><span class="nd">@Override</span>
-<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">check</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">Profile</span><span class="w"> </span><span class="n">profile</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">QuestException</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">namesToCheck</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">names</span><span class="p">.</span><span class="na">getValue</span><span class="p">(</span><span class="n">profile</span><span class="p">);</span>
-<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">namesToCheck</span><span class="p">.</span><span class="na">contains</span><span class="p">(</span><span class="n">profile</span><span class="p">.</span><span class="na">getPlayer</span><span class="p">().</span><span class="na">getName</span><span class="p">());</span>
-<span class="w">    </span><span class="p">}</span>
-
-<span class="p">}</span>
-</code></pre></div>
-<p>This will allow the condition to work for both online and offline players and check against a list of names.</p>
-<h3 id="more-interfaces-summary">More interfaces &amp; Summary<a class="headerlink" href="#more-interfaces-summary" title="Permanent link">🔗</a></h3>
-<p>To create a condition, you have to implement one of the following interfaces:</p>
-<ul>
-<li><code>OnlineCondition</code> to require a player to be online</li>
-<li><code>PlayerCondition</code> to require a player that may be offline</li>
-<li><code>PlayerlessCondition</code> to not require a player at all</li>
-<li><code>NullableCondition</code> to allow the condition to be checked with or without a player</li>
-</ul>
-<p>Using <code>Argument</code>s allows you to pass arguments to the condition that may contain placeholders.</p>
-<h2 id="how-to-create-a-factory-for-a-condition">How to create a factory for a condition<a class="headerlink" href="#how-to-create-a-factory-for-a-condition" title="Permanent link">🔗</a></h2>
-<p>After creating a condition, we have to create a factory for it.
-Factories are used to create instances of a condition for a specific instruction.</p>
-<p>Creating a factory for a condition is done by implementing the <code>PlayerConditionFactory</code> or <code>PlayerlessConditionFactory</code> interface.
-There are no factory interfaces equivalent to the <code>OnlineCondition</code> or <code>NullableCondition</code> interfaces.</p>
-<p>In the following you are going to learn how to create a factory for the different <code>IsBiggestFanCondition</code> approaches.
-In all approaches we will create only factories for condition classes that do require a player and therefore implement the <code>PlayerConditionFactory</code> interface.</p>
-<h3 id="approach-1-a-simple-factory">Approach #1: A simple factory<a class="headerlink" href="#approach-1-a-simple-factory" title="Permanent link">🔗</a></h3>
-<p>See <a href="#approach-1-a-naive-implementation">Approach #1</a>.</p>
-<p>This is the easiest approach to create a factory for a condition and may be even done inline in the <a href="#how-to-register-a-condition-and-its-factory-with-betonquest">registration</a>.
-However, this approach is not very versatile and therefore explicitly not recommended in most cases.</p>
-<div class="highlight"><span class="filename">Approach #1: IsBiggestFanConditionFactory.java</span><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">IsBiggestFanConditionFactory</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">PlayerConditionFactory</span><span class="w"> </span><span class="p">{</span>
-
-<span class="w">  </span><span class="nd">@Override</span>
-<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="n">PlayerCondition</span><span class="w"> </span><span class="nf">parsePlayer</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">Instruction</span><span class="w"> </span><span class="n">instruction</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">OnlineConditionAdapter</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">IsBiggestFanCondition</span><span class="p">());</span>
-<span class="w">  </span><span class="p">}</span>
-
-<span class="p">}</span>
-</code></pre></div>
-<details class="example">
-<summary>YAML examples</summary>
-<div class="highlight"><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">biggestFan</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">isBiggestFan</span>
-</code></pre></div>
+<details class="info">
+<summary><code>BetonQuestLoggerFactory</code> additional background implementation information</summary>
+<p>As the BetonQuestLoggerFactory is a service, it is not guaranteed that the instance you get
+is the one BetonQuest created by default. But here we explain the behavior of the default BetonQuestLoggerFactory.</p>
+<p>First there is the <code>DefaultBetonQuestLoggerFactory</code> class,
+which is the default implementation of the <code>BetonQuestLoggerFactory</code> interface.
+It simply creates a child logger for the given class using the Logger of your plugin.
+This is done by checking which plugin loaded the class.</p>
+<p>This default implementation is wrapped into the <code>CachingBetonQuestLoggerFactory</code>.
+This class can be used to cache any implementation of the <code>BetonQuestLoggerFactory</code> interface.
+It returns always the same instance for the same class.
+There is one special behavior if the BetonQuestLogger is created with a topic. 
+In that case the <code>CachingBetonQuestLoggerFactory</code> will create a new instance for each different topic,
+but it will still cache the instances for the same topic or without a topic.</p>
 </details>
-<h3 id="approach-2-without-placeholder-support">Approach #2: Without placeholder support<a class="headerlink" href="#approach-2-without-placeholder-support" title="Permanent link">🔗</a></h3>
-<p>See <a href="#approach-2-adding-parameters">Approach #2</a>.</p>
-<p>Adding a parameter to the condition is a good approach to make the condition more versatile.
-In the second approach we made the player name configurable by passing it to the constructor.
-Now we still have to pass the name to the condition. This is done inside the factory.</p>
-<div class="highlight"><span class="filename">Approach #2: IsBiggestFanConditionFactory.java</span><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">IsBiggestFanConditionFactory</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">PlayerConditionFactory</span><span class="w"> </span><span class="p">{</span>
-
-<span class="w">  </span><span class="nd">@Override</span>
-<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="n">PlayerCondition</span><span class="w"> </span><span class="nf">parsePlayer</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">Instruction</span><span class="w"> </span><span class="n">instruction</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">QuestException</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">string</span><span class="p">().</span><span class="na">get</span><span class="p">().</span><span class="na">getValue</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span><span class="w"> </span><span class="c1">//(1)!</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">OnlineConditionAdapter</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">IsBiggestFanCondition</span><span class="p">(</span><span class="n">name</span><span class="p">));</span>
-<span class="w">  </span><span class="p">}</span>
-
-<span class="p">}</span>
-</code></pre></div>
-<ol>
-<li>Get the name from the instruction using the <code>string()</code> method to declare the type of the argument.</li>
-</ol>
-<details class="example">
-<summary>YAML examples</summary>
-<div class="highlight"><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">biggestFan1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">isBiggestFan &quot;_Xx_BQ_Lover_xX_&quot;</span>
-<span class="w">  </span><span class="nt">biggestFan2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">isBiggestFan &quot;Wolf2323&quot;</span>
-</code></pre></div>
-</details>
-<h3 id="approach-3-with-placeholder-support-using-argument">Approach #3: With placeholder support using <code>Argument</code><a class="headerlink" href="#approach-3-with-placeholder-support-using-argument" title="Permanent link">🔗</a></h3>
-<p>See <a href="#approach-3-using-the-argument-container">Approach #3</a>.</p>
-<p>Having the name configurable is good, but using the <code>Argument</code> container is even better.
-In the third approach, we passed the name to the condition as an <code>Argument</code> and the <code>Instruction</code> is designed
-to make it as easy as possible to create an <code>Argument</code> for a specific value.
-The factory is very similar to the second approach, pay close attention to the <code>Argument</code> creation.</p>
-<div class="highlight"><span class="filename">Approach #3: IsBiggestFanConditionFactory.java</span><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">IsBiggestFanConditionFactory</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">PlayerConditionFactory</span><span class="w"> </span><span class="p">{</span>
-
-<span class="w">  </span><span class="nd">@Override</span>
-<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="n">PlayerCondition</span><span class="w"> </span><span class="nf">parsePlayer</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">Instruction</span><span class="w"> </span><span class="n">instruction</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">QuestException</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Argument</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">string</span><span class="p">().</span><span class="na">get</span><span class="p">();</span><span class="w"> </span><span class="c1">//(1)!</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">OnlineConditionAdapter</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">IsBiggestFanCondition</span><span class="p">(</span><span class="n">name</span><span class="p">));</span>
-<span class="w">  </span><span class="p">}</span>
-
-<span class="p">}</span>
-</code></pre></div>
-<ol>
-<li>Get the name from the instruction using the <code>string()</code> method to declare the type of the argument.</li>
-</ol>
-<details class="example">
-<summary>YAML examples</summary>
-<div class="highlight"><pre><span></span><code><span class="nt">constants</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">biggestFan</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Wolf2323&quot;</span>
-<span class="nt">conditions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">biggestFan1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">isBiggestFan &quot;_Xx_BQ_Lover_xX_&quot;</span>
-<span class="w">  </span><span class="nt">biggestFan2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">isBiggestFan %constant.biggestFan%</span>
-</code></pre></div>
-</details>
-<h3 id="approach-4-offline-player-support-and-a-list-of-names">Approach #4: Offline player support and a list of names<a class="headerlink" href="#approach-4-offline-player-support-and-a-list-of-names" title="Permanent link">🔗</a></h3>
-<p>See <a href="#approach-4-for-offline-players-and-multiple-names">Approach #4</a>.</p>
-<p>In the fourth approach we want to make the condition work for both online and offline players.
-We also want to check against a list of names.
-The factory is very similar to the third approach, pay close attention to the <code>Argument</code> creation, where we use the <code>list()</code> modifier to
-create an <code>Argument</code> that can contain multiple comma-separated values.</p>
-<div class="highlight"><span class="filename">Approach #4: IsBiggestFanConditionFactory.java</span><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">IsBiggestFanConditionFactory</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">PlayerConditionFactory</span><span class="w"> </span><span class="p">{</span>
-
-<span class="w">  </span><span class="nd">@Override</span>
-<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="n">PlayerCondition</span><span class="w"> </span><span class="nf">parsePlayer</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">Instruction</span><span class="w"> </span><span class="n">instruction</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">QuestException</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Argument</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">string</span><span class="p">().</span><span class="na">list</span><span class="p">().</span><span class="na">get</span><span class="p">();</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">IsBiggestFanCondition</span><span class="p">(</span><span class="n">name</span><span class="p">);</span><span class="w"> </span><span class="c1">//(1)!</span>
-<span class="w">  </span><span class="p">}</span>
-
-<span class="p">}</span>
-</code></pre></div>
-<ol>
-<li>The <code>OnlineConditionAdapter</code> is no longer needed since the condition is a <code>PlayerCondition</code> itself.</li>
-</ol>
-<details class="example">
-<summary>YAML examples</summary>
-<div class="highlight"><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">biggestFan</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">isBiggestFan &quot;_Xx_BQ_Lover_xX_,Wolf2323,some_random_name&quot;</span>
-</code></pre></div>
-</details>
-<h3 id="optional-parameters">Optional parameters<a class="headerlink" href="#optional-parameters" title="Permanent link">🔗</a></h3>
-<p>If we want to have optional parameters in our condition, for example, to switch between names and uuids, we have to get the 
-<code>Argument</code> from the instruction with an optional parameter name.<br />
-A more detailed explanation of this can be found in the documentation for <a href="../../Instruction/">Instructions</a>.</p>
-<h3 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">🔗</a></h3>
-<p>To create a factory for a condition, you have to implement one of the following interfaces:</p>
-<ul>
-<li><code>PlayerConditionFactory</code> to create a condition that requires a player</li>
-<li><code>PlayerlessConditionFactory</code> to create a condition that does not require a player</li>
-</ul>
-<p>For <code>NullableCondition</code>s you have to implement both interfaces.</p>
-<p>Since <code>OnlineCondition</code> is not a <code>PlayerCondition</code> we have to use the <code>OnlineConditionAdapter</code> to make it work.
-Since <code>NullableCondition</code> is neither a <code>PlayerCondition</code> nor a <code>PlayerlessCondition</code> we have to use 
-the <code>NullableConditionAdapter</code> to adapt to the <code>PlayerCondition</code> and <code>PlayerlessCondition</code> interfaces.</p>
-<h2 id="how-to-register-a-condition-and-its-factory-with-betonquest">How to register a condition and its factory with BetonQuest<a class="headerlink" href="#how-to-register-a-condition-and-its-factory-with-betonquest" title="Permanent link">🔗</a></h2>
-<p>After creating a condition and its factory, we have to register them with BetonQuest.<br />
-The name of the condition used in the script is now defined in the registration process.<br />
-Given the api is already obtained, we can access the condition registry and register the factory as follows:</p>
-<div class="highlight"><span class="filename">Register IsBiggestFanConditionFactory.java</span><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">MyPlugin</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">JavaPlugin</span><span class="w"> </span><span class="p">{</span>
-
-<span class="w">  </span><span class="nd">@Override</span>
-<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onEnable</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="c1">// ...</span>
-<span class="w">    </span><span class="n">betonQuestApi</span><span class="p">.</span><span class="na">conditions</span><span class="p">().</span><span class="na">registry</span><span class="p">().</span><span class="na">register</span><span class="p">(</span><span class="s">&quot;isBiggestFan&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">IsBiggestFanConditionFactory</span><span class="p">());</span><span class="w"> </span><span class="c1">//(1)!</span>
-<span class="w">    </span><span class="c1">// ...</span>
-<span class="w">  </span><span class="p">}</span>
-
-<span class="p">}</span>
-</code></pre></div>
-<ol>
-<li>For factories that implement both <code>PlayerConditionFactory</code> and <code>PlayerlessConditionFactory</code>, you should use <code>registerCombined</code> instead.</li>
-</ol>
-<h2 id="how-to-test-a-condition">How to test a condition<a class="headerlink" href="#how-to-test-a-condition" title="Permanent link">🔗</a></h2>
-<p>Instead of creating new condition types and their factories, we can also use existing ones and test them.
-This is useful if we want to reuse loaded conditions in another condition or just for a feature inside an addon.
-Loaded conditions are generally referenced by an <code>ConditionIdentifier</code> consisting of their name and the package they are defined in.
-<code>ConditionIdentifier</code>s are unique since you cannot have two conditions with the same name in the same package.
-They can be obtained from an <code>Instruction</code> using the <code>identifier(ConditionIdentifier.class)</code> type declaring method (See <a href="../../Instruction/#argument-parsing">Instruction</a>).</p>
-<p>You can test a condition as follows:</p>
-<div class="highlight"><span class="filename">Test a condition</span><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">MyFeature</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">BetonQuestApi</span><span class="w"> </span><span class="n">betonQuestApi</span><span class="p">;</span>
-
-<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">foo</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">ConditionIdentifier</span><span class="w"> </span><span class="n">condition</span><span class="p">;</span><span class="w"> </span><span class="c1">//(1)!</span>
-<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Profile</span><span class="w"> </span><span class="n">profile</span><span class="p">;</span><span class="w"> </span><span class="c1">//(2)!</span>
-<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">betonQuestApi</span><span class="p">.</span><span class="na">conditions</span><span class="p">()</span>
-<span class="w">        </span><span class="p">.</span><span class="na">manager</span><span class="p">().</span><span class="na">test</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span><span class="w"> </span><span class="n">condition</span><span class="p">);</span><span class="w"> </span><span class="c1">//(3)!</span>
-<span class="w">  </span><span class="p">}</span>
-
-<span class="p">}</span>
-</code></pre></div>
-<ol>
-<li>The <code>ConditionIdentifier</code> is used to identify the condition to be tested.</li>
-<li>The <code>Profile</code> is required for conditions that require a player. May also be an <code>OnlineProfile</code>.</li>
-<li>The condition is tested for the provided profile.</li>
-</ol>
-<p>You can also test a condition without a profile requiring the condition to be independent:</p>
-<div class="highlight"><span class="filename">Test a condition</span><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">MyFeature</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">BetonQuestApi</span><span class="w"> </span><span class="n">betonQuestApi</span><span class="p">;</span>
-
-<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">foo</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">ConditionIdentifier</span><span class="w"> </span><span class="n">condition</span><span class="p">;</span><span class="w"> </span><span class="c1">//(1)!</span>
-<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">betonQuestApi</span><span class="p">.</span><span class="na">conditions</span><span class="p">()</span>
-<span class="w">        </span><span class="p">.</span><span class="na">manager</span><span class="p">().</span><span class="na">test</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="n">condition</span><span class="p">);</span><span class="w"> </span><span class="c1">//(2)!</span>
-<span class="w">  </span><span class="p">}</span>
-
-<span class="p">}</span>
-</code></pre></div>
-<ol>
-<li>The <code>ConditionIdentifier</code> is used to identify the condition to be tested.</li>
-<li>In this case, it will fail if no <code>Profile</code> is provided but the condition is <em>not</em> independent.</li>
-</ol>
-<p>Lastly, testing multiple conditions at once is also possible in either conjunction or disjunction.
-In most cases not all conditions need to be tested to determine the result, this therefore improves performance.</p>
-<div class="highlight"><span class="filename">Test conditions</span><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">MyFeature</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">BetonQuestApi</span><span class="w"> </span><span class="n">betonQuestApi</span><span class="p">;</span>
-
-<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">foo</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">ConditionIdentifier</span><span class="o">&gt;</span><span class="w"> </span><span class="n">conditions</span><span class="p">;</span><span class="w"> </span><span class="c1">//(1)!</span>
-<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">betonQuestApi</span><span class="p">.</span><span class="na">conditions</span><span class="p">()</span>
-<span class="w">        </span><span class="p">.</span><span class="na">manager</span><span class="p">().</span><span class="na">testAll</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="n">condition</span><span class="p">);</span><span class="w"> </span><span class="c1">//(2)!</span>
-<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">betonQuestApi</span><span class="p">.</span><span class="na">conditions</span><span class="p">()</span>
-<span class="w">        </span><span class="p">.</span><span class="na">manager</span><span class="p">().</span><span class="na">testAny</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="n">condition</span><span class="p">);</span><span class="w"> </span><span class="c1">//(3)!</span>
-<span class="w">  </span><span class="p">}</span>
-
-<span class="p">}</span>
-</code></pre></div>
-<ol>
-<li>Any <code>java.util.Collection</code> type is supported</li>
-<li>Conjunction. The order of the conditions is <em>not</em> guaranteed to be preserved. 
-It may fast-fail if one condition is not met without checking the others.</li>
-<li>Disjunction. The order of the conditions is <em>not</em> guaranteed to be preserved. 
-It may early-succeed if one condition is met without checking the others.</li>
-</ol>
-<h2 id="how-a-full-example-looks-like">How a full example looks like<a class="headerlink" href="#how-a-full-example-looks-like" title="Permanent link">🔗</a></h2>
-<details class="example">
-<summary>IsBiggestFanCondition.java</summary>
-<div class="highlight"><span class="filename">IsBiggestFanCondition.java</span><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">IsBiggestFanCondition</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">PlayerCondition</span><span class="w"> </span><span class="p">{</span>
-
-<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Argument</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">names</span><span class="p">;</span>
-
-<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">FlagArgument</span><span class="o">&lt;</span><span class="n">Boolean</span><span class="o">&gt;</span><span class="w"> </span><span class="n">useUUIDs</span><span class="p">;</span>
-
-<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">IsBiggestFanCondition</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">Argument</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">names</span><span class="p">,</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">FlagArgument</span><span class="o">&lt;</span><span class="n">Boolean</span><span class="o">&gt;</span><span class="w"> </span><span class="n">useUUIDs</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="na">names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">names</span><span class="p">;</span>
-<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="na">useUUIDs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">useUUIDs</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-
-<span class="w">    </span><span class="nd">@Override</span>
-<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">check</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">Profile</span><span class="w"> </span><span class="n">profile</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">QuestException</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">namesToCheck</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">names</span><span class="p">.</span><span class="na">getValue</span><span class="p">(</span><span class="n">profile</span><span class="p">);</span>
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">useUUIDs</span><span class="p">.</span><span class="na">getValue</span><span class="p">(</span><span class="n">profile</span><span class="p">).</span><span class="na">orElse</span><span class="p">(</span><span class="kc">false</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">//(1)!</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">namesToCheck</span><span class="p">.</span><span class="na">contains</span><span class="p">(</span><span class="n">profile</span><span class="p">.</span><span class="na">getPlayer</span><span class="p">().</span><span class="na">getUniqueId</span><span class="p">().</span><span class="na">toString</span><span class="p">());</span>
-<span class="w">      </span><span class="p">}</span>
-<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">namesToCheck</span><span class="p">.</span><span class="na">contains</span><span class="p">(</span><span class="n">profile</span><span class="p">.</span><span class="na">getPlayer</span><span class="p">().</span><span class="na">getName</span><span class="p">());</span>
-<span class="w">    </span><span class="p">}</span>
-
-<span class="p">}</span>
-</code></pre></div>
-<ol>
-<li>The <code>useUUIDs</code> flag is used to switch between checking against names and uuids. It defaults to <code>false</code> if not present.</li>
-</ol>
-</details>
-<details class="example">
-<summary>IsBiggestFanConditionFactory.java</summary>
-<div class="highlight"><span class="filename">IsBiggestFanConditionFactory.java</span><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">IsBiggestFanConditionFactory</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">PlayerConditionFactory</span><span class="w"> </span><span class="p">{</span>
-
-<span class="w">  </span><span class="nd">@Override</span>
-<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="n">PlayerCondition</span><span class="w"> </span><span class="nf">parsePlayer</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">Instruction</span><span class="w"> </span><span class="n">instruction</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">QuestException</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Argument</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">string</span><span class="p">().</span><span class="na">list</span><span class="p">().</span><span class="na">get</span><span class="p">();</span><span class="w"> </span><span class="c1">//(1)!</span>
-<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">FlagArgument</span><span class="o">&lt;</span><span class="n">Boolean</span><span class="o">&gt;</span><span class="w"> </span><span class="n">useUUIDs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">bool</span><span class="p">().</span><span class="na">getFlag</span><span class="p">(</span><span class="s">&quot;useUUIDs&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">);</span><span class="w"> </span><span class="c1">//(2)!</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">IsBiggestFanCondition</span><span class="p">(</span><span class="n">names</span><span class="p">,</span><span class="w"> </span><span class="n">useUUIDs</span><span class="p">);</span>
-<span class="w">  </span><span class="p">}</span>
-
-<span class="p">}</span>
-</code></pre></div>
-<ol>
-<li>The list of names to check against is required as the first argument.</li>
-<li>The <code>useUUIDs</code> flag is used to switch between checking against names and uuids. It defaults to <code>true</code> if it is present but unspecified.</li>
-</ol>
-</details>
-<details class="example">
-<summary>conditions.yml</summary>
-<div class="highlight"><span class="filename">conditions.yml</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">isBiggestFan1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">isBiggestFan &quot;_Xx_BQ_Lover_xX_,Wolf2323,some_random_name&quot;</span>
-<span class="w">  </span><span class="nt">isBiggestFan2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">isBiggestFan &quot;49085e80-eb73-4e2e-b14d-6bd5f5f76062,2cc0d875-2501-4d14-8676-467ea522ea4f&quot; useUUIDs</span>
-<span class="w">  </span><span class="nt">isBiggestFan3</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">isBiggestFan &quot;2cc0d875-2501-4d14-8676-467ea522ea4f,eba17d33-959d-42a7-a4d9-e9aebef5969e&quot; useUUIDs:true</span>
-</code></pre></div>
-</details>
-<h2 id="additional-notes">Additional notes<a class="headerlink" href="#additional-notes" title="Permanent link">🔗</a></h2>
-<h3 id="force-synchronous-condition-testing">Force synchronous condition testing<a class="headerlink" href="#force-synchronous-condition-testing" title="Permanent link">🔗</a></h3>
-<p>Generally, BetonQuest tries to test conditions asynchronously. In some contexts, especially if a condition interacts with 
-the bukkit api, it may be necessary to test it synchronously.</p>
-<p>To mark a condition as required to test in sync with the main thread, overwrite the <code>isPrimaryThreadEnforced()</code> method 
-inherented from the <code>PrimaryThreadEnforceable</code> interface, which is implemented by all conditions by default:</p>
-<div class="highlight"><span class="filename">MySyncCondition.java</span><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">MySyncCondition</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">PlayerCondition</span><span class="w"> </span><span class="p">{</span>
-
-<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="nf">MySyncCondition</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="p">}</span>
-
-<span class="w">  </span><span class="nd">@Override</span>
-<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">check</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">Profile</span><span class="w"> </span><span class="n">profile</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="c1">// ...</span>
-<span class="w">  </span><span class="p">}</span>
-
-<span class="w">  </span><span class="nd">@Override</span>
-<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">isPrimaryThreadEnforced</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span><span class="w"> </span><span class="c1">//(1)!</span>
-<span class="w">  </span><span class="p">}</span>
-
-<span class="p">}</span>
-</code></pre></div>
-<ol>
-<li>This method returns <code>false</code> by default, so all conditions are tested asynchronously if not defined otherwise.</li>
-</ol>
+<h2 id="logging-with-topics">Logging with Topics<a class="headerlink" href="#logging-with-topics" title="Permanent link">🔗</a></h2>
+<p>This is useful if you want to give your log messages a prefix like <code>(Database)</code>.
+Mainly <em>PascalCase</em> should be used for topics and they should be short and meaningful to the user. </p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">BetonQuestLoggerFactory</span><span class="w"> </span><span class="n">loggerFactory</span><span class="p">;</span>
+<span class="n">BetonQuestLogger</span><span class="w"> </span><span class="n">logger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">loggerFactory</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="n">MyFeature</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;MyCustomTopic&quot;</span><span class="p">);</span>
+</code></pre></div></td></tr></table></div>
+<h2 id="using-the-betonquestlogger">Using the BetonQuestLogger<a class="headerlink" href="#using-the-betonquestlogger" title="Permanent link">🔗</a></h2>
+<p>The BetonQuestLogger has a bunch of methods for all use cases. Its JavaDocs explain when and how to use these.
+Make sure to give the JavaDocs a quick read!</p>
+<p>The usage might look like this:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">logger</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;Hello Log!&quot;</span><span class="p">);</span>
+</code></pre></div></td></tr></table></div></p>
+<h3 id="method-overview">Method Overview<a class="headerlink" href="#method-overview" title="Permanent link">🔗</a></h3>
+<p>All methods come in multiple variants. Always provide a package if possible, as this allows the user to filter log
+messages.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Use Case</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img alt="🤫" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f92b.svg" title=":shushing_face:" /> Debug</td>
+<td>Used to display internal states or actions that may be beneficial for bug-fixing. These messages are only be visible in the debug log.</td>
+<td>An action has been fired.</td>
+</tr>
+<tr>
+<td><img alt="ℹ" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2139.svg" title=":information_source:" /> Info</td>
+<td>Use this for normal log information in the server's console.</td>
+<td>A new integration was successfully hooked.</td>
+</tr>
+<tr>
+<td><img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26a0.svg" title=":warning:" /> Warning</td>
+<td>You can provide useful information how to fix the underlying problem.</td>
+<td>The user wrote an action with syntax errors.</td>
+</tr>
+<tr>
+<td><img alt="❌" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/274c.svg" title=":x:" /> Error</td>
+<td>The underlying problem affects the servers security or functionality. Usage is also allowed if you don't know how the user can fix the underlying problem.</td>
+<td>An error occurred while loading an integration.</td>
+</tr>
+<tr>
+<td><img alt="🚨" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f6a8.svg" title=":rotating_light:" /> Report Exception</td>
+<td>Only use this in cases that should never occur and indicate an error that must be reported to the projects issue tracker.</td>
+<td>You need to catch an exception that you know should never occur unless something is horribly wrong.</td>
+</tr>
+</tbody>
+</table>
 
 
 

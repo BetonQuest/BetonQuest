@@ -13,14 +13,6 @@
          <lastmod>2026-04-16</lastmod>
     </url>
     <url>
-         <loc>https://betonquest.org/3.0-DEV/API/Instruction/</loc>
-         <lastmod>2026-04-16</lastmod>
-    </url>
-    <url>
-         <loc>https://betonquest.org/3.0-DEV/API/Logging/</loc>
-         <lastmod>2026-04-16</lastmod>
-    </url>
-    <url>
          <loc>https://betonquest.org/3.0-DEV/API/Obtaining-API/</loc>
          <lastmod>2026-04-16</lastmod>
     </url>
@@ -29,39 +21,47 @@
          <lastmod>2026-04-16</lastmod>
     </url>
     <url>
-         <loc>https://betonquest.org/3.0-DEV/API/Profiles/</loc>
+         <loc>https://betonquest.org/3.0-DEV/API/Essentials/Actions/</loc>
          <lastmod>2026-04-16</lastmod>
     </url>
     <url>
-         <loc>https://betonquest.org/3.0-DEV/API/Schedules/</loc>
+         <loc>https://betonquest.org/3.0-DEV/API/Essentials/Conditions/</loc>
          <lastmod>2026-04-16</lastmod>
     </url>
     <url>
-         <loc>https://betonquest.org/3.0-DEV/API/TextParsing/</loc>
+         <loc>https://betonquest.org/3.0-DEV/API/Essentials/NPCs/</loc>
          <lastmod>2026-04-16</lastmod>
     </url>
     <url>
-         <loc>https://betonquest.org/3.0-DEV/API/Quest/Actions/</loc>
+         <loc>https://betonquest.org/3.0-DEV/API/Essentials/Objectives/</loc>
          <lastmod>2026-04-16</lastmod>
     </url>
     <url>
-         <loc>https://betonquest.org/3.0-DEV/API/Quest/Conditions/</loc>
+         <loc>https://betonquest.org/3.0-DEV/API/Essentials/Overview/</loc>
          <lastmod>2026-04-16</lastmod>
     </url>
     <url>
-         <loc>https://betonquest.org/3.0-DEV/API/Quest/NPCs/</loc>
+         <loc>https://betonquest.org/3.0-DEV/API/Legacy/Schedules/</loc>
          <lastmod>2026-04-16</lastmod>
     </url>
     <url>
-         <loc>https://betonquest.org/3.0-DEV/API/Quest/Objectives/</loc>
+         <loc>https://betonquest.org/3.0-DEV/API/Legacy/Writing-Implementations/</loc>
          <lastmod>2026-04-16</lastmod>
     </url>
     <url>
-         <loc>https://betonquest.org/3.0-DEV/API/Quest/Overview/</loc>
+         <loc>https://betonquest.org/3.0-DEV/API/Tools/Instruction/</loc>
          <lastmod>2026-04-16</lastmod>
     </url>
     <url>
-         <loc>https://betonquest.org/3.0-DEV/API/Quest/Writing-Implementations/</loc>
+         <loc>https://betonquest.org/3.0-DEV/API/Tools/Logging/</loc>
+         <lastmod>2026-04-16</lastmod>
+    </url>
+    <url>
+         <loc>https://betonquest.org/3.0-DEV/API/Tools/Profiles/</loc>
+         <lastmod>2026-04-16</lastmod>
+    </url>
+    <url>
+         <loc>https://betonquest.org/3.0-DEV/API/Tools/TextParsing/</loc>
          <lastmod>2026-04-16</lastmod>
     </url>
     <url>
