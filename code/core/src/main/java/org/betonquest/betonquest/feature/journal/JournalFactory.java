@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.text.TextParser;
+import org.betonquest.betonquest.kernel.component.DatabaseComponent;
 import org.betonquest.betonquest.kernel.processor.feature.JournalEntryProcessor;
 import org.betonquest.betonquest.kernel.processor.feature.JournalMainPageProcessor;
 
@@ -59,6 +60,11 @@ public class JournalFactory {
     private final FontRegistry fontRegistry;
 
     /**
+     * The database component.
+     */
+    private final DatabaseComponent databaseComponent;
+
+    /**
      * Create a new Factory for Journals.
      *
      * @param loggerFactory     the logger Factory to create new class specific logger
@@ -69,11 +75,12 @@ public class JournalFactory {
      * @param config            a {@link ConfigAccessor} that contains the journal's configuration
      * @param textParser        the text parser to use for parsing text
      * @param fontRegistry      the font registry to get the width of the characters
+     * @param databaseComponent the database component
      */
     public JournalFactory(final BetonQuestLoggerFactory loggerFactory, final Localizations localizations,
                           final ConditionManager conditionManager, final JournalMainPageProcessor mainPageProcessor,
                           final JournalEntryProcessor entryProcessor, final ConfigAccessor config,
-                          final TextParser textParser, final FontRegistry fontRegistry) {
+                          final TextParser textParser, final FontRegistry fontRegistry, final DatabaseComponent databaseComponent) {
         this.loggerFactory = loggerFactory;
         this.localizations = localizations;
         this.conditionManager = conditionManager;
@@ -82,6 +89,7 @@ public class JournalFactory {
         this.config = config;
         this.textParser = textParser;
         this.fontRegistry = fontRegistry;
+        this.databaseComponent = databaseComponent;
     }
 
     /**
@@ -93,6 +101,7 @@ public class JournalFactory {
      */
     public Journal createJournal(final Profile profile, final List<Pointer> pointers) {
         final BetonQuestLogger log = loggerFactory.create(Journal.class);
-        return new Journal(log, localizations, conditionManager, mainPageProcessor, entryProcessor, textParser, fontRegistry, profile, pointers, config);
+        return new Journal(log, localizations, conditionManager, mainPageProcessor, entryProcessor, textParser,
+                fontRegistry, profile, pointers, config, databaseComponent);
     }
 }

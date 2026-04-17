@@ -25,6 +25,7 @@ import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
+import org.betonquest.betonquest.kernel.component.DatabaseComponent;
 import org.betonquest.betonquest.kernel.processor.feature.JournalEntryProcessor;
 import org.betonquest.betonquest.kernel.processor.feature.JournalMainPageProcessor;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
@@ -93,6 +94,11 @@ public class Journal {
     private final TextParser textParser;
 
     /**
+     * The database component.
+     */
+    private final DatabaseComponent databaseComponent;
+
+    /**
      * The wrapper for formatting book pages.
      */
     private final BookPageWrapper bookWrapper;
@@ -141,18 +147,20 @@ public class Journal {
      * @param profile           the {@link OnlineProfile} of the player whose journal is created
      * @param list              list of pointers to journal entries
      * @param config            a {@link ConfigAccessor} that contains the plugin's configuration
+     * @param databaseComponent the database component
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public Journal(final BetonQuestLogger log, final Localizations localizations, final ConditionManager conditionManager,
                    final JournalMainPageProcessor mainPageProcessor, final JournalEntryProcessor entryProcessor,
                    final TextParser textParser, final FontRegistry fontRegistry, final Profile profile,
-                   final List<Pointer> list, final ConfigAccessor config) {
+                   final List<Pointer> list, final ConfigAccessor config, final DatabaseComponent databaseComponent) {
         this.log = log;
         this.localizations = localizations;
         this.conditionManager = conditionManager;
         this.mainPageProcessor = mainPageProcessor;
         this.entryProcessor = entryProcessor;
         this.textParser = textParser;
+        this.databaseComponent = databaseComponent;
         this.bookWrapper = new BookPageWrapper(fontRegistry, config.getInt("journal.format.line_length"),
                 config.getInt("journal.format.line_count"));
         this.profile = profile;
@@ -210,7 +218,7 @@ public class Journal {
         final BetonQuest betonQuest = BetonQuest.getInstance();
         new PlayerJournalAddEvent(profile, !betonQuest.getServer().isPrimaryThread(), this, pointer).callEvent();
         pointers.add(pointer);
-        final String date = betonQuest.isMySQLUsed()
+        final String date = databaseComponent.usesMySQL()
                 ? DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ROOT)
                   .format(Instant.ofEpochMilli(pointer.timestamp()).atZone(ZoneId.systemDefault()))
                 : Long.toString(pointer.timestamp());
@@ -228,7 +236,7 @@ public class Journal {
             if (pointer.pointer().equals(pointerName)) {
                 final BetonQuest betonQuest = BetonQuest.getInstance();
                 new PlayerJournalDeleteEvent(profile, !betonQuest.getServer().isPrimaryThread(), this, pointer).callEvent();
-                final String date = betonQuest.isMySQLUsed()
+                final String date = databaseComponent.usesMySQL()
                         ? DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ROOT)
                           .format(Instant.ofEpochMilli(pointer.timestamp()).atZone(ZoneId.systemDefault()))
                         : Long.toString(pointer.timestamp());

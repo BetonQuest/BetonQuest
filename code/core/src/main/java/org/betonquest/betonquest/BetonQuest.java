@@ -20,7 +20,6 @@ import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.integration.DefaultIntegrationService;
 import org.betonquest.betonquest.integration.IntegrationManager;
 import org.betonquest.betonquest.kernel.BetonQuestComponents;
-import org.betonquest.betonquest.kernel.component.DatabaseComponent;
 import org.betonquest.betonquest.kernel.processor.feature.ConversationProcessor;
 import org.betonquest.betonquest.lib.dependency.component.DefaultCoreComponentLoader;
 import org.betonquest.betonquest.lib.logger.CachingBetonQuestLoggerFactory;
@@ -163,15 +162,6 @@ public class BetonQuest extends JavaPlugin {
      */
     public BetonQuestApi getBetonQuestApi() {
         return coreComponentLoader.get(BetonQuestApi.class);
-    }
-
-    /**
-     * Checks if MySQL is used or not.
-     *
-     * @return if MySQL is used (false means that SQLite is being used)
-     */
-    public boolean isMySQLUsed() {
-        return coreComponentLoader.get(DatabaseComponent.class).usesMySQL();
     }
 
     /**

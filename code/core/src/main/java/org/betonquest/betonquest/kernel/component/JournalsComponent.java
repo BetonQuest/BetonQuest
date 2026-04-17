@@ -62,6 +62,7 @@ public class JournalsComponent extends AbstractCoreComponent {
         final FontRegistry fontRegistry = getDependency(FontRegistry.class);
         final ConditionManager conditionManager = getDependency(ConditionManager.class);
         final ProcessorDataLoader processorDataLoader = getDependency(ProcessorDataLoader.class);
+        final DatabaseComponent databaseComponent = getDependency(DatabaseComponent.class);
 
         final JournalEntryIdentifierFactory journalEntryIdentifierFactory = new JournalEntryIdentifierFactory(questPackageManager);
         identifiers.register(JournalEntryIdentifier.class, journalEntryIdentifierFactory);
@@ -73,7 +74,8 @@ public class JournalsComponent extends AbstractCoreComponent {
         final JournalMainPageProcessor journalMainPageProcessor = new JournalMainPageProcessor(loggerFactory.create(JournalMainPageProcessor.class),
                 instructions, parsedSectionTextCreator, journalMainPageIdentifierFactory);
 
-        final JournalFactory journalFactory = new JournalFactory(loggerFactory, localizations, conditionManager, journalMainPageProcessor, journalEntryProcessor, config, textParser, fontRegistry);
+        final JournalFactory journalFactory = new JournalFactory(loggerFactory, localizations, conditionManager,
+                journalMainPageProcessor, journalEntryProcessor, config, textParser, fontRegistry, databaseComponent);
 
         dependencyProvider.take(JournalEntryIdentifierFactory.class, journalEntryIdentifierFactory);
         dependencyProvider.take(JournalMainPageIdentifierFactory.class, journalMainPageIdentifierFactory);
