@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.BukkitManager;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.dependency.CoreComponentLoader;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.identifier.NpcIdentifier;
 import org.betonquest.betonquest.api.integration.Integration;
@@ -78,9 +79,10 @@ public class CitizensIntegrator implements Integration {
         actionRegistry.register("npcmove", new CitizensMoveActionFactory(api.npcs().manager(), citizensArgument, citizensMoveController));
         actionRegistry.registerCombined("npcstop", new CitizensStopActionFactory(api.npcs().manager(), citizensArgument, citizensMoveController));
 
-        final FeatureRegistry<ConversationIOFactory> conversationIORegistry = plugin.getComponentLoader().get(ConversationIORegistry.class);
+        final CoreComponentLoader componentLoader = plugin.getComponentLoader();
+        final FeatureRegistry<ConversationIOFactory> conversationIORegistry = componentLoader.get(ConversationIORegistry.class);
         final ConfigAccessor pluginConfig = plugin.getPluginConfig();
-        final ConversationColors colors = plugin.getConversationColors();
+        final ConversationColors colors = componentLoader.get(ConversationColors.class);
         conversationIORegistry.register("chest", new CitizensInventoryConvIOFactory(loggerFactory,
                 api.fonts(), colors, pluginConfig, plugin, plugin.getServer().getPluginManager(), api.instructions(),
                 api.localizations(), api.items().manager(), api.profiles(), api.conversations(), false));

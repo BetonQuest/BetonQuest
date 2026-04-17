@@ -13,7 +13,6 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.conversation.AnswerFilter;
 import org.betonquest.betonquest.conversation.Conversation;
-import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.Saver;
@@ -190,14 +189,5 @@ public class BetonQuest extends JavaPlugin {
      */
     public PlayerDataStorage getPlayerDataStorage() {
         return coreComponentLoader.get(PlayerDataStorage.class);
-    }
-
-    /**
-     * Get the colors used in conversations.
-     *
-     * @return the colors used in conversations
-     */
-    public ConversationColors getConversationColors() {
-        return coreComponentLoader.get(ConversationColors.class);
     }
 }

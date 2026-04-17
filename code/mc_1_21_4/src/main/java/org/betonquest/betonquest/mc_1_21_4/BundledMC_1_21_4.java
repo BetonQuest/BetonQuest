@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.dependency.CoreComponentLoader;
 import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.service.item.ItemRegistry;
 import org.betonquest.betonquest.api.text.TextParser;
+import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.menu.MenuConvIOFactory;
 import org.betonquest.betonquest.conversation.menu.input.ConversationAction;
 import org.betonquest.betonquest.conversation.menu.input.ConversationSession;
@@ -57,7 +58,7 @@ public class BundledMC_1_21_4 implements Integration {
         componentLoader.get(ConversationIORegistry.class).register("menu", new MenuConvIOFactory(
                 api.loggerFactory(), betonQuest.getPluginConfig(), betonQuest,
                 api.localizations(), inputFunction, textParser,
-                api.fonts(), betonQuest.getConversationColors()));
+                api.fonts(), componentLoader.get(ConversationColors.class)));
 
         api.conditions().registry().register("biome", new UpdatedBiomeConditionFactory());
 
