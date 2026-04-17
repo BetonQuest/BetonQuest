@@ -58,13 +58,13 @@ public class UpdatedSimpleItemFactory extends SimpleQuestItemFactory {
 
         final Localizations localizations = questItemLoreSupplier.get();
         final List<ItemMetaHandler<?>> handlers = List.of(
-                new QuestHandler(localizations == null ? LoreConsumer.EMPTY : new LoreConsumer.Lore(localizations)),
                 new DurabilityHandler(),
                 new CustomModelDataHandler(),
                 new UnbreakableHandler(),
                 new FlagHandler(),
                 name,
                 lore,
+                new QuestHandler(localizations == null ? LoreConsumer.EMPTY : new LoreConsumer.Lore(localizations)),
                 new EnchantmentsHandler(),
                 new UpdatedPotionHandler(),
                 new BookHandler(textParser, bookPageWrapper),
