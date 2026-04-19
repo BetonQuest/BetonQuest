@@ -15,7 +15,6 @@ import org.bukkit.block.BrewingStand;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.BrewerInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -117,11 +116,13 @@ public class BrewObjective extends CountingObjective {
             return;
         }
         final QuestItem potion = this.potion.getValue(profile).getItem(profile);
-        final boolean[] newlyDone = getMatchingPotions(potion, event.getResults(), event.getContents());
+        final List<ItemStack> results = event.getResults();
+        final ItemStack[] currentContents = event.getContents().getStorageContents();
 
         int progress = 0;
-        for (final boolean brewed : newlyDone) {
-            if (brewed) {
+        for (int index = 0; index < Math.min(results.size(), 3); index++) {
+            if (!results.get(index).equals(currentContents[index])
+                    && potion.matches(currentContents[index])) {
                 progress++;
             }
         }
@@ -137,23 +138,5 @@ public class BrewObjective extends CountingObjective {
                 removals.forEach(locations::remove);
             }
         }
-    }
-
-    /**
-     * Generates an array that matches potions in slots to if they are match the quest item. A filter array can be
-     * provided that excludes all indices that are {@code true}.
-     *
-     * @param newly     the result items
-     * @param inventory the brewer inventory containing the old items
-     * @return array mapping slot index to potion match
-     */
-    private boolean[] getMatchingPotions(final QuestItem potion, final List<ItemStack> newly, final BrewerInventory inventory) {
-        final boolean[] resultPotions = new boolean[3];
-        final ItemStack[] storageContents = inventory.getStorageContents();
-        for (int index = 0; index < Math.min(newly.size(), 3); index++) {
-            resultPotions[index] = !newly.get(index).equals(storageContents[index])
-                    && potion.matches(storageContents[index]);
-        }
-        return resultPotions;
     }
 }
