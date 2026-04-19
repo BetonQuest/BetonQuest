@@ -15,12 +15,12 @@ import org.bukkit.block.BrewingStand;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.BrewerInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -116,50 +116,27 @@ public class BrewObjective extends CountingObjective {
             return;
         }
         final QuestItem potion = this.potion.getValue(profile).getItem(profile);
-        final boolean[] alreadyDone = getMatchingPotions(potion, event.getContents());
+        final List<ItemStack> results = event.getResults();
+        final ItemStack[] currentContents = event.getContents().getStorageContents();
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                final boolean[] newlyDone = getMatchingPotions(potion, event.getContents(), alreadyDone);
-
-                int progress = 0;
-                for (final boolean brewed : newlyDone) {
-                    if (brewed) {
-                        progress++;
-                    }
-                }
-
-                if (progress > 0) {
-                    getCountingData(profile).progress(progress);
-                    final boolean completed = completeIfDoneOrNotify(profile);
-                    if (completed) {
-                        final Set<Location> removals = locations.entrySet().stream()
-                                .filter(location -> profile.equals(location.getValue()))
-                                .map(Map.Entry::getKey)
-                                .collect(Collectors.toSet());
-                        removals.forEach(locations::remove);
-                    }
-                }
+        int progress = 0;
+        for (int index = 0; index < Math.min(results.size(), 3); index++) {
+            if (!results.get(index).equals(currentContents[index])
+                    && potion.matches(currentContents[index])) {
+                progress++;
             }
-        }.runTask(plugin);
-    }
-
-    /**
-     * Generates an array that matches potions in slots to if they are match the quest item. A filter array can be
-     * provided that excludes all indices that are {@code true}.
-     *
-     * @param inventory  the brewer inventory to check
-     * @param exclusions the excluded indices
-     * @return array mapping slot index to potion match
-     */
-    private boolean[] getMatchingPotions(final QuestItem potion, final BrewerInventory inventory, final boolean... exclusions) {
-        final boolean[] resultPotions = new boolean[3];
-        final ItemStack[] storageContents = inventory.getStorageContents();
-        for (int index = 0; index < 3; index++) {
-            resultPotions[index] = (exclusions.length <= index || !exclusions[index])
-                    && potion.matches(storageContents[index]);
         }
-        return resultPotions;
+
+        if (progress > 0) {
+            getCountingData(profile).progress(progress);
+            final boolean completed = completeIfDoneOrNotify(profile);
+            if (completed) {
+                final Set<Location> removals = locations.entrySet().stream()
+                        .filter(location -> profile.equals(location.getValue()))
+                        .map(Map.Entry::getKey)
+                        .collect(Collectors.toSet());
+                removals.forEach(locations::remove);
+            }
+        }
     }
 }
