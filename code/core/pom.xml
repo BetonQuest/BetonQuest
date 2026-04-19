@@ -23,7 +23,7 @@
     <excludedFailsafeGroups>ConfigurationSection</excludedFailsafeGroups>
     <excludedPitestGroups>ConfigurationSection</excludedPitestGroups>
 
-    <lib.version>1.0.0${changelist}</lib.version>
+    <betonquest.lib.version>3.0.0${changelist}</betonquest.lib.version>
 
     <paper-api.version>1.18.2-R0.1-SNAPSHOT</paper-api.version>
     <bstats-bukkit.version>3.0.2</bstats-bukkit.version>
@@ -37,7 +37,7 @@
     <dependency>
       <groupId>org.betonquest.betonquest</groupId>
       <artifactId>lib</artifactId>
-      <version>${lib.version}</version>
+      <version>${betonquest.lib.version}</version>
     </dependency>
 
     <!-- from papermc repository -->
