@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.item.typehandler.QuestHandler;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,9 +15,10 @@ import java.util.List;
 /**
  * Adds the tag identifying an ItemStack as BetonQuest QuestItem.
  *
- * @param original the quest item to add the tag to
+ * @param original     the quest item to add the tag to
+ * @param loreConsumer the Consumer to (possibly) add the "Quest Item"-Lore to the generated item
  */
-public record QuestItemTagAdapter(QuestItem original) implements QuestItem {
+public record QuestItemTagAdapter(QuestItem original, LoreConsumer loreConsumer) implements QuestItem {
 
     @Override
     public Component getName() {
@@ -39,8 +41,10 @@ public record QuestItemTagAdapter(QuestItem original) implements QuestItem {
     @Override
     public ItemStack generate(final int stackSize, @Nullable final Profile profile) throws QuestException {
         final ItemStack stack = original.generate(stackSize, profile);
-        stack.editMeta(meta -> meta.getPersistentDataContainer()
-                .set(QuestHandler.QUEST_ITEM_KEY, PersistentDataType.BYTE, (byte) 1));
+        final ItemMeta meta = stack.getItemMeta();
+        meta.getPersistentDataContainer().set(QuestHandler.QUEST_ITEM_KEY, PersistentDataType.BYTE, (byte) 1);
+        loreConsumer.accept(meta, profile);
+        stack.setItemMeta(meta);
         return stack;
     }
 

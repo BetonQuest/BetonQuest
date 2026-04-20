@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
 import org.betonquest.betonquest.api.text.TextParser;
+import org.betonquest.betonquest.item.LoreConsumer;
 import org.betonquest.betonquest.item.SimpleQuestItem;
 import org.betonquest.betonquest.item.SimpleQuestItemFactory;
 import org.betonquest.betonquest.item.typehandler.BookHandler;
@@ -58,13 +59,13 @@ public class UpdatedSimpleItemFactory extends SimpleQuestItemFactory {
 
         final Localizations localizations = questItemLoreSupplier.get();
         final List<ItemMetaHandler<?>> handlers = List.of(
-                new QuestHandler(localizations == null ? QuestHandler.LoreConsumer.EMPTY : new QuestHandler.Lore(localizations)),
                 new DurabilityHandler(),
                 new UpdatedCustomModelDataHandler(),
                 new UnbreakableHandler(),
                 new FlagHandler(),
                 name,
                 lore,
+                new QuestHandler(localizations == null ? LoreConsumer.EMPTY : new LoreConsumer.Lore(localizations)),
                 new EnchantmentsHandler(),
                 new UpdatedPotionHandler(),
                 new BookHandler(textParser, bookPageWrapper),

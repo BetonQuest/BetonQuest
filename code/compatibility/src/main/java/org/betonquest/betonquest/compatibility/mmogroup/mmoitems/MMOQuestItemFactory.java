@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.item.QuestItemWrapper;
 import org.betonquest.betonquest.api.quest.TypeFactory;
-import org.betonquest.betonquest.item.QuestItemTagAdapterWrapper;
 
 /**
  * Factory to create {@link MMOQuestItem}s from {@link Instruction}s.
@@ -34,12 +33,6 @@ public class MMOQuestItemFactory implements TypeFactory<QuestItemWrapper> {
         final Argument<Type> itemType = instruction.parse(MMOItemsUtils::getMMOItemType).get();
         final Argument<String> itemId = instruction.string().get();
         final FlagArgument<Number> soulBound = instruction.number().getFlag("soulBound", 1);
-        final MMOQuestItemWrapper mmoQuestItemWrapper = new MMOQuestItemWrapper(mmoPlugin, itemType, itemId, soulBound);
-        final boolean questItem = instruction.bool().getFlag("quest-item", true)
-                .getValue(null).orElse(false);
-        if (questItem) {
-            return new QuestItemTagAdapterWrapper(mmoQuestItemWrapper);
-        }
-        return mmoQuestItemWrapper;
+        return new MMOQuestItemWrapper(mmoPlugin, itemType, itemId, soulBound);
     }
 }

@@ -2,6 +2,7 @@ package org.betonquest.betonquest.mc_1_21_4.item;
 
 import org.betonquest.betonquest.api.common.component.BookPageWrapper;
 import org.betonquest.betonquest.api.text.TextParser;
+import org.betonquest.betonquest.item.LoreConsumer;
 import org.betonquest.betonquest.item.SimpleQuestItemFactory;
 import org.betonquest.betonquest.item.SimpleQuestItemSerializer;
 import org.betonquest.betonquest.item.typehandler.BookHandler;
@@ -37,7 +38,7 @@ public class UpdatedSimpleQuestItemSerializer extends SimpleQuestItemSerializer 
                 new DurabilityHandler(), new UpdatedNameHandler(textParser), new LoreHandler(textParser), new EnchantmentsHandler(),
                 new BookHandler(textParser, bookPageWrapper), new UpdatedPotionHandler(), new ColorHandler(), new HeadHandler(),
                 new FireworkHandler(), new UnbreakableHandler(), new UpdatedCustomModelDataHandler(), new FlagHandler(),
-                new QuestHandler(QuestHandler.LoreConsumer.EMPTY)
+                new QuestHandler(LoreConsumer.EMPTY)
         ));
     }
 }

@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.item.QuestItemSerializer;
 import org.betonquest.betonquest.api.item.QuestItemWrapper;
 import org.betonquest.betonquest.api.quest.FeatureTypeRegistry;
+import org.betonquest.betonquest.api.quest.TypeFactory;
 
 import java.util.Set;
 
@@ -11,6 +12,29 @@ import java.util.Set;
  * Stores the item factories and serializer.
  */
 public interface ItemRegistry extends FeatureTypeRegistry<QuestItemWrapper> {
+
+    /**
+     * Registers an item factory with an additional quest item wrapper.
+     * <p>
+     * The wrapper will handle the {@code quest-item} tag and their lore configuration.
+     *
+     * @param name    the name of the type
+     * @param factory the factory to create the type
+     */
+    @Override
+    void register(String name, TypeFactory<QuestItemWrapper> factory);
+
+    /**
+     * Registers an item factory with an additional quest item wrapper.
+     * <p>
+     * The wrapper will handle the {@code quest-item} tag and their lore configuration.
+     * Setting the {@param ignoreQuestTag} will not add the wrapper.
+     *
+     * @param name           the name of the type
+     * @param factory        the factory to create the type
+     * @param ignoreQuestTag if the quest item wrapper should not be added
+     */
+    void register(String name, TypeFactory<QuestItemWrapper> factory, boolean ignoreQuestTag);
 
     /**
      * Registers a {@link QuestItemSerializer} to allow parsing an ItemStack to instruction string.

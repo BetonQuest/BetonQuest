@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.item.QuestItemWrapper;
 import org.betonquest.betonquest.api.quest.TypeFactory;
 import org.betonquest.betonquest.compatibility.nexo.NexoParser;
-import org.betonquest.betonquest.item.QuestItemTagAdapterWrapper;
 
 /**
  * Factory for creating {@link QuestItemWrapper} from Nexo items.
@@ -21,9 +20,6 @@ public class NexoItemFactory implements TypeFactory<QuestItemWrapper> {
 
     @Override
     public QuestItemWrapper parseInstruction(final Instruction instruction) throws QuestException {
-        final NexoItemWrapper wrapper = new NexoItemWrapper(instruction.parse(NexoParser.NEXO_PARSER).get());
-        final boolean isQuestItem = instruction.bool().getFlag("quest-item", true)
-                .getValue(null).orElse(false);
-        return isQuestItem ? new QuestItemTagAdapterWrapper(wrapper) : wrapper;
+        return new NexoItemWrapper(instruction.parse(NexoParser.NEXO_PARSER).get());
     }
 }

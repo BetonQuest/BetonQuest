@@ -12,11 +12,10 @@ import java.util.List;
 public interface FeatureRegistry<F> {
 
     /**
-     * Registers a type that does not support playerless execution with its name
-     * and a player factory to create new player instances.
+     * Registers a type factory with its name.
      *
      * @param name    the name of the type
-     * @param factory the player factory to create the type
+     * @param factory the factory to create the type
      */
     void register(String name, F factory);
 
