@@ -10,7 +10,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.Plugin;
 
 /**
  * Add QuestItem Drops if the entity is marked.
@@ -21,11 +20,6 @@ public class CustomDropListener implements Listener {
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
-
-    /**
-     * Plugin used as namespace.
-     */
-    private final Plugin plugin;
 
     /**
      * The item manager.
@@ -41,15 +35,13 @@ public class CustomDropListener implements Listener {
      * Create a new custom drop Listener.
      *
      * @param log               the custom logger for exceptions
-     * @param plugin            the plugin used as namespace
      * @param itemManager       the item manager
      * @param identifierFactory the identifier factory
      */
-    public CustomDropListener(final BetonQuestLogger log, final Plugin plugin, final ItemManager itemManager,
+    public CustomDropListener(final BetonQuestLogger log, final ItemManager itemManager,
                               final IdentifierFactory<ItemIdentifier> identifierFactory) {
         this.identifierFactory = identifierFactory;
         this.log = log;
-        this.plugin = plugin;
         this.itemManager = itemManager;
     }
 
@@ -63,7 +55,7 @@ public class CustomDropListener implements Listener {
         int dropIndex = 0;
         String dataContainerValue;
         do {
-            final NamespacedKey key = new NamespacedKey(plugin, "betonquest-drops-" + dropIndex);
+            final NamespacedKey key = new NamespacedKey("betonquest", "betonquest-drops-" + dropIndex);
             dataContainerValue = event.getEntity().getPersistentDataContainer().get(key, PersistentDataType.STRING);
             if (dataContainerValue != null) {
                 final int separatorIndex = dataContainerValue.indexOf(':');

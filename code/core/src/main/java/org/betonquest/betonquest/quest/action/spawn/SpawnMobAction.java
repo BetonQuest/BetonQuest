@@ -1,13 +1,12 @@
 package org.betonquest.betonquest.quest.action.spawn;
 
 import net.kyori.adventure.text.Component;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.action.NullableAction;
+import org.betonquest.betonquest.util.EntityUtils;
 import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Mob;
 import org.bukkit.persistence.PersistentDataType;
@@ -82,8 +81,7 @@ public class SpawnMobAction implements NullableAction {
                 mob.customName(this.name.getValue(profile));
             }
             if (this.marked != null) {
-                final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
-                mob.getPersistentDataContainer().set(key, PersistentDataType.STRING, this.marked.getValue(profile));
+                mob.getPersistentDataContainer().set(EntityUtils.MARKED_KEY, PersistentDataType.STRING, this.marked.getValue(profile));
             }
         }
     }

@@ -62,7 +62,7 @@ public class ListenersComponent extends AbstractCoreComponent {
         List.of(
                 new CombatTagger(profileProvider, config.getInt("conversation.damage.combat_delay")),
                 new MobKillListener(profileProvider),
-                new CustomDropListener(loggerFactory.create(CustomDropListener.class), plugin, itemManager, itemIdentifierFactory),
+                new CustomDropListener(loggerFactory.create(CustomDropListener.class), itemManager, itemIdentifierFactory),
                 new QuestItemHandler(config, playerDataStorage, profileProvider),
                 new QuestItemConvertListener(loggerFactory.create(QuestItemConvertListener.class),
                         () -> config.getBoolean("item.quest.update_legacy_on_join"), localizations, profileProvider),

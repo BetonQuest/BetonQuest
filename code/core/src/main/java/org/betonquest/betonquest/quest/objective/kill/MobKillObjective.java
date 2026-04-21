@@ -1,13 +1,12 @@
 package org.betonquest.betonquest.quest.objective.kill;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.MobKillNotifier.MobKilledEvent;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
-import org.bukkit.NamespacedKey;
+import org.betonquest.betonquest.util.EntityUtils;
 import org.bukkit.entity.EntityType;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
@@ -72,8 +71,7 @@ public class MobKillObjective extends CountingObjective {
         }
         if (marked != null) {
             final String value = marked.getValue(profile);
-            final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
-            final String dataContainerValue = event.getEntity().getPersistentDataContainer().get(key, PersistentDataType.STRING);
+            final String dataContainerValue = event.getEntity().getPersistentDataContainer().get(EntityUtils.MARKED_KEY, PersistentDataType.STRING);
             if (dataContainerValue == null || !dataContainerValue.equals(value)) {
                 return;
             }

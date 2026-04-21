@@ -63,8 +63,8 @@ public class AdvancementNotifyIO extends NotifyIO {
 
     private void notifyPlayerObject(final JsonElement message, final OnlineProfile onlineProfile) {
         final UUID uuid = UUID.randomUUID();
-        final NamespacedKey rootKey = new NamespacedKey(plugin, "notify/" + uuid + "-root");
-        final NamespacedKey key = new NamespacedKey(plugin, "notify/" + uuid + "-message");
+        final NamespacedKey rootKey = new NamespacedKey("betonquest", "notify/" + uuid + "-root");
+        final NamespacedKey key = new NamespacedKey("betonquest", "notify/" + uuid + "-message");
         loadAdvancement(message, rootKey, key);
 
         Bukkit.getScheduler().runTask(plugin, run -> grant(key, onlineProfile.getPlayer()));

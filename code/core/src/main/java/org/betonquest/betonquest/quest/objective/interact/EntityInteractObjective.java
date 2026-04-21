@@ -1,15 +1,14 @@
 package org.betonquest.betonquest.quest.objective.interact;
 
 import net.kyori.adventure.text.Component;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
+import org.betonquest.betonquest.util.EntityUtils;
 import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -128,8 +127,7 @@ public class EntityInteractObjective extends CountingObjective {
         // check if the entity is correctly marked
         if (marked != null) {
             final String value = marked.getValue(onlineProfile);
-            final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
-            final String dataContainerValue = entity.getPersistentDataContainer().get(key, PersistentDataType.STRING);
+            final String dataContainerValue = entity.getPersistentDataContainer().get(EntityUtils.MARKED_KEY, PersistentDataType.STRING);
             if (dataContainerValue == null || !dataContainerValue.equals(value)) {
                 return false;
             }

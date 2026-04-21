@@ -28,6 +28,11 @@ import java.util.Map;
 public class MythicSpawnMobAction implements OnlineAction, PlayerlessAction {
 
     /**
+     * Key to mark mobs.
+     */
+    private static final NamespacedKey MARKED_KEY = new NamespacedKey("betonquest", "betonquest-marked");
+
+    /**
      * Plugin to start tasks.
      */
     private final Plugin plugin;
@@ -64,11 +69,6 @@ public class MythicSpawnMobAction implements OnlineAction, PlayerlessAction {
     private final Argument<String> marked;
 
     /**
-     * Key to mark mobs.
-     */
-    private final NamespacedKey markedKey;
-
-    /**
      * Constructs a new MythicSpawnMobAction.
      *
      * @param plugin       the plugin to start tasks
@@ -89,7 +89,6 @@ public class MythicSpawnMobAction implements OnlineAction, PlayerlessAction {
         this.mythicHider = mythicHider;
         this.targetPlayer = targetPlayer;
         this.marked = marked;
-        markedKey = new NamespacedKey("betonquest", "betonquest-marked");
     }
 
     @Override
@@ -114,7 +113,7 @@ public class MythicSpawnMobAction implements OnlineAction, PlayerlessAction {
                 Bukkit.getScheduler().runTaskLater(plugin, () -> targetMob.setTarget(BukkitAdapter.adapt(player)), 20L);
             }
             if (mark != null) {
-                entity.getPersistentDataContainer().set(markedKey, PersistentDataType.STRING, mark);
+                entity.getPersistentDataContainer().set(MARKED_KEY, PersistentDataType.STRING, mark);
             }
         }
     }
@@ -134,7 +133,7 @@ public class MythicSpawnMobAction implements OnlineAction, PlayerlessAction {
             }
             final Entity entity = targetMob.getEntity().getBukkitEntity();
             if (mark != null) {
-                entity.getPersistentDataContainer().set(markedKey, PersistentDataType.STRING, mark);
+                entity.getPersistentDataContainer().set(MARKED_KEY, PersistentDataType.STRING, mark);
             }
         }
     }
