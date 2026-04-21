@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.kernel.component;
 
+import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.bukkit.BukkitManager;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
@@ -59,6 +61,7 @@ public class RPGMenuComponent extends AbstractCoreComponent {
     protected void load(final DependencyProvider dependencyProvider) {
         final QuestPackageManager packManager = getDependency(QuestPackageManager.class);
         final BetonQuestLoggerFactory loggerFactory = getDependency(BetonQuestLoggerFactory.class);
+        final BukkitManager bukkitManager = getDependency(BetonQuestApi.class).bukkit();
         final Instructions instructions = getDependency(Instructions.class);
         final Identifiers identifiers = getDependency(Identifiers.class);
         final ParsedSectionTextCreator parsedSectionTextCreator = getDependency(ParsedSectionTextCreator.class);
@@ -79,7 +82,7 @@ public class RPGMenuComponent extends AbstractCoreComponent {
         identifiers.register(MenuIdentifier.class, menuIdentifierFactory);
         final MenuItemIdentifierFactory menuItemIdentifierFactory = new MenuItemIdentifierFactory(packManager);
         identifiers.register(MenuItemIdentifier.class, menuItemIdentifierFactory);
-        final RPGMenu rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, instructions, config,
+        final RPGMenu rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, bukkitManager, instructions, config,
                 localizations, parsedSectionTextCreator, profileProvider, argumentParsers,
                 menuIdentifierFactory, menuItemIdentifierFactory, actionRegistry, conditionRegistry,
                 objectiveRegistry, placeholderRegistry, actionManager, conditionManager);

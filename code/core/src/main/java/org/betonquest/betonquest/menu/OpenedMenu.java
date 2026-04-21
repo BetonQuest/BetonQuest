@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.menu;
 
 import net.kyori.adventure.text.Component;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.bukkit.BukkitManager;
 import org.betonquest.betonquest.api.identifier.MenuIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -41,6 +41,11 @@ public class OpenedMenu implements Listener {
     private final BetonQuestLogger log;
 
     /**
+     * Bukkit manager to register listener and schedule tasks.
+     */
+    private final BukkitManager bukkitManager;
+
+    /**
      * Online Profile the menu is opened for.
      */
     private final OnlineProfile onlineProfile;
@@ -69,12 +74,14 @@ public class OpenedMenu implements Listener {
      * Create a new Opened Menu and opens it for the profile.
      *
      * @param log           the custom {@link BetonQuestLogger} instance for this class
+     * @param bukkitManager the bukkit manager to register listener and schedule tasks
      * @param onlineProfile the online profile to open the menu
      * @param menu          the menu to open
      * @throws QuestException when the menu values cannot be resolved
      */
-    public OpenedMenu(final BetonQuestLogger log, final OnlineProfile onlineProfile, final Menu menu) throws QuestException {
+    public OpenedMenu(final BetonQuestLogger log, final BukkitManager bukkitManager, final OnlineProfile onlineProfile, final Menu menu) throws QuestException {
         this.log = log;
+        this.bukkitManager = bukkitManager;
         // If player already has an open menu we close it first
         final OpenedMenu current = getMenu(onlineProfile);
         if (current != null) {
@@ -88,7 +95,7 @@ public class OpenedMenu implements Listener {
         final Inventory inventory = Bukkit.createInventory(null, data.getSize(), resolvedTitle);
         this.update(onlineProfile, inventory);
         onlineProfile.getPlayer().openInventory(inventory);
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        bukkitManager.registerEvents(this);
         OPENED_MENUS.put(onlineProfile.getProfileUUID(), this);
     }
 
@@ -233,7 +240,7 @@ public class OpenedMenu implements Listener {
             case SHIFT_LEFT:
             case LEFT:
             case MIDDLE:
-                Bukkit.getServer().getScheduler().runTask(BetonQuest.getInstance(), () -> clickLogic(event, item));
+                Bukkit.getServer().getScheduler().runTask(bukkitManager.plugin(), () -> clickLogic(event, item));
                 break;
             default:
                 break;
