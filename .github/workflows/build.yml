@@ -6,6 +6,9 @@ on:
       - "v*-*"
   pull_request:
 
+env:
+  MODULES_TO_CHECK: "api lib"
+
 jobs:
   prepare:
     name: Prepare Build Variables
@@ -16,6 +19,7 @@ jobs:
       VERSION_TYPE: ${{ steps.version.outputs.VERSION_TYPE }}
       VERSION_MAVEN: ${{ steps.version.outputs.VERSION_MAVEN }}
       VERSION_IS_NEW: ${{ steps.version.outputs.VERSION_IS_NEW }}
+      SKIP_MODULES: ${{ steps.modules.outputs.SKIP_MODULES }}
 
     steps:
       - name: Checkout source code
@@ -31,6 +35,25 @@ jobs:
             docs
           MAVEN_WRAPPER_DIR: '~/.m2/wrapper'
           SUB_MODULE: 'betonquest'
+      - name: Determine modules to skip
+        if: "steps.version.outputs.VERSION_TYPE == 'release'"
+        id: modules
+        shell: bash --noprofile --norc -euo pipefail {0}
+        run: |
+          read -ra modules <<< "$MODULES_TO_CHECK"
+          skip_modules=()
+
+          for module in "${modules[@]}"; do
+            version=$(./mvnw --raw-streams help:evaluate -Dexpression=revision -q -DforceStdout --projects ":$module")
+            tag="v${version}-${module}"
+            if git tag -l "$tag"; then
+              echo "Deployment of module "$module" will bee skipped (tag exists: $tag)"
+              skip_modules+=("!:$module")
+            fi
+          done
+          
+          SKIP_MODULES=$(IFS=,; echo "${skip_modules[*]}")
+          echo "SKIP_MODULES=$SKIP_MODULES" >> "$GITHUB_OUTPUT"
 
   build-code:
     name: Build Code
@@ -42,6 +65,7 @@ jobs:
       VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
       VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
       VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
+      SKIP_MODULES: ${{ needs.prepare.outputs.SKIP_MODULES }}
 
     steps:
       - name: Checkout source code
@@ -82,6 +106,7 @@ jobs:
       VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
       VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
       VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
+      SKIP_MODULES: ${{ needs.prepare.outputs.SKIP_MODULES }}
 
     steps:
       - name: Checkout source code
@@ -124,6 +149,7 @@ jobs:
       VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
       VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
       VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
+      SKIP_MODULES: ${{ needs.prepare.outputs.SKIP_MODULES }}
 
     outputs:
       UPLOAD_PATH: ${{ steps.save_upload_path.outputs.upload_path }}
@@ -149,7 +175,8 @@ jobs:
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           if [ $VERSION_TYPE == 'release' ]; then CHANGELIST=-Dchangelist=; fi
-          ./mvnw ${CHANGELIST-} -P Skip-Verification,Test-None -B deploy | tee maven-deploy.log
+          if [ -n "$SKIP_MODULES" ]; then PROJECTS="--projects $SKIP_MODULES"; fi
+          ./mvnw ${CHANGELIST-} -P Skip-Verification,Test-None -B ${PROJECTS-} deploy | tee maven-deploy.log
         env:
           REPOSITORY_URL: ${{ vars.REPOSITORY_URL }}
           MAVEN_SERVER_USERNAME: ${{ secrets.MAVEN_SERVER_USERNAME }}
@@ -175,6 +202,7 @@ jobs:
       VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
       VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
       VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
+      SKIP_MODULES: ${{ needs.prepare.outputs.SKIP_MODULES }}
 
     steps:
       - name: Checkout source code
@@ -257,6 +285,7 @@ jobs:
       VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
       VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
       VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
+      SKIP_MODULES: ${{ needs.prepare.outputs.SKIP_MODULES }}
 
     steps:
       - name: Checkout source code
@@ -301,6 +330,7 @@ jobs:
       VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
       VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
       VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
+      SKIP_MODULES: ${{ needs.prepare.outputs.SKIP_MODULES }}
 
     steps:
       - name: Checkout source code
