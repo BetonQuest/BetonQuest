@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.action.spawn;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
@@ -41,7 +40,7 @@ public record Equipment(@Nullable Argument<ItemWrapper> helmet, @Nullable Argume
         int dropIndex = 0;
         for (final ItemWrapper item : drops.getValue(profile)) {
             final String value = item.getID().getFull() + ":" + item.getAmount().getValue(profile).intValue();
-            final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-drops-" + dropIndex);
+            final NamespacedKey key = new NamespacedKey("betonquest", "betonquest-drops-" + dropIndex);
             mob.getPersistentDataContainer().set(key, PersistentDataType.STRING, value);
             dropIndex++;
         }

@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
 import org.betonquest.betonquest.api.service.objective.ObjectiveRegistry;
 import org.betonquest.betonquest.api.service.objective.Objectives;
+import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.id.objective.ObjectiveIdentifierFactory;
 import org.betonquest.betonquest.kernel.ProcessorDataLoader;
 import org.betonquest.betonquest.kernel.processor.quest.ActionProcessor;
@@ -59,6 +60,7 @@ public class ObjectivesComponent extends AbstractCoreComponent {
         final PluginManager pluginManager = getDependency(PluginManager.class);
         final ProfileProvider profileProvider = getDependency(ProfileProvider.class);
         final Plugin plugin = getDependency(Plugin.class);
+        final PlayerDataStorage playerDataStorage = getDependency(PlayerDataStorage.class);
         final ProcessorDataLoader processorDataLoader = getDependency(ProcessorDataLoader.class);
 
         final DefaultObjectiveServiceProvider objectiveServiceProvider = new DefaultObjectiveServiceProvider(plugin, conditionProcessor, actionProcessor,
@@ -68,7 +70,7 @@ public class ObjectivesComponent extends AbstractCoreComponent {
         final ObjectiveTypeRegistry objectiveTypeRegistry = new ObjectiveTypeRegistry(loggerFactory.create(ObjectiveTypeRegistry.class));
         final ObjectiveProcessor objectiveProcessor = new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class),
                 objectiveTypeRegistry, objectiveIdentifierFactory, pluginManager,
-                objectiveServiceProvider, instructions, plugin);
+                objectiveServiceProvider, instructions, plugin, playerDataStorage);
 
         dependencyProvider.take(ObjectiveIdentifierFactory.class, objectiveIdentifierFactory);
         dependencyProvider.take(ObjectiveTypeRegistry.class, objectiveTypeRegistry);

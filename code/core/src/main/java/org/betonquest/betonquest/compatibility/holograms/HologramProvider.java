@@ -47,9 +47,9 @@ public final class HologramProvider {
      */
     private NpcHologramLoop npcHologramLoop;
 
-    private HologramProvider(final BetonQuestApi betonQuestApi, final BetonHologramFactory integration) {
+    private HologramProvider(final BetonQuestApi betonQuestApi, final ConfigAccessor config, final BetonHologramFactory integration) {
         this.hologramFactory = integration;
-        load(betonQuestApi);
+        load(betonQuestApi, config);
     }
 
     /**
@@ -68,7 +68,7 @@ public final class HologramProvider {
         integrations.sort(Comparator.comparingInt(value -> getPriority(config, value)));
         final HologramIntegration selected = integrations.get(integrations.size() - 1);
         final BetonHologramFactory factory = selected.getHologramFactory(betonQuestApi);
-        return new HologramProvider(betonQuestApi, factory);
+        return new HologramProvider(betonQuestApi, config, factory);
     }
 
     /**
@@ -113,7 +113,7 @@ public final class HologramProvider {
         return hologramFactory.parsePlaceholder(pack, text);
     }
 
-    private void load(final BetonQuestApi api) {
+    private void load(final BetonQuestApi api, final ConfigAccessor config) {
         final BetonQuest plugin = BetonQuest.getInstance();
         final BetonQuestLoggerFactory loggerFactory = api.loggerFactory();
         final TextParser textParser = plugin.getComponentLoader().get(TextParser.class);
@@ -122,11 +122,11 @@ public final class HologramProvider {
         final IdentifierFactory<HologramIdentifier> hologramIdentifierFactory = new HologramIdentifierFactory(api.packages());
         api.identifiers().register(HologramIdentifier.class, hologramIdentifierFactory);
         this.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class),
-                connector, api.instructions(), hologramIdentifierFactory, plugin.getPluginConfig(),
+                connector, api.instructions(), hologramIdentifierFactory, config,
                 this, plugin, textParser, api.conditions().manager(), api.profiles());
         processorDataLoader.addProcessor(locationHologramLoop);
         this.npcHologramLoop = new NpcHologramLoop(loggerFactory, loggerFactory.create(NpcHologramLoop.class),
-                connector, api.instructions(), plugin, this, plugin.getPluginConfig(),
+                connector, api.instructions(), plugin, this, config,
                 hologramIdentifierFactory, api.conditions().manager(), api.npcs().manager(), api.npcs().registry(), textParser, api.profiles());
         processorDataLoader.addProcessor(npcHologramLoop);
         api.bukkit().registerEvents(new HologramListener(api.profiles()));

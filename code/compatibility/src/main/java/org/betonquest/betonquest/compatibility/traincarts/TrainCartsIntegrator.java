@@ -22,7 +22,7 @@ public class TrainCartsIntegrator extends IntegrationTemplate {
     @Override
     public void enable(final BetonQuestApi api) {
         objective("location", new TrainCartsLocationObjectiveFactory());
-        objective("ride", new TrainCartsRideObjectiveFactory());
+        objective("ride", new TrainCartsRideObjectiveFactory(api.bukkit().plugin()));
         objective("exit", new TrainCartsExitObjectiveFactory());
 
         playerCondition("ride", new TrainCartsRideConditionFactory());

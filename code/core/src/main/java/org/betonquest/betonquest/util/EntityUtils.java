@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.util;
 
 import net.kyori.adventure.text.Component;
-import org.betonquest.betonquest.BetonQuest;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
@@ -15,6 +14,11 @@ import java.util.List;
  * Utility class for entities.
  */
 public final class EntityUtils {
+
+    /**
+     * Key for the {@link PersistentDataType#STRING} marker of entities.
+     */
+    public static final NamespacedKey MARKED_KEY = new NamespacedKey("betonquest", "betonquest-marked");
 
     private EntityUtils() {
     }
@@ -39,8 +43,7 @@ public final class EntityUtils {
             return false;
         }
         if (mark != null) {
-            final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
-            final String dataContainerValue = entity.getPersistentDataContainer().get(key, PersistentDataType.STRING);
+            final String dataContainerValue = entity.getPersistentDataContainer().get(MARKED_KEY, PersistentDataType.STRING);
             return dataContainerValue != null && dataContainerValue.equals(mark);
         }
         return true;

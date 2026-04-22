@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.kernel.processor.quest;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.data.TagHolder;
@@ -57,6 +56,11 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
     private final Plugin plugin;
 
     /**
+     * Storage for player data storage.
+     */
+    private final PlayerDataStorage playerDataStorage;
+
+    /**
      * Loaded auto-once objectives.
      */
     private final Set<ObjectiveIdentifier> autoOnceObjectiveIds;
@@ -79,19 +83,21 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
      * @param objectiveIdentifierFactory the factory to create objective identifiers
      * @param instructionApi             the instruction api
      * @param pluginManager              the manager to register listener
+     * @param playerDataStorage          the storage for player data
      * @param service                    the event service for objectives
      * @param plugin                     the plugin instance to associate registered listener with
      */
     public ObjectiveProcessor(final BetonQuestLogger log, final ObjectiveTypeRegistry objectiveTypes,
                               final IdentifierFactory<ObjectiveIdentifier> objectiveIdentifierFactory,
                               final PluginManager pluginManager, final ObjectiveServiceProvider service,
-                              final Instructions instructionApi, final Plugin plugin) {
+                              final Instructions instructionApi, final Plugin plugin, final PlayerDataStorage playerDataStorage) {
         super(log, objectiveIdentifierFactory, "Objective", "objectives");
         this.instructionApi = instructionApi;
         this.pluginManager = pluginManager;
         this.objectiveService = service;
         this.types = objectiveTypes;
         this.plugin = plugin;
+        this.playerDataStorage = playerDataStorage;
         autoOnceObjectiveIds = new HashSet<>();
     }
 
@@ -150,8 +156,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
         final ObjectiveService service = objective.getService();
         for (final Map.Entry<Profile, String> entry : service.getData().entrySet()) {
             final Profile profile = entry.getKey();
-            BetonQuest.getInstance().getPlayerDataStorage().get(profile).addRawObjective(service.getObjectiveID(),
-                    entry.getValue());
+            playerDataStorage.get(profile).addRawObjective(service.getObjectiveID(), entry.getValue());
         }
     }
 
@@ -193,7 +198,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
             final Objective objective = get(objectiveID);
             final String defaultInstruction = objective.getService().getDefaultData(profile);
             objectiveService.start(objective.getObjectiveID(), profile, defaultInstruction, ObjectiveState.NEW);
-            BetonQuest.getInstance().getPlayerDataStorage().get(profile).addObjToDB(objectiveID, defaultInstruction);
+            playerDataStorage.get(profile).addObjToDB(objectiveID, defaultInstruction);
         } catch (final QuestException e) {
             log.warn("Could not create new objective '%s' for profile '%s': The objective instruction could not be resolved: %s"
                     .formatted(objectiveID, profile, e.getMessage()), e);

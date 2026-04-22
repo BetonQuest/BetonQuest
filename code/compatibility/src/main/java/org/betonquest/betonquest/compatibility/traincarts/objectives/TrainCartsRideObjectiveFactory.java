@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.plugin.Plugin;
 
 /**
  * Factory for creating {@link TrainCartsRideObjective} instances from {@link Instruction}s.
@@ -18,16 +19,24 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class TrainCartsRideObjectiveFactory implements ObjectiveFactory {
 
     /**
-     * Creates a new instance of the TrainCartsRideObjectiveFactory.
+     * Plugin used for scheduling.
      */
-    public TrainCartsRideObjectiveFactory() {
+    private final Plugin plugin;
+
+    /**
+     * Creates a new instance of the TrainCartsRideObjectiveFactory.
+     *
+     * @param plugin the plugin used for scheduling
+     */
+    public TrainCartsRideObjectiveFactory(final Plugin plugin) {
+        this.plugin = plugin;
     }
 
     @Override
     public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
         final Argument<String> name = instruction.string().get("name", "");
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get("amount", 1);
-        final TrainCartsRideObjective objective = new TrainCartsRideObjective(service, targetAmount, name);
+        final TrainCartsRideObjective objective = new TrainCartsRideObjective(service, plugin, targetAmount, name);
         service.request(MemberSeatEnterEvent.class).onlineHandler(objective::onMemberSeatEnter)
                 .entity(MemberSeatEnterEvent::getEntity).ignoreConditions().subscribe(false);
         service.request(MemberSeatExitEvent.class).onlineHandler(objective::onMemberSeatExit)

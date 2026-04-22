@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.menu;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.bukkit.BukkitManager;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
@@ -29,7 +29,6 @@ import org.betonquest.betonquest.menu.kernel.MenuItemListener;
 import org.betonquest.betonquest.menu.kernel.MenuItemProcessor;
 import org.betonquest.betonquest.menu.kernel.MenuProcessor;
 import org.betonquest.betonquest.text.ParsedSectionTextCreator;
-import org.bukkit.Server;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.Nullable;
 
@@ -50,6 +49,11 @@ public class RPGMenu {
      * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
      */
     private final BetonQuestLoggerFactory loggerFactory;
+
+    /**
+     * Bukkit manager to register listener and schedule tasks.
+     */
+    private final BukkitManager bukkitManager;
 
     /**
      * Menu command.
@@ -76,6 +80,7 @@ public class RPGMenu {
      *
      * @param log                       the custom logger for this class
      * @param loggerFactory             the factory to create new custom logger instances
+     * @param bukkitManager             the bukkit manager to register listener and schedule tasks
      * @param instructions              the instruction api to use
      * @param pluginConfig              the plugin config
      * @param localizations             the Localizations instance
@@ -92,7 +97,7 @@ public class RPGMenu {
      * @param conditionManager          the condition manager
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
-    public RPGMenu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
+    public RPGMenu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final BukkitManager bukkitManager,
                    final Instructions instructions, final ConfigAccessor pluginConfig,
                    final Localizations localizations, final ParsedSectionTextCreator textCreator,
                    final ProfileProvider profileProvider, final ArgumentParsers parsers,
@@ -103,9 +108,8 @@ public class RPGMenu {
                    final ActionManager actionManager, final ConditionManager conditionManager) {
         this.log = log;
         this.loggerFactory = loggerFactory;
-        final BetonQuest betonQuest = BetonQuest.getInstance();
+        this.bukkitManager = bukkitManager;
         final String menu = "menu";
-        final Server server = betonQuest.getServer();
         conditionRegistry.register(menu, new MenuConditionFactory());
         objectiveRegistry.register(menu, new MenuObjectiveFactory(loggerFactory, this));
         actionRegistry.register(menu, new MenuActionFactory(this));
@@ -119,7 +123,7 @@ public class RPGMenu {
                 textCreator, actionManager, conditionManager, parsers, this, menuIdentifierFactory, profileProvider);
         this.menuItemListener = new MenuItemListener(loggerFactory.create(MenuItemListener.class), this,
                 menuProcessor, profileProvider, localizations);
-        server.getPluginManager().registerEvents(menuItemListener, betonQuest);
+        bukkitManager.registerEvents(menuItemListener);
     }
 
     /**
@@ -154,7 +158,7 @@ public class RPGMenu {
     public void openMenu(final OnlineProfile onlineProfile, final MenuIdentifier menuID) throws QuestException {
         final Menu menu = menuProcessor.get(menuID);
         if (new MenuOpenEvent(onlineProfile, menuID).callEvent()) {
-            new OpenedMenu(loggerFactory.create(OpenedMenu.class), onlineProfile, menu);
+            new OpenedMenu(loggerFactory.create(OpenedMenu.class), bukkitManager, onlineProfile, menu);
             log.debug(menu.getMenuID().getPackage(), "opening menu " + menuID + " for " + onlineProfile);
         } else {
             log.debug(menu.getMenuID().getPackage(), "A Bukkit listener canceled opening of menu " + menuID + " for " + onlineProfile);
@@ -165,11 +169,8 @@ public class RPGMenu {
      * Disables and closes all Menus.
      */
     public void onDisable() {
-        //close all menus
         OpenedMenu.closeAll();
-        //disable listeners
         HandlerList.unregisterAll(menuItemListener);
-        HandlerList.unregisterAll(BetonQuest.getInstance());
         menuItemProcessor.clear();
         menuProcessor.clear();
         this.pluginCommand.unregister();
