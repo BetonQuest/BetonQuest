@@ -1,5 +1,7 @@
 # [Denizen](http://dev.bukkit.org/bukkit-plugins/denizen/)
 
+@snippet:versions:minimum@ _1.2.5-SNAPSHOT_
+
 Depenizen is also integrated with BetonQuest! Discover available features on the [meta documentation](https://meta.denizenscript.com/Docs/Search/BetonQuest).
 
 ## Actions

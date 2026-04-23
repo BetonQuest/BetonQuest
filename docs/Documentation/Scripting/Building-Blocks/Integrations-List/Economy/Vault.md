@@ -1,4 +1,6 @@
-# Vault[](http://dev.bukkit.org/bukkit-plugins/vault/)
+# [Vault](http://dev.bukkit.org/bukkit-plugins/vault/)
+
+@snippet:versions:minimum@ _1.7.1_
 
 ## Actions
 

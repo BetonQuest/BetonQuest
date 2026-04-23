@@ -1,5 +1,7 @@
 # [EffectLib](http://dev.bukkit.org/bukkit-plugins/effectlib/)
 
+@snippet:versions:minimum@ _10.3_
+
 If you install this plugin on your server you will be able to play particle effects on NPCs and locations.
 You can also use the `particle` action to trigger particle.
 

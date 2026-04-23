@@ -1,4 +1,6 @@
-# PlaceholderAPI[](https://www.spigotmc.org/resources/6245/)
+# [PlaceholderAPI](https://www.spigotmc.org/resources/6245/)
+
+@snippet:versions:minimum@ _2.11.6_
 
 If you have this plugin, BetonQuest will add a `betonquest` placeholder to it. You will be able to use the `ph` placeholder.
 

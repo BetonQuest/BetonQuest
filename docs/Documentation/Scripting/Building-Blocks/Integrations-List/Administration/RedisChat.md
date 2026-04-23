@@ -1,4 +1,6 @@
-# RedisChat[](https://emibergo.gitbook.io/redischat/)
+# [RedisChat](https://emibergo.gitbook.io/redischat/)
+
+@snippet:versions:minimum@ _5.3_
 
 ## Chat Interceptor
 

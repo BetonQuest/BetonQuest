@@ -1,7 +1,9 @@
 # [Citizens](https://www.spigotmc.org/resources/13811/)
 
-If you have this plugin you can use it's NPCs. I highly recommend you installing it,
-it's NPCs are way more immersive. Having Citizens also allows you to use NPCKill objective and to have moving NPC's
+@snippet:versions:minimum@ _2.0.33-SNAPSHOT_
+
+If you have this plugin you can use its NPCs. I highly recommend you installing it,
+its NPCs are way more immersive. Having Citizens also allows you to use NPCKill objective and to have moving NPCs
 in addition to the normal NPC functionality.
 
 !!! info

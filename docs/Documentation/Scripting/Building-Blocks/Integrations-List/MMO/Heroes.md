@@ -1,5 +1,7 @@
 # [Heroes](https://www.spigotmc.org/resources/24734/)
 
+@snippet:versions:minimum@ _7.3.0_
+
 When you install Heroes, all kills done via this plugin's skills will be counted in MobKill objectives.
 
 ## Actions

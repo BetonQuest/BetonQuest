@@ -1,4 +1,6 @@
-# Shopkeepers[](http://dev.bukkit.org/bukkit-plugins/shopkeepers/)
+# [Shopkeepers](http://dev.bukkit.org/bukkit-plugins/shopkeepers/)
+
+@snippet:versions:minimum@ _2.22.3_
 
 ## Actions
 

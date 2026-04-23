@@ -1,4 +1,6 @@
-# PacketEvents[](https://www.spigotmc.org/resources/80279/)
+# [PacketEvents](https://www.spigotmc.org/resources/80279/)
+
+@snippet:versions:minimum@ _2.9.5_
 
 ## Chat Interceptor
 

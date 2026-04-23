@@ -1,5 +1,7 @@
 # [DecentHolograms](https://www.spigotmc.org/resources/96927/)
 
+@snippet:versions:minimum@ _2.8.11_
+
 Please note that this integration requires [PlaceholderAPI](../Administration/PlaceholderAPI.md).
 
 !!! info

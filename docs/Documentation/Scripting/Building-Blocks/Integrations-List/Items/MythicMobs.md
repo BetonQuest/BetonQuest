@@ -1,7 +1,6 @@
 # [MythicMobs](http://dev.bukkit.org/bukkit-plugins/mythicmobs/)
 
-!!! info ""
-    **Required MythicMobs version: _5.3.5_ or above**
+@snippet:versions:minimum@ _4.0.10_
 
 !!! info
     MythicMobs integration supports all [BetonQuest NPC](../NPCs/index.md) features as well.

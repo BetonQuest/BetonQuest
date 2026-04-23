@@ -1,5 +1,7 @@
 # [Nexo](https://polymart.org/product/6901/nexo)
 
+@snippet:versions:minimum@ _1.17.0_
+
 ## Items
 
 ### `Nexo`

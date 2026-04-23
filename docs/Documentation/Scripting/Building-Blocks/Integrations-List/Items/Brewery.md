@@ -1,5 +1,7 @@
 # [Brewery](https://www.spigotmc.org/resources/3082/) & [BreweryX](https://www.spigotmc.org/resources/114777/)
 
+@snippet:versions:minimum@ _3.1.1_
+
 ## Items
 
 ### `Brew`

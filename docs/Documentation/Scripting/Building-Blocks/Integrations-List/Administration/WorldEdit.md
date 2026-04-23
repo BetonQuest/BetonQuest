@@ -1,4 +1,6 @@
-# WorldEdit[](http://dev.bukkit.org/bukkit-plugins/worldedit/) or FastAsyncWorldEdit[](https://www.spigotmc.org/resources/13932/)
+# [WorldEdit](http://dev.bukkit.org/bukkit-plugins/worldedit/) or [FastAsyncWorldEdit](https://www.spigotmc.org/resources/13932/)
+
+@snippet:versions:minimum@ _7.3.0_
 
 ## Actions
 

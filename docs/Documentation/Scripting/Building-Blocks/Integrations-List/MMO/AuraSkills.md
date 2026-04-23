@@ -1,5 +1,7 @@
 # [AuraSkills](https://www.spigotmc.org/resources/81069/)
 
+@snippet:versions:minimum@ _2.2.0_
+
 ## Actions
 
 ### `AuraSkillsXp`

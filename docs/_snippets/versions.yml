@@ -3,3 +3,7 @@ mc-1.20.6: |-
 
 mc-1.21.4: |-
   **Requires Minecraft version _1.21.4_ or above!**
+
+minimum: |-
+  !!! info ""
+      **Minimal required version:**

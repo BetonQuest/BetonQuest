@@ -1,7 +1,6 @@
 # [ItemsAdder](https://www.spigotmc.org/resources/73355/)
 
-!!! info ""
-    **Required ItemsAdder version: _4.0.10_ or above**
+@snippet:versions:minimum@ _4.0.10_
 
 ## Items
 

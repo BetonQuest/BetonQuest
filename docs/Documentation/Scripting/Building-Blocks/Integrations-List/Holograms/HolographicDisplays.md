@@ -1,5 +1,7 @@
 # [HolographicDisplays](https://dev.bukkit.org/projects/holographic-displays)
 
+@snippet:versions:minimum@ _3.0.5_
+
 This is an older hologram plugin.
 
 !!! info
