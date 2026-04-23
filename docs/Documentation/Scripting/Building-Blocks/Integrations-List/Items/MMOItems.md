@@ -7,6 +7,7 @@
 MMOItems usage is integrated to the [Items](../../../../Features/Items.md) system and thus used for actions and 
 conditions.
 
+The item can be adjusted to the players level by adding the `scale` option.  
 The [`soulbound`](https://docs.phoenixdevt.fr/mmoitems/features/soulbound.html) keyword can be used
 with an optional `amount`, defaulting to `1`.  
 In addition, you can also add `quest-item` argument to tag them as "QuestItem".
@@ -14,7 +15,7 @@ In addition, you can also add `quest-item` argument to tag them as "QuestItem".
 ```YAML title="Example"
 items:
   crown: "mmoitem ARMOR SKELETON_CROWN"
-  boundBoot: "mmoitem ARMOR TRAVELERS_BOOTS soulbound:100"
+  boundBoot: "mmoitem ARMOR TRAVELERS_BOOTS scale soulbound:100"
   gem: "mmoitem GEMS SPEED_GEM quest-item"
 conditions:
   hasCrown: "hand crown"
