@@ -23,6 +23,7 @@ import org.betonquest.betonquest.compatibility.packetevents.interceptor.history.
 import org.betonquest.betonquest.compatibility.packetevents.interceptor.history.NoneChatHistory;
 import org.betonquest.betonquest.compatibility.packetevents.interceptor.history.PacketChatHistory;
 import org.betonquest.betonquest.compatibility.packetevents.passenger.FakeArmorStandPassengerController;
+import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.menu.MenuConvIOFactory;
 import org.betonquest.betonquest.conversation.menu.input.ConversationAction;
 import org.betonquest.betonquest.conversation.menu.input.ConversationSession;
@@ -72,7 +73,7 @@ public class PacketEventsIntegrator implements Integration {
                 new FakeArmorStandPassengerController(plugin, packetEventsAPI, player, control, setSpeed);
         componentLoader.get(ConversationIORegistry.class).register("packetevents",
                 new MenuConvIOFactory(api.loggerFactory(), pluginConfig, plugin, api.localizations(), inputFunction, componentLoader.get(TextParser.class),
-                        api.fonts(), plugin.getConversationColors()));
+                        api.fonts(), componentLoader.get(ConversationColors.class)));
 
         final boolean displayHistory = pluginConfig.getBoolean("conversation.interceptor.display_history");
         final ChatHistory chatHistory = displayHistory ? getPacketChatHistory(packetEventsAPI, api.bukkit()) : new NoneChatHistory();
