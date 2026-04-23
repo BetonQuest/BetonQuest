@@ -171,6 +171,15 @@ setupCommit() {
   echo '    Updating BetonQuest pom.xml file...'
   ./mvnw versions:set-property -DgenerateBackupPoms=false -Dproperty=revision -DnewVersion="$NEW_VERSION" --projects -:lib,-:api 2>&1 > /dev/null | sed 's/^/        /'
 
+  for module in $(./mvnw -DforceStdout help:evaluate -Dexpression=project.modules | sed -n 's:.*<string>\(.*\)</string>.*:\1:p'); do
+    module="${module#code/}"
+    case "$module" in
+      api|lib|"") continue ;;
+    esac
+    find . -name "pom.xml" -type f -exec sed -i \
+      "s|<betonquest\.${module}\.version>[^<]*</betonquest\.${module}\.version>|<betonquest.${module}.version>4.0.0\${changelist}</betonquest.${module}.version>|g" {} +
+  done
+
   echo '    Updating CHANGELOG.md file...'
   NEW_CHANGELOG="## \[Unreleased\] - \${maven.build.timestamp}\n### Added\n### Changed\n### Deprecated\n### Removed\n### Fixed\n### Security\n"
   sed -i "s~## \[Unreleased\] - \${maven\.build\.timestamp}~$NEW_CHANGELOG\n## \[$CURRENT_VERSION\] - $RELEASE_TIME~g" CHANGELOG.md 2>&1 > /dev/null | sed 's/^/        /'
@@ -185,6 +194,10 @@ bumpCommit() {
     echo "    Updating pom.xml files for mudules $BUMP_MODULES..."
     FORMATTED_BUMP_MODULES=":${BUMP_MODULES//,/,:}"
     ./mvnw versions:set-property -DgenerateBackupPoms=false -Dproperty=revision -DnewVersion="$NEW_VERSION" --projects "$FORMATTED_BUMP_MODULES" 2>&1 > /dev/null | sed 's/^/        /'
+
+    for module in $(echo "$BUMP_MODULES" | tr ',' ' '); do
+      find . -name "pom.xml" -type f -exec sed -i "s|<betonquest\.${module}\.version>[^<]*</betonquest\.${module}\.version>|<betonquest.${module}.version>4.0.0\${changelist}</betonquest.${module}.version>|g" {} +
+    done
 
     if [ ! "$(git status --porcelain)" ]; then
       echo 'No version to bump to was found!'
