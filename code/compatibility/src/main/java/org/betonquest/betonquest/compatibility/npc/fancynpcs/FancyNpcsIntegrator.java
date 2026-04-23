@@ -2,8 +2,12 @@ package org.betonquest.betonquest.compatibility.npc.fancynpcs;
 
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.integration.Integration;
+import org.betonquest.betonquest.api.integration.policy.Policy;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.service.npc.NpcRegistry;
+import org.betonquest.betonquest.lib.integration.policy.Policies;
+import org.betonquest.betonquest.lib.version.DefaultVersionType;
+import org.betonquest.betonquest.lib.version.VersionParser;
 import org.bukkit.plugin.Plugin;
 
 /**
@@ -17,6 +21,11 @@ public class FancyNpcsIntegrator implements Integration {
     public static final String PREFIX = "FancyNpcs";
 
     /**
+     * The minimum required version of FancyNpcs.
+     */
+    public static final String REQUIRED_VERSION = "2.4.1";
+
+    /**
      * The plugin instance to run tasks on.
      */
     private final Plugin plugin;
@@ -28,6 +37,17 @@ public class FancyNpcsIntegrator implements Integration {
      */
     public FancyNpcsIntegrator(final Plugin plugin) {
         this.plugin = plugin;
+    }
+
+    /**
+     * Checks for the valid version range of the 'FancyHolograms' plugin.
+     *
+     * @return whether the correct version is installed or not
+     */
+    public static Policy[] getPolicies() {
+        return Policies.pluginVersionRange(PREFIX,
+                VersionParser.parse(DefaultVersionType.SIMPLE_SEMANTIC_VERSION, REQUIRED_VERSION),
+                VersionParser.parse(DefaultVersionType.SIMPLE_SEMANTIC_VERSION, "2.999"));
     }
 
     @Override

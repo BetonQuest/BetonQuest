@@ -10,6 +10,11 @@ import org.betonquest.betonquest.lib.integration.IntegrationTemplate;
 public class MythicLibIntegrator extends IntegrationTemplate {
 
     /**
+     * The minimum required version of MythicLib.
+     */
+    public static final String REQUIRED_VERSION = "1.7.1-SNAPSHOT";
+
+    /**
      * Creates a new MythicLib integrator.
      */
     public MythicLibIntegrator() {

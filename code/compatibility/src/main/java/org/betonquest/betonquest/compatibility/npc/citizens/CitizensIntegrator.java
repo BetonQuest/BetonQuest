@@ -32,6 +32,11 @@ import org.bukkit.event.HandlerList;
 public class CitizensIntegrator implements Integration {
 
     /**
+     * The minimum required version of Citizens.
+     */
+    public static final String REQUIRED_VERSION = "2.0.33-SNAPSHOT";
+
+    /**
      * Handles NPC movement of the {@link CitizensMoveAction}.
      */
     @SuppressWarnings("NullAway.Init")

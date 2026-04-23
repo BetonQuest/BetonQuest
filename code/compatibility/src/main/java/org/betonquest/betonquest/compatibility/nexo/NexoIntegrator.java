@@ -11,6 +11,11 @@ import org.betonquest.betonquest.lib.integration.IntegrationTemplate;
 public class NexoIntegrator extends IntegrationTemplate {
 
     /**
+     * The minimum required version of Nexo.
+     */
+    public static final String REQUIRED_VERSION = "1.17.0";
+
+    /**
      * The empty default constructor.
      */
     public NexoIntegrator() {

@@ -20,6 +20,11 @@ import java.util.Objects;
 public class MagicIntegrator implements Integration {
 
     /**
+     * The minimum required version of Magic.
+     */
+    public static final String REQUIRED_VERSION = "10.2";
+
+    /**
      * Creates a new Integrator.
      */
     public MagicIntegrator() {

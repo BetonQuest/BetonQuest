@@ -11,6 +11,11 @@ import org.betonquest.betonquest.lib.integration.IntegrationTemplate;
 public class CraftEngineIntegrator extends IntegrationTemplate {
 
     /**
+     * The minimum required version of CraftEngine.
+     */
+    public static final String REQUIRED_VERSION = "0.0.66";
+
+    /**
      * The empty default constructor.
      */
     public CraftEngineIntegrator() {

@@ -21,6 +21,11 @@ import org.betonquest.betonquest.lib.integration.IntegrationTemplate;
 public class MMOCoreIntegrator extends IntegrationTemplate {
 
     /**
+     * The minimum required version of MMOCore.
+     */
+    public static final String REQUIRED_VERSION = "1.12-SNAPSHOT";
+
+    /**
      * The default constructor.
      */
     public MMOCoreIntegrator() {

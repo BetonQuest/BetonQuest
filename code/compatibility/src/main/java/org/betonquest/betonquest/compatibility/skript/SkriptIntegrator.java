@@ -10,6 +10,11 @@ import org.betonquest.betonquest.api.integration.Integration;
 public class SkriptIntegrator implements Integration {
 
     /**
+     * The minimum required version of Skript.
+     */
+    public static final String REQUIRED_VERSION = "5.0.0";
+
+    /**
      * The default constructor.
      */
     public SkriptIntegrator() {

@@ -10,6 +10,11 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 public class McMMOIntegrator implements Integration {
 
     /**
+     * The minimum required version of McMMO.
+     */
+    public static final String REQUIRED_VERSION = "2.1.227";
+
+    /**
      * Creates a new Integrator.
      */
     public McMMOIntegrator() {

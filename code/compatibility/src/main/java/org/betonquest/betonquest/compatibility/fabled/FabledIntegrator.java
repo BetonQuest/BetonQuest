@@ -11,6 +11,11 @@ import org.betonquest.betonquest.lib.integration.IntegrationTemplate;
 public class FabledIntegrator extends IntegrationTemplate {
 
     /**
+     * The minimum required version of Fabled.
+     */
+    public static final String REQUIRED_VERSION = "1.0.2-R1";
+
+    /**
      * Creates a new Integrator.
      */
     public FabledIntegrator() {

@@ -16,6 +16,11 @@ import org.betonquest.betonquest.lib.integration.IntegrationTemplate;
 public class HeroesIntegrator extends IntegrationTemplate {
 
     /**
+     * The minimum required version of Heroes.
+     */
+    public static final String REQUIRED_VERSION = "7.3.0";
+
+    /**
      * Creates a new Integrator.
      */
     public HeroesIntegrator() {

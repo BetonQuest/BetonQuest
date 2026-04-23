@@ -18,6 +18,11 @@ import org.bukkit.plugin.ServicesManager;
 public class VaultIntegrator implements Integration {
 
     /**
+     * The minimum required version of Vault.
+     */
+    public static final String REQUIRED_VERSION = "1.7.1";
+
+    /**
      * Bukkit services manager.
      */
     private final ServicesManager servicesManager;

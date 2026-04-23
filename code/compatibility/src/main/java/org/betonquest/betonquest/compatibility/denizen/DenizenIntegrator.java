@@ -10,6 +10,11 @@ import org.betonquest.betonquest.compatibility.denizen.action.DenizenTaskScriptA
 public class DenizenIntegrator implements Integration {
 
     /**
+     * The minimum required version of Denizens.
+     */
+    public static final String REQUIRED_VERSION = "1.2.5-SNAPSHOT";
+
+    /**
      * The default constructor.
      */
     public DenizenIntegrator() {
