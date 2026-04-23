@@ -35,6 +35,11 @@ public class MMOQuestItemWrapper implements QuestItemWrapper {
     private final Argument<String> itemId;
 
     /**
+     * Whether to scale the item with the player.
+     */
+    private final FlagArgument<Boolean> scale;
+
+    /**
      * Whether to add the soul bound stat to the generated item.
      */
     private final FlagArgument<Number> soulBound;
@@ -45,13 +50,15 @@ public class MMOQuestItemWrapper implements QuestItemWrapper {
      * @param mmoPlugin the mmo items plugin instance to get the item
      * @param itemType  the item type
      * @param itemId    the item id
+     * @param scale     whether to scale the item with the player
      * @param soulBound whether to add the soul bound stat to the generated item
      */
     public MMOQuestItemWrapper(final MMOItems mmoPlugin, final Argument<Type> itemType, final Argument<String> itemId,
-                               final FlagArgument<Number> soulBound) {
+                               final FlagArgument<Boolean> scale, final FlagArgument<Number> soulBound) {
         this.mmoPlugin = mmoPlugin;
         this.itemType = itemType;
         this.itemId = itemId;
+        this.scale = scale;
         this.soulBound = soulBound;
     }
 
@@ -60,7 +67,7 @@ public class MMOQuestItemWrapper implements QuestItemWrapper {
         final Type type = itemType.getValue(profile);
         final String identifier = itemId.getValue(profile);
         final MMOItem item;
-        if (profile == null) {
+        if (profile == null || !scale.getValue(profile).orElse(false)) {
             item = mmoPlugin.getMMOItem(type, identifier);
         } else {
             item = mmoPlugin.getMMOItem(type, identifier, PlayerData.get(profile.getPlayerUUID()));

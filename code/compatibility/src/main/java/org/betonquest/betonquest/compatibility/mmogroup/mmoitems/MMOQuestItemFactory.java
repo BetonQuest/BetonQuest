@@ -32,7 +32,8 @@ public class MMOQuestItemFactory implements TypeFactory<QuestItemWrapper> {
     public QuestItemWrapper parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<Type> itemType = instruction.parse(MMOItemsUtils::getMMOItemType).get();
         final Argument<String> itemId = instruction.string().get();
+        final FlagArgument<Boolean> scale = instruction.bool().getFlag("scale", true);
         final FlagArgument<Number> soulBound = instruction.number().getFlag("soulBound", 1);
-        return new MMOQuestItemWrapper(mmoPlugin, itemType, itemId, soulBound);
+        return new MMOQuestItemWrapper(mmoPlugin, itemType, itemId, scale, soulBound);
     }
 }
