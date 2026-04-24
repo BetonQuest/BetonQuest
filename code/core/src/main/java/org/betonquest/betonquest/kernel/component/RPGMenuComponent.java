@@ -48,7 +48,7 @@ public class RPGMenuComponent extends AbstractCoreComponent {
         return Set.of(QuestPackageManager.class, BetonQuestLoggerFactory.class, ConfigAccessor.class,
                 ProfileProvider.class, ArgumentParsers.class, Instructions.class, Identifiers.class,
                 ParsedSectionTextCreator.class, Localizations.class, Reloader.class,
-                ActionManager.class, ConditionManager.class, ProcessorDataLoader.class,
+                ActionManager.class, ConditionManager.class, ProcessorDataLoader.class, BetonQuestApi.class,
                 ActionRegistry.class, ConditionRegistry.class, ObjectiveRegistry.class, PlaceholderRegistry.class);
     }
 

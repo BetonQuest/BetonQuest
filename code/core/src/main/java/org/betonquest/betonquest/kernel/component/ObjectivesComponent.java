@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.kernel.component;
 
+import com.google.common.base.Suppliers;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
@@ -60,7 +61,6 @@ public class ObjectivesComponent extends AbstractCoreComponent {
         final PluginManager pluginManager = getDependency(PluginManager.class);
         final ProfileProvider profileProvider = getDependency(ProfileProvider.class);
         final Plugin plugin = getDependency(Plugin.class);
-        final PlayerDataStorage playerDataStorage = getDependency(PlayerDataStorage.class);
         final ProcessorDataLoader processorDataLoader = getDependency(ProcessorDataLoader.class);
 
         final DefaultObjectiveServiceProvider objectiveServiceProvider = new DefaultObjectiveServiceProvider(plugin, conditionProcessor, actionProcessor,
@@ -70,7 +70,7 @@ public class ObjectivesComponent extends AbstractCoreComponent {
         final ObjectiveTypeRegistry objectiveTypeRegistry = new ObjectiveTypeRegistry(loggerFactory.create(ObjectiveTypeRegistry.class));
         final ObjectiveProcessor objectiveProcessor = new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class),
                 objectiveTypeRegistry, objectiveIdentifierFactory, pluginManager,
-                objectiveServiceProvider, instructions, plugin, playerDataStorage);
+                objectiveServiceProvider, instructions, plugin, Suppliers.memoize(() -> getDependency(PlayerDataStorage.class)));
 
         dependencyProvider.take(ObjectiveIdentifierFactory.class, objectiveIdentifierFactory);
         dependencyProvider.take(ObjectiveTypeRegistry.class, objectiveTypeRegistry);

@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 
 /**
  * Stores Objectives and starts/stops/resumes them.
@@ -58,7 +59,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
     /**
      * Storage for player data storage.
      */
-    private final PlayerDataStorage playerDataStorage;
+    private final Supplier<PlayerDataStorage> playerDataStorage;
 
     /**
      * Loaded auto-once objectives.
@@ -90,7 +91,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
     public ObjectiveProcessor(final BetonQuestLogger log, final ObjectiveTypeRegistry objectiveTypes,
                               final IdentifierFactory<ObjectiveIdentifier> objectiveIdentifierFactory,
                               final PluginManager pluginManager, final ObjectiveServiceProvider service,
-                              final Instructions instructionApi, final Plugin plugin, final PlayerDataStorage playerDataStorage) {
+                              final Instructions instructionApi, final Plugin plugin, final Supplier<PlayerDataStorage> playerDataStorage) {
         super(log, objectiveIdentifierFactory, "Objective", "objectives");
         this.instructionApi = instructionApi;
         this.pluginManager = pluginManager;
@@ -156,7 +157,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
         final ObjectiveService service = objective.getService();
         for (final Map.Entry<Profile, String> entry : service.getData().entrySet()) {
             final Profile profile = entry.getKey();
-            playerDataStorage.get(profile).addRawObjective(service.getObjectiveID(), entry.getValue());
+            playerDataStorage.get().get(profile).addRawObjective(service.getObjectiveID(), entry.getValue());
         }
     }
 
@@ -198,7 +199,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
             final Objective objective = get(objectiveID);
             final String defaultInstruction = objective.getService().getDefaultData(profile);
             objectiveService.start(objective.getObjectiveID(), profile, defaultInstruction, ObjectiveState.NEW);
-            playerDataStorage.get(profile).addObjToDB(objectiveID, defaultInstruction);
+            playerDataStorage.get().get(profile).addObjToDB(objectiveID, defaultInstruction);
         } catch (final QuestException e) {
             log.warn("Could not create new objective '%s' for profile '%s': The objective instruction could not be resolved: %s"
                     .formatted(objectiveID, profile, e.getMessage()), e);
