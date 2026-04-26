@@ -16,11 +16,11 @@
   <description>Provides the library of BetonQuest</description>
 
   <properties>
-    <revision>1.0.0</revision>
+    <revision>3.0.0</revision>
     <changelist>-SNAPSHOT</changelist>
 
     <!-- module versions -->
-    <api.version>3.0.0${changelist}</api.version>
+    <betonquest.api.version>3.0.0${changelist}</betonquest.api.version>
 
     <!-- dependency versions -->
     <paper-api.version>1.18.2-R0.1-SNAPSHOT</paper-api.version>
@@ -38,7 +38,7 @@
     <dependency>
       <groupId>org.betonquest.betonquest</groupId>
       <artifactId>api</artifactId>
-      <version>${api.version}</version>
+      <version>${betonquest.api.version}</version>
     </dependency>
 
     <!-- from papermc repository -->

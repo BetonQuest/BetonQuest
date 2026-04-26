@@ -16,12 +16,12 @@
   <description>Provides the 3rd-party Compatibility of BetonQuest</description>
 
   <properties>
-    <revision>1.0.0</revision>
+    <revision>3.0.0</revision>
     <changelist>-SNAPSHOT</changelist>
     <pit.report.skip>true</pit.report.skip>
 
     <!-- module versions -->
-    <core.version>1.0.0${changelist}</core.version>
+    <betonquest.core.version>3.0.0${changelist}</betonquest.core.version>
 
     <!-- dependency versions -->
     <paper-api.version>1.18.2-R0.1-SNAPSHOT</paper-api.version>
@@ -69,7 +69,7 @@
     <dependency>
       <groupId>org.betonquest.betonquest</groupId>
       <artifactId>core</artifactId>
-      <version>${core.version}</version>
+      <version>${betonquest.core.version}</version>
       <scope>provided</scope>
     </dependency>
 
