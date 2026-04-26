@@ -46,6 +46,11 @@ public class ObjectivesComponent extends AbstractCoreComponent {
     }
 
     @Override
+    protected boolean requires(final Class<?> type) {
+        return PlayerDataStorage.class.isAssignableFrom(type) || super.requires(type);
+    }
+
+    @Override
     public Set<Class<?>> provides() {
         return Set.of(ObjectiveIdentifierFactory.class, ObjectiveTypeRegistry.class, ObjectiveProcessor.class, DefaultObjectives.class);
     }
