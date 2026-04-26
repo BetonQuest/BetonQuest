@@ -18,7 +18,7 @@ printHelp() {
   echo '        Additionally a Pull Request is created for the selected remote repository and branch.'
   echo '    Bump'
   echo '        Bump the version of lazy versioned modules to the current version of BetonQuest.'
-  echo '        Selected either API & Library or just the Library to bump.'
+  echo '        Select either API & Library or just the Library to bump.'
   echo
   echo '    A value in (parentheses) before an input value is the default value if no input is given.'
 }
@@ -65,7 +65,7 @@ selectAction() {
         exit 1
         ;;
   esac
-  deletePreviousLines 7
+  deletePreviousLines 8
   echo "Action: $ACTION_TYPE"
 }
 
@@ -83,6 +83,8 @@ version() {
   printNewSection
   echo 'Version:'
   versionCurrent
+  releasePrepareModule "api"
+  releasePrepareModule "lib"
   if [ "$ACTION_DO_SETUP" = true ]; then
     promptNewVersion
     promptShouldBumpVersion
@@ -93,23 +95,26 @@ version() {
 }
 
 versionCurrent() {
-  CURRENT_VERSION="$(./mvnw --raw-streams help:evaluate -Dexpression=revision -q -DforceStdout)"
-  echo "    Current: $CURRENT_VERSION"
+  CURRENT_VERSION="$(./mvnw -B --raw-streams help:evaluate -Dexpression=revision -q -DforceStdout)"
+  if [ "$(git tag -l "v$CURRENT_VERSION")" ]; then
+    echo "    betonquest: $CURRENT_VERSION (already released)"
+  else
+    echo "    betonquest: $CURRENT_VERSION"
+  fi
 }
 
 releasePrepare() {
   printNewSection
   echo 'Release:'
   promptReleaseRemote
-  releasePrepareModule "api"
-  releasePrepareModule "lib"
 }
 
 releasePrepareModule() {
   local module="$1"
-  CURRENT_MODULE_VERSION="$(./mvnw --raw-streams help:evaluate -Dexpression=revision -q -DforceStdout --projects ":$module")"
+  CURRENT_MODULE_VERSION="$(./mvnw -B --raw-streams help:evaluate -Dexpression=revision -q -DforceStdout --projects ":$module")"
   if [ "$(git tag -l "v$CURRENT_MODULE_VERSION-$module")" ]; then
-    echo "    $module: up to date"
+    echo "    $module: $CURRENT_MODULE_VERSION (already released)"
+    printf -v "CURRENT_MODULE_VERSION_$module" '%s' ""
   else
     echo "    $module: $CURRENT_MODULE_VERSION"
     printf -v "CURRENT_MODULE_VERSION_$module" '%s' "v$CURRENT_MODULE_VERSION-$module"
@@ -119,24 +124,24 @@ releasePrepareModule() {
 releasePublish() {
   echo 'Release'
 
-  echo '    Creating version tag...'
+  echo '    Creating version tag for betonquest...'
   git tag "v$CURRENT_VERSION" HEAD 2>&1 > /dev/null | sed 's/^/        /'
-  TAGS_TO_PUSH="v$CURRENT_VERSION"
+  TAGS_TO_PUSH=("v$CURRENT_VERSION")
 
   if [ -n "$CURRENT_MODULE_VERSION_api" ]; then
     echo '    Creating version tag for api...'
     git tag "$CURRENT_MODULE_VERSION_api" HEAD 2>&1 > /dev/null | sed 's/^/        /'
-    TAGS_TO_PUSH="$TAGS_TO_PUSH $CURRENT_MODULE_VERSION_api"
+    TAGS_TO_PUSH+=("$CURRENT_MODULE_VERSION_api")
   fi
 
   if [ -n "$CURRENT_MODULE_VERSION_lib" ]; then
     echo '    Creating version tag for lib...'
     git tag "$CURRENT_MODULE_VERSION_lib" HEAD 2>&1 > /dev/null | sed 's/^/        /'
-    TAGS_TO_PUSH="$TAGS_TO_PUSH $CURRENT_MODULE_VERSION_lib"
+    TAGS_TO_PUSH+=("$CURRENT_MODULE_VERSION_lib")
   fi
 
-  echo '    Pushing version tag...'
-  git push "$RELEASE_REMOTE_REPOSITORY" "$TAGS_TO_PUSH" 2>&1 > /dev/null | sed 's/^/        /'
+  echo '    Pushing version tags...'
+  git push "$RELEASE_REMOTE_REPOSITORY" "${TAGS_TO_PUSH[@]}" 2>&1 > /dev/null | sed 's/^/        /'
 
   echo '    DONE'
 }
@@ -169,15 +174,15 @@ setupCommit() {
   echo 'Setup'
 
   echo '    Updating BetonQuest pom.xml file...'
-  ./mvnw versions:set-property -DgenerateBackupPoms=false -Dproperty=revision -DnewVersion="$NEW_VERSION" --projects -:lib,-:api 2>&1 > /dev/null | sed 's/^/        /'
+  ./mvnw -B versions:set-property -DgenerateBackupPoms=false -Dproperty=revision -DnewVersion="$NEW_VERSION" --projects -:lib,-:api 2>&1 > /dev/null | sed 's/^/        /'
 
-  for module in $(./mvnw -DforceStdout help:evaluate -Dexpression=project.modules | sed -n 's:.*<string>\(.*\)</string>.*:\1:p'); do
+  for module in $(./mvnw -B -DforceStdout help:evaluate -Dexpression=project.modules | sed -n 's:.*<string>\(.*\)</string>.*:\1:p'); do
     module="${module#code/}"
     case "$module" in
       api|lib|"") continue ;;
     esac
     find . -name "pom.xml" -type f -exec sed -i \
-      "s|<betonquest\.${module}\.version>[^<]*</betonquest\.${module}\.version>|<betonquest.${module}.version>4.0.0\${changelist}</betonquest.${module}.version>|g" {} +
+      "s|<betonquest\.${module}\.version>[^<]*</betonquest\.${module}\.version>|<betonquest.${module}.version>${NEW_VERSION}\${changelist}</betonquest.${module}.version>|g" {} +
   done
 
   echo '    Updating CHANGELOG.md file...'
@@ -185,40 +190,42 @@ setupCommit() {
   sed -i "s~## \[Unreleased\] - \${maven\.build\.timestamp}~$NEW_CHANGELOG\n## \[$CURRENT_VERSION\] - $RELEASE_TIME~g" CHANGELOG.md 2>&1 > /dev/null | sed 's/^/        /'
 
   echo '    Committing changed files...'
-  git commit --all --message="Bump version of BetonQuest to $NEW_VERSION" 2>&1 > /dev/null | sed 's/^/        /'
+  git -c core.safecrlf=false commit --all --message="Bump version of BetonQuest to $NEW_VERSION" 2>&1 > /dev/null | sed 's/^/        /'
 }
 
 bumpCommit() {
-    echo 'Bump'
+  echo 'Bump'
 
-    echo "    Updating pom.xml files for mudules $BUMP_MODULES..."
-    FORMATTED_BUMP_MODULES=":${BUMP_MODULES//,/,:}"
-    ./mvnw versions:set-property -DgenerateBackupPoms=false -Dproperty=revision -DnewVersion="$NEW_VERSION" --projects "$FORMATTED_BUMP_MODULES" 2>&1 > /dev/null | sed 's/^/        /'
+  echo "    Updating pom.xml files for mudules $BUMP_MODULES..."
+  FORMATTED_BUMP_MODULES=":${BUMP_MODULES//,/,:}"
+  ./mvnw -B versions:set-property -DgenerateBackupPoms=false -Dproperty=revision -DnewVersion="$NEW_VERSION" --projects "$FORMATTED_BUMP_MODULES" 2>&1 > /dev/null | sed 's/^/        /'
 
-    for module in $(echo "$BUMP_MODULES" | tr ',' ' '); do
-      find . -name "pom.xml" -type f -exec sed -i "s|<betonquest\.${module}\.version>[^<]*</betonquest\.${module}\.version>|<betonquest.${module}.version>4.0.0\${changelist}</betonquest.${module}.version>|g" {} +
-    done
+  for module in $(echo "$BUMP_MODULES" | tr ',' '\t'); do
+    find . -name "pom.xml" -type f -exec sed -i \
+      "s|<betonquest\.${module}\.version>[^<]*</betonquest\.${module}\.version>|<betonquest.${module}.version>${NEW_VERSION}\${changelist}</betonquest.${module}.version>|g" {} +
+  done
 
-    if [ ! "$(git status --porcelain)" ]; then
-      echo 'No version to bump to was found!'
-      exit 1
-    fi
+  if [ ! "$(git status --porcelain)" ]; then
+    echo 'No version to bump to was found!'
+    exit 1
+  fi
 
-    echo '    Committing changed files...'
-    git commit --all --message="Bump version of $BUMP_MODULES to $NEW_VERSION" 2>&1 > /dev/null | sed 's/^/        /'
+  echo '    Committing changed files...'
+  git -c core.safecrlf=false commit --all --message="Bump version of $BUMP_MODULES to $NEW_VERSION" 2>&1 > /dev/null | sed 's/^/        /'
 }
 
 finalizeAndPublish() {
-    echo '    Pushing committed changes...'
-    git push "$SETUP_REMOTE_REPOSITORY" "HEAD:$SETUP_REMOTE_BRANCH" 2>&1 > /dev/null | sed 's/^/        /'
+  echo 'Finalize'
+  echo '    Pushing committed changes...'
+  git push "$SETUP_REMOTE_REPOSITORY" "HEAD:$SETUP_REMOTE_BRANCH" 2>&1 > /dev/null | sed 's/^/        /'
 
-    echo '    Creating Pull Request...'
-    setupPublishCreatePullRequest
+  echo '    Creating Pull Request...'
+  setupPublishCreatePullRequest
 
-    echo '    Resetting current branch...'
-    git reset --hard HEAD~1 2>&1 > /dev/null | sed 's/^/        /'
+  echo '    Resetting current branch...'
+  git reset --hard "$PREVIOUS_HEAD" 2>&1 > /dev/null | sed 's/^/        /'
 
-    echo '    DONE'
+  echo '    DONE'
 }
 
 setupPublishCreatePullRequest() {
@@ -232,7 +239,7 @@ setupPublishCreatePullRequest() {
         --body "This is an automatically created PR from the release script" \
         --base "$CURRENT_BRANCH" \
         --head "$SETUP_REMOTE_SLUG:$SETUP_REMOTE_BRANCH" \
-        --repo "BetonQuest/BetonQuest" \
+        --repo "$SETUP_REMOTE_SLUG/BetonQuest" \
         2>&1 > /dev/null | sed 's/^/        /'
         return
     else
@@ -256,23 +263,23 @@ setupPublishCreatePullRequestSlug() {
 bumpPrepare() {
   printNewSection
   echo 'Bump:'
-  echo '    1. api'
-  echo '    2. lib'
-  echo '    3. api & lib'
+  echo '    1. api & lib'
+  echo '    2. api'
+  echo '    3. lib'
   echo
   echo '    ? Select the module(s) you want to bump'
   echo -n '    Selection: '
 
   read -r ACTION
   case "$ACTION" in
-    1|'api')
+    1|'api & lib')
+        BUMP_MODULES='api,lib'
+        ;;
+    2|'api')
         BUMP_MODULES='api'
         ;;
-    2|'lib')
+    3|'lib')
         BUMP_MODULES='lib'
-        ;;
-    3|'api & lib')
-        BUMP_MODULES='api,lib'
         ;;
     *)  printNewSection
         echo 'You need to select a valid module to bump!'
@@ -280,9 +287,9 @@ bumpPrepare() {
         ;;
   esac
   deletePreviousLines 6
-  echo "Bump: $BUMP_MODULES"
+  echo "    Modules: $BUMP_MODULES"
 
-  if [ -z "$NEW_VERSION" ]; then
+  if [ -z ${NEW_VERSION+x} ]; then
     NEW_VERSION="$CURRENT_VERSION"
     promptSetupRemote
     promptSetupBranch "$NEW_VERSION"
@@ -298,6 +305,7 @@ goToRootDirectory
 source "./.github/scripts/release_utils.sh"
 source "./.github/scripts/release_prompts.sh"
 
+PREVIOUS_HEAD=$(git rev-parse HEAD)
 printHelp
 checkRequirements
 selectAction

@@ -49,7 +49,7 @@ prompt() {
 promptNewVersion() {
   prompt \
     "" \
-    "New" \
+    "New betonquest version" \
     NEW_VERSION \
     "" \
     "You need to enter a new version!"
