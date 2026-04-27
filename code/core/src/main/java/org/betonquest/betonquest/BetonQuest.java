@@ -88,7 +88,7 @@ public class BetonQuest extends JavaPlugin {
         this.coreComponentLoader.init(IntegrationManager.class, integrationManager);
 
         initPluginDependencies(coreComponentLoader);
-        BetonQuestComponents.createDefaults(this.getFile()).forEach(coreComponentLoader::register);
+        BetonQuestComponents.createDefaults().forEach(coreComponentLoader::register);
     }
 
     @Override

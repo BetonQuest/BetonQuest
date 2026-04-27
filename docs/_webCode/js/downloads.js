@@ -32,10 +32,11 @@ document$.subscribe(async () => {
   async function loadBuilds(idKey, builds) {
     const latestBuild = document.getElementsByClassName("download-latest-" + idKey)[0];
     if (builds.length > 0) {
-      latestBuild.textContent = builds[0].version;
+      const version = builds[0].version;
+      latestBuild.textContent = version;
       const downloadUrl = builds[0].downloadUrl;
       latestBuild.onclick = function () {
-        downloadWithRename(downloadUrl, "BetonQuest.jar");
+        downloadWithRename(downloadUrl, "BetonQuest-" + version + ".jar");
       };
       resetDisabled(latestBuild);
     } else {
@@ -56,10 +57,11 @@ document$.subscribe(async () => {
         const li = document.createElement("li");
         li.style.cssText = "padding: 0";
         const a = document.createElement("a");
-        a.textContent = build.version;
+        const version = build.version;
+        a.textContent = version;
         a.href = "#";
         a.onclick = function () {
-          downloadWithRename(build.downloadUrl, "BetonQuest.jar");
+          downloadWithRename(build.downloadUrl, "BetonQuest-" + version + ".jar");
         };
         a.style.cssText = "width: 100%; text-align: center;";
         a.classList.add("md-button");

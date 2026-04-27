@@ -248,7 +248,7 @@ public class Updater {
                     + getUpdateVersion() + "'! You can execute '/bq update' again to update.");
         }
         if (latest.getValue() == null) {
-            if (updateDownloader.alreadyDownloaded()) {
+            if (updateDownloader.alreadyDownloaded(latest.getKey())) {
                 throw new QuestException("The update was already downloaded! Restart the server to update the plugin.");
             }
             throw new QuestException("The updater did not find an update!"
@@ -258,7 +258,7 @@ public class Updater {
 
     private void executeUpdate() throws QuestException {
         try {
-            updateDownloader.downloadToFile(new URL(latest.getValue()));
+            updateDownloader.downloadToFile(latest.getKey(), new URL(latest.getValue()));
             latest = Pair.of(latest.getKey(), null);
         } catch (final MalformedURLException e) {
             throw new QuestException("There was an error resolving the url '" + latest.getValue() + "'! Reason: " + e.getMessage(), e);

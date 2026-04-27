@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.io.File;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -33,7 +32,7 @@ class BetonQuestComponentsIT {
 
     @BeforeEach
     void setUp() {
-        this.components = BetonQuestComponents.createDefaults(new File("test.jar"));
+        this.components = BetonQuestComponents.createDefaults();
     }
 
     @Test
@@ -60,7 +59,7 @@ class BetonQuestComponentsIT {
 
         @Test
         void invalidate_blocking_dependencies() {
-            final Set<CoreComponent> modifiedComponents = BetonQuestComponents.createDefaults(new File("test.jar"));
+            final Set<CoreComponent> modifiedComponents = BetonQuestComponents.createDefaults();
             modifiedComponents.removeIf(comp -> comp instanceof QuestPackageManagerComponent);
             assertThrows(IllegalStateException.class, () -> DependencyHelper.topologicalOrder(modifiedComponents, loadedDependencies), "Missing dependencies should be detected");
         }

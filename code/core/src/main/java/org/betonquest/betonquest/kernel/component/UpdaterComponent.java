@@ -23,10 +23,8 @@ import org.betonquest.betonquest.web.updater.source.implementations.ReposiliteRe
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import java.io.File;
 import java.time.InstantSource;
 import java.util.List;
 import java.util.Set;
@@ -62,18 +60,10 @@ public class UpdaterComponent extends AbstractCoreComponent {
     public static final String REPO_API_URL = "https://api.github.com/repos/BetonQuest/BetonQuest";
 
     /**
-     * The plugin file sourced from {@link JavaPlugin}.
-     */
-    private final File pluginFile;
-
-    /**
      * Creates a new UpdaterComponent.
-     *
-     * @param pluginFile the plugin file
      */
-    public UpdaterComponent(final File pluginFile) {
+    public UpdaterComponent() {
         super();
-        this.pluginFile = pluginFile;
     }
 
     @Override
@@ -97,10 +87,8 @@ public class UpdaterComponent extends AbstractCoreComponent {
         final BetonQuestLoggerFactory loggerFactory = getDependency(BetonQuestLoggerFactory.class);
         final Reloader reloader = getDependency(Reloader.class);
 
-        final File updateFolder = server.getUpdateFolderFile();
-        final File file = new File(updateFolder, pluginFile.getName());
         final DownloadSource downloadSource = new TempFileDownloadSource(new WebDownloadSource());
-        final UpdateDownloader updateDownloader = new UpdateDownloader(downloadSource, file);
+        final UpdateDownloader updateDownloader = new UpdateDownloader(downloadSource, server.getUpdateFolderFile(), plugin.getDescription());
         final ReposiliteReleaseAndDevelopmentSource reposiliteReleaseAndDevelopmentSource =
                 new ReposiliteReleaseAndDevelopmentSource(REPOSILITE_URL, REPOSITORY_NAME, POM_MAPPER_ID, new WebContentSource());
         final GitHubReleaseSource gitHubReleaseSource = new GitHubReleaseSource(REPO_API_URL, new WebContentSource(GitHubReleaseSource.HTTP_CODE_HANDLER));

@@ -60,9 +60,7 @@ import org.betonquest.betonquest.kernel.component.types.PlaceholderTypeComponent
 import org.betonquest.betonquest.kernel.component.types.ScheduleTypesComponent;
 import org.betonquest.betonquest.kernel.component.types.TextParserTypesComponent;
 import org.betonquest.betonquest.lib.dependency.component.RequirementComponentWrapper;
-import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -78,12 +76,11 @@ public final class BetonQuestComponents {
     /**
      * Create a set of all default components.
      *
-     * @param betonQuestPluginFile the plugin file of BetonQuest obtained through {@link JavaPlugin#getFile()}.
      * @return a set of all default components
      */
-    public static Set<CoreComponent> createDefaults(final File betonQuestPluginFile) {
+    public static Set<CoreComponent> createDefaults() {
         return Set.of(createEssentials(), createDefaultFeatures(), createDefaultTypes(),
-                        createAdditionalFeatures(betonQuestPluginFile), createIntegrationsAndAPI())
+                        createAdditionalFeatures(), createIntegrationsAndAPI())
                 .stream().flatMap(Set::stream).collect(Collectors.toSet());
     }
 
@@ -137,7 +134,7 @@ public final class BetonQuestComponents {
         );
     }
 
-    private static Set<CoreComponent> createAdditionalFeatures(final File betonQuestPluginFile) {
+    private static Set<CoreComponent> createAdditionalFeatures() {
         return Set.of(
                 new BStatsMetricsComponent(),
                 new VersionInfoComponent(),
@@ -146,7 +143,7 @@ public final class BetonQuestComponents {
                 new PostEnableComponent(),
                 new LogHandlerComponent(),
                 new FontRegistryComponent(),
-                new UpdaterComponent(betonQuestPluginFile),
+                new UpdaterComponent(),
                 new PlayerHiderComponent(),
                 new ConversationColorsComponent(),
                 new ExecutionCacheComponent(),
