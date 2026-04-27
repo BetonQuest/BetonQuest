@@ -75,7 +75,7 @@ case "$JOB_STATUS" in
     EMBED_COLOR=3066993
     DEV_BUILD_DOWNLOAD="Click to Download $VERSION!"
     STATUS_MESSAGE="$RELEASE_NAME is now available"
-    BUILD_DOWNLOAD_URL="${DOCS_URL}${DOCS_VERSION}/Downloads/?path=$UPLOAD_PATH&filename=BetonQuest.jar"
+    BUILD_DOWNLOAD_URL="${DOCS_URL}${DOCS_VERSION}/Downloads/?path=$UPLOAD_PATH&filename=BetonQuest-$VERSION.jar"
     DESCRIPTION="${RELEASE_NAME}s available [HERE](${RELEASE_DOWNLOAD_URL}). Report bugs [HERE](https://github.com/BetonQuest/BetonQuest/issues)"
     COMMIT_ICON="$RELEASE_COMMIT_ICON_SUCCESS"
     ;;
