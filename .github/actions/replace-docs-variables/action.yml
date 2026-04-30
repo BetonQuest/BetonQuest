@@ -25,10 +25,21 @@ runs:
     - uses: BetonQuest/Workflows/.github/actions/replace-docs-variables@main
       with:
         VERSION: ${{ inputs.VERSION }}
+    - name: Get Lib and Api version
+      shell: bash --noprofile --norc -euo pipefail {0}
+      run: |
+        API_REVISION="$(./mvnw --raw-streams help:evaluate -Dexpression=revision -DforceStdout -q --projects :api)"
+        LIB_REVISION="$(./mvnw --raw-streams help:evaluate -Dexpression=revision -DforceStdout -q --projects :lib)"
+        if [ "$(git tag -l "v$API_REVISION-api")" ]; then API_VERSION_MAVEN="$API_REVISION"; else API_VERSION_MAVEN="$API_REVISION-SNAPSHOT"; fi
+        if [ "$(git tag -l "v$LIB_REVISION-lib")" ]; then LIB_VERSION_MAVEN="$LIB_REVISION"; else LIB_VERSION_MAVEN="$LIB_REVISION-SNAPSHOT"; fi
+        echo "API_VERSION_MAVEN=$API_VERSION_MAVEN" >> $GITHUB_ENV
+        echo "LIB_VERSION_MAVEN=$LIB_VERSION_MAVEN" >> $GITHUB_ENV
     - name: Set API/Overview.md version
       shell: bash --noprofile --norc -euo pipefail {0}
       run: |
         sed -i "s~\${plugin\.version}~${VERSION_MAVEN}~g" ./docs/API/Overview.md
+        sed -i "s~\${api\.version}~${API_VERSION_MAVEN}~g" ./docs/API/Overview.md
+        sed -i "s~\${lib\.version}~${LIB_VERSION_MAVEN}~g" ./docs/API/Overview.md
       env:
         VERSION_MAVEN: ${{ inputs.VERSION_MAVEN }}
     - name: Set ref in download commands
