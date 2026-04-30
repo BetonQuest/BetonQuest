@@ -293,8 +293,8 @@ class UpdaterTest {
         final BetonQuest plugin = mock(BetonQuest.class);
         final InstantSource instantSource = InstantSource.system();
 
-        when(handler.searchUpdate(any(), any())).thenReturn(Pair.of(BetonQuestVersion.parse("2.0.0-DEV-3"), null));
-        when(downloader.alreadyDownloaded()).thenReturn(true);
+        when(handler.searchUpdate(any(), any())).thenReturn(Pair.of(version, null));
+        when(downloader.alreadyDownloaded(version)).thenReturn(true);
 
         final UpdaterConfigTest.Input patchDev = new UpdaterConfigTest.Input(null, true, false, "PATCH_DEV", false);
         final UpdaterConfig updaterConfig = UpdaterConfigTest.getMockedConfig(logger, patchDev, version);
