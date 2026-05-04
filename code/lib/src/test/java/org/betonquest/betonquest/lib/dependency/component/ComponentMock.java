@@ -26,7 +26,7 @@ public class ComponentMock extends AbstractCoreComponent {
     private final Consumer<DependencyProvider> loadMethod;
 
     /**
-     * Wether this component should inject itself into the dependency provider.
+     * Whether this component should inject itself into the dependency provider.
      */
     private final boolean injectSelf;
 
