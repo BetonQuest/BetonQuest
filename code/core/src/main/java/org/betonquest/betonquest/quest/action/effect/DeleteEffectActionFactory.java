@@ -28,8 +28,8 @@ public class DeleteEffectActionFactory implements PlayerActionFactory {
         final Argument<List<PotionEffectType>> effects;
         final boolean any = instruction.bool().getFlag("any", true)
                 .getValue(null).orElse(false);
-        if (!any && instruction.size() > 1) {
-            effects = instruction.parse(type -> {
+        if (!any && instruction.size() > 1 && !instruction.nextElement().startsWith("conditions:")) {
+            effects = instruction.chainForArgument(instruction.current()).parse(type -> {
                 final PotionEffectType effect = PotionEffectType.getByName(type);
                 if (effect == null) {
                     throw new QuestException("Unknown effect type: " + type);
