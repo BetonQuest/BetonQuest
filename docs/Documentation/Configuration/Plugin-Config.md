@@ -115,6 +115,7 @@ All conversation related settings.
 * `default_io` - A comma-separated list of conversation styles. The first one that is loaded (depending on the 
   available third party plugin integrations) is used. 
   See [conversation styles](../Features/Conversations.md#conversation-displaying) for supported styles.
+* `block_item_transfer` - Prevents the player moving items while in a conversation.  
 * `interceptor`  
   Catches chat during a conversation to prevent distraction from the conversation.
     * `default` - A comma-separated list of chat interceptors. The first one that is loaded (depending on the 

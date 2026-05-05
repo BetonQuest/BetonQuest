@@ -177,15 +177,17 @@ public class ConversationProcessor extends SectionProcessor<ConversationIdentifi
         final String rawConvIO = defaultingValue(section, "conversationIO", "conversation.default_io", "menu,tellraw");
         final String rawInterceptor = defaultingValue(section, "interceptor", "conversation.interceptor.default", "simple");
         final String rawInterceptorDelay = defaultingValue(section, "interceptor_delay", "conversation.interceptor.delay", "50");
+        final String rawBlockTransfer = defaultingValue(section, "block_item_transfer", "conversation.block_item_transfer", "true");
 
         final Argument<Boolean> stop = instruction.read().value("stop").bool().getOptional(false);
+        final Argument<Boolean> blockTransfer = instruction.chainForArgument(rawBlockTransfer).bool().get();
         final Argument<List<ActionIdentifier>> finalActions = instruction.read().value("final_actions").identifier(ActionIdentifier.class).list().getOptional(Collections.emptyList());
         final Argument<ConversationIOFactory> conversationIO = instruction.chainForArgument(rawConvIO).string().list().map(convIORegistry::getFactory).get();
         final Argument<InterceptorFactory> interceptor = instruction.chainForArgument(rawInterceptor).string().list().map(interceptorRegistry::getFactory).get();
         final Argument<Number> interceptorDelay = instruction.chainForArgument(rawInterceptorDelay).number()
                 .validate(delay -> delay.doubleValue() > 0, "Expected a non-negative number for 'interceptor_delay', got '%s' instead.").get();
 
-        final ConversationPublicData publicData = new ConversationPublicData(identifier, quester, stop, finalActions, conversationIO, interceptor, interceptorDelay, invincible);
+        final ConversationPublicData publicData = new ConversationPublicData(identifier, quester, stop, blockTransfer, finalActions, conversationIO, interceptor, interceptorDelay, invincible);
         final DefaultConversationData conversationData = new DefaultConversationData(loggerFactory.create(DefaultConversationData.class), questPackageManager,
                 placeholderProcessor, conditionManager, instruction, this, textCreator, section, publicData);
         return Map.entry(identifier, conversationData);

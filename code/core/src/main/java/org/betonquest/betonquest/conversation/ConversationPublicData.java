@@ -15,17 +15,18 @@ import java.util.List;
 /**
  * The external used data.
  *
- * @param conversationID   The ID of the conversation.
- * @param quester          A map of the quester's name in different languages.
- * @param blockMovement    If true, the player will not be able to move during this conversation.
- * @param finalActions     All actions that will be executed when the conversation ends.
- * @param convIO           The conversation IO that should be used for this conversation.
- * @param interceptor      The interceptor that should be used for this conversation.
- * @param interceptorDelay The delay before the interceptor is ended after the conversation ends.
- * @param invincible       If true, the player will not be able to damage or be damaged by entities in conversation.
+ * @param conversationID    The ID of the conversation.
+ * @param quester           A map of the quester's name in different languages.
+ * @param blockMovement     If true, the player will not be able to move during this conversation.
+ * @param finalActions      All actions that will be executed when the conversation ends.
+ * @param convIO            The conversation IO that should be used for this conversation.
+ * @param interceptor       The interceptor that should be used for this conversation.
+ * @param interceptorDelay  The delay before the interceptor is ended after the conversation ends.
+ * @param invincible        If true, the player will not be able to damage or be damaged by entities in conversation.
+ * @param blockItemTransfer If true, the player will not be able to transfer or move items during this conversation.
  */
 public record ConversationPublicData(ConversationIdentifier conversationID, Text quester,
-                                     Argument<Boolean> blockMovement,
+                                     Argument<Boolean> blockMovement, Argument<Boolean> blockItemTransfer,
                                      Argument<List<ActionIdentifier>> finalActions,
                                      Argument<ConversationIOFactory> convIO,
                                      Argument<InterceptorFactory> interceptor, Argument<Number> interceptorDelay,

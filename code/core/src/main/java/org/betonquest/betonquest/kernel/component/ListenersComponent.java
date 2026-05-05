@@ -5,12 +5,12 @@ import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.service.conversation.Conversations;
 import org.betonquest.betonquest.api.service.item.ItemManager;
 import org.betonquest.betonquest.conversation.CombatTagger;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.id.item.ItemIdentifierFactory;
 import org.betonquest.betonquest.item.QuestItemHandler;
+import org.betonquest.betonquest.kernel.processor.feature.ConversationProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.ObjectiveProcessor;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
 import org.betonquest.betonquest.listener.CustomDropListener;
@@ -41,7 +41,7 @@ public class ListenersComponent extends AbstractCoreComponent {
         return Set.of(Plugin.class, PluginManager.class,
                 BetonQuestLoggerFactory.class, ProfileProvider.class, FileConfigAccessor.class,
                 PlayerDataStorage.class, Localizations.class,
-                ItemIdentifierFactory.class, ObjectiveProcessor.class, ItemManager.class, Conversations.class, Updater.class);
+                ItemIdentifierFactory.class, ObjectiveProcessor.class, ItemManager.class, ConversationProcessor.class, Updater.class);
     }
 
     @Override
@@ -56,14 +56,14 @@ public class ListenersComponent extends AbstractCoreComponent {
         final ItemIdentifierFactory itemIdentifierFactory = getDependency(ItemIdentifierFactory.class);
         final ObjectiveProcessor objectiveProcessor = getDependency(ObjectiveProcessor.class);
         final ItemManager itemManager = getDependency(ItemManager.class);
-        final Conversations conversations = getDependency(Conversations.class);
+        final ConversationProcessor conversations = getDependency(ConversationProcessor.class);
         final Updater updater = getDependency(Updater.class);
 
         List.of(
                 new CombatTagger(profileProvider, config.getInt("conversation.damage.combat_delay")),
                 new MobKillListener(profileProvider),
                 new CustomDropListener(loggerFactory.create(CustomDropListener.class), itemManager, itemIdentifierFactory),
-                new QuestItemHandler(config, playerDataStorage, profileProvider),
+                new QuestItemHandler(config, playerDataStorage, profileProvider, conversations),
                 new QuestItemConvertListener(loggerFactory.create(QuestItemConvertListener.class),
                         () -> config.getBoolean("item.quest.update_legacy_on_join"), localizations, profileProvider),
                 new JoinQuitListener(config, objectiveProcessor, playerDataStorage,
