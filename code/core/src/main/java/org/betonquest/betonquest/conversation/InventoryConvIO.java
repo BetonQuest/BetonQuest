@@ -23,6 +23,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -329,7 +330,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
      * @param event the event
      */
     @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.AvoidDeeplyNestedIfStmts"})
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onInventoryClick(final InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player)) {
             return;

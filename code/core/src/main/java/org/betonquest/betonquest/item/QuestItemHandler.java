@@ -3,9 +3,11 @@ package org.betonquest.betonquest.item;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.item.typehandler.QuestHandler;
+import org.betonquest.betonquest.kernel.processor.feature.ConversationProcessor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.enchantments.EnchantmentTarget;
@@ -38,7 +40,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 /**
- * Handler for Journals and Quest Items.
+ * Handler for Journals and Quest Items as well as item interaction while in conversations.
  */
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.CyclomaticComplexity", "PMD.CouplingBetweenObjects", "PMD.GodClass"})
 public class QuestItemHandler implements Listener {
@@ -59,29 +61,42 @@ public class QuestItemHandler implements Listener {
     private final ProfileProvider profileProvider;
 
     /**
+     * Processor to get if items should not be moved at all in conversations.
+     */
+    private final ConversationProcessor conversationProcessor;
+
+    /**
      * Creates a new quest item handler listener.
      *
-     * @param config          the config provider
-     * @param dataStorage     the storage providing player data
-     * @param profileProvider the profile provider instance
+     * @param config                the config provider
+     * @param dataStorage           the storage providing player data
+     * @param profileProvider       the profile provider instance
+     * @param conversationProcessor the processor to get if items should not be moved at all in conversations
      */
     public QuestItemHandler(final FileConfigAccessor config, final PlayerDataStorage dataStorage,
-                            final ProfileProvider profileProvider) {
+                            final ProfileProvider profileProvider, final ConversationProcessor conversationProcessor) {
         this.config = config;
         this.dataStorage = dataStorage;
         this.profileProvider = profileProvider;
+        this.conversationProcessor = conversationProcessor;
     }
 
     /**
      * Prevents dropping Quest Items.
      * <p>
      * Does not affect creative mode.
+     * <p>
+     * Blocks everything if {@link #isItemTransferBlocked(Player)}.
      *
      * @param event the drop item event
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onItemDrop(final PlayerDropItemEvent event) {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
+            return;
+        }
+        if (isItemTransferBlocked(event.getPlayer())) {
+            event.setCancelled(true);
             return;
         }
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
@@ -102,6 +117,8 @@ public class QuestItemHandler implements Listener {
      * Prevents moving the Journal and Quest Items out of the inventory.
      * <p>
      * Does not affect creative mode.
+     * <p>
+     * Blocks everything if {@link #isItemTransferBlocked(Player)}.
      *
      * @param event the inventory click event, attempting moving items
      */
@@ -109,6 +126,10 @@ public class QuestItemHandler implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onItemMove(final InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof final Player player) || player.getGameMode() == GameMode.CREATIVE) {
+            return;
+        }
+        if (isItemTransferBlocked(player)) {
+            event.setCancelled(true);
             return;
         }
         ItemStack item = null;
@@ -172,12 +193,18 @@ public class QuestItemHandler implements Listener {
      * Prevents moving the Journal and Quest Items out of the inventory.
      * <p>
      * Does not affect creative mode.
+     * <p>
+     * Blocks everything if {@link #isItemTransferBlocked(Player)}.
      *
      * @param event the inventory drag event, attempting moving items
      */
     @EventHandler(ignoreCancelled = true)
     public void onItemDrag(final InventoryDragEvent event) {
         if (!(event.getWhoClicked() instanceof final Player player) || player.getGameMode() == GameMode.CREATIVE) {
+            return;
+        }
+        if (isItemTransferBlocked(player)) {
+            event.setCancelled(true);
             return;
         }
         if (Journal.isJournal(event.getOldCursor()) || QuestHandler.isQuestItem(event.getOldCursor())) {
@@ -189,12 +216,18 @@ public class QuestItemHandler implements Listener {
      * Prevents equipping ArmorStands with Quest Items.
      * <p>
      * Does not affect creative mode.
+     * <p>
+     * Blocks everything if {@link #isItemTransferBlocked(Player)}.
      *
      * @param event the armor stand interaction event
      */
     @EventHandler(ignoreCancelled = true)
     public void onArmorStandEquip(final PlayerArmorStandManipulateEvent event) {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
+            return;
+        }
+        if (isItemTransferBlocked(event.getPlayer())) {
+            event.setCancelled(true);
             return;
         }
         final ItemStack item = event.getPlayerItem();
@@ -269,6 +302,8 @@ public class QuestItemHandler implements Listener {
      * Prevents putting the Journal and Quest Items in Item Frames.
      * <p>
      * Does not affect creative mode.
+     * <p>
+     * Blocks everything if {@link #isItemTransferBlocked(Player)}.
      *
      * @param event the interact at entity event which is checked for Item Frames
      */
@@ -279,6 +314,10 @@ public class QuestItemHandler implements Listener {
         }
         // this prevents the journal from being placed inside of item frame
         if (event.getRightClicked() instanceof ItemFrame) {
+            if (isItemTransferBlocked(event.getPlayer())) {
+                event.setCancelled(true);
+                return;
+            }
             final ItemStack item = event.getPlayer().getInventory().getItem(event.getHand());
             if (Journal.isJournal(item) || QuestHandler.isQuestItem(item)) {
                 event.setCancelled(true);
@@ -290,12 +329,18 @@ public class QuestItemHandler implements Listener {
      * Prevents placing Quest Items.
      * <p>
      * Does not affect creative mode.
+     * <p>
+     * Blocks everything if {@link #isItemTransferBlocked(Player)}.
      *
      * @param event the block place event
      */
     @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(final BlockPlaceEvent event) {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
+            return;
+        }
+        if (isItemTransferBlocked(event.getPlayer())) {
+            event.setCancelled(true);
             return;
         }
         // this prevents players from placing "quest item" blocks
@@ -378,11 +423,17 @@ public class QuestItemHandler implements Listener {
      * Prevents interacting with bucket Quest Items.
      * <p>
      * Does not affect creative mode.
+     * <p>
+     * Blocks everything if {@link #isItemTransferBlocked(Player)}.
      *
      * @param event the bucket event
      */
     public void onBucketEvent(final PlayerBucketEvent event) {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
+            return;
+        }
+        if (isItemTransferBlocked(event.getPlayer())) {
+            event.setCancelled(true);
             return;
         }
         final ItemStack item = event.getPlayer().getInventory().getItem(event.getHand());
@@ -410,5 +461,10 @@ public class QuestItemHandler implements Listener {
 
     private boolean isJournalSlotLocked() {
         return config.getBoolean("journal.lock_default_journal_slot");
+    }
+
+    private boolean isItemTransferBlocked(final Player player) {
+        final Conversation active = conversationProcessor.getActiveConversation(profileProvider.getProfile(player));
+        return active != null && active.isItemTransferBlocked();
     }
 }
