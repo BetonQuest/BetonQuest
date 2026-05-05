@@ -28,6 +28,7 @@ profile:
   initial_name: 'default'
 conversation:
   default_io: menu,packetevents,tellraw
+  block_item_transfer: true
   interceptor:
     default: redischat,packetevents,simple
     display_history: true

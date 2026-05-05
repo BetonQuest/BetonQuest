@@ -979,11 +979,12 @@ __Description__: Take items from the player’s inventory or backpack.
 
 The items itself must be defined in the `items` section, optionally with an amount after a colon.
 Which inventory types are checked is defined by the `invOrder:`
-option. You can use `Backpack`, `Inventory`, `MainHand`,  `Offhand` and `Armor` there. One after another will be checked if multiple types are defined.
+option. You can use `Backpack`, `Inventory`, `MainHand`, `Offhand` and `Armor` there. One after another will be checked if multiple types are defined.
 
 Note: If the items aren't quest items don't use `take` action with player options in conversations!
 The player can drop items before selecting the option and pickup them after the action fires.
-Validate it on the NPC’s reaction!
+Validate it on the NPC’s reaction!  
+However, all item movement can be prevented with the `conversation.block_item_transfer` option in the "_config.yml_".
 
 You can also specify `notify` keyword to display a simple message to the player about loosing items.
 

@@ -19,6 +19,7 @@ conversations: #(1)!
     quester: "Hans the Mayor" #(3)!
     first: "welcome,blacksmithReminder" #(4)!
     stop: "true"  #(5)!
+    block_item_transfer: "true" #(16)!
     final_actions: "setCityState" #(6)!
     conversationIO: "menu" #(7)!
     interceptor: "simple" #(8)!
@@ -61,7 +62,7 @@ conversations: #(1)!
     e.g. guards attacking the player if he tries to run). You can leave this option out if you don't need any final 
     actions.
 7. `conversationIO` optionally set the conversation style for this conversation. Multiple styles can be provided in 
-    acomma-separated list with the first valid one used. It's better to set this as a global config setting in
+    a comma-separated list with the first valid one used. It's better to set this as a global config setting in
     "_config.yml_".
 8. `interceptor` optionally set a chat interceptor for this conversation. Multiple interceptors can be provided in a 
     comma-separated list with the first valid one used. It's better to set this as a global config setting in
@@ -77,6 +78,8 @@ conversations: #(1)!
 14. `pointers` is list of pointers to the opposite branch (from NPC branch it will point to options player can 
     choose from when answering, and from player branch it will point to different NPC reactions).
 15. `player_options` is a branch with options the player can choose from.
+16. `block_item_transfer` determines if player can move items while in this conversation (false) or if the item's
+    movement is blocked (true). If not set the `conversation.prevent_item_movement` setting in the "_config.yml_" is used.
 
 When an NPC wants to say something he will check conditions for the first option (in this case `welcome`). If they are met,
 he will choose it. Otherwise, he will skip to next option (note: conversation ends when there are no options left to choose).
@@ -265,7 +268,7 @@ The `none` interceptor is an interceptor that won't intercept messages. That sou
 that you want to be excluded from interception. In this case you can just set `interceptor: none` inside your conversation file.
 
 ## Advanced: Extends
-Conversations also support the concept of inheritance. Any option can include the key `extends` with a comma delimited list of other options of the same time. The first option that does not have any false conditions will have its text, pointers and actions merged with the extending option. The extended option may itself extend other options. Infinite loops are detected.
+Conversations also support the concept of inheritance. Any option can include the key `extends` with a comma-delimited list of other options of the same time. The first option that does not have any false conditions will have its text, pointers and actions merged with the extending option. The extended option may itself extend other options. Infinite loops are detected.
 
 ```YAML
 NPC_options:
