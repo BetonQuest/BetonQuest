@@ -79,6 +79,7 @@ import org.betonquest.betonquest.quest.action.tag.TagGlobalActionFactory;
 import org.betonquest.betonquest.quest.action.tag.TagPlayerActionFactory;
 import org.betonquest.betonquest.quest.action.take.TakeActionFactory;
 import org.betonquest.betonquest.quest.action.teleport.TeleportActionFactory;
+import org.betonquest.betonquest.quest.action.test.ConditionTestActionFactory;
 import org.betonquest.betonquest.quest.action.time.TimeActionFactory;
 import org.betonquest.betonquest.quest.action.variable.VariableActionFactory;
 import org.betonquest.betonquest.quest.action.velocity.VelocityActionFactory;
@@ -202,6 +203,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         actionTypes.registerCombined("tag", new TagPlayerActionFactory(persistence, saver, profileProvider));
         actionTypes.register("take", new TakeActionFactory(loggerFactory, playerDataStorage, localizations));
         actionTypes.register("teleport", new TeleportActionFactory(conversations));
+        actionTypes.registerCombined("test", new ConditionTestActionFactory(loggerFactory, conditionManager));
         actionTypes.registerCombined("time", new TimeActionFactory());
         actionTypes.register("updatevisibility", new UpdateVisibilityNowActionFactory(npcHider));
         actionTypes.register("variable", new VariableActionFactory(objectiveManager));
