@@ -16,6 +16,11 @@ import org.bukkit.plugin.ServicesManager;
 public class LuckPermsIntegrator implements Integration {
 
     /**
+     * The minimum required version of LuckPerms.
+     */
+    public static final String REQUIRED_VERSION = "5.4";
+
+    /**
      * Bukkit services manager.
      */
     private final ServicesManager servicesManager;

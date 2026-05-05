@@ -128,42 +128,42 @@ public final class BundledCompatibility {
     @SuppressWarnings("Convert2MethodRef") //ClassNotFoundException on load up if certain integrations are absent
     public void registerCompatiblePlugins(final ServicesManager servicesManager, final ProcessorDataLoader processorDataLoader) {
         register("MythicMobs", () -> new MythicMobsIntegrator(plugin, config), MythicMobsIntegrator.REQUIRED_VERSION);
-        register("Citizens", () -> new CitizensIntegrator());
-        register("Vault", () -> new VaultIntegrator(servicesManager));
-        register("Skript", () -> new SkriptIntegrator());
-        register("WorldGuard", () -> new WorldGuardIntegrator());
-        register("WorldEdit", () -> new WorldEditIntegrator());
-        register("FastAsyncWorldEdit", () -> new WorldEditIntegrator());
-        register("mcMMO", () -> new McMMOIntegrator());
-        register("MythicLib", () -> new MythicLibIntegrator());
-        register("MMOCore", () -> new MMOCoreIntegrator());
-        register("MMOItems", () -> new MMOItemsIntegrator());
-        register("EffectLib", () -> new EffectLibIntegrator(plugin, processorDataLoader));
-        register("Heroes", () -> new HeroesIntegrator());
-        register("Magic", () -> new MagicIntegrator());
-        register("Denizen", () -> new DenizenIntegrator());
-        register("Fabled", () -> new FabledIntegrator());
+        register("Citizens", () -> new CitizensIntegrator(), CitizensIntegrator.REQUIRED_VERSION);
+        register("Vault", () -> new VaultIntegrator(servicesManager), VaultIntegrator.REQUIRED_VERSION);
+        register("Skript", () -> new SkriptIntegrator(), SkriptIntegrator.REQUIRED_VERSION);
+        register("WorldGuard", () -> new WorldGuardIntegrator(), WorldGuardIntegrator.REQUIRED_VERSION);
+        register("WorldEdit", () -> new WorldEditIntegrator(), WorldEditIntegrator.REQUIRED_VERSION);
+        register("FastAsyncWorldEdit", () -> new WorldEditIntegrator(), WorldEditIntegrator.REQUIRED_VERSION);
+        register("mcMMO", () -> new McMMOIntegrator(), McMMOIntegrator.REQUIRED_VERSION);
+        register("MythicLib", () -> new MythicLibIntegrator(), MythicLibIntegrator.REQUIRED_VERSION);
+        register("MMOCore", () -> new MMOCoreIntegrator(), MMOCoreIntegrator.REQUIRED_VERSION);
+        register("MMOItems", () -> new MMOItemsIntegrator(), MMOItemsIntegrator.REQUIRED_VERSION);
+        register("EffectLib", () -> new EffectLibIntegrator(plugin, processorDataLoader), EffectLibIntegrator.REQUIRED_VERSION);
+        register("Heroes", () -> new HeroesIntegrator(), HeroesIntegrator.REQUIRED_VERSION);
+        register("Magic", () -> new MagicIntegrator(), MagicIntegrator.REQUIRED_VERSION);
+        register("Denizen", () -> new DenizenIntegrator(), DenizenIntegrator.REQUIRED_VERSION);
+        register("Fabled", () -> new FabledIntegrator(), FabledIntegrator.REQUIRED_VERSION);
         register("Quests", () -> new QuestsIntegrator(), QuestsIntegrator.classPolicy());
         register("Shopkeepers", () -> new ShopkeepersIntegrator(), ShopkeepersIntegrator.REQUIRED_VERSION);
-        register("PlaceholderAPI", () -> new PlaceholderAPIIntegrator(plugin.getDescription()));
+        register("PlaceholderAPI", () -> new PlaceholderAPIIntegrator(plugin.getDescription()), PlaceholderAPIIntegrator.REQUIRED_VERSION);
         register("packetevents", () -> new PacketEventsIntegrator(), PacketEventsIntegrator.REQUIRED_VERSION);
-        register("Brewery", () -> new BreweryIntegrator());
-        register("BreweryX", () -> new BreweryIntegrator());
+        register("Brewery", () -> new BreweryIntegrator(), BreweryIntegrator.REQUIRED_VERSION);
+        register("BreweryX", () -> new BreweryIntegrator(), BreweryIntegrator.REQUIRED_VERSION);
         register("Jobs", () -> new JobsRebornIntegrator());
-        register("LuckPerms", () -> new LuckPermsIntegrator(servicesManager));
-        register("AuraSkills", () -> new AuraSkillsIntegrator());
+        register("LuckPerms", () -> new LuckPermsIntegrator(servicesManager), LuckPermsIntegrator.REQUIRED_VERSION);
+        register("AuraSkills", () -> new AuraSkillsIntegrator(), AuraSkillsIntegrator.REQUIRED_VERSION);
         register("DecentHolograms", () -> new DecentHologramsIntegrator(),
                 DecentHologramsIntegrator.REQUIRED_VERSION);
         register("HolographicDisplays", () -> new HolographicDisplaysIntegrator(plugin),
                 HolographicDisplaysIntegrator.REQUIRED_VERSION);
         register("fake-block", () -> new FakeBlockIntegrator(servicesManager), FakeBlockIntegrator.REQUIRED_VERSION);
-        register("RedisChat", () -> new RedisChatIntegrator());
-        register("Train_Carts", () -> new TrainCartsIntegrator());
-        register(FancyNpcsIntegrator.PREFIX, () -> new FancyNpcsIntegrator(plugin));
+        register("RedisChat", () -> new RedisChatIntegrator(), RedisChatIntegrator.REQUIRED_VERSION);
+        register("Train_Carts", () -> new TrainCartsIntegrator(), TrainCartsIntegrator.REQUIRED_VERSION);
+        register(FancyNpcsIntegrator.PREFIX, () -> new FancyNpcsIntegrator(plugin), FancyNpcsIntegrator.getPolicies());
         register(FancyHologramsIntegrator.NAME, () -> new FancyHologramsIntegrator(), FancyHologramsIntegrator.getPolicies());
         register(ZNPCsPlusIntegrator.PREFIX, () -> new ZNPCsPlusIntegrator(), ZNPCsPlusIntegrator.REQUIRED_VERSION);
-        register("Nexo", () -> new NexoIntegrator());
-        register("CraftEngine", () -> new CraftEngineIntegrator());
+        register("Nexo", () -> new NexoIntegrator(), NexoIntegrator.REQUIRED_VERSION);
+        register("CraftEngine", () -> new CraftEngineIntegrator(), CraftEngineIntegrator.REQUIRED_VERSION);
         register("ItemsAdder", () -> new ItemsAdderIntegrator(), ItemsAdderIntegrator.REQUIRED_VERSION);
     }
 }

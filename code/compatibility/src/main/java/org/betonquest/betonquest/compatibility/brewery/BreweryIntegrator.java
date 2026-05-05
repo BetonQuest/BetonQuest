@@ -13,6 +13,11 @@ import org.betonquest.betonquest.lib.integration.IntegrationTemplate;
 public class BreweryIntegrator extends IntegrationTemplate {
 
     /**
+     * The minimum required version of Brewery.
+     */
+    public static final String REQUIRED_VERSION = "3.1.1";
+
+    /**
      * Create a new Brewery Integrator.
      */
     public BreweryIntegrator() {

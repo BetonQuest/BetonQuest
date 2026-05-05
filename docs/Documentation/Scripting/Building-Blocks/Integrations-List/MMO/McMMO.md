@@ -1,5 +1,7 @@
 # [mcMMO](https://www.spigotmc.org/resources/64348/)
 
+@snippet:versions:minimum@ _2.1.227_
+
 ## Actions
 
 ### `mcMmoExp`

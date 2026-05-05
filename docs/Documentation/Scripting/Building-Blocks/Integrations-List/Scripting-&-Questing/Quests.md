@@ -1,5 +1,7 @@
 # [Quests](https://www.spigotmc.org/resources/3711/)
 
+@snippet:versions:minimum@ _5.1.1_
+
 Quests is another questing plugin, which offers very simple creation of quests.
 If you don't want to spend a lot of time to write advanced quests in BetonQuest but you need a specific thing from
 this plugin you can use Custom Action Reward or Custom Condition Requirement.

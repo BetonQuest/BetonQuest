@@ -1,5 +1,7 @@
 # [Skript](http://dev.bukkit.org/bukkit-plugins/skript/)
 
+@snippet:versions:minimum@ _2.9.1_
+
 To avoid any confusion, everything is referenced with the plugin name.
 Having Skript on your server will enable using BetonQuest actions and conditions in scripts and also trigger them by BetonQuest action.
 

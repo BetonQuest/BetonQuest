@@ -17,6 +17,11 @@ import org.jetbrains.annotations.Nullable;
 public class EffectLibIntegrator implements Integration {
 
     /**
+     * The minimum required version of EffectLib.
+     */
+    public static final String REQUIRED_VERSION = "10.3";
+
+    /**
      * The plugin instance.
      */
     private final Plugin plugin;

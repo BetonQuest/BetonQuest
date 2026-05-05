@@ -1,5 +1,7 @@
 # [MMOItems](https://www.spigotmc.org/resources/39267/)
 
+@snippet:versions:minimum@ _6.9.4-SNAPSHOT_
+
 ## Items
 
 ### `MmoItem`

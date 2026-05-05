@@ -16,6 +16,11 @@ import org.betonquest.betonquest.lib.integration.IntegrationTemplate;
 public class AuraSkillsIntegrator extends IntegrationTemplate {
 
     /**
+     * The minimum required version of AuraSkills.
+     */
+    public static final String REQUIRED_VERSION = "2.2.0";
+
+    /**
      * The default constructor.
      */
     public AuraSkillsIntegrator() {

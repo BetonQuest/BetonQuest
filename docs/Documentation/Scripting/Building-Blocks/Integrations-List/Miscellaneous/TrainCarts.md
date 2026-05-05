@@ -1,5 +1,7 @@
 # [TrainCarts](https://www.spigotmc.org/resources/39592/)
 
+@snippet:versions:minimum@ _1.20.6-v1_
+
 TrainCarts is a plugin that allows you to create trains with advanced features.
 
 ## Objectives

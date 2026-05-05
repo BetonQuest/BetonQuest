@@ -13,6 +13,11 @@ import org.betonquest.betonquest.lib.integration.IntegrationTemplate;
 public class TrainCartsIntegrator extends IntegrationTemplate {
 
     /**
+     * The minimum required version of TrainCarts.
+     */
+    public static final String REQUIRED_VERSION = "1.20.6-v1";
+
+    /**
      * Create the TrainCarts integration.
      */
     public TrainCartsIntegrator() {

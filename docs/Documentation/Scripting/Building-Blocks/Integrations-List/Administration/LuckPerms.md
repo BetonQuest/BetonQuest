@@ -1,4 +1,6 @@
-# LuckPerms[](https://luckperms.net/)
+# [LuckPerms](https://luckperms.net/)
+
+@snippet:versions:minimum@ _5.4_
 
 ## Context Integration
 

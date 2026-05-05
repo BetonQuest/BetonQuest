@@ -15,6 +15,11 @@ import java.util.Objects;
 public class RedisChatIntegrator implements Integration, Listener {
 
     /**
+     * The minimum required version of RedisChat.
+     */
+    public static final String REQUIRED_VERSION = "5.3";
+
+    /**
      * Creates the RedisChat integrator.
      */
     public RedisChatIntegrator() {

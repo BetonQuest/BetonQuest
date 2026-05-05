@@ -17,6 +17,11 @@ import org.jetbrains.annotations.Nullable;
 public class WorldGuardIntegrator implements Integration {
 
     /**
+     * The minimum required version of WorldGuard.
+     */
+    public static final String REQUIRED_VERSION = "7.0.9";
+
+    /**
      * The default constructor.
      */
     public WorldGuardIntegrator() {

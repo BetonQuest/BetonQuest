@@ -1,5 +1,7 @@
 # [MMOCore](https://www.spigotmc.org/resources/70575/)
 
+@snippet:versions:minimum@ _1.12-SNAPSHOT_
+
 ## Actions
 
 ### `MmoClassExperience`

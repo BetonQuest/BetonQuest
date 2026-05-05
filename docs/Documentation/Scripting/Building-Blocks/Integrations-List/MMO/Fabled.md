@@ -1,5 +1,7 @@
 # [Fabled](https://www.spigotmc.org/resources/91913/)
 
+@snippet:versions:minimum@ _1.0.2-R1_
+
 ## Conditions
 
 ### `FabledClass`

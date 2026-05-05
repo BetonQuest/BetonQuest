@@ -1,5 +1,7 @@
 # [MMOLib](https://www.spigotmc.org/resources/90306/)
 
+@snippet:versions:minimum@ _1.7.1-SNAPSHOT_
+
 ## Objectives
 
 ### `MmoSkill`

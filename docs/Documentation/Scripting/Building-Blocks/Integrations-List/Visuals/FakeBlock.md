@@ -1,5 +1,7 @@
 # [FakeBlock](https://github.com/toddharrison/BriarCode/tree/main/fake-block)
 
+@snippet:versions:minimum@ _v2.0.0_
+
 If you have the FakeBlock integration installed, you will be able to view and hide the block groups
 created in FakeBlock on a player-specific basis.
 

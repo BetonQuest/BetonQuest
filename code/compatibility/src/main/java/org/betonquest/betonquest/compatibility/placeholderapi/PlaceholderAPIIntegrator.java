@@ -10,6 +10,11 @@ import org.bukkit.plugin.PluginDescriptionFile;
 public class PlaceholderAPIIntegrator implements Integration {
 
     /**
+     * The minimum required version of PlaceholderAPI.
+     */
+    public static final String REQUIRED_VERSION = "2.11.6";
+
+    /**
      * Description to use for placeholder.
      */
     private final PluginDescriptionFile description;

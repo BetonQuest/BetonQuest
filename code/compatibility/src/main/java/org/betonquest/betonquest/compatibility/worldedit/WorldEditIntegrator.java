@@ -13,6 +13,11 @@ import java.io.File;
 public class WorldEditIntegrator implements Integration {
 
     /**
+     * The minimum required version of WorldEdit.
+     */
+    public static final String REQUIRED_VERSION = "7.3.0";
+
+    /**
      * The default constructor.
      */
     public WorldEditIntegrator() {

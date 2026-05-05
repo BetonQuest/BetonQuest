@@ -12,6 +12,11 @@ import org.betonquest.betonquest.lib.integration.IntegrationTemplate;
 public class MMOItemsIntegrator extends IntegrationTemplate {
 
     /**
+     * The minimum required version of MMOItems.
+     */
+    public static final String REQUIRED_VERSION = "6.9.4-SNAPSHOT";
+
+    /**
      * Creates a new Integrator.
      */
     public MMOItemsIntegrator() {

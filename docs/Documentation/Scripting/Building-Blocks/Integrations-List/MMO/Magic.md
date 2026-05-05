@@ -1,5 +1,7 @@
 # [Magic](http://dev.bukkit.org/bukkit-plugins/magic/)
 
+@snippet:versions:minimum@ _10.2_
+
 ## Conditions
 
 ### `Wand`
