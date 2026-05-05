@@ -50,7 +50,7 @@
     <fake-block-api.version>v2.0.0</fake-block-api.version>
     <RedisChat.version>5.3</RedisChat.version>
     <VaultAPI.version>1.7.1</VaultAPI.version>
-    <Jobs.version>b537ec4f36</Jobs.version>
+    <Jobs.version>v5.2.6.3</Jobs.version>
     <Brewery.version>3.1.1</Brewery.version>
     <decentholograms.version>2.8.11</decentholograms.version>
     <EffectLib.version>10.3</EffectLib.version>
