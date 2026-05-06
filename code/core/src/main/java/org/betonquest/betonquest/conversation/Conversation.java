@@ -422,6 +422,20 @@ public class Conversation {
     }
 
     /**
+     * Checks if all item transfers should be blocked.
+     *
+     * @return false if items are enabled to be moved from the player, true otherwise
+     */
+    public boolean isItemTransferBlocked() {
+        try {
+            return data.getPublicData().blockItemTransfer().getValue(onlineProfile);
+        } catch (final QuestException e) {
+            log.warn(pack, "Error resolving if item transfer should be blocked: " + e.getMessage(), e);
+            return true;
+        }
+    }
+
+    /**
      * Checks if the conversation has a next NPC option.
      *
      * @return true if there is a next NPC option, false otherwise
