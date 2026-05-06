@@ -10504,10 +10504,11 @@ and delete the tag for all players in the database (even if offline).</p>
 <strong>Description</strong>: Take items from the player’s inventory or backpack.</p>
 <p>The items itself must be defined in the <code>items</code> section, optionally with an amount after a colon.
 Which inventory types are checked is defined by the <code>invOrder:</code>
-option. You can use <code>Backpack</code>, <code>Inventory</code>, <code>MainHand</code>,  <code>Offhand</code> and <code>Armor</code> there. One after another will be checked if multiple types are defined.</p>
+option. You can use <code>Backpack</code>, <code>Inventory</code>, <code>MainHand</code>, <code>Offhand</code> and <code>Armor</code> there. One after another will be checked if multiple types are defined.</p>
 <p>Note: If the items aren't quest items don't use <code>take</code> action with player options in conversations!
 The player can drop items before selecting the option and pickup them after the action fires.
-Validate it on the NPC’s reaction!</p>
+Validate it on the NPC’s reaction!<br />
+However, all item movement can be prevented with the <code>conversation.block_item_transfer</code> option in the "<em>config.yml</em>".</p>
 <p>You can also specify <code>notify</code> keyword to display a simple message to the player about loosing items.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">emeraldsAndSword</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;take</span><span class="nv"> </span><span class="s">emerald:120,sword&quot;</span>

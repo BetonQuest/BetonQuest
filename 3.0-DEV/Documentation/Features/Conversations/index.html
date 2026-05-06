@@ -7055,6 +7055,7 @@ the NPC.</p>
 <span class="w">    </span><span class="nt">quester</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hans</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">Mayor&quot;</span><span class="w"> </span><span class="c1">#(3)!</span>
 <span class="w">    </span><span class="nt">first</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;welcome,blacksmithReminder&quot;</span><span class="w"> </span><span class="c1">#(4)!</span>
 <span class="w">    </span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w">  </span><span class="c1">#(5)!</span>
+<span class="w">    </span><span class="nt">block_item_transfer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w"> </span><span class="c1">#(16)!</span>
 <span class="w">    </span><span class="nt">final_actions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;setCityState&quot;</span><span class="w"> </span><span class="c1">#(6)!</span>
 <span class="w">    </span><span class="nt">conversationIO</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;menu&quot;</span><span class="w"> </span><span class="c1">#(7)!</span>
 <span class="w">    </span><span class="nt">interceptor</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;simple&quot;</span><span class="w"> </span><span class="c1">#(8)!</span>
@@ -7096,7 +7097,7 @@ the NPC.</p>
     e.g. guards attacking the player if he tries to run). You can leave this option out if you don't need any final 
     actions.</li>
 <li><code>conversationIO</code> optionally set the conversation style for this conversation. Multiple styles can be provided in 
-    acomma-separated list with the first valid one used. It's better to set this as a global config setting in
+    a comma-separated list with the first valid one used. It's better to set this as a global config setting in
     "<em>config.yml</em>".</li>
 <li><code>interceptor</code> optionally set a chat interceptor for this conversation. Multiple interceptors can be provided in a 
     comma-separated list with the first valid one used. It's better to set this as a global config setting in
@@ -7112,6 +7113,8 @@ the NPC.</p>
 <li><code>pointers</code> is list of pointers to the opposite branch (from NPC branch it will point to options player can 
     choose from when answering, and from player branch it will point to different NPC reactions).</li>
 <li><code>player_options</code> is a branch with options the player can choose from.</li>
+<li><code>block_item_transfer</code> determines if player can move items while in this conversation (false) or if the item's
+    movement is blocked (true). If not set the <code>conversation.prevent_item_movement</code> setting in the "<em>config.yml</em>" is used.</li>
 </ol>
 <p>When an NPC wants to say something he will check conditions for the first option (in this case <code>welcome</code>). If they are met,
 he will choose it. Otherwise, he will skip to next option (note: conversation ends when there are no options left to choose).
@@ -7281,7 +7284,7 @@ This means that it first tries to use the <code>packetevents</code> interceptor.
 <p>The <code>none</code> interceptor is an interceptor that won't intercept messages. That sounds useless until you have a conversation
 that you want to be excluded from interception. In this case you can just set <code>interceptor: none</code> inside your conversation file.</p>
 <h2 id="advanced-extends">Advanced: Extends<a class="headerlink" href="#advanced-extends" title="Permanent link">🔗</a></h2>
-<p>Conversations also support the concept of inheritance. Any option can include the key <code>extends</code> with a comma delimited list of other options of the same time. The first option that does not have any false conditions will have its text, pointers and actions merged with the extending option. The extended option may itself extend other options. Infinite loops are detected.</p>
+<p>Conversations also support the concept of inheritance. Any option can include the key <code>extends</code> with a comma-delimited list of other options of the same time. The first option that does not have any false conditions will have its text, pointers and actions merged with the extending option. The extended option may itself extend other options. Infinite loops are detected.</p>
 <p><div class="highlight"><pre><span></span><code><span class="nt">NPC_options</span><span class="p">:</span>
 
 <span class="w">  </span><span class="c1">## Normal Conversation Start</span>
