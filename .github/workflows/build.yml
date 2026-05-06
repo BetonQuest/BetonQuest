@@ -306,6 +306,11 @@ jobs:
           sed -i "s~## \[Unreleased\]~## \[${VERSION}\]~g" ./CHANGELOG.md
           DATE="$(date +%Y-%m-%d)"
           sed -i "s~\${maven\.build\.timestamp}~$DATE~g" ./CHANGELOG.md
+      - name: Rename Artifacts
+        shell: bash --noprofile --norc -euo pipefail {0}
+        run: |
+          mv target/code/BetonQuest.jar target/code/BetonQuest-${VERSION}.jar
+          mv target/docs/Docs.zip target/docs/Docs-${VERSION}.zip
       - name: Create release
         uses: docker://antonyurchenko/git-release:v6
         env:
@@ -316,11 +321,11 @@ jobs:
           RELEASE_NAME: BetonQuest ${{ env.VERSION }}
         with:
           args: |
-            target/code/BetonQuest.jar
-            target/docs/Docs.zip
+            target/code/BetonQuest-${VERSION}.jar
+            target/docs/Docs-${VERSION}.zip
 
-  discord-announcement:
-    name: Official Deployment
+  discord-deployment:
+    name: Discord Deployment
     if: "always() && !cancelled() && ( needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' && ( needs.prepare.outputs.VERSION_IS_NEW == 'true' || failure() ) )"
     needs: [ prepare, deploy-code, deploy-docs, create-release ]
     runs-on: ubuntu-latest
@@ -354,3 +359,70 @@ jobs:
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
           DOCS_URL: ${{ vars.DOCS_URL }}
           UPLOAD_PATH: ${{ needs.deploy-code.outputs.UPLOAD_PATH }}
+
+  hangar-deployment:
+    name: Hangar Deployment
+    if: "needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' && ( needs.prepare.outputs.VERSION_IS_NEW == 'true')"
+    needs: [ prepare, deploy-code, deploy-docs, create-release ]
+    runs-on: ubuntu-latest
+
+    env:
+      VERSION: ${{ needs.prepare.outputs.VERSION }}
+      VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
+      VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
+      VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
+      SKIP_MODULES: ${{ needs.prepare.outputs.SKIP_MODULES }}
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v6
+      - uses: BetonQuest/Workflows/.github/actions/setup-java-maven/cache@main
+        with:
+          MAVEN_BUILD_DIR: 'target/code'
+      - shell: bash --noprofile --norc -euo pipefail {0}
+        run: |
+          PLUGIN_API_VERSION="$(./mvnw --raw-streams help:evaluate -Dexpression=plugin.api-version -DforceStdout -q --projects :betonquest)"
+          echo "PLUGIN_API_VERSION=$PLUGIN_API_VERSION" >> $GITHUB_ENV
+      - name: Rename Artifacts
+        shell: bash --noprofile --norc -euo pipefail {0}
+        run: |
+          mv target/code/BetonQuest.jar target/code/BetonQuest-${VERSION}.jar
+          mv target/docs/Docs.zip target/docs/Docs-${VERSION}.zip
+      - uses: cardinalby/git-get-release-action@v1
+        id: get_release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}  # or your personal access token
+        with:
+          tag: 'v${{ env.VERSION }}'
+          doNotFailIfNotFound: true
+      - name: Set release description
+        shell: bash --noprofile --norc -euo pipefail {0}
+        run: |
+          COMMIT_MESSAGE="$(git log -1 "$GITHUB_SHA" --pretty="%b")"
+          #Replace newlines with literal \n
+          COMMIT_MESSAGE="$(echo "$COMMIT_MESSAGE" | sed -E ':a;N;$!ba;s/\r?\n|\n?\r/\\n/g;')"
+          #Replace double quotes with literal \"
+          COMMIT_MESSAGE="${COMMIT_MESSAGE//\"/\\\"}"
+          RELEASE_BODY="${{ steps.get_release.outputs.body }}"
+          RELEASE_DESCRIPTION="${RELEASE_BODY:-$COMMIT_MESSAGE}"
+          echo "RELEASE_DESCRIPTION=$RELEASE_DESCRIPTION" >> $GITHUB_ENV
+      - name: Publish to Hangar
+        uses: milkdrinkers/Hangar-Publish@v2
+        with:
+          api_token: ${{ secrets.HANGAR_TOKEN }}
+          slug: ${{ github.event.repository.name }}
+          version: ${{ env.VERSION }}
+          channel: ${{ needs.prepare.outputs.VERSION_TYPE }}
+          description: ${{ env.RELEASE_DESCRIPTION }}
+          files: |
+            [
+              {
+                "path": "target/code/BetonQuest-${VERSION}.jar",
+                "platforms": ["PAPER"]
+              }
+            ]
+          platform_dependencies: |
+            {
+              "PAPER": [">=${PLUGIN_API_VERSION}"]
+            }
+
