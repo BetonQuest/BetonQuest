@@ -362,7 +362,7 @@ jobs:
 
   hangar-deployment:
     name: Hangar Deployment
-    if: "needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' && ( needs.prepare.outputs.VERSION_IS_NEW == 'true')"
+    if: "always() && !cancelled() && !failure() && ( needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' &&  needs.prepare.outputs.VERSION_IS_NEW == 'true' )"
     needs: [ prepare, deploy-code, deploy-docs, create-release ]
     runs-on: ubuntu-latest
 
