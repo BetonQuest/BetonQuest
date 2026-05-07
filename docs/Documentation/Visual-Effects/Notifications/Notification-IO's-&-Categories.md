@@ -300,29 +300,30 @@ notifications:
    existent category (from left to right) will be used.
 <div class="grid" markdown>
 
-| Notifications           | Categories                                       | 
-|-------------------------|--------------------------------------------------| 
-| Command Blocked         | command_blocked, *error*                         | 
-| No Permission           | no_permission, *error*                           | 
-| Inventory Full Backpack | inventory_full_backpack, inventory_full, *error* | 
-| Inventory Full Drop     | inventory_full_drop, inventory_full, *error*     | 
-| Language Changed        | language_changed, *info*                         | 
-| Quest Cancelled         | quest_cancelled, *info*                          | 
-| New Journal Entry       | new_journal_entry, *info*                        | 
-| Conversation start      | conversation_start, *info*                       |
-| Conversation end        | conversation_end, *info*                         |
-| Conversation blocked    | busy, *error*                                    | 
-| Money Given             | money_given, *info*                              | 
-| Money Taken             | money_taken, *info*                              | 
-| Items given             | items_given, *info*                              | 
-| Items taken             | items_taken, *info*                              |
-| Points given            | point_given, *info*                              |
-| Points taken            | point_taken, *info*                              |
-| Points set              | point_set, *info*                                |
+| Notifications                 | Categories                                       | 
+|-------------------------------|--------------------------------------------------| 
+| Command Blocked               | command_blocked, *error*                         | 
+| No Permission                 | no_permission, *error*                           | 
+| Inventory Full Backpack       | inventory_full_backpack, inventory_full, *error* | 
+| Inventory Full Drop           | inventory_full_drop, inventory_full, *error*     | 
+| Language Changed              | language_changed, *info*                         | 
+| Quest Cancelled               | quest_cancelled, *info*                          | 
+| New Journal Entry             | new_journal_entry, *info*                        | 
+| Conversation nothing to start | conversation_nothing_to_start, *info*            |
+| Conversation start            | conversation_start, *info*                       |
+| Conversation end              | conversation_end, *info*                         |
+| Conversation blocked          | busy, *error*                                    | 
+| Money Given                   | money_given, *info*                              | 
+| Money Taken                   | money_taken, *info*                              | 
+| Items given                   | items_given, *info*                              | 
+| Items taken                   | items_taken, *info*                              |
 
 
 | Notifications      | Categories                 |
 |--------------------|----------------------------|
+| Points given       | point_given, *info*        |
+| Points taken       | point_taken, *info*        |
+| Points set         | point_set, *info*          |
 | Points multiplied  | point_multiplied, *info*   |
 | Animals to Breed   | animals_to_breed, *info*   |
 | Blocks to Break    | blocks_to_break, *info*    |

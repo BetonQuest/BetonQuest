@@ -1,3 +1,7 @@
+3.0.0.3:
+  - type: SET
+    key: conversation_nothing_to_start
+    value: '@[legacy]&e====&b{npc}&b has nothing to say!&e===='
 3.0.0.2:
   - type: KEY_RENAME
     oldKey: condition_variable_met

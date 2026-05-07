@@ -25,7 +25,6 @@ import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.kernel.processor.feature.ConversationProcessor;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.betonquest.betonquest.quest.action.NotificationLevel;
-import org.betonquest.betonquest.quest.action.NotificationSender;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -112,6 +111,11 @@ public class Conversation {
      * The conversationIO will pass an integer to the conversation, which will be used to get the option from this map.
      */
     private final Map<Integer, ResolvedOption> availablePlayerOptions = new HashMap<>();
+
+    /**
+     * Notification sender when there is nothing to start.
+     */
+    private final IngameNotificationSender nothingToStartSender;
 
     /**
      * Notification sender when conversation starts.
@@ -204,6 +208,7 @@ public class Conversation {
         this.saver = saver;
         this.pack = conversationID.getPackage();
         this.center = center;
+        this.nothingToStartSender = new IngameNotificationSender(log, localizations, pack, conversationID.getFull(), NotificationLevel.INFO, "conversation_nothing_to_start");
         this.startSender = new IngameNotificationSender(log, localizations, pack, conversationID.getFull(), NotificationLevel.INFO, "conversation_start");
         this.endSender = new IngameNotificationSender(log, localizations, pack, conversationID.getFull(), NotificationLevel.INFO, "conversation_end");
 
@@ -591,7 +596,7 @@ public class Conversation {
          *
          * @throws QuestException when starting options could not be resolved
          */
-        public void start(final NotificationSender didNotStartSender) throws QuestException {
+        public void start() throws QuestException {
             if (conversation.state.isStarted()) {
                 return;
             }
@@ -604,10 +609,10 @@ public class Conversation {
 
                 final OnlineProfile onlineProfile = conversation.onlineProfile;
 
-                final List<ResolvedOption> resolvedOptions = resolveOptions(startingOptions);
-                if (resolvedOptions.isEmpty()) {
+                conversation.selectOption(resolveOptions(startingOptions), force);
+                if (!conversation.hasNextNPCOption()) {
                     conversation.log.debug(conversation.pack, "No starting option found for conversation '%s', aborting start".formatted(conversation.identifier));
-                    didNotStartSender.sendNotification(onlineProfile, new VariableReplacement("npc",
+                    conversation.nothingToStartSender.sendNotification(onlineProfile, new VariableReplacement("npc",
                             conversation.data.getPublicData().getQuester(conversation.log, onlineProfile)));
                     conversation.endCallable.run();
                     return;
@@ -620,7 +625,6 @@ public class Conversation {
                 conversation.inOut.begin();
                 conversation.interceptor.begin();
 
-                conversation.selectOption(resolvedOptions, force);
                 conversation.printNPCText();
                 new ConversationOptionEvent(onlineProfile, conversation, conversation.nextNPCOption, conversation.nextNPCOption).callEvent();
             } finally {

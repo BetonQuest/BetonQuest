@@ -69,6 +69,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - menu `bind` item for specific clicks
 - `FancyHolograms` as compatible Hologram plugin
 - `conversation.block_item_transfer` option with per-conversation override to prevent item moving while in a conversation
+- new notification category `conversation_nothing_to_start`
 ### Changed
 - Spigot is no longer supported, paper is now required 
 - message.yml file was deleted and instead the lang folder now contains all translations
