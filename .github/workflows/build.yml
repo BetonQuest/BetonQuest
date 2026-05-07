@@ -387,7 +387,6 @@ jobs:
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           mv target/code/BetonQuest.jar target/code/BetonQuest-${VERSION}.jar
-          mv target/docs/Docs.zip target/docs/Docs-${VERSION}.zip
       - uses: cardinalby/git-get-release-action@v1
         id: get_release
         env:
