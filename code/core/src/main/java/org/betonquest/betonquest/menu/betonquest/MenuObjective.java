@@ -9,8 +9,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.menu.Menu;
-import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.menu.event.MenuOpenEvent;
+import org.betonquest.betonquest.menu.kernel.MenuProcessor;
 
 /**
  * Completed if menu with given id is opened.
@@ -28,9 +28,9 @@ public class MenuObjective extends DefaultObjective {
     private final BetonQuestLogger log;
 
     /**
-     * The RPGMenu instance.
+     * The MenuProcessor instance.
      */
-    private final RPGMenu rpgMenu;
+    private final MenuProcessor menuProcessor;
 
     /**
      * The menu to open.
@@ -40,16 +40,16 @@ public class MenuObjective extends DefaultObjective {
     /**
      * Construct a new Menu Objective from Instruction.
      *
-     * @param service the objective service
-     * @param log     the logger for this objective
-     * @param rpgMenu the RPGMenu instance
-     * @param menuID  the menu id to open
+     * @param service       the objective service
+     * @param log           the logger for this objective
+     * @param menuProcessor the MenuProcessor instance
+     * @param menuID        the menu id to open
      * @throws QuestException if the menu id does not exist
      */
-    public MenuObjective(final ObjectiveService service, final BetonQuestLogger log, final RPGMenu rpgMenu, final Argument<MenuIdentifier> menuID) throws QuestException {
+    public MenuObjective(final ObjectiveService service, final BetonQuestLogger log, final MenuProcessor menuProcessor, final Argument<MenuIdentifier> menuID) throws QuestException {
         super(service);
         this.log = log;
-        this.rpgMenu = rpgMenu;
+        this.menuProcessor = menuProcessor;
         this.menuID = menuID;
         service.getProperties().setProperty(MENU_PROPERTY, this::getMenuProperty);
     }
@@ -76,15 +76,10 @@ public class MenuObjective extends DefaultObjective {
     private String getMenuProperty(final Profile profile) {
         final Menu menuData;
         try {
-            menuData = rpgMenu.getMenu(menuID.getValue(profile));
+            menuData = menuProcessor.get(menuID.getValue(profile));
         } catch (final QuestException e) {
             log.warn(getPackage(), "Error while getting menu property in '" + getObjectiveID() + "' objective: "
                     + e.getMessage(), e);
-            return "";
-        }
-        if (menuData == null) {
-            log.debug(getPackage(), "Error while getting menu property in '" + getObjectiveID() + "' objective: "
-                    + "menu with id " + menuID + " isn't loaded");
             return "";
         }
         try {

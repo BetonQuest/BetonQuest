@@ -163,7 +163,7 @@ public class Slots {
     public List<MenuItem> getItems(final Profile profile) throws QuestException {
         final List<MenuItem> items = new ArrayList<>();
         for (final MenuItemIdentifier itemID : this.items.getValue(profile)) {
-            final MenuItem item = rpgMenu.getMenuItem(itemID);
+            final MenuItem item = rpgMenu.getMenuItemProcessor().get(itemID);
             if (item.display(profile)) {
                 items.add(item);
             }

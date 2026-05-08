@@ -32,8 +32,6 @@ import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-
 /**
  * The RPGMenu instance.
  */
@@ -109,11 +107,6 @@ public class RPGMenu {
         this.log = log;
         this.loggerFactory = loggerFactory;
         this.bukkitManager = bukkitManager;
-        final String menu = "menu";
-        conditionRegistry.register(menu, new MenuConditionFactory());
-        objectiveRegistry.register(menu, new MenuObjectiveFactory(loggerFactory, this));
-        actionRegistry.register(menu, new MenuActionFactory(this));
-        placeholderRegistry.register(menu, new MenuPlaceholderFactory());
         this.pluginCommand = new RPGMenuCommand(loggerFactory.create(RPGMenuCommand.class), this, menuIdentifierFactory);
         pluginCommand.register();
         pluginCommand.syncCraftBukkitCommands();
@@ -124,6 +117,12 @@ public class RPGMenu {
         this.menuItemListener = new MenuItemListener(loggerFactory.create(MenuItemListener.class), this,
                 menuProcessor, profileProvider, localizations);
         bukkitManager.registerEvents(menuItemListener);
+
+        final String menu = "menu";
+        conditionRegistry.register(menu, new MenuConditionFactory());
+        objectiveRegistry.register(menu, new MenuObjectiveFactory(loggerFactory, this.menuProcessor));
+        actionRegistry.register(menu, new MenuActionFactory(this));
+        placeholderRegistry.register(menu, new MenuPlaceholderFactory());
     }
 
     /**
@@ -201,36 +200,5 @@ public class RPGMenu {
     public void syncCommands() {
         pluginCommand.syncCraftBukkitCommands();
         log.info("Synced Command Map for (Menu) Commands…");
-    }
-
-    /**
-     * Get all loaded menu's ids.
-     *
-     * @return a collection containing all loaded menus
-     */
-    public Collection<MenuIdentifier> getMenus() {
-        return menuProcessor.getValues().keySet();
-    }
-
-    /**
-     * Get a menu by their id.
-     *
-     * @param menuID menuID of the menu
-     * @return menu with the given menuID
-     */
-    @Nullable
-    public Menu getMenu(final MenuIdentifier menuID) {
-        return menuProcessor.getValues().get(menuID);
-    }
-
-    /**
-     * Gets a loaded menu item bei their id.
-     *
-     * @param menuItemID the id to get the menu item for
-     * @return the menu item
-     * @throws QuestException when there is no such object
-     */
-    public MenuItem getMenuItem(final MenuItemIdentifier menuItemID) throws QuestException {
-        return menuItemProcessor.get(menuItemID);
     }
 }
