@@ -397,14 +397,22 @@ jobs:
       - name: Set release description
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
-          COMMIT_MESSAGE="$(git log -1 "$GITHUB_SHA" --pretty="%b")"
-          #Replace newlines with literal \n
-          COMMIT_MESSAGE="$(echo "$COMMIT_MESSAGE" | sed -E ':a;N;$!ba;s/\r?\n|\n?\r/\\n/g;')"
-          #Replace double quotes with literal \"
-          COMMIT_MESSAGE="${COMMIT_MESSAGE//\"/\\\"}"
           RELEASE_BODY="${{ steps.get_release.outputs.body }}"
-          RELEASE_DESCRIPTION="${RELEASE_BODY:-$COMMIT_MESSAGE}"
-          echo "RELEASE_DESCRIPTION=$RELEASE_DESCRIPTION" >> $GITHUB_ENV
+          if [[ -n "$RELEASE_BODY" ]]; then
+            RELEASE_DESCRIPTION="$RELEASE_BODY"
+          else
+            COMMIT_SUBJECT="$(git log -1 "$GITHUB_SHA" --pretty="%s")"
+            COMMIT_MESSAGE="$(git log -1 "$GITHUB_SHA" --pretty="%b")"
+            RELEASE_DESCRIPTION="$COMMIT_SUBJECT"
+            if [[ -n "$COMMIT_MESSAGE" ]]; then
+              RELEASE_DESCRIPTION="$RELEASE_DESCRIPTION"$'\n\n'"$COMMIT_MESSAGE"
+            fi
+          fi
+          {
+            echo 'RELEASE_DESCRIPTION<<EOF'
+            echo "$RELEASE_DESCRIPTION"
+            echo 'EOF'
+          } >> "$GITHUB_ENV"
       - name: Publish to Hangar
         uses: milkdrinkers/Hangar-Publish@v2
         with:
