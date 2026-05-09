@@ -47,6 +47,6 @@ jobs:
       - name: Publish to Discord
         if: "always() && github.repository == 'BetonQuest/BetonQuest'"
         run: |
-          bash .github/scripts/discord_cache_alert.sh
+          bash .github/scripts/discord_dependency_notification.sh
         env:
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}

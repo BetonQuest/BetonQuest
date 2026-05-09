@@ -87,13 +87,14 @@ jobs:
         run: |
           if [ $VERSION_TYPE == 'release' ]; then CHANGELIST=-Dchangelist=; fi
           ./mvnw ${CHANGELIST-} -P Test-All -B verify
+          mv target/code/BetonQuest.jar target/code/BetonQuest-${VERSION}.jar
           git diff > target/code/CodeChanges.patch
       - name: Upload Code
         uses: actions/upload-artifact@v7
         with:
           name: BetonQuest-Code
           path: |
-            target/code/BetonQuest.jar
+            target/code/BetonQuest-${VERSION}.jar
             target/code/*/*.jar
 
   build-docs:
@@ -186,7 +187,7 @@ jobs:
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           UPLOAD_PATH="$(grep -oP "(?<=Uploading to betonquest: $REPOSITORY_URL)org/betonquest/betonquest/.*/betonquest-.*-shaded.jar" maven-deploy.log)"
-          echo "upload_path=$UPLOAD_PATH" >> $GITHUB_OUTPUT
+          echo "upload_path=$UPLOAD_PATH" >> "$GITHUB_OUTPUT"
         env:
           REPOSITORY_URL: ${{ vars.REPOSITORY_URL }}
 
@@ -226,43 +227,11 @@ jobs:
         if: "env.VERSION_TYPE == 'release' || env.VERSION_TYPE == 'development'"
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
-          git config --global user.name "BetonQuest-Bot"
-          git config --global user.email "contact@betonquest.org"
-          
-          IFS='.' read -r major minor _ <<< "$VERSION"
-          TWO_DIGIT_VERSION="$major.$minor"
-          
-          FLAGS=(--push --update-aliases)
-          VERSIONS=()
-          if [ "$VERSION_TYPE" = release ]; then
-            VERSIONS+=("$TWO_DIGIT_VERSION" "$TWO_DIGIT_VERSION-DEV")
-            if [ -n "$(git branch -r --contains tags/v${VERSION} --remote origin/main)" ]; then
-              VERSIONS+=(RELEASE DEV)
-            elif { mike list --json "$TWO_DIGIT_VERSION" | grep -q '"aliases" *: *\[[^]]*"RELEASE"'; }; then
-              VERSIONS+=(RELEASE)
-            fi
-            echo "mike delete $TWO_DIGIT_VERSION-DEV"
-            mike delete "$TWO_DIGIT_VERSION-DEV"
-          elif [ "$VERSION_TYPE" = development ]; then
-            VERSIONS+=("$TWO_DIGIT_VERSION-DEV")
-            if ! { mike list --json | grep -q "\"version\" *: *\"$TWO_DIGIT_VERSION\""; }; then
-              VERSIONS+=("$TWO_DIGIT_VERSION")
-            fi
-            if [ ${{ github.ref }} == 'refs/heads/main' ]; then 
-              VERSIONS+=(DEV);
-          
-              OLD_DEV_VERSION=$(mike list --json DEV | awk -F\" '/version/{print $4}')
-              if [ "$TWO_DIGIT_VERSION-DEV" != "$OLD_DEV_VERSION" ] && [[ "$OLD_DEV_VERSION" == *"-DEV" ]]; then
-                echo "mike delete $OLD_DEV_VERSION"
-                mike delete "$OLD_DEV_VERSION"
-                echo "mike alias ${OLD_DEV_VERSION%-DEV} $OLD_DEV_VERSION"
-                mike alias ${OLD_DEV_VERSION%-DEV} $OLD_DEV_VERSION
-              fi
-            fi
-          fi
-          
-          echo "mike deploy ${FLAGS[@]} ${VERSIONS[@]}"
-          mike deploy "${FLAGS[@]}" "${VERSIONS[@]}"
+          bash .github/scripts/docs_deployment.sh
+        env:
+          VERSION: ${{ env.VERSION }}
+          VERSION_TYPE: ${{ env.VERSION_TYPE }}
+          GIT_REF: ${{ github.ref }}
       - name: Set version Tag for Quest-Tutorials submodule
         if: "env.VERSION_TYPE == 'release'"
         shell: bash --noprofile --norc -euo pipefail {0}
@@ -276,7 +245,7 @@ jobs:
 
   create-release:
     name: Create GitHub Release
-    if: "needs.prepare.outputs.VERSION_TYPE == 'release' && needs.deploy-code.result == 'success' && needs.deploy-docs.result == 'success'"
+    if: "needs.prepare.outputs.VERSION_TYPE == 'release'"
     needs: [ prepare, deploy-code, deploy-docs ]
     runs-on: ubuntu-latest
 
@@ -299,18 +268,13 @@ jobs:
       - name: Zip Docs
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
-          zip -r target/docs/Docs.zip target/docs/
+          zip -r target/docs/Docs-${VERSION}.zip target/docs/
       - name: Set CHANGELOG.md version
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           sed -i "s~## \[Unreleased\]~## \[${VERSION}\]~g" ./CHANGELOG.md
           DATE="$(date +%Y-%m-%d)"
           sed -i "s~\${maven\.build\.timestamp}~$DATE~g" ./CHANGELOG.md
-      - name: Rename Artifacts
-        shell: bash --noprofile --norc -euo pipefail {0}
-        run: |
-          mv target/code/BetonQuest.jar target/code/BetonQuest-${VERSION}.jar
-          mv target/docs/Docs.zip target/docs/Docs-${VERSION}.zip
       - name: Create release
         uses: docker://antonyurchenko/git-release:v6
         env:
@@ -324,9 +288,9 @@ jobs:
             target/code/BetonQuest-${VERSION}.jar
             target/docs/Docs-${VERSION}.zip
 
-  discord-deployment:
-    name: Discord Deployment
-    if: "always() && !cancelled() && ( needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' && ( needs.prepare.outputs.VERSION_IS_NEW == 'true' || failure() ) )"
+  publish-prepare:
+    name: Prepare Publish
+    if: "always() && !cancelled() && ( needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' &&  needs.prepare.outputs.VERSION_IS_NEW == 'true' )"
     needs: [ prepare, deploy-code, deploy-docs, create-release ]
     runs-on: ubuntu-latest
 
@@ -337,41 +301,9 @@ jobs:
       VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
       SKIP_MODULES: ${{ needs.prepare.outputs.SKIP_MODULES }}
 
-    steps:
-      - name: Checkout source code
-        uses: actions/checkout@v6
-      - name: Set NEEDED_JOB_STATES
-        if: always() && !cancelled()
-        shell: bash --noprofile --norc -euo pipefail {0}
-        run: |
-          if [[ "${{ needs.prepare.result }}" == "failure" || "${{ needs.deploy-code.result }}" == "failure" || "${{ needs.deploy-docs.result }}" == "failure" || "${{ needs.create-release.result }}" == "failure" ]]; then
-            echo "NEEDED_JOB_STATES=failure" >> $GITHUB_ENV
-          else
-            echo "NEEDED_JOB_STATES=success" >> $GITHUB_ENV
-          fi
-      - name: Publish to Discord
-        if: "always() && !cancelled()"
-        shell: bash --noprofile --norc -euo pipefail {0}
-        run: |
-          bash .github/scripts/discord.sh
-        env:
-          JOB_STATUS: ${{ env.NEEDED_JOB_STATES }}
-          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
-          DOCS_URL: ${{ vars.DOCS_URL }}
-          UPLOAD_PATH: ${{ needs.deploy-code.outputs.UPLOAD_PATH }}
-
-  hangar-deployment:
-    name: Hangar Deployment
-    if: "always() && !cancelled() && !failure() && ( needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' &&  needs.prepare.outputs.VERSION_IS_NEW == 'true' )"
-    needs: [ prepare, deploy-code, deploy-docs, create-release ]
-    runs-on: ubuntu-latest
-
-    env:
-      VERSION: ${{ needs.prepare.outputs.VERSION }}
-      VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
-      VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
-      VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
-      SKIP_MODULES: ${{ needs.prepare.outputs.SKIP_MODULES }}
+    outputs:
+      PLUGIN_API_VERSION: ${{ needs.api_version.outputs.PLUGIN_API_VERSION }}
+      RELEASE_DESCRIPTION: ${{ steps.description.outputs.RELEASE_DESCRIPTION }}
 
     steps:
       - name: Checkout source code
@@ -379,22 +311,22 @@ jobs:
       - uses: BetonQuest/Workflows/.github/actions/setup-java-maven/cache@main
         with:
           MAVEN_BUILD_DIR: 'target/code'
-      - shell: bash --noprofile --norc -euo pipefail {0}
+      - name: Prepare API version
+        shell: bash --noprofile --norc -euo pipefail {0}
+        id: api_version
         run: |
           PLUGIN_API_VERSION="$(./mvnw --raw-streams help:evaluate -Dexpression=plugin.api-version -DforceStdout -q --projects :betonquest)"
-          echo "PLUGIN_API_VERSION=$PLUGIN_API_VERSION" >> $GITHUB_ENV
-      - name: Rename Artifacts
-        shell: bash --noprofile --norc -euo pipefail {0}
-        run: |
-          mv target/code/BetonQuest.jar target/code/BetonQuest-${VERSION}.jar
-      - uses: cardinalby/git-get-release-action@v1
+          echo "PLUGIN_API_VERSION=$PLUGIN_API_VERSION" >> "$GITHUB_OUTPUT"
+      - name: Get release
+        uses: cardinalby/git-get-release-action@v1
         id: get_release
         env:
-          GITHUB_TOKEN: ${{ github.token }}  # or your personal access token
+          GITHUB_TOKEN: ${{ github.token }}
         with:
           tag: 'v${{ env.VERSION }}'
           doNotFailIfNotFound: true
       - name: Set release description
+        id: description
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           RELEASE_BODY="${{ steps.get_release.outputs.body }}"
@@ -412,14 +344,73 @@ jobs:
             echo 'RELEASE_DESCRIPTION<<EOF'
             echo "$RELEASE_DESCRIPTION"
             echo 'EOF'
-          } >> "$GITHUB_ENV"
+          } >> "$GITHUB_OUTPUT"
+
+  discord-publish:
+    name: Discord Publish
+    if: "always() && !cancelled() && ( needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' && ( needs.prepare.outputs.VERSION_IS_NEW == 'true' || failure() ) )"
+    needs: [ prepare, deploy-code, deploy-docs, create-release, publish-prepare ]
+    runs-on: ubuntu-latest
+
+    env:
+      VERSION: ${{ needs.prepare.outputs.VERSION }}
+      VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
+      VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
+      VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
+      SKIP_MODULES: ${{ needs.prepare.outputs.SKIP_MODULES }}
+      UPLOAD_PATH: ${{ needs.deploy-code.outputs.UPLOAD_PATH }}
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v6
+      - name: Determine job state
+        if: always() && !cancelled()
+        shell: bash --noprofile --norc -euo pipefail {0}
+        run: |
+          if [[ "${{ needs.prepare.result }}" == "failure" || "${{ needs.deploy-code.result }}" == "failure" || "${{ needs.deploy-docs.result }}" == "failure" || "${{ needs.create-release.result }}" == "failure" || "${{ needs.publish-prepare.result }}" == "failure" ]]; then
+            echo "JOB_STATUS=failure" >> "$GITHUB_ENV"
+          else
+            echo "JOB_STATUS=success" >> "$GITHUB_ENV"
+          fi
+      - name: Publish to Discord
+        if: "always() && !cancelled()"
+        shell: bash --noprofile --norc -euo pipefail {0}
+        run: |
+          bash .github/scripts/discord_notification.sh
+        env:
+          JOB_STATUS: ${{ env.JOB_STATUS }}
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+          DOCS_URL: ${{ vars.DOCS_URL }}
+          UPLOAD_PATH: ${{ env.UPLOAD_PATH }}
+
+  hangar-publish:
+    name: Hangar Publish
+    if: "always() && !cancelled() && !failure() && ( needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' &&  needs.prepare.outputs.VERSION_IS_NEW == 'true' )"
+    needs: [ prepare, deploy-code, deploy-docs, create-release, publish-prepare ]
+    runs-on: ubuntu-latest
+
+    env:
+      VERSION: ${{ needs.prepare.outputs.VERSION }}
+      VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
+      VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
+      VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
+      SKIP_MODULES: ${{ needs.prepare.outputs.SKIP_MODULES }}
+      PLUGIN_API_VERSION: ${{ needs.prepair-deployment.outputs.PLUGIN_API_VERSION }}
+      RELEASE_DESCRIPTION: ${{ needs.prepair-deployment.outputs.RELEASE_DESCRIPTION }}
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v6
+      - uses: BetonQuest/Workflows/.github/actions/setup-java-maven/cache@main
+        with:
+          MAVEN_BUILD_DIR: 'target/code'
       - name: Publish to Hangar
         uses: milkdrinkers/Hangar-Publish@v2
         with:
           api_token: ${{ secrets.HANGAR_TOKEN }}
           slug: ${{ github.event.repository.name }}
           version: ${{ env.VERSION }}
-          channel: ${{ needs.prepare.outputs.VERSION_TYPE }}
+          channel: ${{ env.VERSION_TYPE }}
           description: ${{ env.RELEASE_DESCRIPTION }}
           files: |
             [
@@ -432,4 +423,3 @@ jobs:
             {
               "PAPER": [">=${{ env.PLUGIN_API_VERSION }}"]
             }
-
