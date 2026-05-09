@@ -1,0 +1,4 @@
+3.0.0.1:
+  - type: SET
+    key: conversation_nothing_to_start
+    value: '@[legacy]&e====&b{npc}&b has nothing to say!&e===='

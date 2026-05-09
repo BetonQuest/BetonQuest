@@ -113,6 +113,11 @@ public class Conversation {
     private final Map<Integer, ResolvedOption> availablePlayerOptions = new HashMap<>();
 
     /**
+     * Notification sender when there is nothing to start.
+     */
+    private final IngameNotificationSender nothingToStartSender;
+
+    /**
      * Notification sender when conversation starts.
      */
     private final IngameNotificationSender startSender;
@@ -203,6 +208,7 @@ public class Conversation {
         this.saver = saver;
         this.pack = conversationID.getPackage();
         this.center = center;
+        this.nothingToStartSender = new IngameNotificationSender(log, localizations, pack, conversationID.getFull(), NotificationLevel.INFO, "conversation_nothing_to_start");
         this.startSender = new IngameNotificationSender(log, localizations, pack, conversationID.getFull(), NotificationLevel.INFO, "conversation_start");
         this.endSender = new IngameNotificationSender(log, localizations, pack, conversationID.getFull(), NotificationLevel.INFO, "conversation_end");
 
@@ -603,6 +609,15 @@ public class Conversation {
 
                 final OnlineProfile onlineProfile = conversation.onlineProfile;
 
+                conversation.selectOption(resolveOptions(startingOptions), force);
+                if (!conversation.hasNextNPCOption()) {
+                    conversation.log.debug(conversation.pack, "No starting option found for conversation '%s', aborting start".formatted(conversation.identifier));
+                    conversation.nothingToStartSender.sendNotification(onlineProfile, new VariableReplacement("npc",
+                            conversation.data.getPublicData().getQuester(conversation.log, onlineProfile)));
+                    conversation.endCallable.run();
+                    return;
+                }
+
                 conversation.startSender.sendNotification(onlineProfile,
                         new VariableReplacement("npc", conversation.data.getPublicData().getQuester(conversation.log, onlineProfile)));
                 conversation.state = ConversationState.ACTIVE;
@@ -610,7 +625,6 @@ public class Conversation {
                 conversation.inOut.begin();
                 conversation.interceptor.begin();
 
-                conversation.selectOption(resolveOptions(startingOptions), force);
                 conversation.printNPCText();
                 new ConversationOptionEvent(onlineProfile, conversation, conversation.nextNPCOption, conversation.nextNPCOption).callEvent();
             } finally {

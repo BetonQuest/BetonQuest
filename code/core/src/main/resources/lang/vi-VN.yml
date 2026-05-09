@@ -1,4 +1,5 @@
 configVersion: ""
+conversation_nothing_to_start: '@[legacy]&e====&b{npc}&b has nothing to say!&e===='
 conversation_start: '@[legacy]&e====&bĐối thoại với {npc}&b bắt đầu!&e===='
 conversation_end: '@[legacy]&e====&bĐối thoại với {npc}&b đã xong!&e===='
 no_permission: '@[legacy]&Bạn không có quyền.'

@@ -1,4 +1,4 @@
-configVersion: ""
+configVersion: "3.0.0-CONFIG-0"
 conversation_start: '@[legacy]&e====&b {npc}(와)과 대화를 시작합니다!&e===='
 conversation_end: '@[legacy]&e====&b {npc}(와)과의 대화가 끝났습니다!&e===='
 no_permission: '@[legacy]&c권한이 없습니다.'
