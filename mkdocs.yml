@@ -167,11 +167,17 @@ nav:
           - 'Objectives': API/Essentials/Objectives.md
           - 'Conditions': API/Essentials/Conditions.md
           - 'NPCs': API/Essentials/NPCs.md
+      - 'Integration':
+          - 'Overview': API/Integration/Overview.md
+          - 'Policies': API/Integration/Policies.md
+          - 'Integration Builder': API/Integration/Integration-Builder.md
+          - 'Implementation': API/Integration/Implementation.md
       - 'Tools':
           - 'Instruction': API/Tools/Instruction.md
           - 'Logging': API/Tools/Logging.md
           - 'Text Parsing': API/Tools/TextParsing.md
           - 'Profiles': API/Tools/Profiles.md
+          - 'Versioning': API/Tools/Versioning.md
           - 'Configuration Accessor': API/Configuration-Files.md
           - 'Bukkit Configurations': API/BukkitConfigurations.md
       - 'Legacy':
