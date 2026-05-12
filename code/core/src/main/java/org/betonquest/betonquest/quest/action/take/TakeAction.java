@@ -3,11 +3,14 @@ package org.betonquest.betonquest.quest.action.take;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
+import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.action.OnlineAction;
+import org.betonquest.betonquest.api.service.action.ActionManager;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.quest.action.NotificationSender;
 import org.bukkit.entity.Player;
@@ -39,6 +42,11 @@ public class TakeAction implements OnlineAction {
     private final NotificationSender notificationSender;
 
     /**
+     * The action manager.
+     */
+    private final ActionManager actionManager;
+
+    /**
      * The items to be removed.
      */
     private final Argument<List<ItemWrapper>> questItems;
@@ -49,19 +57,37 @@ public class TakeAction implements OnlineAction {
     private final Argument<List<CheckType>> checkOrder;
 
     /**
+     * If not all items being present should not take items at all.
+     */
+    private final FlagArgument<Boolean> abort;
+
+    /**
+     * Actions to execute if not all items could be taken.
+     */
+    @Nullable
+    private final Argument<List<ActionIdentifier>> failActions;
+
+    /**
      * Constructs a new TakeAction.
      *
      * @param playerDataStorage  the storage for player data
      * @param notificationSender the notification sender to use
+     * @param actionManager      the action manager
      * @param questItems         the items to be removed
      * @param checkOrder         the order in which the checks should be performed
+     * @param abort              if not all items being present should not take items at all
+     * @param failActions        the actions to execute if not all items could be taken
      */
-    public TakeAction(final PlayerDataStorage playerDataStorage, final NotificationSender notificationSender,
-                      final Argument<List<ItemWrapper>> questItems, final Argument<List<CheckType>> checkOrder) {
+    public TakeAction(final PlayerDataStorage playerDataStorage, final NotificationSender notificationSender, final ActionManager actionManager,
+                      final Argument<List<ItemWrapper>> questItems, final Argument<List<CheckType>> checkOrder,
+                      final FlagArgument<Boolean> abort, @Nullable final Argument<List<ActionIdentifier>> failActions) {
         this.playerDataStorage = playerDataStorage;
+        this.actionManager = actionManager;
         this.checkOrder = checkOrder;
         this.notificationSender = notificationSender;
         this.questItems = questItems;
+        this.abort = abort;
+        this.failActions = failActions;
     }
 
     @Override
@@ -72,7 +98,7 @@ public class TakeAction implements OnlineAction {
             final int deleteAmount = item.getAmount().getValue(profile).intValue();
             neededDeletions.compute(questItem, (ignored, integer) -> (integer == null ? 0 : integer) + deleteAmount);
         }
-        final Session session = new Session(profile, neededDeletions);
+        final Session session = new Session(profile, neededDeletions, abort.getValue(profile).orElse(false));
         session.checkSelectedTypes();
         neededDeletions.forEach((questItem, deleteAmount) -> {
             final Integer notTaken = session.stillToTake.getOrDefault(questItem, 0);
@@ -99,6 +125,11 @@ public class TakeAction implements OnlineAction {
         private final Player player;
 
         /**
+         * If not all items being present should result in a fail.
+         */
+        private final boolean abort;
+
+        /**
          * Items which still need to be taken.
          */
         private final Map<QuestItem, Integer> stillToTake;
@@ -123,10 +154,11 @@ public class TakeAction implements OnlineAction {
          */
         private @Nullable List<ItemStack> newBackpack;
 
-        private Session(final OnlineProfile profile, final Map<QuestItem, Integer> neededDeletions) {
+        private Session(final OnlineProfile profile, final Map<QuestItem, Integer> neededDeletions, final boolean abort) {
             this.profile = profile;
             this.player = profile.getPlayer();
             this.stillToTake = new HashMap<>(neededDeletions);
+            this.abort = abort;
         }
 
         private void checkSelectedTypes() throws QuestException {
@@ -146,7 +178,15 @@ public class TakeAction implements OnlineAction {
             setNewContents();
         }
 
-        private void setNewContents() {
+        private void setNewContents() throws QuestException {
+            if (!stillToTake.isEmpty()) {
+                if (failActions != null) {
+                    actionManager.run(profile, failActions.getValue(profile));
+                }
+                if (abort) {
+                    return;
+                }
+            }
             if (newInventory != null) {
                 player.getInventory().setStorageContents(newInventory);
             }
@@ -223,18 +263,20 @@ public class TakeAction implements OnlineAction {
                         changed = true;
                         if (item.getAmount() <= desiredDeletions) {
                             items[i] = null;
-                            desiredDeletions = desiredDeletions - item.getAmount();
+                            desiredDeletions -= item.getAmount();
                         } else {
-                            item.setAmount(item.getAmount() - desiredDeletions);
+                            item.subtract(desiredDeletions);
                             desiredDeletions = 0;
                         }
                     }
                 }
+
                 entry.setValue(desiredDeletions);
                 if (desiredDeletions <= 0) {
                     iterator.remove();
                 }
             }
+
             if (changed) {
                 return items;
             }

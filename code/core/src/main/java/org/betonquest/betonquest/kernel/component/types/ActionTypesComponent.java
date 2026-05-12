@@ -148,7 +148,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         actionTypes.register("chat", new ChatActionFactory());
         actionTypes.registerCombined("chestclear", new ChestClearActionFactory());
         actionTypes.registerCombined("chestgive", new ChestGiveActionFactory());
-        actionTypes.registerCombined("chesttake", new ChestTakeActionFactory());
+        actionTypes.registerCombined("chesttake", new ChestTakeActionFactory(actionManager));
         actionTypes.register("compass", new CompassActionFactory(compassManager, persistence));
         actionTypes.registerCombined("command", new CommandActionFactory(loggerFactory, server));
         actionTypes.register("conversation", new ConversationActionFactory(conversations));
@@ -200,7 +200,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         actionTypes.register("stage", new StageActionFactory(objectiveManager));
         actionTypes.register("sudo", new SudoActionFactory(server));
         actionTypes.registerCombined("tag", new TagPlayerActionFactory(persistence, saver, profileProvider));
-        actionTypes.register("take", new TakeActionFactory(loggerFactory, playerDataStorage, localizations));
+        actionTypes.register("take", new TakeActionFactory(loggerFactory, playerDataStorage, localizations, actionManager));
         actionTypes.register("teleport", new TeleportActionFactory(conversations));
         actionTypes.registerCombined("time", new TimeActionFactory());
         actionTypes.register("updatevisibility", new UpdateVisibilityNowActionFactory(npcHider));
