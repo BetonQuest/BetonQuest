@@ -76,7 +76,7 @@ public class RPGMenuCommand extends SimpleCommand {
                     return new ArrayList<>();
                 }
                 final List<String> completions = new ArrayList<>();
-                for (final MenuIdentifier id : menu.getMenus()) {
+                for (final MenuIdentifier id : menu.getMenuProcessor().getValues().keySet()) {
                     if (id.getPackage().equals(configPack)) {
                         completions.add(id.toString());
                     }
@@ -122,7 +122,7 @@ public class RPGMenuCommand extends SimpleCommand {
             case "list":
                 final TextComponent.Builder builder = Component.text();
                 builder.append(getMessage(sender, "command_list"));
-                final Collection<MenuIdentifier> ids = this.menu.getMenus();
+                final Collection<MenuIdentifier> ids = this.menu.getMenuProcessor().getValues().keySet();
                 if (ids.isEmpty()) {
                     builder.append(Component.newline().append(Component.text(" - ").color(NamedTextColor.GRAY)));
                 } else {

@@ -8,9 +8,12 @@ The first argument is the type of action that should be done.
 It is either `open` to open a new menu, `close` to close the currently opened menu, or `update` to update the 
 content of the currently opened menu.  
 If you want to open a menu you have to add a second argument which should be the id of a menu.
-If you want to open menus from other packages just use the cross package format.
+If you want to open menus from other packages just use the cross package format.  
+By default, the menu's open conditions are ignored. When you want to check for them, use the `check` flag.
 
 **Example:** `menu open quest_gui`
+
+**Example:** `menu open reward_gui check`
 
 **Example:** `menu close`
 

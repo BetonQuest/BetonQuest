@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestConsumer;
 import org.betonquest.betonquest.api.identifier.MenuIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.action.OnlineActionAdapter;
@@ -37,7 +38,15 @@ public class MenuActionFactory implements PlayerActionFactory {
         final QuestConsumer<OnlineProfile> consumer = switch (operation) {
             case OPEN -> {
                 final Argument<MenuIdentifier> menuID = instruction.identifier(MenuIdentifier.class).get();
-                yield profile -> rpgMenu.openMenu(profile, menuID.getValue(profile));
+                final FlagArgument<Boolean> check = instruction.bool().getFlag("check", true);
+                yield profile -> {
+                    final MenuIdentifier resolvedId = menuID.getValue(profile);
+                    if (check.getValue(profile).orElse(false)
+                            && !rpgMenu.getMenuProcessor().get(resolvedId).mayOpen(profile)) {
+                        return;
+                    }
+                    rpgMenu.openMenu(profile, resolvedId);
+                };
             }
             case CLOSE -> RPGMenu::closeMenu;
             case UPDATE -> profile -> {
