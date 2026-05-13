@@ -303,7 +303,8 @@ jobs:
 
     outputs:
       PLUGIN_API_VERSION: ${{ needs.api_version.outputs.PLUGIN_API_VERSION }}
-      RELEASE_DESCRIPTION: ${{ steps.description.outputs.RELEASE_DESCRIPTION }}
+      COMMIT_DESCRIPTION: ${{ steps.commit_description.outputs.COMMIT_DESCRIPTION }}
+      RELEASE_DESCRIPTION: ${{ steps.release_description.outputs.RELEASE_DESCRIPTION }}
 
     steps:
       - name: Checkout source code
@@ -317,6 +318,22 @@ jobs:
         run: |
           PLUGIN_API_VERSION="$(./mvnw --raw-streams help:evaluate -Dexpression=plugin.api-version -DforceStdout -q --projects :betonquest)"
           echo "PLUGIN_API_VERSION=$PLUGIN_API_VERSION" >> "$GITHUB_OUTPUT"
+      - name: Set Commit Description
+        id: commit_description
+        shell: bash --noprofile --norc -euo pipefail {0}
+        run: |
+          COMMIT_SUBJECT="$(git log -1 "$GITHUB_SHA" --pretty="%s")"
+          COMMIT_MESSAGE="$(git log -1 "$GITHUB_SHA" --pretty="%b")"
+          COMMIT_URL="https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA"
+          COMMIT_DESCRIPTION="[__**${COMMIT_SUBJECT}**__](${COMMIT_URL})"
+          if [[ -n "$COMMIT_MESSAGE" ]]; then
+            COMMIT_DESCRIPTION="$COMMIT_DESCRIPTION"$'\n\n'"$COMMIT_MESSAGE"
+          fi
+          {
+            echo 'COMMIT_DESCRIPTION<<EOF'
+            echo "$COMMIT_DESCRIPTION"
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
       - name: Get release
         uses: cardinalby/git-get-release-action@v1
         id: get_release
@@ -326,19 +343,14 @@ jobs:
           tag: 'v${{ env.VERSION }}'
           doNotFailIfNotFound: true
       - name: Set release description
-        id: description
+        id: release_description
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           RELEASE_BODY="${{ steps.get_release.outputs.body }}"
           if [[ -n "$RELEASE_BODY" ]]; then
             RELEASE_DESCRIPTION="$RELEASE_BODY"
           else
-            COMMIT_SUBJECT="$(git log -1 "$GITHUB_SHA" --pretty="%s")"
-            COMMIT_MESSAGE="$(git log -1 "$GITHUB_SHA" --pretty="%b")"
-            RELEASE_DESCRIPTION="$COMMIT_SUBJECT"
-            if [[ -n "$COMMIT_MESSAGE" ]]; then
-              RELEASE_DESCRIPTION="$RELEASE_DESCRIPTION"$'\n\n'"$COMMIT_MESSAGE"
-            fi
+            RELEASE_DESCRIPTION="${{ steps.commit_description.outputs.COMMIT_DESCRIPTION }}"
           fi
           {
             echo 'RELEASE_DESCRIPTION<<EOF'
@@ -359,6 +371,7 @@ jobs:
       VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
       SKIP_MODULES: ${{ needs.prepare.outputs.SKIP_MODULES }}
       UPLOAD_PATH: ${{ needs.deploy-code.outputs.UPLOAD_PATH }}
+      COMMIT_DESCRIPTION: ${{ needs.prepair-deployment.outputs.COMMIT_DESCRIPTION }}
 
     steps:
       - name: Checkout source code
@@ -382,6 +395,7 @@ jobs:
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
           DOCS_URL: ${{ vars.DOCS_URL }}
           UPLOAD_PATH: ${{ env.UPLOAD_PATH }}
+          COMMIT_DESCRIPTION: ${{ env.COMMIT_DESCRIPTION }}
 
   hangar-publish:
     name: Hangar Publish
