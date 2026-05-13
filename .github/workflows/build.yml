@@ -290,7 +290,7 @@ jobs:
 
   publish-prepare:
     name: Publish Prepare
-    if: "always() && !cancelled() && ( needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' &&  needs.prepare.outputs.VERSION_IS_NEW == 'true' )"
+    if: "always() && !cancelled() && ( needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' && needs.prepare.outputs.VERSION_IS_NEW == 'true' )"
     needs: [ prepare, deploy-code, deploy-docs, create-release ]
     runs-on: ubuntu-latest
 
@@ -408,7 +408,7 @@ jobs:
 
   hangar-publish:
     name: Hangar Publish
-    if: "always() && !cancelled() && !failure() && ( needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' &&  needs.prepare.outputs.VERSION_IS_NEW == 'true' )"
+    if: "always() && !cancelled() && !failure() && ( needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' && needs.prepare.outputs.VERSION_IS_NEW == 'true' )"
     needs: [ prepare, deploy-code, deploy-docs, create-release, publish-prepare ]
     runs-on: ubuntu-latest
 
@@ -446,3 +446,37 @@ jobs:
             {
               "PAPER": [">=${{ env.PLUGIN_API_VERSION }}"]
             }
+
+  modrinth-publish:
+    name: Modrinth Publish
+    if: "always() && !cancelled() && !failure() && ( needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' && needs.prepare.outputs.VERSION_IS_NEW == 'true' )"
+    needs: [ prepare, deploy-code, deploy-docs, create-release ]
+    runs-on: ubuntu-latest
+
+    env:
+      VERSION: ${{ needs.prepare.outputs.VERSION }}
+      VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
+      VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
+      VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
+      SKIP_MODULES: ${{ needs.prepare.outputs.SKIP_MODULES }}
+      PLUGIN_API_VERSION: ${{ needs.publish-prepare.outputs.PLUGIN_API_VERSION }}
+      RELEASE_DESCRIPTION: ${{ needs.publish-prepare.outputs.RELEASE_DESCRIPTION }}
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v6
+      - uses: BetonQuest/Workflows/.github/actions/setup-java-maven/cache@main
+        with:
+          MAVEN_BUILD_DIR: 'target/code'
+      - name: Publish to Modrinth
+        uses: cloudnode-pro/modrinth-publish@v2
+        with:
+          name: '${{ github.event.repository.name }} ${{ env.VERSION }}'
+          token: ${{ secrets.MODRINTH_TOKEN }}
+          project: 'uVhukxY9'
+          version: ${{ env.VERSION }}
+          channel: ${{ env.VERSION_TYPE }}
+          loaders: 'paper'
+          changelog: ${{ env.RELEASE_DESCRIPTION }}
+          files: 'target/code/BetonQuest-${{ env.VERSION }}.jar'
+          game-versions: ${{ env.PLUGIN_API_VERSION }}
