@@ -22,12 +22,10 @@ COMMIT_ICON_RELEASE="https://github.githubassets.com/images/icons/emoji/unicode/
 echo "[Webhook]: Preparing git related variables...";
 AUTHOR_NAME="$(git log -1 "$GITHUB_SHA" --pretty="%aN")"
 COMMITTER_NAME="$(git log -1 "$GITHUB_SHA" --pretty="%cN")"
-COMMIT_SUBJECT="$(git log -1 "$GITHUB_SHA" --pretty="%s")"
-COMMIT_MESSAGE="$(git log -1 "$GITHUB_SHA" --pretty="%b")"
 #Replace newlines with literal \n
-COMMIT_MESSAGE="$(echo "$COMMIT_MESSAGE" | sed -E ':a;N;$!ba;s/\r?\n|\n?\r/\\n/g;')"
+COMMIT_DESCRIPTION="$(echo "$COMMIT_DESCRIPTION" | sed -E ':a;N;$!ba;s/\r?\n|\n?\r/\\n/g;')"
 #Replace double quotes with literal \"
-COMMIT_MESSAGE="${COMMIT_MESSAGE//\"/\\\"}"
+COMMIT_DESCRIPTION="${COMMIT_DESCRIPTION//\"/\\\"}"
 COMMIT_URL="https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA"
 BRANCH_NAME="${GITHUB_REF#*/*/}"
 REPO_URL="https://github.com/$GITHUB_REPOSITORY"
@@ -38,12 +36,6 @@ if [ "$AUTHOR_NAME" == "$COMMITTER_NAME" ]; then
 else
   CREDITS="$AUTHOR_NAME authored & $COMMITTER_NAME committed"
 fi
-LINEBREAK=""
-if [ -n "$COMMIT_MESSAGE" ]; then
-  LINEBREAK="\n"
-fi
-COMMIT_MESSAGE="${COMMIT_MESSAGE//$\\n/ }"
-ADDITIONAL_INFORMATION="$LINEBREAK$COMMIT_MESSAGE$LINEBREAK\\n$CREDITS"
 
 echo "[Webhook]: Preparing type related variables...";
 case "$VERSION_TYPE" in
@@ -110,7 +102,7 @@ WEBHOOK_DATA='{
     },
     "title": "'"${DEV_BUILD_DOWNLOAD}"'",
     "url": "'"$BUILD_DOWNLOAD_URL"'",
-    "description": "'"$DESCRIPTION"'\n\n'"[__**${COMMIT_SUBJECT}**__](${COMMIT_URL})\\n${ADDITIONAL_INFORMATION}"'",
+    "description": "'"$DESCRIPTION"'\n\n'"${COMMIT_DESCRIPTION}\\n\\n${CREDITS}"'",
     "fields": [
       {
         "name": "Commit",

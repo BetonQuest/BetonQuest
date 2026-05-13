@@ -32,8 +32,8 @@ runs:
         LIB_REVISION="$(./mvnw --raw-streams help:evaluate -Dexpression=revision -DforceStdout -q --projects :lib)"
         if [ "$(git tag -l "v$API_REVISION-api")" ]; then API_VERSION_MAVEN="$API_REVISION"; else API_VERSION_MAVEN="$API_REVISION-SNAPSHOT"; fi
         if [ "$(git tag -l "v$LIB_REVISION-lib")" ]; then LIB_VERSION_MAVEN="$LIB_REVISION"; else LIB_VERSION_MAVEN="$LIB_REVISION-SNAPSHOT"; fi
-        echo "API_VERSION_MAVEN=$API_VERSION_MAVEN" >> $GITHUB_ENV
-        echo "LIB_VERSION_MAVEN=$LIB_VERSION_MAVEN" >> $GITHUB_ENV
+        echo "API_VERSION_MAVEN=$API_VERSION_MAVEN" >> "$GITHUB_ENV"
+        echo "LIB_VERSION_MAVEN=$LIB_VERSION_MAVEN" >> "$GITHUB_ENV"
     - name: Set API/Overview.md version
       shell: bash --noprofile --norc -euo pipefail {0}
       run: |
