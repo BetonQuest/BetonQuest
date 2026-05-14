@@ -41,6 +41,22 @@
          <lastmod>2026-05-14</lastmod>
     </url>
     <url>
+         <loc>https://betonquest.org/3.0-DEV/API/Integration/Implementation/</loc>
+         <lastmod>2026-05-14</lastmod>
+    </url>
+    <url>
+         <loc>https://betonquest.org/3.0-DEV/API/Integration/Integration-Builder/</loc>
+         <lastmod>2026-05-14</lastmod>
+    </url>
+    <url>
+         <loc>https://betonquest.org/3.0-DEV/API/Integration/Overview/</loc>
+         <lastmod>2026-05-14</lastmod>
+    </url>
+    <url>
+         <loc>https://betonquest.org/3.0-DEV/API/Integration/Policies/</loc>
+         <lastmod>2026-05-14</lastmod>
+    </url>
+    <url>
          <loc>https://betonquest.org/3.0-DEV/API/Legacy/Schedules/</loc>
          <lastmod>2026-05-14</lastmod>
     </url>
@@ -62,6 +78,10 @@
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/API/Tools/TextParsing/</loc>
+         <lastmod>2026-05-14</lastmod>
+    </url>
+    <url>
+         <loc>https://betonquest.org/3.0-DEV/API/Tools/Versioning/</loc>
          <lastmod>2026-05-14</lastmod>
     </url>
     <url>
