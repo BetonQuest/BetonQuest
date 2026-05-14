@@ -374,7 +374,7 @@ jobs:
       VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
       SKIP_MODULES: ${{ needs.prepare.outputs.SKIP_MODULES }}
       UPLOAD_PATH: ${{ needs.deploy-code.outputs.UPLOAD_PATH }}
-      COMMIT_DESCRIPTION: ${{ needs.prepair-deployment.outputs.COMMIT_DESCRIPTION }}
+      COMMIT_DESCRIPTION: ${{ needs.publish-prepare.outputs.COMMIT_DESCRIPTION }}
 
     steps:
       - name: Checkout source code
@@ -418,8 +418,8 @@ jobs:
       VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
       VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
       SKIP_MODULES: ${{ needs.prepare.outputs.SKIP_MODULES }}
-      PLUGIN_API_VERSION: ${{ needs.prepair-deployment.outputs.PLUGIN_API_VERSION }}
-      RELEASE_DESCRIPTION: ${{ needs.prepair-deployment.outputs.RELEASE_DESCRIPTION }}
+      PLUGIN_API_VERSION: ${{ needs.publish-prepare.outputs.PLUGIN_API_VERSION }}
+      RELEASE_DESCRIPTION: ${{ needs.publish-prepare.outputs.RELEASE_DESCRIPTION }}
 
     steps:
       - name: Checkout source code
