@@ -37,7 +37,7 @@ public class EntityInteractObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
         final Argument<Interaction> interaction = instruction.enumeration(Interaction.class).get();
-        final Argument<EntityType> mobType = instruction.enumeration(EntityType.class).get();
+        final Argument<Optional<EntityType>> mobType = instruction.enumeration(EntityType.class).prefilterOptional("any", null).get();
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get();
         final Argument<Component> customName = instruction.component().get("name").orElse(null);
         final Argument<String> realName = instruction.string().get("realname").orElse(null);

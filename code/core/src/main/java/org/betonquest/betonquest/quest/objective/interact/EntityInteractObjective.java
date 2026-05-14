@@ -19,6 +19,8 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 /**
  * Player has to interact with specified amount of specified mobs. It can also
  * require the player to interact with specifically named mobs and notify them
@@ -60,7 +62,7 @@ public class EntityInteractObjective extends CountingObjective {
     /**
      * The mob type to interact with.
      */
-    protected Argument<EntityType> mobType;
+    protected Argument<Optional<EntityType>> mobType;
 
     /**
      * The identifier for the marked entities.
@@ -99,7 +101,7 @@ public class EntityInteractObjective extends CountingObjective {
                                    @Nullable final Argument<Location> loc,
                                    final Argument<Number> range, @Nullable final Argument<Component> customName,
                                    @Nullable final Argument<String> realName, @Nullable final EquipmentSlot slot,
-                                   final Argument<EntityType> mobType, @Nullable final Argument<String> marked,
+                                   final Argument<Optional<EntityType>> mobType, @Nullable final Argument<String> marked,
                                    final Argument<Interaction> interaction, final FlagArgument<Boolean> cancel) throws QuestException {
         super(service, targetAmount, "mobs_to_click");
         this.loc = loc;
@@ -115,7 +117,7 @@ public class EntityInteractObjective extends CountingObjective {
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     private boolean onInteract(final OnlineProfile onlineProfile, final Entity entity) throws QuestException {
-        if (entity.getType() != mobType.getValue(onlineProfile)) {
+        if (entity.getType() != mobType.getValue(onlineProfile).orElse(entity.getType())) {
             return false;
         }
         if (customName != null && (entity.customName() == null || !customName.getValue(onlineProfile).equals(entity.customName()))) {
