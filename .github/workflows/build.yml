@@ -246,7 +246,7 @@ jobs:
   create-release:
     name: Create GitHub Release
     if: "needs.prepare.outputs.VERSION_TYPE == 'release'"
-    needs: [ prepare, deploy-code, deploy-docs ]
+    needs: [ prepare, build-code, build-docs, deploy-code, deploy-docs ]
     runs-on: ubuntu-latest
 
     env:
@@ -291,7 +291,7 @@ jobs:
   publish-prepare:
     name: Publish Prepare
     if: "always() && !cancelled() && ( needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' && needs.prepare.outputs.VERSION_IS_NEW == 'true' )"
-    needs: [ prepare, deploy-code, deploy-docs, create-release ]
+    needs: [ prepare, build-code, build-docs, deploy-code, deploy-docs, create-release ]
     runs-on: ubuntu-latest
 
     env:
@@ -364,7 +364,7 @@ jobs:
   discord-publish:
     name: Discord Publish
     if: "always() && !cancelled() && ( needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' && ( needs.prepare.outputs.VERSION_IS_NEW == 'true' || failure() ) )"
-    needs: [ prepare, deploy-code, deploy-docs, create-release, publish-prepare ]
+    needs: [ prepare, build-code, build-docs, deploy-code, deploy-docs, create-release, publish-prepare ]
     runs-on: ubuntu-latest
 
     env:
@@ -383,13 +383,15 @@ jobs:
         if: always() && !cancelled()
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
-          if [[ "$PREPARE" == "failure" || "$DEPLOY_CODE" == "failure" || "$DEPLOY_DOCS" == "failure" || "$CREATE_RELEASE" == "failure" || "$PUBLISH_PREPARE" == "failure" ]]; then
+          if [[ "$PREPARE" == "failure" || "$BUILD_CODE" == "failure" || "$BUILD_DOCS" == "failure" || "$DEPLOY_CODE" == "failure" || "$DEPLOY_DOCS" == "failure" || "$CREATE_RELEASE" == "failure" || "$PUBLISH_PREPARE" == "failure" ]]; then
             echo "JOB_STATUS=failure" >> "$GITHUB_ENV"
           else
             echo "JOB_STATUS=success" >> "$GITHUB_ENV"
           fi
         env:
           PREPARE: ${{ needs.prepare.result }}
+          BUILD_CODE: ${{ needs.build-code.result }}
+          BUILD_DOCS: §{{ needs.build-docs.result }}
           DEPLOY_CODE: ${{ needs.deploy-code.result }}
           DEPLOY_DOCS: ${{ needs.deploy-docs.result }}
           CREATE_RELEASE: ${{ needs.create-release.result }}
@@ -409,7 +411,7 @@ jobs:
   hangar-publish:
     name: Hangar Publish
     if: "always() && !cancelled() && !failure() && ( needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' && needs.prepare.outputs.VERSION_IS_NEW == 'true' )"
-    needs: [ prepare, deploy-code, deploy-docs, create-release, publish-prepare ]
+    needs: [ prepare, build-code, build-docs, deploy-code, deploy-docs, create-release, publish-prepare ]
     runs-on: ubuntu-latest
 
     env:
@@ -450,7 +452,7 @@ jobs:
   modrinth-publish:
     name: Modrinth Publish
     if: "always() && !cancelled() && !failure() && ( needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' && needs.prepare.outputs.VERSION_IS_NEW == 'true' )"
-    needs: [ prepare, deploy-code, deploy-docs, create-release, publish-prepare ]
+    needs: [ prepare, build-code, build-docs, deploy-code, deploy-docs, create-release, publish-prepare ]
     runs-on: ubuntu-latest
 
     env:
