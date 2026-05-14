@@ -289,7 +289,7 @@ jobs:
             target/docs/Docs-${VERSION}.zip
 
   publish-prepare:
-    name: Prepare Publish
+    name: Publish Prepare
     if: "always() && !cancelled() && ( needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' &&  needs.prepare.outputs.VERSION_IS_NEW == 'true' )"
     needs: [ prepare, deploy-code, deploy-docs, create-release ]
     runs-on: ubuntu-latest
@@ -302,7 +302,7 @@ jobs:
       SKIP_MODULES: ${{ needs.prepare.outputs.SKIP_MODULES }}
 
     outputs:
-      PLUGIN_API_VERSION: ${{ needs.api_version.outputs.PLUGIN_API_VERSION }}
+      PLUGIN_API_VERSION: ${{ steps.api_version.outputs.PLUGIN_API_VERSION }}
       COMMIT_DESCRIPTION: ${{ steps.commit_description.outputs.COMMIT_DESCRIPTION }}
       RELEASE_DESCRIPTION: ${{ steps.release_description.outputs.RELEASE_DESCRIPTION }}
 
@@ -331,7 +331,7 @@ jobs:
           fi
           {
             echo 'COMMIT_DESCRIPTION<<EOF'
-            echo "$COMMIT_DESCRIPTION"
+            printf '%s\n' "$COMMIT_DESCRIPTION"
             echo 'EOF'
           } >> "$GITHUB_OUTPUT"
       - name: Get release
@@ -346,17 +346,20 @@ jobs:
         id: release_description
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
-          RELEASE_BODY="${{ steps.get_release.outputs.body }}"
+          RELEASE_BODY="$RELEASE_BODY"
           if [[ -n "$RELEASE_BODY" ]]; then
             RELEASE_DESCRIPTION="$RELEASE_BODY"
           else
-            RELEASE_DESCRIPTION="${{ steps.commit_description.outputs.COMMIT_DESCRIPTION }}"
+            RELEASE_DESCRIPTION="$COMMIT_DESCRIPTION"
           fi
           {
             echo 'RELEASE_DESCRIPTION<<EOF'
-            echo "$RELEASE_DESCRIPTION"
+            printf '%s\n' "$RELEASE_DESCRIPTION"
             echo 'EOF'
           } >> "$GITHUB_OUTPUT"
+        env:
+          RELEASE_BODY: ${{ steps.get_release.outputs.body }}
+          COMMIT_DESCRIPTION: ${{ steps.commit_description.outputs.COMMIT_DESCRIPTION }}
 
   discord-publish:
     name: Discord Publish
@@ -380,11 +383,17 @@ jobs:
         if: always() && !cancelled()
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
-          if [[ "${{ needs.prepare.result }}" == "failure" || "${{ needs.deploy-code.result }}" == "failure" || "${{ needs.deploy-docs.result }}" == "failure" || "${{ needs.create-release.result }}" == "failure" || "${{ needs.publish-prepare.result }}" == "failure" ]]; then
+          if [[ "$PREPARE" == "failure" || "$DEPLOY_CODE" == "failure" || "$DEPLOY_DOCS" == "failure" || "$CREATE_RELEASE" == "failure" || "$PUBLISH_PREPARE" == "failure" ]]; then
             echo "JOB_STATUS=failure" >> "$GITHUB_ENV"
           else
             echo "JOB_STATUS=success" >> "$GITHUB_ENV"
           fi
+        env:
+          PREPARE: ${{ needs.prepare.result }}
+          DEPLOY_CODE: ${{ needs.deploy-code.result }}
+          DEPLOY_DOCS: ${{ needs.deploy-docs.result }}
+          CREATE_RELEASE: ${{ needs.create-release.result }}
+          PUBLISH_PREPARE: ${{ needs.publish-prepare.result }}
       - name: Publish to Discord
         if: "always() && !cancelled()"
         shell: bash --noprofile --norc -euo pipefail {0}
@@ -429,11 +438,11 @@ jobs:
           files: |
             [
               {
-                "path": "target/code/BetonQuest-${{ env.VERSION }}.jar",
+                "path": "target/code/BetonQuest-$VERSION.jar",
                 "platforms": ["PAPER"]
               }
             ]
           platform_dependencies: |
             {
-              "PAPER": [">=${{ env.PLUGIN_API_VERSION }}"]
+              "PAPER": [">=$PLUGIN_API_VERSION"]
             }
