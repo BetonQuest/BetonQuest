@@ -468,6 +468,14 @@ jobs:
       - uses: BetonQuest/Workflows/.github/actions/setup-java-maven/cache@main
         with:
           MAVEN_BUILD_DIR: 'target/code'
+      - name: Determine version channel
+        shell: bash --noprofile --norc -euo pipefail {0}
+        run: |
+          if [[ "$VERSION_TYPE" == "release" ]]; then
+            echo "MODRINTH_VERSION_TYPE=release" >> "$GITHUB_ENV"
+          else
+            echo "MODRINTH_VERSION_TYPE=beta" >> "$GITHUB_ENV"
+          fi
       - name: Publish to Modrinth
         uses: cloudnode-pro/modrinth-publish@v2
         with:
@@ -475,7 +483,7 @@ jobs:
           token: ${{ secrets.MODRINTH_TOKEN }}
           project: 'uVhukxY9'
           version: ${{ env.VERSION }}
-          channel: ${{ env.VERSION_TYPE }}
+          channel: ${{ env.MODRINTH_VERSION_TYPE }}
           loaders: 'paper'
           changelog: ${{ env.RELEASE_DESCRIPTION }}
           files: 'target/code/BetonQuest-${{ env.VERSION }}.jar'
