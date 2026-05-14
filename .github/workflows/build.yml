@@ -450,7 +450,7 @@ jobs:
   modrinth-publish:
     name: Modrinth Publish
     if: "always() && !cancelled() && !failure() && ( needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' && needs.prepare.outputs.VERSION_IS_NEW == 'true' )"
-    needs: [ prepare, deploy-code, deploy-docs, create-release ]
+    needs: [ prepare, deploy-code, deploy-docs, create-release, publish-prepare ]
     runs-on: ubuntu-latest
 
     env:
