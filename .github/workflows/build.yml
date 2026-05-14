@@ -438,11 +438,11 @@ jobs:
           files: |
             [
               {
-                "path": "target/code/BetonQuest-$VERSION.jar",
+                "path": "target/code/BetonQuest-${{ env.VERSION }}.jar",
                 "platforms": ["PAPER"]
               }
             ]
           platform_dependencies: |
             {
-              "PAPER": [">=$PLUGIN_API_VERSION"]
+              "PAPER": [">=${{ env.PLUGIN_API_VERSION }}"]
             }
