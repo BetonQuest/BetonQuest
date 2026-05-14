@@ -137,6 +137,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `citizens` npc hiding now uses the inbuilt player filter trait
 - `global` property for objectives renamed to `auto-once`
 - `brew` objective now checks brewed items in a more accurate way
+- `interact` objective now accepting `any` as an option for the entity type argument
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation
