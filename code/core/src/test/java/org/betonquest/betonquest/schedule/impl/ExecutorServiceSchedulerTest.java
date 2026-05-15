@@ -2,7 +2,6 @@ package org.betonquest.betonquest.schedule.impl;
 
 import org.betonquest.betonquest.api.identifier.ScheduleIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.schedule.FictiveTime;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.service.action.ActionManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -130,5 +129,12 @@ class ExecutorServiceSchedulerTest {
         verify(logger, times(1)).error(eq("Error while stopping scheduler"), any(TimeoutException.class));
         verify(logger, times(1)).debug("Stop complete.");
         verifyNoMoreInteractions(logger);
+    }
+
+    /**
+     * Fictive time class used for testing.
+     */
+    public record FictiveTime() {
+
     }
 }
