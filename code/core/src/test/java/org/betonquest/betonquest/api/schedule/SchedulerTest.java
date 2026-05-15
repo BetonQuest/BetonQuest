@@ -99,4 +99,11 @@ class SchedulerTest {
             return new FictiveTime();
         }
     }
+
+    /**
+     * Fictive time class used for testing.
+     */
+    public record FictiveTime() {
+
+    }
 }

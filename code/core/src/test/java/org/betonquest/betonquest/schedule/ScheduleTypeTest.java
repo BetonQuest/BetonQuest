@@ -14,7 +14,6 @@ import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
-import org.betonquest.betonquest.api.schedule.FictiveTime;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
@@ -216,5 +215,12 @@ class ScheduleTypeTest {
             final ScheduleData scheduleData = parseScheduleData(instruction);
             return new ThrowingUncheckedSchedule(scheduleID, scheduleData.actions(), scheduleData.catchup());
         }
+    }
+
+    /**
+     * Fictive time class used for testing.
+     */
+    public record FictiveTime() {
+
     }
 }

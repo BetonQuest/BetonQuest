@@ -11,7 +11,6 @@ import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
-import org.betonquest.betonquest.api.schedule.FictiveTime;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
@@ -220,5 +219,12 @@ class ActionSchedulingTest {
         public MockedSchedule createNewInstance(final ScheduleIdentifier scheduleID, final SectionInstruction instruction) {
             return new MockedSchedule(scheduleID, List.of(), CatchupStrategy.NONE);
         }
+    }
+
+    /**
+     * Fictive time class used for testing.
+     */
+    public record FictiveTime() {
+
     }
 }
