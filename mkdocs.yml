@@ -166,6 +166,7 @@ nav:
           - 'Actions': API/Essentials/Actions.md
           - 'Objectives': API/Essentials/Objectives.md
           - 'Conditions': API/Essentials/Conditions.md
+          - 'Placeholders': API/Essentials/Placeholders.md
           - 'NPCs': API/Essentials/NPCs.md
       - 'Integration':
           - 'Overview': API/Integration/Overview.md
