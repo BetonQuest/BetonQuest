@@ -1,13 +1,13 @@
+unfinished: |-
+  ??? warning "API State: `Unfinished`"
+      @snippet:api-state:state-explanation@
+
 draft: |-
   ??? question "API State: `Draft`"
       @snippet:api-state:state-explanation@
 
 stable: |-
   ??? success "API State: `Stable`"
-      @snippet:api-state:state-explanation@
-
-unfinished: |-
-  ??? warning "API State: `Unfinished`"
       @snippet:api-state:state-explanation@
 
 state-explanation: |-
