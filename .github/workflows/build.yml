@@ -479,7 +479,7 @@ jobs:
             echo "MODRINTH_VERSION_TYPE=beta" >> "$GITHUB_ENV"
           fi
       - name: Publish to Modrinth
-        uses: Wolf2323/modrinth-publish@VersionRange
+        uses: cloudnode-pro/modrinth-publish@113-allow-version-ranges-for-the-game-versions
         with:
           name: '${{ github.event.repository.name }} ${{ env.VERSION }}'
           token: ${{ secrets.MODRINTH_TOKEN }}
