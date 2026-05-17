@@ -2,6 +2,6 @@
 icon: material/application-export
 status: new
 ---
-@snippet:api-state:todo@
+@snippet:api-state:draft@
 
 ## No Player Characters (NPCs)

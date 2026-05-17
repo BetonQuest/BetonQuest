@@ -1,7 +1,7 @@
 ---
 icon: material/text-box-outline
 ---
-@snippet:api-state:draft@
+@snippet:api-state:stable@
 
 !!! abstract "[ServicesManager](../Obtaining-API.md) API Classes"
     * `org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory`
