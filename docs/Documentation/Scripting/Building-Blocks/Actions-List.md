@@ -86,14 +86,17 @@ actions:
 ## `ChestTake`
 
 __Context__: @snippet:action-meta:independent@  
-__Syntax__: `chesttake <location> <items>`  
+__Syntax__: `chesttake <location> <items> [abort] [fail]`  
 __Description__: Take items from the chest at the specified location.
 
-This action works the same as `take` action, but it takes items from a chest at specified location. The instruction string is defined in the same way as in `chestgive` action.
+This action works the same as `take` action, but it takes items from a chest at specified location.
+The instruction string is defined in the same way as in `chestgive` action
+and accepts the `abort` and `fail` options from the `take` action.
 
 ```YAML title="Example"
 actions:
   chesttake: "chesttake 100;200;300;world emerald:5,sword"
+  finishRiddle: "chesttake 300;200;100;world stone:8,artifact:2,sand:3 abort fail:thunder"
 ```
 
 ## `Command`
@@ -974,17 +977,24 @@ actions:
 ## `Take`
 
 __Context__: @snippet:action-meta:online@  
-__Syntax__: `take <items> [invOrder] [notify]`  
+__Syntax__: `take <items> [invOrder] [notify] [abort] [fail]`  
 __Description__: Take items from the player’s inventory or backpack.
 
 The items itself must be defined in the `items` section, optionally with an amount after a colon.
 Which inventory types are checked is defined by the `invOrder:`
 option. You can use `Backpack`, `Inventory`, `MainHand`, `Offhand` and `Armor` there. One after another will be checked if multiple types are defined.
 
+The `abort` option sets that no items are taken at all, when not all are present.
+The `fail` actions will be executed when not all specified items could be taken from the given inventories.
+These in combination can be used for example setting a tag which you can use in a later conversation option to check
+if the player still had the items when they should be taken.
+Alternatively you can check for the tag in a folder's cancel conditions to only execute the following actions when
+in fact all items are taken.
+
 Note: If the items aren't quest items don't use `take` action with player options in conversations!
 The player can drop items before selecting the option and pickup them after the action fires.
-Validate it on the NPC’s reaction!  
-However, all item movement can be prevented with the `conversation.block_item_transfer` option in the "_config.yml_".
+Validate it on the NPC’s reaction or consider the `fail` actions in addition.
+However, item movement can be prevented with the `conversation.block_item_transfer` option in the "_config.yml_".
 
 You can also specify `notify` keyword to display a simple message to the player about loosing items.
 
@@ -995,6 +1005,7 @@ actions:
   wand: "take wand notify invOrder:Backpack"
   money: "take money:50 invOrder:Backpack,Inventory"
   armor: "take armor invOrder:Armor,Offhand,Inventory,Backpack"
+  takeBribe: "take bribe:10 invOrder:mainHand fail:notEnough"
 ```
 
 ## `Teleport`
