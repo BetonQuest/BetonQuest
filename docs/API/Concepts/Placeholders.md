@@ -1,8 +1,7 @@
 ---
-icon: material/application-export
-status: new
+icon: material/variable-box
 ---
-@snippet:api-state:unfinished@
+@snippet:api-state:draft@
 
 ??? abstract "Placeholder API Classes"
     * `org.betonquest.betonquest.api.service.placeholder.Placeholders`
@@ -29,7 +28,7 @@ This page covers the Placeholder API of BetonQuest.
 !!! abstract "What this page covers"
     - [How to create a placeholder](#how-to-create-a-placeholder)
     - [How to create a factory for a placeholder](#how-to-create-a-factory-for-a-placeholder)
-    - [How to register a placeholder and its factory with BetonQuest](#how-to-register-a-placeholder-and-its-factory-with-betonquest)
+    - [How to register a placeholder and its factory with BetonQuest](#how-to-register-a-placeholder-with-betonquest)
     - [How to resolve a placeholder](#how-to-resolve-a-placeholder)
     - [How a full example looks like](#how-a-full-example-looks-like)
     - [What limitations are there](#what-limitations-are-there)

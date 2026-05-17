@@ -1,5 +1,5 @@
 ---
-icon: material/application-export
+icon: material/script-text-key-outline
 status: new
 ---
 # Policies

@@ -1,5 +1,5 @@
 ---
-icon: material/application-export
+icon: material/wrench
 status: new
 ---
 # IntegrationBuilder
