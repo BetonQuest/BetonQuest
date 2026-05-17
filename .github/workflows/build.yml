@@ -479,7 +479,7 @@ jobs:
             echo "MODRINTH_VERSION_TYPE=beta" >> "$GITHUB_ENV"
           fi
       - name: Publish to Modrinth
-        uses: cloudnode-pro/modrinth-publish@113-allow-version-ranges-for-the-game-versions
+        uses: cloudnode-pro/modrinth-publish@v2
         with:
           name: '${{ github.event.repository.name }} ${{ env.VERSION }}'
           token: ${{ secrets.MODRINTH_TOKEN }}
@@ -489,4 +489,10 @@ jobs:
           loaders: 'paper'
           changelog: ${{ env.RELEASE_DESCRIPTION }}
           files: 'target/code/BetonQuest-${{ env.VERSION }}.jar'
-          game-versions: ">=${{ env.PLUGIN_API_VERSION }}"
+          game-versions: |
+            ${{ env.PLUGIN_API_VERSION }}
+            1.18.x
+            1.19.x
+            1.20.x
+            1.21.x
+            26.1.x
