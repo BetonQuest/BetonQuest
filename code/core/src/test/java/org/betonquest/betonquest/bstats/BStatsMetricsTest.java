@@ -161,10 +161,10 @@ class BStatsMetricsTest {
 
         new BStatsMetrics(plugin, bstatsMetrics, Map.of("id", metricsSupplier), mock(Compatibility.class), instructionApi);
 
-        verify(bstatsMetrics, times(6)).addCustomChart(chartArgumentCaptor.capture());
+        verify(bstatsMetrics, times(7)).addCustomChart(chartArgumentCaptor.capture());
         final List<CustomChart> customCharts = chartArgumentCaptor.getAllValues();
-        final CustomChart countChart = customCharts.get(2);
-        final CustomChart enabledChart = customCharts.get(3);
+        final CustomChart countChart = customCharts.get(3);
+        final CustomChart enabledChart = customCharts.get(4);
 
         assertCollectedChartData("{\"chartId\":\"idCount\",\"data\":{\"values\":{\"test\":1}}}", countChart);
         assertCollectedChartData("{\"chartId\":\"idEnabled\",\"data\":{\"values\":{\"test\":1}}}", enabledChart);

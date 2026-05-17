@@ -5,15 +5,19 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.identifier.ReadableIdentifier;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
+import org.betonquest.betonquest.api.version.Version;
 import org.betonquest.betonquest.compatibility.Compatibility;
+import org.betonquest.betonquest.lib.version.BetonQuestVersion;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.AdvancedPie;
 import org.bstats.charts.DrilldownPie;
+import org.bstats.charts.MultiLineChart;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
@@ -67,6 +71,10 @@ public class BStatsMetrics {
 
         metrics.addCustomChart(new DrilldownPie("versionMcBq", () -> getDrillDownPie(versionPlugin, versionMc)));
         metrics.addCustomChart(new DrilldownPie("versionBqMc", () -> getDrillDownPie(versionMc, versionPlugin)));
+
+        final Version betonQuestVersion = BetonQuestVersion.parse(versionPlugin);
+        final String versionType = betonQuestVersion.getNamedElement("type").orElse("other").toLowerCase(Locale.ROOT);
+        metrics.addCustomChart(new MultiLineChart("versionTypes", () -> Map.of(versionType, 1)));
     }
 
     private Map<String, Map<String, Integer>> getDrillDownPie(final String firstValue, final String secondValue) {
