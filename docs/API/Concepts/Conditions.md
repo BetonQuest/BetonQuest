@@ -2,7 +2,7 @@
 icon: material/application-export
 status: new
 ---
-@snippet:api-state:unfinished@
+@snippet:api-state:draft@
 
 ??? abstract "Condition API Classes"
     * `org.betonquest.betonquest.api.service.condition.Conditions`
@@ -323,7 +323,7 @@ This is useful if we want to reuse loaded conditions in another condition or jus
 Loaded conditions are generally referenced by an `ConditionIdentifier` consisting of their name and the package they are defined in.
 `ConditionIdentifier`s are unique since you cannot have two conditions with the same name in the same package.
 They can be obtained from an `Instruction` using the `identifier(ConditionIdentifier.class)` type declaring method (See [Instruction](../Tools/Instruction.md#argument-parsing))
-or directly manually via the API (See [API Overview](../Essentials/Overview.md#identifiers)).
+or directly manually via the API (See [API Overview](../Concepts/Overview.md#identifiers)).
 
 You can test a condition as follows:
 

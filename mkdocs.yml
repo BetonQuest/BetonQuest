@@ -162,12 +162,12 @@ nav:
       - 'Overview': API/Overview.md
       - 'Obtaining API': API/Obtaining-API.md
       - 'Concepts':
-          - 'Overview': API/Essentials/Overview.md
-          - 'Actions': API/Essentials/Actions.md
-          - 'Objectives': API/Essentials/Objectives.md
-          - 'Conditions': API/Essentials/Conditions.md
-          - 'Placeholders': API/Essentials/Placeholders.md
-          - 'NPCs': API/Essentials/NPCs.md
+          - 'Overview': API/Concepts/Overview.md
+          - 'Actions': API/Concepts/Actions.md
+          - 'Objectives': API/Concepts/Objectives.md
+          - 'Conditions': API/Concepts/Conditions.md
+          - 'Placeholders': API/Concepts/Placeholders.md
+          - 'NPCs': API/Concepts/NPCs.md
       - 'Integration':
           - 'Overview': API/Integration/Overview.md
           - 'Policies': API/Integration/Policies.md
