@@ -1,12 +1,15 @@
 package org.betonquest.betonquest.compatibility.craftengine.item;
 
 import net.kyori.adventure.text.Component;
+import net.momirealms.craftengine.bukkit.api.BukkitAdaptor;
 import net.momirealms.craftengine.bukkit.api.CraftEngineItems;
-import net.momirealms.craftengine.core.item.CustomItem;
+import net.momirealms.craftengine.bukkit.item.BukkitItemDefinition;
+import net.momirealms.craftengine.core.item.ItemBuildContext;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.item.QuestItemWrapper;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -20,7 +23,7 @@ import java.util.Objects;
  *
  * @param customItemArgument the argument containing the custom item
  */
-public record CraftEngineItemWrapper(Argument<CustomItem<ItemStack>> customItemArgument) implements QuestItemWrapper {
+public record CraftEngineItemWrapper(Argument<BukkitItemDefinition> customItemArgument) implements QuestItemWrapper {
 
     @Override
     public QuestItem getItem(@Nullable final Profile profile) throws QuestException {
@@ -35,7 +38,7 @@ public record CraftEngineItemWrapper(Argument<CustomItem<ItemStack>> customItemA
         /**
          * The base custom item from CraftEngine.
          */
-        private final CustomItem<ItemStack> customItem;
+        private final BukkitItemDefinition definition;
 
         /**
          * The cached item meta for the custom item.
@@ -45,11 +48,11 @@ public record CraftEngineItemWrapper(Argument<CustomItem<ItemStack>> customItemA
         /**
          * Constructs a CraftEngineItem for the given base custom item.
          *
-         * @param customItem the base custom item.
+         * @param definition the base custom item.
          */
-        public CraftEngineItem(final CustomItem<ItemStack> customItem) {
-            this.customItem = customItem;
-            this.itemMeta = customItem.buildItemStack().getItemMeta();
+        public CraftEngineItem(final BukkitItemDefinition definition) {
+            this.definition = definition;
+            this.itemMeta = definition.buildBukkitItem().getItemMeta();
         }
 
         @Override
@@ -64,12 +67,15 @@ public record CraftEngineItemWrapper(Argument<CustomItem<ItemStack>> customItemA
 
         @Override
         public ItemStack generate(final int stackSize, @Nullable final Profile profile) {
-            return customItem.buildItemStack(stackSize);
+            if (profile instanceof final OnlineProfile onlineProfile) {
+                return definition.buildBukkitItem(ItemBuildContext.of(BukkitAdaptor.adapt(onlineProfile.getPlayer())), stackSize);
+            }
+            return definition.buildBukkitItem(ItemBuildContext.empty(), stackSize);
         }
 
         @Override
         public boolean matches(@Nullable final ItemStack item) {
-            return item != null && Objects.equals(customItem.id(), CraftEngineItems.getCustomItemId(item));
+            return item != null && Objects.equals(definition.id(), CraftEngineItems.getCustomItemId(item));
         }
     }
 }

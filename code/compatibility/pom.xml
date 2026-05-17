@@ -59,8 +59,8 @@
     <auraskills-api-bukkit.version>2.2.0</auraskills-api-bukkit.version>
     <fabled.version>1.0.2-R1</fabled.version>
     <nexo.version>1.17.0</nexo.version>
-    <craft-engine-core.version>0.0.66</craft-engine-core.version>
-    <craft-engine-bukkit.version>0.0.66</craft-engine-bukkit.version>
+    <craft-engine-core.version>26.5</craft-engine-core.version>
+    <craft-engine-bukkit.version>26.5</craft-engine-bukkit.version>
     <api-itemsadder.version>4.0.10</api-itemsadder.version>
   </properties>
 
