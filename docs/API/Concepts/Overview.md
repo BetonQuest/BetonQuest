@@ -1,6 +1,5 @@
 ---
-icon: material/application-export
-status: new
+icon: octicons/info-16
 ---
 @snippet:api-state:draft@
 

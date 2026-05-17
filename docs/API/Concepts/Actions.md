@@ -1,6 +1,5 @@
 ---
-icon: material/application-export
-status: new
+icon: fontawesome/solid/play
 ---
 @snippet:api-state:draft@
 

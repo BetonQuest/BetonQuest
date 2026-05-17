@@ -1,6 +1,5 @@
 ---
-icon: material/application-export
-status: new
+icon: material/account-group-outline
 ---
 @snippet:api-state:draft@
 

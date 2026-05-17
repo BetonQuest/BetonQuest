@@ -1,6 +1,5 @@
 ---
-icon: material/application-export
-status: new
+icon: octicons/question-16
 ---
 @snippet:api-state:draft@
 

@@ -1,6 +1,5 @@
 ---
-icon: material/application-export
-status: new
+icon: material/variable-box
 ---
 @snippet:api-state:draft@
 
