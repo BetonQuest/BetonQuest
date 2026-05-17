@@ -9797,11 +9797,14 @@ BetonQuest will log an error to the console when this action is fired but there 
 </code></pre></div>
 <h2 id="chesttake"><code>ChestTake</code><a class="headerlink" href="#chesttake" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="<b>Independent</b><br> This action can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"/></svg></span><br />
-<strong>Syntax</strong>: <code>chesttake &lt;location&gt; &lt;items&gt;</code><br />
+<strong>Syntax</strong>: <code>chesttake &lt;location&gt; &lt;items&gt; [abort] [fail]</code><br />
 <strong>Description</strong>: Take items from the chest at the specified location.</p>
-<p>This action works the same as <code>take</code> action, but it takes items from a chest at specified location. The instruction string is defined in the same way as in <code>chestgive</code> action.</p>
+<p>This action works the same as <code>take</code> action, but it takes items from a chest at specified location.
+The instruction string is defined in the same way as in <code>chestgive</code> action
+and accepts the <code>abort</code> and <code>fail</code> options from the <code>take</code> action.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">chesttake</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;chesttake</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">emerald:5,sword&quot;</span>
+<span class="w">  </span><span class="nt">finishRiddle</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;chesttake</span><span class="nv"> </span><span class="s">300;200;100;world</span><span class="nv"> </span><span class="s">stone:8,artifact:2,sand:3</span><span class="nv"> </span><span class="s">abort</span><span class="nv"> </span><span class="s">fail:thunder&quot;</span>
 </code></pre></div>
 <h2 id="command"><code>Command</code><a class="headerlink" href="#command" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="<b>Independent</b><br> This action can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"/></svg></span><br />
@@ -10756,15 +10759,21 @@ and delete the tag for all players in the database (even if offline).</p>
 </code></pre></div>
 <h2 id="take"><code>Take</code><a class="headerlink" href="#take" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This action can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
-<strong>Syntax</strong>: <code>take &lt;items&gt; [invOrder] [notify]</code><br />
+<strong>Syntax</strong>: <code>take &lt;items&gt; [invOrder] [notify] [abort] [fail]</code><br />
 <strong>Description</strong>: Take items from the player’s inventory or backpack.</p>
 <p>The items itself must be defined in the <code>items</code> section, optionally with an amount after a colon.
 Which inventory types are checked is defined by the <code>invOrder:</code>
 option. You can use <code>Backpack</code>, <code>Inventory</code>, <code>MainHand</code>, <code>Offhand</code> and <code>Armor</code> there. One after another will be checked if multiple types are defined.</p>
+<p>The <code>abort</code> option sets that no items are taken at all, when not all are present.
+The <code>fail</code> actions will be executed when not all specified items could be taken from the given inventories.
+These in combination can be used for example setting a tag which you can use in a later conversation option to check
+if the player still had the items when they should be taken.
+Alternatively you can check for the tag in a folder's cancel conditions to only execute the following actions when
+in fact all items are taken.</p>
 <p>Note: If the items aren't quest items don't use <code>take</code> action with player options in conversations!
 The player can drop items before selecting the option and pickup them after the action fires.
-Validate it on the NPC’s reaction!<br />
-However, all item movement can be prevented with the <code>conversation.block_item_transfer</code> option in the "<em>config.yml</em>".</p>
+Validate it on the NPC’s reaction or consider the <code>fail</code> actions in addition.
+However, item movement can be prevented with the <code>conversation.block_item_transfer</code> option in the "<em>config.yml</em>".</p>
 <p>You can also specify <code>notify</code> keyword to display a simple message to the player about loosing items.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">emeraldsAndSword</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;take</span><span class="nv"> </span><span class="s">emerald:120,sword&quot;</span>
@@ -10772,6 +10781,7 @@ However, all item movement can be prevented with the <code>conversation.block_it
 <span class="w">  </span><span class="nt">wand</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;take</span><span class="nv"> </span><span class="s">wand</span><span class="nv"> </span><span class="s">notify</span><span class="nv"> </span><span class="s">invOrder:Backpack&quot;</span>
 <span class="w">  </span><span class="nt">money</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;take</span><span class="nv"> </span><span class="s">money:50</span><span class="nv"> </span><span class="s">invOrder:Backpack,Inventory&quot;</span>
 <span class="w">  </span><span class="nt">armor</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;take</span><span class="nv"> </span><span class="s">armor</span><span class="nv"> </span><span class="s">invOrder:Armor,Offhand,Inventory,Backpack&quot;</span>
+<span class="w">  </span><span class="nt">takeBribe</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;take</span><span class="nv"> </span><span class="s">bribe:10</span><span class="nv"> </span><span class="s">invOrder:mainHand</span><span class="nv"> </span><span class="s">fail:notEnough&quot;</span>
 </code></pre></div>
 <h2 id="teleport"><code>Teleport</code><a class="headerlink" href="#teleport" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This action can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
