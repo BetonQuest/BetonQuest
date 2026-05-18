@@ -1,6 +1,6 @@
 # [CraftEngine](https://polymart.org/product/7624/craftengine)
 
-@snippet:versions:minimum@ _0.0.66_
+@snippet:versions:minimum@ _26.5_
 
 ## Items
 
