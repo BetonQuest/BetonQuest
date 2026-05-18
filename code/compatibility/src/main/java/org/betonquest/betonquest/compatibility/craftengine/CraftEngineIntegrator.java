@@ -13,7 +13,7 @@ public class CraftEngineIntegrator extends IntegrationTemplate {
     /**
      * The minimum required version of CraftEngine.
      */
-    public static final String REQUIRED_VERSION = "0.0.66";
+    public static final String REQUIRED_VERSION = "26.5";
 
     /**
      * The empty default constructor.
