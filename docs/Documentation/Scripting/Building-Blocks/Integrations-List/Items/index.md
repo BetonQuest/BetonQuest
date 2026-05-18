@@ -18,6 +18,7 @@ BetonQuest provides integrations for the following items plugins:
 - [Brewery & BreweryX](./Brewery.md)
 - [CraftEngine](./CraftEngine.md)
 - [ItemsAdder](./ItemsAdder.md)
+- [Magic](./Magic.md)
 - [MMOItems](./MMOItems.md)
 - [MythicMobs](./MythicMobs.md)
 - [Nexo](./Nexo.md)

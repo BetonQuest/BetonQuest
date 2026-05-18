@@ -4,10 +4,12 @@ import com.elmakers.mine.bukkit.api.event.SpellInventoryEvent;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
-import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.compatibility.magic.item.MagicItemFactory;
+import org.betonquest.betonquest.compatibility.magic.item.MagicQuestItemSerializer;
 import org.betonquest.betonquest.data.PlayerDataStorage;
+import org.betonquest.betonquest.lib.integration.IntegrationTemplate;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,7 +19,7 @@ import java.util.Objects;
 /**
  * Integrator for the Magic plugin.
  */
-public class MagicIntegrator implements Integration {
+public class MagicIntegrator extends IntegrationTemplate {
 
     /**
      * The minimum required version of Magic.
@@ -28,13 +30,16 @@ public class MagicIntegrator implements Integration {
      * Creates a new Integrator.
      */
     public MagicIntegrator() {
+        super();
     }
 
     @Override
     public void enable(final BetonQuestApi api) {
         final MagicAPI magicApi = Objects.requireNonNull((MagicAPI) Bukkit.getPluginManager().getPlugin("Magic"));
-        api.conditions().registry().register("wand", new WandConditionFactory(magicApi));
+        playerCondition("wand", new WandConditionFactory(magicApi));
         api.bukkit().registerEvents(new InventoryListener(BetonQuest.getInstance().getPlayerDataStorage(), api.profiles()));
+        item("magic", new MagicItemFactory(magicApi.getController()), new MagicQuestItemSerializer(magicApi.getController()));
+        registerFeatures(api);
     }
 
     @Override

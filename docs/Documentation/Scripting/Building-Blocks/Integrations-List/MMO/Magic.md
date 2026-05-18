@@ -2,6 +2,10 @@
 
 @snippet:versions:minimum@ _10.2_
 
+!!! info
+    Magic integration supports [BetonQuest Item](../Items/index.md) features as well.
+    For those, please visit the [Magic](../Items/Magic.md) Item page.
+
 ## Conditions
 
 ### `Wand`

@@ -72,6 +72,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - new notification category `conversation_nothing_to_start`
 - `check` flag to `menu` action to respect the menu's open conditions
 - `abort` flag and `fail` actions to (chest) take action
+- item support for the integration `magic`
 ### Changed
 - Spigot is no longer supported, paper is now required 
 - message.yml file was deleted and instead the lang folder now contains all translations
