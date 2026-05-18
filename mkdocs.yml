@@ -81,6 +81,7 @@ nav:
                   - 'Brewery & BreweryX': Documentation/Scripting/Building-Blocks/Integrations-List/Items/Brewery.md
                   - 'CraftEngine': Documentation/Scripting/Building-Blocks/Integrations-List/Items/CraftEngine.md
                   - 'ItemsAdder': Documentation/Scripting/Building-Blocks/Integrations-List/Items/ItemsAdder.md
+                  - 'Magic': Documentation/Scripting/Building-Blocks/Integrations-List/Items/Magic.md
                   - 'MMOItems': Documentation/Scripting/Building-Blocks/Integrations-List/Items/MMOItems.md
                   - 'MythicMobs': Documentation/Scripting/Building-Blocks/Integrations-List/Items/MythicMobs.md
                   - 'Nexo': Documentation/Scripting/Building-Blocks/Integrations-List/Items/Nexo.md

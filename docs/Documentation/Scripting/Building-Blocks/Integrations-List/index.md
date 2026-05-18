@@ -26,6 +26,7 @@ The categories are just to make it easier for you to find the plugins you're loo
     - [Brewery & BreweryX](./Items/Brewery.md)
     - [CraftEngine](./Items/CraftEngine.md)
     - [ItemsAdder](./Items/ItemsAdder.md)
+    - [Magic](./Items/Magic.md)
     - [MMOItems](./Items/MMOItems.md)
     - [MythicMobs](./Items/MythicMobs.md)
     - [Nexo](./Items/Nexo.md)
