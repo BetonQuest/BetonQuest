@@ -1,4 +1,4 @@
-# [CraftEngine](https://polymart.org/product/7624/craftengine)
+# [CraftEngine](https://modrinth.com/plugin/craftengine)
 
 @snippet:versions:minimum@ _26.5_
 
