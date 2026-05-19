@@ -3,6 +3,7 @@ package org.betonquest.betonquest.lib.integration.policy;
 import org.betonquest.betonquest.api.integration.policy.Policy;
 import org.betonquest.betonquest.api.version.Version;
 import org.betonquest.betonquest.lib.integration.PluginProvider;
+import org.betonquest.betonquest.lib.version.BetonQuestVersion;
 import org.betonquest.betonquest.lib.version.MinecraftVersion;
 import org.bukkit.plugin.Plugin;
 
@@ -123,6 +124,39 @@ public final class Policies {
      */
     public static Policy maximalVanillaVersion(final String version) {
         return new VanillaPolicy(MinecraftVersion.parse(version), VersionCompareStrategy.MAXIMAL, "Minecraft version '%s' or below is required.".formatted(version));
+    }
+
+    /**
+     * Creates a policy requiring a minimum BetonQuest version.
+     *
+     * @param version the minimum BetonQuest version required
+     * @return a policy that checks for the minimum BetonQuest version
+     */
+    public static Policy minimalBetonQuestVersion(final String version) {
+        return new BetonQuestPolicy(BetonQuestVersion.parse(version), VersionCompareStrategy.MINIMAL,
+                "BetonQuest (API) version '%s' and above is required.".formatted(version));
+    }
+
+    /**
+     * Creates a policy requiring an exact BetonQuest version.
+     *
+     * @param version the exact BetonQuest version required
+     * @return a policy that checks for the exact BetonQuest version
+     */
+    public static Policy exactBetonQuestVersion(final String version) {
+        return new BetonQuestPolicy(BetonQuestVersion.parse(version), VersionCompareStrategy.EXACT,
+                "BetonQuest (API) version '%s' is required.".formatted(version));
+    }
+
+    /**
+     * Creates a policy requiring a maximum BetonQuest version.
+     *
+     * @param version the maximum BetonQuest version allowed
+     * @return a policy that checks for the maximum BetonQuest version
+     */
+    public static Policy maximalBetonQuestVersion(final String version) {
+        return new BetonQuestPolicy(BetonQuestVersion.parse(version), VersionCompareStrategy.MAXIMAL,
+                "BetonQuest (API) version '%s' and below is required.".formatted(version));
     }
 
     /**
