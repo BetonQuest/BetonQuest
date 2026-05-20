@@ -116,14 +116,17 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
             final DyeColor dye = DyeColor.getByFireworkColor(color);
             builder.append(dye == null ? '#' + Integer.toHexString(color.asRGB()) : dye).append(';');
         }
-        // remove last semicolon
-        builder.setLength(Math.max(builder.length() - 1, 0));
+        if (!effect.getColors().isEmpty()) {
+            builder.deleteCharAt(builder.length() - 1);
+        }
         builder.append(':');
         for (final Color color : effect.getFadeColors()) {
             final DyeColor dye = DyeColor.getByFireworkColor(color);
             builder.append(dye == null ? '#' + Integer.toHexString(color.asRGB()) : dye).append(';');
         }
-        builder.setLength(Math.max(builder.length() - 1, 0));
+        if (!effect.getFadeColors().isEmpty()) {
+            builder.deleteCharAt(builder.length() - 1);
+        }
         builder.append(':').append(effect.hasTrail()).append(':').append(effect.hasFlicker());
     }
 

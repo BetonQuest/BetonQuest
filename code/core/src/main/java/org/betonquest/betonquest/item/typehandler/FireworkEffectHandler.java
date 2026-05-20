@@ -69,7 +69,7 @@ public class FireworkEffectHandler {
      * @param string the serialized firework effect data
      * @throws QuestException if the data is malformed
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
     public void set(final String string) throws QuestException {
         final String[] parts = HandlerUtil.getSplit(string, "Effect is missing!", ":");
         // if "whatever" then all type checking is unnecessary
@@ -91,30 +91,8 @@ public class FireworkEffectHandler {
         if (parts.length != 5) {
             throw new QuestException("Incorrect effect format: " + string);
         }
-        if (Existence.NONE_KEY.equalsIgnoreCase(parts[1])) {
-            mainE = Existence.FORBIDDEN;
-        } else if ("?".equals(parts[1])) {
-            mainE = Existence.WHATEVER;
-        } else {
-            mainE = Existence.REQUIRED;
-            for (final String color : parts[1].split(";")) {
-                final Color regularColor = HandlerUtil.getColor(color);
-                final DyeColor fireworkColor = DyeColor.getByColor(regularColor);
-                mainColors.add(fireworkColor == null ? regularColor : fireworkColor.getFireworkColor());
-            }
-        }
-        if (Existence.NONE_KEY.equalsIgnoreCase(parts[2])) {
-            fadeE = Existence.FORBIDDEN;
-        } else if ("?".equals(parts[2])) {
-            fadeE = Existence.WHATEVER;
-        } else {
-            fadeE = Existence.REQUIRED;
-            for (final String color : parts[2].split(";")) {
-                final Color regularColor = HandlerUtil.getColor(color);
-                final DyeColor fireworkColor = DyeColor.getByColor(regularColor);
-                fadeColors.add(fireworkColor == null ? regularColor : fireworkColor.getFireworkColor());
-            }
-        }
+        mainE = colors(parts[1], mainColors);
+        fadeE = colors(parts[2], fadeColors);
         final BooleanParser booleanParser = new BooleanParser();
         if ("?".equals(parts[3])) {
             trail = Existence.WHATEVER;
@@ -126,6 +104,24 @@ public class FireworkEffectHandler {
         } else {
             flicker = booleanParser.apply(parts[4]) ? Existence.REQUIRED : Existence.FORBIDDEN;
         }
+    }
+
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
+    private Existence colors(final String part, final List<Color> colors) throws QuestException {
+        if (Existence.NONE_KEY.equalsIgnoreCase(part)) {
+            return Existence.FORBIDDEN;
+        }
+        if ("?".equals(part)) {
+            return Existence.WHATEVER;
+        }
+        if (!part.isEmpty()) {
+            for (final String color : part.split(";")) {
+                final Color regularColor = HandlerUtil.getColor(color);
+                final DyeColor fireworkColor = DyeColor.getByColor(regularColor);
+                colors.add(fireworkColor == null ? regularColor : fireworkColor.getFireworkColor());
+            }
+        }
+        return Existence.REQUIRED;
     }
 
     /**
