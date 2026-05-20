@@ -27,6 +27,7 @@
 
     <paper-api.version>1.18.2-R0.1-SNAPSHOT</paper-api.version>
     <bstats-bukkit.version>3.0.2</bstats-bukkit.version>
+    <faststats-bukkit.version>0.22.0</faststats-bukkit.version>
     <log4j-api.version>3.0.0-beta2</log4j-api.version>
     <log4j-core.version>3.0.0-beta2</log4j-core.version>
     <cron-utils.version>9.2.1</cron-utils.version>
@@ -59,6 +60,13 @@
       <groupId>org.bstats</groupId>
       <artifactId>bstats-bukkit</artifactId>
       <version>${bstats-bukkit.version}</version>
+    </dependency>
+
+    <!-- FastStats pilot dependency -->
+    <dependency>
+      <groupId>dev.faststats.metrics</groupId>
+      <artifactId>bukkit</artifactId>
+      <version>${faststats-bukkit.version}</version>
     </dependency>
 
     <!-- only dependencies from maven central that are no MC Plugins -->

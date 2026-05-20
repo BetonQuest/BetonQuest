@@ -16,6 +16,7 @@ import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.Saver;
+import org.betonquest.betonquest.faststats.FastStatsMetrics;
 import org.betonquest.betonquest.integration.DefaultIntegrationService;
 import org.betonquest.betonquest.integration.IntegrationManager;
 import org.betonquest.betonquest.kernel.BetonQuestComponents;
@@ -133,6 +134,8 @@ public class BetonQuest extends JavaPlugin {
         coreComponentLoader.getOptional(Connector.class).ifPresent(connector -> connector.getDatabase().closeConnection());
         coreComponentLoader.getOptional(PlayerHider.class).ifPresent(PlayerHider::stop);
         coreComponentLoader.getOptional(RPGMenu.class).ifPresent(RPGMenu::onDisable);
+
+        coreComponentLoader.getOptional(FastStatsMetrics.class).ifPresent(FastStatsMetrics::disable);
 
         log.info("BetonQuest successfully disabled!");
     }

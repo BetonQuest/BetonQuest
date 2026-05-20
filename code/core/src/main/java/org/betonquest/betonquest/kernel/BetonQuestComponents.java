@@ -19,6 +19,7 @@ import org.betonquest.betonquest.kernel.component.ConversationsComponent;
 import org.betonquest.betonquest.kernel.component.DataLoaderComponent;
 import org.betonquest.betonquest.kernel.component.DatabaseComponent;
 import org.betonquest.betonquest.kernel.component.ExecutionCacheComponent;
+import org.betonquest.betonquest.kernel.component.FastStatsMetricsComponent;
 import org.betonquest.betonquest.kernel.component.FontRegistryComponent;
 import org.betonquest.betonquest.kernel.component.GlobalDataComponent;
 import org.betonquest.betonquest.kernel.component.IdentifiersComponent;
@@ -137,6 +138,7 @@ public final class BetonQuestComponents {
     private static Set<CoreComponent> createAdditionalFeatures() {
         return Set.of(
                 new BStatsMetricsComponent(),
+                new FastStatsMetricsComponent(),
                 new VersionInfoComponent(),
                 new MigratorComponent(),
                 new ReloaderComponent(),
