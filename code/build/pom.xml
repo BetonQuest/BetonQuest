@@ -126,6 +126,7 @@
                 <includes>
                   <include>org.betonquest.betonquest</include>
                   <include>org.bstats</include>
+                  <include>dev.faststats.metrics</include>
                   <include>org.apache.maven</include>
                   <include>org.apache.commons</include>
                   <include>com.google.guava</include>
