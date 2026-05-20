@@ -489,9 +489,4 @@ jobs:
           loaders: 'paper'
           changelog: ${{ env.RELEASE_DESCRIPTION }}
           files: 'target/code/BetonQuest-${{ env.VERSION }}.jar'
-          game-versions: |
-            1.18.x
-            1.19.x
-            1.20.x
-            1.21.x
-            26.1.x
+          game-versions: ">=${{ env.PLUGIN_API_VERSION }}"
