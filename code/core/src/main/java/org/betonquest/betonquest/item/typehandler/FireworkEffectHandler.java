@@ -114,10 +114,12 @@ public class FireworkEffectHandler {
         if ("?".equals(part)) {
             return Existence.WHATEVER;
         }
-        for (final String color : part.split(";")) {
-            final Color regularColor = HandlerUtil.getColor(color);
-            final DyeColor fireworkColor = DyeColor.getByColor(regularColor);
-            colors.add(fireworkColor == null ? regularColor : fireworkColor.getFireworkColor());
+        if (!part.isEmpty()) {
+            for (final String color : part.split(";")) {
+                final Color regularColor = HandlerUtil.getColor(color);
+                final DyeColor fireworkColor = DyeColor.getByColor(regularColor);
+                colors.add(fireworkColor == null ? regularColor : fireworkColor.getFireworkColor());
+            }
         }
         return Existence.REQUIRED;
     }

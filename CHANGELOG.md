@@ -194,6 +194,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `QuestItem`s and `Journal`s could be put into bundles (MC 1.21.4+)
 - hologram integration with the lowest priority was selected instead with the highest
 - broken Conversation states no longer trap players
+- `firework` colors de-/serializing in `simple` item when there is no color
 ### Security
 
 ## [2.2.1] - 2025-01-12
