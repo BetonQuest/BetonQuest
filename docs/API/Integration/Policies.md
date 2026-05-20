@@ -53,6 +53,7 @@ The `Policies` class provides a number of pre-defined policies that can be used 
 requirements. Those include:
 
 - Minecraft (vanilla) version requirements
+- BetonQuest version requirements
 - Plugin dependency requirements
 - Plugin version requirements
 - Java class requirements
