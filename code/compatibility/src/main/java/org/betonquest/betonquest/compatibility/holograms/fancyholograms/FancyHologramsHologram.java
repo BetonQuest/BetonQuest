@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.holograms.fancyholograms;
 
 import de.oliver.fancyholograms.api.HologramManager;
+import de.oliver.fancyholograms.api.data.HologramData;
 import de.oliver.fancyholograms.api.data.ItemHologramData;
 import de.oliver.fancyholograms.api.data.TextHologramData;
 import de.oliver.fancyholograms.api.data.property.Visibility;
@@ -13,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,16 @@ public class FancyHologramsHologram implements BetonHologram {
      * Instance containing all tags used for to serializing.
      */
     private static final MiniMessage NORMAL_INSTANCE = MiniMessage.miniMessage();
+
+    /**
+     * Standard scaling for item displays to match dropped item size.
+     */
+    private static final Vector3f DEFAULT_ITEM_SCALE = new Vector3f(.5f, .5f, .5f);
+
+    /**
+     * Standard scaling for item displays to match dropped item position.
+     */
+    private static final double DEFAULT_ITEM_OFFSET = .15;
 
     /**
      * The hologram manager to create new Holograms.
@@ -97,11 +109,12 @@ public class FancyHologramsHologram implements BetonHologram {
 
     private Hologram createItemLine(final int offset, final ItemStack item) {
         final Location location = getLocation();
-        location.subtract(0, offset * LINE_SPACING, 0);
+        location.subtract(0, offset * LINE_SPACING - DEFAULT_ITEM_OFFSET, 0);
         final ItemHologramData data = new ItemHologramData("BQ Item Line", location);
         data.setPersistent(false);
         data.setVisibility(Visibility.MANUAL);
         data.setItemStack(item);
+        data.setScale(DEFAULT_ITEM_SCALE);
         final Hologram hologram = manager.create(data);
         hologram.createHologram();
         return hologram;
@@ -187,7 +200,10 @@ public class FancyHologramsHologram implements BetonHologram {
     public void move(final Location location) {
         baseData.setLocation(location);
         for (final Hologram hologram : holograms) {
-            hologram.getData().setLocation(location);
+            final HologramData data = hologram.getData();
+            data.setLocation(data instanceof ItemHologramData
+                    ? location.clone().add(0, DEFAULT_ITEM_OFFSET, 0)
+                    : location);
             hologram.refreshForViewers();
             location.subtract(0, LINE_SPACING, 0);
         }
