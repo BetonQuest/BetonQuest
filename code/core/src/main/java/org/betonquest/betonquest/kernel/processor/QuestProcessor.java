@@ -1,15 +1,19 @@
 package org.betonquest.betonquest.kernel.processor;
 
+import dev.faststats.core.data.Metric;
+import dev.faststats.core.data.SourceId;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.faststats.FastStatsMetricsProvider;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Does the logic around {@link T}.
@@ -17,7 +21,7 @@ import java.util.Map;
  * @param <I> the {@link Identifier} identifying {@link T}
  * @param <T> the quest type being processed
  */
-public abstract class QuestProcessor<I extends Identifier, T> {
+public abstract class QuestProcessor<I extends Identifier, T> implements FastStatsMetricsProvider {
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -42,6 +46,7 @@ public abstract class QuestProcessor<I extends Identifier, T> {
     /**
      * Section name.
      */
+    @SourceId
     protected final String internal;
 
     /**
@@ -53,12 +58,17 @@ public abstract class QuestProcessor<I extends Identifier, T> {
      * @param internal          the section name and/or bstats topic identifier
      */
     public QuestProcessor(final BetonQuestLogger log,
-                          final IdentifierFactory<I> identifierFactory, final String readable, final String internal) {
+                          final IdentifierFactory<I> identifierFactory, final String readable, @SourceId final String internal) {
         this.log = log;
         this.identifierFactory = identifierFactory;
         this.values = new HashMap<>();
         this.readable = readable;
         this.internal = internal;
+    }
+
+    @Override
+    public Set<Metric<?>> getMetrics() {
+        return Set.of(Metric.number(internal + "_count", values::size));
     }
 
     /**

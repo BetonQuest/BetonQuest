@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.kernel.processor;
 
+import dev.faststats.core.data.SourceId;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
@@ -46,7 +47,7 @@ public abstract class TypedQuestProcessor<I extends ReadableIdentifier, T> exten
      */
     public TypedQuestProcessor(final BetonQuestLogger log,
                                final FactoryTypeRegistry<T> types, final IdentifierFactory<I> identifierFactory,
-                               final Instructions instructionApi, final String readable, final String internal) {
+                               final Instructions instructionApi, final String readable, @SourceId final String internal) {
         super(log, identifierFactory, readable, internal);
         this.types = types;
         this.instructionApi = instructionApi;

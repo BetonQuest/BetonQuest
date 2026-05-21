@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.kernel.component;
 
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
+import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.faststats.FastStatsMetrics;
 import org.betonquest.betonquest.faststats.FastStatsMetricsProvider;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
@@ -29,7 +30,7 @@ public class FastStatsMetricsComponent extends AbstractCoreComponent {
 
     @Override
     public Set<Class<?>> requires() {
-        return Set.of(JavaPlugin.class);
+        return Set.of(JavaPlugin.class, Compatibility.class);
     }
 
     @Override
@@ -47,7 +48,7 @@ public class FastStatsMetricsComponent extends AbstractCoreComponent {
         final JavaPlugin plugin = getDependency(JavaPlugin.class);
 
         final Set<FastStatsMetricsProvider> fastStatsMetricsProviders = injectedDependencies.stream()
-                .filter(injectedDependency -> injectedDependency.match(FastStatsMetricsProvider.class))
+                .filter(injectedDependency -> FastStatsMetricsProvider.class.isAssignableFrom(injectedDependency.type()))
                 .map(injectedDependency -> (FastStatsMetricsProvider) injectedDependency.dependency())
                 .collect(Collectors.toSet());
         final FastStatsMetrics fastStatsMetrics = new FastStatsMetrics(plugin, TOKEN, fastStatsMetricsProviders);
