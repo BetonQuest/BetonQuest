@@ -1,9 +1,11 @@
 package org.betonquest.betonquest.web.updater;
 
+import dev.faststats.core.data.Metric;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.version.Version;
+import org.betonquest.betonquest.faststats.FastStatsMetricsProvider;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -20,12 +22,15 @@ import java.time.InstantSource;
 import java.time.temporal.TemporalAmount;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * This {@link Updater} checks for new versions on the BetonQuest page and on the GitHub page and download them if wanted.
  */
-public class Updater {
+@SuppressWarnings("PMD.TooManyMethods")
+public class Updater implements FastStatsMetricsProvider {
 
     /**
      * The minimum delay when checking for updates, this prevents too many api requests when reloading the plugin often.
@@ -83,6 +88,12 @@ public class Updater {
     private final Map<UUID, Instant> lastNotification;
 
     /**
+     * The update metric. Only used for FastStats metrics.
+     * 0 = no update, 1 = update scheduled
+     */
+    private final AtomicInteger updateMetric;
+
+    /**
      * The latest version, the key is a {@link Version} and the value is the URL for the download.
      * If the URL is empty, the version is the current installed one or the already downloaded one.
      */
@@ -124,6 +135,7 @@ public class Updater {
         this.scheduler = scheduler;
         this.instantSource = instantSource;
         this.lastNotification = new HashMap<>();
+        this.updateMetric = new AtomicInteger(0);
 
         search();
     }
@@ -230,6 +242,7 @@ public class Updater {
                 executeUpdate();
                 sendMessage(sender, ChatColor.DARK_GREEN + "...download finished. Restart the server to update the plugin.");
                 updateNotification = "Update was downloaded! Restart the server to update the plugin.";
+                updateMetric.set(1);
             } catch (final QuestException e) {
                 sendMessage(sender, ChatColor.RED + e.getMessage());
                 log.debug("Error while performing update!", e);
@@ -270,5 +283,20 @@ public class Updater {
         if (sender != null && !(sender instanceof ConsoleCommandSender)) {
             sender.sendMessage(PLUGIN_TAG + message);
         }
+    }
+
+    @Override
+    public Set<Metric<?>> getMetrics() {
+        return Set.of(
+                Metric.number("auto_updater_updates", updateMetric::get),
+                Metric.bool("auto_updater_enabled", config::isEnabled),
+                Metric.bool("auto_updater_dev_enabled", config::isDevDownloadEnabled),
+                Metric.bool("auto_updater_automatic", config::isAutomatic),
+                Metric.string("auto_updater_strategy", () -> config.getStrategy().name()));
+    }
+
+    @Override
+    public void metricsFlushed() {
+        updateMetric.set(0);
     }
 }
