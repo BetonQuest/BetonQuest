@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility;
 
 import com.google.gson.internal.LinkedTreeMap;
+import dev.faststats.core.data.Metric;
 import org.apache.commons.lang3.tuple.Triple;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.QuestException;
@@ -8,6 +9,7 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.compatibility.holograms.HologramIntegration;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
+import org.betonquest.betonquest.faststats.FastStatsMetricsProvider;
 import org.betonquest.betonquest.integration.IntegrationManager;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.Nullable;
@@ -16,12 +18,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
  * Loads compatibility with hologram plugins and provides access to integration readability.
  */
-public class Compatibility implements Listener {
+public class Compatibility implements Listener, FastStatsMetricsProvider {
 
     /**
      * BetonQuest plugin name.
@@ -83,6 +86,14 @@ public class Compatibility implements Listener {
                 .filter(name -> !"Minecraft".equals(name))
                 .sorted()
                 .toList();
+    }
+
+    @Override
+    public Set<Metric<?>> getMetrics() {
+        return Set.of(
+                Metric.stringArray("enabled_integration_plugin_names", () -> getPluginNames().toArray(new String[0])),
+                Metric.number("enabled_integrations_count", () -> integrationManager.getEnabledIntegrations().size())
+        );
     }
 
     /**

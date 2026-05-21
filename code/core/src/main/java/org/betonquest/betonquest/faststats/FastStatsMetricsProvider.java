@@ -7,6 +7,7 @@ import java.util.Set;
 /**
  * Interface for providing metrics to FastStats.
  */
+@FunctionalInterface
 public interface FastStatsMetricsProvider {
 
     /**
@@ -19,5 +20,7 @@ public interface FastStatsMetricsProvider {
     /**
      * Called when metrics have been flushed by FastStats.
      */
-    void metricsFlushed();
+    default void metricsFlushed() {
+        // Empty
+    }
 }
