@@ -44,7 +44,7 @@ public class PaymentObjective extends DefaultObjective {
         final ObjectiveProperties properties = service.getProperties();
         properties.setProperty("amount", profile -> String.valueOf(getAmount(profile).current));
         properties.setProperty("left", profile -> String.valueOf(getRemainingAmount(profile)));
-        properties.setProperty("total", profile -> targetAmount.getValue(profile).toString());
+        properties.setProperty("total", profile -> String.valueOf(getAmount(profile).target));
     }
 
     /**
