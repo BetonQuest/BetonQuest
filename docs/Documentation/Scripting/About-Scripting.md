@@ -132,7 +132,7 @@ Possible use cases would be a quest which starts if a player reaches a specific 
 
 To prevent the objective from being started every time a player joins, a tag is set for the player whenever the objective
 is started. With this tag, the objective will not be started again.  
-These tags follow the syntax `<package>.auto-once-<id>`, where `<id>` is the objectives id and `<package>` the package where
+These tags follow the syntax `<package>>auto-once-<id>`, where `<id>` is the objectives id and `<package>` the package where
 the objective is located.
 
 ```YAML title="Example"

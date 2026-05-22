@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Factory for creating {@link BetonQuestLogger} instances that decorates another factory and caches the created loggers.
@@ -30,7 +31,7 @@ public class CachingBetonQuestLoggerFactory implements BetonQuestLoggerFactory {
      */
     public CachingBetonQuestLoggerFactory(final BetonQuestLoggerFactory loggerFactory) {
         this.loggerFactory = loggerFactory;
-        this.loggers = new HashMap<>();
+        this.loggers = new ConcurrentHashMap<>();
     }
 
     @Override

@@ -59,11 +59,12 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
     @Nullable
     public String serializeToString(final ItemMeta meta) {
         if (meta.hasLore()) {
-            final StringBuilder string = new StringBuilder();
+            final StringBuilder string = new StringBuilder(22);
+            final MiniMessage miniMessage = MiniMessage.miniMessage();
             for (final Component line : meta.lore()) {
-                string.append(MiniMessage.miniMessage().serialize(line)).append(';');
+                string.append("\"lore:@[minimessage]").append(miniMessage.serialize(line)).append("\" ");
             }
-            return "\"lore:@[minimessage]" + string.substring(0, string.length() - 1) + "\"";
+            return string.substring(0, string.length() - 1);
         }
         return null;
     }
