@@ -7442,7 +7442,7 @@ to the conversation file at the top of the YAML hierarchy (which is the same lev
 <div class="tabbed-block">
 <p>A modern conversation style that works with some of Minecraft's native controls.</p>
 <p><strong>Requires Minecraft version <em>1.21.4</em> or above!</strong></p>
-<p>When <code>set_speed</code> is disabled the player won't be able to be moved by external sources and get "rubber banding"
+<p>When <code>set_speed</code> is disabled the player won't be able to be moved by external sources and get a "rubber banding"
 like effect when moving/selecting options.</p>
 <details>
 <summary>Customizing the Menu Style</summary>
@@ -7534,11 +7534,13 @@ an option name after the point (<code>package&gt;conversation.</code>).</p>
 Check the <a href="../../Scripting/Building-Blocks/Placeholders-List/">placeholders list</a> for more information about which placeholders exist.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If you use a placeholders incorrectly (for example trying to get a property of an objective which isn't active for
+<p>If you use placeholders incorrectly (for example trying to get a property of an objective which isn't active for
 the player, or using %quester% in <code>message</code> action), the placeholders will be replaced with empty string ("").</p>
 </div>
 <h2 id="translations">Translations<a class="headerlink" href="#translations" title="Permanent link">🔗</a></h2>
-<p>Conversation can be fully translated into multiple languages. A players can choose their preferred language with the <strong>/questlang</strong> command. You can translate every NPC option, player option and the NPC's name. This is how it's done:</p>
+<p>Conversation can be fully translated into multiple languages.
+A player can choose their preferred language with the <strong>/questlang</strong> command.
+You can translate every NPC option, player option and the NPC's name. This is how it's done:</p>
 <p><div class="highlight"><pre><span></span><code><span class="nt">quester</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">en-US</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Innkeeper&quot;</span>
 <span class="w">  </span><span class="nt">pl-PL</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Karczmarz&quot;</span>

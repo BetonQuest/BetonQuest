@@ -7559,7 +7559,7 @@ If you want to specifically say that the item must not have any name, use <code>
 </ul>
 </div>
 <ol>
-<li>If you do not want italics, you must append <code>&lt;!i&gt;</code> before the name text. See <a href="https://docs.advntr.dev/minimessage/format.html#decoration">Minimessage Formatting</a> for more information. </li>
+<li>If you do not want italics, you must append <code>&lt;!i&gt;</code> before the name text. See <a href="https://docs.advntr.dev/minimessage/format.html#decoration">MiniMessage Formatting</a> for more information. </li>
 <li>In difference to <code>name</code> it is not italic by default and can't be changed in an amboss by players, only overridden.</li>
 </ol>
 <div class="annotate">
@@ -7568,7 +7568,10 @@ If you want to specifically say that the item must not have any name, use <code>
 To make a new line, use <code>;</code> character. If you require the item to not have lore at all, use <code>none</code> keyword.
 By default, lore will match only if all lines are exactly the same.
 If you want to accept all items that contain specified lines (and/or more lines),
-add <code>lore-containing</code> argument to the instruction string. (1)</li>
+add <code>lore-containing</code> argument to the instruction string. (1)  <ul>
+<li>Optionally, instead of using <code>;</code> for a new line you can also add another <code>lore</code> to improve readability</li>
+</ul>
+</li>
 </ul>
 </div>
 <ol>
@@ -7653,6 +7656,9 @@ the level, replace the number with <code>?</code>.</li>
 <span class="w">  </span><span class="no">simple stone_sword </span>
 <span class="w">  </span><span class="no">&quot;name:&lt;!i&gt;&lt;red&gt;An Even Better Sword&quot; </span>
 <span class="w">  </span><span class="no">&quot;lore:&lt;#FF1CA4&gt;Sharp as can be!&quot;</span>
+<span class="w">  </span><span class="no">&quot;lore:With lore lines as separate yaml lines&quot;</span>
+<span class="w">  </span><span class="no">&quot;lore:to improve spotting of new lines&quot;</span>
+<span class="w">  </span><span class="no">&quot;lore:since it is really hard to spot the semicolon on a long line&quot;</span>
 <span class="w">  </span><span class="no">enchants:damage_all:3</span>
 <span class="w">  </span><span class="no">unbreakable</span>
 <span class="w">  </span><span class="no">flags:HIDE_ENCHANTS,HIDE_ATTRIBUTES,HIDE_UNBREAKABLE</span>

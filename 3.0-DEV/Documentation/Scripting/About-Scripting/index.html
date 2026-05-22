@@ -7478,7 +7478,7 @@ When you then reload BetonQuest it is started for all online players and also wi
 <p>Possible use cases would be a quest which starts if a player reaches a specific location or breaks a specific block.</p>
 <p>To prevent the objective from being started every time a player joins, a tag is set for the player whenever the objective
 is started. With this tag, the objective will not be started again.<br />
-These tags follow the syntax <code>&lt;package&gt;.auto-once-&lt;id&gt;</code>, where <code>&lt;id&gt;</code> is the objectives id and <code>&lt;package&gt;</code> the package where
+These tags follow the syntax <code>&lt;package&gt;&gt;auto-once-&lt;id&gt;</code>, where <code>&lt;id&gt;</code> is the objectives id and <code>&lt;package&gt;</code> the package where
 the objective is located.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">startQuestByMining</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;location</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">actions:start_quest_mine_folder</span><span class="nv"> </span><span class="s"><ins class="critic">auto-once</ins>&#39;</span>
