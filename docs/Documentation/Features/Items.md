@@ -49,7 +49,7 @@ If you want to specifically say that the item must not have any name, use `none`
 
 </div>
 
-1. If you do not want italics, you must append `<!i>` before the name text. See [Minimessage Formatting](https://docs.advntr.dev/minimessage/format.html#decoration) for more information. 
+1. If you do not want italics, you must append `<!i>` before the name text. See [MiniMessage Formatting](https://docs.advntr.dev/minimessage/format.html#decoration) for more information. 
 2. In difference to `name` it is not italic by default and can't be changed in an amboss by players, only overridden.
 
 <div class="annotate" markdown>
@@ -57,8 +57,8 @@ If you want to specifically say that the item must not have any name, use `none`
 To make a new line, use `;` character. If you require the item to not have lore at all, use `none` keyword.
 By default, lore will match only if all lines are exactly the same.
 If you want to accept all items that contain specified lines (and/or more lines),
-add `lore-containing` argument to the instruction string. (1)
-
+add `lore-containing` argument to the instruction string. (1)  
+    * Optionally, instead of using `;` for a new line you can also add another `lore` to improve readability
 </div>
 
 1. If you do not want the default styling, you must append `<!i><colorValue>` before the text in your `lore` argument.
@@ -128,6 +128,9 @@ the level, replace the number with `?`.
           simple stone_sword 
           "name:<!i><red>An Even Better Sword" 
           "lore:<#FF1CA4>Sharp as can be!"
+          "lore:With lore lines as separate yaml lines"
+          "lore:to improve spotting of new lines"
+          "lore:since it is really hard to spot the semicolon on a long line"
           enchants:damage_all:3
           unbreakable
           flags:HIDE_ENCHANTS,HIDE_ATTRIBUTES,HIDE_UNBREAKABLE
