@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.data;
 
+import dev.faststats.core.data.Metric;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -9,17 +10,20 @@ import org.betonquest.betonquest.api.service.conversation.Conversations;
 import org.betonquest.betonquest.conversation.ConversationResumer;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.PlayerDataFactory;
+import org.betonquest.betonquest.faststats.FastStatsMetricsProvider;
 import org.betonquest.betonquest.kernel.processor.quest.ObjectiveProcessor;
 import org.betonquest.betonquest.lib.profile.ProfileKeyMap;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Stores loaded {@link PlayerData}.
  */
-public class PlayerDataStorage {
+public class PlayerDataStorage implements FastStatsMetricsProvider {
 
     /**
      * Custom logger for debug messages.
@@ -183,5 +187,16 @@ public class PlayerDataStorage {
      */
     public void remove(final Profile profile) {
         playerDataMap.remove(profile);
+    }
+
+    @Override
+    public Set<Metric<?>> getMetrics() {
+        return Set.of(
+                Metric.number("profiles_personal_lang_count", () -> playerDataMap.values().stream()
+                        .filter(data -> data.getLanguage().isPresent()).count()),
+                Metric.stringArray("profiles_personal_lang", () -> playerDataMap.values().stream()
+                        .map(data -> data.getLanguage().orElse(null)).filter(Objects::nonNull)
+                        .toList().toArray(new String[0]))
+        );
     }
 }
