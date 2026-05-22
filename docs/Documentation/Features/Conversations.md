@@ -134,7 +134,7 @@ In both cases, you can choose from the following conversation styles:
         
         @snippet:versions:mc-1.21.4@
         
-        When `set_speed` is disabled the player won't be able to be moved by external sources and get "rubber banding"
+        When `set_speed` is disabled the player won't be able to be moved by external sources and get a "rubber banding"
         like effect when moving/selecting options.
         
         ??? "Customizing the Menu Style"
@@ -220,12 +220,14 @@ You can use placeholders in the conversations. They will be resolved and display
 Check the [placeholders list](../Scripting/Building-Blocks/Placeholders-List.md) for more information about which placeholders exist.
 
 !!! note
-    If you use a placeholders incorrectly (for example trying to get a property of an objective which isn't active for
+    If you use placeholders incorrectly (for example trying to get a property of an objective which isn't active for
     the player, or using %quester% in `message` action), the placeholders will be replaced with empty string ("").
 
 ## Translations
 
-Conversation can be fully translated into multiple languages. A players can choose their preferred language with the **/questlang** command. You can translate every NPC option, player option and the NPC's name. This is how it's done:
+Conversation can be fully translated into multiple languages.
+A player can choose their preferred language with the **/questlang** command.
+You can translate every NPC option, player option and the NPC's name. This is how it's done:
 
 ```YAML
 quester:

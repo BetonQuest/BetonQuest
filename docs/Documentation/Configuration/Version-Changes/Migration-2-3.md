@@ -950,7 +950,7 @@ you now need to set the interceptor to `none`.
     events:
       winLottery: "money 7 multiply notify"
       applyBonus: "score kill 1.2 action:multiply"
-      bigProgress: "globalpoint progress *2 action:multiply"
+      bigProgress: "globalpoint progress 2 action:multiply"
     ```
     
     </div>
