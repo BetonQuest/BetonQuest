@@ -42,7 +42,7 @@ public class PaymentObjective extends DefaultObjective {
         this.paymentSender = paymentSender;
         service.setDefaultData(this::getDefaultDataInstruction);
         final ObjectiveProperties properties = service.getProperties();
-        properties.setProperty("amount", profile -> String.valueOf(getAmount(profile)));
+        properties.setProperty("amount", profile -> String.valueOf(getAmount(profile).current));
         properties.setProperty("left", profile -> String.valueOf(getRemainingAmount(profile)));
         properties.setProperty("total", profile -> targetAmount.getValue(profile).toString());
     }
@@ -55,7 +55,7 @@ public class PaymentObjective extends DefaultObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void onJobsPaymentEvent(final JobsPaymentEvent event, final Profile profile) throws QuestException {
-        final double previousAmount = getAmount(profile);
+        final double previousAmount = getAmount(profile).current;
         add(profile, event.get(CurrencyType.MONEY));
 
         if (isCompleted(profile)) {
@@ -63,7 +63,7 @@ public class PaymentObjective extends DefaultObjective {
             return;
         }
         final int interval = getService().getServiceDataProvider().getNotificationInterval(profile);
-        if (interval > 0 && ((int) getAmount(profile)) / interval != ((int) previousAmount) / interval && profile.getOnlineProfile().isPresent()) {
+        if (interval > 0 && ((int) getAmount(profile).current) / interval != ((int) previousAmount) / interval && profile.getOnlineProfile().isPresent()) {
             paymentSender.sendNotification(profile,
                     new VariableReplacement("amount", Component.text(getRemainingAmount(profile))));
         }
@@ -74,24 +74,48 @@ public class PaymentObjective extends DefaultObjective {
     }
 
     private double getRemainingAmount(final Profile profile) throws QuestException {
-        return targetAmount.getValue(profile).doubleValue() - getAmount(profile);
+        final Amount amount = getAmount(profile);
+        return amount.target - amount.current;
     }
 
     private boolean isCompleted(final Profile profile) throws QuestException {
-        return getAmount(profile) >= targetAmount.getValue(profile).doubleValue();
+        final Amount amount = getAmount(profile);
+        return amount.current >= amount.target;
     }
 
-    private void add(final Profile profile, final double amount) throws QuestException {
-        final double newAmount = getAmount(profile) + amount;
-        getService().getData().put(profile, String.valueOf(newAmount));
+    private void add(final Profile profile, final double toAdd) throws QuestException {
+        final Amount amount = getAmount(profile);
+        final double newAmount = amount.current + toAdd;
+        getService().getData().put(profile, newAmount + "/" + amount.target);
         getService().updateData(profile);
     }
 
-    private double getAmount(final Profile profile) throws QuestException {
-        final String data = getService().getData().get(profile);
-        if (data == null) {
-            return 0;
+    private Amount getAmount(final Profile profile) throws QuestException {
+        final String stringData = getService().getData().get(profile);
+        if (stringData == null) {
+            throw new QuestException("Profile should have data!");
         }
-        return NumberParser.DEFAULT.apply(data).doubleValue();
+        final String[] split = stringData.split("/");
+        final double amount;
+        final double targetAmount;
+        final int initLength = 1;
+        if (split.length == initLength) {
+            amount = 0;
+            targetAmount = NumberParser.DEFAULT.apply(split[0]).doubleValue();
+        } else {
+            amount = NumberParser.DEFAULT.apply(split[0]).doubleValue();
+            targetAmount = NumberParser.DEFAULT.apply(split[1]).doubleValue();
+        }
+        return new Amount(amount, targetAmount);
+    }
+
+    /**
+     * Already paid and at all to be paid money amount.
+     *
+     * @param current the already paid money
+     * @param target  the money to be paid at all
+     */
+    private record Amount(double current, double target) {
+
     }
 }

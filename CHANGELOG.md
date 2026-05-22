@@ -196,6 +196,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - hologram integration with the lowest priority was selected instead with the highest
 - broken Conversation states no longer trap players
 - `firework` colors de-/serializing in `simple` item when there is no color
+- `nujobs_payment` objective wrongly using target amount for everything
 ### Security
 
 ## [2.2.1] - 2025-01-12
