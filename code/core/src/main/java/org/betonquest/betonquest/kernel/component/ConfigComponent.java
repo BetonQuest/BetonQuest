@@ -1,11 +1,13 @@
 package org.betonquest.betonquest.kernel.component;
 
+import dev.faststats.core.data.Metric;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.reload.ReloadPhase;
 import org.betonquest.betonquest.api.reload.Reloader;
+import org.betonquest.betonquest.faststats.FastStatsMetricsProvider;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.Plugin;
@@ -39,7 +41,7 @@ public class ConfigComponent extends AbstractCoreComponent {
 
     @Override
     public Set<Class<?>> provides() {
-        return Set.of(FileConfigAccessor.class);
+        return Set.of(FileConfigAccessor.class, ConfigMetrics.class);
     }
 
     @Override
@@ -54,6 +56,7 @@ public class ConfigComponent extends AbstractCoreComponent {
         try {
             final FileConfigAccessor config = configAccessorFactory.createPatching(configurationFile, plugin, CONFIG_FILE);
             dependencyProvider.take(FileConfigAccessor.class, config);
+            dependencyProvider.take(ConfigMetrics.class, new ConfigMetrics(config));
             reloader.register(ReloadPhase.CONFIG, () -> reload(config));
         } catch (final InvalidConfigurationException | FileNotFoundException e) {
             throw new IllegalStateException("Could not load the %s file!".formatted(CONFIG_FILE), e);
@@ -65,6 +68,24 @@ public class ConfigComponent extends AbstractCoreComponent {
             config.reload();
         } catch (final IOException e) {
             throw new IllegalStateException("Failed to reload the %s file!".formatted(CONFIG_FILE), e);
+        }
+    }
+
+    /**
+     * Metrics provider for config settings.
+     *
+     * @param fileConfigAccessor the config accessor to read the settings from
+     */
+    private record ConfigMetrics(FileConfigAccessor fileConfigAccessor) implements FastStatsMetricsProvider {
+
+        @Override
+        public Set<Metric<?>> getMetrics() {
+            return Set.of(
+                    Metric.string("c_server_language", () -> fileConfigAccessor.getString("language")),
+                    Metric.string("c_conversation_default_io", () -> fileConfigAccessor.getString("conversation.default_io")),
+                    Metric.string("c_conversation_interceptor_default", () -> fileConfigAccessor.getString("conversation.interceptor.default")),
+                    Metric.number("c_npc_interaction_limit", () -> fileConfigAccessor.getInt("npc.interaction_limit"))
+            );
         }
     }
 }
