@@ -103,5 +103,10 @@
       <name>Maven Central</name>
       <url>https://repo.maven.apache.org/maven2/</url>
     </repository>
+    <repository>
+      <id>faststats-releases</id>
+      <name>betonquest-fast-stats</name>
+      <url>https://repo.faststats.dev/releases</url>
+    </repository>
   </repositories>
 </project>
