@@ -357,7 +357,6 @@ Each request must fulfill certain requirements to be registered successfully.
 
     | Method                       | Description                                                | Info               |
     |:-----------------------------|:-----------------------------------------------------------|:-------------------|
-    | `source(Id)`                 | Sets the objective's id for the event request.             | :information: [^1] |
     | `handler(NonProfileHandler)` | Define how the event is handled.                           |                    |
     | `handler(ProfileHandler)`    | Define how the event is handled.                           |                    |
     | `onlinehandler(Handler)`     | Define how the event is handled.                           |                    |
@@ -369,8 +368,6 @@ Each request must fulfill certain requirements to be registered successfully.
     | `priority(EventPriority)`    | Sets the priority for the event request.                   | def: `NORMAL`      |
     | `ignoreConditions()`         | Ignores conditions set for the objective for this event.   | def: unset         |
     | `subscribe(boolean)`         | Finalize event subscription and define `ignoreCancelled`   |                    |
-
-    [^1]: The id is required, but usually already set before provided to the factory.
 
 The following examples show how to subscribe to an event with the request builder:
 
