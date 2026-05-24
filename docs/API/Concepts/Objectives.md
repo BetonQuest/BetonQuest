@@ -355,19 +355,19 @@ Each request must fulfill certain requirements to be registered successfully.
 
 ??? abstract "Event subscription methods"
 
-    | Method                       | Description                                                | Info               |
-    |:-----------------------------|:-----------------------------------------------------------|:-------------------|
-    | `handler(NonProfileHandler)` | Define how the event is handled.                           |                    |
-    | `handler(ProfileHandler)`    | Define how the event is handled.                           |                    |
-    | `onlinehandler(Handler)`     | Define how the event is handled.                           |                    |
-    | `uuid(Extractor)`            | Extract a players `UUID` from the event.                   |                    |
-    | `offlinePlayer(Extractor)`   | Extract an `OfflinePlayer` from the event.                 |                    |
-    | `player(Extractor)`          | Extract a `Player` from the event.                         |                    |
-    | `entity(Extractor)`          | Extract an `Entity` from the event that may be a `Player`. |                    |
-    | `profile(Extractor)`         | Extract a `Profile` from the event.                        |                    |
-    | `priority(EventPriority)`    | Sets the priority for the event request.                   | def: `NORMAL`      |
-    | `ignoreConditions()`         | Ignores conditions set for the objective for this event.   | def: unset         |
-    | `subscribe(boolean)`         | Finalize event subscription and define `ignoreCancelled`   |                    |
+    | Method                       | Description                                                | Info          |
+    |:-----------------------------|:-----------------------------------------------------------|:--------------|
+    | `handler(NonProfileHandler)` | Define how the event is handled.                           |               |
+    | `handler(ProfileHandler)`    | Define how the event is handled.                           |               |
+    | `onlinehandler(Handler)`     | Define how the event is handled.                           |               |
+    | `uuid(Extractor)`            | Extract a players `UUID` from the event.                   |               |
+    | `offlinePlayer(Extractor)`   | Extract an `OfflinePlayer` from the event.                 |               |
+    | `player(Extractor)`          | Extract a `Player` from the event.                         |               |
+    | `entity(Extractor)`          | Extract an `Entity` from the event that may be a `Player`. |               |
+    | `profile(Extractor)`         | Extract a `Profile` from the event.                        |               |
+    | `priority(EventPriority)`    | Sets the priority for the event request.                   | def: `NORMAL` |
+    | `ignoreConditions()`         | Ignores conditions set for the objective for this event.   | def: unset    |
+    | `subscribe(boolean)`         | Finalize event subscription and define `ignoreCancelled`   |               |
 
 The following examples show how to subscribe to an event with the request builder:
 
