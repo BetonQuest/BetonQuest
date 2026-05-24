@@ -25,6 +25,7 @@ public class MythicLibIntegrator extends IntegrationTemplate {
     public void enable(final BetonQuestApi api) {
         playerCondition("stat", new MythicLibStatConditionFactory());
         objective("skill", new MythicLibSkillObjectiveFactory());
+        playerAction("stat", new MythicLibStatActionFactory());
 
         registerFeatures(api, "mmo");
     }
