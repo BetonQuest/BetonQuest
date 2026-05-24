@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -36,11 +35,11 @@ public class CachingBetonQuestLoggerFactory implements BetonQuestLoggerFactory {
 
     @Override
     public BetonQuestLogger create(final Class<?> clazz, @Nullable final String topic) {
-        return loggers.computeIfAbsent(clazz, k -> new HashMap<>()).computeIfAbsent(topic, t -> loggerFactory.create(clazz, t));
+        return loggers.computeIfAbsent(clazz, k -> new ConcurrentHashMap<>()).computeIfAbsent(topic, t -> loggerFactory.create(clazz, t));
     }
 
     @Override
     public BetonQuestLogger create(final Plugin plugin, @Nullable final String topic) {
-        return loggers.computeIfAbsent(plugin.getClass(), k -> new HashMap<>()).computeIfAbsent(topic, t -> loggerFactory.create(plugin, t));
+        return loggers.computeIfAbsent(plugin.getClass(), k -> new ConcurrentHashMap<>()).computeIfAbsent(topic, t -> loggerFactory.create(plugin, t));
     }
 }
