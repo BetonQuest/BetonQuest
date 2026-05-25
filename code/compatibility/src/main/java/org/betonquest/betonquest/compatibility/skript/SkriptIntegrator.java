@@ -12,7 +12,7 @@ public class SkriptIntegrator implements Integration {
     /**
      * The minimum required version of Skript.
      */
-    public static final String REQUIRED_VERSION = "5.0.0";
+    public static final String REQUIRED_VERSION = "2.9.1";
 
     /**
      * The default constructor.

@@ -15,7 +15,12 @@ public class WorldEditIntegrator implements Integration {
     /**
      * The minimum required version of WorldEdit.
      */
-    public static final String REQUIRED_VERSION = "7.3.0";
+    public static final String WE_REQUIRED_VERSION = "7.3.0";
+
+    /**
+     * The minimum required version of FastAsyncWorldEdit.
+     */
+    public static final String FAWE_REQUIRED_VERSION = "2.10.0";
 
     /**
      * The default constructor.
