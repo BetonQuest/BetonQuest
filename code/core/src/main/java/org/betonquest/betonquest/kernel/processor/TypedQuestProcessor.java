@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.kernel.processor;
 
+import dev.faststats.core.data.Metric;
 import dev.faststats.core.data.SourceId;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
@@ -12,9 +13,12 @@ import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
 import org.betonquest.betonquest.bstats.MetricsHolder;
 import org.betonquest.betonquest.kernel.registry.FactoryTypeRegistry;
+import org.betonquest.betonquest.util.MetricsUtils;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Does the logic around a quest type and stores their type registry.
@@ -56,6 +60,13 @@ public abstract class TypedQuestProcessor<I extends ReadableIdentifier, T> exten
     @Override
     public Map.Entry<String, CompositeInstructionMetricsSupplier<?>> metricsSupplier() {
         return Map.entry(internal, new CompositeInstructionMetricsSupplier<>(values::keySet, types::keySet));
+    }
+
+    @Override
+    public Set<Metric<?>> getMetrics() {
+        final Set<Metric<?>> metrics = new HashSet<>(super.getMetrics());
+        metrics.add(Metric.numberMap(internal + "_type_count", () -> MetricsUtils.typeCountMetrics(values.keySet(), types.keySet(), instructionApi)));
+        return metrics;
     }
 
     @Override

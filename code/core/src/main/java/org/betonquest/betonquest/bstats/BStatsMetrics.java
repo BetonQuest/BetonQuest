@@ -1,23 +1,19 @@
 package org.betonquest.betonquest.bstats;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.identifier.ReadableIdentifier;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.compatibility.Compatibility;
+import org.betonquest.betonquest.util.MetricsUtils;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.AdvancedPie;
 import org.bstats.charts.DrilldownPie;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * bStats metrics sending class. It implements BetonQuest's custom charts.
@@ -90,21 +86,7 @@ public class BStatsMetrics {
 
     private Map<String, Integer> countUsages(final InstructionMetricsSupplier<? extends ReadableIdentifier> instructionMetricsSupplier) {
         final Set<String> validTypes = instructionMetricsSupplier.getTypes();
-        return instructionMetricsSupplier.getIdentifiers().stream()
-                .map(this::typeFromId)
-                .filter(validTypes::contains)
-                .collect(Collectors.toMap(Function.identity(), key -> 1, Integer::sum));
-    }
-
-    @Nullable
-    private String typeFromId(final ReadableIdentifier identifier) {
-        try {
-            final Instruction instruction = instructionApi.create(identifier, identifier.readRawInstruction());
-            return instruction.getPart(0);
-        } catch (final QuestException ex) {
-            // ignore broken instructions
-            return null;
-        }
+        return MetricsUtils.typeCountMetrics(instructionMetricsSupplier.getIdentifiers(), validTypes, instructionApi);
     }
 
     private void hookedPlugins(final Compatibility compatibility) {
