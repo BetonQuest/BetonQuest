@@ -1,7 +1,10 @@
 package org.betonquest.betonquest.compatibility.mythicmobs.item;
 
+import io.lumine.mythic.api.adapters.AbstractPlayer;
 import io.lumine.mythic.api.items.ItemManager;
+import io.lumine.mythic.api.mobs.GenericCaster;
 import io.lumine.mythic.bukkit.BukkitAdapter;
+import io.lumine.mythic.core.drops.DropMetadataImpl;
 import io.lumine.mythic.core.items.MythicItem;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
@@ -31,7 +34,15 @@ public record MythicItemWrapper(ItemManager itemManager, Argument<String> itemNa
         final Optional<MythicItem> mythicItem = itemManager.getItem(name);
         if (mythicItem.isPresent()) {
             final Predicate<ItemStack> predicate = stack -> name.equals(itemManager.getMythicTypeFromItem(stack));
-            return new MythicStack(BukkitAdapter.adapt(mythicItem.get().generateItemStack(1)), predicate);
+            final ItemStack adapt;
+            if (profile == null || profile.getOnlineProfile().isEmpty()) {
+                adapt = BukkitAdapter.adapt(mythicItem.get().generateItemStack(1));
+            } else {
+                final AbstractPlayer abstractPlayer = BukkitAdapter.adapt(profile.getOnlineProfile().get().getPlayer());
+                final DropMetadataImpl dropMetadata = new DropMetadataImpl(new GenericCaster(abstractPlayer), abstractPlayer);
+                adapt = BukkitAdapter.adapt(mythicItem.get().generateItemStack(dropMetadata, 1));
+            }
+            return new MythicStack(adapt, predicate);
         }
         throw new QuestException("Could not find mythic item for name " + name);
     }
