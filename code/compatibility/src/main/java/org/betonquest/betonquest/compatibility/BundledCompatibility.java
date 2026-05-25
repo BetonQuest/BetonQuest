@@ -132,8 +132,7 @@ public final class BundledCompatibility {
         register("Vault", () -> new VaultIntegrator(servicesManager), VaultIntegrator.REQUIRED_VERSION);
         register("Skript", () -> new SkriptIntegrator(), SkriptIntegrator.REQUIRED_VERSION);
         register("WorldGuard", () -> new WorldGuardIntegrator(), WorldGuardIntegrator.REQUIRED_VERSION);
-        register("WorldEdit", () -> new WorldEditIntegrator(), WorldEditIntegrator.WE_REQUIRED_VERSION);
-        register("FastAsyncWorldEdit", () -> new WorldEditIntegrator(), WorldEditIntegrator.FAWE_REQUIRED_VERSION);
+        register("WorldEdit", () -> new WorldEditIntegrator(), WorldEditIntegrator.getPolicies());
         register("mcMMO", () -> new McMMOIntegrator(), McMMOIntegrator.REQUIRED_VERSION);
         register("MythicLib", () -> new MythicLibIntegrator(), MythicLibIntegrator.REQUIRED_VERSION);
         register("MMOCore", () -> new MMOCoreIntegrator(), MMOCoreIntegrator.REQUIRED_VERSION);
