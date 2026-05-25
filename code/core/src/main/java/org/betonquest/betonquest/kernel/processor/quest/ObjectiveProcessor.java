@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.kernel.processor.quest;
 
+import dev.faststats.core.data.Metric;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.data.TagHolder;
@@ -22,6 +23,7 @@ import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.kernel.processor.QuestProcessor;
 import org.betonquest.betonquest.kernel.registry.quest.ObjectiveTypeRegistry;
+import org.betonquest.betonquest.util.MetricsUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -115,6 +117,13 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
     @Override
     public Map.Entry<String, CompositeInstructionMetricsSupplier<?>> metricsSupplier() {
         return Map.entry(internal, new CompositeInstructionMetricsSupplier<>(values::keySet, types::keySet));
+    }
+
+    @Override
+    public Set<Metric<?>> getMetrics() {
+        final Set<Metric<?>> metrics = new HashSet<>(super.getMetrics());
+        metrics.add(Metric.numberMap(internal + "_type_count", () -> MetricsUtils.typeCountMetrics(values.keySet(), types.keySet(), instructionApi)));
+        return metrics;
     }
 
     @Override
