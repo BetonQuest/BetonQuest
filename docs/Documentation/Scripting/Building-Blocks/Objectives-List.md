@@ -566,7 +566,7 @@ objectives:
 ## `NpcRange`
 
 __Context__: @snippet:objective-meta:online@  
-__Syntax__: `npcrange <npc <action> <range>`  
+__Syntax__: `npcrange <npc> <action> <range>`  
 __Description__: The player has to enter or leave the specified area around the NPC.
 
 It is also possible to define multiple NPCs separated with `,`.
