@@ -11,16 +11,18 @@
 ### `MCast`
 
 __Context__: @snippet:action-meta:online@  
-__Syntax__: `mcast <name>`  
+__Syntax__: `mcast <name> +[...]`  
 __Description__: Cast a MythicMobs skill.
 
-| Parameter | Syntax | Default Value          | Explanation            |
-|-----------|--------|------------------------|------------------------|
-| _name_    | Name   | :octicons-x-circle-16: | Name of Skill to cast. |
+| Parameter | Syntax  | Default Value          | Explanation                                                                                                                                             |
+|-----------|---------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| _name_    | Name    | :octicons-x-circle-16: | Name of Skill to cast.                                                                                                                                  |
+| _+[...]_  | Strings | None                   | Sets the [skill parameters](https://git.mythiccraft.io/mythiccraft/MythicMobs/-/wikis/Skills/Metaskills#skill-parameters-premium-feature) for the cast. |
 
 ```YAML title="Example"
 actions:
   castPoison: "mcast AngrySludgePoison"
+  giveItem: "mcast giveNItem +amount:20 +item:gold_coin"
 ```
 
 ### `MSpawnMob`
