@@ -36,13 +36,13 @@ public class CachingBetonQuestLoggerFactory implements BetonQuestLoggerFactory {
     @Override
     public BetonQuestLogger create(final Class<?> clazz, @Nullable final String topic) {
         return loggers.computeIfAbsent(clazz, k -> new ConcurrentHashMap<>())
-                .computeIfAbsent(nullableTopicToEmpty(topic), t -> loggerFactory.create(clazz, t));
+                .computeIfAbsent(nullableTopicToEmpty(topic), t -> loggerFactory.create(clazz, topic));
     }
 
     @Override
     public BetonQuestLogger create(final Plugin plugin, @Nullable final String topic) {
         return loggers.computeIfAbsent(plugin.getClass(), k -> new ConcurrentHashMap<>())
-                .computeIfAbsent(nullableTopicToEmpty(topic), t -> loggerFactory.create(plugin, t));
+                .computeIfAbsent(nullableTopicToEmpty(topic), t -> loggerFactory.create(plugin, topic));
     }
 
     private String nullableTopicToEmpty(@Nullable final String topic) {
