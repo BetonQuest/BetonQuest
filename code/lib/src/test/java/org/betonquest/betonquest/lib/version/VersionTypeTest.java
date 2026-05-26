@@ -23,7 +23,7 @@ class VersionTypeTest {
 
     private static Stream<Arguments> types() {
         return Stream.of(
-                Arguments.of(BetonQuestVersion.BETONQUEST_VERSION_TYPE, "major.minor{.patch}?{-type}?{-type-repository-run}?{-type-build}?", 17),
+                Arguments.of(BetonQuestVersion.BETONQUEST_VERSION_TYPE, "major.minor{.patch}?{-type}?{-type-user-repository-run}?{-type-run}?{-type-build}?", 23),
                 Arguments.of(MinecraftVersion.MINECRAFT_VERSION_TYPE, "major.minor{.patch}?", 5),
                 Arguments.of(DefaultVersionType.SIMPLE_SEMANTIC_VERSION, "major{.minor}?{.patch}?{remainder}?", 6),
                 Arguments.of(TEST_TYPE, "build", 1),

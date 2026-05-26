@@ -21,6 +21,7 @@ public final class BetonQuestVersion {
     /**
      * The {@link VersionType} for BetonQuest standard versions.
      */
+    @SuppressWarnings("PMD.AvoidDuplicateLiterals")
     public static final VersionType BETONQUEST_VERSION_TYPE = DefaultVersionType.builder()
             .number("major").dot()
             .number("minor")
@@ -30,7 +31,11 @@ public final class BetonQuestVersion {
             .dash().finite().exact("type", "DEV-UNOFFICIAL", TYPE_COMPARATOR)
             .opt()
             .dash().exact("type", "DEV-ARTIFACT", TYPE_COMPARATOR)
+            .dash().exact("user", "[^\\-]+")
             .dash().exact("repository", "[^\\-]+")
+            .dash().finite().number("run")
+            .opt()
+            .dash().exact("type", "DEV-ARTIFACT", TYPE_COMPARATOR)
             .dash().finite().number("run")
             .opt()
             .dash().exact("type", "DEV", TYPE_COMPARATOR, "RELEASE")

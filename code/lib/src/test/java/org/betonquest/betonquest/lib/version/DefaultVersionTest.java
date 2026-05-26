@@ -35,7 +35,7 @@ class DefaultVersionTest {
     /**
      * A version that represent a fork PATCH Version.
      */
-    private static final Version V_1_0_1_ARTIFACT_55 = BetonQuestVersion.parse("1.0.1-DEV-ARTIFACT-Betonquest/Betonquest-55");
+    private static final Version V_1_0_1_ARTIFACT_55 = BetonQuestVersion.parse("1.0.1-DEV-ARTIFACT-Wolf2323-Betonquest-55");
 
     /**
      * Test if the {@link DefaultVersion}'s have the correct string version.
@@ -46,7 +46,7 @@ class DefaultVersionTest {
         assertVersionString(V_1_0_0_DEV_1, "1.0.0-DEV-1");
         assertVersionString(V_1_1_0_DEV_146, "1.1.0-DEV-146");
         assertVersionString(V_1_0_1_DEV_UNOFFICIAL, "1.0.1-DEV-UNOFFICIAL");
-        assertVersionString(V_1_0_1_ARTIFACT_55, "1.0.1-DEV-ARTIFACT-Betonquest/Betonquest-55");
+        assertVersionString(V_1_0_1_ARTIFACT_55, "1.0.1-DEV-ARTIFACT-Wolf2323-Betonquest-55");
     }
 
     /**
