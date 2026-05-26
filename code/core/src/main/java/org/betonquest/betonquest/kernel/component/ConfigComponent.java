@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.reload.ReloadPhase;
 import org.betonquest.betonquest.api.reload.Reloader;
 import org.betonquest.betonquest.faststats.FastStatsMetricsProvider;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.Plugin;
 
@@ -84,8 +85,19 @@ public class ConfigComponent extends AbstractCoreComponent {
                     Metric.string("c_server_language", () -> fileConfigAccessor.getString("language")),
                     Metric.string("c_conversation_default_io", () -> fileConfigAccessor.getString("conversation.default_io")),
                     Metric.string("c_conversation_interceptor_default", () -> fileConfigAccessor.getString("conversation.interceptor.default")),
-                    Metric.number("c_npc_interaction_limit", () -> fileConfigAccessor.getInt("npc.interaction_limit"))
+                    Metric.number("c_npc_interaction_limit", () -> fileConfigAccessor.getInt("npc.interaction_limit")),
+                    Metric.stringArray("c_integration_blacklisted", this::disabledHooks)
             );
+        }
+
+        private String[] disabledHooks() {
+            final ConfigurationSection hookSection = fileConfigAccessor.getConfigurationSection("hook");
+            if (hookSection == null) {
+                return new String[0];
+            }
+            return hookSection.getKeys(false).stream()
+                    .filter(key -> !hookSection.getBoolean(key, true))
+                    .toList().toArray(String[]::new);
         }
     }
 }
