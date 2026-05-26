@@ -37,7 +37,7 @@ class BetonQuestComponentsIT {
 
     @Test
     void validate_all_components_are_loaded() {
-        assertEquals(58, components.size(), "All known components should be loaded");
+        assertEquals(59, components.size(), "All known components should be loaded");
     }
 
     @Nested
