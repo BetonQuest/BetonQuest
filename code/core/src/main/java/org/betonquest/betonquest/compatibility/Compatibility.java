@@ -11,10 +11,13 @@ import org.betonquest.betonquest.compatibility.holograms.HologramIntegration;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
 import org.betonquest.betonquest.faststats.FastStatsMetricsProvider;
 import org.betonquest.betonquest.integration.IntegrationManager;
+import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -92,8 +95,24 @@ public class Compatibility implements Listener, FastStatsMetricsProvider {
     public Set<Metric<?>> getMetrics() {
         return Set.of(
                 Metric.stringArray("enabled_integration_plugin_names", () -> getPluginNames().toArray(new String[0])),
-                Metric.number("enabled_integrations_count", () -> integrationManager.getEnabledIntegrations().size())
+                Metric.number("enabled_integrations_count", () -> integrationManager.getEnabledIntegrations().size()),
+                Metric.stringMap("non_integrated_plugins", this::getPluginNamesMissingIntegration)
         );
+    }
+
+    private Map<String, String> getPluginNamesMissingIntegration() {
+        final List<String> integratedPlugins = getPluginNames();
+        return Arrays.stream(Bukkit.getPluginManager().getPlugins())
+                .filter(plugin -> !integratedPlugins.contains(plugin.getName()))
+                .filter(plugin -> !BETONQUEST.equals(plugin.getName()))
+                .map(this::getPluginNameAndVersion)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    private Map.Entry<String, String> getPluginNameAndVersion(final Plugin plugin) {
+        final List<String> authors = plugin.getDescription().getAuthors();
+        final String name = plugin.getName() + " [" + String.join(", ", authors) + "]";
+        return Map.entry(name, plugin.getDescription().getVersion());
     }
 
     /**
