@@ -67,7 +67,7 @@ class VersionComparatorTest {
     /**
      * A version that represent a fork PATCH Version.
      */
-    private static final Version V_1_0_1_ARTIFACT_1 = BetonQuestVersion.parse("1.0.1-DEV-ARTIFACT-Betonquest/Betonquest-1");
+    private static final Version V_1_0_1_ARTIFACT_1 = BetonQuestVersion.parse("1.0.1-DEV-ARTIFACT-Wolf2323-Betonquest-1");
 
     /**
      * Compares all version combinations with the
@@ -497,7 +497,7 @@ class VersionComparatorTest {
                                         final Version current, final Version... targets) {
         for (final Version targetVersion : targets) {
             final String message = "UpdateStrategy: '" + strategy
-                    + "', Version: '" + current.toString()
+                    + "', Version: '" + current
                     + "', with Version: '" + targetVersion.toString()
                     + "', expected: '" + updateExpected + "'!";
             assertEquals(updateExpected, current.isOlderThan(versionComparator, targetVersion), message);

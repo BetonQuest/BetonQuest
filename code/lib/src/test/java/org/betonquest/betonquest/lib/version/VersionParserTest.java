@@ -14,12 +14,12 @@ class VersionParserTest {
 
     private static final Set<String> VALID_BQ_VERSIONS = Set.of("1.10", "1.0.0", "1.2.5", "2.0.0", "2.2.0", "3.0.0",
             "1.0.0-DEV-55", "1.2.5-DEV-23", "2.0.0-DEV-334", "2.2.0-DEV-918", "3.0.0-DEV-1",
-            "5.0.0-DEV-UNOFFICIAL", "1.0.0-DEV-ARTIFACT-Betonquest/Betonquest-55");
+            "5.0.0-DEV-UNOFFICIAL", "1.0.0-DEV-ARTIFACT-34541", "1.0.0-DEV-ARTIFACT-Wolf2323-Betonquest-55");
 
     private static final Set<String> INVALID_BQ_VERSIONS = Set.of("1.0.", "3.0.0-dev-1.1", "1.0.0b", "3.0.0-dev.1",
             "1.2.5-DEV-1.1", "2.2.a", "2.2.0-SNAPSHOT", "2.2.0-SNAPSHOT-1", "2.2.0-alpha.1", "1.1.1.1", "1.0.0+dev-55",
             "1.0.0-DEV", "1.2.5-DEV", "2.0.0-DEV", "2.2.0-DEV", "3.0.0-DEV", "1.0.0-dev-", "2.2.0-rc.1",
-            "3.0.0-UNOFFICIAL", "2.2.-DEV-50", "2.2.0-dev-1", "1.0.0-DEV-ARTIFACT-Betonquest-Betonquest-55");
+            "3.0.0-UNOFFICIAL", "2.2.-DEV-50", "2.2.0-dev-1", "1.0.0-DEV-ARTIFACT-Wolf2323/Betonquest-55");
 
     private static final Set<String> VALID_MINECRAFT_VERSIONS = Set.of("1.18.2", "1.19.2", "1.20", "1.20.2", "1.21.2", "1.22.2");
 
