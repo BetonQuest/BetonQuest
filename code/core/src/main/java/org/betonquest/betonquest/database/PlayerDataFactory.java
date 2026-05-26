@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.database;
 
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
@@ -15,6 +14,11 @@ import java.util.function.Supplier;
  * Factory to create PlayerData objects for profiles.
  */
 public class PlayerDataFactory {
+
+    /**
+     * Factory to create new class-specific loggers.
+     */
+    private final BetonQuestLoggerFactory loggerFactory;
 
     /**
      * Saver to persist player data changes.
@@ -52,11 +56,6 @@ public class PlayerDataFactory {
     private final Supplier<JournalFactory> journalFactory;
 
     /**
-     * The logger for player data instances.
-     */
-    private final BetonQuestLogger playerDataLogger;
-
-    /**
      * Create a new Player Data Factory.
      *
      * @param loggerFactory      the logger factory to create class-specific logger
@@ -72,6 +71,7 @@ public class PlayerDataFactory {
                              final Connector connector, final Identifiers identifierRegistry,
                              final ObjectiveManager objectiveManager, final ConfigAccessor config,
                              final Supplier<JournalFactory> journalFactory) {
+        this.loggerFactory = loggerFactory;
         this.connector = connector;
         this.identifierRegistry = identifierRegistry;
         this.saver = saver;
@@ -79,7 +79,6 @@ public class PlayerDataFactory {
         this.objectiveManager = objectiveManager;
         this.config = config;
         this.journalFactory = journalFactory;
-        this.playerDataLogger = loggerFactory.create(PlayerData.class);
     }
 
     /**
@@ -89,7 +88,7 @@ public class PlayerDataFactory {
      * @return the newly created player data
      */
     public PlayerData createPlayerData(final Profile profile) {
-        return new PlayerData(this.playerDataLogger, saver, server, connector, identifierRegistry,
+        return new PlayerData(loggerFactory.create(PlayerData.class), saver, server, connector, identifierRegistry,
                 objectiveManager, config, journalFactory.get(), profile);
     }
 }
