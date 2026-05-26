@@ -2,6 +2,7 @@ package org.betonquest.betonquest;
 
 import org.betonquest.betonquest.api.integration.IntegrationService;
 import org.betonquest.betonquest.compatibility.BundledCompatibility;
+import org.betonquest.betonquest.faststats.FastStatsMetrics;
 import org.betonquest.betonquest.kernel.ProcessorDataLoader;
 import org.betonquest.betonquest.lib.integration.policy.Policies;
 import org.betonquest.betonquest.mc_1_20_6.BundledMC_1_20_6;
@@ -42,6 +43,8 @@ public class BetonQuestPlugin extends BetonQuest {
             super.onEnable();
         } catch (final IllegalStateException exception) {
             log.error("Disabling BetonQuest due to an error: " + exception.getMessage(), exception);
+            getComponentLoader().getOptional(FastStatsMetrics.class)
+                    .ifPresent(metrics -> metrics.getErrorTracker().trackError(exception, true));
             getServer().getPluginManager().disablePlugin(this);
             return;
         }

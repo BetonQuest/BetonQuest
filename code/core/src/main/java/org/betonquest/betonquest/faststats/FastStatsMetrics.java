@@ -52,6 +52,15 @@ public class FastStatsMetrics {
     }
 
     /**
+     * Get the error tracker used by this metrics instance.
+     *
+     * @return the error tracker
+     */
+    public ErrorTracker getErrorTracker() {
+        return errorTracker;
+    }
+
+    /**
      * Enable the metrics.
      */
     public void enable() {
