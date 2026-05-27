@@ -30,6 +30,7 @@ import org.betonquest.betonquest.kernel.component.JournalsComponent;
 import org.betonquest.betonquest.kernel.component.LanguageProviderComponent;
 import org.betonquest.betonquest.kernel.component.ListenersComponent;
 import org.betonquest.betonquest.kernel.component.LogHandlerComponent;
+import org.betonquest.betonquest.kernel.component.MetaDataComponent;
 import org.betonquest.betonquest.kernel.component.MigratorComponent;
 import org.betonquest.betonquest.kernel.component.NotificationCategoriesComponent;
 import org.betonquest.betonquest.kernel.component.NotificationsComponent;
@@ -140,6 +141,7 @@ public final class BetonQuestComponents {
                 new BStatsMetricsComponent(),
                 new FastStatsMetricsComponent(),
                 new VersionInfoComponent(),
+                new MetaDataComponent(),
                 new MigratorComponent(),
                 new ReloaderComponent(),
                 new PostEnableComponent(),
