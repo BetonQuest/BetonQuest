@@ -106,7 +106,7 @@ Sometimes, user reviews describe a plugin better than the author can:
         
         It’s crazy that with this plugin and some integrations you can almost do anything that comes to your mind and not only speaking about quests but systems and mechanics as well like working GUIs and much more.
         
-        I’ve been addicted to this plugin since 2020 and once i discovered it my entire server creation experience changed.
+        I’ve been addicted to this plugin since 2020 and once I discovered it my entire server creation experience changed.
         
         5/5 Stars absolutely recommended:
         
