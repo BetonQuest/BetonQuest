@@ -131,9 +131,9 @@ Sometimes, user reviews describe a plugin better than the author can:
     === "Esron"
         Quick Facts:
         
-        - Amazing system for Quests, no matter if they are simple or complex.
-        - Easy to make Daily/repeatable quests.
-        - Great Discord community and staff support.
+        - Amazing system for quests, no matter if they are simple or complex.
+        - Easy to make daily/repeatable quests.
+        - Great discord community and staff support.
         - Can be used to replace every GUI plugin we've had before.
         - Can be used for a ton of stuff other than quests if you learn the systems.
       
