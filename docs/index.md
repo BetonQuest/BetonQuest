@@ -122,7 +122,7 @@ Sometimes, user reviews describe a plugin better than the author can:
         
         Secret passages, interesting parkour with checkpoint registration. Or maybe even a path made of particles? All of this is possible with the help of a very user-friendly integration management system.
         
-        I especially liked the dialogue and NPC system. With extensive customization options. 
+        I especially like the dialogue and NPC system. With extensive customization options. 
         
         I have been using this plugin for 3 years now and I really like it.
         
