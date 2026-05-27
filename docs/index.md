@@ -102,7 +102,7 @@ Sometimes, user reviews describe a plugin better than the author can:
 !!! quote "Reviews"
 
     === "Kebs"
-        I’ve never seen a plugin like BetonQuest before. It can be challenging at first but once you get an hand of it you cant live without it.
+        I’ve never seen a plugin like BetonQuest before. It can be challenging at first but once you get an hang of it you can’t live without it.
         
         It’s crazy that with this plugin and some integrations you could almost do anything that comes to your mind and not only speaking about Quests but Systems and Mechanics aswell like working GUIs and much more.
         
