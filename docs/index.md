@@ -124,7 +124,7 @@ Sometimes, user reviews describe a plugin better than the author can:
         
         I especially liked the dialogue and NPC system. With extensive customization options. 
         
-        I have been using this plugin for 3 years now. And I really like him.
+        I have been using this plugin for 3 years now and I really like it.
         
         This plugin can be called international!
         
