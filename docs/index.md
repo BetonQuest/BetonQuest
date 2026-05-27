@@ -108,12 +108,12 @@ Sometimes, user reviews describe a plugin better than the author can:
         
         I’ve been addicted to this plugin since 2020 and once I discovered it my entire server creation experience changed.
         
-        5/5 Stars absolutely recommended:
+        5/5 stars absolutely recommended:
         
-        - Huge versatility not only in Quests
+        - Huge versatility not only in quests
         - Perfect for any kind of server not only RPG
-        - Great Community and Discord Support
-        - Lovely and passionate Staff that care about the Community opinion
+        - Great community and discord support
+        - Lovely and passionate staff that care about the community opinion
     
     === "Sorfune"
         Do you want to make your server the most memorable? Then this very flexible and user-friendly plugin will help you! 
