@@ -100,17 +100,44 @@ thead span {
 Sometimes, user reviews describe a plugin better than the author can:
 
 !!! quote "Reviews"
+
+    === "Kebs"
+        I’ve never seen a plugin like BetonQuest before. It can be challenging at first but once you get an hang of it you can’t live without it.
+        
+        It’s crazy that with this plugin and some integrations you can almost do anything that comes to your mind and not only speaking about quests but systems and mechanics as well like working GUIs and much more.
+        
+        I’ve been addicted to this plugin since 2020 and once I discovered it my entire server creation experience changed.
+        
+        5/5 stars absolutely recommended:
+        
+        - Huge versatility not only in quests
+        - Perfect for any kind of server not only RPG
+        - Great community and discord support
+        - Lovely and passionate staff that care about the community opinion
+    
+    === "Sorfune"
+        Do you want to make your server the most memorable? Then this very flexible and user-friendly plugin will help you! 
+        
+        Mini-games, global events, as well as shops and full-fledged skill casting systems. 
+        
+        Secret passages, interesting parkour with checkpoint registration. Or maybe even a path made of particles? All of this is possible with the help of a very user-friendly integration management system.
+        
+        I especially like the dialogue and NPC system. With extensive customization options. 
+        
+        I have been using this plugin for 3 years now and I really like it.
+        
+        This plugin can be called international!
+        
     === "Esron"
         Quick Facts:
-        <ul>
-        <li> Amazing system for Quests, no matter if they are simple or complex.</li>
-        <li> Easy to make Daily/repeatable quests.</li>
-        <li> Great Discord community and staff support.</li>
-        <li> Can be used to replace every GUI plugin we've had before.</li>
-        <li> Can be used for a ton of stuff other than quests if you learn the systems.</li>
-        </ul>
+        
+        - Amazing system for quests, no matter if they are simple or complex.
+        - Easy to make daily/repeatable quests.
+        - Great discord community and staff support.
+        - Can be used to replace every GUI plugin we've had before.
+        - Can be used for a ton of stuff other than quests if you learn the systems.
       
-        The story:
+        The story:  
         I've worked with Beton for a year now, and probably (guessing) worked with it for 500 hours.
         We've used it on both a survival and a MMORPG server.
         
