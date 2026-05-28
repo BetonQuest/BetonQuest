@@ -33,6 +33,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           EXCLUDE_PATHS: |
             docs
+            mkdocs.yml
           MAVEN_WRAPPER_DIR: '~/.m2/wrapper'
           SUB_MODULE: 'betonquest'
       - name: Determine modules to skip
