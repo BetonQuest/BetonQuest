@@ -19,8 +19,8 @@ using them.
     * [Conditions Tutorial](../../../Tutorials/Getting-Started/Basics/Conditions.md)
 
 !!! example "Related Docs"
-    * [Conditions Reference](../../../Documentation/Scripting/About-Scripting.md#conditions)
-    * [Condition Tag](../../../Documentation/Scripting/Building-Blocks/Conditions-List.md#tag)
+    * [Conditions Reference](../../../Documentation/Basics/About-Scripting.md#conditions)
+    * [Condition Tag](../../../Documentation/Reference/Conditions-List.md#tag)
 </div>
 
 ## 1. Creating the folder structure for the example quest

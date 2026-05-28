@@ -13,8 +13,8 @@ fishing fish. The possibilities are nearly endless! You will learn about these i
     * [Actions Tutorial](Actions.md)
 
 !!! example "Related Docs"
-    * [Objectives Reference](../../../Documentation/Scripting/About-Scripting.md#objectives)
-    * [Objectives List](../../../Documentation/Scripting/Building-Blocks/Objectives-List.md)
+    * [Objectives Reference](../../../Documentation/Basics/About-Scripting.md#objectives)
+    * [Objectives List](../../../Documentation/Reference/Objectives-List.md)
 </div>
 @snippet:tutorials:download-setup-warning@
     ```
@@ -217,7 +217,7 @@ the dialog to the npc in "_package.yml_". If not, [check the previous tutorials]
 ## Summary
 
 You've learned what objectives are and how to create them. You can now give a player an 
-objective to have a more advanced quest! More objectives can be found in the [objectives list](../../../Documentation/Scripting/Building-Blocks/Objectives-List.md).
+objective to have a more advanced quest! More objectives can be found in the [objectives list](../../../Documentation/Reference/Objectives-List.md).
 In the next tutorial you will learn how **conditions** work and how to use them to make the Blacksmith react to the completed objective.
 ---
 <div class="grid" markdown style="text-align: center;">

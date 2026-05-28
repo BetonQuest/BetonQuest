@@ -146,7 +146,7 @@ This section is _not necessary_ to use the API, but it will help you _understand
 
 An identifier refers to a specific element in a quest package, consisting of the path to the containing package and the element's name.
 
-Unlike [identifiers used in packages](../../Documentation/Scripting/Packages-&-Templates.md#working-across-packages), 
+Unlike [identifiers used in packages](../../Documentation/Basics/Packages-&-Templates.md#working-across-packages), 
 API identifiers always contain the full absolute package path (no relative context exists) and are always type-specific.
 An `ActionIdentifier` may have the same string representation as an `ObjectiveIdentifier`, but they refer to different types and cannot be used interchangeably.
 This type safety prevents accidentally passing an action identifier where a condition identifier is expected, providing compile-time validation.

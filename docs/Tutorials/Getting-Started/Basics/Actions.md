@@ -12,8 +12,8 @@ In this tutorial, we will give the player items and teleport them to different l
     * [Conversations Tutorial](Conversations.md)
 
 !!! example "Related Docs"
-    * [Actions Reference](../../../Documentation/Scripting/About-Scripting.md#actions)
-    * [Actions List](../../../Documentation/Scripting/Building-Blocks/Actions-List.md)
+    * [Actions Reference](../../../Documentation/Basics/About-Scripting.md#actions)
+    * [Actions List](../../../Documentation/Reference/Actions-List.md)
 </div>
 @snippet:tutorials:download-setup-warning@
     ```
@@ -151,15 +151,15 @@ actions:
   tpBlacksmith: "teleport 50;70;50;world" # (4)!
 ```
 
-1. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Scripting/Data-Formats.md#unified-location-formating)
-2. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Scripting/Data-Formats.md#unified-location-formating)
-3. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Scripting/Data-Formats.md#unified-location-formating)
-4. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Scripting/Data-Formats.md#unified-location-formating)
+1. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Reference/Data-Formats.md#unified-location-formating)
+2. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Reference/Data-Formats.md#unified-location-formating)
+3. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Reference/Data-Formats.md#unified-location-formating)
+4. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Reference/Data-Formats.md#unified-location-formating)
 
 As you can see, there are a few new actions of the types `folder` and `teleport`.
 The folder action wraps multiple actions inside itself. Once triggered, it simply executes its actions. 
-Every action type is documented in the actions list, read more about the [folder](../../../Documentation/Scripting/Building-Blocks/Actions-List.md#folder)
-and [teleport](../../../Documentation/Scripting/Building-Blocks/Actions-List.md#teleport) actions there. 
+Every action type is documented in the actions list, read more about the [folder](../../../Documentation/Reference/Actions-List.md#folder)
+and [teleport](../../../Documentation/Reference/Actions-List.md#teleport) actions there. 
 
 Running the `townTour` action will teleport you to a new location every five seconds
 until we get to our final destination, the blacksmith. The folder action is done after the `tpBlacksmith` action was run.
@@ -217,7 +217,7 @@ Now speak with the NPC again to take the tour.
 ## Summary
 
 You've learned what actions are and how to create them. You can now give a player some food or
-even teleport him through the whole town! More actions can be found in the [actions list](../../../Documentation/Scripting/Building-Blocks/Actions-List.md).
+even teleport him through the whole town! More actions can be found in the [actions list](../../../Documentation/Reference/Actions-List.md).
 Next you will learn how to give tasks to the player using **objectives**. 
 ---
 <div class="grid" markdown style="text-align: center;">

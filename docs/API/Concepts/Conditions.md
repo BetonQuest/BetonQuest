@@ -35,7 +35,7 @@ This page covers the Conditions API of BetonQuest.
 
 !!! info "What this page does not cover"
     - What a condition is
-    - [Which conditions are available](../../Documentation/Scripting/Building-Blocks/Conditions-List.md)
+    - [Which conditions are available](../../Documentation/Reference/Conditions-List.md)
     - [How to work with conditions in scripting](../../Tutorials/Getting-Started/Basics/Conditions.md)
 
 </div>
