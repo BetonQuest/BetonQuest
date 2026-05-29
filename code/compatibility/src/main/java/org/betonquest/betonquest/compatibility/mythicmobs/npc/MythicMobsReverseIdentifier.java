@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.mythicmobs.npc;
 
 import io.lumine.mythic.core.mobs.ActiveMob;
 import org.betonquest.betonquest.api.identifier.NpcIdentifier;
+import org.betonquest.betonquest.compatibility.mythicmobs.npc.type.Type;
 import org.betonquest.betonquest.compatibility.npc.GenericReverseIdentifier;
 
 /**

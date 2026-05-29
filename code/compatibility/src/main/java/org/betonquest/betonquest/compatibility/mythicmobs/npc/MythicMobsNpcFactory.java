@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.npc.NpcFactory;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
 import org.betonquest.betonquest.compatibility.mythicmobs.MythicHider;
+import org.betonquest.betonquest.compatibility.mythicmobs.npc.type.Type;
 
 /**
  * Creates validated Npc Wrapper for MythicMobs Npcs.
