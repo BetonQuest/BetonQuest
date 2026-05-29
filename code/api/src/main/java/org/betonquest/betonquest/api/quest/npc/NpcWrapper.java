@@ -4,20 +4,31 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Set;
+
 /**
  * A validated wrapper for a {@link Npc}.
  *
  * @param <T> the original npc type
  */
-@FunctionalInterface
 public interface NpcWrapper<T> {
 
     /**
-     * Gets the Npc represented by this Wrapper.
+     * Gets the single npc represented by this wrapper.
+     * If multiple npcs match the definition, a quest exception is thrown.
      *
-     * @param profile the profile to resolve the Npc
+     * @param profile the profile to resolve the npc
      * @return the npc ready to use
-     * @throws QuestException when the Npc cannot be found
+     * @throws QuestException if the npc cannot be found, or multiple npcs match the definition
      */
     Npc<T> getNpc(@Nullable Profile profile) throws QuestException;
+
+    /**
+     * Gets all npcs represented by this wrapper.
+     *
+     * @param profile the profile to resolve the npcs
+     * @return the npcs ready to use
+     * @throws QuestException if no npc can be found
+     */
+    Set<Npc<T>> getNpcs(@Nullable Profile profile) throws QuestException;
 }
