@@ -9,6 +9,8 @@ import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Set;
+
 /**
  * ZNPCsPlus wrapper to get a Npc.
  */
@@ -43,5 +45,10 @@ public class ZNPCsPlusWrapper implements NpcWrapper<NpcEntry> {
             throw new QuestException("ZNPCsPlus Npc with ID " + npcId + " not found");
         }
         return new ZNPCsPlusAdapter(npcEntry);
+    }
+
+    @Override
+    public Set<Npc<NpcEntry>> getNpcs(@Nullable final Profile profile) throws QuestException {
+        return Set.of(getNpc(profile));
     }
 }
