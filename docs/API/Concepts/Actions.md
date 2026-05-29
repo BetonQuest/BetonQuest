@@ -35,7 +35,7 @@ This page covers the Actions API of BetonQuest.
 
 !!! info "What this page does not cover"
     - What an action is
-    - [Which actions are available](../../Documentation/Scripting/Building-Blocks/Actions-List.md)
+    - [Which actions are available](../../Documentation/Reference/Actions-List.md)
     - [How to work with actions in scripting](../../Tutorials/Getting-Started/Basics/Actions.md)
     
 </div>

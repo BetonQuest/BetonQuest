@@ -61,101 +61,99 @@ nav:
   - 'Documentation':
       - 'Overview': Documentation/Overview.md
 
-      - 'Scripting':
-          - 'About Scripting': Documentation/Scripting/About-Scripting.md
-          - 'Packages & Templates': Documentation/Scripting/Packages-&-Templates.md
-          - 'Actions List': Documentation/Scripting/Building-Blocks/Actions-List.md
-          - 'Objectives List': Documentation/Scripting/Building-Blocks/Objectives-List.md
-          - 'Conditions List': Documentation/Scripting/Building-Blocks/Conditions-List.md
-          - 'Placeholders List': Documentation/Scripting/Building-Blocks/Placeholders-List.md
+      - 'Basics':
+          - 'About Scripting': Documentation/Basics/About-Scripting.md
+          - 'Packages & Templates': Documentation/Basics/Packages-&-Templates.md
+          - 'Quoting & advanced YAML': Documentation/Basics/Quoting-&-YAML.md
+
+      - 'Advanced':
+          - 'Conversations': Documentation/Advanced/Conversations.md
+          - 'Text Formatting': Documentation/Advanced/Text-Formatting.md
+          - 'Menus':
+              - 'Documentation/Advanced/Menus/index.md'
+              - 'Menu Example': Documentation/Advanced/Menus/Example.md
+              - 'Elements': Documentation/Advanced/Menus/Elements.md
+          - 'Journal': Documentation/Advanced/Journal.md
+          - 'Quest Items': Documentation/Advanced/Items.md
+          - 'Quest Cancelers': Documentation/Advanced/Quest-Cancelers.md
+          - 'Player Hider': Documentation/Advanced/Player-Hider.md
+          - 'Schedules': Documentation/Advanced/Schedules.md
+          - 'Parties': Documentation/Advanced/Parties.md
+          - "Notify IO's & Categories": Documentation/Advanced/Notification-IO's-&-Categories.md
+          - 'Notification Settings': Documentation/Advanced/Notification-Settings.md
+
+      - 'Reference':
+          - 'Plugin Config': Documentation/Reference/Plugin-Config.md
+          - 'Permissions & Commands': Documentation/Reference/Commands-and-Permissions.md
+          - 'Actions List': Documentation/Reference/Actions-List.md
+          - 'Objectives List': Documentation/Reference/Objectives-List.md
+          - 'Conditions List': Documentation/Reference/Conditions-List.md
+          - 'Placeholders List': Documentation/Reference/Placeholders-List.md
           - 'Integrations List':
-              - 'Documentation/Scripting/Building-Blocks/Integrations-List/index.md'
+              - 'Documentation/Reference/Integrations-List/index.md'
               - 'NPCs':
-                  - 'Documentation/Scripting/Building-Blocks/Integrations-List/NPCs/index.md'
-                  - 'Citizens': Documentation/Scripting/Building-Blocks/Integrations-List/NPCs/Citizens.md
-                  - 'FancyNpcs': Documentation/Scripting/Building-Blocks/Integrations-List/NPCs/FancyNpcs.md
-                  - 'MythicMobs': Documentation/Scripting/Building-Blocks/Integrations-List/NPCs/MythicMobs.md
-                  - 'ZNPCsPlus': Documentation/Scripting/Building-Blocks/Integrations-List/NPCs/ZNPCsPlus.md
+                  - 'Documentation/Reference/Integrations-List/NPCs/index.md'
+                  - 'Citizens': Documentation/Reference/Integrations-List/NPCs/Citizens.md
+                  - 'FancyNpcs': Documentation/Reference/Integrations-List/NPCs/FancyNpcs.md
+                  - 'MythicMobs': Documentation/Reference/Integrations-List/NPCs/MythicMobs.md
+                  - 'ZNPCsPlus': Documentation/Reference/Integrations-List/NPCs/ZNPCsPlus.md
               - 'Items':
-                  - 'Documentation/Scripting/Building-Blocks/Integrations-List/Items/index.md'
-                  - 'Brewery & BreweryX': Documentation/Scripting/Building-Blocks/Integrations-List/Items/Brewery.md
-                  - 'CraftEngine': Documentation/Scripting/Building-Blocks/Integrations-List/Items/CraftEngine.md
-                  - 'ItemsAdder': Documentation/Scripting/Building-Blocks/Integrations-List/Items/ItemsAdder.md
-                  - 'Magic': Documentation/Scripting/Building-Blocks/Integrations-List/Items/Magic.md
-                  - 'MMOItems': Documentation/Scripting/Building-Blocks/Integrations-List/Items/MMOItems.md
-                  - 'MythicMobs': Documentation/Scripting/Building-Blocks/Integrations-List/Items/MythicMobs.md
-                  - 'Nexo': Documentation/Scripting/Building-Blocks/Integrations-List/Items/Nexo.md
+                  - 'Documentation/Reference/Integrations-List/Items/index.md'
+                  - 'Brewery & BreweryX': Documentation/Reference/Integrations-List/Items/Brewery.md
+                  - 'CraftEngine': Documentation/Reference/Integrations-List/Items/CraftEngine.md
+                  - 'ItemsAdder': Documentation/Reference/Integrations-List/Items/ItemsAdder.md
+                  - 'Magic': Documentation/Reference/Integrations-List/Items/Magic.md
+                  - 'MMOItems': Documentation/Reference/Integrations-List/Items/MMOItems.md
+                  - 'MythicMobs': Documentation/Reference/Integrations-List/Items/MythicMobs.md
+                  - 'Nexo': Documentation/Reference/Integrations-List/Items/Nexo.md
               - 'Holograms':
-                  - 'Documentation/Scripting/Building-Blocks/Integrations-List/Holograms/index.md'
-                  - 'DecentHolograms': Documentation/Scripting/Building-Blocks/Integrations-List/Holograms/DecentHolograms.md
-                  - 'FancyHolograms': Documentation/Scripting/Building-Blocks/Integrations-List/Holograms/FancyHolograms.md
-                  - 'HolographicDisplays': Documentation/Scripting/Building-Blocks/Integrations-List/Holograms/HolographicDisplays.md
+                  - 'Documentation/Reference/Integrations-List/Holograms/index.md'
+                  - 'DecentHolograms': Documentation/Reference/Integrations-List/Holograms/DecentHolograms.md
+                  - 'FancyHolograms': Documentation/Reference/Integrations-List/Holograms/FancyHolograms.md
+                  - 'HolographicDisplays': Documentation/Reference/Integrations-List/Holograms/HolographicDisplays.md
               - 'Visuals':
-                  - 'Documentation/Scripting/Building-Blocks/Integrations-List/Visuals/index.md'
-                  - 'EffectLib': Documentation/Scripting/Building-Blocks/Integrations-List/Visuals/EffectLib.md
-                  - 'FakeBlock': Documentation/Scripting/Building-Blocks/Integrations-List/Visuals/FakeBlock.md
+                  - 'Documentation/Reference/Integrations-List/Visuals/index.md'
+                  - 'EffectLib': Documentation/Reference/Integrations-List/Visuals/EffectLib.md
+                  - 'FakeBlock': Documentation/Reference/Integrations-List/Visuals/FakeBlock.md
               - 'Scripting & Questing':
-                  - 'Documentation/Scripting/Building-Blocks/Integrations-List/Scripting-&-Questing/index.md'
-                  - 'Denizen': Documentation/Scripting/Building-Blocks/Integrations-List/Scripting-&-Questing/Denizen.md
-                  - 'Quests': Documentation/Scripting/Building-Blocks/Integrations-List/Scripting-&-Questing/Quests.md
-                  - 'Skript': Documentation/Scripting/Building-Blocks/Integrations-List/Scripting-&-Questing/Skript.md
+                  - 'Documentation/Reference/Integrations-List/Scripting-&-Questing/index.md'
+                  - 'Denizen': Documentation/Reference/Integrations-List/Scripting-&-Questing/Denizen.md
+                  - 'Quests': Documentation/Reference/Integrations-List/Scripting-&-Questing/Quests.md
+                  - 'Skript': Documentation/Reference/Integrations-List/Scripting-&-Questing/Skript.md
               - 'Economy':
-                  - 'Documentation/Scripting/Building-Blocks/Integrations-List/Economy/index.md'
-                  - 'JobsReborn': Documentation/Scripting/Building-Blocks/Integrations-List/Economy/JobsReborn.md
-                  - 'Shopkeepers': Documentation/Scripting/Building-Blocks/Integrations-List/Economy/Shopkeepers.md
-                  - 'Vault': Documentation/Scripting/Building-Blocks/Integrations-List/Economy/Vault.md
+                  - 'Documentation/Reference/Integrations-List/Economy/index.md'
+                  - 'JobsReborn': Documentation/Reference/Integrations-List/Economy/JobsReborn.md
+                  - 'Shopkeepers': Documentation/Reference/Integrations-List/Economy/Shopkeepers.md
+                  - 'Vault': Documentation/Reference/Integrations-List/Economy/Vault.md
               - 'MMO':
-                  - 'Documentation/Scripting/Building-Blocks/Integrations-List/MMO/index.md'
-                  - 'AuraSkills': Documentation/Scripting/Building-Blocks/Integrations-List/MMO/AuraSkills.md
-                  - 'Fabled': Documentation/Scripting/Building-Blocks/Integrations-List/MMO/Fabled.md
-                  - 'Heroes': Documentation/Scripting/Building-Blocks/Integrations-List/MMO/Heroes.md
-                  - 'Magic': Documentation/Scripting/Building-Blocks/Integrations-List/MMO/Magic.md
-                  - 'mcMMO': Documentation/Scripting/Building-Blocks/Integrations-List/MMO/McMMO.md
-                  - 'MMOCore': Documentation/Scripting/Building-Blocks/Integrations-List/MMO/MMOCore.md
-                  - 'MMOLib': Documentation/Scripting/Building-Blocks/Integrations-List/MMO/MMOLib.md
+                  - 'Documentation/Reference/Integrations-List/MMO/index.md'
+                  - 'AuraSkills': Documentation/Reference/Integrations-List/MMO/AuraSkills.md
+                  - 'Fabled': Documentation/Reference/Integrations-List/MMO/Fabled.md
+                  - 'Heroes': Documentation/Reference/Integrations-List/MMO/Heroes.md
+                  - 'Magic': Documentation/Reference/Integrations-List/MMO/Magic.md
+                  - 'mcMMO': Documentation/Reference/Integrations-List/MMO/McMMO.md
+                  - 'MMOCore': Documentation/Reference/Integrations-List/MMO/MMOCore.md
+                  - 'MMOLib': Documentation/Reference/Integrations-List/MMO/MMOLib.md
               - 'Administration':
-                  - 'Documentation/Scripting/Building-Blocks/Integrations-List/Administration/index.md'
-                  - 'LuckPerms': Documentation/Scripting/Building-Blocks/Integrations-List/Administration/LuckPerms.md
-                  - 'PacketEvents': Documentation/Scripting/Building-Blocks/Integrations-List/Administration/PacketEvents.md
-                  - 'PlaceholderAPI': Documentation/Scripting/Building-Blocks/Integrations-List/Administration/PlaceholderAPI.md
-                  - 'RedisChat': Documentation/Scripting/Building-Blocks/Integrations-List/Administration/RedisChat.md
-                  - 'WorldEdit & FastAsyncWorldEdit': Documentation/Scripting/Building-Blocks/Integrations-List/Administration/WorldEdit.md
-                  - 'WorldGuard': Documentation/Scripting/Building-Blocks/Integrations-List/Administration/WorldGuard.md
+                  - 'Documentation/Reference/Integrations-List/Administration/index.md'
+                  - 'LuckPerms': Documentation/Reference/Integrations-List/Administration/LuckPerms.md
+                  - 'PacketEvents': Documentation/Reference/Integrations-List/Administration/PacketEvents.md
+                  - 'PlaceholderAPI': Documentation/Reference/Integrations-List/Administration/PlaceholderAPI.md
+                  - 'RedisChat': Documentation/Reference/Integrations-List/Administration/RedisChat.md
+                  - 'WorldEdit & FastAsyncWorldEdit': Documentation/Reference/Integrations-List/Administration/WorldEdit.md
+                  - 'WorldGuard': Documentation/Reference/Integrations-List/Administration/WorldGuard.md
               - 'Miscellaneous':
-                  - 'Documentation/Scripting/Building-Blocks/Integrations-List/Miscellaneous/index.md'
-                  - 'TrainCarts': Documentation/Scripting/Building-Blocks/Integrations-List/Miscellaneous/TrainCarts.md
-          - 'Additional Features':
-              - 'Schedules': Documentation/Scripting/Schedules.md
-              - 'Parties': Documentation/Scripting/Parties.md
-              - 'Data Formats': Documentation/Scripting/Data-Formats.md
-              - 'Quoting & advanced YAML': Documentation/Scripting/Quoting-&-YAML.md
+                  - 'Documentation/Reference/Integrations-List/Miscellaneous/index.md'
+                  - 'TrainCarts': Documentation/Reference/Integrations-List/Miscellaneous/TrainCarts.md
+          - 'Data Formats': Documentation/Reference/Data-Formats.md
+          - 'Font Config': Documentation/Reference/Font-Config.md
 
-      - 'Features':
-          - 'Conversations': Documentation/Features/Conversations.md
-          - 'Text Formatting': Documentation/Features/Text-Formatting.md
-          - 'Quest Menus':
-              - 'Menus': Documentation/Features/Menus/Menu.md
-              - 'Menu Example': Documentation/Features/Menus/Example.md
-              - 'Elements': Documentation/Features/Menus/Elements.md
-          - 'Additional Features':
-              - 'Journal': Documentation/Features/Journal.md
-              - 'Quest Items': Documentation/Features/Items.md
-              - 'Quest Cancelers': Documentation/Features/Quest-Cancelers.md
-
-      - 'Visual Effects':
-          - 'Notification Settings': Documentation/Visual-Effects/Notifications/Notification-Settings.md
-          - "Notify IO's & Categories": Documentation/Visual-Effects/Notifications/Notification-IO's-&-Categories.md
-          - 'Player Hider': Documentation/Visual-Effects/Additional-Effects/Player-Hider.md
-
-      - 'Configuration':
-          - 'Plugin Config': Documentation/Configuration/Plugin-Config.md
-          - 'Font Config': Documentation/Configuration/Font-Config.md
-          - 'Permissions & Commands': Documentation/Configuration/Commands-and-Permissions.md
-          - 'Version Changes':
-              - 'Updating': Documentation/Configuration/Version-Changes/Updating.md
-              - 'Migration 1.X to 2.X': Documentation/Configuration/Version-Changes/Migration-1-2.md
-              - 'Migration 2.X to 3.X': Documentation/Configuration/Version-Changes/Migration-2-3.md
-              - 'Changelog': Documentation/CHANGELOG.md
+      - 'Updates':
+          - 'Updating': Documentation/Updates/Updating.md
+          - 'Migrations':
+              - 'Migration 1.X to 2.X': Documentation/Updates/Migrations/Migration-1-2.md
+              - 'Migration 2.X to 3.X': Documentation/Updates/Migrations/Migration-2-3.md
+          - 'Changelog': Documentation/CHANGELOG.md
 
       - 'Frequently Asked Questions':
           - 'General FAQ': Documentation/Frequently-Asked-Questions.md

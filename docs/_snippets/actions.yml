@@ -5,7 +5,7 @@ cancel: |-
   __Syntax__: `cancel <canceler> [bypass]`  
   __Description__: Call the specified quest canceler.
   
-  This action works in the same way as a [quest canceler in the backpack](/Documentation/Features/Quest-Cancelers.md).
+  This action works in the same way as a [quest canceler in the backpack](/Documentation/Advanced/Quest-Cancelers.md).
   Running this action is equal to the player canceling a quest using the backpack.
 
   | Parameter  | Syntax             | Default Value          | Explanation                                                                                                                  |
@@ -26,7 +26,7 @@ notify: |-
   __Description__: Send the notification to the player using the specified notifyIO.
   
   Every notify IO has it's own specific settings. You must understand these too if you want to use the Notify system to it's full extend.
-  Advanced users may also use [Notify Categories](/Documentation/Visual-Effects/Notifications/Notification-IO's-&-Categories.md#categories) to make their lives easier.
+  Advanced users may also use [Notify Categories](/Documentation/Advanced/Notification-IO's-&-Categories.md#categories) to make their lives easier.
   
   Also a language can be defined with a language key from the language folder in the format `{Lang-Key}`.
   Any text after the language key until the next language key belongs to the specified language.

@@ -17,8 +17,8 @@ In this tutorial, you will learn how to create and use conditions!
     * [Objectives Tutorial](Objectives.md)
 
 !!! example "Related Docs"
-    * [Conditions Reference](../../../Documentation/Scripting/About-Scripting.md#conditions)
-    * [Conditions List](../../../Documentation/Scripting/Building-Blocks/Conditions-List.md)
+    * [Conditions Reference](../../../Documentation/Basics/About-Scripting.md#conditions)
+    * [Conditions List](../../../Documentation/Reference/Conditions-List.md)
 </div>
 @snippet:tutorials:download-setup-warning@
     ```
@@ -340,7 +340,7 @@ conversations:
 #### 5.3.2 Handing out the armor
 
 Now add an action to reward the player on your own. Tip: You must use the
-[`give`](../../../Documentation/Scripting/Building-Blocks/Actions-List.md#give) action to hand out items that are defined
+[`give`](../../../Documentation/Reference/Actions-List.md#give) action to hand out items that are defined
 in the `items` section of your "_package.yml_" file.
 
 ??? example "SPOILER: Solution"
@@ -432,7 +432,7 @@ in actions.
 ## Summary
 
 You've learned what conditions are and how to they are used in objectives, conversations and actions.
-More conditions can be found in the [conditions list](../../../Documentation/Scripting/Building-Blocks/Conditions-List.md).
+More conditions can be found in the [conditions list](../../../Documentation/Reference/Conditions-List.md).
 ---
 <div markdown style="text-align: left;">
 [:octicons-arrow-left-16: Objectives](./Objectives.md){ .md-button .md-button--primary}

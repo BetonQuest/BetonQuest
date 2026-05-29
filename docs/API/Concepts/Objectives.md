@@ -32,7 +32,7 @@ This page covers the Objective API of BetonQuest.
 
 !!! info "What this page does not cover"
     - What an objective is
-    - [Which objectives are available](../../Documentation/Scripting/Building-Blocks/Objectives-List.md)
+    - [Which objectives are available](../../Documentation/Reference/Objectives-List.md)
     - [How to work with objectives in scripting](../../Tutorials/Getting-Started/Basics/Objectives.md)
 
 </div>

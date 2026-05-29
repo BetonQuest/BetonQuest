@@ -11,10 +11,10 @@ If not, feel free to ask us in the
 There is no such command. BetonQuest is too complex to edit it using commands or chest GUI's.
 
 ## Can you add particles over NPCs' heads like in "Quests" plugin?
-Yes! Check out the [EffectLib](../Documentation/Scripting/Building-Blocks/Integrations-List/Visuals/EffectLib.md) compatibility documentation.
+Yes! Check out the [EffectLib](Reference/Integrations-List/Visuals/EffectLib.md) compatibility documentation.
 
 ## Can I assign multiple conversation files to one NPC?
-No. You can use [cross-conversation-pointers](../Documentation/Features/Conversations.md#cross-conversation-pointers) though.
+No. You can use [cross-conversation-pointers](Advanced/Conversations.md#cross-conversation-pointers) though.
 
 ## Can I delete all tags from a player at once?
 No. You either need to run all `/bq t del PLAYER PACKAGE>TAG` commands, or you can use `/bq purge PLAYER` to reset an entire player profile.
@@ -24,7 +24,7 @@ Or use a `run` action in which you specify all tag-deleting actions at once.
 (We will improve this don't worry)
 
 ## How do I start an objective from a conversation?
-Use the [objective action](../Documentation/Scripting/Building-Blocks/Actions-List.md#objective).
+Use the [objective action](Reference/Actions-List.md#objective).
 
 ## Why is X thing not working?
 If something stopped working before asking for help please do `/bq reload` and READ THE OUTPUT IN CONSOLE!
@@ -98,7 +98,7 @@ You can just add them together using `math.calc`.
 ## How to match different items with just one condition?
 If you want a player to have e.g. `potato + poisonous_potato = 64` in his inventory you can make a special item in your 
 `items` section file that matches items based of their names. 
-More specifically, you can have a [*Block Selector*](../Documentation/Scripting/Data-Formats.md#block-selectors) that is a *regex*.
+More specifically, you can have a [*Block Selector*](Reference/Data-Formats.md#block-selectors) that is a *regex*.
 It would look like this in the example:
 ```YAML
 items:
@@ -176,7 +176,7 @@ and the conversation option will become available after defined in `delay` objec
 
 ## The same random daily quest for every player
 
-To do this use something called "[Schedules](../Documentation/Scripting/Schedules.md)".  
+To do this use something called "[Schedules](Advanced/Schedules.md)".  
 Run a scheduled `folder` action every day at some late hour (for example 4am).
 The `folder` action should be `random:1` and contain several different `globaltag` actions.
 These actions will set a specific tag. Now when the player starts the conversation and asks about the daily quest the NPC
@@ -313,16 +313,16 @@ have to add the additional objectives to the conditions.
 
 ## Creating quest menus
 To create a menu that gives the player an overview of his open quests just define one menu item for each quest.
-Set the [conditions](../Documentation/Features/Menus/Menu.md#the-menu_items-section) for this item, so it is only 
-displayed if the quest is not finished (use the [tag condition](../Documentation/Scripting/Building-Blocks/Conditions-List.md#tag)).  
-Then assign all those items to [a row of slots](../Documentation/Features/Menus/Menu.md#the-slots-section) so that they are sorted perfectly.
+Set the [conditions](./Advanced/Menus/index.md#the-menu_items-section) for this item, so it is only 
+displayed if the quest is not finished (use the [tag condition](Reference/Conditions-List.md#tag)).  
+Then assign all those items to [a row of slots](Advanced/Menus/index.md#the-slots-section) so that they are sorted perfectly.
 
 You can also add click actions to display npc locations, add compass targets, directly open the conversations or cancel the quest.
 
 Or you could define separate items for open and finished quests or even to show the progress. Just be a bit creative.
 
 ## Menus displaying players stats
-You may also use menus to display the stats of a player. Just use [placeholders](Scripting/Building-Blocks/Placeholders-List.md) in the text or for the amount of an item.
+You may also use menus to display the stats of a player. Just use [placeholders](Reference/Placeholders-List.md) in the text or for the amount of an item.
 
 For example, try displaying a players money using the placeholder from [Vault integration](http://dev.bukkit.org/bukkit-plugins/vault/)
-or use [PlaceholderAPI](../Documentation/Scripting/Building-Blocks/Integrations-List/Administration/PlaceholderAPI.md) to show placeholders from many other plugins.
+or use [PlaceholderAPI](Reference/Integrations-List/Administration/PlaceholderAPI.md) to show placeholders from many other plugins.

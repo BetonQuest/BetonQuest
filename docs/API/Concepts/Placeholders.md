@@ -35,7 +35,7 @@ This page covers the Placeholder API of BetonQuest.
 
 !!! info "What this page does not cover"
     - What a placeholder is
-    - [Which placeholders are available](../../Documentation/Scripting/Building-Blocks/Placeholders-List.md)
+    - [Which placeholders are available](../../Documentation/Reference/Placeholders-List.md)
     - How to work with placeholders in scripting
 
 </div>

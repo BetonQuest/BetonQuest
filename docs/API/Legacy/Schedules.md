@@ -4,7 +4,7 @@ icon: octicons/clock-16
 # Schedules
 @snippet:api-state:unfinished@
 
-If the native [schedule](../../Documentation/Scripting/Schedules.md) types are not enough for you, this API enables you to create your own type.
+If the native [schedule](../../Documentation/Advanced/Schedules.md) types are not enough for you, this API enables you to create your own type.
 
 ## API Overview
 ![](../../_media/content/API/Schedules/Schedule-dark.svg#only-dark)
@@ -29,11 +29,11 @@ public class MyCustomSchedule extends Schedule/* (1)! */ {
     private final int ticks, rebootSleep;
 
     // (2)!
-    public MyCustomSchedule(ScheduleID scheduleID, ConfigurationSection instruction) throws QuestException { 
+    public MyCustomSchedule(final ScheduleID scheduleID, final ConfigurationSection instruction) throws QuestException { 
         super(scheduleID, instruction);
         try {
             ticks = Integer.parseInt(getTime()/* (3)! */);
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             throw new QuestException("Time is not a number");// (4)!
         }
 
@@ -89,9 +89,9 @@ public class MyCustomScheduler extends Scheduler<MyCustomSchedule>/* (1)! */ {
         super.start();// (2)!
 
         tasks = new ArrayList<>();
-        for (MyCustomSchedule schedule : schedules.values()/* (3)! */) {
+        for (final MyCustomSchedule schedule : schedules.values()/* (3)! */) {
             // (4)!
-            BukkitTask task = new BukkitRunnable() {
+            final BukkitTask task = new BukkitRunnable() {
                 @Override
                 public void run() {
                     executeActions(schedule);
