@@ -923,7 +923,7 @@ By increasing it the player will be able to complete the objective. When increas
 you can optionally specify an amount to increase or decrease by.  
 When decreasing the objective it will do nothing when the first stage is reached.  
 When the conditions of the stage objective are not met, the stage of the player can not be modified.  
-For more take a look at the [stage objective](Objectives-List.md#tag).
+For more take a look at the [stage objective](Objectives-List.md#stage).
 
 | Parameter         | Syntax                          | Default Value          | Explanation                                     |
 |-------------------|---------------------------------|------------------------|-------------------------------------------------|
