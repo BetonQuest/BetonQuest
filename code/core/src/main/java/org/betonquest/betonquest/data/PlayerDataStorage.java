@@ -193,9 +193,11 @@ public class PlayerDataStorage implements FastStatsMetricsProvider {
     public Set<Metric<?>> getMetrics() {
         return Set.of(
                 Metric.number("profiles_personal_lang_count", () -> playerDataMap.values().stream()
-                        .filter(data -> data.getLanguage().isPresent()).count()),
+                        .filter(data -> data.getLanguage().isPresent()
+                                && !"default".equalsIgnoreCase(data.getLanguage().get())).count()),
                 Metric.stringArray("profiles_personal_lang", () -> playerDataMap.values().stream()
                         .map(data -> data.getLanguage().orElse(null)).filter(Objects::nonNull)
+                        .filter(lang -> !"default".equalsIgnoreCase(lang))
                         .toList().toArray(new String[0]))
         );
     }
