@@ -20,6 +20,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * A {@link BukkitRunnable} that shows an EffectLib effect to all players that meet the required conditions.
@@ -113,8 +114,8 @@ public class EffectLibRunnable extends BukkitRunnable {
                     activePlayerEffects.add(onlineProfile);
                 }
             } catch (final QuestException e) {
-                log.warn("Could not check conditions for effectlib effect '" + effectConfiguration.effectClass()
-                        + "' for profile '" + onlineProfile + "': " + e.getMessage(), e);
+                log.warn("Could not check conditions for effectlib effect '%s' for profile '%s': %s".formatted(
+                        effectConfiguration.settings().getName(), onlineProfile, e.getMessage()), e);
             }
         }
         return activePlayerEffects;
@@ -122,50 +123,68 @@ public class EffectLibRunnable extends BukkitRunnable {
 
     private void activateEffects(final List<OnlineProfile> activePlayers) {
         for (final OnlineProfile currentPlayer : activePlayers) {
-            runNPCEffects(effectConfiguration, currentPlayer);
-            runLocationEffects(currentPlayer, effectConfiguration);
+            try {
+                final String effectClass = effectConfiguration.effectClass().getValue(currentPlayer);
+                runNPCEffects(effectClass, currentPlayer);
+                runLocationEffects(effectClass, currentPlayer);
+            } catch (final QuestException e) {
+                log.warn("Could not resolve effectClass for effectlib effect '%s': %s".formatted(
+                        effectConfiguration.settings().getName(), e.getMessage()), e);
+            }
         }
     }
 
-    private void runNPCEffects(final EffectConfiguration effect, final OnlineProfile profile) {
+    private void runNPCEffects(final String effectClass, final OnlineProfile profile) {
+        final List<NpcIdentifier> identifiers;
         try {
-            for (final NpcIdentifier npcId : effect.npcs().getValue(profile)) {
-                final Npc<?> npc;
-                try {
-                    npc = npcManager.get(profile, npcId);
-                } catch (final QuestException exception) {
-                    log.debug("Could not get Npc for id '" + npcId + "' in effects: " + exception.getMessage(), exception);
-                    continue;
-                }
-                if (!npc.isSpawned()) {
-                    continue;
-                }
-                final Optional<Location> location = npc.getLocation();
-                if (location.isEmpty()) {
-                    log.debug("Spawned Npc '" + npcId + "' has no location in effects");
-                    continue;
-                }
-                final Player player = profile.getPlayer();
-
-                if (!location.get().getWorld().equals(player.getWorld()) || npcManager.isHidden(npcId, profile)) {
-                    continue;
-                }
-
-                manager.start(effect.effectClass().getValue(profile), effect.settings(), new NpcDynamicLocation(npc),
-                        new DynamicLocation(null, null), (ConfigurationSection) null, player);
-            }
+            identifiers = effectConfiguration.npcs().getValue(profile);
         } catch (final QuestException e) {
-            log.warn("Could not resolve npcs for effectlib effect '" + effect.effectClass() + "': " + e.getMessage(), e);
+            log.warn("Could not resolve npcs for effectlib effect '" + effectClass + "': " + e.getMessage(), e);
+            return;
+        }
+        for (final NpcIdentifier npcId : identifiers) {
+            if (npcManager.isHidden(npcId, profile)) {
+                continue;
+            }
+            final Set<Npc<?>> npcs;
+            try {
+                npcs = npcManager.getAll(profile, npcId);
+            } catch (final QuestException exception) {
+                log.debug("Could not get Npc for id '" + npcId + "' in effects: " + exception.getMessage(), exception);
+                continue;
+            }
+            runForNPC(effectClass, profile, npcId, npcs);
         }
     }
 
-    private void runLocationEffects(final OnlineProfile profile, final EffectConfiguration effect) {
+    private void runForNPC(final String effectClass, final OnlineProfile profile, final NpcIdentifier npcId, final Set<Npc<?>> npcs) {
+        for (final Npc<?> npc : npcs) {
+            if (!npc.isSpawned()) {
+                continue;
+            }
+            final Optional<Location> location = npc.getLocation();
+            if (location.isEmpty()) {
+                log.debug("Spawned Npc '" + npcId + "' has no location in effects");
+                continue;
+            }
+            final Player player = profile.getPlayer();
+
+            if (!location.get().getWorld().equals(player.getWorld())) {
+                continue;
+            }
+
+            manager.start(effectClass, effectConfiguration.settings(), new NpcDynamicLocation(npc),
+                    new DynamicLocation(null, null), (ConfigurationSection) null, player);
+        }
+    }
+
+    private void runLocationEffects(final String effectClass, final OnlineProfile profile) {
         try {
-            for (final Location location : effect.locations().getValue(profile)) {
-                manager.start(effect.effectClass().getValue(profile), effect.settings(), location, profile.getPlayer());
+            for (final Location location : effectConfiguration.locations().getValue(profile)) {
+                manager.start(effectClass, effectConfiguration.settings(), location, profile.getPlayer());
             }
         } catch (final QuestException e) {
-            log.warn("Could not resolve locations for effectlib effect '" + effect.effectClass() + "': " + e.getMessage(), e);
+            log.warn("Could not resolve locations for effectlib effect '" + effectClass + "': " + e.getMessage(), e);
         }
     }
 
