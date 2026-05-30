@@ -20,7 +20,7 @@ public class EntityInteractData extends CountingObjective.CountingData {
     /**
      * The set of entities that have been interacted with.
      */
-    private final Set<UUID> entities;
+    private final Set<UUID> entities = new HashSet<>();
 
     /**
      * Creates a new instance of the EntityInteractData.
@@ -32,7 +32,6 @@ public class EntityInteractData extends CountingObjective.CountingData {
      */
     public EntityInteractData(final String instruction, final Profile profile, final ObjectiveIdentifier objID) throws QuestException {
         super(instruction, profile, objID);
-        entities = new HashSet<>();
         final String[] entityInstruction = instruction.split(";", 3);
         if (entityInstruction.length >= 2 && !entityInstruction[1].isEmpty()) {
             Arrays.stream(entityInstruction[1].split("/"))
