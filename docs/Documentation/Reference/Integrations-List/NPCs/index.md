@@ -87,9 +87,11 @@ You would then use the `betonQuestNPCID` for all NPC references within BetonQues
         Use `ZNPCsPlus` for the NPC selector argument.
         To acquire the NPCs ID, use the `/npc near 5` command and copy the `ID` from the NPC info.
 
-!!! warning "Multiple NPCs with the same name"
-    If there is more than one NPC with the same name and you select multiple NPCs by name (such as when using 
-    Citizens `byName` option), certain actions like `npcteleport` or objectives like `npcrange` might throw an exception.
+!!! warning "Multiple NPCs from one identifier"
+    If there is more than one NPC valid for an identifier (such as when using Citizens `byName` option),
+    actions like `npcteleport` will teleport all NPCs and objectives like `npcrange` will complete if any NPC meets the
+    conditions. Only the NPC placeholders will fail to resolve if not exactly one NPC is found.
+
 ## Conversations
 
 You can start [Conversations](../../../Advanced/Conversations.md) through NPC interactions from players by assigning them in the

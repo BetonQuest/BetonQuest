@@ -11,6 +11,8 @@ import org.betonquest.betonquest.api.service.npc.NpcManager;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Set;
+
 /**
  * Teleports a Npc to a given location.
  */
@@ -55,12 +57,15 @@ public class NpcTeleportAction implements NullableAction {
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
         final Location loc = location.getValue(profile);
-        final Npc<?> npc = npcManager.get(profile, npcId.getValue(profile));
-        if (npc.isSpawned()) {
-            npc.teleport(loc);
-        } else if (spawn.getValue(profile).orElse(false)) {
-            npc.spawn(loc);
-        }
+        final Set<Npc<?>> npcs = npcManager.getAll(profile, npcId.getValue(profile));
+        final boolean shouldSpawn = spawn.getValue(profile).orElse(false);
+        npcs.forEach(npc -> {
+            if (npc.isSpawned()) {
+                npc.teleport(loc);
+            } else if (shouldSpawn) {
+                npc.spawn(loc);
+            }
+        });
     }
 
     @Override

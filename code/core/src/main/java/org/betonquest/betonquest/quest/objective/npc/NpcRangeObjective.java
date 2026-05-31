@@ -20,12 +20,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 /**
  * The player has to reach a certain radius around a specified Npc.
  */
 public class NpcRangeObjective extends DefaultObjective {
+
+    /**
+     * The npc manager to use.
+     */
+    private final NpcManager npcManager;
 
     /**
      * Stores the relevant Npc Ids to get their locations.
@@ -55,15 +61,16 @@ public class NpcRangeObjective extends DefaultObjective {
     /**
      * Creates a new NPCRangeObjective from the given instruction.
      *
-     * @param service the objective service
-     * @param npcIds  the list of Npc IDs to check
-     * @param radius  the radius around the Npc
-     * @param trigger the trigger type for the objective
-     * @throws QuestException if the instruction is invalid
+     * @param service    the objective service
+     * @param npcManager the npc manager to use
+     * @param npcIds     the list of Npc IDs to check
+     * @param radius     the radius around the Npc
+     * @param trigger    the trigger type for the objective
      */
-    public NpcRangeObjective(final ObjectiveService service, final Argument<List<NpcIdentifier>> npcIds, final Argument<Number> radius,
-                             final Argument<Trigger> trigger) throws QuestException {
+    public NpcRangeObjective(final ObjectiveService service, final NpcManager npcManager, final Argument<List<NpcIdentifier>> npcIds,
+                             final Argument<Number> radius, final Argument<Trigger> trigger) {
         super(service);
+        this.npcManager = npcManager;
         this.npcIds = npcIds;
         this.radius = radius;
         this.checkStuff = getStuff(trigger);
@@ -112,7 +119,6 @@ public class NpcRangeObjective extends DefaultObjective {
         super.close();
     }
 
-    @SuppressWarnings("PMD.CognitiveComplexity")
     private void loop() throws QuestException {
         final List<UUID> profilesInside = new ArrayList<>();
         final List<OnlineProfile> profiles = getService().getData().keySet().stream()
@@ -124,16 +130,9 @@ public class NpcRangeObjective extends DefaultObjective {
         for (final OnlineProfile onlineProfile : profiles) {
             try {
                 for (final NpcIdentifier npcId : npcIds.getValue(onlineProfile)) {
-                    final Npc<?> npc = BetonQuest.getInstance().getComponentLoader().get(NpcManager.class).get(onlineProfile, npcId);
-                    if (!npc.isSpawned()) {
-                        continue;
-                    }
-                    final Optional<Location> location = npc.getLocation();
-                    if (location.isEmpty()) {
-                        continue;
-                    }
-                    if (!profilesInside.contains(onlineProfile.getProfileUUID()) && isInside(onlineProfile, location.get())) {
+                    if (isInRange(onlineProfile, npcId)) {
                         profilesInside.add(onlineProfile.getProfileUUID());
+                        break;
                     }
                 }
             } catch (final QuestException e) {
@@ -144,6 +143,24 @@ public class NpcRangeObjective extends DefaultObjective {
             checkPlayer(onlineProfile, profilesInside.contains(onlineProfile.getProfileUUID()));
         }
         questListException.throwIfNotEmpty();
+    }
+
+    private boolean isInRange(final OnlineProfile onlineProfile, final NpcIdentifier npcId)
+            throws QuestException {
+        final Set<Npc<?>> npcs = npcManager.getAll(onlineProfile, npcId);
+        for (final Npc<?> npc : npcs) {
+            if (!npc.isSpawned()) {
+                continue;
+            }
+            final Optional<Location> location = npc.getLocation();
+            if (location.isEmpty()) {
+                continue;
+            }
+            if (isInside(onlineProfile, location.get())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isInside(final OnlineProfile onlineProfile, final Location location) throws QuestException {

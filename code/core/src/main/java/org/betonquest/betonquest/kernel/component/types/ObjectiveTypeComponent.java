@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.service.action.ActionManager;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
+import org.betonquest.betonquest.api.service.npc.NpcManager;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.kernel.registry.quest.ObjectiveTypeRegistry;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
@@ -66,7 +67,7 @@ public class ObjectiveTypeComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(BetonQuestLoggerFactory.class, ProfileProvider.class,
                 Localizations.class, PlayerDataStorage.class,
-                ObjectiveTypeRegistry.class, ActionManager.class, ConditionManager.class, Plugin.class);
+                ObjectiveTypeRegistry.class, ActionManager.class, ConditionManager.class, Plugin.class, NpcManager.class);
     }
 
     @Override
@@ -79,6 +80,7 @@ public class ObjectiveTypeComponent extends AbstractCoreComponent {
         final ActionManager actionManager = getDependency(ActionManager.class);
         final ConditionManager conditionManager = getDependency(ConditionManager.class);
         final Plugin plugin = getDependency(Plugin.class);
+        final NpcManager npcManager = getDependency(NpcManager.class);
 
         objectiveTypes.register("action", new ActionObjectiveFactory());
         objectiveTypes.register("arrow", new ArrowShootObjectiveFactory(plugin));
@@ -101,7 +103,7 @@ public class ObjectiveTypeComponent extends AbstractCoreComponent {
         objectiveTypes.register("logout", new LogoutObjectiveFactory());
         objectiveTypes.register("mobkill", new MobKillObjectiveFactory());
         objectiveTypes.register("npcinteract", new NpcInteractObjectiveFactory());
-        objectiveTypes.register("npcrange", new NpcRangeObjectiveFactory());
+        objectiveTypes.register("npcrange", new NpcRangeObjectiveFactory(npcManager));
         objectiveTypes.register("password", new PasswordObjectiveFactory(actionManager));
         objectiveTypes.register("pickup", new PickupObjectiveFactory());
         objectiveTypes.register("point", new PointObjectiveFactory(dataStorage));

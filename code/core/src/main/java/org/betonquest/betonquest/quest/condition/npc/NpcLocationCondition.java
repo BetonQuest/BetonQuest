@@ -11,6 +11,7 @@ import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Checks if a npc is at a specific location.
@@ -55,18 +56,23 @@ public class NpcLocationCondition implements NullableCondition {
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
-        final Npc<?> npc = npcManager.get(profile, npcId.getValue(profile));
+        final Set<Npc<?>> npcs = npcManager.getAll(profile, npcId.getValue(profile));
         final Location location = this.location.getValue(profile);
+        final double radius = this.radius.getValue(profile).doubleValue();
+        final double radiusRadius = radius * radius;
+        return npcs.stream().anyMatch(npc -> isNpcNearby(npc, location, radiusRadius));
+    }
+
+    private boolean isNpcNearby(final Npc<?> npc, final Location location, final double radiusRadius) {
+        if (!npc.isSpawned()) {
+            return false;
+        }
         final Optional<Location> loc = npc.getLocation();
         if (loc.isEmpty()) {
             return false;
         }
         final Location npcLocation = loc.get();
-        if (!location.getWorld().equals(npcLocation.getWorld())) {
-            return false;
-        }
-        final double radius = this.radius.getValue(profile).doubleValue();
-        return npcLocation.distanceSquared(location) <= radius * radius;
+        return location.getWorld().equals(npcLocation.getWorld()) && npcLocation.distanceSquared(location) <= radiusRadius;
     }
 
     @Override
