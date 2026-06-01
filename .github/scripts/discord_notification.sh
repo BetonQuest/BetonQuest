@@ -73,7 +73,7 @@ case "$JOB_STATUS" in
     ;;
 
   "failure"|"cancelled" )
-    if [[ $VERSION_IS_NEW == true ]]; then VERSION_HINT=$VERSION; else VERSION_HINT="the project"; fi
+    if [[ $VERSION_IS_NEW == true  && -n $VERSION ]]; then VERSION_HINT=$VERSION; else VERSION_HINT="the project"; fi
     EMBED_COLOR=15158332
     STATUS_MESSAGE="There was an error building a $RELEASE_NAME!"
     DEV_BUILD_DOWNLOAD="Inspect the failure on $VERSION_HINT!"
