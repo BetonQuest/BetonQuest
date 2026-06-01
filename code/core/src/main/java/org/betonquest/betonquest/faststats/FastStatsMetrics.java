@@ -39,6 +39,7 @@ public class FastStatsMetrics {
                 final Set<Metric<?>> providerMetrics = provider.getMetrics();
                 providerMetrics.forEach(factory::addMetric);
             }
+            factory.onFlush(() -> metricsProviders.forEach(FastStatsMetricsProvider::metricsFlushed));
             return factory.create();
         });
         context.errorTrackerService(this.errorTracker);
