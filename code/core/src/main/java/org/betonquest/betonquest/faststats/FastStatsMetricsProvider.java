@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.faststats;
 
-import dev.faststats.core.data.Metric;
+import dev.faststats.data.Metric;
 
 import java.util.Set;
 

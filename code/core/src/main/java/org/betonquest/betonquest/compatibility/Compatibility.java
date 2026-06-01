@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility;
 
 import com.google.gson.internal.LinkedTreeMap;
-import dev.faststats.core.data.Metric;
+import dev.faststats.data.Metric;
 import org.apache.commons.lang3.tuple.Triple;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.QuestException;

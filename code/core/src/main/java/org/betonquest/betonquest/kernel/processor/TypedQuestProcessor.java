@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.kernel.processor;
 
-import dev.faststats.core.data.Metric;
-import dev.faststats.core.data.SourceId;
+import dev.faststats.data.Metric;
+import dev.faststats.data.SourceId;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
