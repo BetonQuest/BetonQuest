@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.kernel.component;
 
-import dev.faststats.core.data.Metric;
+import dev.faststats.data.Metric;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.web.updater;
 
-import dev.faststats.core.data.Metric;
+import dev.faststats.data.Metric;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;

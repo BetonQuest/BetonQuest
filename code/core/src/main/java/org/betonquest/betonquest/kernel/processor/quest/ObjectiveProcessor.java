@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.kernel.processor.quest;
 
-import dev.faststats.core.data.Metric;
+import dev.faststats.data.Metric;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.data.TagHolder;

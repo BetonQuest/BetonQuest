@@ -44,7 +44,7 @@ public class BetonQuestPlugin extends BetonQuest {
         } catch (final IllegalStateException exception) {
             log.error("Disabling BetonQuest due to an error: " + exception.getMessage(), exception);
             getComponentLoader().getOptional(FastStatsMetrics.class)
-                    .ifPresent(metrics -> metrics.getErrorTracker().trackError(exception, true));
+                    .ifPresent(metrics -> metrics.getErrorTracker().trackError(exception).handled(true));
             getServer().getPluginManager().disablePlugin(this);
             return;
         }

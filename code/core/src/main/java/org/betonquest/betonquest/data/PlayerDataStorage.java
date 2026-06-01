@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.data;
 
-import dev.faststats.core.data.Metric;
+import dev.faststats.data.Metric;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
