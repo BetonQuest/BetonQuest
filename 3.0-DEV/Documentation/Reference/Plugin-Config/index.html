@@ -7907,40 +7907,44 @@ Currently, there is no way to switch between profiles, as the feature is still i
 <span class="normal">24</span>
 <span class="normal">25</span>
 <span class="normal">26</span>
-<span class="normal">27</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">menu</span><span class="p">:</span>
+<span class="normal">27</span>
+<span class="normal">28</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">menu</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">line_length</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">320</span><span class="w">      </span><span class="c1">#(1)!</span>
 <span class="w">  </span><span class="nt">line_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w">        </span><span class="c1">#(2)!</span>
-<span class="w">  </span><span class="nt">line_fill_before</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w">  </span><span class="c1">#(3)!</span>
-<span class="w">  </span><span class="nt">refresh_delay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">180</span><span class="w">    </span><span class="c1">#(4)!</span>
-<span class="w">  </span><span class="nt">rate_limit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w">        </span><span class="c1">#(5)!</span>
-<span class="w">  </span><span class="nt">set_speed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">       </span><span class="c1">#(22)!</span>
+<span class="w">  </span><span class="nt">bottom_margin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span><span class="w">      </span><span class="c1">#(3)!</span>
+<span class="w">  </span><span class="nt">line_fill_before</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w">  </span><span class="c1">#(4)!</span>
+<span class="w">  </span><span class="nt">refresh_delay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">180</span><span class="w">    </span><span class="c1">#(5)!</span>
+<span class="w">  </span><span class="nt">rate_limit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w">        </span><span class="c1">#(6)!</span>
+<span class="w">  </span><span class="nt">set_speed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">       </span><span class="c1">#(7)!</span>
 
-<span class="w">  </span><span class="nt">npc_name_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">chat</span><span class="w">              </span><span class="c1">#(6)!</span>
-<span class="w">  </span><span class="nt">npc_name_align</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">center</span><span class="w">           </span><span class="c1">#(7)!</span>
-<span class="w">  </span><span class="nt">npc_name_separator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">         </span><span class="c1">#(8)!</span>
-<span class="w">  </span><span class="nt">options_separator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">          </span><span class="c1">#(9)!</span>
-<span class="w">  </span><span class="nt">control_select</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jump,left_click</span><span class="w">  </span><span class="c1">#(10)!</span>
-<span class="w">  </span><span class="nt">control_move</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scroll,move</span><span class="w">        </span><span class="c1">#(11)!</span>
-<span class="w">  </span><span class="nt">control_cancel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sneak</span><span class="w">            </span><span class="c1">#(12)!</span>
+<span class="w">  </span><span class="nt">npc_name_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">chat</span><span class="w">              </span><span class="c1">#(8)!</span>
+<span class="w">  </span><span class="nt">npc_name_align</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">center</span><span class="w">           </span><span class="c1">#(9)!</span>
+<span class="w">  </span><span class="nt">npc_name_separator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">         </span><span class="c1">#(10)!</span>
+<span class="w">  </span><span class="nt">options_separator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">          </span><span class="c1">#(11)!</span>
+<span class="w">  </span><span class="nt">control_select</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jump,left_click</span><span class="w">  </span><span class="c1">#(12)!</span>
+<span class="w">  </span><span class="nt">control_move</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scroll,move</span><span class="w">        </span><span class="c1">#(13)!</span>
+<span class="w">  </span><span class="nt">control_cancel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sneak</span><span class="w">            </span><span class="c1">#(14)!</span>
 
-<span class="w">  </span><span class="nt">npc_name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]&lt;yellow&gt;{npc_name}&#39;</span><span class="w">                        </span><span class="c1">#(13)!</span>
-<span class="w">  </span><span class="nt">npc_text</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv"> </span><span class="s">&lt;white&gt;{npc_text}&#39;</span><span class="w">                        </span><span class="c1">#(14)!</span>
-<span class="w">  </span><span class="nt">npc_text_wrap</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv"> </span><span class="s">&#39;</span><span class="w">                                    </span><span class="c1">#(15)!</span>
+<span class="w">  </span><span class="nt">npc_name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]&lt;yellow&gt;{npc_name}&#39;</span><span class="w">                        </span><span class="c1">#(15)!</span>
+<span class="w">  </span><span class="nt">npc_text</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv"> </span><span class="s">&lt;white&gt;{npc_text}&#39;</span><span class="w">                        </span><span class="c1">#(16)!</span>
+<span class="w">  </span><span class="nt">npc_text_wrap</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv"> </span><span class="s">&#39;</span><span class="w">                                    </span><span class="c1">#(17)!</span>
 <span class="w">  </span><span class="nt">option_text</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv">    </span><span class="s">&lt;dark_gray&gt;[</span><span class="nv"> </span><span class="s">&lt;aqua&gt;{option_text}</span>
-<span class="w">    </span><span class="s">&lt;/aqua&gt;</span><span class="nv"> </span><span class="s">]&#39;</span><span class="w">                                                        </span><span class="c1">#(16)!</span>
-<span class="w">  </span><span class="nt">option_text_wrap</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv">    </span><span class="s">&#39;</span><span class="w">                              </span><span class="c1">#(17)!</span>
+<span class="w">    </span><span class="s">&lt;/aqua&gt;</span><span class="nv"> </span><span class="s">]&#39;</span><span class="w">                                                        </span><span class="c1">#(18)!</span>
+<span class="w">  </span><span class="nt">option_text_wrap</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv">    </span><span class="s">&#39;</span><span class="w">                              </span><span class="c1">#(19)!</span>
 <span class="w">  </span><span class="nt">option_selected_text</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv"> </span><span class="s">&lt;gray&gt;»</span><span class="nv"> </span><span class="s">&lt;dark_gray&gt;[</span><span class="nv"> </span><span class="s">&lt;white&gt;</span>
-<span class="w">    </span><span class="s">&lt;underlined&gt;{option_text}&lt;/underlined&gt;&lt;/white&gt;</span><span class="nv"> </span><span class="s">]&#39;</span><span class="w">                 </span><span class="c1">#(18)!</span>
-<span class="w">  </span><span class="nt">option_selected_text_wrap</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv">    </span><span class="s">&lt;white&gt;&lt;underlined&gt;&#39;</span><span class="w">  </span><span class="c1">#(19)!</span>
-<span class="w">  </span><span class="nt">scroll_up</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]&lt;white&gt;</span><span class="nv">        </span><span class="s">↑&lt;/white&gt;&#39;</span><span class="w">                 </span><span class="c1">#(20)!</span>
-<span class="w">  </span><span class="nt">scroll_down</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]&lt;white&gt;</span><span class="nv">        </span><span class="s">↓&lt;/white&gt;&#39;</span><span class="w">               </span><span class="c1">#(21)!</span>
+<span class="w">    </span><span class="s">&lt;underlined&gt;{option_text}&lt;/underlined&gt;&lt;/white&gt;</span><span class="nv"> </span><span class="s">]&#39;</span><span class="w">                 </span><span class="c1">#(20)!</span>
+<span class="w">  </span><span class="nt">option_selected_text_wrap</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv">    </span><span class="s">&lt;white&gt;&lt;underlined&gt;&#39;</span><span class="w">  </span><span class="c1">#(21)!</span>
+<span class="w">  </span><span class="nt">scroll_up</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]&lt;white&gt;</span><span class="nv">        </span><span class="s">↑&lt;/white&gt;&#39;</span><span class="w">                 </span><span class="c1">#(22)!</span>
+<span class="w">  </span><span class="nt">scroll_down</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]&lt;white&gt;</span><span class="nv">        </span><span class="s">↓&lt;/white&gt;&#39;</span><span class="w">               </span><span class="c1">#(23)!</span>
 </code></pre></div></td></tr></table></div></p>
 <ol>
 <li>Maximum length of a line till its wrapped in pixels.</li>
 <li>Height of a conversation in lines.</li>
-<li>Amount of empty lines before a conversation starts.</li>
+<li>Number of empty lines to add at the end of a text.</li>
+<li>Number of empty lines before a conversation starts.</li>
 <li>Time interval before printing the conversation again in ticks.</li>
 <li>Time to wait until a new option can be selected in ticks.</li>
+<li>Sets the speed to zero to achieve a zoom effect.</li>
 <li>Place to show the NPC name, <code>chat</code> or <code>none</code>.</li>
 <li>For <code>npc_name_type</code> <code>chat</code>, the alignment of the name, <code>left</code>, <code>right</code> or <code>center</code>.</li>
 <li>Separate the NPC name with an empty line from the text.</li>
@@ -7957,7 +7961,6 @@ Currently, there is no way to switch between profiles, as the feature is still i
 <li>A prefix that gets applied to the start of a new line if the actual text is too long.</li>
 <li>The arrow format to scroll up.</li>
 <li>The arrow format to scroll down.</li>
-<li>Sets the speed to zero to achieve a zoom effect.</li>
 </ol>
 </li>
 <li>
