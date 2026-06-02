@@ -55,9 +55,12 @@ public class UpdatedSimpleItemFactory extends SimpleQuestItemFactory {
         final BlockSelector selector = new DefaultBlockSelector(material);
 
         final NameHandler name = new UpdatedNameHandler(textParser);
-        final LoreHandler lore = new LoreHandler(textParser);
 
         final Localizations localizations = questItemLoreSupplier.get();
+        final QuestHandler questHandler = new QuestHandler(localizations == null
+                ? LoreConsumer.EMPTY : new LoreConsumer.Lore(localizations));
+        final LoreHandler lore = new LoreHandler(textParser, questHandler::isLoreSet);
+
         final List<ItemMetaHandler<?>> handlers = List.of(
                 new DurabilityHandler(),
                 new UpdatedCustomModelDataHandler(),
@@ -65,7 +68,7 @@ public class UpdatedSimpleItemFactory extends SimpleQuestItemFactory {
                 new FlagHandler(),
                 name,
                 lore,
-                new QuestHandler(localizations == null ? LoreConsumer.EMPTY : new LoreConsumer.Lore(localizations)),
+                questHandler,
                 new EnchantmentsHandler(),
                 new UpdatedPotionHandler(),
                 new BookHandler(textParser, bookPageWrapper),

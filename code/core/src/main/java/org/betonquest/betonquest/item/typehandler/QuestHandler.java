@@ -112,4 +112,13 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
             case FORBIDDEN -> !meta.getPersistentDataContainer().has(QUEST_ITEM_KEY);
         };
     }
+
+    /**
+     * Indicates whether the quest item tag is set and changes the lore.
+     *
+     * @return if the item has an additional lore line
+     */
+    public boolean isLoreSet() {
+        return questItem == Existence.REQUIRED && questItemLore instanceof LoreConsumer.Lore;
+    }
 }

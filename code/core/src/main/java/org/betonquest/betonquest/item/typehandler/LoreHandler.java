@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 /**
  * Handles de-/serialization of Item Lore.
@@ -20,6 +21,11 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
      * The text parser used to parse text.
      */
     private final TextParser textParser;
+
+    /**
+     * If the last lore line should be interpreted as 'quest-item' line and ignored in checks.
+     */
+    private final Supplier<Boolean> ignoreLastLine;
 
     /**
      * The lore.
@@ -39,10 +45,12 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
     /**
      * Creates an empty LoreHandler.
      *
-     * @param textParser the text parser used to parse text
+     * @param textParser     the text parser used to parse text
+     * @param ignoreLastLine if the last lore line should be interpreted as 'quest-item' line and ignored in checks
      */
-    public LoreHandler(final TextParser textParser) {
+    public LoreHandler(final TextParser textParser, final Supplier<Boolean> ignoreLastLine) {
         this.textParser = textParser;
+        this.ignoreLastLine = ignoreLastLine;
     }
 
     @Override
@@ -94,7 +102,9 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
 
     @Override
     public boolean check(final ItemMeta meta) {
-        final List<Component> lore = meta.lore();
+        final List<Component> original = meta.lore();
+        final List<Component> lore = original == null ? null
+                : original.subList(0, Math.max(0, original.size() - (ignoreLastLine.get() ? 1 : 0)));
         return switch (existence) {
             case WHATEVER -> true;
             case REQUIRED -> checkRequired(lore);
