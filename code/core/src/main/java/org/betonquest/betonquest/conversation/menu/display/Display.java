@@ -62,6 +62,7 @@ public class Display {
         if (npcNameChat) {
             lineCount--;
         }
+        lineCount -= settings.bottomMargin();
 
         final LineView npcNameView = getFormattedNpcName(settings, wrapper, npcName, npcNameChat);
         final LineView npcTextView = getFormattedNpcLines(settings, wrapper, npcText, npcNameChat);
@@ -75,7 +76,8 @@ public class Display {
         this.scroll = new Cursor(0, combined.getSize() - lineCount, 0);
         final LineView excerpt = new LineView.Excerpt(lineCount, scroll::get, combined, scrollUp, scrollDown);
         final LineView filler = new LineView.Filler(new LineView.Empty(), settings.lineFillBefore());
-        this.screen = new LineView.Combiner(filler, new LineView.Combiner(npcNameView, excerpt));
+        final LineView bottomMargin = new LineView.Filler(new LineView.Empty(), settings.bottomMargin());
+        this.screen = new LineView.Combiner(filler, new LineView.Combiner(npcNameView, excerpt), bottomMargin);
         this.lastViewableOptions = new HashSet<>();
     }
 
