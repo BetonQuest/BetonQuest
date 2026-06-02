@@ -11,7 +11,8 @@ import org.bukkit.configuration.ConfigurationSection;
  *
  * @param lineLength             maximum length of a line till its wrapped in pixels
  * @param lineCount              height of a conversation in lines
- * @param lineFillBefore         amount of empty lines before a conversation starts
+ * @param bottomMargin           number of empty lines to add at the end of a text
+ * @param lineFillBefore         number of empty lines before a conversation starts
  * @param refreshDelay           time interval before printing the conversation again in ticks
  * @param rateLimit              time to wait until a new option can be selected in ticks
  * @param setSpeed               sets the speed to zero to achieve a zoom effect
@@ -32,14 +33,13 @@ import org.bukkit.configuration.ConfigurationSection;
  * @param scrollUp               arrow format to scroll up
  * @param scrollDown             arrow format to scroll down
  */
-public record MenuConvIOSettings(int lineLength, int lineCount, int lineFillBefore, int refreshDelay, int rateLimit,
-                                 boolean setSpeed, String npcNameType, String npcNameAlign,
-                                 boolean npcNameSeparator, boolean optionsSeparator,
-                                 String controlSelect, String controlMove, String controlCancel,
-                                 VariableComponent npcName, VariableComponent npcText, Component npcTextWrap,
-                                 VariableComponent optionText, Component optionTextWrap,
-                                 VariableComponent optionSelectedText, Component optionSelectedTextWrap,
-                                 Component scrollUp, Component scrollDown) {
+public record MenuConvIOSettings(int lineLength, int lineCount, int bottomMargin, int lineFillBefore, int refreshDelay,
+                                 int rateLimit, boolean setSpeed, String npcNameType, String npcNameAlign,
+                                 boolean npcNameSeparator, boolean optionsSeparator, String controlSelect,
+                                 String controlMove, String controlCancel, VariableComponent npcName,
+                                 VariableComponent npcText, Component npcTextWrap, VariableComponent optionText,
+                                 Component optionTextWrap, VariableComponent optionSelectedText,
+                                 Component optionSelectedTextWrap, Component scrollUp, Component scrollDown) {
 
     /**
      * Creates a new instance of MenuConvIOSettings from a configuration section.
@@ -52,6 +52,7 @@ public record MenuConvIOSettings(int lineLength, int lineCount, int lineFillBefo
     public static MenuConvIOSettings fromConfigurationSection(final TextParser textParser, final ConfigurationSection config) throws QuestException {
         final int lineLength = config.getInt("line_length");
         final int lineCount = config.getInt("line_count");
+        final int bottomMargin = config.getInt("bottom_margin");
         final int lineFillBefore = config.getInt("line_fill_before");
         final int refreshDelay = config.getInt("refresh_delay");
         final int rateLimit = config.getInt("rate_limit");
@@ -75,12 +76,13 @@ public record MenuConvIOSettings(int lineLength, int lineCount, int lineFillBefo
         final String scrollUp = config.getString("scroll_up", "");
         final String scrollDown = config.getString("scroll_down", "");
 
-        return new MenuConvIOSettings(lineLength, lineCount, lineFillBefore, refreshDelay, rateLimit, setSpeed,
-                npcNameType, npcNameAlign, npcNameSeparator, optionsSeparator, controlSelect, controlMove, controlCancel,
-                new VariableComponent(textParser.parse(npcName)), new VariableComponent(textParser.parse(npcText)),
-                textParser.parse(npcTextWrap), new VariableComponent(textParser.parse(optionText)),
-                textParser.parse(optionTextWrap), new VariableComponent(textParser.parse(optionSelectedText)),
-                textParser.parse(optionSelectedTextWrap), textParser.parse(scrollUp), textParser.parse(scrollDown)
+        return new MenuConvIOSettings(lineLength, lineCount, bottomMargin, lineFillBefore, refreshDelay, rateLimit,
+                setSpeed, npcNameType, npcNameAlign, npcNameSeparator, optionsSeparator, controlSelect, controlMove,
+                controlCancel, new VariableComponent(textParser.parse(npcName)),
+                new VariableComponent(textParser.parse(npcText)), textParser.parse(npcTextWrap),
+                new VariableComponent(textParser.parse(optionText)), textParser.parse(optionTextWrap),
+                new VariableComponent(textParser.parse(optionSelectedText)), textParser.parse(optionSelectedTextWrap),
+                textParser.parse(scrollUp), textParser.parse(scrollDown)
         );
     }
 }

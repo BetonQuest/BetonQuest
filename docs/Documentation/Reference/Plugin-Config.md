@@ -158,54 +158,56 @@ Every io has its own settings that can be configured in the `io` section.
     menu:
       line_length: 320      #(1)!
       line_count: 10        #(2)!
-      line_fill_before: 10  #(3)!
-      refresh_delay: 180    #(4)!
-      rate_limit: 10        #(5)!
-      set_speed: true       #(22)!
+      bottom_margin: 0      #(3)!
+      line_fill_before: 10  #(4)!
+      refresh_delay: 180    #(5)!
+      rate_limit: 10        #(6)!
+      set_speed: true       #(7)!
   
-      npc_name_type: chat              #(6)!
-      npc_name_align: center           #(7)!
-      npc_name_separator: true         #(8)!
-      options_separator: true          #(9)!
-      control_select: jump,left_click  #(10)!
-      control_move: scroll,move        #(11)!
-      control_cancel: sneak            #(12)!
+      npc_name_type: chat              #(8)!
+      npc_name_align: center           #(9)!
+      npc_name_separator: true         #(10)!
+      options_separator: true          #(11)!
+      control_select: jump,left_click  #(12)!
+      control_move: scroll,move        #(13)!
+      control_cancel: sneak            #(14)!
     
-      npc_name: '@[minimessage]<yellow>{npc_name}'                        #(13)!
-      npc_text: '@[minimessage] <white>{npc_text}'                        #(14)!
-      npc_text_wrap: '@[minimessage] '                                    #(15)!
+      npc_name: '@[minimessage]<yellow>{npc_name}'                        #(15)!
+      npc_text: '@[minimessage] <white>{npc_text}'                        #(16)!
+      npc_text_wrap: '@[minimessage] '                                    #(17)!
       option_text: '@[minimessage]    <dark_gray>[ <aqua>{option_text}
-        </aqua> ]'                                                        #(16)!
-      option_text_wrap: '@[minimessage]    '                              #(17)!
+        </aqua> ]'                                                        #(18)!
+      option_text_wrap: '@[minimessage]    '                              #(19)!
       option_selected_text: '@[minimessage] <gray>» <dark_gray>[ <white>
-        <underlined>{option_text}</underlined></white> ]'                 #(18)!
-      option_selected_text_wrap: '@[minimessage]    <white><underlined>'  #(19)!
-      scroll_up: '@[minimessage]<white>        ↑</white>'                 #(20)!
-      scroll_down: '@[minimessage]<white>        ↓</white>'               #(21)!
+        <underlined>{option_text}</underlined></white> ]'                 #(20)!
+      option_selected_text_wrap: '@[minimessage]    <white><underlined>'  #(21)!
+      scroll_up: '@[minimessage]<white>        ↑</white>'                 #(22)!
+      scroll_down: '@[minimessage]<white>        ↓</white>'               #(23)!
     ```
     
     1. Maximum length of a line till its wrapped in pixels.
     2. Height of a conversation in lines.
-    3. Amount of empty lines before a conversation starts.
-    4. Time interval before printing the conversation again in ticks.
-    5. Time to wait until a new option can be selected in ticks.
-    6. Place to show the NPC name, `chat` or `none`.
-    7. For `npc_name_type` `chat`, the alignment of the name, `left`, `right` or `center`.
-    8. Separate the NPC name with an empty line from the text.
-    9. Separate the NPC text from the player options by filling remaining space with empty lines.
-    10. Comma separated actions to select an option, `jump`, `left_click` or `sneak`.
-    11. Comma separated actions to move the selection, `move` or `scroll`.
-    12. Comma separated actions to cancel the conversation, `jump`, `left_click` or `sneak`.
-    13. The format of the NPC name. Placeholder `{npc_name}`
-    14. The format of the NPC text. Placeholder `{npc_text}`
-    15. A prefix that gets applied to the start of a new line if the actual text is too long.
-    16. The format of the player options. Placeholder `{option_text}`
+    3. Number of empty lines to add at the end of a text.
+    4. Number of empty lines before a conversation starts.
+    5. Time interval before printing the conversation again in ticks.
+    6. Time to wait until a new option can be selected in ticks.
+    7. Sets the speed to zero to achieve a zoom effect.
+    8. Place to show the NPC name, `chat` or `none`.
+    9. For `npc_name_type` `chat`, the alignment of the name, `left`, `right` or `center`.
+    10. Separate the NPC name with an empty line from the text.
+    11. Separate the NPC text from the player options by filling remaining space with empty lines.
+    12. Comma separated actions to select an option, `jump`, `left_click` or `sneak`.
+    13. Comma separated actions to move the selection, `move` or `scroll`.
+    14. Comma separated actions to cancel the conversation, `jump`, `left_click` or `sneak`.
+    15. The format of the NPC name. Placeholder `{npc_name}`
+    16. The format of the NPC text. Placeholder `{npc_text}`
     17. A prefix that gets applied to the start of a new line if the actual text is too long.
-    18. The format of the selected player option. Placeholder `{option_text}`
+    18. The format of the player options. Placeholder `{option_text}`
     19. A prefix that gets applied to the start of a new line if the actual text is too long.
-    20. The arrow format to scroll up.
-    21. The arrow format to scroll down.
-    22. Sets the speed to zero to achieve a zoom effect.
+    20. The format of the selected player option. Placeholder `{option_text}`
+    21. A prefix that gets applied to the start of a new line if the actual text is too long.
+    22. The arrow format to scroll up.
+    23. The arrow format to scroll down.
   
 
 * `chest`  
