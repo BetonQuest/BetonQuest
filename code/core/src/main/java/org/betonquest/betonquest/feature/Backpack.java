@@ -41,7 +41,6 @@ import java.util.Map;
 /**
  * Represents a chest GUI for the backpack displayed to the player.
  */
-@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class Backpack implements Listener {
 
     /**

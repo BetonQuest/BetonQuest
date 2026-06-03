@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Tag("ConfigurationSection")
-@SuppressWarnings({"PMD.JUnit5TestShouldBePackagePrivate", "PMD.UnitTestAssertionsShouldIncludeMessage"})
+@SuppressWarnings({"PMD.JUnitJupiterTestShouldBePackagePrivate", "PMD.UnitTestAssertionsShouldIncludeMessage"})
 class LazyConfigurationSectionTest extends ConfigurationSectionBaseTest {
 
     private MemoryConfiguration root;

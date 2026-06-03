@@ -45,7 +45,6 @@ import static org.mockito.Mockito.*;
 /**
  * Tests for {@link ActionScheduling.ScheduleType}.
  */
-@SuppressWarnings("PMD.CouplingBetweenObjects")
 @ExtendWith({MockitoExtension.class, BetonQuestLoggerExtension.class})
 class ScheduleTypeTest {
 

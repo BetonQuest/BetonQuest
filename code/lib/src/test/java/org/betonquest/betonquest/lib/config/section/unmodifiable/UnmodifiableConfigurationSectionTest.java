@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * This is a test for the {@link UnmodifiableConfiguration} as a {@link ConfigurationSection}.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings({"PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.JUnit5TestShouldBePackagePrivate"})
+@SuppressWarnings({"PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.JUnitJupiterTestShouldBePackagePrivate"})
 public class UnmodifiableConfigurationSectionTest extends ConfigurationSectionBaseTest {
 
     /**

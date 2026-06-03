@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Tag;
  * This is a test for the {@link ConfigurationSectionDecorator}.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings("PMD.TestClassWithoutTestCases")
+@SuppressWarnings({"PMD.TestClassWithoutTestCases", "PMD.JUnitJupiterTestShouldBePackagePrivate"})
 public class ConfigurationSectionDecoratorTest extends ConfigurationSectionBaseTest {
 
     @Override
