@@ -8,7 +8,6 @@ on:
 
 env:
   MODULES_TO_CHECK: "api lib"
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   prepare:
