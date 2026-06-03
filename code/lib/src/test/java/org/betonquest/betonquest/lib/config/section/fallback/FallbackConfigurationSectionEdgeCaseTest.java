@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * This class tests edge cases of the {@link FallbackConfigurationSection}.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings("PMD.JUnit5TestShouldBePackagePrivate")
+@SuppressWarnings("PMD.JUnitJupiterTestShouldBePackagePrivate")
 public class FallbackConfigurationSectionEdgeCaseTest {
 
     @Test

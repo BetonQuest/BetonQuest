@@ -16,7 +16,7 @@ import static org.mockito.Mockito.*;
 /**
  * Test for {@link CronSchedule} that support reboot and custom nicknames.
  */
-@SuppressWarnings("PMD.JUnit5TestShouldBePackagePrivate")
+@SuppressWarnings("PMD.JUnitJupiterTestShouldBePackagePrivate")
 public class CronRebootScheduleTest extends CronScheduleBaseTest {
 
     @Override

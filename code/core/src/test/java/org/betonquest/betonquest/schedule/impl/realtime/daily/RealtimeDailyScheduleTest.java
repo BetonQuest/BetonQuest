@@ -40,7 +40,7 @@ class RealtimeDailyScheduleTest extends ScheduleBaseTest {
 
     @Test
     @Override
-    @SuppressWarnings("PMD.JUnit5TestShouldBePackagePrivate")
+    @SuppressWarnings("PMD.JUnitJupiterTestShouldBePackagePrivate")
     public void testScheduleValidLoad() throws QuestException {
         final RealtimeDailySchedule schedule = createSchedule();
         assertEquals(LocalTime.of(22, 0), schedule.getTimeToRun(), "Returned time should be correct");

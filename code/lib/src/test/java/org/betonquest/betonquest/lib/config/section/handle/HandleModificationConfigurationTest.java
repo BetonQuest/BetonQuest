@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * This is a test for {@link HandleModificationConfiguration}.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings({"PMD.UnitTestShouldIncludeAssert", "PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.JUnit5TestShouldBePackagePrivate"})
+@SuppressWarnings({"PMD.UnitTestShouldIncludeAssert", "PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.JUnitJupiterTestShouldBePackagePrivate"})
 public class HandleModificationConfigurationTest extends ConfigurationBaseTest {
 
     /**

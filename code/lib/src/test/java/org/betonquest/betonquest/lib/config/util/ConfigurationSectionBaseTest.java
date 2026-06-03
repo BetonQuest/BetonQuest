@@ -36,7 +36,7 @@ import static org.mockito.Mockito.*;
  * You only need to override methods with behaviours that differ from the default one.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings({"PMD.GodClass", "PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.JUnit5TestShouldBePackagePrivate",
+@SuppressWarnings({"PMD.GodClass", "PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.JUnitJupiterTestShouldBePackagePrivate",
         "PMD.CyclomaticComplexity", "PMD.ExcessivePublicCount"})
 public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<ConfigurationSection> implements ConfigurationSectionInterfaceTest {
 

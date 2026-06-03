@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.schedule.CronSchedule;
 /**
  * Tests for realtime cron schedule.
  */
-@SuppressWarnings("PMD.TestClassWithoutTestCases")
+@SuppressWarnings({"PMD.TestClassWithoutTestCases", "PMD.JUnitJupiterTestShouldBePackagePrivate"})
 public class RealtimeCronScheduleTest extends CronRebootScheduleTest {
 
     @Override

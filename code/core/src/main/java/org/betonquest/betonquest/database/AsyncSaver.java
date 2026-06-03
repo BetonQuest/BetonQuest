@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 @SuppressWarnings({"PMD.DoNotUseThreads", "PMD.AvoidSynchronizedStatement"})
 @SuppressFBWarnings("IS2_INCONSISTENT_SYNC")
-public class AsyncSaver extends Thread implements Saver {
+public class AsyncSaver implements Runnable, Saver {
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -46,7 +46,6 @@ public class AsyncSaver extends Thread implements Saver {
      * @param connector         the connector for database access
      */
     public AsyncSaver(final BetonQuestLogger log, final long reconnectInterval, final Connector connector) {
-        super();
         this.log = log;
         this.reconnectInterval = reconnectInterval;
         this.con = connector;
@@ -81,7 +80,7 @@ public class AsyncSaver extends Thread implements Saver {
                     log.warn("Failed to re-establish connection with the database! Trying again in %s second(s)..."
                             .formatted(reconnectInterval / 1000), illegalStateException);
                     try {
-                        sleep(reconnectInterval);
+                        Thread.sleep(reconnectInterval);
                     } catch (final InterruptedException interruptedException) {
                         log.warn("AsyncSaver got interrupted!", interruptedException);
                         return;

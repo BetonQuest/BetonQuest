@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * This is a test for {@link MultiSectionConfiguration} as a {@link ConfigurationSection}.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings({"PMD.TestClassWithoutTestCases", "PMD.UnitTestAssertionsShouldIncludeMessage"})
+@SuppressWarnings({"PMD.TestClassWithoutTestCases", "PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.JUnitJupiterTestShouldBePackagePrivate"})
 public class MultiSectionConfigurationSectionWithConfigurationTest extends ConfigurationSectionBaseTest {
 
     @Override
