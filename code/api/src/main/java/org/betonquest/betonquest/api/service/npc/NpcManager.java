@@ -9,6 +9,8 @@ import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Set;
+
 /**
  * The NpcManager is responsible for handling NPCs known to BetonQuest.
  * <br> <br>
@@ -19,6 +21,8 @@ public interface NpcManager {
 
     /**
      * Obtains an {@link Npc} by its {@link NpcIdentifier} with an unknown original type.
+     * <br>
+     * If multiple npcs match the identifier, a quest exception is thrown.
      * <br> <br>
      * The specified {@link Profile} will be used to resolve any placeholders in the npc's instruction.
      * <br> <br>
@@ -29,9 +33,27 @@ public interface NpcManager {
      * @param profile       the profile to resolve the npc for or null if no profile is involved
      * @param npcIdentifier the identifier of the npc
      * @return the npc for the given identifier
-     * @throws QuestException if there is no npc with the given identifier
+     * @throws QuestException if there are no or multiple npcs with the given identifier
+     * @see #getAll(Profile, NpcIdentifier) for getting multiple npcs from an identifier
      */
     Npc<?> get(@Nullable Profile profile, NpcIdentifier npcIdentifier) throws QuestException;
+
+    /**
+     * Obtains all {@link Npc}s by its {@link NpcIdentifier} with an unknown original type.
+     * <br> <br>
+     * The specified {@link Profile} will be used to resolve any placeholders in the npc's instruction.
+     * <br> <br>
+     * If no profile is specified, the npcs will be resolved without any profile and any related placeholders
+     * will be resolved without a profile.
+     * If there are placeholders requiring a profile, but none is given, the resolution will fail.
+     *
+     * @param profile       the profile to resolve the npcs for or null if no profile is involved
+     * @param npcIdentifier the identifier of the npcs
+     * @return the npcs for the given identifier
+     * @throws QuestException if there are no npcs with the given identifier
+     * @see #get(Profile, NpcIdentifier) for getting a single npc from an identifier
+     */
+    Set<Npc<?>> getAll(@Nullable Profile profile, NpcIdentifier npcIdentifier) throws QuestException;
 
     /**
      * Checks if the npc of the specified {@link NpcIdentifier} is supposed to be hidden

@@ -325,6 +325,13 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
         return get(npcIdentifier).getNpc(profile);
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public Set<Npc<?>> getAll(@Nullable final Profile profile, final NpcIdentifier npcIdentifier) throws QuestException {
+        final Set<? extends Npc<?>> npcs = get(npcIdentifier).getNpcs(profile);
+        return (Set<Npc<?>>) npcs;
+    }
+
     @Override
     public boolean isHidden(final NpcIdentifier npcId, final OnlineProfile profile) {
         return getNpcHider().isHidden(npcId, profile);

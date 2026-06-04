@@ -9,6 +9,8 @@ import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Set;
+
 /**
  * Citizens wrapper to get a Npc.
  */
@@ -40,8 +42,13 @@ public class CitizensWrapper implements NpcWrapper<NPC> {
         final int npcId = this.npcId.getValue(profile).intValue();
         final NPC npc = registry.getById(npcId);
         if (npc == null) {
-            throw new QuestException("NPC with ID " + npcId + " not found");
+            throw new QuestException("Citizens NPC with ID '%d' not found".formatted(npcId));
         }
         return new CitizensAdapter(npc);
+    }
+
+    @Override
+    public Set<Npc<NPC>> getNpcs(@Nullable final Profile profile) throws QuestException {
+        return Set.of(getNpc(profile));
     }
 }
