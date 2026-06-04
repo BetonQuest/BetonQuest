@@ -151,10 +151,10 @@ actions:
   tpBlacksmith: "teleport 50;70;50;world" # (4)!
 ```
 
-1. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Reference/Data-Formats.md#unified-location-formating)
-2. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Reference/Data-Formats.md#unified-location-formating)
-3. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Reference/Data-Formats.md#unified-location-formating)
-4. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Reference/Data-Formats.md#unified-location-formating)
+1. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Reference/Definition-Encyclopedia.md#unified-location-format)
+2. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Reference/Definition-Encyclopedia.md#unified-location-format)
+3. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Reference/Definition-Encyclopedia.md#unified-location-format)
+4. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Reference/Definition-Encyclopedia.md#unified-location-format)
 
 As you can see, there are a few new actions of the types `folder` and `teleport`.
 The folder action wraps multiple actions inside itself. Once triggered, it simply executes its actions. 

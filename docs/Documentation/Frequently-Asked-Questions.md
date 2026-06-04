@@ -98,7 +98,7 @@ You can just add them together using `math.calc`.
 ## How to match different items with just one condition?
 If you want a player to have e.g. `potato + poisonous_potato = 64` in his inventory you can make a special item in your 
 `items` section file that matches items based of their names. 
-More specifically, you can have a [*Block Selector*](Reference/Data-Formats.md#block-selectors) that is a *regex*.
+More specifically, you can have a [*Block Selector*](Reference/Definition-Encyclopedia.md#block-selectors) that is a *regex*.
 It would look like this in the example:
 ```YAML
 items:

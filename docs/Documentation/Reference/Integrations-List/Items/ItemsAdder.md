@@ -43,10 +43,10 @@ __Context__: @snippet:action-meta:online-offline@
 __Syntax__: `itemsadderblock <itemId> <location>`  
 __Description__: Changes the block at the given position.
 
-| Parameter  | Syntax                                                     | Default Value          | Explanation                         |
-|------------|------------------------------------------------------------|------------------------|-------------------------------------|
-| _itemId_   | string                                                     | :octicons-x-circle-16: | Identifier of the block to place.   |
-| _location_ | [ULF](../../Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | The location to place the block at. |
+| Parameter  | Syntax                                                          | Default Value          | Explanation                         |
+|------------|-----------------------------------------------------------------|------------------------|-------------------------------------|
+| _itemId_   | string                                                          | :octicons-x-circle-16: | Identifier of the block to place.   |
+| _location_ | [ULF](../../Definition-Encyclopedia.md#unified-location-format) | :octicons-x-circle-16: | The location to place the block at. |
 
 ```YAML title="Example"
 actions:
@@ -99,10 +99,10 @@ __Context__: @snippet:condition-meta:independent@
 __Syntax__: `itemsadderblock <itemId> <location>`  
 __Description__: Whether the ItemsAdder block is at a location.
 
-| Parameter  | Syntax                                                     | Default Value          | Explanation                         |
-|------------|------------------------------------------------------------|------------------------|-------------------------------------|
-| _itemId_   | string                                                     | :octicons-x-circle-16: | Identifier of the block to check.   |
-| _location_ | [ULF](../../Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | The location to check the block at. |
+| Parameter  | Syntax                                                          | Default Value          | Explanation                         |
+|------------|-----------------------------------------------------------------|------------------------|-------------------------------------|
+| _itemId_   | string                                                          | :octicons-x-circle-16: | Identifier of the block to check.   |
+| _location_ | [ULF](../../Definition-Encyclopedia.md#unified-location-format) | :octicons-x-circle-16: | The location to check the block at. |
 
 ```YAML title="Example"
 conditions:

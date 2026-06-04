@@ -15,14 +15,14 @@ __Description__: The player has to interact with the specified block.
  
 It works great with the location condition and the item in hand condition to further limit the counted clicks.
 
-| Parameter    | Syntax                                                        | Default Value           | Explanation                                                                                                   |
-|--------------|---------------------------------------------------------------|-------------------------|---------------------------------------------------------------------------------------------------------------|
-| _Click Type_ | `right`, `left` or `any`                                      | :octicons-x-circle-16:  | What type of click should be handled                                                                          |
-| _Block Type_ | [Block Selector](Data-Formats.md#block-selectors) or `any` | :octicons-x-circle-16:  | The block which must be clicked, or `any` for even air                                                        |
-| _Location_   | loc:[Location](Data-Formats.md#unified-location-formating) | Optional. Default: none | Adds an optional location to the objective, only counting blocks clicked at the specific location.            |
-| _range_      | range:number                                                  | 0                       | The range around the location where to count the clicks.                                                      |
-| _cancel_     | Keyword (`cancel`)                                            | Not Set                 | Prevents the player from interacting with the block.                                                          |
-| _hand_       | hand:(`hand`,`off_hand`, `any`)                               | `hand`                  | The hand the player must use to click the block, `any` can the objective cause to be completed multiple times |
+| Parameter    | Syntax                                                                | Default Value           | Explanation                                                                                                   |
+|--------------|-----------------------------------------------------------------------|-------------------------|---------------------------------------------------------------------------------------------------------------|
+| _Click Type_ | `right`, `left` or `any`                                              | :octicons-x-circle-16:  | What type of click should be handled                                                                          |
+| _Block Type_ | [Block Selector](Definition-Encyclopedia.md#block-selectors) or `any` | :octicons-x-circle-16:  | The block which must be clicked, or `any` for even air                                                        |
+| _Location_   | loc:[Location](Definition-Encyclopedia.md#unified-location-format)    | Optional. Default: none | Adds an optional location to the objective, only counting blocks clicked at the specific location.            |
+| _range_      | range:number                                                          | 0                       | The range around the location where to count the clicks.                                                      |
+| _cancel_     | Keyword (`cancel`)                                                    | Not Set                 | Prevents the player from interacting with the block.                                                          |
+| _hand_       | hand:(`hand`,`off_hand`, `any`)                                       | `hand`                  | The hand the player must use to click the block, `any` can the objective cause to be completed multiple times |
 
 ```YAML title="Example"
 objectives:
@@ -57,15 +57,15 @@ __Context__: @snippet:objective-meta:online@
 __Syntax__: `block <block> <amount> [safetyCheck] [notifications] [location] [region] [ignorecancel]`  
 __Description__: The player has to break or place the specified amount of blocks.
 
-| Parameter        | Syntax                                               | Default Value                                  | Explanation                                                                                                                                                                                                                                                               |
-|------------------|------------------------------------------------------|------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| _Block Type_     | [Block Selector](Data-Formats.md#block-selectors) | :octicons-x-circle-16:                         | The block which must be broken / placed.                                                                                                                                                                                                                                  |
-| _Amount_         | Number                                               | :octicons-x-circle-16:                         | The amount of blocks to break / place. Less than 0 for breaking and more than 0 for placing blocks.                                                                                                                                                                       |
-| _Safety Check_   | Keyword (`noSafety`)                                 | Safety Check Enabled                           | The Safety Check prevents faking the objective. The progress will be reduced when the player does to opposite of what they are supposed to do. Example: Player must break 10 blocks. They place 10 of their stored blocks. Now the total amount of blocks to break is 20. |
-| _Notifications_  | Keyword (`notify`)                                   | Disabled                                       | Displays messages to the player each time they progress the objective. Optionally with the notification interval after colon.                                                                                                                                             |
-| _Location_       | loc:location                                         | Optional. Default: none                        | Adds an optional location to the objective, only counting blocks broken/placed at the specific location.                                                                                                                                                                  |
-| _Region definer_ | region:location                                      | Optional. Default: none                        | Adds an optional second location to only count blocks broken/placed in a rectangle between the specified location and this location. This won't have an effect if parameter location isn't set.                                                                           |
-| _ignorecancel_   | Keyword (`ignorecancel`)                             | Protected blocks will not affect the objective | Allows the objective to progress, even if the action is cancelled by the Server. For example if the player is not allowed to build.                                                                                                                                       |
+| Parameter        | Syntax                                                       | Default Value                                  | Explanation                                                                                                                                                                                                                                                               |
+|------------------|--------------------------------------------------------------|------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| _Block Type_     | [Block Selector](Definition-Encyclopedia.md#block-selectors) | :octicons-x-circle-16:                         | The block which must be broken / placed.                                                                                                                                                                                                                                  |
+| _Amount_         | Number                                                       | :octicons-x-circle-16:                         | The amount of blocks to break / place. Less than 0 for breaking and more than 0 for placing blocks.                                                                                                                                                                       |
+| _Safety Check_   | Keyword (`noSafety`)                                         | Safety Check Enabled                           | The Safety Check prevents faking the objective. The progress will be reduced when the player does to opposite of what they are supposed to do. Example: Player must break 10 blocks. They place 10 of their stored blocks. Now the total amount of blocks to break is 20. |
+| _Notifications_  | Keyword (`notify`)                                           | Disabled                                       | Displays messages to the player each time they progress the objective. Optionally with the notification interval after colon.                                                                                                                                             |
+| _Location_       | loc:location                                                 | Optional. Default: none                        | Adds an optional location to the objective, only counting blocks broken/placed at the specific location.                                                                                                                                                                  |
+| _Region definer_ | region:location                                              | Optional. Default: none                        | Adds an optional second location to only count blocks broken/placed in a rectangle between the specified location and this location. This won't have an effect if parameter location isn't set.                                                                           |
+| _ignorecancel_   | Keyword (`ignorecancel`)                                     | Protected blocks will not affect the objective | Allows the objective to progress, even if the action is cancelled by the Server. For example if the player is not allowed to build.                                                                                                                                       |
 
 ```YAML title="Example"
 objectives:
@@ -357,13 +357,13 @@ __Description__: The player has to catch something with the fishing rod.
 
 It doesn't have to be a fish, it can also be any other item.
 
-| Parameter       | Syntax                                                                 | Default Value          | Explanation                                                                                                            |
-|-----------------|------------------------------------------------------------------------|------------------------|------------------------------------------------------------------------------------------------------------------------|
-| _Item_          | [Quest Item](../Advanced/Items.md)                                  | :octicons-x-circle-16: | The item that must be caught.                                                                                          |
-| _amount_        | Any Number                                                             | :octicons-x-circle-16: | The amount that must be caught.                                                                                        |
-| _notifications_ | notify:number                                                          | notify:0               | Add `notify` to display a notification when a fish is caught. Optionally with the notification interval after a colon. |
-| _hookLocation_  | hookLocation:[Location](Data-Formats.md#unified-location-formating) | Everywhere             | The location at which the item must be caught. Range must also be defined.                                             |
-| _range_         | range:number                                                           | Everywhere             | The range around the `hookLocation`.                                                                                   |
+| Parameter       | Syntax                                                                      | Default Value          | Explanation                                                                                                            |
+|-----------------|-----------------------------------------------------------------------------|------------------------|------------------------------------------------------------------------------------------------------------------------|
+| _Item_          | [Quest Item](../Advanced/Items.md)                                          | :octicons-x-circle-16: | The item that must be caught.                                                                                          |
+| _amount_        | Any Number                                                                  | :octicons-x-circle-16: | The amount that must be caught.                                                                                        |
+| _notifications_ | notify:number                                                               | notify:0               | Add `notify` to display a notification when a fish is caught. Optionally with the notification interval after a colon. |
+| _hookLocation_  | hookLocation:[Location](Definition-Encyclopedia.md#unified-location-format) | Everywhere             | The location at which the item must be caught. Range must also be defined.                                             |
+| _range_         | range:number                                                                | Everywhere             | The range around the `hookLocation`.                                                                                   |
 
 
 
@@ -401,7 +401,7 @@ __Description__: The player has to interact with the specified entities.
 | _hand_          | hand:(`hand`,`off_hand`, `any`)                                                                        | `hand`                 | The hand the player must use to click the block, `any` can the objective cause to be completed multiple times                       |
 | _Notifications_ | Keyword (_notify_)                                                                                     | Disabled               | Displays messages to the player each time they progress the objective. Optionally with the notification interval after colon.       |
 | _Cancel_        | Keyword (_cancel_)                                                                                     | Disabled               | if the click shouldn't do what it usually does (i.e. left click won't hurt the entity).                                             |
-| _Location_      | loc:[Location](Data-Formats.md#unified-location-formating)                                             | Everywhere             | The location at which the entity must be interacted.                                                                                |
+| _Location_      | loc:[Location](Definition-Encyclopedia.md#unified-location-format)                                     | Everywhere             | The location at which the entity must be interacted.                                                                                |
 | _range_         | range:number                                                                                           | 1                      | The range around the `loc`. Requires defined `loc`.                                                                                 |
 
 ```YAML title="Example"
@@ -463,12 +463,12 @@ __Description__: The player has to reach the specified location.
 It is not required to specify `entry` or `exit` then the objective also completes
 if the player just moves inside the location's range.
 
-| Parameter  | Syntax                                               | Default Value          | Explanation                                                                               |
-|------------|------------------------------------------------------|------------------------|-------------------------------------------------------------------------------------------|
-| _location_ | [ULF](Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | The location to go to                                                                     |
-| _range_    | number                                               | :octicons-x-circle-16: | The range around the location where the player must be.                                   |
-| _entry_    | entry                                                | Disabled               | The player must enter (go from outside to inside) the location to complete the objective. |
-| _exit_     | exit                                                 | Disabled               | The player must exit (go from inside to outside) the location to complete the objective.  |
+| Parameter  | Syntax                                                    | Default Value          | Explanation                                                                               |
+|------------|-----------------------------------------------------------|------------------------|-------------------------------------------------------------------------------------------|
+| _location_ | [ULF](Definition-Encyclopedia.md#unified-location-format) | :octicons-x-circle-16: | The location to go to                                                                     |
+| _range_    | number                                                    | :octicons-x-circle-16: | The range around the location where the player must be.                                   |
+| _entry_    | entry                                                     | Disabled               | The player must enter (go from outside to inside) the location to complete the objective. |
+| _exit_     | exit                                                      | Disabled               | The player must exit (go from inside to outside) the location to complete the objective.  |
 
 ```YAML title="Example"
 objectives:
@@ -603,7 +603,7 @@ Solution: The Cake is a lie!
 The objective's instruction string is defined as follows:
 
 1. The first argument is the password, use [quoting](../Basics/Quoting-&-YAML.md#quoting) for spaces
-   The password is a [regular expression](Data-Formats.md#regex-regular-expressions). 
+   The password is a [regular expression](Definition-Encyclopedia.md#regular-expressions). 
 
 2. The prefix can be changed: The default (when no prefix is set) is the translated prefix from the *messages.yml* config in the user's language.             
    Note that every custom prefix is suffixed with `:⠀`, so `prefix:Library_password` will require the user to enter `Library password: myfancypassword`.     
@@ -892,3 +892,5 @@ objectives:
   storage: "variable"
   storeChat: "variable no-chat"
 ```
+
+--8<-- "instruction-datatypes.md"

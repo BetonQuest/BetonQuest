@@ -24,14 +24,14 @@ You can change maximum pathfinding range in Citizens configuration files.
 
 Move action can fail if the NPC is already moving for another player.
 
-| Parameter   | Syntax                                                           | Default Value          | Explanation                                                                  |
-|-------------|------------------------------------------------------------------|------------------------|------------------------------------------------------------------------------|
-| _NpcID_     | npcId                                                            | :octicons-x-circle-16: | The NPCId.                                                                   |
-| _Locations_ | [Locations](../../Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | The locations where the NPC will move to.                                    |
-| _block_     | Keyword (`block`)                                                | Disabled               | Blocks the NPC so interaction won't start a conversation while it is moving. |
-| _wait_      | wait:number                                                      | 0                      | Number of ticks the NPC will wait at its destination before firing actions.  |
-| _done_      | done:actions                                                     | Disabled               | List of actions fired after reaching the destination.                        |
-| _fail_      | fail:actions                                                     | Disabled               | List of actions fired if this action fails.                                  |
+| Parameter   | Syntax                                                                | Default Value          | Explanation                                                                  |
+|-------------|-----------------------------------------------------------------------|------------------------|------------------------------------------------------------------------------|
+| _NpcID_     | npcId                                                                 | :octicons-x-circle-16: | The NPCId.                                                                   |
+| _Locations_ | [Locations](../../Definition-Encyclopedia.md#unified-location-format) | :octicons-x-circle-16: | The locations where the NPC will move to.                                    |
+| _block_     | Keyword (`block`)                                                     | Disabled               | Blocks the NPC so interaction won't start a conversation while it is moving. |
+| _wait_      | wait:number                                                           | 0                      | Number of ticks the NPC will wait at its destination before firing actions.  |
+| _done_      | done:actions                                                          | Disabled               | List of actions fired after reaching the destination.                        |
+| _fail_      | fail:actions                                                          | Disabled               | List of actions fired if this action fails.                                  |
 
 ```YAML title="Example"
 actions:

@@ -241,7 +241,7 @@ __Description__: Drop the specified items at the specified location.
 The action takes two parameters: `items` and `location`. Items is a list of [items](../Advanced/Items.md) to be
 dropped.
 Every item can optionally be followed by a colon to define an amount `<item>:<amount>` otherwise the amount is 1.
-The optional location defines where the items will be dropped. It must be specified in the [unified location format](Data-Formats.md#unified-location-formating).
+The optional location defines where the items will be dropped. It must be specified in the [unified location format](Definition-Encyclopedia.md#unified-location-format).
 If no location is given then the items will be dropped at the player's current location.
 
 If the drop action is used without a player, like in a schedule,
@@ -630,11 +630,11 @@ __Context__: @snippet:action-meta:independent@
 __Syntax__: `npcteleport <Npc> <Location> [spawn]`  
 __Description__: Teleport the NPC to the specified location.
 
-| Parameter  | Syntax                                                                       | Default Value          | Explanation                                      |
-|------------|------------------------------------------------------------------------------|------------------------|--------------------------------------------------|
-| _Npc_      | Npc                                                                          | :octicons-x-circle-16: | The ID of the Npc                                |
-| _Location_ | [Unified Location Formatting](Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | The location to which the Npc will be teleported |
-| _Spawn_    | Keyword (`spawn`)                                                            | Disabled               | If the NPC should be spawned if not in the world |
+| Parameter  | Syntax                                                                            | Default Value          | Explanation                                      |
+|------------|-----------------------------------------------------------------------------------|------------------------|--------------------------------------------------|
+| _Npc_      | Npc                                                                               | :octicons-x-circle-16: | The ID of the Npc                                |
+| _Location_ | [Unified Location Formatting](Definition-Encyclopedia.md#unified-location-format) | :octicons-x-circle-16: | The location to which the Npc will be teleported |
+| _Spawn_    | Keyword (`spawn`)                                                                 | Disabled               | If the NPC should be spawned if not in the world |
 
 ```YAML title="Example"
 actions:
@@ -747,14 +747,14 @@ Here you can look up all [type's of entity's](https://hub.spigotmc.org/javadocs/
 
 Can only effect loaded entities!
 
-| Parameter   | Syntax                                                                       | Default Value          | Explanation                                                                                                      |
-|-------------|------------------------------------------------------------------------------|------------------------|------------------------------------------------------------------------------------------------------------------|
-| _entity(s)_ | `entity,entity`                                                              | :octicons-x-circle-16: | Required. List of entity's (separated by `,`).                                                                   |
-| _location_  | [Unified Location Formatting](Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | Required. The center location of the target entity's.                                                            |
-| _radius_    | Number                                                                       | :octicons-x-circle-16: | Required. The radius around the location.                                                                        |
-| _name_      | `name:name`                                                                  | :octicons-x-circle-16: | Name of the entity.                                                                                              |
-| _marked_    | `marked:mark`                                                                | :octicons-x-circle-16: | Mark of the entity (from the [spawn action](#spawn) for example). |
-| _kill_      | `kill`                                                                       | :octicons-x-circle-16: | Whether to remove or actually kill the entity (if possible).                                                     |
+| Parameter   | Syntax                                                                            | Default Value          | Explanation                                                       |
+|-------------|-----------------------------------------------------------------------------------|------------------------|-------------------------------------------------------------------|
+| _entity(s)_ | `entity,entity`                                                                   | :octicons-x-circle-16: | Required. List of entity's (separated by `,`).                    |
+| _location_  | [Unified Location Formatting](Definition-Encyclopedia.md#unified-location-format) | :octicons-x-circle-16: | Required. The center location of the target entity's.             |
+| _radius_    | Number                                                                            | :octicons-x-circle-16: | Required. The radius around the location.                         |
+| _name_      | `name:name`                                                                       | :octicons-x-circle-16: | Name of the entity.                                               |
+| _marked_    | `marked:mark`                                                                     | :octicons-x-circle-16: | Mark of the entity (from the [spawn action](#spawn) for example). |
+| _kill_      | `kill`                                                                            | :octicons-x-circle-16: | Whether to remove or actually kill the entity (if possible).      |
 
 ```YAML title="Example"
 actions:
@@ -880,7 +880,7 @@ __Context__: @snippet:action-meta:independent@
 __Syntax__: `setblock <block> <location> [ignorePhysics]`  
 __Description__: Set the block at the specified location.
 
-The first argument is a [Block Selector](Data-Formats.md#block-selectors), the second a location. It's possible to
+The first argument is a [Block Selector](Definition-Encyclopedia.md#block-selectors), the second a location. It's possible to
 deactivate the physics of the block by adding `ignorePhysics` at the end.
 Very powerful if used to trigger redstone contraptions.
 
@@ -1018,9 +1018,9 @@ Ends any active conversations.
 
 Do you only want to [cancel the conversation](#cancelconversation)?
 
-| Parameter  | Syntax                                                                    | Default Value          | Explanation                                          |
-|------------|---------------------------------------------------------------------------|------------------------|------------------------------------------------------|
-| _location_ | [Unified Location Formatting](Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | The location to which the player will be teleported. |
+| Parameter  | Syntax                                                                            | Default Value          | Explanation                                          |
+|------------|-----------------------------------------------------------------------------------|------------------------|------------------------------------------------------|
+| _location_ | [Unified Location Formatting](Definition-Encyclopedia.md#unified-location-format) | :octicons-x-circle-16: | The location to which the player will be teleported. |
 
 ```YAML title="Example"
 actions:
@@ -1117,3 +1117,5 @@ actions:
   setShortRain: "weather rain duration:60 world:rpgworld"
   setStorm: "weather storm duration:%point.tribute.left:150%"
 ```
+
+--8<-- "instruction-datatypes.md"

@@ -15,7 +15,7 @@ items:
 
 1. Consider [YAML multiline syntax](../Basics/Quoting-&-YAML.md) for long item strings.
 
-[BLOCK_SELECTOR](../Reference/Data-Formats.md#block-selectors) specifies the type of item you are creating. At its 
+[BLOCK_SELECTOR](../Reference/Definition-Encyclopedia.md#block-selectors) specifies the type of item you are creating. At its 
 most basic, it is the item material. It doesn't have to be all in uppercase.
 
 
