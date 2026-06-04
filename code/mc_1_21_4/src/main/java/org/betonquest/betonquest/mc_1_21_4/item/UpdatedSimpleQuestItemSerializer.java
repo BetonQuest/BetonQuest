@@ -35,7 +35,7 @@ public class UpdatedSimpleQuestItemSerializer extends SimpleQuestItemSerializer 
      */
     public UpdatedSimpleQuestItemSerializer(final TextParser textParser, final BookPageWrapper bookPageWrapper) {
         super(List.of(
-                new DurabilityHandler(), new UpdatedNameHandler(textParser), new LoreHandler(textParser), new EnchantmentsHandler(),
+                new DurabilityHandler(), new UpdatedNameHandler(textParser), new LoreHandler(textParser, () -> false), new EnchantmentsHandler(),
                 new BookHandler(textParser, bookPageWrapper), new UpdatedPotionHandler(), new ColorHandler(), new HeadHandler(),
                 new FireworkHandler(), new UnbreakableHandler(), new UpdatedCustomModelDataHandler(), new FlagHandler(),
                 new QuestHandler(LoreConsumer.EMPTY)

@@ -110,9 +110,11 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
         final BlockSelector selector = new DefaultBlockSelector(material);
 
         final NameHandler name = new NameHandler(textParser);
-        final LoreHandler lore = new LoreHandler(textParser);
 
         final Localizations localizations = questItemLoreSupplier.get();
+        final QuestHandler questHandler = new QuestHandler(localizations == null
+                ? LoreConsumer.EMPTY : new LoreConsumer.Lore(localizations));
+        final LoreHandler lore = new LoreHandler(textParser, questHandler::isLoreSet);
         final List<ItemMetaHandler<?>> handlers = List.of(
                 new DurabilityHandler(),
                 new CustomModelDataHandler(),
@@ -120,7 +122,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
                 new FlagHandler(),
                 name,
                 lore,
-                new QuestHandler(localizations == null ? LoreConsumer.EMPTY : new LoreConsumer.Lore(localizations)),
+                questHandler,
                 new EnchantmentsHandler(),
                 new PotionHandler(),
                 new BookHandler(textParser, bookPageWrapper),
