@@ -4,6 +4,7 @@ import com.github.retrooper.packetevents.PacketEventsAPI;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.attribute.Attributes;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.protocol.player.User;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerInput;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientSteerVehicle;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateAttributes;
@@ -62,13 +63,17 @@ public class FakeArmorStandPassengerController extends FakeArmorStandPassenger i
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void sendSpeed(final double speed) {
         if (!setSpeed) {
             return;
         }
         final WrapperPlayServerUpdateAttributes attributes = new WrapperPlayServerUpdateAttributes(player.getEntityId(),
                 List.of(new WrapperPlayServerUpdateAttributes.Property(Attributes.MOVEMENT_SPEED, speed, List.of())));
-        packetEventsAPI.getPlayerManager().getUser(player).sendPacket(attributes);
+        final User user = packetEventsAPI.getPlayerManager().getUser(player);
+        if (user != null) {
+            user.sendPacket(attributes);
+        }
     }
 
     @Override
