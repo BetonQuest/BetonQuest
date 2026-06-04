@@ -1591,7 +1591,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
         final VariableComponent baseContent = new VariableComponent(localizations.getMessage(null, "command_version_output.info",
                 new VariableReplacement("version", Component.text(plugin.getDescription().getVersion())),
-                new VariableReplacement("server", Component.text(Bukkit.getServer().getVersion())),
+                new VariableReplacement("server", Component.text(Bukkit.getServer().getName() + " " + Bukkit.getServer().getVersion())),
                 new VariableReplacement("hooked", hooked),
                 new VariableReplacement("external_hooks", externalHooked.build())));
         final Component copyContent = baseContent.resolve(
