@@ -20,6 +20,7 @@ public class DenizenTaskScriptActionFactory implements PlayerActionFactory {
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<String> name = instruction.string().get();
-        return new DenizenTaskScriptAction(name);
+        final Argument<String> definition = instruction.string().get("def", "");
+        return new DenizenTaskScriptAction(name, definition);
     }
 }

@@ -20,12 +20,19 @@ public class DenizenTaskScriptAction implements PlayerAction {
     private final Argument<String> name;
 
     /**
+     * The definition for the script to run with.
+     */
+    private final Argument<String> definition;
+
+    /**
      * Create a new Denizen Task Script Action.
      *
-     * @param name the name of the script to run.
+     * @param name       the name of the script to run
+     * @param definition the definition for the script to run with
      */
-    public DenizenTaskScriptAction(final Argument<String> name) {
+    public DenizenTaskScriptAction(final Argument<String> name, final Argument<String> definition) {
         this.name = name;
+        this.definition = definition;
     }
 
     @Override
@@ -36,7 +43,8 @@ public class DenizenTaskScriptAction implements PlayerAction {
             throw new QuestException("Could not find '" + name + "' Denizen script");
         }
         final BukkitScriptEntryData data = new BukkitScriptEntryData(PlayerTag.mirrorBukkitPlayer(profile.getPlayer()), null);
-        script.run(data, null);
+        final String definitionValue = definition.getValue(profile);
+        script.run(data, null, scriptQueue -> scriptQueue.addDefinition("bq", definitionValue));
     }
 
     @Override
