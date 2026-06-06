@@ -35,6 +35,7 @@ import org.betonquest.betonquest.compatibility.quests.QuestsIntegrator;
 import org.betonquest.betonquest.compatibility.redischat.RedisChatIntegrator;
 import org.betonquest.betonquest.compatibility.shopkeepers.ShopkeepersIntegrator;
 import org.betonquest.betonquest.compatibility.skript.SkriptIntegrator;
+import org.betonquest.betonquest.compatibility.tbp.TbpIntegrator;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsIntegrator;
 import org.betonquest.betonquest.compatibility.vault.VaultIntegrator;
 import org.betonquest.betonquest.compatibility.worldedit.WorldEditIntegrator;
@@ -164,5 +165,6 @@ public final class BundledCompatibility {
         register("Nexo", () -> new NexoIntegrator(), NexoIntegrator.REQUIRED_VERSION);
         register("CraftEngine", () -> new CraftEngineIntegrator(), CraftEngineIntegrator.REQUIRED_VERSION);
         register("ItemsAdder", () -> new ItemsAdderIntegrator(), ItemsAdderIntegrator.REQUIRED_VERSION);
+        register("TheBrewingProject", () -> new TbpIntegrator(), TbpIntegrator.REQUIRED_VERSION);
     }
 }
