@@ -62,6 +62,7 @@
     <craft-engine-core.version>26.5</craft-engine-core.version>
     <craft-engine-bukkit.version>26.5</craft-engine-bukkit.version>
     <api-itemsadder.version>4.0.10</api-itemsadder.version>
+    <thebrewingproject-bukkit.version>3.2.0</thebrewingproject-bukkit.version>
   </properties>
 
   <dependencies>
@@ -328,6 +329,15 @@
       <optional>true</optional>
     </dependency>
 
+    <!-- from breweryteam repository -->
+    <dependency>
+      <groupId>dev.jsinco.brewery</groupId>
+      <artifactId>thebrewingproject-bukkit</artifactId>
+      <version>${thebrewingproject-bukkit.version}</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
+
     <!-- from matteodev repository -->
     <dependency>
       <groupId>dev.lone</groupId>
@@ -506,6 +516,10 @@
     <repository>
       <id>betonquest-matteodev-repo</id>
       <url>https://maven.devs.beer/</url>
+    </repository>
+    <repository>
+      <id>betonquest-breweryteam-repo</id>
+      <url>https://repo.breweryteam.dev/releases</url>
     </repository>
     <repository>
       <id>maven_central</id>
