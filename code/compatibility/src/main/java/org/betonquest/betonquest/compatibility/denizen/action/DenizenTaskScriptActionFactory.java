@@ -6,6 +6,8 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 
+import java.util.Map;
+
 /**
  * Factory to create Denizen Task Script Actions.
  */
@@ -20,7 +22,7 @@ public class DenizenTaskScriptActionFactory implements PlayerActionFactory {
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<String> name = instruction.string().get();
-        final Argument<String> definition = instruction.string().get("def", "");
-        return new DenizenTaskScriptAction(name, definition);
+        final Map<String, Argument<String>> definitions = instruction.string().getNamed();
+        return new DenizenTaskScriptAction(name, definitions);
     }
 }
