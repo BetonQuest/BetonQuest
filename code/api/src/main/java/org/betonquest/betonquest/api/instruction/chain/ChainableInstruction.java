@@ -6,7 +6,9 @@ import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.jetbrains.annotations.Contract;
 
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 /**
  * An instruction that can be parsed in parts using chained calls.
@@ -77,4 +79,16 @@ public interface ChainableInstruction {
      */
     @Contract("!null, !null, !null -> new")
     <T> FlagArgument<T> getFlag(String argumentKey, InstructionArgumentParser<T> argumentParser, T presenceDefault) throws QuestException;
+
+    /**
+     * Get all named arguments in the instruction filtered by the given {@link Predicate} for their keys.
+     *
+     * @param argumentParser the argument parser to use
+     * @param keyFilter      the filter to apply to the keys
+     * @param <T>            the type of the argument
+     * @return a map of the named arguments
+     * @throws QuestException if an error occurs while parsing
+     */
+    @Contract("!null, !null -> new")
+    <T> Map<String, Argument<T>> getNamed(InstructionArgumentParser<T> argumentParser, Predicate<String> keyFilter) throws QuestException;
 }

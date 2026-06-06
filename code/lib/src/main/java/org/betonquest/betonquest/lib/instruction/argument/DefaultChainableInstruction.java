@@ -13,12 +13,15 @@ import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentPar
 import org.betonquest.betonquest.api.instruction.chain.ChainableInstruction;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 /**
  * The default implementation for {@link ChainableInstruction}.
  */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class DefaultChainableInstruction implements ChainableInstruction {
 
     /**
@@ -52,25 +55,33 @@ public class DefaultChainableInstruction implements ChainableInstruction {
     private final QuestFunction<String, Map.Entry<FlagState, String>> nextFlagFunction;
 
     /**
+     * The function to retrieve the next named elements by a key filter.
+     */
+    private final QuestFunction<Predicate<String>, Map<String, String>> namedElementsFunction;
+
+    /**
      * Sole constructor.
      *
-     * @param placeholders         the {@link PlaceholderManager} to create and resolve placeholders
-     * @param packManager          the package manager
-     * @param pack                 the related package
-     * @param nextElementSupplier  the provider for the next element
-     * @param nextOptionalFunction the provider for the next element by key
-     * @param nextFlagFunction     the provider for the next flag by key
+     * @param placeholders          the {@link PlaceholderManager} to create and resolve placeholders
+     * @param packManager           the package manager
+     * @param pack                  the related package
+     * @param nextElementSupplier   the provider for the next element
+     * @param nextOptionalFunction  the provider for the next element by key
+     * @param nextFlagFunction      the provider for the next flag by key
+     * @param namedElementsFunction the provider for the next named elements by a key filter
      */
     public DefaultChainableInstruction(final PlaceholderManager placeholders, final QuestPackageManager packManager,
                                        final QuestPackage pack, final QuestSupplier<String> nextElementSupplier,
                                        final QuestFunction<String, String> nextOptionalFunction,
-                                       final QuestFunction<String, Map.Entry<FlagState, String>> nextFlagFunction) {
+                                       final QuestFunction<String, Map.Entry<FlagState, String>> nextFlagFunction,
+                                       final QuestFunction<Predicate<String>, Map<String, String>> namedElementsFunction) {
         this.placeholders = placeholders;
         this.packManager = packManager;
         this.pack = pack;
         this.nextElementSupplier = nextElementSupplier;
         this.nextOptionalFunction = nextOptionalFunction;
         this.nextFlagFunction = nextFlagFunction;
+        this.namedElementsFunction = namedElementsFunction;
     }
 
     @Override
@@ -108,5 +119,16 @@ public class DefaultChainableInstruction implements ChainableInstruction {
             case DEFINED -> new DefaultFlagArgument<>(placeholders, pack, flag.getValue(),
                     value -> Optional.of(argumentParser.apply(placeholders, packManager, pack, value)));
         };
+    }
+
+    @Override
+    public <T> Map<String, Argument<T>> getNamed(final InstructionArgumentParser<T> argumentParser, final Predicate<String> keyFilter) throws QuestException {
+        final Map<String, String> map = namedElementsFunction.apply(keyFilter);
+        final Map<String, Argument<T>> result = new HashMap<>();
+        for (final Map.Entry<String, String> entry : map.entrySet()) {
+            result.put(entry.getKey(), new DefaultArgument<>(placeholders, pack, entry.getValue(),
+                    value -> argumentParser.apply(placeholders, packManager, pack, value)));
+        }
+        return result;
     }
 }

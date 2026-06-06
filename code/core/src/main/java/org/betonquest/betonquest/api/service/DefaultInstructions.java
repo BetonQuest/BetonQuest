@@ -74,7 +74,7 @@ public class DefaultInstructions implements Instructions {
     @Override
     public InstructionChainParser createForArgument(final QuestPackage questPackage, final QuestSupplier<String> argument) {
         final ChainableInstruction instruction = new DefaultChainableInstruction(placeholders.get(), packageManager, questPackage,
-                argument, key -> argument.get(), key -> Map.entry(FlagState.DEFINED, key));
+                argument, key -> argument.get(), key -> Map.entry(FlagState.DEFINED, key), predicate -> Map.of("", argument.get()));
         return new DefaultInstructionChainParser(instruction, argumentParsers.get());
     }
 

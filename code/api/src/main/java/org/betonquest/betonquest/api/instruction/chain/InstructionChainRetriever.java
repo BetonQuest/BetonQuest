@@ -6,7 +6,9 @@ import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.jetbrains.annotations.Contract;
 
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 /**
  * In the last step of the instruction chain, the argument is retrieved.
@@ -59,5 +61,29 @@ public interface InstructionChainRetriever<T> {
      * @see org.betonquest.betonquest.api.instruction.FlagState
      * @see ChainableInstruction#getFlag(String, InstructionArgumentParser, Object)
      */
+    @Contract("!null, !null -> new")
     FlagArgument<T> getFlag(String argumentKey, T presenceDefaultValue) throws QuestException;
+
+    /**
+     * Retrieves all named arguments of the chain as {@link Argument}s with their key as name in a {@link Map}.
+     *
+     * @return a map of named arguments
+     * @throws QuestException an argument could not be resolved
+     * @see ChainableInstruction#getNamed(InstructionArgumentParser, Predicate)
+     */
+    @Contract("-> new")
+    Map<String, Argument<T>> getNamed() throws QuestException;
+
+    /**
+     * Retrieves all targeted named arguments of the chain as {@link Argument}s with their key as name in a {@link Map}.
+     * The arguments are filtered by the given {@link Predicate}
+     * and only those argument keys that match the filter are returned.
+     *
+     * @param keyFilter a filter for the keys of the arguments
+     * @return a map of named arguments
+     * @throws QuestException an argument could not be resolved
+     * @see ChainableInstruction#getNamed(InstructionArgumentParser, Predicate)
+     */
+    @Contract("!null -> new")
+    Map<String, Argument<T>> getNamed(Predicate<String> keyFilter) throws QuestException;
 }
