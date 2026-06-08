@@ -107,7 +107,9 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
-  - pymdownx.snippets
+  - pymdownx.snippets:
+      check_paths: true
+      base_path: 'docs/_glossary'
   - abbr
   - toc:
       permalink: 🔗
@@ -120,6 +122,7 @@ plugins:
       identifier: "snippet"
   - exclude:
       glob:
+        - _glossary/*
         - _snippets/*
         - _custom_theme/*
         - _tutorials/*
