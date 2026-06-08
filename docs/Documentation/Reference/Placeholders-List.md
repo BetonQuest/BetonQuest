@@ -143,7 +143,7 @@ __Syntax__: `location.<format>.[precision]`
 __Description__: Represents the location of the player in the specified format.
 
 The x, y and z coordinates, the world name, the yaw and pitch (head rotation).
-There are also modes for the [Unified Location Formatting](Data-Formats.md#unified-location-formating) (ULF from now on)
+There are also modes for the [Unified Location Formatting](Definition-Encyclopedia.md#unified-location-format) (ULF from now on)
 which means that this placeholder can also be used in actions, conditions etc.
 If you just specify `%location%` the placeholders will resolve to a ULF with yaw and pitch.
 You can add two options to that base, one will give back parts of the ULF and the other will set to how many decimal places 
@@ -340,3 +340,5 @@ You can optionally add the name of the plugin as an argument to display version 
 ```scss title="Example"
 %version.Citizens%
 ```
+
+--8<-- "instruction-datatypes.md"

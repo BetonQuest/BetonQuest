@@ -747,13 +747,13 @@ conditions:
 
 __Context__: @snippet:condition-meta:independent@  
 __Syntax__: `variable <placeholder> <regex> [forceSync]`  
-__Description__: Whether the placeholder value matches the specified [regular expression](Data-Formats.md#regex-regular-expressions)
+__Description__: Whether the placeholder value matches the specified [regular expression](Definition-Encyclopedia.md#regular-expressions)
 
-| Parameter     | Syntax          | Default Value          | Explanation                                                                                                                                     |
-|---------------|-----------------|------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
-| _Placeholder_ | Any placeholder | :octicons-x-circle-16: | The placeholder (surrounded by `%` characters).                                                                                                 |
-| _Regex_       | A regex pattern | :octicons-x-circle-16: | The [regex](Data-Formats.md#regex-regular-expressions) that the placeholder value must match. The regex can also be stored in a placeholder. |
-| _forceSync_   | Keyword         | False                  | Forces the placeholder to be resolved on the main thread. This may be required by some third party placeholder.                                 |
+| Parameter     | Syntax          | Default Value          | Explanation                                                                                                                                       |
+|---------------|-----------------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| _Placeholder_ | Any placeholder | :octicons-x-circle-16: | The placeholder (surrounded by `%` characters).                                                                                                   |
+| _Regex_       | A regex pattern | :octicons-x-circle-16: | The [regex](Definition-Encyclopedia.md#regular-expressions) that the placeholder value must match. The regex can also be stored in a placeholder. |
+| _forceSync_   | Keyword         | False                  | Forces the placeholder to be resolved on the main thread. This may be required by some third party placeholder.                                   |
 
 
 ```YAML title="Example"
@@ -803,3 +803,5 @@ The first argument is the name of a world.
 conditions:
   isInWorld: "world world"
 ```
+
+--8<-- "instruction-datatypes.md"

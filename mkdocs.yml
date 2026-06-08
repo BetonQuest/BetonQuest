@@ -145,8 +145,8 @@ nav:
               - 'Miscellaneous':
                   - 'Documentation/Reference/Integrations-List/Miscellaneous/index.md'
                   - 'TrainCarts': Documentation/Reference/Integrations-List/Miscellaneous/TrainCarts.md
-          - 'Data Formats': Documentation/Reference/Data-Formats.md
           - 'Font Config': Documentation/Reference/Font-Config.md
+          - 'Definition Encyclopedia': Documentation/Reference/Definition-Encyclopedia.md
 
       - 'Updates':
           - 'Updating': Documentation/Updates/Updating.md
@@ -195,6 +195,7 @@ nav:
               - 'Guidelines': Participate/Process/Docs/Guidelines.md
               - 'Writing Tutorials': Participate/Process/Docs/Writing-Tutorials.md
               - 'mkdocs Customizations': Participate/Process/Docs/Customizations.md
+              - 'Style Definitions': Participate/Process/Docs/Style-Definitions.md
           - 'Changing Code':
               - 'Workflow': Participate/Process/Code/Workflow.md
               - 'Checking Requirements': Participate/Process/Code/Checking-Requirements.md

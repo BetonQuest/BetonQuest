@@ -29,14 +29,14 @@ __Context__: @snippet:action-meta:online-independent@
 __Syntax__: `mspawnmob <location> <name> <amount> [target] [private] [marked]`  
 __Description__: Spawn a MythicMob at a specific location.
 
-| Parameter  | Syntax                                                     | Default Value          | Explanation                                                                                                                             |
-|------------|------------------------------------------------------------|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
-| _location_ | [ULF](../../Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | The location to spawn the mob at.                                                                                                       |
-| _name_     | name:level                                                 | :octicons-x-circle-16: | MythicMobs mob name. A level must be specified after a colon.                                                                           |
-| _amount_   | Positive Number                                            | :octicons-x-circle-16: | Amount of mobs to spawn.                                                                                                                |
-| _target_   | Keyword                                                    | False                  | Will make the mob target the player.                                                                                                    |
-| _private_  | Keyword                                                    | Disabled               | Will hide the mob from all other players until restart. This does not hide particles or block sound from the mob. Also see notes below. |
-| _marked_   | marked:text                                                | None                   | Marks the mob. You can check for marked mobs in mmobkill objective.                                                                     |
+| Parameter  | Syntax                                                          | Default Value          | Explanation                                                                                                                             |
+|------------|-----------------------------------------------------------------|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| _location_ | [ULF](../../Definition-Encyclopedia.md#unified-location-format) | :octicons-x-circle-16: | The location to spawn the mob at.                                                                                                       |
+| _name_     | name:level                                                      | :octicons-x-circle-16: | MythicMobs mob name. A level must be specified after a colon.                                                                           |
+| _amount_   | Positive Number                                                 | :octicons-x-circle-16: | Amount of mobs to spawn.                                                                                                                |
+| _target_   | Keyword                                                         | False                  | Will make the mob target the player.                                                                                                    |
+| _private_  | Keyword                                                         | Disabled               | Will hide the mob from all other players until restart. This does not hide particles or block sound from the mob. Also see notes below. |
+| _marked_   | marked:text                                                     | None                   | Marks the mob. You can check for marked mobs in mmobkill objective.                                                                     |
 
 ```YAML title="Example"
 actions:

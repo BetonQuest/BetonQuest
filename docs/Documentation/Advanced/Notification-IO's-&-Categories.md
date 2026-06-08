@@ -149,7 +149,7 @@ Keep that in mind when creating sounds close to a player. They can move around t
 | soundcategory     | The [category](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/SoundCategory.html) in which the sound will be played.                                  |
 | soundvolume       | Minecraft's [special sound volume](https://minecraft.wiki/w/Commands/playsound#Arguments). Default: _1_                                                    |
 | soundpitch        | Pitch of the sound. Default: _1_ Min: _0_ Max: _2_                                                                                                         |
-| soundlocation     | Default: The player's location. A location using the BetonQuest [ULF](../Reference/Data-Formats.md#unified-location-formating).                            |
+| soundlocation     | Default: The player's location. A location using the BetonQuest [ULF](../Reference/Definition-Encyclopedia.md#unified-location-format).                    |
 | soundplayeroffset | This option is special. See below.                                                                                                                         |
 
 <h4> soundplayeroffset </h4>
@@ -157,7 +157,7 @@ Keep that in mind when creating sounds close to a player. They can move around t
 as the `soundlocation` option. This option can be a number or a vector. (1)
 { .annotate }
 
-1. For more information about how BetonQuest processes location data, see [Unified location formatting](../Reference/Data-Formats.md).
+1. For more information about how BetonQuest processes location data, see [Unified location formatting](../Reference/Definition-Encyclopedia.md#unified-location-format).
 
 === "Number" 
     !!! tip inline end "Example Usage"
