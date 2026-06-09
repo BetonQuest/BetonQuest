@@ -36,7 +36,7 @@ public class TbpItemSerializer implements QuestItemSerializer {
         return String.format("\"%s\" %s", recipeName, quality.name().toLowerCase(Locale.ROOT));
     }
 
-    private @Nullable BrewQuality quality(double score) {
+    private @Nullable BrewQuality quality(final double score) {
         if (score >= 0.8) {
             return BrewQuality.EXCELLENT;
         }
