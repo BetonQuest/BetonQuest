@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
+import org.betonquest.betonquest.quest.condition.number.Operation;
 
 /**
  * A drunken modifier condition.
@@ -19,13 +20,13 @@ public record ModifierCondition(TheBrewingProjectApi api) implements PlayerCondi
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<String> modifierNameArgument = instruction.string().get();
-        final Argument<Type> modifierConditionTypeArgument = instruction.enumeration(Type.class).get();
+        final Argument<Operation> modifierConditionTypeArgument = instruction.enumeration(Operation.class).get();
         final Argument<Number> modifierValueArgument = instruction.number().get();
         return playerProfile -> {
             final String modifierName = modifierNameArgument.getValue(playerProfile);
             final DrunkenModifier modifier = api.getModifierManager().getModifier(modifierName)
                     .orElseThrow(() -> new QuestException(String.format("Unknown modifier %s", modifierName)));
-            final Type modifierConditionType = modifierConditionTypeArgument.getValue(playerProfile);
+            final Operation operation = modifierConditionTypeArgument.getValue(playerProfile);
             final double modifierValue = modifierValueArgument.getValue(playerProfile).doubleValue();
             if (modifierValue < modifier.minValue() || modifierValue > modifier.maxValue()) {
                 throw new QuestException(String.format("%s level can only be between %s and %s", modifier.name(), modifier.minValue(), modifier.maxValue()));
@@ -37,17 +38,7 @@ public record ModifierCondition(TheBrewingProjectApi api) implements PlayerCondi
             } else {
                 actualValue = drunkState.modifierValue(modifier);
             }
-            return switch (modifierConditionType) {
-                case ABOVE -> actualValue > modifierValue;
-                case UNDER -> actualValue < modifierValue;
-                case EXACT -> actualValue == modifierValue;
-            };
+            return operation.check(modifierValue, actualValue);
         };
-    }
-
-    public enum Type {
-        ABOVE,
-        UNDER,
-        EXACT
     }
 }
