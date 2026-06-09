@@ -7581,6 +7581,16 @@ To have valid calls the <code>Number</code> parser is used as an example, but na
 <td style="text-align: center;"><code>FlagArgument&lt;Number&gt;</code></td>
 <td style="text-align: left;">Retrieves an optional flag argument of the value with the key <code>repeat</code> from the instruction using the default value for its undefined state</td>
 </tr>
+<tr>
+<td style="text-align: left;"><code>.getNamed()</code></td>
+<td style="text-align: center;"><code>Map&lt;String, Argument&lt;Number&gt;&gt;</code></td>
+<td style="text-align: left;">Retrieves all named arguments from the instruction as a map of key-value pairs. Named arguments are prefixed with <code>+</code> in the script.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>.getNamed(p -&gt; p.startsWith("a"))</code></td>
+<td style="text-align: center;"><code>Map&lt;String, Argument&lt;Number&gt;&gt;</code></td>
+<td style="text-align: left;">Retrieves all named arguments with keys starting with <code>a</code> from the instruction as a map of key-value pairs. Named arguments are prefixed with <code>+</code> in the script.</td>
+</tr>
 </tbody>
 </table>
 <h3 id="advanced-argument-parsing">Advanced Argument Parsing<a class="headerlink" href="#advanced-argument-parsing" title="Permanent link">🔗</a></h3>
