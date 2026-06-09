@@ -39,13 +39,15 @@ public record TbpBrewItem(Recipe<ItemStack> recipe, String recipeName, BrewQuali
 
     @Override
     public ItemStack generate(final int stackSize, @Nullable final Profile profile) throws QuestException {
-        return BrewAdapterHolder.instance()
+        final ItemStack output = BrewAdapterHolder.instance()
                 .matcher()
                 .matchAgainstOnly(recipe)
                 .disallowStepVariations()
                 .build()
                 .match(api.createBrew(recipe.getSteps()))
                 .toItem(new Brew.State.Seal(null));
+        output.setAmount(stackSize);
+        return output;
     }
 
     @Override
