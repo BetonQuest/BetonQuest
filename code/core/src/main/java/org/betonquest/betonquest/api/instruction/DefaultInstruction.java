@@ -35,6 +35,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * The Instruction. Primary object for input parsing.
@@ -125,7 +127,7 @@ public class DefaultInstruction implements Instruction {
             throw new QuestException("Could not tokenize instruction '" + instruction + "': " + e.getMessage(), e);
         }
         this.chainableInstruction = new DefaultChainableInstruction(placeholders, packManager, pack,
-                this.instructionParts::nextElement, this::getValue, this::getFlag);
+                this.instructionParts::nextElement, this::getValue, this::getFlag, this::getNamedValues);
     }
 
     /**
@@ -143,7 +145,7 @@ public class DefaultInstruction implements Instruction {
         this.instructionParts = new InstructionPartsArray(instruction.instructionParts);
         this.argumentParsers = instruction.argumentParsers;
         this.chainableInstruction = new DefaultChainableInstruction(placeholders, packManager, pack,
-                this.instructionParts::nextElement, this::getValue, this::getFlag);
+                this.instructionParts::nextElement, this::getValue, this::getFlag, this::getNamedValues);
     }
 
     private static Identifier useFallbackIdIfNecessary(final QuestPackage pack, @Nullable final Identifier identifier) {
@@ -227,6 +229,19 @@ public class DefaultInstruction implements Instruction {
                 .orElse(Map.entry(FlagState.ABSENT, ""));
     }
 
+    private Map<String, String> getNamedValues(final Predicate<String> keyFilter) {
+        return instructionParts.getParts().stream()
+                .filter(part -> part.startsWith("+"))
+                .map(part -> part.substring(1))
+                .filter(part -> part.indexOf(':') > 0)
+                .map(part -> {
+                    final int colonIndex = part.indexOf(':');
+                    return Map.entry(part.substring(0, colonIndex), part.substring(colonIndex + 1));
+                })
+                .filter(argument -> keyFilter.test(argument.getKey()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
     @Override
     public DefaultInstruction copy() {
         return copy(identifier);
@@ -240,7 +255,8 @@ public class DefaultInstruction implements Instruction {
     @Override
     public InstructionChainParser chainForArgument(final QuestSupplier<String> rawArgumentSupplier) {
         final ChainableInstruction instruction = new DefaultChainableInstruction(placeholders, packManager, pack,
-                rawArgumentSupplier, key -> rawArgumentSupplier.get(), key -> Map.entry(FlagState.DEFINED, key));
+                rawArgumentSupplier, key -> rawArgumentSupplier.get(), key -> Map.entry(FlagState.DEFINED, key),
+                this::getNamedValues);
         return new DefaultInstructionChainParser(instruction, argumentParsers);
     }
 
@@ -262,6 +278,11 @@ public class DefaultInstruction implements Instruction {
     @Override
     public <T> FlagArgument<T> getFlag(final String argumentKey, final InstructionArgumentParser<T> argumentParser, final T presenceDefault) throws QuestException {
         return chainableInstruction.getFlag(argumentKey, argumentParser, presenceDefault);
+    }
+
+    @Override
+    public <T> Map<String, Argument<T>> getNamed(final InstructionArgumentParser<T> argumentParser, final Predicate<String> keyFilter) throws QuestException {
+        return chainableInstruction.getNamed(argumentParser, keyFilter);
     }
 
     @Override

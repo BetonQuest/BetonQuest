@@ -130,7 +130,7 @@ public class DefaultSectionInstruction implements SectionInstruction {
     @Override
     public InstructionChainParser chainForArgument(final String argument) {
         final DefaultChainableInstruction instruction = new DefaultChainableInstruction(placeholders, packageManager, questPackage,
-                () -> argument, val -> argument, val -> Map.entry(FlagState.DEFINED, val));
+                () -> argument, val -> argument, val -> Map.entry(FlagState.DEFINED, val), predicate -> Map.of("", argument));
         return new DefaultInstructionChainParser(instruction, parsers);
     }
 

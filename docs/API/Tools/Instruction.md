@@ -113,12 +113,14 @@ The argument retrieval step is required after the argument parsing and represent
 instance to be carried on into actions, conditions and objectives.
 To have valid calls the `Number` parser is used as an example, but naturally any parser will do.
 
-| Call                                                                  |                Type                | Description                                                                                                                                           |
-|:----------------------------------------------------------------------|:----------------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `.get()`                                                              |         `Argument<Number>`         | Retrieves an argument of the next value in order from the instruction                                                                                 |
-| `.get("amount")`                                                      |    `Optional<Argument<Number>>`    | Retrieves an optional argument of the value with the key `amount` from the instruction                                                                |
-| `.get("amount", 10)`                                                  |         `Argument<Number>`         | Retrieves an optional argument of the value with the key `amount` from the instruction or gets an argument with default value                         |
-| `.getFlag("repeat", 10)`                                              |       `FlagArgument<Number>`       | Retrieves an optional flag argument of the value with the key `repeat` from the instruction using the default value for its undefined state           |
+| Call                                |              Type               | Description                                                                                                                                                      |
+|:------------------------------------|:-------------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `.get()`                            |       `Argument<Number>`        | Retrieves an argument of the next value in order from the instruction                                                                                            |
+| `.get("amount")`                    |  `Optional<Argument<Number>>`   | Retrieves an optional argument of the value with the key `amount` from the instruction                                                                           |
+| `.get("amount", 10)`                |       `Argument<Number>`        | Retrieves an optional argument of the value with the key `amount` from the instruction or gets an argument with default value                                    |
+| `.getFlag("repeat", 10)`            |     `FlagArgument<Number>`      | Retrieves an optional flag argument of the value with the key `repeat` from the instruction using the default value for its undefined state                      |
+| `.getNamed()`                       | `Map<String, Argument<Number>>` | Retrieves all named arguments from the instruction as a map of key-value pairs. Named arguments are prefixed with `+` in the script.                             |
+| `.getNamed(p -> p.startsWith("a"))` | `Map<String, Argument<Number>>` | Retrieves all named arguments with keys starting with `a` from the instruction as a map of key-value pairs. Named arguments are prefixed with `+` in the script. |
 
 ### Advanced Argument Parsing
 Parsers via the chain offer more functionality than just parsing a string into a specific type.

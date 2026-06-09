@@ -7,7 +7,9 @@ import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentPar
 import org.betonquest.betonquest.api.instruction.chain.ChainableInstruction;
 import org.betonquest.betonquest.api.instruction.chain.InstructionChainRetriever;
 
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 /**
  * A default implementation of {@link InstructionChainRetriever}.
@@ -55,5 +57,15 @@ public class DefaultInstructionChainRetriever<T> implements InstructionChainRetr
     @Override
     public FlagArgument<T> getFlag(final String argumentKey, final T presenceDefaultValue) throws QuestException {
         return instruction.getFlag(argumentKey, argument, presenceDefaultValue);
+    }
+
+    @Override
+    public Map<String, Argument<T>> getNamed() throws QuestException {
+        return getNamed(key -> true);
+    }
+
+    @Override
+    public Map<String, Argument<T>> getNamed(final Predicate<String> keyFilter) throws QuestException {
+        return instruction.getNamed(argument, keyFilter);
     }
 }
