@@ -24,8 +24,8 @@ import java.util.List;
  * @param quality    The brew quality.
  * @param api        The api needed to craft brew.
  */
-public record TbpBrewItem(Recipe<ItemStack> recipe, String recipeName, BrewQuality quality,
-                          BrewManager<ItemStack> api) implements QuestItem {
+public record BrewItem(Recipe<ItemStack> recipe, String recipeName, BrewQuality quality,
+                       BrewManager<ItemStack> api) implements QuestItem {
 
     @Override
     public Component getName() {

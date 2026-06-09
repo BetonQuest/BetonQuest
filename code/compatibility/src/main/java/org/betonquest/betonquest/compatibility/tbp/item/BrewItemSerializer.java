@@ -14,7 +14,7 @@ import java.util.Locale;
 /**
  * The brewing project item serializer.
  */
-public class TbpItemSerializer implements QuestItemSerializer {
+public class BrewItemSerializer implements QuestItemSerializer {
 
     @Override
     public String serialize(final ItemStack itemStack) throws QuestException {
