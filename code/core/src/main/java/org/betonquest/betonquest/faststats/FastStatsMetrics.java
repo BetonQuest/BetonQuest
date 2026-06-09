@@ -29,8 +29,10 @@ public class FastStatsMetrics {
      * @param plugin           the plugin instance
      * @param token            the token to use for metrics publication
      * @param metricsProviders the metrics providers to use for metrics publication
+     * @param logErrors        whether to log errors
      */
-    public FastStatsMetrics(final Plugin plugin, @Token final String token, final Set<FastStatsMetricsProvider> metricsProviders) {
+    public FastStatsMetrics(final Plugin plugin, @Token final String token, final Set<FastStatsMetricsProvider> metricsProviders,
+                            final boolean logErrors) {
         this.errorTracker = ErrorTracker.contextAware();
         configureErrorTracker();
         final BukkitContext.Factory context = new BukkitContext.Factory(plugin, token);
@@ -42,7 +44,9 @@ public class FastStatsMetrics {
             factory.onFlush(() -> metricsProviders.forEach(FastStatsMetricsProvider::metricsFlushed));
             return factory.create();
         });
-        context.errorTrackerService(this.errorTracker);
+        if (logErrors) {
+            context.errorTrackerService(this.errorTracker);
+        }
         this.context = context.create();
     }
 
