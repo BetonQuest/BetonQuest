@@ -116,7 +116,7 @@ public class ChestPutObjective extends DefaultObjective {
             checkItems(onlineProfile);
             return;
         }
-        final InventoryHolder holder = event.getInventory().getHolder();
+        final InventoryHolder holder = event.getInventory().getHolder(false);
         if (holder instanceof final DoubleChest doubleChest) {
             final Chest leftChest = (Chest) doubleChest.getLeftSide();
             final Chest rightChest = (Chest) doubleChest.getRightSide();
@@ -141,10 +141,10 @@ public class ChestPutObjective extends DefaultObjective {
 
     private void checkIsInventory(final Location targetChestLocation) throws QuestException {
         final Block block = targetChestLocation.getBlock();
-        if (!(block.getState() instanceof InventoryHolder)) {
+        if (!(block.getState(false) instanceof InventoryHolder)) {
             final World world = targetChestLocation.getWorld();
             throw new QuestException(
-                    String.format("Block at location x:%d y:%d z:%d in world '%s' isn't a chest!",
+                    "Block at location x:%d y:%d z:%d in world '%s' isn't a chest!".formatted(
                             targetChestLocation.getBlockX(),
                             targetChestLocation.getBlockY(),
                             targetChestLocation.getBlockZ(),

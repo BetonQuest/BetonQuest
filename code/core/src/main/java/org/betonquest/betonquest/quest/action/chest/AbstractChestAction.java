@@ -38,7 +38,7 @@ public abstract class AbstractChestAction implements NullableAction {
     protected InventoryHolder getChest(@Nullable final Profile profile) throws QuestException {
         final Block block = location.getValue(profile).getBlock();
         try {
-            return (InventoryHolder) block.getState();
+            return (InventoryHolder) block.getState(false);
         } catch (final ClassCastException e) {
             throw new QuestException("No chest found at location: X"
                     + block.getX() + " Y" + block.getY() + " Z" + block.getZ(), e);
