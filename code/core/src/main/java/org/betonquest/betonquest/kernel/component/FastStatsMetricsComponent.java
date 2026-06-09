@@ -1,12 +1,16 @@
 package org.betonquest.betonquest.kernel.component;
 
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
+import org.betonquest.betonquest.api.version.Version;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.faststats.FastStatsMetrics;
 import org.betonquest.betonquest.faststats.FastStatsMetricsProvider;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
+import org.betonquest.betonquest.lib.version.BetonQuestVersion;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,7 +34,7 @@ public class FastStatsMetricsComponent extends AbstractCoreComponent {
 
     @Override
     public Set<Class<?>> requires() {
-        return Set.of(JavaPlugin.class, Compatibility.class);
+        return Set.of(JavaPlugin.class, Compatibility.class, PluginDescriptionFile.class);
     }
 
     @Override
@@ -46,12 +50,17 @@ public class FastStatsMetricsComponent extends AbstractCoreComponent {
     @Override
     protected void load(final DependencyProvider dependencyProvider) {
         final JavaPlugin plugin = getDependency(JavaPlugin.class);
+        final PluginDescriptionFile descriptionFile = getDependency(PluginDescriptionFile.class);
+
+        final Version version = BetonQuestVersion.parse(descriptionFile.getVersion());
+        final Optional<String> typeElement = version.getNamedElement("type");
+        final boolean fastStatsErrorTrackingEnabled = typeElement.isPresent() && !"DEV-UNOFFICIAL".equals(typeElement.get());
 
         final Set<FastStatsMetricsProvider> fastStatsMetricsProviders = injectedDependencies.stream()
                 .filter(injectedDependency -> FastStatsMetricsProvider.class.isAssignableFrom(injectedDependency.type()))
                 .map(injectedDependency -> (FastStatsMetricsProvider) injectedDependency.dependency())
                 .collect(Collectors.toSet());
-        final FastStatsMetrics fastStatsMetrics = new FastStatsMetrics(plugin, TOKEN, fastStatsMetricsProviders);
+        final FastStatsMetrics fastStatsMetrics = new FastStatsMetrics(plugin, TOKEN, fastStatsMetricsProviders, fastStatsErrorTrackingEnabled);
         fastStatsMetrics.enable();
 
         dependencyProvider.take(FastStatsMetrics.class, fastStatsMetrics);
