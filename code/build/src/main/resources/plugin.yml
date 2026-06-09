@@ -43,6 +43,7 @@ softdepend:
   - ItemsAdder
   - Nexo
   - FancyHolograms
+  - TheBrewingProject
 commands:
   journal:
     description: Adds journal to your inventory
