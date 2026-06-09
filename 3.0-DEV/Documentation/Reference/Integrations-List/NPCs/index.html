@@ -7032,9 +7032,10 @@ To acquire the NPCs ID, use the <code>/npc near 5</code> command and copy the <c
 </div>
 </div>
 <div class="admonition warning">
-<p class="admonition-title">Multiple NPCs with the same name</p>
-<p>If there is more than one NPC with the same name and you select multiple NPCs by name (such as when using 
-Citizens <code>byName</code> option), certain actions like <code>npcteleport</code> or objectives like <code>npcrange</code> might throw an exception.</p>
+<p class="admonition-title">Multiple NPCs from one identifier</p>
+<p>If there is more than one NPC valid for an identifier (such as when using Citizens <code>byName</code> option),
+actions like <code>npcteleport</code> will teleport all NPCs and objectives like <code>npcrange</code> will complete if any NPC meets the
+conditions. Only the NPC placeholders will fail to resolve if not exactly one NPC is found.</p>
 </div>
 <h2 id="conversations">Conversations<a class="headerlink" href="#conversations" title="Permanent link">🔗</a></h2>
 <p>You can start <a href="../../../Advanced/Conversations/">Conversations</a> through NPC interactions from players by assigning them in the
