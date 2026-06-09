@@ -117,6 +117,7 @@ public class ConversationStarter {
                 log.debug(pack, "Conversation '" + conversationID + "' for '" + onlineProfile + "' has been "
                         + "canceled because its PlayerConversationStartEvent has been canceled.");
                 activeConversations.remove(onlineProfile);
+                return;
             }
             try {
                 if (startingOption == null) {
