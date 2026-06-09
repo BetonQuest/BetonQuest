@@ -205,15 +205,20 @@ public class DefaultNpcHider {
         if (conditions == null) {
             return;
         }
-        final Npc<?> npc;
+        final Set<Npc<?>> npcs;
         try {
-            npc = npcManager.get(onlineProfile, npcId);
+            npcs = npcManager.getAll(onlineProfile, npcId);
         } catch (final QuestException exception) {
             log.warn("NPCHider could not update visibility for npc '" + npcId + "': " + exception.getMessage(), exception);
             return;
         }
-        if (npc.isSpawned()) {
-            if (conditions.isEmpty() || conditionManager.testAll(onlineProfile, conditions)) {
+        final List<Npc<?>> spawned = npcs.stream().filter(Npc::isSpawned).toList();
+        if (spawned.isEmpty()) {
+            return;
+        }
+        final boolean shouldHide = conditions.isEmpty() || conditionManager.testAll(onlineProfile, conditions);
+        for (final Npc<?> npc : spawned) {
+            if (shouldHide) {
                 npc.hide(onlineProfile);
             } else {
                 npc.show(onlineProfile);

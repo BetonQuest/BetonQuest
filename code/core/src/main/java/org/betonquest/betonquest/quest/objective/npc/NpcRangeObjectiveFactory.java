@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
+import org.betonquest.betonquest.api.service.npc.NpcManager;
 
 import java.util.List;
 
@@ -16,9 +17,17 @@ import java.util.List;
 public class NpcRangeObjectiveFactory implements ObjectiveFactory {
 
     /**
-     * Creates a new instance of the NpcRangeObjectiveFactory.
+     * The npc manager to use.
      */
-    public NpcRangeObjectiveFactory() {
+    private final NpcManager npcManager;
+
+    /**
+     * Creates a new instance of the NpcRangeObjectiveFactory.
+     *
+     * @param npcManager the npc manager to use
+     */
+    public NpcRangeObjectiveFactory(final NpcManager npcManager) {
+        this.npcManager = npcManager;
     }
 
     @Override
@@ -26,6 +35,6 @@ public class NpcRangeObjectiveFactory implements ObjectiveFactory {
         final Argument<List<NpcIdentifier>> npcIds = instruction.identifier(NpcIdentifier.class).list().get();
         final Argument<Trigger> trigger = instruction.enumeration(Trigger.class).get();
         final Argument<Number> radius = instruction.number().get();
-        return new NpcRangeObjective(service, npcIds, radius, trigger);
+        return new NpcRangeObjective(service, npcManager, npcIds, radius, trigger);
     }
 }

@@ -24,6 +24,8 @@ You can change maximum pathfinding range in Citizens configuration files.
 
 Move action can fail if the NPC is already moving for another player.
 
+Unlike other NPC actions, execution will fail if not exactly one NPC is found for the identifier.
+
 | Parameter   | Syntax                                                                | Default Value          | Explanation                                                                  |
 |-------------|-----------------------------------------------------------------------|------------------------|------------------------------------------------------------------------------|
 | _NpcID_     | npcId                                                                 | :octicons-x-circle-16: | The NPCId.                                                                   |
@@ -43,6 +45,8 @@ actions:
 __Context__: @snippet:action-meta:independent@  
 __Syntax__: `npcstop <npcId>`  
 __Description__: This will stop all current move tasks for the NPC.
+
+Unlike other NPC actions, execution will fail if not exactly one NPC is found for the identifier.
 
 | Parameter | Syntax | Default Value          | Explanation |
 |-----------|--------|------------------------|-------------|

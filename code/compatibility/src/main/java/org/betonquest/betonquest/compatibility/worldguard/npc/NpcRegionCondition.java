@@ -12,6 +12,7 @@ import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Checks if a Npc is inside a WorldGuard region.
@@ -48,12 +49,15 @@ public class NpcRegionCondition implements NullableCondition {
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
-        final Npc<?> npc = npcManager.get(profile, npcId.getValue(profile));
-        if (!npc.isSpawned()) {
-            return false;
-        }
-        final Optional<Location> location = npc.getLocation();
-        return location.isPresent() && WorldGuardIntegrator.isInsideRegion(location.get(), region.getValue(profile));
+        final Set<Npc<?>> npcs = npcManager.getAll(profile, npcId.getValue(profile));
+        final String region = this.region.getValue(profile);
+        return npcs.stream().anyMatch(npc -> {
+            if (!npc.isSpawned()) {
+                return false;
+            }
+            final Optional<Location> location = npc.getLocation();
+            return location.isPresent() && WorldGuardIntegrator.isInsideRegion(location.get(), region);
+        });
     }
 
     @Override

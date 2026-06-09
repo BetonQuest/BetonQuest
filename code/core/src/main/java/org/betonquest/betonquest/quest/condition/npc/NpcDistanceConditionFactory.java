@@ -8,9 +8,10 @@ import org.betonquest.betonquest.api.quest.condition.OnlineConditionAdapter;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.service.npc.NpcManager;
+import org.betonquest.betonquest.lib.instruction.argument.DefaultArguments;
 
 /**
- * Factory to create {@link NpcDistanceCondition}s from {@link Instruction}s.
+ * Factory to create {@link NpcLocationCondition}s with a player location from {@link Instruction}s.
  */
 public class NpcDistanceConditionFactory implements PlayerConditionFactory {
 
@@ -32,6 +33,7 @@ public class NpcDistanceConditionFactory implements PlayerConditionFactory {
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<NpcIdentifier> npcId = instruction.identifier(NpcIdentifier.class).get();
         final Argument<Number> distance = instruction.number().get();
-        return new OnlineConditionAdapter(new NpcDistanceCondition(npcManager, npcId, distance));
+        final NpcLocationCondition condition = new NpcLocationCondition(npcManager, npcId, DefaultArguments.PLAYER_LOCATION, distance);
+        return new OnlineConditionAdapter(condition::check);
     }
 }

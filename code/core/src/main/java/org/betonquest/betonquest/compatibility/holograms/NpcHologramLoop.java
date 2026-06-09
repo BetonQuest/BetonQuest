@@ -97,7 +97,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, PostLoadT
         npcHolograms = new ArrayList<>();
         followTask = plugin.getServer().getScheduler().runTaskTimer(plugin,
                 () -> npcHolograms.stream().filter(NpcHologram::follow)
-                        .forEach(this::updateHologram), 1L, 1L);
+                        .forEach(this::updateNpcHologram), 1L, 1L);
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -126,8 +126,8 @@ public class NpcHologramLoop extends HologramLoop implements Listener, PostLoadT
         }
         final List<NpcIdentifier> npcIDs = instruction.read().value("npcs").identifier(NpcIdentifier.class).list().get().getValue(null);
         final boolean follow = section.getBoolean("follow", false);
-        final Map<NpcIdentifier, BetonHologram> npcBetonHolograms = new HashMap<>();
-        npcIDs.forEach(npcID -> npcBetonHolograms.put(npcID, null));
+        final Map<NpcIdentifier, Map<Object, BetonHologram>> npcBetonHolograms = new HashMap<>();
+        npcIDs.forEach(npcID -> npcBetonHolograms.put(npcID, new HashMap<>()));
         final List<BetonHologram> holograms = new ArrayList<>();
         npcHolograms.add(new NpcHologram(npcBetonHolograms, holograms, vector, follow));
         return holograms;
@@ -143,68 +143,87 @@ public class NpcHologramLoop extends HologramLoop implements Listener, PostLoadT
         plugin.getServer().getScheduler().runTask(plugin, () -> {
             log.debug("Loading delayed NPC Holograms.");
             npcHolograms.forEach(holo -> {
-                for (final Map.Entry<NpcIdentifier, BetonHologram> entry : holo.npcHolograms.entrySet()) {
+                for (final Map.Entry<NpcIdentifier, Map<Object, BetonHologram>> entry : holo.npcHolograms.entrySet()) {
                     final NpcIdentifier npcID = entry.getKey();
-                    final Npc<?> npc;
+                    final Set<Npc<?>> npcs;
                     try {
-                        npc = npcManager.get(null, npcID);
+                        npcs = npcManager.getAll(null, npcID);
                     } catch (final QuestException exception) {
                         log.warn("Could not get Npc for id '" + npcID + "' at hologram creation: " + exception.getMessage(), exception);
                         continue;
                     }
-                    if (!npc.isSpawned()) {
-                        continue;
+                    final Map<Object, BetonHologram> holograms = new HashMap<>();
+                    entry.setValue(holograms);
+                    for (final Npc<?> npc : npcs) {
+                        if (!npc.isSpawned()) {
+                            continue;
+                        }
+                        final Optional<Location> location = npc.getLocation();
+                        if (location.isEmpty()) {
+                            log.debug("Spawned Npc '" + npcID + "' has no location at hologram creation");
+                            continue;
+                        }
+                        final BetonHologram hologram = hologramProvider.createHologram(location.get().add(holo.vector));
+                        holograms.put(npc.getOriginal(), hologram);
+                        holo.holograms.add(hologram);
+                        updateBetonHologram(hologram);
                     }
-                    final Optional<Location> location = npc.getLocation();
-                    if (location.isEmpty()) {
-                        log.debug("Spawned Npc '" + npcID + "' has no location at hologram creation");
-                        continue;
-                    }
-                    final BetonHologram hologram = hologramProvider.createHologram(location.get().add(holo.vector));
-                    entry.setValue(hologram);
-                    holo.holograms.add(hologram);
-                    updateHologram(hologram);
                 }
             });
             log.debug("Loaded NPC Holograms.");
         });
     }
 
-    private void updateHologram(final NpcHologram npcHologram) {
+    private void updateNpcHologram(final NpcHologram npcHologram) {
         npcHologram.npcHolograms().entrySet().forEach(entry -> {
                     final NpcIdentifier npcID = entry.getKey();
-                    final BetonHologram hologram = entry.getValue();
-                    final Npc<?> npc;
+                    final Set<Npc<?>> npcs;
                     try {
-                        npc = npcManager.get(null, npcID);
+                        npcs = npcManager.getAll(null, npcID);
                     } catch (final QuestException exception) {
                         log.warn("Could not get Npc for id '" + npcID + "' in hologram loop: " + exception.getMessage(), exception);
                         return;
                     }
-                    final Optional<Location> npcLocation = npc.getLocation();
-                    if (!npc.isSpawned() || npcLocation.isEmpty()) {
-                        if (hologram != null) {
-                            hologram.disable();
-                        }
-                        return;
-                    }
-                    final Location location = npcLocation.get().add(npcHologram.vector());
-                    if (hologram == null) {
-                        final BetonHologram newHologram = hologramProvider.createHologram(location);
-                        entry.setValue(newHologram);
-                        npcHologram.holograms().add(newHologram);
-                        updateHologram(newHologram);
-                    } else {
-                        if (hologram.isDisabled()) {
-                            hologram.enable();
-                        }
-                        hologram.move(location);
-                    }
+                    final Map<Object, BetonHologram> oldHolograms = entry.getValue();
+                    entry.setValue(updateNpcs(npcHologram, npcs, oldHolograms));
+                    oldHolograms.values().forEach(betonHologram -> {
+                        npcHologram.holograms.remove(betonHologram);
+                        betonHologram.disable();
+                    });
                 }
         );
     }
 
-    private void updateHologram(final BetonHologram hologram) {
+    private Map<Object, BetonHologram> updateNpcs(final NpcHologram npcHologram, final Set<Npc<?>> npcs,
+                                                  final Map<Object, BetonHologram> oldHolograms) {
+        final Map<Object, BetonHologram> newHolograms = new HashMap<>();
+        for (final Npc<?> npc : npcs) {
+            if (!npc.isSpawned()) {
+                continue;
+            }
+            final Optional<Location> npcLocation = npc.getLocation();
+            if (npcLocation.isEmpty()) {
+                continue;
+            }
+            final BetonHologram hologram = oldHolograms.remove(npc.getOriginal());
+            final Location location = npcLocation.get().add(npcHologram.vector());
+            if (hologram == null) {
+                final BetonHologram newHologram = hologramProvider.createHologram(location);
+                newHolograms.put(npc.getOriginal(), newHologram);
+                npcHologram.holograms().add(newHologram);
+                updateBetonHologram(newHologram);
+            } else {
+                if (hologram.isDisabled()) {
+                    hologram.enable();
+                }
+                newHolograms.put(npc.getOriginal(), hologram);
+                hologram.move(location);
+            }
+        }
+        return newHolograms;
+    }
+
+    private void updateBetonHologram(final BetonHologram hologram) {
         values.values().stream()
                 .filter(hologramWrapper -> hologramWrapper.holograms().contains(hologram))
                 .forEach(hologramWrapper -> {
@@ -222,7 +241,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, PostLoadT
     public void onExternalUpdate(final NpcVisibilityUpdateEvent event) {
         final Npc<?> npc = event.getNpc();
         if (npc == null) {
-            npcHolograms.forEach(this::updateHologram);
+            npcHolograms.forEach(this::updateNpcHologram);
             return;
         }
         final Set<NpcIdentifier> ids = npcRegistry.getIdentifier(npc, null);
@@ -233,7 +252,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, PostLoadT
                 .filter(npcHologram -> ids.stream().anyMatch(npcId -> npcHologram.npcHolograms().containsKey(npcId)))
                 .toList();
         if (!list.isEmpty()) {
-            plugin.getServer().getScheduler().runTask(plugin, () -> list.forEach(this::updateHologram));
+            plugin.getServer().getScheduler().runTask(plugin, () -> list.forEach(this::updateNpcHologram));
         }
     }
 
@@ -245,7 +264,8 @@ public class NpcHologramLoop extends HologramLoop implements Listener, PostLoadT
      * @param follow       Whether the holograms should follow the NPC
      * @param holograms    The holograms
      */
-    private record NpcHologram(Map<NpcIdentifier, BetonHologram> npcHolograms, List<BetonHologram> holograms,
+    private record NpcHologram(Map<NpcIdentifier, Map<Object, BetonHologram>> npcHolograms,
+                               List<BetonHologram> holograms,
                                Vector vector, boolean follow) {
 
     }
