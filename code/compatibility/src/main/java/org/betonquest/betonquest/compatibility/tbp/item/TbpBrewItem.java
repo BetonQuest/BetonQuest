@@ -34,7 +34,7 @@ public record TbpBrewItem(Recipe<ItemStack> recipe, String recipeName, BrewQuali
 
     @Override
     public List<Component> getLore() {
-        return List.of();
+        return recipe.getRecipeResult(quality).staticLore();
     }
 
     @Override
