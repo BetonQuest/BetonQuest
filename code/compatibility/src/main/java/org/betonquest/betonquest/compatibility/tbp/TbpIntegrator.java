@@ -22,11 +22,11 @@ public class TbpIntegrator extends IntegrationTemplate {
 
     @Override
     public void enable(final BetonQuestApi api) {
-        RegisteredServiceProvider<TheBrewingProjectApi> tbpProvider = Bukkit.getServicesManager().getRegistration(TheBrewingProjectApi.class);
+        final RegisteredServiceProvider<TheBrewingProjectApi> tbpProvider = Bukkit.getServicesManager().getRegistration(TheBrewingProjectApi.class);
         if (tbpProvider == null) {
             return;
         }
-        TheBrewingProjectApi tbpApi = tbpProvider.getProvider();
+        final TheBrewingProjectApi tbpApi = tbpProvider.getProvider();
         playerCondition("drunken_modifier", new ModifierCondition(tbpApi));
         playerAction("drunken_event", new DrunkenEventActionFactory(tbpApi));
         item("brew", new TbpItemFactory(tbpApi), new TbpItemSerializer());
