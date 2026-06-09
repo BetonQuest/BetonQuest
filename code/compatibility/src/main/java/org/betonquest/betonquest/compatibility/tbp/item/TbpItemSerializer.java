@@ -11,6 +11,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 
+/**
+ * The brewing project item serializer.
+ */
 public class TbpItemSerializer implements QuestItemSerializer {
 
     @Override

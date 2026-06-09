@@ -10,13 +10,12 @@ import org.betonquest.betonquest.api.item.QuestItemWrapper;
 import org.betonquest.betonquest.api.quest.TypeFactory;
 import org.bukkit.inventory.ItemStack;
 
-public class TbpItemFactory implements TypeFactory<QuestItemWrapper> {
-
-    private final TheBrewingProjectApi api;
-
-    public TbpItemFactory(final TheBrewingProjectApi api) {
-        this.api = api;
-    }
+/**
+ * A factory for generating the brewing project brews.
+ *
+ * @param api The brewing project api
+ */
+public record TbpItemFactory(TheBrewingProjectApi api) implements TypeFactory<QuestItemWrapper> {
 
     @Override
     public QuestItemWrapper parseInstruction(final Instruction instruction) throws QuestException {

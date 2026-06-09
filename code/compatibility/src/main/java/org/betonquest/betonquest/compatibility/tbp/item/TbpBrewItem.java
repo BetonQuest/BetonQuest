@@ -16,6 +16,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+/**
+ * The brewing project brew item.
+ *
+ * @param recipe     The recipe this brew item completes.
+ * @param recipeName The name of the recipe.
+ * @param quality    The brew quality.
+ * @param api        The api needed to craft brew.
+ */
 public record TbpBrewItem(Recipe<ItemStack> recipe, String recipeName, BrewQuality quality,
                           BrewManager<ItemStack> api) implements QuestItem {
 

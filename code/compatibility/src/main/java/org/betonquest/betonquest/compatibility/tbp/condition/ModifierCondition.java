@@ -9,6 +9,11 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 
+/**
+ * A drunken modifier condition.
+ *
+ * @param api The brewing project api
+ */
 public record ModifierCondition(TheBrewingProjectApi api) implements PlayerConditionFactory {
 
     @Override
