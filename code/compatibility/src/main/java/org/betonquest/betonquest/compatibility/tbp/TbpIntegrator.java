@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.tbp;
 
 import dev.jsinco.brewery.bukkit.api.TheBrewingProjectApi;
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.compatibility.tbp.action.DrunkenEventActionFactory;
 import org.betonquest.betonquest.compatibility.tbp.condition.ModifierCondition;
 import org.betonquest.betonquest.compatibility.tbp.item.TbpItemFactory;
@@ -21,10 +22,10 @@ public class TbpIntegrator extends IntegrationTemplate {
     public static final String REQUIRED_VERSION = "3.2.0";
 
     @Override
-    public void enable(final BetonQuestApi api) {
+    public void enable(final BetonQuestApi api) throws QuestException {
         final RegisteredServiceProvider<TheBrewingProjectApi> tbpProvider = Bukkit.getServicesManager().getRegistration(TheBrewingProjectApi.class);
         if (tbpProvider == null) {
-            return;
+            throw new QuestException("TheBrewingProject provider not present");
         }
         final TheBrewingProjectApi tbpApi = tbpProvider.getProvider();
         playerCondition("drunken_modifier", new ModifierCondition(tbpApi));
