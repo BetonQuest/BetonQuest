@@ -9,6 +9,20 @@ This is the definition encyclopedia. All important and regularly used keywords a
 
 A list of all data types that require a special and more elaborate explanation.
 
+### Basic Types
+
+!!! info "Basic Types"
+    
+    There are a few basic data types that are commonly used in elements:
+    
+    - `String`: A string of characters that may contain any character including spaces if quoted.
+    - `Number`: Any number, either integer or floating point. Might be negative as well.
+    Limited only to java's `integer`, `long`, `float` and `double` depending on the element. 
+    See [here](https://www.w3schools.com/java/java_data_types.asp) for more information.
+    - `Boolean`: Binary value. Either `true` or `false`.
+    
+    Other mostly element-specific data types are defined in the other sections or in the element's documentation itself.
+
 ### Block Selectors
 
 !!! info "Block Selector"
@@ -101,6 +115,64 @@ A list of all data types that require a special and more elaborate explanation.
     - `%location%`
     - `%location%->(10;2.5;-13)`
 
-## Element Meta
+## Elements
+
+All actions, conditions, etc. - essentially anything definable under a specific section in the script - are considered elements.
 
 ### Context
+
+!!! info "Context"
+
+    The context defines the scope of the element. The context is defined for every element and determines 
+    the requirement of a profile for a valid execution of the element.
+    Commonly used contexts are:
+    
+    - `online`: Used for elements that require a player _to be online_ to be properly executed.
+    - `offline`: Used for elements that require a player _that may be offline_ to be properly executed.
+    - `independent`: Used for elements that _don't require a player_ at all.
+    
+    Since those requirements are not exclusive to one another, they often appear in combinations.
+    The following icons are used to represent the context combination for each element.
+    For example, for actions: @snippet:action-meta:online-offline-independent@  
+    Be aware that the precise definition of the context variations might differ, so read their hover text for more information.
+
+### Parameter Type
+
+!!! info "Parameter Type"
+
+    There are currently four types of parameters used in elements:
+    
+    - `Required`: The parameter is required to be **present** in the element's instruction at the exact position and 
+    without its name.
+    - `Optional`: The parameter is optional and may be **defined** or **absent**. The order is ignored.
+    - `Flag`: The parameter is a flag and may be **defined**, **undefined** or **absent**. The order is ignored.
+    - `Additionals`: The parameter allows any number of additional **defined** parameters. Their individual names are free 
+    to choose and usually depend on the context of the element. All additional parameter names are prefixed with `+` and the 
+    order is ignored.
+    
+    The naming of the parameters is defined in the element's [syntax](#syntax). Except required parameters, all other 
+    parameters are named and allow different specifications.
+    
+    - `present`: A present parameter is simply `value` where `value` is just the value of the parameter, without mentioning the name at all.
+    - `defined`: A defined parameter is like `param:value` where `param` is the name of the parameter and `value` is 
+    the value of the parameter.
+    - `undefined`: An undefined parameter is simply `param` where `param` is the name of the parameter falling back to the 
+    `undefined` default value of the parameter.
+    - `absent`: An absent parameter is simply not specifying the parameter at all falling back to the `absent` default value 
+    of the parameter.
+
+### Syntax
+
+!!! info "Syntax"
+
+    The syntax of an element defines the format of that element's instruction. 
+    It usually consists of a single line starting with the element's name and is followed by parameters separated by an element-specific separator.
+    
+    The common types of parameters are defined like:
+    
+    - required parameters: `<parameter>`
+    - optional parameters: `[parameter]`
+    - flag parameters: `{parameter}`
+    - additional parameters: `+[...]`
+    
+    For more information on different types of parameters, see the [Parameter Type](#parameter-type) section.
