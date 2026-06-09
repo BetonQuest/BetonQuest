@@ -97,7 +97,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, PostLoadT
         npcHolograms = new ArrayList<>();
         followTask = plugin.getServer().getScheduler().runTaskTimer(plugin,
                 () -> npcHolograms.stream().filter(NpcHologram::follow)
-                        .forEach(this::updateHologram), 1L, 1L);
+                        .forEach(this::updateNpcHologram), 1L, 1L);
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -166,7 +166,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, PostLoadT
                         final BetonHologram hologram = hologramProvider.createHologram(location.get().add(holo.vector));
                         holograms.put(npc.getOriginal(), hologram);
                         holo.holograms.add(hologram);
-                        updateHologram(hologram);
+                        updateBetonHologram(hologram);
                     }
                 }
             });
@@ -174,7 +174,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, PostLoadT
         });
     }
 
-    private void updateHologram(final NpcHologram npcHologram) {
+    private void updateNpcHologram(final NpcHologram npcHologram) {
         npcHologram.npcHolograms().entrySet().forEach(entry -> {
                     final NpcIdentifier npcID = entry.getKey();
                     final Set<Npc<?>> npcs;
@@ -211,7 +211,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, PostLoadT
                 final BetonHologram newHologram = hologramProvider.createHologram(location);
                 newHolograms.put(npc.getOriginal(), newHologram);
                 npcHologram.holograms().add(newHologram);
-                updateHologram(newHologram);
+                updateBetonHologram(newHologram);
             } else {
                 if (hologram.isDisabled()) {
                     hologram.enable();
@@ -223,7 +223,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, PostLoadT
         return newHolograms;
     }
 
-    private void updateHologram(final BetonHologram hologram) {
+    private void updateBetonHologram(final BetonHologram hologram) {
         values.values().stream()
                 .filter(hologramWrapper -> hologramWrapper.holograms().contains(hologram))
                 .forEach(hologramWrapper -> {
@@ -241,7 +241,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, PostLoadT
     public void onExternalUpdate(final NpcVisibilityUpdateEvent event) {
         final Npc<?> npc = event.getNpc();
         if (npc == null) {
-            npcHolograms.forEach(this::updateHologram);
+            npcHolograms.forEach(this::updateNpcHologram);
             return;
         }
         final Set<NpcIdentifier> ids = npcRegistry.getIdentifier(npc, null);
@@ -252,7 +252,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, PostLoadT
                 .filter(npcHologram -> ids.stream().anyMatch(npcId -> npcHologram.npcHolograms().containsKey(npcId)))
                 .toList();
         if (!list.isEmpty()) {
-            plugin.getServer().getScheduler().runTask(plugin, () -> list.forEach(this::updateHologram));
+            plugin.getServer().getScheduler().runTask(plugin, () -> list.forEach(this::updateNpcHologram));
         }
     }
 
