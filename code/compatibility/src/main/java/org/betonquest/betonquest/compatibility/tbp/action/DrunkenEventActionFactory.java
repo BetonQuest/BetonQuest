@@ -9,13 +9,12 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 
-public class DrunkenEventActionFactory implements PlayerActionFactory {
-
-    private final TheBrewingProjectApi api;
-
-    public DrunkenEventActionFactory(final TheBrewingProjectApi api) {
-        this.api = api;
-    }
+/**
+ * Factory fpr running drunken events.
+ *
+ * @param api The brewing project api.
+ */
+public record DrunkenEventActionFactory(TheBrewingProjectApi api) implements PlayerActionFactory {
 
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {

@@ -10,6 +10,9 @@ import org.betonquest.betonquest.lib.integration.IntegrationTemplate;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
+/**
+ * The brewing project integration.
+ */
 public class TbpIntegrator extends IntegrationTemplate {
 
     /**
