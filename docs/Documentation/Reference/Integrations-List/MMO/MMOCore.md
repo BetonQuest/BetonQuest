@@ -1,14 +1,14 @@
 # [MMOCore](https://www.spigotmc.org/resources/70575/)
 
-@snippet:versions:minimum@ _1.12-SNAPSHOT_
+@snippet:versions:minimum@ _1.13.1-SNAPSHOT_
 
 ## Actions
 
 ### `MmoClassExperience`
 
-__Context__: @snippet:action-meta:online-offline@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `mmoclassexperience <amount> [level]`  
-__Description__: Adds experience to the players class.
+__Description__: Adds experience to the player's class.
 
 The amount is a number. The `level` argument
 is optional and would convert the amount to levels instead of XP points.
@@ -21,7 +21,7 @@ actions:
 
 ### `MmoProfessionExperience`
 
-__Context__: @snippet:action-meta:online-offline@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `mmoprofessionexperience <profession> <amount> [level]`  
 __Description__: Adds experience in the specified player profession.
 
@@ -36,9 +36,9 @@ actions:
 
 ### `MmoCoreClassPoints`
 
-__Context__: @snippet:action-meta:online-offline@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `mmocoreclasspoints <amount>`  
-__Description__: Gives the player class points.
+__Description__: Awards class points to the player.
 
 The amount is a number.
 
@@ -49,9 +49,9 @@ actions:
 
 ### `MmoCoreSkillPoints`
 
-__Context__: @snippet:action-meta:online-offline@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `mmocoreskillpoints <amount>`  
-__Description__: Gives the player skill points.
+__Description__: Awards skill points to the player.
 
 The amount is a number.
 
@@ -62,9 +62,9 @@ actions:
 
 ### `MmoCoreAttributePoints`
 
-__Context__: @snippet:action-meta:online-offline@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `mmocoreattributepoints <amount>`  
-__Description__: Gives the player attribute points.
+__Description__: Awards attribute points to the player.
 
 The amount is a number.
 
@@ -73,9 +73,9 @@ actions:
   give2: "mmocoreattributepoints 2"
 ```
 
-### `MmoCoreAttributeRealLocationPoints`
+### `MmoCoreAttributeReallocationPoints`
 
-__Context__: @snippet:action-meta:online-offline@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `mmocoreattributereallocationpoints <amount>`  
 __Description__: Gives the player attribute reallocation points.
 
@@ -135,6 +135,20 @@ objectives:
 
 ## Conditions
 
+### `MmoAttribute`
+
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `mmoattribute <attribute> <level> [equal]`  
+__Description__: Whether the player has the specified attribute on the given level or higher.
+
+You can disable this behavior by adding the `equal` argument.
+
+```YAML title="Example"
+conditions:
+  strength2: "mmoattribute strength 2"
+  strength2Equal: "mmoattribute strength 2 equal"
+```
+
 ### `MmoClass`
 
 __Context__: @snippet:condition-meta:online-offline@  
@@ -142,7 +156,7 @@ __Syntax__: `mmoclass <class> [equal]`
 __Description__: Whether the player has the given MMOCore class.
 
 You can check for any class that is not the default class by writing `*` instead of a class name.
-If a level has been specified the player needs to be on that level or higher to meet the condition.
+If a level has been specified, the player needs to be on that level or higher to meet the condition.
 You can disable this behaviour by adding the `equal` argument.
 
 ```YAML title="Example"
@@ -153,23 +167,9 @@ conditions:
   mage5Equal: "mmoclass MAGE 5 equal"
 ```
 
-### `MmoAttribute`
-
-__Context__: @snippet:condition-meta:online-offline@  
-__Syntax__: `mmoattribute <attribute> <level> [equal]`  
-__Description__: Whether the player has the specified attribute on the given level or higher.
-
-You can disable this behaviour by adding the `equal` argument.
-
-```YAML title="Example"
-conditions:
-  strength2: "mmoattribute strength 2"
-  strength2Equal: "mmoattribute strength 2 equal"
-```
-
 ### `MmoProfession`
 
-__Context__: @snippet:condition-meta:online-offline@  
+__Context__: @snippet:condition-meta:online@  
 __Syntax__: `mmoprofession <profession> <level> [equal]`  
 __Description__: Whether the player has the specified profession on the given level or higher.
 

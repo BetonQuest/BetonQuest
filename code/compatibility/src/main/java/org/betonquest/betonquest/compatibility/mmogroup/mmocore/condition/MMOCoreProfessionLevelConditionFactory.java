@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.quest.condition.OnlineConditionAdapter;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.MMOProfessionParser;
@@ -25,6 +26,6 @@ public class MMOCoreProfessionLevelConditionFactory implements PlayerConditionFa
         final Argument<Profession> profession = instruction.parse(MMOProfessionParser.PROFESSION).get();
         final Argument<Number> targetLevel = instruction.number().get();
         final FlagArgument<Boolean> mustBeEqual = instruction.bool().getFlag("equal", true);
-        return new MMOCoreProfessionLevelCondition(profession, targetLevel, mustBeEqual);
+        return new OnlineConditionAdapter(new MMOCoreProfessionLevelCondition(profession, targetLevel, mustBeEqual));
     }
 }

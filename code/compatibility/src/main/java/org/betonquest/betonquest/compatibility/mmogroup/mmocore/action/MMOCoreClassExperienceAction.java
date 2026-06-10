@@ -5,13 +5,13 @@ import net.Indyuce.mmocore.experience.EXPSource;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
-import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.action.PlayerAction;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.action.OnlineAction;
 
 /**
  * Action to add class experience to a player.
  */
-public class MMOCoreClassExperienceAction implements PlayerAction {
+public class MMOCoreClassExperienceAction implements OnlineAction {
 
     /**
      * Amount to grant.
@@ -35,7 +35,7 @@ public class MMOCoreClassExperienceAction implements PlayerAction {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestException {
+    public void execute(final OnlineProfile profile) throws QuestException {
         final int amount = this.amount.getValue(profile).intValue();
         final PlayerData mmoData = PlayerData.get(profile.getPlayerUUID());
 

@@ -1,11 +1,12 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmocore.condition;
 
-import net.Indyuce.mmocore.api.player.PlayerData;
+import net.Indyuce.mmocore.manager.data.OfflinePlayerData;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
+import org.betonquest.betonquest.compatibility.mmogroup.mmocore.MMOCoreUtils;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -14,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 public class MMOCoreClassCondition implements PlayerCondition {
 
     /**
-     * If the current class should be checked instead a specific one.
+     * If the current class should be checked instead of a specific one.
      */
     private static final String CURRENT_CLASS = "*";
 
@@ -36,9 +37,9 @@ public class MMOCoreClassCondition implements PlayerCondition {
 
     /**
      * Create a new class condition.
-     * The class needs to be the active.
+     * The class needs to be active.
      *
-     * @param className  the name of the required class to check or '*' if to check current class
+     * @param className  the name of the required class to check or '*' if to check the current class
      * @param classLevel the required level
      * @param equal      whether the actual must be equal to the target level
      */
@@ -50,7 +51,7 @@ public class MMOCoreClassCondition implements PlayerCondition {
 
     @Override
     public boolean check(final Profile profile) throws QuestException {
-        final PlayerData data = PlayerData.get(profile.getPlayerUUID());
+        final OfflinePlayerData data = MMOCoreUtils.getOfflinePlayerData(profile);
 
         final String actualClassName = data.getProfess().getId();
         final int actualClassLevel = data.getLevel();

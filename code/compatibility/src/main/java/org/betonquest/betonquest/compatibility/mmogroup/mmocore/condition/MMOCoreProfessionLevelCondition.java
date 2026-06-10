@@ -5,13 +5,13 @@ import net.Indyuce.mmocore.experience.Profession;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
-import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.condition.OnlineCondition;
 
 /**
  * Condition to check if the player has a level in a profession.
  */
-public class MMOCoreProfessionLevelCondition implements PlayerCondition {
+public class MMOCoreProfessionLevelCondition implements OnlineCondition {
 
     /**
      * Profession name.
@@ -42,7 +42,7 @@ public class MMOCoreProfessionLevelCondition implements PlayerCondition {
     }
 
     @Override
-    public boolean check(final Profile profile) throws QuestException {
+    public boolean check(final OnlineProfile profile) throws QuestException {
         final PlayerData data = PlayerData.get(profile.getPlayerUUID());
         final int actualLevel = data.getCollectionSkills().getLevel(profession.getValue(profile));
         final int targetLevel = this.targetLevel.getValue(profile).intValue();

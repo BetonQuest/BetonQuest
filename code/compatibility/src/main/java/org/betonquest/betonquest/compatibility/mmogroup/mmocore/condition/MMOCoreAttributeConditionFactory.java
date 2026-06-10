@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.quest.condition.OnlineConditionAdapter;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.MMOAttributeParser;
@@ -25,6 +26,6 @@ public class MMOCoreAttributeConditionFactory implements PlayerConditionFactory 
         final Argument<PlayerAttribute> attribute = instruction.parse(MMOAttributeParser.ATTRIBUTE).get();
         final Argument<Number> targetLevel = instruction.number().get();
         final FlagArgument<Boolean> mustBeEqual = instruction.bool().getFlag("equal", true);
-        return new MMOCoreAttributeCondition(attribute, targetLevel, mustBeEqual);
+        return new OnlineConditionAdapter(new MMOCoreAttributeCondition(attribute, targetLevel, mustBeEqual));
     }
 }
