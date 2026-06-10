@@ -135,24 +135,6 @@ objectives:
 
 ## Conditions
 
-### `MmoClass`
-
-__Context__: @snippet:condition-meta:online-offline@  
-__Syntax__: `mmoclass <class> [equal]`  
-__Description__: Whether the player has the given MMOCore class.
-
-You can check for any class that is not the default class by writing `*` instead of a class name.
-If a level has been specified the player needs to be on that level or higher to meet the condition.
-You can disable this behaviour by adding the `equal` argument.
-
-```YAML title="Example"
-conditions:
-  5: "mmoclass * 5"
-  warrior: "mmoclass WARRIOR"
-  mage5: "mmoclass MAGE 5"
-  mage5Equal: "mmoclass MAGE 5 equal"
-```
-
 ### `MmoAttribute`
 
 __Context__: @snippet:condition-meta:online-offline@  
@@ -165,6 +147,24 @@ You can disable this behaviour by adding the `equal` argument.
 conditions:
   strength2: "mmoattribute strength 2"
   strength2Equal: "mmoattribute strength 2 equal"
+```
+
+### `MmoClass`
+
+__Context__: @snippet:condition-meta:online-offline@  
+__Syntax__: `mmoclass <class> [equal]`  
+__Description__: Whether the player has the given MMOCore class.
+
+You can check for any class that is not the default class by writing `*` instead of a class name.
+If a level has been specified, the player needs to be on that level or higher to meet the condition.
+You can disable this behaviour by adding the `equal` argument.
+
+```YAML title="Example"
+conditions:
+  5: "mmoclass * 5"
+  warrior: "mmoclass WARRIOR"
+  mage5: "mmoclass MAGE 5"
+  mage5Equal: "mmoclass MAGE 5 equal"
 ```
 
 ### `MmoProfession`
