@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.quest.action.OnlineActionAdapter;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 
@@ -23,6 +24,6 @@ public class MMOCoreClassExperienceActionFactory implements PlayerActionFactory 
 
         final Argument<Number> amount = instruction.number().get();
         final FlagArgument<Boolean> level = instruction.bool().getFlag("level", true);
-        return new MMOCoreClassExperienceAction(amount, level);
+        return new OnlineActionAdapter(new MMOCoreClassExperienceAction(amount, level));
     }
 }

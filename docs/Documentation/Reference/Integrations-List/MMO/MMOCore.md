@@ -6,9 +6,9 @@
 
 ### `MmoClassExperience`
 
-__Context__: @snippet:action-meta:online-offline@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `mmoclassexperience <amount> [level]`  
-__Description__: Adds experience to the players class.
+__Description__: Adds experience to the player's class.
 
 The amount is a number. The `level` argument
 is optional and would convert the amount to levels instead of XP points.
