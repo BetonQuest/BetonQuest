@@ -169,7 +169,7 @@ conditions:
 
 ### `MmoProfession`
 
-__Context__: @snippet:condition-meta:online-offline@  
+__Context__: @snippet:condition-meta:online@  
 __Syntax__: `mmoprofession <profession> <level> [equal]`  
 __Description__: Whether the player has the specified profession on the given level or higher.
 
