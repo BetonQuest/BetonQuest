@@ -36,7 +36,7 @@ public final class MetricsUtils {
         return identifiers.stream()
                 .map(identifier -> typeFromId(identifier, instructionApi))
                 .filter(validTypes::contains)
-                .collect(Collectors.toMap(Function.identity(), key -> 1, Integer::sum));
+                .collect(Collectors.toConcurrentMap(Function.identity(), key -> 1, Integer::sum));
     }
 
     @Nullable
