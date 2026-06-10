@@ -61,12 +61,11 @@ public class ChestPutObjective extends DefaultObjective {
      * @param loc                the location of the chest
      * @param occupiedSender     the sender to notify the player if the chest is occupied
      * @param multipleAccess     manages the chest access for one or multiple players
-     * @throws QuestException if there is an error in the instruction
      */
     public ChestPutObjective(final ObjectiveService service,
                              final NullableCondition chestItemCondition, @Nullable final ChestTakeAction chestTakeAction,
                              final Argument<Location> loc, final IngameNotificationSender occupiedSender,
-                             final boolean multipleAccess) throws QuestException {
+                             final boolean multipleAccess) {
         super(service);
         this.chestItemCondition = chestItemCondition;
         this.chestTakeAction = chestTakeAction;
@@ -83,8 +82,8 @@ public class ChestPutObjective extends DefaultObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void onChestOpen(final InventoryOpenEvent event, final OnlineProfile onlineProfile) throws QuestException {
-        checkIsInventory(loc.getValue(onlineProfile));
         if (!multipleAccess && !checkForNoOtherPlayer(event)) {
+            checkIsInventory(loc.getValue(onlineProfile));
             occupiedSender.sendNotification(onlineProfile);
             event.setCancelled(true);
         }
@@ -109,13 +108,14 @@ public class ChestPutObjective extends DefaultObjective {
      */
     public void onChestClose(final InventoryCloseEvent event, final OnlineProfile onlineProfile) throws QuestException {
         final Location targetLocation = loc.getValue(onlineProfile);
-        checkIsInventory(targetLocation);
 
         final Location invLocation = event.getInventory().getLocation();
         if (invLocation != null && targetLocation.equals(invLocation.getBlock().getLocation())) {
+            checkIsInventory(targetLocation);
             checkItems(onlineProfile);
             return;
         }
+
         final InventoryHolder holder = event.getInventory().getHolder(false);
         if (holder instanceof final DoubleChest doubleChest) {
             final Chest leftChest = (Chest) doubleChest.getLeftSide();
