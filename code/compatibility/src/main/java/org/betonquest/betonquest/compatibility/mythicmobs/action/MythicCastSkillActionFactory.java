@@ -10,6 +10,8 @@ import org.betonquest.betonquest.api.quest.action.OnlineActionAdapter;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 
+import java.util.Map;
+
 /**
  * Factory to create {@link MythicCastSkillAction}s from {@link Instruction}s.
  */
@@ -40,6 +42,7 @@ public class MythicCastSkillActionFactory implements PlayerActionFactory {
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<String> skillName = instruction.string().get();
         final BetonQuestLogger log = loggerFactory.create(MythicCastSkillAction.class);
-        return new OnlineActionAdapter(new MythicCastSkillAction(log, instruction.getPackage(), apiHelper, skillName));
+        final Map<String, Argument<String>> parameter = instruction.string().getNamed();
+        return new OnlineActionAdapter(new MythicCastSkillAction(log, instruction.getPackage(), apiHelper, skillName, parameter));
     }
 }

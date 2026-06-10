@@ -75,6 +75,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - item support for the integration `magic`
 - FastStats integration to provide better statistics for BetonQuest
 - `mmostat` action to modify the player's stats using the MythicLib (MmoLib) integration
+- `mcast` skill parameters
 ### Changed
 - Spigot is no longer supported, paper is now required 
 - message.yml file was deleted and instead the lang folder now contains all translations

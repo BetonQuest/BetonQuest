@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.mythicmobs.action;
 
+import io.lumine.mythic.api.skills.SkillMetadata;
 import io.lumine.mythic.bukkit.BukkitAPIHelper;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
@@ -7,6 +8,10 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.action.OnlineAction;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Casts a skill as a player.
@@ -34,25 +39,38 @@ public class MythicCastSkillAction implements OnlineAction {
     private final Argument<String> skillName;
 
     /**
+     * Parameters for skill casting.
+     */
+    private final Map<String, Argument<String>> parameters;
+
+    /**
      * Constructs a new MythicCastSkillAction.
      *
-     * @param log       logs when the skill could not be cast
-     * @param pack      the source pack used as log source
-     * @param apiHelper the BukkitAPIHelper to cast the skill
-     * @param skillName the name of the skill
+     * @param log        logs when the skill could not be cast
+     * @param pack       the source pack used as log source
+     * @param apiHelper  the BukkitAPIHelper to cast the skill
+     * @param skillName  the name of the skill
+     * @param parameters the parameters for skill casting
      */
     public MythicCastSkillAction(final BetonQuestLogger log, final QuestPackage pack, final BukkitAPIHelper apiHelper,
-                                 final Argument<String> skillName) {
+                                 final Argument<String> skillName, final Map<String, Argument<String>> parameters) {
         this.log = log;
         this.pack = pack;
         this.apiHelper = apiHelper;
         this.skillName = skillName;
+        this.parameters = parameters;
     }
 
     @Override
     public void execute(final OnlineProfile profile) throws QuestException {
         final String name = skillName.getValue(profile);
-        if (!apiHelper.castSkill(profile.getPlayer(), name)) {
+        final Map<String, String> parameters = new HashMap<>(this.parameters.size());
+        for (final Map.Entry<String, Argument<String>> entry : this.parameters.entrySet()) {
+            final String value = entry.getValue().getValue(profile);
+            parameters.put(entry.getKey(), value);
+        }
+        final Consumer<SkillMetadata> consumer = meta -> meta.getParameters().putAll(parameters);
+        if (!apiHelper.castSkill(profile.getPlayer(), name, consumer)) {
             log.debug(pack, "Could not cast skill '" + name + "' for profile " + profile);
         }
     }
