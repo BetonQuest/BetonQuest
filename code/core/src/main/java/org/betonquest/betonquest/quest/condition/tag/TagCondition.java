@@ -34,6 +34,6 @@ public class TagCondition implements PlayerCondition {
 
     @Override
     public boolean check(final Profile profile) throws QuestException {
-        return dataStorage.get(profile).tags().has(tag.getValue(profile));
+        return dataStorage.getOffline(profile).tags().has(tag.getValue(profile));
     }
 }

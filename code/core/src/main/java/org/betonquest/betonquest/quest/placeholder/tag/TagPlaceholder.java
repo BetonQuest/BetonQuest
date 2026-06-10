@@ -30,6 +30,6 @@ public class TagPlaceholder extends AbstractTagPlaceholder<PlayerDataStorage> im
 
     @Override
     public String getValue(final Profile profile) throws QuestException {
-        return getValueFor(profile, data.get(profile).tags().get());
+        return getValueFor(profile, data.getOffline(profile).tags().get());
     }
 }
