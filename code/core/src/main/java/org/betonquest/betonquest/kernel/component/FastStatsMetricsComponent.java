@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.kernel.component;
 
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.version.Version;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.faststats.FastStatsMetrics;
@@ -34,7 +35,7 @@ public class FastStatsMetricsComponent extends AbstractCoreComponent {
 
     @Override
     public Set<Class<?>> requires() {
-        return Set.of(JavaPlugin.class, Compatibility.class, PluginDescriptionFile.class);
+        return Set.of(JavaPlugin.class, Compatibility.class, PluginDescriptionFile.class, BetonQuestLoggerFactory.class);
     }
 
     @Override
@@ -48,9 +49,11 @@ public class FastStatsMetricsComponent extends AbstractCoreComponent {
     }
 
     @Override
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     protected void load(final DependencyProvider dependencyProvider) {
         final JavaPlugin plugin = getDependency(JavaPlugin.class);
         final PluginDescriptionFile descriptionFile = getDependency(PluginDescriptionFile.class);
+        final BetonQuestLoggerFactory loggerFactory = getDependency(BetonQuestLoggerFactory.class);
 
         final Version version = BetonQuestVersion.parse(descriptionFile.getVersion());
         final Optional<String> typeElement = version.getNamedElement("type");
@@ -60,9 +63,12 @@ public class FastStatsMetricsComponent extends AbstractCoreComponent {
                 .filter(injectedDependency -> FastStatsMetricsProvider.class.isAssignableFrom(injectedDependency.type()))
                 .map(injectedDependency -> (FastStatsMetricsProvider) injectedDependency.dependency())
                 .collect(Collectors.toSet());
-        final FastStatsMetrics fastStatsMetrics = new FastStatsMetrics(plugin, TOKEN, fastStatsMetricsProviders, fastStatsErrorTrackingEnabled);
-        fastStatsMetrics.enable();
-
-        dependencyProvider.take(FastStatsMetrics.class, fastStatsMetrics);
+        try {
+            final FastStatsMetrics fastStatsMetrics = new FastStatsMetrics(plugin, TOKEN, fastStatsMetricsProviders, fastStatsErrorTrackingEnabled);
+            fastStatsMetrics.enable();
+            dependencyProvider.take(FastStatsMetrics.class, fastStatsMetrics);
+        } catch (final Exception e) {
+            loggerFactory.create(FastStatsMetrics.class).error("Could not enable FastStats metrics!", e);
+        }
     }
 }

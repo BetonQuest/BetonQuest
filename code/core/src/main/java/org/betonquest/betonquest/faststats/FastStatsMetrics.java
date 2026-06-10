@@ -5,7 +5,9 @@ import dev.faststats.Token;
 import dev.faststats.bukkit.BukkitContext;
 import dev.faststats.data.Metric;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -16,6 +18,7 @@ public class FastStatsMetrics {
     /**
      * The error tracker to use for faststats error tracking.
      */
+    @Nullable
     private final ErrorTracker errorTracker;
 
     /**
@@ -33,8 +36,6 @@ public class FastStatsMetrics {
      */
     public FastStatsMetrics(final Plugin plugin, @Token final String token, final Set<FastStatsMetricsProvider> metricsProviders,
                             final boolean logErrors) {
-        this.errorTracker = ErrorTracker.contextAware();
-        configureErrorTracker();
         final BukkitContext.Factory context = new BukkitContext.Factory(plugin, token);
         context.metrics(factory -> {
             for (final FastStatsMetricsProvider provider : metricsProviders) {
@@ -45,12 +46,19 @@ public class FastStatsMetrics {
             return factory.create();
         });
         if (logErrors) {
+            this.errorTracker = ErrorTracker.contextAware();
+            configureErrorTracker();
             context.errorTrackerService(this.errorTracker);
+        } else {
+            this.errorTracker = null;
         }
         this.context = context.create();
     }
 
     private void configureErrorTracker() {
+        if (errorTracker == null) {
+            return;
+        }
         errorTracker
                 .anonymize("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$", "[[E-MAIL]]")
                 .anonymize("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", "[[UUID]]");
@@ -61,8 +69,8 @@ public class FastStatsMetrics {
      *
      * @return the error tracker
      */
-    public ErrorTracker getErrorTracker() {
-        return errorTracker;
+    public Optional<ErrorTracker> getErrorTracker() {
+        return Optional.ofNullable(errorTracker);
     }
 
     /**
