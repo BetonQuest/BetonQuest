@@ -62,9 +62,9 @@ actions:
 
 ### `MmoCoreAttributePoints`
 
-__Context__: @snippet:action-meta:online-offline@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `mmocoreattributepoints <amount>`  
-__Description__: Gives the player attribute points.
+__Description__: Awards attribute points to the player.
 
 The amount is a number.
 
