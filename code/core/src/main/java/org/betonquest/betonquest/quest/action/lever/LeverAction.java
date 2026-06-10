@@ -62,7 +62,7 @@ public class LeverAction implements NullableAction {
         };
         final Block relative = block.getRelative(attachedTo);
 
-        final BlockState relativeState = relative.getState();
+        final BlockState relativeState = relative.getState(true);
         if (relativeState instanceof final Container container) {
             container.getInventory().clear();
         }
