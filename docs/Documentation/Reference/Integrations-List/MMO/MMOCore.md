@@ -21,7 +21,7 @@ actions:
 
 ### `MmoProfessionExperience`
 
-__Context__: @snippet:action-meta:online-offline@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `mmoprofessionexperience <profession> <amount> [level]`  
 __Description__: Adds experience in the specified player profession.
 
