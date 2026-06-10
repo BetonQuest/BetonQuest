@@ -49,9 +49,9 @@ actions:
 
 ### `MmoCoreSkillPoints`
 
-__Context__: @snippet:action-meta:online-offline@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `mmocoreskillpoints <amount>`  
-__Description__: Gives the player skill points.
+__Description__: Awards skill points to the player.
 
 The amount is a number.
 
