@@ -44,11 +44,10 @@ Make sure the style matches using the following checklists:
 
     - [x] The **headline** of the reference list element should be the precise name of the action, condition, etc.
     - [x] The element should be inserted into the list in alphabetical order, making it easy to find.
-    - [x] The **context** should be defined according to the implementation. Make sure to use the correct snippet.
-    Refer to the [Definition Encyclopedia](../../../Documentation/Reference/Definition-Encyclopedia.md#context) for 
-    more information.
-    - [x] The **syntax** should be defined according to the implementation. Use `<name>` for required parameters, 
-    `[name]` for optional and `{name}` for flag parameters.
+    - [x] The [**context**](../../../Documentation/Reference/Definition-Encyclopedia.md#context) should be defined according to the implementation. 
+    Make sure to use the correct snippet.
+    - [x] The [**syntax**](../../../Documentation/Reference/Definition-Encyclopedia.md#syntax) should be defined according to the implementation. 
+    Use `<name>` for required parameters, `[name]` for optional and `{name}` for flag parameters. `+[...]` should be used for additional parameters.
     - [x] The short **description** should be written in a way that is easy to understand.
     - [x] The longer **description** may be used to provide additional information about the parameters or 
     special behaviors of the element, but may be omitted if it is not necessary.
@@ -57,9 +56,11 @@ Make sure the style matches using the following checklists:
 
     - [x] If the element has _at least one_ parameter, there has to be a **table** listing the parameters. 
     If the element has no parameters, the table may be omitted.
-    - [x] The parameters should be listed in identical order as they are defined in the **syntax** above.
-    - [x] Each parameters **name** should be defined in the first column and the expected data format after a linebreak inside `[]` brackets. 
-    - [x] Each parameters **type** should be defined in the second column and its defaults after a linebreak inside `[]` brackets.
+    - [x] The parameters should be listed in identical order as they are defined in the [**syntax**](../../../Documentation/Reference/Definition-Encyclopedia.md#syntax) above.
+    - [x] Each parameters **name** should be defined in the first column and the expected 
+    [**data type**](../../../Documentation/Reference/Definition-Encyclopedia.md#basic-types) after a linebreak inside `[]` brackets. 
+    - [x] Each parameters [**type**](../../../Documentation/Reference/Definition-Encyclopedia.md#parameter-type) 
+    should be defined in the second column and its defaults after a linebreak inside `[]` brackets.
     - [x] The **explaination** of each parameter should be written in a way that is precise yet easy to understand.
 
 ??? check "Examples"
