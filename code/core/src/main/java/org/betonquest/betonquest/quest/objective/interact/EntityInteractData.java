@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.entity.Entity;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -19,7 +20,10 @@ public class EntityInteractData extends CountingObjective.CountingData {
 
     /**
      * The set of entities that have been interacted with.
+     * This value is only nullable to a rare incident in which the super call
+     * in the instructor accesses the {@link #toString()} method.
      */
+    @Nullable
     private final Set<UUID> entities;
 
     /**
@@ -57,6 +61,6 @@ public class EntityInteractData extends CountingObjective.CountingData {
 
     @Override
     public String toString() {
-        return super.toString() + ";" + entities.stream().map(UUID::toString).collect(Collectors.joining("/"));
+        return super.toString() + ";" + (entities == null ? "" : entities.stream().map(UUID::toString).collect(Collectors.joining("/")));
     }
 }
