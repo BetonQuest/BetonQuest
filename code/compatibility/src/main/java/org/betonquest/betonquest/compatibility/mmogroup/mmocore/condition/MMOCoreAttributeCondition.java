@@ -5,13 +5,13 @@ import net.Indyuce.mmocore.api.player.attribute.PlayerAttribute;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
-import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.condition.OnlineCondition;
 
 /**
  * Condition to check if the player has a level in an attribute.
  */
-public class MMOCoreAttributeCondition implements PlayerCondition {
+public class MMOCoreAttributeCondition implements OnlineCondition {
 
     /**
      * Attribute to check.
@@ -42,7 +42,7 @@ public class MMOCoreAttributeCondition implements PlayerCondition {
     }
 
     @Override
-    public boolean check(final Profile profile) throws QuestException {
+    public boolean check(final OnlineProfile profile) throws QuestException {
         final int targetLevel = this.targetLevel.getValue(profile).intValue();
         final int actualLevel = PlayerData.get(profile.getPlayerUUID()).getAttributes().getAttribute(attribute.getValue(profile));
 

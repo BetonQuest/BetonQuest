@@ -137,11 +137,11 @@ objectives:
 
 ### `MmoAttribute`
 
-__Context__: @snippet:condition-meta:online-offline@  
+__Context__: @snippet:condition-meta:online@  
 __Syntax__: `mmoattribute <attribute> <level> [equal]`  
 __Description__: Whether the player has the specified attribute on the given level or higher.
 
-You can disable this behaviour by adding the `equal` argument.
+You can disable this behavior by adding the `equal` argument.
 
 ```YAML title="Example"
 conditions:
