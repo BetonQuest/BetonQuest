@@ -105,7 +105,7 @@ public class PointObjective extends DefaultObjective {
         if (event.getState() != ObjectiveState.ACTIVE) {
             return;
         }
-        final PlayerData playerData = playerDataStorage.get(profile);
+        final PlayerData playerData = playerDataStorage.getOffline(profile);
         final Optional<Integer> points = playerData.points().get(category.getValue(profile));
         if (points.isPresent()) {
             checkProgress(profile, points.get());

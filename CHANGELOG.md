@@ -200,6 +200,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `firework` colors de-/serializing in `simple` item when there is no color
 - `nujobs_payment` objective wrongly using target amount for everything
 - `MMOCore` actions and conditions now no longer wrongly accept offline players
+- offline player data access in multiple elements supporting offline context
 ### Security
 
 ## [2.2.1] - 2025-01-12
