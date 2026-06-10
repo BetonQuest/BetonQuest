@@ -73,9 +73,9 @@ actions:
   give2: "mmocoreattributepoints 2"
 ```
 
-### `MmoCoreAttributeRealLocationPoints`
+### `MmoCoreAttributeReallocationPoints`
 
-__Context__: @snippet:action-meta:online-offline@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `mmocoreattributereallocationpoints <amount>`  
 __Description__: Gives the player attribute reallocation points.
 
