@@ -36,9 +36,9 @@ actions:
 
 ### `MmoCoreClassPoints`
 
-__Context__: @snippet:action-meta:online-offline@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `mmocoreclasspoints <amount>`  
-__Description__: Gives the player class points.
+__Description__: Awards class points to the player.
 
 The amount is a number.
 

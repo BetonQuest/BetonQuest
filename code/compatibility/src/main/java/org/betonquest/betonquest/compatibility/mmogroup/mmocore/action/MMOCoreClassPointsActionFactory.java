@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmocore.action;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.quest.action.OnlineActionAdapter;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 
@@ -20,6 +21,6 @@ public class MMOCoreClassPointsActionFactory implements PlayerActionFactory {
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<Number> amount = instruction.number().get();
-        return new MMOCoreClassPointsAction(amount);
+        return new OnlineActionAdapter(new MMOCoreClassPointsAction(amount));
     }
 }
