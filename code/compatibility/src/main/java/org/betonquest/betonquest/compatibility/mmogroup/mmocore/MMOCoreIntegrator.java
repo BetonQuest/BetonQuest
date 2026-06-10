@@ -23,7 +23,7 @@ public class MMOCoreIntegrator extends IntegrationTemplate {
     /**
      * The minimum required version of MMOCore.
      */
-    public static final String REQUIRED_VERSION = "1.12-SNAPSHOT";
+    public static final String REQUIRED_VERSION = "1.13.1-SNAPSHOT";
 
     /**
      * The default constructor.
