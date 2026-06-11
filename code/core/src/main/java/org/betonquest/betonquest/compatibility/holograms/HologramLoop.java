@@ -204,7 +204,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramIdentifier, 
     private ItemLine parseItemLine(final QuestPackage pack, final String line) throws QuestException {
         try {
             final Argument<ItemWrapper> parsedValue = instructionApi.createForArgument(pack, line).item().get();
-            return new ItemLine(parsedValue.getValue(null).generate(null));
+            return new ItemLine(parsedValue.getValue(null));
         } catch (final QuestException e) {
             throw new QuestException("Error while loading item: " + e.getMessage(), e);
         }

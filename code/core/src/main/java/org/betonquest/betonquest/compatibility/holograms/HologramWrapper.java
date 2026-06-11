@@ -115,7 +115,7 @@ public record HologramWrapper(QuestExceptionHandler handler, ConditionManager co
         for (final AbstractLine line : cleanedLines) {
             final int finalIndex = index;
             for (final BetonHologram hologram : holograms) {
-                line.setLine(hologram, finalIndex);
+                handler.handle(() -> line.setLine(hologram, finalIndex));
             }
             index += line.getLinesAdded();
         }
@@ -132,8 +132,9 @@ public record HologramWrapper(QuestExceptionHandler handler, ConditionManager co
         int index = 0;
         for (final AbstractLine line : cleanedLines) {
             if (line.isNotStaticText()) {
+                final int finalIndex = index;
                 for (final BetonHologram hologram : holograms) {
-                    line.setLine(hologram, index);
+                    handler.handle(() -> line.setLine(hologram, finalIndex));
                 }
             }
             index += line.getLinesAdded();
