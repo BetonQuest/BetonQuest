@@ -6,6 +6,7 @@ import com.github.retrooper.packetevents.protocol.chat.message.ChatMessage_v1_19
 import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerChatMessage;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDisguisedChat;
+import net.kyori.adventure.text.Component;
 
 /**
  * A PacketWrapperFunction implementation for handling WrapperPlayServerChatMessage packets.
@@ -27,7 +28,8 @@ public class FunctionWrapperPlayServerChatMessage implements PacketWrapperFuncti
     public PacketWrapper<?> transform(final WrapperPlayServerChatMessage packetWrapper) {
         final ChatMessage message = packetWrapper.getMessage();
         if (message instanceof final ChatMessage_v1_19_3 chatMessage) {
-            return new WrapperPlayServerDisguisedChat(message.getChatContent(), chatMessage.getChatFormatting());
+            final Component chatContent = chatMessage.getUnsignedChatContent().orElse(message.getChatContent());
+            return new WrapperPlayServerDisguisedChat(chatContent, chatMessage.getChatFormatting());
         }
         return copy(packetWrapper);
     }
