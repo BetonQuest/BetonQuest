@@ -15,16 +15,27 @@ import org.bukkit.block.Chest;
 import org.bukkit.block.DoubleChest;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Requires the player to put items in the chest. Items can optionally NOT
  * disappear once the chest is closed.
  */
 public class ChestPutObjective extends DefaultObjective {
+
+    /**
+     * Inventory types without a persistent inventory.
+     */
+    private static final Set<InventoryType> IGNORED_TYPES = EnumSet.of(InventoryType.WORKBENCH, InventoryType.CRAFTING,
+            InventoryType.ENCHANTING, InventoryType.PLAYER, InventoryType.CREATIVE, InventoryType.MERCHANT, InventoryType.ANVIL,
+            InventoryType.SMITHING, InventoryType.BEACON, InventoryType.LOOM, InventoryType.CARTOGRAPHY, InventoryType.GRINDSTONE,
+            InventoryType.STONECUTTER, InventoryType.COMPOSTER);
 
     /**
      * Condition to check if the items are in the chest.
@@ -107,6 +118,9 @@ public class ChestPutObjective extends DefaultObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void onChestClose(final InventoryCloseEvent event, final OnlineProfile onlineProfile) throws QuestException {
+        if (IGNORED_TYPES.contains(event.getInventory().getType())) {
+            return;
+        }
         final Location targetLocation = loc.getValue(onlineProfile);
 
         final Location invLocation = event.getInventory().getLocation();
