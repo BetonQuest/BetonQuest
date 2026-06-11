@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.holograms.lines;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 
 /**
@@ -36,8 +37,9 @@ public abstract class AbstractLine {
      *
      * @param hologram target hologram
      * @param index    the starting index
+     * @throws QuestException if the already pre-validated line could not be set
      */
-    public abstract void setLine(BetonHologram hologram, int index);
+    public abstract void setLine(BetonHologram hologram, int index) throws QuestException;
 
     /**
      * Gets the amount of lines added when {@link #setLine(BetonHologram, int)} is called.
