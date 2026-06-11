@@ -190,7 +190,19 @@ In both cases, you can choose from the following conversation styles:
             
             The delay between lines (in ticks) can be configured with the [`slowtellraw`](../Reference/Plugin-Config.md/#io-conversation-io-settings) config option.
         ![SimpleIO](../../_media/content/Documentation/Conversations/SimpleIO.png)
-
+    === "`dialog`"
+        A modern conversation style that works with some of Minecraft's native controls.
+        
+        @snippet:versions:mc-1.21.8@
+        
+        When `set_speed` is disabled the player won't be able to be moved by external sources and get a "rubber banding" like effect when moving/selecting options.
+        
+        ??? "Customizing the Menu Style"
+            The formatting of this style can be configured with the [`menu` config option](../Reference/Plugin-Config.md/#io-conversation-io-settings).
+    
+        <video controls loop src="../../../_media/content/Documentation/Conversations/DialogIO_NPC_TITLE.mp4" width="49%"></video><video controls loop src="../../../_media/content/Documentation/Conversations/Dialog_FULL_BODY.mp4" width="49%"></video>
+        
+        *The blue overlay shows the player's key presses.*
 
 ## Cross-Conversation Pointers
 
