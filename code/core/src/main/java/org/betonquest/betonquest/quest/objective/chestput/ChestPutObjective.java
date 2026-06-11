@@ -14,6 +14,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.DoubleChest;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.InventoryHolder;
@@ -93,8 +94,10 @@ public class ChestPutObjective extends DefaultObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void onChestOpen(final InventoryOpenEvent event, final OnlineProfile onlineProfile) throws QuestException {
-        if (!multipleAccess && !checkForNoOtherPlayer(event)) {
-            checkIsInventory(loc.getValue(onlineProfile));
+        if (multipleAccess || IGNORED_TYPES.contains(event.getInventory().getType())) {
+            return;
+        }
+        if (!checkForNoOtherPlayer(event) && isRelevantBlock(event, onlineProfile)) {
             occupiedSender.sendNotification(onlineProfile);
             event.setCancelled(true);
         }
@@ -121,13 +124,18 @@ public class ChestPutObjective extends DefaultObjective {
         if (IGNORED_TYPES.contains(event.getInventory().getType())) {
             return;
         }
+        if (isRelevantBlock(event, onlineProfile)) {
+            checkItems(onlineProfile);
+        }
+    }
+
+    private boolean isRelevantBlock(final InventoryEvent event, final OnlineProfile onlineProfile) throws QuestException {
         final Location targetLocation = loc.getValue(onlineProfile);
 
         final Location invLocation = event.getInventory().getLocation();
         if (invLocation != null && targetLocation.equals(invLocation.getBlock().getLocation())) {
             checkIsInventory(targetLocation);
-            checkItems(onlineProfile);
-            return;
+            return true;
         }
 
         final InventoryHolder holder = event.getInventory().getHolder(false);
@@ -135,13 +143,12 @@ public class ChestPutObjective extends DefaultObjective {
             final Chest leftChest = (Chest) doubleChest.getLeftSide();
             final Chest rightChest = (Chest) doubleChest.getRightSide();
             if (leftChest == null || rightChest == null) {
-                return;
+                return false;
             }
-            if (leftChest.getLocation().getBlock().getLocation().equals(targetLocation)
-                    || rightChest.getLocation().getBlock().getLocation().equals(targetLocation)) {
-                checkItems(onlineProfile);
-            }
+            return leftChest.getLocation().getBlock().getLocation().equals(targetLocation)
+                    || rightChest.getLocation().getBlock().getLocation().equals(targetLocation);
         }
+        return false;
     }
 
     private void checkItems(final OnlineProfile onlineProfile) throws QuestException {
