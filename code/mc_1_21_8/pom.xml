@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.betonquest</groupId>
+    <artifactId>parent</artifactId>
+    <version>2.10.0</version>
+  </parent>
+
+  <name>BetonQuest Minecraft 1.21.8</name>
+  <groupId>org.betonquest.betonquest</groupId>
+  <artifactId>mc_1_21_8</artifactId>
+  <version>${revision}${changelist}</version>
+  <description>Provides the Minecraft 1.21.8 Compatibility of BetonQuest</description>
+
+  <properties>
+    <revision>3.0.0</revision>
+    <changelist>-SNAPSHOT</changelist>
+    <pit.report.skip>true</pit.report.skip>
+
+    <!-- module versions -->
+    <betonquest.core.version>3.0.0${changelist}</betonquest.core.version>
+
+    <!-- dependency versions -->
+    <paper-api.version>1.21.8-R0.1-SNAPSHOT</paper-api.version>
+    <betonquest.mc_1_20_6.version>3.0.0${changelist}</betonquest.mc_1_20_6.version>
+  </properties>
+
+  <dependencies>
+    <!-- from betonquest module -->
+    <dependency>
+      <groupId>org.betonquest.betonquest</groupId>
+      <artifactId>core</artifactId>
+      <version>${betonquest.core.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.betonquest.betonquest</groupId>
+      <artifactId>mc_1_20_6</artifactId>
+      <version>${betonquest.mc_1_20_6.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- from papermc repository -->
+    <dependency>
+      <groupId>io.papermc.paper</groupId>
+      <artifactId>paper-api</artifactId>
+      <version>${paper-api.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <repositories>
+    <repository>
+      <id>betonquest-repo</id>
+      <url>https://repo.betonquest.org/betonquest/</url>
+    </repository>
+    <repository>
+      <id>betonquest-papermc-repo</id>
+      <url>https://repo.papermc.io/repository/maven-public/</url>
+    </repository>
+  </repositories>
+</project>
+

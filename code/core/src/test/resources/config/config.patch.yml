@@ -8,6 +8,27 @@
   - type: SET
     key: copied
     value: resource
+  - type: SET
+    key: conversation.io.dialog.layout
+    value: NPC_TITLE
+  - type: SET
+    key: conversation.io.dialog.button-render-padding
+    value: 13
+  - type: SET
+    key: conversation.io.dialog.default-button-width
+    value: -1
+  - type: SET
+    key: conversation.io.dialog.close-button.enabled
+    value: true
+  - type: SET
+    key: conversation.io.dialog.close-button.text
+    value: <red>Close
+  - type: SET
+    key: conversation.io.dialog.close-button.width
+    value: -1
+  - type: SET
+    key: conversation.io.dialog.close-button.close-with-escape
+    value: true
 
 "2.0.0.1":
   - type: SET
