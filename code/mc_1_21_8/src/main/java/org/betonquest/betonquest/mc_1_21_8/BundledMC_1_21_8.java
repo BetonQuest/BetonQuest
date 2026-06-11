@@ -35,7 +35,7 @@ public class BundledMC_1_21_8 implements Integration {
         final CoreComponentLoader componentLoader = betonQuest.getComponentLoader();
         final FontRegistry fontRegistry = componentLoader.get(FontRegistry.class);
 
-        componentLoader.get(ConversationIORegistry.class).register("dialog_bq", new DialogConvIOFactory(
+        componentLoader.get(ConversationIORegistry.class).register("dialog", new DialogConvIOFactory(
                 betonQuest.getPluginConfig(),
                 componentLoader.get(ConversationColors.class),
                 new ComponentLineWrapper(fontRegistry)
