@@ -47,7 +47,7 @@ public class ChestGiveAction implements NullableAction {
         final Block block = location.getValue(profile).getBlock();
         final InventoryHolder chest;
         try {
-            chest = (InventoryHolder) block.getState();
+            chest = (InventoryHolder) block.getState(false);
         } catch (final ClassCastException e) {
             throw new QuestException("Trying to put items in chest, but there's no chest! Location: X"
                     + block.getX() + " Y" + block.getY() + " Z" + block.getZ(), e);

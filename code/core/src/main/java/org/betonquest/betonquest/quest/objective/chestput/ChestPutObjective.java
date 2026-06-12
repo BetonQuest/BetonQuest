@@ -14,17 +14,29 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.DoubleChest;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Requires the player to put items in the chest. Items can optionally NOT
  * disappear once the chest is closed.
  */
 public class ChestPutObjective extends DefaultObjective {
+
+    /**
+     * Inventory types without a persistent inventory.
+     */
+    private static final Set<InventoryType> IGNORED_TYPES = EnumSet.of(InventoryType.WORKBENCH, InventoryType.CRAFTING,
+            InventoryType.ENCHANTING, InventoryType.PLAYER, InventoryType.CREATIVE, InventoryType.MERCHANT, InventoryType.ANVIL,
+            InventoryType.SMITHING, InventoryType.BEACON, InventoryType.LOOM, InventoryType.CARTOGRAPHY, InventoryType.GRINDSTONE,
+            InventoryType.STONECUTTER, InventoryType.COMPOSTER);
 
     /**
      * Condition to check if the items are in the chest.
@@ -61,12 +73,11 @@ public class ChestPutObjective extends DefaultObjective {
      * @param loc                the location of the chest
      * @param occupiedSender     the sender to notify the player if the chest is occupied
      * @param multipleAccess     manages the chest access for one or multiple players
-     * @throws QuestException if there is an error in the instruction
      */
     public ChestPutObjective(final ObjectiveService service,
                              final NullableCondition chestItemCondition, @Nullable final ChestTakeAction chestTakeAction,
                              final Argument<Location> loc, final IngameNotificationSender occupiedSender,
-                             final boolean multipleAccess) throws QuestException {
+                             final boolean multipleAccess) {
         super(service);
         this.chestItemCondition = chestItemCondition;
         this.chestTakeAction = chestTakeAction;
@@ -83,8 +94,10 @@ public class ChestPutObjective extends DefaultObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void onChestOpen(final InventoryOpenEvent event, final OnlineProfile onlineProfile) throws QuestException {
-        checkIsInventory(loc.getValue(onlineProfile));
-        if (!multipleAccess && !checkForNoOtherPlayer(event)) {
+        if (multipleAccess || IGNORED_TYPES.contains(event.getInventory().getType())) {
+            return;
+        }
+        if (!checkForNoOtherPlayer(event) && isRelevantBlock(event, onlineProfile)) {
             occupiedSender.sendNotification(onlineProfile);
             event.setCancelled(true);
         }
@@ -108,26 +121,34 @@ public class ChestPutObjective extends DefaultObjective {
      * @throws QuestException if argument resolving for the profile fails
      */
     public void onChestClose(final InventoryCloseEvent event, final OnlineProfile onlineProfile) throws QuestException {
+        if (IGNORED_TYPES.contains(event.getInventory().getType())) {
+            return;
+        }
+        if (isRelevantBlock(event, onlineProfile)) {
+            checkItems(onlineProfile);
+        }
+    }
+
+    private boolean isRelevantBlock(final InventoryEvent event, final OnlineProfile onlineProfile) throws QuestException {
         final Location targetLocation = loc.getValue(onlineProfile);
-        checkIsInventory(targetLocation);
 
         final Location invLocation = event.getInventory().getLocation();
         if (invLocation != null && targetLocation.equals(invLocation.getBlock().getLocation())) {
-            checkItems(onlineProfile);
-            return;
+            checkIsInventory(targetLocation);
+            return true;
         }
-        final InventoryHolder holder = event.getInventory().getHolder();
+
+        final InventoryHolder holder = event.getInventory().getHolder(false);
         if (holder instanceof final DoubleChest doubleChest) {
             final Chest leftChest = (Chest) doubleChest.getLeftSide();
             final Chest rightChest = (Chest) doubleChest.getRightSide();
             if (leftChest == null || rightChest == null) {
-                return;
+                return false;
             }
-            if (leftChest.getLocation().getBlock().getLocation().equals(targetLocation)
-                    || rightChest.getLocation().getBlock().getLocation().equals(targetLocation)) {
-                checkItems(onlineProfile);
-            }
+            return leftChest.getLocation().getBlock().getLocation().equals(targetLocation)
+                    || rightChest.getLocation().getBlock().getLocation().equals(targetLocation);
         }
+        return false;
     }
 
     private void checkItems(final OnlineProfile onlineProfile) throws QuestException {
@@ -141,10 +162,10 @@ public class ChestPutObjective extends DefaultObjective {
 
     private void checkIsInventory(final Location targetChestLocation) throws QuestException {
         final Block block = targetChestLocation.getBlock();
-        if (!(block.getState() instanceof InventoryHolder)) {
+        if (!(block.getState(false) instanceof InventoryHolder)) {
             final World world = targetChestLocation.getWorld();
             throw new QuestException(
-                    String.format("Block at location x:%d y:%d z:%d in world '%s' isn't a chest!",
+                    "Block at location x:%d y:%d z:%d in world '%s' isn't a chest!".formatted(
                             targetChestLocation.getBlockX(),
                             targetChestLocation.getBlockY(),
                             targetChestLocation.getBlockZ(),

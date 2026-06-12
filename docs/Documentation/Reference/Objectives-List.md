@@ -137,7 +137,7 @@ objectives:
 ## `ChestPut`
 
 __Context__: @snippet:objective-meta:online@  
-__Syntax__: `chestput <location> <items> [items-stay]`  
+__Syntax__: `chestput <location> <items> [items-stay] [multipleaccess]`  
 __Description__: The player has to put the specified items into the specified chest.
 
 First argument is a location of the chest, second argument is a list of items (from _items_ section),
@@ -146,6 +146,8 @@ You can also add amount of items after a colon.
 The items will be removed upon completing the objective unless you add `items-stay` optional argument.
 By default, only one player can look into the chest at the same time. You can change it by adding the key 
 `multipleaccess`.
+
+Note that the access to double chests can't be blocked and multiple players can open it even without `multipleaccess`.
 
 ```YAML title="Example"
 objectives:
