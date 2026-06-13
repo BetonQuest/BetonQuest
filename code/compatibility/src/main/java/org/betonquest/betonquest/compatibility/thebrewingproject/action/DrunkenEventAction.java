@@ -23,7 +23,7 @@ public record DrunkenEventAction(Argument<String> drunkenEventNameArgument,
                 .stream()
                 .filter(event -> event.key().equals(BreweryKey.parse(drunkenEventName)))
                 .findFirst()
-                .orElseThrow(() -> new QuestException(String.format("Unknown drunken event: " + drunkenEventName)));
+                .orElseThrow(() -> new QuestException("Unknown drunken event: %s".formatted(drunkenEventName)));
         api.getDrunkenEventManager().runEvent(profile.getPlayerUUID(), drunkEvent);
     }
 }

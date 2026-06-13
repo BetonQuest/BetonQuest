@@ -26,7 +26,7 @@ public record BrewItemWrapper(Argument<String> recipeNameArgument, Argument<Brew
         final String recipeName = recipeNameArgument.getValue(profile);
         final BrewQuality brewQuality = brewQualityArgument.getValue(profile);
         final Recipe<ItemStack> recipe = api.getRecipeRegistry().getRecipe(recipeName)
-                .orElseThrow(() -> new QuestException(String.format("Unknown recipe: %s", recipeName)));
+                .orElseThrow(() -> new QuestException("Unknown recipe: %s".formatted(recipeName)));
         return new BrewItem(recipe, recipeName, brewQuality, api.getBrewManager());
     }
 }
