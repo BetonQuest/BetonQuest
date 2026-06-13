@@ -107,9 +107,12 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
         if (bookMeta.hasPages()) {
             final StringBuilder builder = new StringBuilder();
             for (final Component page : bookMeta.pages()) {
-                builder.append(MiniMessage.miniMessage().serialize(page).replace("|", "\\|")).append('|');
+                builder.append('|').append(MiniMessage.miniMessage().serialize(page)
+                        .replace("|", "\\|")
+                        .replace("\"", "\\\"")
+                );
             }
-            return " \"text:@[minimessage]" + builder.substring(0, builder.length() - 1) + "\"";
+            return " \"text:@[minimessage]" + builder.substring(1) + "\"";
         }
         return "";
     }

@@ -410,9 +410,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                  "a" -> completeActions(args);
             case "items",
                  "item",
-                 "i" -> completeItems(false, args);
+                 "i" -> completeItems(true, args);
             case "give",
-                 "g" -> completeItems(true, args);
+                 "g" -> completeItems(false, args);
             case "objectives",
                  "objective",
                  "o" -> completeObjectives(args);
@@ -909,11 +909,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Returns a list including all possible options for tab complete of the
      * /betonquest item and /betonquest give commands.
      */
-    private Optional<List<String>> completeItems(final boolean give, final String... args) {
+    private Optional<List<String>> completeItems(final boolean suggestSerializers, final String... args) {
         if (args.length == 2) {
             return completeId(args, AccessorType.ITEMS);
         }
-        if (give && args.length == 3) {
+        if (suggestSerializers && args.length == 3) {
             return Optional.of(List.copyOf(itemTypeRegistry.serializerKeySet()));
         }
         return Optional.of(new ArrayList<>());

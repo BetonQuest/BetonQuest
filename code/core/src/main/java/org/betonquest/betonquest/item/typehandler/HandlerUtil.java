@@ -94,13 +94,15 @@ public final class HandlerUtil {
      * <p>
      * It will be serialized into MiniMessage format and prefixed with {@code @[minimessage]}
      * as used in the DecidingMessageParser standard implementation.
+     * <p>
+     * In addition, all quotes will be escaped as parsed in the standard tokenizer.
      *
      * @param key   the instruction key
      * @param value the component to serialize
      * @return the ready to parse key value pair
      */
     public static String toKeyValue(final String key, final Component value) {
-        return "\"" + key + ":@[minimessage]" + MiniMessage.miniMessage().serialize(value) + "\"";
+        return "\"" + key + ":@[minimessage]" + MiniMessage.miniMessage().serialize(value).replace("\"", "\\\"") + "\"";
     }
 
     /**
