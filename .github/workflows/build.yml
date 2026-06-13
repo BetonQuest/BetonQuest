@@ -47,7 +47,7 @@ jobs:
           for module in "${modules[@]}"; do
             version=$(./mvnw --raw-streams help:evaluate -Dexpression=revision -q -DforceStdout --projects ":$module")
             tag="v${version}-${module}"
-            if [ -n "$(git tag -l "$tag")" ]; then
+            if [ -n "$(git tag -l "$tag" --points-at HEAD~1)" ]; then
               echo "Deployment of module '"$module"' for tag '$tag' will bee skipped (tag already exists)"
               skip_modules+=("!:$module")
             fi
