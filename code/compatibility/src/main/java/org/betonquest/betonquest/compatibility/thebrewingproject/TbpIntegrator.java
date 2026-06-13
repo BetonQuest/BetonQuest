@@ -7,6 +7,10 @@ import org.betonquest.betonquest.compatibility.thebrewingproject.action.DrunkenE
 import org.betonquest.betonquest.compatibility.thebrewingproject.condition.ModifierConditionFactory;
 import org.betonquest.betonquest.compatibility.thebrewingproject.item.BrewItemFactory;
 import org.betonquest.betonquest.compatibility.thebrewingproject.item.BrewItemSerializer;
+import org.betonquest.betonquest.compatibility.thebrewingproject.objective.BrewConsumeObjectiveFactory;
+import org.betonquest.betonquest.compatibility.thebrewingproject.objective.BrewCreateObjectiveFactory;
+import org.betonquest.betonquest.compatibility.thebrewingproject.objective.DrunkenEventObjectiveFactory;
+import org.betonquest.betonquest.compatibility.thebrewingproject.objective.StructureDestroyObjectiveFactory;
 import org.betonquest.betonquest.lib.integration.IntegrationTemplate;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -21,6 +25,13 @@ public class TbpIntegrator extends IntegrationTemplate {
      */
     public static final String REQUIRED_VERSION = "3.2.0";
 
+    /**
+     * Create a new tbp integrator.
+     */
+    public TbpIntegrator() {
+        super();
+    }
+
     @Override
     public void enable(final BetonQuestApi api) throws QuestException {
         final RegisteredServiceProvider<TheBrewingProjectApi> tbpProvider = Bukkit.getServicesManager().getRegistration(TheBrewingProjectApi.class);
@@ -31,7 +42,11 @@ public class TbpIntegrator extends IntegrationTemplate {
         playerCondition("drunken_modifier", new ModifierConditionFactory(tbpApi));
         playerAction("drunken_event", new DrunkenEventActionFactory(tbpApi));
         item("brew", new BrewItemFactory(tbpApi), new BrewItemSerializer());
-
+        objective("brew_consume", new BrewConsumeObjectiveFactory());
+        objective("brew_create", new BrewCreateObjectiveFactory(tbpApi));
+        objective("brew_transfer", new BrewCreateObjectiveFactory(tbpApi));
+        objective("drunken_event", new DrunkenEventObjectiveFactory());
+        objective("structure_destroy", new StructureDestroyObjectiveFactory());
         registerFeatures(api);
     }
 
