@@ -33,7 +33,7 @@ public class BrewItemSerializer implements QuestItemSerializer {
         if (quality == null) {
             throw new QuestException("Brew is failed");
         }
-        return String.format("\"%s\" %s", recipeName, quality.name().toLowerCase(Locale.ROOT));
+        return "\"%s\" %s".formatted(recipeName, quality.name().toLowerCase(Locale.ROOT));
     }
 
     private @Nullable BrewQuality quality(final double score) {
