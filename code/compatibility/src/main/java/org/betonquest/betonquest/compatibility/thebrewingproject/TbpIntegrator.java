@@ -1,12 +1,12 @@
-package org.betonquest.betonquest.compatibility.tbp;
+package org.betonquest.betonquest.compatibility.thebrewingproject;
 
 import dev.jsinco.brewery.bukkit.api.TheBrewingProjectApi;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.compatibility.tbp.action.DrunkenEventActionFactory;
-import org.betonquest.betonquest.compatibility.tbp.condition.ModifierConditionFactory;
-import org.betonquest.betonquest.compatibility.tbp.item.BrewItemFactory;
-import org.betonquest.betonquest.compatibility.tbp.item.BrewItemSerializer;
+import org.betonquest.betonquest.compatibility.thebrewingproject.action.DrunkenEventActionFactory;
+import org.betonquest.betonquest.compatibility.thebrewingproject.condition.ModifierConditionFactory;
+import org.betonquest.betonquest.compatibility.thebrewingproject.item.BrewItemFactory;
+import org.betonquest.betonquest.compatibility.thebrewingproject.item.BrewItemSerializer;
 import org.betonquest.betonquest.lib.integration.IntegrationTemplate;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;

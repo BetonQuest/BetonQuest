@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.tbp.item;
+package org.betonquest.betonquest.compatibility.thebrewingproject.item;
 
 import dev.jsinco.brewery.api.brew.BrewQuality;
 import dev.jsinco.brewery.bukkit.api.TheBrewingProjectApi;
