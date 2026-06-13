@@ -16,16 +16,16 @@
   <description>Provides the Minecraft 1.21.4 Compatibility of BetonQuest</description>
 
   <properties>
-    <revision>3.0.0</revision>
+    <revision>3.0.1</revision>
     <changelist>-SNAPSHOT</changelist>
     <pit.report.skip>true</pit.report.skip>
 
     <!-- module versions -->
-    <betonquest.core.version>3.0.0${changelist}</betonquest.core.version>
+    <betonquest.core.version>3.0.1${changelist}</betonquest.core.version>
 
     <!-- dependency versions -->
     <paper-api.version>1.21.4-R0.1-SNAPSHOT</paper-api.version>
-    <betonquest.mc_1_20_6.version>3.0.0${changelist}</betonquest.mc_1_20_6.version>
+    <betonquest.mc_1_20_6.version>3.0.1${changelist}</betonquest.mc_1_20_6.version>
   </properties>
 
   <dependencies>

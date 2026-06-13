@@ -6,6 +6,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## [3.0.0] - 2026-06-13
+### Added
 - `package.version` for quest packages and quest templates
 - `constants` can be addressed with the new constant placeholder
 - `bypass` keyword to `cancel` action to ignore conditions in quest cancelers
