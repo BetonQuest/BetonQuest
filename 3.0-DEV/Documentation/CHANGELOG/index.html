@@ -4688,13 +4688,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#300-dev-850-2026-06-13">
+  <a class="md-nav__link" href="#300-dev-851-2026-06-13">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          [3.0.0-DEV-850] - 2026-06-13
+          [3.0.0-DEV-851] - 2026-06-13
         </span>
 
       
@@ -4704,7 +4704,7 @@
 
   
   
-  <nav aria-label="[3.0.0-DEV-850] - 2026-06-13" class="md-nav">
+  <nav aria-label="[3.0.0-DEV-851] - 2026-06-13" class="md-nav">
     <ul class="md-nav__list">
       
       
@@ -12415,13 +12415,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#300-dev-850-2026-06-13">
+  <a class="md-nav__link" href="#300-dev-851-2026-06-13">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          [3.0.0-DEV-850] - 2026-06-13
+          [3.0.0-DEV-851] - 2026-06-13
         </span>
 
       
@@ -12431,7 +12431,7 @@
 
   
   
-  <nav aria-label="[3.0.0-DEV-850] - 2026-06-13" class="md-nav">
+  <nav aria-label="[3.0.0-DEV-851] - 2026-06-13" class="md-nav">
     <ul class="md-nav__list">
       
       
@@ -18157,195 +18157,187 @@
 <p>All notable changes to this project will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>, and this project adheres
 to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
-<h2 id="300-dev-850-2026-06-13">[3.0.0-DEV-850] - 2026-06-13<a class="headerlink" href="#300-dev-850-2026-06-13" title="Permanent link">🔗</a></h2>
+<h2 id="300-dev-851-2026-06-13">[3.0.0-DEV-851] - 2026-06-13<a class="headerlink" href="#300-dev-851-2026-06-13" title="Permanent link">🔗</a></h2>
 <h3 id="added">Added<a class="headerlink" href="#added" title="Permanent link">🔗</a></h3>
 <ul>
-<li><code>quest compass</code> location now allows variables</li>
-<li><code>point</code> and <code>globalpoint</code> events and conditions now support variables</li>
-<li><code>cancel</code> event now has <code>bypass</code> keyword to ignore conditions in Quest Canceler</li>
-<li><code>quester</code> in conversation now supports variables</li>
-<li>Support for Text Parsing Formatter<ul>
-<li><code>notify</code> event</li>
-<li><code>notifyall</code> event</li>
-<li><code>npc</code> Variable</li>
-<li>Compass Names</li>
-<li>Journal</li>
-<li>Quest Canceler</li>
-<li>Conversation</li>
-<li>Plugin Messages / Translations</li>
-<li>Menu Items &amp; Title</li>
-<li>Mob Names for <code>interact</code> objective, <code>spawn</code> event, <code>removeentity</code> event and <code>entiry</code> condition</li>
-<li><code>simple</code> items</li>
-</ul>
-</li>
-<li><code>region</code> and <code>wand</code> conditions now supports variables</li>
-<li><code>JobsReborn</code>, <code>Quests</code>, <code>McMMO</code> now supports variables</li>
-<li>notification categories <code>conversation_start</code> and <code>conversation_end</code></li>
-<li>Support for Npc plugins<ul>
-<li><code>FancyNpcs</code></li>
-<li><code>ZNPCsPlus</code></li>
-<li><code>MythicMobs</code></li>
-</ul>
-</li>
-<li><code>tag</code> and <code>globaltag</code> events and conditions now support variables</li>
-<li><code>package.version</code> for QuestPackages and -Templates</li>
-<li>BlockSelector now supports variables when used in events, conditions, objectives</li>
-<li>Variable support for all lists in events objectives and conditions for things like events conditions items and co.</li>
-<li><code>Menu Item</code> are now in the <code>menu_items</code> section, allowing references from multiple Menus</li>
-<li><code>Menu</code> title allows defining different messages</li>
-<li><code>eval</code> event and condition to resolve a string and interpret it again as event/condition</li>
-<li><code>constants</code> to replace the <code>variables</code> section including new addressing of them with the new constant variable</li>
-<li><code>mmoitem</code> item type</li>
-<li>ingame message for plugin updates (removed in 2.1.0)</li>
-<li>menu <code>slots</code> and bound <code>item</code> now support variables, <code>menu item</code> now supports variable <code>item</code></li>
-<li><code>menu</code> event now supports the <code>update</code> action to update the currently opened menu</li>
-<li><code>menu</code> conversation IO settings to configure the scroll down and up buttons</li>
-<li><code>citizens</code> npcs are now used only from default registry</li>
-<li><code>invincible</code> config option to disable conversation invincibility</li>
+<li><code>package.version</code> for quest packages and quest templates</li>
+<li><code>constants</code> can be addressed with the new constant placeholder</li>
+<li><code>bypass</code> keyword to <code>cancel</code> action to ignore conditions in quest cancelers</li>
+<li><code>eval</code> action and condition to resolve a string and interpret it again as action/condition</li>
+<li><code>sync</code> placeholder offering identical evaluation as <code>eval</code> but forcing the execution on the main thread </li>
+<li><code>mainhand</code> selection order to <code>take</code> action</li>
+<li><code>abort</code> flag and <code>fail</code> actions to (chest) take action</li>
 <li><code>debug dump</code> command to only dump the history to the log file</li>
-<li><code>brew</code> event/condition <code>mode</code> parameter to select by name or id</li>
-<li><code>timer</code> objective to track ingame time</li>
-<li><code>mcast</code> event to cast a Mythic(Mobs) skill for a player</li>
-<li><code>mythic</code>(mobs) item integration</li>
-<li><code>quest-item</code> argument for Mythic(-Mobs) and MMOItems item types</li>
-<li><code>point</code> and <code>tag</code> objective</li>
-<li><code>simple</code> item type:<ul>
+<li><code>unit</code> as optional argument to the <code>folder</code> action to define the time unit for ticks, seconds, and minutes - defaults to seconds</li>
+<li>support for <code>itemModel</code> for the totem NotifyIO (MC 1.21.4+)</li>
+<li>optional ingame message for plugin updates (previously removed in 2.1.0)</li>
+<li><code>FastStats</code> to provide better statistics for BetonQuest</li>
+<li>all of Minecraft's default font widths are now used to calculate the width of a string for line wrapping</li>
+<li>support for text parsing formatter allowing for minimessage, minedown, and other formats for texts</li>
+<li>support for placeholders in all actions, objectives, conditions, and more<ul>
+<li>list arguments allow for placeholders to be used in each element or all elements</li>
+</ul>
+</li>
+<li>menu features<ul>
+<li>menu items are now in the <code>menu_items</code> section, allowing references from multiple menus</li>
+<li><code>title</code> allows defining different messages</li>
+<li><code>bind</code> item for specific clicks</li>
+<li><code>check</code> flag to <code>menu</code> action to respect the menu's open conditions</li>
+<li><code>menu</code> action now supports the <code>update</code> action to update the currently opened menu</li>
+</ul>
+</li>
+<li>item types and item system improvements<ul>
+<li><code>mmoitem</code>, <code>nexo</code>, <code>craftEngine</code>, <code>itemsAdder</code>, <code>mythic</code>, <code>brew</code>, <code>magic</code> item types</li>
+<li><code>simple</code> item type<ul>
 <li><code>item-name</code> argument (MC 1.20.6+)</li>
 <li><code>item-model</code> &amp; <code>no-item-model</code> arguments (MC 1.21.4+)</li>
 <li><code>custom-model-data</code> support for data lists (MC 1.21.4+)</li>
 </ul>
 </li>
-<li>All of Minecrafts default font widths are now used to calculate the width of a string for line wrapping</li>
-<li>conditions <code>biome</code>, <code>effect</code>, <code>ride</code>, <code>random</code> now support variables</li>
-<li><code>sync</code> variable offering identical evaluation as <code>eval</code> but forcing the execution on the main thread </li>
+<li><code>quest-item</code> argument for Mythic(-Mobs) and MMOItems item types</li>
+</ul>
+</li>
+<li>integrations and features to existing integrations<ul>
+<li><code>FancyNpcs</code>, <code>ZNPCsPlus</code> and <code>MythicMobs</code> as new options for npcs</li>
+<li><code>FancyHolograms</code> as compatible hologram plugin</li>
+<li><code>citizens</code> npcs are now used only from default registry</li>
+<li><code>mcast</code> action to cast a Mythic(Mobs) skill with skill parameters for a player</li>
+<li><code>mmostat</code> action to modify the player's stats using the MythicLib (MmoLib) integration</li>
+<li><code>brew</code> action/condition <code>mode</code> parameter to select by name or id</li>
+<li><code>mode</code> to <code>mmobkill</code> to allow checking for faction instead of name</li>
+</ul>
+</li>
+<li>new conversation features<ul>
+<li>notification categories <code>conversation_start</code> and <code>conversation_end</code></li>
+<li><code>menu</code> conversation IO settings to configure the scroll down and up buttons</li>
 <li>native <code>menu</code> io implementation which sets the player's speed to zero instead mounting it on an arrow (MC 1.21.4+)</li>
-<li>support for <code>itemModel</code> for the totem NotifyIO (MC 1.21.4+)</li>
-<li>identifier <code>mode</code> to <code>mmobkill</code> to check for faction instead of name</li>
-<li><code>nexo</code> item type</li>
-<li><code>craftEngine</code> item type</li>
-<li><code>itemsAdder</code> item type</li>
-<li><code>brew</code> item type</li>
-<li><code>mainhand</code> selection order to <code>take</code> action</li>
-<li>menu <code>bind</code> item for specific clicks</li>
-<li><code>FancyHolograms</code> as compatible Hologram plugin</li>
+<li><code>invincible</code> config option to disable conversation invincibility</li>
 <li><code>conversation.block_item_transfer</code> option with per-conversation override to prevent item moving while in a conversation</li>
 <li>new notification category <code>conversation_nothing_to_start</code></li>
-<li><code>check</code> flag to <code>menu</code> action to respect the menu's open conditions</li>
-<li><code>abort</code> flag and <code>fail</code> actions to (chest) take action</li>
-<li>item support for the integration <code>magic</code></li>
-<li>FastStats integration to provide better statistics for BetonQuest</li>
-<li><code>mmostat</code> action to modify the player's stats using the MythicLib (MmoLib) integration</li>
-<li><code>mcast</code> skill parameters</li>
+<li>config option <code>conversation.interceptor.display_history</code> to allow the interceptor to send the chat history after a conversation</li>
+<li>config option <code>conversation.interceptor.delay</code> to configure a delay between the end of a conversation and the moment the interceptor is ended</li>
+</ul>
+</li>
+<li>new objectives<ul>
+<li><code>timer</code> to track ingame time</li>
+<li><code>point</code> to track point changes</li>
+<li><code>tag</code> to track tag changes</li>
+</ul>
+</li>
 </ul>
 <h3 id="changed">Changed<a class="headerlink" href="#changed" title="Permanent link">🔗</a></h3>
 <ul>
-<li>Spigot is no longer supported, paper is now required </li>
-<li>message.yml file was deleted and instead the lang folder now contains all translations</li>
-<li>menuConfig.yml file was deleted, translations are in the lang folder and the config is part of config.yml </li>
-<li><code>cancel</code> event now respects by default canceler conditions</li>
-<li><code>objectives</code> can now be removed from database via command even when it does not exist</li>
-<li><code>max_npc_distance</code> config into <code>max_conversation_distance</code></li>
-<li><code>acceptNPCLeftClick</code> and <code>npcInteractionLimit</code> configs into <code>npcs.accept_left_click</code> and <code>npcs.interaction_limit</code></li>
-<li><code>%quester%</code> variable is used instead of <code>%npc%</code> for the quester's name in conversations; <code>%npc</code> variable is used now for the new Npc system</li>
-<li><code>fish</code> objective use block selector instead of a QuestItem</li>
-<li>everything that used <code>Citizens</code> NPC ids now uses the BQ NpcIDs</li>
-<li>conversations now always print their start and stop conversation message</li>
-<li><code>events</code>, <code>objectives</code>, <code>conditions</code>, <code>variables</code> and co. are now case-insensitive</li>
-<li>underscores aren't replaced anymore, instead quoting needs to be used now<ul>
-<li><code>shear</code> objective - name </li>
-<li><code>mobkill</code> objective - name</li>
-<li><code>password</code> objective - password</li>
-<li><code>interact</code> objective - custom name and real name</li>
-<li><code>simple</code> items</li>
-</ul>
-</li>
-<li><code>items</code> now have a type like events</li>
-<li>renamed list keys from singular to plural<ul>
-<li>objectives - <code>event</code> and <code>condition</code> are now <code>events</code> and <code>conditions</code></li>
-<li>events - <code>condition</code> is now <code>conditions</code></li>
-<li>menus - <code>condition</code> is now <code>conditions</code></li>
-<li>conversations - options <code>condition</code>, <code>event</code>, <code>pointer</code> and <code>extend</code> are now <code>conditions</code>, <code>events</code>, <code>pointers</code> and <code>extends</code></li>
-</ul>
-</li>
-<li><code>pickrandom</code> event now use tilde instead of percentage</li>
-<li><code>Menu Items</code> name and lore are no longer italic by default, name can be overridden while keeping original lore</li>
-<li>events, objectives and conditions do not replace underscores anymore, quoting syntax needs to be used now</li>
-<li><code>mooncycle</code> condition is now <code>moonphase</code> and uses a variable list of the phases instead of numbers</li>
-<li><code>item</code> command now requires the specification of serializer</li>
-<li><code>npcs</code> in the <code>npc_holograms</code> and <code>npcs</code>, <code>conditions</code> and <code>locations</code> in the <code>effectlib</code> section now use comma separated lists</li>
-<li>in quest cancelers the events are now executed before the teleport</li>
-<li><code>simple</code> quest items now resolve variables one time on reload to support <code>constant</code> variables<ul>
+<li>previous maven artifact repository nexus <code>https://nexus.betonquest.org/repository/betonquest/</code> replaced with reposilite available at <code>https://repo.betonquest.org/betonquest/</code></li>
+<li>Bukkit API events are now called sync/async depending on the tread context they are called in</li>
+<li>actions, objectives, and conditions do not replace underscores anymore. quoting syntax needs to be used now</li>
+<li><code>brew</code> objective now checks brewed items in a more accurate way</li>
+<li><code>simple</code> quest items now resolve placeholders one time on reload to support <code>constant</code> placeholders<ul>
 <li><code>owner:%player%</code> was changed to <code>owner:</code> to allow constant pre-parsing</li>
 </ul>
 </li>
-<li><code>math</code> variable now gives a better exception message and does not return 0 instead</li>
-<li><code>folder</code> event now use the <code>unit</code> argument to define the time unit for ticks, seconds and minutes</li>
-<li>custom items in the chest conversation IO are now defined in the <code>properties</code> section on an option</li>
-<li>Reworked the config.yml file to be more clean and structured<ul>
+<li><code>npc_conversations</code> show the combat message only if there is a bound conversation</li>
+<li><code>Journal</code> and <code>Quest Item</code> are checked with PersistentDataContainer instead of lore</li>
+<li><code>hologram</code>'s <code>top:</code> line to customizable format</li>
+<li>LoadDataEvent is now called before and after the data is loaded with a new enum <code>LoadDataEvent.State</code> that indicates the state</li>
+<li>configuration structure and naming<ul>
+<li>reworked the entire config.yml file</li>
+<li>renamed <code>max_npc_distance</code> to <code>max_conversation_distance</code></li>
+<li>renamed <code>acceptNPCLeftClick</code> to <code>npcs.accept_left_click</code></li>
+<li>renamed <code>npcInteractionLimit</code> to <code>npcs.interaction_limit</code></li>
+<li><code>message.yml</code> file was deleted, and instead the lang folder now contains all translations</li>
+<li><code>menuConfig.yml</code> file was deleted, translations are in the lang folder, and the config is part of config.yml</li>
 <li><code>item.backpack.cancel_button</code> and <code>item.backpack.compass_button</code> do not have a <code>DEFAULT</code> value anymore, instead you need to specify an item</li>
 </ul>
 </li>
-<li>LoadDataEvent is now called before and after the data is loaded with a new enum <code>LoadDataEvent.State</code> that indicates the state</li>
-<li>menu conversation IO settings are now defined the config.yml file in the <code>conversation.io.menu</code> section</li>
-<li><code>chest</code> conversation IO now actually ends when there is to npc option left or the player closes the inventory</li>
-<li><code>menu</code> Conversation IO displaying and scroll behavior rework</li>
-<li><code>objectives</code> event listener are now registered on reload instead when the first player gets it active</li>
-<li><code>npcmove</code> event - remove strange code effecting the end of a navigation to may return to a previous location in some cases</li>
-<li><code>npc_conversations</code> show the combat message only if there is a bound conversation</li>
-<li>Addressing cross Packages now use <code>&gt;</code> instead of <code>.</code> to solve conflicts in Variables</li>
-<li>Bukkit API events are now called sync/async depending on the tread context they are called in</li>
-<li><code>variable</code> command allows setting and getting data now for offline players</li>
-<li><code>mmobkill</code> objective now uses the killer (if present) to resolve names and distances</li>
-<li><code>Journal</code> and <code>Quest Item</code> are checked with PersistentDataContainer instead of lore</li>
-<li><code>ProtocolLib</code> was removed and replaced with <code>PacketEvents</code> that now needs to be installed instead<ul>
-<li><code>packet</code> chat interceptor was renamed to <code>packetevents</code></li>
-<li><code>conversation.interceptor.display_history</code> config option, allow the interceptor to send the chat history after a conversation</li>
+<li>terminology and naming<ul>
+<li>renamed <code>Variables</code> to <code>Placeholders</code> in the entire project</li>
+<li>renamed <code>Events</code> to <code>Actions</code> in the entire project</li>
+<li>renamed <code>global</code> property for objectives to <code>auto-once</code></li>
+<li>cross-packages now use <code>&gt;</code> instead of <code>.</code> to solve conflicts in placeholders</li>
+<li>in objectives - <code>event</code> and <code>condition</code> are now <code>actions</code> and <code>conditions</code></li>
+<li>in actions - <code>condition</code> is now <code>conditions</code></li>
+<li>in menus - <code>condition</code> is now <code>conditions</code></li>
+<li>in conversations - options <code>condition</code>, <code>event</code>, <code>pointer</code> and <code>extend</code> are now <code>conditions</code>, <code>actions</code>, <code>pointers</code> and <code>extends</code></li>
 </ul>
 </li>
-<li><code>menu</code> <code>bound_item</code> now finds the first menu allowed to open instead aborting after the first check</li>
-<li><code>money</code> event now has a <code>multiply</code> argument instead of <code>*</code> in front of number</li>
-<li>old maven artifact repository nexus <code>https://nexus.betonquest.org/repository/betonquest/</code> replaced with reposilite available at <code>https://repo.betonquest.org/betonquest/</code></li>
-<li><code>menu</code> io based on packetevents renamed to <code>packetevents</code></li>
-<li>config option <code>conversation.interceptor.delay</code> to configure a delay between the end of a conversation and the moment the interceptor is ended</li>
-<li><code>hologram</code> <code>top:</code> line to customizable format</li>
-<li>Variables to Placeholders. This change won't harm any user scripts, it's only a conceptual change</li>
-<li>Events to Actions.</li>
-<li><code>menu</code> conv io no longer ignores canceled events to process as input</li>
-<li><code>citizens</code> npc hiding now uses the inbuilt player filter trait</li>
-<li><code>global</code> property for objectives renamed to <code>auto-once</code></li>
-<li><code>brew</code> objective now checks brewed items in a more accurate way</li>
-<li><code>interact</code> objective now accepting <code>any</code> as an option for the entity type argument</li>
+<li>commands<ul>
+<li><code>item</code> command now requires the specification of serializer</li>
+<li><code>variable</code> command allows setting and getting data now for offline players</li>
+<li><code>objectives</code> can now be removed from the database via command even when it does not exist</li>
+</ul>
+</li>
+<li>conversations and conversation IOs<ul>
+<li>conversations now always print their start and stop conversation message</li>
+<li><code>menu</code> conversation IO settings are now defined the <code>config.yml</code> file in the <code>conversation.io.menu</code> section</li>
+<li><code>menu</code> conversation IO based on packetevents renamed to <code>packetevents</code></li>
+<li><code>menu</code> conversation IO displaying and scroll behavior rework</li>
+<li><code>menu</code> conversation IO no longer ignores canceled bukkit events to process as input</li>
+<li><code>packet</code> chat interceptor was renamed to <code>packetevents</code></li>
+<li>custom items in the chest conversation IO are now defined in the <code>properties</code> section as an option</li>
+<li><code>%quester%</code> placeholder is used instead of <code>%npc%</code> for the quester's name in conversations; <code>%npc</code> placeholder is now used for the new npc system</li>
+<li><code>chest</code> conversation IO now actually ends when there is to npc option left or the player closes the inventory</li>
+</ul>
+</li>
+<li>integrations<ul>
+<li><code>ProtocolLib</code> was replaced with <code>PacketEvents</code></li>
 <li><code>MMOCore</code> integration updated to <code>1.13.1-SNAPSHOT</code></li>
+</ul>
+</li>
+<li>menus and menu items<ul>
+<li>menu item's name and lore are no longer italic by default, name can be overridden while keeping original lore</li>
+<li><code>bound_item</code> now finds the first menu allowed to open instead aborting after the first check</li>
+</ul>
+</li>
+<li>npcs<ul>
+<li><code>citizens</code> npcs to use the npc identifiers of BetonQuest instead of those from Citizens</li>
+<li><code>citizens</code> npcs hiding now uses the inbuilt player filter trait</li>
+<li><code>npcs</code> in the <code>npc_holograms</code> and <code>npcs</code>, <code>conditions</code> and <code>locations</code> in the <code>effectlib</code> section now use comma-separated lists</li>
+</ul>
+</li>
+<li>element behavior<ul>
+<li>the actions in quest cancelers to be now executed before the teleport</li>
+<li><code>items</code> now have a type like other elements</li>
+<li><code>math</code> placeholder now gives a better exception message and does not return 0 instead</li>
+<li><code>cancel</code> action now respects by default canceler conditions</li>
+<li><code>fish</code> objective use block selector instead of a quest item</li>
+<li><code>actions</code>, <code>objectives</code>, <code>conditions</code> and co. are now case-insensitive</li>
+<li><code>interact</code> objective now accepting <code>any</code> as an option for the entity type argument</li>
+<li><code>pickrandom</code> action now use tilde instead of percentage</li>
+<li><code>mooncycle</code> condition is now <code>moonphase</code> and uses a list of the phases instead of numbers</li>
+<li><code>mmobkill</code> objective now uses the killer (if present) to resolve names and distances</li>
+<li><code>money</code> action now has a <code>multiply</code> argument instead of <code>*</code> in front of number</li>
+</ul>
+</li>
 </ul>
 <h3 id="deprecated">Deprecated<a class="headerlink" href="#deprecated" title="Permanent link">🔗</a></h3>
 <h3 id="removed">Removed<a class="headerlink" href="#removed" title="Permanent link">🔗</a></h3>
 <ul>
+<li>spigot support entirely, now paper is required</li>
 <li>undocumented prefix feature in conversation</li>
 <li><code>citizens_npcs_by_name</code> config option, which is now part of the id</li>
 <li>start and stop sound in the configuration for conversations were removed in favor of the notification system that now also has the two new build in categories <code>conversation_start</code> and <code>conversation_end</code></li>
 <li><code>menu reload</code> command which did not work</li>
-<li><code>variables</code> section in favor for <code>constants</code></li>
-<li><code>MMOItems</code> conditions, events and <code>mmoitemcraft</code> objective in favor of the built-in ones</li>
+<li><code>variables</code> section</li>
+<li><code>MMOItems</code> conditions, actions, and the <code>mmoitemcraft</code> objective in favor of the built-in ones</li>
 <li><code>journal.chars_per_page</code> was deleted from the config.yml </li>
-<li>undocumented way of addressing packages in some variables</li>
+<li>undocumented way of addressing packages in some placeholders</li>
 <li><code>journal.show_separator</code> option deleted</li>
 <li><code>display_missed</code> config option, as the <code>none</code> interceptor should be used instead</li>
 <li>legacy multiply with <code>*</code> for points</li>
-<li>dependency PaperLib since its discontinued</li>
+<li>dependency <code>PaperLib</code> since its discontinued</li>
 <li>aliases <code>/q</code>, <code>/j</code> and <code>/b</code> to improve compatibility with other plugins by actively reducing conflicts on command names</li>
 <li><code>Brewery</code> item condition and actions, in favor of the built-in ones</li>
 </ul>
 <h3 id="fixed">Fixed<a class="headerlink" href="#fixed" title="Permanent link">🔗</a></h3>
 <ul>
-<li>Reloading plugin did not reload Menu config</li>
-<li>potions generated not extended/upgraded since 2.2.1</li>
-<li>Biome condition on mc 1.21.4 could not parse the biome from the instruction anymore</li>
-<li><code>randomnumber</code> variable now correctly returns lower bound</li>
-<li><code>stage</code> objective 'index' property not working and now also starts at 0</li>
+<li>plugin did not reload menu config correctly</li>
+<li>potions generated have not been extended/upgraded since 2.2.1</li>
+<li>biome condition on Minecraft 1.21.4 could not parse the biome from the instruction anymore</li>
+<li><code>randomnumber</code> placeholder now correctly returns lower bound</li>
+<li><code>stage</code> objective <code>index</code> property not working and now also starts at 0</li>
 <li>betonquest command without arguments did not work anymore</li>
-<li>the Fabled hook not working properly</li>
-<li><code>compass</code> event did not work with variables in <code>compass</code> location</li>
-<li><code>quest canceler</code> did not resolve global variables</li>
+<li><code>Fabled</code> hook not working properly</li>
+<li><code>quest canceler</code> did not resolve global placeholders</li>
 <li><code>quest canceler</code> used <code>loc</code> instead of <code>location</code> key for teleportation</li>
 <li><code>journal</code> language only changed after rejoin when changing player language</li>
 <li><code>journal</code> entry renaming or deleting via command now affects all specified pointers and not only one</li>
@@ -18353,31 +18345,31 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <li>scrolling the mouse in the menu conversation IO did not work</li>
 <li><code>MMOCore</code> attribute loading with MMOCore 1.13</li>
 <li>missing messages <code>animals_to_tame</code> and <code>times_to_jump</code> in language files by adding them</li>
-<li><code>Menu Item</code> parsing with newlines lead in some cases to missing lines</li>
-<li><code>Menu</code>s throwing exception on reload when bound commands are used</li>
+<li><code>menu</code> item parsing with newlines caused missing lines in some cases</li>
+<li><code>menu</code>s throwing exception on reload when bound commands are used</li>
 <li><code>mmoitemcraft</code> objective NoSuchMethodError with MMOItems 6.10+</li>
 <li><code>menu</code> conversation IO exception in one edge case</li>
-<li>1.21.5 ProtocolLib support</li>
 <li><code>interact</code> objective's documentations used hookLocation instead of loc for the location</li>
-<li><code>randomnumber</code> variable using locale/eventually comma instead of dots breaking further using like math</li>
+<li><code>randomnumber</code> placeholder using locale/eventually comma instead of dots breaking further using like math</li>
 <li><code>interact</code> objective now blocks the interaction with an item frame properly if cancel is set</li>
 <li><code>brewery</code> null pointer exception when a brew has no recipe</li>
 <li><code>npcrange</code> objective did count player without it valid for <code>outside</code> action</li>
 <li><code>global objective</code> error on join when it was added with the command or the tag got removed</li>
 <li><code>tellraw</code> conversation IO showed pop-up for unknown command</li>
 <li><code>simple</code> item <code>flags</code> crashed plugin when invalid</li>
-<li>Disabling the plugin no longer causes hardly expected zip errors</li>
+<li>disabling the plugin no longer causes hardly expected zip errors</li>
 <li><code>mspawnmob</code> exception when spawning the mob is canceled/forbidden</li>
 <li>conversations could cause deadlocks when too many conditions are checked</li>
-<li><code>itemdurability</code> variable parsed differently than intended in docs</li>
+<li><code>itemdurability</code> placeholder parsed differently than intended in docs</li>
 <li>database connection is now more stable and reconnect probably works better now</li>
 <li><code>QuestItem</code>s and <code>Journal</code>s could be put into bundles (MC 1.21.4+)</li>
-<li>hologram integration with the lowest priority was selected instead with the highest</li>
-<li>broken Conversation states no longer trap players</li>
+<li>hologram integration with the lowest priority was selected instead of with the highest</li>
+<li>broken conversation states no longer trap players</li>
 <li><code>firework</code> colors de-/serializing in <code>simple</code> item when there is no color</li>
 <li><code>nujobs_payment</code> objective wrongly using target amount for everything</li>
 <li><code>MMOCore</code> actions and conditions now no longer wrongly accept offline players</li>
 <li>offline player data access in multiple elements supporting offline context</li>
+<li>code in <code>npcmove</code> action effecting the end of a navigation to may return to a previous location in some cases</li>
 </ul>
 <h3 id="security">Security<a class="headerlink" href="#security" title="Permanent link">🔗</a></h3>
 <h2 id="221-2025-01-12">[2.2.1] - 2025-01-12<a class="headerlink" href="#221-2025-01-12" title="Permanent link">🔗</a></h2>
@@ -18457,7 +18449,7 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <li>Schedules could run twice on some systems by an inaccurate time returned java's Instant.now()</li>
 <li><code>Journal</code> interaction with blocks like lecterns</li>
 <li>sections that are created in templates by write operations, where no edits should actually be done<ul>
-<li>this caused a lot of "ghost" sections that could not be loaded like schedules, menus and manny more</li>
+<li>this caused a lot of "ghost" sections that could not be loaded like schedules, menus, and manny more</li>
 </ul>
 </li>
 <li>Conversations work in 1.21.3 again</li>
@@ -18563,8 +18555,8 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <ul>
 <li><code>variable</code> objective loads newlines correctly</li>
 <li>exception in <code>lookAtBlock</code> condition when omitting the type</li>
-<li>MMOCoreClassCondition, MMOItemsGiveEvent, MMOItemsHandCondition and MMOItemsItemCondition now work with numeric identifiers</li>
-<li>yaml multiline instructions could lead to partly working events, conditions and objectives</li>
+<li>MMOCoreClassCondition, MMOItemsGiveEvent, MMOItemsHandCondition, and MMOItemsItemCondition now work with numeric identifiers</li>
+<li>yaml multiline instructions could lead to partly working events, conditions, and objectives</li>
 <li>creation of advancement tab when an advancement NotifyIO is sent</li>
 <li><code>burn</code> event throwing unexpected error when omitting duration</li>
 <li>added missing firework meta to string representation of QuestItem</li>
@@ -18719,7 +18711,7 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <li><code>cancelconversation</code> event</li>
 <li><code>time</code> event - now supports subtraction and world selection, which made it persistent and static</li>
 <li><code>globalpoint</code> event - new syntax for manipulating global points</li>
-<li><code>experience</code> event - it's now possible to change xp, change and set levels and set the xp bar</li>
+<li><code>experience</code> event - it's now possible to change xp, change and set levels, and set the xp bar</li>
 <li><code>deleteglobalpoint</code> event</li>
 <li><code>score</code> event - more options for manipulating the scoreboard</li>
 <li><code>item</code> variable - new <code>name</code> and <code>lore</code> argument and now supports items from other packages</li>
@@ -18727,13 +18719,13 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <li><code>give</code> event - new <code>backpack</code> argument to place items in the backpack (if a valid QuestItem)</li>
 <li><code>party</code> event - new optional <code>amount</code> of maximal affected players</li>
 <li><code>drop</code> event</li>
-<li><code>itemdurability</code> event, condition and variable</li>
+<li><code>itemdurability</code> event, condition, and variable</li>
 <li><code>numbercompare</code> condition</li>
 <li><code>cancelOnLogout</code> argument for <code>folder</code> event</li>
-<li><code>npcinteract</code> objective - now supports the argument <code>interaction</code> to choose between left, right or both clicks</li>
+<li><code>npcinteract</code> objective - now supports the argument <code>interaction</code> to choose between left, right, or both clicks</li>
 <li><code>log</code> event</li>
 <li><code>party</code> event - new range 0 and -1 to select players in the same world or server wide</li>
-<li><code>stage</code> objective, condition and event</li>
+<li><code>stage</code> objective, condition, and event</li>
 <li><code>first</code> event - attempts to run a list of events until one successfully runs, like a compressed <code>if</code> event</li>
 </ul>
 <h3 id="changed_8">Changed<a class="headerlink" href="#changed_8" title="Permanent link">🔗</a></h3>
@@ -18822,7 +18814,7 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <h3 id="deprecated_8">Deprecated<a class="headerlink" href="#deprecated_8" title="Permanent link">🔗</a></h3>
 <h3 id="removed_8">Removed<a class="headerlink" href="#removed_8" title="Permanent link">🔗</a></h3>
 <ul>
-<li>deprecated internals, code and old features</li>
+<li>deprecated internals, code, and old features</li>
 <li>Support for MMOLib</li>
 <li><code>message</code> event</li>
 <li><code>title</code> event</li>
@@ -18937,7 +18929,7 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <ul>
 <li>reload with an invalid PlayerHider causes a NPE</li>
 <li>QuestItems could be eaten, this was caused by a changed mc behavior</li>
-<li>command, sudo and opsudo events didn't work with conditions</li>
+<li>command, sudo, and opsudo events didn't work with conditions</li>
 <li>interact objective did not work with armorstands</li>
 <li>MMOItemsGiveEvent did not check if item actually exists</li>
 <li>notify IO <code>subtitle</code> and <code>title</code> with only a subtitle was not send</li>
@@ -19038,7 +19030,7 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <h3 id="fixes_4">Fixes<a class="headerlink" href="#fixes_4" title="Permanent link">🔗</a></h3>
 <ul>
 <li>parsing of math variable</li>
-<li>craft objective: multi-craft, drop-craft, hotbar/offhand-craft, shift-Q-craft and any illegal crafting is correctly detected,</li>
+<li>craft objective: multi-craft, drop-craft, hotbar/offhand-craft, shift-Q-craft, and any illegal crafting is correctly detected,</li>
 <li>craft objective variables <code>left</code> and <code>amount</code> were swapped</li>
 <li>NPC hider for not spawned NPCs</li>
 <li>Conversation IO Chest load NPC skull async from Citizens instead of sync</li>
@@ -19170,7 +19162,7 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <li>Added variable support to the PickRandomEvent</li>
 <li>Added "acceptNPCLeftClick: true / false" config option</li>
 <li>Added optional "minlevel" and "maxlevel" arguments to mmobkill objective</li>
-<li>Added new options 'inside/outside' for npcrange objective, support for multiple npcs and improved performance</li>
+<li>Added new options 'inside/outside' for npcrange objective, support for multiple npcs, and improved performance</li>
 <li>Added new Event QuestCompassTargetChangeEvent that is triggered when a new CompassTarget is set. It is also possible to cancel it</li>
 <li>added multi language support for Notify system</li>
 <li>Added 'notifyall' event to broadcast a notification</li>
@@ -19250,7 +19242,7 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <li>fixed message duplication when using the packet interceptor</li>
 <li>fixed Journal interaction with Lectern</li>
 <li>fixed QuestItems ignoring durability</li>
-<li>fixed QuestItem interaction with Lectern, Campfire and Composter</li>
+<li>fixed QuestItem interaction with Lectern, Campfire, and Composter</li>
 <li>update journal after closing magic inventory</li>
 <li>fixed lever event not toggling the lever</li>
 <li>fixed ConcurrentModificationException in PlayerData</li>
@@ -19297,7 +19289,7 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <li>New 'nujobs_levelup' objective - Triggers when a player levels up in Jobs Reborn</li>
 <li>New 'nujobs_payment' objective - Triggers when a player receives money from Jobs Reborn</li>
 <li>New Notification System</li>
-<li>New 'notify' event - Create custom notifications on the ActionBar, BossBar, Title, Subtitle and Achievement</li>
+<li>New 'notify' event - Create custom notifications on the ActionBar, BossBar, Title, Subtitle, and Achievement</li>
 <li>New 'menu' conversation IO - Requires ProtocolLib. See: <a href="https://www.youtube.com/watch?v=Qtn7Dpdf4jw&amp;lc">https://www.youtube.com/watch?v=Qtn7Dpdf4jw&amp;lc</a></li>
 <li>New 'packet' chat interceptor - Requires ProtocolLib.</li>
 <li>new '/q debug' command - Enable or disable the debug mode</li>
@@ -19469,7 +19461,7 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <li>Locations can be variables which resolve to location format</li>
 <li>Point condition can now check exact point amount with 'equal' argument</li>
 <li>In 'chest' conversation IO items can be specified with durability values after a colon</li>
-<li>Mobs spawned with 'spawn' event can have armor, items in hands and custom drops</li>
+<li>Mobs spawned with 'spawn' event can have armor, items in hands, and custom drops</li>
 <li>Unbreakability of quest items can be disabled (if you want to use "unbreakable" tag instead)</li>
 <li>Ranges in locations are now a separate argument ("10;20;30;world;4" is now "10;20;30;world 4")</li>
 <li>"main.yml" is now the only required file in the package. Empty files can be deleted</li>
@@ -19489,7 +19481,7 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <li>New condition 'achievement' - check if the player has an achievement</li>
 <li>New condition 'variable' - check if a variable matches a pattern</li>
 <li>New event 'lever' - switches a lever</li>
-<li>New event 'door' - opens/closes doors, trapdoors and gates</li>
+<li>New event 'door' - opens/closes doors, trapdoors, and gates</li>
 <li>New event 'if' - run one of two events, depending on condition</li>
 <li>New event 'movenpc' - move Citizens NPC to a location</li>
 <li>New event 'variable' - set a variable in "variable" objective</li>
@@ -19534,7 +19526,7 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 </ul>
 <h3 id="changes_4">Changes<a class="headerlink" href="#changes_4" title="Permanent link">🔗</a></h3>
 <ul>
-<li>Updater is now based on GitHub Releases, no longer downloads major updates automatically, it is more configurable and can also download development versions with "/q update --dev"</li>
+<li>Updater is now based on GitHub Releases, no longer downloads major updates automatically, it is more configurable, and can also download development versions with "/q update --dev"</li>
 </ul>
 <h3 id="added_24">Added<a class="headerlink" href="#added_24" title="Permanent link">🔗</a></h3>
 <ul>
@@ -19566,8 +19558,8 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <li>Static events now are canceled correctly</li>
 <li>Action objective now correctly checks locations</li>
 <li>Combat tag is removed after death</li>
-<li>Block, Craft and MythicMobs MobKill objectives now correctly save data</li>
-<li>Take event now correctly takes items from inventory, armor slots and backpack</li>
+<li>Block, Craft, and MythicMobs MobKill objectives now correctly save data</li>
+<li>Take event now correctly takes items from inventory, armor slots, and backpack</li>
 </ul>
 <h3 id="added_25">Added<a class="headerlink" href="#added_25" title="Permanent link">🔗</a></h3>
 <ul>
@@ -19615,7 +19607,7 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <li>In conversations, %quester% variable changed to %npc%</li>
 <li>In inventory GUI there is NPC's text in every option, for convenience</li>
 <li>Conversations can point to NPC options in other conversations within the package</li>
-<li>You can use spaces between events, conditions and pointers in conversations</li>
+<li>You can use spaces between events, conditions, and pointers in conversations</li>
 <li>All tags and points are internally associated with a package now</li>
 <li>Some conditions are now static and persistent (just like events)</li>
 <li>Point event can now multiply points</li>
@@ -19772,14 +19764,14 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <li>WorldGuard support (region condition)</li>
 <li>Errors are logged to the "error.log" file in "logs" directory</li>
 <li>Debug option in config.yml for logging plugin's activity to "debug.log" file</li>
-<li>New commands for opening backpack: b, bb, backpack, bbackpack or betonbackpack</li>
-<li>Items are now aware of leather armor color, head owner and enchantments in books</li>
+<li>New commands for opening backpack: b, bb, backpack, bbackpack, or betonbackpack</li>
+<li>Items are now aware of leather armor color, head owner, and enchantments in books</li>
 </ul>
 <h3 id="changes_10">Changes<a class="headerlink" href="#changes_10" title="Permanent link">🔗</a></h3>
 <ul>
 <li>Added and changed a lot of subcommands in /q command:<ul>
 <li>event and condition can be run for every online player</li>
-<li>tag, point, objective and (new) journal can edit every (even offline) player</li>
+<li>tag, point, objective, and (new) journal can edit every (even offline) player</li>
 <li>config (new) can set configuration files from command line</li>
 <li>backup (new) backups the whole configuration and database</li>
 </ul>
@@ -19793,7 +19785,7 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <li>Inverting conditions is now done by prefixing their name with "!" (in the place where you use them, like conversation, not in conditions.yml)</li>
 <li>Configuration updater is no longer based on plugin's version</li>
 <li>Backup files are now kept in "backups" directory, old ones are moved to it</li>
-<li>Changed internal structure of the code (may matter to developers - QuestEvent, Condition and Objective classes have been moved from "core" package to "api", update your imports)</li>
+<li>Changed internal structure of the code (may matter to developers - QuestEvent, Condition, and Objective classes have been moved from "core" package to "api", update your imports)</li>
 </ul>
 <h2 id="154-2015-03-12">[1.5.4] - 2015-03-12<a class="headerlink" href="#154-2015-03-12" title="Permanent link">🔗</a></h2>
 <ul>
