@@ -37,9 +37,8 @@ public interface QuestPredicate<T> {
      * @return a composed predicate that represents the short-circuiting logical
      * AND of this predicate and the {@code other} predicate
      * @throws NullPointerException if other is null
-     * @throws QuestException       when the method execution fails
      */
-    default QuestPredicate<T> and(final QuestPredicate<? super T> other) throws QuestException {
+    default QuestPredicate<T> and(final QuestPredicate<? super T> other) {
         Objects.requireNonNull(other);
         return (T t) -> test(t) && other.test(t);
     }
@@ -50,9 +49,8 @@ public interface QuestPredicate<T> {
      *
      * @return a predicate that represents the logical negation of this
      * predicate
-     * @throws QuestException when the method execution fails
      */
-    default QuestPredicate<T> negate() throws QuestException {
+    default QuestPredicate<T> negate() {
         return (T t) -> !test(t);
     }
 
@@ -71,10 +69,9 @@ public interface QuestPredicate<T> {
      * @return a composed predicate that represents the short-circuiting logical
      * OR of this predicate and the {@code other} predicate
      * @throws NullPointerException if other is null
-     * @throws QuestException       when the method execution fails
      */
     @SuppressWarnings("PMD.ShortMethodName")
-    default QuestPredicate<T> or(final QuestPredicate<? super T> other) throws QuestException {
+    default QuestPredicate<T> or(final QuestPredicate<? super T> other) {
         Objects.requireNonNull(other);
         return (T t) -> test(t) || other.test(t);
     }
