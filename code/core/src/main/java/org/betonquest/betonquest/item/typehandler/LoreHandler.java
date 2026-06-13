@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -68,11 +67,10 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
     public String serializeToString(final ItemMeta meta) {
         if (meta.hasLore()) {
             final StringBuilder string = new StringBuilder(22);
-            final MiniMessage miniMessage = MiniMessage.miniMessage();
             for (final Component line : meta.lore()) {
-                string.append("\"lore:@[minimessage]").append(miniMessage.serialize(line)).append("\" ");
+                string.append(' ').append(HandlerUtil.toKeyValue("lore", line));
             }
-            return string.substring(0, string.length() - 1);
+            return string.substring(1);
         }
         return null;
     }
