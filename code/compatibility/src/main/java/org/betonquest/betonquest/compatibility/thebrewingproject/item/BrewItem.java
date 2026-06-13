@@ -9,9 +9,8 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.bukkit.NamespacedKey;
+import org.betonquest.betonquest.compatibility.thebrewingproject.BrewUtil;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -52,15 +51,8 @@ public record BrewItem(Recipe<ItemStack> recipe, String recipeName, BrewQuality 
 
     @Override
     public boolean matches(@Nullable final ItemStack item) {
-        if (item == null) {
-            return false;
-        }
-        final String keyString = item.getItemMeta().getPersistentDataContainer().get(
-                new NamespacedKey("brewery", "tag"), PersistentDataType.STRING
-        );
-        if (keyString == null) {
-            return false;
-        }
-        return keyString.equals(recipeName);
+        return item != null && BrewUtil.brewName(item.getItemMeta().getPersistentDataContainer())
+                .filter(recipeName::equals)
+                .isPresent();
     }
 }

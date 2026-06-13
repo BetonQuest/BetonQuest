@@ -1,0 +1,45 @@
+package org.betonquest.betonquest.compatibility.thebrewingproject.argument;
+
+import dev.jsinco.brewery.api.ingredient.BaseIngredient;
+import dev.jsinco.brewery.api.ingredient.Ingredient;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+/**
+ * Utility class for evaluating ingredients.
+ */
+public final class IngredientsUtil {
+
+    private IngredientsUtil() {
+        throw new UnsupportedOperationException("Utility class");
+    }
+
+    /**
+     * Check if the actual ingredients are all greater than the expected ingredients.
+     *
+     * @param expected The expected ingredients
+     * @param actual   The actual ingredients to compare
+     * @return True if all actual ingredients has more or equal amount than expected, otherwise false
+     */
+    public static boolean checkMatch(final Map<Ingredient, Integer> expected, final Map<? extends Ingredient, Integer> actual) {
+        final Map<BaseIngredient, Integer> actualIngredients = new HashMap<>(actual.entrySet().stream()
+                .map(entry -> Map.entry(entry.getKey().toBaseIngredient(), entry.getValue()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue))
+        );
+        for (final Map.Entry<Ingredient, Integer> entry : expected.entrySet()) {
+            final Optional<BaseIngredient> matchOptional = entry.getKey().findMatch(actualIngredients.keySet())
+                    .map(Ingredient::toBaseIngredient);
+            if (matchOptional.isEmpty()) {
+                return false;
+            }
+            final int actualAmount = actual.remove(matchOptional.get());
+            if (actualAmount <= entry.getValue()) {
+                return false;
+            }
+        }
+        return actualIngredients.isEmpty();
+    }
+}
