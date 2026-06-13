@@ -37,11 +37,11 @@ public class TbpIntegrator extends IntegrationTemplate {
 
     @Override
     public void postEnable(final BetonQuestApi api) {
-        // NO-OP
+        // Empty
     }
 
     @Override
     public void disable() {
-        // NO-OP
+        // Empty
     }
 }
