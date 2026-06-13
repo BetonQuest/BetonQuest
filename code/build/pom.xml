@@ -32,6 +32,7 @@
     <betonquest.core.version>3.0.0${changelist}</betonquest.core.version>
     <betonquest.mc_1_20_6.version>3.0.0${changelist}</betonquest.mc_1_20_6.version>
     <betonquest.mc_1_21_4.version>3.0.0${changelist}</betonquest.mc_1_21_4.version>
+    <betonquest.mc_1_21_8.version>3.0.0${changelist}</betonquest.mc_1_21_8.version>
     <betonquest.compatibility.version>3.0.0${changelist}</betonquest.compatibility.version>
 
     <!-- dependency versions -->
@@ -54,6 +55,11 @@
       <groupId>org.betonquest.betonquest</groupId>
       <artifactId>mc_1_21_4</artifactId>
       <version>${betonquest.mc_1_21_4.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.betonquest.betonquest</groupId>
+      <artifactId>mc_1_21_8</artifactId>
+      <version>${betonquest.mc_1_21_8.version}</version>
     </dependency>
     <dependency>
       <groupId>org.betonquest.betonquest</groupId>
