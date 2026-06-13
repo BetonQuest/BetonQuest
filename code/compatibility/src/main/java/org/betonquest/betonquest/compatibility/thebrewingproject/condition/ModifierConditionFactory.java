@@ -18,7 +18,7 @@ public record ModifierConditionFactory(TheBrewingProjectApi api) implements Play
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<String> modifierNameArgument = instruction.string().get();
-        final Argument<Operation> modifierConditionTypeArgument = instruction.enumeration(Operation.class).get();
+        final Argument<Operation> modifierConditionTypeArgument = instruction.parse(Operation::fromSymbol).get();
         final Argument<Number> modifierValueArgument = instruction.number().get();
         return new ModifierCondition(modifierNameArgument, modifierConditionTypeArgument, modifierValueArgument, api);
     }
