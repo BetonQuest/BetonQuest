@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.tbp.condition;
+package org.betonquest.betonquest.compatibility.thebrewingproject.condition;
 
 import dev.jsinco.brewery.bukkit.api.TheBrewingProjectApi;
 import org.betonquest.betonquest.api.QuestException;

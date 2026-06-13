@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.tbp.action;
+package org.betonquest.betonquest.compatibility.thebrewingproject.action;
 
 import dev.jsinco.brewery.api.event.DrunkEvent;
 import dev.jsinco.brewery.api.util.BreweryKey;
