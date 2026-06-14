@@ -1,4 +1,8 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/Configuration-Files.md
+3.1.0.2:
+  - type: SET
+    key: hook.thebrewingproject
+    value: true
 3.1.0.1:
   - type: KEY_RENAME
     oldKey: language
