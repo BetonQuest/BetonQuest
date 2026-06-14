@@ -7,8 +7,12 @@ import org.betonquest.betonquest.compatibility.thebrewingproject.action.DrunkenE
 import org.betonquest.betonquest.compatibility.thebrewingproject.condition.ModifierConditionFactory;
 import org.betonquest.betonquest.compatibility.thebrewingproject.item.BrewItemFactory;
 import org.betonquest.betonquest.compatibility.thebrewingproject.item.BrewItemSerializer;
+import org.betonquest.betonquest.compatibility.thebrewingproject.objective.BrewAgeObjectiveFactory;
 import org.betonquest.betonquest.compatibility.thebrewingproject.objective.BrewConsumeObjectiveFactory;
-import org.betonquest.betonquest.compatibility.thebrewingproject.objective.BrewCreateObjectiveFactory;
+import org.betonquest.betonquest.compatibility.thebrewingproject.objective.BrewCookObjectiveFactory;
+import org.betonquest.betonquest.compatibility.thebrewingproject.objective.BrewDistillObjectiveFactory;
+import org.betonquest.betonquest.compatibility.thebrewingproject.objective.BrewMixObjectiveFactory;
+import org.betonquest.betonquest.compatibility.thebrewingproject.objective.BrewTransferObjectiveFactory;
 import org.betonquest.betonquest.compatibility.thebrewingproject.objective.DrunkenEventObjectiveFactory;
 import org.betonquest.betonquest.compatibility.thebrewingproject.objective.StructureDestroyObjectiveFactory;
 import org.betonquest.betonquest.lib.integration.IntegrationTemplate;
@@ -18,7 +22,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 /**
  * The brewing project integration.
  */
-public class TbpIntegrator extends IntegrationTemplate {
+public class TheBrewingProjectIntegrator extends IntegrationTemplate {
 
     /**
      * The minimum required version of TheBrewingProject.
@@ -28,7 +32,7 @@ public class TbpIntegrator extends IntegrationTemplate {
     /**
      * Create a new tbp integrator.
      */
-    public TbpIntegrator() {
+    public TheBrewingProjectIntegrator() {
         super();
     }
 
@@ -43,8 +47,11 @@ public class TbpIntegrator extends IntegrationTemplate {
         playerAction("drunken_event", new DrunkenEventActionFactory(tbpApi));
         item("brew", new BrewItemFactory(tbpApi), new BrewItemSerializer());
         objective("brew_consume", new BrewConsumeObjectiveFactory());
-        objective("brew_create", new BrewCreateObjectiveFactory(tbpApi));
-        objective("brew_transfer", new BrewCreateObjectiveFactory(tbpApi));
+        objective("brew_age", new BrewAgeObjectiveFactory(tbpApi));
+        objective("brew_cook", new BrewCookObjectiveFactory(tbpApi));
+        objective("brew_mix", new BrewMixObjectiveFactory(tbpApi));
+        objective("brew_distill", new BrewDistillObjectiveFactory(tbpApi));
+        objective("brew_transfer", new BrewTransferObjectiveFactory());
         objective("drunken_event", new DrunkenEventObjectiveFactory());
         objective("structure_destroy", new StructureDestroyObjectiveFactory());
         registerFeatures(api);

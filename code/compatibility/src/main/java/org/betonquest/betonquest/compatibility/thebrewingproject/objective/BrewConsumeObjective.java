@@ -37,7 +37,7 @@ public record BrewConsumeObjective(BrewQualityArgument qualityArgument, Argument
      * @throws QuestException If any argument is invalid
      */
     public void handle(final BrewConsumeEvent event, final OnlineProfile profile) throws QuestException {
-        final Predicate<BrewQuality> quality = qualityArgument.getValue(profile);
+        final Predicate<BrewQuality> quality = qualityArgument.resolve(profile);
         final String type = brewTypeArgument.getValue(profile);
         final ItemStack itemStack = event.getItem();
         final PersistentDataContainer container = itemStack.getItemMeta().getPersistentDataContainer();
