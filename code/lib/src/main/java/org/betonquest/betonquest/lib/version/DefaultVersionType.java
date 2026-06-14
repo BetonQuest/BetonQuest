@@ -34,6 +34,13 @@ public record DefaultVersionType(List<VersionToken> tokens) implements VersionTy
             .build();
 
     /**
+     * Accepts any version string.
+     */
+    public static final DefaultVersionType UNDEFINED_VERSION = builder()
+            .finite().any("version")
+            .build();
+
+    /**
      * Create a new {@link VersionTypeBuilder} instance.
      *
      * @return a new {@link VersionTypeBuilder} instance

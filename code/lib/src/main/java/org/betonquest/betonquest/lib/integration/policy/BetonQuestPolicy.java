@@ -20,8 +20,7 @@ public record BetonQuestPolicy(Version version, VersionCompareStrategy versionCo
 
     @Override
     public boolean validate() {
-        return pluginProvider().withVersionType(BetonQuestVersion.BETONQUEST_VERSION_TYPE)
-                .version().map(actual -> versionCompareStrategy.test(actual, version)).orElse(false);
+        return pluginProvider().version().map(actual -> versionCompareStrategy.test(actual, version)).orElse(false);
     }
 
     @Override
@@ -31,6 +30,6 @@ public record BetonQuestPolicy(Version version, VersionCompareStrategy versionCo
 
     @Override
     public PluginProvider pluginProvider() {
-        return PluginProvider.forName(name());
+        return PluginProvider.forName(name()).withVersionType(BetonQuestVersion.BETONQUEST_VERSION_TYPE);
     }
 }

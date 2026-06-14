@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.lib.integration.policy;
 
 import org.betonquest.betonquest.lib.integration.PluginProvider;
+import org.betonquest.betonquest.lib.version.DefaultVersionType;
 import org.bukkit.plugin.Plugin;
 
 /**
@@ -17,5 +18,10 @@ public record UnversionedPluginPolicy(PluginProvider pluginProvider, String desc
     @Override
     public boolean validate() {
         return pluginProvider.plugin().map(Plugin::isEnabled).orElse(false);
+    }
+
+    @Override
+    public PluginProvider pluginProvider() {
+        return pluginProvider.withVersionType(DefaultVersionType.UNDEFINED_VERSION);
     }
 }

@@ -23,13 +23,18 @@ public record VersionedPluginPolicy(PluginProvider pluginProvider, Version versi
 
     @Override
     public boolean validate() {
-        return pluginProvider.plugin().map(Plugin::isEnabled).orElse(false)
-                && pluginProvider.withVersionType(version.type()).version()
-                .map(actual -> versionCompareStrategy.test(actual, version)).orElse(false);
+        final PluginProvider provider = pluginProvider();
+        return provider.plugin().map(Plugin::isEnabled).orElse(false)
+                && provider.version().map(actual -> versionCompareStrategy.test(actual, version)).orElse(false);
     }
 
     @Override
     public String name() {
         return pluginProvider.name().orElse("unknown plugin");
+    }
+
+    @Override
+    public PluginProvider pluginProvider() {
+        return pluginProvider.withVersionType(version.type());
     }
 }
