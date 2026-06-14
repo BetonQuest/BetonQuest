@@ -3,7 +3,6 @@ package org.betonquest.betonquest.mc_1_21_8;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
-import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.dependency.CoreComponentLoader;
 import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.conversation.ConversationColors;

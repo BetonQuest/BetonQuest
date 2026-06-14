@@ -78,6 +78,15 @@ conversation:
       show_npc_text: true
     slowtellraw:
       message_delay: 10
+    dialog:
+      layout: NPC_TITLE
+      button-render-padding: 13
+      default-button-width: -1
+      close-button:
+        enabled: true
+        text: <red>Close
+        width: -1
+        close-with-escape: true
 npc:
   accept_left_click: false
   interaction_limit: 500
