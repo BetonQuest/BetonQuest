@@ -9,11 +9,11 @@ import io.papermc.paper.registry.data.dialog.type.DialogType;
 import io.papermc.paper.registry.data.dialog.type.MultiActionType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickCallback;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.ConversationIO;
@@ -46,6 +46,11 @@ public class DialogConvIO implements ConversationIO {
     /** Cached component for the close button text. */
     private final Component cachedCloseText;
 
+    /**
+     * the text parser to parse the configuration text.
+     */
+    private final TextParser textParser;
+
     /** Whether the layout is NPC title. */
     private final boolean isNpcTitleLayout;
 
@@ -69,23 +74,27 @@ public class DialogConvIO implements ConversationIO {
      * @param config               the plugin configuration accessor
      * @param colors               the colors used in the conversation
      * @param componentLineWrapper the component line wrapper used to calculate text widths
+     * @param textParser            the text parser used to parse text
+     * @throws QuestException if the configuration contains invalid dialog settings
      */
     public DialogConvIO(
             final Conversation conv,
             final OnlineProfile onlineProfile,
             final ConfigAccessor config,
             final ConversationColors colors,
-            final ComponentLineWrapper componentLineWrapper
-    ) {
+            final ComponentLineWrapper componentLineWrapper,
+            final TextParser textParser
+    ) throws QuestException {
         this.conv = conv;
         this.onlineProfile = onlineProfile;
         this.colors = colors;
         this.componentLineWrapper = componentLineWrapper;
+        this.textParser = textParser;
 
         final ConfigurationSection section = config.getConfigurationSection("conversation.io.dialog");
         this.settings = new DialogSettings(section);
 
-        this.cachedCloseText = MiniMessage.miniMessage().deserialize(settings.closeButtonText);
+        this.cachedCloseText = textParser.parse(settings.closeButtonText);
         this.isNpcTitleLayout = settings.layout == DialogLayout.NPC_TITLE;
     }
 

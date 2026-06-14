@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.mc_1_21_8.conversation.io;
 
-import org.betonquest.betonquest.api.config.ConfigAccessor;
-import java.util.Locale;
+import org.betonquest.betonquest.api.QuestException;
+import org.bukkit.configuration.ConfigurationSection;
 
 /**
  * Holds configuration settings for the Dialog conversation interface.
@@ -33,24 +33,19 @@ class DialogSettings {
      * Constructs a new DialogSettings from the specified configuration section.
      *
      * @param section the configuration section containing dialog settings, or null for defaults
+     * @throws QuestException if the configuration contains invalid dialog settings
      */
-    /* default */ DialogSettings(final ConfigAccessor section) {
-
-        final String layoutStr = section.getString("layout", "NPC_TITLE").toUpperCase(Locale.ROOT);
-        DialogLayout parsedLayout;
-        try {
-            parsedLayout = DialogLayout.valueOf(layoutStr);
-        } catch (final IllegalArgumentException e) {
-            parsedLayout = DialogLayout.NPC_TITLE;
-        }
-        this.layout = parsedLayout;
+    /* default */ DialogSettings(final ConfigurationSection section) throws QuestException {
+        final String layoutStr = section.getString("layout", "NPC_TITLE");
+        this.layout = DialogLayout.fromString(layoutStr);
 
         this.buttonRenderPadding = section.getInt("button-render-padding", 13);
         this.defaultButtonWidth = section.getInt("default-button-width", 250);
 
-        this.closeButtonEnabled = section.getBoolean("close-button.enabled", true);
-        this.closeButtonText = section.getString("close-button.text", "<red>Close");
-        this.closeButtonWidth = section.getInt("close-button.width", 250);
-        this.closeWithEscape = section.getBoolean("close-with-escape", true);
+        final ConfigurationSection close = section.getConfigurationSection("close-button");
+        this.closeButtonEnabled = close.getBoolean("enabled", true);
+        this.closeButtonText = close.getString("text", "<red>Close");
+        this.closeButtonWidth = close.getInt("width", 250);
+        this.closeWithEscape = close.getBoolean("close-with-escape", true);
     }
 }
