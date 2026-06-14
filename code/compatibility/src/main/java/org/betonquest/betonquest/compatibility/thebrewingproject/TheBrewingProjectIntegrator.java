@@ -25,11 +25,6 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 public class TheBrewingProjectIntegrator extends IntegrationTemplate {
 
     /**
-     * The minimum required version of TheBrewingProject.
-     */
-    public static final String REQUIRED_VERSION = "3.2.0";
-
-    /**
      * Create a new tbp integrator.
      */
     public TheBrewingProjectIntegrator() {
