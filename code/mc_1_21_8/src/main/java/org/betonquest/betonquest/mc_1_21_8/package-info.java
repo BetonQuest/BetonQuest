@@ -1,5 +1,5 @@
 /**
- * The BetonQuest Minecraft 1.21.4 Compatibility.
+ * The BetonQuest Minecraft 1.21.8 Compatibility.
  */
 @DefaultQualifier(value = NotNull.class, locations = {FIELD, PARAMETER, RETURN})
 package org.betonquest.betonquest.mc_1_21_8;
