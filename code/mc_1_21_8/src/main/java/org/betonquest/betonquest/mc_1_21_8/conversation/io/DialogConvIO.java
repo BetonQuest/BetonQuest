@@ -56,10 +56,10 @@ public class DialogConvIO implements ConversationIO {
     private final List<Component> options = new ArrayList<>();
 
     /** The text spoken by the NPC. */
-    private Component npcText = EMPTY;
+    private Component npcText;
 
     /** The name of the NPC. */
-    private Component npcName = EMPTY;
+    private Component npcName;
 
     /**
      * Creates a new DialogConvIO instance.
@@ -107,7 +107,7 @@ public class DialogConvIO implements ConversationIO {
 
     @Override
     public void display() {
-        if (npcText == null && options.isEmpty()) {
+        if (Component.empty().equals(npcText) && options.isEmpty()) {
             end(() -> { });
             return;
         }
@@ -126,8 +126,8 @@ public class DialogConvIO implements ConversationIO {
      * @return the built DialogBase object
      */
     private DialogBase buildDialogBase() {
-        final Component name = npcName != null ? npcName : EMPTY;
-        final Component text = npcText != null ? npcText : EMPTY;
+        final Component name = npcName;
+        final Component text = npcText;
 
         final DialogBody body = DialogBody.plainMessage(
                 isNpcTitleLayout ? colors.getText().append(text)

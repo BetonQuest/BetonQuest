@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.mc_1_21_8.conversation.io;
 
-import org.bukkit.configuration.ConfigurationSection;
-
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import java.util.Locale;
 
 /**
@@ -35,17 +34,7 @@ class DialogSettings {
      *
      * @param section the configuration section containing dialog settings, or null for defaults
      */
-    /* default */ DialogSettings(final ConfigurationSection section) {
-        if (section == null) {
-            this.layout = DialogLayout.NPC_TITLE;
-            this.buttonRenderPadding = 13;
-            this.defaultButtonWidth = 250;
-            this.closeButtonEnabled = true;
-            this.closeButtonText = "<red>Close";
-            this.closeButtonWidth = 250;
-            this.closeWithEscape = true;
-            return;
-        }
+    /* default */ DialogSettings(final ConfigAccessor section) {
 
         final String layoutStr = section.getString("layout", "NPC_TITLE").toUpperCase(Locale.ROOT);
         DialogLayout parsedLayout;
@@ -59,10 +48,9 @@ class DialogSettings {
         this.buttonRenderPadding = section.getInt("button-render-padding", 13);
         this.defaultButtonWidth = section.getInt("default-button-width", 250);
 
-        final ConfigurationSection close = section.getConfigurationSection("close-button");
-        this.closeButtonEnabled = close == null || close.getBoolean("enabled", true);
-        this.closeButtonText = close != null ? close.getString("text", "<red>Close") : "<red>Close";
-        this.closeButtonWidth = close != null ? close.getInt("width", 250) : 250;
-        this.closeWithEscape = close == null || close.getBoolean("close-with-escape", true);
+        this.closeButtonEnabled = section.getBoolean("close-button.enabled", true);
+        this.closeButtonText = section.getString("close-button.text", "<red>Close");
+        this.closeButtonWidth = section.getInt("close-button.width", 250);
+        this.closeWithEscape = section.getBoolean("close-with-escape", true);
     }
 }
