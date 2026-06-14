@@ -15,14 +15,3 @@ journalLock: megaTrue
 testNew: someValue
 additionalVal: '42'
 copied: resource
-conversation:
-  io:
-    dialog:
-      layout: NPC_TITLE
-      button-render-padding: 13
-      default-button-width: -1
-      close-button:
-        enabled: true
-        text: <red>Close
-        width: -1
-        close-with-escape: true

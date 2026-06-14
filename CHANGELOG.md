@@ -6,171 +6,147 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
-- `quest compass` location now allows variables
-- `point` and `globalpoint` events and conditions now support variables
-- `cancel` event now has `bypass` keyword to ignore conditions in Quest Canceler
-- `quester` in conversation now supports variables
-- Support for Text Parsing Formatter
-    - `notify` event
-    - `notifyall` event
-    - `npc` Variable
-    - Compass Names
-    - Journal
-    - Quest Canceler
-    - Conversation
-    - Plugin Messages / Translations
-    - Menu Items & Title
-    - Mob Names for `interact` objective, `spawn` event, `removeentity` event and `entiry` condition
-    - `simple` items
-- `region` and `wand` conditions now supports variables
-- `JobsReborn`, `Quests`, `McMMO` now supports variables
-- notification categories `conversation_start` and `conversation_end`
-- Support for Npc plugins
-    - `FancyNpcs`
-    - `ZNPCsPlus`
-    - `MythicMobs`
-- `tag` and `globaltag` events and conditions now support variables
-- `package.version` for QuestPackages and -Templates
-- BlockSelector now supports variables when used in events, conditions, objectives
-- Variable support for all lists in events objectives and conditions for things like events conditions items and co.
-- `Menu Item` are now in the `menu_items` section, allowing references from multiple Menus
-- `Menu` title allows defining different messages
-- `eval` event and condition to resolve a string and interpret it again as event/condition
-- `constants` to replace the `variables` section including new addressing of them with the new constant variable
-- `mmoitem` item type
-- ingame message for plugin updates (removed in 2.1.0)
-- menu `slots` and bound `item` now support variables, `menu item` now supports variable `item`
-- `menu` event now supports the `update` action to update the currently opened menu
-- `menu` conversation IO settings to configure the scroll down and up buttons
-- `citizens` npcs are now used only from default registry
-- `invincible` config option to disable conversation invincibility
-- `debug dump` command to only dump the history to the log file
-- `brew` event/condition `mode` parameter to select by name or id
-- `timer` objective to track ingame time
-- `mcast` event to cast a Mythic(Mobs) skill for a player
-- `mythic`(mobs) item integration
-- `quest-item` argument for Mythic(-Mobs) and MMOItems item types
-- `point` and `tag` objective
-- `simple` item type:
-    - `item-name` argument (MC 1.20.6+)
-    - `item-model` & `no-item-model` arguments (MC 1.21.4+)
-    - `custom-model-data` support for data lists (MC 1.21.4+)
-- All of Minecrafts default font widths are now used to calculate the width of a string for line wrapping
-- conditions `biome`, `effect`, `ride`, `random` now support variables
-- `sync` variable offering identical evaluation as `eval` but forcing the execution on the main thread 
-- native `menu` io implementation which sets the player's speed to zero instead mounting it on an arrow (MC 1.21.4+)
-- support for `itemModel` for the totem NotifyIO (MC 1.21.4+)
-- identifier `mode` to `mmobkill` to check for faction instead of name
-- `nexo` item type
-- `craftEngine` item type
-- `itemsAdder` item type
-- `brew` item type
+- `package.version` for quest packages and quest templates
+- `constants` can be addressed with the new constant placeholder
+- `bypass` keyword to `cancel` action to ignore conditions in quest cancelers
+- `eval` action and condition to resolve a string and interpret it again as action/condition
+- `sync` placeholder offering identical evaluation as `eval` but forcing the execution on the main thread 
 - `mainhand` selection order to `take` action
-- menu `bind` item for specific clicks
-- `FancyHolograms` as compatible Hologram plugin
-- `conversation.block_item_transfer` option with per-conversation override to prevent item moving while in a conversation
-- new notification category `conversation_nothing_to_start`
-- `check` flag to `menu` action to respect the menu's open conditions
 - `abort` flag and `fail` actions to (chest) take action
-- item support for the integration `magic`
-- FastStats integration to provide better statistics for BetonQuest
-- `mmostat` action to modify the player's stats using the MythicLib (MmoLib) integration
-- `mcast` skill parameters
-- `dialog` conversation IO
+- `debug dump` command to only dump the history to the log file
+- `unit` as optional argument to the `folder` action to define the time unit for ticks, seconds, and minutes - defaults to seconds
+- support for `itemModel` for the totem NotifyIO (MC 1.21.4+)
+- optional ingame message for plugin updates (previously removed in 2.1.0)
+- `FastStats` to provide better statistics for BetonQuest
+- all of Minecraft's default font widths are now used to calculate the width of a string for line wrapping
+- support for text parsing formatter allowing for minimessage, minedown, and other formats for texts
+- support for placeholders in all actions, objectives, conditions, and more
+    - list arguments allow for placeholders to be used in each element or all elements
+- menu features
+    - menu items are now in the `menu_items` section, allowing references from multiple menus
+    - `title` allows defining different messages
+    - `bind` item for specific clicks
+    - `check` flag to `menu` action to respect the menu's open conditions
+    - `menu` action now supports the `update` action to update the currently opened menu
+- item types and item system improvements
+    - `mmoitem`, `nexo`, `craftEngine`, `itemsAdder`, `mythic`, `brew`, `magic` item types
+    - `simple` item type
+        - `item-name` argument (MC 1.20.6+)
+        - `item-model` & `no-item-model` arguments (MC 1.21.4+)
+        - `custom-model-data` support for data lists (MC 1.21.4+)
+    - `quest-item` argument for Mythic(-Mobs) and MMOItems item types
+- integrations and features to existing integrations
+    - `FancyNpcs`, `ZNPCsPlus` and `MythicMobs` as new options for npcs
+    - `FancyHolograms` as compatible hologram plugin
+    - `citizens` npcs are now used only from default registry
+    - `mcast` action to cast a Mythic(Mobs) skill with skill parameters for a player
+    - `mmostat` action to modify the player's stats using the MythicLib (MmoLib) integration
+    - `brew` action/condition `mode` parameter to select by name or id
+    - `mode` to `mmobkill` to allow checking for faction instead of name
+- new conversation features
+    - notification categories `conversation_start` and `conversation_end`
+    - `menu` conversation IO settings to configure the scroll down and up buttons
+    - native `menu` io implementation which sets the player's speed to zero instead mounting it on an arrow (MC 1.21.4+)
+    - `invincible` config option to disable conversation invincibility
+    - `conversation.block_item_transfer` option with per-conversation override to prevent item moving while in a conversation
+    - new notification category `conversation_nothing_to_start`
+    - config option `conversation.interceptor.display_history` to allow the interceptor to send the chat history after a conversation
+    - config option `conversation.interceptor.delay` to configure a delay between the end of a conversation and the moment the interceptor is ended
+    - `dialog` conversation IO settings to configure
+- new objectives
+    - `timer` to track ingame time
+    - `point` to track point changes
+    - `tag` to track tag changes
 ### Changed
-- Spigot is no longer supported, paper is now required 
-- message.yml file was deleted and instead the lang folder now contains all translations
-- menuConfig.yml file was deleted, translations are in the lang folder and the config is part of config.yml 
-- `cancel` event now respects by default canceler conditions
-- `objectives` can now be removed from database via command even when it does not exist
-- `max_npc_distance` config into `max_conversation_distance`
-- `acceptNPCLeftClick` and `npcInteractionLimit` configs into `npcs.accept_left_click` and `npcs.interaction_limit`
-- `%quester%` variable is used instead of `%npc%` for the quester's name in conversations; `%npc` variable is used now for the new Npc system
-- `fish` objective use block selector instead of a QuestItem
-- everything that used `Citizens` NPC ids now uses the BQ NpcIDs
-- conversations now always print their start and stop conversation message
-- `events`, `objectives`, `conditions`, `variables` and co. are now case-insensitive
-- underscores aren't replaced anymore, instead quoting needs to be used now
-    - `shear` objective - name 
-    - `mobkill` objective - name
-    - `password` objective - password
-    - `interact` objective - custom name and real name
-    - `simple` items
-- `items` now have a type like events
-- renamed list keys from singular to plural
-    - objectives - `event` and `condition` are now `events` and `conditions`
-    - events - `condition` is now `conditions`
-    - menus - `condition` is now `conditions`
-    - conversations - options `condition`, `event`, `pointer` and `extend` are now `conditions`, `events`, `pointers` and `extends`
-- `pickrandom` event now use tilde instead of percentage
-- `Menu Items` name and lore are no longer italic by default, name can be overridden while keeping original lore
-- events, objectives and conditions do not replace underscores anymore, quoting syntax needs to be used now
-- `mooncycle` condition is now `moonphase` and uses a variable list of the phases instead of numbers
-- `item` command now requires the specification of serializer
-- `npcs` in the `npc_holograms` and `npcs`, `conditions` and `locations` in the `effectlib` section now use comma separated lists
-- in quest cancelers the events are now executed before the teleport
-- `simple` quest items now resolve variables one time on reload to support `constant` variables
-    - `owner:%player%` was changed to `owner:` to allow constant pre-parsing
-- `math` variable now gives a better exception message and does not return 0 instead
-- `folder` event now use the `unit` argument to define the time unit for ticks, seconds and minutes
-- custom items in the chest conversation IO are now defined in the `properties` section on an option
-- Reworked the config.yml file to be more clean and structured
-    - `item.backpack.cancel_button` and `item.backpack.compass_button` do not have a `DEFAULT` value anymore, instead you need to specify an item
-- LoadDataEvent is now called before and after the data is loaded with a new enum `LoadDataEvent.State` that indicates the state
-- menu conversation IO settings are now defined the config.yml file in the `conversation.io.menu` section
-- `chest` conversation IO now actually ends when there is to npc option left or the player closes the inventory
-- `menu` Conversation IO displaying and scroll behavior rework
-- `objectives` event listener are now registered on reload instead when the first player gets it active
-- `npcmove` event - remove strange code effecting the end of a navigation to may return to a previous location in some cases
-- `npc_conversations` show the combat message only if there is a bound conversation
-- Addressing cross Packages now use `>` instead of `.` to solve conflicts in Variables
+- previous maven artifact repository nexus `https://nexus.betonquest.org/repository/betonquest/` replaced with reposilite available at `https://repo.betonquest.org/betonquest/`
 - Bukkit API events are now called sync/async depending on the tread context they are called in
-- `variable` command allows setting and getting data now for offline players
-- `mmobkill` objective now uses the killer (if present) to resolve names and distances
-- `Journal` and `Quest Item` are checked with PersistentDataContainer instead of lore
-- `ProtocolLib` was removed and replaced with `PacketEvents` that now needs to be installed instead
-    - `packet` chat interceptor was renamed to `packetevents`
-    - `conversation.interceptor.display_history` config option, allow the interceptor to send the chat history after a conversation
-- `menu` `bound_item` now finds the first menu allowed to open instead aborting after the first check
-- `money` event now has a `multiply` argument instead of `*` in front of number
-- old maven artifact repository nexus `https://nexus.betonquest.org/repository/betonquest/` replaced with reposilite available at `https://repo.betonquest.org/betonquest/`
-- `menu` io based on packetevents renamed to `packetevents`
-- config option `conversation.interceptor.delay` to configure a delay between the end of a conversation and the moment the interceptor is ended
-- `hologram` `top:` line to customizable format
-- Variables to Placeholders. This change won't harm any user scripts, it's only a conceptual change
-- Events to Actions.
-- `menu` conv io no longer ignores canceled events to process as input
-- `citizens` npc hiding now uses the inbuilt player filter trait
-- `global` property for objectives renamed to `auto-once`
+- actions, objectives, and conditions do not replace underscores anymore. quoting syntax needs to be used now
 - `brew` objective now checks brewed items in a more accurate way
-- `interact` objective now accepting `any` as an option for the entity type argument
-- `MMOCore` integration updated to `1.13.1-SNAPSHOT`
+- `simple` quest items now resolve placeholders one time on reload to support `constant` placeholders
+    - `owner:%player%` was changed to `owner:` to allow constant pre-parsing
+- `npc_conversations` show the combat message only if there is a bound conversation
+- `Journal` and `Quest Item` are checked with PersistentDataContainer instead of lore
+- `hologram`'s `top:` line to customizable format
+- LoadDataEvent is now called before and after the data is loaded with a new enum `LoadDataEvent.State` that indicates the state
+- configuration structure and naming
+    - reworked the entire config.yml file
+    - renamed `max_npc_distance` to `max_conversation_distance`
+    - renamed `acceptNPCLeftClick` to `npcs.accept_left_click`
+    - renamed `npcInteractionLimit` to `npcs.interaction_limit`
+    - `message.yml` file was deleted, and instead the lang folder now contains all translations
+    - `menuConfig.yml` file was deleted, translations are in the lang folder, and the config is part of config.yml
+    - `item.backpack.cancel_button` and `item.backpack.compass_button` do not have a `DEFAULT` value anymore, instead you need to specify an item
+- terminology and naming
+    - renamed `Variables` to `Placeholders` in the entire project
+    - renamed `Events` to `Actions` in the entire project
+    - renamed `global` property for objectives to `auto-once`
+    - cross-packages now use `>` instead of `.` to solve conflicts in placeholders
+    - in objectives - `event` and `condition` are now `actions` and `conditions`
+    - in actions - `condition` is now `conditions`
+    - in menus - `condition` is now `conditions`
+    - in conversations - options `condition`, `event`, `pointer` and `extend` are now `conditions`, `actions`, `pointers` and `extends`
+- commands
+    - `item` command now requires the specification of serializer
+    - `variable` command allows setting and getting data now for offline players
+    - `objectives` can now be removed from the database via command even when it does not exist
+- conversations and conversation IOs
+    - conversations now always print their start and stop conversation message
+    - `menu` conversation IO settings are now defined the `config.yml` file in the `conversation.io.menu` section
+    - `menu` conversation IO based on packetevents renamed to `packetevents`
+    - `menu` conversation IO displaying and scroll behavior rework
+    - `menu` conversation IO no longer ignores canceled bukkit events to process as input
+    - `packet` chat interceptor was renamed to `packetevents`
+    - custom items in the chest conversation IO are now defined in the `properties` section as an option
+    - `%quester%` placeholder is used instead of `%npc%` for the quester's name in conversations; `%npc` placeholder is now used for the new npc system
+    - `chest` conversation IO now actually ends when there is to npc option left or the player closes the inventory
+- integrations
+    - `ProtocolLib` was replaced with `PacketEvents`
+    - `MMOCore` integration updated to `1.13.1-SNAPSHOT`
+- menus and menu items
+    - menu item's name and lore are no longer italic by default, name can be overridden while keeping original lore
+    - `bound_item` now finds the first menu allowed to open instead aborting after the first check
+- npcs
+    - `citizens` npcs to use the npc identifiers of BetonQuest instead of those from Citizens
+    - `citizens` npcs hiding now uses the inbuilt player filter trait
+    - `npcs` in the `npc_holograms` and `npcs`, `conditions` and `locations` in the `effectlib` section now use comma-separated lists
+- element behavior
+    - the actions in quest cancelers to be now executed before the teleport
+    - `items` now have a type like other elements
+    - `math` placeholder now gives a better exception message and does not return 0 instead
+    - `cancel` action now respects by default canceler conditions
+    - `fish` objective use block selector instead of a quest item
+    - `actions`, `objectives`, `conditions` and co. are now case-insensitive
+    - `interact` objective now accepting `any` as an option for the entity type argument
+    - `pickrandom` action now use tilde instead of percentage
+    - `mooncycle` condition is now `moonphase` and uses a list of the phases instead of numbers
+    - `mmobkill` objective now uses the killer (if present) to resolve names and distances
+    - `money` action now has a `multiply` argument instead of `*` in front of number
 ### Deprecated
 ### Removed
+- spigot support entirely, now paper is required
 - undocumented prefix feature in conversation
 - `citizens_npcs_by_name` config option, which is now part of the id
 - start and stop sound in the configuration for conversations were removed in favor of the notification system that now also has the two new build in categories `conversation_start` and `conversation_end`
 - `menu reload` command which did not work
-- `variables` section in favor for `constants`
-- `MMOItems` conditions, events and `mmoitemcraft` objective in favor of the built-in ones
+- `variables` section
+- `MMOItems` conditions, actions, and the `mmoitemcraft` objective in favor of the built-in ones
 - `journal.chars_per_page` was deleted from the config.yml 
-- undocumented way of addressing packages in some variables
+- undocumented way of addressing packages in some placeholders
 - `journal.show_separator` option deleted
 - `display_missed` config option, as the `none` interceptor should be used instead
 - legacy multiply with `*` for points
-- dependency PaperLib since its discontinued
+- dependency `PaperLib` since its discontinued
 - aliases `/q`, `/j` and `/b` to improve compatibility with other plugins by actively reducing conflicts on command names
 - `Brewery` item condition and actions, in favor of the built-in ones
 ### Fixed
-- Reloading plugin did not reload Menu config
-- potions generated not extended/upgraded since 2.2.1
-- Biome condition on mc 1.21.4 could not parse the biome from the instruction anymore
-- `randomnumber` variable now correctly returns lower bound
-- `stage` objective 'index' property not working and now also starts at 0
+- plugin did not reload menu config correctly
+- potions generated have not been extended/upgraded since 2.2.1
+- biome condition on Minecraft 1.21.4 could not parse the biome from the instruction anymore
+- `randomnumber` placeholder now correctly returns lower bound
+- `stage` objective `index` property not working and now also starts at 0
 - betonquest command without arguments did not work anymore
-- the Fabled hook not working properly
-- `compass` event did not work with variables in `compass` location
-- `quest canceler` did not resolve global variables
+- `Fabled` hook not working properly
+- `quest canceler` did not resolve global placeholders
 - `quest canceler` used `loc` instead of `location` key for teleportation
 - `journal` language only changed after rejoin when changing player language
 - `journal` entry renaming or deleting via command now affects all specified pointers and not only one
@@ -178,31 +154,31 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - scrolling the mouse in the menu conversation IO did not work
 - `MMOCore` attribute loading with MMOCore 1.13
 - missing messages `animals_to_tame` and `times_to_jump` in language files by adding them
-- `Menu Item` parsing with newlines lead in some cases to missing lines
-- `Menu`s throwing exception on reload when bound commands are used
+- `menu` item parsing with newlines caused missing lines in some cases
+- `menu`s throwing exception on reload when bound commands are used
 - `mmoitemcraft` objective NoSuchMethodError with MMOItems 6.10+
 - `menu` conversation IO exception in one edge case
-- 1.21.5 ProtocolLib support
 - `interact` objective's documentations used hookLocation instead of loc for the location
-- `randomnumber` variable using locale/eventually comma instead of dots breaking further using like math
+- `randomnumber` placeholder using locale/eventually comma instead of dots breaking further using like math
 - `interact` objective now blocks the interaction with an item frame properly if cancel is set
 - `brewery` null pointer exception when a brew has no recipe
 - `npcrange` objective did count player without it valid for `outside` action
 - `global objective` error on join when it was added with the command or the tag got removed
 - `tellraw` conversation IO showed pop-up for unknown command
 - `simple` item `flags` crashed plugin when invalid
-- Disabling the plugin no longer causes hardly expected zip errors
+- disabling the plugin no longer causes hardly expected zip errors
 - `mspawnmob` exception when spawning the mob is canceled/forbidden
 - conversations could cause deadlocks when too many conditions are checked
-- `itemdurability` variable parsed differently than intended in docs
+- `itemdurability` placeholder parsed differently than intended in docs
 - database connection is now more stable and reconnect probably works better now
 - `QuestItem`s and `Journal`s could be put into bundles (MC 1.21.4+)
-- hologram integration with the lowest priority was selected instead with the highest
-- broken Conversation states no longer trap players
+- hologram integration with the lowest priority was selected instead of with the highest
+- broken conversation states no longer trap players
 - `firework` colors de-/serializing in `simple` item when there is no color
 - `nujobs_payment` objective wrongly using target amount for everything
 - `MMOCore` actions and conditions now no longer wrongly accept offline players
 - offline player data access in multiple elements supporting offline context
+- code in `npcmove` action effecting the end of a navigation to may return to a previous location in some cases
 ### Security
 
 ## [2.2.1] - 2025-01-12
@@ -270,7 +246,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Schedules could run twice on some systems by an inaccurate time returned java's Instant.now()
 - `Journal` interaction with blocks like lecterns
 - sections that are created in templates by write operations, where no edits should actually be done
-    - this caused a lot of "ghost" sections that could not be loaded like schedules, menus and manny more
+    - this caused a lot of "ghost" sections that could not be loaded like schedules, menus, and manny more
 - Conversations work in 1.21.3 again
 ### Security
 
@@ -352,8 +328,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Fixed
 - `variable` objective loads newlines correctly
 - exception in `lookAtBlock` condition when omitting the type
-- MMOCoreClassCondition, MMOItemsGiveEvent, MMOItemsHandCondition and MMOItemsItemCondition now work with numeric identifiers
-- yaml multiline instructions could lead to partly working events, conditions and objectives
+- MMOCoreClassCondition, MMOItemsGiveEvent, MMOItemsHandCondition, and MMOItemsItemCondition now work with numeric identifiers
+- yaml multiline instructions could lead to partly working events, conditions, and objectives
 - creation of advancement tab when an advancement NotifyIO is sent
 - `burn` event throwing unexpected error when omitting duration
 - added missing firework meta to string representation of QuestItem
@@ -480,7 +456,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `cancelconversation` event
 - `time` event - now supports subtraction and world selection, which made it persistent and static
 - `globalpoint` event - new syntax for manipulating global points
-- `experience` event - it's now possible to change xp, change and set levels and set the xp bar
+- `experience` event - it's now possible to change xp, change and set levels, and set the xp bar
 - `deleteglobalpoint` event
 - `score` event - more options for manipulating the scoreboard
 - `item` variable - new `name` and `lore` argument and now supports items from other packages
@@ -488,13 +464,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `give` event - new `backpack` argument to place items in the backpack (if a valid QuestItem)
 - `party` event - new optional `amount` of maximal affected players
 - `drop` event
-- `itemdurability` event, condition and variable
+- `itemdurability` event, condition, and variable
 - `numbercompare` condition
 - `cancelOnLogout` argument for `folder` event
-- `npcinteract` objective - now supports the argument `interaction` to choose between left, right or both clicks
+- `npcinteract` objective - now supports the argument `interaction` to choose between left, right, or both clicks
 - `log` event
 - `party` event - new range 0 and -1 to select players in the same world or server wide
-- `stage` objective, condition and event
+- `stage` objective, condition, and event
 - `first` event - attempts to run a list of events until one successfully runs, like a compressed `if` event
 ### Changed
 - Java 17 is now required
@@ -569,7 +545,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `vehicle` objective - renamed to `ride`
 ### Deprecated
 ### Removed
-- deprecated internals, code and old features
+- deprecated internals, code, and old features
 - Support for MMOLib
 - `message` event
 - `title` event
@@ -670,7 +646,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Fixed
 - reload with an invalid PlayerHider causes a NPE
 - QuestItems could be eaten, this was caused by a changed mc behavior
-- command, sudo and opsudo events didn't work with conditions
+- command, sudo, and opsudo events didn't work with conditions
 - interact objective did not work with armorstands
 - MMOItemsGiveEvent did not check if item actually exists
 - notify IO `subtitle` and `title` with only a subtitle was not send
@@ -748,7 +724,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Removed
 ### Fixes
 - parsing of math variable
-- craft objective: multi-craft, drop-craft, hotbar/offhand-craft, shift-Q-craft and any illegal crafting is correctly detected,
+- craft objective: multi-craft, drop-craft, hotbar/offhand-craft, shift-Q-craft, and any illegal crafting is correctly detected,
 - craft objective variables `left` and `amount` were swapped
 - NPC hider for not spawned NPCs
 - Conversation IO Chest load NPC skull async from Citizens instead of sync
@@ -863,7 +839,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Added variable support to the PickRandomEvent
 - Added "acceptNPCLeftClick: true / false" config option
 - Added optional "minlevel" and "maxlevel" arguments to mmobkill objective
-- Added new options 'inside/outside' for npcrange objective, support for multiple npcs and improved performance
+- Added new options 'inside/outside' for npcrange objective, support for multiple npcs, and improved performance
 - Added new Event QuestCompassTargetChangeEvent that is triggered when a new CompassTarget is set. It is also possible to cancel it
 - added multi language support for Notify system
 - Added 'notifyall' event to broadcast a notification
@@ -933,7 +909,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - fixed message duplication when using the packet interceptor
 - fixed Journal interaction with Lectern
 - fixed QuestItems ignoring durability
-- fixed QuestItem interaction with Lectern, Campfire and Composter
+- fixed QuestItem interaction with Lectern, Campfire, and Composter
 - update journal after closing magic inventory
 - fixed lever event not toggling the lever
 - fixed ConcurrentModificationException in PlayerData
@@ -977,7 +953,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - New 'nujobs_levelup' objective - Triggers when a player levels up in Jobs Reborn
 - New 'nujobs_payment' objective - Triggers when a player receives money from Jobs Reborn
 - New Notification System
-- New 'notify' event - Create custom notifications on the ActionBar, BossBar, Title, Subtitle and Achievement
+- New 'notify' event - Create custom notifications on the ActionBar, BossBar, Title, Subtitle, and Achievement
 - New 'menu' conversation IO - Requires ProtocolLib. See: https://www.youtube.com/watch?v=Qtn7Dpdf4jw&lc
 - New 'packet' chat interceptor - Requires ProtocolLib.
 - new '/q debug' command - Enable or disable the debug mode
@@ -1127,7 +1103,7 @@ Notes:
 - Locations can be variables which resolve to location format
 - Point condition can now check exact point amount with 'equal' argument
 - In 'chest' conversation IO items can be specified with durability values after a colon
-- Mobs spawned with 'spawn' event can have armor, items in hands and custom drops
+- Mobs spawned with 'spawn' event can have armor, items in hands, and custom drops
 - Unbreakability of quest items can be disabled (if you want to use "unbreakable" tag instead)
 - Ranges in locations are now a separate argument ("10;20;30;world;4" is now "10;20;30;world 4")
 - "main.yml" is now the only required file in the package. Empty files can be deleted
@@ -1145,7 +1121,7 @@ Notes:
 - New condition 'achievement' - check if the player has an achievement
 - New condition 'variable' - check if a variable matches a pattern
 - New event 'lever' - switches a lever
-- New event 'door' - opens/closes doors, trapdoors and gates
+- New event 'door' - opens/closes doors, trapdoors, and gates
 - New event 'if' - run one of two events, depending on condition
 - New event 'movenpc' - move Citizens NPC to a location
 - New event 'variable' - set a variable in "variable" objective
@@ -1185,7 +1161,7 @@ Notes:
 - Fixed problems with relogging while in conversations with "stop" option enabled
 - Fixed error when loading corrupted item from the database
 ### Changes
-- Updater is now based on GitHub Releases, no longer downloads major updates automatically, it is more configurable and can also download development versions with "/q update --dev"
+- Updater is now based on GitHub Releases, no longer downloads major updates automatically, it is more configurable, and can also download development versions with "/q update --dev"
 ### Added
 - Added console message about the cause of "/q give" errors (tells you what is wrong with item instruction string)
 
@@ -1212,8 +1188,8 @@ Notes:
 - Static events now are canceled correctly
 - Action objective now correctly checks locations
 - Combat tag is removed after death
-- Block, Craft and MythicMobs MobKill objectives now correctly save data
-- Take event now correctly takes items from inventory, armor slots and backpack
+- Block, Craft, and MythicMobs MobKill objectives now correctly save data
+- Take event now correctly takes items from inventory, armor slots, and backpack
 ### Added
 - New variable system in conversations (check out the documentation)
 - More options for journal, including one entry per page and removing date
@@ -1257,7 +1233,7 @@ Notes:
 - In conversations, %quester% variable changed to %npc%
 - In inventory GUI there is NPC's text in every option, for convenience
 - Conversations can point to NPC options in other conversations within the package
-- You can use spaces between events, conditions and pointers in conversations
+- You can use spaces between events, conditions, and pointers in conversations
 - All tags and points are internally associated with a package now
 - Some conditions are now static and persistent (just like events)
 - Point event can now multiply points
@@ -1390,12 +1366,12 @@ Notes:
 - WorldGuard support (region condition)
 - Errors are logged to the "error.log" file in "logs" directory
 - Debug option in config.yml for logging plugin's activity to "debug.log" file
-- New commands for opening backpack: b, bb, backpack, bbackpack or betonbackpack
-- Items are now aware of leather armor color, head owner and enchantments in books
+- New commands for opening backpack: b, bb, backpack, bbackpack, or betonbackpack
+- Items are now aware of leather armor color, head owner, and enchantments in books
 ### Changes
 - Added and changed a lot of subcommands in /q command:
     - event and condition can be run for every online player
-    - tag, point, objective and (new) journal can edit every (even offline) player
+    - tag, point, objective, and (new) journal can edit every (even offline) player
     - config (new) can set configuration files from command line
     - backup (new) backups the whole configuration and database
 - Folder event now runs these events even after the player logs out: command, tag, objective, delete, point, setblock
@@ -1407,7 +1383,7 @@ Notes:
 - Inverting conditions is now done by prefixing their name with "!" (in the place where you use them, like conversation, not in conditions.yml)
 - Configuration updater is no longer based on plugin's version
 - Backup files are now kept in "backups" directory, old ones are moved to it
-- Changed internal structure of the code (may matter to developers - QuestEvent, Condition and Objective classes have been moved from "core" package to "api", update your imports)
+- Changed internal structure of the code (may matter to developers - QuestEvent, Condition, and Objective classes have been moved from "core" package to "api", update your imports)
 
 ## [1.5.4] - 2015-03-12
 - This version is almost the same as 1.5.3. The only difference is that it can load database backups created by 1.6 version. When updating to 1.6, the database format will change, so it won't be possible to go back, unless by loading the backup using this version of the plugin.
