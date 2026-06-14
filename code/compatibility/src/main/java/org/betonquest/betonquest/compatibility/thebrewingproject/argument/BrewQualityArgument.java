@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.quest.condition.number.Operation;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
 
@@ -17,7 +16,7 @@ import java.util.function.Predicate;
  * @param operationArgument A comparison operator
  */
 public record BrewQualityArgument(Argument<BrewQuality> qualityArgument,
-                                  Argument<Operation> operationArgument) implements Argument<Predicate<BrewQuality>> {
+                                  Argument<Operation> operationArgument) {
 
     /**
      * Parse an instruction chain.
@@ -40,8 +39,14 @@ public record BrewQualityArgument(Argument<BrewQuality> qualityArgument,
         };
     }
 
-    @Override
-    public Predicate<BrewQuality> getValue(@Nullable final Profile profile) throws QuestException {
+    /**
+     * Resolve these arguments based on a profile.
+     *
+     * @param profile A profile.
+     * @return A predicate for testing brew quality
+     * @throws QuestException If any argument is invalid
+     */
+    public Predicate<BrewQuality> resolve(final Profile profile) throws QuestException {
         final BrewQuality quality = qualityArgument.getValue(profile);
         final Operation operation = operationArgument.getValue(profile);
         return other -> operation.check(value(quality), value(other));

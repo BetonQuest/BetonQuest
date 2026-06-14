@@ -96,7 +96,7 @@ public record BrewTransferObjective(BrewQualityArgument qualityArgument, Argumen
     }
 
     private void completeForItem(@Nullable final ItemSource itemSource, final OnlineProfile profile) throws QuestException {
-        final Predicate<BrewQuality> quality = qualityArgument.getValue(profile);
+        final Predicate<BrewQuality> quality = qualityArgument.resolve(profile);
         final String type = brewTypeArgument.getValue(profile);
         if (itemSource == null) {
             return;

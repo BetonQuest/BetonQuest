@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.thebrewingproject.argument;
+package org.betonquest.betonquest.compatibility.thebrewingproject.objective;
 
 import dev.jsinco.brewery.api.ingredient.BaseIngredient;
 import dev.jsinco.brewery.api.ingredient.Ingredient;
