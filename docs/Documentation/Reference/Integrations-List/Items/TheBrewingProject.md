@@ -118,6 +118,8 @@ __Description__: The player needs to have extracted a brew from a barrel with sp
 | _barrel-type_ | A barrel type, for default values check [here](https://docs.breweryteam.dev/docs/tbp/gameplay/creating-brews/aging#barrel-types) | The type of the barrel               |
 | _aging-years_ | A number above (not equal to) 0.5                                                                                                | The time the brew needs to have aged |
 
+Note that an aging year might change if TheBrewingProject reloads.
+
 ```YAML title="Example"
 objectives:
   cook: "tbp_age any 1"
