@@ -23,10 +23,7 @@ public record BrewItemSerializer() implements QuestItemSerializer {
             throw new QuestException("Item not completed brew");
         }
         final BrewQuality quality = BrewUtil.quality(container)
-                .orElse(null);
-        if (quality == null) {
-            throw new QuestException("Brew is failed");
-        }
+                .orElseThrow(() -> new QuestException("Brew is failed"));
         return "\"%s\" %s".formatted(recipeName, quality.name().toLowerCase(Locale.ROOT));
     }
 }
