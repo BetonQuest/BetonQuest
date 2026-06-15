@@ -21,22 +21,24 @@ To simplify the process of maintaining these lists, we use the following style d
     This description is used to provide a brief explanation of the action if it is not obvious from short description
     above. It may also be used to provide additional information about the parameters or special behaviors of the action.
     
-    | Parameter            | Type                   | Explanation                  |
-    |----------------------|------------------------|------------------------------|
-    | param1 <br>[Number]  | Required               | What does this parameter do? |
-    | param2 <br>[String]  | Optional <br>[Null]    | What does this parameter do? |
-    | param3 <br>[Boolean] | Flag <br>[false, true] | What does this parameter do? |
-    | +[...] <br>[String]  | Additionals            | What do these parameters do? |
-    
+    | Parameter               | Type                   | Explanation                  |
+    |-------------------------|------------------------|------------------------------|
+    | param1 <br>[Number]     | Required               | What does this parameter do? |
+    | param2 <br>List[Number] | Required               | What does this parameter do? |
+    | param3 <br>[String]     | Optional <br>[Null]    | What does this parameter do? |
+    | param4 <br>[EnumType]   | Optional <br>[NONE]    | What do these parameters do? |
+    | param5 <br>[Boolean]    | Flag <br>[false, true] | What does this parameter do? |
+    | +[...] <br>[String]     | Additionals            | What do these parameters do? |
+
     ```YAML title="Examples"
     actions:
-      exapl1: "example 55 param2:Test param3:false"
-      exapl2: "example 55 param2:Test param3"
-      exapl3: "example 55 param2:Test"
-      exapl4: "example 55 param3"
-      exapl5: "example 55"
-      exapl6: "example 55 param2:Test param3:false +myAdditionalParam:AnyValue"
+      exapl1: "example 55 param2:5,8,33"
+      exapl2: "example 55 param2:5,8,33 param5"
+      exapl3: "example 55 param2:5,8,33 param3:Test param4:ONE param5:false"
+      exapl4: "example 55 param2:5,8,33 param3:Test param4:ONE param5:false +myAdditionalParam:AnyValue"
     ```
+    
+    *[EnumType]: NONE, ONE, MULTIPLE (The enum type should simply list all possible values)
     
 Make sure the style matches using the following checklists:
 
