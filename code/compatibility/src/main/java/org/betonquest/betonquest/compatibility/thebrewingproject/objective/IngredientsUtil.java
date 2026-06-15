@@ -35,8 +35,8 @@ public final class IngredientsUtil {
             if (matchOptional.isEmpty()) {
                 return false;
             }
-            final int actualAmount = actual.remove(matchOptional.get());
-            if (actualAmount <= entry.getValue()) {
+            final int actualAmount = actualIngredients.remove(matchOptional.get());
+            if (actualAmount < entry.getValue()) {
                 return false;
             }
         }
