@@ -1,8 +1,12 @@
 package org.betonquest.betonquest.compatibility.thebrewingproject.objective;
 
 import dev.jsinco.brewery.api.brew.BrewQuality;
+import dev.jsinco.brewery.bukkit.api.event.transaction.BarrelExtractEvent;
+import dev.jsinco.brewery.bukkit.api.event.transaction.BarrelInsertEvent;
 import dev.jsinco.brewery.bukkit.api.event.transaction.CauldronExtractEvent;
 import dev.jsinco.brewery.bukkit.api.event.transaction.CauldronInsertEvent;
+import dev.jsinco.brewery.bukkit.api.event.transaction.DistilleryExtractEvent;
+import dev.jsinco.brewery.bukkit.api.event.transaction.DistilleryInsertEvent;
 import dev.jsinco.brewery.bukkit.api.event.transaction.ItemTransactionEvent;
 import dev.jsinco.brewery.bukkit.api.transaction.ItemSource;
 import dev.jsinco.brewery.bukkit.api.transaction.ItemTransactionSession;
@@ -13,6 +17,7 @@ import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.compatibility.thebrewingproject.BrewUtil;
 import org.betonquest.betonquest.compatibility.thebrewingproject.argument.BrewQualityArgument;
+import org.betonquest.betonquest.compatibility.thebrewingproject.argument.BrewingStructure;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -23,13 +28,15 @@ import java.util.function.Predicate;
 /**
  * The objective reached when transferring brews from either distillery, barrels, or cauldrons.
  *
- * @param qualityArgument      A quality filter
- * @param brewTypeArgument     A brew type argument
- * @param transferTypeArgument A transfer type argument
- * @param service              The objective service
+ * @param qualityArgument       A quality filter
+ * @param brewTypeArgument      A brew type argument
+ * @param transferTypeArgument  A transfer type argument
+ * @param structureTypeArgument A structure type argument
+ * @param service               The objective service
  */
 public record BrewTransferObjective(BrewQualityArgument qualityArgument, Argument<String> brewTypeArgument,
                                     Argument<TransferType> transferTypeArgument,
+                                    Argument<BrewingStructure> structureTypeArgument,
                                     ObjectiveService service) implements Objective {
 
     /**
@@ -41,6 +48,17 @@ public record BrewTransferObjective(BrewQualityArgument qualityArgument, Argumen
      */
     public void handleExtract(final ItemTransactionEvent<ItemSource.ItemBasedSource> event, final OnlineProfile profile) throws QuestException {
         if (transferTypeArgument.getValue(profile) != TransferType.EXTRACT) {
+            return;
+        }
+        final BrewingStructure structureType;
+        if (event instanceof BarrelExtractEvent) {
+            structureType = BrewingStructure.BARREL;
+        } else if (event instanceof DistilleryExtractEvent) {
+            structureType = BrewingStructure.DISTILLERY;
+        } else {
+            throw new QuestException("Unsupported event type '%s'".formatted(event.getClass().getSimpleName()));
+        }
+        if (structureTypeArgument.getValue(profile) != structureType) {
             return;
         }
         final ItemTransactionSession<ItemSource.ItemBasedSource> session = event.getTransactionSession();
@@ -58,6 +76,17 @@ public record BrewTransferObjective(BrewQualityArgument qualityArgument, Argumen
         if (transferTypeArgument.getValue(profile) != TransferType.INSERT) {
             return;
         }
+        final BrewingStructure structureType;
+        if (event instanceof BarrelInsertEvent) {
+            structureType = BrewingStructure.BARREL;
+        } else if (event instanceof DistilleryInsertEvent) {
+            structureType = BrewingStructure.DISTILLERY;
+        } else {
+            throw new QuestException("Unsupported event type '%s'".formatted(event.getClass().getSimpleName()));
+        }
+        if (structureTypeArgument.getValue(profile) != structureType) {
+            return;
+        }
         final ItemTransactionSession<ItemSource.BrewBasedSource> session = event.getTransactionSession();
         completeForItem(session.getResult(), profile);
     }
@@ -70,7 +99,8 @@ public record BrewTransferObjective(BrewQualityArgument qualityArgument, Argumen
      * @throws QuestException If any argument is invalid
      */
     public void handleExtract(final CauldronExtractEvent event, final OnlineProfile profile) throws QuestException {
-        if (transferTypeArgument.getValue(profile) != TransferType.EXTRACT) {
+        if (transferTypeArgument.getValue(profile) != TransferType.EXTRACT
+                || structureTypeArgument.getValue(profile) != BrewingStructure.CAULDRON) {
             return;
         }
         completeForItem(event.getItemResult(), profile);
@@ -84,7 +114,8 @@ public record BrewTransferObjective(BrewQualityArgument qualityArgument, Argumen
      * @throws QuestException If any argument is invalid
      */
     public void handleInsert(final CauldronInsertEvent event, final OnlineProfile profile) throws QuestException {
-        if (transferTypeArgument.getValue(profile) != TransferType.INSERT) {
+        if (transferTypeArgument.getValue(profile) != TransferType.INSERT
+                || structureTypeArgument.getValue(profile) != BrewingStructure.CAULDRON) {
             return;
         }
         completeForItem(event.getItemSource(), profile);

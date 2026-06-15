@@ -13,6 +13,7 @@ import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.compatibility.thebrewingproject.argument.BrewQualityArgument;
+import org.betonquest.betonquest.compatibility.thebrewingproject.argument.BrewingStructure;
 
 /**
  * Factory for {@link BrewTransferObjective}.
@@ -22,9 +23,10 @@ public record BrewTransferObjectiveFactory() implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
         final Argument<TransferType> transferTypeArgument = instruction.enumeration(TransferType.class).get();
+        final Argument<BrewingStructure> structureTypeArgument = instruction.enumeration(BrewingStructure.class).get();
         final Argument<String> brewType = instruction.string().get();
         final BrewQualityArgument brewQualityArgument = BrewQualityArgument.parseInstructions(instruction);
-        final BrewTransferObjective objective = new BrewTransferObjective(brewQualityArgument, brewType, transferTypeArgument, service);
+        final BrewTransferObjective objective = new BrewTransferObjective(brewQualityArgument, brewType, transferTypeArgument, structureTypeArgument, service);
         service.request(DistilleryExtractEvent.class)
                 .onlineHandler(objective::handleExtract)
                 .player(DistilleryExtractEvent::getPlayer)
