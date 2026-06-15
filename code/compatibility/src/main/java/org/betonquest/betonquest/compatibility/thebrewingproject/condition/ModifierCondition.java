@@ -39,6 +39,6 @@ public record ModifierCondition(Argument<String> modifierNameArgument,
         } else {
             actualValue = drunkState.modifierValue(modifier);
         }
-        return operation.check(modifierValue, actualValue);
+        return operation.check(actualValue, modifierValue);
     }
 }
