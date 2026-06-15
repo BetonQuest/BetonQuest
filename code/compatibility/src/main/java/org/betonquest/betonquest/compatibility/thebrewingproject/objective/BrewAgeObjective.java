@@ -49,7 +49,7 @@ public record BrewAgeObjective(Argument<BarrelType> barrelTypeArgument,
         if (brewOptional.isPresent()
                 && brewOptional.get().lastCompletedStep() instanceof final BrewingStep.Age age
                 && barrelType.proximityScore(age.barrelType()) == 1
-                && ageTime > (double) age.time().moment() / ageingYear) {
+                && ageTime * ageingYear <= age.time().moment()) {
             service.complete(profile);
         }
     }
