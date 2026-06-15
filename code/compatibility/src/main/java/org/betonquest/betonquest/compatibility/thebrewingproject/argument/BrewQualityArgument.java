@@ -42,7 +42,7 @@ public record BrewQualityArgument(Argument<BrewQuality> qualityArgument,
     /**
      * Resolve these arguments based on a profile.
      *
-     * @param profile A profile.
+     * @param profile A profile
      * @return A predicate for testing brew quality
      * @throws QuestException If any argument is invalid
      */

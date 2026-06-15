@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Brew item wrapper for the brewing project.
  *
- * @param recipeNameArgument  Recipe name argument.
+ * @param recipeNameArgument  Recipe name argument
  * @param brewQualityArgument Brew quality argument
  * @param api                 The api
  */

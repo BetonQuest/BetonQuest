@@ -11,7 +11,7 @@ import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 /**
  * The objective for triggering a specific drunken event.
  *
- * @param drunkenEventArgument An argument with a key for the drunken event.
+ * @param drunkenEventArgument An argument with a key for the drunken event
  * @param service              The objective service
  */
 public record DrunkenEventObjective(Argument<String> drunkenEventArgument,
