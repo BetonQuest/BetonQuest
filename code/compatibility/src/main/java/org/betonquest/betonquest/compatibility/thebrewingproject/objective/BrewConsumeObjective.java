@@ -24,11 +24,6 @@ import java.util.function.Predicate;
 public record BrewConsumeObjective(BrewQualityArgument qualityArgument, Argument<String> brewTypeArgument,
                                    ObjectiveService service) implements Objective {
 
-    @Override
-    public ObjectiveService getService() {
-        return service;
-    }
-
     /**
      * Handle a brew consume event.
      *
@@ -46,5 +41,10 @@ public record BrewConsumeObjective(BrewQualityArgument qualityArgument, Argument
         ) {
             service.complete(profile);
         }
+    }
+
+    @Override
+    public ObjectiveService getService() {
+        return service;
     }
 }

@@ -17,11 +17,6 @@ import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 public record DrunkenEventObjective(Argument<String> drunkenEventArgument,
                                     ObjectiveService service) implements Objective {
 
-    @Override
-    public ObjectiveService getService() {
-        return service;
-    }
-
     /**
      * Handle a drunk event initiate event.
      *
@@ -35,5 +30,10 @@ public record DrunkenEventObjective(Argument<String> drunkenEventArgument,
         if (event.getDrunkenEvent().key().equals(breweryKey)) {
             service.complete(onlineProfile);
         }
+    }
+
+    @Override
+    public ObjectiveService getService() {
+        return service;
     }
 }

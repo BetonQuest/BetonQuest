@@ -32,11 +32,6 @@ public record BrewTransferObjective(BrewQualityArgument qualityArgument, Argumen
                                     Argument<TransferType> transferTypeArgument,
                                     ObjectiveService service) implements Objective {
 
-    @Override
-    public ObjectiveService getService() {
-        return service;
-    }
-
     /**
      * Handle item transaction events related to extracting items from inventories.
      *
@@ -109,5 +104,10 @@ public record BrewTransferObjective(BrewQualityArgument qualityArgument, Argumen
         ) {
             service.complete(profile);
         }
+    }
+
+    @Override
+    public ObjectiveService getService() {
+        return service;
     }
 }

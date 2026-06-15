@@ -19,11 +19,6 @@ public record StructureDestroyObjective(
         @SuppressWarnings("rawtypes") Argument<StructureType> structureTypeArgument,
         ObjectiveService service) implements Objective {
 
-    @Override
-    public ObjectiveService getService() {
-        return service;
-    }
-
     /**
      * Handle barrel destroy event.
      *
@@ -50,5 +45,10 @@ public record StructureDestroyObjective(
         if (structureType == StructureType.DISTILLERY) {
             service.complete(onlineProfile);
         }
+    }
+
+    @Override
+    public ObjectiveService getService() {
+        return service;
     }
 }
