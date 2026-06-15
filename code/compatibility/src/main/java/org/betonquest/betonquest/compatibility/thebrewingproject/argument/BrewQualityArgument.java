@@ -49,6 +49,6 @@ public record BrewQualityArgument(Argument<BrewQuality> qualityArgument,
     public Predicate<BrewQuality> resolve(final Profile profile) throws QuestException {
         final BrewQuality quality = qualityArgument.getValue(profile);
         final Operation operation = operationArgument.getValue(profile);
-        return other -> operation.check(value(quality), value(other));
+        return other -> operation.check(value(other), value(quality));
     }
 }
