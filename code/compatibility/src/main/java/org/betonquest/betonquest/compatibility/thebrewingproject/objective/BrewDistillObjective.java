@@ -25,11 +25,6 @@ import java.util.Optional;
 public record BrewDistillObjective(Argument<Number> distillRunsArgument, BrewManager<ItemStack> brewManager,
                                    ObjectiveService service) implements Objective {
 
-    @Override
-    public ObjectiveService getService() {
-        return service;
-    }
-
     /**
      * Handle brew extract events from distillery.
      *
@@ -51,5 +46,10 @@ public record BrewDistillObjective(Argument<Number> distillRunsArgument, BrewMan
         ) {
             service.complete(profile);
         }
+    }
+
+    @Override
+    public ObjectiveService getService() {
+        return service;
     }
 }

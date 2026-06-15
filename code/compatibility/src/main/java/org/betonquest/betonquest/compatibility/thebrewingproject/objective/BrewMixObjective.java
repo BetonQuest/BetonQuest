@@ -34,11 +34,6 @@ public record BrewMixObjective(Argument<CauldronType> cauldronTypeArgument, Argu
                                Argument<List<String>> ingredientsArgument, TheBrewingProjectApi api,
                                ObjectiveService service) implements Objective {
 
-    @Override
-    public ObjectiveService getService() {
-        return service;
-    }
-
     /**
      * Handle brew extract events from cauldrons.
      *
@@ -70,5 +65,10 @@ public record BrewMixObjective(Argument<CauldronType> cauldronTypeArgument, Argu
                 && IngredientsUtil.checkMatch(ingredients, mixStep.ingredients())) {
             service.complete(profile);
         }
+    }
+
+    @Override
+    public ObjectiveService getService() {
+        return service;
     }
 }
