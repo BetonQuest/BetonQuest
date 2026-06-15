@@ -22,6 +22,7 @@ BetonQuest provides integrations for the following items plugins:
 - [MMOItems](MMOItems.md)
 - [MythicMobs](MythicMobs.md)
 - [Nexo](Nexo.md)
+- [TheBrewingProject](TheBrewingProject.md)
 
 ## Usages
 
