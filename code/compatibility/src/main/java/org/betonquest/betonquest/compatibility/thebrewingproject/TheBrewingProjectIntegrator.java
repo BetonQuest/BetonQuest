@@ -38,18 +38,18 @@ public class TheBrewingProjectIntegrator extends IntegrationTemplate {
             throw new QuestException("TheBrewingProject provider not present");
         }
         final TheBrewingProjectApi tbpApi = tbpProvider.getProvider();
-        playerCondition("drunken_modifier", new ModifierConditionFactory(tbpApi));
-        playerAction("drunken_event", new DrunkenEventActionFactory(tbpApi));
+        playerCondition("modifier", new ModifierConditionFactory(tbpApi));
+        playerAction("event", new DrunkenEventActionFactory(tbpApi));
         item("brew", new BrewItemFactory(tbpApi), new BrewItemSerializer());
-        objective("brew_consume", new BrewConsumeObjectiveFactory());
-        objective("brew_age", new BrewAgeObjectiveFactory(tbpApi));
-        objective("brew_cook", new BrewCookObjectiveFactory(tbpApi));
-        objective("brew_mix", new BrewMixObjectiveFactory(tbpApi));
-        objective("brew_distill", new BrewDistillObjectiveFactory(tbpApi));
-        objective("brew_transfer", new BrewTransferObjectiveFactory());
-        objective("drunken_event", new DrunkenEventObjectiveFactory());
+        objective("consume", new BrewConsumeObjectiveFactory());
+        objective("age", new BrewAgeObjectiveFactory(tbpApi));
+        objective("cook", new BrewCookObjectiveFactory(tbpApi));
+        objective("mix", new BrewMixObjectiveFactory(tbpApi));
+        objective("distill", new BrewDistillObjectiveFactory(tbpApi));
+        objective("transfer", new BrewTransferObjectiveFactory());
+        objective("event", new DrunkenEventObjectiveFactory());
         objective("structure_destroy", new StructureDestroyObjectiveFactory());
-        registerFeatures(api);
+        registerFeatures(api, "tbp");
     }
 
     @Override
