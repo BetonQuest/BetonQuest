@@ -7,41 +7,6 @@ to the right. It's very likely that it has been already asked and answered.
 If not, feel free to ask us in the
 [Discord :fontawesome-brands-discord:](https://discordapp.com/invite/rK6mfHq)
 
-## How to display "1 / 10" in objective notify
-This problem can be solved by scripting a small custom message system.
-
-The core ideas of that system are:
-
-* An objective always has an amount of 1 as we want to show a message upon each progression towards our goal.
-
-* The objective instantly restarts after it is finished thanks to the `persistent` argument. 
-  It will be deleted using the objective action once it's finished.
-    
-* The systems logic is essentially just a point placeholder that is increased on each completion and a notify action being run.
-  That notify action displays the current objective progress.
-
-* The objective gets reset with an action that has a condition bound to it. That means that the action will only be run once
-  the condition is true. in this case the player needs 10 points / needs to have mined 10 blocks.
-
-Here is an example for the block objective.
-```YAML
-objectives:
-  mineStone: "block stone -1 persistent actions:blockBroken"
-
-actions:
-  blockBroken: "folder addPoint,sendNotify,checkForCompletion"
-  
-  addPoint: "point blockCounter 1"
-  sendNotify: "notify &a%point.blockCounter.amount%&8/&210 &7stone broken. io:chat"
-  
-  checkForCompletion: "folder deleteObjective,deletePoint conditions:has10Points"
-  deleteObjective: "objective remove mineStone"
-  deletePoint: "deletepoint blockCounter"
-
-conditions:
-  has10Points: "point blockCounter 10"
-``` 
-
 ## Random daily quests
 
 Starting the random quest must be blocked with a special tag. If there is no such tag, the conversation option should appear.
