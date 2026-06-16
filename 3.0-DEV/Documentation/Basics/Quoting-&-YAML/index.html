@@ -27,7 +27,7 @@
     
     
       
-        <title>Quoting & advanced YAML - BetonQuest</title>
+        <title>Quoting & YAML - BetonQuest</title>
       
     
     
@@ -141,7 +141,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Quoting & advanced YAML
+              Quoting & YAML
             
           </span>
         </div>
@@ -1656,7 +1656,7 @@
   <span class="md-ellipsis">
     
   
-    Quoting & advanced YAML
+    Quoting & YAML
   
 
     
@@ -1676,7 +1676,7 @@
   <span class="md-ellipsis">
     
   
-    Quoting & advanced YAML
+    Quoting & YAML
   
 
     
@@ -6999,7 +6999,7 @@
   
 
 
-  <h1>Quoting & advanced YAML</h1>
+  <h1>Quoting & YAML</h1>
 
 <h2 id="quoting">Quoting<a class="headerlink" href="#quoting" title="Permanent link">🔗</a></h2>
 <p>Sometimes it is important to pass an argument that contains spaces or even a newline as an argument.
@@ -7019,7 +7019,7 @@ For those cases you can use quotes.</p>
 <p>Very long instructions can be hard to read, but to improve readability there is a YAML feature that allows you to write
 easily readable formatted text that will work perfectly fine with instructions.</p>
 <div class="highlight"><span class="filename">Folded multi-line block example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">long_text</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
+<span class="w">  </span><span class="nt">long_text</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span><span class="w"> </span><span class="c1">#(1)!</span>
 <span class="w">    </span><span class="no">notify</span>
 <span class="w">    </span><span class="no">This is a very long text.</span>
 <span class="w">    </span><span class="no">It will still be displayed as one single line in chat,</span>
@@ -7029,6 +7029,22 @@ easily readable formatted text that will work perfectly fine with instructions.<
 
 <span class="w">    </span><span class="no">as that is interpreted as a normal newline by YAML.&quot;</span>
 </code></pre></div>
+<ol>
+<li>Replace newlines with spaces (folded) &amp; No newline at end (strip)</li>
+</ol>
+<p>Also, in conversations or other places where you want to define a longer text of multiple lines,
+you can use a YAML syntax feature to write easily readable formatted text that will be printed like you wrote it down.</p>
+<div class="highlight"><span class="filename">Literal multi-line block example</span><pre><span></span><code><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span><span class="w"> </span><span class="c1">#(1)!</span>
+<span class="w">  </span><span class="no">This is line one.</span>
+<span class="w">  </span><span class="no">This is line two.</span>
+
+<span class="w">          </span><span class="no">You</span>
+<span class="w">        </span><span class="no">can also</span>
+<span class="w">  </span><span class="no">format this using spaces.</span>
+</code></pre></div>
+<ol>
+<li>Keep newlines (literal) &amp; No newline at end (strip)</li>
+</ol>
 <p>There is also an excellent reference for <a href="https://yaml-multiline.info/">YAML Multiline</a> written by
 <a href="https://www.wolfgangfaust.com/">Wolfgang Faust</a>.</p>
 
