@@ -64,7 +64,7 @@ nav:
       - 'Basics':
           - 'About Scripting': Documentation/Basics/About-Scripting.md
           - 'Packages & Templates': Documentation/Basics/Packages-&-Templates.md
-          - 'Quoting & advanced YAML': Documentation/Basics/Quoting-&-YAML.md
+          - 'Quoting & YAML': Documentation/Basics/Quoting-&-YAML.md
 
       - 'Advanced':
           - 'Conversations': Documentation/Advanced/Conversations.md

@@ -26,7 +26,7 @@ easily readable formatted text that will work perfectly fine with instructions.
 
 ```YAML title="Folded multi-line block example"
 actions:
-  long_text: >-
+  long_text: >- #(1)!
     notify
     This is a very long text.
     It will still be displayed as one single line in chat,
@@ -36,6 +36,23 @@ actions:
     
     as that is interpreted as a normal newline by YAML."
 ```
+
+1. Replace newlines with spaces (folded) & No newline at end (strip)
+
+Also, in conversations or other places where you want to define a longer text of multiple lines,
+you can use a YAML syntax feature to write easily readable formatted text that will be printed like you wrote it down.
+
+```YAML title="Literal multi-line block example"
+text: |- #(1)!
+  This is line one.
+  This is line two.
+          
+          You
+        can also
+  format this using spaces.
+```
+
+1. Keep newlines (literal) & No newline at end (strip)
 
 There is also an excellent reference for [YAML Multiline](https://yaml-multiline.info/) written by
 [Wolfgang Faust](https://www.wolfgangfaust.com/).
