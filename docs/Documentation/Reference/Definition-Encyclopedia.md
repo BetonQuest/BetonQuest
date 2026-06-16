@@ -5,6 +5,29 @@ icon: material/book-open-variant-outline
 
 This is the definition encyclopedia. All important and regularly used keywords are defined here.
 
+## Character Semantics
+
+A list of all characters that are used in the BetonQuest language.
+Each character's semantics are highly dependent on the context.
+    
+| Symbol              | Example                      | Context                     | Reference                                         |
+|---------------------|------------------------------|-----------------------------|---------------------------------------------------|
+| `@`                 | `@[legacy]`                  | text messages               | [Text Formatting](../Advanced/Text-Formatting.md) |
+| `^`                 | `run ^burn ^kill`            | special action syntax       | [Run](Actions-List.md#run)                        |
+| `:`                 | `param:value`                | parameters                  | [Parameter Types](#parameter-type)                |
+| `,`                 | `3,6,9,14`                   | lists of values             |                                                   |
+| `!`                 | `!hasTag`                    | condition negation          |                                                   |
+| `>`                 | `package>identifier`         | package-identifer separator |                                                   |
+| `-`                 | `package-sub>identifier`     | package path separator      |                                                   |
+| `%`                 | `%location%`                 | placeholder brackets        |                                                   |
+| `.`                 | `%foo.bar%`                  | sub addressing placeholder  |                                                   |
+| `.`                 | `convo.sub`                  | sub addressing conversation |                                                   |
+| <code>&#124;</code> | <code>sudo x &#124; y</code> | special action syntax       | [Sudo](Actions-List.md#sudo)                      |
+| `+`                 | `+param:value`               | additional parameters       | [Parameter Types](#syntax)                        |
+| `"`                 | `"Some text"`                | quoting syntax              |                                                   |
+| `~`                 | `0.5~action2`                | special action syntax       | [PickRandom](Actions-List.md#pickrandom)          |
+| `_`                 | `_-parent>identifier`        | package parent accessor     |                                                   |
+
 ## Data Types
 
 A list of all data types that require a special and more elaborate explanation.
