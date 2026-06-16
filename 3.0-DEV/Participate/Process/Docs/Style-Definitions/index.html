@@ -6984,12 +6984,22 @@ above. It may also be used to provide additional information about the parameter
 <td>What does this parameter do?</td>
 </tr>
 <tr>
-<td>param2 <br>[<abbr title="Any concatenation of characters.">String</abbr>]</td>
+<td>param2 <br><abbr title="A list is a sequence of values separated by commas.">List</abbr>[<abbr title="Any number representation that may also have decimal places.">Number</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>What does this parameter do?</td>
+</tr>
+<tr>
+<td>param3 <br>[<abbr title="Any concatenation of characters.">String</abbr>]</td>
 <td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr> <br>[<abbr title="A null value has no value.">Null</abbr>]</td>
 <td>What does this parameter do?</td>
 </tr>
 <tr>
-<td>param3 <br>[<abbr title="A boolean can be either true or false.">Boolean</abbr>]</td>
+<td>param4 <br>[<abbr title="NONE, ONE, MULTIPLE (The enum type should simply list all possible values)">EnumType</abbr>]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr> <br>[NONE]</td>
+<td>What do these parameters do?</td>
+</tr>
+<tr>
+<td>param5 <br>[<abbr title="A boolean can be either true or false.">Boolean</abbr>]</td>
 <td><abbr title="A flag can be either absent or undefined with separate default values [absent, undefined] or explicitly defined with a value.">Flag</abbr> <br>[false, true]</td>
 <td>What does this parameter do?</td>
 </tr>
@@ -7001,12 +7011,10 @@ above. It may also be used to provide additional information about the parameter
 </tbody>
 </table>
 <div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">exapl1</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;example</span><span class="nv"> </span><span class="s">55</span><span class="nv"> </span><span class="s">param2:Test</span><span class="nv"> </span><span class="s">param3:false&quot;</span>
-<span class="w">  </span><span class="nt">exapl2</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;example</span><span class="nv"> </span><span class="s">55</span><span class="nv"> </span><span class="s">param2:Test</span><span class="nv"> </span><span class="s">param3&quot;</span>
-<span class="w">  </span><span class="nt">exapl3</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;example</span><span class="nv"> </span><span class="s">55</span><span class="nv"> </span><span class="s">param2:Test&quot;</span>
-<span class="w">  </span><span class="nt">exapl4</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;example</span><span class="nv"> </span><span class="s">55</span><span class="nv"> </span><span class="s">param3&quot;</span>
-<span class="w">  </span><span class="nt">exapl5</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;example</span><span class="nv"> </span><span class="s">55&quot;</span>
-<span class="w">  </span><span class="nt">exapl6</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;example</span><span class="nv"> </span><span class="s">55</span><span class="nv"> </span><span class="s">param2:Test</span><span class="nv"> </span><span class="s">param3:false</span><span class="nv"> </span><span class="s">+myAdditionalParam:AnyValue&quot;</span>
+<span class="w">  </span><span class="nt">exapl1</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;example</span><span class="nv"> </span><span class="s">55</span><span class="nv"> </span><span class="s">param2:5,8,33&quot;</span>
+<span class="w">  </span><span class="nt">exapl2</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;example</span><span class="nv"> </span><span class="s">55</span><span class="nv"> </span><span class="s">param2:5,8,33</span><span class="nv"> </span><span class="s">param5&quot;</span>
+<span class="w">  </span><span class="nt">exapl3</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;example</span><span class="nv"> </span><span class="s">55</span><span class="nv"> </span><span class="s">param2:5,8,33</span><span class="nv"> </span><span class="s">param3:Test</span><span class="nv"> </span><span class="s">param4:ONE</span><span class="nv"> </span><span class="s">param5:false&quot;</span>
+<span class="w">  </span><span class="nt">exapl4</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;example</span><span class="nv"> </span><span class="s">55</span><span class="nv"> </span><span class="s">param2:5,8,33</span><span class="nv"> </span><span class="s">param3:Test</span><span class="nv"> </span><span class="s">param4:ONE</span><span class="nv"> </span><span class="s">param5:false</span><span class="nv"> </span><span class="s">+myAdditionalParam:AnyValue&quot;</span>
 </code></pre></div>
 </div>
 <p>Make sure the style matches using the following checklists:</p>
