@@ -8,8 +8,11 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 ### Changed
 ### Deprecated
+- `InstructionParts` as part of the API that should have been deprecated for 3.0.0 already
 ### Removed
 ### Fixed
+- FastStats metrics would always be collected on the first start
+- integrations with non-semver versions caused errors
 ### Security
 
 ## [3.0.0] - 2026-06-13
