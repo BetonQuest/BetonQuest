@@ -58,6 +58,8 @@ nav:
           - 'Handling YAML Errors': Tutorials/Tools/YAML-Errors.md
       - 'Syntax':
           - 'Quest Packages': Tutorials/Syntax/Quest-Packages.md
+      - 'Quick Guides':
+          - 'Displaying Progress': Tutorials/Quick-Guides/Displaying-Progress.md
   - 'Documentation':
       - 'Overview': Documentation/Overview.md
 
