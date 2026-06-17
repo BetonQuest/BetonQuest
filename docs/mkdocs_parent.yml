@@ -138,12 +138,16 @@ extra:
     title: Cookie consent
     cookies:
       github: GitHub
+      analytics:
+        name: Web Analytics
+        checked: false
     actions:
       - manage
       - reject
       - accept
     description: >
       <p style="margin-top: 0px; margin-bottom: 0px;">We need your consent to make request to GitHub.com. We load statistics about our Git repository from there.</p>
+      <p style="margin-top: 0px; margin-bottom: 0px;">With your consent, we use Web Analytics to measure documentation usage and improve our content. Without consent, analytics runs in a cookieless mode that does not store identifiers.</p>
 
 validation:
   nav:
