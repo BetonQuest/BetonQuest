@@ -8,6 +8,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 ### Changed
 ### Deprecated
+### Removed
+### Fixed
+### Security
+
+## [3.0.1] - 2026-06-18
+### Added
+### Changed
+### Deprecated
 - `InstructionParts` as part of the API that should have been deprecated for 3.0.0 already
 ### Removed
 ### Fixed
