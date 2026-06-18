@@ -6,3 +6,10 @@
   <strong>Click here to go to the latest BetonQuest release.</strong>
 </a>
 {% endblock %}
+
+
+<!-- Imported this way because MkDocs Configuration does not support scripts with type="module" -->
+{% block scripts %}
+  {{ super() }}
+  <script type="module" src="{{ '_webCode/js/analytics.js' | url }}"></script>
+{% endblock %}
