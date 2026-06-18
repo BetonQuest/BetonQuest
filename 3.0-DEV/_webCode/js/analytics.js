@@ -1,5 +1,5 @@
-// Import FastStats Web Analytics using ESM version 0.3.x (latest patch).
-import {WebAnalytics} from "https://esm.sh/@faststats/web@0.3";
+// Import FastStats Web Analytics using ESM version 0.4.x (latest patch).
+import { WebAnalytics } from "https://esm.sh/@faststats/web@0.4";
 
 function getConsentMode() {
   const consent = globalThis.__md_get("__consent");
@@ -11,11 +11,11 @@ function getConsentMode() {
 
 new WebAnalytics({
   siteKey: "50d515577b9fff402b3b07c8c777f751",
-  trackErrors: true,
+  errorTracking: {enabled: true},
   webVitals: {enabled: true},
   sessionReplays: {enabled: true},
   consent: {
     mode: getConsentMode(),
-    cookielessWhilePending: true,
+    pendingBehavior: "anonymous",
   },
 });
