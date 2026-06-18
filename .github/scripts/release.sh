@@ -158,15 +158,13 @@ setupPrepare() {
 setupPrepareSelectTimeDefaultValue() {
   DEFAULT_RELEASE_TIME="$(date +%Y-%m-%d)"
   DEFAULT_RELEASE_TIME_MESSAGE=''
-  if [ "$GH_CLI_SUPPORT" ]; then
-    set +e
-    GH_RELEASE_DATE="$(gh release view "v$CURRENT_VERSION" --json publishedAt >&1 2> /dev/null)"
-    set -e
-    GH_RELEASE_KEY="${GH_RELEASE_DATE:0:16}"
-    if [ "$GH_RELEASE_KEY" == '{\"publishedAt\":\"' ]; then
-      DEFAULT_RELEASE_TIME=${GH_RELEASE_DATE:16:10}
-      DEFAULT_RELEASE_TIME_MESSAGE='(the default time was extracted from the release tag)'
-    fi
+  set +e
+  GH_RELEASE_DATE="$(gh release view "v$CURRENT_VERSION" --json publishedAt >&1 2> /dev/null)"
+  set -e
+  GH_RELEASE_KEY="${GH_RELEASE_DATE:0:16}"
+  if [ "$GH_RELEASE_KEY" == '{\"publishedAt\":\"' ]; then
+    DEFAULT_RELEASE_TIME=${GH_RELEASE_DATE:16:10}
+    DEFAULT_RELEASE_TIME_MESSAGE='(the default time was extracted from the release tag)'
   fi
 }
 
@@ -229,24 +227,20 @@ finalizeAndPublish() {
 }
 
 setupPublishCreatePullRequest() {
-  if [ "$GH_CLI_SUPPORT" ]; then
-    CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
-    if [ "$CURRENT_BRANCH" != 'HEAD' ]; then
-      setupPublishCreatePullRequestSlug
-      gh pr create \
-        --assignee '@me' \
-        --title "Version bump to $NEW_VERSION" \
-        --body "This is an automatically created PR from the release script" \
-        --base "$CURRENT_BRANCH" \
-        --head "$SETUP_REMOTE_SLUG:$SETUP_REMOTE_BRANCH" \
-        --repo "BetonQuest/BetonQuest" \
-        2>&1 > /dev/null | sed 's/^/        /'
-        return
-    else
-      echo '    ! Looks like no branch is checked out. Create the pull request manually!'
-    fi
+  CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+  if [ "$CURRENT_BRANCH" != 'HEAD' ]; then
+    setupPublishCreatePullRequestSlug
+    gh pr create \
+      --assignee '@me' \
+      --title "Version bump to $NEW_VERSION" \
+      --body "This is an automatically created PR from the release script" \
+      --base "$CURRENT_BRANCH" \
+      --head "$SETUP_REMOTE_SLUG:$SETUP_REMOTE_BRANCH" \
+      --repo "BetonQuest/BetonQuest" \
+      2>&1 > /dev/null | sed 's/^/        /'
+      return
   else
-    echo '    ! You do not have '"'GitHub CLI'"' installed. Create the pull request manually!'
+    echo '    ! Looks like no branch is checked out. Create the pull request manually!'
   fi
   echo "    The changes are already in your repository $SETUP_REMOTE_REPOSITORY in branch $SETUP_REMOTE_BRANCH"
 }
@@ -306,8 +300,8 @@ source "./.github/scripts/release_utils.sh"
 source "./.github/scripts/release_prompts.sh"
 
 PREVIOUS_HEAD=$(git rev-parse HEAD)
-printHelp
 checkRequirements
+printHelp
 selectAction
 
 version
