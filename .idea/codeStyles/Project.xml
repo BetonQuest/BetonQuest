@@ -37,7 +37,7 @@
       <option name="BLANK_LINES_AFTER_CLASS_HEADER" value="1" />
     </codeStyleSettings>
     <codeStyleSettings language="Markdown">
-      <option name="WRAP_ON_TYPING" value="1" />
+      <option name="WRAP_ON_TYPING" value="0" />
     </codeStyleSettings>
   </code_scheme>
 </component>
