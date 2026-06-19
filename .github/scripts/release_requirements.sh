@@ -2,11 +2,6 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-printNewSection() {
-  echo
-  echo
-}
-
 checkRequirements() {
   echo 'Requirements'
   checkSsh
