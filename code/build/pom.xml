@@ -15,7 +15,7 @@
   <description>All Your Adventure Supplies</description>
 
   <properties>
-    <revision>3.0.1</revision>
+    <revision>3.0.2</revision>
     <changelist>-SNAPSHOT</changelist>
     <pit.report.skip>true</pit.report.skip>
 
@@ -29,10 +29,10 @@
     <plugin.description>All Your Adventure Supplies</plugin.description>
 
     <!-- module versions -->
-    <betonquest.core.version>3.0.1${changelist}</betonquest.core.version>
-    <betonquest.mc_1_20_6.version>3.0.1${changelist}</betonquest.mc_1_20_6.version>
-    <betonquest.mc_1_21_4.version>3.0.1${changelist}</betonquest.mc_1_21_4.version>
-    <betonquest.compatibility.version>3.0.1${changelist}</betonquest.compatibility.version>
+    <betonquest.core.version>3.0.2${changelist}</betonquest.core.version>
+    <betonquest.mc_1_20_6.version>3.0.2${changelist}</betonquest.mc_1_20_6.version>
+    <betonquest.mc_1_21_4.version>3.0.2${changelist}</betonquest.mc_1_21_4.version>
+    <betonquest.compatibility.version>3.0.2${changelist}</betonquest.compatibility.version>
 
     <!-- dependency versions -->
     <paper-api.version>1.18.2-R0.1-SNAPSHOT</paper-api.version>
