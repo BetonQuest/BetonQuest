@@ -25,13 +25,19 @@ This project has a custom build-pipeline that utilizes GitHub('s) actions.
 
 ###Step 1: Prerequisites
 
-Check out the remote branch or commit, that you want to use for the release.
-Make sure that the current version in all the files (pom.xml etc.) is the correct version that should be used for the
-release. You will need a bash shell later on (e.g. Git Bash). Additionally, a Maven installation is required and must
-be added to the path. Optionally GitHub-CLI can be installed to enable features like automatic Pull Request
-creation and release date fetching.
+- [x] Accessing the repository through SSH is required. You might wanna use 
+[guides from GitHub](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) to set this up.
+- [x] A bash shell capable of Git is required. (especially on Windows, have a look at [ssh-agent](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/working-with-ssh-key-passphrases#auto-launching-ssh-agent-on-git-for-windows))
+- [x] A Maven installation is required to enable features like automatic version detection. That should be already installed on your system.
+- [x] A GitHub-CLI must be installed to enable features like automatic pull request creation and release date fetching. You can install it from [here](https://cli.github.com/).
 
-###Step 2: Build a release
+###Step 2: Before Releasing
+
+- [x] Check out the remote branch or commit, that you want to use for the release.
+- [x] Make sure that the current version in all the files (pom.xml etc.) is the correct version that should be used for the
+release. 
+
+###Step 3: Build a release
 
 Run the script `./.github/scripts/release.sh` using some sort of bash shell (e.g. Git Bash) from the root dir of the
 project. It guides you through the creation of the release and prepares the next version.  
