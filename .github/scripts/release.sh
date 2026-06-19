@@ -2,6 +2,11 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+printNewSection() {
+  echo
+  echo
+}
+
 printHelp() {
   printNewSection
   echo 'HELP'
@@ -296,7 +301,7 @@ bumpPrepare() {
 
 goToRootDirectory
 
-source "./.github/scripts/release_utils.sh"
+source "./.github/scripts/release_requirements.sh"
 source "./.github/scripts/release_prompts.sh"
 
 PREVIOUS_HEAD=$(git rev-parse HEAD)
