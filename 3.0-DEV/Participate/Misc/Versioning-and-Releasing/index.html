@@ -6841,13 +6841,36 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#step-2-build-a-release">
+  <a class="md-nav__link" href="#step-2-before-releasing">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Step 2: Build a release
+          Step 2: Before Releasing
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#step-3-build-a-release">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Step 3: Build a release
         </span>
 
       
@@ -7022,13 +7045,36 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#step-2-build-a-release">
+  <a class="md-nav__link" href="#step-2-before-releasing">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Step 2: Build a release
+          Step 2: Before Releasing
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#step-3-build-a-release">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Step 3: Build a release
         </span>
 
       
@@ -7155,12 +7201,20 @@ Therefore, it's named <code>BetonQuest.jar</code>. The version can only be seen 
 <h2 id="releasing">Releasing<a class="headerlink" href="#releasing" title="Permanent link">🔗</a></h2>
 <p>This project has a custom build-pipeline that utilizes GitHub('s) actions.</p>
 <h3 id="step-1-prerequisites">Step 1: Prerequisites<a class="headerlink" href="#step-1-prerequisites" title="Permanent link">🔗</a></h3>
-<p>Check out the remote branch or commit, that you want to use for the release.
-Make sure that the current version in all the files (pom.xml etc.) is the correct version that should be used for the
-release. You will need a bash shell later on (e.g. Git Bash). Additionally, a Maven installation is required and must
-be added to the path. Optionally GitHub-CLI can be installed to enable features like automatic Pull Request
-creation and release date fetching.</p>
-<h3 id="step-2-build-a-release">Step 2: Build a release<a class="headerlink" href="#step-2-build-a-release" title="Permanent link">🔗</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Accessing the repository through SSH is required. You might wanna use 
+<a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">guides from GitHub</a> to set this up.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> A bash shell capable of Git is required. (especially on Windows, have a look at <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/working-with-ssh-key-passphrases#auto-launching-ssh-agent-on-git-for-windows">ssh-agent</a>)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> A Maven installation is required to enable features like automatic version detection. That should be already installed on your system.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> A GitHub-CLI must be installed to enable features like automatic pull request creation and release date fetching. You can install it from <a href="https://cli.github.com/">here</a>.</li>
+</ul>
+<h3 id="step-2-before-releasing">Step 2: Before Releasing<a class="headerlink" href="#step-2-before-releasing" title="Permanent link">🔗</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Check out the remote branch or commit, that you want to use for the release.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Make sure that the current version in all the files (pom.xml etc.) is the correct version that should be used for the
+release. </li>
+</ul>
+<h3 id="step-3-build-a-release">Step 3: Build a release<a class="headerlink" href="#step-3-build-a-release" title="Permanent link">🔗</a></h3>
 <p>Run the script <code>./.github/scripts/release.sh</code> using some sort of bash shell (e.g. Git Bash) from the root dir of the
 project. It guides you through the creation of the release and prepares the next version.<br />
 If you run into errors you may need to do the script's release steps manually or fix the script / your setup. </p>
