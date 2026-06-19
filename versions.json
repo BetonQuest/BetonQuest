@@ -3,7 +3,9 @@
     "version": "3.0",
     "title": "3.0",
     "aliases": [
-      "RELEASE"
+      "DEV",
+      "RELEASE",
+      "3.0-DEV"
     ]
   },
   {
