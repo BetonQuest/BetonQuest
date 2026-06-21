@@ -20,9 +20,10 @@ public record DrunkenEventAction(Argument<String> drunkenEventNameArgument,
     @Override
     public void execute(final Profile profile) throws QuestException {
         final String drunkenEventName = drunkenEventNameArgument.getValue(profile);
+        final BreweryKey eventKey = BreweryKey.parse(drunkenEventName);
         final DrunkEvent drunkEvent = api.getDrunkenEventManager().allEvents()
                 .stream()
-                .filter(event -> event.key().equals(BreweryKey.parse(drunkenEventName)))
+                .filter(event -> event.key().equals(eventKey))
                 .findFirst()
                 .orElseThrow(() -> new QuestException("Unknown drunken event: %s".formatted(drunkenEventName)));
         api.getDrunkenEventManager().runEvent(profile.getPlayerUUID(), drunkEvent);
