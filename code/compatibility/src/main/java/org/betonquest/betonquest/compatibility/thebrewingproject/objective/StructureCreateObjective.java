@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.compatibility.thebrewingproject.objective;
 
-import dev.jsinco.brewery.bukkit.api.event.structure.BarrelDestroyEvent;
-import dev.jsinco.brewery.bukkit.api.event.structure.CauldronDestroyEvent;
-import dev.jsinco.brewery.bukkit.api.event.structure.DistilleryDestroyEvent;
+import dev.jsinco.brewery.bukkit.api.event.structure.BarrelCreateEvent;
+import dev.jsinco.brewery.bukkit.api.event.structure.CauldronCreateEvent;
+import dev.jsinco.brewery.bukkit.api.event.structure.DistilleryCreateEvent;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -11,23 +11,23 @@ import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.compatibility.thebrewingproject.argument.BrewingStructureType;
 
 /**
- * The objective reached whenever a TheBrewingProject structure is destroyed.
+ * Objective for creating structures.
  *
- * @param structureTypeArgument An argument to specify structure type
+ * @param structureTypeArgument A structure type argument
  * @param service               The objective service
  */
-public record StructureDestroyObjective(
+public record StructureCreateObjective(
         Argument<BrewingStructureType> structureTypeArgument,
         ObjectiveService service) implements Objective {
 
     /**
-     * Handle barrel destroy event.
+     * Handle barrel create event.
      *
-     * @param ignoredEvent  An ignored barrel destroy event
+     * @param ignoredEvent  An ignored barrel create event
      * @param onlineProfile The player profile
      * @throws QuestException If an argument is invalid
      */
-    public void handleBarrelDestroy(final BarrelDestroyEvent ignoredEvent, final OnlineProfile onlineProfile) throws QuestException {
+    public void handleBarrelCreate(final BarrelCreateEvent ignoredEvent, final OnlineProfile onlineProfile) throws QuestException {
         final BrewingStructureType structureType = structureTypeArgument.getValue(onlineProfile);
         if (structureType == BrewingStructureType.BARREL) {
             service.complete(onlineProfile);
@@ -35,13 +35,13 @@ public record StructureDestroyObjective(
     }
 
     /**
-     * Handle distillery destroy event.
+     * Handle distillery create event.
      *
-     * @param ignoredEvent  An ignored distillery destroy event
+     * @param ignoredEvent  An ignored distillery create event
      * @param onlineProfile The player profile
      * @throws QuestException If an argument is invalid
      */
-    public void handleDistilleryDestroy(final DistilleryDestroyEvent ignoredEvent, final OnlineProfile onlineProfile) throws QuestException {
+    public void handleDistilleryCreate(final DistilleryCreateEvent ignoredEvent, final OnlineProfile onlineProfile) throws QuestException {
         final BrewingStructureType structureType = structureTypeArgument.getValue(onlineProfile);
         if (structureType == BrewingStructureType.DISTILLERY) {
             service.complete(onlineProfile);
@@ -49,13 +49,13 @@ public record StructureDestroyObjective(
     }
 
     /**
-     * Handle cauldron destroy event.
+     * Handle cauldron create event.
      *
-     * @param ignoredEvent An ignored cauldron destroy event
+     * @param ignoredEvent  An ignored cauldron create event
      * @param onlineProfile The player profile
      * @throws QuestException IF an argument is invalid
      */
-    public void handleCauldronDestroy(final CauldronDestroyEvent ignoredEvent, final OnlineProfile onlineProfile) throws QuestException {
+    public void handleCauldronCreate(final CauldronCreateEvent ignoredEvent, final OnlineProfile onlineProfile) throws QuestException {
         final BrewingStructureType structureType = structureTypeArgument.getValue(onlineProfile);
         if (structureType == BrewingStructureType.CAULDRON) {
             service.complete(onlineProfile);

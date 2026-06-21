@@ -4,12 +4,10 @@ import dev.jsinco.brewery.api.brew.Brew;
 import dev.jsinco.brewery.api.brew.BrewManager;
 import dev.jsinco.brewery.api.brew.BrewQuality;
 import dev.jsinco.brewery.api.recipe.Recipe;
-import dev.jsinco.brewery.bukkit.api.brew.BrewAdapterHolder;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.compatibility.thebrewingproject.BrewUtil;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,8 +36,7 @@ public record BrewItem(Recipe<ItemStack> recipe, String recipeName, BrewQuality 
 
     @Override
     public ItemStack generate(final int stackSize, @Nullable final Profile profile) throws QuestException {
-        final ItemStack output = BrewAdapterHolder.instance()
-                .matcher()
+        final ItemStack output = api.matcher()
                 .matchAgainstOnly(recipe)
                 .disallowStepVariations()
                 .build()
@@ -51,7 +48,7 @@ public record BrewItem(Recipe<ItemStack> recipe, String recipeName, BrewQuality 
 
     @Override
     public boolean matches(@Nullable final ItemStack item) {
-        return item != null && BrewUtil.brewName(item.getItemMeta().getPersistentDataContainer())
+        return item != null && api.brewName(item)
                 .filter(recipeName::equals)
                 .isPresent();
     }

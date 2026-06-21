@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.thebrewingproject.objective;
 
+import dev.jsinco.brewery.bukkit.api.TheBrewingProjectApi;
 import dev.jsinco.brewery.bukkit.api.event.BrewConsumeEvent;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
@@ -11,14 +12,16 @@ import org.betonquest.betonquest.compatibility.thebrewingproject.argument.BrewQu
 
 /**
  * Factory for {@link BrewConsumeObjective}.
+ *
+ * @param api The brewing project api
  */
-public record BrewConsumeObjectiveFactory() implements ObjectiveFactory {
+public record BrewConsumeObjectiveFactory(TheBrewingProjectApi api) implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
         final Argument<String> brewType = instruction.string().get();
         final BrewQualityArgument brewQualityArgument = BrewQualityArgument.parseInstructions(instruction);
-        final BrewConsumeObjective objective = new BrewConsumeObjective(brewQualityArgument, brewType, service);
+        final BrewConsumeObjective objective = new BrewConsumeObjective(brewQualityArgument, brewType, service, api.getBrewManager());
         service.request(BrewConsumeEvent.class)
                 .onlineHandler(objective::handle)
                 .player(BrewConsumeEvent::getPlayer)

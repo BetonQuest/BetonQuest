@@ -29,8 +29,8 @@ public record BrewCookObjectiveFactory(TheBrewingProjectApi api) implements Obje
         final BrewCookObjective objective = new BrewCookObjective(
                 cauldronTypeArgument,
                 cookTimeArgument,
-                api.getIngredientManager().getIngredientsWithAmount(ingredientsArgument.getValue(null)),
-                api.getBrewManager(),
+                ingredientsArgument,
+                api,
                 service
         );
         service.request(CauldronExtractEvent.class)

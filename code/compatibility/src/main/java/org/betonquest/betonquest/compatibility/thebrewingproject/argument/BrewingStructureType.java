@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.thebrewingproject.argument;
 /**
  * The types of brewing structures supported by TheBrewingProject.
  */
-public enum BrewingStructure {
+public enum BrewingStructureType {
     /**
      * A cauldron.
      */

@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.thebrewingproject.objective;
 
+import dev.jsinco.brewery.api.brew.BrewManager;
 import dev.jsinco.brewery.api.brew.BrewQuality;
 import dev.jsinco.brewery.bukkit.api.event.transaction.BarrelExtractEvent;
 import dev.jsinco.brewery.bukkit.api.event.transaction.BarrelInsertEvent;
@@ -15,12 +16,9 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
-import org.betonquest.betonquest.compatibility.thebrewingproject.BrewUtil;
 import org.betonquest.betonquest.compatibility.thebrewingproject.argument.BrewQualityArgument;
-import org.betonquest.betonquest.compatibility.thebrewingproject.argument.BrewingStructure;
+import org.betonquest.betonquest.compatibility.thebrewingproject.argument.BrewingStructureType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
@@ -33,11 +31,12 @@ import java.util.function.Predicate;
  * @param transferTypeArgument  A transfer type argument
  * @param structureTypeArgument A structure type argument
  * @param service               The objective service
+ * @param brewManager           The brew manager provided by TheBrewingProject
  */
 public record BrewTransferObjective(BrewQualityArgument qualityArgument, Argument<String> brewTypeArgument,
                                     Argument<TransferType> transferTypeArgument,
-                                    Argument<BrewingStructure> structureTypeArgument,
-                                    ObjectiveService service) implements Objective {
+                                    Argument<BrewingStructureType> structureTypeArgument,
+                                    ObjectiveService service, BrewManager<ItemStack> brewManager) implements Objective {
 
     /**
      * Handle item transaction events related to extracting items from inventories.
@@ -50,11 +49,11 @@ public record BrewTransferObjective(BrewQualityArgument qualityArgument, Argumen
         if (transferTypeArgument.getValue(profile) != TransferType.EXTRACT) {
             return;
         }
-        final BrewingStructure structureType;
+        final BrewingStructureType structureType;
         if (event instanceof BarrelExtractEvent) {
-            structureType = BrewingStructure.BARREL;
+            structureType = BrewingStructureType.BARREL;
         } else if (event instanceof DistilleryExtractEvent) {
-            structureType = BrewingStructure.DISTILLERY;
+            structureType = BrewingStructureType.DISTILLERY;
         } else {
             throw new QuestException("Unsupported event type '%s'".formatted(event.getClass().getSimpleName()));
         }
@@ -76,11 +75,11 @@ public record BrewTransferObjective(BrewQualityArgument qualityArgument, Argumen
         if (transferTypeArgument.getValue(profile) != TransferType.INSERT) {
             return;
         }
-        final BrewingStructure structureType;
+        final BrewingStructureType structureType;
         if (event instanceof BarrelInsertEvent) {
-            structureType = BrewingStructure.BARREL;
+            structureType = BrewingStructureType.BARREL;
         } else if (event instanceof DistilleryInsertEvent) {
-            structureType = BrewingStructure.DISTILLERY;
+            structureType = BrewingStructureType.DISTILLERY;
         } else {
             throw new QuestException("Unsupported event type '%s'".formatted(event.getClass().getSimpleName()));
         }
@@ -100,7 +99,7 @@ public record BrewTransferObjective(BrewQualityArgument qualityArgument, Argumen
      */
     public void handleExtract(final CauldronExtractEvent event, final OnlineProfile profile) throws QuestException {
         if (transferTypeArgument.getValue(profile) != TransferType.EXTRACT
-                || structureTypeArgument.getValue(profile) != BrewingStructure.CAULDRON) {
+                || structureTypeArgument.getValue(profile) != BrewingStructureType.CAULDRON) {
             return;
         }
         completeForItem(event.getItemResult(), profile);
@@ -115,7 +114,7 @@ public record BrewTransferObjective(BrewQualityArgument qualityArgument, Argumen
      */
     public void handleInsert(final CauldronInsertEvent event, final OnlineProfile profile) throws QuestException {
         if (transferTypeArgument.getValue(profile) != TransferType.INSERT
-                || structureTypeArgument.getValue(profile) != BrewingStructure.CAULDRON) {
+                || structureTypeArgument.getValue(profile) != BrewingStructureType.CAULDRON) {
             return;
         }
         completeForItem(event.getItemSource(), profile);
@@ -128,10 +127,8 @@ public record BrewTransferObjective(BrewQualityArgument qualityArgument, Argumen
             return;
         }
         final ItemStack itemStack = itemSource.get();
-        final ItemMeta itemMeta = itemStack.getItemMeta();
-        final PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-        if (BrewUtil.brewName(container).filter(type::equals).isPresent()
-                && BrewUtil.quality(container).filter(quality).isPresent()
+        if (brewManager.brewName(itemStack).filter(type::equals).isPresent()
+                && brewManager.brewQuality(itemStack).filter(quality).isPresent()
         ) {
             service.complete(profile);
         }
