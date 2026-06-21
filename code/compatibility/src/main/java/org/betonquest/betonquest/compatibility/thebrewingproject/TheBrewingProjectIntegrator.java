@@ -14,6 +14,7 @@ import org.betonquest.betonquest.compatibility.thebrewingproject.objective.BrewD
 import org.betonquest.betonquest.compatibility.thebrewingproject.objective.BrewMixObjectiveFactory;
 import org.betonquest.betonquest.compatibility.thebrewingproject.objective.BrewTransferObjectiveFactory;
 import org.betonquest.betonquest.compatibility.thebrewingproject.objective.DrunkenEventObjectiveFactory;
+import org.betonquest.betonquest.compatibility.thebrewingproject.objective.StructureCreateObjectiveFactory;
 import org.betonquest.betonquest.compatibility.thebrewingproject.objective.StructureDestroyObjectiveFactory;
 import org.betonquest.betonquest.lib.integration.IntegrationTemplate;
 import org.bukkit.Bukkit;
@@ -40,16 +41,17 @@ public class TheBrewingProjectIntegrator extends IntegrationTemplate {
         final TheBrewingProjectApi tbpApi = tbpProvider.getProvider();
         playerCondition("modifier", new ModifierConditionFactory(tbpApi));
         playerAction("event", new DrunkenEventActionFactory(tbpApi));
-        item("brew", new BrewItemFactory(tbpApi), new BrewItemSerializer());
-        objective("consume", new BrewConsumeObjectiveFactory());
+        item("brew", new BrewItemFactory(tbpApi), new BrewItemSerializer(tbpApi.getBrewManager()));
+        objective("consume", new BrewConsumeObjectiveFactory(tbpApi));
         objective("age", new BrewAgeObjectiveFactory(tbpApi));
         objective("cook", new BrewCookObjectiveFactory(tbpApi));
         objective("mix", new BrewMixObjectiveFactory(tbpApi));
         objective("distill", new BrewDistillObjectiveFactory(tbpApi));
-        objective("transfer", new BrewTransferObjectiveFactory());
+        objective("transfer", new BrewTransferObjectiveFactory(tbpApi));
         objective("event", new DrunkenEventObjectiveFactory());
         objective("structure_destroy", new StructureDestroyObjectiveFactory());
-        registerFeatures(api, "tbp");
+        objective("structure_create", new StructureCreateObjectiveFactory());
+        registerFeatures(api, "tbp_");
     }
 
     @Override

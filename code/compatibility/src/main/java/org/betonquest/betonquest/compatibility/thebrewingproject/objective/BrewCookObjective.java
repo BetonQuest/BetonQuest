@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.compatibility.thebrewingproject.objective;
 
 import dev.jsinco.brewery.api.brew.Brew;
-import dev.jsinco.brewery.api.brew.BrewManager;
 import dev.jsinco.brewery.api.brew.BrewingStep;
 import dev.jsinco.brewery.api.breweries.CauldronType;
 import dev.jsinco.brewery.api.ingredient.Ingredient;
 import dev.jsinco.brewery.api.moment.Moment;
+import dev.jsinco.brewery.bukkit.api.TheBrewingProjectApi;
 import dev.jsinco.brewery.bukkit.api.event.transaction.CauldronExtractEvent;
 import dev.jsinco.brewery.bukkit.api.transaction.ItemSource;
 import org.betonquest.betonquest.api.QuestException;
@@ -13,26 +13,26 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
-import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * A brew cook objective.
  *
  * @param cauldronTypeArgument A cauldron type argument
  * @param cookTimeArgument     A cook time argument
- * @param ingredientsFuture    A parsed ingredients argument
- * @param brewManager          the brew manager provided by TheBrewingProject
+ * @param ingredientsArgument  An ingredients manager
+ * @param api                  The brewing project api
  * @param service              The objective service
  */
 public record BrewCookObjective(Argument<CauldronType> cauldronTypeArgument, Argument<Number> cookTimeArgument,
-                                CompletableFuture<Map<Ingredient, Integer>> ingredientsFuture,
-                                BrewManager<ItemStack> brewManager,
+                                Argument<List<String>> ingredientsArgument, TheBrewingProjectApi api,
                                 ObjectiveService service) implements Objective {
 
     /**
@@ -50,18 +50,20 @@ public record BrewCookObjective(Argument<CauldronType> cauldronTypeArgument, Arg
         if (itemSource == null) {
             return;
         }
-        final Optional<Brew> brewOptional = brewManager.fromItem(itemSource.get());
+        final Optional<Brew> brewOptional = api.getBrewManager().fromItem(itemSource.get());
         final Map<Ingredient, Integer> ingredients;
         try {
-            ingredients = ingredientsFuture.orTimeout(10, TimeUnit.MICROSECONDS).join();
-        } catch (final CompletionException e) {
+            ingredients = api.getResolvedIngredientManager().get(10, TimeUnit.MICROSECONDS)
+                    .getIngredientsWithAmount(ingredientsArgument.getValue(profile));
+        } catch (final CompletionException | ExecutionException | InterruptedException | TimeoutException e) {
             throw new QuestException(e);
         }
-        if (brewOptional.isPresent()
-                && brewOptional.get().lastCompletedStep() instanceof final BrewingStep.Cook cookStep
-                && cookStep.time().moment() >= cookTime * Moment.MINUTE
-                && cauldronType.appliesTo(cookStep.cauldronType())
-                && IngredientsUtil.checkMatch(ingredients, cookStep.ingredients())) {
+        if (brewOptional.isPresent() && brewOptional.get()
+                .stepMatches(-1, BrewingStep.Cook.class, cookStep ->
+                        cookStep.time().moment() >= cookTime * Moment.MINUTE
+                                && cauldronType.appliesTo(cookStep.cauldronType())
+                                && IngredientsUtil.checkMatch(ingredients, cookStep.ingredients())
+                )) {
             service.complete(profile);
         }
     }

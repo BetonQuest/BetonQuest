@@ -19,7 +19,7 @@ public final class TheBrewingProjectPolicies {
      */
     public static Policy[] policies() {
         return new Policy[]{
-                Policies.requireClass("dev.jsinco.brewery.bukkit.api.effect.DrunkEventManager")
+                Policies.requireClass("dev.jsinco.brewery.api.ingredient.ResolvedIngredientManager")
         };
     }
 }
