@@ -1,17 +1,36 @@
 name: "Docs Feedback"
-description: "Report unclear documentation."
+title: "[Docs] "
+description: "Report wrong or unclear documentation."
+labels: [ "Documentation" ]
+projects: [ "BetonQuest/BetonQuest" ]
 body:
   - type: input
+    id: "version"
     attributes:
       label: "Docs Version"
       description: "The version of the documentation this report is about."
-      placeholder: 2.3.1
+      placeholder: "3.0"
     validations:
       required: true
-    id: "version"
+  - type: input
+    id: "url"
+    attributes:
+      label: "Page URL"
+      description: "The URL of the page this report is about."
+      placeholder: "https://betonquest.org/RELEASE/"
+    validations:
+      required: true
   - type: textarea
+    id: "description"
     attributes:
       label: "Improvement"
       description: "What can be improved?"
     validations:
       required: true
+  - type: upload
+    id: "screenshots"
+    attributes:
+      label: "Screenshots"
+      description: "If applicable, add screenshots to help explain your problem."
+    validations:
+      required: false
