@@ -1,6 +1,6 @@
 # [TheBrewingProject](https://modrinth.com/plugin/thebrewingproject)
 
-@snippet:versions:minimum@ _3.2.0_
+@snippet:versions:minimum@ _3.3.0_
 
 ## Items
 
@@ -184,4 +184,13 @@ __Context__: @snippet:condition-meta:online@
 __Syntax__: `tbp_structure_destroy <structure-type>`  
 __Description__: The player needs to destroy a brewing structure with specified type
 
-_structure-type_ can have the values `barrel` or `distillery`.
+_structure-type_ can have the values `barrel`, `distillery` or `cauldron`.
+
+### `StructureCreate`
+
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `tbp_structure_create <structure-type>`  
+__Description__: The player needs to create a brewing structure with specified type
+
+_structure-type_ can have the values `barrel`, `distillery` or `cauldron`.
+
