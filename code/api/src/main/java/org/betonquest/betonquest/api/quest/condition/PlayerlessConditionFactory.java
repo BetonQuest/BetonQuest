@@ -6,6 +6,8 @@ import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
 
 /**
  * Factory to create a specific {@link PlayerlessCondition} from {@link Instruction}s.
+ *
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface PlayerlessConditionFactory extends PlayerlessQuestFactory<PlayerlessCondition> {
@@ -16,6 +18,7 @@ public interface PlayerlessConditionFactory extends PlayerlessQuestFactory<Playe
      * @param instruction instruction to parse
      * @return condition represented by the instruction
      * @throws QuestException when the instruction cannot be parsed
+     * @since 3.0.0
      */
     @Override
     PlayerlessCondition parsePlayerless(Instruction instruction) throws QuestException;

@@ -13,12 +13,16 @@ import java.util.Optional;
 
 /**
  * The service for objectives managing the subscription of event handlers.
+ *
+ * @since 3.0.0
  */
 public interface ObjectiveServiceProvider {
 
     /**
      * Resets the entire service.
      * Use with caution!
+     *
+     * @since 3.0.0
      */
     void clear();
 
@@ -28,6 +32,7 @@ public interface ObjectiveServiceProvider {
      * @param objectiveID the objective to create a subscription service for
      * @return a new {@link ObjectiveService} for the given objectiveId
      * @throws QuestException if the objective causes issues with creating a factory service
+     * @since 3.0.0
      */
     ObjectiveService getFactoryService(ObjectiveIdentifier objectiveID) throws QuestException;
 
@@ -39,6 +44,7 @@ public interface ObjectiveServiceProvider {
      * @param eventClass the event class to subscribe to
      * @param <T>        the event type
      * @return a new {@link EventServiceSubscriptionBuilder} for the requested event
+     * @since 3.0.0
      */
     <T extends Event> EventServiceSubscriptionBuilder<T> request(Class<T> eventClass);
 
@@ -49,6 +55,7 @@ public interface ObjectiveServiceProvider {
      * @param profile     the profile to stop the objective for
      * @param newState    the new state of the objective
      * @throws QuestException if the objective could not be stopped
+     * @since 3.0.0
      */
     void stop(ObjectiveIdentifier objectiveID, Profile profile, ObjectiveState newState) throws QuestException;
 
@@ -60,6 +67,7 @@ public interface ObjectiveServiceProvider {
      * @param instructionString the data instruction for the objective
      * @param previousState     the previous state of the objective
      * @throws QuestException if the objective could not be started
+     * @since 3.0.0
      */
     void start(ObjectiveIdentifier objectiveID, Profile profile, String instructionString, ObjectiveState previousState) throws QuestException;
 
@@ -74,6 +82,7 @@ public interface ObjectiveServiceProvider {
      * @param ignoreConditions if the event should ignore if the conditions of the objective are not met
      * @param <T>              the event type
      * @throws QuestException if the event could not be subscribed
+     * @since 3.0.0
      */
     <T extends Event> void subscribe(ObjectiveIdentifier objectiveID, Class<T> eventClass, NonProfileEventHandler<T> handler,
                                      EventPriority priority, boolean ignoreCancelled, boolean ignoreConditions) throws QuestException;
@@ -90,6 +99,7 @@ public interface ObjectiveServiceProvider {
      * @param ignoreConditions if the event should ignore if the conditions of the objective are not met
      * @param <T>              the event type
      * @throws QuestException if the event could not be subscribed
+     * @since 3.0.0
      */
     <T extends Event> void subscribe(ObjectiveIdentifier objectiveID, Class<T> eventClass, ProfileEventHandler<T> handler,
                                      QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor,
@@ -107,6 +117,7 @@ public interface ObjectiveServiceProvider {
      * @param ignoreConditions if the event should ignore if the conditions of the objective are not met
      * @param <T>              the event type
      * @throws QuestException if the event could not be subscribed
+     * @since 3.0.0
      */
     <T extends Event> void subscribe(ObjectiveIdentifier objectiveID, Class<T> eventClass, OnlineProfileEventHandler<T> handler,
                                      QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor,

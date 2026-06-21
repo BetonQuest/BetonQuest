@@ -7,6 +7,8 @@ import org.bukkit.event.EventPriority;
 /**
  * The bukkit event service allows subscribing to bukkit events without registering a listener via bukkit's api.
  * This service also allows using generics for events while maintaining a minimum number of listeners in bukkit.
+ *
+ * @since 3.0.0
  */
 public interface BukkitEventService {
 
@@ -17,6 +19,7 @@ public interface BukkitEventService {
      * @param event    the event to require
      * @param priority the priority to require the event to be listened to with
      * @return true if the event was successfully registered, false otherwise
+     * @since 3.0.0
      */
     boolean require(Class<? extends Event> event, EventPriority priority);
 
@@ -30,6 +33,7 @@ public interface BukkitEventService {
      * @param <T>             the event type
      * @return the subscriber that was registered
      * @throws QuestException if the event could not be subscribed to
+     * @since 3.0.0
      */
     <T extends Event> EventServiceSubscriber<T> subscribe(Class<T> event, EventPriority priority, boolean ignoreCancelled,
                                                           EventServiceSubscriber<T> subscriber) throws QuestException;
@@ -40,6 +44,7 @@ public interface BukkitEventService {
      * @param event      the event to unsubscribe from
      * @param priority   the priority of the event to unsubscribe from
      * @param subscriber the subscriber to unsubscribe
+     * @since 3.0.0
      */
     void unsubscribe(Class<? extends Event> event, EventPriority priority, EventServiceSubscriber<?> subscriber);
 
@@ -52,6 +57,7 @@ public interface BukkitEventService {
      * @param <T>        the event type
      * @return the subscriber that was registered
      * @throws QuestException if the event could not be subscribed to
+     * @since 3.0.0
      */
     default <T extends Event> EventServiceSubscriber<T> subscribe(final Class<T> event, final EventPriority priority,
                                                                   final EventServiceSubscriber<T> subscriber) throws QuestException {
@@ -60,6 +66,8 @@ public interface BukkitEventService {
 
     /**
      * Unsubscribes all subscribers from all events.
+     *
+     * @since 3.0.0
      */
     void unsubscribeAll();
 }

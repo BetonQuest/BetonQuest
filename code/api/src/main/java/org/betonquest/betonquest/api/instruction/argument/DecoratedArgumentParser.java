@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
  * A decorated {@link InstructionArgumentParser} offering more methods to modify the result.
  *
  * @param <T> the type of the value
+ * @since 3.0.0
  */
 public interface DecoratedArgumentParser<T> extends InstructionArgumentParser<T> {
 
@@ -25,6 +26,7 @@ public interface DecoratedArgumentParser<T> extends InstructionArgumentParser<T>
      *
      * @return the new list parser as {@link ListArgumentParser}
      * @see #collect(Collector)
+     * @since 3.0.0
      */
     @Contract(value = "-> new", pure = true)
     ListArgumentParser<T> list();
@@ -37,6 +39,7 @@ public interface DecoratedArgumentParser<T> extends InstructionArgumentParser<T>
      * @param <R>       the collected result type
      * @return the new {@link DecoratedArgumentParser} with the new collected type R
      * @see Collectors
+     * @since 3.0.0
      */
     @Contract(value = "!null -> new", pure = true)
     <R> DecoratedArgumentParser<R> collect(Collector<T, ?, R> collector);
@@ -48,6 +51,7 @@ public interface DecoratedArgumentParser<T> extends InstructionArgumentParser<T>
      * @param mapper the mapper function to apply to the value after parsing
      * @param <U>    the new type of the mapped value
      * @return the new mapped {@link DecoratedArgumentParser} with potentially changed type
+     * @since 3.0.0
      */
     @Contract(value = "_ -> new", pure = true)
     <U> DecoratedArgumentParser<U> map(QuestFunction<T, U> mapper);
@@ -58,6 +62,7 @@ public interface DecoratedArgumentParser<T> extends InstructionArgumentParser<T>
      *
      * @param validator the validator to apply to the argument
      * @return the new validated {@link DecoratedArgumentParser}
+     * @since 3.0.0
      */
     @Contract(value = "_ -> new", pure = true)
     DecoratedArgumentParser<T> validate(ValueValidator<T> validator);
@@ -70,6 +75,7 @@ public interface DecoratedArgumentParser<T> extends InstructionArgumentParser<T>
      * @param validator    the validator to apply to the argument
      * @param errorMessage the error message to use if the validator fails
      * @return the new validated {@link DecoratedArgumentParser}
+     * @since 3.0.0
      */
     @Contract(value = "_, _ -> new", pure = true)
     DecoratedArgumentParser<T> validate(ValueValidator<T> validator, String errorMessage);
@@ -81,6 +87,7 @@ public interface DecoratedArgumentParser<T> extends InstructionArgumentParser<T>
      *
      * @param validator the validator to apply to the argument
      * @return the new validated {@link DecoratedArgumentParser}
+     * @since 3.0.0
      */
     @Contract(value = "!null -> new", pure = true)
     default DecoratedArgumentParser<T> invalidate(final ValueValidator<T> validator) {
@@ -97,6 +104,7 @@ public interface DecoratedArgumentParser<T> extends InstructionArgumentParser<T>
      * @param validator    the validator to apply to the argument
      * @param errorMessage the error message to use if the validator fails
      * @return the new validated {@link DecoratedArgumentParser}
+     * @since 3.0.0
      */
     @Contract(value = "!null, !null -> new", pure = true)
     default DecoratedArgumentParser<T> invalidate(final ValueValidator<T> validator, final String errorMessage) {
@@ -115,6 +123,7 @@ public interface DecoratedArgumentParser<T> extends InstructionArgumentParser<T>
      * @param fixedValue the non-null value to return if the expected string matches
      * @return the new prefiltered {@link DecoratedArgumentParser}
      * @see #prefilterOptional(String, Object)
+     * @since 3.0.0
      */
     @Contract(value = "_, _ -> new", pure = true)
     DecoratedArgumentParser<T> prefilter(String expected, T fixedValue);
@@ -132,6 +141,7 @@ public interface DecoratedArgumentParser<T> extends InstructionArgumentParser<T>
      * @param fixedValue the nullable value to return if the expected string matches
      * @return the new prefiltered {@link DecoratedArgumentParser}
      * @see #prefilter(String, Object)
+     * @since 3.0.0
      */
     @Contract(value = "_, _ -> new", pure = true)
     DecoratedArgumentParser<Optional<T>> prefilterOptional(String expected, @Nullable T fixedValue);

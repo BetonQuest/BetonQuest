@@ -2,11 +2,13 @@ package org.betonquest.betonquest.api.quest;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.jetbrains.annotations.Contract;
 
 /**
  * A factory to create a Quest Type from an {@link Instruction}.
  *
  * @param <T> the type to create
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface TypeFactory<T> {
@@ -17,6 +19,8 @@ public interface TypeFactory<T> {
      * @param instruction the instruction to parse
      * @return the newly created {@link T}
      * @throws QuestException if the instruction cannot be parsed
+     * @since 3.0.0
      */
+    @Contract(pure = true, value = "!null -> new")
     T parseInstruction(Instruction instruction) throws QuestException;
 }

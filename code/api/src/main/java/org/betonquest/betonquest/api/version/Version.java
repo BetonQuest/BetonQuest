@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.api.version;
 
+import org.jetbrains.annotations.Contract;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -8,6 +10,8 @@ import java.util.Optional;
  * Interface representing a version object that adheres to a specific version type.
  * A version is typically a structured string composed of multiple elements and tokens
  * which can be parsed, compared, and validated based on the defined version type.
+ *
+ * @since 3.0.0
  */
 public interface Version extends Comparable<Version> {
 
@@ -18,7 +22,9 @@ public interface Version extends Comparable<Version> {
      * that define the expected format and components of the version string.
      *
      * @return the version type
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     VersionType type();
 
     /**
@@ -35,7 +41,9 @@ public interface Version extends Comparable<Version> {
      * Separator tokens (e.g., ".") are also included in the list.
      *
      * @return an unmodifiable list of {@link VersionToken}s that were successfully parsed from the version string
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     List<VersionToken> tokens();
 
     /**
@@ -50,7 +58,9 @@ public interface Version extends Comparable<Version> {
      * patch tokens respectively. Separator tokens (e.g., ".") are also included in the list.
      *
      * @return an unmodifiable list of string values representing the parsed version components
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     List<String> elements();
 
     /**
@@ -69,7 +79,9 @@ public interface Version extends Comparable<Version> {
      * @return an {@link Optional} containing the element value if a token with the
      * given name exists in this version, or an empty {@link Optional} if no
      * such token is found
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     Optional<String> getNamedElement(String elementName);
 
     /**
@@ -79,7 +91,9 @@ public interface Version extends Comparable<Version> {
      * @param other              the other version to compare to
      * @return a negative integer, zero, or a positive integer as this version is
      * less than, equal to, or greater than the specified version.
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     int compareTo(Comparator<Version> comparisonStrategy, Version other);
 
     /**
@@ -90,7 +104,9 @@ public interface Version extends Comparable<Version> {
      * @param comparisonStrategy the comparison strategy to use for determining version order
      * @param other              the other version to compare against
      * @return {@code true} if this version is newer than the specified version, {@code false} otherwise
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     boolean isNewerThan(Comparator<Version> comparisonStrategy, Version other);
 
     /**
@@ -105,7 +121,9 @@ public interface Version extends Comparable<Version> {
      * @param comparisonStrategy the comparison strategy to use for determining version compatibility
      * @param other              the other version to check compatibility against
      * @return {@code true} if this version is compatible with the specified version, {@code false} otherwise
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     boolean isCompatibleWith(Comparator<Version> comparisonStrategy, Version other);
 
     /**
@@ -116,6 +134,8 @@ public interface Version extends Comparable<Version> {
      * @param comparisonStrategy the comparison strategy to use for determining version order
      * @param other              the other version to compare against
      * @return {@code true} if this version is older than the specified version, {@code false} otherwise
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     boolean isOlderThan(Comparator<Version> comparisonStrategy, Version other);
 }

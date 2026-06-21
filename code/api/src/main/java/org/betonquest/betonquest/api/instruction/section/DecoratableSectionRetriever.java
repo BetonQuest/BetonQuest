@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
  * A {@link SectionRetriever} that may be decorated with additional methods.
  *
  * @param <T> the type of the section's value
+ * @since 3.0.0
  */
 public interface DecoratableSectionRetriever<T> extends SectionRetriever<T> {
 
@@ -25,6 +26,7 @@ public interface DecoratableSectionRetriever<T> extends SectionRetriever<T> {
      * Default implementation forwards to {@link #collect(Collector)} using {@link Collectors#toList()}.
      *
      * @return a new {@link ListSectionRetriever} with the new collected type T
+     * @since 3.0.0
      */
     ListSectionRetriever<T> list();
 
@@ -35,6 +37,7 @@ public interface DecoratableSectionRetriever<T> extends SectionRetriever<T> {
      * @param collector the collector to handle the list of values
      * @param <R>       the collected result type
      * @return a new {@link DecoratableSectionRetriever} with the new collected type R
+     * @since 3.0.0
      */
     <R> DecoratableSectionRetriever<R> collect(Collector<T, ?, R> collector);
 
@@ -44,6 +47,7 @@ public interface DecoratableSectionRetriever<T> extends SectionRetriever<T> {
      * @param mapper the mapper function to apply to the value after parsing
      * @param <U>    the new type of the mapped value
      * @return a new {@link DecoratableSectionRetriever} with the new type
+     * @since 3.0.0
      */
     <U> DecoratableSectionRetriever<U> map(QuestFunction<T, U> mapper);
 
@@ -53,6 +57,7 @@ public interface DecoratableSectionRetriever<T> extends SectionRetriever<T> {
      *
      * @param validator the validator to apply to the argument
      * @return a new {@link DecoratableSectionRetriever} with the new validation
+     * @since 3.0.0
      */
     DecoratableSectionRetriever<T> validate(ValueValidator<T> validator);
 
@@ -64,6 +69,7 @@ public interface DecoratableSectionRetriever<T> extends SectionRetriever<T> {
      * @param validator    the validator to apply to the argument
      * @param errorMessage the error message to use if the validator fails
      * @return a new {@link DecoratableSectionRetriever} with the new validation
+     * @since 3.0.0
      */
     DecoratableSectionRetriever<T> validate(ValueValidator<T> validator, String errorMessage);
 
@@ -74,6 +80,7 @@ public interface DecoratableSectionRetriever<T> extends SectionRetriever<T> {
      *
      * @param validator the validator to apply to the argument
      * @return a new {@link DecoratableSectionRetriever} with the new validation
+     * @since 3.0.0
      */
     default DecoratableSectionRetriever<T> invalidate(final ValueValidator<T> validator) {
         return validate(value -> !validator.validate(value));
@@ -89,6 +96,7 @@ public interface DecoratableSectionRetriever<T> extends SectionRetriever<T> {
      * @param validator    the validator to apply to the argument
      * @param errorMessage the error message to use if the validator fails
      * @return a new {@link DecoratableSectionRetriever} with the new validation
+     * @since 3.0.0
      */
     default DecoratableSectionRetriever<T> invalidate(final ValueValidator<T> validator, final String errorMessage) {
         return validate(value -> !validator.validate(value), errorMessage);
@@ -105,6 +113,7 @@ public interface DecoratableSectionRetriever<T> extends SectionRetriever<T> {
      * @param expected   the expected string to be matched
      * @param fixedValue the value to return if the expected string matches
      * @return the new prefiltered {@link DecoratableChainRetriever}
+     * @since 3.0.0
      */
     DecoratableSectionRetriever<T> prefilter(String expected, T fixedValue);
 
@@ -120,6 +129,7 @@ public interface DecoratableSectionRetriever<T> extends SectionRetriever<T> {
      * @param expected   the expected string to be matched
      * @param fixedValue the value to return if the expected string matches
      * @return the new prefiltered {@link DecoratableChainRetriever}
+     * @since 3.0.0
      */
     DecoratableSectionRetriever<Optional<T>> prefilterOptional(String expected, @Nullable T fixedValue);
 }

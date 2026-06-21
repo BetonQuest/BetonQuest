@@ -13,6 +13,7 @@ import java.util.stream.Stream;
  * @param <T> the type of the list's elements
  * @see InstructionChainRetriever
  * @see DecoratableChainRetriever
+ * @since 3.0.0
  */
 public interface ListChainRetriever<T> extends DecoratableChainRetriever<List<T>> {
 
@@ -39,6 +40,7 @@ public interface ListChainRetriever<T> extends DecoratableChainRetriever<List<T>
      * Ensures that the list is not empty and throws an error if it is.
      *
      * @return a new {@link ListChainRetriever}
+     * @since 3.0.0
      */
     ListChainRetriever<T> notEmpty();
 
@@ -48,6 +50,7 @@ public interface ListChainRetriever<T> extends DecoratableChainRetriever<List<T>
      * If T is a complex type, use {@link #distinct(Function)}
      *
      * @return a new {@link ListChainRetriever}
+     * @since 3.0.0
      */
     ListChainRetriever<T> distinct();
 
@@ -61,6 +64,7 @@ public interface ListChainRetriever<T> extends DecoratableChainRetriever<List<T>
      * @param <U>       the element of T that is supposed to be unique across the list
      * @return a new {@link ListChainRetriever}
      * @see #distinct()
+     * @since 3.0.0
      */
     <U> ListChainRetriever<T> distinct(Function<T, U> extractor);
 }

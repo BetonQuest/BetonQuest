@@ -10,6 +10,8 @@ import java.util.UUID;
  * Interface for implementing a profile provider.
  * Profile providers are responsible for creating {@link Profile}s and
  * {@link OnlineProfile}s for players.
+ *
+ * @since 3.0.0
  */
 public interface ProfileProvider {
 
@@ -18,6 +20,7 @@ public interface ProfileProvider {
      *
      * @param offlinePlayer the offline player to get the profile for
      * @return the profile
+     * @since 3.0.0
      */
     Profile getProfile(OfflinePlayer offlinePlayer);
 
@@ -26,6 +29,7 @@ public interface ProfileProvider {
      *
      * @param player the player to get the profile for
      * @return the online profile
+     * @since 3.0.0
      */
     OnlineProfile getProfile(Player player);
 
@@ -33,6 +37,7 @@ public interface ProfileProvider {
      * Get all online profiles.
      *
      * @return all online profiles
+     * @since 3.0.0
      */
     List<OnlineProfile> getOnlineProfiles();
 
@@ -41,6 +46,7 @@ public interface ProfileProvider {
      *
      * @param key the profile UUID
      * @return the profile
+     * @since 3.0.0
      */
     Profile getProfile(UUID key);
 }

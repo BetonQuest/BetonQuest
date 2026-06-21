@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
  * Factory for {@link Identifier} instances.
  *
  * @param <I> the type of the identifier
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface IdentifierFactory<I extends Identifier> {
@@ -19,6 +20,7 @@ public interface IdentifierFactory<I extends Identifier> {
      * @param input  the input string
      * @return the parsed identifier
      * @throws QuestException if the identifier cannot be parsed
+     * @since 3.0.0
      */
     I parseIdentifier(@Nullable QuestPackage source, String input) throws QuestException;
 }

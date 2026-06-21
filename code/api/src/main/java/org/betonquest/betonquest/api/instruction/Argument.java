@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
  * Represent an argument that can be resolved to the given type.
  *
  * @param <T> the type of the argument
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface Argument<T> {
@@ -18,6 +19,7 @@ public interface Argument<T> {
      * @param profile the profile to resolve the arguments for or null if no profile is involved
      * @return the value of the argument
      * @throws QuestException if the argument could not be resolved
+     * @since 3.0.0
      */
     T getValue(@Nullable Profile profile) throws QuestException;
 }

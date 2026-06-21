@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.instruction.chain.InstructionChainRetriever
 import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.Contract;
 
 /**
  * The BetonQuest instructions service is responsible for the creating and resolution of instructions and arguments.
@@ -24,6 +25,8 @@ import org.bukkit.configuration.ConfigurationSection;
  * Right after creating an {@link Argument}, it attempts to validate the process by resolving the argument's value and
  * will throw an exception if the validation fails.
  * In the process of creating an instruction it may also throw a {@link QuestException} if the tokenizing fails.
+ *
+ * @since 3.0.0
  */
 public interface Instructions {
 
@@ -56,7 +59,9 @@ public interface Instructions {
      * @param questPackage the package the argument will be resolved for
      * @param argument     the raw argument to parse
      * @return a new {@link InstructionChainParser} for the given argument
+     * @since 3.0.0
      */
+    @Contract(pure = true, value = "!null, !null -> new")
     InstructionChainParser createForArgument(QuestPackage questPackage, String argument);
 
     /**
@@ -68,7 +73,9 @@ public interface Instructions {
      * @param questPackage the package the argument will be resolved for
      * @param argument     the supplier for the raw argument to parse
      * @return a new {@link InstructionChainParser} for the given argument supplier
+     * @since 3.0.0
      */
+    @Contract(pure = true, value = "!null, !null -> new")
     InstructionChainParser createForArgument(QuestPackage questPackage, QuestSupplier<String> argument);
 
     /**
@@ -81,7 +88,9 @@ public interface Instructions {
      * @param instruction the instruction string
      * @return a new {@link Instruction} for the given identifier and instruction string
      * @throws QuestException if the instruction cannot be created
+     * @since 3.0.0
      */
+    @Contract(pure = true, value = "!null, !null -> new")
     Instruction create(Identifier identifier, String instruction) throws QuestException;
 
     /**
@@ -96,7 +105,9 @@ public interface Instructions {
      * @param instruction  the instruction string
      * @return a new {@link Instruction} for the given quest package and instruction string
      * @throws QuestException if the instruction cannot be created
+     * @since 3.0.0
      */
+    @Contract(pure = true, value = "!null, !null -> new")
     Instruction create(QuestPackage questPackage, String instruction) throws QuestException;
 
     /**
@@ -108,7 +119,9 @@ public interface Instructions {
      * @param placeholder           the placeholder string
      * @return a new {@link Instruction} for the given placeholder identifier and placeholder string
      * @throws QuestException if the placeholder instruction cannot be created
+     * @since 3.0.0
      */
+    @Contract(pure = true, value = "!null, !null -> new")
     Instruction createPlaceholder(PlaceholderIdentifier placeholderIdentifier, String placeholder) throws QuestException;
 
     /**
@@ -121,6 +134,8 @@ public interface Instructions {
      * @param section      the section to create the instruction for
      * @return a new {@link SectionInstruction} for the given quest package and configuration section
      * @throws QuestException if the section instruction cannot be created
+     * @since 3.0.0
      */
+    @Contract(pure = true, value = "!null, !null -> new")
     SectionInstruction createSection(QuestPackage questPackage, ConfigurationSection section) throws QuestException;
 }

@@ -42,6 +42,7 @@ import org.betonquest.betonquest.api.service.placeholder.PlaceholderRegistry;
 import org.betonquest.betonquest.api.service.placeholder.Placeholders;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Contract;
 
 import java.util.UUID;
 
@@ -52,6 +53,8 @@ import java.util.UUID;
  * <br> <br>
  * The API is available and ready to use after BetonQuest itself has finished enabling and may therefore be called
  * the earliest while enabling a plugin explicitly depending on BetonQuest (enabling after BetonQuest).
+ *
+ * @since 3.0.0
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public interface BetonQuestApi {
@@ -65,7 +68,9 @@ public interface BetonQuestApi {
      * @return the profile provider offering functionality to retrieve profiles
      * @see Profile
      * @see OnlineProfile
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     ProfileProvider profiles();
 
     /**
@@ -77,7 +82,9 @@ public interface BetonQuestApi {
      *
      * @return the package manager offering functionality to retrieve packages
      * @see QuestPackage
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     QuestPackageManager packages();
 
     /**
@@ -88,7 +95,9 @@ public interface BetonQuestApi {
      *
      * @return the logger factory offering functionality to create loggers
      * @see BetonQuestLogger
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     BetonQuestLoggerFactory loggerFactory();
 
     /**
@@ -102,7 +111,9 @@ public interface BetonQuestApi {
      * @return the instruction factory offering functionality to create instructions
      * @see Instruction
      * @see SectionInstruction
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     Instructions instructions();
 
     /**
@@ -111,7 +122,9 @@ public interface BetonQuestApi {
      * Conversations are the fundamental concept underlying pretty much all interactions in BetonQuest.
      *
      * @return the conversation api offering functionality to access conversations
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     Conversations conversations();
 
     /**
@@ -120,7 +133,9 @@ public interface BetonQuestApi {
      * Identifiers are used to uniquely identify actions, conditions, objectives, placeholders, and so on.
      *
      * @return the identifier api offering functionality to access identifiers
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     Identifiers identifiers();
 
     /**
@@ -130,7 +145,9 @@ public interface BetonQuestApi {
      * The {@link ActionManager} enables executing actions defined in BetonQuest.
      *
      * @return the action api offering functionality to access actions
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     Actions actions();
 
     /**
@@ -140,7 +157,9 @@ public interface BetonQuestApi {
      * The {@link ConditionManager} enables evaluating conditions defined in BetonQuest.
      *
      * @return the condition api offering functionality to access conditions
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     Conditions conditions();
 
     /**
@@ -150,7 +169,9 @@ public interface BetonQuestApi {
      * The {@link ObjectiveManager} enables managing objectives defined in BetonQuest.
      *
      * @return the objective api offering functionality to access objectives
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     Objectives objectives();
 
     /**
@@ -160,7 +181,9 @@ public interface BetonQuestApi {
      * The {@link PlaceholderManager} enables resolving placeholders defined in BetonQuest.
      *
      * @return the placeholder api offering functionality to access placeholders
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     Placeholders placeholders();
 
     /**
@@ -170,7 +193,9 @@ public interface BetonQuestApi {
      * The {@link ItemManager} enables managing items defined in BetonQuest.
      *
      * @return the item api offering functionality to access items
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     Items items();
 
     /**
@@ -180,7 +205,9 @@ public interface BetonQuestApi {
      * The {@link NpcManager} enables managing NPCs defined in BetonQuest.
      *
      * @return the npc api offering functionality to access NPCs
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     Npcs npcs();
 
     /**
@@ -190,7 +217,9 @@ public interface BetonQuestApi {
      * It also grants access to existing fonts and their specifications.
      *
      * @return the font registry offering access to fonts
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     FontRegistry fonts();
 
     /**
@@ -200,7 +229,9 @@ public interface BetonQuestApi {
      * By hooking functions into the Reloader, you may have your own tools reloaded in sync with BetonQuest.
      *
      * @return the reloader offering access to reloading
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     Reloader reloader();
 
     /**
@@ -210,7 +241,9 @@ public interface BetonQuestApi {
      * By accessing specific {@link PersistentDataHolder}s you may read or change persistent data in a specific context.
      *
      * @return the persistence offering access to persistent data
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     Persistence persistence();
 
     /**
@@ -219,20 +252,26 @@ public interface BetonQuestApi {
      * The {@link CompassManager} manages all quest compasses and allows to obtain them.
      *
      * @return the compass manager
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     CompassManager compasses();
 
     /**
      * Offers access to the localization of plugin messages and available languages.
      *
      * @return the plugin message localization
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     Localizations localizations();
 
     /**
      * Offers access to shortcuts for the Bukkit API.
      *
      * @return the bukkit manager
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     BukkitManager bukkit();
 }

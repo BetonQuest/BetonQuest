@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.api.version;
 
+import org.jetbrains.annotations.Contract;
+
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +15,7 @@ import java.util.Map;
  * in version strings.
  *
  * @see VersionToken
+ * @since 3.0.0
  */
 public interface VersionType {
 
@@ -24,7 +27,9 @@ public interface VersionType {
      * of valid versions.
      *
      * @return an unmodifiable list of tokens in the order they define this version type
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     List<VersionToken> tokens();
 
     /**
@@ -41,6 +46,8 @@ public interface VersionType {
      *
      * @return an unmodifiable map where keys are group numbers and values are lists of tokens
      * in that group, preserving their original order
+     * @since 3.0.0
      */
+    @Contract(value = "-> new", pure = true)
     Map<Integer, List<VersionToken>> tokenGroups();
 }

@@ -5,6 +5,8 @@ import java.util.Optional;
 
 /**
  * Represents all points attached to something referred to as the holder.
+ *
+ * @since 3.0.0
  */
 public interface PointHolder {
 
@@ -12,6 +14,7 @@ public interface PointHolder {
      * Gets all points for all categories of the holder.
      *
      * @return all points
+     * @since 3.0.0
      */
     Map<String, Integer> get();
 
@@ -20,6 +23,7 @@ public interface PointHolder {
      *
      * @param category the category to check
      * @return true if the holder has points in the given category, false otherwise
+     * @since 3.0.0
      */
     boolean has(String category);
 
@@ -30,6 +34,7 @@ public interface PointHolder {
      * @param category the category to get the points from
      * @return the number of points the holder currently has or an empty optional
      * if the holder does not have any points in the given category
+     * @since 3.0.0
      */
     Optional<Integer> get(String category);
 
@@ -38,6 +43,7 @@ public interface PointHolder {
      *
      * @param category the category to set the points for
      * @param points   the number of points to set
+     * @since 3.0.0
      */
     void set(String category, int points);
 
@@ -47,14 +53,16 @@ public interface PointHolder {
      *
      * @param category the category to add the points to
      * @param points   the number of points to add
+     * @since 3.0.0
      */
     void add(String category, int points);
 
     /**
      * Removes all points from the holder in the given category as well as the category itself.
-     * The difference is in not having 0 points in the category but the category itself being absent.
+     * The difference is in not having 0 points in the category, but the category itself being absent.
      *
      * @param category the category to remove
+     * @since 3.0.0
      */
     void remove(String category);
 }

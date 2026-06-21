@@ -13,6 +13,7 @@ import java.util.Optional;
  *
  * @see InstructionChainRetriever
  * @see DecoratableChainRetriever
+ * @since 3.0.0
  */
 public interface NumberChainRetriever extends DecoratableChainRetriever<Number> {
 
@@ -34,6 +35,7 @@ public interface NumberChainRetriever extends DecoratableChainRetriever<Number> 
      *
      * @param inclusiveMin the inclusive minimum to check against
      * @return a new {@link NumberArgumentParser}
+     * @since 3.0.0
      */
     @Contract(value = "!null -> new", pure = true)
     NumberChainRetriever atLeast(Number inclusiveMin);
@@ -44,6 +46,7 @@ public interface NumberChainRetriever extends DecoratableChainRetriever<Number> 
      *
      * @param inclusiveMax the inclusive maximum to check against
      * @return a new {@link NumberArgumentParser}
+     * @since 3.0.0
      */
     @Contract(value = "!null -> new", pure = true)
     NumberChainRetriever atMost(Number inclusiveMax);
@@ -56,6 +59,7 @@ public interface NumberChainRetriever extends DecoratableChainRetriever<Number> 
      * @param inclusiveMin the inclusive minimum to check against
      * @param exclusiveMax the exclusive maximum to check against
      * @return a new {@link NumberArgumentParser}
+     * @since 3.0.0
      */
     @Contract(value = "!null, !null -> new", pure = true)
     NumberChainRetriever inRange(Number inclusiveMin, Number exclusiveMax);

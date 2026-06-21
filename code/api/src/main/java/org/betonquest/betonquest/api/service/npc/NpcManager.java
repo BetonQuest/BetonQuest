@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
@@ -16,6 +17,8 @@ import java.util.Set;
  * <br> <br>
  * Each npc is identified by a {@link NpcIdentifier} which consists of the user-defined name in the configuration
  * as well as the {@link QuestPackage} the npc belongs to.
+ *
+ * @since 3.0.0
  */
 public interface NpcManager {
 
@@ -35,7 +38,9 @@ public interface NpcManager {
      * @return the npc for the given identifier
      * @throws QuestException if there are no or multiple npcs with the given identifier
      * @see #getAll(Profile, NpcIdentifier) for getting multiple npcs from an identifier
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     Npc<?> get(@Nullable Profile profile, NpcIdentifier npcIdentifier) throws QuestException;
 
     /**
@@ -52,7 +57,9 @@ public interface NpcManager {
      * @return the npcs for the given identifier
      * @throws QuestException if there are no npcs with the given identifier
      * @see #get(Profile, NpcIdentifier) for getting a single npc from an identifier
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     Set<Npc<?>> getAll(@Nullable Profile profile, NpcIdentifier npcIdentifier) throws QuestException;
 
     /**
@@ -70,7 +77,9 @@ public interface NpcManager {
      * @see #isHidden(Npc, Player)
      * @see Npc#hide(OnlineProfile)
      * @see Npc#show(OnlineProfile)
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     boolean isHidden(NpcIdentifier npcId, OnlineProfile profile);
 
     /**
@@ -87,6 +96,8 @@ public interface NpcManager {
      * @see #isHidden(NpcIdentifier, OnlineProfile)
      * @see Npc#hide(OnlineProfile)
      * @see Npc#show(OnlineProfile)
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     boolean isHidden(Npc<?> npc, Player player);
 }

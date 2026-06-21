@@ -7,6 +7,8 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Quest action that can work both with and without a profile.
+ *
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface NullableAction extends PrimaryThreadEnforceable {
@@ -18,6 +20,7 @@ public interface NullableAction extends PrimaryThreadEnforceable {
      * @throws QuestException if the action cannot be executed correctly,
      *                        this might indicate that the profile cannot be null
      *                        in this specific case
+     * @since 3.0.0
      */
     void execute(@Nullable Profile profile) throws QuestException;
 }

@@ -10,17 +10,20 @@ import java.io.FileNotFoundException;
 
 /**
  * Factory for {@link ConfigAccessor} instances.
+ *
+ * @since 3.0.0
  */
 public interface ConfigAccessorFactory {
 
     /**
      * Loads a resourceFile.
      *
-     * @param plugin       the plugin which is the source of the resource file
+     * @param plugin       the plugin that is the source of the resource file
      * @param resourceFile the resource file to load from the plugin
      * @return the created {@link ConfigAccessor}
      * @throws InvalidConfigurationException thrown if the resourceFile could not be loaded
      * @throws FileNotFoundException         thrown if the {@code resourceFile} could not be found
+     * @since 3.0.0
      */
     ConfigAccessor create(Plugin plugin, String resourceFile) throws InvalidConfigurationException, FileNotFoundException;
 
@@ -31,6 +34,7 @@ public interface ConfigAccessorFactory {
      * @return the created {@link FileConfigAccessor}
      * @throws InvalidConfigurationException thrown if the configurationFile could not be loaded
      * @throws FileNotFoundException         thrown if the {@code configurationFile} could not be found
+     * @since 3.0.0
      */
     FileConfigAccessor create(File configurationFile) throws InvalidConfigurationException, FileNotFoundException;
 
@@ -40,13 +44,14 @@ public interface ConfigAccessorFactory {
      * and then saved as the configurationFile if given.
      *
      * @param configurationFile the {@link File} that is represented by this {@link FileConfigAccessor}
-     * @param plugin            the plugin which is the source of the resource file
+     * @param plugin            the plugin that is the source of the resource file
      * @param resourceFile      the resource file to load from the plugin
      * @return the created {@link FileConfigAccessor}
      * @throws InvalidConfigurationException thrown if the configurationFile or the resourceFile could not be loaded,
      *                                       or the resourceFile could not be saved to the configurationFile
      * @throws FileNotFoundException         thrown if the {@code configurationFile} or the {@code resourceFile}
      *                                       could not be found
+     * @since 3.0.0
      */
     FileConfigAccessor create(File configurationFile, Plugin plugin, String resourceFile) throws InvalidConfigurationException, FileNotFoundException;
 
@@ -66,13 +71,14 @@ public interface ConfigAccessorFactory {
      * <br><br>
      *
      * @param configurationFile the {@link File} that is represented by this {@link FileConfigAccessor}
-     * @param plugin            the plugin which is the source of the resource file
+     * @param plugin            the plugin that is the source of the resource file
      * @param resourceFile      the resource file to load from the plugin
      * @return the created {@link FileConfigAccessor}
      * @throws InvalidConfigurationException thrown if the configurationFile or the resourceFile could not be loaded,
      *                                       or the resourceFile could not be saved to the configurationFile
      * @throws FileNotFoundException         thrown if the {@code configurationFile} or the {@code resourceFile}
      *                                       could not be found
+     * @since 3.0.0
      */
     default FileConfigAccessor createPatching(final File configurationFile, final Plugin plugin, final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
         return createPatching(configurationFile, plugin, resourceFile, null);
@@ -94,7 +100,7 @@ public interface ConfigAccessorFactory {
      * <br><br>
      *
      * @param configurationFile          the {@link File} that is represented by this {@link FileConfigAccessor}
-     * @param plugin                     the plugin which is the source of the resource file
+     * @param plugin                     the plugin that is the source of the resource file
      * @param resourceFile               the resource file to load from the plugin
      * @param patchTransformerRegisterer a function that registers the transformers to be used for patching
      * @return the created {@link FileConfigAccessor}
@@ -102,6 +108,7 @@ public interface ConfigAccessorFactory {
      *                                       or the resourceFile could not be saved to the configurationFile
      * @throws FileNotFoundException         thrown if the {@code configurationFile} or the {@code resourceFile}
      *                                       could not be found
+     * @since 3.0.0
      */
     FileConfigAccessor createPatching(File configurationFile, Plugin plugin, String resourceFile, @Nullable PatchTransformerRegistry patchTransformerRegisterer) throws InvalidConfigurationException, FileNotFoundException;
 }

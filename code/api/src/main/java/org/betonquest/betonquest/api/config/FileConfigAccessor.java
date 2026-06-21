@@ -5,6 +5,8 @@ import java.io.IOException;
 
 /**
  * Represents a configuration file that can be accessed, saved, deleted and reloaded.
+ *
+ * @since 3.0.0
  */
 public interface FileConfigAccessor extends ConfigAccessor {
 
@@ -14,6 +16,7 @@ public interface FileConfigAccessor extends ConfigAccessor {
      *
      * @return Only returns true if the file was saved.
      * @throws IOException if the file could not be saved.
+     * @since 3.0.0
      */
     boolean save() throws IOException;
 
@@ -23,6 +26,7 @@ public interface FileConfigAccessor extends ConfigAccessor {
      *
      * @return Only returns true if the file was deleted and existed before.
      * @throws IOException if the file could not be deleted.
+     * @since 3.0.0
      */
     boolean delete() throws IOException;
 
@@ -32,6 +36,7 @@ public interface FileConfigAccessor extends ConfigAccessor {
      *
      * @throws IOException           if an exception was thrown during the reload.
      * @throws IllegalStateException if there is no configuration file to be reloaded.
+     * @since 3.0.0
      */
     void reload() throws IOException;
 
@@ -39,6 +44,7 @@ public interface FileConfigAccessor extends ConfigAccessor {
      * Gets the {@link File}, that is represented by this {@link FileConfigAccessor}.
      *
      * @return the {@link File}
+     * @since 3.0.0
      */
     File getConfigurationFile();
 }

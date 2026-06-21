@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.api.version;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
@@ -13,6 +14,8 @@ import java.util.regex.Pattern;
  * <p>
  * Implementations of this interface are used as part of a version type to
  * determine the structure and parsing rules for version strings.
+ *
+ * @since 3.0.0
  */
 public interface VersionToken {
 
@@ -20,21 +23,27 @@ public interface VersionToken {
      * The name of the token.
      *
      * @return the name of the token
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     String name();
 
     /**
      * The regular expression pattern used to match the token.
      *
      * @return the regular expression pattern
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     Pattern pattern();
 
     /**
      * The comparator used to compare tokens of this type.
      *
      * @return the comparator used to compare tokens of this type
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     Comparator<String> tokenComparator();
 
     /**
@@ -46,7 +55,9 @@ public interface VersionToken {
      * Starts from 0 and increases by 1 for each element.
      *
      * @return the group of the token
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     int group();
 
     /**
@@ -58,8 +69,10 @@ public interface VersionToken {
      * Has no effect if the token is not {@link #optional()}.
      *
      * @return the default value to use if the optional token is absent
+     * @since 3.0.0
      */
     @Nullable
+    @Contract(pure = true)
     String absenceDefault();
 
     /**
@@ -71,7 +84,9 @@ public interface VersionToken {
      * to both be valid.
      *
      * @return true if the token can be ejected, false otherwise.
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     boolean optional();
 
     /**
@@ -82,6 +97,8 @@ public interface VersionToken {
      * A valid version string must always end with a finite token.
      *
      * @return true if the token is finite, false otherwise.
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     boolean finite();
 }

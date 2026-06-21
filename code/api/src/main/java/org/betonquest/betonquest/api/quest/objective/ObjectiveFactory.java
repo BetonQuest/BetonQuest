@@ -6,6 +6,8 @@ import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 
 /**
  * Factory to create a specific {@link Objective} from {@link Instruction}s.
+ *
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface ObjectiveFactory {
@@ -17,6 +19,7 @@ public interface ObjectiveFactory {
      * @param service     the objective service
      * @return objective referenced by the instruction
      * @throws QuestException when the instruction cannot be parsed
+     * @since 3.0.0
      */
     Objective parseInstruction(Instruction instruction, ObjectiveService service) throws QuestException;
 }

@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Contract;
  * This class represents a parser for any instruction arguments from a string to a value of type T.
  *
  * @param <T> the type of the parsed value
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface InstructionArgumentParser<T> {
@@ -23,6 +24,7 @@ public interface InstructionArgumentParser<T> {
      * @param string       the string to parse
      * @return the parsed value
      * @throws QuestException if the string cannot be parsed
+     * @since 3.0.0
      */
     @Contract(pure = true)
     T apply(PlaceholderManager placeholders, QuestPackageManager packManager, QuestPackage pack, String string) throws QuestException;

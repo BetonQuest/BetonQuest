@@ -7,6 +7,8 @@ import org.betonquest.betonquest.api.quest.PrimaryThreadEnforceable;
 /**
  * Interface for quest-actions that are executed for a profile. It represents the player action as described in the
  * BetonQuest user documentation. It does not represent the playerless variant though, see {@link PlayerlessAction}.
+ *
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface PlayerAction extends PrimaryThreadEnforceable {
@@ -16,6 +18,7 @@ public interface PlayerAction extends PrimaryThreadEnforceable {
      *
      * @param profile the {@link Profile} the action is executed for
      * @throws QuestException when the action execution fails
+     * @since 3.0.0
      */
     void execute(Profile profile) throws QuestException;
 }

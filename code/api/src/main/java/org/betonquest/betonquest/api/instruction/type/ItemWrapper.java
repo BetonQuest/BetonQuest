@@ -10,6 +10,8 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * A wrapper for a {@link QuestItem}.
+ *
+ * @since 3.0.0
  */
 public interface ItemWrapper {
 
@@ -19,6 +21,7 @@ public interface ItemWrapper {
      * @param profile the profile for argument resolving
      * @return the generated bukkit item
      * @throws QuestException when the generation fails
+     * @since 3.0.0
      */
     ItemStack generate(@Nullable Profile profile) throws QuestException;
 
@@ -29,6 +32,7 @@ public interface ItemWrapper {
      * @param profile the profile to resolve the item
      * @return true if the given item matches the quest item
      * @throws QuestException when there is no QuestItem for the ID
+     * @since 3.0.0
      */
     boolean matches(@Nullable ItemStack item, @Nullable Profile profile) throws QuestException;
 
@@ -36,6 +40,7 @@ public interface ItemWrapper {
      * Gets the stored ID used to generate the Quest Item.
      *
      * @return item id of the item
+     * @since 3.0.0
      */
     Identifier getID();
 
@@ -45,13 +50,15 @@ public interface ItemWrapper {
      * @param profile the profile to resolve the item
      * @return the stored quest item
      * @throws QuestException when there is no QuestItem for the ID
+     * @since 3.0.0
      */
     QuestItem getItem(@Nullable Profile profile) throws QuestException;
 
     /**
      * Gets the amount to set.
      *
-     * @return the stores amount
+     * @return the stored amount
+     * @since 3.0.0
      */
     Argument<Number> getAmount();
 }

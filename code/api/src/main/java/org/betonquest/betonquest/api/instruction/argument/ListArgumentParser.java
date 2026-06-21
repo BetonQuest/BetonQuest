@@ -8,6 +8,7 @@ import java.util.stream.Stream;
  * A decorated {@link List} argument offering more options on top of the {@link DecoratedArgumentParser} itself.
  *
  * @param <T> the type of the list's elements
+ * @since 3.0.0
  */
 public interface ListArgumentParser<T> extends DecoratedArgumentParser<List<T>> {
 
@@ -15,6 +16,7 @@ public interface ListArgumentParser<T> extends DecoratedArgumentParser<List<T>> 
      * Ensures that the list is not empty and throws an error if it is.
      *
      * @return a new {@link ListArgumentParser}
+     * @since 3.0.0
      */
     ListArgumentParser<T> notEmpty();
 
@@ -24,6 +26,7 @@ public interface ListArgumentParser<T> extends DecoratedArgumentParser<List<T>> 
      * If T is a complex type, use {@link #distinct(Function)}
      *
      * @return a new {@link ListArgumentParser}
+     * @since 3.0.0
      */
     ListArgumentParser<T> distinct();
 
@@ -37,6 +40,7 @@ public interface ListArgumentParser<T> extends DecoratedArgumentParser<List<T>> 
      * @param <U>       the element of T that is supposed to be unique across the list
      * @return a new {@link ListArgumentParser}
      * @see #distinct()
+     * @since 3.0.0
      */
     <U> ListArgumentParser<T> distinct(Function<T, U> extractor);
 }

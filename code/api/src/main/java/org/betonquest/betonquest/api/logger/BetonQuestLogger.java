@@ -11,6 +11,8 @@ import java.util.logging.Level;
  * It registers a new child logger for each class it's used in.
  * <p>
  * Therefore, all of BetonQuest's logging needs to be done with the methods of this class.
+ *
+ * @since 3.0.0
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public interface BetonQuestLogger {
@@ -26,6 +28,7 @@ public interface BetonQuestLogger {
      * Use {@link BetonQuestLogger#debug(LogSource, String)} instead.
      *
      * @param msg The message to log.
+     * @since 3.0.0
      */
     void debug(@Nullable String msg);
 
@@ -42,6 +45,7 @@ public interface BetonQuestLogger {
      *
      * @param msg    The message to log.
      * @param thrown The throwable to log.
+     * @since 3.0.0
      */
     void debug(@Nullable String msg, Throwable thrown);
 
@@ -54,6 +58,7 @@ public interface BetonQuestLogger {
      *
      * @param logSource The related {@link LogSource}.
      * @param msg       The message to log.
+     * @since 3.0.0
      */
     void debug(LogSource logSource, @Nullable String msg);
 
@@ -68,6 +73,7 @@ public interface BetonQuestLogger {
      * @param logSource The related {@link LogSource}.
      * @param msg       The message to log.
      * @param thrown    The throwable to log.
+     * @since 3.0.0
      */
     void debug(LogSource logSource, @Nullable String msg, Throwable thrown);
 
@@ -80,6 +86,7 @@ public interface BetonQuestLogger {
      * Use {@link BetonQuestLogger#info(LogSource, String)} instead.
      *
      * @param msg The message to log.
+     * @since 3.0.0
      */
     void info(String msg);
 
@@ -90,6 +97,7 @@ public interface BetonQuestLogger {
      *
      * @param logSource The related {@link LogSource}.
      * @param msg       The message to log.
+     * @since 3.0.0
      */
     void info(LogSource logSource, @Nullable String msg);
 
@@ -104,6 +112,7 @@ public interface BetonQuestLogger {
      * Use {@link BetonQuestLogger#warn(LogSource, String)} instead.
      *
      * @param msg The message to log.
+     * @since 3.0.0
      */
     void warn(@Nullable String msg);
 
@@ -120,6 +129,7 @@ public interface BetonQuestLogger {
      *
      * @param msg    The message to log.
      * @param thrown The throwable to log.
+     * @since 3.0.0
      */
     void warn(@Nullable String msg, Throwable thrown);
 
@@ -132,6 +142,7 @@ public interface BetonQuestLogger {
      *
      * @param logSource The related {@link LogSource}.
      * @param msg       The message to log.
+     * @since 3.0.0
      */
     void warn(LogSource logSource, @Nullable String msg);
 
@@ -146,6 +157,7 @@ public interface BetonQuestLogger {
      * @param logSource The related {@link LogSource}.
      * @param msg       The message to log.
      * @param thrown    The throwable to log.
+     * @since 3.0.0
      */
     void warn(LogSource logSource, @Nullable String msg, Throwable thrown);
 
@@ -161,6 +173,7 @@ public interface BetonQuestLogger {
      * Use {@link BetonQuestLogger#error(LogSource, String)} instead.
      *
      * @param msg The message to log.
+     * @since 3.0.0
      */
     void error(@Nullable String msg);
 
@@ -178,6 +191,7 @@ public interface BetonQuestLogger {
      *
      * @param msg    The message to log.
      * @param thrown The throwable to log.
+     * @since 3.0.0
      */
     void error(@Nullable String msg, Throwable thrown);
 
@@ -191,6 +205,7 @@ public interface BetonQuestLogger {
      *
      * @param logSource The related {@link LogSource}.
      * @param msg       The message to log.
+     * @since 3.0.0
      */
     void error(LogSource logSource, @Nullable String msg);
 
@@ -206,6 +221,7 @@ public interface BetonQuestLogger {
      * @param logSource The related {@link LogSource}.
      * @param msg       The message to log.
      * @param thrown    The throwable to log.
+     * @since 3.0.0
      */
     void error(LogSource logSource, @Nullable String msg, Throwable thrown);
 
@@ -220,6 +236,7 @@ public interface BetonQuestLogger {
      * Use {@link BetonQuestLogger#reportException(LogSource, Throwable)} instead.
      *
      * @param thrown The throwable to log.
+     * @since 3.0.0
      */
     void reportException(Throwable thrown);
 
@@ -232,6 +249,7 @@ public interface BetonQuestLogger {
      *
      * @param logSource The related {@link LogSource}.
      * @param thrown    The throwable to log.
+     * @since 3.0.0
      */
     void reportException(LogSource logSource, Throwable thrown);
 }

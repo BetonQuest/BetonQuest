@@ -9,6 +9,7 @@ import java.util.function.BiConsumer;
  *
  * @param <T> the type of the first input to the operation
  * @param <U> the type of the second input to the operation
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface QuestBiConsumer<T, U> {
@@ -19,6 +20,7 @@ public interface QuestBiConsumer<T, U> {
      * @param firstArg  the first input argument
      * @param secondArg the second input argument
      * @throws QuestException when the method execution fails
+     * @since 3.0.0
      */
     void accept(T firstArg, U secondArg) throws QuestException;
 }

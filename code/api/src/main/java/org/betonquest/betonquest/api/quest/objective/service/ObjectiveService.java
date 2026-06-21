@@ -15,6 +15,8 @@ import java.util.Map;
 
 /**
  * Provides services for objective creation and event subscriptions.
+ *
+ * @since 3.0.0
  */
 public interface ObjectiveService {
 
@@ -31,6 +33,7 @@ public interface ObjectiveService {
      * @param eventClass the event class to subscribe to
      * @param <T>        the event type
      * @return a new {@link EventServiceSubscriptionBuilder} for the requested event
+     * @since 3.0.0
      */
     <T extends Event> EventServiceSubscriptionBuilder<T> request(Class<T> eventClass);
 
@@ -38,6 +41,7 @@ public interface ObjectiveService {
      * Get an exception handler specificly for this objective.
      *
      * @return the exception handler
+     * @since 3.0.0
      */
     QuestExceptionHandler getExceptionHandler();
 
@@ -45,6 +49,7 @@ public interface ObjectiveService {
      * Get the logger specificly for this objective.
      *
      * @return the logger
+     * @since 3.0.0
      */
     BetonQuestLogger getLogger();
 
@@ -52,6 +57,7 @@ public interface ObjectiveService {
      * Get the general profile provider.
      *
      * @return the profile provider
+     * @since 3.0.0
      */
     ProfileProvider getProfileProvider();
 
@@ -59,6 +65,7 @@ public interface ObjectiveService {
      * Get the raw objective data.
      *
      * @return the objective data
+     * @since 3.0.0
      * @deprecated do not use this method. it's scheduled for removal and only exists for compatibility.
      */
     @Deprecated
@@ -68,6 +75,7 @@ public interface ObjectiveService {
      * Update the raw objective data with the database.
      *
      * @param profile the profile to update
+     * @since 3.0.0
      * @deprecated do not use this method. it's scheduled for removal and only exists for compatibility.
      */
     @Deprecated
@@ -79,6 +87,7 @@ public interface ObjectiveService {
      * @param profile the profile to get the data for
      * @return the supplier
      * @throws QuestException when argument resolving fails
+     * @since 3.0.0
      * @deprecated do not use this method. it's scheduled for removal and only exists for compatibility.
      */
     @Deprecated
@@ -88,6 +97,7 @@ public interface ObjectiveService {
      * Set the default objective data supplier.
      *
      * @param supplier the supplier to use
+     * @since 3.0.0
      * @deprecated do not use this method. it's scheduled for removal and only exists for compatibility.
      */
     @Deprecated
@@ -99,6 +109,7 @@ public interface ObjectiveService {
      * Renames the objective.
      *
      * @param newObjectiveID the new objective ID
+     * @since 3.0.0
      */
     void renameObjective(ObjectiveIdentifier newObjectiveID);
 
@@ -106,6 +117,7 @@ public interface ObjectiveService {
      * Retrieves the objective ID.
      *
      * @return the objective ID
+     * @since 3.0.0
      */
     ObjectiveIdentifier getObjectiveID();
 
@@ -113,6 +125,7 @@ public interface ObjectiveService {
      * Retrieves the service data provider containing all additional information about the objective.
      *
      * @return the service data provider
+     * @since 3.0.0
      */
     ObjectiveServiceDataProvider getServiceDataProvider();
 
@@ -120,6 +133,7 @@ public interface ObjectiveService {
      * Gets the objective properties.
      *
      * @return the objective properties
+     * @since 3.0.0
      */
     ObjectiveProperties getProperties();
 
@@ -129,6 +143,7 @@ public interface ObjectiveService {
      * @param profile the profile to check conditions for
      * @return if the conditions are met
      * @throws QuestException if argument resolving for the profile fails
+     * @since 3.0.0
      */
     boolean checkConditions(@Nullable Profile profile) throws QuestException;
 
@@ -137,6 +152,7 @@ public interface ObjectiveService {
      *
      * @param profile the profile to execute actions for
      * @throws QuestException if argument resolving for the profile fails
+     * @since 3.0.0
      */
     void callActions(@Nullable Profile profile) throws QuestException;
 
@@ -145,6 +161,7 @@ public interface ObjectiveService {
      *
      * @param profile the profile to check for
      * @return if the objective contains the profile
+     * @since 3.0.0
      */
     boolean containsProfile(Profile profile);
 
@@ -152,6 +169,7 @@ public interface ObjectiveService {
      * Completes the objective for the given profile.
      *
      * @param profile the profile to complete the objective for
+     * @since 3.0.0
      */
     void complete(Profile profile);
 }

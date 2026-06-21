@@ -12,6 +12,8 @@ import org.jetbrains.annotations.Contract;
  * Policies determine whether integrations should be enabled based on various constraints such as
  * Minecraft version requirements, plugin version requirements, or custom validation logic.
  * Multiple policies can be combined, and all must be satisfied for integrations to be enabled.
+ *
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface IntegrationService {
@@ -44,6 +46,7 @@ public interface IntegrationService {
      *
      * @param policies the {@link Policy} instances to add
      * @return a new {@link IntegrationPolicy} instance for registering integrations
+     * @since 3.0.0
      */
     @Contract(pure = true, value = "_ -> new")
     IntegrationPolicy withPolicies(Policy... policies);

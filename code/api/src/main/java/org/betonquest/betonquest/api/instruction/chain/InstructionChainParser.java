@@ -19,6 +19,7 @@ import java.util.UUID;
  * At this stage only the instruction starting the chain is known.
  *
  * @see InstructionChainRetriever
+ * @since 3.0.0
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public interface InstructionChainParser {
@@ -29,6 +30,7 @@ public interface InstructionChainParser {
      * @param argument the argument parser to use
      * @param <T>      the type of the argument
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
+     * @since 3.0.0
      */
     <T> DecoratableChainRetriever<T> parse(InstructionArgumentParser<T> argument);
 
@@ -39,6 +41,7 @@ public interface InstructionChainParser {
      * @param argument the simplified argument parser to use
      * @param <T>      the type of the argument
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
+     * @since 3.0.0
      */
     default <T> DecoratableChainRetriever<T> parse(final SimpleArgumentParser<T> argument) {
         return this.parse((InstructionArgumentParser<T>) argument);
@@ -48,6 +51,7 @@ public interface InstructionChainParser {
      * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#string()} as parser.
      *
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
+     * @since 3.0.0
      */
     DecoratableChainRetriever<String> string();
 
@@ -55,6 +59,7 @@ public interface InstructionChainParser {
      * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#bool()} as parser.
      *
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
+     * @since 3.0.0
      */
     DecoratableChainRetriever<Boolean> bool();
 
@@ -62,6 +67,7 @@ public interface InstructionChainParser {
      * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#vector()} as parser.
      *
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
+     * @since 3.0.0
      */
     DecoratableChainRetriever<Vector> vector();
 
@@ -69,6 +75,7 @@ public interface InstructionChainParser {
      * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#world()} as parser.
      *
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
+     * @since 3.0.0
      */
     DecoratableChainRetriever<World> world();
 
@@ -76,6 +83,7 @@ public interface InstructionChainParser {
      * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#location()} as parser.
      *
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
+     * @since 3.0.0
      */
     DecoratableChainRetriever<Location> location();
 
@@ -83,6 +91,7 @@ public interface InstructionChainParser {
      * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#item()} as parser.
      *
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
+     * @since 3.0.0
      */
     DecoratableChainRetriever<ItemWrapper> item();
 
@@ -90,6 +99,7 @@ public interface InstructionChainParser {
      * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#blockSelector()} as parser.
      *
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
+     * @since 3.0.0
      */
     DecoratableChainRetriever<BlockSelector> blockSelector();
 
@@ -97,6 +107,7 @@ public interface InstructionChainParser {
      * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#packageIdentifier()} as parser.
      *
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
+     * @since 3.0.0
      */
     DecoratableChainRetriever<String> packageIdentifier();
 
@@ -104,6 +115,7 @@ public interface InstructionChainParser {
      * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#namespacedKey()} as parser.
      *
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
+     * @since 3.0.0
      */
     DecoratableChainRetriever<NamespacedKey> namespacedKey();
 
@@ -111,6 +123,7 @@ public interface InstructionChainParser {
      * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#component()} as parser.
      *
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
+     * @since 3.0.0
      */
     DecoratableChainRetriever<Component> component();
 
@@ -118,6 +131,7 @@ public interface InstructionChainParser {
      * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#uuid()} as parser.
      *
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
+     * @since 3.0.0
      */
     DecoratableChainRetriever<UUID> uuid();
 
@@ -125,6 +139,7 @@ public interface InstructionChainParser {
      * Returns {@link NumberChainRetriever} with {@link ArgumentParsers#number()} as parser.
      *
      * @return a new {@link NumberChainRetriever} carrying all previous settings
+     * @since 3.0.0
      */
     NumberChainRetriever number();
 
@@ -134,6 +149,7 @@ public interface InstructionChainParser {
      * @param enumType the enum type to get a parser for
      * @param <E>      the enum type
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
+     * @since 3.0.0
      */
     <E extends Enum<E>> DecoratableChainRetriever<E> enumeration(Class<E> enumType);
 
@@ -143,6 +159,7 @@ public interface InstructionChainParser {
      * @param identifierClass the identifier class to parse
      * @param <I>             the identifier type
      * @return a new {@link DecoratableChainRetriever} for the argument with the identifier parser
+     * @since 3.0.0
      */
     <I extends Identifier> DecoratableChainRetriever<I> identifier(Class<I> identifierClass);
 }

@@ -5,6 +5,8 @@ import org.betonquest.betonquest.api.instruction.ValueValidator;
 /**
  * A decorated {@link DecoratableSectionRetriever} offering additional
  * methods to modify the parsing process for {@link Number}s.
+ *
+ * @since 3.0.0
  */
 public interface NumberSectionRetriever extends DecoratableSectionRetriever<Number> {
 
@@ -32,6 +34,7 @@ public interface NumberSectionRetriever extends DecoratableSectionRetriever<Numb
      *
      * @param min the inclusive minimum value
      * @return a new {@link NumberSectionRetriever} with the new validation
+     * @since 3.0.0
      */
     NumberSectionRetriever atLeast(int min);
 
@@ -40,6 +43,7 @@ public interface NumberSectionRetriever extends DecoratableSectionRetriever<Numb
      *
      * @param max the inclusive maximum value
      * @return a new {@link NumberSectionRetriever} with the new validation
+     * @since 3.0.0
      */
     NumberSectionRetriever atMost(int max);
 
@@ -49,6 +53,7 @@ public interface NumberSectionRetriever extends DecoratableSectionRetriever<Numb
      * @param min the inclusive minimum value
      * @param max the exclusive maximum value
      * @return a new {@link NumberSectionRetriever} with the new validation
+     * @since 3.0.0
      */
     NumberSectionRetriever inRange(int min, int max);
 }

@@ -10,6 +10,8 @@ import java.util.Set;
 
 /**
  * This is an interface to manage a {@link ConfigurationSection} that can be saved to multiple files.
+ *
+ * @since 3.0.0
  */
 public interface MultiConfiguration extends Configuration {
 
@@ -17,6 +19,7 @@ public interface MultiConfiguration extends Configuration {
      * Returns if a save is needed on a {@link ConfigurationSection} or an unassociated entry.
      *
      * @return true, if a save is needed
+     * @since 3.0.0
      */
     boolean needSave();
 
@@ -26,6 +29,7 @@ public interface MultiConfiguration extends Configuration {
      * if you managed to successfully save a config.
      *
      * @return a set of all unsaved {@link ConfigurationSection}s
+     * @since 3.0.0
      */
     Set<ConfigurationSection> getUnsavedConfigs();
 
@@ -34,6 +38,7 @@ public interface MultiConfiguration extends Configuration {
      *
      * @param section the {@link ConfigurationSection} to save
      * @return true, if it was marked as saved
+     * @since 3.0.0
      */
     boolean markAsSaved(ConfigurationSection section);
 
@@ -50,6 +55,7 @@ public interface MultiConfiguration extends Configuration {
      * @param path The path of the entry to get the {@link ConfigurationSection} to
      * @return The clearly {@link ConfigurationSection} of the given path
      * @throws InvalidConfigurationException if the given path is defined in multiple configuration
+     * @since 3.0.0
      */
     @Nullable
     ConfigurationSection getSourceConfigurationSection(String path) throws InvalidConfigurationException;
@@ -58,6 +64,7 @@ public interface MultiConfiguration extends Configuration {
      * Gets all keys, that are not associated with a {@link ConfigurationSection}.
      *
      * @return a list of unassociated keys.
+     * @since 3.0.0
      */
     List<String> getUnassociatedKeys();
 
@@ -66,6 +73,7 @@ public interface MultiConfiguration extends Configuration {
      * will be associated with the given config.
      *
      * @param targetConfig the config to associate entries to
+     * @since 3.0.0
      */
     void associateWith(ConfigurationSection targetConfig);
 
@@ -75,6 +83,7 @@ public interface MultiConfiguration extends Configuration {
      *
      * @param path         the path that should be associated with the given config
      * @param targetConfig the config to associate entries to
+     * @since 3.0.0
      */
     void associateWith(String path, ConfigurationSection targetConfig);
 }

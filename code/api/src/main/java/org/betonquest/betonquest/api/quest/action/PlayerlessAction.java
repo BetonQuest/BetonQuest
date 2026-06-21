@@ -6,8 +6,10 @@ import org.betonquest.betonquest.api.quest.PrimaryThreadEnforceable;
 /**
  * Interface for playerless quest-actions.
  * It represents the playerless action as described in the BetonQuest user documentation.
- * They may act on all players, only online player or even no player at all; this is an implementation detail.
+ * They may act on all players, only online players, or even no player at all; this is an implementation detail.
  * For the normal action variant see {@link PlayerAction}.
+ *
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface PlayerlessAction extends PrimaryThreadEnforceable {
@@ -16,6 +18,7 @@ public interface PlayerlessAction extends PrimaryThreadEnforceable {
      * Executes the playerless action.
      *
      * @throws QuestException when the action execution fails
+     * @since 3.0.0
      */
     void execute() throws QuestException;
 }

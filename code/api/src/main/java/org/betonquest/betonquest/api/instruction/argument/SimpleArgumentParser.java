@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Contract;
  * This interface offers a simplified version of {@link InstructionArgumentParser} usable in lambdas.
  *
  * @param <T> the type of the parsed value
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface SimpleArgumentParser<T> extends InstructionArgumentParser<T>, ValueParser<T> {
@@ -21,6 +22,7 @@ public interface SimpleArgumentParser<T> extends InstructionArgumentParser<T>, V
      * @param string the string to parse
      * @return the parsed {@link T} from the string
      * @throws QuestException when the string cannot be parsed as {@link T}
+     * @since 3.0.0
      */
     @Contract(pure = true)
     @Override

@@ -4,10 +4,13 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Resolves placeholders in strings to their values.
+ *
+ * @since 3.0.0
  */
 public interface PlaceholderManager {
 
@@ -19,28 +22,34 @@ public interface PlaceholderManager {
      * @param instruction instruction of the placeholder, including start and end % characters.
      * @return the placeholder instance
      * @throws QuestException when the placeholder parsing fails
+     * @since 3.0.0
      */
+    @Contract(pure = true, value = "_, !null -> new")
     Argument<String> create(@Nullable QuestPackage pack, String instruction) throws QuestException;
 
     /**
-     * Resolves the placeholder for specified player. If the placeholder is not loaded, it will create it.
+     * Resolves the placeholder for the specified player. If the placeholder is not loaded, it will create it.
      *
      * @param pack    the {@link QuestPackage} in which the placeholder is defined
      * @param name    name of the placeholder, including start and end % characters
      * @param profile the {@link Profile} of the player
-     * @return the value of this placeholder for given player
+     * @return the value of this placeholder for the given player
      * @throws QuestException if the placeholder could not be created
+     * @since 3.0.0
      */
+    @Contract(pure = true, value = "!null, !null, _ -> new")
     String getValue(QuestPackage pack, String name, @Nullable Profile profile) throws QuestException;
 
     /**
-     * Resolves the placeholder for specified player from string format.
+     * Resolves the placeholder for the specified player from string format.
      *
      * @param placeholder the package with the placeholder, in {@code <package>:<placeholder>} format
      * @param profile     the {@link Profile} of the player
-     * @return the value of parsed placeholder for given player
-     * @throws QuestException if the package cannot be parsed, is not present or the placeholder could not be created
+     * @return the value of the parsed placeholder for the given player
+     * @throws QuestException if the package cannot be parsed, is not present, or the placeholder could not be created
      * @see #getValue(QuestPackage, String, Profile)
+     * @since 3.0.0
      */
+    @Contract(pure = true, value = "!null, _ -> new")
     String getValue(String placeholder, @Nullable Profile profile) throws QuestException;
 }

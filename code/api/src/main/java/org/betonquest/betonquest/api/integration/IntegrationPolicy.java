@@ -8,6 +8,8 @@ import java.util.function.Supplier;
 
 /**
  * The {@link IntegrationPolicy} interface allows to register {@link Integration}s.
+ *
+ * @since 3.0.0
  */
 public interface IntegrationPolicy {
 
@@ -18,6 +20,7 @@ public interface IntegrationPolicy {
      *
      * @param policies additional policies to require
      * @return a new instance with the combined policies
+     * @since 3.0.0
      */
     @Contract(pure = true, value = "_ -> new")
     IntegrationPolicy withPolicies(Policy... policies);
@@ -26,6 +29,7 @@ public interface IntegrationPolicy {
      * Creates a new {@link IntegrationBuilder} to register an integration.
      *
      * @return a new {@link IntegrationBuilder}
+     * @since 3.0.0
      */
     @Contract(pure = true, value = "-> new")
     IntegrationBuilder builder();
@@ -38,6 +42,7 @@ public interface IntegrationPolicy {
      *
      * @param integratingPlugin the plugin registering the integration
      * @param integration       the supplier providing the integration to register
+     * @since 3.0.0
      */
     void register(Plugin integratingPlugin, Supplier<Integration> integration);
 }

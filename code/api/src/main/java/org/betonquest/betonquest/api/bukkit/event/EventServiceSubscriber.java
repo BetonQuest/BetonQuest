@@ -8,6 +8,7 @@ import org.bukkit.event.EventPriority;
  * A subscriber for {@link Event}s in the {@link BukkitEventService}.
  *
  * @param <T> The event type.
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface EventServiceSubscriber<T extends Event> {
@@ -18,6 +19,7 @@ public interface EventServiceSubscriber<T extends Event> {
      * @param event    The event.
      * @param priority The priority of the event.
      * @throws QuestException If an error occurs during the execution of the subscriber.
+     * @since 3.0.0
      */
     void call(T event, EventPriority priority) throws QuestException;
 }

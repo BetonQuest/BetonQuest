@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.QuestException;
  * Checks if a given value is valid.
  *
  * @param <T> the type of the value to be checked
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface ValueValidator<T> {
@@ -18,6 +19,7 @@ public interface ValueValidator<T> {
      * @param value the value to check
      * @return true if the value is valid, false otherwise
      * @throws QuestException if the value is invalid
+     * @since 3.0.0
      */
     boolean validate(T value) throws QuestException;
 }

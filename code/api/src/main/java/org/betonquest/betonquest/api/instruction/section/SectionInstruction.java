@@ -9,6 +9,8 @@ import org.bukkit.configuration.ConfigurationSection;
 
 /**
  * This class represents a {@link ConfigurationSection} that can be traversed and parsed.
+ *
+ * @since 3.0.0
  */
 public interface SectionInstruction extends SectionChainInstruction {
 
@@ -16,6 +18,7 @@ public interface SectionInstruction extends SectionChainInstruction {
      * Get {@link ArgumentParsers} with commonly used parsers.
      *
      * @return a provider of commonly used parsers
+     * @since 3.0.0
      */
     ArgumentParsers getParsers();
 
@@ -23,6 +26,7 @@ public interface SectionInstruction extends SectionChainInstruction {
      * Get the source QuestPackage.
      *
      * @return the package containing this instruction
+     * @since 3.0.0
      */
     QuestPackage getPackage();
 
@@ -30,6 +34,7 @@ public interface SectionInstruction extends SectionChainInstruction {
      * Start traversing the section to parse it.
      *
      * @return a traverser to traverse the section
+     * @since 3.0.0
      */
     SectionTraverser read();
 
@@ -37,6 +42,7 @@ public interface SectionInstruction extends SectionChainInstruction {
      * Get the logger factory to create loggers.
      *
      * @return the logger factory
+     * @since 3.0.0
      */
     BetonQuestLoggerFactory getLoggerFactory();
 
@@ -45,6 +51,7 @@ public interface SectionInstruction extends SectionChainInstruction {
      *
      * @param argument the argument to parse
      * @return a new chain parser
+     * @since 3.0.0
      */
     InstructionChainParser chainForArgument(String argument);
 
@@ -54,6 +61,7 @@ public interface SectionInstruction extends SectionChainInstruction {
      * @param path the path to the subsection
      * @return a new instruction for the subsection
      * @throws QuestException if the subsection does not exist
+     * @since 3.0.0
      */
     SectionInstruction subSection(String... path) throws QuestException;
 
@@ -62,6 +70,7 @@ public interface SectionInstruction extends SectionChainInstruction {
      *
      * @param section the section to create the instruction for
      * @return a new instruction for the given section
+     * @since 3.0.0
      */
     SectionInstruction cloneWithSection(ConfigurationSection section);
 }

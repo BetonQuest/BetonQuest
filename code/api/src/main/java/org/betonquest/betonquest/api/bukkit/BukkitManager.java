@@ -6,6 +6,8 @@ import org.bukkit.plugin.PluginManager;
 
 /**
  * The BukkitManager interface offers shortcuts for common calls to the Bukkit API.
+ *
+ * @since 3.0.0
  */
 public interface BukkitManager {
 
@@ -13,6 +15,7 @@ public interface BukkitManager {
      * Get the plugin instance the api instance was created for.
      *
      * @return the plugin instance of the api instance
+     * @since 3.0.0
      */
     Plugin plugin();
 
@@ -21,6 +24,7 @@ public interface BukkitManager {
      * was created for.
      *
      * @param listener the listener to register
+     * @since 3.0.0
      */
     void registerEvents(Listener listener);
 }
