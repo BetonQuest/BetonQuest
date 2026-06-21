@@ -18,6 +18,7 @@ import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.compatibility.thebrewingproject.argument.BrewQualityArgument;
 import org.betonquest.betonquest.compatibility.thebrewingproject.argument.BrewingStructureType;
+import org.betonquest.betonquest.compatibility.thebrewingproject.argument.TransferType;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
