@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.function.Predicate;
 
 /**
- * Brew consume objective
+ * Brew consume objective.
  *
  * @param qualityArgument  Argument for brew quality
  * @param brewTypeArgument Argument for brew type
