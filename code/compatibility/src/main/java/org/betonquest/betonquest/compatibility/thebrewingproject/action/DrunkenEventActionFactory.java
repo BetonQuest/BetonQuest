@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 
 /**
- * Factory fpr running drunken events.
+ * Factory for running drunken events.
  *
  * @param api The brewing project api
  */

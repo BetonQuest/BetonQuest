@@ -11,7 +11,7 @@ actions and  conditions.
 
 The first argument is the name and the second the quality.
 You can specify the mode to select the brew by its `id`.  
-The `quality` is used for determining equality, and can be `bad`,`good`,`excellent`.  
+The `quality` is used for determining equality, and can be `bad`, `good`, `excellent`.  
 In addition, you can also add `quest-item` argument to tag them as "QuestItem".
 
 ```YAML title="Example"
@@ -53,6 +53,7 @@ __Description__: Trigger a drunken event with the specified key
 actions:
   puke: "tbp_event <event-key>"
 ```
+
 ## Objectives
 
 ### `Cook`
@@ -95,6 +96,7 @@ __Description__: The player needs to have extracted a brew from a cauldron with 
 objectives:
   cook: "tbp_mix water 2 brewery:gin/3,chorus_fruit/6"
 ```
+
 ### `Distill`
 
 __Context__: @snippet:condition-meta:online@  
@@ -107,6 +109,7 @@ Distill runs needs to be an integer above 0.
 objectives:
   cook: "tbp_distill 6"
 ```
+
 ### `Age`
 
 __Context__: @snippet:condition-meta:online@  
