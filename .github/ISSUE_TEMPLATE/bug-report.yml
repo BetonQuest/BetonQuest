@@ -1,6 +1,6 @@
 name: "Bug Report"
 description: "Report any issue that seems to be a bug."
-labels: [ Bug ]
+type: Bug
 body:
   - type: checkboxes
     attributes:
