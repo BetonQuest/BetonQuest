@@ -11,6 +11,8 @@ import java.util.Optional;
 
 /**
  * The retriever endpoint of the section instruction chain.
+ *
+ * @since 3.0.0
  */
 public interface SectionChainInstruction {
 
@@ -18,6 +20,7 @@ public interface SectionChainInstruction {
      * Get the section contained in this instruction.
      *
      * @return the section
+     * @since 3.0.0
      */
     ConfigurationSection getSection();
 
@@ -31,6 +34,7 @@ public interface SectionChainInstruction {
      * @param <T>             the type of the value
      * @return the parsed value
      * @throws QuestException if the value cannot be parsed
+     * @since 3.0.0
      */
     <T> Argument<T> get(ValueSource<List<String>> path, InstructionArgumentParser<T> parser, boolean pathMode, boolean earlyValidation) throws QuestException;
 
@@ -44,6 +48,7 @@ public interface SectionChainInstruction {
      * @param <T>             the type of the value
      * @return the parsed value wrapped in an optional
      * @throws QuestException if the value cannot be parsed
+     * @since 3.0.0
      */
     <T> Optional<Argument<T>> getOptional(ValueSource<List<String>> path, InstructionArgumentParser<T> parser, boolean pathMode, boolean earlyValidation) throws QuestException;
 
@@ -58,6 +63,7 @@ public interface SectionChainInstruction {
      * @param <T>             the type of the value
      * @return the parsed value
      * @throws QuestException if the value cannot be parsed
+     * @since 3.0.0
      */
     <T> Argument<T> getOptional(ValueSource<List<String>> path, InstructionArgumentParser<T> parser, boolean pathMode, boolean earlyValidation, T defaultValue) throws QuestException;
 }

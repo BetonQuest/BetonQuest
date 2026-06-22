@@ -8,6 +8,8 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a compass defined in a quest package.
+ *
+ * @since 3.0.0
  */
 public interface QuestCompass {
 
@@ -15,6 +17,7 @@ public interface QuestCompass {
      * The display name of the compass as a {@link Text} allowing for multiple localizations.
      *
      * @return the display name
+     * @since 3.0.0
      */
     Text name();
 
@@ -22,6 +25,7 @@ public interface QuestCompass {
      * The target location of the compass.
      *
      * @return the target location
+     * @since 3.0.0
      */
     Argument<Location> location();
 
@@ -29,6 +33,7 @@ public interface QuestCompass {
      * The identifier points to the item used for the compass.
      *
      * @return the item identifier or null if no item is set
+     * @since 3.0.0
      */
     @Nullable
     ItemIdentifier item();

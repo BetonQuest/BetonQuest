@@ -22,6 +22,7 @@ import org.betonquest.betonquest.api.QuestException;
  * compatibility checks and ensures integrations are only enabled when their dependencies are available.
  *
  * @see IntegrationService
+ * @since 3.0.0
  */
 public interface Integration {
 
@@ -49,6 +50,7 @@ public interface Integration {
      * @throws QuestException if the integration fails to enable due to user-defined errors
      * @see #postEnable(BetonQuestApi)
      * @see IntegrationService
+     * @since 3.0.0
      */
     void enable(BetonQuestApi betonQuestApi) throws QuestException;
 
@@ -84,6 +86,7 @@ public interface Integration {
      * @throws QuestException if the post-enable phase fails due to user-defined errors
      * @see #enable(BetonQuestApi)
      * @see IntegrationService
+     * @since 3.0.0
      */
     void postEnable(BetonQuestApi betonQuestApi) throws QuestException;
 
@@ -104,6 +107,7 @@ public interface Integration {
      * @throws QuestException if the integration teardown fails due to user-defined errors
      * @see #enable(BetonQuestApi)
      * @see #postEnable(BetonQuestApi)
+     * @since 3.0.0
      */
     void disable() throws QuestException;
 }

@@ -6,6 +6,8 @@ import org.betonquest.betonquest.api.quest.TypeFactory;
 
 /**
  * Factory to create specific {@link Npc}s from {@link Instruction}s.
+ *
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface NpcFactory extends TypeFactory<NpcWrapper<?>> {
@@ -16,6 +18,7 @@ public interface NpcFactory extends TypeFactory<NpcWrapper<?>> {
      * @param instruction instruction to parse
      * @return npc referenced by the instruction
      * @throws QuestException when the instruction cannot be parsed
+     * @since 3.0.0
      */
     @Override
     NpcWrapper<?> parseInstruction(Instruction instruction) throws QuestException;

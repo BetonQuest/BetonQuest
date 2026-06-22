@@ -16,6 +16,7 @@ import java.util.function.Predicate;
  *
  * @param <T> the type of the argument
  * @see InstructionChainParser
+ * @since 3.0.0
  */
 public interface InstructionChainRetriever<T> {
 
@@ -24,6 +25,7 @@ public interface InstructionChainRetriever<T> {
      *
      * @return the argument
      * @throws QuestException if the argument could not be resolved
+     * @since 3.0.0
      */
     @Contract("-> new")
     Argument<T> get() throws QuestException;
@@ -35,6 +37,7 @@ public interface InstructionChainRetriever<T> {
      * @param argumentKey the argument key
      * @return an optional of the argument
      * @throws QuestException if the argument could not be resolved
+     * @since 3.0.0
      */
     @Contract("!null -> new")
     Optional<Argument<T>> get(String argumentKey) throws QuestException;
@@ -47,6 +50,7 @@ public interface InstructionChainRetriever<T> {
      * @param defaultValue the default value to return if the argument is not present
      * @return the argument
      * @throws QuestException if the argument could not be resolved
+     * @since 3.0.0
      */
     @Contract("!null, !null -> new")
     Argument<T> get(String argumentKey, T defaultValue) throws QuestException;
@@ -60,6 +64,7 @@ public interface InstructionChainRetriever<T> {
      * @throws QuestException if the argument could not be resolved
      * @see org.betonquest.betonquest.api.instruction.FlagState
      * @see ChainableInstruction#getFlag(String, InstructionArgumentParser, Object)
+     * @since 3.0.0
      */
     @Contract("!null, !null -> new")
     FlagArgument<T> getFlag(String argumentKey, T presenceDefaultValue) throws QuestException;
@@ -70,6 +75,7 @@ public interface InstructionChainRetriever<T> {
      * @return a map of named arguments
      * @throws QuestException an argument could not be resolved
      * @see ChainableInstruction#getNamed(InstructionArgumentParser, Predicate)
+     * @since 3.0.0
      */
     @Contract("-> new")
     Map<String, Argument<T>> getNamed() throws QuestException;
@@ -83,6 +89,7 @@ public interface InstructionChainRetriever<T> {
      * @return a map of named arguments
      * @throws QuestException an argument could not be resolved
      * @see ChainableInstruction#getNamed(InstructionArgumentParser, Predicate)
+     * @since 3.0.0
      */
     @Contract("!null -> new")
     Map<String, Argument<T>> getNamed(Predicate<String> keyFilter) throws QuestException;

@@ -7,6 +7,8 @@ import org.betonquest.betonquest.api.profile.Profile;
 /**
  * Any objective may have properties in the form of key-value pairs resolvable per {@link Profile}.
  * Those properties are accessible via this interface.
+ *
+ * @since 3.0.0
  */
 public interface ObjectiveProperties {
 
@@ -19,6 +21,7 @@ public interface ObjectiveProperties {
      * @param profile the {@link Profile} for which the property is resolved
      * @return the property for the given name or an empty string if the property is unrecognized
      * @throws QuestException if the property cannot be resolved
+     * @since 3.0.0
      */
     String getProperty(String name, Profile profile) throws QuestException;
 
@@ -29,6 +32,7 @@ public interface ObjectiveProperties {
      *
      * @param name     the name of the property
      * @param property the function to retrieve the property
+     * @since 3.0.0
      */
     void setProperty(String name, QuestFunction<Profile, String> property);
 
@@ -39,6 +43,7 @@ public interface ObjectiveProperties {
      * There can only be a single parent objective properties instance.
      *
      * @param properties the properties to add
+     * @since 3.0.0
      */
     void setParentProperties(ObjectiveProperties properties);
 }

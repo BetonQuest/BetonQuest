@@ -18,6 +18,8 @@ import java.util.UUID;
 /**
  * The middle step of the section instruction chain for key-list retrieval.
  * This class offers methods to decide on how to parse the elements of the list.
+ *
+ * @since 3.0.0
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public interface ListSectionParser {
@@ -28,6 +30,7 @@ public interface ListSectionParser {
      *
      * @param fallbackSource the fallback source to add
      * @return this instance for chaining
+     * @since 3.0.0
      */
     ListSectionParser fallback(ValueSource<List<String>> fallbackSource);
 
@@ -39,6 +42,7 @@ public interface ListSectionParser {
      *
      * @param fallbackPath the fallback path to add
      * @return this instance for chaining
+     * @since 3.0.0
      */
     default ListSectionParser fallback(final String... fallbackPath) {
         return fallback(() -> List.of(fallbackPath));
@@ -50,6 +54,7 @@ public interface ListSectionParser {
      * @param parser the parser to use
      * @param <T>    the type of the argument
      * @return a new {@link SectionRetriever} for the argument with the given parser
+     * @since 3.0.0
      */
     <T> ListSectionRetriever<T> parse(InstructionArgumentParser<T> parser);
 
@@ -59,6 +64,7 @@ public interface ListSectionParser {
      * @param parser the parser to use
      * @param <T>    the type of the argument
      * @return a new {@link SectionRetriever} for the argument with the given parser
+     * @since 3.0.0
      */
     default <T> ListSectionRetriever<T> parse(final SimpleArgumentParser<T> parser) {
         return parse((InstructionArgumentParser<T>) parser);
@@ -70,6 +76,7 @@ public interface ListSectionParser {
      * @param parser the parser to use
      * @param <T>    the type of the parsed value
      * @return a new {@link DecoratableSectionRetriever} for the parsed value
+     * @since 3.0.0
      */
     <T> ListSectionRetriever<T> section(SubSectionArgumentParser<T> parser);
 
@@ -79,6 +86,7 @@ public interface ListSectionParser {
      * @param sectionParser the parser to use for each of the subsections
      * @param <T>           the type of the parsed values
      * @return a new {@link ListSectionRetriever} for the parsed values
+     * @since 3.0.0
      */
     <T> ListSectionRetriever<T> namedSections(NamedSubSectionArgumentParser<T> sectionParser);
 
@@ -88,6 +96,7 @@ public interface ListSectionParser {
      * @param sectionParser the parser to use for each of the sections
      * @param <T>           the type of the parsed values
      * @return a new {@link ListSectionRetriever} for the parsed values
+     * @since 3.0.0
      */
     <T> ListSectionRetriever<Map.Entry<String, T>> namedValues(InstructionArgumentParser<T> sectionParser);
 
@@ -97,6 +106,7 @@ public interface ListSectionParser {
      * @param sectionParser the parser to use for each of the sections
      * @param <T>           the type of the parsed values
      * @return a new {@link ListSectionRetriever} for the parsed values
+     * @since 3.0.0
      */
     default <T> ListSectionRetriever<Map.Entry<String, T>> namedValues(final SimpleArgumentParser<T> sectionParser) {
         return namedValues((InstructionArgumentParser<T>) sectionParser);
@@ -107,6 +117,7 @@ public interface ListSectionParser {
      *
      * @param <T> the type of the parsed values
      * @return a new {@link ListSectionRetriever} for the parsed values
+     * @since 3.0.0
      */
     <T> ListSectionRetriever<Map.Entry<String, String>> namedStrings();
 
@@ -114,6 +125,7 @@ public interface ListSectionParser {
      * Parses the element list into a list of strings.
      *
      * @return a new {@link ListSectionRetriever} for strings
+     * @since 3.0.0
      */
     ListSectionRetriever<String> string();
 
@@ -121,6 +133,7 @@ public interface ListSectionParser {
      * Parses the element list into a list of numbers.
      *
      * @return a new {@link ListSectionRetriever} for numbers
+     * @since 3.0.0
      */
     ListSectionRetriever<Number> number();
 
@@ -128,6 +141,7 @@ public interface ListSectionParser {
      * Parses the element list into a list of items.
      *
      * @return a new {@link ListSectionRetriever} for items
+     * @since 3.0.0
      */
     ListSectionRetriever<ItemWrapper> item();
 
@@ -135,6 +149,7 @@ public interface ListSectionParser {
      * Parses the element list into a list of vectors.
      *
      * @return a new {@link ListSectionRetriever} for vectors
+     * @since 3.0.0
      */
     ListSectionRetriever<Vector> vector();
 
@@ -142,6 +157,7 @@ public interface ListSectionParser {
      * Parses the element list into a list of locations.
      *
      * @return a new {@link ListSectionRetriever} for locations
+     * @since 3.0.0
      */
     ListSectionRetriever<Location> location();
 
@@ -149,6 +165,7 @@ public interface ListSectionParser {
      * Parses the element list into a list of namespaced keys.
      *
      * @return a new {@link ListSectionRetriever} for namespaced keys
+     * @since 3.0.0
      */
     ListSectionRetriever<NamespacedKey> namespacedKey();
 
@@ -156,6 +173,7 @@ public interface ListSectionParser {
      * Parses the element list into a list of components.
      *
      * @return a new {@link ListSectionRetriever} for components
+     * @since 3.0.0
      */
     ListSectionRetriever<Component> component();
 
@@ -163,6 +181,7 @@ public interface ListSectionParser {
      * Parses the element list into a list of worlds.
      *
      * @return a new {@link ListSectionRetriever} for worlds
+     * @since 3.0.0
      */
     ListSectionRetriever<World> world();
 
@@ -170,6 +189,7 @@ public interface ListSectionParser {
      * Parses the element list into a list of block selectors.
      *
      * @return a new {@link ListSectionRetriever} for block selectors
+     * @since 3.0.0
      */
     ListSectionRetriever<BlockSelector> blockSelector();
 
@@ -177,6 +197,7 @@ public interface ListSectionParser {
      * Parses the element list into a list of package identifiers.
      *
      * @return a new {@link ListSectionRetriever} for package identifiers
+     * @since 3.0.0
      */
     ListSectionRetriever<String> packageIdentifier();
 
@@ -184,6 +205,7 @@ public interface ListSectionParser {
      * Parses the element list into a list of UUIDs.
      *
      * @return a new {@link ListSectionRetriever} for UUIDs
+     * @since 3.0.0
      */
     ListSectionRetriever<UUID> uuid();
 
@@ -193,6 +215,7 @@ public interface ListSectionParser {
      * @param enumClass the type of the enum
      * @param <E>       the enum type
      * @return a new {@link ListSectionRetriever} for enumerations
+     * @since 3.0.0
      */
     <E extends Enum<E>> ListSectionRetriever<E> enumeration(Class<E> enumClass);
 }

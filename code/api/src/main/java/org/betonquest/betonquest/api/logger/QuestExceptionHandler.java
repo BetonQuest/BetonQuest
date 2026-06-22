@@ -7,6 +7,8 @@ import org.betonquest.betonquest.api.common.function.QuestSupplier;
 /**
  * Can handle thrown {@link QuestException} and rate limits them.
  * Useful in cases where errors might be thrown periodically.
+ *
+ * @since 3.0.0
  */
 public interface QuestExceptionHandler {
 
@@ -17,6 +19,7 @@ public interface QuestExceptionHandler {
      * @param defaultValue the default value to return in case of an exception
      * @param <T>          the type of the result
      * @return the result of the task or the default value if an exception occurs
+     * @since 3.0.0
      */
     <T> T handle(QuestSupplier<T> qeThrowing, T defaultValue);
 
@@ -24,6 +27,7 @@ public interface QuestExceptionHandler {
      * Runs a task and logs occurring quest exceptions with a rate limit.
      *
      * @param qeThrowing a task that may throw a quest exception
+     * @since 3.0.0
      */
     void handle(QuestRunnable qeThrowing);
 }

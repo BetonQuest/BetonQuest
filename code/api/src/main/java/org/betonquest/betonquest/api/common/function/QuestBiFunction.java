@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.QuestException;
  * @param <T> the type of the first input to the function
  * @param <U> the type of the second input to the function
  * @param <R> the type of the result of the function
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface QuestBiFunction<T, U, R> {
@@ -19,6 +20,7 @@ public interface QuestBiFunction<T, U, R> {
      * @param secondArg the second function argument
      * @return the function result
      * @throws QuestException if the function execution fails
+     * @since 3.0.0
      */
     R apply(T firstArg, U secondArg) throws QuestException;
 }

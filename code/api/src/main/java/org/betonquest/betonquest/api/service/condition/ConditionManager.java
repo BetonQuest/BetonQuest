@@ -16,6 +16,8 @@ import java.util.Collection;
  * Evaluating a condition will always evaluate itself and all related conditions as a side effect.
  * For example, evaluating a condition defining a conjunction of conditions will run all conditions until the result
  * can be determined.
+ *
+ * @since 3.0.0
  */
 public interface ConditionManager {
 
@@ -32,6 +34,7 @@ public interface ConditionManager {
      * @param profile             the profile to evaluate the condition for or null if no profile is involved
      * @param conditionIdentifier the identifier of the condition to evaluate
      * @return whether the condition is met
+     * @since 3.0.0
      */
     boolean test(@Nullable Profile profile, ConditionIdentifier conditionIdentifier);
 
@@ -54,6 +57,7 @@ public interface ConditionManager {
      * @param profile              the profile to evaluate the conditions for or null if no profile is involved
      * @param conditionIdentifiers the identifiers of the conditions to evaluate
      * @return whether all conditions are met
+     * @since 3.0.0
      */
     boolean testAll(@Nullable Profile profile, Collection<ConditionIdentifier> conditionIdentifiers);
 
@@ -76,6 +80,7 @@ public interface ConditionManager {
      * @param profile              the profile to evaluate the conditions for or null if no profile is involved
      * @param conditionIdentifiers the identifiers of the conditions to evaluate
      * @return whether any condition is met
+     * @since 3.0.0
      */
     boolean testAny(@Nullable Profile profile, Collection<ConditionIdentifier> conditionIdentifiers);
 }

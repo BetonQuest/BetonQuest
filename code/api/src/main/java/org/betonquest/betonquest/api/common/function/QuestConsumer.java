@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.QuestException;
  * A simple {@link java.util.function.Consumer} that can throw a {@link QuestException}.
  *
  * @param <T> the type of the input to the operation
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface QuestConsumer<T> {
@@ -15,6 +16,7 @@ public interface QuestConsumer<T> {
      *
      * @param arg the input argument
      * @throws QuestException when the method execution fails
+     * @since 3.0.0
      */
     void accept(T arg) throws QuestException;
 }

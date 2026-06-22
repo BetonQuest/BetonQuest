@@ -10,6 +10,7 @@ import java.util.Optional;
  * This class offers methods to retrieve the {@link Argument}.
  *
  * @param <T> the type of the argument
+ * @since 3.0.0
  */
 public interface SectionRetriever<T> {
 
@@ -18,6 +19,7 @@ public interface SectionRetriever<T> {
      *
      * @return the argument
      * @throws QuestException if the argument could not be resolved
+     * @since 3.0.0
      */
     Argument<T> get() throws QuestException;
 
@@ -27,6 +29,7 @@ public interface SectionRetriever<T> {
      * @param defaultValue the default value to return if the section is not present
      * @return the argument
      * @throws QuestException if the argument could not be resolved
+     * @since 3.0.0
      */
     Argument<T> getOptional(T defaultValue) throws QuestException;
 
@@ -35,6 +38,7 @@ public interface SectionRetriever<T> {
      *
      * @return the argument wrapped in an optional
      * @throws QuestException if the argument could not be resolved
+     * @since 3.0.0
      */
     Optional<Argument<T>> getOptional() throws QuestException;
 
@@ -52,6 +56,7 @@ public interface SectionRetriever<T> {
      * It poses the risk of faulty configurations remaining undetected for any amount of time.
      *
      * @return this section retriever with early validation disabled
+     * @since 3.0.0
      */
     SectionRetriever<T> withoutEarlyValidation();
 }

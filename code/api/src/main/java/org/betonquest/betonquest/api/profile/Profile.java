@@ -8,6 +8,8 @@ import java.util.UUID;
 
 /**
  * The profile allows a single {@link Player} to have multiple independent quest states.
+ *
+ * @since 3.0.0
  */
 public interface Profile {
 
@@ -15,6 +17,7 @@ public interface Profile {
      * Gets the offline player this profile belongs to.
      *
      * @return the {@link OfflinePlayer} that this profile belongs to
+     * @since 3.0.0
      */
     OfflinePlayer getPlayer();
 
@@ -22,6 +25,7 @@ public interface Profile {
      * Gets the unique id of this profile.
      *
      * @return the {@link UUID} of the profile
+     * @since 3.0.0
      */
     UUID getProfileUUID();
 
@@ -29,6 +33,7 @@ public interface Profile {
      * Gets the unique id of the player this profile belongs to.
      *
      * @return the {@link UUID} of the player
+     * @since 3.0.0
      */
     default UUID getPlayerUUID() {
         return getPlayer().getUniqueId();
@@ -38,6 +43,7 @@ public interface Profile {
      * Gets the profile name.
      *
      * @return the name of the profile
+     * @since 3.0.0
      */
     String getProfileName();
 
@@ -45,6 +51,7 @@ public interface Profile {
      * Gets the {@link OnlineProfile} of this Profile if the {@link Player} is online.
      *
      * @return The {@link OnlineProfile} of this Profile
+     * @since 3.0.0
      */
     Optional<OnlineProfile> getOnlineProfile();
 
@@ -52,6 +59,7 @@ public interface Profile {
      * Returns the string representation of the profile.
      *
      * @return the name of the player with the name of the profile
+     * @since 3.0.0
      */
     @Override
     String toString();

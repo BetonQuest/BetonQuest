@@ -6,6 +6,8 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * A validated wrapper for a {@link QuestItem}.
+ *
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface QuestItemWrapper {
@@ -16,6 +18,7 @@ public interface QuestItemWrapper {
      * @param profile the profile to resolve the item
      * @return the item ready to use
      * @throws QuestException when the item (placeholders) could not be resolved
+     * @since 3.0.0
      */
     QuestItem getItem(@Nullable Profile profile) throws QuestException;
 }

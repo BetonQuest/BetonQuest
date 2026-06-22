@@ -6,6 +6,8 @@ import org.betonquest.betonquest.api.quest.PrimaryThreadEnforceable;
 
 /**
  * Quest action that needs an online profile to function correctly.
+ *
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface OnlineAction extends PrimaryThreadEnforceable {
@@ -15,6 +17,7 @@ public interface OnlineAction extends PrimaryThreadEnforceable {
      *
      * @param profile online profile to run the action with
      * @throws QuestException if the execution of the action fails
+     * @since 3.0.0
      */
     void execute(OnlineProfile profile) throws QuestException;
 }

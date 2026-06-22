@@ -7,6 +7,8 @@ import java.util.Optional;
 /**
  * The core component loader essentially manages a number of {@link CoreComponent}s and loads them in the order
  * their dependencies suggest. It detects unsolvable dependencies and throws an exception in case of any.
+ *
+ * @since 3.0.0
  */
 public interface CoreComponentLoader {
 
@@ -16,6 +18,7 @@ public interface CoreComponentLoader {
      *
      * @param component the component to register
      * @throws IllegalArgumentException if the component is already loaded
+     * @since 3.0.0
      */
     void register(CoreComponent component);
 
@@ -27,6 +30,7 @@ public interface CoreComponentLoader {
      * @param instance the instance of the dependency
      * @param <T>      the type of the dependency
      * @throws IllegalStateException if the dependency or a subclass of it was already injected
+     * @since 3.0.0
      */
     <T> void init(Class<T> type, T instance);
 
@@ -38,6 +42,7 @@ public interface CoreComponentLoader {
      * @param <T>  the type of the instance
      * @return the loaded instance
      * @throws NoSuchElementException if no instance of the given type was found
+     * @since 3.0.0
      */
     <T> T get(Class<T> type);
 
@@ -50,6 +55,7 @@ public interface CoreComponentLoader {
      * @param type the type of the instance to get
      * @param <T>  the type of the instance
      * @return the loaded instance wrapped in an optional or an empty optional if no instance was found
+     * @since 3.0.0
      */
     <T> Optional<T> getOptional(Class<T> type);
 
@@ -59,6 +65,7 @@ public interface CoreComponentLoader {
      * @param type the type of the instances to get
      * @param <T>  the type of the instances
      * @return a collection of loaded instances that may be empty
+     * @since 3.0.0
      */
     <T> Collection<T> getAll(Class<T> type);
 
@@ -67,6 +74,7 @@ public interface CoreComponentLoader {
      * May throw an exception in case of unsolvable dependencies causing the loading to abort.
      *
      * @throws IllegalStateException in case of any errors
+     * @since 3.0.0
      */
     void load();
 }

@@ -7,6 +7,8 @@ import org.bukkit.plugin.Plugin;
 
 /**
  * Offers methods for building integrations in a chain.
+ *
+ * @since 3.0.0
  */
 public interface IntegrationBuilder {
 
@@ -15,6 +17,7 @@ public interface IntegrationBuilder {
      *
      * @param enable the integration to enable
      * @return this
+     * @since 3.0.0
      */
     IntegrationBuilder enable(QuestConsumer<BetonQuestApi> enable);
 
@@ -23,6 +26,7 @@ public interface IntegrationBuilder {
      *
      * @param postEnable the integration to enable
      * @return this
+     * @since 3.0.0
      */
     IntegrationBuilder postEnable(QuestConsumer<BetonQuestApi> postEnable);
 
@@ -31,6 +35,7 @@ public interface IntegrationBuilder {
      *
      * @param disable the integration to disable
      * @return this
+     * @since 3.0.0
      */
     IntegrationBuilder disable(QuestRunnable disable);
 
@@ -38,6 +43,7 @@ public interface IntegrationBuilder {
      * Finalizes the builder by registering the integration with all its methods.
      *
      * @param integratingPlugin the plugin registering the integration
+     * @since 3.0.0
      */
     void integrate(Plugin integratingPlugin);
 }

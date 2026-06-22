@@ -10,6 +10,8 @@ import java.util.Set;
 
 /**
  * Offers access to the messages in configurations and its localizations as well as available languages.
+ *
+ * @since 3.0.0
  */
 public interface Localizations {
 
@@ -17,6 +19,7 @@ public interface Localizations {
      * Retrieves the languages available in the message configurations.
      *
      * @return the {@link Set} of languages
+     * @since 3.0.0
      */
     Set<String> getLanguages();
 
@@ -29,6 +32,7 @@ public interface Localizations {
      * @return message with replaced placeholders in the profile's language or the default language or in English
      * @throws IllegalArgumentException if the message could not be found in the configuration
      * @throws QuestException           if the message could not be parsed
+     * @since 3.0.0
      */
     Component getMessage(@Nullable Profile profile, String message, VariableReplacement... replacements) throws QuestException;
 }

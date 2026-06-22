@@ -20,6 +20,8 @@ import java.util.UUID;
 /**
  * The middle step of the section instruction chain for key-value retrieval.
  * This class offers methods to decide on how to parse the argument.
+ *
+ * @since 3.0.0
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public interface SectionParser {
@@ -30,6 +32,7 @@ public interface SectionParser {
      *
      * @param fallbackSource the fallback source to add
      * @return this instance for chaining
+     * @since 3.0.0
      */
     SectionParser fallback(ValueSource<List<String>> fallbackSource);
 
@@ -41,6 +44,7 @@ public interface SectionParser {
      *
      * @param fallbackPath the fallback path to add
      * @return this instance for chaining
+     * @since 3.0.0
      */
     default SectionParser fallback(final String... fallbackPath) {
         return fallback(() -> List.of(fallbackPath));
@@ -52,6 +56,7 @@ public interface SectionParser {
      * @param parser the parser to use
      * @param <T>    the type of the argument
      * @return a new {@link SectionRetriever} for the argument with the given parser
+     * @since 3.0.0
      */
     <T> DecoratableSectionRetriever<T> parse(InstructionArgumentParser<T> parser);
 
@@ -61,6 +66,7 @@ public interface SectionParser {
      * @param parser the parser to use
      * @param <T>    the type of the argument
      * @return a new {@link SectionRetriever} for the argument with the given parser
+     * @since 3.0.0
      */
     default <T> DecoratableSectionRetriever<T> parse(final SimpleArgumentParser<T> parser) {
         return parse((InstructionArgumentParser<T>) parser);
@@ -72,6 +78,7 @@ public interface SectionParser {
      * @param sectionParser the parser to use for the subsection
      * @param <T>           the type of the parsed value
      * @return a new {@link DecoratableSectionRetriever} for the parsed value
+     * @since 3.0.0
      */
     <T> DecoratableSectionRetriever<T> section(SubSectionArgumentParser<T> sectionParser);
 
@@ -79,6 +86,7 @@ public interface SectionParser {
      * Use {@link ArgumentParsers#number()} to parse the argument.
      *
      * @return a new {@link SectionRetriever} for the argument with the number parser
+     * @since 3.0.0
      */
     NumberSectionRetriever number();
 
@@ -86,6 +94,7 @@ public interface SectionParser {
      * Use {@link ArgumentParsers#string()} to parse the argument.
      *
      * @return a new {@link SectionRetriever} for the argument with the string parser
+     * @since 3.0.0
      */
     DecoratableSectionRetriever<String> string();
 
@@ -93,6 +102,7 @@ public interface SectionParser {
      * Use {@link ArgumentParsers#bool()} to parse the argument.
      *
      * @return a new {@link SectionRetriever} for the argument with the bool parser
+     * @since 3.0.0
      */
     DecoratableSectionRetriever<Boolean> bool();
 
@@ -100,6 +110,7 @@ public interface SectionParser {
      * Use {@link ArgumentParsers#item()} to parse the argument.
      *
      * @return a new {@link SectionRetriever} for the argument with the item parser
+     * @since 3.0.0
      */
     DecoratableSectionRetriever<ItemWrapper> item();
 
@@ -107,6 +118,7 @@ public interface SectionParser {
      * Use {@link ArgumentParsers#vector()} to parse the argument.
      *
      * @return a new {@link SectionRetriever} for the argument with the vector parser
+     * @since 3.0.0
      */
     DecoratableSectionRetriever<Vector> vector();
 
@@ -114,6 +126,7 @@ public interface SectionParser {
      * Use {@link ArgumentParsers#location()} to parse the argument.
      *
      * @return a new {@link SectionRetriever} for the argument with the location parser
+     * @since 3.0.0
      */
     DecoratableSectionRetriever<Location> location();
 
@@ -121,6 +134,7 @@ public interface SectionParser {
      * Use {@link ArgumentParsers#namespacedKey()} to parse the argument.
      *
      * @return a new {@link SectionRetriever} for the argument with the namespaced key parser
+     * @since 3.0.0
      */
     DecoratableSectionRetriever<NamespacedKey> namespacedKey();
 
@@ -128,6 +142,7 @@ public interface SectionParser {
      * Use {@link ArgumentParsers#translationSection()} to parse the argument.
      *
      * @return a new {@link SectionRetriever} for the argument with the translation section parser
+     * @since 3.0.0
      */
     DecoratableSectionRetriever<Text> translationSection();
 
@@ -135,6 +150,7 @@ public interface SectionParser {
      * Use {@link ArgumentParsers#component()} to parse the argument.
      *
      * @return a new {@link SectionRetriever} for the argument with the component parser
+     * @since 3.0.0
      */
     DecoratableSectionRetriever<Component> component();
 
@@ -142,6 +158,7 @@ public interface SectionParser {
      * Use {@link ArgumentParsers#world()} to parse the argument.
      *
      * @return a new {@link SectionRetriever} for the argument with the world parser
+     * @since 3.0.0
      */
     DecoratableSectionRetriever<World> world();
 
@@ -149,6 +166,7 @@ public interface SectionParser {
      * Use {@link ArgumentParsers#blockSelector()} to parse the argument.
      *
      * @return a new {@link SectionRetriever} for the argument with the block selector parser
+     * @since 3.0.0
      */
     DecoratableSectionRetriever<BlockSelector> blockSelector();
 
@@ -156,6 +174,7 @@ public interface SectionParser {
      * Use {@link ArgumentParsers#packageIdentifier()} to parse the argument.
      *
      * @return a new {@link SectionRetriever} for the argument with the package identifier parser
+     * @since 3.0.0
      */
     DecoratableSectionRetriever<String> packageIdentifier();
 
@@ -163,6 +182,7 @@ public interface SectionParser {
      * Use {@link ArgumentParsers#uuid()} to parse the argument.
      *
      * @return a new {@link SectionRetriever} for the argument with the uuid parser
+     * @since 3.0.0
      */
     DecoratableSectionRetriever<UUID> uuid();
 
@@ -172,6 +192,7 @@ public interface SectionParser {
      * @param enumClass the enum class to parse
      * @param <E>       the enum type
      * @return a new {@link SectionRetriever} for the argument with the enum parser
+     * @since 3.0.0
      */
     <E extends Enum<E>> DecoratableSectionRetriever<E> enumeration(Class<E> enumClass);
 
@@ -181,6 +202,7 @@ public interface SectionParser {
      * @param identifierClass the identifier class to parse
      * @param <I>             the identifier type
      * @return a new {@link SectionRetriever} for the argument with the identifier parser
+     * @since 3.0.0
      */
     <I extends Identifier> DecoratableSectionRetriever<I> identifier(Class<I> identifierClass);
 }

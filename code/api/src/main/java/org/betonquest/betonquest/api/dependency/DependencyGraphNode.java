@@ -4,6 +4,8 @@ import java.util.Set;
 
 /**
  * Represents a node in the dependency graph.
+ *
+ * @since 3.0.0
  */
 public interface DependencyGraphNode {
 
@@ -12,6 +14,7 @@ public interface DependencyGraphNode {
      * Essentially contains all classes that are dependencies of this node.
      *
      * @return all dependencies of this node
+     * @since 3.0.0
      */
     Set<Class<?>> requires();
 
@@ -20,6 +23,7 @@ public interface DependencyGraphNode {
      * Essentially contains all classes that are provided by this node.
      *
      * @return all provided types of this node
+     * @since 3.0.0
      */
     Set<Class<?>> provides();
 }

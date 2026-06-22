@@ -6,6 +6,8 @@ import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 
 /**
  * Factory to create a specific {@link PlayerAction} from {@link Instruction}s.
+ *
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface PlayerActionFactory extends PlayerQuestFactory<PlayerAction> {
@@ -16,6 +18,7 @@ public interface PlayerActionFactory extends PlayerQuestFactory<PlayerAction> {
      * @param instruction instruction to parse
      * @return normal action represented by the instruction
      * @throws QuestException when the instruction cannot be parsed
+     * @since 3.0.0
      */
     @Override
     PlayerAction parsePlayer(Instruction instruction) throws QuestException;

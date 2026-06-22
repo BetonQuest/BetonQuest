@@ -8,6 +8,7 @@ import org.bukkit.event.Event;
  * A handler for events with profiles involved.
  *
  * @param <T> the event type
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface OnlineProfileEventHandler<T extends Event> {
@@ -18,6 +19,7 @@ public interface OnlineProfileEventHandler<T extends Event> {
      * @param event   the event that was triggered
      * @param profile the event-related profile extracted from the event
      * @throws QuestException when the event handling fails
+     * @since 3.0.0
      */
     void handle(T event, OnlineProfile profile) throws QuestException;
 }

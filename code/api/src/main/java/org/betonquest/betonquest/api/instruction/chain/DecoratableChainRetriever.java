@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
  *
  * @param <T> the type of the argument
  * @see InstructionChainRetriever
+ * @since 3.0.0
  */
 public interface DecoratableChainRetriever<T> extends InstructionChainRetriever<T> {
 
@@ -30,6 +31,7 @@ public interface DecoratableChainRetriever<T> extends InstructionChainRetriever<
      * @return the new {@link ListChainRetriever} with the new list of type T
      * @see #collect(Collector)
      * @see Collectors#toList()
+     * @since 3.0.0
      */
     @Contract(value = "-> new", pure = true)
     ListChainRetriever<T> list();
@@ -41,6 +43,7 @@ public interface DecoratableChainRetriever<T> extends InstructionChainRetriever<
      * @param collector the collector to handle the list of values
      * @param <R>       the collected result type
      * @return the new {@link DecoratableChainRetriever} with the new collected type R
+     * @since 3.0.0
      */
     @Contract(value = "!null -> new", pure = true)
     <R> DecoratableChainRetriever<R> collect(Collector<T, ?, R> collector);
@@ -53,6 +56,7 @@ public interface DecoratableChainRetriever<T> extends InstructionChainRetriever<
      * @param <U>    the new type of the mapped value
      * @return the new {@link DecoratableChainRetriever} with the new type
      * @see DecoratedArgumentParser#map(QuestFunction)
+     * @since 3.0.0
      */
     @Contract(value = "!null -> new", pure = true)
     <U> DecoratableChainRetriever<U> map(QuestFunction<T, U> mapper);
@@ -65,6 +69,7 @@ public interface DecoratableChainRetriever<T> extends InstructionChainRetriever<
      * @return the new validated {@link DecoratableChainRetriever}
      * @see DecoratedArgumentParser#validate(ValueValidator)
      * @see #validate(ValueValidator, String)
+     * @since 3.0.0
      */
     @Contract(value = "!null -> new", pure = true)
     DecoratableChainRetriever<T> validate(ValueValidator<T> validator);
@@ -79,6 +84,7 @@ public interface DecoratableChainRetriever<T> extends InstructionChainRetriever<
      * @return the new validated {@link DecoratableChainRetriever}
      * @see DecoratedArgumentParser#validate(ValueValidator, String)
      * @see #validate(ValueValidator)
+     * @since 3.0.0
      */
     @Contract(value = "!null, !null -> new", pure = true)
     DecoratableChainRetriever<T> validate(ValueValidator<T> validator, String errorMessage);
@@ -90,6 +96,7 @@ public interface DecoratableChainRetriever<T> extends InstructionChainRetriever<
      *
      * @param validator the validator to apply to the argument
      * @return the new validated {@link DecoratableChainRetriever}
+     * @since 3.0.0
      */
     @Contract(value = "!null -> new", pure = true)
     default DecoratableChainRetriever<T> invalidate(final ValueValidator<T> validator) {
@@ -106,6 +113,7 @@ public interface DecoratableChainRetriever<T> extends InstructionChainRetriever<
      * @param validator    the validator to apply to the argument
      * @param errorMessage the error message to use if the validator fails
      * @return the new validated {@link DecoratableChainRetriever}
+     * @since 3.0.0
      */
     @Contract(value = "!null, !null -> new", pure = true)
     default DecoratableChainRetriever<T> invalidate(final ValueValidator<T> validator, final String errorMessage) {
@@ -125,6 +133,7 @@ public interface DecoratableChainRetriever<T> extends InstructionChainRetriever<
      * @return the new prefiltered {@link DecoratableChainRetriever}
      * @see #prefilterOptional(String, Object)
      * @see DecoratedArgumentParser#prefilter(String, Object)
+     * @since 3.0.0
      */
     @Contract(value = "!null, !null -> new", pure = true)
     DecoratableChainRetriever<T> prefilter(String expected, T fixedValue);
@@ -143,6 +152,7 @@ public interface DecoratableChainRetriever<T> extends InstructionChainRetriever<
      * @return the new prefiltered {@link DecoratableChainRetriever}
      * @see #prefilter(String, Object)
      * @see DecoratedArgumentParser#prefilterOptional(String, Object)
+     * @since 3.0.0
      */
     @Contract(value = "!null, _ -> new", pure = true)
     DecoratableChainRetriever<Optional<T>> prefilterOptional(String expected, @Nullable T fixedValue);

@@ -15,6 +15,8 @@ import java.util.UUID;
 
 /**
  * This offers implementations for {@link DecoratedArgumentParser} to parse common types.
+ *
+ * @since 3.0.0
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public interface ArgumentParsers {
@@ -23,6 +25,7 @@ public interface ArgumentParsers {
      * Default {@link DecoratedArgumentParser} for {@link String}.
      *
      * @return a parser for strings
+     * @since 3.0.0
      */
     DecoratedArgumentParser<String> string();
 
@@ -30,6 +33,7 @@ public interface ArgumentParsers {
      * Default {@link DecoratedArgumentParser} for {@link Boolean}.
      *
      * @return a parser for booleans
+     * @since 3.0.0
      */
     DecoratedArgumentParser<Boolean> bool();
 
@@ -37,6 +41,7 @@ public interface ArgumentParsers {
      * Default {@link DecoratedArgumentParser} for {@link Vector}.
      *
      * @return a parser for vectors
+     * @since 3.0.0
      */
     DecoratedArgumentParser<Vector> vector();
 
@@ -44,6 +49,7 @@ public interface ArgumentParsers {
      * Default {@link DecoratedArgumentParser} for {@link World}.
      *
      * @return a parser for worlds
+     * @since 3.0.0
      */
     DecoratedArgumentParser<World> world();
 
@@ -51,6 +57,7 @@ public interface ArgumentParsers {
      * Default {@link DecoratedArgumentParser} for {@link Location}.
      *
      * @return a parser for locations
+     * @since 3.0.0
      */
     DecoratedArgumentParser<Location> location();
 
@@ -58,6 +65,7 @@ public interface ArgumentParsers {
      * Default {@link DecoratedArgumentParser} for {@link ItemWrapper}.
      *
      * @return a parser for items
+     * @since 3.0.0
      */
     DecoratedArgumentParser<ItemWrapper> item();
 
@@ -65,6 +73,7 @@ public interface ArgumentParsers {
      * Default {@link DecoratedArgumentParser} for {@link BlockSelector}.
      *
      * @return a parser for block selectors
+     * @since 3.0.0
      */
     DecoratedArgumentParser<BlockSelector> blockSelector();
 
@@ -74,6 +83,7 @@ public interface ArgumentParsers {
      * using the instruction's package.
      *
      * @return a parser for package identifiers.
+     * @since 3.0.0
      */
     DecoratedArgumentParser<String> packageIdentifier();
 
@@ -82,6 +92,7 @@ public interface ArgumentParsers {
      * If no namespace is given, the default minecraft namespace is used.
      *
      * @return a parser for namespaced keys
+     * @since 3.0.0
      */
     DecoratedArgumentParser<NamespacedKey> namespacedKey();
 
@@ -89,6 +100,7 @@ public interface ArgumentParsers {
      * Default {@link DecoratedArgumentParser} for {@link Component}.
      *
      * @return a parser for components
+     * @since 3.0.0
      */
     DecoratedArgumentParser<Component> component();
 
@@ -96,6 +108,7 @@ public interface ArgumentParsers {
      * Default {@link DecoratedArgumentParser} for {@link UUID}.
      *
      * @return a parser for UUIDs
+     * @since 3.0.0
      */
     DecoratedArgumentParser<UUID> uuid();
 
@@ -103,6 +116,7 @@ public interface ArgumentParsers {
      * Default {@link NumberArgumentParser} for {@link Number}.
      *
      * @return a parser for numbers
+     * @since 3.0.0
      */
     NumberArgumentParser number();
 
@@ -110,6 +124,7 @@ public interface ArgumentParsers {
      * Default {@link SubSectionArgumentParser} for {@link Text} in a translation section arrangement.
      *
      * @return a parser for the translations {@link Text} instance from a translation section arrangement
+     * @since 3.0.0
      */
     SubSectionArgumentParser<Text> translationSection();
 
@@ -119,6 +134,7 @@ public interface ArgumentParsers {
      * @param enumType the enum type to get a parser for
      * @param <E>      the enum type
      * @return a parser for enums of the given type
+     * @since 3.0.0
      */
     <E extends Enum<E>> DecoratedArgumentParser<E> forEnum(Class<E> enumType);
 
@@ -128,6 +144,7 @@ public interface ArgumentParsers {
      * @param identifierType the identifier type to get a parser for
      * @param <I>            the identifier type
      * @return a parser for identifiers of the given type
+     * @since 3.0.0
      */
     <I extends Identifier> DecoratedArgumentParser<I> forIdentifier(Class<I> identifierType);
 }

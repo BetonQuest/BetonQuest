@@ -15,6 +15,8 @@ import java.util.Collection;
  * Executing an action will run anything specified in the action's instruction as well as any side effects of that.
  * For example, executing an action defining a folder of actions will run all actions in that folder,
  * which is considered a side effect of the original action itself.
+ *
+ * @since 3.0.0
  */
 public interface ActionManager {
 
@@ -32,6 +34,7 @@ public interface ActionManager {
      * @param profile          the profile to execute the action for or null if no profile is involved
      * @param actionIdentifier the identifier of the action to be called
      * @return false if the action failed to due to non-existence or unfulfilled conditions, true otherwise
+     * @since 3.0.0
      */
     boolean run(@Nullable Profile profile, ActionIdentifier actionIdentifier);
 
@@ -53,6 +56,7 @@ public interface ActionManager {
      * @param profile           the profile to execute the actions for or null if no profile is involved
      * @param actionIdentifiers the identifiers of the actions to be called
      * @return false if any action failed to due to non-existence or unfulfilled conditions, true otherwise
+     * @since 3.0.0
      */
     boolean run(@Nullable Profile profile, Collection<ActionIdentifier> actionIdentifiers);
 }

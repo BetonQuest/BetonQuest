@@ -3,6 +3,7 @@ package org.betonquest.betonquest.api;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicesManager;
+import org.jetbrains.annotations.Contract;
 
 import java.util.Optional;
 
@@ -19,6 +20,8 @@ import java.util.Optional;
  * <br> <br>
  * The API service is available and ready to use after BetonQuest itself has finished enabling and may therefore be called
  * the earliest while enabling a plugin explicitly depending on BetonQuest (enabling after BetonQuest).
+ *
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface BetonQuestApiService {
@@ -29,7 +32,9 @@ public interface BetonQuestApiService {
      * or an error caused BetonQuest to fail to load entirely.
      *
      * @return an optional containing the API service or an empty optional if the service is not available
+     * @since 3.0.0
      */
+    @Contract(value = "-> new", pure = true)
     static Optional<BetonQuestApiService> get() {
         return Optional.ofNullable(Bukkit.getServicesManager().load(BetonQuestApiService.class));
     }
@@ -42,6 +47,8 @@ public interface BetonQuestApiService {
      *
      * @param plugin the plugin to get the API instance for
      * @return the API instance for the specified plugin
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     BetonQuestApi api(Plugin plugin);
 }

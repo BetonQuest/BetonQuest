@@ -5,6 +5,8 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Factory for {@link BetonQuestLogger} instances.
+ *
+ * @since 3.0.0
  */
 public interface BetonQuestLoggerFactory {
 
@@ -16,6 +18,7 @@ public interface BetonQuestLoggerFactory {
      * @param clazz The class to create a logger for.
      * @return A {@link BetonQuestLogger} implementation.
      * @throws IllegalStateException Thrown if this is called from a class, that extends {@link Plugin}
+     * @since 3.0.0
      */
     default BetonQuestLogger create(final Class<?> clazz) {
         return create(clazz, null);
@@ -30,6 +33,7 @@ public interface BetonQuestLoggerFactory {
      * @param topic The optional topic of the logger.
      * @return A {@link BetonQuestLogger} implementation.
      * @throws IllegalStateException Thrown if this is called from a class, that extends {@link Plugin}
+     * @since 3.0.0
      */
     BetonQuestLogger create(Class<?> clazz, @Nullable String topic);
 
@@ -42,6 +46,7 @@ public interface BetonQuestLoggerFactory {
      *
      * @param plugin The plugin which is used for logging.
      * @return A {@link BetonQuestLogger} implementation.
+     * @since 3.0.0
      */
     default BetonQuestLogger create(final Plugin plugin) {
         return create(plugin, null);
@@ -57,6 +62,7 @@ public interface BetonQuestLoggerFactory {
      * @param plugin The plugin which is used for logging.
      * @param topic  The optional topic of the logger.
      * @return A {@link BetonQuestLogger} implementation.
+     * @since 3.0.0
      */
     BetonQuestLogger create(Plugin plugin, @Nullable String topic);
 }

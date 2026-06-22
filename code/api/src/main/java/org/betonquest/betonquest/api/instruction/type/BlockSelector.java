@@ -10,6 +10,8 @@ import java.util.List;
 
 /**
  * A BlockSelector represents a defined group of materials of which all of a random material may be fetched.
+ *
+ * @since 3.0.0
  */
 public interface BlockSelector {
 
@@ -17,6 +19,7 @@ public interface BlockSelector {
      * Get a random {@link Material}. If only one Material is represented by this {@link BlockSelector} this will be returned.
      *
      * @return A {@link Material}
+     * @since 3.0.0
      */
     Material getRandomMaterial();
 
@@ -24,6 +27,7 @@ public interface BlockSelector {
      * Get a list of all {@link Material}s that match this {@link BlockSelector}.
      *
      * @return A copy of the list of matching {@link Material}s
+     * @since 3.0.0
      */
     List<Material> getMaterials();
 
@@ -34,6 +38,7 @@ public interface BlockSelector {
      * {@link BlockState#setBlockData(BlockData)}.
      *
      * @return A {@link BlockData}
+     * @since 3.0.0
      */
     BlockData getBlockData();
 
@@ -43,6 +48,7 @@ public interface BlockSelector {
      * @param block        The block that is changed by the {@link BlockData}
      * @param applyPhysics If physics should be active for that block
      * @throws QuestException when the block data could not be set
+     * @since 3.0.0
      */
     void setToBlock(Block block, boolean applyPhysics) throws QuestException;
 
@@ -51,6 +57,7 @@ public interface BlockSelector {
      *
      * @param material The {@link Material} that should be compared
      * @return True if the {@link Material} is represented by this {@link BlockSelector}
+     * @since 3.0.0
      */
     boolean match(Material material);
 
@@ -62,6 +69,7 @@ public interface BlockSelector {
      *                   If true, the target block is not allowed to have more {@link BlockState}s than this
      *                   {@link BlockSelector}.
      * @return True if the {@link Material} is represented by this {@link BlockSelector} and the {@link BlockState} matches.
+     * @since 3.0.0
      */
     boolean match(Block block, boolean exactMatch);
 }

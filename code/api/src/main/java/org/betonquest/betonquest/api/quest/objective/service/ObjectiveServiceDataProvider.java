@@ -10,6 +10,8 @@ import java.util.List;
 
 /**
  * Defines additional information accessible per objective.
+ *
+ * @since 3.0.0
  */
 public interface ObjectiveServiceDataProvider {
 
@@ -21,6 +23,7 @@ public interface ObjectiveServiceDataProvider {
      * @param profile the profile to check for
      * @return if the objective is persistent
      * @throws QuestException if argument resolving failed
+     * @since 3.0.0
      */
     boolean isPersistent(@Nullable Profile profile) throws QuestException;
 
@@ -30,6 +33,7 @@ public interface ObjectiveServiceDataProvider {
      * @param profile the profile to get the actions for
      * @return a list of actionIds
      * @throws QuestException if argument resolving failed
+     * @since 3.0.0
      */
     List<ActionIdentifier> getActions(@Nullable Profile profile) throws QuestException;
 
@@ -39,6 +43,7 @@ public interface ObjectiveServiceDataProvider {
      * @param profile the profile to get the conditions for
      * @return a list of conditionIds
      * @throws QuestException if argument resolving failed
+     * @since 3.0.0
      */
     List<ConditionIdentifier> getConditions(@Nullable Profile profile) throws QuestException;
 
@@ -49,6 +54,7 @@ public interface ObjectiveServiceDataProvider {
      * @param profile the profile to get the interval for
      * @return the notification interval
      * @throws QuestException if argument resolving failed
+     * @since 3.0.0
      */
     int getNotificationInterval(@Nullable Profile profile) throws QuestException;
 }

@@ -3,6 +3,8 @@ package org.betonquest.betonquest.api.common.component.font;
 /**
  * The Font interface represents a font that can be used to measure the width of characters.
  * It provides a method to get the width of a character (codepoint) in pixels.
+ *
+ * @since 3.0.0
  */
 @FunctionalInterface
 @SuppressWarnings("PMD.ShortClassName")
@@ -13,6 +15,7 @@ public interface Font {
      *
      * @param characterCodePoint the codepoint of the character to get the width of
      * @return the width of the character in pixels
+     * @since 3.0.0
      */
     int getWidth(int characterCodePoint);
 
@@ -21,6 +24,7 @@ public interface Font {
      *
      * @param character the character to get the width of
      * @return the width of the character in pixels
+     * @since 3.0.0
      */
     default int getWidth(final char character) {
         return getWidth(String.valueOf(character).codePointAt(0));

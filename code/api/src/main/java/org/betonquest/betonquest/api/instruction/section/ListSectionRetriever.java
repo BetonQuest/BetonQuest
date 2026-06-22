@@ -9,6 +9,7 @@ import java.util.function.Function;
  * The {@link DecoratableSectionRetriever} for {@link List}s.
  *
  * @param <T> the type of the list's elements
+ * @since 3.0.0
  */
 public interface ListSectionRetriever<T> extends DecoratableSectionRetriever<List<T>> {
 
@@ -35,6 +36,7 @@ public interface ListSectionRetriever<T> extends DecoratableSectionRetriever<Lis
      * Ensures that the list is not empty and throws an error if it is.
      *
      * @return a new {@link ListSectionRetriever} with the new validation
+     * @since 3.0.0
      */
     ListSectionRetriever<T> notEmpty();
 
@@ -42,6 +44,7 @@ public interface ListSectionRetriever<T> extends DecoratableSectionRetriever<Lis
      * Ensures that all elements of the list are distinct and throws an error if they are not.
      *
      * @return a new {@link ListSectionRetriever} with the new validation
+     * @since 3.0.0
      */
     ListSectionRetriever<T> distinct();
 
@@ -51,6 +54,7 @@ public interface ListSectionRetriever<T> extends DecoratableSectionRetriever<Lis
      * @param extractor the method to extract the information of T that is supposed to be unique
      * @param <U>       the element of T that is supposed to be unique across the list
      * @return a new {@link ListSectionRetriever} with the new validation
+     * @since 3.0.0
      */
     <U> ListSectionRetriever<T> distinct(Function<T, U> extractor);
 }

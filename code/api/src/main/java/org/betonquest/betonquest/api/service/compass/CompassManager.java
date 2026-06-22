@@ -9,6 +9,8 @@ import java.util.Map;
 
 /**
  * The compass manager is responsible for managing the quest compasses.
+ *
+ * @since 3.0.0
  */
 public interface CompassManager {
 
@@ -18,6 +20,7 @@ public interface CompassManager {
      * @param identifier the identifier of the compass to get
      * @return the compass
      * @throws QuestException if the compass could not be accessed
+     * @since 3.0.0
      */
     QuestCompass get(CompassIdentifier identifier) throws QuestException;
 
@@ -26,6 +29,7 @@ public interface CompassManager {
      *
      * @param profile the profile to get the compasses for
      * @return all active compasses for the profile
+     * @since 3.0.0
      */
     Map<CompassIdentifier, QuestCompass> forProfile(Profile profile);
 }

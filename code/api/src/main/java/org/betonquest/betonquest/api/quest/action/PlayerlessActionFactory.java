@@ -6,6 +6,8 @@ import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
 
 /**
  * Factory to create a specific {@link PlayerlessAction} from {@link Instruction}s.
+ *
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface PlayerlessActionFactory extends PlayerlessQuestFactory<PlayerlessAction> {
@@ -16,6 +18,7 @@ public interface PlayerlessActionFactory extends PlayerlessQuestFactory<Playerle
      * @param instruction instruction to parse
      * @return action represented by the instruction
      * @throws QuestException when the instruction cannot be parsed
+     * @since 3.0.0
      */
     @Override
     PlayerlessAction parsePlayerless(Instruction instruction) throws QuestException;

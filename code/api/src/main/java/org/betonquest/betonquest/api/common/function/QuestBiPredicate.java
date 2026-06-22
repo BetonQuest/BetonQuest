@@ -9,6 +9,7 @@ import java.util.Objects;
  *
  * @param <T> the type of the first input to the method
  * @param <U> the type of the second input to the method
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface QuestBiPredicate<T, U> {
@@ -21,6 +22,7 @@ public interface QuestBiPredicate<T, U> {
      * @return {@code true} if the input arguments match the predicate,
      * otherwise {@code false}
      * @throws QuestException when the method execution fails
+     * @since 3.0.0
      */
     boolean test(T first, U second) throws QuestException;
 
@@ -40,6 +42,7 @@ public interface QuestBiPredicate<T, U> {
      * AND of this predicate and the {@code other} predicate
      * @throws NullPointerException if other is null
      * @throws QuestException       when the method execution fails
+     * @since 3.0.0
      */
     default QuestBiPredicate<T, U> and(final QuestBiPredicate<? super T, ? super U> other) throws QuestException {
         Objects.requireNonNull(other);
@@ -53,6 +56,7 @@ public interface QuestBiPredicate<T, U> {
      * @return a predicate that represents the logical negation of this
      * predicate
      * @throws QuestException when the method execution fails
+     * @since 3.0.0
      */
     default QuestBiPredicate<T, U> negate() throws QuestException {
         return (T t, U u) -> !test(t, u);
@@ -74,6 +78,7 @@ public interface QuestBiPredicate<T, U> {
      * OR of this predicate and the {@code other} predicate
      * @throws NullPointerException if other is null
      * @throws QuestException       when the method execution fails
+     * @since 3.0.0
      */
     @SuppressWarnings("PMD.ShortMethodName")
     default QuestBiPredicate<T, U> or(final QuestBiPredicate<? super T, ? super U> other) throws QuestException {

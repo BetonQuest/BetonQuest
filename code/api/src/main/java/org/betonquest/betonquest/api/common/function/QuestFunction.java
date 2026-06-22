@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.QuestException;
  *
  * @param <T> the type of the input to the function
  * @param <R> the type of the result of the function
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface QuestFunction<T, R> {
@@ -17,6 +18,7 @@ public interface QuestFunction<T, R> {
      * @param arg the function argument
      * @return the function result
      * @throws QuestException if the function execution fails
+     * @since 3.0.0
      */
     R apply(T arg) throws QuestException;
 }

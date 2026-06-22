@@ -18,6 +18,7 @@ import java.util.UUID;
  * as well as registering it with the {@link ObjectiveServiceProvider}.
  *
  * @param <T> the event type
+ * @since 3.0.0
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public interface EventServiceSubscriptionBuilder<T extends Event> {
@@ -29,6 +30,7 @@ public interface EventServiceSubscriptionBuilder<T extends Event> {
      *
      * @param priority the priority to use
      * @return this
+     * @since 3.0.0
      */
     @Contract("_ -> this")
     EventServiceSubscriptionBuilder<T> priority(EventPriority priority);
@@ -38,6 +40,7 @@ public interface EventServiceSubscriptionBuilder<T extends Event> {
      *
      * @param objectiveID the objective id
      * @return this
+     * @since 3.0.0
      */
     @Contract("_ -> this")
     EventServiceSubscriptionBuilder<T> source(ObjectiveIdentifier objectiveID);
@@ -50,6 +53,7 @@ public interface EventServiceSubscriptionBuilder<T extends Event> {
      * @param handler the handler to use
      * @return this
      * @throws IllegalStateException if another handler is already set
+     * @since 3.0.0
      */
     @Contract("_ -> this")
     EventServiceSubscriptionBuilder<T> handler(NonProfileEventHandler<T> handler);
@@ -61,6 +65,7 @@ public interface EventServiceSubscriptionBuilder<T extends Event> {
      * @param handler the handler to use
      * @return this
      * @throws IllegalStateException if another handler is already set
+     * @since 3.0.0
      */
     @Contract("_ -> this")
     EventServiceSubscriptionBuilder<T> handler(ProfileEventHandler<T> handler);
@@ -72,6 +77,7 @@ public interface EventServiceSubscriptionBuilder<T extends Event> {
      * @param handler the handler to use
      * @return this
      * @throws IllegalStateException if another handler is already set
+     * @since 3.0.0
      */
     @Contract("_ -> this")
     EventServiceSubscriptionBuilder<T> onlineHandler(OnlineProfileEventHandler<T> handler);
@@ -83,6 +89,7 @@ public interface EventServiceSubscriptionBuilder<T extends Event> {
      * @param extractor the extractor to use
      * @return this
      * @throws IllegalStateException if another extractor is already set
+     * @since 3.0.0
      */
     @Contract("_ -> this")
     EventServiceSubscriptionBuilder<T> uuid(QuestFunction<T, UUID> extractor);
@@ -94,6 +101,7 @@ public interface EventServiceSubscriptionBuilder<T extends Event> {
      * @param extractor the extractor to use
      * @return this
      * @throws IllegalStateException if another extractor is already set
+     * @since 3.0.0
      */
     @Contract("_ -> this")
     EventServiceSubscriptionBuilder<T> offlinePlayer(QuestFunction<T, OfflinePlayer> extractor);
@@ -105,6 +113,7 @@ public interface EventServiceSubscriptionBuilder<T extends Event> {
      * @param extractor the extractor to use
      * @return this
      * @throws IllegalStateException if another extractor is already set
+     * @since 3.0.0
      */
     @Contract("_ -> this")
     EventServiceSubscriptionBuilder<T> player(QuestFunction<T, Player> extractor);
@@ -116,6 +125,7 @@ public interface EventServiceSubscriptionBuilder<T extends Event> {
      * @param extractor the extractor to use
      * @return this
      * @throws IllegalStateException if another extractor is already set
+     * @since 3.0.0
      */
     @Contract("_ -> this")
     EventServiceSubscriptionBuilder<T> entity(QuestFunction<T, Entity> extractor);
@@ -127,6 +137,7 @@ public interface EventServiceSubscriptionBuilder<T extends Event> {
      * @param extractor the extractor to use
      * @return this
      * @throws IllegalStateException if another extractor is already set
+     * @since 3.0.0
      */
     @Contract("_ -> this")
     EventServiceSubscriptionBuilder<T> profile(QuestFunction<T, Profile> extractor);
@@ -139,6 +150,7 @@ public interface EventServiceSubscriptionBuilder<T extends Event> {
      * {@link ObjectiveService#checkConditions(Profile)} check.
      *
      * @return this
+     * @since 3.0.0
      */
     @Contract("-> this")
     EventServiceSubscriptionBuilder<T> ignoreConditions();
@@ -149,6 +161,7 @@ public interface EventServiceSubscriptionBuilder<T extends Event> {
      * @param ignoreCancelled if canceled events should be ignored
      * @throws QuestException        if the subscription could not be registered
      * @throws IllegalStateException if no valid handler-extractor pair was set
+     * @since 3.0.0
      */
     void subscribe(boolean ignoreCancelled) throws QuestException;
 }

@@ -6,6 +6,8 @@ import org.betonquest.betonquest.api.quest.PrimaryThreadEnforceable;
 
 /**
  * Quest condition that needs an online profile to function correctly.
+ *
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface OnlineCondition extends PrimaryThreadEnforceable {
@@ -16,6 +18,7 @@ public interface OnlineCondition extends PrimaryThreadEnforceable {
      * @param profile online profile to check the condition with
      * @return if the condition is fulfilled
      * @throws QuestException when the condition check fails
+     * @since 3.0.0
      */
     boolean check(OnlineProfile profile) throws QuestException;
 }

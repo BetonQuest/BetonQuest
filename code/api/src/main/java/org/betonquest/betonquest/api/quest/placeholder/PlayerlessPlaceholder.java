@@ -7,6 +7,8 @@ import org.betonquest.betonquest.api.quest.PrimaryThreadEnforceable;
  * Interface for playerless quest-placeholders.
  * It represents the playerless placeholder as described in the BetonQuest user documentation.
  * For the normal placeholder variant see {@link PlayerPlaceholder}.
+ *
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface PlayerlessPlaceholder extends PrimaryThreadEnforceable {
@@ -16,6 +18,7 @@ public interface PlayerlessPlaceholder extends PrimaryThreadEnforceable {
      *
      * @return the value of this placeholder
      * @throws QuestException when the value could not be retrieved
+     * @since 3.0.0
      */
     String getValue() throws QuestException;
 }

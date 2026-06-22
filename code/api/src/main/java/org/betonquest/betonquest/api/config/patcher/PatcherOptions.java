@@ -6,6 +6,8 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Options for the patcher.
  * This class is used to store options for the patcher, which can be used by transformers.
+ *
+ * @since 3.0.0
  */
 public interface PatcherOptions {
 
@@ -15,6 +17,7 @@ public interface PatcherOptions {
      * @param key the key to get
      * @return the value of the key
      * @throws PatchException if the key does not exist in the options
+     * @since 3.0.0
      */
     Object get(String key) throws PatchException;
 
@@ -24,6 +27,7 @@ public interface PatcherOptions {
      * @param key          the key to get
      * @param defaultValue the default value to return if the key does not exist
      * @return the value of the key
+     * @since 3.0.0
      */
     @Contract("_, !null -> !null")
     @Nullable
@@ -35,6 +39,7 @@ public interface PatcherOptions {
      * @param key the key to get
      * @return the value of the key
      * @throws PatchException if the key does not exist in the options
+     * @since 3.0.0
      */
     String getString(String key) throws PatchException;
 
@@ -44,6 +49,7 @@ public interface PatcherOptions {
      * @param key          the key to get
      * @param defaultValue the default value to return if the key does not exist
      * @return the value of the key
+     * @since 3.0.0
      */
     @Contract("_, !null -> !null")
     @Nullable

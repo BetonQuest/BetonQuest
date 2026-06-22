@@ -2,6 +2,7 @@ package org.betonquest.betonquest.api.quest;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.jetbrains.annotations.Contract;
 
 /**
  * Factory to create a specific {@link T}.
@@ -10,6 +11,7 @@ import org.betonquest.betonquest.api.instruction.Instruction;
  * {@link org.betonquest.betonquest.api.profile.Profile Profile}.
  *
  * @param <T> quest type executed without a player
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface PlayerlessQuestFactory<T> {
@@ -20,6 +22,8 @@ public interface PlayerlessQuestFactory<T> {
      * @param instruction instruction to parse
      * @return {@link T} represented by the instruction
      * @throws QuestException when the instruction cannot be parsed
+     * @since 3.0.0
      */
+    @Contract(pure = true, value = "!null -> new")
     T parsePlayerless(Instruction instruction) throws QuestException;
 }

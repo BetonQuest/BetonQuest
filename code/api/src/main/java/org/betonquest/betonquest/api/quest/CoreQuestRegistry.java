@@ -1,10 +1,13 @@
 package org.betonquest.betonquest.api.quest;
 
+import org.jetbrains.annotations.Contract;
+
 /**
  * Stores the implementation factories for Quest Types.
  *
  * @param <P> the player variant of the type
  * @param <S> the playerless variant of the type
+ * @since 3.0.0
  */
 public interface CoreQuestRegistry<P, S> {
 
@@ -14,7 +17,9 @@ public interface CoreQuestRegistry<P, S> {
      *
      * @param name    the name of the type
      * @param factory the player factory to create the type
+     * @since 3.0.0
      */
+    @Contract(mutates = "this")
     void register(String name, PlayerQuestFactory<P> factory);
 
     /**
@@ -22,7 +27,9 @@ public interface CoreQuestRegistry<P, S> {
      *
      * @param name              the name of the type
      * @param playerlessFactory the playerless factory to create the type
+     * @since 3.0.0
      */
+    @Contract(mutates = "this")
     void register(String name, PlayerlessQuestFactory<S> playerlessFactory);
 
     /**
@@ -31,7 +38,9 @@ public interface CoreQuestRegistry<P, S> {
      * @param name    the name of the type
      * @param factory the factory to create the player and playerless variant
      * @param <C>     the type of factory that creates both normal and playerless instances of the type
+     * @since 3.0.0
      */
+    @Contract(mutates = "this")
     <C extends PlayerQuestFactory<P> & PlayerlessQuestFactory<S>> void registerCombined(String name, C factory);
 
     /**
@@ -40,6 +49,8 @@ public interface CoreQuestRegistry<P, S> {
      * @param name              the name of the type
      * @param playerFactory     the player factory to create the type
      * @param playerlessFactory the playerless factory to create the type
+     * @since 3.0.0
      */
+    @Contract(mutates = "this")
     void register(String name, PlayerQuestFactory<P> playerFactory, PlayerlessQuestFactory<S> playerlessFactory);
 }

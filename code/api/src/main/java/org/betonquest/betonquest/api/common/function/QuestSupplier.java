@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.QuestException;
  * A simple {@link java.util.function.Supplier} that can throw a {@link QuestException}.
  *
  * @param <T> the type of results supplied by this supplier
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface QuestSupplier<T> {
@@ -15,6 +16,7 @@ public interface QuestSupplier<T> {
      *
      * @return a result
      * @throws QuestException when the method execution fails
+     * @since 3.0.0
      */
     T get() throws QuestException;
 }

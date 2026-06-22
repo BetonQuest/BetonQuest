@@ -13,6 +13,8 @@ import java.util.List;
 
 /**
  * Functionality for a quest to get all related information.
+ *
+ * @since 3.0.0
  */
 public interface QuestPackage extends LogSource {
 
@@ -20,6 +22,7 @@ public interface QuestPackage extends LogSource {
      * Gets the path that addresses this {@link QuestPackage}.
      *
      * @return the address
+     * @since 3.0.0
      */
     String getQuestPath();
 
@@ -33,6 +36,7 @@ public interface QuestPackage extends LogSource {
      * Gets the merged {@link MultiConfiguration} that represents this {@link QuestPackage}.
      *
      * @return a config extending {@link MultiConfiguration}
+     * @since 3.0.0
      */
     MultiConfiguration getConfig();
 
@@ -40,6 +44,7 @@ public interface QuestPackage extends LogSource {
      * Gets a list of all templates that are applied to this {@link QuestPackage} and all inherited templates.
      *
      * @return a list of all templates.
+     * @since 3.0.0
      */
     List<String> getTemplates();
 
@@ -49,6 +54,7 @@ public interface QuestPackage extends LogSource {
      *
      * @param templatePath The path of the template to check for
      * @return true if the template is defined in this {@link QuestPackage} or any of its templates
+     * @since 3.0.0
      */
     boolean hasTemplate(String templatePath);
 
@@ -60,6 +66,7 @@ public interface QuestPackage extends LogSource {
      *                     {@link org.betonquest.betonquest.api.config.FileConfigAccessor#save()}
      *                     or {@link MultiConfiguration#getUnsavedConfigs()} returned a {@link ConfigurationSection},
      *                     that is not represented by this {@link QuestPackage}
+     * @since 3.0.0
      */
     boolean saveAll() throws IOException;
 
@@ -71,6 +78,7 @@ public interface QuestPackage extends LogSource {
      * @return the already existing or newly created {@link ConfigAccessor}
      * @throws InvalidConfigurationException thrown if there was an exception creating the new {@link ConfigAccessor}
      * @throws FileNotFoundException         thrown if the file for the new {@link ConfigAccessor} could not be found
+     * @since 3.0.0
      */
     ConfigAccessor getOrCreateConfigAccessor(String relativePath) throws InvalidConfigurationException, FileNotFoundException;
 }

@@ -5,6 +5,8 @@ import org.jetbrains.annotations.Contract;
 
 /**
  * A decorated {@link Number} argument offering more options on top of the {@link DecoratedArgumentParser} itself.
+ *
+ * @since 3.0.0
  */
 public interface NumberArgumentParser extends DecoratedArgumentParser<Number> {
 
@@ -15,6 +17,7 @@ public interface NumberArgumentParser extends DecoratedArgumentParser<Number> {
      *
      * @param inclusiveMin the inclusive minimum to check against
      * @return a new {@link NumberArgumentParser}
+     * @since 3.0.0
      */
     @Contract(value = "_ -> new", pure = true)
     NumberArgumentParser atLeast(Number inclusiveMin);
@@ -26,6 +29,7 @@ public interface NumberArgumentParser extends DecoratedArgumentParser<Number> {
      *
      * @param inclusiveMax the inclusive maximum to check against
      * @return a new {@link NumberArgumentParser}
+     * @since 3.0.0
      */
     @Contract(value = "_ -> new", pure = true)
     NumberArgumentParser atMost(Number inclusiveMax);
@@ -38,6 +42,7 @@ public interface NumberArgumentParser extends DecoratedArgumentParser<Number> {
      * @param inclusiveMin the inclusive minimum to check against
      * @param exclusiveMax the exclusive maximum to check against
      * @return a new {@link NumberArgumentParser}
+     * @since 3.0.0
      */
     @Contract(value = "_, _ -> new", pure = true)
     NumberArgumentParser inRange(Number inclusiveMin, Number exclusiveMax);

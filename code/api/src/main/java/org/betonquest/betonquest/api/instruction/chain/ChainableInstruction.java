@@ -12,6 +12,8 @@ import java.util.function.Predicate;
 
 /**
  * An instruction that can be parsed in parts using chained calls.
+ *
+ * @since 3.0.0
  */
 public interface ChainableInstruction {
 
@@ -22,6 +24,7 @@ public interface ChainableInstruction {
      * @param <T>            the type of the argument
      * @return the {@link Argument} wrapping the argument
      * @throws QuestException if an error occurs while parsing the argument
+     * @since 3.0.0
      */
     @Contract("!null -> new")
     <T> Argument<T> getNext(InstructionArgumentParser<T> argumentParser) throws QuestException;
@@ -34,6 +37,7 @@ public interface ChainableInstruction {
      * @param <T>            the type of the argument
      * @return an optional of the {@link Argument} wrapping the argument
      * @throws QuestException if an error occurs while parsing the argument
+     * @since 3.0.0
      */
     @Contract("!null, !null -> new")
     <T> Optional<Argument<T>> getOptional(String argumentKey, InstructionArgumentParser<T> argumentParser) throws QuestException;
@@ -47,6 +51,7 @@ public interface ChainableInstruction {
      * @param <T>          the type of the argument
      * @return the {@link Argument} wrapping the argument
      * @throws QuestException if an error occurs while parsing the argument
+     * @since 3.0.0
      */
     @Contract("!null, !null, !null -> new")
     <T> Argument<T> getOptional(String argumentKey, InstructionArgumentParser<T> argument, T defaultValue) throws QuestException;
@@ -76,6 +81,7 @@ public interface ChainableInstruction {
      * @param <T>             the type of the argument
      * @return an optional of the flag argument
      * @throws QuestException if an error occurs while parsing
+     * @since 3.0.0
      */
     @Contract("!null, !null, !null -> new")
     <T> FlagArgument<T> getFlag(String argumentKey, InstructionArgumentParser<T> argumentParser, T presenceDefault) throws QuestException;
@@ -88,6 +94,7 @@ public interface ChainableInstruction {
      * @param <T>            the type of the argument
      * @return a map of the named arguments
      * @throws QuestException if an error occurs while parsing
+     * @since 3.0.0
      */
     @Contract("!null, !null -> new")
     <T> Map<String, Argument<T>> getNamed(InstructionArgumentParser<T> argumentParser, Predicate<String> keyFilter) throws QuestException;

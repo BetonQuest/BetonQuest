@@ -10,6 +10,7 @@ import java.util.Set;
  * A validated wrapper for a {@link Npc}.
  *
  * @param <T> the original npc type
+ * @since 3.0.0
  */
 public interface NpcWrapper<T> {
 
@@ -20,6 +21,7 @@ public interface NpcWrapper<T> {
      * @param profile the profile to resolve the npc
      * @return the npc ready to use
      * @throws QuestException if the npc cannot be found, or multiple npcs match the definition
+     * @since 3.0.0
      */
     Npc<T> getNpc(@Nullable Profile profile) throws QuestException;
 
@@ -29,6 +31,7 @@ public interface NpcWrapper<T> {
      * @param profile the profile to resolve the npcs
      * @return the npcs ready to use
      * @throws QuestException if no npc can be found
+     * @since 3.0.0
      */
     Set<Npc<T>> getNpcs(@Nullable Profile profile) throws QuestException;
 }

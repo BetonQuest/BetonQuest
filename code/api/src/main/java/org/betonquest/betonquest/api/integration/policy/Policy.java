@@ -3,6 +3,8 @@ package org.betonquest.betonquest.api.integration.policy;
 /**
  * The Policy interface represents a set of rules or conditions that can be described and validated.
  * Implementations of this interface define specific policies with custom validation logic.
+ *
+ * @since 3.0.0
  */
 public interface Policy {
 
@@ -21,6 +23,7 @@ public interface Policy {
      * </ul>
      *
      * @return a string representation describing the policy's purpose or details.
+     * @since 3.0.0
      */
     String description();
 
@@ -31,6 +34,7 @@ public interface Policy {
      * This method is not supposed to throw any exceptions but instead return false invalidating the policy.
      *
      * @return true if the policy is valid and meets all requirements, false otherwise
+     * @since 3.0.0
      */
     boolean validate();
 }

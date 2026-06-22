@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.ItemIdentifier;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -12,6 +13,8 @@ import org.jetbrains.annotations.Nullable;
  * <br> <br>
  * Each item is identified by an {@link ItemIdentifier} which consists of the user-defined name in the
  * configuration as well as the {@link QuestPackage} the item belongs to.
+ *
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface ItemManager {
@@ -28,6 +31,8 @@ public interface ItemManager {
      * @param itemIdentifier the identifier of the item
      * @return the item for the given identifier
      * @throws QuestException if there is no item with the given identifier
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     QuestItem getItem(@Nullable Profile profile, ItemIdentifier itemIdentifier) throws QuestException;
 }

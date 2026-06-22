@@ -3,10 +3,13 @@ package org.betonquest.betonquest.api.quest.placeholder;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.PrimaryThreadEnforceable;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Quest placeholder that can work both with and without a profile.
+ *
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface NullablePlaceholder extends PrimaryThreadEnforceable {
@@ -19,6 +22,8 @@ public interface NullablePlaceholder extends PrimaryThreadEnforceable {
      * cannot be resolved, this might indicate that the profile cannot be null
      * in this specific case
      * @throws QuestException when the value could not be retrieved
+     * @since 3.0.0
      */
+    @Contract(pure = true, value = "_ -> new")
     String getValue(@Nullable Profile profile) throws QuestException;
 }

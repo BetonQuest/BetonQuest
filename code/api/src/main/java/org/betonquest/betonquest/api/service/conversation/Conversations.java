@@ -17,6 +17,8 @@ import java.util.Optional;
  * Conversations are the fundamental concept underlying pretty much all interactions in BetonQuest.
  * Each conversation is uniquely identified by a {@link ConversationIdentifier} which consists of the user-defined name
  * in the configuration as well as the {@link QuestPackage} the conversation belongs to.
+ *
+ * @since 3.0.0
  */
 public interface Conversations {
 
@@ -30,6 +32,7 @@ public interface Conversations {
      * @param conversationIdentifier the identifier of the conversation to start
      * @return whether the conversation can be started
      * @throws QuestException if the conversation is not available
+     * @since 3.0.0
      */
     boolean canStart(Profile profile, ConversationIdentifier conversationIdentifier) throws QuestException;
 
@@ -50,6 +53,7 @@ public interface Conversations {
      * @param conversationIdentifier the identifier of the conversation to start
      * @param location               the location to force the player to stay at
      * @param startingOption         the optional starting option to start the conversation with
+     * @since 3.0.0
      */
     void start(OnlineProfile profile, ConversationIdentifier conversationIdentifier, Location location, @Nullable String startingOption);
 
@@ -58,6 +62,7 @@ public interface Conversations {
      *
      * @param profile the profile that might be in a conversation
      * @return true if the profile is currently in a conversation, false otherwise
+     * @since 3.0.0
      */
     boolean hasActive(Profile profile);
 
@@ -66,6 +71,7 @@ public interface Conversations {
      * If the profile is not currently in a conversation, this method will do nothing.
      *
      * @param profile the profile to cancel the conversation for
+     * @since 3.0.0
      */
     void cancel(OnlineProfile profile);
 
@@ -74,6 +80,7 @@ public interface Conversations {
      *
      * @param profile the profile to get the quester name for
      * @return the display name of the quester or an empty optional if no conversation is active or an error occurs
+     * @since 3.0.0
      */
     Optional<Component> getActiveQuesterName(Profile profile);
 
@@ -85,6 +92,7 @@ public interface Conversations {
      *
      * @param profile the profile to send the bypass message to
      * @param message the message to send
+     * @since 3.0.0
      */
     void sendBypassMessage(OnlineProfile profile, Component message);
 
@@ -93,6 +101,7 @@ public interface Conversations {
      *
      * @param profile the profile to get the conversation identifier for
      * @return the identifier of the conversation the profile is currently in, or an empty optional
+     * @since 3.0.0
      */
     Optional<ConversationIdentifier> getActive(Profile profile);
 }

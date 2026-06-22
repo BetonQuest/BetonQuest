@@ -7,6 +7,8 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Quest condition that can work both with and without a profile.
+ *
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface NullableCondition extends PrimaryThreadEnforceable {
@@ -19,6 +21,7 @@ public interface NullableCondition extends PrimaryThreadEnforceable {
      * @throws QuestException if the condition cannot be checked correctly,
      *                        this might indicate that the profile cannot be null
      *                        in this specific case
+     * @since 3.0.0
      */
     boolean check(@Nullable Profile profile) throws QuestException;
 }

@@ -7,6 +7,7 @@ import org.bukkit.event.Event;
  * A handler for non-profile events.
  *
  * @param <T> the event type
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface NonProfileEventHandler<T extends Event> {
@@ -16,6 +17,7 @@ public interface NonProfileEventHandler<T extends Event> {
      *
      * @param event the event that was triggered
      * @throws QuestException when the event handling fails
+     * @since 3.0.0
      */
     void handle(T event) throws QuestException;
 }

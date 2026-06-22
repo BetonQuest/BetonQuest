@@ -6,6 +6,8 @@ import java.util.Map;
 
 /**
  * Interface for managing quest packages.
+ *
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface QuestPackageManager {
@@ -14,6 +16,7 @@ public interface QuestPackageManager {
      * Get all QuestPackages.
      *
      * @return a map of all QuestPackages, with the name as key
+     * @since 3.0.0
      */
     Map<String, QuestPackage> getPackages();
 
@@ -22,6 +25,7 @@ public interface QuestPackageManager {
      *
      * @param name the name of the QuestPackage to retrieve
      * @return the QuestPackage with the specified name, or null if no such package exists
+     * @since 3.0.0
      */
     @Nullable
     default QuestPackage getPackage(final String name) {

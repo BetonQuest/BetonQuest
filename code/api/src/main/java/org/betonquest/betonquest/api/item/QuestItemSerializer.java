@@ -6,6 +6,8 @@ import org.bukkit.inventory.ItemStack;
 
 /**
  * Allows serializing ItemStacks as string format parsed by a {@link TypeFactory} to {@link QuestItem}.
+ *
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface QuestItemSerializer {
@@ -16,6 +18,7 @@ public interface QuestItemSerializer {
      * @param itemStack the item to serialize
      * @return the string which results as the ItemStack when used as instruction for a {@link QuestItem}
      * @throws QuestException when the item stack cannot be serialized
+     * @since 3.0.0
      */
     String serialize(ItemStack itemStack) throws QuestException;
 }

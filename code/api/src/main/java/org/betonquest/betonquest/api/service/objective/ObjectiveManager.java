@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.Objective;
+import org.jetbrains.annotations.Contract;
 
 import java.util.List;
 
@@ -15,6 +16,8 @@ import java.util.List;
  * of the user-defined name in the configuration as well as the {@link QuestPackage} the {@link Objective} belongs to.
  * No profile may have more than one {@link Objective} with the same {@link ObjectiveIdentifier} at the same time.
  * There is only a single {@link Objective} instance shared among all profiles having the same {@link Objective} active.
+ *
+ * @since 3.0.0
  */
 public interface ObjectiveManager {
 
@@ -26,6 +29,7 @@ public interface ObjectiveManager {
      *
      * @param profile             the profile to start the objective for
      * @param objectiveIdentifier the identifier of the objective to start
+     * @since 3.0.0
      */
     void start(Profile profile, ObjectiveIdentifier objectiveIdentifier);
 
@@ -38,6 +42,7 @@ public interface ObjectiveManager {
      * @param profile             the profile to start the objective for
      * @param objectiveIdentifier the identifier of the objective to start
      * @param startingState       the starting state of the objective
+     * @since 3.0.0
      */
     void start(Profile profile, ObjectiveIdentifier objectiveIdentifier, String startingState);
 
@@ -48,6 +53,7 @@ public interface ObjectiveManager {
      *
      * @param profile             the profile to pause the objective for
      * @param objectiveIdentifier the identifier of the objective to pause
+     * @since 3.0.0
      */
     void pause(Profile profile, ObjectiveIdentifier objectiveIdentifier);
 
@@ -58,6 +64,7 @@ public interface ObjectiveManager {
      *
      * @param profile             the profile to cancel the objective for
      * @param objectiveIdentifier the identifier of the objective to cancel
+     * @since 3.0.0
      */
     void cancel(Profile profile, ObjectiveIdentifier objectiveIdentifier);
 
@@ -69,7 +76,9 @@ public interface ObjectiveManager {
      *
      * @param profile the profile to get the objectives for
      * @return a list of active and running objectives
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     List<Objective> getForProfile(Profile profile);
 
     /**
@@ -80,6 +89,8 @@ public interface ObjectiveManager {
      * @param objectiveIdentifier the identifier of the objective to get
      * @return the objective with the specified identifier
      * @throws QuestException if there is no objective with the given identifier
+     * @since 3.0.0
      */
+    @Contract(pure = true)
     Objective getObjective(ObjectiveIdentifier objectiveIdentifier) throws QuestException;
 }

@@ -7,6 +7,8 @@ import org.betonquest.betonquest.api.quest.PrimaryThreadEnforceable;
 /**
  * Interface for quest-conditions that are checked for a profile. It represents the normal condition as described in the
  * BetonQuest user documentation. It does not represent the playerless variant though, see {@link PlayerlessCondition}.
+ *
+ * @since 3.0.0
  */
 @FunctionalInterface
 public interface PlayerCondition extends PrimaryThreadEnforceable {
@@ -17,6 +19,7 @@ public interface PlayerCondition extends PrimaryThreadEnforceable {
      * @param profile the {@link Profile} the condition is checked for
      * @return if the condition is fulfilled
      * @throws QuestException when the condition check fails
+     * @since 3.0.0
      */
     boolean check(Profile profile) throws QuestException;
 }
