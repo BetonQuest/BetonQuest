@@ -7816,8 +7816,11 @@ The proper syntax is <code>%questPackage&gt;constant.constantName%</code>.</p>
 You can nest multiple evals, but this leads you to an escape hell.
 If you do so, you need to add one escape level with each nesting level,
 this means normally you write <code>\%</code> and in the next level you need to write <code>\\\%</code>.</p>
+<p>When using a cross package reference, remember to escape the <code>&gt;</code> of a nested placeholder too. More
+on this in the <a href="../../Basics/Packages-%26-Templates/#nested-package-paths">nested package paths</a> article.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">eval</span><span class="nc">.player.</span><span class="err">\%</span><span class="nt">objective</span><span class="nc">.placeholderStore.displayType</span><span class="err">\%%</span>
 <span class="err">%</span><span class="nt">eval</span><span class="nc">.player.</span><span class="err">\%</span><span class="nt">eval</span><span class="nc">.objective.</span><span class="err">\\\%</span><span class="nt">objective</span><span class="nc">.otherStore.targetStore</span><span class="err">\\\%</span><span class="nc">.displayType</span><span class="err">\%%</span>
+<span class="err">%</span><span class="nt">eval</span><span class="nc">.player.</span><span class="err">\%</span><span class="nt">OtherPackage</span><span class="err">\</span><span class="o">&gt;</span><span class="nt">objective</span><span class="nc">.placeholderStore.displayType</span><span class="err">\%%</span>
 </code></pre></div>
 <h2 id="globalpoint"><code>GlobalPoint</code><a class="headerlink" href="#globalpoint" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="<b>Independent</b><br> This placeholder can be resolved without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"/></svg></span><br />
@@ -7912,11 +7915,15 @@ braces <code>{ }</code>. Inside the curly braces you have to escape with <code>\
 <p>The modulo operator needs to be escaped with a backslash <code>\</code> to prevent it from being interpreted as a placeholder delimiter.
 If you don't want to escape the percentage and actually want to write a backslash you can use <code>\\%</code>.
 Don't forget to escape the backslash itself with another backslash if you are inside a double-quoted string <code>"</code>.</p>
+<p>When using a cross package reference, remember to escape the <code>&gt;</code> of a nested placeholder too.
+More on this in the <a href="../../Basics/Packages-%26-Templates/#nested-package-paths">nested package paths</a>
+article.</p>
 </div>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">math</span><span class="nc">.calc</span><span class="nd">:100</span><span class="o">*(</span><span class="nt">15-point</span><span class="nc">.reputation.amount</span><span class="o">)</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">math</span><span class="nc">.calc</span><span class="nd">:objective</span><span class="nc">.kill_zombies.left</span><span class="o">/</span><span class="nt">objective</span><span class="nc">.kill_zombies.total</span><span class="o">*</span><span class="nt">100</span><span class="o">~</span><span class="nt">2</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">math</span><span class="nc">.calc</span><span class="nd">:-</span><span class="p">{</span><span class="nt">ph</span><span class="nc">.myplugin_stragee</span><span class="o">+</span><span class="nt">placeholder</span><span class="p">}</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">math</span><span class="nc">.calc</span><span class="nd">:64</span><span class="err">\%</span><span class="nt">32</span><span class="err">%</span>
+<span class="err">%</span><span class="nt">math</span><span class="nc">.calc</span><span class="nd">:3</span><span class="o">*</span><span class="nt">OtherPackage</span><span class="err">\</span><span class="o">&gt;</span><span class="nt">globalpoint</span><span class="nc">.factor.amount</span><span class="err">%</span>
 </code></pre></div>
 <h2 id="npc"><code>Npc</code><a class="headerlink" href="#npc" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="<b>Independent</b><br> This placeholder can be resolved without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"/></svg></span><br />

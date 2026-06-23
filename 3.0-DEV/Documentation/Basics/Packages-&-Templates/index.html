@@ -1933,6 +1933,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#nested-package-paths">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Nested Package paths
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -7289,6 +7312,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#nested-package-paths">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Nested Package paths
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -7648,6 +7694,53 @@ downwards". <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdec
 </ol>
 <p>An example usage could look like this:
 <div class="highlight"><pre><span></span><code><span class="nt">zombieObjective</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mobkill</span><span class="nv"> </span><span class="s">ZOMBIE</span><span class="nv"> </span><span class="s">50</span><span class="nv"> </span><span class="s">actions:<mark class="critic">-weeklyQuestTwo-subQuest&gt;startQuest</mark>&quot;</span>
+</code></pre></div></p>
+</div>
+</div>
+</div>
+</details>
+<h4 id="nested-package-paths">Nested Package paths<a class="headerlink" href="#nested-package-paths" title="Permanent link">🔗</a></h4>
+<p>In some places, like the <a href="../../Reference/Placeholders-List/#eval"><code>eval</code> placeholder</a>, you may need
+to write package paths inside nested placeholders. In order to do so you need to escape the grater
+than (<code>&gt;</code>) of the inner paths with a level of backslash (<code>\</code>).</p>
+<p>Note that in some cases you may need to escape the backslash too (<code>\\</code>) for a single level of
+escaping. For example, when you are in a double-quoted YAML string (<code>" "</code>).</p>
+<details class="example">
+<summary>Example</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1"><code>eval</code> placeholder</label><label for="__tabbed_4_2"><code>math</code> placeholder</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>Let's assume you have two packages: The second one called <code>OtherPackage</code> in which there is just
+a simple constant <code>shape</code>.
+<div class="highlight"><pre><span></span><code><span class="nt">constants</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">shape</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">triangle</span>
+</code></pre></div>
+Usually you could use this with <code>%OtherPackage&gt;constant.shape%</code> when accessing from other
+packages.</p>
+<p>However, in this example, you want to use this <code>shape</code> as the name for another constant
+inside your first package using the <a href="../../Reference/Placeholders-List/#eval"><code>eval</code> placeholder</a>.
+<div class="highlight"><pre><span></span><code><span class="nt">constants</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">red_triangle</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">This works!</span>
+<span class="w">  </span><span class="nt">red_circle</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Not this shape.</span>
+<span class="w">  </span><span class="nt">blue_square</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Also not this one.</span>
+
+<span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">printShape</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">notify %eval.constant.red_\%OtherPackage\&gt;constant.shape\%%</span>
+</code></pre></div></p>
+</div>
+<div class="tabbed-block">
+<p>Let's assume the same base: A package called <code>OtherPackage</code> in which there is just
+a simple constant <code>amount</code>.
+<div class="highlight"><pre><span></span><code><span class="nt">constants</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">amount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">7</span>
+</code></pre></div></p>
+<p>Now, in this example, you want to work with this <code>amount</code> inside your first package in the 
+<a href="../../Reference/Placeholders-List/#math"><code>math</code> placeholder</a> and set its result as the <code>answer</code> globalpoint.
+<div class="highlight"><pre><span></span><code><span class="nt">constants</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">factor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6</span>
+
+<span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">setAnswer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">globalpoint answer %math.calc:{constant.factor}*{OtherPackage\&gt;constant.amount}% action:set</span>
 </code></pre></div></p>
 </div>
 </div>
