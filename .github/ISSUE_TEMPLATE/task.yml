@@ -4,7 +4,7 @@ type: "Task"
 body:
   - type: markdown
     attributes:
-      value: "# Only useful for maintainers"
+      value: "# For maintainers only!"
 
   - type: markdown
     attributes:
