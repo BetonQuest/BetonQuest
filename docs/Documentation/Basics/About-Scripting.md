@@ -145,7 +145,30 @@ Typically, users divide their files based on the element types or purpose.
 
 An element section is a configuration section grouping elements of the same type together.
 Each element section has a unique name and can contain any number of elements. 
-It may also be defined in multiple files without conflicting with each other as long as subsequent keys are unique across all files of a package.
+It may also be defined in multiple files without conflicting with each other as long as keys with values are unique across all files of a package.
 Every [type of element](../Reference/Definition-Encyclopedia.md#element-types) has its own section.
+
+### Subsections
+
+Any _single line instruction_ can also be set in a subsection to better organize them by a common prefix.  
+To address them you simply use separators as in YAML itself:
+
+```YAML title="Instructions in subsections"
+actions:
+  startPart1: "folder part1.addTag,part1.teleport"
+  part1:
+    addTag: "tag add part1_active"
+    teleport: "teleport 100;200;300;world"
+  part2:
+    step1:
+      notifyStart: "notify Deeply nested action!"
+      startObjective: "objective start part2.step1.objective"
+objectives:
+  part2:
+    step1:
+      objective: "jump 1"
+```
+
+More complex features utilizing sections can't be nested in such a manner.
 
 [Scripting Elements](./Scripting-Elements.md){ .md-button }
