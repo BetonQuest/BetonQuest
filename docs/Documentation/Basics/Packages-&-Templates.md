@@ -169,6 +169,57 @@ to match the current location, relative paths will still work.
         zombieObjective: "mobkill ZOMBIE 50 actions:{==-weeklyQuestTwo-subQuest>startQuest==}"
         ````
     
+#### Nested Package paths
+
+In some places, like the [`eval` placeholder](../Reference/Placeholders-List.md#eval), you may need
+to write package paths inside nested placeholders. In order to do so you need to escape the grater
+than (`>`) of the inner paths with a level of backslash (`\`).
+
+Note that in some cases you may need to escape the backslash too (`\\`) for a single level of
+escaping. For example, when you are in a double-quoted YAML string (`" "`).
+
+??? example
+
+    === "`eval` placeholder"
+        Let's assume you have two packages: The second one called `OtherPackage` in which there is just
+        a simple constant `shape`.
+        ```YAML
+        constants:
+          shape: triangle
+        ```
+        Usually you could use this with `%OtherPackage>constant.shape%` when accessing from other
+        packages.
+
+        However, in this example, you want to use this `shape` as the name for another constant
+        inside your first package using the [`eval` placeholder](../Reference/Placeholders-List.md#eval).
+        ```YAML
+        constants:
+          red_triangle: This works!
+          red_circle: Not this shape.
+          blue_square: Also not this one.
+        
+        actions:
+          printShape: notify %eval.constant.red_\%OtherPackage\>constant.shape\%%
+        ```
+
+    === "`math` placeholder"
+        Let's assume the same base: A package called `OtherPackage` in which there is just
+        a simple constant `amount`.
+        ```YAML
+        constants:
+          amount: 7
+        ```
+
+        Now, in this example, you want to work with this `amount` inside your first package in the 
+        [`math` placeholder](../Reference/Placeholders-List.md#math) and set its result as the `answer` globalpoint.
+        ```YAML
+        constants:
+          factor: 6
+        
+        actions:
+          setAnswer: globalpoint answer %math.calc:{constant.factor}*{OtherPackage\>constant.amount}% action:set
+        ```
+
 ### Disabling Packages
 
 Packages are enabled by default, you can disable a package if you don't want it to be loaded.
