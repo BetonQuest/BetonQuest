@@ -487,7 +487,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 .getConfigurationSection(type.name().toLowerCase(Locale.ROOT));
         final List<String> completions = new ArrayList<>();
         if (configuration != null) {
-            for (final String key : configuration.getKeys(false)) {
+            for (final String key : configuration.getKeys(type.allowNested)) {
+                if (type.allowNested && configuration.isConfigurationSection(key)) {
+                    continue;
+                }
                 completions.add(pack + Identifier.SEPARATOR + key);
             }
         }
@@ -1950,7 +1953,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             final ConfigurationSection configuration = configPack.getConfig().getConfigurationSection("objectives");
             final List<String> completions = new ArrayList<>();
             if (configuration != null) {
-                for (final String key : configuration.getKeys(false)) {
+                for (final String key : configuration.getKeys(true)) {
+                    if (configuration.isConfigurationSection(key)) {
+                        continue;
+                    }
                     final String rawObjectiveInstruction = configuration.getString(key);
                     if (rawObjectiveInstruction != null && rawObjectiveInstruction.stripIndent().startsWith("variable")) {
                         completions.add(pack + Identifier.SEPARATOR + key);
@@ -2026,23 +2032,32 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         /**
          * ActionID.
          */
-        ACTIONS,
+        ACTIONS(true),
         /**
          * ConditionID.
          */
-        CONDITIONS,
+        CONDITIONS(true),
         /**
          * ObjectiveID.
          */
-        OBJECTIVES,
+        OBJECTIVES(true),
         /**
          * ItemID.
          */
-        ITEMS,
+        ITEMS(true),
         /**
          * JournalID.
          */
-        JOURNAL
+        JOURNAL(false);
+
+        /**
+         * If the accessor allows nested ids.
+         */
+        private final boolean allowNested;
+
+        AccessorType(final boolean allowNested) {
+            this.allowNested = allowNested;
+        }
     }
 
     /**

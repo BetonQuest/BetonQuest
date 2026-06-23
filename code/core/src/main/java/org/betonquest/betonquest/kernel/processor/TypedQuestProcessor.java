@@ -75,7 +75,10 @@ public abstract class TypedQuestProcessor<I extends ReadableIdentifier, T> exten
         if (section == null) {
             return;
         }
-        for (final String key : section.getKeys(false)) {
+        for (final String key : section.getKeys(true)) {
+            if (section.isConfigurationSection(key)) {
+                continue;
+            }
             if (key.contains(" ")) {
                 log.warn(pack, readable + " name cannot contain spaces: '" + key + "' in pack '" + pack.getQuestPath() + "'");
                 continue;
