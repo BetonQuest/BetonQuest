@@ -14,13 +14,13 @@ Closes #XXXX
 ### Reviewer's checklist
 
 <!-- DON'T DO ANYTHING HERE -->
-<!-- This is a checklist for the reviewers, and will be checked by them! -->
+<!-- This is a checklist for the reviewers and will be checked by them! -->
 Did the contributor...
 - [ ]  ... test their changes?
 - [ ]  ... increment the [Version](https://betonquest.org/DEV/Participate/Misc/Versioning-and-Releasing/#versioning)?
 - [ ]  ... update the [Changelog](https://betonquest.org/DEV/Participate/Process/Maintaining-the-Changelog/)?
 - [ ]  ... update the [Documentation](https://betonquest.org/DEV/Participate/Process/Docs/Workflow/)?
-- [ ]  ... wrote a Migration?
+- [ ]  ... write a migration?
 - [ ]  ... clean the commit history?
 
 Check if the build pipeline succeeded for this PR!
