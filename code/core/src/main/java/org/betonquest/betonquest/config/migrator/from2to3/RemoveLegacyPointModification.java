@@ -23,13 +23,16 @@ public class RemoveLegacyPointModification implements QuestMigration {
         final MultiConfiguration config = quest.getQuestConfig();
         for (final String eventName : List.of("point", "globalpoint", "score")) {
             replace(config, "events",
-                    instruction -> instruction.startsWith(eventName + " *"),
-                    instruction -> instruction.replace(eventName + " *", eventName) + " action:multiply"
+                    instruction -> instruction.matches(eventName + " .* \\*.+"),
+                    instruction -> {
+                        final String value = instruction.split(" ")[2];
+                        return instruction.replace(value, value.substring(1)) + " action:multiply";
+                    }
             );
         }
         replace(config, "events",
                 instruction -> instruction.startsWith("money *"),
-                instruction -> instruction.replace("money *", "money") + " multiply"
+                instruction -> instruction.replace("money *", "money ") + " multiply"
         );
     }
 }
