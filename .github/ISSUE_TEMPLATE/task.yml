@@ -1,0 +1,64 @@
+name: "Task"
+description: "Create a new task."
+type: "Task"
+body:
+  - type: markdown
+    attributes:
+      value: "# Only useful for maintainers"
+
+  - type: markdown
+    attributes:
+      value: |
+        This form should streamline the process of creating a new task and provide a consistent format.
+        It should also ensure that the task is properly defined and considered to be complete.
+
+  - type: textarea
+    id: "short"
+    attributes:
+      label: "Short introduction"
+      description: "A clear, concise and short description of what the task is."
+      placeholder: "Create X that does Y by using Z"
+    validations:
+      required: true
+
+  - type: textarea
+    id: "related"
+    attributes:
+      label: "Related"
+      description: "List any related (parent) issues, discussions, etc."
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: "requirements"
+    attributes:
+      label: "Which common steps are required? This task requires..."
+      options:
+        - label: "Changes to the code"
+        - label: "Changes to the database"
+        - label: "Changes to the documentation"
+        - label: "Updating changelog"
+        - label: "Additional unit testing"
+        - label: "Creating a migration"
+        - label: "Bumping the version of the api or library module"
+    validations:
+      required: true
+
+  - type: textarea
+    id: "steps"
+    attributes:
+      label: "Steps to complete"
+      description: "Describe the steps required to complete the task."
+      placeholder: |
+        1. Create A
+        2. Use B to complete C
+        3. Change X
+        4. Implement Y
+    validations:
+      required: true
+
+  - type: textarea
+    id: "notes"
+    attributes:
+      label: "Additional context"
+      description: "Any additional notes, description or context."

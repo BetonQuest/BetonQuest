@@ -2,7 +2,6 @@ name: "Docs Feedback"
 title: "[Docs] "
 description: "Report wrong or unclear documentation."
 labels: [ "Documentation" ]
-projects: [ "BetonQuest/BetonQuest" ]
 body:
   - type: input
     id: "version"
@@ -12,6 +11,7 @@ body:
       placeholder: "3.0"
     validations:
       required: true
+
   - type: input
     id: "url"
     attributes:
@@ -20,6 +20,7 @@ body:
       placeholder: "https://betonquest.org/RELEASE/"
     validations:
       required: true
+
   - type: textarea
     id: "description"
     attributes:
@@ -27,6 +28,7 @@ body:
       description: "What can be improved?"
     validations:
       required: true
+
   - type: upload
     id: "screenshots"
     attributes:
