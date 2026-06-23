@@ -63,9 +63,13 @@ You can nest multiple evals, but this leads you to an escape hell.
 If you do so, you need to add one escape level with each nesting level,
 this means normally you write `\%` and in the next level you need to write `\\\%`.
 
+When using a cross package reference, remember to escape the `>` of a nested placeholder too. More
+on this in the [nested package paths](../Basics/Packages-&-Templates.md#nested-package-paths) article.
+
 ```scss title="Example"
 %eval.player.\%objective.placeholderStore.displayType\%%
 %eval.player.\%eval.objective.\\\%objective.otherStore.targetStore\\\%.displayType\%%
+%eval.player.\%OtherPackage\>objective.placeholderStore.displayType\%%
 ```
 
 ## `GlobalPoint`
@@ -191,11 +195,16 @@ When the calculation fails `0` will be returned and the reason logged.
     If you don't want to escape the percentage and actually want to write a backslash you can use `\\%`.
     Don't forget to escape the backslash itself with another backslash if you are inside a double-quoted string `"`.
 
+    When using a cross package reference, remember to escape the `>` of a nested placeholder too.
+    More on this in the [nested package paths](../Basics/Packages-&-Templates.md#nested-package-paths)
+    article.
+
 ```scss title="Example"
 %math.calc:100*(15-point.reputation.amount)%
 %math.calc:objective.kill_zombies.left/objective.kill_zombies.total*100~2%
 %math.calc:-{ph.myplugin_stragee+placeholder}%
 %math.calc:64\%32%
+%math.calc:3*OtherPackage\>globalpoint.factor.amount%
 ```
 
 ## `Npc`
