@@ -33,7 +33,7 @@ public class LanguageProviderComponent extends AbstractCoreComponent {
     protected void load(final DependencyProvider dependencyProvider) {
         final ConfigAccessor config = getDependency(ConfigAccessor.class);
 
-        final LanguageProvider languageProvider = () -> config.getString("language", "en-US");
+        final LanguageProvider languageProvider = () -> config.getString("language.default", "en-US");
 
         dependencyProvider.take(LanguageProvider.class, languageProvider);
     }
