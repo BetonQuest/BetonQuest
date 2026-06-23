@@ -6,10 +6,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
+- new GitHub issue templates to allow for better issue reporting and feature requests
 ### Changed
+- release script to simplify the release process of coming versions
 ### Deprecated
 ### Removed
 ### Fixed
+- `FastStats` error tracker not working properly
+- Javadocs of the api module missing the `@since` tag
 ### Security
 
 ## [3.0.1] - 2026-06-19
