@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.bukkit.event.npc.NpcVisibilityUpdateEvent;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.identifier.NpcIdentifier;
@@ -19,12 +18,10 @@ import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.kernel.processor.PostLoadTask;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +34,7 @@ import java.util.Set;
  * Hides and shows holograms to players at a Npcs location. Based on conditions.
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
-public class NpcHologramLoop extends HologramLoop implements Listener, PostLoadTask {
+public class NpcHologramLoop extends HologramLoop implements PostLoadTask {
 
     /**
      * The task that lets holograms follow NPCs.
@@ -66,7 +63,6 @@ public class NpcHologramLoop extends HologramLoop implements Listener, PostLoadT
 
     /**
      * Starts a loop, which checks hologram conditions and shows them to players.
-     * Also starts the npc update listener.
      *
      * @param loggerFactory     logger factory to use
      * @param log               the logger that will be used for logging
@@ -98,7 +94,6 @@ public class NpcHologramLoop extends HologramLoop implements Listener, PostLoadT
         followTask = plugin.getServer().getScheduler().runTaskTimer(plugin,
                 () -> npcHolograms.stream().filter(NpcHologram::follow)
                         .forEach(this::updateNpcHologram), 1L, 1L);
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
@@ -108,11 +103,10 @@ public class NpcHologramLoop extends HologramLoop implements Listener, PostLoadT
     }
 
     /**
-     * Stops the follow task and unregisters the update listener.
+     * Stops the follow task and clears the holograms.
      */
     public void close() {
         followTask.cancel();
-        HandlerList.unregisterAll(this);
         clear();
     }
 
@@ -233,13 +227,11 @@ public class NpcHologramLoop extends HologramLoop implements Listener, PostLoadT
     }
 
     /**
-     * Update the hologram on external triggers.
+     * Update the holograms on external triggers.
      *
-     * @param event The event.
+     * @param npc The npc to update or null if all holograms should be updated.
      */
-    @EventHandler
-    public void onExternalUpdate(final NpcVisibilityUpdateEvent event) {
-        final Npc<?> npc = event.getNpc();
+    public void onExternalUpdate(@Nullable final Npc<?> npc) {
         if (npc == null) {
             npcHolograms.forEach(this::updateNpcHologram);
             return;
