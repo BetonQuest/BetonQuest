@@ -21,6 +21,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Fixed
 - FastStats metrics would always be collected on the first start
 - integrations with non-semver versions caused errors
+- `point`, `globalpoint`, `score`, `money` action migration did not work
 ### Security
 
 ## [3.0.0] - 2026-06-13
