@@ -19,7 +19,7 @@ using them.
     * [Conditions Tutorial](../../../Tutorials/Getting-Started/Basics/Conditions.md)
 
 !!! example "Related Docs"
-    * [Conditions Reference](../../../Documentation/Basics/About-Scripting.md#conditions)
+    * [Conditions Reference](../../../Documentation/Basics/Scripting-Elements.md#conditions)
     * [Condition Tag](../../../Documentation/Reference/Conditions-List.md#tag)
 </div>
 
