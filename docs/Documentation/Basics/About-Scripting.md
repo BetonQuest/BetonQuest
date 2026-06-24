@@ -2,8 +2,11 @@
 icon: octicons/info-16
 ---
 
-BetonQuest's quests do not have a predefined structure and can be freely designed.
+BetonQuest does not have a predefined structure for quests or scripts in general and therefore can be freely designed.
 This is made possible by a powerful quest scripting language.
+
+The difference is easier shown than just explained.
+The following graph compares the two quest structures, but please keep in mind that BetonQuest is much more powerful than shown in this example.
 
 <div class="grid" markdown>
 !!! example "Quest Structure with a Traditional Quest Plugin"
@@ -68,3 +71,81 @@ This is made possible by a powerful quest scripting language.
               style H fill:#ed1c24,stroke:#ed1c24
         ```      
 </div>
+
+Instead of a linear quest structure, or any other predefined structure that you fill out to create a quest,
+you can combine basic elements of quests to create complex directives and form the world according to your imagination.
+
+The freedom begins at creating the file structure with almost no restrictions.
+
+## Quest Packages
+
+Inside BetonQuest plugin folder, you will find a folder called `Quest Packages`.
+This folder will contain all the packages you are creating yourself.
+You may create a package per quest or questline, or even combine multiple packages into one. It's up to you!
+
+### Scripting files
+
+Inside those Quest Packages, besides the mandatory `package.yml` file,
+you are free to create any number of other files that will be loaded, merged and interpreted by the engine.
+Files with the `.yml` extension are recognized as quest scripts.
+All those files will follow similar rules as the `package.yml` file and may contain any selection of element sections to define elements in.
+Typically, users divide their files based on the element types or purpose.
+
+<div class="grid" markdown>
+
+!!! info "By element type"
+    ```mermaid
+    ---
+    config:
+      treeView:
+        rowIndent: 30
+      themeVariables:
+        treeView:
+          labelFontSize: '20px'
+          labelColor: '#5d6cc0'
+          lineColor: '#EEEEEE'
+    ---
+    treeView-beta
+        "Quest Packages"
+            "KingRebellion"
+                "package.yml"
+                "actions.yml"
+                "conditions.yml"
+                "objectives.yml"
+                "items.yml"
+                "journal.yml"
+    ```
+!!! info "By purpose"
+    ```mermaid
+    ---
+    config:
+      treeView:
+        rowIndent: 30
+      themeVariables:
+        treeView:
+          labelFontSize: '20px'
+          labelColor: '#5d6cc0'
+          lineColor: '#EEEEEE'
+    ---
+    treeView-beta
+        "Quest Packages"
+            "RescueChildren"
+                "package.yml"
+                "accept_the_quest.yml"
+                "find_the_bandits.yml"
+                "kill_the_bandits.yml"
+                "rescue_children.yml"
+                "claim_the_rewards.yml"
+    ```
+</div>
+
+[Quest Package Guide](./Packages-&-Templates.md){ .md-button }
+
+## Element Sections
+
+An element section is a configuration section grouping elements of the same type together.
+Each element section has a unique name and can contain any number of elements. 
+It may also be defined in multiple files without conflicting with each other as long as subsequent keys are unique across all files of a package.
+Every [type of element](../Reference/Definition-Encyclopedia.md#element-types) has its own section.
+
+[Scripting Elements](./Scripting-Elements.md){ .md-button }
