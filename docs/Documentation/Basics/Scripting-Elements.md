@@ -29,7 +29,6 @@ like `conditions:angry,!quest_started`. This will make an action fire only when 
 
 [Explore all Actions](../Reference/Actions-List.md){ .md-button }
 
-
 ### Objectives
 
 Objectives are any kind of goals or tasks for a player to complete. 
@@ -75,10 +74,6 @@ objectives:
 
 #### Placeholders
 
-!!! warning "Use with caution!"
-    The updating behaviour of already started objectives might change in BetonQuest 3. Perhaps placeholder changes will
-    be reflected in the amount of an active objective. This is not the case right now.
-
 Objectives support placeholders for their amount options.
 When the objective is started for a player, the amount is set to the placeholder's current value. The amount of an active objective will
 not be updated if the placeholder changes.
@@ -93,8 +88,8 @@ objectives:
 
 [Explore all Objectives](../Reference/Objectives-List.md){ .md-button }
 
-
 ### Conditions
+
 Conditions allow you to control what options are available to players in conversations, how the NPC responds or if the objective
 will be completed. They check if a given in-game state is present and return `true` or `false` as a result.
 
