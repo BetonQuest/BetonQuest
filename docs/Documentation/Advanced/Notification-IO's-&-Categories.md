@@ -5,7 +5,7 @@ icon: material/party-popper
 A NotifyIO is a method of displaying notifications to the player. Here's a demo video showing an example configuration
 of all NotifyIO's:
 
-<video controls loop src="../../_media/content/Documentation/Notifications/NotifySystemOverview.mp4" width="100%">
+<video controls loop src="../../../_media/content/Documentation/Notifications/NotifySystemOverview.mp4" width="100%">
   Sorry, your browser doesn't support embedded videos.
 </video>
 
@@ -21,9 +21,8 @@ Most NotifyIO's have unique settings that somehow change how a notification is d
 either defined in the action that triggers the NotifyIO or the appropriate language file 
 in the *lang* directory for all built-in notifications. 
 
-@snippet:actions:notify@
-
-@snippet:actions:notify-all@
+For further information about actions for notifications, have a look at the 
+[`notify` action](../Reference/Actions-List.md#notify) or the [`notifyall` action](../Reference/Actions-List.md#notifyall).
 
 ## Available NotifyIOs
 
@@ -127,7 +126,7 @@ Shows a totem with a "customModelData" NBT tag. This allows you to replace the t
 during the animation.
 
 ??? info "Preview"
-    <video controls loop src="../../_media/content/Documentation/Notifications/TotemIO.mp4" width="100%">
+    <video controls loop src="../../../_media/content/Documentation/Notifications/TotemIO.mp4" width="100%">
       Sorry, your browser doesn't support embedded videos.
     </video>
 
@@ -211,7 +210,7 @@ as the `soundlocation` option. This option can be a number or a vector. (1)
         🔴  = the actual location the sound is played at    
         *soundplayeroffset = (0,0,5)*
     
-        <video controls loop src="../../_media/content/Documentation/Notifications/RelativeVectorExample.mp4" width="100%">
+        <video controls loop src="../../../_media/content/Documentation/Notifications/RelativeVectorExample.mp4" width="100%">
           Sorry, your browser doesn't support embedded videos.
         </video>
         The sound is always played 5 block away from the soundlocation. The direction is however based on where the player is looking.

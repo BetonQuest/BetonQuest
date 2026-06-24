@@ -45,4 +45,4 @@ cancel:
 
 ## Related Actions
 
-@snippet:actions:cancel@
+See [`cancel` action](../Reference/Actions-List.md#cancel).
