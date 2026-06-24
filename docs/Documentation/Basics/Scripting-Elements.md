@@ -107,11 +107,11 @@ actions:
 
 ## Tags
 
-Tags are little pieces of text you can assign to player. They are particularly useful to 
-determine if player has started or completed quest. They are given with [`tag` action](../Reference/Actions-List.md#tag)
+Tags are little pieces of text you can assign to a player. They are particularly useful to 
+determine if a player has started or completed a quest. They are given with [`tag` action](../Reference/Actions-List.md#tag)
 and checked with [`tag` condition](../Reference/Conditions-List.md#tag).
 All tags are bound to a package, so if you add the `questCompleted` tag from within a package named `monsterQuest`,
-the tag will look like `monsterQuest.questCompleted`.
+the tag will look like `monsterQuest>questCompleted`.
 
 Read [working across packages](Packages-&-Templates.md#working-across-packages) to learn how to work with tags across packages.
 
