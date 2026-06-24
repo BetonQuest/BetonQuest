@@ -16,7 +16,7 @@
   <description>Provides the API of BetonQuest</description>
 
   <properties>
-    <revision>3.0.0</revision>
+    <revision>3.1.0</revision>
     <changelist>-SNAPSHOT</changelist>
 
     <!-- dependency versions -->
