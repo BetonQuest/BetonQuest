@@ -12,7 +12,7 @@ In this tutorial, we will give the player items and teleport them to different l
     * [Conversations Tutorial](Conversations.md)
 
 !!! example "Related Docs"
-    * [Actions Reference](../../../Documentation/Basics/About-Scripting.md#actions)
+    * [Actions Reference](../../../Documentation/Basics/Scripting-Elements.md#actions)
     * [Actions List](../../../Documentation/Reference/Actions-List.md)
 </div>
 @snippet:tutorials:download-setup-warning@

@@ -13,7 +13,7 @@ fishing fish. The possibilities are nearly endless! You will learn about these i
     * [Actions Tutorial](Actions.md)
 
 !!! example "Related Docs"
-    * [Objectives Reference](../../../Documentation/Basics/About-Scripting.md#objectives)
+    * [Objectives Reference](../../../Documentation/Basics/Scripting-Elements.md#objectives)
     * [Objectives List](../../../Documentation/Reference/Objectives-List.md)
 </div>
 @snippet:tutorials:download-setup-warning@
