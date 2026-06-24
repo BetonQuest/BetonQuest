@@ -11,13 +11,14 @@ actions and  conditions.
 
 The first argument is the name and the second the quality.
 You can specify the mode to select the brew by its `id`.  
-The `quality` is used for determining equality, and can be `bad`, `good`, `excellent`.  
+The `quality` flag is both used for matching and for generating items,
+ it can be `bad`, `good`, `excellent`.  
 In addition, you can also add `quest-item` argument to tag them as "QuestItem".
 
 ```YAML title="Example"
 items:
-  beer: 'tbp_brew beer excellent'
-  hotChocolate: "tbp_brew hot_choc bad quest-item"
+  beer: 'tbp_brew beer quality:excellent'
+  hotChocolate: "tbp_brew hot_choc quest-item"
 conditions:
   hasBeer: "item beer"
   hasHotChocolateInHand: "hand hotChocolate"
