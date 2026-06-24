@@ -142,6 +142,10 @@ A list of all data types that require a special and more elaborate explanation.
 
 All actions, conditions, etc. - essentially anything definable under a specific section in the script - are considered elements.
 
+### Element Types
+
+_tbd_
+
 ### Context
 
 !!! info "Context"
