@@ -24,8 +24,7 @@ objectives:
 
 In certain moments you will want something to happen. Updating the journal, setting tags, giving rewards, all these are
 done using actions. You define them by specifying a name and instruction like shown above.
-At the end of the instruction you can add the `conditions:` (with or without `s` at the end)
-attribute followed by a list of condition names separated by commas, 
+At the end of the instruction you can add the `conditions:` attribute followed by a list of condition names separated by commas, 
 like `conditions:angry,!quest_started`. This will make an action fire only when these conditions are met.
 
 [Explore all Actions](../Reference/Actions-List.md){ .md-button }
