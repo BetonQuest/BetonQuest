@@ -7,14 +7,6 @@ to the right. It's very likely that it has been already asked and answered.
 If not, feel free to ask us in the
 [Discord :fontawesome-brands-discord:](https://discordapp.com/invite/rK6mfHq)
 
-## Random daily quests
-
-Starting the random quest must be blocked with a special tag. If there is no such tag, the conversation option should appear.
-Create a few quests, each of them started with single `folder` action (they **must** be started by single action!).
-Now add those actions to another `folder` action and make it `random:1`. At the end of every quest add `delay` which will reset the special blocking tag.
-Now add that `folder` action to the conversation option. When the player chooses it he will start one random quest,
-and the conversation option will become available after defined in `delay` objective time after completing the quest.
-
 ## The same random daily quest for every player
 
 To do this use something called "[Schedules](Advanced/Schedules.md)".  
