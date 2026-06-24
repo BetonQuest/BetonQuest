@@ -21,9 +21,8 @@ Most NotifyIO's have unique settings that somehow change how a notification is d
 either defined in the action that triggers the NotifyIO or the appropriate language file 
 in the *lang* directory for all built-in notifications. 
 
-@snippet:actions:notify@
-
-@snippet:actions:notify-all@
+For further information about actions for notifications, have a look at the 
+[`notify` action](../Reference/Actions-List.md#notify) or the [`notifyall` action](../Reference/Actions-List.md#notifyall).
 
 ## Available NotifyIOs
 
