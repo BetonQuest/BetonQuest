@@ -20,9 +20,9 @@ public final class IngredientsUtil {
     /**
      * Check if the actual ingredients are all greater than the expected ingredients.
      *
-     * @param expected The expected ingredients
-     * @param actual   The actual ingredients to compare
-     * @return True if all actual ingredients has more or equal amount than expected, otherwise false
+     * @param expected the expected ingredients
+     * @param actual   the actual ingredients to compare
+     * @return true if all actual ingredients has more or equal amount than expected, otherwise false
      */
     public static boolean checkMatch(final Map<Ingredient, Integer> expected, final Map<? extends Ingredient, Integer> actual) {
         final Map<BaseIngredient, Integer> actualIngredients = new HashMap<>(actual.entrySet().stream()

@@ -11,8 +11,8 @@ import org.betonquest.betonquest.api.quest.action.PlayerAction;
 /**
  * A drunken action.
  *
- * @param drunkenEventNameArgument Drunk event name argument
- * @param api                      The brewing project api
+ * @param drunkenEventNameArgument drunk event name argument
+ * @param api                      the brewing project api
  */
 public record DrunkenEventAction(Argument<String> drunkenEventNameArgument,
                                  TheBrewingProjectApi api) implements PlayerAction {

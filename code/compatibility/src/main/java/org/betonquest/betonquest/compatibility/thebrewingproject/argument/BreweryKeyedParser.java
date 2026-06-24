@@ -9,8 +9,8 @@ import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 /**
  * Parse string representations of {@link BreweryKeyed} types that are backed with a {@link BreweryRegistry}.
  *
- * @param registry The {@link BreweryKeyed} item backing
- * @param <T>      The type of {@link BreweryKeyed} to parse
+ * @param registry the {@link BreweryKeyed} item backing
+ * @param <T>      the type of {@link BreweryKeyed} to parse
  */
 public record BreweryKeyedParser<T extends BreweryKeyed>(
         BreweryRegistry<T> registry) implements SimpleArgumentParser<T> {

@@ -11,10 +11,10 @@ import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.compatibility.thebrewingproject.argument.BrewingStructureType;
 
 /**
- * The objective reached whenever a TheBrewingProject structure is destroyed.
+ * Objective for destroying structures.
  *
- * @param structureTypeArgument An argument to specify structure type
- * @param service               The objective service
+ * @param structureTypeArgument an argument to specify structure type
+ * @param service               the objective service
  */
 public record StructureDestroyObjective(
         Argument<BrewingStructureType> structureTypeArgument,
@@ -23,9 +23,9 @@ public record StructureDestroyObjective(
     /**
      * Handle barrel destroy event.
      *
-     * @param ignoredEvent  An ignored barrel destroy event
-     * @param onlineProfile The player profile
-     * @throws QuestException If an argument is invalid
+     * @param ignoredEvent  an ignored barrel destroy event
+     * @param onlineProfile the player profile
+     * @throws QuestException if an argument is invalid
      */
     public void handleBarrelDestroy(final BarrelDestroyEvent ignoredEvent, final OnlineProfile onlineProfile) throws QuestException {
         final BrewingStructureType structureType = structureTypeArgument.getValue(onlineProfile);
@@ -37,9 +37,9 @@ public record StructureDestroyObjective(
     /**
      * Handle distillery destroy event.
      *
-     * @param ignoredEvent  An ignored distillery destroy event
-     * @param onlineProfile The player profile
-     * @throws QuestException If an argument is invalid
+     * @param ignoredEvent  an ignored distillery destroy event
+     * @param onlineProfile the player profile
+     * @throws QuestException if an argument is invalid
      */
     public void handleDistilleryDestroy(final DistilleryDestroyEvent ignoredEvent, final OnlineProfile onlineProfile) throws QuestException {
         final BrewingStructureType structureType = structureTypeArgument.getValue(onlineProfile);
@@ -51,9 +51,9 @@ public record StructureDestroyObjective(
     /**
      * Handle cauldron destroy event.
      *
-     * @param ignoredEvent An ignored cauldron destroy event
-     * @param onlineProfile The player profile
-     * @throws QuestException IF an argument is invalid
+     * @param ignoredEvent  an ignored cauldron destroy event
+     * @param onlineProfile the player profile
+     * @throws QuestException iF an argument is invalid
      */
     public void handleCauldronDestroy(final CauldronDestroyEvent ignoredEvent, final OnlineProfile onlineProfile) throws QuestException {
         final BrewingStructureType structureType = structureTypeArgument.getValue(onlineProfile);

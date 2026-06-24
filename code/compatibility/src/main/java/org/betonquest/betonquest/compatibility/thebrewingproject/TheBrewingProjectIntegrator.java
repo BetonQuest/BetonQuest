@@ -21,7 +21,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 /**
- * The brewing project integration.
+ * The TheBrewingProject integrator.
  */
 public class TheBrewingProjectIntegrator extends IntegrationTemplate {
 

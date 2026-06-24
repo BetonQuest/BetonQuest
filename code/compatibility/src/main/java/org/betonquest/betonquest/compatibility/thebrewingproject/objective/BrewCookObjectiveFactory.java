@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Factory for {@link BrewCookObjective}.
  *
- * @param api TheBrewingProject API
+ * @param api the TheBrewingProject API
  */
 public record BrewCookObjectiveFactory(TheBrewingProjectApi api) implements ObjectiveFactory {
 

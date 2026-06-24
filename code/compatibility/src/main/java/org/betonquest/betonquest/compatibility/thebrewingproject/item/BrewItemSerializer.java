@@ -9,9 +9,9 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Locale;
 
 /**
- * The brewing project item serializer.
+ * Serializer for TheBrewingProject brews.
  *
- * @param brewManager The brew manager provided by TheBrewingProject
+ * @param brewManager the brew manager provided by TheBrewingProject
  */
 public record BrewItemSerializer(BrewManager<ItemStack> brewManager) implements QuestItemSerializer {
 

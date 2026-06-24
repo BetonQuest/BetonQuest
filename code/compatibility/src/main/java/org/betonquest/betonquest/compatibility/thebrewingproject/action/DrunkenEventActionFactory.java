@@ -8,9 +8,9 @@ import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 
 /**
- * Factory for running drunken events.
+ * Factory for {@link DrunkenEventAction}.
  *
- * @param api The brewing project api
+ * @param api the brewing project api
  */
 public record DrunkenEventActionFactory(TheBrewingProjectApi api) implements PlayerActionFactory {
 

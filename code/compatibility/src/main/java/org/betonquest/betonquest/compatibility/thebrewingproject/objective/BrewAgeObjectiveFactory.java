@@ -15,7 +15,7 @@ import org.betonquest.betonquest.compatibility.thebrewingproject.argument.Brewer
 /**
  * Factory for {@link BrewAgeObjective}.
  *
- * @param api TheBrewingProject api
+ * @param api the TheBrewingProject api
  */
 public record BrewAgeObjectiveFactory(TheBrewingProjectApi api) implements ObjectiveFactory {
 

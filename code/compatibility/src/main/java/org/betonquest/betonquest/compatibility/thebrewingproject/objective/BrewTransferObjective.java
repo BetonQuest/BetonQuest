@@ -27,12 +27,12 @@ import java.util.function.Predicate;
 /**
  * The objective reached when transferring brews from either distillery, barrels, or cauldrons.
  *
- * @param qualityArgument       A quality filter
- * @param brewTypeArgument      A brew type argument
- * @param transferTypeArgument  A transfer type argument
- * @param structureTypeArgument A structure type argument
- * @param service               The objective service
- * @param brewManager           The brew manager provided by TheBrewingProject
+ * @param qualityArgument       a quality filter
+ * @param brewTypeArgument      a brew type argument
+ * @param transferTypeArgument  a transfer type argument
+ * @param structureTypeArgument a structure type argument
+ * @param service               the objective service
+ * @param brewManager           the brew manager provided by TheBrewingProject
  */
 public record BrewTransferObjective(BrewQualityArgument qualityArgument, Argument<String> brewTypeArgument,
                                     Argument<TransferType> transferTypeArgument,
@@ -42,9 +42,9 @@ public record BrewTransferObjective(BrewQualityArgument qualityArgument, Argumen
     /**
      * Handle item transaction events related to extracting items from inventories.
      *
-     * @param event   The event to handle
-     * @param profile The online profile of the player
-     * @throws QuestException If any argument is invalid
+     * @param event   the event to handle
+     * @param profile the online profile of the player
+     * @throws QuestException if any argument is invalid
      */
     public void handleExtract(final ItemTransactionEvent<ItemSource.ItemBasedSource> event, final OnlineProfile profile) throws QuestException {
         if (transferTypeArgument.getValue(profile) != TransferType.EXTRACT) {
@@ -68,9 +68,9 @@ public record BrewTransferObjective(BrewQualityArgument qualityArgument, Argumen
     /**
      * Handle item transaction events related to inserting items into inventories.
      *
-     * @param event   The event to handle
-     * @param profile The online profile of the player
-     * @throws QuestException If any argument is invalid
+     * @param event   the event to handle
+     * @param profile the online profile of the player
+     * @throws QuestException if any argument is invalid
      */
     public void handleInsert(final ItemTransactionEvent<ItemSource.BrewBasedSource> event, final OnlineProfile profile) throws QuestException {
         if (transferTypeArgument.getValue(profile) != TransferType.INSERT) {
@@ -94,9 +94,9 @@ public record BrewTransferObjective(BrewQualityArgument qualityArgument, Argumen
     /**
      * Handle cauldron extract event.
      *
-     * @param event   A cauldron extract event
-     * @param profile The online player profile
-     * @throws QuestException If any argument is invalid
+     * @param event   a cauldron extract event
+     * @param profile the online player profile
+     * @throws QuestException if any argument is invalid
      */
     public void handleExtract(final CauldronExtractEvent event, final OnlineProfile profile) throws QuestException {
         if (transferTypeArgument.getValue(profile) != TransferType.EXTRACT
@@ -109,9 +109,9 @@ public record BrewTransferObjective(BrewQualityArgument qualityArgument, Argumen
     /**
      * Handle cauldron insert event.
      *
-     * @param event   A cauldron extract event
-     * @param profile The online player profile
-     * @throws QuestException If any argument is invalid
+     * @param event   a cauldron extract event
+     * @param profile the online player profile
+     * @throws QuestException if any argument is invalid
      */
     public void handleInsert(final CauldronInsertEvent event, final OnlineProfile profile) throws QuestException {
         if (transferTypeArgument.getValue(profile) != TransferType.INSERT

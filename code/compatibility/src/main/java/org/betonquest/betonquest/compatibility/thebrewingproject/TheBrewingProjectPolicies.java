@@ -15,7 +15,7 @@ public final class TheBrewingProjectPolicies {
     /**
      * The requirements for the right version of TheBrewingProject to be run.
      *
-     * @return All policies for TheBrewingProject to run
+     * @return all policies for TheBrewingProject to run
      */
     public static Policy[] policies() {
         return new Policy[]{
