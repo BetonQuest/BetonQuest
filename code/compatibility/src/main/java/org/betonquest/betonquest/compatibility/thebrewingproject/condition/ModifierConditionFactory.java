@@ -9,9 +9,9 @@ import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.quest.condition.number.Operation;
 
 /**
- * A drunken modifier condition.
+ * Factory for {@link ModifierCondition}.
  *
- * @param api The brewing project api
+ * @param api the TheBrewingProject API
  */
 public record ModifierConditionFactory(TheBrewingProjectApi api) implements PlayerConditionFactory {
 

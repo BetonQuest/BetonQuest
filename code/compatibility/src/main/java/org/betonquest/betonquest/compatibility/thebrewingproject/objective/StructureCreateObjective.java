@@ -13,8 +13,8 @@ import org.betonquest.betonquest.compatibility.thebrewingproject.argument.Brewin
 /**
  * Objective for creating structures.
  *
- * @param structureTypeArgument A structure type argument
- * @param service               The objective service
+ * @param structureTypeArgument a structure type argument
+ * @param service               the objective service
  */
 public record StructureCreateObjective(
         Argument<BrewingStructureType> structureTypeArgument,
@@ -23,9 +23,9 @@ public record StructureCreateObjective(
     /**
      * Handle barrel create event.
      *
-     * @param ignoredEvent  An ignored barrel create event
-     * @param onlineProfile The player profile
-     * @throws QuestException If an argument is invalid
+     * @param ignoredEvent  an ignored barrel create event
+     * @param onlineProfile the player profile
+     * @throws QuestException if an argument is invalid
      */
     public void handleBarrelCreate(final BarrelCreateEvent ignoredEvent, final OnlineProfile onlineProfile) throws QuestException {
         final BrewingStructureType structureType = structureTypeArgument.getValue(onlineProfile);
@@ -37,9 +37,9 @@ public record StructureCreateObjective(
     /**
      * Handle distillery create event.
      *
-     * @param ignoredEvent  An ignored distillery create event
-     * @param onlineProfile The player profile
-     * @throws QuestException If an argument is invalid
+     * @param ignoredEvent  an ignored distillery create event
+     * @param onlineProfile the player profile
+     * @throws QuestException if an argument is invalid
      */
     public void handleDistilleryCreate(final DistilleryCreateEvent ignoredEvent, final OnlineProfile onlineProfile) throws QuestException {
         final BrewingStructureType structureType = structureTypeArgument.getValue(onlineProfile);
@@ -51,9 +51,9 @@ public record StructureCreateObjective(
     /**
      * Handle cauldron create event.
      *
-     * @param ignoredEvent  An ignored cauldron create event
-     * @param onlineProfile The player profile
-     * @throws QuestException IF an argument is invalid
+     * @param ignoredEvent  an ignored cauldron create event
+     * @param onlineProfile the player profile
+     * @throws QuestException if an argument is invalid
      */
     public void handleCauldronCreate(final CauldronCreateEvent ignoredEvent, final OnlineProfile onlineProfile) throws QuestException {
         final BrewingStructureType structureType = structureTypeArgument.getValue(onlineProfile);

@@ -25,11 +25,11 @@ import java.util.concurrent.TimeoutException;
 /**
  * A brew cook objective.
  *
- * @param cauldronTypeArgument A cauldron type argument
- * @param cookTimeArgument     A cook time argument
- * @param ingredientsArgument  An ingredients manager
- * @param api                  The brewing project api
- * @param service              The objective service
+ * @param cauldronTypeArgument a cauldron type argument
+ * @param cookTimeArgument     a cook time argument
+ * @param ingredientsArgument  an ingredients manager
+ * @param api                  the TheBrewingProject API
+ * @param service              the objective service
  */
 public record BrewCookObjective(Argument<CauldronType> cauldronTypeArgument, Argument<Number> cookTimeArgument,
                                 Argument<List<String>> ingredientsArgument, TheBrewingProjectApi api,
@@ -38,9 +38,9 @@ public record BrewCookObjective(Argument<CauldronType> cauldronTypeArgument, Arg
     /**
      * Handle brew extract events from cauldrons.
      *
-     * @param event   The brew extract event
-     * @param profile The player profile
-     * @throws QuestException If any argument was invalid
+     * @param event   the brew extract event
+     * @param profile the player profile
+     * @throws QuestException if any argument was invalid
      */
     public void handle(final CauldronExtractEvent event, final OnlineProfile profile) throws QuestException {
         final CauldronType cauldronType = cauldronTypeArgument.getValue(profile);

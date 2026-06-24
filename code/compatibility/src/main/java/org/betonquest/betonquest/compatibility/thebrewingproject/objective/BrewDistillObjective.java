@@ -18,9 +18,9 @@ import java.util.Optional;
 /**
  * A brew  distill objective.
  *
- * @param distillRunsArgument A distill runs argument
- * @param brewManager         The brew manager provided by TheBrewingProject
- * @param service             The objective service
+ * @param distillRunsArgument a distill runs argument
+ * @param brewManager         the brew manager provided by TheBrewingProject
+ * @param service             the objective service
  */
 public record BrewDistillObjective(Argument<Number> distillRunsArgument, BrewManager<ItemStack> brewManager,
                                    ObjectiveService service) implements Objective {
@@ -28,9 +28,9 @@ public record BrewDistillObjective(Argument<Number> distillRunsArgument, BrewMan
     /**
      * Handle brew extract events from distillery.
      *
-     * @param event   The brew extract event
-     * @param profile The player profile
-     * @throws QuestException If any argument was invalid
+     * @param event   the brew extract event
+     * @param profile the player profile
+     * @throws QuestException if any argument was invalid
      */
     public void handle(final ItemTransactionEvent<ItemSource.ItemBasedSource> event, final OnlineProfile profile) throws QuestException {
         final ItemTransactionSession<ItemSource.ItemBasedSource> session = event.getTransactionSession();

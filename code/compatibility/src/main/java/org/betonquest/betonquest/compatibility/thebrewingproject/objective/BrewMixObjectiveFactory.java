@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Factory for {@link BrewMixObjective}.
  *
- * @param api TheBrewingProject API
+ * @param api the TheBrewingProject API
  */
 public record BrewMixObjectiveFactory(TheBrewingProjectApi api) implements ObjectiveFactory {
 

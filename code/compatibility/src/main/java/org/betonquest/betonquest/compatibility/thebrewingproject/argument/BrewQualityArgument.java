@@ -12,8 +12,8 @@ import java.util.function.Predicate;
 /**
  * A collection of arguments representing a brew quality condition.
  *
- * @param qualityArgument   A brew quality
- * @param operationArgument A comparison operator
+ * @param qualityArgument   a brew quality
+ * @param operationArgument a comparison operator
  */
 public record BrewQualityArgument(Argument<BrewQuality> qualityArgument,
                                   Argument<Operation> operationArgument) {
@@ -21,9 +21,9 @@ public record BrewQualityArgument(Argument<BrewQuality> qualityArgument,
     /**
      * Parse an instruction chain.
      *
-     * @param instruction The instruction chain to parse
-     * @return A new {@link BrewQualityArgument}
-     * @throws QuestException If the argument could not be parsed
+     * @param instruction the instruction chain to parse
+     * @return a new {@link BrewQualityArgument}
+     * @throws QuestException if the argument could not be parsed
      */
     public static BrewQualityArgument parseInstructions(final Instruction instruction) throws QuestException {
         final Argument<Operation> operationArgument = instruction.parse(Operation::fromSymbol).get();
@@ -42,9 +42,9 @@ public record BrewQualityArgument(Argument<BrewQuality> qualityArgument,
     /**
      * Resolve these arguments based on a profile.
      *
-     * @param profile The profile to resolve the arguments against
-     * @return A predicate for testing brew quality
-     * @throws QuestException If any argument is invalid
+     * @param profile the profile to resolve the arguments against
+     * @return a predicate for testing brew quality
+     * @throws QuestException if any argument is invalid
      */
     public Predicate<BrewQuality> resolve(final Profile profile) throws QuestException {
         final BrewQuality quality = qualityArgument.getValue(profile);

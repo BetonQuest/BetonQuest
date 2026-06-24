@@ -20,7 +20,7 @@ import org.betonquest.betonquest.compatibility.thebrewingproject.argument.Transf
 /**
  * Factory for {@link BrewTransferObjective}.
  *
- * @param api TheBrewingProject api
+ * @param api the TheBrewingProject API
  */
 public record BrewTransferObjectiveFactory(TheBrewingProjectApi api) implements ObjectiveFactory {
 

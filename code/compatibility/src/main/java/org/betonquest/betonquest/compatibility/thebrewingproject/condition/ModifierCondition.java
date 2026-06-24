@@ -12,10 +12,10 @@ import org.betonquest.betonquest.quest.condition.number.Operation;
 /**
  * A drunken modifier condition.
  *
- * @param modifierNameArgument          Modifier name argument
- * @param modifierConditionTypeArgument Modifier condition argument
- * @param modifierValueArgument         Modifier value argument
- * @param api                           The brewing project api
+ * @param modifierNameArgument          a modifier name argument
+ * @param modifierConditionTypeArgument a modifier condition argument
+ * @param modifierValueArgument         a modifier value argument
+ * @param api                           the brewing project api
  */
 public record ModifierCondition(Argument<String> modifierNameArgument,
                                 Argument<Operation> modifierConditionTypeArgument,

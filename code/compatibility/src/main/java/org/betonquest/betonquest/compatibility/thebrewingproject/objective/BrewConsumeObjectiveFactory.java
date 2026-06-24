@@ -13,7 +13,7 @@ import org.betonquest.betonquest.compatibility.thebrewingproject.argument.BrewQu
 /**
  * Factory for {@link BrewConsumeObjective}.
  *
- * @param api The brewing project api
+ * @param api the TheBrewingProject API
  */
 public record BrewConsumeObjectiveFactory(TheBrewingProjectApi api) implements ObjectiveFactory {
 

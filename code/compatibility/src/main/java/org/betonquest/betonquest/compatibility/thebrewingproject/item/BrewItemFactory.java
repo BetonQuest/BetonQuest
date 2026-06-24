@@ -9,9 +9,9 @@ import org.betonquest.betonquest.api.item.QuestItemWrapper;
 import org.betonquest.betonquest.api.quest.TypeFactory;
 
 /**
- * A factory for generating the brewing project brews.
+ * Factory for {@link BrewItemWrapper}.
  *
- * @param api The brewing project api
+ * @param api the TheBrewingProject API
  */
 public record BrewItemFactory(TheBrewingProjectApi api) implements TypeFactory<QuestItemWrapper> {
 

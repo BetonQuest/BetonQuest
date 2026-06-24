@@ -12,7 +12,7 @@ import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 /**
  * Factory for {@link BrewDistillObjective}.
  *
- * @param api TheBrewingProject API
+ * @param api the TheBrewingProject API
  */
 public record BrewDistillObjectiveFactory(TheBrewingProjectApi api) implements ObjectiveFactory {
 

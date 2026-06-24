@@ -16,10 +16,10 @@ import java.util.function.Predicate;
 /**
  * Brew consume objective.
  *
- * @param qualityArgument  Argument for brew quality
- * @param brewTypeArgument Argument for brew type
- * @param service          The objective service
- * @param brewManager      The brew manager provided by TheBrewingProject
+ * @param qualityArgument  argument for brew quality
+ * @param brewTypeArgument argument for brew type
+ * @param service          the objective service
+ * @param brewManager      the brew manager provided by TheBrewingProject
  */
 public record BrewConsumeObjective(BrewQualityArgument qualityArgument, Argument<String> brewTypeArgument,
                                    ObjectiveService service, BrewManager<ItemStack> brewManager) implements Objective {
@@ -27,9 +27,9 @@ public record BrewConsumeObjective(BrewQualityArgument qualityArgument, Argument
     /**
      * Handle a brew consume event.
      *
-     * @param event   The event to handle
-     * @param profile The online profile related to the event
-     * @throws QuestException If any argument is invalid
+     * @param event   the event to handle
+     * @param profile the online profile related to the event
+     * @throws QuestException if any argument is invalid
      */
     public void handle(final BrewConsumeEvent event, final OnlineProfile profile) throws QuestException {
         final Predicate<BrewQuality> quality = qualityArgument.resolve(profile);

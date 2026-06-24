@@ -19,11 +19,11 @@ import java.util.Optional;
 /**
  * The brew age objective.
  *
- * @param barrelTypeArgument A barrel type argument
- * @param agingYearsArgument An aging time argument
- * @param ageingYear         An aging year as defined by TheBrewingProject
- * @param brewManager        The brew manager provided by TheBrewingProject
- * @param service            The objective service
+ * @param barrelTypeArgument a barrel type argument
+ * @param agingYearsArgument an aging time argument
+ * @param ageingYear         an aging year as defined by TheBrewingProject
+ * @param brewManager        the brew manager provided by TheBrewingProject
+ * @param service            the objective service
  */
 public record BrewAgeObjective(Argument<BarrelType> barrelTypeArgument,
                                Argument<Number> agingYearsArgument,
@@ -33,9 +33,9 @@ public record BrewAgeObjective(Argument<BarrelType> barrelTypeArgument,
     /**
      * Handle brew extract events from barrel.
      *
-     * @param event   The brew extract event
-     * @param profile The player profile
-     * @throws QuestException If any argument was invalid
+     * @param event   the brew extract event
+     * @param profile the player profile
+     * @throws QuestException if any argument was invalid
      */
     public void handle(final ItemTransactionEvent<ItemSource.ItemBasedSource> event, final OnlineProfile profile) throws QuestException {
         final ItemTransactionSession<ItemSource.ItemBasedSource> session = event.getTransactionSession();

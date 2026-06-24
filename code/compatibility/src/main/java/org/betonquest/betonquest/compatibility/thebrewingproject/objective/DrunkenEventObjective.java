@@ -11,8 +11,8 @@ import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 /**
  * The objective for triggering a specific drunken event.
  *
- * @param drunkenEventArgument An argument with a key for the drunken event
- * @param service              The objective service
+ * @param drunkenEventArgument an argument with a key for the drunken event
+ * @param service              the objective service
  */
 public record DrunkenEventObjective(Argument<String> drunkenEventArgument,
                                     ObjectiveService service) implements Objective {
@@ -20,9 +20,9 @@ public record DrunkenEventObjective(Argument<String> drunkenEventArgument,
     /**
      * Handle a drunk event initiate event.
      *
-     * @param event         The event to handle
-     * @param onlineProfile The player profile related to the event
-     * @throws QuestException If any argument is invalid
+     * @param event         the event to handle
+     * @param onlineProfile the player profile related to the event
+     * @throws QuestException if any argument is invalid
      */
     public void handle(final DrunkEventInitiateEvent event, final OnlineProfile onlineProfile) throws QuestException {
         final String drunkEvent = drunkenEventArgument.getValue(onlineProfile);
