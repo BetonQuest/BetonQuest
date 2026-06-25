@@ -1,5 +1,4 @@
 configVersion: ""
-language: en-US
 text_parser: legacyminimessage
 date_format: dd.MM.yyyy HH:mm
 default_notify_io: chat
@@ -26,6 +25,9 @@ mysql:
   reconnect_interval: 1000
 profile:
   initial_name: 'default'
+language:
+  default: en-US
+  questlang_whitelist: []
 conversation:
   default_io: menu,packetevents,tellraw
   block_item_transfer: true

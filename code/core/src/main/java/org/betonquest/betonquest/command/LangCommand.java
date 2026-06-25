@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -21,7 +22,6 @@ import org.bukkit.entity.Player;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Changes the default language for the player.
@@ -60,6 +60,11 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
     private final IngameNotificationSender languageChangedSender;
 
     /**
+     * The plugin configuration, used to read the questlang whitelist.
+     */
+    private final ConfigAccessor config;
+
+    /**
      * Creates a new executor for the /questlang command.
      *
      * @param log              the logger that will be used for logging
@@ -67,10 +72,11 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
      * @param localizations    the {@link Localizations} instance
      * @param profileProvider  the profile provider instance
      * @param languageProvider the language provider instance
+     * @param config           the {@link ConfigAccessor} used to read the language whitelist
      */
     public LangCommand(final BetonQuestLogger log, final PlayerDataStorage dataStorage,
                        final Localizations localizations, final ProfileProvider profileProvider,
-                       final LanguageProvider languageProvider) {
+                       final LanguageProvider languageProvider, final ConfigAccessor config) {
         this.log = log;
         this.dataStorage = dataStorage;
         this.localizations = localizations;
@@ -78,6 +84,23 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
         this.languageProvider = languageProvider;
         this.languageChangedSender = new IngameNotificationSender(log, localizations, null,
                 "LanguageCommand", NotificationLevel.INFO, "language_changed");
+        this.config = config;
+    }
+
+    /**
+     * Resolves the languages a player is allowed to select via {@code /questlang}.
+     * <p>
+     * An empty {@code language.questlang_whitelist} allows every loaded language; a non-empty
+     * whitelist restricts the result to the loaded languages that are also whitelisted.
+     *
+     * @return the list of selectable language keys
+     */
+    private List<String> allowedLanguages() {
+        final List<String> whitelist = config.getStringList("language.questlang_whitelist");
+        if (whitelist.isEmpty()) {
+            return localizations.getLanguages().stream().toList();
+        }
+        return localizations.getLanguages().stream().filter(whitelist::contains).toList();
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
@@ -98,7 +121,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
             }
             return true;
         }
-        final Set<String> languages = localizations.getLanguages();
+        final List<String> languages = allowedLanguages();
         if (!languages.contains(args[0]) && !"default".equalsIgnoreCase(args[0])) {
             final StringBuilder builder = new StringBuilder();
             builder.append("default (").append(languageProvider.getDefaultLanguage()).append("), ").append(String.join(", ", languages));
@@ -127,7 +150,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
     @Override
     public Optional<List<String>> simpleTabComplete(final CommandSender sender, final Command command, final String alias, final String[] args) {
         if (args.length == 1) {
-            return Optional.of(localizations.getLanguages().stream().toList());
+            return Optional.of(allowedLanguages());
         }
         return Optional.of(Collections.emptyList());
     }

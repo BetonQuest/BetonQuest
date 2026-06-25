@@ -5,13 +5,6 @@ icon: octicons/tasklist-16
 The configuration of BetonQuest is mainly done in the "_config.yml_" file. All of its options are described on this page.
 There is also additional information about backups, updates, and database transfers. 
 
-## `language` - Default plugin language
-The language option sets the default language of BetonQuest.  
-It is used for all players that do not have a specific language set or as fallback language just in case.  
-You can see all available languages in the `lang` folder, and you can add your own language files there.
-The language consists of a 2 to 3 character language key (a-z in lowercase), followed by a dash and at least
-2 characters from a-z, A-Z, numbers and dashes. 
-
 ## `text_parser` - Default text parser
 Set the default parser used to format all text in betonquest.
 For more information, see the [Text Formatting](../Advanced/Text-Formatting.md) page.
@@ -108,6 +101,21 @@ Profiles allow players to have different progress/data active.
 Currently, there is no way to switch between profiles, as the feature is still in development.
 
 * `initial_name` - The name of the profile that is created when a player joins for the first time.
+
+## `language` - Language settings
+`language` section controls the languages BetonQuest uses.
+
+### `language.default` - Default plugin language
+Sets the default language of BetonQuest.  
+It is used for all players that do not have a specific language set, or as a fallback language just in case.  
+You can see all available languages in the `lang` folder, and you can add your own language files there.
+The language consists of a 2 to 3 character language key (a-z in lowercase), followed by a dash and at least
+2 characters from a-z, A-Z, numbers and dashes.
+
+### `language.questlang_whitelist` - Selectable languages
+A list of languages that players are allowed to choose with the `/questlang` command.  
+Leave it empty (`[]`) to allow every loaded language. If the list is not empty, only the listed languages
+are offered as tab-completions and can be selected; any other language is treated as if it does not exist.
 
 ## `conversation` - Conversation settings
 All conversation related settings.

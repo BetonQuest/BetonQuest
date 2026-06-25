@@ -114,7 +114,7 @@ public class CommandsComponent extends AbstractCoreComponent {
         javaPlugin.getCommand("compass").setExecutor(new CompassCommand(javaPlugin, loggerFactory,
                 config, localizations, profileProvider, playerDataStorage, cancelerProcessor,
                 compassManager, itemManager, identifiers));
-        final LangCommand langCommand = new LangCommand(loggerFactory.create(LangCommand.class), playerDataStorage, localizations, profileProvider, languageProvider);
+        final LangCommand langCommand = new LangCommand(loggerFactory.create(LangCommand.class), playerDataStorage, localizations, profileProvider, languageProvider, config);
         javaPlugin.getCommand("questlang").setExecutor(langCommand);
         javaPlugin.getCommand("questlang").setTabCompleter(langCommand);
         javaPlugin.getCommand("betonquestanswer").setTabCompleter((sender, command, label, args) -> List.of());

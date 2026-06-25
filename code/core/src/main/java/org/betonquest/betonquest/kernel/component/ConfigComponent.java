@@ -82,7 +82,7 @@ public class ConfigComponent extends AbstractCoreComponent {
         @Override
         public Set<Metric<?>> getMetrics() {
             return Set.of(
-                    Metric.string("c_server_language", () -> fileConfigAccessor.getString("language")),
+                    Metric.string("c_server_language", () -> fileConfigAccessor.getString("language.default")),
                     Metric.string("c_conversation_default_io", () -> fileConfigAccessor.getString("conversation.default_io")),
                     Metric.string("c_conversation_interceptor_default", () -> fileConfigAccessor.getString("conversation.interceptor.default")),
                     Metric.number("c_npc_interaction_limit", () -> fileConfigAccessor.getInt("npc.interaction_limit")),
