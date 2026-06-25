@@ -7,6 +7,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
 - `language.questlang_whitelist` to restrict which languages players can select via `/questlang`
+- nesting in quest packages for single line instruction types
 ### Changed
 - `language` config option is now a section; the default language moved to `language.default`
 ### Deprecated

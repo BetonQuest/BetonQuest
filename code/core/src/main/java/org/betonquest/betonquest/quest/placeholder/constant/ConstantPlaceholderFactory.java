@@ -35,7 +35,10 @@ public class ConstantPlaceholderFactory implements PlayerPlaceholderFactory, Pla
         if (section == null) {
             throw new QuestException("No 'constants' section found in the QuestPackage!");
         }
-        final String constantTarget = instruction.nextElement();
+        final String constantTarget = String.join(".", instruction.getValueParts());
+        if (section.isConfigurationSection(constantTarget)) {
+            throw new QuestException("Path '" + constantTarget + "' is not a constant but a configuration section!");
+        }
         final String constant = section.getString(constantTarget);
         if (constant == null) {
             throw new QuestException("No constant with the name '" + constantTarget + "' found in the 'constants' section!");
