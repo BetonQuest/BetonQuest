@@ -13,7 +13,6 @@ import org.jetbrains.annotations.Nullable;
  * @since 3.0.0
  */
 @SuppressWarnings("PMD.ShortClassName")
-@FunctionalInterface
 public interface Text {
 
     /**
@@ -26,4 +25,15 @@ public interface Text {
      */
     @Contract(value = "_ -> new", pure = true)
     Component asComponent(@Nullable Profile profile) throws QuestException;
+
+    /**
+     * Returns the raw text for the given profile.
+     *
+     * @param profile the profile to get the text for
+     * @return the text as unparsed string
+     * @throws QuestException if an error occurs while getting the text
+     * @since 3.1.0
+     */
+    @Contract(value = "_ -> new", pure = true)
+    String asRaw(@Nullable Profile profile) throws QuestException;
 }
