@@ -13,6 +13,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Deprecated
 ### Removed
 ### Fixed
+- `/questlang` command error message listing the available languages incorrectly
 ### Security
 
 ## [3.0.2] - 2026-06-24
