@@ -338,6 +338,30 @@ in the messages.yml config.
 %tag.test.papiMode%
 ```
 
+## `Translate`
+
+__Context__: @snippet:placeholder-meta:online-offline-independent@  
+__Syntax__: `translate.<name>`  
+__Description__: Represents a text of the specified constant.
+
+Translatable [constants](#constant) support language keys similar how conversations do.
+Like the other multi-language elements, they use the default language as a fallback if the profile's language is missing.
+Placeholder creation fails if the default language is not specified as a key.
+They are defined in the *constants* section like this:
+
+```YAML
+constants:
+  village_name:
+    de-DE: Steindorf
+    en-US: Stone Village
+```
+
+To use a `translate` placeholder, you must use `%translate.translatableName%`:
+
+```scss title="Example"
+%translate.village_name%
+```
+
 ## `Version`
 
 __Context__: @snippet:placeholder-meta:independent@  

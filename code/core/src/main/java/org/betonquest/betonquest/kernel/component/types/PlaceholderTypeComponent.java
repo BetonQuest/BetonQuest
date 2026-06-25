@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.service.conversation.Conversations;
+import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.npc.NpcManager;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
@@ -28,6 +29,7 @@ import org.betonquest.betonquest.quest.placeholder.random.RandomNumberPlaceholde
 import org.betonquest.betonquest.quest.placeholder.sync.SyncPlaceholderFactory;
 import org.betonquest.betonquest.quest.placeholder.tag.GlobalTagPlaceholderFactory;
 import org.betonquest.betonquest.quest.placeholder.tag.TagPlaceholderFactory;
+import org.betonquest.betonquest.quest.placeholder.translate.TranslatePlaceholderFactory;
 import org.betonquest.betonquest.quest.placeholder.version.VersionPlaceholderFactory;
 import org.bukkit.plugin.Plugin;
 
@@ -49,7 +51,7 @@ public class PlaceholderTypeComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(Plugin.class, Localizations.class, GlobalData.class, PlayerDataStorage.class,
                 PlaceholderTypeRegistry.class, Conversations.class, ConditionManager.class,
-                ObjectiveManager.class, PlaceholderManager.class, NpcManager.class);
+                ObjectiveManager.class, PlaceholderManager.class, NpcManager.class, Instructions.class);
     }
 
     @Override
@@ -64,6 +66,7 @@ public class PlaceholderTypeComponent extends AbstractCoreComponent {
         final ObjectiveManager objectiveManager = getDependency(ObjectiveManager.class);
         final PlaceholderManager placeholderManager = getDependency(PlaceholderManager.class);
         final NpcManager npcManager = getDependency(NpcManager.class);
+        final Instructions instructions = getDependency(Instructions.class);
 
         placeholderTypes.register("condition", new ConditionPlaceholderFactory(conditionManager, localizations));
         placeholderTypes.registerCombined("constant", new ConstantPlaceholderFactory());
@@ -82,6 +85,7 @@ public class PlaceholderTypeComponent extends AbstractCoreComponent {
         placeholderTypes.registerCombined("randomnumber", new RandomNumberPlaceholderFactory());
         placeholderTypes.registerCombined("sync", new SyncPlaceholderFactory());
         placeholderTypes.register("tag", new TagPlaceholderFactory(dataStorage, localizations));
+        placeholderTypes.registerCombined("translate", new TranslatePlaceholderFactory(instructions));
         placeholderTypes.register("version", new VersionPlaceholderFactory(plugin));
     }
 }

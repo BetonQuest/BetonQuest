@@ -58,7 +58,7 @@ public class ParsedText implements Text {
     }
 
     @Override
-    public Component asComponent(@Nullable final Profile profile) throws QuestException {
+    public String asRaw(@Nullable final Profile profile) throws QuestException {
         String language = null;
         Argument<String> text = null;
         if (profile != null) {
@@ -72,6 +72,11 @@ public class ParsedText implements Text {
         if (text == null) {
             throw new QuestException("No text in language " + language + " defined.");
         }
-        return parser.parse(text.getValue(profile));
+        return text.getValue(profile);
+    }
+
+    @Override
+    public Component asComponent(@Nullable final Profile profile) throws QuestException {
+        return parser.parse(asRaw(profile));
     }
 }
