@@ -59,15 +59,17 @@ public record BrewMixObjective(Argument<CauldronType> cauldronTypeArgument, Argu
         } catch (final CompletionException | ExecutionException | InterruptedException | TimeoutException e) {
             throw new QuestException(e);
         }
-        if (brewOptional.isPresent()
-                && brewOptional.get()
-                .stepMatches(-1, BrewingStep.Mix.class, mixStep ->
-                        mixStep.time().moment() >= mixTime * Moment.MINUTE
-                                && cauldronType.appliesTo(mixStep.cauldronType())
-                                && IngredientsUtil.checkMatch(ingredients, mixStep.ingredients())
-                )) {
+        if (brewOptional.map(brew -> filterBrew(brew, mixTime, cauldronType, ingredients)).isPresent()) {
             service.complete(profile);
         }
+    }
+
+    private boolean filterBrew(final Brew brew, final double mixTime, final CauldronType cauldronType, final Map<Ingredient, Integer> ingredients) {
+        return brew.stepMatches(-1, BrewingStep.Mix.class, mixStep ->
+                mixStep.time().moment() >= mixTime * Moment.MINUTE
+                        && cauldronType.appliesTo(mixStep.cauldronType())
+                        && IngredientsUtil.checkMatch(ingredients, mixStep.ingredients())
+        );
     }
 
     @Override
