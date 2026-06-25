@@ -57,10 +57,7 @@ The goal is:
       
       addResetCounter: "objective add resetAfterTime"
     
-      resetAfterSpecificTime: "run 
-                ^tag delete startedQuest_1 
-                ^tag delete startedQuest_2 
-                ^tag delete startedQuest_3" #(5)!
+      resetAfterSpecificTime: tag delete startedQuest_1,startedQuest_2,startedQuest_3 #(5)!
     
     conditions:
       alreadyStartedQuest: "OR startedQuest_1,startedQuest_2,startedQuest_3"
