@@ -90,7 +90,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#language-default-plugin-language" class="md-skip">
+        <a href="#text_parser-default-text-parser" class="md-skip">
           Skip to content
         </a>
       
@@ -2477,29 +2477,6 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#language-default-plugin-language">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          <code>language</code> - Default plugin language
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
   <a class="md-nav__link" href="#text_parser-default-text-parser">
     <span class="md-ellipsis">
 
@@ -2706,6 +2683,82 @@
   </a>
 
   
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#language-language-settings">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>language</code> - Language settings
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+  <nav aria-label="language - Language settings" class="md-nav">
+    <ul class="md-nav__list">
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#languagedefault-default-plugin-language">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>language.default</code> - Default plugin language
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#languagequestlang_whitelist-selectable-languages">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>language.questlang_whitelist</code> - Selectable languages
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+    </ul>
+  </nav>
   
 </li>
     
@@ -7339,29 +7392,6 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#language-default-plugin-language">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          <code>language</code> - Default plugin language
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
   <a class="md-nav__link" href="#text_parser-default-text-parser">
     <span class="md-ellipsis">
 
@@ -7568,6 +7598,82 @@
   </a>
 
   
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#language-language-settings">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>language</code> - Language settings
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+  <nav aria-label="language - Language settings" class="md-nav">
+    <ul class="md-nav__list">
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#languagedefault-default-plugin-language">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>language.default</code> - Default plugin language
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#languagequestlang_whitelist-selectable-languages">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>language.questlang_whitelist</code> - Selectable languages
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+    </ul>
+  </nav>
   
 </li>
     
@@ -7881,12 +7987,6 @@
 
 <p>The configuration of BetonQuest is mainly done in the "<em>config.yml</em>" file. All of its options are described on this page.
 There is also additional information about backups, updates, and database transfers. </p>
-<h2 id="language-default-plugin-language"><code>language</code> - Default plugin language<a class="headerlink" href="#language-default-plugin-language" title="Permanent link">🔗</a></h2>
-<p>The language option sets the default language of BetonQuest.<br />
-It is used for all players that do not have a specific language set or as fallback language just in case.<br />
-You can see all available languages in the <code>lang</code> folder, and you can add your own language files there.
-The language consists of a 2 to 3 character language key (a-z in lowercase), followed by a dash and at least
-2 characters from a-z, A-Z, numbers and dashes. </p>
 <h2 id="text_parser-default-text-parser"><code>text_parser</code> - Default text parser<a class="headerlink" href="#text_parser-default-text-parser" title="Permanent link">🔗</a></h2>
 <p>Set the default parser used to format all text in betonquest.
 For more information, see the <a href="../../Advanced/Text-Formatting/">Text Formatting</a> page.</p>
@@ -7987,6 +8087,18 @@ Currently, there is no way to switch between profiles, as the feature is still i
 <ul>
 <li><code>initial_name</code> - The name of the profile that is created when a player joins for the first time.</li>
 </ul>
+<h2 id="language-language-settings"><code>language</code> - Language settings<a class="headerlink" href="#language-language-settings" title="Permanent link">🔗</a></h2>
+<p><code>language</code> section controls the languages BetonQuest uses.</p>
+<h3 id="languagedefault-default-plugin-language"><code>language.default</code> - Default plugin language<a class="headerlink" href="#languagedefault-default-plugin-language" title="Permanent link">🔗</a></h3>
+<p>Sets the default language of BetonQuest.<br />
+It is used for all players that do not have a specific language set, or as a fallback language just in case.<br />
+You can see all available languages in the <code>lang</code> folder, and you can add your own language files there.
+The language consists of a 2 to 3 character language key (a-z in lowercase), followed by a dash and at least
+2 characters from a-z, A-Z, numbers and dashes.</p>
+<h3 id="languagequestlang_whitelist-selectable-languages"><code>language.questlang_whitelist</code> - Selectable languages<a class="headerlink" href="#languagequestlang_whitelist-selectable-languages" title="Permanent link">🔗</a></h3>
+<p>A list of languages that players are allowed to choose with the <code>/questlang</code> command.<br />
+Leave it empty (<code>[]</code>) to allow every loaded language. If the list is not empty, only the listed languages
+are offered as tab-completions and can be selected; any other language is treated as if it does not exist.</p>
 <h2 id="conversation-conversation-settings"><code>conversation</code> - Conversation settings<a class="headerlink" href="#conversation-conversation-settings" title="Permanent link">🔗</a></h2>
 <p>All conversation related settings.</p>
 <ul>
