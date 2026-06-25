@@ -8,10 +8,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 - `language.questlang_whitelist` to restrict which languages players can select via `/questlang`
 - nesting in quest packages for single line instruction types
+- `unit` optional argument in `burn` action to specify the time unit for the duration
 - `translate` placeholder parsing languages from `constants` section
 - `heal` action to change the current health of a player
 ### Changed
 - `language` config option is now a section; the default language moved to `language.default`
+- `burn` action to no longer require its duration argument to specify its name `duration`
 ### Deprecated
 ### Removed
 ### Fixed
