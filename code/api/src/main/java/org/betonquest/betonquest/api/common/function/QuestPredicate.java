@@ -8,6 +8,7 @@ import java.util.Objects;
  * A {@link java.util.function.Predicate} that may throw a {@link QuestException}
  *
  * @param <T> The type of the input argument
+ * @since 3.1.0
  */
 @FunctionalInterface
 public interface QuestPredicate<T> {
@@ -19,6 +20,7 @@ public interface QuestPredicate<T> {
      * @return {@code true} if the input argument match the predicate,
      * otherwise {@code false}
      * @throws QuestException when the method execution fails
+     * @since 3.1.0
      */
     boolean test(T value) throws QuestException;
 
@@ -37,6 +39,7 @@ public interface QuestPredicate<T> {
      * @return a composed predicate that represents the short-circuiting logical
      * AND of this predicate and the {@code other} predicate
      * @throws NullPointerException if other is null
+     * @since 3.1.0
      */
     default QuestPredicate<T> and(final QuestPredicate<? super T> other) {
         Objects.requireNonNull(other);
@@ -49,6 +52,7 @@ public interface QuestPredicate<T> {
      *
      * @return a predicate that represents the logical negation of this
      * predicate
+     * @since 3.1.0
      */
     default QuestPredicate<T> negate() {
         return (T t) -> !test(t);
@@ -69,6 +73,7 @@ public interface QuestPredicate<T> {
      * @return a composed predicate that represents the short-circuiting logical
      * OR of this predicate and the {@code other} predicate
      * @throws NullPointerException if other is null
+     * @since 3.1.0
      */
     @SuppressWarnings("PMD.ShortMethodName")
     default QuestPredicate<T> or(final QuestPredicate<? super T> other) {
