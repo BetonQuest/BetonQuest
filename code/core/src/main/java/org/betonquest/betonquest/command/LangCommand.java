@@ -129,7 +129,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
                 log.warn("No localizations loaded, somethings wrong!");
                 return false;
             }
-            final String finalMessage = builder.substring(0, builder.length() - 2) + ".";
+            final String finalMessage = builder.append('.').toString();
             try {
                 sender.sendMessage(localizations.getMessage(onlineProfile, "language_not_exist",
                         new VariableReplacement("languages", Component.text(finalMessage))));
