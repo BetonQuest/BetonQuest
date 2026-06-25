@@ -31,25 +31,25 @@ The goal is:
       resetAfterTime: delay 1440 actions:resetAfterSpecificTime #(2)!
     
     actions:
-      selectRandomQuest: "folder selectQuest_1,selectQuest_2,selectQuest_3 random:1 conditions:!alreadyStartedQuest" #(3)!
-    
-      # Quest 1
-      selectQuest_1: "folder addTagStarted_1,addObjectiveQuest_1,notifyPlayerQuest_1 delay:5 seconds"
-      addTagStarted_1: "tag add startedQuest_1"
-      addObjectiveQuest_1: "objective add killMobs"
-      notifyPlayerQuest_1: "notify Go and kill 2 zombies today!"
-    
-      # Quest 2
-      selectQuest_2: "folder addTagStarted_2,addObjectiveQuest_2,notifyPlayerQuest_2 delay:5 seconds"
-      addTagStarted_2: "tag add startedQuest_2"
-      addObjectiveQuest_2: "objective add tameWolfs"
-      notifyPlayerQuest_2: "notify Go and tame 2 wolfs today!"
+      selectRandomQuest: "folder quest_1.selectQuest,quest_2.selectQuest,quest_3.selectQuest random:1 conditions:!alreadyStartedQuest" #(3)!
       
-      # Quest 3
-      selectQuest_3: "folder addTagStarted_3,addObjectiveQuest_3,notifyPlayerQuest_3 delay:5 seconds"
-      addTagStarted_3: "tag add startedQuest_3"
-      addObjectiveQuest_3: "objective add shearSheeps"
-      notifyPlayerQuest_3: "notify Go and shear 5 sheeps today!"
+      quest_1:
+        selectQuest: "folder quest_1.addTagStarted,quest_1.addObjectiveQuest,quest_1.notifyPlayerQuest delay:5 seconds"
+        addTagStarted: "globaltag add startedQuest_1"
+        addObjectiveQuest: "objective add killMobs"
+        notifyPlayerQuest: "notify Go and kill 2 zombies today!"
+    
+      quest_2:
+        selectQuest: "folder quest_2.addTagStarted,quest_2.addObjectiveQuest,quest_2.notifyPlayerQuest delay:5 seconds"
+        addTagStarted: "tag add startedQuest_2"
+        addObjectiveQuest: "objective add tameWolfs"
+        notifyPlayerQuest: "notify Go and tame 2 wolfs today!"
+      
+      quest_3:
+        selectQuest: "folder quest_3.addTagStarted,quest_3.addObjectiveQuest,quest_3.notifyPlayerQuest delay:5 seconds"
+        addTagStarted: "tag add startedQuest_3"
+        addObjectiveQuest: "objective add shearSheeps"
+        notifyPlayerQuest: "notify Go and shear 5 sheeps today!"
     
       questCompleted: "folder rewardPlayer,sendNotify,addResetCounter" #(4)!
       rewardPlayer: "give reward:5"
@@ -75,13 +75,13 @@ The goal is:
     4. Upon completion, the player is assigned the reset objective (the `delay` objective).
     5. Removes all tags that may have been added by the quests.
 
-=== "... static reset at 1pm (with schedules)"
+=== "... static reset at 13:00 (01:00 PM) (with schedules)"
 
     ``` yaml
     schedules:
       resetDailyQuests: #(4)!
-        type: realtime-daily 
-        time: '13:00' 
+        type: realtime-daily
+        time: '13:00'
         actions: resetAfterSpecificTime
     
     objectives:
@@ -92,34 +92,32 @@ The goal is:
       shearSheeps: "shear 5 actions:questCompleted"
     
     actions:
-      selectRandomQuest: "folder selectQuest_1,selectQuest_2,selectQuest_3 random:1 conditions:!alreadyStartedQuest" #(2)!
+      selectRandomQuest: "folder quest_1.selectQuest,quest_2.selectQuest,quest_3.selectQuest random:1 conditions:!alreadyStartedQuest" #(2)!
       
-      # Quest 1
-      selectQuest_1: "folder addTagStarted_1,addObjectiveQuest_1,notifyPlayerQuest_1 delay:5 seconds"
-      addTagStarted_1: "tag add startedQuest_1"
-      addObjectiveQuest_1: "objective add killMobs"
-      notifyPlayerQuest_1: "notify Go and kill 2 zombies today!"
+      quest_1:
+        selectQuest: "folder quest_1.addTagStarted,quest_1.addObjectiveQuest,quest_1.notifyPlayerQuest delay:5 seconds"
+        addTagStarted: "globaltag add startedQuest_1"
+        addObjectiveQuest: "objective add killMobs"
+        notifyPlayerQuest: "notify Go and kill 2 zombies today!"
+    
+      quest_2:
+        selectQuest: "folder quest_2.addTagStarted,quest_2.addObjectiveQuest,quest_2.notifyPlayerQuest delay:5 seconds"
+        addTagStarted: "tag add startedQuest_2"
+        addObjectiveQuest: "objective add tameWolfs"
+        notifyPlayerQuest: "notify Go and tame 2 wolfs today!"
       
-      # Quest 2
-      selectQuest_2: "folder addTagStarted_2,addObjectiveQuest_2,notifyPlayerQuest_2 delay:5 seconds"
-      addTagStarted_2: "tag add startedQuest_2"
-      addObjectiveQuest_2: "objective add tameWolfs"
-      notifyPlayerQuest_2: "notify Go and tame 2 wolfs today!"
-      
-      # Quest 3
-      selectQuest_3: "folder addTagStarted_3,addObjectiveQuest_3,notifyPlayerQuest_3 delay:5 seconds"
-      addTagStarted_3: "tag add startedQuest_3"
-      addObjectiveQuest_3: "objective add shearSheeps"
-      notifyPlayerQuest_3: "notify Go and shear 5 sheeps today!"
+      quest_3:
+        selectQuest: "folder quest_3.addTagStarted,quest_3.addObjectiveQuest,quest_3.notifyPlayerQuest delay:5 seconds"
+        addTagStarted: "tag add startedQuest_3"
+        addObjectiveQuest: "objective add shearSheeps"
+        notifyPlayerQuest: "notify Go and shear 5 sheeps today!"
     
       questCompleted: "folder rewardPlayer,sendNotify"
       rewardPlayer: "give reward:5"
-      sendNotify: "notify Congratulations! You get a new quest at 1pm"
+      sendNotify: "notify Congratulations! You get a new quest at 01:00 PM"
     
-      resetAfterSpecificTime: "run 
-                ^tag delete startedQuest_1 
-                ^tag delete startedQuest_2 
-                ^tag delete startedQuest_3" #(3)!
+      resetAfterSpecificTime: "tag delete startedQuest_1,startedQuest_2,startedQuest_3" #(3)!
+    
     conditions:
       alreadyStartedQuest: "OR startedQuest_1,startedQuest_2,startedQuest_3"
       startedQuest_1: "tag startedQuest_1"
@@ -133,4 +131,4 @@ The goal is:
     1. When the player logs in, a random daily quest is assigned if they haven't already received one that day.
     2. The **folder action** with the `random` argument can be used to create random daily quests.
     3. Removes all tags that may have been added by the quests.
-    4. This is the `schedules` section. It triggers the reset action at 1pm every day.
+    4. This is the `schedules` section. It triggers the reset action at 01:00 PM every day.
