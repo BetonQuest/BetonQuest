@@ -58,14 +58,17 @@ public record BrewCookObjective(Argument<CauldronType> cauldronTypeArgument, Arg
         } catch (final CompletionException | ExecutionException | InterruptedException | TimeoutException e) {
             throw new QuestException(e);
         }
-        if (brewOptional.isPresent() && brewOptional.get()
-                .stepMatches(-1, BrewingStep.Cook.class, cookStep ->
-                        cookStep.time().moment() >= cookTime * Moment.MINUTE
-                                && cauldronType.appliesTo(cookStep.cauldronType())
-                                && IngredientsUtil.checkMatch(ingredients, cookStep.ingredients())
-                )) {
+        if (brewOptional.filter(brew -> filterBrew(brew, cookTime, cauldronType, ingredients)).isPresent()) {
             service.complete(profile);
         }
+    }
+
+    private boolean filterBrew(final Brew brew, final double cookTime, final CauldronType cauldronType, final Map<Ingredient, Integer> ingredients) {
+        return brew.stepMatches(-1, BrewingStep.Cook.class, cookStep ->
+                cookStep.time().moment() >= cookTime * Moment.MINUTE
+                        && cauldronType.appliesTo(cookStep.cauldronType())
+                        && IngredientsUtil.checkMatch(ingredients, cookStep.ingredients())
+        );
     }
 
     @Override
