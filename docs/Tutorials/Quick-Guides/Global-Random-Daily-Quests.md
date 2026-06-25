@@ -59,10 +59,7 @@ actions:
   rewardPlayer: "give reward:5"
   sendNotify: "notify Congratulations! You get a new quest at 1pm"
 
-  resetAfterSpecificTime: "run
-          ^globaltag delete startedQuest_1 
-          ^globaltag delete startedQuest_2 
-          ^globaltag delete startedQuest_3" #(4)!
+  resetAfterSpecificTime: "globaltag delete startedQuest_1,startedQuest_2,startedtQuest_3" #(4)!
 
 conditions:
   alreadyStartedQuest: "OR startedQuest_1,startedQuest_2,startedQuest_3"
