@@ -62,6 +62,7 @@ nav:
           - 'Quest Packages': Tutorials/Syntax/Quest-Packages.md
       - 'Quick Guides':
           - 'Displaying Progress': Tutorials/Quick-Guides/Displaying-Progress.md
+          - 'Random Daily Quest': Tutorials/Quick-Guides/Random-Daily-Quest.md
   - 'Documentation':
       - 'Overview': Documentation/Overview.md
 
