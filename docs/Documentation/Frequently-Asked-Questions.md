@@ -7,15 +7,6 @@ to the right. It's very likely that it has been already asked and answered.
 If not, feel free to ask us in the
 [Discord :fontawesome-brands-discord:](https://discordapp.com/invite/rK6mfHq)
 
-## The same random daily quest for every player
-
-To do this use something called "[Schedules](Advanced/Schedules.md)".  
-Run a scheduled `folder` action every day at some late hour (for example 4am).
-The `folder` action should be `random:1` and contain several different `globaltag` actions.
-These actions will set a specific tag. Now when the player starts the conversation and asks about the daily quest the NPC
-should check (using the `globaltag` condition) which tag is currently set and give the player different quests based on that.
-Of course, the scheduled folder action also needs to remove the current tag before setting a new one.
-
 ## Server wide Quests (all players work together)
 
 There is no easy way to do this (yet). Additionally, every use case differs. Let's assume you have some sort of action

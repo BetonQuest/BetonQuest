@@ -63,6 +63,7 @@ nav:
       - 'Quick Guides':
           - 'Displaying Progress': Tutorials/Quick-Guides/Displaying-Progress.md
           - 'Random Daily Quest': Tutorials/Quick-Guides/Random-Daily-Quest.md
+          - 'Global Daily Quests': Tutorials/Quick-Guides/Global-Random-Daily-Quests.md
   - 'Documentation':
       - 'Overview': Documentation/Overview.md
 
