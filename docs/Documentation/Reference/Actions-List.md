@@ -24,8 +24,6 @@ actions:
   punishing_fire: "burn %point.punishment.amount%"
 ```
 
-*[TimeUnit]: ticks, seconds, minutes, hours, days, weeks, months, years
-
 ## `Cancel`
 
 __Context__: @snippet:action-meta:online@  

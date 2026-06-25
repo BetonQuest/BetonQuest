@@ -20,16 +20,7 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 
 ## Changes
 
-!!! Note
-    - :sun: **Fully automated migration** – These steps are reliably migrated without issues in most cases.
-      You usually don’t need to take any action. However, certain rarely used or non-standard formats (e.g., run 
-      events (now called actions) or math variables (now called placeholders)) may not migrate correctly if they deviate from the common structure.
-    - :white_sun_cloud: **Automated migration with known limitations** – These steps are generally migrated automatically,
-      especially for straightforward cases. However, there are known edge cases that cannot be detected or handled 
-      automatically. You should review these steps and be prepared to make manual adjustments where needed.
-    - :thunder_cloud_rain: **Manual migration required** – These steps are not migrated at all.
-      Either the structure is too complex to detect automatically, or the new format requires additional information.
-      You will need to fully rewrite or convert these steps yourself.
+@snippet:migration:migration-types@
 
 - [3.0.0-DEV-58 - Delete messages.yml](#300-dev-58-delete-messagesyml) :thunder_cloud_rain:
 - [3.0.0-DEV-65 - Delete menuConfig.yml](#300-dev-65-delete-menuconfigyml) :thunder_cloud_rain:
@@ -64,6 +55,7 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 - [3.0.0-DEV-562 - Rename `events` to `actions`](#300-dev-562-rename-events-to-actions) :sun:
 - [3.0.0-DEV-635 - Brewery Item Type](#300-dev-635-brewery-item-type) :thunder_cloud_rain:
 - [3.0.0-DEV-673 - `auto-once` Objectives](#300-dev-673-auto-once-objectives) :sun:
+- [3.1.0-DEV-13 - Reshape burn action](#310-dev-13-reshape-burn-action) :sun:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :thunder_cloud_rain:
 
@@ -1135,6 +1127,31 @@ The `global` property of objectives has been renamed to `auto-once`.
     ```YAML title="New Syntax"
     objectives:
       welcome: login auto-once persistent actions:welcome_message
+    ```
+    
+    </div>
+
+### 3.1.0-DEV-13 - Reshape burn action :sun:
+
+The [burn action](../../Reference/Actions-List.md#burn) has been reshaped.
+
+??? info "Automated Migration"
+    *The migration is automated. You shouldn't have to do anything.*
+    
+    -------------
+
+    The duration has always been a required parameter, but no longer requires the `duration:` prefix.
+    In some rare cases, the automatic migration may not work.
+    <div class="grid" markdown>
+    
+    ```YAML title="Old Syntax"
+    actions:
+      burn: burn duration:60
+    ```
+    
+    ```YAML title="New Syntax"
+    actions:
+      burn: burn 60
     ```
     
     </div>
