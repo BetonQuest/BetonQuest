@@ -35,25 +35,25 @@ objectives:
   shearSheeps: "shear 5 actions:questCompleted"
 
 actions:
-  selectRandomQuest: "folder selectQuest_1,selectQuest_2,selectQuest_3 random:1 conditions:!alreadyStartedQuest" #(3)!
+  selectRandomQuest: "folder quest_1.selectQuest,quest_2.selectQuest,quest_3.selectQuest random:1 conditions:!alreadyStartedQuest" #(3)!
 
-  # Quest 1
-  selectQuest_1: "folder addTagStarted_1,addObjectiveQuest_1,notifyPlayerQuest_1 delay:5 seconds"
-  addTagStarted_1: "globaltag add startedQuest_1"
-  addObjectiveQuest_1: "objective add killMobs"
-  notifyPlayerQuest_1: "notify Go and kill 2 zombies today!"
+  quest_1:
+    selectQuest: "folder quest_1.addTagStarted,quest_1.addObjectiveQuest,quest_1.notifyPlayerQuest delay:5 seconds"
+    addTagStarted: "globaltag add startedQuest_1"
+    addObjectiveQuest: "objective add killMobs"
+    notifyPlayerQuest: "notify Go and kill 2 zombies today!"
 
-  # Quest 2
-  selectQuest_2: "folder addTagStarted_2,addObjectiveQuest_2,notifyPlayerQuest_2 delay:5 seconds"
-  addTagStarted_2: "tag add startedQuest_2"
-  addObjectiveQuest_2: "objective add tameWolfs"
-  notifyPlayerQuest_2: "notify Go and tame 2 wolfs today!"
+  quest_2:
+    selectQuest: "folder quest_2.addTagStarted,quest_2.addObjectiveQuest,quest_2.notifyPlayerQuest delay:5 seconds"
+    addTagStarted: "tag add startedQuest_2"
+    addObjectiveQuest: "objective add tameWolfs"
+    notifyPlayerQuest: "notify Go and tame 2 wolfs today!"
   
-  # Quest 3
-  selectQuest_3: "folder addTagStarted_3,addObjectiveQuest_3,notifyPlayerQuest_3 delay:5 seconds"
-  addTagStarted_3: "tag add startedQuest_3"
-  addObjectiveQuest_3: "objective add shearSheeps"
-  notifyPlayerQuest_3: "notify Go and shear 5 sheeps today!"
+  quest_3:
+    selectQuest: "folder quest_3.addTagStarted,quest_3.addObjectiveQuest,quest_3.notifyPlayerQuest delay:5 seconds"
+    addTagStarted: "tag add startedQuest_3"
+    addObjectiveQuest: "objective add shearSheeps"
+    notifyPlayerQuest: "notify Go and shear 5 sheeps today!"
 
   questCompleted: "folder rewardPlayer,sendNotify"
   rewardPlayer: "give reward:5"
