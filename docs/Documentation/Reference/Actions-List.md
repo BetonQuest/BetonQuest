@@ -490,6 +490,30 @@ actions:
   setNpcsAggressive: "globaltag add global_areNPCsAggressive"
 ```
 
+## `Heal`
+
+__Context__: @snippet:action-meta:online@  
+__Syntax__: `heal <amount> [operation]`  
+__Description__: Heal the player for the specified amount.
+
+Use `operation:set` to set the health to a specific amount instead of adding to it.
+The health of the player will never be less than 0 or more than the maximum health and will be cropped to match that.
+While technically possible, instead of using a negative amount you should consider using the [`damage` action](#damage).
+Using negative amounts will skip the damage animation and any related effects.
+
+| Parameter               | Type              | Explanation                   |
+|-------------------------|-------------------|-------------------------------|
+| amount<br>[Number]      | Required          | The amount of health to heal. |
+| operation<br>[HealType] | Optional<br>[add] | The operation to perform.     |
+
+```YAML title="Example"
+actions:
+  give5: "heal 5"
+  set20: "heal 20 operation:set"
+```
+
+*[HealType]: add, set
+
 ## `Hunger`
 
 __Context__: @snippet:action-meta:online@  

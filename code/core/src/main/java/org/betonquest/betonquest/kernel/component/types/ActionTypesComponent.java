@@ -45,6 +45,7 @@ import org.betonquest.betonquest.quest.action.experience.ExperienceActionFactory
 import org.betonquest.betonquest.quest.action.explosion.ExplosionActionFactory;
 import org.betonquest.betonquest.quest.action.folder.FolderActionFactory;
 import org.betonquest.betonquest.quest.action.give.GiveActionFactory;
+import org.betonquest.betonquest.quest.action.heal.HealActionFactory;
 import org.betonquest.betonquest.quest.action.hunger.HungerActionFactory;
 import org.betonquest.betonquest.quest.action.item.ItemDurabilityActionFactory;
 import org.betonquest.betonquest.quest.action.journal.GiveJournalActionFactory;
@@ -169,6 +170,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         actionTypes.register("givejournal", new GiveJournalActionFactory(playerDataStorage));
         actionTypes.registerCombined("globaltag", new TagGlobalActionFactory(globalData));
         actionTypes.registerCombined("globalpoint", new GlobalPointActionFactory(globalData));
+        actionTypes.register("heal", new HealActionFactory());
         actionTypes.register("hunger", new HungerActionFactory());
         actionTypes.registerCombined("if", new IfElseActionFactory(actionManager, conditionManager));
         actionTypes.register("itemdurability", new ItemDurabilityActionFactory());
