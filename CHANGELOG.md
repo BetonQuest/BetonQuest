@@ -15,6 +15,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Removed
 ### Fixed
 - `/questlang` command error message listing the available languages incorrectly
+- ConcurrentModificationException in statistics calculation
 ### Security
 
 ## [3.0.2] - 2026-06-24

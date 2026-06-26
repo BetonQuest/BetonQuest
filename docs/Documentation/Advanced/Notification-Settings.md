@@ -17,7 +17,7 @@ A truly custom notification can be sent using the [`notify`](../Reference/Action
 
 ## Changing BetonQuest's built-in notifications
 Almost every notification built into BetonQuest is customizable in some way. A list of the notifications can be found in
-the *lang* directory. BQ natively supports [a number of languages](../Reference/Plugin-Config.md#language-default-plugin-language).
+the *lang* directory. BQ natively supports [a number of languages](../Reference/Plugin-Config.md#languagedefault-default-plugin-language).
 Within the *lang* directory, you can find BetonQuest's built-in notifications in the appropriate language's file. They can have
 their text changed, formatted or even sounds added to them. 
   
