@@ -163,8 +163,6 @@ nav:
               - 'Migration 2.X to 3.X': Documentation/Updates/Migrations/Migration-2-3.md
           - 'Changelog': Documentation/CHANGELOG.md
 
-      - 'Frequently Asked Questions':
-          - 'General FAQ': Documentation/Frequently-Asked-Questions.md
   - 'API':
       - 'Overview': API/Overview.md
       - 'Obtaining API': API/Obtaining-API.md
