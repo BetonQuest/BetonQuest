@@ -14,6 +14,8 @@ import org.betonquest.betonquest.api.item.QuestItemWrapper;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.UUID;
+
 /**
  * Creates {@link MMOQuestItem}s from type and id.
  */
@@ -75,12 +77,14 @@ public class MMOQuestItemWrapper implements QuestItemWrapper {
         if (item == null) {
             throw new QuestException("Could not find item for type " + type + " and identifier " + identifier);
         }
+        UUID soulboundTo = null;
         if (profile != null && profile.getOnlineProfile().isPresent()) {
             final int soulBoundLevel = soulBound.getValue(profile).orElse(0).intValue();
             if (soulBoundLevel > 0) {
                 item.setData(ItemStats.SOULBOUND, new SoulboundData(profile.getOnlineProfile().get().getPlayer(), soulBoundLevel));
+                soulboundTo = profile.getPlayerUUID();
             }
         }
-        return new MMOQuestItem(item.newBuilder().buildSilently(), type, identifier);
+        return new MMOQuestItem(item.newBuilder().buildSilently(), type, identifier, soulboundTo);
     }
 }

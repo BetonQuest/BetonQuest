@@ -9,6 +9,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Quest Item implementation for MMOItems.
@@ -31,16 +32,24 @@ public class MMOQuestItem implements QuestItem {
     private final String itemID;
 
     /**
+     * UUID the item is soulbound to.
+     */
+    @Nullable
+    private final UUID createdFor;
+
+    /**
      * Create a new MMO Item.
      *
      * @param resolvedItem the already resolved item stack
      * @param itemType     the item type
      * @param itemID       the item id
+     * @param createdFor   the soulbound uuid to match item with
      */
-    public MMOQuestItem(final ItemStack resolvedItem, final Type itemType, final String itemID) {
+    public MMOQuestItem(final ItemStack resolvedItem, final Type itemType, final String itemID, @Nullable final UUID createdFor) {
         this.resolvedItem = resolvedItem;
         this.itemType = itemType;
         this.itemID = itemID;
+        this.createdFor = createdFor;
     }
 
     @Override
@@ -62,6 +71,6 @@ public class MMOQuestItem implements QuestItem {
 
     @Override
     public boolean matches(@Nullable final ItemStack item) {
-        return MMOItemsUtils.equalsMMOItem(item, itemType, itemID);
+        return MMOItemsUtils.equalsMMOItem(item, itemType, itemID, createdFor);
     }
 }
