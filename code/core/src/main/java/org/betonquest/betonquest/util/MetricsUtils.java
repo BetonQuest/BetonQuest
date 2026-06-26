@@ -7,7 +7,9 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -33,9 +35,10 @@ public final class MetricsUtils {
      */
     public static Map<String, Integer> typeCountMetrics(final Collection<? extends ReadableIdentifier> identifiers,
                                                         final Collection<String> validTypes, final Instructions instructionApi) {
-        return identifiers.stream()
+        final List<String> types = new ArrayList<>(validTypes);
+        return new ArrayList<>(identifiers).stream()
                 .map(identifier -> typeFromId(identifier, instructionApi))
-                .filter(validTypes::contains)
+                .filter(types::contains)
                 .collect(Collectors.toConcurrentMap(Function.identity(), key -> 1, Integer::sum));
     }
 
