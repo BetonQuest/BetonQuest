@@ -65,6 +65,7 @@ nav:
           - 'Random Daily Quest': Tutorials/Quick-Guides/Random-Daily-Quest.md
           - 'Global Daily Quests': Tutorials/Quick-Guides/Global-Random-Daily-Quests.md
           - 'Server Wide Quests': Tutorials/Quick-Guides/Server-Wide-Quests.md
+          - 'Objectives in any Order': Tutorials/Quick-Guides/Objectives-in-any-order.md
   - 'Documentation':
       - 'Overview': Documentation/Overview.md
 
@@ -163,8 +164,6 @@ nav:
               - 'Migration 2.X to 3.X': Documentation/Updates/Migrations/Migration-2-3.md
           - 'Changelog': Documentation/CHANGELOG.md
 
-      - 'Frequently Asked Questions':
-          - 'General FAQ': Documentation/Frequently-Asked-Questions.md
   - 'API':
       - 'Overview': API/Overview.md
       - 'Obtaining API': API/Obtaining-API.md
