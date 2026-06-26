@@ -7,66 +7,6 @@ to the right. It's very likely that it has been already asked and answered.
 If not, feel free to ask us in the
 [Discord :fontawesome-brands-discord:](https://discordapp.com/invite/rK6mfHq)
 
-## Server wide Quests (all players work together)
-
-There is no easy way to do this (yet). Additionally, every use case differs. Let's assume you have some sort of action
-on your server where your player's need to fish 100 salmons. The quest package is only installed during the action.
-
-Create an objective that is immediately fired upon the first interaction (this means setting the amount to one for most objectives).
-That objective must be `persistent` so it restarts immediately upon completion. It also has to be `auto-once` so every
-player will receive it upon joining the server.
-```YAML
-# fish a salmon to progress the server wide quest
-gQuest: fish SALMON 1 actions:gQuestProgress auto-once persistent
-```
-The objective would trigger a folder action that increases a `globalpoint` counter by one and tries to run the
-actions that are fired upon completion. That globalpoint counter tracks the players combined progress.
-The "completion actions" must be limited by a `globalpoint` condition that checks whether the `globalpoint` counter has
-reached a certain value.
-
-=== "actions"
-    ```YAML
-    # 1. increase the global points 2. wait one tick for the change to process 3. attempt to run the completion actions
-    gQuestProgress: folder gQuestIncrementCounter,gQuestCheckCompletion period:1 unit:ticks
-    # Adds 1 to the global points
-    gQuestIncrementCounter: globalpoint gQuest 1
-    # Runs completion actions only when the condition is met (= the global points reached X points)
-    gQuestCheckCompletion: folder gQuestNotify,gQuestOnCompletion,gDeleteObjective conditions:gQuestComplete
-    # Deletes the objective from everyone that fished a salmon after the goal was met
-    qDeleteObjective: "objective delete gQuest"
-    ```
-=== "conditions"
-    ```YAML
-    # Complete at one hundred collected
-    gquest_complete: globalpoint gquest 100
-
-    ```
-Downsides to this approach:
-
-* Only the player that fished the final salmon (number 100) will get the reward immediately. All other players need to fish an additional
-salmon to trigger the completion logic. Therefore, a central NPC that also gives out rewards and shows the
-progress is recommended.
-
-* Since some players logged off during the action while still having the objective, a clean-up package should be installed
-after the action. It will remove the objective from them - this is important as BetonQuest will complain about objectives
-that are still active for a player but are not referenced in any quest package. This will happen since you have to
-remove the action package after the action.
-
-Such a package holds the original objective and clean-up objective:
-
-=== "objectives"
-    ```YAML
-    # Old objective just without auto-once & persistent to make sure no one get's it automatically
-    gQuest: fish SALMON 1 actions:gQuestProgress
-    # Cleanup objective that is immediately completed when someone joins
-    login actions:deleteOldObjective auto-once
-    ```
-
-=== "actions"
-    ```YAML
-    # Deletes the old objective from the current player
-    deleteOldObjective: "objective delete gQuest"
-    ```
 
 ## Non-Linear Objectives in Quests
 
