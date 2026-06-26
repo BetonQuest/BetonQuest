@@ -66,6 +66,7 @@ nav:
           - 'Global Daily Quests': Tutorials/Quick-Guides/Global-Random-Daily-Quests.md
           - 'Server Wide Quests': Tutorials/Quick-Guides/Server-Wide-Quests.md
           - 'Objectives in any Order': Tutorials/Quick-Guides/Objectives-in-any-order.md
+          - 'NPC and Player Hider': Tutorials/Quick-Guides/NPC-and-Player-Hider.md
   - 'Documentation':
       - 'Overview': Documentation/Overview.md
 
