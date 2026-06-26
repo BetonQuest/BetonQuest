@@ -39,7 +39,7 @@ actions:
     notifyPlayer: "notify Congratulations! You have a new friend."
     rewardPlayer: "give reward:8"
 
-  checkForCompletion: "folder sendNotify delay:2 seconds conditions:completedAllObjectives" #(4)!
+  checkForCompletion: "folder sendNotify delay:2 conditions:completedAllObjectives" #(4)!
   sendNotify: "notify &2You have completed all tasks! Get back to James for a new task."
 
 conditions:
