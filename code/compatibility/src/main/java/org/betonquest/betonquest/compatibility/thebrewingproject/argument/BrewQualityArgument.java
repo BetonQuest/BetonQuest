@@ -19,7 +19,8 @@ public record BrewQualityArgument(Argument<BrewQuality> qualityArgument,
                                   Argument<Operation> operationArgument) {
 
     /**
-     * Parse an instruction chain.
+     * Parse an instruction chain. Takes an {@link Operation}, and then a {@link BrewQuality}
+     * argument.
      *
      * @param instruction the instruction chain to parse
      * @return a new {@link BrewQualityArgument}
