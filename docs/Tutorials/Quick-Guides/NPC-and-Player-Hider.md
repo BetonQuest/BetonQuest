@@ -8,7 +8,8 @@ BetonQuest allows you to hide players and NPCs dynamically based on conditions.
 This is useful for creating private quest instances, story areas, or secret locations without affecting other players.
 Choose the implementation that best fits your use case.
 
-The basic idea is:
+The basic idea is: 
+
 - Player visibility is controlled with the `player_hider` section.
 - NPC visibility is controlled with the `hide_npcs` section.
 - Visibility changes automatically whenever the configured conditions change.
