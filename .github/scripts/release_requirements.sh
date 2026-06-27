@@ -8,6 +8,8 @@ checkRequirements() {
   checkGit
   checkMaven
   checkGitHubCLI
+
+  checkGitState
 }
 
 checkSsh() {
@@ -59,4 +61,49 @@ checkGitHubCLI() {
       return 0
     fi
   fi
+}
+
+checkGitState() {
+  git fetch
+
+  BRANCH=$(git rev-parse --abbrev-ref HEAD)
+  if [[ "$BRANCH" != "main" && ! "$BRANCH" =~ ^main_v.+$ ]]; then
+    echo
+    echo "    Git State: failed [expected 'main' or 'main_v*' branch]"
+    echo "        You are currently on branch '$BRANCH'."
+    confirmContinue
+  fi
+  REMOTE=$(git config --get "branch.$BRANCH.remote")
+  if ! REMOTE_HEAD=$(git rev-parse "$REMOTE/$BRANCH" 2>/dev/null); then
+    echo
+    echo "    Git State: failed [remote branch '$REMOTE/$BRANCH' does not exist]"
+    echo "        You are currently on branch '$BRANCH'."
+    confirmContinue
+    return
+  fi
+
+  LOCAL_HEAD=$(git rev-parse HEAD)
+  if [[ "$LOCAL_HEAD" != "$REMOTE_HEAD" ]]; then
+    echo
+    echo "    Git State: failed [local branch is not at the latest remote commit]"
+    echo "        You are currently on '$LOCAL_HEAD' and the remote branch is on '$REMOTE_HEAD'."
+    confirmContinue
+  fi
+
+  echo "    Git State: ok"
+  echo "        You are currently on branch '$BRANCH'."
+}
+
+confirmContinue() {
+  echo
+  read -rp "        Do you really want to continue? [y/N] " answer
+
+  case "$answer" in
+    [yY]|[yY][eE][sS])
+      ;;
+    *)
+      echo "        Aborted."
+      exit 1
+      ;;
+  esac
 }
