@@ -10,13 +10,13 @@
         <meta name="author" content="BetonQuest Organisation">
       
       
-        <link rel="canonical" href="https://betonquest.org/3.1-DEV/Tutorials/Quick-Guides/Random-Daily-Quest/">
+        <link rel="canonical" href="https://betonquest.org/3.1-DEV/Tutorials/Quick-Guides/NPC-and-Player-Hider/">
       
       
-        <link rel="prev" href="../Displaying-Progress/">
+        <link rel="prev" href="../Objectives-in-any-order/">
       
       
-        <link rel="next" href="../Global-Random-Daily-Quests/">
+        <link rel="next" href="../../../Documentation/Overview/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Random Daily Quest - BetonQuest</title>
+        <title>NPC and Player Hider - BetonQuest</title>
       
     
     
@@ -90,7 +90,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#how-to-reset-random-daily-quests" class="md-skip">
+        <a href="#how-to-hide-players-and-npcs" class="md-skip">
           Skip to content
         </a>
       
@@ -141,7 +141,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Random Daily Quest
+              NPC and Player Hider
             
           </span>
         </div>
@@ -1524,19 +1524,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../Random-Daily-Quest/" class="md-nav__link">
         
   
   
@@ -1554,7 +1545,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -1654,10 +1644,19 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../NPC-and-Player-Hider/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1675,6 +1674,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -6984,7 +6984,7 @@
 
 
   
-    <a href="https://github.com/BetonQuest/BetonQuest/edit/main/docs/Tutorials/Quick-Guides/Random-Daily-Quest.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/BetonQuest/BetonQuest/edit/main/docs/Tutorials/Quick-Guides/NPC-and-Player-Hider.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -6992,131 +6992,91 @@
   
 
 
-<h1 id="how-to-reset-random-daily-quests">How to reset random daily quests<a class="headerlink" href="#how-to-reset-random-daily-quests" title="Permanent link">🔗</a></h1>
-<p>Resets for random daily quests can be implemented using different strategies.
-The following examples achieve the same goal but differ in how and when quests become available again.
-Choose which one fits best for you.</p>
-<p>The goal is:</p>
+<h1 id="how-to-hide-players-and-npcs">How to hide players and NPCs<a class="headerlink" href="#how-to-hide-players-and-npcs" title="Permanent link">🔗</a></h1>
+<p>BetonQuest allows you to hide players and NPCs dynamically based on conditions.
+This is useful for creating private quest instances, story areas, or secret locations without affecting other players.
+Choose the implementation that best fits your use case.</p>
+<p>The basic idea is: </p>
 <ul>
-<li>A tag prevents players from starting another daily quest while one is active.</li>
-<li>A random folder action selects one quest from a pool of available daily quests.</li>
-<li>The selected quest adds the blocking tag when it starts.</li>
-<li>After the quest is completed, the blocking tag is removed either after 24 hours or at a fixed daily reset time.</li>
-<li>Once the tag is removed, the player can receive a new random daily quest.</li>
+<li>Player visibility is controlled with the <code>player_hider</code> section.</li>
+<li>NPC visibility is controlled with the <code>hide_npcs</code> section.</li>
+<li>Visibility changes automatically whenever the configured conditions change.</li>
+<li>The <code>updatevisibility</code> action can be used to force an immediate refresh instead of waiting for the next update interval.</li>
 </ul>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">... every 24 hours after completing (with delay objective)</label><label for="__tabbed_1_2">... static reset at 13:00 (01:00 PM) (with schedules)</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Hide players</label><label for="__tabbed_1_2">Hide NPCs</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">questSelection</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;login</span><span class="nv"> </span><span class="s">actions:selectRandomQuest</span><span class="nv"> </span><span class="s">auto-once</span><span class="nv"> </span><span class="s">persistent&quot;</span><span class="w"> </span><span class="c1">#(1)!</span>
-
-<span class="w">  </span><span class="nt">killMobs</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mobkill</span><span class="nv"> </span><span class="s">ZOMBIE</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">notify</span><span class="nv"> </span><span class="s">actions:questCompleted&quot;</span>
-<span class="w">  </span><span class="nt">tameWolfs</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tame</span><span class="nv"> </span><span class="s">WOLF</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">actions:questCompleted&quot;</span>
-<span class="w">  </span><span class="nt">shearSheeps</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;shear</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">actions:questCompleted&quot;</span>
-
-<span class="w">  </span><span class="nt">resetAfterTime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">delay 1440 actions:resetAfterSpecificTime</span><span class="w"> </span><span class="c1">#(2)!</span>
-
-<span class="nt">actions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">selectRandomQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">quest_1.selectQuest,quest_2.selectQuest,quest_3.selectQuest</span><span class="nv"> </span><span class="s">random:1</span><span class="nv"> </span><span class="s">conditions:!alreadyStartedQuest&quot;</span><span class="w"> </span><span class="c1">#(3)!</span>
-
-<span class="w">  </span><span class="nt">quest_1</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">selectQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">quest_1.addTagStarted,quest_1.addObjectiveQuest,quest_1.notifyPlayerQuest</span><span class="nv"> </span><span class="s">delay:5</span><span class="nv"> </span><span class="s">seconds&quot;</span>
-<span class="w">    </span><span class="nt">addTagStarted</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;globaltag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">startedQuest_1&quot;</span>
-<span class="w">    </span><span class="nt">addObjectiveQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;objective</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">killMobs&quot;</span>
-<span class="w">    </span><span class="nt">notifyPlayerQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Go</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">kill</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">zombies</span><span class="nv"> </span><span class="s">today!&quot;</span>
-
-<span class="w">  </span><span class="nt">quest_2</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">selectQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">quest_2.addTagStarted,quest_2.addObjectiveQuest,quest_2.notifyPlayerQuest</span><span class="nv"> </span><span class="s">delay:5</span><span class="nv"> </span><span class="s">seconds&quot;</span>
-<span class="w">    </span><span class="nt">addTagStarted</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">startedQuest_2&quot;</span>
-<span class="w">    </span><span class="nt">addObjectiveQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;objective</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">tameWolfs&quot;</span>
-<span class="w">    </span><span class="nt">notifyPlayerQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Go</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">tame</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">wolfs</span><span class="nv"> </span><span class="s">today!&quot;</span>
-
-<span class="w">  </span><span class="nt">quest_3</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">selectQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">quest_3.addTagStarted,quest_3.addObjectiveQuest,quest_3.notifyPlayerQuest</span><span class="nv"> </span><span class="s">delay:5</span><span class="nv"> </span><span class="s">seconds&quot;</span>
-<span class="w">    </span><span class="nt">addTagStarted</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">startedQuest_3&quot;</span>
-<span class="w">    </span><span class="nt">addObjectiveQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;objective</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">shearSheeps&quot;</span>
-<span class="w">    </span><span class="nt">notifyPlayerQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Go</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">shear</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">sheeps</span><span class="nv"> </span><span class="s">today!&quot;</span>
-
-<span class="w">  </span><span class="nt">questCompleted</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">rewardPlayer,sendNotify,addResetCounter&quot;</span><span class="w"> </span><span class="c1">#(4)!</span>
-<span class="w">  </span><span class="nt">rewardPlayer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;give</span><span class="nv"> </span><span class="s">reward:5&quot;</span>
-<span class="w">  </span><span class="nt">sendNotify</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Congratulations!</span><span class="nv"> </span><span class="s">You</span><span class="nv"> </span><span class="s">can</span><span class="nv"> </span><span class="s">get</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">new</span><span class="nv"> </span><span class="s">task</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">24</span><span class="nv"> </span><span class="s">hours</span><span class="nv"> </span><span class="s">after</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">relog!&quot;</span>
-
-<span class="w">  </span><span class="nt">addResetCounter</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;objective</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">resetAfterTime&quot;</span>
-
-<span class="w">  </span><span class="nt">resetAfterSpecificTime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tag delete startedQuest_1,startedQuest_2,startedQuest_3</span><span class="w"> </span><span class="c1">#(5)!</span>
+<p>The following example hides all players inside a secret room from each other.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">player_hider</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">secretRoom</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">source_player</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">inSecretRoom</span><span class="w"> </span><span class="c1">#(1)!</span>
+<span class="w">    </span><span class="nt">target_player</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">inSecretRoom</span><span class="w"> </span><span class="c1">#(2)!</span>
 
 <span class="nt">conditions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">alreadyStartedQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;OR</span><span class="nv"> </span><span class="s">startedQuest_1,startedQuest_2,startedQuest_3&quot;</span>
-<span class="w">  </span><span class="nt">startedQuest_1</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">startedQuest_1&quot;</span>
-<span class="w">  </span><span class="nt">startedQuest_2</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">startedQuest_2&quot;</span>
-<span class="w">  </span><span class="nt">startedQuest_3</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">startedQuest_3&quot;</span>
-
-<span class="nt">items</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">reward</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;simple</span><span class="nv"> </span><span class="s">diamond&quot;</span>
+<span class="w">  </span><span class="nt">inSecretRoom</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;location</span><span class="nv"> </span><span class="s">100;100;100;world</span><span class="nv"> </span><span class="s">10&quot;</span><span class="w"> </span><span class="c1">#(3)!</span>
 </code></pre></div>
 <ol>
-<li>When the player logs in, a random daily quest is assigned if they haven't already received one that day.</li>
-<li>This is the <strong>delay objective</strong> that triggers every <code>1440</code> minutes and removes the quest tags.</li>
-<li>The <strong>folder action</strong> with the <code>random</code> argument can be used to create random daily quests.</li>
-<li>Upon completion, the player is assigned the reset objective (the <code>delay</code> objective).</li>
-<li>Removes all tags that may have been added by the quests.</li>
+<li>Players meeting this condition will no longer see the target players.</li>
+<li>Players matching this condition become invisible to all matching source players.</li>
+<li>Defines the area in which players become invisible to each other.</li>
 </ol>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="nt">schedules</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">resetDailyQuests</span><span class="p">:</span><span class="w"> </span><span class="c1">#(4)!</span>
-<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">realtime-daily</span>
-<span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;13:00&#39;</span>
-<span class="w">    </span><span class="nt">actions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">resetAfterSpecificTime</span>
+<p>The following example hides an NPC while a specific condition is met.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">npcs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">dummy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;citizens</span><span class="nv"> </span><span class="s">20&quot;</span>
 
-<span class="nt">objectives</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">questSelection</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;login</span><span class="nv"> </span><span class="s">actions:selectRandomQuest</span><span class="nv"> </span><span class="s">auto-once</span><span class="nv"> </span><span class="s">persistent&quot;</span><span class="w"> </span><span class="c1">#(1)!</span>
+<span class="nt">npc_conversations</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">dummy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;dummyTheYummy&quot;</span>
 
-<span class="w">  </span><span class="nt">killMobs</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mobkill</span><span class="nv"> </span><span class="s">ZOMBIE</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">notify</span><span class="nv"> </span><span class="s">actions:questCompleted&quot;</span>
-<span class="w">  </span><span class="nt">tameWolfs</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tame</span><span class="nv"> </span><span class="s">WOLF</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">actions:questCompleted&quot;</span>
-<span class="w">  </span><span class="nt">shearSheeps</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;shear</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">actions:questCompleted&quot;</span>
+<span class="nt">hide_npcs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">dummy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;alreadyTalkedToDummy&quot;</span><span class="w"> </span><span class="c1">#(1)!</span>
 
 <span class="nt">actions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">selectRandomQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">quest_1.selectQuest,quest_2.selectQuest,quest_3.selectQuest</span><span class="nv"> </span><span class="s">random:1</span><span class="nv"> </span><span class="s">conditions:!alreadyStartedQuest&quot;</span><span class="w"> </span><span class="c1">#(2)!</span>
-
-<span class="w">  </span><span class="nt">quest_1</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">selectQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">quest_1.addTagStarted,quest_1.addObjectiveQuest,quest_1.notifyPlayerQuest</span><span class="nv"> </span><span class="s">delay:5</span><span class="nv"> </span><span class="s">seconds&quot;</span>
-<span class="w">    </span><span class="nt">addTagStarted</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;globaltag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">startedQuest_1&quot;</span>
-<span class="w">    </span><span class="nt">addObjectiveQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;objective</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">killMobs&quot;</span>
-<span class="w">    </span><span class="nt">notifyPlayerQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Go</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">kill</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">zombies</span><span class="nv"> </span><span class="s">today!&quot;</span>
-
-<span class="w">  </span><span class="nt">quest_2</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">selectQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">quest_2.addTagStarted,quest_2.addObjectiveQuest,quest_2.notifyPlayerQuest</span><span class="nv"> </span><span class="s">delay:5</span><span class="nv"> </span><span class="s">seconds&quot;</span>
-<span class="w">    </span><span class="nt">addTagStarted</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">startedQuest_2&quot;</span>
-<span class="w">    </span><span class="nt">addObjectiveQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;objective</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">tameWolfs&quot;</span>
-<span class="w">    </span><span class="nt">notifyPlayerQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Go</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">tame</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">wolfs</span><span class="nv"> </span><span class="s">today!&quot;</span>
-
-<span class="w">  </span><span class="nt">quest_3</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">selectQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">quest_3.addTagStarted,quest_3.addObjectiveQuest,quest_3.notifyPlayerQuest</span><span class="nv"> </span><span class="s">delay:5</span><span class="nv"> </span><span class="s">seconds&quot;</span>
-<span class="w">    </span><span class="nt">addTagStarted</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">startedQuest_3&quot;</span>
-<span class="w">    </span><span class="nt">addObjectiveQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;objective</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">shearSheeps&quot;</span>
-<span class="w">    </span><span class="nt">notifyPlayerQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Go</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">shear</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">sheeps</span><span class="nv"> </span><span class="s">today!&quot;</span>
-
-<span class="w">  </span><span class="nt">questCompleted</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">rewardPlayer,sendNotify&quot;</span>
-<span class="w">  </span><span class="nt">rewardPlayer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;give</span><span class="nv"> </span><span class="s">reward:5&quot;</span>
-<span class="w">  </span><span class="nt">sendNotify</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Congratulations!</span><span class="nv"> </span><span class="s">You</span><span class="nv"> </span><span class="s">get</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">new</span><span class="nv"> </span><span class="s">quest</span><span class="nv"> </span><span class="s">at</span><span class="nv"> </span><span class="s">01:00</span><span class="nv"> </span><span class="s">PM&quot;</span>
-
-<span class="w">  </span><span class="nt">resetAfterSpecificTime</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">delete</span><span class="nv"> </span><span class="s">startedQuest_1,startedQuest_2,startedQuest_3&quot;</span><span class="w"> </span><span class="c1">#(3)!</span>
+<span class="w">  </span><span class="nt">hideNPC</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">addTagTalked,hideInstantly&quot;</span><span class="w"> </span><span class="c1">#(2)!</span>
+<span class="w">  </span><span class="nt">addTagTalked</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">talkedToDummy&quot;</span>
+<span class="w">  </span><span class="nt">hideInstantly</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;updatevisibility&quot;</span><span class="w"> </span><span class="c1">#(3)!</span>
 
 <span class="nt">conditions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">alreadyStartedQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;OR</span><span class="nv"> </span><span class="s">startedQuest_1,startedQuest_2,startedQuest_3&quot;</span>
-<span class="w">  </span><span class="nt">startedQuest_1</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">startedQuest_1&quot;</span>
-<span class="w">  </span><span class="nt">startedQuest_2</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">startedQuest_2&quot;</span>
-<span class="w">  </span><span class="nt">startedQuest_3</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">startedQuest_3&quot;</span>
+<span class="w">  </span><span class="nt">alreadyTalkedToDummy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">talkedToDummy&quot;</span><span class="w"> </span><span class="c1">#(4)!</span>
 
-<span class="nt">items</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">reward</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;simple</span><span class="nv"> </span><span class="s">diamond&quot;</span>
+<span class="nt">conversations</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">dummyTheYummy</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">quester</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Dumbum&quot;</span>
+<span class="w">    </span><span class="nt">first</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;dialog_1_1&quot;</span>
+
+<span class="w">    </span><span class="nt">NPC_options</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">dialog_1_1</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hey!</span><span class="nv"> </span><span class="s">You</span><span class="nv"> </span><span class="s">look</span><span class="nv"> </span><span class="s">new</span><span class="nv"> </span><span class="s">around</span><span class="nv"> </span><span class="s">here.</span><span class="nv"> </span><span class="s">What&#39;s</span><span class="nv"> </span><span class="s">your</span><span class="nv"> </span><span class="s">name?&quot;</span>
+<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;dialog_1_1_1,dialog_1_1_2&quot;</span>
+
+<span class="w">      </span><span class="nt">dialog_1_2</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nice</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">meet</span><span class="nv"> </span><span class="s">you,</span><span class="nv"> </span><span class="s">%player%!</span><span class="nv"> </span><span class="s">I</span><span class="nv"> </span><span class="s">have</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">leave</span><span class="nv"> </span><span class="s">now,</span><span class="nv"> </span><span class="s">but</span><span class="nv"> </span><span class="s">come</span><span class="nv"> </span><span class="s">back</span><span class="nv"> </span><span class="s">tomorrow</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">I&#39;ll</span><span class="nv"> </span><span class="s">send</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">on</span><span class="nv"> </span><span class="s">an</span><span class="nv"> </span><span class="s">adventure.&quot;</span>
+<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;dialog_1_1_3&quot;</span>
+
+<span class="w">      </span><span class="nt">dialog_1_3</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Oh,</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">don&#39;t</span><span class="nv"> </span><span class="s">want</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">tell</span><span class="nv"> </span><span class="s">me?</span><span class="nv"> </span><span class="s">That&#39;s</span><span class="nv"> </span><span class="s">okay.</span><span class="nv"> </span><span class="s">I</span><span class="nv"> </span><span class="s">have</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">leave</span><span class="nv"> </span><span class="s">now</span><span class="nv"> </span><span class="s">anyway.</span><span class="nv"> </span><span class="s">Maybe</span><span class="nv"> </span><span class="s">you&#39;ll</span><span class="nv"> </span><span class="s">tell</span><span class="nv"> </span><span class="s">me</span><span class="nv"> </span><span class="s">tomorrow</span><span class="nv"> </span><span class="s">when</span><span class="nv"> </span><span class="s">I&#39;m</span><span class="nv"> </span><span class="s">back.&quot;</span>
+<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;dialog_1_1_3&quot;</span>
+
+<span class="w">    </span><span class="nt">player_options</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">dialog_1_1_1</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;My</span><span class="nv"> </span><span class="s">name</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">%player%.&quot;</span>
+<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;dialog_1_2&quot;</span>
+
+<span class="w">      </span><span class="nt">dialog_1_1_2</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;That&#39;s</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">secret.&quot;</span>
+<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;dialog_1_3&quot;</span>
+
+<span class="w">      </span><span class="nt">dialog_1_1_3</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;See</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">tomorrow!&quot;</span>
+<span class="w">        </span><span class="nt">actions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hideNPC&quot;</span><span class="w"> </span><span class="c1">#(5)!</span>
 </code></pre></div>
 <ol>
-<li>When the player logs in, a random daily quest is assigned if they haven't already received one that day.</li>
-<li>The <strong>folder action</strong> with the <code>random</code> argument can be used to create random daily quests.</li>
-<li>Removes all tags that may have been added by the quests.</li>
-<li>This is the <code>schedules</code> section. It triggers the reset action at 01:00 PM every day.</li>
+<li>The NPC is hidden from players that meet the <code>alreadyTalkedToDummy</code> condition.</li>
+<li>After the conversation ends, the player receives the tag and the NPC visibility is updated.</li>
+<li>Forces an immediate visibility update instead of waiting for the configured <code>npc_update_interval</code>.</li>
+<li>Once the player has the <code>talkedToDummy</code> tag, the NPC is hidden from them.</li>
+<li>The NPC disappears immediately after the player finishes the conversation.</li>
 </ol>
 </div>
 </div>
