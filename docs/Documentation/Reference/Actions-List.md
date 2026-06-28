@@ -10,17 +10,18 @@ search:
 ## `Burn`
 
 __Context__: @snippet:action-meta:online@  
-__Syntax__: `burn <duration>`  
+__Syntax__: `burn <duration> [unit]`  
 __Description__: Ignite the player for the specified duration.
 
-| Parameter  | Syntax            | Default Value          | Explanation                                     |
-|------------|-------------------|------------------------|-------------------------------------------------|
-| _duration_ | `duration:number` | :octicons-x-circle-16: | The duration the player will burn (in seconds). |
+| Parameter            | Type                  | Explanation                                        |
+|----------------------|-----------------------|----------------------------------------------------|
+| duration<br>[Number] | Required              | The duration the player will burn.                 |
+| unit<br>[TimeUnit]   | Optional<br>[seconds] | The unit of the duration time. Default is seconds. |
 
 ```YAML title="Example"
 actions:
-  burn: "burn duration:4"
-  punishing_fire: "burn duration:%point.punishment.amount%"
+  burn: "burn 30 unit:ticks"
+  punishing_fire: "burn %point.punishment.amount%"
 ```
 
 ## `Cancel`

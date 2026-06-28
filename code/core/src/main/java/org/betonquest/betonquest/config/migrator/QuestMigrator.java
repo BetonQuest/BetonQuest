@@ -13,6 +13,7 @@ import org.betonquest.betonquest.config.migrator.from1to2.RemoveEntity;
 import org.betonquest.betonquest.config.migrator.from1to2.RideUpdates;
 import org.betonquest.betonquest.config.migrator.from2to3.AddSimpleTypeToQuestItem;
 import org.betonquest.betonquest.config.migrator.from2to3.AutoOnceObjective;
+import org.betonquest.betonquest.config.migrator.from2to3.BurnDurationArgumentName;
 import org.betonquest.betonquest.config.migrator.from2to3.DynamicHologramTopLine;
 import org.betonquest.betonquest.config.migrator.from2to3.EventsToActionsRename;
 import org.betonquest.betonquest.config.migrator.from2to3.FolderTimeUnit;
@@ -128,6 +129,7 @@ public class QuestMigrator {
         migrations.put(questVersion("3.0.0", 15), new DynamicHologramTopLine());
         migrations.put(questVersion("3.0.0", 16), new EventsToActionsRename());
         migrations.put(questVersion("3.0.0", 17), new AutoOnceObjective());
+        migrations.put(questVersion("3.1.0", 1), new BurnDurationArgumentName());
         this.fallbackVersion = questVersion(pluginDescription.getVersion(), 0);
     }
 

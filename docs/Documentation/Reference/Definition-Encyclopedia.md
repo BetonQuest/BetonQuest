@@ -111,6 +111,23 @@ A list of all data types that require a special and more elaborate explanation.
     | Negative numbers only                                         | `^-\d+$`                 |
     | Any number                                                    | `[-+]?[0-9]+(\.[0-9]+)?` |
 
+### Time Unit
+
+!!! info "Time Unit"
+
+    Time units are used to define durations from raw numbers.
+    In [Elements](#elements) they usually get their own optional argument.
+    BetonQuest supports the following time units _case insensitive_ and with a fixed rate:
+    
+    - `ticks`: Smallest common time unit for minecraft.
+    - `seconds`: 20 ticks = 1 second.
+    - `minutes`: 60 seconds = 1 minute.
+    - `hours`: 60 minutes = 1 hour.
+    - `days`: 24 hours = 1 day.
+    - `weeks`: 7 days = 1 week.
+    - `months`: 30 days = 1 month.
+    - `years`: 365 days = 1 year.
+
 ### Unified Location Format
 
 !!! info "Location"
