@@ -5713,6 +5713,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#310-dev-13-reshape-burn-action">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.1.0-DEV-13 - Reshape burn action <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -8519,6 +8542,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#310-dev-13-reshape-burn-action">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.1.0-DEV-13 - Reshape burn action <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -8654,13 +8700,13 @@ to automatically migrate from "not versioned".
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <ul>
-<li><img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:" /> <strong>Fully automated migration</strong> – These steps are reliably migrated without issues in most cases.
-  You usually don’t need to take any action. However, certain rarely used or non-standard formats (e.g., run 
+<li><img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:" /> <strong>Fully automated migration</strong> - These steps are reliably migrated without issues in most cases.
+  You usually don't need to take any action. However, certain rarely used or non-standard formats (e.g., run 
   events (now called actions) or math variables (now called placeholders)) may not migrate correctly if they deviate from the common structure.</li>
-<li><img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f325.svg" title=":white_sun_cloud:" /> <strong>Automated migration with known limitations</strong> – These steps are generally migrated automatically,
+<li><img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f325.svg" title=":white_sun_cloud:" /> <strong>Automated migration with known limitations</strong> - These steps are generally migrated automatically,
   especially for straightforward cases. However, there are known edge cases that cannot be detected or handled 
   automatically. You should review these steps and be prepared to make manual adjustments where needed.</li>
-<li><img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /> <strong>Manual migration required</strong> – These steps are not migrated at all.
+<li><img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /> <strong>Manual migration required</strong> - These steps are not migrated at all.
   Either the structure is too complex to detect automatically, or the new format requires additional information.
   You will need to fully rewrite or convert these steps yourself.</li>
 </ul>
@@ -8699,6 +8745,7 @@ to automatically migrate from "not versioned".
 <li><a href="#300-dev-562-rename-events-to-actions">3.0.0-DEV-562 - Rename <code>events</code> to <code>actions</code></a> <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:" /></li>
 <li><a href="#300-dev-635-brewery-item-type">3.0.0-DEV-635 - Brewery Item Type</a> <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /></li>
 <li><a href="#300-dev-673-auto-once-objectives">3.0.0-DEV-673 - <code>auto-once</code> Objectives</a> <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:" /></li>
+<li><a href="#310-dev-13-reshape-burn-action">3.1.0-DEV-13 - Reshape burn action</a> <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:" /></li>
 </ul>
 <h3 id="300-dev-58-delete-messagesyml">3.0.0-DEV-58 - Delete messages.yml <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /><a class="headerlink" href="#300-dev-58-delete-messagesyml" title="Permanent link">🔗</a></h3>
 <p>The <code>messages.yml</code> file has been removed.
@@ -9553,6 +9600,23 @@ The following obsolete implementations were removed:</p>
 </code></pre></div>
 <div class="highlight"><span class="filename">New Syntax</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">welcome</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">login auto-once persistent actions:welcome_message</span>
+</code></pre></div>
+</div>
+</details>
+<h3 id="310-dev-13-reshape-burn-action">3.1.0-DEV-13 - Reshape burn action <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:" /><a class="headerlink" href="#310-dev-13-reshape-burn-action" title="Permanent link">🔗</a></h3>
+<p>The <a href="../../../Reference/Actions-List/#burn">burn action</a> has been reshaped.</p>
+<details class="info">
+<summary>Automated Migration</summary>
+<p><em>The migration is automated. You shouldn't have to do anything.</em></p>
+<hr />
+<p>The duration has always been a required parameter, but no longer requires the <code>duration:</code> prefix.
+In some rare cases, the automatic migration may not work.
+<div class="grid" markdown></p>
+<div class="highlight"><span class="filename">Old Syntax</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">burn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">burn duration:60</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">New Syntax</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">burn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">burn 60</span>
 </code></pre></div>
 </div>
 </details>

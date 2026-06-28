@@ -7873,11 +7873,13 @@ as version in your package.yml, as described in the <a href="./">Info Box on the
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <ul>
-<li><img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:" /> <strong>Fully automated migration</strong> – These steps are reliably migrated without issues in most cases.
-  You usually don’t need to take any action. However, certain rarely used or non-standard formats (e.g., run 
-  events (now called actions) or math variables (now called placeholders)) may not migrate correctly if they deviate
-  from the common structure.</li>
-<li><img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /> <strong>Manual migration required</strong> – These steps are not migrated at all.
+<li><img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:" /> <strong>Fully automated migration</strong> - These steps are reliably migrated without issues in most cases.
+  You usually don't need to take any action. However, certain rarely used or non-standard formats (e.g., run 
+  events (now called actions) or math variables (now called placeholders)) may not migrate correctly if they deviate from the common structure.</li>
+<li><img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f325.svg" title=":white_sun_cloud:" /> <strong>Automated migration with known limitations</strong> - These steps are generally migrated automatically,
+  especially for straightforward cases. However, there are known edge cases that cannot be detected or handled 
+  automatically. You should review these steps and be prepared to make manual adjustments where needed.</li>
+<li><img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /> <strong>Manual migration required</strong> - These steps are not migrated at all.
   Either the structure is too complex to detect automatically, or the new format requires additional information.
   You will need to fully rewrite or convert these steps yourself.</li>
 </ul>
