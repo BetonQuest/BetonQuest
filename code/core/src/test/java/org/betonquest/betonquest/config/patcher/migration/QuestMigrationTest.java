@@ -72,6 +72,37 @@ class QuestMigrationTest extends QuestFixture {
         checkAssertion(quest, "other.yml");
     }
 
+    @Test
+    void migrateSubSectionsForSingeLineInstructions() throws InvalidConfigurationException, IOException {
+        original.loadFromString("""
+                bar:
+                  foo1: oldValue Bob 0;0;0;world
+                  foo:
+                    two: oldValue Bob 0;0;0;world
+                    three: different Bob
+                """);
+        expected.loadFromString("""
+                bar:
+                  foo1: newValue Bob 0;0;0;world
+                  foo:
+                    two: newValue Bob 0;0;0;world
+                    three: different Alex
+                """);
+
+        final Quest quest = setupQuest();
+        new QuestMigration() {
+            @Override
+            public void migrate(final Quest quest) {
+                final MultiConfiguration config = quest.getQuestConfig();
+                replaceStartValueInSection(config, "bar", "oldValue", "newValue");
+                replaceValueInSection(config, "bar", "different", "Bob", "Alex");
+            }
+        }.migrate(quest);
+        quest.saveAll();
+
+        checkAssertion(quest, "package.yml");
+    }
+
     /**
      * Renames a section.
      *

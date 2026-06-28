@@ -23,6 +23,8 @@ public interface QuestMigration {
 
     /**
      * Gets the section from the config and replaces the value that starts with the old value with the new value.
+     * <p>
+     * Also replaces values in subsections.
      *
      * @param config        the config
      * @param sectionName   the section name
@@ -38,6 +40,8 @@ public interface QuestMigration {
 
     /**
      * Gets the section from the config and replaces the old value with the new value.
+     * <p>
+     * Also replaces values in subsections.
      *
      * @param config      the config
      * @param sectionName the section name
@@ -55,6 +59,8 @@ public interface QuestMigration {
 
     /**
      * Gets the section from the config filters the values and applies the operation to the value.
+     * <p>
+     * Also replaces values in subsections.
      *
      * @param config      the config
      * @param sectionName the section name
@@ -67,7 +73,10 @@ public interface QuestMigration {
         if (section == null) {
             return;
         }
-        for (final String key : section.getKeys(false)) {
+        for (final String key : section.getKeys(true)) {
+            if (section.isConfigurationSection(key)) {
+                continue;
+            }
             final String value = section.getString(key);
             if (value != null && filter.apply(value)) {
                 section.set(key, operation.apply(value));
