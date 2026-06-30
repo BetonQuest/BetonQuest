@@ -40,7 +40,7 @@ The file structure should look like this:
 
 @snippet:tutorials:download-complete-files@
     ```
-    /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Advanced/Tracking-Quest-Progress/1-ExampleQuest /trackingTutorial overwrite
+    /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Features/Tracking-Quest-Progress/Tags/1-ExampleQuest /trackingTutorial overwrite
     ```
     You can now find all files needed for this tutorial in this location:
     "_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/questTracking_"
@@ -292,7 +292,7 @@ You can now only talk to **Fren and Joe** after you introduced yourself to **Bon
 
 @snippet:tutorials:download-solution@
        ```
-       /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Features/Tracking-Quest-Progress/2-HalfExample /trackingTutorial overwrite
+       /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Features/Tracking-Quest-Progress/Tags/2-HalfExample /trackingTutorial overwrite
        ```
 
 ## 3. Complete the introduction quest (optional)
@@ -406,5 +406,5 @@ Let us have a look:
     
 @snippet:tutorials:download-this-part@
        ```
-       /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Features/Tracking-Quest-Progress/3-FullExample /trackingTutorial overwrite
+       /bq download BetonQuest/Quest-Tutorials ${ref} QuestPackages /Features/Tracking-Quest-Progress/Tags/3-FullExample /trackingTutorial overwrite
        ```

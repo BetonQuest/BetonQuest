@@ -25,7 +25,7 @@ state.
  
      Using points is a very nice way to keep track of amounts and progress.
  
-     Coming soon...
+     [:octicons-arrow-right-24: Points Tutorial](./Points.md)
 
  -   :material-stairs-up:{ .lg .middle }  __...with Stages__
  
