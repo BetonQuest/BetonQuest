@@ -27,7 +27,7 @@
 
     <paper-api.version>1.18.2-R0.1-SNAPSHOT</paper-api.version>
     <bstats-bukkit.version>3.0.2</bstats-bukkit.version>
-    <faststats-bukkit.version>0.27.0</faststats-bukkit.version>
+    <faststats-bukkit.version>0.27.1</faststats-bukkit.version>
     <log4j-api.version>3.0.0-beta2</log4j-api.version>
     <log4j-core.version>3.0.0-beta2</log4j-core.version>
     <cron-utils.version>9.2.1</cron-utils.version>
