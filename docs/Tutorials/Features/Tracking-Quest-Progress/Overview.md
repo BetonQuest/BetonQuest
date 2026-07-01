@@ -33,6 +33,6 @@ state.
  
      You don't want to handle with points? Stages will solve the problem and is easy to configure!
  
-     Coming soon...
+     [:octicons-arrow-right-24: Stages Tutorial](./Stages.md)
 
 </div>
