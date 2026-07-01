@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - uses: BetonQuest/Workflows/.github/actions/setup-java-maven@main
         with:
           JAVA_OVERRIDE_SETTINGS: 'false'
@@ -29,7 +29,7 @@ jobs:
 
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - uses: BetonQuest/Workflows/.github/actions/setup-git-lfs@main
       - uses: BetonQuest/Workflows/.github/actions/setup-mkdocs-material@main
       - name: Build with mkdocs
@@ -44,7 +44,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Publish to Discord
         if: "always() && github.repository == 'BetonQuest/BetonQuest'"
         run: |
