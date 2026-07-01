@@ -56,12 +56,14 @@ nav:
           - 'Tracking Quest Progress':
               - 'Overview': Tutorials/Features/Tracking-Quest-Progress/Overview.md
               - 'Tags': Tutorials/Features/Tracking-Quest-Progress/Tags.md
+              - 'Stages': Tutorials/Features/Tracking-Quest-Progress/Stages.md
       - 'Tools':
           - 'Handling YAML Errors': Tutorials/Tools/YAML-Errors.md
       - 'Syntax':
           - 'Quest Packages': Tutorials/Syntax/Quest-Packages.md
       - 'Quick Guides':
           - 'Displaying Progress': Tutorials/Quick-Guides/Displaying-Progress.md
+          - 'Quest Cancelers': Tutorials/Quick-Guides/Using-Quest-Cancelers.md
           - 'Random Daily Quest': Tutorials/Quick-Guides/Random-Daily-Quest.md
           - 'Global Daily Quests': Tutorials/Quick-Guides/Global-Random-Daily-Quests.md
           - 'Server Wide Quests': Tutorials/Quick-Guides/Server-Wide-Quests.md
