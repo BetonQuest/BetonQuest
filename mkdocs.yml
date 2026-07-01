@@ -56,6 +56,7 @@ nav:
           - 'Tracking Quest Progress':
               - 'Overview': Tutorials/Features/Tracking-Quest-Progress/Overview.md
               - 'Tags': Tutorials/Features/Tracking-Quest-Progress/Tags.md
+              - 'Points': Tutorials/Features/Tracking-Quest-Progress/Points.md
       - 'Tools':
           - 'Handling YAML Errors': Tutorials/Tools/YAML-Errors.md
       - 'Syntax':
