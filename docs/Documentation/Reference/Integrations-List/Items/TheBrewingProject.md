@@ -31,7 +31,7 @@ actions:
 
 ### `Modifier`
 
-__Context__: @snippet:condition-meta:independent@  
+__Context__: @snippet:condition-meta:online-offline@
 __Syntax__: `tbp_modifier <modifier-key> <operation> <value>`  
 __Description__: Compare players modifier with specified value
 
@@ -46,7 +46,7 @@ conditions:
 
 ### `Event`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:action-meta:online@  
 __Syntax__: `tbp_event <event-key>`  
 __Description__: Trigger a drunken event with the specified key
 
@@ -61,7 +61,7 @@ actions:
 
 Heated cauldron brew creation.
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `tbp_cook <cooking-time> <ingredients> [cauldron-type]`  
 __Description__: The player needs to have extracted a brew from a cauldron with specified properties
 
@@ -81,7 +81,7 @@ objectives:
 
 Cold cauldron brew creation.
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `tbp_mix <mixing-time> <ingredients> [cauldron-type]`  
 __Description__: The player needs to have extracted a brew from a cauldron with specified properties
 
@@ -100,7 +100,7 @@ objectives:
 
 ### `Distill`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `tbp_distill <distill-runs>`  
 __Description__: The player needs to have extracted a brew from a distillery with specified runs
 
@@ -113,7 +113,7 @@ objectives:
 
 ### `Age`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `tbp_age <barrel-type> <aging-years>`  
 __Description__: The player needs to have extracted a brew from a barrel with specified properties
 
@@ -131,7 +131,7 @@ objectives:
 
 ### `Transfer`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `tbp_transfer <transfer-type> <structure-type> <brew-key> <operator> <brew-quality>`  
 __Description__: The player needs to have transferred a brew with given conditions
 
@@ -152,7 +152,7 @@ objectives:
 
 ### `Consume`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `tbp_consume <brew-key> <operator> <brew-quality>`  
 __Description__: The player needs to have consumed a brew with given properties
 
@@ -169,7 +169,7 @@ objectives:
 
 ### `Event`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `tbp_event <event-key>`  
 __Description__: The player needs to experience a drunken event with specified key
 
@@ -181,7 +181,7 @@ objectives:
 
 ### `StructureDestroy`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `tbp_structure_destroy <structure-type>`  
 __Description__: The player needs to destroy a brewing structure with specified type
 
@@ -189,7 +189,7 @@ _structure-type_ can have the values `barrel`, `distillery` or `cauldron`.
 
 ### `StructureCreate`
 
-__Context__: @snippet:condition-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `tbp_structure_create <structure-type>`  
 __Description__: The player needs to create a brewing structure with specified type
 
