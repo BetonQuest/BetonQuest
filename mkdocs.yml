@@ -195,6 +195,7 @@ nav:
           - 'Versioning': API/Tools/Versioning.md
           - 'Configuration Accessor': API/Configuration-Files.md
           - 'Bukkit Configurations': API/BukkitConfigurations.md
+          - 'Functions': API/Tools/Functions.md
       - 'Legacy':
           - 'Writing Implementations': API/Legacy/Writing-Implementations.md
           - 'Schedules': API/Legacy/Schedules.md
