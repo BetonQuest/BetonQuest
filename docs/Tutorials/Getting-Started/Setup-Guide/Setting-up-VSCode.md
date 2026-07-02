@@ -112,6 +112,6 @@ for quests!
 [:octicons-arrow-left-16: Install Dependencies](./Installing-BetonQuest.md){ .md-button .md-button--primary }
 </div>
 <div markdown style="text-align: right;">
-[YAML Basics :octicons-arrow-right-16:](../Basics/YAML-Basics.md){ .md-button .md-button--primary }
+[VSCode Basics :octicons-arrow-right-16:](./VSCode-Basics.md){ .md-button .md-button--primary }
 </div>
 </div>
