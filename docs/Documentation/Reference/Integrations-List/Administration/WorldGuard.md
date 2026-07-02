@@ -1,6 +1,6 @@
 # [WorldGuard](http://dev.bukkit.org/bukkit-plugins/worldguard/)
 
-@snippet:versions:minimum@ _7.0.9_
+@snippet:versions:minimum@ _7.0.17_
 
 ## Objectives
 

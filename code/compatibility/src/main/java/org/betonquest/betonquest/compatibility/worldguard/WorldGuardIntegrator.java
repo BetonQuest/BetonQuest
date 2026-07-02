@@ -19,7 +19,7 @@ public class WorldGuardIntegrator implements Integration {
     /**
      * The minimum required version of WorldGuard.
      */
-    public static final String REQUIRED_VERSION = "7.0.9";
+    public static final String REQUIRED_VERSION = "7.0.17";
 
     /**
      * The default constructor.

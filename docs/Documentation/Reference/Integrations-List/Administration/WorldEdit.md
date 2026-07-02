@@ -1,6 +1,6 @@
 # [WorldEdit](http://dev.bukkit.org/bukkit-plugins/worldedit/) or [FastAsyncWorldEdit](https://www.spigotmc.org/resources/13932/)
 
-@snippet:versions:minimum@ _7.3.0_
+@snippet:versions:minimum@ WorldEdit _7.3.19_ / FastAsyncWorldEdit _2.10.0_
 
 ## Actions
 
