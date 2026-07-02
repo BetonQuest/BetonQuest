@@ -49,7 +49,7 @@ nav:
           - 'Basics':
               - 'YAML': Tutorials/Getting-Started/Basics/YAML-Basics.md
               - 'Conversations': Tutorials/Getting-Started/Basics/Conversations.md
-              - '    Actions': Tutorials/Getting-Started/Basics/Actions.md
+              - 'Actions': Tutorials/Getting-Started/Basics/Actions.md
               - 'Objectives': Tutorials/Getting-Started/Basics/Objectives.md
               - 'Conditions': Tutorials/Getting-Started/Basics/Conditions.md
       - 'Features':
