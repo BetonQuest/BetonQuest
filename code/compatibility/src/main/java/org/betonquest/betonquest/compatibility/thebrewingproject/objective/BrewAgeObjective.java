@@ -19,16 +19,16 @@ import java.util.Optional;
 /**
  * The brew age objective.
  *
- * @param barrelTypeArgument a barrel type argument
- * @param agingYearsArgument an aging time argument
  * @param ageingYear         an aging year as defined by TheBrewingProject
  * @param brewManager        the brew manager provided by TheBrewingProject
  * @param service            the objective service
+ * @param barrelTypeArgument a barrel type argument
+ * @param agingYearsArgument an aging time argument
  */
-public record BrewAgeObjective(Argument<BarrelType> barrelTypeArgument,
-                               Argument<Number> agingYearsArgument,
-                               long ageingYear, BrewManager<ItemStack> brewManager,
-                               ObjectiveService service) implements Objective {
+public record BrewAgeObjective(long ageingYear, BrewManager<ItemStack> brewManager,
+                               ObjectiveService service,
+                               Argument<BarrelType> barrelTypeArgument,
+                               Argument<Number> agingYearsArgument) implements Objective {
 
     /**
      * Handle brew extract events from barrel.

@@ -31,10 +31,9 @@ import java.util.concurrent.TimeoutException;
  * @param api                  the TheBrewingProject API
  * @param service              the objective service
  */
-public record BrewMixObjective(Argument<CauldronType> cauldronTypeArgument, Argument<Number> mixTimeArgument,
-                               Argument<List<String>> ingredientsArgument,
-                               TheBrewingProjectApi api,
-                               ObjectiveService service) implements Objective {
+public record BrewMixObjective(TheBrewingProjectApi api, ObjectiveService service,
+                               Argument<CauldronType> cauldronTypeArgument, Argument<Number> mixTimeArgument,
+                               Argument<List<String>> ingredientsArgument) implements Objective {
 
     /**
      * Handle brew extract events from cauldrons.

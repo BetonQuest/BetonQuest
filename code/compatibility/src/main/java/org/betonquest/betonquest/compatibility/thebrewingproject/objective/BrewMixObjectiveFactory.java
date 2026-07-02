@@ -27,11 +27,11 @@ public record BrewMixObjectiveFactory(TheBrewingProjectApi api) implements Objec
         final Argument<Number> cookTimeArgument = instruction.number().atLeast(0).get();
         final Argument<List<String>> ingredientsArgument = instruction.string().list().get();
         final BrewMixObjective objective = new BrewMixObjective(
+                api,
+                service,
                 cauldronTypeArgument,
                 cookTimeArgument,
-                ingredientsArgument,
-                api,
-                service
+                ingredientsArgument
         );
         service.request(CauldronExtractEvent.class)
                 .onlineHandler(objective::handle)

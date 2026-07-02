@@ -27,17 +27,17 @@ import java.util.function.Predicate;
 /**
  * The objective reached when transferring brews from either distillery, barrels, or cauldrons.
  *
+ * @param service               the objective service
+ * @param brewManager           the brew manager provided by TheBrewingProject
  * @param qualityArgument       a quality filter
  * @param brewTypeArgument      a brew type argument
  * @param transferTypeArgument  a transfer type argument
  * @param structureTypeArgument a structure type argument
- * @param service               the objective service
- * @param brewManager           the brew manager provided by TheBrewingProject
  */
-public record BrewTransferObjective(BrewQualityArgument qualityArgument, Argument<String> brewTypeArgument,
+public record BrewTransferObjective(ObjectiveService service, BrewManager<ItemStack> brewManager,
+                                    BrewQualityArgument qualityArgument, Argument<String> brewTypeArgument,
                                     Argument<TransferType> transferTypeArgument,
-                                    Argument<BrewingStructureType> structureTypeArgument,
-                                    ObjectiveService service, BrewManager<ItemStack> brewManager) implements Objective {
+                                    Argument<BrewingStructureType> structureTypeArgument) implements Objective {
 
     /**
      * Handle item transaction events related to extracting items from inventories.

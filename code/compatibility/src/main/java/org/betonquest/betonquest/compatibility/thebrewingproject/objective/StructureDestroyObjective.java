@@ -13,12 +13,11 @@ import org.betonquest.betonquest.compatibility.thebrewingproject.argument.Brewin
 /**
  * Objective for destroying structures.
  *
- * @param structureTypeArgument an argument to specify structure type
  * @param service               the objective service
+ * @param structureTypeArgument an argument to specify structure type
  */
-public record StructureDestroyObjective(
-        Argument<BrewingStructureType> structureTypeArgument,
-        ObjectiveService service) implements Objective {
+public record StructureDestroyObjective(ObjectiveService service,
+                                        Argument<BrewingStructureType> structureTypeArgument) implements Objective {
 
     /**
      * Handle barrel destroy event.

@@ -31,12 +31,12 @@ public record BrewTransferObjectiveFactory(TheBrewingProjectApi api) implements 
         final Argument<String> brewType = instruction.string().get();
         final BrewQualityArgument brewQualityArgument = BrewQualityArgument.parseInstructions(instruction);
         final BrewTransferObjective objective = new BrewTransferObjective(
+                service,
+                api.getBrewManager(),
                 brewQualityArgument,
                 brewType,
                 transferTypeArgument,
-                structureTypeArgument,
-                service,
-                api.getBrewManager()
+                structureTypeArgument
         );
         service.request(DistilleryExtractEvent.class)
                 .onlineHandler(objective::handleExtract)

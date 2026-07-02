@@ -12,15 +12,15 @@ import org.betonquest.betonquest.quest.condition.number.Operation;
 /**
  * A drunken modifier condition.
  *
+ * @param api                           the brewing project api
  * @param modifierNameArgument          a modifier name argument
  * @param modifierConditionTypeArgument a modifier condition argument
  * @param modifierValueArgument         a modifier value argument
- * @param api                           the brewing project api
  */
-public record ModifierCondition(Argument<String> modifierNameArgument,
+public record ModifierCondition(TheBrewingProjectApi api,
+                                Argument<String> modifierNameArgument,
                                 Argument<Operation> modifierConditionTypeArgument,
-                                Argument<Number> modifierValueArgument,
-                                TheBrewingProjectApi api) implements PlayerCondition {
+                                Argument<Number> modifierValueArgument) implements PlayerCondition {
 
     @Override
     public boolean check(final Profile profile) throws QuestException {

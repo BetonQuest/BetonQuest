@@ -16,7 +16,7 @@ public record DrunkenEventObjectiveFactory() implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
         final Argument<String> eventArgument = instruction.string().get();
-        final DrunkenEventObjective objective = new DrunkenEventObjective(eventArgument, service);
+        final DrunkenEventObjective objective = new DrunkenEventObjective(service, eventArgument);
         service.request(DrunkEventInitiateEvent.class)
                 .onlineHandler(objective::handle)
                 .player(DrunkEventInitiateEvent::getPlayer)

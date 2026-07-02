@@ -15,12 +15,12 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Brew item wrapper for the brewing project.
  *
+ * @param api                 the TheBrewingProject API
  * @param recipeNameArgument  a recipe name argument
  * @param brewQualityArgument a brew quality argument
- * @param api                 the TheBrewingProject API
  */
-public record BrewItemWrapper(Argument<String> recipeNameArgument, FlagArgument<BrewQuality> brewQualityArgument,
-                              TheBrewingProjectApi api) implements QuestItemWrapper {
+public record BrewItemWrapper(TheBrewingProjectApi api, Argument<String> recipeNameArgument,
+                              FlagArgument<BrewQuality> brewQualityArgument) implements QuestItemWrapper {
 
     @Override
     public QuestItem getItem(@Nullable final Profile profile) throws QuestException {

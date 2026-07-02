@@ -21,7 +21,7 @@ public record BrewConsumeObjectiveFactory(TheBrewingProjectApi api) implements O
     public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
         final Argument<String> brewType = instruction.string().get();
         final BrewQualityArgument brewQualityArgument = BrewQualityArgument.parseInstructions(instruction);
-        final BrewConsumeObjective objective = new BrewConsumeObjective(brewQualityArgument, brewType, service, api.getBrewManager());
+        final BrewConsumeObjective objective = new BrewConsumeObjective(service, api.getBrewManager(), brewQualityArgument, brewType);
         service.request(BrewConsumeEvent.class)
                 .onlineHandler(objective::handle)
                 .player(BrewConsumeEvent::getPlayer)

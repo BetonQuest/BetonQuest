@@ -20,7 +20,7 @@ public record StructureDestroyObjectiveFactory() implements ObjectiveFactory {
     public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
         final Argument<BrewingStructureType> structureTypeArgument = instruction.enumeration(BrewingStructureType.class)
                 .get();
-        final StructureDestroyObjective objective = new StructureDestroyObjective(structureTypeArgument, service);
+        final StructureDestroyObjective objective = new StructureDestroyObjective(service, structureTypeArgument);
         service.request(DistilleryDestroyEvent.class)
                 .onlineHandler(objective::handleDistilleryDestroy)
                 .player(DistilleryDestroyEvent::getPlayer)

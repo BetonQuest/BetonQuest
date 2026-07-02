@@ -20,6 +20,6 @@ public record BrewItemFactory(TheBrewingProjectApi api) implements TypeFactory<Q
     public QuestItemWrapper parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<String> recipeNameArgument = instruction.string().get();
         final FlagArgument<BrewQuality> brewQualityArgument = instruction.enumeration(BrewQuality.class).getFlag("quality", BrewQuality.EXCELLENT);
-        return new BrewItemWrapper(recipeNameArgument, brewQualityArgument, api);
+        return new BrewItemWrapper(api, recipeNameArgument, brewQualityArgument);
     }
 }

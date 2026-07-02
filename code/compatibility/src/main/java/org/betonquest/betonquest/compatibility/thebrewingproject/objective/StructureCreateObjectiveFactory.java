@@ -21,7 +21,7 @@ public record StructureCreateObjectiveFactory() implements ObjectiveFactory {
         final Argument<BrewingStructureType> structureTypeArgument = instruction.enumeration(BrewingStructureType.class)
                 .get();
         final StructureCreateObjective objective = new StructureCreateObjective(
-                structureTypeArgument, service
+                service, structureTypeArgument
         );
         service.request(BarrelCreateEvent.class)
                 .onlineHandler(objective::handleBarrelCreate)

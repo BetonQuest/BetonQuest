@@ -17,6 +17,6 @@ public record DrunkenEventActionFactory(TheBrewingProjectApi api) implements Pla
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<String> drunkenEventNameArgument = instruction.string().get();
-        return new DrunkenEventAction(drunkenEventNameArgument, api);
+        return new DrunkenEventAction(api, drunkenEventNameArgument);
     }
 }

@@ -20,6 +20,6 @@ public record ModifierConditionFactory(TheBrewingProjectApi api) implements Play
         final Argument<String> modifierNameArgument = instruction.string().get();
         final Argument<Operation> modifierConditionTypeArgument = instruction.parse(Operation::fromSymbol).get();
         final Argument<Number> modifierValueArgument = instruction.number().get();
-        return new ModifierCondition(modifierNameArgument, modifierConditionTypeArgument, modifierValueArgument, api);
+        return new ModifierCondition(api, modifierNameArgument, modifierConditionTypeArgument, modifierValueArgument);
     }
 }

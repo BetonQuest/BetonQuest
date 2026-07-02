@@ -19,7 +19,7 @@ public record BrewDistillObjectiveFactory(TheBrewingProjectApi api) implements O
     @Override
     public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
         final Argument<Number> distillRunsArgument = instruction.number().atLeast(1).get();
-        final BrewDistillObjective objective = new BrewDistillObjective(distillRunsArgument, api.getBrewManager(), service);
+        final BrewDistillObjective objective = new BrewDistillObjective(service, api.getBrewManager(), distillRunsArgument);
         service.request(DistilleryExtractEvent.class)
                 .onlineHandler(objective::handle)
                 .player(DistilleryExtractEvent::getPlayer)

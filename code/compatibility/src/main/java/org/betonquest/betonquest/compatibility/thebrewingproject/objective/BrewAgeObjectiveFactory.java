@@ -24,11 +24,11 @@ public record BrewAgeObjectiveFactory(TheBrewingProjectApi api) implements Objec
         final Argument<BarrelType> barrelTypeArgument = instruction.parse(new BreweryKeyedParser<>(BreweryRegistry.BARREL_TYPE)).get();
         final Argument<Number> ageTimeArgument = instruction.number().atLeast(0.5).get();
         final BrewAgeObjective objective = new BrewAgeObjective(
-                barrelTypeArgument,
-                ageTimeArgument,
                 api.getConfiguration().barrels().agingYearTicks(),
                 api.getBrewManager(),
-                service
+                service,
+                barrelTypeArgument,
+                ageTimeArgument
         );
         service.request(BarrelExtractEvent.class)
                 .onlineHandler(objective::handle)
