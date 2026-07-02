@@ -6,6 +6,7 @@ import dev.jsinco.brewery.bukkit.api.TheBrewingProjectApi;
 import dev.jsinco.brewery.bukkit.api.event.transaction.CauldronExtractEvent;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
@@ -23,7 +24,9 @@ public record BrewMixObjectiveFactory(TheBrewingProjectApi api) implements Objec
 
     @Override
     public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
-        final Argument<CauldronType> cauldronTypeArgument = instruction.parse(new BreweryKeyedParser<>(BreweryRegistry.CAULDRON_TYPE)).get();
+        final FlagArgument<CauldronType> cauldronTypeArgument = instruction
+                .parse(new BreweryKeyedParser<>(BreweryRegistry.CAULDRON_TYPE))
+                .getFlag("cauldron", CauldronType.WATER);
         final Argument<Number> cookTimeArgument = instruction.number().atLeast(0).get();
         final Argument<List<String>> ingredientsArgument = instruction.string().list().get();
         final BrewMixObjective objective = new BrewMixObjective(

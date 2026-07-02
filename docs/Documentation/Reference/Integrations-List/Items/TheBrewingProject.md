@@ -62,19 +62,19 @@ actions:
 Heated cauldron brew creation.
 
 __Context__: @snippet:condition-meta:online@  
-__Syntax__: `tbp_cook <cauldron-type> <cooking-time> <ingredients>`  
+__Syntax__: `tbp_cook <cooking-time> <ingredients> [cauldron-type]`  
 __Description__: The player needs to have extracted a brew from a cauldron with specified properties
 
-| Parameter       | Syntax                                                         | Explanation                                       |
-|-----------------|----------------------------------------------------------------|---------------------------------------------------|
-| _cauldron-type_ | Any of `water`, `lava`, `snow`, `brew`                         | The type of the cauldron contents                 |
-| _cooking-time_  | Any number above 0                                             | The time in minutes the brew has to be cooked for |
-| _ingredients_   | A list with `<ingredient>/<amount>` example: `wheat/6,apple/7` | The ingredients added into the cauldorn           |
+| Parameter      | Syntax                                                         | Explanation                                       |
+|----------------|----------------------------------------------------------------|---------------------------------------------------|
+| _cauldron_     | Any of `water`, `lava`, `snow`, `brew`                         | The type of the cauldron contents                 |
+| _cooking-time_ | Any number above 0                                             | The time in minutes the brew has to be cooked for |
+| _ingredients_  | A list with `<ingredient>/<amount>` example: `wheat/6,apple/7` | The ingredients added into the cauldorn           |
 
 ```YAML title="Example"
 objectives:
-  beerBase: "tbp_cook water 8 wheat/6"
-  failedBased: "tbp_cook lava 2 wheat/6,apple/3"
+  beerBase: "tbp_cook 8 wheat/6 cauldron:water"
+  failedBase: "tbp_cook 2 wheat/6,apple/3 cauldron:lava"
 ```
 
 ### `Mix`
@@ -82,20 +82,20 @@ objectives:
 Cold cauldron brew creation.
 
 __Context__: @snippet:condition-meta:online@  
-__Syntax__: `tbp_mix <cauldron-type> <mixing-time> <ingredients>`  
+__Syntax__: `tbp_mix <mixing-time> <ingredients> [cauldron-type]`  
 __Description__: The player needs to have extracted a brew from a cauldron with specified properties
 
-| Parameter       | Syntax                                                         | Explanation                                      |
-|-----------------|----------------------------------------------------------------|--------------------------------------------------|
-| _cauldron-type_ | Any of `water`, `lava`, `snow`, `brew`                         | The type of the cauldron contents                |
-| _mixing-time_   | Any number above 0                                             | The time in minutes the brew has to be mixed for |
-| _ingredients_   | A list with `<ingredient>/<amount>` example: `wheat/6,apple/7` | The ingredients added into the cauldorn          |
+| Parameter     | Syntax                                                         | Explanation                                      |
+|---------------|----------------------------------------------------------------|--------------------------------------------------|
+| _cauldron_    | Any of `water`, `lava`, `snow`, `brew`                         | The type of the cauldron contents                |
+| _mixing-time_ | Any number above 0                                             | The time in minutes the brew has to be mixed for |
+| _ingredients_ | A list with `<ingredient>/<amount>` example: `wheat/6,apple/7` | The ingredients added into the cauldorn          |
 
 
 
 ```YAML title="Example"
 objectives:
-  cook: "tbp_mix water 2 brewery:gin/3,chorus_fruit/6"
+  cook: "tbp_mix 2 brewery:gin/3,chorus_fruit/6 cauldron:water"
 ```
 
 ### `Distill`

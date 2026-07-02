@@ -10,9 +10,11 @@ import dev.jsinco.brewery.bukkit.api.event.transaction.CauldronExtractEvent;
 import dev.jsinco.brewery.bukkit.api.transaction.ItemSource;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
@@ -32,7 +34,7 @@ import java.util.concurrent.TimeoutException;
  * @param ingredientsArgument  an ingredients manager
  */
 public record BrewCookObjective(TheBrewingProjectApi api, ObjectiveService service,
-                                Argument<CauldronType> cauldronTypeArgument, Argument<Number> cookTimeArgument,
+                                FlagArgument<CauldronType> cauldronTypeArgument, Argument<Number> cookTimeArgument,
                                 Argument<List<String>> ingredientsArgument) implements Objective {
 
     /**
@@ -43,7 +45,8 @@ public record BrewCookObjective(TheBrewingProjectApi api, ObjectiveService servi
      * @throws QuestException if any argument was invalid
      */
     public void handle(final CauldronExtractEvent event, final OnlineProfile profile) throws QuestException {
-        final CauldronType cauldronType = cauldronTypeArgument.getValue(profile);
+        final CauldronType cauldronType = cauldronTypeArgument.getValue(profile)
+                .orElse(null);
         final double cookTime = cookTimeArgument.getValue(profile).doubleValue();
 
         final ItemSource itemSource = event.getItemResult();
@@ -63,10 +66,10 @@ public record BrewCookObjective(TheBrewingProjectApi api, ObjectiveService servi
         }
     }
 
-    private boolean filterBrew(final Brew brew, final double cookTime, final CauldronType cauldronType, final Map<Ingredient, Integer> ingredients) {
+    private boolean filterBrew(final Brew brew, final double cookTime, @Nullable final CauldronType cauldronType, final Map<Ingredient, Integer> ingredients) {
         return brew.stepMatches(-1, BrewingStep.Cook.class, cookStep ->
                 cookStep.time().moment() >= cookTime * Moment.MINUTE
-                        && cauldronType.appliesTo(cookStep.cauldronType())
+                        && (cauldronType == null || cauldronType.appliesTo(cookStep.cauldronType()))
                         && IngredientsUtil.checkMatch(ingredients, cookStep.ingredients())
         );
     }
