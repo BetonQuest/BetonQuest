@@ -13,12 +13,12 @@ import org.betonquest.betonquest.compatibility.thebrewingproject.argument.Brewin
 /**
  * Objective for creating structures.
  *
- * @param structureTypeArgument a structure type argument
  * @param service               the objective service
+ * @param structureTypeArgument a structure type argument
  */
 public record StructureCreateObjective(
-        Argument<BrewingStructureType> structureTypeArgument,
-        ObjectiveService service) implements Objective {
+        ObjectiveService service,
+        Argument<BrewingStructureType> structureTypeArgument) implements Objective {
 
     /**
      * Handle barrel create event.

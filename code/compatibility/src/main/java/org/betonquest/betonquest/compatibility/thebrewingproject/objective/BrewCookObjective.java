@@ -25,15 +25,15 @@ import java.util.concurrent.TimeoutException;
 /**
  * A brew cook objective.
  *
+ * @param api                  the TheBrewingProject API
+ * @param service              the objective service
  * @param cauldronTypeArgument a cauldron type argument
  * @param cookTimeArgument     a cook time argument
  * @param ingredientsArgument  an ingredients manager
- * @param api                  the TheBrewingProject API
- * @param service              the objective service
  */
-public record BrewCookObjective(Argument<CauldronType> cauldronTypeArgument, Argument<Number> cookTimeArgument,
-                                Argument<List<String>> ingredientsArgument, TheBrewingProjectApi api,
-                                ObjectiveService service) implements Objective {
+public record BrewCookObjective(TheBrewingProjectApi api, ObjectiveService service,
+                                Argument<CauldronType> cauldronTypeArgument, Argument<Number> cookTimeArgument,
+                                Argument<List<String>> ingredientsArgument) implements Objective {
 
     /**
      * Handle brew extract events from cauldrons.

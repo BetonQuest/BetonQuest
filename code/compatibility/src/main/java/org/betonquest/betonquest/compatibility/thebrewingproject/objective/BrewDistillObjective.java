@@ -18,12 +18,12 @@ import java.util.Optional;
 /**
  * A brew  distill objective.
  *
- * @param distillRunsArgument a distill runs argument
- * @param brewManager         the brew manager provided by TheBrewingProject
  * @param service             the objective service
+ * @param brewManager         the brew manager provided by TheBrewingProject
+ * @param distillRunsArgument a distill runs argument
  */
-public record BrewDistillObjective(Argument<Number> distillRunsArgument, BrewManager<ItemStack> brewManager,
-                                   ObjectiveService service) implements Objective {
+public record BrewDistillObjective(ObjectiveService service, BrewManager<ItemStack> brewManager,
+                                   Argument<Number> distillRunsArgument) implements Objective {
 
     /**
      * Handle brew extract events from distillery.

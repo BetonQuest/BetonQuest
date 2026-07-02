@@ -16,13 +16,14 @@ import java.util.function.Predicate;
 /**
  * Brew consume objective.
  *
- * @param qualityArgument  argument for brew quality
- * @param brewTypeArgument argument for brew type
  * @param service          the objective service
  * @param brewManager      the brew manager provided by TheBrewingProject
+ * @param qualityArgument  argument for brew quality
+ * @param brewTypeArgument argument for brew type
  */
-public record BrewConsumeObjective(BrewQualityArgument qualityArgument, Argument<String> brewTypeArgument,
-                                   ObjectiveService service, BrewManager<ItemStack> brewManager) implements Objective {
+public record BrewConsumeObjective(ObjectiveService service, BrewManager<ItemStack> brewManager,
+                                   BrewQualityArgument qualityArgument,
+                                   Argument<String> brewTypeArgument) implements Objective {
 
     /**
      * Handle a brew consume event.

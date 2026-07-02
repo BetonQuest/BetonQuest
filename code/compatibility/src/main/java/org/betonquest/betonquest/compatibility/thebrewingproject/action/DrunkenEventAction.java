@@ -11,11 +11,11 @@ import org.betonquest.betonquest.api.quest.action.PlayerAction;
 /**
  * A drunken action.
  *
- * @param drunkenEventNameArgument drunk event name argument
  * @param api                      the brewing project api
+ * @param drunkenEventNameArgument drunk event name argument
  */
-public record DrunkenEventAction(Argument<String> drunkenEventNameArgument,
-                                 TheBrewingProjectApi api) implements PlayerAction {
+public record DrunkenEventAction(TheBrewingProjectApi api,
+                                 Argument<String> drunkenEventNameArgument) implements PlayerAction {
 
     @Override
     public void execute(final Profile profile) throws QuestException {

@@ -11,11 +11,11 @@ import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 /**
  * The objective for triggering a specific drunken event.
  *
- * @param drunkenEventArgument an argument with a key for the drunken event
  * @param service              the objective service
+ * @param drunkenEventArgument an argument with a key for the drunken event
  */
-public record DrunkenEventObjective(Argument<String> drunkenEventArgument,
-                                    ObjectiveService service) implements Objective {
+public record DrunkenEventObjective(ObjectiveService service,
+                                    Argument<String> drunkenEventArgument) implements Objective {
 
     /**
      * Handle a drunk event initiate event.
