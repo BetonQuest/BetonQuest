@@ -59,6 +59,11 @@ nav:
               - 'Tags': Tutorials/Features/Tracking-Quest-Progress/Tags.md
               - 'Points': Tutorials/Features/Tracking-Quest-Progress/Points.md
               - 'Stages': Tutorials/Features/Tracking-Quest-Progress/Stages.md
+          - 'Schedules':
+              - 'Overview': Tutorials/Features/Schedules/Overview.md
+              - 'Daily Repetition': Tutorials/Features/Schedules/Daily-Repetition.md
+              - 'Delayed Quest Steps': Tutorials/Features/Schedules/Delayed-Quest-Steps.md
+              - 'Limited Time Events': Tutorials/Features/Schedules/Limited-Time-Events.md
       - 'Tools':
           - 'Handling YAML Errors': Tutorials/Tools/YAML-Errors.md
       - 'Syntax':
