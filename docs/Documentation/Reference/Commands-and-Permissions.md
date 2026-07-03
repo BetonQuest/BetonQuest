@@ -58,7 +58,7 @@ The server must be restarted to unregister command tab completions.
 ## Aliases
 
 * `/journal` - `j`, `bj`, `bjournal`, `betonjournal`, `betonquestjournal`
-* `/backpack` - `b`, `bb`, `bbackpack`, `betonbackpack`, `betonquestbackpack`
+* `/backpack` - `bb`, `bbackpack`, `betonbackpack`, `betonquestbackpack`
 * `/compass` - `bc`, `bcompass`, `betoncompass`, `betonquestcompass`
 * `/cancelquest` - `bcq`, `bcq`, `bcancelquest`, `betoncancelquest`, `betonquestcancelquest`
 * `/questlang` - `ql`
