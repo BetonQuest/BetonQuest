@@ -20,7 +20,7 @@
     <changelist>-SNAPSHOT</changelist>
 
     <!-- dependency versions -->
-    <paper-api.version>1.18.2-R0.1-SNAPSHOT</paper-api.version>
+    <paper-api.version>1.20.6-R0.1-SNAPSHOT</paper-api.version>
   </properties>
 
   <dependencies>

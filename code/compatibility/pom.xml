@@ -24,7 +24,7 @@
     <betonquest.core.version>3.3.0${changelist}</betonquest.core.version>
 
     <!-- dependency versions -->
-    <paper-api.version>1.18.2-R0.1-SNAPSHOT</paper-api.version>
+    <paper-api.version>1.20.6-R0.1-SNAPSHOT</paper-api.version>
     <worldguard-bukkit.version>7.0.0</worldguard-bukkit.version>
     <worldguard-core.version>7.0.0</worldguard-core.version>
     <worldedit-bukkit.version>7.3.0</worldedit-bukkit.version>
