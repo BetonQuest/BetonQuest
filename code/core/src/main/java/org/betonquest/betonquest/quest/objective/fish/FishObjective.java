@@ -66,7 +66,7 @@ public class FishObjective extends CountingObjective {
         if (event.getState() != State.CAUGHT_FISH) {
             return;
         }
-        if (event.getCaught() == null || event.getCaught().getType() != EntityType.DROPPED_ITEM) {
+        if (event.getCaught() == null || event.getCaught().getType() != EntityType.ITEM) {
             return;
         }
         if (isInvalidLocation(event, onlineProfile)) {
