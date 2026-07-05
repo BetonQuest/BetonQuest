@@ -87,6 +87,7 @@ nav:
               - 'Global Daily Quests': Tutorials/Quick-Guides/Multiplayer-and-Global-Quests/Global-Random-Daily-Quests.md
               - 'Server Wide Quests': Tutorials/Quick-Guides/Multiplayer-and-Global-Quests/Server-Wide-Quests.md
           - 'World, NPCs & Visibility':
+              - 'Binding Conversations to NPCs': Tutorials/Quick-Guides/Binding-Conversations-to-NPCs.md
               - 'NPC and Player Hider': Tutorials/Quick-Guides/World-NPCs-and-Visibility/NPC-and-Player-Hider.md
   - 'Documentation':
       - 'Overview': Documentation/Overview.md
