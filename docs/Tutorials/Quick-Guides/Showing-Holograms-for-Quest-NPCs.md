@@ -7,9 +7,9 @@ icon: material/text-recognition
 NPC holograms are useful when players should quickly see which NPC starts, continues, or finishes a quest.
 BetonQuest can attach holograms to NPCs and show different text depending on the player's quest state.
 
-The following example shows a marker above a mayor NPC.
-Players see `! New Quest` before accepting the quest, `Return here` while the quest is active, and no hologram after
-the quest is finished.
+The following example shows floating item markers above a mayor NPC.
+Players see a quest book before accepting the quest, a compass while the quest is active, and no hologram after the
+quest is finished.
 
 The goal is:
 
@@ -17,6 +17,7 @@ The goal is:
 - Show one hologram before the quest starts.
 - Show another hologram while the quest is active.
 - Hide both holograms after the quest is completed.
+- Use item lines as clear visual markers.
 - Keep the hologram above the NPC with a vertical offset.
 
 ```yaml
@@ -29,8 +30,8 @@ npc_conversations:
 npc_holograms:
   mayorNewQuest:
     lines:
-      - "&e!"
-      - "&6New Quest" #(2)!
+      - "item:questAvailableIcon" #(2)!
+      - "&6New Quest"
     npcs: mayor #(3)!
     vector: 0;0.7;0 #(4)!
     conditions: "!mayorQuestStarted,!mayorQuestDone" #(5)!
@@ -39,7 +40,7 @@ npc_holograms:
 
   mayorReturnQuest:
     lines:
-      - "&a?"
+      - "item:questReturnIcon"
       - "&2Return here"
     npcs: mayor
     vector: 0;0.7;0
@@ -65,12 +66,14 @@ conditions:
   mayorQuestDone: "tag mayor_quest_done"
 
 items:
+  questAvailableIcon: "simple WRITABLE_BOOK title:&6New_Quest" #(13)!
+  questReturnIcon: "simple COMPASS title:&aReturn_to_Mayor"
   reward: "simple EMERALD"
 
 conversations:
   mayorQuest:
     quester: "Mayor"
-    first: "newQuest,activeQuest,doneQuest" #(13)!
+    first: "newQuest,activeQuest,doneQuest" #(14)!
 
     NPC_options:
       newQuest:
@@ -91,7 +94,7 @@ conversations:
 ```
 
 1. Defines the BetonQuest NPC ID. Use this ID in `npc_holograms`, not the raw Citizens ID.
-2. These lines are shown above the NPC before the quest starts.
+2. Shows the `questAvailableIcon` item as a floating hologram line above the NPC.
 3. Attaches the hologram to the `mayor` NPC. Multiple NPC IDs can be separated with commas.
 4. Moves the hologram 0.7 blocks above the NPC location.
 5. Shows this hologram only while the quest has not been started and not completed.
@@ -102,7 +105,8 @@ conversations:
 10. Starts the quest and changes the player's quest state.
 11. Finishes the quest. After the tag is added, neither hologram condition matches anymore.
 12. These tag conditions control which hologram the player sees.
-13. The conversation is included because `npc_conversations` must point to a defined conversation.
+13. These items are used by the `item:` hologram lines.
+14. The conversation is included because `npc_conversations` must point to a defined conversation.
 
 ## Requirements
 
@@ -125,11 +129,15 @@ If the NPC moves around, add `follow: true`:
 npc_holograms:
   patrolQuest:
     lines:
-      - "&e!"
+      - "item:patrolQuestIcon"
+      - "&6New Patrol"
     npcs: patrolGuard
     vector: 0;0.7;0
     follow: true
     conditions: "!patrolQuestDone"
+
+items:
+  patrolQuestIcon: "simple MAP title:&6Patrol_Quest"
 ```
 
 Only use `follow: true` for NPCs that actually move.
