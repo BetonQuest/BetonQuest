@@ -80,6 +80,8 @@ nav:
           - 'Quest Flow & Lifecycle':
               - 'Quest Cancelers': Tutorials/Quick-Guides/Quest-Flow-and-Lifecycle/Using-Quest-Cancelers.md
               - 'Random Daily Quest': Tutorials/Quick-Guides/Quest-Flow-and-Lifecycle/Random-Daily-Quest.md
+          - 'Rewards & Economy':
+              - 'Rewarding Money with Vault': Tutorials/Quick-Guides/Rewarding-Money-with-Vault.md
           - 'Items & Inventory':
               - 'Complex Quest Items': Tutorials/Quick-Guides/Items-and-Inventory/Complex-Quest-Items.md
           - 'Multiplayer & Global Quests':
