@@ -10,31 +10,31 @@
         <meta name="author" content="BetonQuest Organisation">
       
       
-        <link rel="canonical" href="https://betonquest.org/3.1-DEV/Tutorials/Quick-Guides/Complex-Quest-Items/">
+        <link rel="canonical" href="https://betonquest.org/3.1-DEV/Tutorials/Quick-Guides/Quest-Progress-and-State/Displaying-Progress/">
       
       
-        <link rel="prev" href="../Using-Menus/">
+        <link rel="prev" href="../../../Syntax/Quest-Packages/">
       
       
-        <link rel="next" href="../Using-Quest-Cancelers/">
+        <link rel="next" href="../Objectives-in-any-order/">
       
       
         
       
       
-      <link rel="icon" href="../../../_media/brand/Icon/Icon32.ico">
+      <link rel="icon" href="../../../../_media/brand/Icon/Icon32.ico">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
-        <title>Complex Quest Items - BetonQuest</title>
+        <title>Displaying Progress - BetonQuest</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
   
@@ -63,9 +63,9 @@
       
     
     
-      <link rel="stylesheet" href="../../../_webCode/css/coloredIcons.css">
+      <link rel="stylesheet" href="../../../../_webCode/css/coloredIcons.css">
     
-    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -90,7 +90,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#how-to-create-complex-quest-items" class="md-skip">
+        <a href="#how-to-display-1-10-during-objective-progression" class="md-skip">
           Skip to content
         </a>
       
@@ -105,12 +105,12 @@
             <div class="md-banner__inner md-grid md-typeset">
               
 <a style="color: black"> You're viewing the docs of an outdated or legacy development version! </a>
-<a href="../../../..">
+<a href="../../../../..">
   <strong>Click here to go to the latest BetonQuest release.</strong>
 </a>
 
             </div>
-            <script>var el=document.querySelector("[data-md-component=outdated]"),base=new URL("../../.."),outdated=__md_get("__outdated",sessionStorage,base);!0===outdated&&el&&(el.hidden=!1)</script>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),base=new URL("../../../.."),outdated=__md_get("__outdated",sessionStorage,base);!0===outdated&&el&&(el.hidden=!1)</script>
           </aside>
         
       </div>
@@ -122,9 +122,9 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="BetonQuest" class="md-header__button md-logo" aria-label="BetonQuest" data-md-component="logo">
+    <a href="../../../.." title="BetonQuest" class="md-header__button md-logo" aria-label="BetonQuest" data-md-component="logo">
       
-  <img src="../../../_media/brand/Icon/Icon1K.png" alt="logo">
+  <img src="../../../../_media/brand/Icon/Icon1K.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -141,7 +141,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Complex Quest Items
+              Displaying Progress
             
           </span>
         </div>
@@ -253,7 +253,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../.." class="md-tabs__link">
+      <a href="../../../.." class="md-tabs__link">
         
   
   
@@ -276,7 +276,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="../../Overview/" class="md-tabs__link">
+        <a href="../../../Overview/" class="md-tabs__link">
           
   
   
@@ -298,7 +298,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../Documentation/Overview/" class="md-tabs__link">
+        <a href="../../../../Documentation/Overview/" class="md-tabs__link">
           
   
   
@@ -320,7 +320,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../API/Overview/" class="md-tabs__link">
+        <a href="../../../../API/Overview/" class="md-tabs__link">
           
   
   
@@ -342,7 +342,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../Participate/Overview/" class="md-tabs__link">
+        <a href="../../../../Participate/Overview/" class="md-tabs__link">
           
   
   
@@ -362,7 +362,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../Downloads/" class="md-tabs__link">
+      <a href="../../../../Downloads/" class="md-tabs__link">
         
   
   
@@ -403,9 +403,9 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="BetonQuest" class="md-nav__button md-logo" aria-label="BetonQuest" data-md-component="logo">
+    <a href="../../../.." title="BetonQuest" class="md-nav__button md-logo" aria-label="BetonQuest" data-md-component="logo">
       
-  <img src="../../../_media/brand/Icon/Icon1K.png" alt="logo">
+  <img src="../../../../_media/brand/Icon/Icon1K.png" alt="logo">
 
     </a>
     BetonQuest
@@ -432,7 +432,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../.." class="md-nav__link">
+      <a href="../../../.." class="md-nav__link">
         
   
   
@@ -530,7 +530,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Overview/" class="md-nav__link">
+      <a href="../../../Overview/" class="md-nav__link">
         
   
   
@@ -623,7 +623,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Getting-Started/About/" class="md-nav__link">
+      <a href="../../../Getting-Started/About/" class="md-nav__link">
         
   
   
@@ -713,7 +713,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Getting-Started/Setup-Guide/Setting-up-a-Test-Server/" class="md-nav__link">
+      <a href="../../../Getting-Started/Setup-Guide/Setting-up-a-Test-Server/" class="md-nav__link">
         
   
   
@@ -743,7 +743,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Getting-Started/Setup-Guide/Installing-BetonQuest/" class="md-nav__link">
+      <a href="../../../Getting-Started/Setup-Guide/Installing-BetonQuest/" class="md-nav__link">
         
   
   
@@ -773,7 +773,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Getting-Started/Setup-Guide/Setting-up-VSCode/" class="md-nav__link">
+      <a href="../../../Getting-Started/Setup-Guide/Setting-up-VSCode/" class="md-nav__link">
         
   
   
@@ -803,7 +803,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Getting-Started/Setup-Guide/VSCode-Basics/" class="md-nav__link">
+      <a href="../../../Getting-Started/Setup-Guide/VSCode-Basics/" class="md-nav__link">
         
   
   
@@ -905,7 +905,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Getting-Started/Basics/YAML-Basics/" class="md-nav__link">
+      <a href="../../../Getting-Started/Basics/YAML-Basics/" class="md-nav__link">
         
   
   
@@ -935,7 +935,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Getting-Started/Basics/Conversations/" class="md-nav__link">
+      <a href="../../../Getting-Started/Basics/Conversations/" class="md-nav__link">
         
   
   
@@ -965,7 +965,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Getting-Started/Basics/Actions/" class="md-nav__link">
+      <a href="../../../Getting-Started/Basics/Actions/" class="md-nav__link">
         
   
   
@@ -995,7 +995,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Getting-Started/Basics/Objectives/" class="md-nav__link">
+      <a href="../../../Getting-Started/Basics/Objectives/" class="md-nav__link">
         
   
   
@@ -1025,7 +1025,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Getting-Started/Basics/Conditions/" class="md-nav__link">
+      <a href="../../../Getting-Started/Basics/Conditions/" class="md-nav__link">
         
   
   
@@ -1194,7 +1194,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Features/Tracking-Quest-Progress/Overview/" class="md-nav__link">
+      <a href="../../../Features/Tracking-Quest-Progress/Overview/" class="md-nav__link">
         
   
   
@@ -1224,7 +1224,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Features/Tracking-Quest-Progress/Tags/" class="md-nav__link">
+      <a href="../../../Features/Tracking-Quest-Progress/Tags/" class="md-nav__link">
         
   
   
@@ -1254,7 +1254,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Features/Tracking-Quest-Progress/Points/" class="md-nav__link">
+      <a href="../../../Features/Tracking-Quest-Progress/Points/" class="md-nav__link">
         
   
   
@@ -1284,7 +1284,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Features/Tracking-Quest-Progress/Stages/" class="md-nav__link">
+      <a href="../../../Features/Tracking-Quest-Progress/Stages/" class="md-nav__link">
         
   
   
@@ -1384,7 +1384,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Features/Schedules/Overview/" class="md-nav__link">
+      <a href="../../../Features/Schedules/Overview/" class="md-nav__link">
         
   
   
@@ -1414,7 +1414,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Features/Schedules/Daily-Repetition/" class="md-nav__link">
+      <a href="../../../Features/Schedules/Daily-Repetition/" class="md-nav__link">
         
   
   
@@ -1444,7 +1444,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Features/Schedules/Delayed-Quest-Steps/" class="md-nav__link">
+      <a href="../../../Features/Schedules/Delayed-Quest-Steps/" class="md-nav__link">
         
   
   
@@ -1474,7 +1474,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Features/Schedules/Limited-Time-Events/" class="md-nav__link">
+      <a href="../../../Features/Schedules/Limited-Time-Events/" class="md-nav__link">
         
   
   
@@ -1579,7 +1579,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Tools/YAML-Errors/" class="md-nav__link">
+      <a href="../../../Tools/YAML-Errors/" class="md-nav__link">
         
   
   
@@ -1676,7 +1676,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Syntax/Quest-Packages/" class="md-nav__link">
+      <a href="../../../Syntax/Quest-Packages/" class="md-nav__link">
         
   
   
@@ -1717,14 +1717,6 @@
   
     
     
-      
-        
-      
-        
-      
-        
-      
-        
       
         
       
@@ -1790,49 +1782,41 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../Displaying-Progress/" class="md-nav__link">
+  
+    
+    
+      
         
-  
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 2.03v2.02c4.39.54 7.5 4.53 6.96 8.92-.46 3.64-3.32 6.53-6.96 6.96v2c5.5-.55 9.5-5.43 8.95-10.93-.45-4.75-4.22-8.5-8.95-8.97m-2 .03c-1.95.19-3.81.94-5.33 2.2L7.1 5.74c1.12-.9 2.47-1.48 3.9-1.68zM4.26 5.67A9.9 9.9 0 0 0 2.05 11h2c.19-1.42.75-2.77 1.64-3.9zM15.5 8.5l-4.88 4.88-2.12-2.12-1.06 1.06 3.18 3.18 5.94-5.94zM2.06 13c.2 1.96.97 3.81 2.21 5.33l1.42-1.43A8 8 0 0 1 4.06 13zm5.04 5.37-1.43 1.37A10 10 0 0 0 11 22v-2a8 8 0 0 1-3.9-1.63"/></svg>
-  
-  <span class="md-ellipsis">
+      
+        
+      
     
-  
-    Displaying Progress
-  
-
     
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_1" id="__nav_2_6_1_label" tabindex="0">
             
-              
-                
   
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../Using-the-Journal/" class="md-nav__link">
-        
-  
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.04 13.13c.14 0 .27.06.38.17l1.28 1.28c.22.21.22.56 0 .77l-1 1-2.05-2.05 1-1c.11-.11.25-.17.39-.17m-1.97 1.75 2.05 2.05L15.06 23H13v-2.06zM3 7V5h2V4a2 2 0 0 1 2-2h6v7l2.5-1.5L18 9V2h1c1.05 0 2 .95 2 2v6L11 20v2H7c-1.05 0-2-.95-2-2v-1H3v-2h2v-4H3v-2h2V7zm2 0h2V5H5zm0 4v2h2v-2zm0 6v2h2v-2z"/></svg>
   
   <span class="md-ellipsis">
     
   
-    Using the Journal
+    Quest Progress & State
   
 
     
@@ -1840,41 +1824,19 @@
   
   
 
-      </a>
-    </li>
-  
-
-              
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_6_1">
+            <span class="md-nav__icon md-icon"></span>
             
-              
-                
   
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../Using-Menus/" class="md-nav__link">
-        
-  
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM21 9h-8V3h8zm-8 9.06V11h8v.1c-.76 0-1.43.4-1.81.79zM11 13H3V3h8zm0 8H3v-6h8z"/></svg>
-  
-  <span class="md-ellipsis">
-    
-  
-    Using Menus
+    Quest Progress & State
   
 
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
@@ -1896,12 +1858,12 @@
         
   
   
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m6.2 2.44 11.9 11.9 2.12-2.12 1.41 1.41-2.47 2.47 3.18 3.18c.39.39.39 1.02 0 1.41l-.71.71a.996.996 0 0 1-1.41 0L17 18.23l-2.44 2.47-1.41-1.41 2.12-2.12-11.9-11.9V2.44zM15.89 10l4.74-4.74V2.44H17.8l-4.74 4.74zm-4.95 5-2.83-2.87-2.21 2.21-2.12-2.12-1.41 1.41 2.47 2.47-3.18 3.19a.996.996 0 0 0 0 1.41l.71.71c.39.39 1.02.39 1.41 0L7 18.23l2.44 2.47 1.41-1.41-2.12-2.12z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 2.03v2.02c4.39.54 7.5 4.53 6.96 8.92-.46 3.64-3.32 6.53-6.96 6.96v2c5.5-.55 9.5-5.43 8.95-10.93-.45-4.75-4.22-8.5-8.95-8.97m-2 .03c-1.95.19-3.81.94-5.33 2.2L7.1 5.74c1.12-.9 2.47-1.48 3.9-1.68zM4.26 5.67A9.9 9.9 0 0 0 2.05 11h2c.19-1.42.75-2.77 1.64-3.9zM15.5 8.5l-4.88 4.88-2.12-2.12-1.06 1.06 3.18 3.18 5.94-5.94zM2.06 13c.2 1.96.97 3.81 2.21 5.33l1.42-1.43A8 8 0 0 1 4.06 13zm5.04 5.37-1.43 1.37A10 10 0 0 0 11 22v-2a8 8 0 0 1-3.9-1.63"/></svg>
   
   <span class="md-ellipsis">
     
   
-    Complex Quest Items
+    Displaying Progress
   
 
     
@@ -1911,126 +1873,6 @@
 
       </a>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../Using-Quest-Cancelers/" class="md-nav__link">
-        
-  
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5.5 0 10 4.5 10 10s-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2m0 2c-1.9 0-3.6.6-4.9 1.7l11.2 11.2c1-1.4 1.7-3.1 1.7-4.9 0-4.4-3.6-8-8-8m4.9 14.3L5.7 7.1C4.6 8.4 4 10.1 4 12c0 4.4 3.6 8 8 8 1.9 0 3.6-.6 4.9-1.7"/></svg>
-  
-  <span class="md-ellipsis">
-    
-  
-    Quest Cancelers
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../Random-Daily-Quest/" class="md-nav__link">
-        
-  
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 1v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1h-2v2H8V1zM5 8h14v11H5zm7.19 1c-.87 0-1.57.2-2.11.59-.52.41-.78.98-.77 1.77l.01.03h1.93c.01-.3.1-.53.28-.69a1 1 0 0 1 .66-.23c.31 0 .57.1.75.28.18.19.26.45.26.75 0 .32-.07.59-.23.82-.14.23-.35.43-.61.59-.51.34-.86.64-1.05.91-.2.26-.31.68-.31 1.18h2c0-.31.04-.56.13-.74s.26-.36.51-.52c.45-.24.82-.53 1.11-.93s.44-.81.44-1.31c0-.76-.27-1.37-.81-1.82-.53-.45-1.26-.68-2.19-.68M11 16v2h2v-2z"/></svg>
-  
-  <span class="md-ellipsis">
-    
-  
-    Random Daily Quest
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../Global-Random-Daily-Quests/" class="md-nav__link">
-        
-  
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 5.5A3.5 3.5 0 0 1 15.5 9a3.5 3.5 0 0 1-3.5 3.5A3.5 3.5 0 0 1 8.5 9 3.5 3.5 0 0 1 12 5.5M5 8c.56 0 1.08.15 1.53.42-.15 1.43.27 2.85 1.13 3.96C7.16 13.34 6.16 14 5 14a3 3 0 0 1-3-3 3 3 0 0 1 3-3m14 0a3 3 0 0 1 3 3 3 3 0 0 1-3 3c-1.16 0-2.16-.66-2.66-1.62a5.54 5.54 0 0 0 1.13-3.96c.45-.27.97-.42 1.53-.42M5.5 18.25c0-2.07 2.91-3.75 6.5-3.75s6.5 1.68 6.5 3.75V20h-13zM0 20v-1.5c0-1.39 1.89-2.56 4.45-2.9-.59.68-.95 1.62-.95 2.65V20zm24 0h-3.5v-1.75c0-1.03-.36-1.97-.95-2.65 2.56.34 4.45 1.51 4.45 2.9z"/></svg>
-  
-  <span class="md-ellipsis">
-    
-  
-    Global Daily Quests
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../Server-Wide-Quests/" class="md-nav__link">
-        
-  
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg>
-  
-  <span class="md-ellipsis">
-    
-  
-    Server Wide Quests
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -2066,6 +1908,72 @@
 
               
             
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_2" id="__nav_2_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Player UI & Feedback
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Player UI & Feedback
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
               
                 
   
@@ -2073,7 +1981,477 @@
   
   
     <li class="md-nav__item">
-      <a href="../NPC-and-Player-Hider/" class="md-nav__link">
+      <a href="../../Player-UI-and-Feedback/Using-the-Journal/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.04 13.13c.14 0 .27.06.38.17l1.28 1.28c.22.21.22.56 0 .77l-1 1-2.05-2.05 1-1c.11-.11.25-.17.39-.17m-1.97 1.75 2.05 2.05L15.06 23H13v-2.06zM3 7V5h2V4a2 2 0 0 1 2-2h6v7l2.5-1.5L18 9V2h1c1.05 0 2 .95 2 2v6L11 20v2H7c-1.05 0-2-.95-2-2v-1H3v-2h2v-4H3v-2h2V7zm2 0h2V5H5zm0 4v2h2v-2zm0 6v2h2v-2z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Using the Journal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Player-UI-and-Feedback/Using-Menus/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM21 9h-8V3h8zm-8 9.06V11h8v.1c-.76 0-1.43.4-1.81.79zM11 13H3V3h8zm0 8H3v-6h8z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Using Menus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quest Flow & Lifecycle
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Quest Flow & Lifecycle
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Quest-Flow-and-Lifecycle/Using-Quest-Cancelers/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5.5 0 10 4.5 10 10s-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2m0 2c-1.9 0-3.6.6-4.9 1.7l11.2 11.2c1-1.4 1.7-3.1 1.7-4.9 0-4.4-3.6-8-8-8m4.9 14.3L5.7 7.1C4.6 8.4 4 10.1 4 12c0 4.4 3.6 8 8 8 1.9 0 3.6-.6 4.9-1.7"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Quest Cancelers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Quest-Flow-and-Lifecycle/Random-Daily-Quest/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 1v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1h-2v2H8V1zM5 8h14v11H5zm7.19 1c-.87 0-1.57.2-2.11.59-.52.41-.78.98-.77 1.77l.01.03h1.93c.01-.3.1-.53.28-.69a1 1 0 0 1 .66-.23c.31 0 .57.1.75.28.18.19.26.45.26.75 0 .32-.07.59-.23.82-.14.23-.35.43-.61.59-.51.34-.86.64-1.05.91-.2.26-.31.68-.31 1.18h2c0-.31.04-.56.13-.74s.26-.36.51-.52c.45-.24.82-.53 1.11-.93s.44-.81.44-1.31c0-.76-.27-1.37-.81-1.82-.53-.45-1.26-.68-2.19-.68M11 16v2h2v-2z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Random Daily Quest
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_4" id="__nav_2_6_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Items & Inventory
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Items & Inventory
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Items-and-Inventory/Complex-Quest-Items/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m6.2 2.44 11.9 11.9 2.12-2.12 1.41 1.41-2.47 2.47 3.18 3.18c.39.39.39 1.02 0 1.41l-.71.71a.996.996 0 0 1-1.41 0L17 18.23l-2.44 2.47-1.41-1.41 2.12-2.12-11.9-11.9V2.44zM15.89 10l4.74-4.74V2.44H17.8l-4.74 4.74zm-4.95 5-2.83-2.87-2.21 2.21-2.12-2.12-1.41 1.41 2.47 2.47-3.18 3.19a.996.996 0 0 0 0 1.41l.71.71c.39.39 1.02.39 1.41 0L7 18.23l2.44 2.47 1.41-1.41-2.12-2.12z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Complex Quest Items
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_5" id="__nav_2_6_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multiplayer & Global Quests
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Multiplayer & Global Quests
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Multiplayer-and-Global-Quests/Global-Random-Daily-Quests/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 5.5A3.5 3.5 0 0 1 15.5 9a3.5 3.5 0 0 1-3.5 3.5A3.5 3.5 0 0 1 8.5 9 3.5 3.5 0 0 1 12 5.5M5 8c.56 0 1.08.15 1.53.42-.15 1.43.27 2.85 1.13 3.96C7.16 13.34 6.16 14 5 14a3 3 0 0 1-3-3 3 3 0 0 1 3-3m14 0a3 3 0 0 1 3 3 3 3 0 0 1-3 3c-1.16 0-2.16-.66-2.66-1.62a5.54 5.54 0 0 0 1.13-3.96c.45-.27.97-.42 1.53-.42M5.5 18.25c0-2.07 2.91-3.75 6.5-3.75s6.5 1.68 6.5 3.75V20h-13zM0 20v-1.5c0-1.39 1.89-2.56 4.45-2.9-.59.68-.95 1.62-.95 2.65V20zm24 0h-3.5v-1.75c0-1.03-.36-1.97-.95-2.65 2.56.34 4.45 1.51 4.45 2.9z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Global Daily Quests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Multiplayer-and-Global-Quests/Server-Wide-Quests/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Server Wide Quests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_6" id="__nav_2_6_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    World, NPCs & Visibility
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    World, NPCs & Visibility
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../World-NPCs-and-Visibility/NPC-and-Player-Hider/" class="md-nav__link">
         
   
   
@@ -2091,6 +2469,14 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -2182,7 +2568,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Overview/" class="md-nav__link">
+      <a href="../../../../Documentation/Overview/" class="md-nav__link">
         
   
   
@@ -2274,7 +2660,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Basics/About-Scripting/" class="md-nav__link">
+      <a href="../../../../Documentation/Basics/About-Scripting/" class="md-nav__link">
         
   
   
@@ -2304,7 +2690,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Basics/Scripting-Elements/" class="md-nav__link">
+      <a href="../../../../Documentation/Basics/Scripting-Elements/" class="md-nav__link">
         
   
   
@@ -2334,7 +2720,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Basics/Packages-%26-Templates/" class="md-nav__link">
+      <a href="../../../../Documentation/Basics/Packages-%26-Templates/" class="md-nav__link">
         
   
   
@@ -2364,7 +2750,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Basics/Quoting-%26-YAML/" class="md-nav__link">
+      <a href="../../../../Documentation/Basics/Quoting-%26-YAML/" class="md-nav__link">
         
   
   
@@ -2480,7 +2866,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Advanced/Conversations/" class="md-nav__link">
+      <a href="../../../../Documentation/Advanced/Conversations/" class="md-nav__link">
         
   
   
@@ -2510,7 +2896,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Advanced/Text-Formatting/" class="md-nav__link">
+      <a href="../../../../Documentation/Advanced/Text-Formatting/" class="md-nav__link">
         
   
   
@@ -2567,7 +2953,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../Documentation/Advanced/Menus/" class="md-nav__link ">
+            <a href="../../../../Documentation/Advanced/Menus/" class="md-nav__link ">
               
   
   
@@ -2613,7 +2999,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Advanced/Menus/Example/" class="md-nav__link">
+      <a href="../../../../Documentation/Advanced/Menus/Example/" class="md-nav__link">
         
   
   
@@ -2643,7 +3029,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Advanced/Menus/Elements/" class="md-nav__link">
+      <a href="../../../../Documentation/Advanced/Menus/Elements/" class="md-nav__link">
         
   
   
@@ -2681,7 +3067,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Advanced/Journal/" class="md-nav__link">
+      <a href="../../../../Documentation/Advanced/Journal/" class="md-nav__link">
         
   
   
@@ -2711,7 +3097,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Advanced/Items/" class="md-nav__link">
+      <a href="../../../../Documentation/Advanced/Items/" class="md-nav__link">
         
   
   
@@ -2741,7 +3127,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Advanced/Quest-Cancelers/" class="md-nav__link">
+      <a href="../../../../Documentation/Advanced/Quest-Cancelers/" class="md-nav__link">
         
   
   
@@ -2771,7 +3157,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Advanced/Player-Hider/" class="md-nav__link">
+      <a href="../../../../Documentation/Advanced/Player-Hider/" class="md-nav__link">
         
   
   
@@ -2801,7 +3187,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Advanced/Schedules/" class="md-nav__link">
+      <a href="../../../../Documentation/Advanced/Schedules/" class="md-nav__link">
         
   
   
@@ -2831,7 +3217,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Advanced/Functions/" class="md-nav__link">
+      <a href="../../../../Documentation/Advanced/Functions/" class="md-nav__link">
         
   
   
@@ -2861,7 +3247,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Advanced/Parties/" class="md-nav__link">
+      <a href="../../../../Documentation/Advanced/Parties/" class="md-nav__link">
         
   
   
@@ -2891,7 +3277,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Advanced/Notification-IO%27s-%26-Categories/" class="md-nav__link">
+      <a href="../../../../Documentation/Advanced/Notification-IO%27s-%26-Categories/" class="md-nav__link">
         
   
   
@@ -2921,7 +3307,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Advanced/Notification-Settings/" class="md-nav__link">
+      <a href="../../../../Documentation/Advanced/Notification-Settings/" class="md-nav__link">
         
   
   
@@ -3031,7 +3417,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Plugin-Config/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Plugin-Config/" class="md-nav__link">
         
   
   
@@ -3061,7 +3447,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Commands-and-Permissions/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Commands-and-Permissions/" class="md-nav__link">
         
   
   
@@ -3091,7 +3477,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Actions-List/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Actions-List/" class="md-nav__link">
         
   
   
@@ -3121,7 +3507,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Objectives-List/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Objectives-List/" class="md-nav__link">
         
   
   
@@ -3151,7 +3537,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Conditions-List/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Conditions-List/" class="md-nav__link">
         
   
   
@@ -3181,7 +3567,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Placeholders-List/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Placeholders-List/" class="md-nav__link">
         
   
   
@@ -3252,7 +3638,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../Documentation/Reference/Integrations-List/" class="md-nav__link ">
+            <a href="../../../../Documentation/Reference/Integrations-List/" class="md-nav__link ">
               
   
   
@@ -3329,7 +3715,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../Documentation/Reference/Integrations-List/NPCs/" class="md-nav__link ">
+            <a href="../../../../Documentation/Reference/Integrations-List/NPCs/" class="md-nav__link ">
               
   
   
@@ -3375,7 +3761,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/NPCs/Citizens/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/NPCs/Citizens/" class="md-nav__link">
         
   
   
@@ -3403,7 +3789,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/NPCs/FancyNpcs/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/NPCs/FancyNpcs/" class="md-nav__link">
         
   
   
@@ -3431,7 +3817,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/NPCs/MythicMobs/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/NPCs/MythicMobs/" class="md-nav__link">
         
   
   
@@ -3459,7 +3845,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/NPCs/ZNPCsPlus/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/NPCs/ZNPCsPlus/" class="md-nav__link">
         
   
   
@@ -3532,7 +3918,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../Documentation/Reference/Integrations-List/Items/" class="md-nav__link ">
+            <a href="../../../../Documentation/Reference/Integrations-List/Items/" class="md-nav__link ">
               
   
   
@@ -3578,7 +3964,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Items/Brewery/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Items/Brewery/" class="md-nav__link">
         
   
   
@@ -3606,7 +3992,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Items/CraftEngine/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Items/CraftEngine/" class="md-nav__link">
         
   
   
@@ -3634,7 +4020,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Items/ItemsAdder/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Items/ItemsAdder/" class="md-nav__link">
         
   
   
@@ -3662,7 +4048,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Items/Magic/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Items/Magic/" class="md-nav__link">
         
   
   
@@ -3690,7 +4076,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Items/MMOItems/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Items/MMOItems/" class="md-nav__link">
         
   
   
@@ -3718,7 +4104,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Items/MythicMobs/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Items/MythicMobs/" class="md-nav__link">
         
   
   
@@ -3746,7 +4132,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Items/Nexo/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Items/Nexo/" class="md-nav__link">
         
   
   
@@ -3811,7 +4197,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../Documentation/Reference/Integrations-List/Holograms/" class="md-nav__link ">
+            <a href="../../../../Documentation/Reference/Integrations-List/Holograms/" class="md-nav__link ">
               
   
   
@@ -3857,7 +4243,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Holograms/DecentHolograms/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Holograms/DecentHolograms/" class="md-nav__link">
         
   
   
@@ -3885,7 +4271,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Holograms/FancyHolograms/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Holograms/FancyHolograms/" class="md-nav__link">
         
   
   
@@ -3913,7 +4299,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Holograms/HolographicDisplays/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Holograms/HolographicDisplays/" class="md-nav__link">
         
   
   
@@ -3976,7 +4362,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../Documentation/Reference/Integrations-List/Visuals/" class="md-nav__link ">
+            <a href="../../../../Documentation/Reference/Integrations-List/Visuals/" class="md-nav__link ">
               
   
   
@@ -4022,7 +4408,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Visuals/EffectLib/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Visuals/EffectLib/" class="md-nav__link">
         
   
   
@@ -4050,7 +4436,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Visuals/FakeBlock/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Visuals/FakeBlock/" class="md-nav__link">
         
   
   
@@ -4115,7 +4501,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../Documentation/Reference/Integrations-List/Scripting-%26-Questing/" class="md-nav__link ">
+            <a href="../../../../Documentation/Reference/Integrations-List/Scripting-%26-Questing/" class="md-nav__link ">
               
   
   
@@ -4161,7 +4547,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Scripting-%26-Questing/Denizen/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Scripting-%26-Questing/Denizen/" class="md-nav__link">
         
   
   
@@ -4189,7 +4575,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Scripting-%26-Questing/Quests/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Scripting-%26-Questing/Quests/" class="md-nav__link">
         
   
   
@@ -4217,7 +4603,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Scripting-%26-Questing/Skript/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Scripting-%26-Questing/Skript/" class="md-nav__link">
         
   
   
@@ -4282,7 +4668,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../Documentation/Reference/Integrations-List/Economy/" class="md-nav__link ">
+            <a href="../../../../Documentation/Reference/Integrations-List/Economy/" class="md-nav__link ">
               
   
   
@@ -4328,7 +4714,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Economy/JobsReborn/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Economy/JobsReborn/" class="md-nav__link">
         
   
   
@@ -4356,7 +4742,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Economy/Shopkeepers/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Economy/Shopkeepers/" class="md-nav__link">
         
   
   
@@ -4384,7 +4770,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Economy/Vault/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Economy/Vault/" class="md-nav__link">
         
   
   
@@ -4457,7 +4843,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../Documentation/Reference/Integrations-List/MMO/" class="md-nav__link ">
+            <a href="../../../../Documentation/Reference/Integrations-List/MMO/" class="md-nav__link ">
               
   
   
@@ -4503,7 +4889,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/MMO/AuraSkills/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/MMO/AuraSkills/" class="md-nav__link">
         
   
   
@@ -4531,7 +4917,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/MMO/Fabled/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/MMO/Fabled/" class="md-nav__link">
         
   
   
@@ -4559,7 +4945,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/MMO/Heroes/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/MMO/Heroes/" class="md-nav__link">
         
   
   
@@ -4587,7 +4973,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/MMO/Magic/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/MMO/Magic/" class="md-nav__link">
         
   
   
@@ -4615,7 +5001,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/MMO/McMMO/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/MMO/McMMO/" class="md-nav__link">
         
   
   
@@ -4643,7 +5029,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/MMO/MMOCore/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/MMO/MMOCore/" class="md-nav__link">
         
   
   
@@ -4671,7 +5057,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/MMO/MMOLib/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/MMO/MMOLib/" class="md-nav__link">
         
   
   
@@ -4742,7 +5128,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../Documentation/Reference/Integrations-List/Administration/" class="md-nav__link ">
+            <a href="../../../../Documentation/Reference/Integrations-List/Administration/" class="md-nav__link ">
               
   
   
@@ -4788,7 +5174,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Administration/LuckPerms/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Administration/LuckPerms/" class="md-nav__link">
         
   
   
@@ -4816,7 +5202,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Administration/PacketEvents/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Administration/PacketEvents/" class="md-nav__link">
         
   
   
@@ -4844,7 +5230,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Administration/PlaceholderAPI/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Administration/PlaceholderAPI/" class="md-nav__link">
         
   
   
@@ -4872,7 +5258,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Administration/RedisChat/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Administration/RedisChat/" class="md-nav__link">
         
   
   
@@ -4900,7 +5286,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Administration/WorldEdit/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Administration/WorldEdit/" class="md-nav__link">
         
   
   
@@ -4928,7 +5314,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Administration/WorldGuard/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Administration/WorldGuard/" class="md-nav__link">
         
   
   
@@ -4989,7 +5375,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../Documentation/Reference/Integrations-List/Miscellaneous/" class="md-nav__link ">
+            <a href="../../../../Documentation/Reference/Integrations-List/Miscellaneous/" class="md-nav__link ">
               
   
   
@@ -5035,7 +5421,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Miscellaneous/TrainCarts/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Miscellaneous/TrainCarts/" class="md-nav__link">
         
   
   
@@ -5079,7 +5465,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Font-Config/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Font-Config/" class="md-nav__link">
         
   
   
@@ -5109,7 +5495,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Definition-Encyclopedia/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Definition-Encyclopedia/" class="md-nav__link">
         
   
   
@@ -5207,7 +5593,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Updates/Updating/" class="md-nav__link">
+      <a href="../../../../Documentation/Updates/Updating/" class="md-nav__link">
         
   
   
@@ -5295,7 +5681,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Updates/Migrations/Migration-1-2/" class="md-nav__link">
+      <a href="../../../../Documentation/Updates/Migrations/Migration-1-2/" class="md-nav__link">
         
   
   
@@ -5325,7 +5711,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Updates/Migrations/Migration-2-3/" class="md-nav__link">
+      <a href="../../../../Documentation/Updates/Migrations/Migration-2-3/" class="md-nav__link">
         
   
   
@@ -5363,7 +5749,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/CHANGELOG/" class="md-nav__link">
+      <a href="../../../../Documentation/CHANGELOG/" class="md-nav__link">
         
   
   
@@ -5474,7 +5860,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Overview/" class="md-nav__link">
+      <a href="../../../../API/Overview/" class="md-nav__link">
         
   
   
@@ -5504,7 +5890,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Obtaining-API/" class="md-nav__link">
+      <a href="../../../../API/Obtaining-API/" class="md-nav__link">
         
   
   
@@ -5600,7 +5986,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Concepts/Overview/" class="md-nav__link">
+      <a href="../../../../API/Concepts/Overview/" class="md-nav__link">
         
   
   
@@ -5630,7 +6016,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Concepts/Actions/" class="md-nav__link">
+      <a href="../../../../API/Concepts/Actions/" class="md-nav__link">
         
   
   
@@ -5660,7 +6046,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Concepts/Objectives/" class="md-nav__link">
+      <a href="../../../../API/Concepts/Objectives/" class="md-nav__link">
         
   
   
@@ -5690,7 +6076,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Concepts/Conditions/" class="md-nav__link">
+      <a href="../../../../API/Concepts/Conditions/" class="md-nav__link">
         
   
   
@@ -5720,7 +6106,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Concepts/Placeholders/" class="md-nav__link">
+      <a href="../../../../API/Concepts/Placeholders/" class="md-nav__link">
         
   
   
@@ -5750,7 +6136,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Concepts/NPCs/" class="md-nav__link">
+      <a href="../../../../API/Concepts/NPCs/" class="md-nav__link">
         
   
   
@@ -5850,7 +6236,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Integration/Overview/" class="md-nav__link">
+      <a href="../../../../API/Integration/Overview/" class="md-nav__link">
         
   
   
@@ -5887,7 +6273,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Integration/Policies/" class="md-nav__link">
+      <a href="../../../../API/Integration/Policies/" class="md-nav__link">
         
   
   
@@ -5924,7 +6310,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Integration/Integration-Builder/" class="md-nav__link">
+      <a href="../../../../API/Integration/Integration-Builder/" class="md-nav__link">
         
   
   
@@ -5961,7 +6347,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Integration/Implementation/" class="md-nav__link">
+      <a href="../../../../API/Integration/Implementation/" class="md-nav__link">
         
   
   
@@ -6076,7 +6462,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Tools/Instruction/" class="md-nav__link">
+      <a href="../../../../API/Tools/Instruction/" class="md-nav__link">
         
   
   
@@ -6106,7 +6492,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Tools/Logging/" class="md-nav__link">
+      <a href="../../../../API/Tools/Logging/" class="md-nav__link">
         
   
   
@@ -6136,7 +6522,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Tools/TextParsing/" class="md-nav__link">
+      <a href="../../../../API/Tools/TextParsing/" class="md-nav__link">
         
   
   
@@ -6173,7 +6559,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Tools/Profiles/" class="md-nav__link">
+      <a href="../../../../API/Tools/Profiles/" class="md-nav__link">
         
   
   
@@ -6210,7 +6596,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Tools/Versioning/" class="md-nav__link">
+      <a href="../../../../API/Tools/Versioning/" class="md-nav__link">
         
   
   
@@ -6247,7 +6633,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Configuration-Files/" class="md-nav__link">
+      <a href="../../../../API/Configuration-Files/" class="md-nav__link">
         
   
   
@@ -6277,7 +6663,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/BukkitConfigurations/" class="md-nav__link">
+      <a href="../../../../API/BukkitConfigurations/" class="md-nav__link">
         
   
   
@@ -6307,7 +6693,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Tools/Functions/" class="md-nav__link">
+      <a href="../../../../API/Tools/Functions/" class="md-nav__link">
         
   
   
@@ -6410,7 +6796,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Legacy/Writing-Implementations/" class="md-nav__link">
+      <a href="../../../../API/Legacy/Writing-Implementations/" class="md-nav__link">
         
   
   
@@ -6440,7 +6826,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Legacy/Schedules/" class="md-nav__link">
+      <a href="../../../../API/Legacy/Schedules/" class="md-nav__link">
         
   
   
@@ -6549,7 +6935,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Overview/" class="md-nav__link">
+      <a href="../../../../Participate/Overview/" class="md-nav__link">
         
   
   
@@ -6579,7 +6965,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Donating-Money/" class="md-nav__link">
+      <a href="../../../../Participate/Donating-Money/" class="md-nav__link">
         
   
   
@@ -6609,7 +6995,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Setup-Project/" class="md-nav__link">
+      <a href="../../../../Participate/Setup-Project/" class="md-nav__link">
         
   
   
@@ -6703,7 +7089,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Process/Create-a-new-Branch/" class="md-nav__link">
+      <a href="../../../../Participate/Process/Create-a-new-Branch/" class="md-nav__link">
         
   
   
@@ -6799,7 +7185,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Process/Docs/Workflow/" class="md-nav__link">
+      <a href="../../../../Participate/Process/Docs/Workflow/" class="md-nav__link">
         
   
   
@@ -6829,7 +7215,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Process/Docs/Principles/" class="md-nav__link">
+      <a href="../../../../Participate/Process/Docs/Principles/" class="md-nav__link">
         
   
   
@@ -6859,7 +7245,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Process/Docs/Guidelines/" class="md-nav__link">
+      <a href="../../../../Participate/Process/Docs/Guidelines/" class="md-nav__link">
         
   
   
@@ -6889,7 +7275,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Process/Docs/Writing-Tutorials/" class="md-nav__link">
+      <a href="../../../../Participate/Process/Docs/Writing-Tutorials/" class="md-nav__link">
         
   
   
@@ -6919,7 +7305,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Process/Docs/Customizations/" class="md-nav__link">
+      <a href="../../../../Participate/Process/Docs/Customizations/" class="md-nav__link">
         
   
   
@@ -6949,7 +7335,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Process/Docs/Style-Definitions/" class="md-nav__link">
+      <a href="../../../../Participate/Process/Docs/Style-Definitions/" class="md-nav__link">
         
   
   
@@ -7049,7 +7435,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Process/Code/Workflow/" class="md-nav__link">
+      <a href="../../../../Participate/Process/Code/Workflow/" class="md-nav__link">
         
   
   
@@ -7079,7 +7465,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Process/Code/Checking-Requirements/" class="md-nav__link">
+      <a href="../../../../Participate/Process/Code/Checking-Requirements/" class="md-nav__link">
         
   
   
@@ -7109,7 +7495,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Process/Code/Adding-a-new-Dependency/" class="md-nav__link">
+      <a href="../../../../Participate/Process/Code/Adding-a-new-Dependency/" class="md-nav__link">
         
   
   
@@ -7139,7 +7525,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Process/Code/Writing-JUnit-Tests/" class="md-nav__link">
+      <a href="../../../../Participate/Process/Code/Writing-JUnit-Tests/" class="md-nav__link">
         
   
   
@@ -7177,7 +7563,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Process/Maintaining-the-Changelog/" class="md-nav__link">
+      <a href="../../../../Participate/Process/Maintaining-the-Changelog/" class="md-nav__link">
         
   
   
@@ -7207,7 +7593,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Process/Submitting-Changes/" class="md-nav__link">
+      <a href="../../../../Participate/Process/Submitting-Changes/" class="md-nav__link">
         
   
   
@@ -7301,7 +7687,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Misc/Versioning-and-Releasing/" class="md-nav__link">
+      <a href="../../../../Participate/Misc/Versioning-and-Releasing/" class="md-nav__link">
         
   
   
@@ -7346,7 +7732,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Downloads/" class="md-nav__link">
+      <a href="../../../../Downloads/" class="md-nav__link">
         
   
   
@@ -7413,7 +7799,7 @@
   
   
     <li class="md-path__item">
-      <a href="../../.." class="md-path__link">
+      <a href="../../../.." class="md-path__link">
         
   <span class="md-ellipsis">
     Home
@@ -7431,7 +7817,7 @@
     
     
       <li class="md-path__item">
-        <a href="../../Overview/" class="md-path__link">
+        <a href="../../../Overview/" class="md-path__link">
           
   <span class="md-ellipsis">
     Tutorials
@@ -7448,11 +7834,37 @@
   
     
     
+      
+  
+  
+    
+    
       <li class="md-path__item">
-        <a href="../Displaying-Progress/" class="md-path__link">
+        <a href="./" class="md-path__link">
           
   <span class="md-ellipsis">
     Quick Guides
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="./" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Quest Progress & State
   </span>
 
         </a>
@@ -7471,7 +7883,7 @@
 
 
   
-    <a href="https://github.com/BetonQuest/BetonQuest/edit/main/docs/Tutorials/Quick-Guides/Complex-Quest-Items.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/BetonQuest/BetonQuest/edit/main/docs/Tutorials/Quick-Guides/Quest-Progress-and-State/Displaying-Progress.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -7479,119 +7891,46 @@
   
 
 
-<h1 id="how-to-create-complex-quest-items">How to create complex quest items<a class="headerlink" href="#how-to-create-complex-quest-items" title="Permanent link">🔗</a></h1>
-<p>Complex quest items are useful when an item should look unique, carry quest information, and stay protected from normal
-player interaction.
-The examples below only define items.
-You can give them with <code>/bq give &lt;package&gt;&gt;&lt;item&gt;</code> or use them in actions, menus, conditions, conversations, or backpacks.</p>
+<h1 id="how-to-display-1-10-during-objective-progression">How to display <code>1 / 10</code> during objective progression<a class="headerlink" href="#how-to-display-1-10-during-objective-progression" title="Permanent link">🔗</a></h1>
+<p>BetonQuest already provides default objective progress notifications.
+However, if you want to fully customize the displayed message, you can create a simple tracking system
+using points and a repeating objective.</p>
 <p>The basic idea is:</p>
 <ul>
-<li>Use YAML multiline syntax for long item definitions.</li>
-<li>Use <code>name</code> and <code>lore</code> to control colors and remove unwanted italics.</li>
-<li>Use <code>quest-item</code> when the item should be protected and stored in the backpack.</li>
-<li>Use flags to hide technical item data from players.</li>
-<li>Use custom model data or item models when a resource pack should change the appearance.</li>
+<li>The objective completes after every single progression.</li>
+<li>A point category tracks the current progress.</li>
+<li>A notification displays the current amount using a point placeholder.</li>
+<li>The objective automatically restarts until the desired amount is reached.</li>
 </ul>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Custom Weapon</label><label for="__tabbed_1_2">Written Book</label><label for="__tabbed_1_3">Custom Potion</label><label for="__tabbed_1_4">Armor and Head</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<p>This item is a persistent quest weapon with custom text, enchantments, hidden attributes, and custom model data.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">cryptBlade</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
-<span class="w">    </span><span class="no">simple DIAMOND_SWORD</span>
-<span class="w">    </span><span class="no">&quot;name:&lt;!i&gt;&lt;dark_purple&gt;Crypt Blade&quot;</span>
-<span class="w">    </span><span class="no">&quot;lore:&lt;!i&gt;&lt;gray&gt;A silent blade from the sealed crypt.&quot;</span>
-<span class="w">    </span><span class="no">&quot;lore:&lt;!i&gt;&lt;red&gt;Only useful while the crypt seal is broken.&quot;</span>
-<span class="w">    </span><span class="no">enchants:damage_all:3</span>
-<span class="w">    </span><span class="no">unbreakable</span>
-<span class="w">    </span><span class="no">custom-model-data:31001</span>
-<span class="w">    </span><span class="no">flags:HIDE_ENCHANTS,HIDE_ATTRIBUTES,HIDE_UNBREAKABLE</span>
-<span class="w">    </span><span class="no">quest-item</span>
-</code></pre></div>
-<p>Important parts:</p>
-<ul>
-<li>Folded multiline syntax keeps long item definitions readable.</li>
-<li><code>enchants:damage_all:3</code> adds Sharpness 3 to the sword.</li>
-<li><code>unbreakable</code> makes the item unbreakable.</li>
-<li><code>custom-model-data:31001</code> allows a resource pack to replace the item's model.</li>
-<li><code>flags:HIDE_ENCHANTS,HIDE_ATTRIBUTES,HIDE_UNBREAKABLE</code> hides technical tooltip lines.</li>
-<li><code>quest-item</code> marks the item as protected and allows BetonQuest to store it in the backpack.</li>
-</ul>
-</div>
-<div class="tabbed-block">
-<p>This item is a written quest book with a title, author, multiple pages, and protected quest-item behavior.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">fieldReport</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
-<span class="w">    </span><span class="no">simple WRITTEN_BOOK</span>
-<span class="w">    </span><span class="no">&quot;name:&lt;!i&gt;&lt;gold&gt;Field Report&quot;</span>
-<span class="w">    </span><span class="no">&quot;title:Field Report&quot;</span>
-<span class="w">    </span><span class="no">&quot;author:The Archivist&quot;</span>
-<span class="w">    </span><span class="no">&quot;text:&lt;dark_green&gt;Field Report&lt;newline&gt;&lt;newline&gt;&lt;black&gt;The eastern gate is damaged. Speak with the guard captain before entering the ruins.|&lt;black&gt;Known risks:&lt;newline&gt;- unstable stone&lt;newline&gt;- hostile skeletons&lt;newline&gt;- missing scout team&quot;</span>
-<span class="w">    </span><span class="no">quest-item</span>
-</code></pre></div>
-<p>Important parts:</p>
-<ul>
-<li>Books can use the same display name options as other items.</li>
-<li><code>title</code> and <code>author</code> set the written book metadata.</li>
-<li>The <code>|</code> character starts a new page.</li>
-<li><code>&lt;newline&gt;</code> creates a new line on the same page.</li>
-<li><code>quest-item</code> makes the book protected instead of a normal book players can freely lose.</li>
-</ul>
-</div>
-<div class="tabbed-block">
-<p>This item is a custom potion with a display name, lore, a vanilla potion type, and additional potion effects.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">scoutPotion</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
-<span class="w">    </span><span class="no">simple POTION</span>
-<span class="w">    </span><span class="no">&quot;name:&lt;!i&gt;&lt;aqua&gt;Scout&#39;s Focus&quot;</span>
-<span class="w">    </span><span class="no">&quot;lore:&lt;!i&gt;&lt;gray&gt;Issued to scouts before entering hostile terrain.&quot;</span>
-<span class="w">    </span><span class="no">type:strength</span>
-<span class="w">    </span><span class="no">upgraded:false</span>
-<span class="w">    </span><span class="no">extended:false</span>
-<span class="w">    </span><span class="no">effects:speed:1:45,night_vision:1:60</span>
-<span class="w">    </span><span class="no">flags:HIDE_POTION_EFFECTS</span>
-<span class="w">    </span><span class="no">quest-item</span>
-</code></pre></div>
-<p>Important parts:</p>
-<ul>
-<li>Potions can combine normal item arguments with potion-specific arguments.</li>
-<li><code>type:strength</code> sets the vanilla potion type.</li>
-<li><code>effects:speed:1:45,night_vision:1:60</code> adds custom effects using <code>effect:power:duration</code>.</li>
-<li>Effect power must be a positive integer.</li>
-<li><code>flags:HIDE_POTION_EFFECTS</code> hides the technical potion effect list.</li>
-<li><code>quest-item</code> protects the potion as a quest item.</li>
-</ul>
-</div>
-<div class="tabbed-block">
-<p>These items show a colored leather armor piece and a player head.
-This is useful for disguises, faction uniforms, trophies, or menu icons.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">rangerChestplate</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
-<span class="w">    </span><span class="no">simple LEATHER_CHESTPLATE</span>
-<span class="w">    </span><span class="no">&quot;name:&lt;!i&gt;&lt;green&gt;Ranger Tunic&quot;</span>
-<span class="w">    </span><span class="no">&quot;lore:&lt;!i&gt;&lt;gray&gt;Standard issue for forest patrols.&quot;</span>
-<span class="w">    </span><span class="no">color:#2f8f4e</span>
-<span class="w">    </span><span class="no">unbreakable</span>
-<span class="w">    </span><span class="no">flags:HIDE_DYE,HIDE_ATTRIBUTES,HIDE_UNBREAKABLE</span>
-<span class="w">    </span><span class="no">quest-item</span>
+<p>The following example displays <code>1 / 10</code>, <code>2 / 10</code>, and so on while the player breaks stone blocks.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">mineStone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;block</span><span class="nv"> </span><span class="s">stone</span><span class="nv"> </span><span class="s">-1</span><span class="nv"> </span><span class="s">persistent</span><span class="nv"> </span><span class="s">actions:blockBroken&quot;</span><span class="w"> </span><span class="c1">#(1)!</span>
 
-<span class="w">  </span><span class="nt">archivistHead</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
-<span class="w">    </span><span class="no">simple PLAYER_HEAD</span>
-<span class="w">    </span><span class="no">&quot;name:&lt;!i&gt;&lt;yellow&gt;Archivist Token&quot;</span>
-<span class="w">    </span><span class="no">&quot;lore:&lt;!i&gt;&lt;gray&gt;A personal quest token.&quot;</span>
-<span class="w">    </span><span class="no">owner:Alex</span>
-<span class="w">    </span><span class="no">quest-item</span>
+<span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">blockBroken</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">addPoint,sendNotify,checkForCompletion&quot;</span><span class="w"> </span><span class="c1">#(2)!</span>
+
+<span class="w">  </span><span class="nt">addPoint</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;point</span><span class="nv"> </span><span class="s">blockCounter</span><span class="nv"> </span><span class="s">1&quot;</span><span class="w"> </span><span class="c1">#(3)!</span>
+<span class="w">  </span><span class="nt">sendNotify</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">&amp;a%point.blockCounter.amount%&amp;8/&amp;210</span><span class="nv"> </span><span class="s">&amp;7stone</span><span class="nv"> </span><span class="s">broken.</span><span class="nv"> </span><span class="s">io:chat&quot;</span><span class="w"> </span><span class="c1">#(4)!</span>
+
+<span class="w">  </span><span class="nt">checkForCompletion</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">deleteObjective,deletePoint</span><span class="nv"> </span><span class="s">conditions:has10Points&quot;</span><span class="w"> </span><span class="c1">#(5)!</span>
+
+<span class="w">  </span><span class="nt">deleteObjective</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;objective</span><span class="nv"> </span><span class="s">remove</span><span class="nv"> </span><span class="s">mineStone&quot;</span><span class="w"> </span><span class="c1">#(6)!</span>
+<span class="w">  </span><span class="nt">deletePoint</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;deletepoint</span><span class="nv"> </span><span class="s">blockCounter&quot;</span><span class="w"> </span><span class="c1">#(7)!</span>
+
+<span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">has10Points</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;point</span><span class="nv"> </span><span class="s">blockCounter</span><span class="nv"> </span><span class="s">10&quot;</span><span class="w"> </span><span class="c1">#(8)!</span>
 </code></pre></div>
-<p>Important parts:</p>
-<ul>
-<li>Leather armor supports the normal item arguments plus a color.</li>
-<li><code>color:#2f8f4e</code> uses a hexadecimal RGB color for the leather armor.</li>
-<li>Player heads can be used as quest items or menu icons.</li>
-<li><code>owner:Alex</code> sets the player skin used by the head without requiring a player-dependent placeholder.</li>
-</ul>
-</div>
-</div>
-</div>
+<ol>
+<li>The <code>persistent</code> objective that should be tracked.</li>
+<li>The actions that should be executed when ever a block is broken.</li>
+<li>Increase the point counter by 1 every time a block is broken.</li>
+<li>Display the current number of points using a point placeholder.</li>
+<li>Calls the cleanup actions when the player reaches 10 points.
+   This is also the place where you can call further actions after the objective is completed.</li>
+<li>Removes the objective once the player reaches 10 points.</li>
+<li>Deletes the point counter once the player reaches 10 points.</li>
+<li>Checks if the player has reached 10 points.</li>
+</ol>
 
 
 
@@ -8126,24 +8465,24 @@ This is useful for disguises, faction uniforms, trophies, or menu icons.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.action.edit", "content.code.annotate", "content.code.copy", "content.tabs.link", "navigation.tabs", "navigation.tabs.sticky", "navigation.tracking", "navigation.sections", "navigation.top", "navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.indexes", "search.share", "search.suggest", "content.tooltips", "toc.follow"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["RELEASE", "DEV"], "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.action.edit", "content.code.annotate", "content.code.copy", "content.tabs.link", "navigation.tabs", "navigation.tabs.sticky", "navigation.tracking", "navigation.sections", "navigation.top", "navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.indexes", "search.share", "search.suggest", "content.tooltips", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["RELEASE", "DEV"], "provider": "mike"}}</script>
     
     
   
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
-        <script src="../../../_webCode/js/copyLinkToClipboard.js"></script>
+        <script src="../../../../_webCode/js/copyLinkToClipboard.js"></script>
       
-        <script src="../../../_webCode/js/copyrightYearUpdater.js"></script>
+        <script src="../../../../_webCode/js/copyrightYearUpdater.js"></script>
       
-        <script src="../../../_webCode/js/mathjax.js"></script>
+        <script src="../../../../_webCode/js/mathjax.js"></script>
       
-        <script src="../../../_webCode/js/externalLinkIcon.js"></script>
+        <script src="../../../../_webCode/js/externalLinkIcon.js"></script>
       
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
-  <script type="module" src="../../../_webCode/js/analytics.js"></script>
+  <script type="module" src="../../../../_webCode/js/analytics.js"></script>
 
   </body>
 </html>
