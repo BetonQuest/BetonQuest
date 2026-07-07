@@ -2394,6 +2394,8 @@
       
         
       
+        
+      
     
     
     
@@ -2777,6 +2779,36 @@
     
   
     Schedules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Documentation/Advanced/Functions/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.42 5.29c-1.1-.1-2.07.71-2.17 1.82L10 10h2.82v2h-3l-.44 5.07A4.001 4.001 0 0 1 2 18.83l1.5-1.5c.33 1.05 1.46 1.64 2.5 1.3.78-.24 1.33-.93 1.4-1.74L7.82 12h-3v-2H8l.27-3.07a4.01 4.01 0 0 1 4.33-3.65c1.26.11 2.4.81 3.06 1.89l-1.5 1.5c-.25-.77-.93-1.31-1.74-1.38M22 13.65l-1.41-1.41-2.83 2.83-2.83-2.83-1.43 1.41 2.85 2.85-2.85 2.81 1.43 1.41 2.83-2.83 2.83 2.83L22 19.31l-2.83-2.81z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Functions
   
 
     
@@ -7739,25 +7771,26 @@ This part of the API will only change over at least one major version and will l
 </details>
 <h1 id="functions-overview">Functions Overview<a class="headerlink" href="#functions-overview" title="Permanent link">🔗</a></h1>
 <p>This page covers the functions API and the underlying concepts.</p>
+<div class="admonition info">
+<p class="admonition-title">Function Basics</p>
+<p>See <a href="../../../Documentation/Advanced/Functions/">Functions</a> for more information about how functions work in the script.</p>
+</div>
 <h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">🔗</a></h2>
 <p>Functions solve a problem that is not common in BetonQuest's scripting language, but not having them is a huge pain in specific situations.
 They combine logic with math and are a powerful tool for creating complex behaviors 
 that otherwise would be very verbose with just actions and conditions or completely impossible in the first place.</p>
 <h2 id="accessing-functions">Accessing Functions<a class="headerlink" href="#accessing-functions" title="Permanent link">🔗</a></h2>
-<div class="admonition danger">
-<p class="admonition-title">API currently not backed</p>
-<p>Functions are currently not available in the BetonQuest scripting language and therefore cannot be accessed.
-The discription below is still valid as the API endpoints are technically implemented. They just won't give any results yet.</p>
-</div>
 <p>Functions are accessed through the <code>Functions</code> interface. It allows you to find and evaluate functions.
 <div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">myFunction</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">Functions</span><span class="w"> </span><span class="n">functions</span><span class="p">,</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">FunctionIdentifier</span><span class="w"> </span><span class="n">identifier</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">QuestException</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">MathFunction</span><span class="w"> </span><span class="n">mathFunction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">functions</span><span class="p">.</span><span class="na">getFunction</span><span class="p">(</span><span class="n">identifier</span><span class="p">);</span><span class="w"> </span><span class="c1">//(1)!</span>
-<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">FunctionAssignment</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mathFunction</span><span class="p">.</span><span class="na">evaluate</span><span class="p">(</span><span class="n">functions</span><span class="p">,</span><span class="w"> </span><span class="n">List</span><span class="p">.</span><span class="na">of</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">NumberSourceAssignment</span><span class="p">(</span><span class="mi">10</span><span class="p">));</span><span class="w"> </span><span class="c1">//(2)!</span>
-<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Number</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="na">asNumber</span><span class="p">();</span><span class="w"> </span><span class="c1">//(3)!</span>
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">FunctionProvider</span><span class="w"> </span><span class="n">functionProvider</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">functions</span><span class="p">.</span><span class="na">getFunctionProvider</span><span class="p">(</span><span class="n">identifier</span><span class="p">.</span><span class="na">getPackage</span><span class="p">());</span><span class="w"> </span><span class="c1">//(2)!</span>
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">FunctionAssignment</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mathFunction</span><span class="p">.</span><span class="na">evaluate</span><span class="p">(</span><span class="n">functionProvider</span><span class="p">,</span><span class="w"> </span><span class="n">List</span><span class="p">.</span><span class="na">of</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">NumberSourceAssignment</span><span class="p">(</span><span class="mi">10</span><span class="p">));</span><span class="w"> </span><span class="c1">//(3)!</span>
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Number</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="na">asNumber</span><span class="p">();</span><span class="w"> </span><span class="c1">//(4)!</span>
 <span class="p">}</span>
 </code></pre></div></p>
 <ol>
 <li><code>getFunction</code> returns a <code>MathFunction</code> object that can be used to evaluate the function. This may throw a <code>QuestException</code> if the function is not found.</li>
+<li><code>getFunctionProvider</code> returns a <code>FunctionProvider</code> object that can be used to resolve relative function identifiers to <code>MathFunction</code> objects.</li>
 <li><code>evaluate</code> takes a list of <code>FunctionAssignment</code> objects that are used to evaluate the function. Functions can be evaluated with any number of arguments, but
 the required number of arguments is defined by the function definition. Missing arguments might result in an error, too many arguments might be just ignored and have no effect.</li>
 <li>Functions produce their result as <code>FunctionAssignment</code>s that can be passed to other functions or resolved to java values. 

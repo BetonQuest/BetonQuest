@@ -2402,6 +2402,8 @@
       
         
       
+        
+      
     
     
     
@@ -2788,6 +2790,36 @@
     
   
     Schedules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Advanced/Functions/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.42 5.29c-1.1-.1-2.07.71-2.17 1.82L10 10h2.82v2h-3l-.44 5.07A4.001 4.001 0 0 1 2 18.83l1.5-1.5c.33 1.05 1.46 1.64 2.5 1.3.78-.24 1.33-.93 1.4-1.74L7.82 12h-3v-2H8l.27-3.07a4.01 4.01 0 0 1 4.33-3.65c1.26.11 2.4.81 3.06 1.89l-1.5 1.5c-.25-.77-.93-1.31-1.74-1.38M22 13.65l-1.41-1.41-2.83 2.83-2.83-2.83-1.43 1.41 2.85 2.85-2.85 2.81 1.43 1.41 2.83-2.83 2.83 2.83L22 19.31l-2.83-2.81z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Functions
   
 
     
@@ -3527,6 +3559,29 @@
       
         <span class="md-typeset">
           <code>Fly</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#function">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>Function</code>
         </span>
 
       
@@ -9020,6 +9075,29 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#function">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>Function</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#gamemode">
     <span class="md-ellipsis">
 
@@ -10123,6 +10201,38 @@ If you want to check for an absolute amount of experience points you can convert
 <strong>Description</strong>: Whether the player is currently flying (Elytra type of flight).</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">isFlying</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fly&quot;</span>
+</code></pre></div>
+<h2 id="function"><code>Function</code><a class="headerlink" href="#function" title="Permanent link">🔗</a></h2>
+<p><strong>Context</strong>: <span class="twemoji account account-independent" title="<b>Independent</b><br> This condition can be checked without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"/></svg></span><br />
+<strong>Syntax</strong>: <code>function &lt;function&gt; &lt;arguments&gt;</code><br />
+<strong>Description</strong>: Whether the specified function called with the specified arguments resolves to true.</p>
+<p>See <a href="../../Advanced/Functions/">Functions</a> for more information about defining functions.
+See <a href="../../Advanced/Functions/#value-interpretation">Value Interpretation</a> for more information about how the results of functions are interpreted.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>function<br>[Identifier]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The function to evaluate.</td>
+</tr>
+<tr>
+<td>arguments<br><abbr title="A list is a sequence of values separated by commas.">List</abbr>[<abbr title="Any concatenation of characters.">String</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The list of arguments to pass to the function.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">myFunction</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;function</span><span class="nv"> </span><span class="s">reward</span><span class="nv"> </span><span class="s">%point.reputation.amount%,15,%tag.questCompleted%&quot;</span>
+<span class="nt">functions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">reward</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;b(reputation,reqRep,completed)</span><span class="nv"> </span><span class="s">=</span><span class="nv"> </span><span class="s">completed</span><span class="nv"> </span><span class="s">&amp;</span><span class="nv"> </span><span class="s">reputation</span><span class="nv"> </span><span class="s">&gt;</span><span class="nv"> </span><span class="s">reqRep&#39;</span>
 </code></pre></div>
 <h2 id="gamemode"><code>Gamemode</code><a class="headerlink" href="#gamemode" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
