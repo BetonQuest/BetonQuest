@@ -92,7 +92,7 @@ nav:
           - 'World, NPCs & Visibility':
               - 'NPC Conversations': Tutorials/Quick-Guides/World-NPCs-and-Visibility/NPC-Conversations.md
               - 'NPC and Player Hider': Tutorials/Quick-Guides/World-NPCs-and-Visibility/NPC-and-Player-Hider.md
-              - 'Showing Holograms for Quest NPCs': Tutorials/Quick-Guides/World-NPCs-and-Visibility/Showing-Holograms-for-Quest-NPCs.md
+              - 'Show NPC Holograms': Tutorials/Quick-Guides/World-NPCs-and-Visibility/Show-NPC-Holograms.md
               - 'WorldGuard Region': Tutorials/Quick-Guides/World-NPCs-and-Visibility/WorldGuard-Region.md
   - 'Documentation':
       - 'Overview': Documentation/Overview.md

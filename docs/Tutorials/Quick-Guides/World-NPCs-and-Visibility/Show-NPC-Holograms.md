@@ -2,7 +2,7 @@
 icon: material/text-recognition
 ---
 
-# How to show holograms for quest NPCs
+# How to show NPC holograms
 
 NPC holograms are useful when players should quickly see which NPC starts, continues, or finishes a quest.
 BetonQuest can attach holograms to NPCs and show different text depending on the player's quest state.
