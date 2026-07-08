@@ -75,7 +75,7 @@ nav:
           - 'Player UI & Feedback':
               - 'Using the Journal': Tutorials/Quick-Guides/Player-UI-and-Feedback/Using-the-Journal.md
               - 'Using Menus': Tutorials/Quick-Guides/Player-UI-and-Feedback/Using-Menus.md
-              - 'Custom Quest Notifications': Tutorials/Quick-Guides/Player-UI-and-Feedback/Custom-Quest-Notifications.md
+              - 'Custom notifications': Tutorials/Quick-Guides/Player-UI-and-Feedback/Custom-Quest-Notifications.md
           - 'Quest Flow & Lifecycle':
               - 'Quest Cancelers': Tutorials/Quick-Guides/Quest-Flow-and-Lifecycle/Using-Quest-Cancelers.md
               - 'Random Daily Quest': Tutorials/Quick-Guides/Quest-Flow-and-Lifecycle/Random-Daily-Quest.md
