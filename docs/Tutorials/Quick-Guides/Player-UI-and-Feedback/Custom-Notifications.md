@@ -2,7 +2,7 @@
 icon: material/message-bulleted
 ---
 
-# Custom notifications
+# Custom Quest notifications
 
 Custom notifications are useful when quest feedback should be more visible than a default chat message.
 You can send notifications as chat messages, actionbars, bossbars, titles, sounds, or combinations of these.
