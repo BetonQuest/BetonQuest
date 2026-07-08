@@ -5674,6 +5674,29 @@
       
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#identifiers">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Identifiers
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#regular-expressions">
     <span class="md-ellipsis">
 
@@ -8241,6 +8264,29 @@
       
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#identifiers">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Identifiers
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#regular-expressions">
     <span class="md-ellipsis">
 
@@ -8685,6 +8731,31 @@ Example: <code>fence[facing=north]</code> matches <code>fence[facing=north]</cod
 You can add an <code>exactMatch</code> argument if you only want to match blocks that exactly match the block state. </p>
 <p>A regex is allowed in any block state value when the block selector is used to <strong>match</strong> blocks.
 You cannot use a regex in block states when the block selector is used for <strong>placing</strong> blocks.</p>
+</div>
+<h3 id="identifiers">Identifiers<a class="headerlink" href="#identifiers" title="Permanent link">🔗</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Identifier</p>
+<p>Identifiers are used to identify elements in packages. 
+They are usually defined as relative paths and consist of two parts:</p>
+<ul>
+<li>An optional <code>package</code> path</li>
+<li>An <code>identifier</code> uniquely identifying the element within the package</li>
+</ul>
+<p>The path is separated by a <code>&gt;</code> character from the identifier if the package is defined.<br />
+More information:</p>
+<ul>
+<li><a href="../../Basics/Packages-%26-Templates/">package paths</a> </li>
+<li><a href="../../Basics/About-Scripting/#subsections">identifier subsections</a>.</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<ul>
+<li><code>identifier</code></li>
+<li><code>identifier.subsection</code></li>
+<li><code>package&gt;identifier</code></li>
+<li><code>package-subpackage&gt;identifier</code></li>
+<li><code>_-package&gt;identifier</code></li>
+<li><code>_-package-subpackage&gt;identifier.subsection</code></li>
+</ul>
 </div>
 <h3 id="regular-expressions">Regular Expressions<a class="headerlink" href="#regular-expressions" title="Permanent link">🔗</a></h3>
 <div class="admonition info">

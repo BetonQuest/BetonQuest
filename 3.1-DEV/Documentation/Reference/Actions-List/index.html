@@ -10783,7 +10783,7 @@
 </code></pre></div>
 <h2 id="cancel"><code>Cancel</code><a class="headerlink" href="#cancel" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This action can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
-<strong>Syntax</strong>: <code>cancel &lt;canceler&gt; [bypass]</code><br />
+<strong>Syntax</strong>: <code>cancel &lt;canceler&gt; {bypass}</code><br />
 <strong>Description</strong>: Call the specified quest canceler.</p>
 <p>This action works in the same way as a <a href="../../Advanced/Quest-Cancelers/">quest canceler in the backpack</a>.
 Running this action is equal to the player canceling a quest using the backpack.</p>
@@ -10791,33 +10791,32 @@ Running this action is equal to the player canceling a quest using the backpack.
 <thead>
 <tr>
 <th>Parameter</th>
-<th>Syntax</th>
-<th>Default Value</th>
+<th>Type</th>
 <th>Explanation</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><em>canceler</em></td>
-<td>CancelerID</td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg></span></td>
-<td>The Quest Canceler to execute.</td>
+<td>canceler<br><a href="../Definition-Encyclopedia/#identifiers">[Identifier]</a></td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The identifier of the quest canceler to execute.</td>
 </tr>
 <tr>
-<td><em>bypass</em></td>
-<td>Keyword (<code>bypass</code>)</td>
-<td>Disabled</td>
+<td>bypass<br>[<abbr title="A boolean can be either true or false.">Boolean</abbr>]</td>
+<td><abbr title="A flag can be either absent or undefined with separate default values [absent, undefined] or explicitly defined with a value.">Flag</abbr><br>[false, true]</td>
 <td>If the canceler conditions should be ignored. If enabled the canceler will be executed, even when its conditions are not met.</td>
 </tr>
 </tbody>
 </table>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">cancelQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;cancel</span><span class="nv"> </span><span class="s">woodQuest</span><span class="nv"> </span><span class="s">bypass&quot;</span>
+<span class="w">  </span><span class="nt">cancelSmallQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;cancel</span><span class="nv"> </span><span class="s">smallQuest&quot;</span>
+<span class="w">  </span><span class="nt">cancelWoodQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;cancel</span><span class="nv"> </span><span class="s">woodQuest</span><span class="nv"> </span><span class="s">bypass&quot;</span>
+<span class="w">  </span><span class="nt">cancelWaterQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;cancel</span><span class="nv"> </span><span class="s">_-package&gt;waterQuest</span><span class="nv"> </span><span class="s">bypass:%tag.startedWaterQuest%&quot;</span>
 </code></pre></div>
 <h2 id="cancelconversation"><code>CancelConversation</code><a class="headerlink" href="#cancelconversation" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This action can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>cancelconversation</code><br />
-<strong>Description</strong>: Cancel a conversation that is currently active for the player.</p>
+<strong>Description</strong>: Cancel the conversation that is currently active for the player.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">cancel</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;cancelconversation&quot;</span>
 </code></pre></div>
@@ -10838,6 +10837,22 @@ Additional messages can be defined by separating them with <code>|</code> charac
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="<b>Independent</b><br> This action can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"/></svg></span><br />
 <strong>Syntax</strong>: <code>chestclear &lt;location&gt;</code><br />
 <strong>Description</strong>: Remove all items from the chest at the specified location.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>location<br><a href="../Definition-Encyclopedia/#unified-location-format">[Location]</a></td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The location of the chest to be cleared. In case there is no chest at the given location or it could not be cleared, an error is thrown.</td>
+</tr>
+</tbody>
+</table>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">chestclear</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;chestclear</span><span class="nv"> </span><span class="s">100;200;300;world&quot;</span>
 </code></pre></div>
