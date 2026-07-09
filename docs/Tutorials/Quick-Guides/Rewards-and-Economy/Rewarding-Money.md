@@ -4,6 +4,19 @@ icon: material/cash-multiple
 
 # How to reward money with Vault
 
+!!!info "Requirements"
+
+    The `money` action, condition, and placeholders are provided by the Vault integration.
+    Your server needs:
+    
+    - Vault
+    - an economy plugin supported by Vault
+    - BetonQuest with the Vault hook loaded
+
+    After installing or changing economy plugins, restart the server and check `/bq version`.
+    It should list Vault as a hooked plugin.
+
+
 Vault rewards are useful when quests should pay players with the server economy instead of items.
 BetonQuest can deposit money, withdraw money, check whether a player has enough money, and show the current balance.
 
@@ -55,17 +68,6 @@ conditions:
 8. Shows how much money the player is still missing for a price of 50.
 9. Checks whether the player has at least 50 money.
 
-## Requirements
-
-The `money` action, condition, and placeholders are provided by the Vault integration.
-Your server needs:
-
-- Vault
-- an economy plugin supported by Vault
-- BetonQuest with the Vault hook loaded
-
-After installing or changing economy plugins, restart the server and check `/bq version`.
-It should list Vault as a hooked plugin.
 
 ## Common patterns
 
