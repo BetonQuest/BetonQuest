@@ -77,7 +77,7 @@ nav:
               - 'Using Menus': Tutorials/Quick-Guides/Player-UI-and-Feedback/Using-Menus.md
               - 'Custom Notifications': Tutorials/Quick-Guides/Player-UI-and-Feedback/Custom-Notifications.md
               - 'Text Placeholders': Tutorials/Quick-Guides/Player-UI-and-Feedback/Text-Placeholders.md
-              - 'Quest Compass & Navigation Hints': Tutorials/Quick-Guides/Player-UI-and-Feedback/Quest-Compass-Navigation-Hint.md
+              - 'Compass & Navigation Hints': Tutorials/Quick-Guides/Player-UI-and-Feedback/Compass-Navigation-Hint.md
           - 'Quest Flow & Lifecycle':
               - 'Quest Cancelers': Tutorials/Quick-Guides/Quest-Flow-and-Lifecycle/Using-Quest-Cancelers.md
               - 'Random Daily Quest': Tutorials/Quick-Guides/Quest-Flow-and-Lifecycle/Random-Daily-Quest.md
