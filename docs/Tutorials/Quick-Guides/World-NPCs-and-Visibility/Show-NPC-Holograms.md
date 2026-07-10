@@ -4,6 +4,19 @@ icon: material/text-recognition
 
 # How to show NPC holograms
 
+!!!info "Requirements"
+    
+    NPC holograms require a supported hologram plugin.
+    BetonQuest supports:
+    
+    - DecentHolograms
+    - FancyHolograms
+    - Holographic Displays
+    
+    If more than one hologram plugin is installed, choose the default plugin with the `hologram.default` option in the
+    BetonQuest config.
+    After installing or changing hologram plugins, restart the server and check `/bq version`.
+
 NPC holograms are useful when players should quickly see which NPC starts, continues, or finishes a quest.
 BetonQuest can attach holograms to NPCs and show different text depending on the player's quest state.
 
@@ -108,18 +121,6 @@ conversations:
 13. These items are used by the `item:` hologram lines.
 14. The conversation is included because `npc_conversations` must point to a defined conversation.
 
-## Requirements
-
-NPC holograms require a supported hologram plugin.
-BetonQuest supports:
-
-- DecentHolograms
-- FancyHolograms
-- Holographic Displays
-
-If more than one hologram plugin is installed, choose the default plugin with the `hologram.default` option in the
-BetonQuest config.
-After installing or changing hologram plugins, restart the server and check `/bq version`.
 
 ## Moving NPCs
 
