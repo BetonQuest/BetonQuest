@@ -10,31 +10,31 @@
         <meta name="author" content="BetonQuest Organisation">
       
       
-        <link rel="canonical" href="https://betonquest.org/3.1-DEV/Tutorials/Syntax/Quest-Packages/">
+        <link rel="canonical" href="https://betonquest.org/3.1-DEV/Tutorials/Quick-Guides/World-NPCs-and-Visibility/WorldGuard-Region/">
       
       
-        <link rel="prev" href="../../Tools/YAML-Errors/">
+        <link rel="prev" href="../NPC-and-Player-Hider/">
       
       
-        <link rel="next" href="../../Quick-Guides/Quest-Progress-and-State/Displaying-Progress/">
+        <link rel="next" href="../../../../Documentation/Overview/">
       
       
         
       
       
-      <link rel="icon" href="../../../_media/brand/Icon/Icon32.ico">
+      <link rel="icon" href="../../../../_media/brand/Icon/Icon32.ico">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
-        <title>Quest Packages - BetonQuest</title>
+        <title>WorldGuard Region - BetonQuest</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
   
@@ -63,9 +63,9 @@
       
     
     
-      <link rel="stylesheet" href="../../../_webCode/css/coloredIcons.css">
+      <link rel="stylesheet" href="../../../../_webCode/css/coloredIcons.css">
     
-    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -90,7 +90,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#quest-packages" class="md-skip">
+        <a href="#how-to-use-worldguard-regions-in-quests" class="md-skip">
           Skip to content
         </a>
       
@@ -105,12 +105,12 @@
             <div class="md-banner__inner md-grid md-typeset">
               
 <a style="color: black"> You're viewing the docs of an outdated or legacy development version! </a>
-<a href="../../../..">
+<a href="../../../../..">
   <strong>Click here to go to the latest BetonQuest release.</strong>
 </a>
 
             </div>
-            <script>var el=document.querySelector("[data-md-component=outdated]"),base=new URL("../../.."),outdated=__md_get("__outdated",sessionStorage,base);!0===outdated&&el&&(el.hidden=!1)</script>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),base=new URL("../../../.."),outdated=__md_get("__outdated",sessionStorage,base);!0===outdated&&el&&(el.hidden=!1)</script>
           </aside>
         
       </div>
@@ -122,9 +122,9 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="BetonQuest" class="md-header__button md-logo" aria-label="BetonQuest" data-md-component="logo">
+    <a href="../../../.." title="BetonQuest" class="md-header__button md-logo" aria-label="BetonQuest" data-md-component="logo">
       
-  <img src="../../../_media/brand/Icon/Icon1K.png" alt="logo">
+  <img src="../../../../_media/brand/Icon/Icon1K.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -141,7 +141,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Quest Packages
+              WorldGuard Region
             
           </span>
         </div>
@@ -253,7 +253,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../.." class="md-tabs__link">
+      <a href="../../../.." class="md-tabs__link">
         
   
   
@@ -276,7 +276,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="../../Overview/" class="md-tabs__link">
+        <a href="../../../Overview/" class="md-tabs__link">
           
   
   
@@ -298,7 +298,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../Documentation/Overview/" class="md-tabs__link">
+        <a href="../../../../Documentation/Overview/" class="md-tabs__link">
           
   
   
@@ -320,7 +320,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../API/Overview/" class="md-tabs__link">
+        <a href="../../../../API/Overview/" class="md-tabs__link">
           
   
   
@@ -342,7 +342,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../Participate/Overview/" class="md-tabs__link">
+        <a href="../../../../Participate/Overview/" class="md-tabs__link">
           
   
   
@@ -362,7 +362,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../Downloads/" class="md-tabs__link">
+      <a href="../../../../Downloads/" class="md-tabs__link">
         
   
   
@@ -403,9 +403,9 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="BetonQuest" class="md-nav__button md-logo" aria-label="BetonQuest" data-md-component="logo">
+    <a href="../../../.." title="BetonQuest" class="md-nav__button md-logo" aria-label="BetonQuest" data-md-component="logo">
       
-  <img src="../../../_media/brand/Icon/Icon1K.png" alt="logo">
+  <img src="../../../../_media/brand/Icon/Icon1K.png" alt="logo">
 
     </a>
     BetonQuest
@@ -432,7 +432,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../.." class="md-nav__link">
+      <a href="../../../.." class="md-nav__link">
         
   
   
@@ -530,7 +530,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Overview/" class="md-nav__link">
+      <a href="../../../Overview/" class="md-nav__link">
         
   
   
@@ -623,7 +623,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Getting-Started/About/" class="md-nav__link">
+      <a href="../../../Getting-Started/About/" class="md-nav__link">
         
   
   
@@ -713,7 +713,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Getting-Started/Setup-Guide/Setting-up-a-Test-Server/" class="md-nav__link">
+      <a href="../../../Getting-Started/Setup-Guide/Setting-up-a-Test-Server/" class="md-nav__link">
         
   
   
@@ -743,7 +743,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Getting-Started/Setup-Guide/Installing-BetonQuest/" class="md-nav__link">
+      <a href="../../../Getting-Started/Setup-Guide/Installing-BetonQuest/" class="md-nav__link">
         
   
   
@@ -773,7 +773,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Getting-Started/Setup-Guide/Setting-up-VSCode/" class="md-nav__link">
+      <a href="../../../Getting-Started/Setup-Guide/Setting-up-VSCode/" class="md-nav__link">
         
   
   
@@ -803,7 +803,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Getting-Started/Setup-Guide/VSCode-Basics/" class="md-nav__link">
+      <a href="../../../Getting-Started/Setup-Guide/VSCode-Basics/" class="md-nav__link">
         
   
   
@@ -905,7 +905,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Getting-Started/Basics/YAML-Basics/" class="md-nav__link">
+      <a href="../../../Getting-Started/Basics/YAML-Basics/" class="md-nav__link">
         
   
   
@@ -935,7 +935,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Getting-Started/Basics/Conversations/" class="md-nav__link">
+      <a href="../../../Getting-Started/Basics/Conversations/" class="md-nav__link">
         
   
   
@@ -965,7 +965,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Getting-Started/Basics/Actions/" class="md-nav__link">
+      <a href="../../../Getting-Started/Basics/Actions/" class="md-nav__link">
         
   
   
@@ -995,7 +995,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Getting-Started/Basics/Objectives/" class="md-nav__link">
+      <a href="../../../Getting-Started/Basics/Objectives/" class="md-nav__link">
         
   
   
@@ -1025,7 +1025,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Getting-Started/Basics/Conditions/" class="md-nav__link">
+      <a href="../../../Getting-Started/Basics/Conditions/" class="md-nav__link">
         
   
   
@@ -1194,7 +1194,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Features/Tracking-Quest-Progress/Overview/" class="md-nav__link">
+      <a href="../../../Features/Tracking-Quest-Progress/Overview/" class="md-nav__link">
         
   
   
@@ -1224,7 +1224,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Features/Tracking-Quest-Progress/Tags/" class="md-nav__link">
+      <a href="../../../Features/Tracking-Quest-Progress/Tags/" class="md-nav__link">
         
   
   
@@ -1254,7 +1254,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Features/Tracking-Quest-Progress/Points/" class="md-nav__link">
+      <a href="../../../Features/Tracking-Quest-Progress/Points/" class="md-nav__link">
         
   
   
@@ -1284,7 +1284,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Features/Tracking-Quest-Progress/Stages/" class="md-nav__link">
+      <a href="../../../Features/Tracking-Quest-Progress/Stages/" class="md-nav__link">
         
   
   
@@ -1384,7 +1384,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Features/Schedules/Overview/" class="md-nav__link">
+      <a href="../../../Features/Schedules/Overview/" class="md-nav__link">
         
   
   
@@ -1414,7 +1414,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Features/Schedules/Daily-Repetition/" class="md-nav__link">
+      <a href="../../../Features/Schedules/Daily-Repetition/" class="md-nav__link">
         
   
   
@@ -1444,7 +1444,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Features/Schedules/Delayed-Quest-Steps/" class="md-nav__link">
+      <a href="../../../Features/Schedules/Delayed-Quest-Steps/" class="md-nav__link">
         
   
   
@@ -1474,7 +1474,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Features/Schedules/Limited-Time-Events/" class="md-nav__link">
+      <a href="../../../Features/Schedules/Limited-Time-Events/" class="md-nav__link">
         
   
   
@@ -1579,7 +1579,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Tools/YAML-Errors/" class="md-nav__link">
+      <a href="../../../Tools/YAML-Errors/" class="md-nav__link">
         
   
   
@@ -1614,8 +1614,6 @@
                 
   
   
-    
-  
   
   
     
@@ -1635,11 +1633,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
         
           
           <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="">
@@ -1660,7 +1658,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1675,39 +1673,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 20H4a2 2 0 0 1-2-2V6c0-1.11.89-2 2-2h6l2 2h7a2 2 0 0 1 2 2H4v10l2.14-8h17.07l-2.28 8.5c-.23.87-1.01 1.5-1.93 1.5"/></svg>
-  
-  <span class="md-ellipsis">
-    
-  
-    Quest Packages
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../Syntax/Quest-Packages/" class="md-nav__link">
         
   
   
@@ -1725,169 +1694,6 @@
   
 
       </a>
-      
-        
-
-
-
-<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
-  
-
-  
-  
-  
-  
-
-  
-  <label class="md-nav__title" for="__toc">
-    <span class="md-nav__icon md-icon"></span>
-    Table of contents
-  </label>
-  <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#1-what-is-a-quest-package">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          1. What is a Quest Package?
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#2-creating-a-quest-package-with-multiple-files">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          2. Creating a Quest Package with multiple files
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#3-creating-a-quest-package-with-a-single-file">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          3. Creating a Quest Package with a single file
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#4-creating-packages-in-packages">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          4. Creating packages in packages
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#5-creating-subdirectories-in-a-package">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          5. Creating subdirectories in a package
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#summary">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Summary
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-  </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1905,6 +1711,8 @@
                 
   
   
+    
+  
   
   
     
@@ -1936,11 +1744,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" checked>
         
           
           <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="">
@@ -1961,7 +1769,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2_6">
             <span class="md-nav__icon md-icon"></span>
             
@@ -2037,7 +1845,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Quick-Guides/Quest-Progress-and-State/Displaying-Progress/" class="md-nav__link">
+      <a href="../../Quest-Progress-and-State/Displaying-Progress/" class="md-nav__link">
         
   
   
@@ -2067,7 +1875,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Quick-Guides/Quest-Progress-and-State/Objectives-in-any-order/" class="md-nav__link">
+      <a href="../../Quest-Progress-and-State/Objectives-in-any-order/" class="md-nav__link">
         
   
   
@@ -2167,7 +1975,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Quick-Guides/Player-UI-and-Feedback/Using-the-Journal/" class="md-nav__link">
+      <a href="../../Player-UI-and-Feedback/Using-the-Journal/" class="md-nav__link">
         
   
   
@@ -2197,7 +2005,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Quick-Guides/Player-UI-and-Feedback/Using-Menus/" class="md-nav__link">
+      <a href="../../Player-UI-and-Feedback/Using-Menus/" class="md-nav__link">
         
   
   
@@ -2227,7 +2035,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Quick-Guides/Player-UI-and-Feedback/Custom-Notifications/" class="md-nav__link">
+      <a href="../../Player-UI-and-Feedback/Custom-Notifications/" class="md-nav__link">
         
   
   
@@ -2257,7 +2065,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Quick-Guides/Player-UI-and-Feedback/Text-Placeholders/" class="md-nav__link">
+      <a href="../../Player-UI-and-Feedback/Text-Placeholders/" class="md-nav__link">
         
   
   
@@ -2353,7 +2161,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Quick-Guides/Quest-Flow-and-Lifecycle/Using-Quest-Cancelers/" class="md-nav__link">
+      <a href="../../Quest-Flow-and-Lifecycle/Using-Quest-Cancelers/" class="md-nav__link">
         
   
   
@@ -2383,7 +2191,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Quick-Guides/Quest-Flow-and-Lifecycle/Random-Daily-Quest/" class="md-nav__link">
+      <a href="../../Quest-Flow-and-Lifecycle/Random-Daily-Quest/" class="md-nav__link">
         
   
   
@@ -2477,7 +2285,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Quick-Guides/Rewards-and-Economy/Rewarding-Money/" class="md-nav__link">
+      <a href="../../Rewards-and-Economy/Rewarding-Money/" class="md-nav__link">
         
   
   
@@ -2571,7 +2379,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Quick-Guides/Items-and-Inventory/Complex-Quest-Items/" class="md-nav__link">
+      <a href="../../Items-and-Inventory/Complex-Quest-Items/" class="md-nav__link">
         
   
   
@@ -2669,7 +2477,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Quick-Guides/Multiplayer-and-Global-Quests/Party-Quests/" class="md-nav__link">
+      <a href="../../Multiplayer-and-Global-Quests/Party-Quests/" class="md-nav__link">
         
   
   
@@ -2699,7 +2507,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Quick-Guides/Multiplayer-and-Global-Quests/Global-Random-Daily-Quests/" class="md-nav__link">
+      <a href="../../Multiplayer-and-Global-Quests/Global-Random-Daily-Quests/" class="md-nav__link">
         
   
   
@@ -2729,7 +2537,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Quick-Guides/Multiplayer-and-Global-Quests/Server-Wide-Quests/" class="md-nav__link">
+      <a href="../../Multiplayer-and-Global-Quests/Server-Wide-Quests/" class="md-nav__link">
         
   
   
@@ -2764,8 +2572,10 @@
                 
   
   
+    
   
   
+  
     
     
       
@@ -2784,11 +2594,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_7" checked>
         
           
           <label class="md-nav__link" for="__nav_2_6_7" id="__nav_2_6_7_label" tabindex="0">
@@ -2809,7 +2619,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_7_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_7_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2_6_7">
             <span class="md-nav__icon md-icon"></span>
             
@@ -2827,7 +2637,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Quick-Guides/World-NPCs-and-Visibility/NPC-Conversations/" class="md-nav__link">
+      <a href="../NPC-Conversations/" class="md-nav__link">
         
   
   
@@ -2857,7 +2667,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Quick-Guides/World-NPCs-and-Visibility/NPC-and-Player-Hider/" class="md-nav__link">
+      <a href="../NPC-and-Player-Hider/" class="md-nav__link">
         
   
   
@@ -2884,10 +2694,19 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../Quick-Guides/World-NPCs-and-Visibility/WorldGuard-Region/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -2905,6 +2724,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -3004,7 +2824,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Overview/" class="md-nav__link">
+      <a href="../../../../Documentation/Overview/" class="md-nav__link">
         
   
   
@@ -3096,7 +2916,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Basics/About-Scripting/" class="md-nav__link">
+      <a href="../../../../Documentation/Basics/About-Scripting/" class="md-nav__link">
         
   
   
@@ -3126,7 +2946,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Basics/Scripting-Elements/" class="md-nav__link">
+      <a href="../../../../Documentation/Basics/Scripting-Elements/" class="md-nav__link">
         
   
   
@@ -3156,7 +2976,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Basics/Packages-%26-Templates/" class="md-nav__link">
+      <a href="../../../../Documentation/Basics/Packages-%26-Templates/" class="md-nav__link">
         
   
   
@@ -3186,7 +3006,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Basics/Quoting-%26-YAML/" class="md-nav__link">
+      <a href="../../../../Documentation/Basics/Quoting-%26-YAML/" class="md-nav__link">
         
   
   
@@ -3302,7 +3122,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Advanced/Conversations/" class="md-nav__link">
+      <a href="../../../../Documentation/Advanced/Conversations/" class="md-nav__link">
         
   
   
@@ -3332,7 +3152,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Advanced/Text-Formatting/" class="md-nav__link">
+      <a href="../../../../Documentation/Advanced/Text-Formatting/" class="md-nav__link">
         
   
   
@@ -3389,7 +3209,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../Documentation/Advanced/Menus/" class="md-nav__link ">
+            <a href="../../../../Documentation/Advanced/Menus/" class="md-nav__link ">
               
   
   
@@ -3435,7 +3255,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Advanced/Menus/Example/" class="md-nav__link">
+      <a href="../../../../Documentation/Advanced/Menus/Example/" class="md-nav__link">
         
   
   
@@ -3465,7 +3285,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Advanced/Menus/Elements/" class="md-nav__link">
+      <a href="../../../../Documentation/Advanced/Menus/Elements/" class="md-nav__link">
         
   
   
@@ -3503,7 +3323,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Advanced/Journal/" class="md-nav__link">
+      <a href="../../../../Documentation/Advanced/Journal/" class="md-nav__link">
         
   
   
@@ -3533,7 +3353,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Advanced/Items/" class="md-nav__link">
+      <a href="../../../../Documentation/Advanced/Items/" class="md-nav__link">
         
   
   
@@ -3563,7 +3383,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Advanced/Quest-Cancelers/" class="md-nav__link">
+      <a href="../../../../Documentation/Advanced/Quest-Cancelers/" class="md-nav__link">
         
   
   
@@ -3593,7 +3413,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Advanced/Player-Hider/" class="md-nav__link">
+      <a href="../../../../Documentation/Advanced/Player-Hider/" class="md-nav__link">
         
   
   
@@ -3623,7 +3443,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Advanced/Schedules/" class="md-nav__link">
+      <a href="../../../../Documentation/Advanced/Schedules/" class="md-nav__link">
         
   
   
@@ -3653,7 +3473,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Advanced/Functions/" class="md-nav__link">
+      <a href="../../../../Documentation/Advanced/Functions/" class="md-nav__link">
         
   
   
@@ -3683,7 +3503,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Advanced/Parties/" class="md-nav__link">
+      <a href="../../../../Documentation/Advanced/Parties/" class="md-nav__link">
         
   
   
@@ -3713,7 +3533,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Advanced/Notification-IO%27s-%26-Categories/" class="md-nav__link">
+      <a href="../../../../Documentation/Advanced/Notification-IO%27s-%26-Categories/" class="md-nav__link">
         
   
   
@@ -3743,7 +3563,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Advanced/Notification-Settings/" class="md-nav__link">
+      <a href="../../../../Documentation/Advanced/Notification-Settings/" class="md-nav__link">
         
   
   
@@ -3853,7 +3673,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Plugin-Config/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Plugin-Config/" class="md-nav__link">
         
   
   
@@ -3883,7 +3703,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Commands-and-Permissions/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Commands-and-Permissions/" class="md-nav__link">
         
   
   
@@ -3913,7 +3733,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Actions-List/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Actions-List/" class="md-nav__link">
         
   
   
@@ -3943,7 +3763,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Objectives-List/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Objectives-List/" class="md-nav__link">
         
   
   
@@ -3973,7 +3793,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Conditions-List/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Conditions-List/" class="md-nav__link">
         
   
   
@@ -4003,7 +3823,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Placeholders-List/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Placeholders-List/" class="md-nav__link">
         
   
   
@@ -4074,7 +3894,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../Documentation/Reference/Integrations-List/" class="md-nav__link ">
+            <a href="../../../../Documentation/Reference/Integrations-List/" class="md-nav__link ">
               
   
   
@@ -4151,7 +3971,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../Documentation/Reference/Integrations-List/NPCs/" class="md-nav__link ">
+            <a href="../../../../Documentation/Reference/Integrations-List/NPCs/" class="md-nav__link ">
               
   
   
@@ -4197,7 +4017,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/NPCs/Citizens/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/NPCs/Citizens/" class="md-nav__link">
         
   
   
@@ -4225,7 +4045,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/NPCs/FancyNpcs/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/NPCs/FancyNpcs/" class="md-nav__link">
         
   
   
@@ -4253,7 +4073,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/NPCs/MythicMobs/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/NPCs/MythicMobs/" class="md-nav__link">
         
   
   
@@ -4281,7 +4101,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/NPCs/ZNPCsPlus/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/NPCs/ZNPCsPlus/" class="md-nav__link">
         
   
   
@@ -4354,7 +4174,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../Documentation/Reference/Integrations-List/Items/" class="md-nav__link ">
+            <a href="../../../../Documentation/Reference/Integrations-List/Items/" class="md-nav__link ">
               
   
   
@@ -4400,7 +4220,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Items/Brewery/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Items/Brewery/" class="md-nav__link">
         
   
   
@@ -4428,7 +4248,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Items/CraftEngine/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Items/CraftEngine/" class="md-nav__link">
         
   
   
@@ -4456,7 +4276,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Items/ItemsAdder/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Items/ItemsAdder/" class="md-nav__link">
         
   
   
@@ -4484,7 +4304,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Items/Magic/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Items/Magic/" class="md-nav__link">
         
   
   
@@ -4512,7 +4332,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Items/MMOItems/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Items/MMOItems/" class="md-nav__link">
         
   
   
@@ -4540,7 +4360,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Items/MythicMobs/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Items/MythicMobs/" class="md-nav__link">
         
   
   
@@ -4568,7 +4388,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Items/Nexo/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Items/Nexo/" class="md-nav__link">
         
   
   
@@ -4633,7 +4453,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../Documentation/Reference/Integrations-List/Holograms/" class="md-nav__link ">
+            <a href="../../../../Documentation/Reference/Integrations-List/Holograms/" class="md-nav__link ">
               
   
   
@@ -4679,7 +4499,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Holograms/DecentHolograms/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Holograms/DecentHolograms/" class="md-nav__link">
         
   
   
@@ -4707,7 +4527,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Holograms/FancyHolograms/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Holograms/FancyHolograms/" class="md-nav__link">
         
   
   
@@ -4735,7 +4555,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Holograms/HolographicDisplays/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Holograms/HolographicDisplays/" class="md-nav__link">
         
   
   
@@ -4798,7 +4618,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../Documentation/Reference/Integrations-List/Visuals/" class="md-nav__link ">
+            <a href="../../../../Documentation/Reference/Integrations-List/Visuals/" class="md-nav__link ">
               
   
   
@@ -4844,7 +4664,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Visuals/EffectLib/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Visuals/EffectLib/" class="md-nav__link">
         
   
   
@@ -4872,7 +4692,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Visuals/FakeBlock/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Visuals/FakeBlock/" class="md-nav__link">
         
   
   
@@ -4937,7 +4757,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../Documentation/Reference/Integrations-List/Scripting-%26-Questing/" class="md-nav__link ">
+            <a href="../../../../Documentation/Reference/Integrations-List/Scripting-%26-Questing/" class="md-nav__link ">
               
   
   
@@ -4983,7 +4803,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Scripting-%26-Questing/Denizen/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Scripting-%26-Questing/Denizen/" class="md-nav__link">
         
   
   
@@ -5011,7 +4831,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Scripting-%26-Questing/Quests/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Scripting-%26-Questing/Quests/" class="md-nav__link">
         
   
   
@@ -5039,7 +4859,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Scripting-%26-Questing/Skript/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Scripting-%26-Questing/Skript/" class="md-nav__link">
         
   
   
@@ -5104,7 +4924,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../Documentation/Reference/Integrations-List/Economy/" class="md-nav__link ">
+            <a href="../../../../Documentation/Reference/Integrations-List/Economy/" class="md-nav__link ">
               
   
   
@@ -5150,7 +4970,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Economy/JobsReborn/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Economy/JobsReborn/" class="md-nav__link">
         
   
   
@@ -5178,7 +4998,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Economy/Shopkeepers/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Economy/Shopkeepers/" class="md-nav__link">
         
   
   
@@ -5206,7 +5026,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Economy/Vault/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Economy/Vault/" class="md-nav__link">
         
   
   
@@ -5279,7 +5099,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../Documentation/Reference/Integrations-List/MMO/" class="md-nav__link ">
+            <a href="../../../../Documentation/Reference/Integrations-List/MMO/" class="md-nav__link ">
               
   
   
@@ -5325,7 +5145,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/MMO/AuraSkills/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/MMO/AuraSkills/" class="md-nav__link">
         
   
   
@@ -5353,7 +5173,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/MMO/Fabled/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/MMO/Fabled/" class="md-nav__link">
         
   
   
@@ -5381,7 +5201,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/MMO/Heroes/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/MMO/Heroes/" class="md-nav__link">
         
   
   
@@ -5409,7 +5229,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/MMO/Magic/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/MMO/Magic/" class="md-nav__link">
         
   
   
@@ -5437,7 +5257,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/MMO/McMMO/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/MMO/McMMO/" class="md-nav__link">
         
   
   
@@ -5465,7 +5285,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/MMO/MMOCore/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/MMO/MMOCore/" class="md-nav__link">
         
   
   
@@ -5493,7 +5313,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/MMO/MMOLib/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/MMO/MMOLib/" class="md-nav__link">
         
   
   
@@ -5564,7 +5384,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../Documentation/Reference/Integrations-List/Administration/" class="md-nav__link ">
+            <a href="../../../../Documentation/Reference/Integrations-List/Administration/" class="md-nav__link ">
               
   
   
@@ -5610,7 +5430,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Administration/LuckPerms/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Administration/LuckPerms/" class="md-nav__link">
         
   
   
@@ -5638,7 +5458,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Administration/PacketEvents/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Administration/PacketEvents/" class="md-nav__link">
         
   
   
@@ -5666,7 +5486,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Administration/PlaceholderAPI/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Administration/PlaceholderAPI/" class="md-nav__link">
         
   
   
@@ -5694,7 +5514,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Administration/RedisChat/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Administration/RedisChat/" class="md-nav__link">
         
   
   
@@ -5722,7 +5542,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Administration/WorldEdit/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Administration/WorldEdit/" class="md-nav__link">
         
   
   
@@ -5750,7 +5570,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Administration/WorldGuard/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Administration/WorldGuard/" class="md-nav__link">
         
   
   
@@ -5811,7 +5631,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../Documentation/Reference/Integrations-List/Miscellaneous/" class="md-nav__link ">
+            <a href="../../../../Documentation/Reference/Integrations-List/Miscellaneous/" class="md-nav__link ">
               
   
   
@@ -5857,7 +5677,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Integrations-List/Miscellaneous/TrainCarts/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Integrations-List/Miscellaneous/TrainCarts/" class="md-nav__link">
         
   
   
@@ -5901,7 +5721,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Font-Config/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Font-Config/" class="md-nav__link">
         
   
   
@@ -5931,7 +5751,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Reference/Definition-Encyclopedia/" class="md-nav__link">
+      <a href="../../../../Documentation/Reference/Definition-Encyclopedia/" class="md-nav__link">
         
   
   
@@ -6029,7 +5849,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Updates/Updating/" class="md-nav__link">
+      <a href="../../../../Documentation/Updates/Updating/" class="md-nav__link">
         
   
   
@@ -6117,7 +5937,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Updates/Migrations/Migration-1-2/" class="md-nav__link">
+      <a href="../../../../Documentation/Updates/Migrations/Migration-1-2/" class="md-nav__link">
         
   
   
@@ -6147,7 +5967,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/Updates/Migrations/Migration-2-3/" class="md-nav__link">
+      <a href="../../../../Documentation/Updates/Migrations/Migration-2-3/" class="md-nav__link">
         
   
   
@@ -6185,7 +6005,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Documentation/CHANGELOG/" class="md-nav__link">
+      <a href="../../../../Documentation/CHANGELOG/" class="md-nav__link">
         
   
   
@@ -6296,7 +6116,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Overview/" class="md-nav__link">
+      <a href="../../../../API/Overview/" class="md-nav__link">
         
   
   
@@ -6326,7 +6146,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Obtaining-API/" class="md-nav__link">
+      <a href="../../../../API/Obtaining-API/" class="md-nav__link">
         
   
   
@@ -6422,7 +6242,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Concepts/Overview/" class="md-nav__link">
+      <a href="../../../../API/Concepts/Overview/" class="md-nav__link">
         
   
   
@@ -6452,7 +6272,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Concepts/Actions/" class="md-nav__link">
+      <a href="../../../../API/Concepts/Actions/" class="md-nav__link">
         
   
   
@@ -6482,7 +6302,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Concepts/Objectives/" class="md-nav__link">
+      <a href="../../../../API/Concepts/Objectives/" class="md-nav__link">
         
   
   
@@ -6512,7 +6332,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Concepts/Conditions/" class="md-nav__link">
+      <a href="../../../../API/Concepts/Conditions/" class="md-nav__link">
         
   
   
@@ -6542,7 +6362,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Concepts/Placeholders/" class="md-nav__link">
+      <a href="../../../../API/Concepts/Placeholders/" class="md-nav__link">
         
   
   
@@ -6572,7 +6392,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Concepts/NPCs/" class="md-nav__link">
+      <a href="../../../../API/Concepts/NPCs/" class="md-nav__link">
         
   
   
@@ -6672,7 +6492,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Integration/Overview/" class="md-nav__link">
+      <a href="../../../../API/Integration/Overview/" class="md-nav__link">
         
   
   
@@ -6709,7 +6529,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Integration/Policies/" class="md-nav__link">
+      <a href="../../../../API/Integration/Policies/" class="md-nav__link">
         
   
   
@@ -6746,7 +6566,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Integration/Integration-Builder/" class="md-nav__link">
+      <a href="../../../../API/Integration/Integration-Builder/" class="md-nav__link">
         
   
   
@@ -6783,7 +6603,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Integration/Implementation/" class="md-nav__link">
+      <a href="../../../../API/Integration/Implementation/" class="md-nav__link">
         
   
   
@@ -6898,7 +6718,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Tools/Instruction/" class="md-nav__link">
+      <a href="../../../../API/Tools/Instruction/" class="md-nav__link">
         
   
   
@@ -6928,7 +6748,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Tools/Logging/" class="md-nav__link">
+      <a href="../../../../API/Tools/Logging/" class="md-nav__link">
         
   
   
@@ -6958,7 +6778,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Tools/TextParsing/" class="md-nav__link">
+      <a href="../../../../API/Tools/TextParsing/" class="md-nav__link">
         
   
   
@@ -6995,7 +6815,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Tools/Profiles/" class="md-nav__link">
+      <a href="../../../../API/Tools/Profiles/" class="md-nav__link">
         
   
   
@@ -7032,7 +6852,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Tools/Versioning/" class="md-nav__link">
+      <a href="../../../../API/Tools/Versioning/" class="md-nav__link">
         
   
   
@@ -7069,7 +6889,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Configuration-Files/" class="md-nav__link">
+      <a href="../../../../API/Configuration-Files/" class="md-nav__link">
         
   
   
@@ -7099,7 +6919,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/BukkitConfigurations/" class="md-nav__link">
+      <a href="../../../../API/BukkitConfigurations/" class="md-nav__link">
         
   
   
@@ -7129,7 +6949,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Tools/Functions/" class="md-nav__link">
+      <a href="../../../../API/Tools/Functions/" class="md-nav__link">
         
   
   
@@ -7232,7 +7052,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Legacy/Writing-Implementations/" class="md-nav__link">
+      <a href="../../../../API/Legacy/Writing-Implementations/" class="md-nav__link">
         
   
   
@@ -7262,7 +7082,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../API/Legacy/Schedules/" class="md-nav__link">
+      <a href="../../../../API/Legacy/Schedules/" class="md-nav__link">
         
   
   
@@ -7371,7 +7191,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Overview/" class="md-nav__link">
+      <a href="../../../../Participate/Overview/" class="md-nav__link">
         
   
   
@@ -7401,7 +7221,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Donating-Money/" class="md-nav__link">
+      <a href="../../../../Participate/Donating-Money/" class="md-nav__link">
         
   
   
@@ -7431,7 +7251,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Setup-Project/" class="md-nav__link">
+      <a href="../../../../Participate/Setup-Project/" class="md-nav__link">
         
   
   
@@ -7525,7 +7345,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Process/Create-a-new-Branch/" class="md-nav__link">
+      <a href="../../../../Participate/Process/Create-a-new-Branch/" class="md-nav__link">
         
   
   
@@ -7621,7 +7441,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Process/Docs/Workflow/" class="md-nav__link">
+      <a href="../../../../Participate/Process/Docs/Workflow/" class="md-nav__link">
         
   
   
@@ -7651,7 +7471,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Process/Docs/Principles/" class="md-nav__link">
+      <a href="../../../../Participate/Process/Docs/Principles/" class="md-nav__link">
         
   
   
@@ -7681,7 +7501,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Process/Docs/Guidelines/" class="md-nav__link">
+      <a href="../../../../Participate/Process/Docs/Guidelines/" class="md-nav__link">
         
   
   
@@ -7711,7 +7531,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Process/Docs/Writing-Tutorials/" class="md-nav__link">
+      <a href="../../../../Participate/Process/Docs/Writing-Tutorials/" class="md-nav__link">
         
   
   
@@ -7741,7 +7561,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Process/Docs/Customizations/" class="md-nav__link">
+      <a href="../../../../Participate/Process/Docs/Customizations/" class="md-nav__link">
         
   
   
@@ -7771,7 +7591,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Process/Docs/Style-Definitions/" class="md-nav__link">
+      <a href="../../../../Participate/Process/Docs/Style-Definitions/" class="md-nav__link">
         
   
   
@@ -7871,7 +7691,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Process/Code/Workflow/" class="md-nav__link">
+      <a href="../../../../Participate/Process/Code/Workflow/" class="md-nav__link">
         
   
   
@@ -7901,7 +7721,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Process/Code/Checking-Requirements/" class="md-nav__link">
+      <a href="../../../../Participate/Process/Code/Checking-Requirements/" class="md-nav__link">
         
   
   
@@ -7931,7 +7751,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Process/Code/Adding-a-new-Dependency/" class="md-nav__link">
+      <a href="../../../../Participate/Process/Code/Adding-a-new-Dependency/" class="md-nav__link">
         
   
   
@@ -7961,7 +7781,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Process/Code/Writing-JUnit-Tests/" class="md-nav__link">
+      <a href="../../../../Participate/Process/Code/Writing-JUnit-Tests/" class="md-nav__link">
         
   
   
@@ -7999,7 +7819,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Process/Maintaining-the-Changelog/" class="md-nav__link">
+      <a href="../../../../Participate/Process/Maintaining-the-Changelog/" class="md-nav__link">
         
   
   
@@ -8029,7 +7849,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Process/Submitting-Changes/" class="md-nav__link">
+      <a href="../../../../Participate/Process/Submitting-Changes/" class="md-nav__link">
         
   
   
@@ -8123,7 +7943,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Participate/Misc/Versioning-and-Releasing/" class="md-nav__link">
+      <a href="../../../../Participate/Misc/Versioning-and-Releasing/" class="md-nav__link">
         
   
   
@@ -8168,7 +7988,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Downloads/" class="md-nav__link">
+      <a href="../../../../Downloads/" class="md-nav__link">
         
   
   
@@ -8212,153 +8032,6 @@
   
 
   
-  <label class="md-nav__title" for="__toc">
-    <span class="md-nav__icon md-icon"></span>
-    Table of contents
-  </label>
-  <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#1-what-is-a-quest-package">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          1. What is a Quest Package?
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#2-creating-a-quest-package-with-multiple-files">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          2. Creating a Quest Package with multiple files
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#3-creating-a-quest-package-with-a-single-file">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          3. Creating a Quest Package with a single file
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#4-creating-packages-in-packages">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          4. Creating packages in packages
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#5-creating-subdirectories-in-a-package">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          5. Creating subdirectories in a package
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#summary">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Summary
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-  </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -8382,7 +8055,7 @@
   
   
     <li class="md-path__item">
-      <a href="../../.." class="md-path__link">
+      <a href="../../../.." class="md-path__link">
         
   <span class="md-ellipsis">
     Home
@@ -8400,7 +8073,7 @@
     
     
       <li class="md-path__item">
-        <a href="../../Overview/" class="md-path__link">
+        <a href="../../../Overview/" class="md-path__link">
           
   <span class="md-ellipsis">
     Tutorials
@@ -8417,11 +8090,37 @@
   
     
     
+      
+  
+  
+    
+    
       <li class="md-path__item">
-        <a href="./" class="md-path__link">
+        <a href="../../Quest-Progress-and-State/Displaying-Progress/" class="md-path__link">
           
   <span class="md-ellipsis">
-    Syntax
+    Quick Guides
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../NPC-Conversations/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    World, NPCs & Visibility
   </span>
 
         </a>
@@ -8440,7 +8139,7 @@
 
 
   
-    <a href="https://github.com/BetonQuest/BetonQuest/edit/main/docs/Tutorials/Syntax/Quest-Packages.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/BetonQuest/BetonQuest/edit/main/docs/Tutorials/Quick-Guides/World-NPCs-and-Visibility/WorldGuard-Region.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -8448,402 +8147,92 @@
   
 
 
-<h1 id="quest-packages"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 20H4a2 2 0 0 1-2-2V6c0-1.11.89-2 2-2h6l2 2h7a2 2 0 0 1 2 2H4v10l2.14-8h17.07l-2.28 8.5c-.23.87-1.01 1.5-1.93 1.5"/></svg></span> Quest Packages<a class="headerlink" href="#quest-packages" title="Permanent link">🔗</a></h1>
-<p>This tutorial will teach you about the package managing system, which helps you keep your quests organized.
-You can write a small quest in just one file or split a big quest into lots of small files. It's completely
-up to you! </p>
-<div class="grid">
-<div class="admonition danger">
-<p class="admonition-title">Requirements</p>
-<p>Doing this tutorial helps but is not strictly required:</p>
+<h1 id="how-to-use-worldguard-regions-in-quests">How to use WorldGuard regions in quests<a class="headerlink" href="#how-to-use-worldguard-regions-in-quests" title="Permanent link">🔗</a></h1>
+<p>WorldGuard regions are useful when quest progress should depend on where the player is.
+You can start actions when a player enters or leaves a region, and you can use region conditions to only allow actions while the player is inside a specific area.</p>
+<p>The following example creates a scout quest for a WorldGuard region named <code>bandit_camp</code>.
+The player accepts the quest, enters the region, and can only complete the scout report while standing inside that region.
+The report action can be called from a menu, a command objective, a bound item, or an NPC placed inside the region.</p>
+<p>The goal is:</p>
 <ul>
-<li><a href="../../Getting-Started/About/">Basic Tutorial</a></li>
+<li>A quest starts outside the region.</li>
+<li>Entering the WorldGuard region triggers quest progress.</li>
+<li>A condition checks whether the player is currently inside the region.</li>
+<li>The player can only complete the report while inside the region.</li>
+<li>Leaving the region before completion gives a reminder.</li>
 </ul>
-</div>
-<div class="admonition example">
-<p class="admonition-title">Related Docs</p>
-<ul>
-<li><a href="../../../Documentation/Basics/Packages-%26-Templates/#structure">Package Structure Reference</a></li>
-<li><a href="../../../Documentation/Basics/Packages-%26-Templates/#defining-features">Defining Features Reference</a></li>
-</ul>
-</div>
-</div>
-<h2 id="1-what-is-a-quest-package">1. What is a Quest Package?<a class="headerlink" href="#1-what-is-a-quest-package" title="Permanent link">🔗</a></h2>
-<p>A quest package is a folder that contains all the files that belong to a "quest". Since BetonQuest doesn't have its own 
-definition of a quest, a quest package could technically also contain multiple quests. That is up to you.</p>
-<p>It is created by placing a <em>package.yml</em> file inside a folder.
-If a folder lacks the <em>package.yml</em>, it will be considered as a part of another package that is located in a folder
-above it.</p>
-<p>The files inside a quest package can be organized in any way you like. There are no limitations on file names or file count.
-The only thing that matters is that the <em>package.yml</em> file is present. </p>
-<p>Let's compare the structure of the basic tutorial to one of a realistic quest package: </p>
-<div class="grid">
-<div class="admonition example annotate">
-<p class="admonition-title">Basics Tutorial Structure</p>
-<ul>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 20H4a2 2 0 0 1-2-2V6c0-1.11.89-2 2-2h6l2 2h7a2 2 0 0 1 2 2H4v10l2.14-8h17.07l-2.28 8.5c-.23.87-1.01 1.5-1.93 1.5"/></svg></span> tutorialQuest<ul>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8zm.5 16.9L12 17.5 9.5 19l.7-2.8L8 14.3l2.9-.2 1.1-2.7 1.1 2.6 2.9.2-2.2 1.9zM13 9V3.5L18.5 9z"/></svg></span> package.yml (1)</li>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> actions.yml  (2)</li>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> conditions.yml</li>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> objectives.yml</li>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 20H4a2 2 0 0 1-2-2V6c0-1.11.89-2 2-2h6l2 2h7a2 2 0 0 1 2 2H4v10l2.14-8h17.07l-2.28 8.5c-.23.87-1.01 1.5-1.93 1.5"/></svg></span> conversations<ul>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> blacksmith.yml</li>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> jack.yml</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
-<ol>
-<li>The package.yml file is required to make the folder a quest package.</li>
-<li>We created only one file per content type to make the basics tutorial easier. In a real quest package you would
-   probably have multiple files per content type.</li>
-</ol>
-<div class="admonition example annotate">
-<p class="admonition-title">Typical Quest Structure</p>
-<ul>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 20H4a2 2 0 0 1-2-2V6c0-1.11.89-2 2-2h6l2 2h7a2 2 0 0 1 2 2H4v10l2.14-8h17.07l-2.28 8.5c-.23.87-1.01 1.5-1.93 1.5"/></svg></span> myExampleQuest<ul>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8zm.5 16.9L12 17.5 9.5 19l.7-2.8L8 14.3l2.9-.2 1.1-2.7 1.1 2.6 2.9.2-2.2 1.9zM13 9V3.5L18.5 9z"/></svg></span> package.yml (1)</li>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> myActionsList1.yml (2)</li>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> myActionsList2.yml (3)</li>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> importantConditions.yml</li>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> normalObjectives.yml (4)</li>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> dungeonObjectives.yml</li>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> myConstantsFile.yml</li>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 20H4a2 2 0 0 1-2-2V6c0-1.11.89-2 2-2h6l2 2h7a2 2 0 0 1 2 2H4v10l2.14-8h17.07l-2.28 8.5c-.23.87-1.01 1.5-1.93 1.5"/></svg></span> conversations (5)<ul>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> indiana.yml</li>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> jones.yml</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
-<ol>
-<li>The package.yml file is required to make a folder a quest package. In this case the package is called <code>myExampleQuest</code>
-   because the folder it is located in is called <code>myExampleQuest</code>.</li>
-<li>Multiple files with the same content type are possible and typically for bigger quests.</li>
-<li>Multiple files with the same content type are possible and typically for bigger quests.</li>
-<li>The files can have ANY name you want as the content type is defined in the file itself. How that works is explained
-   later in this tutorial.</li>
-<li>Since this folder does not contain a <em>package.yml</em>, it will be considered as a part of the quest package.</li>
-</ol>
-</div>
-<h2 id="2-creating-a-quest-package-with-multiple-files">2. Creating a Quest Package with multiple files<a class="headerlink" href="#2-creating-a-quest-package-with-multiple-files" title="Permanent link">🔗</a></h2>
-<p>Download this example quest and take a look at the following structure overview and explanation.
-It's a simple woodcutting quest with a reward upon completion.
-Then play around with this system to get a feel for it.</p>
-<details class="hint">
-<summary>Download the files for this tutorial</summary>
-<p>Instead of manually creating / filling the files, just download them using the command below:
-<div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials 0c8f45a7845826e1d2717aa0e78c8c5d1b0fe722 QuestPackages /Syntax/packageStructure/1-MultiFileStructure /packageStructure/MultiFile
-</code></pre></div>
-You can now find all files needed for this tutorial in this location:
-"<em>YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/packageStructure/MultiFile</em>"</p>
-</details>
-<div class="admonition example">
-<p class="admonition-title">File Structure</p>
-<ul>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 20H4a2 2 0 0 1-2-2V6c0-1.11.89-2 2-2h6l2 2h7a2 2 0 0 1 2 2H4v10l2.14-8h17.07l-2.28 8.5c-.23.87-1.01 1.5-1.93 1.5"/></svg></span> QuestPackages<ul>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 20H4a2 2 0 0 1-2-2V6c0-1.11.89-2 2-2h6l2 2h7a2 2 0 0 1 2 2H4v10l2.14-8h17.07l-2.28 8.5c-.23.87-1.01 1.5-1.93 1.5"/></svg></span> myExampleQuest<ul>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> package.yml</li>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> myActionsList1.yml</li>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> myActionsList2.yml</li>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> importantConditions.yml</li>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> myAwesomeObjectives.yml</li>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> myConstantsFile.yml</li>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 20H4a2 2 0 0 1-2-2V6c0-1.11.89-2 2-2h6l2 2h7a2 2 0 0 1 2 2H4v10l2.14-8h17.07l-2.28 8.5c-.23.87-1.01 1.5-1.93 1.5"/></svg></span> conversations<ul>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> jones.yml</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="admonition example">
-<p class="admonition-title">File Contents</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:6"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><input id="__tabbed_1_5" name="__tabbed_1" type="radio" /><input id="__tabbed_1_6" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">package.yml</label><label for="__tabbed_1_2">jones.yml</label><label for="__tabbed_1_3">myActionsList1.yml</label><label for="__tabbed_1_4">myActionsList2.yml</label><label for="__tabbed_1_5">myAwesomeObjectives.yml</label><label for="__tabbed_1_6">importantConditions.yml</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="nt"><mark class="critic">npcs</mark></span><span class="p">:</span>
-<span class="w">  </span><span class="nt">JonesNpc</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;citizens</span><span class="nv"> </span><span class="s">0&quot;</span>
-
-<span class="nt"><mark class="critic">npc_conversations</mark></span><span class="p">:</span>
-<span class="w">  </span><span class="nt">JonesNpc</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Jones&quot;</span>
-
-<span class="nt"><mark class="critic">items</mark></span><span class="p">:</span>
-<span class="w">  </span><span class="nt">oakLog</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;simple</span><span class="nv"> </span><span class="s">minecraft:oak_log&quot;</span>
-<span class="w">  </span><span class="nt">jonesAxe</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;simple</span><span class="nv"> </span><span class="s">IRON_AXE</span><span class="nv"> </span><span class="s">name:§7Jones_Hardened_Axe</span><span class="nv"> </span><span class="s">enchants:DIG_SPEED:2,DURABILITY:4&quot;</span>
-</code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="nt"><mark class="critic">conversations</mark></span><span class="p">:</span>
-<span class="w">  </span><span class="nt">Jones</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">quester</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Jones&quot;</span>
-<span class="w">    </span><span class="nt">first</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;questAlreadyDone,noWoodInInv,wrongWood,questNotDone,questDone,firstGreeting&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="nt">conversations</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ScoutCaptain</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">quester</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Scout</span><span class="nv"> </span><span class="s">Captain&quot;</span>
+<span class="w">    </span><span class="nt">first</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;offerQuest,activeQuest,finishedQuest&quot;</span>
 <span class="w">    </span><span class="nt">NPC_options</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">firstGreeting</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Yoo!</span><span class="nv"> </span><span class="s">You</span><span class="nv"> </span><span class="s">look</span><span class="nv"> </span><span class="s">like</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">can</span><span class="nv"> </span><span class="s">handle</span><span class="nv"> </span><span class="s">those</span><span class="nv"> </span><span class="s">heavy</span><span class="nv"> </span><span class="s">axes</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">cut</span><span class="nv"> </span><span class="s">down</span><span class="nv"> </span><span class="s">some</span><span class="nv"> </span><span class="s">trees..?&quot;</span>
-<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;probably&quot;</span>
-<span class="w">      </span><span class="nt">woodAmountAnswer</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Bring</span><span class="nv"> </span><span class="s">me</span><span class="nv"> </span><span class="s">20</span><span class="nv"> </span><span class="s">logs</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">oak</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">will</span><span class="nv"> </span><span class="s">get</span><span class="nv"> </span><span class="s">my</span><span class="nv"> </span><span class="s">special</span><span class="nv"> </span><span class="s">axe</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">woodcutting!&quot;</span>
-<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;letsDoIt&quot;</span>
-<span class="w">      </span><span class="nt">seeYou</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;See</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">soon!&quot;</span>
-<span class="w">      </span><span class="nt">noWoodInInv</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Looks</span><span class="nv"> </span><span class="s">like</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">don&#39;t</span><span class="nv"> </span><span class="s">have</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">required</span><span class="nv"> </span><span class="s">wood</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">you.</span><span class="nv"> </span><span class="s">Bring</span><span class="nv"> </span><span class="s">me</span><span class="nv"> </span><span class="s">20</span><span class="nv"> </span><span class="s">oak</span><span class="nv"> </span><span class="s">logs!&quot;</span>
-<span class="w">        </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;startedTag,woodcuttingDoneTag,!logsInInventory&quot;</span>
-<span class="w">      </span><span class="nt">wrongWood</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Oh</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">still</span><span class="nv"> </span><span class="s">need</span><span class="nv"> </span><span class="s">some</span><span class="nv"> </span><span class="s">time</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">mission?..</span><span class="nv"> </span><span class="s">You</span><span class="nv"> </span><span class="s">have</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">actually</span><span class="nv"> </span><span class="s">chop</span><span class="nv"> </span><span class="s">them</span><span class="nv"> </span><span class="s">down</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">not</span><span class="nv"> </span><span class="s">take</span><span class="nv"> </span><span class="s">it</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">your</span><span class="nv"> </span><span class="s">chest!&quot;</span>
-<span class="w">        </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;startedTag,!woodcuttingDoneTag,logsInInventory&quot;</span>
-<span class="w">      </span><span class="nt">questNotDone</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Oh</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">still</span><span class="nv"> </span><span class="s">need</span><span class="nv"> </span><span class="s">some</span><span class="nv"> </span><span class="s">time</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">mission?..&quot;</span>
-<span class="w">        </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;startedTag,!woodcuttingDoneTag,!logsInInventory&quot;</span>
-<span class="w">      </span><span class="nt">questDone</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;That&#39;s</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">wood</span><span class="nv"> </span><span class="s">I</span><span class="nv"> </span><span class="s">was</span><span class="nv"> </span><span class="s">looking</span><span class="nv"> </span><span class="s">for!</span><span class="nv"> </span><span class="s">Thank</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">so</span><span class="nv"> </span><span class="s">much!</span><span class="nv"> </span><span class="s">Here</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">my</span><span class="nv"> </span><span class="s">special</span><span class="nv"> </span><span class="s">axe</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">my</span><span class="nv"> </span><span class="s">special</span><span class="nv"> </span><span class="s">friend.&quot;</span>
-<span class="w">        </span><span class="nt">actions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;questDone&quot;</span>
-<span class="w">        </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;woodcuttingDoneTag,logsInInventory&quot;</span>
-<span class="w">      </span><span class="nt">questAlreadyDone</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hey!</span><span class="nv"> </span><span class="s">I</span><span class="nv"> </span><span class="s">don&#39;t</span><span class="nv"> </span><span class="s">need</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">anymore.</span><span class="nv"> </span><span class="s">Thanks</span><span class="nv"> </span><span class="s">again</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">help.&quot;</span>
-<span class="w">        </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;questDoneTag&quot;</span>
+<span class="w">      </span><span class="nt">offerQuest</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;I</span><span class="nv"> </span><span class="s">need</span><span class="nv"> </span><span class="s">someone</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">scout</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">bandit</span><span class="nv"> </span><span class="s">camp.</span><span class="nv"> </span><span class="s">Can</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">get</span><span class="nv"> </span><span class="s">close</span><span class="nv"> </span><span class="s">enough</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">report</span><span class="nv"> </span><span class="s">back?&quot;</span>
+<span class="w">        </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;!scoutStarted,!scoutDone&quot;</span>
+<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;acceptScoutQuest,declineScoutQuest&quot;</span>
+<span class="w">      </span><span class="nt">activeQuest</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;The</span><span class="nv"> </span><span class="s">camp</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">still</span><span class="nv"> </span><span class="s">unscouted.</span><span class="nv"> </span><span class="s">Go</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">bandit</span><span class="nv"> </span><span class="s">camp</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">send</span><span class="nv"> </span><span class="s">your</span><span class="nv"> </span><span class="s">report</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">inside</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">region.&quot;</span>
+<span class="w">        </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;scoutStarted,!scoutDone&quot;</span>
+<span class="w">      </span><span class="nt">finishedQuest</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Good</span><span class="nv"> </span><span class="s">work.</span><span class="nv"> </span><span class="s">Your</span><span class="nv"> </span><span class="s">report</span><span class="nv"> </span><span class="s">helped</span><span class="nv"> </span><span class="s">us</span><span class="nv"> </span><span class="s">plan</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">next</span><span class="nv"> </span><span class="s">move.&quot;</span>
+<span class="w">        </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;scoutDone&quot;</span>
 <span class="w">    </span><span class="nt">player_options</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">probably</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Yes</span><span class="nv"> </span><span class="s">I</span><span class="nv"> </span><span class="s">can</span><span class="nv"> </span><span class="s">do</span><span class="nv"> </span><span class="s">that</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">you!</span><span class="nv"> </span><span class="s">How</span><span class="nv"> </span><span class="s">much</span><span class="nv"> </span><span class="s">wood</span><span class="nv"> </span><span class="s">do</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">need?&quot;</span>
-<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;woodAmountAnswer&quot;</span>
-<span class="w">      </span><span class="nt">letsDoIt</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Alright</span><span class="nv"> </span><span class="s">let&#39;s</span><span class="nv"> </span><span class="s">get</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">job</span><span class="nv"> </span><span class="s">done!&quot;</span>
-<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;seeYou&quot;</span>
-<span class="w">        </span><span class="nt">actions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;questStarted&quot;</span>
-</code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="nt"><mark class="critic">actions</mark></span><span class="p">:</span>
-<span class="w">  </span><span class="nt">questStarted</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">startedTagAdd,addWoodcuttingObj&quot;</span>
-<span class="w">  </span><span class="nt">startedTagAdd</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">startedTag&quot;</span>
-<span class="w">  </span><span class="nt">addWoodcuttingObj</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;objective</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">woodCuttingObj&quot;</span>
-</code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="nt"><mark class="critic">actions</mark></span><span class="p">:</span>
-<span class="w">  </span><span class="nt">questDone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">takeWoodFromPlayer,rewardPlayer,addQuestDoneTag&quot;</span>
-<span class="w">  </span><span class="nt">takeWoodFromPlayer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;take</span><span class="nv"> </span><span class="s">oakLog:10&quot;</span>
-<span class="w">  </span><span class="nt">rewardPlayer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;give</span><span class="nv"> </span><span class="s">jonesAxe&quot;</span>
-<span class="w">  </span><span class="nt">addQuestDoneTag</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">questDoneTag&quot;</span>
+<span class="w">      </span><span class="nt">acceptScoutQuest</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;I</span><span class="nv"> </span><span class="s">will</span><span class="nv"> </span><span class="s">scout</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">camp.&quot;</span>
+<span class="w">        </span><span class="nt">actions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;startScoutQuest&quot;</span>
+<span class="w">      </span><span class="nt">declineScoutQuest</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Not</span><span class="nv"> </span><span class="s">right</span><span class="nv"> </span><span class="s">now.&quot;</span>
 
-<span class="w">  </span><span class="nt">addWoodcuttingDoneTag</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">woodcuttingDoneTag&quot;</span>
+<span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">enterBanditCamp</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;region</span><span class="nv"> </span><span class="s">bandit_camp</span><span class="nv"> </span><span class="s">entry</span><span class="nv"> </span><span class="s">actions:enteredBanditCamp&quot;</span><span class="w"> </span><span class="c1">#(1)!</span>
+<span class="w">  </span><span class="nt">leaveBanditCamp</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;region</span><span class="nv"> </span><span class="s">bandit_camp</span><span class="nv"> </span><span class="s">exit</span><span class="nv"> </span><span class="s">actions:leftBanditCamp&quot;</span><span class="w"> </span><span class="c1">#(2)!</span>
+
+<span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">startScoutQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">addScoutStarted,addEnterObjective,notifyStart&quot;</span><span class="w"> </span><span class="c1">#(3)!</span>
+<span class="w">  </span><span class="nt">addScoutStarted</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">scout_started&quot;</span>
+<span class="w">  </span><span class="nt">addEnterObjective</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;objective</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">enterBanditCamp&quot;</span>
+<span class="w">  </span><span class="nt">notifyStart</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">&amp;6Reach</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">bandit</span><span class="nv"> </span><span class="s">camp</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">scout</span><span class="nv"> </span><span class="s">it</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">inside</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">region.&quot;</span>
+
+<span class="w">  </span><span class="nt">enteredBanditCamp</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">addCampEntered,addLeaveObjective,notifyEntered&quot;</span><span class="w"> </span><span class="c1">#(4)!</span>
+<span class="w">  </span><span class="nt">addCampEntered</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">bandit_camp_entered&quot;</span>
+<span class="w">  </span><span class="nt">addLeaveObjective</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;objective</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">leaveBanditCamp&quot;</span>
+<span class="w">  </span><span class="nt">notifyEntered</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">&amp;aYou</span><span class="nv"> </span><span class="s">entered</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">bandit</span><span class="nv"> </span><span class="s">camp.</span><span class="nv"> </span><span class="s">Send</span><span class="nv"> </span><span class="s">your</span><span class="nv"> </span><span class="s">report</span><span class="nv"> </span><span class="s">before</span><span class="nv"> </span><span class="s">leaving.&quot;</span>
+
+<span class="w">  </span><span class="nt">trySendScoutReport</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">completeScoutReport,wrongLocationReminder&quot;</span><span class="w"> </span><span class="c1">#(5)!</span>
+<span class="w">  </span><span class="nt">completeScoutReport</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">addScoutDone,removeRegionObjectives,rewardPlayer,notifyComplete</span><span class="nv"> </span><span class="s">conditions:inBanditCamp,scoutStarted,!scoutDone&quot;</span><span class="w"> </span><span class="c1">#(6)!</span>
+<span class="w">  </span><span class="nt">wrongLocationReminder</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">&amp;cYou</span><span class="nv"> </span><span class="s">must</span><span class="nv"> </span><span class="s">stand</span><span class="nv"> </span><span class="s">inside</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">bandit</span><span class="nv"> </span><span class="s">camp</span><span class="nv"> </span><span class="s">region</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">send</span><span class="nv"> </span><span class="s">this</span><span class="nv"> </span><span class="s">report.</span><span class="nv"> </span><span class="s">conditions:!inBanditCamp,scoutStarted,!scoutDone&quot;</span>
+
+<span class="w">  </span><span class="nt">addScoutDone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">scout_done&quot;</span>
+<span class="w">  </span><span class="nt">removeRegionObjectives</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">removeEnterObjective,removeLeaveObjective&quot;</span>
+<span class="w">  </span><span class="nt">removeEnterObjective</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;objective</span><span class="nv"> </span><span class="s">remove</span><span class="nv"> </span><span class="s">enterBanditCamp&quot;</span>
+<span class="w">  </span><span class="nt">removeLeaveObjective</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;objective</span><span class="nv"> </span><span class="s">remove</span><span class="nv"> </span><span class="s">leaveBanditCamp&quot;</span>
+<span class="w">  </span><span class="nt">rewardPlayer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;give</span><span class="nv"> </span><span class="s">reward:3&quot;</span>
+<span class="w">  </span><span class="nt">notifyComplete</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">&amp;aScout</span><span class="nv"> </span><span class="s">report</span><span class="nv"> </span><span class="s">sent.</span><span class="nv"> </span><span class="s">Return</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">captain.&quot;</span>
+
+<span class="w">  </span><span class="nt">leftBanditCamp</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">&amp;eYou</span><span class="nv"> </span><span class="s">left</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">bandit</span><span class="nv"> </span><span class="s">camp.</span><span class="nv"> </span><span class="s">Go</span><span class="nv"> </span><span class="s">back</span><span class="nv"> </span><span class="s">inside</span><span class="nv"> </span><span class="s">if</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">still</span><span class="nv"> </span><span class="s">need</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">send</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">report.</span><span class="nv"> </span><span class="s">conditions:scoutStarted,!scoutDone&quot;</span><span class="w"> </span><span class="c1">#(7)!</span>
+
+<span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">scoutStarted</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">scout_started&quot;</span>
+<span class="w">  </span><span class="nt">scoutDone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">scout_done&quot;</span>
+<span class="w">  </span><span class="nt">inBanditCamp</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;region</span><span class="nv"> </span><span class="s">bandit_camp&quot;</span><span class="w"> </span><span class="c1">#(8)!</span>
+<span class="w">  </span><span class="nt">campEntered</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">bandit_camp_entered&quot;</span>
+
+<span class="nt">items</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">reward</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;simple</span><span class="nv"> </span><span class="s">EMERALD&quot;</span>
 </code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="nt"><mark class="critic">objectives</mark></span><span class="p">:</span>
-<span class="w">  </span><span class="nt">woodCuttingObj</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;block</span><span class="nv"> </span><span class="s">OAK_LOG</span><span class="nv"> </span><span class="s">-10</span><span class="nv"> </span><span class="s">notify</span><span class="nv"> </span><span class="s">actions:addWoodcuttingDoneTag&quot;</span>
-</code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="nt"><mark class="critic">conditions</mark></span><span class="p">:</span>
-<span class="w">  </span><span class="nt">woodcuttingDoneTag</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">woodcuttingDoneTag&quot;</span>
-<span class="w">  </span><span class="nt">logsInInventory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;item</span><span class="nv"> </span><span class="s">oakLog:10&quot;</span>
-<span class="w">  </span><span class="nt">questDoneTag</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">questDoneTag&quot;</span>
-<span class="w">  </span><span class="nt">startedTag</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">startedTag&quot;</span>
-</code></pre></div>
-</div>
-</div>
-</div>
-</div>
-<p>As you can see: Every feature goes into a section like <code>actions:</code>, <code>objectives:</code>, <code>conversations:</code> which are marked in
-<mark class="critic">blue</mark> in this example quest.
-BetonQuest uses these section names to understand the contents of a file.
-You can write these sections in any file you want, and it will still work! That's the way you can organize your quests.</p>
-<div class="admonition note">
-<p class="admonition-title">A note about Sections</p>
-<p>While you can have multiple sections in one file, you can't have multiple sections with the same name.
-For example, you can't have two <code>actions:</code> sections in one file. If you do, the second one will overwrite the first one.
-You can however have <code>actions:</code> sections in two different files. In this case, the actions from both files will be loaded.</p>
-<p>You also cannot have two features (e.g. actions) with the same name in one package, even if those are in different files.</p>
-</div>
-<h2 id="3-creating-a-quest-package-with-a-single-file">3. Creating a Quest Package with a single file<a class="headerlink" href="#3-creating-a-quest-package-with-a-single-file" title="Permanent link">🔗</a></h2>
-<p>Now that you understood how the <em>multifile</em> system works we will try another example.
-It's the exact same quest but in just one file:</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><span class="filename">package.yml</span><pre><span></span><code><span class="nt"><mark class="critic">npcs</mark></span><span class="p">:</span>
-<span class="w">  </span><span class="nt">JonesNpc</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;citizens</span><span class="nv"> </span><span class="s">0&quot;</span>
-
-<span class="nt"><mark class="critic">npc_conversations</mark></span><span class="p">:</span>
-<span class="w">  </span><span class="nt">JonesNpc</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Jones&quot;</span>
-
-<span class="nt"><mark class="critic">items</mark></span><span class="p">:</span>
-<span class="w">  </span><span class="nt">oakLog</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;simple</span><span class="nv"> </span><span class="s">minecraft:oak_log&quot;</span>
-<span class="w">  </span><span class="nt">jewelry</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;simple</span><span class="nv"> </span><span class="s">minecraft:diamond&quot;</span>
-
-<span class="nt"><mark class="critic">conversations</mark></span><span class="p">:</span>
-<span class="w">  </span><span class="nt">Jones</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">quester</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Jones&quot;</span>
-<span class="w">    </span><span class="nt">first</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;questAlreadyDone,noWoodInInv,wrongWood,questNotDone,questDone,firstGreeting&quot;</span>
-<span class="w">    </span><span class="nt">NPC_options</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">firstGreeting</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Yoo!</span><span class="nv"> </span><span class="s">You</span><span class="nv"> </span><span class="s">look</span><span class="nv"> </span><span class="s">like</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">can</span><span class="nv"> </span><span class="s">handle</span><span class="nv"> </span><span class="s">those</span><span class="nv"> </span><span class="s">heavy</span><span class="nv"> </span><span class="s">axes</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">cut</span><span class="nv"> </span><span class="s">down</span><span class="nv"> </span><span class="s">some</span><span class="nv"> </span><span class="s">trees..?&quot;</span>
-<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;probably&quot;</span>
-<span class="w">      </span><span class="nt">woodAmountAnswer</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Bring</span><span class="nv"> </span><span class="s">me</span><span class="nv"> </span><span class="s">20</span><span class="nv"> </span><span class="s">logs</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">oak</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">will</span><span class="nv"> </span><span class="s">get</span><span class="nv"> </span><span class="s">my</span><span class="nv"> </span><span class="s">special</span><span class="nv"> </span><span class="s">axe</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">woodcutting!&quot;</span>
-<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;letsDoIt&quot;</span>
-<span class="w">      </span><span class="nt">seeYou</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;See</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">soon!&quot;</span>
-<span class="w">      </span><span class="nt">noWoodInInv</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Looks</span><span class="nv"> </span><span class="s">like</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">don&#39;t</span><span class="nv"> </span><span class="s">have</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">required</span><span class="nv"> </span><span class="s">wood</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">you.</span><span class="nv"> </span><span class="s">Bring</span><span class="nv"> </span><span class="s">me</span><span class="nv"> </span><span class="s">20</span><span class="nv"> </span><span class="s">oak</span><span class="nv"> </span><span class="s">logs!&quot;</span>
-<span class="w">        </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;startedTag,woodcuttingDoneTag,!logsInInventory&quot;</span>
-<span class="w">      </span><span class="nt">wrongWood</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Oh</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">still</span><span class="nv"> </span><span class="s">need</span><span class="nv"> </span><span class="s">some</span><span class="nv"> </span><span class="s">time</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">mission?..</span><span class="nv"> </span><span class="s">You</span><span class="nv"> </span><span class="s">have</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">actually</span><span class="nv"> </span><span class="s">chop</span><span class="nv"> </span><span class="s">them</span><span class="nv"> </span><span class="s">down</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">not</span><span class="nv"> </span><span class="s">take</span><span class="nv"> </span><span class="s">it</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">your</span><span class="nv"> </span><span class="s">chest!&quot;</span>
-<span class="w">        </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;startedTag,!woodcuttingDoneTag,logsInInventory&quot;</span>
-<span class="w">      </span><span class="nt">questNotDone</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Oh</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">still</span><span class="nv"> </span><span class="s">need</span><span class="nv"> </span><span class="s">some</span><span class="nv"> </span><span class="s">time</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">mission?..&quot;</span>
-<span class="w">        </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;startedTag,!woodcuttingDoneTag,!logsInInventory&quot;</span>
-<span class="w">      </span><span class="nt">questDone</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;That&#39;s</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">wood</span><span class="nv"> </span><span class="s">I</span><span class="nv"> </span><span class="s">was</span><span class="nv"> </span><span class="s">looking</span><span class="nv"> </span><span class="s">for!</span><span class="nv"> </span><span class="s">Thank</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">so</span><span class="nv"> </span><span class="s">much!</span><span class="nv"> </span><span class="s">Here</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">my</span><span class="nv"> </span><span class="s">special</span><span class="nv"> </span><span class="s">axe</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">my</span><span class="nv"> </span><span class="s">special</span><span class="nv"> </span><span class="s">friend.&quot;</span>
-<span class="w">        </span><span class="nt">actions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;questDone&quot;</span>
-<span class="w">        </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;woodcuttingDoneTag,logsInInventory&quot;</span>
-<span class="w">      </span><span class="nt">questAlreadyDone</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hey!</span><span class="nv"> </span><span class="s">I</span><span class="nv"> </span><span class="s">don&#39;t</span><span class="nv"> </span><span class="s">need</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">anymore.</span><span class="nv"> </span><span class="s">Thanks</span><span class="nv"> </span><span class="s">again</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">help.&quot;</span>
-<span class="w">        </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;questDoneTag&quot;</span>
-<span class="w">    </span><span class="nt">player_options</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">probably</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Yes</span><span class="nv"> </span><span class="s">I</span><span class="nv"> </span><span class="s">can</span><span class="nv"> </span><span class="s">do</span><span class="nv"> </span><span class="s">that</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">you!</span><span class="nv"> </span><span class="s">How</span><span class="nv"> </span><span class="s">much</span><span class="nv"> </span><span class="s">wood</span><span class="nv"> </span><span class="s">do</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">need?&quot;</span>
-<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;woodAmountAnswer&quot;</span>
-<span class="w">      </span><span class="nt">letsDoIt</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Alright</span><span class="nv"> </span><span class="s">let&#39;s</span><span class="nv"> </span><span class="s">get</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">job</span><span class="nv"> </span><span class="s">done!&quot;</span>
-<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;seeYou&quot;</span>
-<span class="w">        </span><span class="nt">actions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;questStarted&quot;</span>
-
-<span class="nt"><mark class="critic">actions</mark></span><span class="p">:</span>
-<span class="w">  </span><span class="nt">questStarted</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">startedTagAdd,addWoodcuttingObj&quot;</span>
-<span class="w">  </span><span class="nt">startedTagAdd</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">startedTag&quot;</span>
-<span class="w">  </span><span class="nt">addWoodcuttingObj</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;objective</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">woodCuttingObj&quot;</span>
-
-<span class="w">  </span><span class="nt">questDone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">takeWoodFromPlayer,rewardPlayer,addQuestDoneTag&quot;</span>
-<span class="w">  </span><span class="nt">takeWoodFromPlayer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;take</span><span class="nv"> </span><span class="s">oakLog:10&quot;</span>
-<span class="w">  </span><span class="nt">rewardPlayer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;give</span><span class="nv"> </span><span class="s">jewelry:2&quot;</span>
-<span class="w">  </span><span class="nt">addQuestDoneTag</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">questDoneTag&quot;</span>
-
-<span class="w">  </span><span class="nt">addWoodcuttingDoneTag</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">woodcuttingDoneTag&quot;</span>
-
-<span class="nt"><mark class="critic">objectives</mark></span><span class="p">:</span>
-<span class="w">  </span><span class="nt">woodCuttingObj</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;block</span><span class="nv"> </span><span class="s">OAK_LOG</span><span class="nv"> </span><span class="s">-10</span><span class="nv"> </span><span class="s">notify</span><span class="nv"> </span><span class="s">actions:addWoodcuttingDoneTag&quot;</span>
-
-<span class="nt"><mark class="critic">conditions</mark></span><span class="p">:</span>
-<span class="w">  </span><span class="nt">woodcuttingDoneTag</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">woodcuttingDoneTag&quot;</span>
-<span class="w">  </span><span class="nt">logsInInventory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;item</span><span class="nv"> </span><span class="s">oakLog:10&quot;</span>
-<span class="w">  </span><span class="nt">questDoneTag</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">questDoneTag&quot;</span>
-<span class="w">  </span><span class="nt">startedTag</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">startedTag&quot;</span>
-</code></pre></div>
-</div>
-<p>You can download this example as well. No worries, the files of the previous example will not get overwritten.
-Instead, a new folder will be created in the previous package.</p>
-<details class="hint">
-<summary>Download the files for this tutorial</summary>
-<p>Instead of manually creating / filling the files, just download them using the command below:
-<div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials 0c8f45a7845826e1d2717aa0e78c8c5d1b0fe722 QuestPackages /Syntax/packageStructure/2-SingleFileStructure /packageStructure/SingleFile
-</code></pre></div>
-You can now find all files needed for this tutorial in this location:
-"<em>YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/packageStructure/SingleFile</em>"</p>
-</details>
-<h2 id="4-creating-packages-in-packages">4. Creating packages in packages<a class="headerlink" href="#4-creating-packages-in-packages" title="Permanent link">🔗</a></h2>
-<p>It is also possible to have a package inside a package.
-And it's pretty easy to do! Just look at the following structure:</p>
-<div class="grid">
-<div class="admonition example">
-<p class="admonition-title">Example 1</p>
-<ul>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 20H4a2 2 0 0 1-2-2V6c0-1.11.89-2 2-2h6l2 2h7a2 2 0 0 1 2 2H4v10l2.14-8h17.07l-2.28 8.5c-.23.87-1.01 1.5-1.93 1.5"/></svg></span> QuestPackages<ul>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 20H4a2 2 0 0 1-2-2V6c0-1.11.89-2 2-2h6l2 2h7a2 2 0 0 1 2 2H4v10l2.14-8h17.07l-2.28 8.5c-.23.87-1.01 1.5-1.93 1.5"/></svg></span> woodCuttingQuest<ul>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8zm.5 16.9L12 17.5 9.5 19l.7-2.8L8 14.3l2.9-.2 1.1-2.7 1.1 2.6 2.9.2-2.2 1.9zM13 9V3.5L18.5 9z"/></svg></span> package.yml</li>
-<li><mark class="critic"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 20H4a2 2 0 0 1-2-2V6c0-1.11.89-2 2-2h6l2 2h7a2 2 0 0 1 2 2H4v10l2.14-8h17.07l-2.28 8.5c-.23.87-1.01 1.5-1.93 1.5"/></svg></span> miningQuest</mark><ul>
-<li><mark class="critic"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8zm.5 16.9L12 17.5 9.5 19l.7-2.8L8 14.3l2.9-.2 1.1-2.7 1.1 2.6 2.9.2-2.2 1.9zM13 9V3.5L18.5 9z"/></svg></span> package.yml</mark></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="admonition example">
-<p class="admonition-title">Example 2</p>
-<ul>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 20H4a2 2 0 0 1-2-2V6c0-1.11.89-2 2-2h6l2 2h7a2 2 0 0 1 2 2H4v10l2.14-8h17.07l-2.28 8.5c-.23.87-1.01 1.5-1.93 1.5"/></svg></span> QuestPackages<ul>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 20H4a2 2 0 0 1-2-2V6c0-1.11.89-2 2-2h6l2 2h7a2 2 0 0 1 2 2H4v10l2.14-8h17.07l-2.28 8.5c-.23.87-1.01 1.5-1.93 1.5"/></svg></span> woodCuttingQuest<ul>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8zm.5 16.9L12 17.5 9.5 19l.7-2.8L8 14.3l2.9-.2 1.1-2.7 1.1 2.6 2.9.2-2.2 1.9zM13 9V3.5L18.5 9z"/></svg></span> package.yml</li>
-<li><mark class="critic"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 20H4a2 2 0 0 1-2-2V6c0-1.11.89-2 2-2h6l2 2h7a2 2 0 0 1 2 2H4v10l2.14-8h17.07l-2.28 8.5c-.23.87-1.01 1.5-1.93 1.5"/></svg></span> miningQuest</mark><ul>
-<li><mark class="critic"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8zm.5 16.9L12 17.5 9.5 19l.7-2.8L8 14.3l2.9-.2 1.1-2.7 1.1 2.6 2.9.2-2.2 1.9zM13 9V3.5L18.5 9z"/></svg></span> package.yml</mark></li>
-<li><mark class="critic"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 20H4a2 2 0 0 1-2-2V6c0-1.11.89-2 2-2h6l2 2h7a2 2 0 0 1 2 2H4v10l2.14-8h17.07l-2.28 8.5c-.23.87-1.01 1.5-1.93 1.5"/></svg></span> fishingQuest</mark><ul>
-<li><mark class="critic"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8zm.5 16.9L12 17.5 9.5 19l.7-2.8L8 14.3l2.9-.2 1.1-2.7 1.1 2.6 2.9.2-2.2 1.9zM13 9V3.5L18.5 9z"/></svg></span> package.yml</mark></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-<p>Not hard to understand but to make things clearer:
-Every folder that contains a <em>package.yml</em> file is a standalone quest package.
-By creating a folder with a <em>package.yml</em> file inside another package, you create a standalone "subpackage". </p>
-<details class="hint">
-<summary>Download the files for this tutorial</summary>
-<p>Instead of manually creating / filling the files, just download them using the command below:
-<div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials 0c8f45a7845826e1d2717aa0e78c8c5d1b0fe722 QuestPackages /Syntax/packageStructure/3-PackageInPackage /packageStructure/PackageInPackage
-</code></pre></div>
-You can now find all files needed for this tutorial in this location:
-"<em>YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/packageStructure/PackageInPackage</em>"</p>
-</details>
-<h2 id="5-creating-subdirectories-in-a-package">5. Creating subdirectories in a package<a class="headerlink" href="#5-creating-subdirectories-in-a-package" title="Permanent link">🔗</a></h2>
-<p>Now you know, that it is possible to do nearly everything to structure your quests.
-But there is one more possibility: <em>subdirectories</em>.
-Let me first show you the example for it:</p>
-<div class="admonition success">
-<p class="admonition-title">Example</p>
-<ul>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 20H4a2 2 0 0 1-2-2V6c0-1.11.89-2 2-2h6l2 2h7a2 2 0 0 1 2 2H4v10l2.14-8h17.07l-2.28 8.5c-.23.87-1.01 1.5-1.93 1.5"/></svg></span> QuestPackages<ul>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 20H4a2 2 0 0 1-2-2V6c0-1.11.89-2 2-2h6l2 2h7a2 2 0 0 1 2 2H4v10l2.14-8h17.07l-2.28 8.5c-.23.87-1.01 1.5-1.93 1.5"/></svg></span> woodCuttingQuest<ul>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> package.yml</li>
-<li><mark class="critic"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 20H4a2 2 0 0 1-2-2V6c0-1.11.89-2 2-2h6l2 2h7a2 2 0 0 1 2 2H4v10l2.14-8h17.07l-2.28 8.5c-.23.87-1.01 1.5-1.93 1.5"/></svg></span> questPart1</mark><ul>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> myActionsPart1.yml</li>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> MageConversation.yml</li>
-</ul>
-</li>
-<li><mark class="critic"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 20H4a2 2 0 0 1-2-2V6c0-1.11.89-2 2-2h6l2 2h7a2 2 0 0 1 2 2H4v10l2.14-8h17.07l-2.28 8.5c-.23.87-1.01 1.5-1.93 1.5"/></svg></span> questPart2</mark><ul>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> myActionsPart2.yml</li>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span> KingConversation.yml</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
-<p>You can create as many subdirectories in your quest packages as you like.
-Just create a folder with a name of your choice and start adding files to it!
-As long as you don't create a <em>package.yml</em> file in a subdirectory, it will belong to the package defined further up 
-in the directory tree.</p>
-<div class="admonition warning">
-<p class="admonition-title">Directory names with spaces</p>
-<p>The only limitation for directory names are spaces. These cannot be used. </p>
-</div>
-<details class="hint">
-<summary>Download the files for this tutorial</summary>
-<p>Instead of manually creating / filling the files, just download them using the command below:
-<div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials 0c8f45a7845826e1d2717aa0e78c8c5d1b0fe722 QuestPackages /Syntax/packageStructure/4-SubDirectory /packageStructure/SubDirectory
-</code></pre></div>
-You can now find all files needed for this tutorial in this location:
-"<em>YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/packageStructure/SubDirectory</em>"</p>
-</details>
-<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">🔗</a></h2>
-<p>You have learned how to structure your quest packages. Now you are able to pick the best structure for your quests. </p>
+<ol>
+<li>The <code>region</code> objective completes when the player enters the WorldGuard region named <code>bandit_camp</code>.</li>
+<li>This objective completes when the player leaves the same region.</li>
+<li>Starts the quest and adds the entry objective.</li>
+<li>Runs when the player enters the region, marks that progress, and starts watching for region exit.</li>
+<li>Calls both possible report outcomes. Conditions decide which one actually runs. Use this action from the interaction that should submit the report.</li>
+<li>Completes the report only while the player is inside <code>bandit_camp</code>.</li>
+<li>Warns the player if they leave the region before finishing the scout report.</li>
+<li>The WorldGuard region condition is true while the player is standing inside the region.</li>
+</ol>
+<p>The region name must match an existing WorldGuard region.
+Use the <code>region</code> objective when entering or leaving an area should trigger progress.
+Use the <code>region</code> condition when an action, menu option, or conversation option should only work while the player is currently inside an area.</p>
 
 
 
@@ -9378,24 +8767,24 @@ You can now find all files needed for this tutorial in this location:
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.action.edit", "content.code.annotate", "content.code.copy", "content.tabs.link", "navigation.tabs", "navigation.tabs.sticky", "navigation.tracking", "navigation.sections", "navigation.top", "navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.indexes", "search.share", "search.suggest", "content.tooltips", "toc.follow"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["RELEASE", "DEV"], "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.action.edit", "content.code.annotate", "content.code.copy", "content.tabs.link", "navigation.tabs", "navigation.tabs.sticky", "navigation.tracking", "navigation.sections", "navigation.top", "navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.indexes", "search.share", "search.suggest", "content.tooltips", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["RELEASE", "DEV"], "provider": "mike"}}</script>
     
     
   
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
-        <script src="../../../_webCode/js/copyLinkToClipboard.js"></script>
+        <script src="../../../../_webCode/js/copyLinkToClipboard.js"></script>
       
-        <script src="../../../_webCode/js/copyrightYearUpdater.js"></script>
+        <script src="../../../../_webCode/js/copyrightYearUpdater.js"></script>
       
-        <script src="../../../_webCode/js/mathjax.js"></script>
+        <script src="../../../../_webCode/js/mathjax.js"></script>
       
-        <script src="../../../_webCode/js/externalLinkIcon.js"></script>
+        <script src="../../../../_webCode/js/externalLinkIcon.js"></script>
       
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
-  <script type="module" src="../../../_webCode/js/analytics.js"></script>
+  <script type="module" src="../../../../_webCode/js/analytics.js"></script>
 
   </body>
 </html>
