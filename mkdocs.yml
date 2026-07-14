@@ -145,6 +145,7 @@ nav:
                   - 'MMOItems': Documentation/Reference/Integrations-List/Items/MMOItems.md
                   - 'MythicMobs': Documentation/Reference/Integrations-List/Items/MythicMobs.md
                   - 'Nexo': Documentation/Reference/Integrations-List/Items/Nexo.md
+                  - 'TheBrewingProject': Documentation/Reference/Integrations-List/Items/TheBrewingProject.md
               - 'Holograms':
                   - 'Documentation/Reference/Integrations-List/Holograms/index.md'
                   - 'DecentHolograms': Documentation/Reference/Integrations-List/Holograms/DecentHolograms.md

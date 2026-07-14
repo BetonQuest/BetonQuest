@@ -30,6 +30,7 @@ The categories are just to make it easier for you to find the plugins you're loo
     - [MMOItems](./Items/MMOItems.md)
     - [MythicMobs](./Items/MythicMobs.md)
     - [Nexo](./Items/Nexo.md)
+    - [TheBrewingProject](./Items/TheBrewingProject.md)
 
 -    [Holograms](Holograms/index.md)
 

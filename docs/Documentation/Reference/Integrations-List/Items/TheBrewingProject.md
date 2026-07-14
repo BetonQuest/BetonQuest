@@ -6,14 +6,18 @@
 
 ### `Brew`
 
-TheBrewingProject brew item usage is integrated to the [Items](../../../Advanced/Items.md) system and thus used for 
-actions and  conditions.
 
-The first argument is the name and the second the quality.
-You can specify the mode to select the brew by its `id`.  
-The `quality` flag is both used for matching and for generating items,
- it can be `bad`, `good`, `excellent`.  
-In addition, you can also add `quest-item` argument to tag them as "QuestItem".
+__Syntax__: `tbp_brew <brew-id> [quality] [quest-item]`  
+__Description__: A brew item definition
+
+TheBrewingProject brew item usage is integrated to the [Items](../../../Advanced/Items.md) system and can therefore be used for 
+actions and conditions.
+
+| Parameter                | Type                | Explanation                                                                  |
+|--------------------------|---------------------|------------------------------------------------------------------------------|
+| brew-id <br>[String]     | Required            | Specifies the type of brew                                                   |
+| quality <br>[Quality]    | Optional <br>[NONE] | The quality of the brew, if not specified this will not be validated against |
+| quest-item <br>[Boolean] | Flag <br>[false]    | Mark this item as a quest item                                               |
 
 ```YAML title="Example"
 items:
@@ -32,10 +36,15 @@ actions:
 ### `Modifier`
 
 __Context__: @snippet:condition-meta:online-offline@
-__Syntax__: `tbp_modifier <modifier-key> <operation> <value>`  
+__Syntax__: `tbp_modifier <modifier-id> <operation> <value>`  
 __Description__: Compare players modifier with specified value
 
-The valid operations are: `<`, `<=`, `=`, `!=`, `>=`, `>`.
+| Parameter                 | Type     | Explanation                  |
+|---------------------------|----------|------------------------------|
+| modifier-id <br>[String]  | Required | The id of the modifier       |
+| operation <br>[Operation] | Required | The comparison oparator      |
+| value <br>[Number]        | Required | The value to compare against |
+
 
 ```YAML title="Example"
 conditions:
@@ -47,8 +56,13 @@ conditions:
 ### `Event`
 
 __Context__: @snippet:action-meta:online@  
-__Syntax__: `tbp_event <event-key>`  
-__Description__: Trigger a drunken event with the specified key
+__Syntax__: `tbp_event <event-id>`  
+__Description__: Trigger a drunken event with the specified id
+
+| Parameter             | Type     | Explanation                |
+|-----------------------|----------|----------------------------|
+| event-id <br>[String] | Required | The id of the event to run |
+
 
 ```YAML title="Example"
 actions:
@@ -65,11 +79,11 @@ __Context__: @snippet:objective-meta:online@
 __Syntax__: `tbp_cook <cooking-time> <ingredients> [cauldron-type]`  
 __Description__: The player needs to have extracted a brew from a cauldron with specified properties
 
-| Parameter      | Syntax                                                         | Explanation                                       |
-|----------------|----------------------------------------------------------------|---------------------------------------------------|
-| _cauldron_     | Any of `water`, `lava`, `snow`, `brew`                         | The type of the cauldron contents                 |
-| _cooking-time_ | Any number above 0                                             | The time in minutes the brew has to be cooked for |
-| _ingredients_  | A list with `<ingredient>/<amount>` example: `wheat/6,apple/7` | The ingredients added into the cauldorn           |
+| Parameter                      | Type                | Explanation                                       |
+|--------------------------------|---------------------|---------------------------------------------------|
+| cauldron <br>[CauldronType]    | Optional <br>[NONE] | The type of the cauldron block                    |
+| cooking-time <br>[Number]      | Requried            | The time in minutes the brew has to be cooked for |
+| ingredients  <br>[Ingredients] | Required            | The ingredients added into the cauldorn           |
 
 ```YAML title="Example"
 objectives:
@@ -85,12 +99,11 @@ __Context__: @snippet:objective-meta:online@
 __Syntax__: `tbp_mix <mixing-time> <ingredients> [cauldron-type]`  
 __Description__: The player needs to have extracted a brew from a cauldron with specified properties
 
-| Parameter     | Syntax                                                         | Explanation                                      |
-|---------------|----------------------------------------------------------------|--------------------------------------------------|
-| _cauldron_    | Any of `water`, `lava`, `snow`, `brew`                         | The type of the cauldron contents                |
-| _mixing-time_ | Any number above 0                                             | The time in minutes the brew has to be mixed for |
-| _ingredients_ | A list with `<ingredient>/<amount>` example: `wheat/6,apple/7` | The ingredients added into the cauldorn          |
-
+| Parameter                     | Type           | Explanation                                      |
+|-------------------------------|----------------|--------------------------------------------------|
+| cauldron  <br>[CauldronType]  | Optional[NONE] | The type of the cauldron contents                |
+| mixing-time <br>[Number]      | Required       | The time in minutes the brew has to be mixed for |
+| ingredients <br>[Ingredients] | Required       | The ingredients added into the cauldron          |
 
 
 ```YAML title="Example"
@@ -104,7 +117,10 @@ __Context__: @snippet:objective-meta:online@
 __Syntax__: `tbp_distill <distill-runs>`  
 __Description__: The player needs to have extracted a brew from a distillery with specified runs
 
-Distill runs needs to be an integer above 0.
+| Parameter                 | Type     | Explanation                              |
+|---------------------------|----------|------------------------------------------|
+| distill-runs <br>[Number] | Required | Tha amount of runs of the extracted brew |
+
 
 ```YAML title="Example"
 objectives:
@@ -117,12 +133,13 @@ __Context__: @snippet:objective-meta:online@
 __Syntax__: `tbp_age <barrel-type> <aging-years>`  
 __Description__: The player needs to have extracted a brew from a barrel with specified properties
 
-| Parameter     | Syntax                                                                                                                           | Explanation                          |
-|---------------|----------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
-| _barrel-type_ | A barrel type, for default values check [here](https://docs.breweryteam.dev/docs/tbp/gameplay/creating-brews/aging#barrel-types) | The type of the barrel               |
-| _aging-years_ | A number above (not equal to) 0.5                                                                                                | The time the brew needs to have aged |
-
 Note that an aging year might change if TheBrewingProject reloads.
+
+| Parameter                    | Type     | Explanation                                                        |
+|------------------------------|----------|--------------------------------------------------------------------|
+| barrel-type <br>[BarrelType] | Required | The type of the barrel                                             |
+| aging-years <br>[Number]     | Required | The time the brew needs to have aged (needs to be larger than 0.5) |
+
 
 ```YAML title="Example"
 objectives:
@@ -132,16 +149,16 @@ objectives:
 ### `Transfer`
 
 __Context__: @snippet:objective-meta:online@  
-__Syntax__: `tbp_transfer <transfer-type> <structure-type> <brew-key> <operator> <brew-quality>`  
+__Syntax__: `tbp_transfer <transfer-type> <structure-type> <brew-id> <operator> <brew-quality>`  
 __Description__: The player needs to have transferred a brew with given conditions
 
-| Parameter        | Syntax                                                         | Description                                      |
-|------------------|----------------------------------------------------------------|--------------------------------------------------|
-| _transfer-type_  | Either `extract` or `insert`                                   | If the player extracted or inserted the brew     |
-| _structure-type_ | Any of `barrel`, `distillery`, `cauldron`                      | The type of structure the transfer is from or to |
-| _brew-key_       | A recipe key                                                   | The recipe key the brew matches                  |
-| _operator_       | Any of the following operators `<`, `<=`, `=`, `!=`, `>=`, `>` | A comparison between brew quality                |
-| _brew-quality_   | Any of `bad`, `good`, `excellent`                              | The brew quality to compare to                   |
+| Parameter                          | Type     | Description                                      |
+|------------------------------------|----------|--------------------------------------------------|
+| transfer-type <br>[TransferType]   | Required | If the player extracted or inserted the brew     |
+| structure-type <br>[StructureType] | Required | The type of structure the transfer is from or to |
+| brew-id <br>[String]               | Required | The recipe key the brew matches                  |
+| operator <br>[Operation]           | Required | A comparison between brew quality                |
+| brew-quality <br>[Quality]         | Required | The brew quality to compare against              |
 
 ```YAML title="Example"
 objectives:
@@ -153,14 +170,14 @@ objectives:
 ### `Consume`
 
 __Context__: @snippet:objective-meta:online@  
-__Syntax__: `tbp_consume <brew-key> <operator> <brew-quality>`  
+__Syntax__: `tbp_consume <brew-id> <operator> <brew-quality>`  
 __Description__: The player needs to have consumed a brew with given properties
 
-| Parameter        | Syntax                                                         | Description                                      |
-|------------------|----------------------------------------------------------------|--------------------------------------------------|
-| _brew-key_       | A recipe key                                                   | The recipe key the brew matches                  |
-| _operator_       | Any of the following operators `<`, `<=`, `=`, `!=`, `>=`, `>` | A comparison between brew quality                |
-| _brew-quality_   | Any of `bad`, `good`, `excellent`                              | The brew quality to compare to                   |
+| Parameter                  | Type     | Description                       |
+|----------------------------|----------|-----------------------------------|
+| brew-id <br>[String]       | Required | The recipe key the brew matches   |
+| operator <br>[Operation]   | Required | A comparison between brew quality |
+| brew-quality <br>[Quality] | Required | The brew quality to compare to    |
 
 ```YAML title="Example"
 objectives:
@@ -170,8 +187,13 @@ objectives:
 ### `Event`
 
 __Context__: @snippet:objective-meta:online@  
-__Syntax__: `tbp_event <event-key>`  
+__Syntax__: `tbp_event <event-id>`  
 __Description__: The player needs to experience a drunken event with specified key
+
+| Parameter             | Type     | Description                              |
+|-----------------------|----------|------------------------------------------|
+| event-id <br>[String] | Required | The id of the event a player experienced |
+
 
 ```YAML title="Example"
 objectives:
@@ -185,7 +207,14 @@ __Context__: @snippet:objective-meta:online@
 __Syntax__: `tbp_structure_destroy <structure-type>`  
 __Description__: The player needs to destroy a brewing structure with specified type
 
-_structure-type_ can have the values `barrel`, `distillery` or `cauldron`.
+| Parameter                          | Type     | Explanation                                    |
+|------------------------------------|----------|------------------------------------------------|
+| structure-type <br>[StructureType] | Required | The structure type the player needs to destroy |
+
+```YAML title="Example"
+objectives:
+  structureDestroyed: tbp_structure_destroy barrel
+```
 
 ### `StructureCreate`
 
@@ -193,5 +222,21 @@ __Context__: @snippet:objective-meta:online@
 __Syntax__: `tbp_structure_create <structure-type>`  
 __Description__: The player needs to create a brewing structure with specified type
 
-_structure-type_ can have the values `barrel`, `distillery` or `cauldron`.
+| Parameter                          | Type     | Explanation                                    |
+|------------------------------------|----------|------------------------------------------------|
+| structure-type <br>[StructureType] | Required | The structure type the player needs to destroy |
 
+```YAML title="Example"
+objectives:
+  structureCreated: tbp_structure_create distillery
+```
+
+*[Quality]: bad, good, excellent
+*[CauldronType]: water, lava, snow, brew
+*[Operation]: Any of <, <=, =, !=, >=, >
+*[Ingredients]: A list with ingredient/amount as entries
+*[BarrelType]: any, oak, spruce, birch, jungle, acacia, dark_oak, crimson, warped, cherry, pale_oak, copper
+*[TransferType]: extract, insert
+*[StructureType]: barrel, distillery, cauldron
+
+--8<-- "instruction-datatypes.md"
