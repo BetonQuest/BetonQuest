@@ -81,9 +81,9 @@ __Description__: The player needs to have extracted a brew from a cauldron with 
 
 | Parameter                      | Type                | Explanation                                       |
 |--------------------------------|---------------------|---------------------------------------------------|
-| cauldron <br>[CauldronType]    | Optional <br>[NONE] | The type of the cauldron block                    |
 | cooking-time <br>[Number]      | Requried            | The time in minutes the brew has to be cooked for |
 | ingredients  <br>[Ingredients] | Required            | The ingredients added into the cauldorn           |
+| cauldron <br>[CauldronType]    | Optional <br>[NONE] | The type of the cauldron block                    |
 
 ```YAML title="Example"
 objectives:
@@ -101,9 +101,9 @@ __Description__: The player needs to have extracted a brew from a cauldron with 
 
 | Parameter                     | Type           | Explanation                                      |
 |-------------------------------|----------------|--------------------------------------------------|
-| cauldron  <br>[CauldronType]  | Optional[NONE] | The type of the cauldron contents                |
 | mixing-time <br>[Number]      | Required       | The time in minutes the brew has to be mixed for |
 | ingredients <br>[Ingredients] | Required       | The ingredients added into the cauldron          |
+| cauldron  <br>[CauldronType]  | Optional[NONE] | The type of the cauldron contents                |
 
 
 ```YAML title="Example"
