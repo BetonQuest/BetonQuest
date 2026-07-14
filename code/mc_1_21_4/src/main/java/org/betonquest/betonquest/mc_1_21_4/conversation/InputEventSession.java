@@ -21,8 +21,6 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.plugin.Plugin;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -39,7 +37,7 @@ public class InputEventSession implements ConversationSession, Listener {
     /**
      * Attributes to set to 0 while in the conversation.
      */
-    private static final Set<Attribute> ATTRIBUTES = new HashSet<>(Arrays.asList(Attribute.MOVEMENT_SPEED, Attribute.JUMP_STRENGTH));
+    private static final Set<Attribute> ATTRIBUTES = Set.of(Attribute.MOVEMENT_SPEED, Attribute.JUMP_STRENGTH);
 
     /**
      * Attribute Modifier that multiplies the total value with 0.
@@ -68,30 +66,57 @@ public class InputEventSession implements ConversationSession, Listener {
     private final boolean setSpeed;
 
     /**
+     * If the {@link Player#getWalkSpeed()} and {@link Player#getFlySpeed()} should set instead when {@link #setSpeed}.
+     */
+    private final boolean baseSpeed;
+
+    /**
      * Separate listener to prevent unmounting.
      */
     private final Listener unmount;
 
     /**
+     * Walk speed to reset to.
+     */
+    private float oldWalkSpeed;
+
+    /**
+     * Fly speed to reset to.
+     */
+    private float oldFlySpeed;
+
+    /**
      * Creates a new Conversation Input Session based on the {@link PlayerInputEvent}.
      *
-     * @param plugin   the plugin to start tasks
-     * @param player   the player of the session
-     * @param action   the conversation action to call on input
-     * @param setSpeed the player should get their speed set to 0 instead just cancelling moves
+     * @param plugin    the plugin to start tasks
+     * @param player    the player of the session
+     * @param action    the conversation action to call on input
+     * @param setSpeed  the player should get their speed set to 0 instead just cancelling moves
+     * @param baseSpeed whether the {@link Player#getWalkSpeed()} and {@link Player#getFlySpeed()} should be set
+     *                  instead of modifying the {@link Attribute#MOVEMENT_SPEED}
      */
-    public InputEventSession(final Plugin plugin, final Player player, final ConversationAction action, final boolean setSpeed) {
+    public InputEventSession(final Plugin plugin, final Player player, final ConversationAction action, final boolean setSpeed,
+                             final boolean baseSpeed) {
         this.plugin = plugin;
         this.player = player;
         this.action = action;
         this.setSpeed = setSpeed;
+        this.baseSpeed = baseSpeed;
         this.unmount = new Unmount();
     }
 
+    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
     @Override
     public void begin() {
         if (setSpeed) {
             for (final Attribute attribute : ATTRIBUTES) {
+                if (baseSpeed && attribute == Attribute.MOVEMENT_SPEED) {
+                    oldWalkSpeed = player.getWalkSpeed();
+                    oldFlySpeed = player.getFlySpeed();
+                    player.setWalkSpeed(0);
+                    player.setFlySpeed(0);
+                    continue;
+                }
                 final AttributeInstance attributeInstance = player.getAttribute(attribute);
                 if (attributeInstance != null && attributeInstance.getModifier(ATTRIBUTE_KEY) == null) {
                     attributeInstance.addTransientModifier(TO_ZERO_MODIFIER);
@@ -115,6 +140,10 @@ public class InputEventSession implements ConversationSession, Listener {
     @Override
     public void end() {
         Bukkit.getScheduler().runTask(plugin, () -> {
+            if (baseSpeed) {
+                player.setWalkSpeed(oldWalkSpeed);
+                player.setFlySpeed(oldFlySpeed);
+            }
             for (final Attribute attribute : ATTRIBUTES) {
                 final AttributeInstance attributeInstance = player.getAttribute(attribute);
                 if (attributeInstance != null) {
