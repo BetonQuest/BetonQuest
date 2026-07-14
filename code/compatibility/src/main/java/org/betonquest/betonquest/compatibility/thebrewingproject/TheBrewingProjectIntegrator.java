@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.thebrewingproject;
 import dev.jsinco.brewery.bukkit.api.TheBrewingProjectApi;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.integration.policy.Policy;
 import org.betonquest.betonquest.compatibility.thebrewingproject.action.DrunkenEventActionFactory;
 import org.betonquest.betonquest.compatibility.thebrewingproject.condition.ModifierConditionFactory;
 import org.betonquest.betonquest.compatibility.thebrewingproject.item.BrewItemFactory;
@@ -17,6 +18,7 @@ import org.betonquest.betonquest.compatibility.thebrewingproject.objective.Drunk
 import org.betonquest.betonquest.compatibility.thebrewingproject.objective.StructureCreateObjectiveFactory;
 import org.betonquest.betonquest.compatibility.thebrewingproject.objective.StructureDestroyObjectiveFactory;
 import org.betonquest.betonquest.lib.integration.IntegrationTemplate;
+import org.betonquest.betonquest.lib.integration.policy.Policies;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
@@ -62,5 +64,16 @@ public class TheBrewingProjectIntegrator extends IntegrationTemplate {
     @Override
     public void disable() {
         // Empty
+    }
+
+    /**
+     * The requirements for the right version of TheBrewingProject to be run.
+     *
+     * @return all policies for TheBrewingProject to run
+     */
+    public static Policy[] policies() {
+        return new Policy[]{
+                Policies.requireClass("dev.jsinco.brewery.api.ingredient.ResolvedIngredientManager")
+        };
     }
 }
