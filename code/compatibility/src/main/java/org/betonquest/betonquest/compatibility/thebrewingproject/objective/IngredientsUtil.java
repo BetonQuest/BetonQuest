@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public final class IngredientsUtil {
 
     private IngredientsUtil() {
-        throw new UnsupportedOperationException("Utility class");
+        
     }
 
     /**

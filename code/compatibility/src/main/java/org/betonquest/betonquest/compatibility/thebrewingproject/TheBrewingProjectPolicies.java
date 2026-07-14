@@ -9,7 +9,7 @@ import org.betonquest.betonquest.lib.integration.policy.Policies;
 public final class TheBrewingProjectPolicies {
 
     private TheBrewingProjectPolicies() {
-        throw new UnsupportedOperationException("Utility class");
+
     }
 
     /**
