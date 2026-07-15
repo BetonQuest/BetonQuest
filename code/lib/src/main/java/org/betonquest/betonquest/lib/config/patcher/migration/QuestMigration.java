@@ -98,7 +98,20 @@ public interface QuestMigration {
             return;
         }
         final ConfigurationSection newSection = config.createSection(newPath);
+        renameSectionChildren(config, oldSection, newSection, oldPath, newPath);
+
+        config.set(oldPath, null);
+    }
+
+    private void renameSectionChildren(final MultiConfiguration config,
+                                       final ConfigurationSection oldSection, final ConfigurationSection newSection,
+                                       final String oldPath, final String newPath) throws InvalidConfigurationException {
         for (final String key : oldSection.getKeys(false)) {
+            final ConfigurationSection keySection = oldSection.getConfigurationSection(key);
+            if (keySection != null) {
+                renameSectionChildren(config, keySection, newSection.createSection(key), oldPath + "." + key, newPath + "." + key);
+                continue;
+            }
             final ConfigurationSection source = config.getSourceConfigurationSection(oldPath + "." + key);
             if (source == null) {
                 throw new InvalidConfigurationException("Cannot migrate '" + oldPath + "' to '" + newPath + "' for key: " + key);
@@ -107,10 +120,16 @@ public interface QuestMigration {
             newSection.setComments(key, oldSection.getComments(key));
             newSection.setInlineComments(key, oldSection.getInlineComments(key));
             config.associateWith(newPath + "." + key, source);
+            copyParentComments(source, oldPath, newPath);
         }
-        config.setComments(newPath, config.getComments(oldPath));
-        config.setInlineComments(newPath, config.getInlineComments(oldPath));
-        config.set(oldPath, null);
+    }
+
+    private void copyParentComments(final ConfigurationSection source, final String oldPath, final String newPath) {
+        source.setComments(newPath, source.getComments(oldPath));
+        source.setInlineComments(newPath, source.getInlineComments(oldPath));
+        if (oldPath.contains(".") && newPath.contains(".")) {
+            copyParentComments(source, oldPath.substring(0, oldPath.lastIndexOf('.')), newPath.substring(0, newPath.lastIndexOf('.')));
+        }
     }
 
     /**

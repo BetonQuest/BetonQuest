@@ -90,8 +90,8 @@ class ConfigPatcherIT extends QuestFixture {
         yamlPatchedConfig.load(Files.newBufferedReader(configOldToPatch));
 
         applyException(yamlPatchedConfig, exceptionsPatcher);
-        assertConfigContains(null, yamlPluginConfig, yamlPatchedConfig, "Plugin");
-        assertConfigContains(null, yamlPatchedConfig, yamlPluginConfig, "Patched");
+        assertConfigContains(yamlPluginConfig, yamlPatchedConfig, "Plugin", true);
+        assertConfigContains(yamlPatchedConfig, yamlPluginConfig, "Patched", true);
     }
 
     private void applyException(final ConfigurationSection yamlPatchedConfig, @Nullable final Consumer<ConfigurationSection> exceptionsPatcher) {

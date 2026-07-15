@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.config.quest;
 
+import org.betonquest.betonquest.api.config.section.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.lib.config.DefaultConfigAccessorFactory;
@@ -7,7 +8,6 @@ import org.betonquest.betonquest.lib.config.quest.Quest;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
@@ -75,30 +75,37 @@ public class QuestFixture {
     }
 
     protected void checkAssertion(final Quest quest, final String fileName) throws IOException, InvalidConfigurationException {
-        final ConfigurationSection questConfig = quest.getQuestConfig();
+        final MultiConfiguration questConfig = quest.getQuestConfig();
         final ConfigurationSection fileConfig = loadFile(fileName);
 
-        assertConfigContains(null, expected, questConfig, "Expected");
-        assertConfigContains(null, questConfig, expected, "Quest");
-        assertConfigContains(null, expected, fileConfig, "Expected");
-        assertConfigContains(null, fileConfig, expected, "File");
+        assertConfigContains(expected, questConfig, "Expected", false);
+        assertConfigContains(questConfig, expected, "Quest", false);
+        assertConfigContains(expected, fileConfig, "Expected", true);
+        assertConfigContains(fileConfig, expected, "File", true);
     }
 
-    protected void assertConfigContains(@Nullable final String parentKey, final ConfigurationSection actual,
-                                        final ConfigurationSection contains, final String actualName) {
+    protected void assertConfigContains(final ConfigurationSection actual,
+                                        final ConfigurationSection contains, final String actualName, final boolean checkParents) throws InvalidConfigurationException {
         for (final String key : contains.getKeys(true)) {
-            final String actualKey = parentKey == null ? key : parentKey + "." + key;
             if (contains.isConfigurationSection(key)) {
-                assertTrue(actual.isConfigurationSection(key), "Key '" + actualKey + "' is missing in the '" + actualName + "' config");
-                assertEquals(contains.getComments(key), actual.getComments(key), "Key '" + actualKey + "' has different comments in the '" + actualName + "' config");
-                assertEquals(contains.getInlineComments(key), actual.getInlineComments(key), "Key '" + actualKey + "' has different inline comments in the '" + actualName + "' config");
-                assertConfigContains(actualKey, actual.getConfigurationSection(key), contains.getConfigurationSection(key), actualName);
+                assertTrue(actual.isConfigurationSection(key), "Key '" + key + "' is missing in the '" + actualName + "' config");
             } else {
-                assertTrue(actual.contains(key), "Key '" + actualKey + "' is missing in the '" + actualName + "' config");
-                assertEquals(contains.get(key), actual.get(key), "Key '" + actualKey + "' has different value in the '" + actualName + "' config");
-                assertEquals(contains.getComments(key), actual.getComments(key), "Key '" + actualKey + "' has different comments in the '" + actualName + "' config");
-                assertEquals(contains.getInlineComments(key), actual.getInlineComments(key), "Key '" + actualKey + "' has different inline comments in the '" + actualName + "' config");
+                assertTrue(actual.contains(key), "Key '" + key + "' is missing in the '" + actualName + "' config");
+                assertEquals(contains.get(key), actual.get(key), "Key '" + key + "' has different value in the '" + actualName + "' config");
+                assertEquals(contains.getComments(key), actual.getComments(key), "Key '" + key + "' has different comments in the '" + actualName + "' config");
+                assertEquals(contains.getInlineComments(key), actual.getInlineComments(key), "Key '" + key + "' has different inline comments in the '" + actualName + "' config");
+                if (checkParents && key.contains(".")) {
+                    assertParentComments(key.substring(0, key.lastIndexOf('.')), actual, contains);
+                }
             }
+        }
+    }
+
+    private void assertParentComments(final String key, final ConfigurationSection expected, final ConfigurationSection actual) {
+        assertEquals(expected.getComments(key), actual.getComments(key), "Key '" + key + "' has different comments.");
+        assertEquals(expected.getInlineComments(key), actual.getInlineComments(key), "Key '" + key + "' has different inline comments.");
+        if (key.contains(".")) {
+            assertParentComments(key.substring(0, key.lastIndexOf('.')), expected, actual);
         }
     }
 }

@@ -13,15 +13,19 @@ class EventsToActionsRenameTest extends QuestFixture {
     void migrate() throws InvalidConfigurationException, IOException {
         original.loadFromString("""
                 # Comment 1
-                events:
-                  # Comment 2
-                  foo: bar
+                events: # Comment 2
+                  # Comment 3
+                  foo: # Comment 4
+                    # Comment 5
+                    bar: test # Comment 6
                 """);
         expected.loadFromString("""
                 # Comment 1
-                actions:
-                  # Comment 2
-                  foo: bar
+                actions: # Comment 2
+                  # Comment 3
+                  foo: # Comment 4
+                    # Comment 5
+                    bar: test # Comment 6
                 """);
 
         final Quest quest = setupQuest("conv.yml");
@@ -30,5 +34,4 @@ class EventsToActionsRenameTest extends QuestFixture {
 
         checkAssertion(quest, "conv.yml");
     }
-
 }

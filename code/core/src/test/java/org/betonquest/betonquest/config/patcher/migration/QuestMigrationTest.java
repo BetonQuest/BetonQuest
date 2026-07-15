@@ -4,12 +4,10 @@ import org.betonquest.betonquest.api.config.section.multi.MultiConfiguration;
 import org.betonquest.betonquest.config.quest.QuestFixture;
 import org.betonquest.betonquest.lib.config.patcher.migration.QuestMigration;
 import org.betonquest.betonquest.lib.config.quest.Quest;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * Generic tests for Migration types.
@@ -21,8 +19,8 @@ class QuestMigrationTest extends QuestFixture {
         original.loadFromString("""
                 # Test Comment 1
                 old:
-                    # Test Comment 2
-                    type: beton
+                  # Test Comment 2
+                  type: beton
                 """);
         final Quest quest = setupQuest("other.yml");
         new RenameSection("old", "new").migrate(quest);
@@ -30,8 +28,8 @@ class QuestMigrationTest extends QuestFixture {
         expected.loadFromString("""
                 # Test Comment 1
                 new:
-                    # Test Comment 2
-                    type: beton
+                  # Test Comment 2
+                  type: beton
                 """);
         checkAssertion(quest, "other.yml");
     }
@@ -41,10 +39,10 @@ class QuestMigrationTest extends QuestFixture {
         original.loadFromString("""
                 # Test Comment 1
                 old:
-                    # Test Comment 2
-                    avc:
-                        # Test Comment 3
-                        type: beton
+                  # Test Comment 2
+                  avc:
+                    # Test Comment 3
+                    type: beton
                 """);
         final Quest quest = setupQuest("other.yml");
         new RenameSection("old", "new").migrate(quest);
@@ -52,10 +50,10 @@ class QuestMigrationTest extends QuestFixture {
         expected.loadFromString("""
                 # Test Comment 1
                 new:
-                    # Test Comment 2
-                    avc:
-                        # Test Comment 3
-                        type: beton
+                  # Test Comment 2
+                  avc:
+                    # Test Comment 3
+                    type: beton
                 """);
         checkAssertion(quest, "other.yml");
     }
@@ -123,19 +121,7 @@ class QuestMigrationTest extends QuestFixture {
 
         @Override
         public void migrate(final Quest quest) throws InvalidConfigurationException {
-            final MultiConfiguration config = quest.getQuestConfig();
-            final ConfigurationSection staticSection = config.getConfigurationSection(oldPath);
-            final ConfigurationSection source = config.getSourceConfigurationSection(oldPath);
-            if (staticSection == null || source == null) {
-                return;
-            }
-            for (final Map.Entry<String, Object> entry : staticSection.getValues(false).entrySet()) {
-                final String key = entry.getKey();
-                final Object value = entry.getValue();
-                config.set(newPath + "." + key, value);
-            }
-            config.set(oldPath, null);
-            config.associateWith(source);
+            renameSection(quest.getQuestConfig(), oldPath, newPath);
         }
     }
 }

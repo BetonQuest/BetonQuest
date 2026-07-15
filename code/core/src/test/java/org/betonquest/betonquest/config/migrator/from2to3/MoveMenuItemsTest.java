@@ -107,7 +107,6 @@ class MoveMenuItemsTest extends QuestFixture {
                       4: "questMenu_reputation"
                       5-8: "questMenu_filler,questMenu_filler,questMenu_filler,questMenu_filler"
                       9: "questMenu_skeletonQuestActive,questMenu_skeletonQuestDone"
-
                 menu_items:
                   questMenu_skeletonQuestActive:
                     item: "skeletonQuestActiveItem"
