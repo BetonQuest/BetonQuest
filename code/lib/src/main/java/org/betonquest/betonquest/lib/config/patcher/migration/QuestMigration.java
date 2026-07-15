@@ -108,6 +108,8 @@ public interface QuestMigration {
             newSection.setInlineComments(key, oldSection.getInlineComments(key));
             config.associateWith(newPath + "." + key, source);
         }
+        config.setComments(newPath, config.getComments(oldPath));
+        config.setInlineComments(newPath, config.getInlineComments(oldPath));
         config.set(oldPath, null);
     }
 

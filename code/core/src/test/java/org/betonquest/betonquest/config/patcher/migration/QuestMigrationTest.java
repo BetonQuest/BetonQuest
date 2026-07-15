@@ -19,14 +19,18 @@ class QuestMigrationTest extends QuestFixture {
     @Test
     void test_flat() throws IOException, InvalidConfigurationException {
         original.loadFromString("""
+                # Test Comment 1
                 old:
+                    # Test Comment 2
                     type: beton
                 """);
         final Quest quest = setupQuest("other.yml");
         new RenameSection("old", "new").migrate(quest);
         quest.saveAll();
         expected.loadFromString("""
+                # Test Comment 1
                 new:
+                    # Test Comment 2
                     type: beton
                 """);
         checkAssertion(quest, "other.yml");
@@ -35,17 +39,23 @@ class QuestMigrationTest extends QuestFixture {
     @Test
     void test_deep() throws IOException, InvalidConfigurationException {
         original.loadFromString("""
+                # Test Comment 1
                 old:
-                  avc:
-                    type: beton
+                    # Test Comment 2
+                    avc:
+                        # Test Comment 3
+                        type: beton
                 """);
         final Quest quest = setupQuest("other.yml");
         new RenameSection("old", "new").migrate(quest);
         quest.saveAll();
         expected.loadFromString("""
+                # Test Comment 1
                 new:
-                  avc:
-                    type: beton
+                    # Test Comment 2
+                    avc:
+                        # Test Comment 3
+                        type: beton
                 """);
         checkAssertion(quest, "other.yml");
     }

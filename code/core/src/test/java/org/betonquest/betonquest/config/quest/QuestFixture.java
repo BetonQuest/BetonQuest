@@ -90,6 +90,8 @@ public class QuestFixture {
             final String actualKey = parentKey == null ? key : parentKey + "." + key;
             if (contains.isConfigurationSection(key)) {
                 assertTrue(actual.isConfigurationSection(key), "Key '" + actualKey + "' is missing in the '" + actualName + "' config");
+                assertEquals(contains.getComments(key), actual.getComments(key), "Key '" + actualKey + "' has different comments in the '" + actualName + "' config");
+                assertEquals(contains.getInlineComments(key), actual.getInlineComments(key), "Key '" + actualKey + "' has different inline comments in the '" + actualName + "' config");
                 assertConfigContains(actualKey, actual.getConfigurationSection(key), contains.getConfigurationSection(key), actualName);
             } else {
                 assertTrue(actual.contains(key), "Key '" + actualKey + "' is missing in the '" + actualName + "' config");
