@@ -171,6 +171,7 @@ Every io has its own settings that can be configured in the `io` section.
       refresh_delay: 180    #(5)!
       rate_limit: 10        #(6)!
       set_speed: true       #(7)!
+      base_speed: false     #(24)!
   
       npc_name_type: chat              #(8)!
       npc_name_align: center           #(9)!
@@ -216,6 +217,8 @@ Every io has its own settings that can be configured in the `io` section.
     21. A prefix that gets applied to the start of a new line if the actual text is too long.
     22. The arrow format to scroll up.
     23. The arrow format to scroll down.
+    24. Requires `set_speed: true`. If set to `true`, the base movement speed is directly reduced to 0 instead using a
+        temporary modifier for that. However, in case of a server crash during a conversation, this change might persist.
   
 
 * `chest`  

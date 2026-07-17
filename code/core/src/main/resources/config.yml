@@ -27,7 +27,7 @@ profile:
   initial_name: 'default'
 language:
   default: en-US
-  questlang_whitelist: []
+  questlang_whitelist: [ ]
 conversation:
   default_io: menu,packetevents,tellraw
   block_item_transfer: true
@@ -59,6 +59,7 @@ conversation:
       refresh_delay: 180
       rate_limit: 10
       set_speed: true
+      base_speed: false
       npc_name_type: chat
       npc_name_align: center
       npc_name_separator: true

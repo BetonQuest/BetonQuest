@@ -54,7 +54,7 @@ public class BundledMC_1_21_4 implements Integration {
         item.registerSerializer("simple", new UpdatedSimpleQuestItemSerializer(textParser, bookPageWrapper));
 
         final TriFunction<Player, ConversationAction, Boolean, ConversationSession> inputFunction = (player, control, setSpeed)
-                -> new InputEventSession(betonQuest, player, control, setSpeed, true);
+                -> new InputEventSession(betonQuest, player, control, setSpeed, betonQuest.getPluginConfig().getBoolean("conversation.io.menu.base_speed"));
         componentLoader.get(ConversationIORegistry.class).register("menu", new MenuConvIOFactory(
                 api.loggerFactory(), betonQuest.getPluginConfig(), betonQuest,
                 api.localizations(), inputFunction, textParser,
