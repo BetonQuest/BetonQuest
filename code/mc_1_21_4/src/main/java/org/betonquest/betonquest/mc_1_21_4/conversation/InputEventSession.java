@@ -139,29 +139,35 @@ public class InputEventSession implements ConversationSession, Listener {
 
     @Override
     public void end() {
-        Bukkit.getScheduler().runTask(plugin, () -> {
-            if (baseSpeed) {
-                player.setWalkSpeed(oldWalkSpeed);
-                player.setFlySpeed(oldFlySpeed);
+        if (Bukkit.isPrimaryThread()) {
+            endReset();
+        } else {
+            Bukkit.getScheduler().runTask(plugin, this::endReset);
+        }
+        HandlerList.unregisterAll(this);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> HandlerList.unregisterAll(unmount), 20);
+    }
+
+    private void endReset() {
+        if (baseSpeed) {
+            player.setWalkSpeed(oldWalkSpeed);
+            player.setFlySpeed(oldFlySpeed);
+        }
+        for (final Attribute attribute : ATTRIBUTES) {
+            final AttributeInstance attributeInstance = player.getAttribute(attribute);
+            if (attributeInstance != null) {
+                attributeInstance.removeModifier(ATTRIBUTE_KEY);
             }
+        }
+
+        if (player.getVehicle() instanceof final Attributable vehicle) {
             for (final Attribute attribute : ATTRIBUTES) {
-                final AttributeInstance attributeInstance = player.getAttribute(attribute);
+                final AttributeInstance attributeInstance = vehicle.getAttribute(attribute);
                 if (attributeInstance != null) {
                     attributeInstance.removeModifier(ATTRIBUTE_KEY);
                 }
             }
-
-            if (player.getVehicle() instanceof final Attributable vehicle) {
-                for (final Attribute attribute : ATTRIBUTES) {
-                    final AttributeInstance attributeInstance = vehicle.getAttribute(attribute);
-                    if (attributeInstance != null) {
-                        attributeInstance.removeModifier(ATTRIBUTE_KEY);
-                    }
-                }
-            }
-        });
-        HandlerList.unregisterAll(this);
-        Bukkit.getScheduler().runTaskLater(plugin, () -> HandlerList.unregisterAll(unmount), 20);
+        }
     }
 
     /**
