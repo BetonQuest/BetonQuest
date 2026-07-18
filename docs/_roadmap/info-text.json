@@ -39,6 +39,80 @@
   },
   "info": [
     {
+      "id": "4.0",
+      "style": "default",
+      "tiles": {
+        "center": {
+          "title": "Version 4.0.0",
+          "features": [
+            "- Database rework",
+            "- Quest Profiles",
+            "- Conversation Rework?"
+          ]
+        },
+        "north-east": {
+          "title": "Conversation Rework?",
+          "features": [
+            "- A new conversation system that allows for better structured conversations",
+            "- More flexible and powerful conversation options",
+            "- (Mostly) automatic migration for existing conversations"
+          ]
+        },
+        "east": {
+          "title": "Quest Profiles",
+          "features": [
+            "- Multiple profiles for each player",
+            "- Allow players to switch between profiles",
+            "- Better access to different player profiles in the script"
+          ]
+        },
+        "south-east": {
+          "title": "Database rework",
+          "features": [
+            "- Better database system supporting multiple databases",
+            "- Better database migration and maintenance",
+            "- Required for multiple exciting features in the future"
+          ]
+        }
+      }
+    },
+    {
+      "id": "3.2",
+      "style": "default",
+      "tiles": {
+        "center": {
+          "title": "Version 3.2.0",
+          "features": [
+            "- Bulk execution of elements in subsections",
+            "- Placeholder escaping and function placeholder",
+            "- Improvements for point condition",
+            "- Better objective property accessibility"
+          ]
+        },
+        "north-west": {
+          "title": "Bulk Execution",
+          "features": [
+            "- Actions can be executed in bulk",
+            "- Conditions can be evaluated with a mode",
+            "- Reducing boilerplate in scripts"
+          ]
+        },
+        "west": {
+          "title": "Placeholder Escaping",
+          "features": [
+            "- Placeholders can be escaped to allow for currently disallowed characters",
+            "- A function placeholder can be used to get the value of a function"
+          ]
+        },
+        "south-west": {
+          "title": "Point Condition",
+          "features": [
+            "- New point condition that checks if a specific point category is set"
+          ]
+        }
+      }
+    },
+    {
       "id": "3.1",
       "style": "default",
       "tiles": {
@@ -58,7 +132,7 @@
           "title": "Documentation Updates",
           "features": [
             "- A roadmap showing progress and future plans for the project",
-            "- A ton of new quick-guides have been added to quickly learn specific skills"
+            "- A ton of new quick-guides to quickly learn specific skills"
           ],
           "link": "Tutorials/Overview/",
           "link-text": "Click the block to go to the tutorials section!"
@@ -66,8 +140,8 @@
         "east": {
           "title": "True Functions",
           "features": [
-            "- You can now define math functions in the functions section",
-            "- New function condition added that uses math functions"
+            "- You can define math functions in the functions section",
+            "- New function condition that uses math functions"
           ],
           "link": "Documentation/Advanced/Functions/",
           "link-text": "Click the block to read the full function documentation!"
@@ -75,7 +149,7 @@
         "south-east": {
           "title": "Element Subsections",
           "features": [
-            "- Elements can now be nested inside of subsections",
+            "- Elements can be nested inside of subsections",
             "- Subsections can be nested inside of other subsections",
             "- Use them to organize your quests and actions into logical groups"
           ],
