@@ -1,0 +1,93 @@
+{
+  "meta": {
+    "scale": 0.5,
+    "margin": {
+      "top": 25,
+      "left": 150
+    },
+    "hover-filter": {
+      "content": "saturate(150%) brightness(120%)",
+      "empty": "saturate(50%) brightness(80%)"
+    },
+    "cluster": {
+      "tile-size": 200,
+      "height-offset-scale": 2.297,
+      "center-offset": {
+        "scale": {
+          "x": 0.895,
+          "y": 0.765
+        }
+      },
+      "left-scale": 0.50,
+      "right-scale": 0.06
+    },
+    "history": {
+      "start": "3.1",
+      "start-orientation": "right",
+      "button": {
+        "top-margin": 100,
+        "height": 100,
+        "width": 400,
+        "line-color": "#4051b5",
+        "line-width": 2,
+        "background-color": "#16181d",
+        "hover-color": "#00bda4",
+        "text": "Show History",
+        "font-color": "#ffffff",
+        "font-family": "Consolas",
+        "font-size": 30
+      }
+    }
+  },
+  "path": [
+    {
+      "id": "3.1",
+      "tiles": {
+        "center": "grass",
+        "east": "path",
+        "west": "grass",
+        "north-east": "path",
+        "north-west": "grass",
+        "south-east": "path",
+        "south-west": "grass"
+      },
+      "decorations": {
+        "center": {
+          "asset": "blue-orchid",
+          "offset": {
+            "x": 0,
+            "y": -100
+          }
+        }
+      }
+    },
+    {
+      "id": "3.0",
+      "tiles": {
+        "center": "grass",
+        "east": "grass",
+        "west": "path",
+        "north-east": "grass",
+        "north-west": "path",
+        "south-east": "grass",
+        "south-west": "path"
+      },
+      "decorations": {
+        "center": {
+          "asset": "full-amethyst",
+          "offset": {
+            "x": 0,
+            "y": -100
+          }
+        },
+        "north-east": {
+          "asset": "head-command-block",
+          "offset": {
+            "x": 0,
+            "y": -50
+          }
+        }
+      }
+    }
+  ]
+}
