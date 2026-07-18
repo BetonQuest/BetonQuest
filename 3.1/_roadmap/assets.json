@@ -1,0 +1,101 @@
+{
+  "grass": {
+    "url": "https://de.minecraft.wiki/images/Grasblock.png",
+    "path": "_media/content/Roadmap/blocks/grass.png",
+    "size": {
+      "height": 300,
+      "width": 300
+    }
+  },
+  "path": {
+    "url": "https://de.minecraft.wiki/images/Trampelpfad.png",
+    "path": "_media/content/Roadmap/blocks/path.png",
+    "base": "path-base",
+    "size": {
+      "height": 300,
+      "width": 300
+    },
+    "offset": {
+      "x": 0,
+      "y": -10
+    }
+  },
+  "path-base": {
+    "url": "https://de.minecraft.wiki/images/Erde.png",
+    "path": "_media/content/Roadmap/blocks/dirt.png",
+    "size": {
+      "height": 300,
+      "width": 300
+    },
+    "offset": {
+      "x": 0,
+      "y": 29
+    }
+  },
+  "dirt": {
+    "url": "https://de.minecraft.wiki/images/Erde.png",
+    "path": "_media/content/Roadmap/blocks/dirt.png",
+    "size": {
+      "height": 300,
+      "width": 300
+    }
+  },
+  "small-amethyst": {
+    "url": "https://de.minecraft.wiki/images/Mittlere_Amethystknospe.png",
+    "size": {
+      "height": 300,
+      "width": 300
+    }
+  },
+  "big-amethyst": {
+    "url": "https://de.minecraft.wiki/images/Große_Amethystknospe.png",
+    "size": {
+      "height": 300,
+      "width": 300
+    }
+  },
+  "full-amethyst": {
+    "url": "https://de.minecraft.wiki/images/Amethysthaufen.png",
+    "size": {
+      "height": 300,
+      "width": 300
+    }
+  },
+  "blue-orchid": {
+    "url": "https://de.minecraft.wiki/images/Blaue_Orchidee.png",
+    "size": {
+      "height": 300,
+      "width": 300
+    }
+  },
+  "cherry-sampling": {
+    "url": "https://de.minecraft.wiki/images/Kirschsetzling.png",
+    "size": {
+      "height": 300,
+      "width": 300
+    }
+  },
+  "anvil": {
+    "url": "https://de.minecraft.wiki/images/Amboss.png",
+    "size": {
+      "height": 300,
+      "width": 300
+    },
+    "offset": {
+      "x": 0,
+      "y": 50
+    }
+  },
+  "head-command-block": {
+    "deprecated-url": "https://images.minecraft-heads.com/render3d/head/34/34113a19ab958665933a1f82be9c60ee.webp",
+    "path": "_media/content/Roadmap/deco/commandblock.webp",
+    "size": {
+      "height": 150,
+      "width": 150
+    },
+    "offset": {
+      "x": 50,
+      "y": 20
+    }
+  }
+}
