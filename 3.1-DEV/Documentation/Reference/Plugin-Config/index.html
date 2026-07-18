@@ -9572,7 +9572,8 @@ are offered as tab-completions and can be selected; any other language is treate
 <span class="normal">25</span>
 <span class="normal">26</span>
 <span class="normal">27</span>
-<span class="normal">28</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">menu</span><span class="p">:</span>
+<span class="normal">28</span>
+<span class="normal">29</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">menu</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">line_length</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">320</span><span class="w">      </span><span class="c1">#(1)!</span>
 <span class="w">  </span><span class="nt">line_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w">        </span><span class="c1">#(2)!</span>
 <span class="w">  </span><span class="nt">bottom_margin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span><span class="w">      </span><span class="c1">#(3)!</span>
@@ -9580,6 +9581,7 @@ are offered as tab-completions and can be selected; any other language is treate
 <span class="w">  </span><span class="nt">refresh_delay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">180</span><span class="w">    </span><span class="c1">#(5)!</span>
 <span class="w">  </span><span class="nt">rate_limit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w">        </span><span class="c1">#(6)!</span>
 <span class="w">  </span><span class="nt">set_speed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">       </span><span class="c1">#(7)!</span>
+<span class="w">  </span><span class="nt">base_speed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">     </span><span class="c1">#(24)!</span>
 
 <span class="w">  </span><span class="nt">npc_name_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">chat</span><span class="w">              </span><span class="c1">#(8)!</span>
 <span class="w">  </span><span class="nt">npc_name_align</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">center</span><span class="w">           </span><span class="c1">#(9)!</span>
@@ -9625,6 +9627,8 @@ are offered as tab-completions and can be selected; any other language is treate
 <li>A prefix that gets applied to the start of a new line if the actual text is too long.</li>
 <li>The arrow format to scroll up.</li>
 <li>The arrow format to scroll down.</li>
+<li>Requires <code>set_speed: true</code>. If set to <code>true</code>, the base movement speed is directly reduced to 0 instead using a
+    temporary modifier for that. However, in case of a server crash during a conversation, this change might persist.</li>
 </ol>
 </li>
 <li>
