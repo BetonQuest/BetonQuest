@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 public final class IngredientsUtil {
 
     private IngredientsUtil() {
-
     }
 
     /**
