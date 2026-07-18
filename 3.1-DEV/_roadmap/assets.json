@@ -68,6 +68,24 @@
       "width": 300
     }
   },
+  "cherry-sampling": {
+    "url": "https://de.minecraft.wiki/images/Kirschsetzling.png",
+    "size": {
+      "height": 300,
+      "width": 300
+    }
+  },
+  "anvil": {
+    "url": "https://de.minecraft.wiki/images/Amboss.png",
+    "size": {
+      "height": 300,
+      "width": 300
+    },
+    "offset": {
+      "x": 0,
+      "y": 50
+    }
+  },
   "head-command-block": {
     "deprecated-url": "https://images.minecraft-heads.com/render3d/head/34/34113a19ab958665933a1f82be9c60ee.webp",
     "path": "_media/content/Roadmap/deco/commandblock.webp",

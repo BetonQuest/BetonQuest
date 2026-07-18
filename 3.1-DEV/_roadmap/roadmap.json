@@ -41,6 +41,48 @@
   },
   "path": [
     {
+      "id": "4.0",
+      "tiles": {
+        "center": "grass",
+        "east": "path",
+        "west": "grass",
+        "north-east": "path",
+        "north-west": "grass",
+        "south-east": "path",
+        "south-west": "grass"
+      },
+      "decorations": {
+        "center": {
+          "asset": "anvil",
+          "offset": {
+            "x": 0,
+            "y": -165
+          }
+        }
+      }
+    },
+    {
+      "id": "3.2",
+      "tiles": {
+        "center": "grass",
+        "east": "grass",
+        "west": "path",
+        "north-east": "grass",
+        "north-west": "path",
+        "south-east": "grass",
+        "south-west": "path"
+      },
+      "decorations": {
+        "center": {
+          "asset": "cherry-sampling",
+          "offset": {
+            "x": 0,
+            "y": -100
+          }
+        }
+      }
+    },
+    {
       "id": "3.1",
       "tiles": {
         "center": "grass",
