@@ -1,0 +1,214 @@
+{
+  "meta": {
+    "styles": {
+      "default": {
+        "box": {
+          "line-color": "#4051b5",
+          "line-width": 5,
+          "background-color": "#16181d",
+          "size": {
+            "width": 0.5,
+            "height": 0.5
+          }
+        },
+        "position": {
+          "x": 0.02,
+          "y": 0.02
+        },
+        "title": {
+          "font-family": "Consolas",
+          "font-size": 60,
+          "color": "#ffffff",
+          "offset": {
+            "x": 10,
+            "y": 35
+          }
+        },
+        "features": {
+          "font-family": "Consolas",
+          "font-size": 40,
+          "color": "#ffffff",
+          "line-spacing": 0.2,
+          "offset": {
+            "x": 10,
+            "y": 25
+          }
+        }
+      }
+    }
+  },
+  "info": [
+    {
+      "id": "4.0",
+      "style": "default",
+      "tiles": {
+        "center": {
+          "title": "Version 4.0.0",
+          "features": [
+            "- Database rework",
+            "- Quest Profiles",
+            "- Conversation Rework?"
+          ]
+        },
+        "north-east": {
+          "title": "Conversation Rework?",
+          "features": [
+            "- A new conversation system that allows for better structured conversations",
+            "- More flexible and powerful conversation options",
+            "- (Mostly) automatic migration for existing conversations"
+          ]
+        },
+        "east": {
+          "title": "Quest Profiles",
+          "features": [
+            "- Multiple profiles for each player",
+            "- Allow players to switch between profiles",
+            "- Better access to different player profiles in the script"
+          ]
+        },
+        "south-east": {
+          "title": "Database rework",
+          "features": [
+            "- Better database system supporting multiple databases",
+            "- Better database migration and maintenance",
+            "- Required for multiple exciting features in the future"
+          ]
+        }
+      }
+    },
+    {
+      "id": "3.2",
+      "style": "default",
+      "tiles": {
+        "center": {
+          "title": "Version 3.2.0",
+          "features": [
+            "- Bulk execution of elements in subsections",
+            "- Placeholder escaping and function placeholder",
+            "- Improvements for point condition",
+            "- Better objective property accessibility"
+          ]
+        },
+        "north-west": {
+          "title": "Bulk Execution",
+          "features": [
+            "- Actions can be executed in bulk",
+            "- Conditions can be evaluated with a mode",
+            "- Reducing boilerplate in scripts"
+          ]
+        },
+        "west": {
+          "title": "Placeholder Escaping",
+          "features": [
+            "- Placeholders can be escaped to allow for currently disallowed characters",
+            "- A function placeholder can be used to get the value of a function"
+          ]
+        },
+        "south-west": {
+          "title": "Point Condition",
+          "features": [
+            "- New point condition that checks if a specific point category is set"
+          ]
+        }
+      }
+    },
+    {
+      "id": "3.1",
+      "style": "default",
+      "tiles": {
+        "center": {
+          "title": "Version 3.1.0",
+          "features": [
+            "- Elements allow subsections",
+            "- True mathematical functions",
+            "- A roadmap for project overview",
+            "- New quick-guides as addition to tutorials",
+            "- Bug fixes and improvements"
+          ],
+          "link": "Documentation/CHANGELOG/#310-2026-07-19",
+          "link-text": "Click the block to read the full changelog!"
+        },
+        "north-east": {
+          "title": "Documentation Updates",
+          "features": [
+            "- A roadmap showing progress and future plans for the project",
+            "- A ton of new quick-guides to quickly learn specific skills"
+          ],
+          "link": "Tutorials/Overview/",
+          "link-text": "Click the block to go to the tutorials section!"
+        },
+        "east": {
+          "title": "True Functions",
+          "features": [
+            "- You can define math functions in the functions section",
+            "- New function condition that uses math functions"
+          ],
+          "link": "Documentation/Advanced/Functions/",
+          "link-text": "Click the block to read the full function documentation!"
+        },
+        "south-east": {
+          "title": "Element Subsections",
+          "features": [
+            "- Elements can be nested inside of subsections",
+            "- Subsections can be nested inside of other subsections",
+            "- Use them to organize your quests and actions into logical groups"
+          ],
+          "link": "Documentation/Basics/About-Scripting/#subsections",
+          "link-text": "Click the block to read more about subsections!"
+        }
+      }
+    },
+    {
+      "id": "3.0",
+      "style": "default",
+      "tiles": {
+        "center": {
+          "title": "Version 3.0.0",
+          "features": [
+            "- Better placeholder support",
+            "- Support for other NPC providers and a unified item system",
+            "- Support for MiniMessage and MineDown",
+            "- Improved versioning and terminology rework",
+            "- Comprehensive restructuring and configuration cleanup",
+            "- Now using Paper and PacketEvents instead of Spigot and ProtocolLib"
+          ],
+          "link": "Documentation/CHANGELOG/#300-2026-06-13",
+          "link-text": "Click the block to read the full changelog!"
+        },
+        "north-west": {
+          "title": "Changed Fundamentals",
+          "features": [
+            "- Spigot is no longer supported, Paper is now required",
+            "- ProtocolLib replaced with PacketEvents"
+          ]
+        },
+        "west": {
+          "title": "Element improvements",
+          "features": [
+            "- Placeholder support for actions, objectives, and more!",
+            "- Unified item system with typed definitions similar to actions and objectives",
+            "- Better text parsing support for MiniMessage and MineDown"
+          ]
+        },
+        "south-west": {
+          "title": "Restructuring",
+          "features": [
+            "- Comprehensive restructuring and cleanup of all configuration files",
+            "- Terminology rework by renaming “events” to “actions” and “variables” to “placeholders”",
+            "- Versioning system for BetonQuest modules and quest packages"
+          ]
+        },
+        "north-east": {
+          "title": "New API",
+          "features": [
+            "- Brand new API for BetonQuest allows for better integration with other plugins",
+            "- Documented and will receive less breaking changes in the future",
+            "- Separately versioned to provide better compatibility to developers"
+          ],
+          "link": "API/Overview/",
+          "link-text": "Click the block to read the full API documentation!"
+        }
+      }
+    }
+  ]
+}
