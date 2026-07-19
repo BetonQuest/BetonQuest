@@ -308,7 +308,7 @@ async function buildTile(x, y, size, imageId, decoration, imageCache, identifier
       if (!this.deco) {
         return;
       }
-      return drawTileDecoration(ctx, this.id, this.hex, this.deco.offset, imageCache.get(this.deco.asset), this.filter);
+      return drawTileDecoration(ctx, this.id, this.hex, this.deco, imageCache.get(this.deco.asset), this.filter);
     },
     hit: function (point) {
       let previous = hex.start;
@@ -359,11 +359,13 @@ async function buildHex(x, y, size) {
   };
 }
 
-async function drawTileDecoration(ctx, id, hex, offset, imageBox, hoverFilter) {
-  let targetX = hex.x - hex.size / 2 + (imageBox.offset.x + offset.x) * window.devicePixelRatio * SCALE;
-  let targetY = hex.y - hex.size / 2 + (imageBox.offset.y + offset.y) * window.devicePixelRatio * SCALE;
+async function drawTileDecoration(ctx, id, hex, deco, imageBox, hoverFilter) {
+  let targetX = hex.x - hex.size / 2 + (imageBox.offset.x + deco.offset.x) * window.devicePixelRatio * SCALE;
+  let targetY = hex.y - hex.size / 2 + (imageBox.offset.y + deco.offset.y) * window.devicePixelRatio * SCALE;
   ctx.save();
-  clipHex(ctx, hex, offset);
+  if (!deco.hasOwnProperty("clip") || deco.clip) {
+    clipHex(ctx, hex, deco.offset);
+  }
   if (FOCUSSED_TILE != null && FOCUSSED_TILE.id === id) {
     ctx.filter = FOCUSSED_TILE.info ? hoverFilter.content : hoverFilter.empty;
   }

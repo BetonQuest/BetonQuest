@@ -57,7 +57,8 @@
           "offset": {
             "x": 0,
             "y": -165
-          }
+          },
+          "clip": false
         }
       }
     },
@@ -78,7 +79,8 @@
           "offset": {
             "x": 0,
             "y": -100
-          }
+          },
+          "clip": false
         }
       }
     },
@@ -99,7 +101,8 @@
           "offset": {
             "x": 0,
             "y": -100
-          }
+          },
+          "clip": false
         }
       }
     },
@@ -120,14 +123,16 @@
           "offset": {
             "x": 0,
             "y": -100
-          }
+          },
+          "clip": false
         },
         "north-east": {
           "asset": "head-command-block",
           "offset": {
             "x": 0,
             "y": -50
-          }
+          },
+          "clip": false
         }
       }
     }
