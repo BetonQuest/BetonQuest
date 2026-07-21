@@ -236,25 +236,25 @@ Journal behavior is configured in the `journal` section of `config.yml`.
 
 ```yaml
 journal:
-  default_slot: 8
+  default_slot: -1
   lock_default_slot: false
   show_in_backpack: true
   give_on_respawn: false
-  custom_model_data: 0
+  custom_model_data: -1
   format:
-    chars_per_line: 19
+    chars_per_line: 114
     lines_per_page: 14
     one_entry_per_page: false
-    reversed_order: false
+    reversed_order: true
     full_main_page: false
-    separator: "---------------"
+    separator: "@[minimessage]<newline>"
     hide_date: false
-  color:
-    date:
-      day: "9"
-      hour: "8"
-    line: "8"
-    text: "0"
+    color:
+      date:
+        day: "@[minimessage]<blue>"
+        hour: "@[minimessage]<gold>"
+      line: "@[minimessage]<dark_red>"
+      text: "@[minimessage]<black>"
 ```
 
 Important settings:
@@ -264,13 +264,13 @@ Important settings:
 - `show_in_backpack` displays the journal in the backpack if the player does not have it in the inventory.
 - `give_on_respawn` gives the journal back after respawn.
 - `custom_model_data` changes the journal item model when used with a resource pack.
-- `chars_per_line` and `lines_per_page` control how much text fits on one page.
-- `one_entry_per_page` puts every journal entry on its own page.
-- `reversed_order` changes whether old or new entries appear first.
-- `full_main_page` reserves the whole first page for `journal_main_page`.
-- `separator` is shown between entries.
-- `hide_date` hides dates on journal entries.
-- `color` controls the date, separator, and entry text colors.
+- `format.chars_per_line` and `format.lines_per_page` control how much text fits on one page.
+- `format.one_entry_per_page` puts every journal entry on its own page.
+- `format.reversed_order` changes whether old or new entries appear first.
+- `format.full_main_page` reserves the whole first page for `journal_main_page`.
+- `format.separator` is shown between entries.
+- `format.hide_date` hides dates on journal entries.
+- `format.color` controls the date, separator, and entry text colors.
 
 ## Usage guidelines
 
