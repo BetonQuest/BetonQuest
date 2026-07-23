@@ -19,6 +19,7 @@ import org.betonquest.betonquest.quest.objective.chestput.ChestPutObjectiveFacto
 import org.betonquest.betonquest.quest.objective.command.CommandObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.consume.ConsumeObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.crafting.CraftingObjectiveFactory;
+import org.betonquest.betonquest.quest.objective.damage.DamageObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.data.PointObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.data.TagObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.delay.DelayObjectiveFactory;
@@ -119,5 +120,6 @@ public class ObjectiveTypeComponent extends AbstractCoreComponent {
         objectiveTypes.register("equip", new EquipItemObjectiveFactory());
         objectiveTypes.register("jump", new JumpObjectiveFactory());
         objectiveTypes.register("resourcepack", new ResourcepackObjectiveFactory());
+        objectiveTypes.register("damage", new DamageObjectiveFactory());
     }
 }
