@@ -53,6 +53,8 @@ import org.betonquest.betonquest.quest.condition.objective.ObjectiveConditionFac
 import org.betonquest.betonquest.quest.condition.party.PartyConditionFactory;
 import org.betonquest.betonquest.quest.condition.permission.PermissionConditionFactory;
 import org.betonquest.betonquest.quest.condition.point.GlobalPointConditionFactory;
+import org.betonquest.betonquest.quest.condition.point.HasGlobalPointConditionFactory;
+import org.betonquest.betonquest.quest.condition.point.HasPointConditionFactory;
 import org.betonquest.betonquest.quest.condition.point.PointConditionFactory;
 import org.betonquest.betonquest.quest.condition.random.RandomConditionFactory;
 import org.betonquest.betonquest.quest.condition.ride.RideConditionFactory;
@@ -136,6 +138,8 @@ public class ConditionTypesComponent extends AbstractCoreComponent {
         conditionTypes.registerCombined("globalpoint", new GlobalPointConditionFactory(globalData));
         conditionTypes.register("globaltag", new GlobalTagConditionFactory(globalData));
         conditionTypes.register("hand", new HandConditionFactory());
+        conditionTypes.registerCombined("hasglobalpoint", new HasGlobalPointConditionFactory(globalData));
+        conditionTypes.register("haspoint", new HasPointConditionFactory(dataStorage));
         conditionTypes.register("health", new HealthConditionFactory());
         conditionTypes.register("height", new HeightConditionFactory());
         conditionTypes.register("hunger", new HungerConditionFactory());

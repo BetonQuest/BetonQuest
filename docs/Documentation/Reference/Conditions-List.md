@@ -262,8 +262,10 @@ conditions:
 ## `GlobalPoint`
 
 __Context__: @snippet:condition-meta:independent@  
-__Syntax__: `globalpoint <category> <point>`  
+__Syntax__: `globalpoint <category> <point> [equal]`  
 __Description__: Whether the specified global point category has the specified amount of points.
+
+See the [`point` condition](#point).
 
 ```YAML title="Example"
 conditions:
@@ -294,6 +296,32 @@ Amount cannot be set here, though it may be checked with the `item` condition.
 conditions:
   holdSword: "hand SpecialSword"
   holdShieldOffhand: "hand QuestShield offhand"
+```
+
+## `HasGlobalPoint`
+
+__Context__: @snippet:condition-meta:independent@  
+__Syntax__: `hasglobalpoint <category>`  
+__Description__: Whether the specified global point category has any amount.
+
+See the [`haspoint` condition](#haspoint).
+
+```YAML title="Example"
+conditions:
+  hasBetonUsers: "hasglobalpoint beton"
+```
+
+## `HasPoint`
+
+__Context__: @snippet:condition-meta:online-offline@  
+__Syntax__: `haspoint <category>`  
+__Description__: Whether the player has any amount of points in the specified category.
+
+This explicit checks for any set value. `0` is a set value.
+
+```YAML title="Example"
+conditions:
+  hasBetonPoints: "haspoint beton"
 ```
 
 ## `Health`
