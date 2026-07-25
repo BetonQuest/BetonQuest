@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
+import org.betonquest.betonquest.lib.argument.type.TimeUnit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -22,26 +23,6 @@ import java.util.List;
 public class DamageObjectiveFactory implements ObjectiveFactory {
 
     /**
-     * The name of the parameter that determines whether the player is the one attacking or taking damage.
-     */
-    public static final String ACTION_ARGUMENT = "action";
-
-    /**
-     * The name of the parameter that determines the type of damage to be dealt.
-     */
-    public static final String TYPE_ARGUMENT = "type";
-
-    /**
-     * The name of the parameter that defines the minimum amount of damage.
-     */
-    public static final String MIN_AMOUNT_ARGUMENT = "min";
-
-    /**
-     * The name of the parameter that defines the delay between each attack.
-     */
-    public static final String INTERVAL_ARGUMENT = "interval";
-
-    /**
      * Creates a new DamageObjectiveFactory instance.
      */
     public DamageObjectiveFactory() {
@@ -50,11 +31,13 @@ public class DamageObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
         final Argument<Number> targetAmount = instruction.number().get();
-        final Argument<String> action = instruction.string().get(ACTION_ARGUMENT, "deal");
-        final Argument<List<String>> type = instruction.string().list().get(TYPE_ARGUMENT, List.of("entity_attack"));
-        final Argument<Number> minAmount = instruction.number().get(MIN_AMOUNT_ARGUMENT, 0.0);
-        final Argument<Number> interval = instruction.number().get(INTERVAL_ARGUMENT, 0L);
-        final DamageObjective objective = new DamageObjective(service, targetAmount, action, type, minAmount, interval);
+        final Argument<DamageAction> action = instruction.enumeration(DamageAction.class).get("action", DamageAction.DEAL);
+        final Argument<List<EntityDamageEvent.DamageCause>> type = instruction.enumeration(EntityDamageEvent.DamageCause.class)
+                .list().get("type", List.of(EntityDamageEvent.DamageCause.ENTITY_ATTACK));
+        final Argument<Number> minAmount = instruction.number().get("min", 0.0);
+        final Argument<Number> interval = instruction.number().get("interval", 0L);
+        final Argument<TimeUnit> timeUnit = instruction.enumeration(TimeUnit.class).get("unit", TimeUnit.SECONDS);
+        final DamageObjective objective = new DamageObjective(service, targetAmount, action, type, minAmount, interval, timeUnit);
         service.request(EntityDamageByEntityEvent.class)
                 .priority(EventPriority.HIGHEST).onlineHandler(objective::onDamageDealt)
                 .player(event -> resolveAttackingPlayer(event.getDamager()))
