@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.betonquest</groupId>
     <artifactId>parent</artifactId>
-    <version>2.10.0</version>
+    <version>2.11.0</version>
   </parent>
 
   <name>BetonQuest Build</name>
@@ -15,7 +15,7 @@
   <description>All Your Adventure Supplies</description>
 
   <properties>
-    <revision>3.0.0</revision>
+    <revision>3.2.0</revision>
     <changelist>-SNAPSHOT</changelist>
     <pit.report.skip>true</pit.report.skip>
 
@@ -29,10 +29,11 @@
     <plugin.description>All Your Adventure Supplies</plugin.description>
 
     <!-- module versions -->
-    <betonquest.core.version>3.0.0${changelist}</betonquest.core.version>
-    <betonquest.mc_1_20_6.version>3.0.0${changelist}</betonquest.mc_1_20_6.version>
-    <betonquest.mc_1_21_4.version>3.0.0${changelist}</betonquest.mc_1_21_4.version>
-    <betonquest.compatibility.version>3.0.0${changelist}</betonquest.compatibility.version>
+    <betonquest.core.version>3.2.0${changelist}</betonquest.core.version>
+    <betonquest.mc_1_20_6.version>3.2.0${changelist}</betonquest.mc_1_20_6.version>
+    <betonquest.mc_1_21_4.version>3.2.0${changelist}</betonquest.mc_1_21_4.version>
+    <betonquest.mc_1_21_8.version>3.2.0${changelist}</betonquest.mc_1_21_8.version>
+    <betonquest.compatibility.version>3.2.0${changelist}</betonquest.compatibility.version>
 
     <!-- dependency versions -->
     <paper-api.version>1.18.2-R0.1-SNAPSHOT</paper-api.version>
@@ -54,6 +55,11 @@
       <groupId>org.betonquest.betonquest</groupId>
       <artifactId>mc_1_21_4</artifactId>
       <version>${betonquest.mc_1_21_4.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.betonquest.betonquest</groupId>
+      <artifactId>mc_1_21_8</artifactId>
+      <version>${betonquest.mc_1_21_8.version}</version>
     </dependency>
     <dependency>
       <groupId>org.betonquest.betonquest</groupId>
