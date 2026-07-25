@@ -73,12 +73,12 @@ public class DialogConvIO implements ConversationIO {
     /**
      * The text spoken by the NPC.
      */
-    private Component npcText;
+    private Component npcText = EMPTY;
 
     /**
      * The name of the NPC.
      */
-    private Component npcName;
+    private Component npcName = EMPTY;
 
     /**
      * Creates a new DialogConvIO instance.
@@ -234,7 +234,7 @@ public class DialogConvIO implements ConversationIO {
         for (final Component option : options) {
             maxOptionWidth = Math.max(maxOptionWidth, componentLineWrapper.width(option) + padding);
         }
-        return Math.max(Math.max(maxOptionWidth, settings.defaultButtonWidth()), 100);
+        return Math.max(Math.max(maxOptionWidth, settings.buttonWidth()), 100);
     }
 
     /**

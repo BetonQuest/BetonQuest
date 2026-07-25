@@ -7,8 +7,11 @@
     key: conversation.io.dialog.button-render-padding
     value: 13
   - type: SET
-    key: conversation.io.dialog.default-button-width
+    key: conversation.io.dialog.button-width
     value: -1
+  - type: SET
+    key: conversation.io.dialog.close-with-escape
+    value: true
   - type: SET
     key: conversation.io.dialog.close-button.enabled
     value: true
@@ -18,9 +21,6 @@
   - type: SET
     key: conversation.io.dialog.close-button.width
     value: -1
-  - type: SET
-    key: conversation.io.dialog.close-button.close-with-escape
-    value: true
 3.1.0.3:
   - type: SET
     key: conversation.io.menu.base_speed

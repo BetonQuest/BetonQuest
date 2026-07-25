@@ -11,24 +11,24 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 /**
- * Holds configuration settings for the Dialog conversation interface.
+ * Holds configuration settings for the Dialog conversation io.
  *
  * @param layout              the layout type for the dialog
  * @param buttonRenderPadding the padding used when rendering buttons
- * @param defaultButtonWidth  the default width for buttons
+ * @param buttonWidth         the minimum width for buttons
+ * @param closeWithEscape     whether the dialog can be closed using the Escape key
  * @param closeButtonEnabled  whether the close button is enabled
  * @param closeButtonText     the text displayed on the close button
  * @param closeButtonWidth    the width of the close button
- * @param closeWithEscape     whether the dialog can be closed using the Escape key
  */
 public record DialogSettings(
         DialogLayout layout,
         int buttonRenderPadding,
-        int defaultButtonWidth,
+        int buttonWidth,
+        boolean closeWithEscape,
         boolean closeButtonEnabled,
         Component closeButtonText,
-        int closeButtonWidth,
-        boolean closeWithEscape
+        int closeButtonWidth
 ) {
 
     /**
@@ -41,19 +41,19 @@ public record DialogSettings(
      */
     public static DialogSettings fromSection(final TextParser textParser, @Nullable final ConfigurationSection section) throws QuestException {
         if (section == null) {
-            return new DialogSettings(DialogLayout.NPC_TITLE, 13, 250, true, textParser.parse("<red>close"), 250, true);
+            return new DialogSettings(DialogLayout.NPC_TITLE, 13, 250, true, true, textParser.parse("<red>close"), 250);
         }
         final DialogLayout layout = new EnumParser<>(DialogLayout.class).apply(section.getString("layout", "NPC_TITLE"));
 
         final int buttonRenderPadding = section.getInt("button-render-padding", 13);
-        final int defaultButtonWidth = section.getInt("default-button-width", 250);
+        final int defaultButtonWidth = section.getInt("button-width", 250);
 
         final ConfigurationSection close = Objects.requireNonNullElseGet(section.getConfigurationSection("close-button"), YamlConfiguration::new);
         final boolean closeButtonEnabled = close.getBoolean("enabled", true);
         final Component closeButtonText = textParser.parse(close.getString("text", "<red>Close"));
         final int closeButtonWidth = close.getInt("width", 250);
         final boolean closeWithEscape = close.getBoolean("close-with-escape", true);
-        return new DialogSettings(layout, buttonRenderPadding, defaultButtonWidth, closeButtonEnabled, closeButtonText,
-                closeButtonWidth, closeWithEscape);
+        return new DialogSettings(layout, buttonRenderPadding, defaultButtonWidth, closeButtonEnabled, closeWithEscape,
+                closeButtonText, closeButtonWidth);
     }
 }
