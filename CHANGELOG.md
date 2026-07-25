@@ -7,6 +7,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
 ### Changed
+- `worldguard` integration version requirement to 7.0.0
+- `worldedit` integration version requirement to 7.3.0
 ### Deprecated
 ### Removed
 ### Fixed
