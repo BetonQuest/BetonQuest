@@ -9,10 +9,8 @@ import io.papermc.paper.registry.data.dialog.type.DialogType;
 import io.papermc.paper.registry.data.dialog.type.MultiActionType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickCallback;
-import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.ConversationIO;
@@ -63,11 +61,6 @@ public class DialogConvIO implements ConversationIO {
     private final Component cachedCloseText;
 
     /**
-     * the text parser to parse the configuration text.
-     */
-    private final TextParser textParser;
-
-    /**
      * Whether the layout is NPC title.
      */
     private final boolean isNpcTitleLayout;
@@ -95,26 +88,22 @@ public class DialogConvIO implements ConversationIO {
      * @param settings             the dialog settings to use
      * @param colors               the colors used in the conversation
      * @param componentLineWrapper the component line wrapper used to calculate text widths
-     * @param textParser           the text parser used to parse text
-     * @throws QuestException if the configuration contains invalid dialog settings
      */
     public DialogConvIO(
             final Conversation conv,
             final OnlineProfile onlineProfile,
             final DialogSettings settings,
             final ConversationColors colors,
-            final ComponentLineWrapper componentLineWrapper,
-            final TextParser textParser
-    ) throws QuestException {
+            final ComponentLineWrapper componentLineWrapper
+    ) {
         this.conv = conv;
         this.onlineProfile = onlineProfile;
         this.colors = colors;
         this.componentLineWrapper = componentLineWrapper;
-        this.textParser = textParser;
 
         this.settings = settings;
 
-        this.cachedCloseText = textParser.parse(settings.closeButtonText());
+        this.cachedCloseText = settings.closeButtonText();
         this.isNpcTitleLayout = settings.layout() == DialogLayout.NPC_TITLE;
     }
 
@@ -130,7 +119,7 @@ public class DialogConvIO implements ConversationIO {
     }
 
     @Override
-    public void addPlayerOption(final Component option, final ConfigurationSection properties) throws QuestException {
+    public void addPlayerOption(final Component option, final ConfigurationSection properties) {
         this.options.add(option);
     }
 
@@ -210,7 +199,7 @@ public class DialogConvIO implements ConversationIO {
     private ActionButton buildPlayerOptionButton(final Component option, final int index, final int width) {
         return ActionButton.builder(option)
                 .width(width)
-                .action(DialogAction.customClick((aud, ctx) -> conv.passPlayerAnswer(index + 1), clickOptions()))
+                .action(DialogAction.customClick((response, audience) -> conv.passPlayerAnswer(index + 1), clickOptions()))
                 .build();
     }
 
@@ -254,7 +243,7 @@ public class DialogConvIO implements ConversationIO {
      * @return the built ClickCallback.Options object
      */
     private ClickCallback.Options clickOptions() {
-        return ClickCallback.Options.builder().uses(1).lifetime(ClickCallback.DEFAULT_LIFETIME).build();
+        return ClickCallback.Options.builder().uses(1).build();
     }
 
     @Override

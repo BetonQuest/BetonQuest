@@ -57,7 +57,7 @@ public class DialogConvIOFactory implements ConversationIOFactory {
 
     @Override
     public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) throws QuestException {
-        final DialogSettings settings = DialogSettings.fromSection(config.getConfigurationSection("conversation.io.dialog"));
-        return new DialogConvIO(conversation, onlineProfile, settings, colors, componentLineWrapper, textParser);
+        final DialogSettings settings = DialogSettings.fromSection(textParser, config.getConfigurationSection("conversation.io.dialog"));
+        return new DialogConvIO(conversation, onlineProfile, settings, colors, componentLineWrapper);
     }
 }

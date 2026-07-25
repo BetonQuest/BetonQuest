@@ -1,7 +1,9 @@
 package org.betonquest.betonquest.mc_1_21_8.conversation.io;
 
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.parser.EnumParser;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.Nullable;
@@ -24,7 +26,7 @@ public record DialogSettings(
         int buttonRenderPadding,
         int defaultButtonWidth,
         boolean closeButtonEnabled,
-        String closeButtonText,
+        Component closeButtonText,
         int closeButtonWidth,
         boolean closeWithEscape
 ) {
@@ -32,13 +34,14 @@ public record DialogSettings(
     /**
      * Constructs a new DialogSettings from the specified configuration section.
      *
-     * @param section the configuration section containing dialog settings, or null for defaults
+     * @param textParser the text parser used to parse text
+     * @param section    the configuration section containing dialog settings, or null for defaults
      * @return the settings from the configuration setting
      * @throws QuestException if the configuration contains invalid dialog settings
      */
-    public static DialogSettings fromSection(@Nullable final ConfigurationSection section) throws QuestException {
+    public static DialogSettings fromSection(final TextParser textParser, @Nullable final ConfigurationSection section) throws QuestException {
         if (section == null) {
-            return new DialogSettings(DialogLayout.NPC_TITLE, 13, 250, true, "<red>close", 250, true);
+            return new DialogSettings(DialogLayout.NPC_TITLE, 13, 250, true, textParser.parse("<red>close"), 250, true);
         }
         final DialogLayout layout = new EnumParser<>(DialogLayout.class).apply(section.getString("layout", "NPC_TITLE"));
 
@@ -47,7 +50,7 @@ public record DialogSettings(
 
         final ConfigurationSection close = Objects.requireNonNullElseGet(section.getConfigurationSection("close-button"), YamlConfiguration::new);
         final boolean closeButtonEnabled = close.getBoolean("enabled", true);
-        final String closeButtonText = close.getString("text", "<red>Close");
+        final Component closeButtonText = textParser.parse(close.getString("text", "<red>Close"));
         final int closeButtonWidth = close.getInt("width", 250);
         final boolean closeWithEscape = close.getBoolean("close-with-escape", true);
         return new DialogSettings(layout, buttonRenderPadding, defaultButtonWidth, closeButtonEnabled, closeButtonText,
