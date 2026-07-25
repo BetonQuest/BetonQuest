@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.lib.argument.type.TimeUnit;
 import org.bukkit.Bukkit;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.jetbrains.annotations.UnknownNullability;
 
 import java.util.List;
 import java.util.Map;
@@ -63,7 +62,7 @@ public class DamageObjective extends CountingObjective {
      * @throws QuestException if the instruction is invalid.
      */
     public DamageObjective(final ObjectiveService service, final Argument<Number> targetAmount,
-                           final Argument<DamageAction> action, final @UnknownNullability Argument<List<EntityDamageEvent.DamageCause>> type,
+                           final Argument<DamageAction> action, final Argument<List<EntityDamageEvent.DamageCause>> type,
                            final Argument<Number> minAmount, final Argument<Number> interval,
                            final Argument<TimeUnit> timeUnit) throws QuestException {
         super(service, targetAmount, null);
@@ -98,7 +97,7 @@ public class DamageObjective extends CountingObjective {
 
     private void processDamageEvent(final EntityDamageEvent event, final OnlineProfile profile, final DamageAction expectedAction)
             throws QuestException {
-        if (action.getValue(profile) != expectedAction) {
+        if (action.getValue(profile) != expectedAction && action.getValue(profile) != DamageAction.BOTH) {
             return;
         }
 
@@ -124,9 +123,13 @@ public class DamageObjective extends CountingObjective {
     }
 
     private boolean checkIsOnCooldown(final OnlineProfile profile) throws QuestException {
+        final Long expirationTime = intervalTimes.get(profile.getProfileUUID());
+        if (expirationTime != null && Bukkit.getCurrentTick() < expirationTime) {
+            return true;
+        }
+
         final long rawAmount = interval.getValue(profile).longValue();
         final TimeUnit unit = timeUnit.getValue(profile);
-
         final long requiredInterval = unit.getTicks(rawAmount);
 
         if (requiredInterval <= 0) {
@@ -135,11 +138,6 @@ public class DamageObjective extends CountingObjective {
 
         final long currentTick = Bukkit.getCurrentTick();
         final UUID profileId = profile.getProfileUUID();
-
-        final Long expirationTime = intervalTimes.get(profileId);
-        if (expirationTime != null && currentTick < expirationTime) {
-            return true;
-        }
 
         intervalTimes.put(profileId, currentTick + requiredInterval);
         return false;

@@ -13,5 +13,10 @@ public enum DamageAction {
     /**
      * The player must deal damage to the entity.
      */
-    DEAL
+    DEAL,
+
+    /**
+     * The player must take/deal damage.
+     */
+    BOTH
 }

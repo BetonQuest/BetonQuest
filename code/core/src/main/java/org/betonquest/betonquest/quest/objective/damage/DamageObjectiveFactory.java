@@ -31,7 +31,7 @@ public class DamageObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
         final Argument<Number> targetAmount = instruction.number().get();
-        final Argument<DamageAction> action = instruction.enumeration(DamageAction.class).get("action", DamageAction.DEAL);
+        final Argument<DamageAction> action = instruction.enumeration(DamageAction.class).get("action", DamageAction.BOTH);
         final Argument<List<EntityDamageEvent.DamageCause>> type = instruction.enumeration(EntityDamageEvent.DamageCause.class)
                 .list().get("type", List.of(EntityDamageEvent.DamageCause.ENTITY_ATTACK));
         final Argument<Number> minAmount = instruction.number().get("min", 0.0);
