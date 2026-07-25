@@ -11,7 +11,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickCallback;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
-import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.conversation.Conversation;
@@ -93,7 +92,7 @@ public class DialogConvIO implements ConversationIO {
      *
      * @param conv                 the conversation this IO is part of
      * @param onlineProfile        the online profile of the player participating in the conversation
-     * @param config               the plugin configuration accessor
+     * @param settings             the dialog settings to use
      * @param colors               the colors used in the conversation
      * @param componentLineWrapper the component line wrapper used to calculate text widths
      * @param textParser           the text parser used to parse text
@@ -102,7 +101,7 @@ public class DialogConvIO implements ConversationIO {
     public DialogConvIO(
             final Conversation conv,
             final OnlineProfile onlineProfile,
-            final ConfigAccessor config,
+            final DialogSettings settings,
             final ConversationColors colors,
             final ComponentLineWrapper componentLineWrapper,
             final TextParser textParser
@@ -113,11 +112,10 @@ public class DialogConvIO implements ConversationIO {
         this.componentLineWrapper = componentLineWrapper;
         this.textParser = textParser;
 
-        final ConfigurationSection section = config.getConfigurationSection("conversation.io.dialog");
-        this.settings = new DialogSettings(section);
+        this.settings = settings;
 
-        this.cachedCloseText = textParser.parse(settings.closeButtonText);
-        this.isNpcTitleLayout = settings.layout == DialogLayout.NPC_TITLE;
+        this.cachedCloseText = textParser.parse(settings.closeButtonText());
+        this.isNpcTitleLayout = settings.layout() == DialogLayout.NPC_TITLE;
     }
 
     @Override
@@ -169,7 +167,7 @@ public class DialogConvIO implements ConversationIO {
         final Component title = isNpcTitleLayout ? colors.getNpc().append(name) : EMPTY;
 
         return DialogBase.builder(title)
-                .canCloseWithEscape(settings.closeButtonEnabled && settings.closeWithEscape)
+                .canCloseWithEscape(settings.closeButtonEnabled() && settings.closeWithEscape())
                 .body(List.of(body))
                 .build();
     }
@@ -194,7 +192,7 @@ public class DialogConvIO implements ConversationIO {
         }
 
         final MultiActionType.Builder typeBuilder = DialogType.multiAction(buttons).columns(1);
-        if (settings.closeButtonEnabled) {
+        if (settings.closeButtonEnabled()) {
             typeBuilder.exitAction(buildExitButton(dialogWidth));
         }
 
@@ -223,11 +221,11 @@ public class DialogConvIO implements ConversationIO {
      * @return the built ActionButton object
      */
     private ActionButton buildExitButton(final int totalWidth) {
-        final int buttonWidth = settings.closeButtonWidth;
+        final int buttonWidth = settings.closeButtonWidth();
 
         final int finalWidth = (buttonWidth > 0) ? buttonWidth
                 : (buttonWidth == -1) ? totalWidth
-                  : componentLineWrapper.width(cachedCloseText) + settings.buttonRenderPadding;
+                  : componentLineWrapper.width(cachedCloseText) + settings.buttonRenderPadding();
 
         return ActionButton.builder(cachedCloseText)
                 .width(finalWidth)
@@ -242,12 +240,12 @@ public class DialogConvIO implements ConversationIO {
      */
     private int computeDialogWidth() {
         int maxOptionWidth = 0;
-        final int padding = settings.buttonRenderPadding;
+        final int padding = settings.buttonRenderPadding();
 
         for (final Component option : options) {
             maxOptionWidth = Math.max(maxOptionWidth, componentLineWrapper.width(option) + padding);
         }
-        return Math.max(Math.max(maxOptionWidth, settings.defaultButtonWidth), 100);
+        return Math.max(Math.max(maxOptionWidth, settings.defaultButtonWidth()), 100);
     }
 
     /**

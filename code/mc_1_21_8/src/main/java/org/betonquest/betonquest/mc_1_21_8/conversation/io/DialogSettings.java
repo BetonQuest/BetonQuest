@@ -1,51 +1,56 @@
 package org.betonquest.betonquest.mc_1_21_8.conversation.io;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.argument.parser.EnumParser;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
 
 /**
  * Holds configuration settings for the Dialog conversation interface.
+ *
+ * @param layout              the layout type for the dialog
+ * @param buttonRenderPadding the padding used when rendering buttons
+ * @param defaultButtonWidth  the default width for buttons
+ * @param closeButtonEnabled  whether the close button is enabled
+ * @param closeButtonText     the text displayed on the close button
+ * @param closeButtonWidth    the width of the close button
+ * @param closeWithEscape     whether the dialog can be closed using the Escape key
  */
-class DialogSettings {
-
-    /** The layout type for the dialog. */
-    /* default */ final DialogLayout layout;
-
-    /** The padding used when rendering buttons. */
-    /* default */ final int buttonRenderPadding;
-
-    /** The default width for buttons. */
-    /* default */ final int defaultButtonWidth;
-
-    /** Whether the close button is enabled. */
-    /* default */ final boolean closeButtonEnabled;
-
-    /** The text displayed on the close button. */
-    /* default */ final String closeButtonText;
-
-    /** The width of the close button. */
-    /* default */ final int closeButtonWidth;
-
-    /** Whether the dialog can be closed using the Escape key. */
-    /* default */ final boolean closeWithEscape;
+public record DialogSettings(
+        DialogLayout layout,
+        int buttonRenderPadding,
+        int defaultButtonWidth,
+        boolean closeButtonEnabled,
+        String closeButtonText,
+        int closeButtonWidth,
+        boolean closeWithEscape
+) {
 
     /**
      * Constructs a new DialogSettings from the specified configuration section.
      *
      * @param section the configuration section containing dialog settings, or null for defaults
+     * @return the settings from the configuration setting
      * @throws QuestException if the configuration contains invalid dialog settings
      */
-    /* default */ DialogSettings(final ConfigurationSection section) throws QuestException {
-        final String layoutStr = section.getString("layout", "NPC_TITLE");
-        this.layout = DialogLayout.fromString(layoutStr);
+    public static DialogSettings fromSection(@Nullable final ConfigurationSection section) throws QuestException {
+        if (section == null) {
+            return new DialogSettings(DialogLayout.NPC_TITLE, 13, 250, true, "<red>close", 250, true);
+        }
+        final DialogLayout layout = new EnumParser<>(DialogLayout.class).apply(section.getString("layout", "NPC_TITLE"));
 
-        this.buttonRenderPadding = section.getInt("button-render-padding", 13);
-        this.defaultButtonWidth = section.getInt("default-button-width", 250);
+        final int buttonRenderPadding = section.getInt("button-render-padding", 13);
+        final int defaultButtonWidth = section.getInt("default-button-width", 250);
 
-        final ConfigurationSection close = section.getConfigurationSection("close-button");
-        this.closeButtonEnabled = close.getBoolean("enabled", true);
-        this.closeButtonText = close.getString("text", "<red>Close");
-        this.closeButtonWidth = close.getInt("width", 250);
-        this.closeWithEscape = close.getBoolean("close-with-escape", true);
+        final ConfigurationSection close = Objects.requireNonNullElseGet(section.getConfigurationSection("close-button"), YamlConfiguration::new);
+        final boolean closeButtonEnabled = close.getBoolean("enabled", true);
+        final String closeButtonText = close.getString("text", "<red>Close");
+        final int closeButtonWidth = close.getInt("width", 250);
+        final boolean closeWithEscape = close.getBoolean("close-with-escape", true);
+        return new DialogSettings(layout, buttonRenderPadding, defaultButtonWidth, closeButtonEnabled, closeButtonText,
+                closeButtonWidth, closeWithEscape);
     }
 }
