@@ -288,17 +288,17 @@ objectives:
 ## `Damage`
 
 __Context__: @snippet:objective-meta:online@  
-__Syntax__: `damage <amount> [action] [type] [min] [interval]`  
-__Description__: The player has to deal or receive damage to progress the objective.
+__Syntax__: `damage <amount> [action] [type] [min] [interval] [unit]`  
+__Description__: The player has to deal or receive damage (or both) to progress the objective.
 
-| Parameter   | Syntax                  | Default Value          | Explanation                                                                                                                                           |
-|-------------|-------------------------|------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
-| _Amount_    | Positive Number         | :octicons-x-circle-16: | Target progress count for the objective.                                                                                                              |
-| _action_    | action:`<deal/take>`    | `deal`                 | Whether the player must deal (`deal`) or receive (`take`) damage.                                                                                     |
-| _type_      | type:`<type1,type2>`    | `entity_attack`        | Allowed [`DamageCause`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDamageEvent.DamageCause.html) types (comma-separated).                                                                                                 |
-| _min_       | min:`number`            |  0.0                   | Minimum damage required in a single hit for the event to count.                                                                                       |
-| _interval_  | interval:`number`       |  0                     | Cooldown duration between registered damage events per player profile.                                                                                |
-| _unit_      | unit:`<unit>`           | `seconds`              | The unit of time. Either `minutes`, `seconds` or `ticks`.                                                                                             |
+| Parameter   | Syntax                   | Default Value          | Explanation                                                                                                                                           |
+|-------------|--------------------------|------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| _Amount_    | Positive Number          | :octicons-x-circle-16: | Target progress count for the objective.                                                                                                              |
+| _action_    | action:`<deal/take/both>`| `both`                 | Whether the player must deal (`deal`) or receive (`take`) damage.                                                                                     |
+| _type_      | type:`<type1,type2>`     | `entity_attack`        | Allowed [`DamageCause`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDamageEvent.DamageCause.html) types (comma-separated).                                                                                                 |
+| _min_       | min:`number`             |  0.0                   | Minimum damage required in a single hit for the event to count.                                                                                       |
+| _interval_  | interval:`number`        |  0                     | Cooldown duration between registered damage events per player profile.                                                                                |
+| _unit_      | unit:`<unit>`            | `seconds`              | The unit of time. Either `minutes`, `seconds` or `ticks`.                                                                                             |
 
 ```YAML title="Example"
 objectives:
@@ -306,6 +306,7 @@ objectives:
   elementalDamage: "damage 10 type:fire,lava"
   combatDamage: "damage 20 action:deal type:entity_attack min:5.0"
   poisonDamage: "damage 3 type:poison interval:40 unit:ticks"
+  projectileDamage: "damage 10 action:deal type:projectile min:2.5 interval:80 unit:ticks"
 ```
 
 ## `Enchant`
