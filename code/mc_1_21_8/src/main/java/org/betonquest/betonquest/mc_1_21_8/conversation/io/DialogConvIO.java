@@ -25,25 +25,42 @@ import java.util.List;
 /**
  * ConversationIO implementation using Paper's Dialog API for Minecraft 1.21.8.
  */
-@SuppressWarnings("PMD.TooManyMethods")
+@SuppressWarnings({"PMD.TooManyMethods", "UnstableApiUsage"})
 public class DialogConvIO implements ConversationIO {
 
-    /** The conversation instance. */
+    /**
+     * An empty component constant.
+     */
+    private static final Component EMPTY = Component.empty();
+
+    /**
+     * The conversation instance.
+     */
     private final Conversation conv;
 
-    /** The online profile of the player. */
+    /**
+     * The online profile of the player.
+     */
     private final OnlineProfile onlineProfile;
 
-    /** The colors used in the conversation. */
+    /**
+     * The colors used in the conversation.
+     */
     private final ConversationColors colors;
 
-    /** The line wrapper for calculating text widths. */
+    /**
+     * The line wrapper for calculating text widths.
+     */
     private final ComponentLineWrapper componentLineWrapper;
 
-    /** The settings for the dialog. */
+    /**
+     * The settings for the dialog.
+     */
     private final DialogSettings settings;
 
-    /** Cached component for the close button text. */
+    /**
+     * Cached component for the close button text.
+     */
     private final Component cachedCloseText;
 
     /**
@@ -51,19 +68,24 @@ public class DialogConvIO implements ConversationIO {
      */
     private final TextParser textParser;
 
-    /** Whether the layout is NPC title. */
+    /**
+     * Whether the layout is NPC title.
+     */
     private final boolean isNpcTitleLayout;
 
-    /** An empty component constant. */
-    private static final Component EMPTY = Component.empty();
-
-    /** The list of player options. */
+    /**
+     * The list of player options.
+     */
     private final List<Component> options = new ArrayList<>();
 
-    /** The text spoken by the NPC. */
+    /**
+     * The text spoken by the NPC.
+     */
     private Component npcText;
 
-    /** The name of the NPC. */
+    /**
+     * The name of the NPC.
+     */
     private Component npcName;
 
     /**
@@ -74,7 +96,7 @@ public class DialogConvIO implements ConversationIO {
      * @param config               the plugin configuration accessor
      * @param colors               the colors used in the conversation
      * @param componentLineWrapper the component line wrapper used to calculate text widths
-     * @param textParser            the text parser used to parse text
+     * @param textParser           the text parser used to parse text
      * @throws QuestException if the configuration contains invalid dialog settings
      */
     public DialogConvIO(
@@ -117,7 +139,8 @@ public class DialogConvIO implements ConversationIO {
     @Override
     public void display() {
         if (Component.empty().equals(npcText) && options.isEmpty()) {
-            end(() -> { });
+            end(() -> {
+            });
             return;
         }
 

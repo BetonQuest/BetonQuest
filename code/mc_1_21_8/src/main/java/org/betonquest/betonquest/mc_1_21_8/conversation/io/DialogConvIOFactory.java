@@ -15,15 +15,24 @@ import org.betonquest.betonquest.conversation.ConversationIOFactory;
  */
 public class DialogConvIOFactory implements ConversationIOFactory {
 
-    /** The plugin configuration accessor. */
+    /**
+     * The plugin configuration accessor.
+     */
     private final ConfigAccessor config;
 
-    /** The conversation colors. */
+    /**
+     * The conversation colors.
+     */
     private final ConversationColors colors;
 
-    /** The component line wrapper used to calculate text widths. */
+    /**
+     * The component line wrapper used to calculate text widths.
+     */
     private final ComponentLineWrapper componentLineWrapper;
 
+    /**
+     * The {@link TextParser} to use for parsing text.
+     */
     private final TextParser textParser;
 
     /**
