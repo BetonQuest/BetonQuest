@@ -22,6 +22,7 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.lib.version.MinecraftVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.UnsafeValues;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -34,17 +35,24 @@ import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.Nullable;
 import org.spigotmc.event.entity.EntityMountEvent;
 
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * Creates a fake armor stand and mounts the player on it.
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
 public class FakeArmorStandPassenger implements PacketListener, Listener {
+
+    /**
+     * The 26.2+ method to get the next entity requires a world.
+     */
+    private static final Function<World, Integer> NEXT_ID = nextIdFunction();
 
     /**
      * The plugin instance.
@@ -83,7 +91,30 @@ public class FakeArmorStandPassenger implements PacketListener, Listener {
         this.plugin = plugin;
         this.packetEventsAPI = packetEventsAPI;
         this.player = player;
-        this.armorStandId = Bukkit.getUnsafe().nextEntityId();
+        this.armorStandId = NEXT_ID.apply(player.getWorld());
+    }
+
+    @SuppressWarnings("deprecation")
+    private static Function<World, Integer> nextIdFunction() {
+        // TODO version switch:
+        //  Remove this code when only 26.2+ is supported
+        try {
+            Bukkit.getUnsafe().nextEntityId();
+            return world -> Bukkit.getUnsafe().nextEntityId();
+        } catch (final NoSuchMethodError ignored) {
+            try {
+                final Method idMethod = UnsafeValues.class.getMethod("nextEntityId", World.class);
+                return world -> {
+                    try {
+                        return (Integer) idMethod.invoke(Bukkit.getUnsafe(), world);
+                    } catch (final ReflectiveOperationException tja) {
+                        throw new IllegalStateException(tja);
+                    }
+                };
+            } catch (final ReflectiveOperationException tja) {
+                throw new IllegalStateException(tja);
+            }
+        }
     }
 
     /**
