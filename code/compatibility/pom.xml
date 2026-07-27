@@ -97,8 +97,8 @@
       <optional>true</optional>
       <exclusions>
         <exclusion>
-          <groupId>org.spigotmc</groupId>
-          <artifactId>spigot-api</artifactId>
+          <groupId>org.bukkit</groupId>
+          <artifactId>bukkit</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -115,12 +115,6 @@
       <version>${worldedit-bukkit.version}</version>
       <scope>provided</scope>
       <optional>true</optional>
-      <exclusions>
-        <exclusion>
-          <groupId>org.spigotmc</groupId>
-          <artifactId>spigot-api</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.sk89q.worldedit</groupId>
@@ -128,12 +122,6 @@
       <version>${worldedit-core.version}</version>
       <scope>provided</scope>
       <optional>true</optional>
-      <exclusions>
-        <exclusion>
-          <groupId>org.enginehub.lin-bus</groupId>
-          <artifactId>lin-bus-bom</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
 
     <!-- from hc repository -->
