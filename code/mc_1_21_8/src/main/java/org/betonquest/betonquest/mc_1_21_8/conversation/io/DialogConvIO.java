@@ -156,7 +156,7 @@ public class DialogConvIO implements ConversationIO {
         final Component title = isNpcTitleLayout ? colors.getNpc().append(name) : EMPTY;
 
         return DialogBase.builder(title)
-                .canCloseWithEscape(settings.closeButtonEnabled() && settings.closeWithEscape())
+                .canCloseWithEscape(settings.closeButtonEnabled() && settings.closeWithEscape() && !conv.isMovementBlock())
                 .body(List.of(body))
                 .build();
     }
@@ -181,7 +181,7 @@ public class DialogConvIO implements ConversationIO {
         }
 
         final MultiActionType.Builder typeBuilder = DialogType.multiAction(buttons).columns(1);
-        if (settings.closeButtonEnabled()) {
+        if (settings.closeButtonEnabled() && !conv.isMovementBlock()) {
             typeBuilder.exitAction(buildExitButton(dialogWidth));
         }
 
