@@ -49,7 +49,7 @@ public class ExperienceObjectiveFactory implements ObjectiveFactory {
         final BetonQuestLogger log = loggerFactory.create(ExperienceObjective.class);
         final IngameNotificationSender levelSender = new IngameNotificationSender(log,
                 localizations, instruction.getPackage(), instruction.getID().getFull(),
-                NotificationLevel.INFO, "level_to_gain");
+                NotificationLevel.INFO, "objective.level_to_gain");
         final ExperienceObjective objective = new ExperienceObjective(service, amount, levelSender);
         service.request(PlayerLevelChangeEvent.class).priority(EventPriority.MONITOR).onlineHandler(objective::onLevelChangeEvent)
                 .player(PlayerLevelChangeEvent::getPlayer).subscribe(true);

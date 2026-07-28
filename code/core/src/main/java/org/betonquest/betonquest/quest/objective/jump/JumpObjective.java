@@ -20,7 +20,7 @@ public class JumpObjective extends CountingObjective {
      * @throws QuestException if there is an error in the instruction
      */
     public JumpObjective(final ObjectiveService service, final Argument<Number> targetAmount) throws QuestException {
-        super(service, targetAmount, "times_to_jump");
+        super(service, targetAmount, "objective.times_to_jump");
     }
 
     /**

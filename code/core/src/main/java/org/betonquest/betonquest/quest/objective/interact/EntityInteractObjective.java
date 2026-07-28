@@ -103,7 +103,7 @@ public class EntityInteractObjective extends CountingObjective {
                                    @Nullable final Argument<String> realName, @Nullable final EquipmentSlot slot,
                                    final Argument<Optional<EntityType>> mobType, @Nullable final Argument<String> marked,
                                    final Argument<Interaction> interaction, final FlagArgument<Boolean> cancel) throws QuestException {
-        super(service, targetAmount, "mobs_to_click");
+        super(service, targetAmount, "objective.mobs_to_click");
         this.loc = loc;
         this.range = range;
         this.customName = customName;

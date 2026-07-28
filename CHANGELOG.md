@@ -7,9 +7,11 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
 - `haspoint` and `hasglobalpoint` conditions to check if a point is set
+- counting objective related translations in the lang files can now use all counting objective related placeholders
 ### Changed
 - `worldguard` integration version requirement to 7.0.0
 - `worldedit` integration version requirement to 7.3.0
+- counting objective related translations in the lang files were moved in an own `objective` section and use `{absoluteleft}` instead of `{amount}`
 ### Deprecated
 ### Removed
 ### Fixed

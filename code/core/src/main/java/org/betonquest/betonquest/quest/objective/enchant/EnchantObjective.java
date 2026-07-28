@@ -46,7 +46,7 @@ public class EnchantObjective extends CountingObjective {
      */
     public EnchantObjective(final ObjectiveService service, final Argument<Number> targetAmount, final Argument<ItemWrapper> item,
                             final Argument<List<EnchantmentData>> desiredEnchantments, final boolean requireOne) throws QuestException {
-        super(service, targetAmount, "items_to_enchant");
+        super(service, targetAmount, "objective.items_to_enchant");
         this.item = item;
         this.desiredEnchantments = desiredEnchantments;
         this.requireOne = requireOne;

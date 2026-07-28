@@ -1,3 +1,124 @@
+3.2.0.2:
+  - type: VALUE_REPLACE
+    key: objective.blocks_to_break
+    oldValue: "{amount}"
+    newValue: "{absoluteleft}"
+  - type: VALUE_REPLACE
+    key: objective.blocks_to_place
+    oldValue: "{amount}"
+    newValue: "{absoluteleft}"
+  - type: VALUE_REPLACE
+    key: objective.mobs_to_kill
+    oldValue: "{amount}"
+    newValue: "{absoluteleft}"
+  - type: VALUE_REPLACE
+    key: objective.mobs_to_click
+    oldValue: "{amount}"
+    newValue: "{absoluteleft}"
+  - type: VALUE_REPLACE
+    key: objective.players_to_kill
+    oldValue: "{amount}"
+    newValue: "{absoluteleft}"
+  - type: VALUE_REPLACE
+    key: objective.fish_to_catch
+    oldValue: "{amount}"
+    newValue: "{absoluteleft}"
+  - type: VALUE_REPLACE
+    key: objective.sheep_to_shear
+    oldValue: "{amount}"
+    newValue: "{absoluteleft}"
+  - type: VALUE_REPLACE
+    key: objective.potions_to_brew
+    oldValue: "{amount}"
+    newValue: "{absoluteleft}"
+  - type: VALUE_REPLACE
+    key: objective.animals_to_breed
+    oldValue: "{amount}"
+    newValue: "{absoluteleft}"
+  - type: VALUE_REPLACE
+    key: objective.items_to_pickup
+    oldValue: "{amount}"
+    newValue: "{absoluteleft}"
+  - type: VALUE_REPLACE
+    key: objective.items_to_smelt
+    oldValue: "{amount}"
+    newValue: "{absoluteleft}"
+  - type: VALUE_REPLACE
+    key: objective.items_to_craft
+    oldValue: "{amount}"
+    newValue: "{absoluteleft}"
+  - type: VALUE_REPLACE
+    key: objective.items_to_enchant
+    oldValue: "{amount}"
+    newValue: "{absoluteleft}"
+  - type: VALUE_REPLACE
+    key: objective.level_to_gain
+    oldValue: "{amount}"
+    newValue: "{absoluteleft}"
+  - type: VALUE_REPLACE
+    key: objective.payment_to_receive
+    oldValue: "{amount}"
+    newValue: "{absoluteleft}"
+  - type: VALUE_REPLACE
+    key: objective.animals_to_tame
+    oldValue: "{amount}"
+    newValue: "{absoluteleft}"
+  - type: VALUE_REPLACE
+    key: objective.times_to_jump
+    oldValue: "{amount}"
+    newValue: "{absoluteleft}"
+3.2.0.1:
+  - type: KEY_RENAME
+    oldKey: blocks_to_break
+    newKey: objective.blocks_to_break
+  - type: KEY_RENAME
+    oldKey: blocks_to_place
+    newKey: objective.blocks_to_place
+  - type: KEY_RENAME
+    oldKey: mobs_to_kill
+    newKey: objective.mobs_to_kill
+  - type: KEY_RENAME
+    oldKey: mobs_to_click
+    newKey: objective.mobs_to_click
+  - type: KEY_RENAME
+    oldKey: players_to_kill
+    newKey: objective.players_to_kill
+  - type: KEY_RENAME
+    oldKey: fish_to_catch
+    newKey: objective.fish_to_catch
+  - type: KEY_RENAME
+    oldKey: sheep_to_shear
+    newKey: objective.sheep_to_shear
+  - type: KEY_RENAME
+    oldKey: potions_to_brew
+    newKey: objective.potions_to_brew
+  - type: KEY_RENAME
+    oldKey: animals_to_breed
+    newKey: objective.animals_to_breed
+  - type: KEY_RENAME
+    oldKey: items_to_pickup
+    newKey: objective.items_to_pickup
+  - type: KEY_RENAME
+    oldKey: items_to_smelt
+    newKey: objective.items_to_smelt
+  - type: KEY_RENAME
+    oldKey: items_to_craft
+    newKey: objective.items_to_craft
+  - type: KEY_RENAME
+    oldKey: items_to_enchant
+    newKey: objective.items_to_enchant
+  - type: KEY_RENAME
+    oldKey: level_to_gain
+    newKey: objective.level_to_gain
+  - type: KEY_RENAME
+    oldKey: payment_to_receive
+    newKey: objective.payment_to_receive
+  - type: KEY_RENAME
+    oldKey: animals_to_tame
+    newKey: objective.animals_to_tame
+  - type: KEY_RENAME
+    oldKey: times_to_jump
+    newKey: objective.times_to_jump
 3.0.0.3:
   - type: SET
     key: conversation_nothing_to_start
