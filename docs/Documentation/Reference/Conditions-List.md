@@ -265,7 +265,7 @@ __Context__: @snippet:condition-meta:independent@
 __Syntax__: `globalpoint <category> <point> [equal]`  
 __Description__: Whether the specified global point category has the specified amount of points.
 
-See the [`point` condition](#point).
+See the [`point` condition](#point) for argument explanation.
 
 ```YAML title="Example"
 conditions:
@@ -304,7 +304,7 @@ __Context__: @snippet:condition-meta:independent@
 __Syntax__: `hasglobalpoint <category>`  
 __Description__: Whether the specified global point category has any amount.
 
-See the [`haspoint` condition](#haspoint).
+See the [`haspoint` condition](#haspoint) for argument explanation.
 
 ```YAML title="Example"
 conditions:
@@ -318,6 +318,8 @@ __Syntax__: `haspoint <category>`
 __Description__: Whether the player has any amount of points in the specified category.
 
 This explicit checks for any set value. `0` is a set value.
+
+See also the [`hasglobalpoint` condition](#hasglobalpoint).
 
 ```YAML title="Example"
 conditions:
@@ -615,6 +617,8 @@ __Description__: Whether the player has at least the specified amount of points 
 
 There are two required arguments, first is the category (string), second is the amount (integer).
 You can also add optional argument `equal` to accept only players with exactly equal amount of points.
+
+See also the [`globalpoint` condition](#globalpoint).
 
 ```YAML title="Example"
 conditions:
