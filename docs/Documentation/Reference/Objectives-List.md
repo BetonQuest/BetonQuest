@@ -233,6 +233,37 @@ objectives:
   craftSaddle: "craft saddle 5 actions:reward"
 ```
 
+## `Damage`
+    
+__Context__: @snippet:action-meta:online@  
+__Syntax__: `damage <amount> [action] [type] [min] [interval] [unit]`  
+__Description__: The player has to deal or receive damage (or both) to progress the objective.
+
+The objective tracks the cumulative amount of damage dealt or taken, rather than the number of hits. Each qualifying 
+damage event adds its value directly to the objective's progress.
+    
+| Parameter                      | Type                          | Explanation                                                                                                                                           |
+|--------------------------------|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| amount  <br>[Number]           | Required                      | Total accumulated damage                                                                                                                              |
+| action  <br>[DamageAction]     | Optional <br>[deal]           | Whether the player should deal (distribute), receive (take), or do both.                                                                              |
+| type    <br>List[DamageCause]  | Optional <br>[entity_attack]  | Allowed [`DamageCause`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDamageEvent.DamageCause.html) types (comma-separated). |
+| min     <br>[Double]           | Optional <br>[0.0]            | Minimum damage required in a single hit for the event to count                                                                                        |
+| interval<br>[Number]           | Optional <br>[0]              | Cooldown between each damage event recorded for the same player                                                                                       |
+| unit    <br>[TimeUnit]         | Optional <br>[seconds]        | The unit of time (seconds, minutes, hours...)                                                                                                         |
+
+```YAML title="Examples"
+objectives:
+  basicDamage: "damage 5"
+  elementalDamage: "damage 10 action:both type:fire,lava"
+  combatDamage: "damage 20 action:deal type:entity_attack min:5.0"
+  poisonDamage: "damage 3 type:poison interval:40 unit:ticks"
+  projectileDamage: "damage 10 action:deal type:projectile min:2.5 interval:80 unit:ticks"
+```
+
+*[DamageAction]: BOTH, DEAL, TAKE
+*[DamageCause]: Click the link below for more information.
+*[TimeUnit]: TICKS, SECONDS, MINUTES, HOURS, DAYS, WEEKS, MONTHS, YEARS
+
 ## `Delay`
 
 __Context__: @snippet:objective-meta:online@  
@@ -283,30 +314,6 @@ You can also specify the `respawn` location to which the player will be teleport
 objectives:
   respawn: "die respawn:100;200;300;world;90;0 actions:respawned"
   preventDying: "die cancel respawn:100;200;300;world;90;0 actions:respawned"
-```
-
-## `Damage`
-
-__Context__: @snippet:objective-meta:online@  
-__Syntax__: `damage <amount> [action] [type] [min] [interval] [unit]`  
-__Description__: The player has to deal or receive damage (or both) to progress the objective.
-
-| Parameter   | Syntax                   | Default Value          | Explanation                                                                                                                                           |
-|-------------|--------------------------|------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
-| _Amount_    | Positive Number          | :octicons-x-circle-16: | Target progress count for the objective.                                                                                                              |
-| _action_    | action:`<deal/take/both>`| `both`                 | Whether the player must deal (`deal`) or receive (`take`) damage.                                                                                     |
-| _type_      | type:`<type1,type2>`     | `entity_attack`        | Allowed [`DamageCause`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDamageEvent.DamageCause.html) types (comma-separated).                                                                                                 |
-| _min_       | min:`number`             |  0.0                   | Minimum damage required in a single hit for the event to count.                                                                                       |
-| _interval_  | interval:`number`        |  0                     | Cooldown duration between registered damage events per player profile.                                                                                |
-| _unit_      | unit:`<unit>`            | `seconds`              | The unit of time. Either `minutes`, `seconds` or `ticks`.                                                                                             |
-
-```YAML title="Example"
-objectives:
-  basicDamage: "damage 5"
-  elementalDamage: "damage 10 type:fire,lava"
-  combatDamage: "damage 20 action:deal type:entity_attack min:5.0"
-  poisonDamage: "damage 3 type:poison interval:40 unit:ticks"
-  projectileDamage: "damage 10 action:deal type:projectile min:2.5 interval:80 unit:ticks"
 ```
 
 ## `Enchant`

@@ -6,12 +6,10 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.lib.argument.type.TimeUnit;
-import org.bukkit.Bukkit;
+import org.betonquest.betonquest.lib.profile.ProfileKeyMap;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -47,7 +45,7 @@ public class DamageObjective extends CountingObjective {
     /**
      * Stores the last damage event timestamp in milliseconds for each profile.
      */
-    private final Map<UUID, Long> intervalTimes = new ConcurrentHashMap<>();
+    private final ProfileKeyMap<Long> intervalTimes;
 
     /**
      * Constructs a new {@code DamageObjective} for the given {@code Instruction}.
@@ -71,6 +69,10 @@ public class DamageObjective extends CountingObjective {
         this.minAmount = minAmount;
         this.interval = interval;
         this.timeUnit = timeUnit;
+        this.intervalTimes = new ProfileKeyMap<>(
+                service.getProfileProvider(),
+                new ConcurrentHashMap<>()
+        );
     }
 
     /**
@@ -107,7 +109,8 @@ public class DamageObjective extends CountingObjective {
             return;
         }
 
-        getCountingData(profile).progress();
+        final int dmg = (int) Math.round(event.getDamage());
+        getCountingData(profile).progress(dmg);
         completeIfDoneOrNotify(profile);
     }
 
@@ -123,23 +126,21 @@ public class DamageObjective extends CountingObjective {
     }
 
     private boolean checkIsOnCooldown(final OnlineProfile profile) throws QuestException {
-        final Long expirationTime = intervalTimes.get(profile.getProfileUUID());
-        if (expirationTime != null && Bukkit.getCurrentTick() < expirationTime) {
+        final Long expirationTimeMillis = intervalTimes.get(profile);
+        if (expirationTimeMillis != null && System.currentTimeMillis() < expirationTimeMillis) {
             return true;
         }
 
         final long rawAmount = interval.getValue(profile).longValue();
         final TimeUnit unit = timeUnit.getValue(profile);
-        final long requiredInterval = unit.getTicks(rawAmount);
+        final long requiredIntervalMillis = unit.getTicks(rawAmount) * 50;
 
-        if (requiredInterval <= 0) {
+        if (requiredIntervalMillis <= 0) {
             return false;
         }
 
-        final long currentTick = Bukkit.getCurrentTick();
-        final UUID profileId = profile.getProfileUUID();
-
-        intervalTimes.put(profileId, currentTick + requiredInterval);
+        final long currentTimeMillis = System.currentTimeMillis();
+        intervalTimes.put(profile, currentTimeMillis + requiredIntervalMillis);
         return false;
     }
 }
