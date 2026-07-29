@@ -12,11 +12,11 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.api.service.npc.NpcManager;
+import org.betonquest.betonquest.lib.profile.ProfileKeyMap;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -49,9 +49,9 @@ public class NpcRangeObjective extends DefaultObjective {
     private final QuestBiPredicate<Profile, Boolean> checkStuff;
 
     /**
-     * Stores the state of player to ensure correct completion based on the {@link Trigger}.
+     * Stores the state of the profile to ensure correct completion based on the {@link Trigger}.
      */
-    private final Map<UUID, Boolean> playersInRange;
+    private final Map<Profile, Boolean> playersInRange;
 
     /**
      * BukkitTask ID to stop range check loop.
@@ -74,42 +74,39 @@ public class NpcRangeObjective extends DefaultObjective {
         this.npcIds = npcIds;
         this.radius = radius;
         this.checkStuff = getStuff(trigger);
-        this.playersInRange = new HashMap<>();
+        this.playersInRange = new ProfileKeyMap<>(service.getProfileProvider());
         this.npcMoveTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(BetonQuest.getInstance(),
                 () -> getExceptionHandler().handle(this::loop), 0, 20);
     }
 
     private QuestBiPredicate<Profile, Boolean> getStuff(final Argument<Trigger> trigger) {
-        return (profile, inside) -> {
-            final UUID uuid = profile.getPlayerUUID();
-            return switch (trigger.getValue(profile)) {
-                case INSIDE -> !inside;
-                case OUTSIDE -> inside;
-                case ENTER -> {
-                    if (playersInRange.containsKey(uuid)) {
-                        if (playersInRange.get(uuid) || !inside) {
-                            playersInRange.put(uuid, inside);
-                            yield true;
-                        }
-                    } else {
-                        playersInRange.put(uuid, inside);
+        return (profile, inside) -> switch (trigger.getValue(profile)) {
+            case INSIDE -> !inside;
+            case OUTSIDE -> inside;
+            case ENTER -> {
+                if (playersInRange.containsKey(profile)) {
+                    if (playersInRange.get(profile) || !inside) {
+                        playersInRange.put(profile, inside);
                         yield true;
                     }
-                    yield false;
+                } else {
+                    playersInRange.put(profile, inside);
+                    yield true;
                 }
-                case LEAVE -> {
-                    if (playersInRange.containsKey(uuid)) {
-                        if (!playersInRange.get(uuid) || inside) {
-                            playersInRange.put(uuid, inside);
-                            yield true;
-                        }
-                    } else {
-                        playersInRange.put(uuid, inside);
+                yield false;
+            }
+            case LEAVE -> {
+                if (playersInRange.containsKey(profile)) {
+                    if (!playersInRange.get(profile) || inside) {
+                        playersInRange.put(profile, inside);
                         yield true;
                     }
-                    yield false;
+                } else {
+                    playersInRange.put(profile, inside);
+                    yield true;
                 }
-            };
+                yield false;
+            }
         };
     }
 
@@ -181,7 +178,7 @@ public class NpcRangeObjective extends DefaultObjective {
         if (!getService().checkConditions(profile)) {
             return;
         }
-        playersInRange.remove(profile.getPlayerUUID());
+        playersInRange.remove(profile);
         getService().complete(profile);
     }
 }
