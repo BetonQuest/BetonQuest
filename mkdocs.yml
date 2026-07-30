@@ -53,6 +53,7 @@ nav:
               - 'Actions': Tutorials/Getting-Started/Basics/Actions.md
               - 'Objectives': Tutorials/Getting-Started/Basics/Objectives.md
               - 'Conditions': Tutorials/Getting-Started/Basics/Conditions.md
+              - 'Placeholders': Tutorials/Getting-Started/Basics/Placeholders.md
       - 'Features':
           - 'Tracking Quest Progress':
               - 'Overview': Tutorials/Features/Tracking-Quest-Progress/Overview.md

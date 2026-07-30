@@ -434,6 +434,11 @@ in actions.
 You've learned what conditions are and how to they are used in objectives, conversations and actions.
 More conditions can be found in the [conditions list](../../../Documentation/Reference/Conditions-List.md).
 ---
+<div class="grid" markdown style="text-align: center;">
 <div markdown style="text-align: left;">
-[:octicons-arrow-left-16: Objectives](./Objectives.md){ .md-button .md-button--primary}
+[:octicons-arrow-left-16: Objectives](./Objectives.md){ .md-button .md-button--primary }
+</div>
+<div markdown style="text-align: right;">
+[Placeholders :octicons-arrow-right-16:](./Placeholders.md){ .md-button .md-button--primary}
+</div>
 </div>
