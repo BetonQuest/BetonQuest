@@ -33,7 +33,7 @@ public class CraftingObjective extends CountingObjective {
      */
     public CraftingObjective(final ObjectiveService service, final Argument<Number> targetAmount,
                              final Argument<ItemWrapper> item) throws QuestException {
-        super(service, targetAmount, "items_to_craft");
+        super(service, targetAmount, "objective.items_to_craft");
         this.item = item;
     }
 

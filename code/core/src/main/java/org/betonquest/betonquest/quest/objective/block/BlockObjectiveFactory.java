@@ -55,9 +55,9 @@ public class BlockObjectiveFactory implements ObjectiveFactory {
         final FlagArgument<Boolean> ignoreCancel = instruction.bool().getFlag("ignorecancel", true);
         final BetonQuestLogger log = loggerFactory.create(BlockObjective.class);
         final IngameNotificationSender blockBreakSender = new IngameNotificationSender(log, localizations, instruction.getPackage(),
-                instruction.getID().getFull(), NotificationLevel.INFO, "blocks_to_break");
+                instruction.getID().getFull(), NotificationLevel.INFO, "objective.blocks_to_break");
         final IngameNotificationSender blockPlaceSender = new IngameNotificationSender(log, localizations, instruction.getPackage(),
-                instruction.getID().getFull(), NotificationLevel.INFO, "blocks_to_place");
+                instruction.getID().getFull(), NotificationLevel.INFO, "objective.blocks_to_place");
         final BlockObjective objective = new BlockObjective(service, targetAmount, selector, exactMatch, noSafety,
                 location, region, ignoreCancel, blockBreakSender, blockPlaceSender);
         service.request(BlockPlaceEvent.class).priority(EventPriority.HIGHEST).onlineHandler(objective::onBlockPlace)

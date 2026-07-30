@@ -13,10 +13,10 @@ public class QuoteEndState implements TokenizerState {
 
     @Override
     public TokenizerState parseNext(final TokenizerContext ctx, final int codePoint) throws TokenizerException {
-        if (Character.isWhitespace(codePoint)) {
+        if (ctx.settings().isSeparator(codePoint)) {
             return new NoWordState();
         }
-        throw new TokenizerException("Expected whitespace or nothing but got: " + Character.toString(codePoint));
+        throw new TokenizerException("Expected separator or nothing but got: '%s'".formatted(Character.toString(codePoint)));
     }
 
     @Override

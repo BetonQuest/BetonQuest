@@ -4,7 +4,9 @@ import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
+import org.betonquest.betonquest.lib.profile.ProfileKeyMap;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -16,10 +18,8 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.vehicle.VehicleMoveEvent;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -34,19 +34,19 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public abstract class AbstractLocationObjective extends DefaultObjective {
 
     /**
-     * Should entry be checked instead of being inside the location of not.
+     * Should entry be checked instead of being inside the location or not.
      */
     private final FlagArgument<Boolean> entry;
 
     /**
-     * Should exit be checked instead of being inside the location of not.
+     * Should exit be checked instead of being inside the location or not.
      */
     private final FlagArgument<Boolean> exit;
 
     /**
-     * A map of players and if they are inside the location.
+     * A map of profiles and if they are inside the location.
      */
-    private final Map<UUID, Boolean> playersInsideRegion;
+    private final Map<Profile, Boolean> playersInsideRegion;
 
     /**
      * The constructor takes an Instruction object as a parameter and throws a QuestException.
@@ -55,13 +55,12 @@ public abstract class AbstractLocationObjective extends DefaultObjective {
      * @param service the ObjectiveFactoryService to be used in the constructor
      * @param entry   the entry flag for the location objective
      * @param exit    the exit flag for the location objective
-     * @throws QuestException if there is an error while parsing the instruction
      */
-    public AbstractLocationObjective(final ObjectiveService service, final FlagArgument<Boolean> entry, final FlagArgument<Boolean> exit) throws QuestException {
+    public AbstractLocationObjective(final ObjectiveService service, final FlagArgument<Boolean> entry, final FlagArgument<Boolean> exit) {
         super(service);
         this.entry = entry;
         this.exit = exit;
-        playersInsideRegion = new HashMap<>();
+        playersInsideRegion = new ProfileKeyMap<>(service.getProfileProvider());
     }
 
     /**
@@ -104,7 +103,7 @@ public abstract class AbstractLocationObjective extends DefaultObjective {
      * @param onlineProfile the online profile of the player
      */
     public void onPlayerQuit(final PlayerQuitEvent event, final OnlineProfile onlineProfile) {
-        playersInsideRegion.remove(onlineProfile.getProfileUUID());
+        playersInsideRegion.remove(onlineProfile);
     }
 
     /**
@@ -183,18 +182,18 @@ public abstract class AbstractLocationObjective extends DefaultObjective {
     }
 
     private void checkLocationEnterExit(final OnlineProfile onlineProfile, final boolean toInside) throws QuestException {
-        if (!playersInsideRegion.containsKey(onlineProfile.getProfileUUID())) {
-            playersInsideRegion.put(onlineProfile.getProfileUUID(), toInside);
+        if (!playersInsideRegion.containsKey(onlineProfile)) {
+            playersInsideRegion.put(onlineProfile, toInside);
             return;
         }
 
-        final boolean fromInside = playersInsideRegion.get(onlineProfile.getProfileUUID());
-        playersInsideRegion.put(onlineProfile.getProfileUUID(), toInside);
+        final boolean fromInside = playersInsideRegion.get(onlineProfile);
+        playersInsideRegion.put(onlineProfile, toInside);
 
         if (entry.getValue(onlineProfile).orElse(false) && toInside && !fromInside
                 || exit.getValue(onlineProfile).orElse(false) && fromInside && !toInside) {
             getService().complete(onlineProfile);
-            playersInsideRegion.remove(onlineProfile.getProfileUUID());
+            playersInsideRegion.remove(onlineProfile);
         }
     }
 

@@ -1,10 +1,12 @@
 package org.betonquest.betonquest.api.instruction;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.tokenizer.Token;
 import org.betonquest.betonquest.api.instruction.tokenizer.Tokenizer;
 import org.betonquest.betonquest.api.instruction.tokenizer.TokenizerException;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Represents the parts of an instruction.
@@ -29,7 +31,7 @@ public class InstructionPartsArray implements InstructionParts {
      * @throws TokenizerException If the tokenizer fails to tokenize the instruction.
      */
     public InstructionPartsArray(final Tokenizer tokenizer, final String instruction) throws TokenizerException {
-        this.parts = tokenizer.tokens(instruction);
+        this.parts = Stream.of(tokenizer.tokens(instruction)).map(Token::resolveValue).toArray(String[]::new);
         this.index = 0;
     }
 

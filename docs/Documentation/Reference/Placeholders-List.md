@@ -81,6 +81,8 @@ __Description__: Represents the number of global points in the specified categor
 It is also possible to display the remaining number of points to reach a certain number of points.
 The first argument is the name of a category and the second argument is either `amount` or `left:x`, where `x` is a number.
 
+See also the [`point` placeholder](#point).
+
 ```scss title="Example"
 %globalpoint.global_knownusers.amount%
 %globalpoint.global_knownusers.left:100%
@@ -267,9 +269,11 @@ The placeholder `%player%` is the same as `%player.name%` and will display the n
 __Context__: @snippet:placeholder-meta:online-offline@  
 __Syntax__: `point.<category>.<amount|left>`  
 __Description__: Represents the number of points in the specified category.
- 
+
 It is also possible to display the remaining number of points to reach a certain number of points.
 The first argument is the name of a category and the second argument is either `amount` or `left:x`, where `x` is a number.
+
+See also the [`globalpoint` placeholder](#globalpoint).
 
 ```scss title="Example"
 %point.reputation.amount%

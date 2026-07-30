@@ -50,7 +50,7 @@ public class CitizensAdapter implements Npc<NPC> {
     public Optional<Location> getLocation() {
         final Entity entity = npc.getEntity();
         if (entity == null) {
-            return Optional.empty();
+            return Optional.ofNullable(npc.getStoredLocation());
         }
         return Optional.of(entity.getLocation());
     }

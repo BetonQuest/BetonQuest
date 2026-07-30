@@ -6,11 +6,19 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
-- `dialog` conversation IO settings to configure
+- `haspoint` and `hasglobalpoint` conditions to check if a point is set
+- counting objective related translations in the lang files can now use all counting objective related placeholders
+- `dialog` conversation IO
 ### Changed
+- `worldguard` integration version requirement to 7.0.0
+- `worldedit` integration version requirement to 7.3.0
+- counting objective related translations in the lang files were moved in an own `objective` section and use `{absoluteleft}` instead of `{amount}`
+- `citizens` returns the stored `location` instead of nothing when not spawned
 ### Deprecated
 ### Removed
 ### Fixed
+- `freeze` action and `packetevents` conversation io on MC 26.2+
+- NPE in PacketEvents Interceptor when resending messages to offline players
 ### Security
 
 ## [3.1.0] - 2026-07-19

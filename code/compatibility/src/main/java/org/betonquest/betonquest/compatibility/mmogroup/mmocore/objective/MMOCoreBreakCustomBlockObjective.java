@@ -31,7 +31,7 @@ public class MMOCoreBreakCustomBlockObjective extends CountingObjective {
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
     public MMOCoreBreakCustomBlockObjective(final ObjectiveService service, final Argument<Number> targetAmount, final Argument<String> desiredBlockId) throws QuestException {
-        super(service, targetAmount, "blocks_to_break");
+        super(service, targetAmount, "objective.blocks_to_break");
         this.desiredBlockId = desiredBlockId;
     }
 

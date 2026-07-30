@@ -14,12 +14,16 @@ public class QuotedWordState implements TokenizerState {
 
     @Override
     public TokenizerState parseNext(final TokenizerContext ctx, final int codePoint) {
-        if (codePoint == QuotingTokenizer.ESCAPE) {
+        if (ctx.settings().isEscape(codePoint)) {
             return new EscapeState(this);
         }
-        if (codePoint == QuotingTokenizer.QUOTE) {
+        if (ctx.settings().isEndQuote(codePoint)) {
             ctx.endWord();
             return new QuoteEndState();
+        }
+        if (ctx.settings().isBeginQuote(codePoint)) {
+            ctx.beginWord();
+            return new QuotedWordState();
         }
         ctx.appendCodePoint(codePoint);
         return this;

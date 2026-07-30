@@ -131,7 +131,14 @@ public abstract class CountingObjective extends DefaultObjective {
             return true;
         }
         if (notificationInterval(profile) > 0 && notificationSender != null && shouldNotify(profile, data) && profile.getOnlineProfile().isPresent()) {
-            notificationSender.sendNotification(profile, new VariableReplacement("amount", Component.text(Math.abs(data.getAmountLeft()))));
+            notificationSender.sendNotification(profile,
+                    new VariableReplacement("amount", Component.text(data.getCompletedAmount())),
+                    new VariableReplacement("left", Component.text(data.getAmountLeft())),
+                    new VariableReplacement("total", Component.text(data.getTargetAmount())),
+                    new VariableReplacement("absoluteamount", Component.text(Math.abs(data.getCompletedAmount()))),
+                    new VariableReplacement("absoluteleft", Component.text(Math.abs(data.getAmountLeft()))),
+                    new VariableReplacement("absolutetotal", Component.text(Math.abs(data.getTargetAmount())))
+            );
         }
         return false;
     }

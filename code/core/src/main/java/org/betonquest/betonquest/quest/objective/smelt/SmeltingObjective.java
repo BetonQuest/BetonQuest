@@ -33,7 +33,7 @@ public class SmeltingObjective extends CountingObjective {
      */
     public SmeltingObjective(final ObjectiveService service, final Argument<Number> targetAmount, final Argument<ItemWrapper> item)
             throws QuestException {
-        super(service, targetAmount, "items_to_smelt");
+        super(service, targetAmount, "objective.items_to_smelt");
         this.item = item;
     }
 

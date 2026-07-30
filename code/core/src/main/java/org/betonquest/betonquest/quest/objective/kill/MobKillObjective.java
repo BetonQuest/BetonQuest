@@ -50,7 +50,7 @@ public class MobKillObjective extends CountingObjective {
     public MobKillObjective(final ObjectiveService service, final Argument<Number> targetAmount,
                             final Argument<List<EntityType>> entities, @Nullable final Argument<String> name,
                             @Nullable final Argument<String> marked) throws QuestException {
-        super(service, targetAmount, "mobs_to_kill");
+        super(service, targetAmount, "objective.mobs_to_kill");
         this.entities = entities;
         this.name = name;
         this.marked = marked;

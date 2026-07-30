@@ -26,7 +26,7 @@ public class IABlockBreakObjectiveFactory implements ObjectiveFactory {
     public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
         final Argument<CustomStack> itemID = instruction.parse(ItemsAdderParser.ITEMS_ADDER_PARSER).get();
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get("amount", 1);
-        final IABlockObjective objective = new IABlockObjective(service, targetAmount, "blocks_to_break", itemID);
+        final IABlockObjective objective = new IABlockObjective(service, targetAmount, "objective.blocks_to_break", itemID);
         service.request(CustomBlockBreakEvent.class)
                 .priority(EventPriority.MONITOR)
                 .onlineHandler((event, profile) -> objective.handle(event.getNamespacedID(), profile))

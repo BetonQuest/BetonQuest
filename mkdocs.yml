@@ -48,11 +48,17 @@ nav:
               - 'Setting up VSCode': Tutorials/Getting-Started/Setup-Guide/Setting-up-VSCode.md
               - 'VSCode Basics': Tutorials/Getting-Started/Setup-Guide/VSCode-Basics.md
           - 'Basics':
-              - 'YAML': Tutorials/Getting-Started/Basics/YAML-Basics.md
+              - 'YAML': Tutorials/Getting-Started/Basics/YAML.md
               - 'Conversations': Tutorials/Getting-Started/Basics/Conversations.md
               - 'Actions': Tutorials/Getting-Started/Basics/Actions.md
               - 'Objectives': Tutorials/Getting-Started/Basics/Objectives.md
               - 'Conditions': Tutorials/Getting-Started/Basics/Conditions.md
+              - 'Placeholders': Tutorials/Getting-Started/Basics/Placeholders.md
+      - 'Tools':
+          - 'Handling YAML Errors': Tutorials/Tools/Handling-YAML-Errors.md
+          - 'Debugging Quest Logic': Tutorials/Tools/Debugging-Quest-Logic.md
+      - 'Syntax':
+          - 'Quest Packages': Tutorials/Syntax/Quest-Packages.md
       - 'Features':
           - 'Tracking Quest Progress':
               - 'Overview': Tutorials/Features/Tracking-Quest-Progress/Overview.md
@@ -64,11 +70,6 @@ nav:
               - 'Daily Repetition': Tutorials/Features/Schedules/Daily-Repetition.md
               - 'Delayed Quest Steps': Tutorials/Features/Schedules/Delayed-Quest-Steps.md
               - 'Limited Time Events': Tutorials/Features/Schedules/Limited-Time-Events.md
-      - 'Tools':
-          - 'Handling YAML Errors': Tutorials/Tools/YAML-Errors.md
-          - 'Debugging Quest Logic': Tutorials/Tools/Debugging-Quest-Logic.md
-      - 'Syntax':
-          - 'Quest Packages': Tutorials/Syntax/Quest-Packages.md
       - 'Quick Guides':
           - 'Quest Progress & State':
               - 'Displaying Progress': Tutorials/Quick-Guides/Quest-Progress-and-State/Displaying-Progress.md
@@ -81,7 +82,7 @@ nav:
               - 'Compass & Navigation Hints': Tutorials/Quick-Guides/Player-UI-and-Feedback/Compass-Navigation-Hint.md
               - 'Language-Specific Text': Tutorials/Quick-Guides/Player-UI-and-Feedback/Language-Specific-Text.md
           - 'Quest Flow & Lifecycle':
-              - 'Quest Cancelers': Tutorials/Quick-Guides/Quest-Flow-and-Lifecycle/Using-Quest-Cancelers.md
+              - 'Quest Cancelers': Tutorials/Quick-Guides/Quest-Flow-and-Lifecycle/Quest-Cancelers.md
               - 'Random Daily Quest': Tutorials/Quick-Guides/Quest-Flow-and-Lifecycle/Random-Daily-Quest.md
           - 'Rewards & Economy':
               - 'Rewarding Money': Tutorials/Quick-Guides/Rewards-and-Economy/Rewarding-Money.md
@@ -89,7 +90,7 @@ nav:
               - 'Complex Quest Items': Tutorials/Quick-Guides/Items-and-Inventory/Complex-Quest-Items.md
           - 'Multiplayer & Global Quests':
               - 'Party Quests': Tutorials/Quick-Guides/Multiplayer-and-Global-Quests/Party-Quests.md
-              - 'Global Daily Quests': Tutorials/Quick-Guides/Multiplayer-and-Global-Quests/Global-Random-Daily-Quests.md
+              - 'Global Daily Quests': Tutorials/Quick-Guides/Multiplayer-and-Global-Quests/Global-Daily-Quests.md
               - 'Server Wide Quests': Tutorials/Quick-Guides/Multiplayer-and-Global-Quests/Server-Wide-Quests.md
           - 'World, NPCs & Visibility':
               - 'NPC Conversations': Tutorials/Quick-Guides/World-NPCs-and-Visibility/NPC-Conversations.md

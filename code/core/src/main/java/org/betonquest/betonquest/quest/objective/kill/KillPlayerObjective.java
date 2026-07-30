@@ -45,7 +45,7 @@ public class KillPlayerObjective extends CountingObjective {
      */
     public KillPlayerObjective(final ObjectiveService service, final ConditionManager conditionManager, final Argument<Number> targetAmount,
                                @Nullable final Argument<String> name, final Argument<List<ConditionIdentifier>> required) throws QuestException {
-        super(service, targetAmount, "players_to_kill");
+        super(service, targetAmount, "objective.players_to_kill");
         this.conditionManager = conditionManager;
         this.name = name;
         this.required = required;
