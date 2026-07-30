@@ -106,7 +106,9 @@ public class PacketEventsInterceptor implements Interceptor, PacketListener {
     @Override
     public void sendMessage(final Component component) {
         final User user = packetEventsAPI.getPlayerManager().getUser(onlineProfile.getPlayer());
-        user.sendPacketSilently(PacketEventsIntegrator.MESSAGE_FUNCTION.apply(component));
+        if (user != null) {
+            user.sendPacketSilently(PacketEventsIntegrator.MESSAGE_FUNCTION.apply(component));
+        }
     }
 
     @Override
