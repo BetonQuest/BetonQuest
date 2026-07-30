@@ -39,7 +39,7 @@ public class ShearObjective extends CountingObjective {
      */
     public ShearObjective(final ObjectiveService service, final Argument<Number> targetAmount, @Nullable final Argument<String> name,
                           @Nullable final Argument<DyeColor> color) throws QuestException {
-        super(service, targetAmount, "sheep_to_shear");
+        super(service, targetAmount, "objective.sheep_to_shear");
         this.name = name;
         this.color = color;
     }

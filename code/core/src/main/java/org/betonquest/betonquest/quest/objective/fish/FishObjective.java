@@ -49,7 +49,7 @@ public class FishObjective extends CountingObjective {
     public FishObjective(final ObjectiveService service, final Argument<Number> targetAmount,
                          final Argument<ItemWrapper> item, @Nullable final Argument<Location> hookTargetLocation,
                          @Nullable final Argument<Number> range) throws QuestException {
-        super(service, targetAmount, "fish_to_catch");
+        super(service, targetAmount, "objective.fish_to_catch");
         this.item = item;
         this.hookTargetLocation = hookTargetLocation;
         this.range = range;

@@ -86,7 +86,7 @@ public class MythicMobKillObjective extends CountingObjective {
             final Argument<IdentifierMode> mode, final Argument<Number> minMobLevel, final Argument<Number> maxMobLevel,
             final Argument<Number> deathRadiusAllPlayers, final Argument<Number> neutralDeathRadiusAllPlayers,
             @Nullable final Argument<String> marked) throws QuestException {
-        super(service, targetAmount, "mobs_to_kill");
+        super(service, targetAmount, "objective.mobs_to_kill");
         this.identifiers = identifiers;
         this.mode = mode;
         this.minMobLevel = minMobLevel;

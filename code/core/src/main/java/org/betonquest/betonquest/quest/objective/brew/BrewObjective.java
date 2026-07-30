@@ -57,7 +57,7 @@ public class BrewObjective extends CountingObjective {
      */
     public BrewObjective(final ObjectiveService service, final Argument<Number> targetAmount, final Plugin plugin,
                          final ProfileProvider profileProvider, final Argument<ItemWrapper> potion) throws QuestException {
-        super(service, targetAmount, "potions_to_brew");
+        super(service, targetAmount, "objective.potions_to_brew");
         this.plugin = plugin;
         this.potion = potion;
         this.locations = new ProfileValueMap<>(profileProvider);

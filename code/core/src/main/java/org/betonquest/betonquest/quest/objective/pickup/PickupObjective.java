@@ -31,7 +31,7 @@ public class PickupObjective extends CountingObjective {
      */
     public PickupObjective(final ObjectiveService service, final Argument<Number> targetAmount,
                            final Argument<List<ItemWrapper>> pickupItems) throws QuestException {
-        super(service, targetAmount, "items_to_pickup");
+        super(service, targetAmount, "objective.items_to_pickup");
         this.pickupItems = pickupItems;
     }
 

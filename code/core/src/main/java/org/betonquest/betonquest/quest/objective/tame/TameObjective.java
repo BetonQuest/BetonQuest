@@ -28,7 +28,7 @@ public class TameObjective extends CountingObjective {
      */
     public TameObjective(final ObjectiveService service, final Argument<Number> targetAmount,
                          final Argument<EntityType> type) throws QuestException {
-        super(service, targetAmount, "animals_to_tame");
+        super(service, targetAmount, "objective.animals_to_tame");
         this.type = type;
     }
 

@@ -45,7 +45,7 @@ public class PaymentObjectiveFactory implements ObjectiveFactory {
         final BetonQuestLogger log = loggerFactory.create(PaymentObjective.class);
         final IngameNotificationSender paymentSender = new IngameNotificationSender(log,
                 localizations, instruction.getPackage(), instruction.getID().getFull(),
-                NotificationLevel.INFO, "payment_to_receive");
+                NotificationLevel.INFO, "objective.payment_to_receive");
         final PaymentObjective objective = new PaymentObjective(service, targetAmount, paymentSender);
         service.request(JobsPaymentEvent.class).handler(objective::onJobsPaymentEvent)
                 .offlinePlayer(JobsPaymentEvent::getPlayer).subscribe(true);

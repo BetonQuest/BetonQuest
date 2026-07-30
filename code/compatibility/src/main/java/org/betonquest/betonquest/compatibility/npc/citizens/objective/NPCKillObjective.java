@@ -44,7 +44,7 @@ public class NPCKillObjective extends CountingObjective {
      */
     public NPCKillObjective(final ObjectiveService service, final NPCRegistry registry, final Argument<Number> targetAmount,
                             final Argument<NpcIdentifier> npcID, final Instructions instructionApi) throws QuestException {
-        super(service, targetAmount, "mobs_to_kill");
+        super(service, targetAmount, "objective.mobs_to_kill");
         this.instructionApi = instructionApi;
         this.registry = registry;
         this.npcID = npcID;

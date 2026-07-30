@@ -26,7 +26,7 @@ public class IABlockPlaceObjectiveFactory implements ObjectiveFactory {
     public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
         final Argument<CustomStack> itemID = instruction.parse(ItemsAdderParser.ITEMS_ADDER_PARSER).get();
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get("amount", 1);
-        final IABlockObjective objective = new IABlockObjective(service, targetAmount, "blocks_to_place", itemID);
+        final IABlockObjective objective = new IABlockObjective(service, targetAmount, "objective.blocks_to_place", itemID);
         service.request(CustomBlockPlaceEvent.class)
                 .priority(EventPriority.MONITOR)
                 .onlineHandler((event, profile) -> objective.handle(event.getNamespacedID(), profile))

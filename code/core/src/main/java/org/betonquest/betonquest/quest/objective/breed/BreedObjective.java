@@ -27,7 +27,7 @@ public class BreedObjective extends CountingObjective {
      * @throws QuestException if there is an error in the instruction
      */
     public BreedObjective(final ObjectiveService service, final Argument<Number> targetAmount, final Argument<EntityType> type) throws QuestException {
-        super(service, targetAmount, "animals_to_breed");
+        super(service, targetAmount, "objective.animals_to_breed");
         this.type = type;
     }
 
