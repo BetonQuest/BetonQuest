@@ -13,6 +13,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Deprecated
 ### Removed
 ### Fixed
+- `freeze` action and `packetevents` conversation io on MC 26.2+
 ### Security
 
 ## [3.1.0] - 2026-07-19
