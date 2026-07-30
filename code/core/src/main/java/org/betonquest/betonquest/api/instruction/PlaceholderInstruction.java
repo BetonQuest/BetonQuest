@@ -5,8 +5,11 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
+import org.betonquest.betonquest.api.instruction.tokenizer.Token;
 import org.betonquest.betonquest.api.instruction.tokenizer.Tokenizer;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
+
+import java.util.stream.Stream;
 
 /**
  * The {@link PlaceholderInstruction}. Primary object for placeholder input parsing.
@@ -16,7 +19,8 @@ public class PlaceholderInstruction extends DefaultInstruction {
     /**
      * Regular expression that can be used to split placeholders correctly.
      */
-    private static final Tokenizer DOT_TOKENIZER = (instruction) -> instruction.split("\\.");
+    private static final Tokenizer DOT_TOKENIZER = (instruction) -> Stream.of(instruction.split("\\."))
+            .map(elem -> new Token(null, elem)).toArray(Token[]::new);
 
     /**
      * Constructs a new {@link PlaceholderInstruction} with the given quest package, placeholder identifier, and instruction.

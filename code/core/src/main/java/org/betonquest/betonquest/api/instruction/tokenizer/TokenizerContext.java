@@ -13,7 +13,19 @@ public interface TokenizerContext {
     void appendCodePoint(int codePoint);
 
     /**
+     * Begin a new word nested in the current word.
+     */
+    void beginWord();
+
+    /**
      * End the word that is currently being collected.
      */
     void endWord();
+
+    /**
+     * Get the settings of the tokenizer.
+     *
+     * @return the tokenizer settings
+     */
+    TokenizerSettings settings();
 }

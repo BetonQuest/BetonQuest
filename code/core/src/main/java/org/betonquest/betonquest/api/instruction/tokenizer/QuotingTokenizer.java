@@ -1,27 +1,22 @@
 package org.betonquest.betonquest.api.instruction.tokenizer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Instruction string tokenizer that splits on spaces but honors quoting and escaping.
  */
 public class QuotingTokenizer implements Tokenizer {
 
     /**
-     * Character that is used to quote words.
+     * The tokenizer settings.
      */
-    public static final char QUOTE = '"';
-
-    /**
-     * Character that is used to escape characters.
-     */
-    public static final char ESCAPE = '\\';
+    private final TokenizerSettings tokenizerSettings;
 
     /**
      * Create a new quote respecting instruction string tokenizer.
+     *
+     * @param tokenizerSettings the tokenizer settings
      */
-    public QuotingTokenizer() {
+    public QuotingTokenizer(final TokenizerSettings tokenizerSettings) {
+        this.tokenizerSettings = tokenizerSettings;
     }
 
     /**
@@ -33,14 +28,14 @@ public class QuotingTokenizer implements Tokenizer {
      * @throws TokenizerException if the instruction string is invalid
      */
     @Override
-    public String[] tokens(final String instruction) throws TokenizerException {
-        final Context ctx = new Context();
+    public Token[] tokens(final String instruction) throws TokenizerException {
+        final Context ctx = new Context(tokenizerSettings);
         TokenizerState state = new NoWordState();
         for (final int character : instruction.codePoints().toArray()) {
             state = state.parseNext(ctx, character);
         }
         state.parseEnd(ctx);
-        return ctx.words.toArray(String[]::new);
+        return ctx.parent.children().toArray(Token[]::new);
     }
 
     /**
@@ -49,25 +44,59 @@ public class QuotingTokenizer implements Tokenizer {
     private static final class Context implements TokenizerContext {
 
         /**
-         * The list of already collected words.
+         * The tokenizer settings.
          */
-        private final List<String> words = new ArrayList<>();
+        private final TokenizerSettings tokenizerSettings;
 
         /**
          * The word that is currently being collected.
          */
         @SuppressWarnings("PMD.AvoidStringBufferField")
-        private StringBuilder currentWord = new StringBuilder();
+        private StringBuilder currentWord;
+
+        /**
+         * The current parent token or null if there is no parent token.
+         */
+        private Token parent;
+
+        private Context(final TokenizerSettings tokenizerSettings) {
+            this.tokenizerSettings = tokenizerSettings;
+            this.currentWord = new StringBuilder();
+            this.parent = new Token();
+        }
+
+        @Override
+        public void beginWord() {
+            if (!currentWord.isEmpty()) {
+                final Token newChild = new Token(parent, currentWord.toString());
+                this.parent.addChild(newChild);
+            }
+            this.parent = new Token(this.parent);
+            currentWord = new StringBuilder();
+        }
 
         @Override
         public void endWord() {
-            words.add(currentWord.toString());
+            boolean parentUpdated = false;
+            if (parent.children().isEmpty() && parent.parent() != null) {
+                parent = parent.parent();
+                parentUpdated = true;
+            }
+            parent.addChild(new Token(parent, currentWord.toString()));
             currentWord = new StringBuilder();
+            if (!parentUpdated && parent.parent() != null) {
+                parent = parent.parent();
+            }
         }
 
         @Override
         public void appendCodePoint(final int codePoint) {
             currentWord.appendCodePoint(codePoint);
+        }
+
+        @Override
+        public TokenizerSettings settings() {
+            return tokenizerSettings;
         }
     }
 }
