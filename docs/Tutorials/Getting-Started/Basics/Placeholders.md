@@ -159,8 +159,6 @@ expect an item amount.
 ## 4. Using placeholders in actions and objectives
 
 Placeholders are not limited to conversations. They can also be used in actions or objectives.
-Not every part of every instruction should use placeholders, so always check the related reference page when you use
-them in actions, objectives or conditions.
 
 Open "_objectives.yml_" and change the amount of fish to the `requiredFish` constant:
 
