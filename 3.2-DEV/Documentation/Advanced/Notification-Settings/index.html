@@ -8651,16 +8651,18 @@ Just set <code>io:</code> to <a href="../Notification-IO%27s-%26-Categories/#sup
 <p>Some objectives have a <code>notify</code> argument that can be added to their instruction.
 If you do so, the objective will send a notification to the player if they progress in the objective.
 You can also add an interval (<code>notify:5</code>) - in this case the player will get a notification every 5 steps
-towards the completion of the objective.</p>
-<div class="admonition inline end">
-<p class="admonition-title">Inline</p>
-<p><code>@[legacy]</code> is a <a href="../Text-Formatting/">text formatter</a>.
-<code>{amount}</code> is just an internal placeholder that will be replaced with a number based on the
-player's progression.</p>
-</div>
-<div class="highlight"><span class="filename">Built-in Notification Example</span><pre><span></span><code><span class="nt">blocks_to_break</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[legacy]&amp;2{amount}</span><span class="nv"> </span><span class="s">blocks</span><span class="nv"> </span><span class="s">left</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">break&#39;</span>
+towards the completion of the objective.
+You can also customize the notification text for all objectives or add you own translations.</p>
+<div class="highlight"><span class="filename">Example from lang/en-US.yml</span><pre><span></span><code><span class="nt">objective</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">blocks_to_break</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[legacy]&amp;2{absoluteleft}</span><span class="nv"> </span><span class="s">blocks</span><span class="nv"> </span><span class="s">left</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">break&#39;</span>
 </code></pre></div>
-<p>You can customize how these notifications are displayed by using <a href="../Notification-IO%27s-%26-Categories/#categories">categories</a>.</p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p><code>@[legacy]</code> is a <a href="../Text-Formatting/">text formatter</a>.</p>
+<p><code>{absoluteleft}</code> is an internal placeholder that will be replaced with a number based on the
+player's progression. You can use all counting objective placeholders in the notification text.</p>
+</div>
+<p>You can also customize how these notifications are displayed and styled by using the build in <a href="../Notification-IO%27s-%26-Categories/#categories">categories</a>.</p>
 
 
 
