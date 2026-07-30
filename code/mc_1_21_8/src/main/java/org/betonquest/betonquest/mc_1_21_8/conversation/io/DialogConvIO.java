@@ -234,7 +234,7 @@ public class DialogConvIO implements ConversationIO {
         for (final Component option : options) {
             maxOptionWidth = Math.max(maxOptionWidth, componentLineWrapper.width(option) + padding);
         }
-        return Math.max(Math.max(maxOptionWidth, settings.buttonWidth()), 100);
+        return Math.min(1024, Math.max(Math.max(maxOptionWidth, settings.buttonWidth()), 100));
     }
 
     /**
