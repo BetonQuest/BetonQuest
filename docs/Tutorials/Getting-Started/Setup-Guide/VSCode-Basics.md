@@ -18,8 +18,8 @@ spot syntax errors, and reload your changes on the server.
     * [Setting up VSCode](./Setting-up-VSCode.md)
 
 !!! example "Related Docs"
-    * [YAML Basics](../Basics/YAML-Basics.md)
-    * [Handling YAML Errors](../../Tools/YAML-Errors.md)
+    * [YAML Basics](../Basics/YAML.md)
+    * [Handling YAML Errors](../../Tools/Handling-YAML-Errors.md)
 </div>
 
 ## 1. Understanding the Layout
@@ -146,6 +146,6 @@ Next, we will look at the YAML format itself. YAML is the structure used in almo
 [:octicons-arrow-left-16: Setting up Visual Studio Code](./Setting-up-VSCode.md){ .md-button .md-button--primary }
 </div>
 <div markdown style="text-align: right;">
-[YAML Basics :octicons-arrow-right-16:](../Basics/YAML-Basics.md){ .md-button .md-button--primary }
+[YAML Basics :octicons-arrow-right-16:](../Basics/YAML.md){ .md-button .md-button--primary }
 </div>
 </div>

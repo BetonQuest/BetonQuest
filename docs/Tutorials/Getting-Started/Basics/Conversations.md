@@ -246,7 +246,7 @@ In the next part of the basics tutorial you will learn how Jack the mayor can gi
 ---
 <div class="grid" markdown style="text-align: center;">
 <div markdown style="text-align: left;">
-[:octicons-arrow-left-16: YAML Basics](../Basics/YAML-Basics.md){ .md-button .md-button--primary }
+[:octicons-arrow-left-16: YAML Basics](../Basics/YAML.md){ .md-button .md-button--primary }
 </div>
 <div markdown style="text-align: right;">
 [Actions :octicons-arrow-right-16:](./Actions.md){ .md-button .md-button--primary}

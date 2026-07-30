@@ -7,7 +7,7 @@ What if you make a YAML mistake? How can you find it?
 
 <div class="grid" markdown>
 !!! danger "Requirements"
-    * [YAML Basics](../Getting-Started/Basics/YAML-Basics.md)
+    * [YAML Basics](../Getting-Started/Basics/YAML.md)
 
 !!! example "Related Docs"
     * No related documentation

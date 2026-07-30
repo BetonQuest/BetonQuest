@@ -15,7 +15,7 @@ So let's briefly talk about what YAML is and how it works.
     * No further requirements
 
 !!! example "Related Docs"
-    * [Handling YAML Errors](../../Tools/YAML-Errors.md)
+    * [Handling YAML Errors](../../Tools/Handling-YAML-Errors.md)
 </div>
 
 ## What is YAML?
