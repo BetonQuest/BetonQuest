@@ -29,6 +29,7 @@ import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
 import org.betonquest.betonquest.kernel.processor.feature.ConversationProcessor;
 import org.betonquest.betonquest.kernel.processor.feature.ConversationStarter;
 import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
+import org.betonquest.betonquest.lib.profile.ProfileKeyMap;
 import org.betonquest.betonquest.quest.action.IngameNotificationSender;
 import org.betonquest.betonquest.quest.action.NotificationLevel;
 import org.betonquest.betonquest.quest.objective.interact.Interaction;
@@ -47,7 +48,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * Stores Npcs and starts Npc conversations.
@@ -81,9 +81,9 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
     private final IdentifierFactory<ConversationIdentifier> conversationIdentifierFactory;
 
     /**
-     * Stores the last time the player interacted with an NPC.
+     * Stores the last time the profile interacted with an NPC.
      */
-    private final Map<UUID, Long> npcInteractionLimiter = new HashMap<>();
+    private final Map<Profile, Long> npcInteractionLimiter;
 
     /**
      * Stores the conversations assigned to NPCs via the configuration.
@@ -186,6 +186,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
         this.localizations = localizations;
         this.convStarter = convStarter;
         this.conversationIdentifierFactory = conversationIdentifierFactory;
+        this.npcInteractionLimiter = new ProfileKeyMap<>(profileProvider);
         this.actionManager = actionManager;
         this.conditionManager = conditionManager;
         this.configAccessor = configAccessor;
@@ -265,14 +266,13 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
         if (!onlineProfile.getPlayer().hasPermission("betonquest.conversation")) {
             return false;
         }
-        final UUID playerUUID = profile.getPlayerUUID();
 
-        final Long lastClick = npcInteractionLimiter.get(playerUUID);
+        final Long lastClick = npcInteractionLimiter.get(profile);
         final long currentClick = System.currentTimeMillis();
         if (lastClick != null && lastClick + interactionLimit >= currentClick) {
             return false;
         }
-        npcInteractionLimiter.put(playerUUID, currentClick);
+        npcInteractionLimiter.put(profile, currentClick);
 
         return startConversation(onlineProfile, npcIds, npc, onlineProfile);
     }

@@ -12,15 +12,13 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
+import org.betonquest.betonquest.lib.profile.ProfileKeyMap;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * This {@link CountingObjective} is completed when a player rides a train for a certain amount of time.
@@ -42,7 +40,7 @@ public class TrainCartsRideObjective extends CountingObjective {
     /**
      * The {@link Map} that stores the current amount of time the player has ridden the train.
      */
-    private final Map<UUID, Pair<Long, BukkitTask>> startTimes;
+    private final Map<Profile, Pair<Long, BukkitTask>> startTimes;
 
     /**
      * The name of the train, maybe empty.
@@ -63,7 +61,7 @@ public class TrainCartsRideObjective extends CountingObjective {
         super(service, targetAmount, null);
         this.plugin = plugin;
         this.name = name;
-        this.startTimes = new HashMap<>();
+        this.startTimes = new ProfileKeyMap<>(service.getProfileProvider());
     }
 
     /**
@@ -106,10 +104,7 @@ public class TrainCartsRideObjective extends CountingObjective {
     @Override
     public void close() {
         while (!startTimes.isEmpty()) {
-            final Player player = Bukkit.getPlayer(startTimes.keySet().iterator().next());
-            if (player != null) {
-                stopCount(getService().getProfileProvider().getProfile(player));
-            }
+            startTimes.keySet().iterator().next().getOnlineProfile().ifPresent(this::stopCount);
         }
         super.close();
     }
@@ -124,7 +119,7 @@ public class TrainCartsRideObjective extends CountingObjective {
         if (event.getPreviousState() == ObjectiveState.ACTIVE) {
             return;
         }
-        final Pair<Long, BukkitTask> remove = startTimes.remove(profile.getPlayerUUID());
+        final Pair<Long, BukkitTask> remove = startTimes.remove(profile);
         if (remove != null) {
             remove.getValue().cancel();
         }
@@ -135,14 +130,14 @@ public class TrainCartsRideObjective extends CountingObjective {
         final BukkitTask bukkitTask = Bukkit.getScheduler().runTaskLater(plugin,
                 () -> stopCount(onlineProfile), ticksToCompletion);
 
-        startTimes.put(onlineProfile.getPlayerUUID(), Pair.of(System.currentTimeMillis(), bukkitTask));
+        startTimes.put(onlineProfile, Pair.of(System.currentTimeMillis(), bukkitTask));
     }
 
     private void stopCount(final OnlineProfile onlineProfile) {
-        if (!startTimes.containsKey(onlineProfile.getPlayerUUID())) {
+        if (!startTimes.containsKey(onlineProfile)) {
             return;
         }
-        final Pair<Long, BukkitTask> remove = startTimes.remove(onlineProfile.getPlayerUUID());
+        final Pair<Long, BukkitTask> remove = startTimes.remove(onlineProfile);
         remove.getValue().cancel();
         if (!getExceptionHandler().handle(() -> getService().checkConditions(onlineProfile), false)) {
             return;
