@@ -17,6 +17,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Removed
 ### Fixed
 - `freeze` action and `packetevents` conversation io on MC 26.2+
+- NPE in PacketEvents Interceptor when resending messages to offline players
 ### Security
 
 ## [3.1.0] - 2026-07-19
