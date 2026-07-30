@@ -3,7 +3,6 @@ package org.betonquest.betonquest.mc_1_21_8.conversation.io;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.parser.EnumParser;
 import org.bukkit.configuration.ConfigurationSection;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Holds configuration settings for the Dialog conversation io.
@@ -27,14 +26,11 @@ public record DialogSettings(
     /**
      * Constructs a new DialogSettings from the specified configuration section.
      *
-     * @param section the configuration section containing dialog settings, or null for defaults
+     * @param section the configuration section containing dialog settings
      * @return the settings from the configuration setting
      * @throws QuestException if the configuration contains invalid dialog settings
      */
-    public static DialogSettings fromSection(@Nullable final ConfigurationSection section) throws QuestException {
-        if (section == null) {
-            return new DialogSettings(DialogLayout.NPC_TITLE, 13, 250, true, true);
-        }
+    public static DialogSettings fromSection(final ConfigurationSection section) throws QuestException {
         final DialogLayout layout = new EnumParser<>(DialogLayout.class).apply(section.getString("layout", "NPC_TITLE"));
         final boolean onlyButtons = section.getBoolean("only-button", false);
 
