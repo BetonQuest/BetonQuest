@@ -7,9 +7,29 @@ package org.betonquest.betonquest.api.instruction.tokenizer;
 public class QuotedWordState implements TokenizerState {
 
     /**
-     * Create the quoted word collection state.
+     * The initial quoting level of a quoted word.
+     */
+    public static final int INITIAL_QUOTING_LEVEL = 0;
+
+    /**
+     * The quoting level of the word.
+     */
+    private final int quotingLevel;
+
+    /**
+     * Create the quoted word collection state with the initial quoting level.
      */
     public QuotedWordState() {
+        this.quotingLevel = INITIAL_QUOTING_LEVEL;
+    }
+
+    /**
+     * Create the quoted word collection state.
+     *
+     * @param quotingLevel the quoting level of the word
+     */
+    public QuotedWordState(final int quotingLevel) {
+        this.quotingLevel = quotingLevel;
     }
 
     @Override
@@ -19,11 +39,11 @@ public class QuotedWordState implements TokenizerState {
         }
         if (ctx.settings().isEndQuote(codePoint)) {
             ctx.endWord();
-            return new QuoteEndState();
+            return new QuoteEndState(quotingLevel);
         }
         if (ctx.settings().isBeginQuote(codePoint)) {
             ctx.beginWord();
-            return new QuotedWordState();
+            return new QuotedWordState(quotingLevel + 1);
         }
         ctx.appendCodePoint(codePoint);
         return this;
