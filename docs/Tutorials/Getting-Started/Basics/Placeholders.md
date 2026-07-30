@@ -158,7 +158,7 @@ expect an item amount.
 
 ## 4. Using placeholders in actions and objectives
 
-Placeholders are not limited to conversations. They can also be used in actions, and some objective options support them.
+Placeholders are not limited to conversations. They can also be used in actions or objectives.
 Not every part of every instruction should use placeholders, so always check the related reference page when you use
 them in actions, objectives or conditions.
 
@@ -208,7 +208,7 @@ player_options:
 
 ## 5. Using placeholders in conditions
 
-You can also use placeholders inside conditions. For this, BetonQuest provides the `variable` condition. It resolves a
+You can also use placeholders inside conditions. For this example we use the `variable` condition. It resolves a
 placeholder and checks if the result matches a pattern.
 
 Open "_conditions.yml_" and add this condition:
