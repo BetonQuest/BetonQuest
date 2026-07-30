@@ -225,6 +225,8 @@ __Context__: @snippet:action-meta:independent@
 __Syntax__: `deleteglobalpoint <category>`  
 __Description__: Delete the global point category.
 
+See also the [`deletepoint` action](#deletepoint).
+
 ```YAML title="Example"
 actions:
   deleteBonus: "deleteglobalpoint bonus"
@@ -237,6 +239,8 @@ __Syntax__: `deletepoint <category>`
 __Description__: Delete the point category for the player.
 
 The independent context will delete the points for all players in the database (even if offline).
+
+See also the [`deleteglobalpoint` action](#deleteglobalpoint).
 
 ```YAML title="Example"
 actions:
@@ -476,6 +480,8 @@ This works the same way as the normal [point action](#point) but instead to mani
 player it manipulates points in a global category. These global categories are player independent, so you could for
 example add a point to such a global category every time a player does a quest and give some special rewards for
 the 100th player who does the quest.
+
+See the [`point` action](#point) for argument explanation.
 
 ```YAML title="Example"
 actions:
@@ -849,6 +855,8 @@ First you can specify a number of points, then the modification action.
 For that, you can use `action:add`, `action:subtract`, `action:set` and `action:multiply`
 as modification types. This action also supports an optional `notify` argument that will display information about the
 change using the notification system.
+
+See also the [`globalpoint` action](#globalpoint).
 
 ```YAML title="Example"
 actions:
