@@ -13,5 +13,5 @@ public interface Tokenizer {
      * @return tokens of the instruction
      * @throws TokenizerException if the instruction cannot be tokenized
      */
-    String[] tokens(String instruction) throws TokenizerException;
+    Token[] tokens(String instruction) throws TokenizerException;
 }

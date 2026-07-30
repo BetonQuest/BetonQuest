@@ -14,10 +14,10 @@ public class NoWordState implements TokenizerState {
 
     @Override
     public TokenizerState parseNext(final TokenizerContext ctx, final int codePoint) {
-        if (Character.isWhitespace(codePoint)) {
+        if (ctx.settings().isSeparator(codePoint)) {
             return this;
         }
-        if (codePoint == QuotingTokenizer.QUOTE) {
+        if (ctx.settings().isBeginQuote(codePoint)) {
             return new QuotedWordState();
         }
         ctx.appendCodePoint(codePoint);

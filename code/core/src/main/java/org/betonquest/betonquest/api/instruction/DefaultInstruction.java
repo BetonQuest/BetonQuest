@@ -17,6 +17,7 @@ import org.betonquest.betonquest.api.instruction.chain.NumberChainRetriever;
 import org.betonquest.betonquest.api.instruction.tokenizer.QuotingTokenizer;
 import org.betonquest.betonquest.api.instruction.tokenizer.Tokenizer;
 import org.betonquest.betonquest.api.instruction.tokenizer.TokenizerException;
+import org.betonquest.betonquest.api.instruction.tokenizer.TokenizerSettings;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
@@ -98,7 +99,7 @@ public class DefaultInstruction implements Instruction {
      */
     public DefaultInstruction(final PlaceholderManager placeholders, final QuestPackageManager packManager, final QuestPackage pack,
                               @Nullable final Identifier identifier, final ArgumentParsers parsers, final String instruction) throws QuestException {
-        this(placeholders, packManager, new QuotingTokenizer(), pack, useFallbackIdIfNecessary(pack, identifier), parsers, instruction);
+        this(placeholders, packManager, new QuotingTokenizer(TokenizerSettings.DEFAULT), pack, useFallbackIdIfNecessary(pack, identifier), parsers, instruction);
     }
 
     /**

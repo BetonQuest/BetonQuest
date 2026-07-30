@@ -4,6 +4,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -57,15 +58,16 @@ class TokenizerTest {
     @ParameterizedTest
     @MethodSource("validInstructions")
     void strings_are_tokenized_correctly(final String instruction, final String... expected) throws TokenizerException {
-        final Tokenizer tokenizer = new QuotingTokenizer();
-        final String[] parsed = tokenizer.tokens(instruction);
-        assertArrayEquals(expected, parsed, "The tokenized instruction should match the expected for instruction: " + instruction);
+        final Tokenizer tokenizer = new QuotingTokenizer(TokenizerSettings.DEFAULT);
+        final Token[] parsed = tokenizer.tokens(instruction);
+        final String[] mapped = Stream.of(parsed).map(Token::resolveValue).toArray(String[]::new);
+        assertArrayEquals(expected, mapped, "The tokenized instruction should match the expected for instruction: '%s' != '%s'".formatted(instruction, Arrays.asList(mapped)));
     }
 
     @ParameterizedTest
     @MethodSource("invalidInstructions")
     void invalid_strings_throw_tokenizer_exception(final String instruction) {
-        final Tokenizer tokenizer = new QuotingTokenizer();
+        final Tokenizer tokenizer = new QuotingTokenizer(TokenizerSettings.DEFAULT);
         assertThrows(TokenizerException.class, () -> tokenizer.tokens(instruction), "Expected tokenizing to fail for instruction: " + instruction);
     }
 }
