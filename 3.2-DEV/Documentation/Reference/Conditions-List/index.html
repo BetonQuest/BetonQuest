@@ -4477,6 +4477,52 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#hasglobalpoint">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>HasGlobalPoint</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#haspoint">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>HasPoint</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#health">
     <span class="md-ellipsis">
 
@@ -10034,6 +10080,52 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#hasglobalpoint">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>HasGlobalPoint</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#haspoint">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>HasPoint</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#health">
     <span class="md-ellipsis">
 
@@ -11088,8 +11180,9 @@ See <a href="../../Advanced/Functions/#value-interpretation">Value Interpretatio
 </code></pre></div>
 <h2 id="globalpoint"><code>GlobalPoint</code><a class="headerlink" href="#globalpoint" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="<b>Independent</b><br> This condition can be checked without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"/></svg></span><br />
-<strong>Syntax</strong>: <code>globalpoint &lt;category&gt; &lt;point&gt;</code><br />
+<strong>Syntax</strong>: <code>globalpoint &lt;category&gt; &lt;point&gt; [equal]</code><br />
 <strong>Description</strong>: Whether the specified global point category has the specified amount of points.</p>
+<p>See the <a href="#point"><code>point</code> condition</a> for argument explanation.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">has100Users</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;globalpoint</span><span class="nv"> </span><span class="s">global_knownusers</span><span class="nv"> </span><span class="s">100&quot;</span>
 </code></pre></div>
@@ -11109,6 +11202,23 @@ Amount cannot be set here, though it may be checked with the <code>item</code> c
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">holdSword</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hand</span><span class="nv"> </span><span class="s">SpecialSword&quot;</span>
 <span class="w">  </span><span class="nt">holdShieldOffhand</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hand</span><span class="nv"> </span><span class="s">QuestShield</span><span class="nv"> </span><span class="s">offhand&quot;</span>
+</code></pre></div>
+<h2 id="hasglobalpoint"><code>HasGlobalPoint</code><a class="headerlink" href="#hasglobalpoint" title="Permanent link">🔗</a></h2>
+<p><strong>Context</strong>: <span class="twemoji account account-independent" title="<b>Independent</b><br> This condition can be checked without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"/></svg></span><br />
+<strong>Syntax</strong>: <code>hasglobalpoint &lt;category&gt;</code><br />
+<strong>Description</strong>: Whether the specified global point category has any amount.</p>
+<p>See the <a href="#haspoint"><code>haspoint</code> condition</a> for argument explanation.</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">hasBetonUsers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hasglobalpoint</span><span class="nv"> </span><span class="s">beton&quot;</span>
+</code></pre></div>
+<h2 id="haspoint"><code>HasPoint</code><a class="headerlink" href="#haspoint" title="Permanent link">🔗</a></h2>
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span> <span class="twemoji account account-offline" title="<b>Offline</b><br> This condition can be checked on a player that is offline."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 4a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m7.5 9C15 13 13 15 13 17.5s2 4.5 4.5 4.5 4.5-2 4.5-4.5-2-4.5-4.5-4.5M10 14c-4.42 0-8 1.79-8 4v2h9.5a6.5 6.5 0 0 1-.5-2.5 6.5 6.5 0 0 1 .95-3.36c-.63-.08-1.27-.14-1.95-.14m7.5.5c1.66 0 3 1.34 3 3 0 .56-.15 1.08-.42 1.5L16 14.92c.42-.27.94-.42 1.5-.42M14.92 16 19 20.08c-.42.27-.94.42-1.5.42-1.66 0-3-1.34-3-3 0-.56.15-1.08.42-1.5"/></svg></span><br />
+<strong>Syntax</strong>: <code>haspoint &lt;category&gt;</code><br />
+<strong>Description</strong>: Whether the player has any amount of points in the specified category.</p>
+<p>This explicit checks for any set value. <code>0</code> is a set value.</p>
+<p>See also the <a href="#hasglobalpoint"><code>hasglobalpoint</code> condition</a>.</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">hasBetonPoints</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;haspoint</span><span class="nv"> </span><span class="s">beton&quot;</span>
 </code></pre></div>
 <h2 id="health"><code>Health</code><a class="headerlink" href="#health" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
@@ -11383,6 +11493,7 @@ You don't have to specify all those arguments, you can use only one if you want.
 <strong>Description</strong>: Whether the player has at least the specified amount of points in the specified category.</p>
 <p>There are two required arguments, first is the category (string), second is the amount (integer).
 You can also add optional argument <code>equal</code> to accept only players with exactly equal amount of points.</p>
+<p>See also the <a href="#globalpoint"><code>globalpoint</code> condition</a>.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">has20BetonPoints</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;point</span><span class="nv"> </span><span class="s">beton</span><span class="nv"> </span><span class="s">20&quot;</span>
 </code></pre></div>

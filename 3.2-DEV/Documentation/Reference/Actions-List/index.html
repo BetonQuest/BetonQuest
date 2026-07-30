@@ -11377,6 +11377,7 @@ Alternatively to <code>any</code>, you just can leave it blank.</p>
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="<b>Independent</b><br> This action can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"/></svg></span><br />
 <strong>Syntax</strong>: <code>deleteglobalpoint &lt;category&gt;</code><br />
 <strong>Description</strong>: Delete the global point category.</p>
+<p>See also the <a href="#deletepoint"><code>deletepoint</code> action</a>.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">deleteBonus</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;deleteglobalpoint</span><span class="nv"> </span><span class="s">bonus&quot;</span>
 </code></pre></div>
@@ -11385,6 +11386,7 @@ Alternatively to <code>any</code>, you just can leave it blank.</p>
 <strong>Syntax</strong>: <code>deletepoint &lt;category&gt;</code><br />
 <strong>Description</strong>: Delete the point category for the player.</p>
 <p>The independent context will delete the points for all players in the database (even if offline).</p>
+<p>See also the <a href="#deleteglobalpoint"><code>deleteglobalpoint</code> action</a>.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">deletePoints</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;deletepoint</span><span class="nv"> </span><span class="s">npc_attitude&quot;</span>
 </code></pre></div>
@@ -11610,6 +11612,7 @@ The optional <code>backpack</code> argument forces quest items to be placed in t
 player it manipulates points in a global category. These global categories are player independent, so you could for
 example add a point to such a global category every time a player does a quest and give some special rewards for
 the 100<sup>th</sup> player who does the quest.</p>
+<p>See the <a href="#point"><code>point</code> action</a> for argument explanation.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">increaseUserCount</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;globalpoint</span><span class="nv"> </span><span class="s">global_knownusers</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">action:add&quot;</span>
 <span class="w">  </span><span class="nt">resetDailyLogins</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;globalpoint</span><span class="nv"> </span><span class="s">daily_login</span><span class="nv"> </span><span class="s">0</span><span class="nv"> </span><span class="s">action:set&quot;</span>
@@ -11986,6 +11989,7 @@ Note that only as many actions as specified can be picked and <code>amount:0</co
 For that, you can use <code>action:add</code>, <code>action:subtract</code>, <code>action:set</code> and <code>action:multiply</code>
 as modification types. This action also supports an optional <code>notify</code> argument that will display information about the
 change using the notification system.</p>
+<p>See also the <a href="#globalpoint"><code>globalpoint</code> action</a>.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">gainAttitude</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;point</span><span class="nv"> </span><span class="s">npc_attitude</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">action:add&quot;</span>
 <span class="w">  </span><span class="nt">loseAttitude</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;point</span><span class="nv"> </span><span class="s">npc_attitude</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">action:subtract&quot;</span>
