@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
  * Holds configuration settings for the Dialog conversation io.
  *
  * @param layout              the layout type for the dialog
+ * @param onlyButtons         whether the text should be displayed only on the buttons or also in it own boxes
  * @param buttonRenderPadding the padding used when rendering buttons
  * @param buttonWidth         the minimum width for buttons
  * @param closeWithEscape     whether the dialog can be closed using the Escape key
@@ -16,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public record DialogSettings(
         DialogLayout layout,
+        boolean onlyButtons,
         int buttonRenderPadding,
         int buttonWidth,
         boolean closeWithEscape,
@@ -34,12 +36,13 @@ public record DialogSettings(
             return new DialogSettings(DialogLayout.NPC_TITLE, 13, 250, true, true);
         }
         final DialogLayout layout = new EnumParser<>(DialogLayout.class).apply(section.getString("layout", "NPC_TITLE"));
+        final boolean onlyButtons = section.getBoolean("only-button", false);
 
         final int buttonRenderPadding = section.getInt("button-render-padding", 13);
         final int defaultButtonWidth = section.getInt("button-width", 250);
 
         final boolean closeButtonEnabled = section.getBoolean("close-button-enabled", true);
         final boolean closeWithEscape = section.getBoolean("close-with-escape", true);
-        return new DialogSettings(layout, buttonRenderPadding, defaultButtonWidth, closeButtonEnabled, closeWithEscape);
+        return new DialogSettings(layout, onlyButtons, buttonRenderPadding, defaultButtonWidth, closeButtonEnabled, closeWithEscape);
     }
 }

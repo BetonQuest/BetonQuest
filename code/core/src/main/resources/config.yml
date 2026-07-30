@@ -83,6 +83,7 @@ conversation:
       message_delay: 10
     dialog:
       layout: NPC_TITLE
+      only-buttons: false
       button-width: -1
       button-render-padding: 13
       close-with-escape: true

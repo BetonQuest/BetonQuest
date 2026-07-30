@@ -4,6 +4,9 @@
     key: conversation.io.dialog.layout
     value: NPC_TITLE
   - type: SET
+    key: conversation.io.dialog.only-buttons
+    value: false
+  - type: SET
     key: conversation.io.dialog.button-render-padding
     value: 13
   - type: SET

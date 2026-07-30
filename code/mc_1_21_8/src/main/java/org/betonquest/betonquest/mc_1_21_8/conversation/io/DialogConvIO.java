@@ -132,9 +132,17 @@ public class DialogConvIO implements ConversationIO {
         }
 
         onlineProfile.getPlayer().showDialog(
-                Dialog.create(builder -> builder.empty()
-                        .base(buildDialogBase())
-                        .type(buildDialogType())
+                Dialog.create(builder -> {
+                            if (settings.onlyButtons()) {
+                                builder.empty()
+                                        .base(buildDialogBase(new ArrayList<>(1)))
+                                        .type(buildDialogType());
+                            } else {
+                                builder.empty()
+                                        .base(buildTextDialogBase())
+                                        .type(buildTextDialogType());
+                            }
+                        }
                 )
         );
     }
@@ -144,7 +152,7 @@ public class DialogConvIO implements ConversationIO {
      *
      * @return the built DialogBase object
      */
-    private DialogBase buildDialogBase() {
+    private DialogBase buildDialogBase(final List<DialogBody> bodies) {
         final Component name = npcName;
         final Component text = npcText;
 
@@ -152,12 +160,13 @@ public class DialogConvIO implements ConversationIO {
                 isNpcTitleLayout ? colors.getText().append(text)
                         : colors.getText().append(colors.getNpc().append(name)).append(Component.text(": ")).append(text)
         );
+        bodies.add(0, body);
 
         final Component title = isNpcTitleLayout ? colors.getNpc().append(name) : EMPTY;
 
         return DialogBase.builder(title)
                 .canCloseWithEscape(settings.closeButtonEnabled() && settings.closeWithEscape() && !conv.isMovementBlock())
-                .body(List.of(body))
+                .body(bodies)
                 .build();
     }
 
@@ -182,9 +191,41 @@ public class DialogConvIO implements ConversationIO {
 
         final MultiActionType.Builder typeBuilder = DialogType.multiAction(buttons).columns(1);
         if (settings.closeButtonEnabled() && !conv.isMovementBlock()) {
-            typeBuilder.exitAction(buildExitButton(dialogWidth));
+            typeBuilder.exitAction(buildExitButton());
+        }
+        return typeBuilder.build();
+    }
+
+    private DialogBase buildTextDialogBase() {
+        final int size = options.size();
+        final List<DialogBody> bodies = new ArrayList<>(size * 2 + 1);
+        for (int i = 0; i < size; i++) {
+            bodies.add(DialogBody.plainMessage(Component.empty()));
+            bodies.add(DialogBody.plainMessage(colorfulPlayerText(options.get(i), i)));
         }
 
+        return buildDialogBase(bodies);
+    }
+
+    private DialogType buildTextDialogType() {
+        if (options.isEmpty()) {
+            return DialogType.notice();
+        }
+
+        final int size = options.size();
+        final List<ActionButton> buttons = new ArrayList<>(size);
+
+        for (int i = 0; i < size; i++) {
+            final Component option = options.get(i);
+            final List<Component> components = componentLineWrapper.splitWidth(option, settings.buttonWidth());
+            final Component text = components.size() > 1 ? components.get(0).append(Component.text("…")) : components.get(0);
+            buttons.add(buildPlayerOptionButton(text, i, settings.buttonWidth() + settings.buttonRenderPadding()));
+        }
+
+        final MultiActionType.Builder typeBuilder = DialogType.multiAction(buttons).columns(1);
+        if (settings.closeButtonEnabled() && !conv.isMovementBlock()) {
+            typeBuilder.exitAction(buildExitButton());
+        }
         return typeBuilder.build();
     }
 
@@ -197,24 +238,24 @@ public class DialogConvIO implements ConversationIO {
      * @return the built ActionButton object
      */
     private ActionButton buildPlayerOptionButton(final Component option, final int index, final int width) {
-        return ActionButton.builder(option)
+        return ActionButton.builder(colorfulPlayerText(option, index))
                 .width(width)
                 .action(DialogAction.customClick((response, audience) -> conv.passPlayerAnswer(index + 1), clickOptions()))
                 .build();
     }
 
+    private Component colorfulPlayerText(final Component text, final int index) {
+        return colors.getOption().append(colors.getNumber().append(Component.text(index + 1))
+                .append(Component.text(". "))).append(text);
+    }
+
     /**
      * Builds the exit button for the dialog.
      *
-     * @param totalWidth the total width available
      * @return the built ActionButton object
      */
-    private ActionButton buildExitButton(final int totalWidth) {
-        final int buttonWidth = settings.buttonWidth();
-
-        final int finalWidth = (buttonWidth > 0) ? buttonWidth
-                : (buttonWidth == -1) ? totalWidth
-                  : componentLineWrapper.width(CLOSE_TEXT) + settings.buttonRenderPadding();
+    private ActionButton buildExitButton() {
+        final int finalWidth = settings.buttonWidth() + settings.buttonRenderPadding();
 
         return ActionButton.builder(CLOSE_TEXT)
                 .width(finalWidth)
