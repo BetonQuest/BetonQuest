@@ -230,47 +230,6 @@ When adding an entry manually, a date can be appended with an underscore between
 
 The entry ID is package-prefixed, so use `my_package>entry_name` when running commands.
 
-## Configuration
-
-Journal behavior is configured in the `journal` section of `config.yml`.
-
-```yaml
-journal:
-  default_slot: -1
-  lock_default_slot: false
-  show_in_backpack: true
-  give_on_respawn: false
-  custom_model_data: -1
-  format:
-    chars_per_line: 114
-    lines_per_page: 14
-    one_entry_per_page: false
-    reversed_order: true
-    full_main_page: false
-    separator: "@[minimessage]<newline>"
-    hide_date: false
-    color:
-      date:
-        day: "@[minimessage]<blue>"
-        hour: "@[minimessage]<gold>"
-      line: "@[minimessage]<dark_red>"
-      text: "@[minimessage]<black>"
-```
-
-Important settings:
-
-- `default_slot` controls where the journal is placed when using `/journal` or `givejournal`.
-- `lock_default_slot` prevents moving the journal from that slot.
-- `show_in_backpack` displays the journal in the backpack if the player does not have it in the inventory.
-- `give_on_respawn` gives the journal back after respawn.
-- `custom_model_data` changes the journal item model when used with a resource pack.
-- `format.chars_per_line` and `format.lines_per_page` control how much text fits on one page.
-- `format.one_entry_per_page` puts every journal entry on its own page.
-- `format.reversed_order` changes whether old or new entries appear first.
-- `format.full_main_page` reserves the whole first page for `journal_main_page`.
-- `format.separator` is shown between entries.
-- `format.hide_date` hides dates on journal entries.
-- `format.color` controls the date, separator, and entry text colors.
 
 ## Usage guidelines
 
@@ -294,12 +253,3 @@ Good uses for the main page:
 
 Keep journal entries short.
 Minecraft books have limited space, and long lines can be hard to read.
-
-## Troubleshooting
-
-- If the journal does not appear, check the player's `betonquest.journal` permission and the `journal.default_slot`.
-- If an entry is missing, check that the action used `journal add <entry>` and that the entry exists in the `journal` section.
-- If the main page does not change, call `journal update` after changing the related tags, points, or objectives.
-- If translations do not work, check the player's `/questlang` setting and make sure the default language is defined.
-- If text overflows, lower `journal.format.chars_per_line`, lower `journal.format.lines_per_page`, or shorten the text.
-- If a placeholder is empty, check whether the referenced objective, point, or value exists for that player.
