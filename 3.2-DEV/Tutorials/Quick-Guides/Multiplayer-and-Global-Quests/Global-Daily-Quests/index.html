@@ -10,13 +10,13 @@
         <meta name="author" content="BetonQuest Organisation">
       
       
-        <link rel="canonical" href="https://betonquest.org/3.2-DEV/Tutorials/Getting-Started/Basics/YAML-Basics/">
+        <link rel="canonical" href="https://betonquest.org/3.2-DEV/Tutorials/Quick-Guides/Multiplayer-and-Global-Quests/Global-Daily-Quests/">
       
       
-        <link rel="prev" href="../../Setup-Guide/VSCode-Basics/">
+        <link rel="prev" href="../Party-Quests/">
       
       
-        <link rel="next" href="../Conversations/">
+        <link rel="next" href="../Server-Wide-Quests/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>YAML - BetonQuest</title>
+        <title>Global Daily Quests - BetonQuest</title>
       
     
     
@@ -90,7 +90,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#yaml-basics" class="md-skip">
+        <a href="#how-to-assign-the-same-random-daily-quest-to-every-player" class="md-skip">
           Skip to content
         </a>
       
@@ -141,7 +141,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              YAML
+              Global Daily Quests
             
           </span>
         </div>
@@ -576,8 +576,6 @@
                 
   
   
-    
-  
   
   
     
@@ -601,11 +599,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
         
           
           <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="">
@@ -626,7 +624,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -644,7 +642,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../About/" class="md-nav__link">
+      <a href="../../../Getting-Started/About/" class="md-nav__link">
         
   
   
@@ -734,7 +732,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Setup-Guide/Setting-up-a-Test-Server/" class="md-nav__link">
+      <a href="../../../Getting-Started/Setup-Guide/Setting-up-a-Test-Server/" class="md-nav__link">
         
   
   
@@ -764,7 +762,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Setup-Guide/Installing-BetonQuest/" class="md-nav__link">
+      <a href="../../../Getting-Started/Setup-Guide/Installing-BetonQuest/" class="md-nav__link">
         
   
   
@@ -794,7 +792,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Setup-Guide/Setting-up-VSCode/" class="md-nav__link">
+      <a href="../../../Getting-Started/Setup-Guide/Setting-up-VSCode/" class="md-nav__link">
         
   
   
@@ -824,7 +822,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Setup-Guide/VSCode-Basics/" class="md-nav__link">
+      <a href="../../../Getting-Started/Setup-Guide/VSCode-Basics/" class="md-nav__link">
         
   
   
@@ -859,10 +857,8 @@
                 
   
   
-    
   
   
-  
     
     
       
@@ -887,11 +883,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_3" >
         
           
           <label class="md-nav__link" for="__nav_2_2_3" id="__nav_2_2_3_label" tabindex="0">
@@ -912,7 +908,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_2_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_2_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_2_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -927,39 +923,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m0 .97 4.111 6.453v4.09h2.638v-4.09L11.053.969H8.214L5.58 5.125 2.965.969Zm12.093.024-4.47 10.544h2.114l.97-2.345h4.775l.804 2.345h2.26L14.255.994Zm1.133 2.225 1.463 3.87h-3.096zm3.06 9.475v10.29H24v-2.199h-5.454v-8.091zm-12.175.002v10.335h2.217v-7.129l2.32 4.792h1.746l2.4-4.96v7.295h2.127V12.696h-2.904L9.44 17.37l-2.455-4.674Z"/></svg>
-  
-  <span class="md-ellipsis">
-    
-  
-    YAML
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../Getting-Started/Basics/YAML/" class="md-nav__link">
         
   
   
@@ -977,54 +944,6 @@
   
 
       </a>
-      
-        
-
-
-
-<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
-  
-
-  
-  
-  
-  
-
-  
-  <label class="md-nav__title" for="__toc">
-    <span class="md-nav__icon md-icon"></span>
-    Table of contents
-  </label>
-  <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#what-is-yaml">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          What is YAML?
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-  </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1037,7 +956,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Conversations/" class="md-nav__link">
+      <a href="../../../Getting-Started/Basics/Conversations/" class="md-nav__link">
         
   
   
@@ -1067,7 +986,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Actions/" class="md-nav__link">
+      <a href="../../../Getting-Started/Basics/Actions/" class="md-nav__link">
         
   
   
@@ -1097,7 +1016,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Objectives/" class="md-nav__link">
+      <a href="../../../Getting-Started/Basics/Objectives/" class="md-nav__link">
         
   
   
@@ -1127,7 +1046,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Conditions/" class="md-nav__link">
+      <a href="../../../Getting-Started/Basics/Conditions/" class="md-nav__link">
         
   
   
@@ -1157,7 +1076,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Placeholders/" class="md-nav__link">
+      <a href="../../../Getting-Started/Basics/Placeholders/" class="md-nav__link">
         
   
   
@@ -1235,7 +1154,7 @@
   <span class="md-ellipsis">
     
   
-    Features
+    Tools
   
 
     
@@ -1248,6 +1167,232 @@
         
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tools
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Tools/Handling-YAML-Errors/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m0 .97 4.111 6.453v4.09h2.638v-4.09L11.053.969H8.214L5.58 5.125 2.965.969Zm12.093.024-4.47 10.544h2.114l.97-2.345h4.775l.804 2.345h2.26L14.255.994Zm1.133 2.225 1.463 3.87h-3.096zm3.06 9.475v10.29H24v-2.199h-5.454v-8.091zm-12.175.002v10.335h2.217v-7.129l2.32 4.792h1.746l2.4-4.96v7.295h2.127V12.696h-2.904L9.44 17.37l-2.455-4.674Z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Handling YAML Errors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Tools/Debugging-Quest-Logic/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 7h-2.81c-.45-.8-1.07-1.5-1.82-2L16 3.41 14.59 2l-2.17 2.17a6 6 0 0 0-2.83 0L7.41 2 6 3.41 7.62 5c-.75.5-1.36 1.21-1.81 2H3v2h2.09c-.06.33-.09.66-.09 1v1H3v2h2v1c0 .34.03.67.09 1H3v2h2.81A6 6 0 0 0 13 19.65V19c0-2.54 1.61-4.8 4-5.65V13h2v-2h-2v-1c0-.34-.03-.67-.09-1H19zm-6 8H9v-2h4zm0-4H9V9h4zm4.75 11.16-2.75-3L16.16 18l1.59 1.59L21.34 16l1.16 1.41z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Debugging Quest Logic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Syntax
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Syntax
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Syntax/Quest-Packages/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 20H4a2 2 0 0 1-2-2V6c0-1.11.89-2 2-2h6l2 2h7a2 2 0 0 1 2 2H4v10l2.14-8h17.07l-2.28 8.5c-.23.87-1.01 1.5-1.93 1.5"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Quest Packages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Features
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1287,10 +1432,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5_1" >
         
           
-          <label class="md-nav__link" for="__nav_2_3_1" id="__nav_2_3_1_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2_5_1" id="__nav_2_5_1_label" tabindex="0">
             
   
   
@@ -1308,8 +1453,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_3_1">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5_1">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1477,10 +1622,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5_2" >
         
           
-          <label class="md-nav__link" for="__nav_2_3_2" id="__nav_2_3_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2_5_2" id="__nav_2_5_2_label" tabindex="0">
             
   
   
@@ -1498,8 +1643,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_3_2">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5_2">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1649,231 +1794,7 @@
                 
   
   
-  
-  
     
-    
-      
-        
-      
-        
-      
-    
-    
-    
-      
-      
-        
-          
-          
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Tools
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_4">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Tools
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../Tools/YAML-Errors/" class="md-nav__link">
-        
-  
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m0 .97 4.111 6.453v4.09h2.638v-4.09L11.053.969H8.214L5.58 5.125 2.965.969Zm12.093.024-4.47 10.544h2.114l.97-2.345h4.775l.804 2.345h2.26L14.255.994Zm1.133 2.225 1.463 3.87h-3.096zm3.06 9.475v10.29H24v-2.199h-5.454v-8.091zm-12.175.002v10.335h2.217v-7.129l2.32 4.792h1.746l2.4-4.96v7.295h2.127V12.696h-2.904L9.44 17.37l-2.455-4.674Z"/></svg>
-  
-  <span class="md-ellipsis">
-    
-  
-    Handling YAML Errors
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../Tools/Debugging-Quest-Logic/" class="md-nav__link">
-        
-  
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 7h-2.81c-.45-.8-1.07-1.5-1.82-2L16 3.41 14.59 2l-2.17 2.17a6 6 0 0 0-2.83 0L7.41 2 6 3.41 7.62 5c-.75.5-1.36 1.21-1.81 2H3v2h2.09c-.06.33-.09.66-.09 1v1H3v2h2v1c0 .34.03.67.09 1H3v2h2.81A6 6 0 0 0 13 19.65V19c0-2.54 1.61-4.8 4-5.65V13h2v-2h-2v-1c0-.34-.03-.67-.09-1H19zm-6 8H9v-2h4zm0-4H9V9h4zm4.75 11.16-2.75-3L16.16 18l1.59 1.59L21.34 16l1.16 1.41z"/></svg>
-  
-  <span class="md-ellipsis">
-    
-  
-    Debugging Quest Logic
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-      
-        
-      
-    
-    
-    
-      
-      
-        
-          
-          
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Syntax
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_5">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Syntax
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../Syntax/Quest-Packages/" class="md-nav__link">
-        
-  
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 20H4a2 2 0 0 1-2-2V6c0-1.11.89-2 2-2h6l2 2h7a2 2 0 0 1 2 2H4v10l2.14-8h17.07l-2.28 8.5c-.23.87-1.01 1.5-1.93 1.5"/></svg>
-  
-  <span class="md-ellipsis">
-    
-  
-    Quest Packages
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
   
   
   
@@ -1906,11 +1827,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" checked>
         
           
           <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="">
@@ -1931,7 +1852,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2_6">
             <span class="md-nav__icon md-icon"></span>
             
@@ -2007,7 +1928,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Quick-Guides/Quest-Progress-and-State/Displaying-Progress/" class="md-nav__link">
+      <a href="../../Quest-Progress-and-State/Displaying-Progress/" class="md-nav__link">
         
   
   
@@ -2037,7 +1958,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Quick-Guides/Quest-Progress-and-State/Objectives-in-any-order/" class="md-nav__link">
+      <a href="../../Quest-Progress-and-State/Objectives-in-any-order/" class="md-nav__link">
         
   
   
@@ -2141,7 +2062,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Quick-Guides/Player-UI-and-Feedback/Using-the-Journal/" class="md-nav__link">
+      <a href="../../Player-UI-and-Feedback/Using-the-Journal/" class="md-nav__link">
         
   
   
@@ -2171,7 +2092,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Quick-Guides/Player-UI-and-Feedback/Using-Menus/" class="md-nav__link">
+      <a href="../../Player-UI-and-Feedback/Using-Menus/" class="md-nav__link">
         
   
   
@@ -2201,7 +2122,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Quick-Guides/Player-UI-and-Feedback/Custom-Notifications/" class="md-nav__link">
+      <a href="../../Player-UI-and-Feedback/Custom-Notifications/" class="md-nav__link">
         
   
   
@@ -2231,7 +2152,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Quick-Guides/Player-UI-and-Feedback/Text-Placeholders/" class="md-nav__link">
+      <a href="../../Player-UI-and-Feedback/Text-Placeholders/" class="md-nav__link">
         
   
   
@@ -2261,7 +2182,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Quick-Guides/Player-UI-and-Feedback/Compass-Navigation-Hint/" class="md-nav__link">
+      <a href="../../Player-UI-and-Feedback/Compass-Navigation-Hint/" class="md-nav__link">
         
   
   
@@ -2291,7 +2212,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Quick-Guides/Player-UI-and-Feedback/Language-Specific-Text/" class="md-nav__link">
+      <a href="../../Player-UI-and-Feedback/Language-Specific-Text/" class="md-nav__link">
         
   
   
@@ -2387,7 +2308,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Quick-Guides/Quest-Flow-and-Lifecycle/Using-Quest-Cancelers/" class="md-nav__link">
+      <a href="../../Quest-Flow-and-Lifecycle/Quest-Cancelers/" class="md-nav__link">
         
   
   
@@ -2417,7 +2338,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Quick-Guides/Quest-Flow-and-Lifecycle/Random-Daily-Quest/" class="md-nav__link">
+      <a href="../../Quest-Flow-and-Lifecycle/Random-Daily-Quest/" class="md-nav__link">
         
   
   
@@ -2511,7 +2432,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Quick-Guides/Rewards-and-Economy/Rewarding-Money/" class="md-nav__link">
+      <a href="../../Rewards-and-Economy/Rewarding-Money/" class="md-nav__link">
         
   
   
@@ -2605,7 +2526,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Quick-Guides/Items-and-Inventory/Complex-Quest-Items/" class="md-nav__link">
+      <a href="../../Items-and-Inventory/Complex-Quest-Items/" class="md-nav__link">
         
   
   
@@ -2640,8 +2561,10 @@
                 
   
   
+    
   
   
+  
     
     
       
@@ -2660,11 +2583,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_6" checked>
         
           
           <label class="md-nav__link" for="__nav_2_6_6" id="__nav_2_6_6_label" tabindex="0">
@@ -2685,7 +2608,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2_6_6">
             <span class="md-nav__icon md-icon"></span>
             
@@ -2703,7 +2626,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Quick-Guides/Multiplayer-and-Global-Quests/Party-Quests/" class="md-nav__link">
+      <a href="../Party-Quests/" class="md-nav__link">
         
   
   
@@ -2730,10 +2653,19 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../../Quick-Guides/Multiplayer-and-Global-Quests/Global-Random-Daily-Quests/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -2751,6 +2683,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -2763,7 +2696,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Quick-Guides/Multiplayer-and-Global-Quests/Server-Wide-Quests/" class="md-nav__link">
+      <a href="../Server-Wide-Quests/" class="md-nav__link">
         
   
   
@@ -2863,7 +2796,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Quick-Guides/World-NPCs-and-Visibility/NPC-Conversations/" class="md-nav__link">
+      <a href="../../World-NPCs-and-Visibility/NPC-Conversations/" class="md-nav__link">
         
   
   
@@ -2893,7 +2826,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Quick-Guides/World-NPCs-and-Visibility/NPC-and-Player-Hider/" class="md-nav__link">
+      <a href="../../World-NPCs-and-Visibility/NPC-and-Player-Hider/" class="md-nav__link">
         
   
   
@@ -2923,7 +2856,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Quick-Guides/World-NPCs-and-Visibility/Show-NPC-Holograms/" class="md-nav__link">
+      <a href="../../World-NPCs-and-Visibility/Show-NPC-Holograms/" class="md-nav__link">
         
   
   
@@ -2953,7 +2886,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Quick-Guides/World-NPCs-and-Visibility/WorldGuard-Region/" class="md-nav__link">
+      <a href="../../World-NPCs-and-Visibility/WorldGuard-Region/" class="md-nav__link">
         
   
   
@@ -8335,38 +8268,6 @@
   
 
   
-  <label class="md-nav__title" for="__toc">
-    <span class="md-nav__icon md-icon"></span>
-    Table of contents
-  </label>
-  <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#what-is-yaml">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          What is YAML?
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-  </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -8425,15 +8326,23 @@
   
     
     
+      
+  
+  
+    
+    
       <li class="md-path__item">
-        <a href="../../About/" class="md-path__link">
+        <a href="../../Quest-Progress-and-State/Displaying-Progress/" class="md-path__link">
           
   <span class="md-ellipsis">
-    Getting Started
+    Quick Guides
   </span>
 
         </a>
       </li>
+    
+  
+
     
   
 
@@ -8444,10 +8353,10 @@
     
     
       <li class="md-path__item">
-        <a href="./" class="md-path__link">
+        <a href="../Party-Quests/" class="md-path__link">
           
   <span class="md-ellipsis">
-    Basics
+    Multiplayer & Global Quests
   </span>
 
         </a>
@@ -8466,7 +8375,7 @@
 
 
   
-    <a href="https://github.com/BetonQuest/BetonQuest/edit/main/docs/Tutorials/Getting-Started/Basics/YAML-Basics.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/BetonQuest/BetonQuest/edit/main/docs/Tutorials/Quick-Guides/Multiplayer-and-Global-Quests/Global-Daily-Quests.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -8474,49 +8383,74 @@
   
 
 
-<h1 id="yaml-basics">YAML Basics<a class="headerlink" href="#yaml-basics" title="Permanent link">🔗</a></h1>
-<p>This plugin uses the YAML (<code>.yml</code>) format for all files. You may already know it from other plugins as most use this format.</p>
-<p>Unfortunately, you'll likely soon experience that your quest is not working because you made a YAML syntax error.
-This is the case because it is quite easy to make a mistake in YAML syntax.</p>
-<p>So let's briefly talk about what YAML is and how it works.</p>
-<div class="grid">
-<div class="admonition danger">
-<p class="admonition-title">Requirements</p>
+<h1 id="how-to-assign-the-same-random-daily-quest-to-every-player">How to assign the same random daily quest to every player<a class="headerlink" href="#how-to-assign-the-same-random-daily-quest-to-every-player" title="Permanent link">🔗</a></h1>
+<p>Using schedules, you can assign the same random daily quest to every player each day.
+Instead of selecting a <a href="../../Quest-Flow-and-Lifecycle/Random-Daily-Quest/">random quest individually for every player</a>,
+a global tag determines which quest is active for everyone.</p>
+<p>The basic idea is:</p>
 <ul>
-<li>No further requirements</li>
+<li>A schedule runs once every day at a fixed time.</li>
+<li>The schedule removes the previously selected global quest tag.</li>
+<li>A random folder action selects one new global quest tag.</li>
+<li>When a player logs in, the system checks which global tag is currently active.</li>
+<li>Every player therefore receives the same daily quest until the next scheduled reset.</li>
 </ul>
-</div>
-<div class="admonition example">
-<p class="admonition-title">Related Docs</p>
-<ul>
-<li><a href="../../../Tools/YAML-Errors/">Handling YAML Errors</a></li>
-</ul>
-</div>
-</div>
-<h2 id="what-is-yaml">What is YAML?<a class="headerlink" href="#what-is-yaml" title="Permanent link">🔗</a></h2>
-<p>YAML is a data-serialization language that is readable by humans. It is frequently used for Minecraft related configuration files.</p>
-<p>YAML is <code>key: "value"</code> based. This means you use a <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M10.5 0a5.499 5.499 0 1 1-1.288 10.848l-.932.932a.75.75 0 0 1-.53.22H7v.75a.75.75 0 0 1-.22.53l-.5.5a.75.75 0 0 1-.53.22H5v.75a.75.75 0 0 1-.22.53l-.5.5a.75.75 0 0 1-.53.22h-2A1.75 1.75 0 0 1 0 14.25v-2c0-.199.079-.389.22-.53l4.932-4.932A5.5 5.5 0 0 1 10.5 0m-4 5.5c-.001.431.069.86.205 1.269a.75.75 0 0 1-.181.768L1.5 12.56v1.69c0 .138.112.25.25.25h1.69l.06-.06v-1.19a.75.75 0 0 1 .75-.75h1.19l.06-.06v-1.19a.75.75 0 0 1 .75-.75h1.19l1.023-1.025a.75.75 0 0 1 .768-.18A4 4 0 1 0 6.5 5.5M11 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2"/></svg></span> to get a certain value. Values should be surrounded by double quotes (<code>"..."</code>).
-Let me show you an example:</p>
-<p><div class="highlight"><span class="filename">YAML Data Format</span><pre><span></span><code><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;value&quot;</span>
-<span class="nt">Jack</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Some</span><span class="nv"> </span><span class="s">data</span><span class="nv"> </span><span class="s">about</span><span class="nv"> </span><span class="s">Jack&quot;</span>
+<p>The following example shows how to assign the same random daily quest to every player using global tags and schedules.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">schedules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">resetDailyQuests</span><span class="p">:</span><span class="w"> </span><span class="c1">#(1)!</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">realtime-daily</span><span class="w"> </span>
+<span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;04:00&#39;</span><span class="w"> </span>
+<span class="w">    </span><span class="nt">actions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">resetAfterSpecificTime,selectRandomQuest</span><span class="w"> </span><span class="c1">#(2)!</span>
+
+<span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">questSelection</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;login</span><span class="nv"> </span><span class="s">actions:selectRandomQuest</span><span class="nv"> </span><span class="s">auto-once</span><span class="nv"> </span><span class="s">persistent&quot;</span>
+
+<span class="w">  </span><span class="nt">killMobs</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mobkill</span><span class="nv"> </span><span class="s">ZOMBIE</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">notify</span><span class="nv"> </span><span class="s">actions:questCompleted&quot;</span>
+<span class="w">  </span><span class="nt">tameWolfs</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tame</span><span class="nv"> </span><span class="s">WOLF</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">actions:questCompleted&quot;</span>
+<span class="w">  </span><span class="nt">shearSheeps</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;shear</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">actions:questCompleted&quot;</span>
+
+<span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">selectRandomQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">quest_1.selectQuest,quest_2.selectQuest,quest_3.selectQuest</span><span class="nv"> </span><span class="s">random:1</span><span class="nv"> </span><span class="s">conditions:!alreadyStartedQuest&quot;</span><span class="w"> </span><span class="c1">#(3)!</span>
+
+<span class="w">  </span><span class="nt">quest_1</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">selectQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">quest_1.addTagStarted,quest_1.addObjectiveQuest,quest_1.notifyPlayerQuest</span><span class="nv"> </span><span class="s">delay:5</span><span class="nv"> </span><span class="s">seconds&quot;</span>
+<span class="w">    </span><span class="nt">addTagStarted</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;globaltag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">startedQuest_1&quot;</span>
+<span class="w">    </span><span class="nt">addObjectiveQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;objective</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">killMobs&quot;</span>
+<span class="w">    </span><span class="nt">notifyPlayerQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Go</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">kill</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">zombies</span><span class="nv"> </span><span class="s">today!&quot;</span>
+
+<span class="w">  </span><span class="nt">quest_2</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">selectQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">quest_2.addTagStarted,quest_2.addObjectiveQuest,quest_2.notifyPlayerQuest</span><span class="nv"> </span><span class="s">delay:5</span><span class="nv"> </span><span class="s">seconds&quot;</span>
+<span class="w">    </span><span class="nt">addTagStarted</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">startedQuest_2&quot;</span>
+<span class="w">    </span><span class="nt">addObjectiveQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;objective</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">tameWolfs&quot;</span>
+<span class="w">    </span><span class="nt">notifyPlayerQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Go</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">tame</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">wolfs</span><span class="nv"> </span><span class="s">today!&quot;</span>
+
+<span class="w">  </span><span class="nt">quest_3</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">selectQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">quest_3.addTagStarted,quest_3.addObjectiveQuest,quest_3.notifyPlayerQuest</span><span class="nv"> </span><span class="s">delay:5</span><span class="nv"> </span><span class="s">seconds&quot;</span>
+<span class="w">    </span><span class="nt">addTagStarted</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">startedQuest_3&quot;</span>
+<span class="w">    </span><span class="nt">addObjectiveQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;objective</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">shearSheeps&quot;</span>
+<span class="w">    </span><span class="nt">notifyPlayerQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Go</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">shear</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">sheeps</span><span class="nv"> </span><span class="s">today!&quot;</span>
+
+<span class="w">  </span><span class="nt">questCompleted</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">rewardPlayer,sendNotify&quot;</span>
+<span class="w">  </span><span class="nt">rewardPlayer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;give</span><span class="nv"> </span><span class="s">reward:5&quot;</span>
+<span class="w">  </span><span class="nt">sendNotify</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Congratulations!</span><span class="nv"> </span><span class="s">You</span><span class="nv"> </span><span class="s">get</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">new</span><span class="nv"> </span><span class="s">quest</span><span class="nv"> </span><span class="s">at</span><span class="nv"> </span><span class="s">1pm&quot;</span>
+
+<span class="w">  </span><span class="nt">resetAfterSpecificTime</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;globaltag</span><span class="nv"> </span><span class="s">delete</span><span class="nv"> </span><span class="s">startedQuest_1,startedQuest_2,startedtQuest_3&quot;</span><span class="w"> </span><span class="c1">#(4)!</span>
+
+<span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">alreadyStartedQuest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;OR</span><span class="nv"> </span><span class="s">startedQuest_1,startedQuest_2,startedQuest_3&quot;</span>
+<span class="w">  </span><span class="nt">startedQuest_1</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;globaltag</span><span class="nv"> </span><span class="s">startedQuest_1&quot;</span>
+<span class="w">  </span><span class="nt">startedQuest_2</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;globaltag</span><span class="nv"> </span><span class="s">startedQuest_2&quot;</span>
+<span class="w">  </span><span class="nt">startedQuest_3</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;globaltag</span><span class="nv"> </span><span class="s">startedQuest_3&quot;</span>
+
+<span class="nt">items</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">reward</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;simple</span><span class="nv"> </span><span class="s">diamond&quot;</span>
 </code></pre></div>
-Now you can use the <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M10.5 0a5.499 5.499 0 1 1-1.288 10.848l-.932.932a.75.75 0 0 1-.53.22H7v.75a.75.75 0 0 1-.22.53l-.5.5a.75.75 0 0 1-.53.22H5v.75a.75.75 0 0 1-.22.53l-.5.5a.75.75 0 0 1-.53.22h-2A1.75 1.75 0 0 1 0 14.25v-2c0-.199.079-.389.22-.53l4.932-4.932A5.5 5.5 0 0 1 10.5 0m-4 5.5c-.001.431.069.86.205 1.269a.75.75 0 0 1-.181.768L1.5 12.56v1.69c0 .138.112.25.25.25h1.69l.06-.06v-1.19a.75.75 0 0 1 .75-.75h1.19l.06-.06v-1.19a.75.75 0 0 1 .75-.75h1.19l1.023-1.025a.75.75 0 0 1 .768-.18A4 4 0 1 0 6.5 5.5M11 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2"/></svg></span> <code>Jack</code> to obtain <code>Some data about Jack</code>.</p>
-<p>Keys and values can also be nested into each other. Then they <strong>must</strong> be indented with two <strong>spaces</strong>.</p>
-<div class="highlight"><span class="filename">Nested YAML</span><pre><span></span><code><span class="nt">outerName</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">innerName</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;innerValue&quot;</span>
-<span class="w">  </span><span class="nt">anotherInnerName</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;BetonQuest</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">great!&quot;</span>
-</code></pre></div>
-<p>Tabs are not supported. Use spaces instead.</p>
-<p>You shouldn't name anything <code>yes</code>, <code>no</code>, <code>on</code>, <code>off</code>, <code>null</code>, <code>true</code> or <code>false</code> as those names are reserved keywords in YAML.  </p>
-<hr />
-<div class="grid" style="text-align: center;">
-<div style="text-align: left;">
-<p><a class="md-button md-button--primary" href="../../Setup-Guide/Setting-up-VSCode/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M7.78 12.53a.75.75 0 0 1-1.06 0L2.47 8.28a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.042.018.75.75 0 0 1 .018 1.042L4.81 7h7.44a.75.75 0 0 1 0 1.5H4.81l2.97 2.97a.75.75 0 0 1 0 1.06"/></svg></span> Setting up Visual Studio Code</a></p>
-</div>
-<div style="text-align: right;">
-<p><a class="md-button md-button--primary" href="../Conversations/">Conversations <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8.22 2.97a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l2.97-2.97H3.75a.75.75 0 0 1 0-1.5h7.44L8.22 4.03a.75.75 0 0 1 0-1.06"/></svg></span></a></p>
-</div>
-</div>
+<ol>
+<li>This schedule runs every day at 4:00 AM and selects the quest for that day.</li>
+<li>Clears all previously assigned global quest tags before adding a new one.</li>
+<li>The <strong>folder action</strong> with the <code>random</code> argument can be used to create random daily quests.</li>
+<li>Removes all tags that may have been added by the quests.</li>
+</ol>
 
 
 

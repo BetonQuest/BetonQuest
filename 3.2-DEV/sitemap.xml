@@ -541,7 +541,7 @@
          <lastmod>2026-07-30</lastmod>
     </url>
     <url>
-         <loc>https://betonquest.org/3.2-DEV/Tutorials/Getting-Started/Basics/YAML-Basics/</loc>
+         <loc>https://betonquest.org/3.2-DEV/Tutorials/Getting-Started/Basics/YAML/</loc>
          <lastmod>2026-07-30</lastmod>
     </url>
     <url>
@@ -565,7 +565,7 @@
          <lastmod>2026-07-30</lastmod>
     </url>
     <url>
-         <loc>https://betonquest.org/3.2-DEV/Tutorials/Quick-Guides/Multiplayer-and-Global-Quests/Global-Random-Daily-Quests/</loc>
+         <loc>https://betonquest.org/3.2-DEV/Tutorials/Quick-Guides/Multiplayer-and-Global-Quests/Global-Daily-Quests/</loc>
          <lastmod>2026-07-30</lastmod>
     </url>
     <url>
@@ -601,11 +601,11 @@
          <lastmod>2026-07-30</lastmod>
     </url>
     <url>
-         <loc>https://betonquest.org/3.2-DEV/Tutorials/Quick-Guides/Quest-Flow-and-Lifecycle/Random-Daily-Quest/</loc>
+         <loc>https://betonquest.org/3.2-DEV/Tutorials/Quick-Guides/Quest-Flow-and-Lifecycle/Quest-Cancelers/</loc>
          <lastmod>2026-07-30</lastmod>
     </url>
     <url>
-         <loc>https://betonquest.org/3.2-DEV/Tutorials/Quick-Guides/Quest-Flow-and-Lifecycle/Using-Quest-Cancelers/</loc>
+         <loc>https://betonquest.org/3.2-DEV/Tutorials/Quick-Guides/Quest-Flow-and-Lifecycle/Random-Daily-Quest/</loc>
          <lastmod>2026-07-30</lastmod>
     </url>
     <url>
@@ -645,7 +645,7 @@
          <lastmod>2026-07-30</lastmod>
     </url>
     <url>
-         <loc>https://betonquest.org/3.2-DEV/Tutorials/Tools/YAML-Errors/</loc>
+         <loc>https://betonquest.org/3.2-DEV/Tutorials/Tools/Handling-YAML-Errors/</loc>
          <lastmod>2026-07-30</lastmod>
     </url>
 </urlset>
