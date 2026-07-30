@@ -9,6 +9,7 @@ import io.papermc.paper.registry.data.dialog.type.DialogType;
 import io.papermc.paper.registry.data.dialog.type.MultiActionType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickCallback;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.conversation.Conversation;
@@ -24,6 +25,11 @@ import java.util.List;
  */
 @SuppressWarnings({"PMD.TooManyMethods", "UnstableApiUsage"})
 public class DialogConvIO implements ConversationIO {
+
+    /**
+     * Button for closing the conversation.
+     */
+    public static final Component CLOSE_TEXT = Component.translatable("mco.selectServer.close", NamedTextColor.RED);
 
     /**
      * An empty component constant.
@@ -54,11 +60,6 @@ public class DialogConvIO implements ConversationIO {
      * The settings for the dialog.
      */
     private final DialogSettings settings;
-
-    /**
-     * Cached component for the close button text.
-     */
-    private final Component cachedCloseText;
 
     /**
      * Whether the layout is NPC title.
@@ -103,7 +104,6 @@ public class DialogConvIO implements ConversationIO {
 
         this.settings = settings;
 
-        this.cachedCloseText = settings.closeButtonText();
         this.isNpcTitleLayout = settings.layout() == DialogLayout.NPC_TITLE;
     }
 
@@ -210,13 +210,13 @@ public class DialogConvIO implements ConversationIO {
      * @return the built ActionButton object
      */
     private ActionButton buildExitButton(final int totalWidth) {
-        final int buttonWidth = settings.closeButtonWidth();
+        final int buttonWidth = settings.buttonWidth();
 
         final int finalWidth = (buttonWidth > 0) ? buttonWidth
                 : (buttonWidth == -1) ? totalWidth
-                  : componentLineWrapper.width(cachedCloseText) + settings.buttonRenderPadding();
+                  : componentLineWrapper.width(CLOSE_TEXT) + settings.buttonRenderPadding();
 
-        return ActionButton.builder(cachedCloseText)
+        return ActionButton.builder(CLOSE_TEXT)
                 .width(finalWidth)
                 .action(DialogAction.customClick((aud, ctx) -> conv.endConversation(), clickOptions()))
                 .build();

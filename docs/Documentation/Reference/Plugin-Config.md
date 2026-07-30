@@ -227,11 +227,7 @@ Every io has its own settings that can be configured in the `io` section.
     * `button-render-padding` - Pixel distance to button ends.
     * `button-width` - Minimum size of player answer buttons.
     * `close-with-escape` - If using the escape (keyboard) button should quit the conversation.
-    * `close-button`  
-       Specific settings for the close button.
-        * `enabled` - If the close button should be shown.
-        * `text` - Text of the close button TODO should probably be a language file thing
-        * `width` - Size of the close button.
+    * `close-button-enabled` - If the close button should be shown.
 
 * `chest`  
   Settings for the chest conversation IO.

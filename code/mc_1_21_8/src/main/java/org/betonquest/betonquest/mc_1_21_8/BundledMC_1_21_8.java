@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
 import org.betonquest.betonquest.api.dependency.CoreComponentLoader;
 import org.betonquest.betonquest.api.integration.Integration;
-import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.mc_1_21_8.conversation.io.DialogConvIOFactory;
@@ -33,13 +32,11 @@ public class BundledMC_1_21_8 implements Integration {
     @Override
     public void enable(final BetonQuestApi api) {
         final CoreComponentLoader componentLoader = betonQuest.getComponentLoader();
-        final TextParser textParser = componentLoader.get(TextParser.class);
 
         componentLoader.get(ConversationIORegistry.class).register("dialog", new DialogConvIOFactory(
                 betonQuest.getPluginConfig(),
                 componentLoader.get(ConversationColors.class),
-                new ComponentLineWrapper(api.fonts()),
-                textParser
+                new ComponentLineWrapper(api.fonts())
         ));
     }
 

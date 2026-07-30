@@ -86,10 +86,7 @@ conversation:
       button-width: -1
       button-render-padding: 13
       close-with-escape: true
-      close-button:
-        enabled: true
-        text: <red>Close
-        width: -1
+      close-button-enabled: true
 npc:
   accept_left_click: false
   interaction_limit: 500

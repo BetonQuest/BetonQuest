@@ -4,7 +4,6 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.ConversationIO;
@@ -31,33 +30,25 @@ public class DialogConvIOFactory implements ConversationIOFactory {
     private final ComponentLineWrapper componentLineWrapper;
 
     /**
-     * The {@link TextParser} to use for parsing text.
-     */
-    private final TextParser textParser;
-
-    /**
      * Creates a new DialogConvIOFactory instance.
      *
      * @param config               the plugin configuration accessor
      * @param colors               the conversation colors
      * @param componentLineWrapper the component line wrapper
-     * @param textParser           the text parser used to parse text
      */
     public DialogConvIOFactory(
             final ConfigAccessor config,
             final ConversationColors colors,
-            final ComponentLineWrapper componentLineWrapper,
-            final TextParser textParser
+            final ComponentLineWrapper componentLineWrapper
     ) {
         this.config = config;
         this.colors = colors;
         this.componentLineWrapper = componentLineWrapper;
-        this.textParser = textParser;
     }
 
     @Override
     public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) throws QuestException {
-        final DialogSettings settings = DialogSettings.fromSection(textParser, config.getConfigurationSection("conversation.io.dialog"));
+        final DialogSettings settings = DialogSettings.fromSection(config.getConfigurationSection("conversation.io.dialog"));
         return new DialogConvIO(conversation, onlineProfile, settings, colors, componentLineWrapper);
     }
 }
