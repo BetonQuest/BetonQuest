@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 /**
  * Factory for creating {@link MythicLibSkillObjective} instances from {@link Instruction}s.
@@ -26,9 +27,9 @@ public class MythicLibSkillObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
         final Argument<String> skillId = instruction.string().get();
-        final List<TriggerType> triggerTypes = instruction
+        final Optional<Argument<List<TriggerType>>> triggerTypes = instruction
                 .parse(id -> TriggerType.valueOf(id.toUpperCase(Locale.ROOT)))
-                .list().get().getValue(null);
+                .list().get("trigger");
         final MythicLibSkillObjective objective = new MythicLibSkillObjective(service, skillId, triggerTypes);
         service.request(SkillCastEvent.class).onlineHandler(objective::onSkillCast)
                 .player(SkillCastEvent::getPlayer).subscribe(true);
