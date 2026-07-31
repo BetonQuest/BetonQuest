@@ -17,10 +17,24 @@ public class PlaceholderExtractorContext implements TokenizerContext<Placeholder
     private final List<Token> tokens = new ArrayList<>();
 
     /**
+     * The context settings.
+     */
+    private final PlaceholderExtractorSettings settings;
+
+    /**
      * The word that is currently being collected.
      */
     @SuppressWarnings("PMD.AvoidStringBufferField")
     private StringBuilder word = new StringBuilder();
+
+    /**
+     * Create a new context.
+     *
+     * @param settings the context settings
+     */
+    public PlaceholderExtractorContext(final PlaceholderExtractorSettings settings) {
+        this.settings = settings;
+    }
 
     @Override
     public void appendCodePoint(final int codePoint) {
@@ -34,13 +48,15 @@ public class PlaceholderExtractorContext implements TokenizerContext<Placeholder
 
     @Override
     public void endWord() {
-        tokens.add(new Token(null, word.toString()));
+        if (!word.isEmpty()) {
+            tokens.add(new Token(null, word.toString()));
+        }
         word = new StringBuilder();
     }
 
     @Override
     public PlaceholderExtractorSettings settings() {
-        return PlaceholderExtractorSettings.DEFAULT;
+        return settings;
     }
 
     /**
