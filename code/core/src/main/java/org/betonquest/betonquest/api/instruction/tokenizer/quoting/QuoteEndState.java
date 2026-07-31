@@ -1,9 +1,12 @@
-package org.betonquest.betonquest.api.instruction.tokenizer;
+package org.betonquest.betonquest.api.instruction.tokenizer.quoting;
+
+import org.betonquest.betonquest.api.instruction.tokenizer.TokenizerException;
+import org.betonquest.betonquest.api.instruction.tokenizer.TokenizerState;
 
 /**
  * The state of a just finished quoted word. A whitespace character is expected.
  */
-public class QuoteEndState implements TokenizerState {
+public class QuoteEndState implements TokenizerState<QuotingTokenizerContext> {
 
     /**
      * The quoting level of the word.
@@ -20,7 +23,7 @@ public class QuoteEndState implements TokenizerState {
     }
 
     @Override
-    public TokenizerState parseNext(final TokenizerContext ctx, final int codePoint) throws TokenizerException {
+    public TokenizerState<QuotingTokenizerContext> parseNext(final QuotingTokenizerContext ctx, final int codePoint) throws TokenizerException {
         if (ctx.settings().isSeparator(codePoint)) {
             return new NoWordState();
         }
@@ -43,7 +46,7 @@ public class QuoteEndState implements TokenizerState {
     }
 
     @Override
-    public void parseEnd(final TokenizerContext ctx) throws TokenizerException {
+    public void parseEnd(final QuotingTokenizerContext ctx) throws TokenizerException {
         if (quotingLevel > QuotedWordState.INITIAL_QUOTING_LEVEL) {
             throw new TokenizerException("Expected quoted string to end but reached end of data.");
         }
