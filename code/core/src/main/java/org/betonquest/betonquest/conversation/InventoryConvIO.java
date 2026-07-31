@@ -209,7 +209,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         // each row contains 7 options, so get amount of rows
         int rows = options.size() / 7;
         rows++;
-        inv = Bukkit.createInventory(null, 9 * rows, Component.text("NPC"));
+        inv = Bukkit.createInventory(null, 9 * rows, npcName);
         inv.setContents(new ItemStack[9 * rows]);
         final ItemStack[] buttons = new ItemStack[9 * rows];
         buttons[0] = createNpcHead();
