@@ -1,10 +1,9 @@
 package org.betonquest.betonquest.quest.objective.damage;
 
-import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveProperties;
@@ -57,11 +56,6 @@ public class DamageObjective extends DefaultObjective {
     private final Map<Profile, Long> intervalTimes;
 
     /**
-     * BetonQuest API instance used to interact with the stored data.
-     */
-    private final BetonQuestApi api;
-
-    /**
      * Constructs a new {@code DamageObjective}.
      *
      * @param service      the objective service
@@ -86,12 +80,11 @@ public class DamageObjective extends DefaultObjective {
         this.timeUnit = timeUnit;
         this.intervalTimes = new ProfileKeyMap<>(service.getProfileProvider());
 
-        this.api = BetonQuest.getInstance().getBetonQuestApi();
-
+        service.setDefaultData(this::getDefaultDataInstruction);
         final ObjectiveProperties properties = service.getProperties();
-        properties.setProperty("amount", profile -> String.valueOf(getCurrentDamage(profile)));
+        properties.setProperty("amount", profile -> String.valueOf(getDamageAmount(profile).current));
         properties.setProperty("left", profile -> String.valueOf(getRemainingDamage(profile)));
-        properties.setProperty("total", profile -> String.valueOf(targetAmount.getValue(profile)));
+        properties.setProperty("total", profile -> String.valueOf(getDamageAmount(profile).target));
     }
 
     /**
@@ -131,11 +124,9 @@ public class DamageObjective extends DefaultObjective {
             return;
         }
 
-        final int dmgToAdd = (int) Math.round(finalDmg * 100);
+        add(profile, finalDmg);
 
-        api.persistence().of(profile).points().add("damage_progress", dmgToAdd);
-
-        if (getCurrentDamage(profile) >= targetAmount.getValue(profile).doubleValue()) {
+        if (isCompleted(profile)) {
             getService().complete(profile);
         }
     }
@@ -170,14 +161,54 @@ public class DamageObjective extends DefaultObjective {
         return false;
     }
 
-    private double getCurrentDamage(final Profile profile) {
-        final int storedPoints = api.persistence().of(profile).points().get("damage_progress").orElse(0);
-        return storedPoints / 100.0;
+    private String getDefaultDataInstruction(final Profile profile) throws QuestException {
+        return String.valueOf(targetAmount.getValue(profile).doubleValue());
     }
 
     private double getRemainingDamage(final Profile profile) throws QuestException {
-        final double target = targetAmount.getValue(profile).doubleValue();
-        final double current = getCurrentDamage(profile);
-        return Math.max(0.0, target - current);
+        final Amount amount = getDamageAmount(profile);
+        return amount.target - amount.current;
+    }
+
+    private boolean isCompleted(final Profile profile) throws QuestException {
+        final Amount amount = getDamageAmount(profile);
+        return amount.current >= amount.target;
+    }
+
+    private void add(final Profile profile, final double toAdd) throws QuestException {
+        final Amount amount = getDamageAmount(profile);
+        final double newAmount = amount.current + toAdd;
+        getService().getData().put(profile, newAmount + "/" + amount.target);
+        getService().updateData(profile);
+    }
+
+    private Amount getDamageAmount(final Profile profile) throws QuestException {
+        final String stringData = getService().getData().get(profile);
+        if (stringData == null) {
+            throw new QuestException("Profile should have data!");
+        }
+        final String[] split = stringData.split("/");
+        final double amount;
+        final double targetAmount;
+        final int initLength = 1;
+        if (split.length == initLength) {
+            amount = 0;
+            targetAmount = NumberParser.DEFAULT.apply(split[0]).doubleValue();
+        } else {
+            amount = NumberParser.DEFAULT.apply(split[0]).doubleValue();
+            targetAmount = NumberParser.DEFAULT.apply(split[1]).doubleValue();
+        }
+        return new Amount(amount, targetAmount);
+    }
+
+    /**
+     * Represents a numerical progress tracking structure containing the current value
+     * and the target objective value.
+     *
+     * @param current the current progress value achieved so far
+     * @param target  the final target value required to complete the objective
+     */
+    private record Amount(double current, double target) {
+
     }
 }
