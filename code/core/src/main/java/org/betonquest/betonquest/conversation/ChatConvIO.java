@@ -168,7 +168,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     }
 
     @Override
-    public void setNpcResponse(final Component npcName, final Component response) {
+    public void setNpcResponse(final Component npcName, final Component response, final ConfigurationSection properties) {
         this.npcName = npcName;
         this.npcText = response;
     }

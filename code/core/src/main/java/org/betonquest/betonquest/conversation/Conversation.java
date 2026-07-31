@@ -262,7 +262,8 @@ public class Conversation {
             new ConversationEnder().runTask(plugin);
             return;
         }
-        inOut.setNpcResponse(data.getPublicData().getQuester(log, onlineProfile), data.getText(onlineProfile, nextNPCOption));
+        inOut.setNpcResponse(data.getPublicData().getQuester(log, onlineProfile), data.getText(onlineProfile, nextNPCOption),
+                data.getProperties(onlineProfile, nextNPCOption));
         new NPCActionRunner(nextNPCOption).runTask(plugin);
     }
 

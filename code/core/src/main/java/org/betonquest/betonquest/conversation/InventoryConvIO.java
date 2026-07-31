@@ -90,6 +90,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
 
     protected Component npcName;
 
+    @Nullable
+    protected String npcItem;
+
     protected ConversationColors colors;
 
     protected Component answerPrefix;
@@ -171,9 +174,10 @@ public class InventoryConvIO implements Listener, ConversationIO {
     }
 
     @Override
-    public void setNpcResponse(final Component npcName, final Component response) {
+    public void setNpcResponse(final Component npcName, final Component response, final ConfigurationSection properties) {
         this.npcName = npcName;
         this.response = colors.getText().append(response);
+        this.npcItem = properties.getString("item");
     }
 
     @Override
@@ -212,7 +216,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         inv = Bukkit.createInventory(null, 9 * rows, npcName);
         inv.setContents(new ItemStack[9 * rows]);
         final ItemStack[] buttons = new ItemStack[9 * rows];
-        buttons[0] = createNpcHead();
+        buttons[0] = createNpcItem();
         generateRows(rows, buttons);
 
         if (printMessages) {
@@ -279,7 +283,23 @@ public class InventoryConvIO implements Listener, ConversationIO {
         }
     }
 
-    private ItemStack createNpcHead() {
+    private ItemStack createNpcItem() {
+        if (npcItem != null) {
+            try {
+                final ItemIdentifier itemIdentifier = instructions.createForArgument(conv.getPackage(), npcItem)
+                        .identifier(ItemIdentifier.class).get().getValue(profile);
+                final ItemStack item = itemManager.getItem(profile, itemIdentifier).generate(1);
+                final ItemMeta meta = item.getItemMeta();
+                meta.displayName(colors.getNpc().append(npcName));
+                Objects.requireNonNull(response);
+                meta.lore(componentLineWrapper.splitWidth(colors.getText().append(response)));
+                item.setItemMeta(meta);
+                return item;
+            } catch (final QuestException e) {
+                log.warn("Failed to generate NPC conversation item: " + e.getMessage(), e);
+            }
+        }
+
         final String plainTextNpcName = PlainTextComponentSerializer.plainText().serialize(npcName);
         final ItemStack npcHead;
         if (SKULL_CACHE.containsKey(plainTextNpcName)) {
