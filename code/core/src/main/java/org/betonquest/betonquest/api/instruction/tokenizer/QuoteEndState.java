@@ -6,9 +6,17 @@ package org.betonquest.betonquest.api.instruction.tokenizer;
 public class QuoteEndState implements TokenizerState {
 
     /**
-     * Create the quoted word end state.
+     * The quoting level of the word.
      */
-    public QuoteEndState() {
+    private final int quotingLevel;
+
+    /**
+     * Create the quoted word end state.
+     *
+     * @param quotingLevel the quoting level of the word
+     */
+    public QuoteEndState(final int quotingLevel) {
+        this.quotingLevel = quotingLevel;
     }
 
     @Override
@@ -16,11 +24,28 @@ public class QuoteEndState implements TokenizerState {
         if (ctx.settings().isSeparator(codePoint)) {
             return new NoWordState();
         }
+        if (ctx.settings().isBeginQuote(codePoint)) {
+            ctx.beginWord();
+            return new QuotedWordState(quotingLevel);
+        }
+        if (ctx.settings().isEndQuote(codePoint)) {
+            if (quotingLevel == QuotedWordState.INITIAL_QUOTING_LEVEL) {
+                throw new TokenizerException("Unexpected closing quote.");
+            }
+            ctx.endWord();
+            return new QuoteEndState(quotingLevel - 1);
+        }
+        if (quotingLevel > QuotedWordState.INITIAL_QUOTING_LEVEL) {
+            ctx.appendCodePoint(codePoint);
+            return new QuotedWordState(quotingLevel - 1);
+        }
         throw new TokenizerException("Expected separator or nothing but got: '%s'".formatted(Character.toString(codePoint)));
     }
 
     @Override
-    public void parseEnd(final TokenizerContext ctx) {
-        // no action required
+    public void parseEnd(final TokenizerContext ctx) throws TokenizerException {
+        if (quotingLevel > QuotedWordState.INITIAL_QUOTING_LEVEL) {
+            throw new TokenizerException("Expected quoted string to end but reached end of data.");
+        }
     }
 }
