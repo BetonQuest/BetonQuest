@@ -2,8 +2,10 @@ package org.betonquest.betonquest.api.instruction.tokenizer;
 
 /**
  * State of the instruction string tokenizer.
+ *
+ * @param <T> the type of the tokenizer settings
  */
-public interface TokenizerState {
+public interface TokenizerState<T extends TokenizerContext<?>> {
 
     /**
      * Parse the next code point according to the current state.
@@ -13,7 +15,7 @@ public interface TokenizerState {
      * @return the next state to transition to
      * @throws TokenizerException if the code point was invalid for the current state
      */
-    TokenizerState parseNext(TokenizerContext ctx, int codePoint) throws TokenizerException;
+    TokenizerState<T> parseNext(T ctx, int codePoint) throws TokenizerException;
 
     /**
      * End the parsing of the instruction string in this state.
@@ -21,5 +23,5 @@ public interface TokenizerState {
      * @param ctx context object that collects parsing results
      * @throws TokenizerException if the current state does not allow the parsing to end
      */
-    void parseEnd(TokenizerContext ctx) throws TokenizerException;
+    void parseEnd(T ctx) throws TokenizerException;
 }
