@@ -144,7 +144,7 @@ public class EntityInteractObjective extends CountingObjective {
             }
         }
 
-        final String data = getService().getData().get(onlineProfile);
+        final String data = getService().getData().getOrDefault(onlineProfile, "");
         final EntityInteractData interactData = new EntityInteractData(data, onlineProfile, getObjectiveID());
         final boolean success = interactData.tryProgressWithEntity(entity);
         if (success) {
