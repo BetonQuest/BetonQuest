@@ -41,11 +41,11 @@ public class DamageObjectiveFactory implements ObjectiveFactory {
         service.request(EntityDamageByEntityEvent.class)
                 .priority(EventPriority.HIGHEST).onlineHandler(objective::onDamageDealt)
                 .player(event -> resolveAttackingPlayer(event.getDamager()))
-                .subscribe(false);
+                .subscribe(true);
         service.request(EntityDamageEvent.class)
                 .priority(EventPriority.HIGHEST).onlineHandler(objective::onDamageTaken)
                 .player(event -> event.getEntity() instanceof final Player player ? player : null)
-                .subscribe(false);
+                .subscribe(true);
         return objective;
     }
 
