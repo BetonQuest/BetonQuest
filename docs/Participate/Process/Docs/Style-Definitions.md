@@ -15,7 +15,7 @@ To simplify the process of maintaining these lists, we use the following style d
     ## `Example`
     
     __Context__: @snippet:action-meta:online-offline-independent@  
-    __Syntax__: `example <param1> [param2] {param3} +[...]`  
+    __Syntax__: `example <param1> <param2> [param3] [param4] {param5} +[...]`  
     __Description__: An example action.
     
     This description is used to provide a brief explanation of the action if it is not obvious from short description

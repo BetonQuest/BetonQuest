@@ -13,11 +13,11 @@ __Description__: A brew item definition
 TheBrewingProject brew item usage is integrated to the [Items](../../../Advanced/Items.md) system and can therefore be used for 
 actions and conditions.
 
-| Parameter                | Type                | Explanation                                                                  |
-|--------------------------|---------------------|------------------------------------------------------------------------------|
-| brew-id <br>[String]     | Required            | Specifies the type of brew                                                   |
-| quality <br>[Quality]    | Optional <br>[NONE] | The quality of the brew, if not specified this will not be validated against |
-| quest-item <br>[Boolean] | Flag <br>[false]    | Mark this item as a quest item                                               |
+| Parameter                | Type                   | Explanation                                                                  |
+|--------------------------|------------------------|------------------------------------------------------------------------------|
+| brew-id <br>[String]     | Required               | Specifies the type of brew                                                   |
+| quality <br>[Quality]    | Optional <br>[NONE]    | The quality of the brew, if not specified this will not be validated against |
+| quest-item <br>[Boolean] | Flag <br>[false, true] | Mark this item as a quest item                                               |
 
 ```YAML title="Example"
 items:
