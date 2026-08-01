@@ -262,10 +262,17 @@ conditions:
 ## `GlobalPoint`
 
 __Context__: @snippet:condition-meta:independent@  
-__Syntax__: `globalpoint <category> <point> [equal]`  
+__Syntax__: `globalpoint <category> <amount> {equal} {fallback}`  
 __Description__: Whether the specified global point category has the specified amount of points.
 
-See the [`point` condition](#point) for argument explanation.
+See also the [`point` condition](#point).
+
+| Parameter                 | Type                   | Explanation                                        |
+|---------------------------|------------------------|----------------------------------------------------|
+| category <br>[Identifier] | Required               | The point category to check.                       |
+| amount <br>[Number]       | Required               | The required amount in the category.               |
+| equal <br>[Boolean]       | Flag <br>[false, true] | Accept only exactly equal amount of points.        |
+| fallback <br>[Number]     | Flag <br>[None, 0]     | Value to check against if the category is not set. |
 
 ```YAML title="Example"
 conditions:
@@ -612,17 +619,24 @@ conditions:
 ## `Point`
 
 __Context__: @snippet:condition-meta:online-offline@  
-__Syntax__: `point <category> <amount> [equal]`  
+__Syntax__: `point <category> <amount> {equal} {fallback}`  
 __Description__: Whether the player has at least the specified amount of points in the specified category.
 
-There are two required arguments, first is the category (string), second is the amount (integer).
-You can also add optional argument `equal` to accept only players with exactly equal amount of points.
+Having no point at all never allows this condition to be met.
 
 See also the [`globalpoint` condition](#globalpoint).
 
-```YAML title="Example"
+| Parameter                 | Type                   | Explanation                                        |
+|---------------------------|------------------------|----------------------------------------------------|
+| category <br>[Identifier] | Required               | The point category to check.                       |
+| amount <br>[Number]       | Required               | The required amount in the category.               |
+| equal <br>[Boolean]       | Flag <br>[false, true] | Accept only exactly equal amount of points.        |
+| fallback <br>[Number]     | Flag <br>[None, 0]     | Value to check against if the category is not set. |
+
+```YAML title="Examples"
 conditions:
   has20BetonPoints: "point beton 20"
+  isAtLeastNeutral: "point reputation -100 fallback"
 ```
 
 ## `Random`
