@@ -84,7 +84,7 @@ conversation:
     dialog:
       layout: NPC_TITLE
       only-buttons: false
-      button-width: -1
+      button-width: 250
       button-render-padding: 13
       close-with-escape: true
       close-button-enabled: true

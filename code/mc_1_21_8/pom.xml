@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.betonquest</groupId>
     <artifactId>parent</artifactId>
-    <version>2.10.0</version>
+    <version>2.11.0</version>
   </parent>
 
   <name>BetonQuest Minecraft 1.21.8</name>
@@ -21,11 +21,10 @@
     <pit.report.skip>true</pit.report.skip>
 
     <!-- module versions -->
-    <betonquest.core.version>3.0.0${changelist}</betonquest.core.version>
+    <betonquest.core.version>3.2.0${changelist}</betonquest.core.version>
 
     <!-- dependency versions -->
     <paper-api.version>1.21.8-R0.1-SNAPSHOT</paper-api.version>
-    <betonquest.mc_1_20_6.version>3.0.0${changelist}</betonquest.mc_1_20_6.version>
   </properties>
 
   <dependencies>
@@ -34,12 +33,6 @@
       <groupId>org.betonquest.betonquest</groupId>
       <artifactId>core</artifactId>
       <version>${betonquest.core.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.betonquest.betonquest</groupId>
-      <artifactId>mc_1_20_6</artifactId>
-      <version>${betonquest.mc_1_20_6.version}</version>
       <scope>provided</scope>
     </dependency>
 

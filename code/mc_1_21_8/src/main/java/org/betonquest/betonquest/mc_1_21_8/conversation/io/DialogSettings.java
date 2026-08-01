@@ -32,7 +32,7 @@ public record DialogSettings(
      */
     public static DialogSettings fromSection(final ConfigurationSection section) throws QuestException {
         final DialogLayout layout = new EnumParser<>(DialogLayout.class).apply(section.getString("layout", "NPC_TITLE"));
-        final boolean onlyButtons = section.getBoolean("only-button", false);
+        final boolean onlyButtons = section.getBoolean("only-buttons", false);
 
         final int buttonRenderPadding = section.getInt("button-render-padding", 13);
         final int defaultButtonWidth = section.getInt("button-width", 250);

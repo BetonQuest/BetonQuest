@@ -7,11 +7,11 @@
     key: conversation.io.dialog.only-buttons
     value: false
   - type: SET
+    key: conversation.io.dialog.button-width
+    value: 250
+  - type: SET
     key: conversation.io.dialog.button-render-padding
     value: 13
-  - type: SET
-    key: conversation.io.dialog.button-width
-    value: -1
   - type: SET
     key: conversation.io.dialog.close-with-escape
     value: true

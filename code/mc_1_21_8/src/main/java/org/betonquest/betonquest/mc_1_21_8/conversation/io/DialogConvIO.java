@@ -200,7 +200,6 @@ public class DialogConvIO implements ConversationIO {
         final int size = options.size();
         final List<DialogBody> bodies = new ArrayList<>(size * 2 + 1);
         for (int i = 0; i < size; i++) {
-            bodies.add(DialogBody.plainMessage(Component.empty()));
             bodies.add(DialogBody.plainMessage(colorfulPlayerText(options.get(i), i)));
         }
 

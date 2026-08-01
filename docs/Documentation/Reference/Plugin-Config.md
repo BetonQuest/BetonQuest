@@ -225,8 +225,8 @@ Every io has its own settings that can be configured in the `io` section.
   Settings for the dialog conversation IO.
     * `layout` - Where the Npc name will be shown, either `NPC_TITLE` or `FULL_BODY`.
     * `only-buttons` - Whether the text should be displayed only on the buttons or also in it own boxes.
-    * `button-render-padding` - Pixel distance to button ends.
     * `button-width` - Minimum size of player answer buttons.
+    * `button-render-padding` - Pixel distance to button ends.
     * `close-with-escape` - If using the escape (keyboard) button should quit the conversation.
     * `close-button-enabled` - If the close button should be shown.
 
