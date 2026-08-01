@@ -12,6 +12,8 @@ import org.betonquest.betonquest.api.instruction.ValueParser;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.chain.ChainableInstruction;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
+import org.betonquest.betonquest.lib.instruction.reader.InstructionReaderStrategy;
+import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,25 +44,12 @@ public class DefaultChainableInstruction implements ChainableInstruction {
     /**
      * The supplier providing the next element to parse.
      */
-    private final QuestSupplier<String> nextElementSupplier;
+    private final InstructionReaderStrategy<String> instructionReaderStrategy;
 
     /**
-     * The function to retrieve the next element by its key.
-     */
-    private final QuestFunction<String, String> nextOptionalFunction;
-
-    /**
-     * The function to retrieve the next flag by its key.
-     */
-    private final QuestFunction<String, Map.Entry<FlagState, String>> nextFlagFunction;
-
-    /**
-     * The function to retrieve the next named elements by a key filter.
-     */
-    private final QuestFunction<Predicate<String>, Map<String, String>> namedElementsFunction;
-
-    /**
-     * Sole constructor.
+     * Deprecated constructor.
+     * <p>
+     * See {@link InstructionReaderStrategy} to use the new constructor.
      *
      * @param placeholders          the {@link PlaceholderManager} to create and resolve placeholders
      * @param packManager           the package manager
@@ -70,29 +59,60 @@ public class DefaultChainableInstruction implements ChainableInstruction {
      * @param nextFlagFunction      the provider for the next flag by key
      * @param namedElementsFunction the provider for the next named elements by a key filter
      */
+    @Deprecated
     public DefaultChainableInstruction(final PlaceholderManager placeholders, final QuestPackageManager packManager,
                                        final QuestPackage pack, final QuestSupplier<String> nextElementSupplier,
                                        final QuestFunction<String, String> nextOptionalFunction,
                                        final QuestFunction<String, Map.Entry<FlagState, String>> nextFlagFunction,
                                        final QuestFunction<Predicate<String>, Map<String, String>> namedElementsFunction) {
+        this(placeholders, packManager, pack, new InstructionReaderStrategy<>() {
+            @Override
+            public String getNext() throws QuestException {
+                return nextElementSupplier.get();
+            }
+
+            @Override
+            public @Nullable String getOptional(final String prefix) throws QuestException {
+                return nextOptionalFunction.apply(prefix);
+            }
+
+            @Override
+            public Map.Entry<FlagState, String> getFlag(final String prefix) throws QuestException {
+                return nextFlagFunction.apply(prefix);
+            }
+
+            @Override
+            public Map<String, String> getNamed(final Predicate<String> keyFilter) throws QuestException {
+                return namedElementsFunction.apply(keyFilter);
+            }
+        });
+    }
+
+    /**
+     * Creates a new {@link DefaultChainableInstruction} instance.
+     *
+     * @param placeholders              the {@link PlaceholderManager} to create and resolve placeholders
+     * @param packManager               the package manager
+     * @param pack                      the related package
+     * @param instructionReaderStrategy the strategy to read the arguments from the instruction
+     */
+    public DefaultChainableInstruction(final PlaceholderManager placeholders, final QuestPackageManager packManager,
+                                       final QuestPackage pack, final InstructionReaderStrategy<String> instructionReaderStrategy) {
         this.placeholders = placeholders;
         this.packManager = packManager;
         this.pack = pack;
-        this.nextElementSupplier = nextElementSupplier;
-        this.nextOptionalFunction = nextOptionalFunction;
-        this.nextFlagFunction = nextFlagFunction;
-        this.namedElementsFunction = namedElementsFunction;
+        this.instructionReaderStrategy = instructionReaderStrategy;
     }
 
     @Override
     public <T> Argument<T> getNext(final InstructionArgumentParser<T> argumentParser) throws QuestException {
-        return new DefaultArgument<>(placeholders, pack, nextElementSupplier.get(),
+        return new DefaultArgument<>(placeholders, pack, instructionReaderStrategy.getNext(),
                 value -> argumentParser.apply(placeholders, packManager, pack, value));
     }
 
     @Override
     public <T> Optional<Argument<T>> getOptional(final String argumentKey, final InstructionArgumentParser<T> argumentParser) throws QuestException {
-        final String argumentValue = nextOptionalFunction.apply(argumentKey);
+        final String argumentValue = instructionReaderStrategy.getOptional(argumentKey);
         if (argumentValue == null) {
             return Optional.empty();
         }
@@ -102,7 +122,7 @@ public class DefaultChainableInstruction implements ChainableInstruction {
 
     @Override
     public <T> Argument<T> getOptional(final String argumentKey, final InstructionArgumentParser<T> argument, final T defaultValue) throws QuestException {
-        final String argumentValue = nextOptionalFunction.apply(argumentKey);
+        final String argumentValue = instructionReaderStrategy.getOptional(argumentKey);
         if (argumentValue == null) {
             return new DefaultArgument<>(defaultValue);
         }
@@ -112,7 +132,7 @@ public class DefaultChainableInstruction implements ChainableInstruction {
 
     @Override
     public <T> FlagArgument<T> getFlag(final String argumentKey, final InstructionArgumentParser<T> argumentParser, final T presenceDefault) throws QuestException {
-        final Map.Entry<FlagState, String> flag = nextFlagFunction.apply(argumentKey);
+        final Map.Entry<FlagState, String> flag = instructionReaderStrategy.getFlag(argumentKey);
         return switch (flag.getKey()) {
             case ABSENT -> new DefaultFlagArgument<>();
             case UNDEFINED -> new DefaultFlagArgument<>(presenceDefault, FlagState.UNDEFINED);
@@ -123,7 +143,7 @@ public class DefaultChainableInstruction implements ChainableInstruction {
 
     @Override
     public <T> Map<String, Argument<T>> getNamed(final InstructionArgumentParser<T> argumentParser, final Predicate<String> keyFilter) throws QuestException {
-        final Map<String, String> map = namedElementsFunction.apply(keyFilter);
+        final Map<String, String> map = instructionReaderStrategy.getNamed(keyFilter);
         final Map<String, Argument<T>> result = new HashMap<>();
         for (final Map.Entry<String, String> entry : map.entrySet()) {
             result.put(entry.getKey(), new DefaultArgument<>(placeholders, pack, entry.getValue(),
