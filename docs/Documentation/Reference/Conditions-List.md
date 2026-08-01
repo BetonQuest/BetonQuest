@@ -262,7 +262,7 @@ conditions:
 ## `GlobalPoint`
 
 __Context__: @snippet:condition-meta:independent@  
-__Syntax__: `globalpoint <category> <point> [equal]`  
+__Syntax__: `globalpoint <category> <point> [equal] [fallback]`  
 __Description__: Whether the specified global point category has the specified amount of points.
 
 See the [`point` condition](#point) for argument explanation.
@@ -612,17 +612,22 @@ conditions:
 ## `Point`
 
 __Context__: @snippet:condition-meta:online-offline@  
-__Syntax__: `point <category> <amount> [equal]`  
+__Syntax__: `point <category> <amount> [equal] [fallback]`  
 __Description__: Whether the player has at least the specified amount of points in the specified category.
 
 There are two required arguments, first is the category (string), second is the amount (integer).
 You can also add optional argument `equal` to accept only players with exactly equal amount of points.
+
+By default, having no point at all never allows this condition to be met.
+You can use the `fallback:x` (`x` defaults to 0) argument to use a default value when the category is not set.
+To simply check if any point is set at all use the [`haspoint` condition](#haspoint).
 
 See also the [`globalpoint` condition](#globalpoint).
 
 ```YAML title="Example"
 conditions:
   has20BetonPoints: "point beton 20"
+  isAtLeastNeutral: "point reputation -100 fallback"
 ```
 
 ## `Random`

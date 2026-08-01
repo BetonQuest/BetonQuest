@@ -36,24 +36,36 @@ public class GlobalPointCondition implements NullableCondition {
     private final FlagArgument<Boolean> equal;
 
     /**
+     * Default value when there is no value for the category at all.
+     */
+    private final FlagArgument<Number> fallback;
+
+    /**
      * Constructor for the global point condition.
      *
      * @param globalData the global data
      * @param category   the category of the points
      * @param count      the amount of points
      * @param equal      whether the points should be equal to the specified amount
+     * @param fallback   the default value when there is no value in the category at all
      */
-    public GlobalPointCondition(final GlobalData globalData, final Argument<String> category, final Argument<Number> count, final FlagArgument<Boolean> equal) {
+    public GlobalPointCondition(final GlobalData globalData, final Argument<String> category, final Argument<Number> count,
+                                final FlagArgument<Boolean> equal, final FlagArgument<Number> fallback) {
         this.globalData = globalData;
         this.category = category;
         this.count = count;
         this.equal = equal;
+        this.fallback = fallback;
     }
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
         final Optional<Integer> point = globalData.points().get(category.getValue(profile));
-        return point.isPresent() && checkPoints(point.get(), profile);
+        if (point.isPresent() && checkPoints(point.get(), profile)) {
+            return true;
+        }
+        final Optional<Number> fallback = this.fallback.getValue(profile);
+        return fallback.isPresent() && checkPoints(fallback.get().intValue(), profile);
     }
 
     private boolean checkPoints(final int point, @Nullable final Profile profile) throws QuestException {

@@ -44,6 +44,7 @@ public class GlobalPointConditionFactory implements PlayerConditionFactory, Play
         final Argument<String> category = instruction.packageIdentifier().get();
         final Argument<Number> count = instruction.number().get();
         final FlagArgument<Boolean> equal = instruction.bool().getFlag("equal", true);
-        return new GlobalPointCondition(globalData, category, count, equal);
+        final FlagArgument<Number> fallback = instruction.number().getFlag("fallback", 0);
+        return new GlobalPointCondition(globalData, category, count, equal, fallback);
     }
 }

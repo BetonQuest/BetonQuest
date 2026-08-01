@@ -35,24 +35,36 @@ public class PointCondition implements PlayerCondition {
     private final FlagArgument<Boolean> equal;
 
     /**
+     * Default value when there is no value for the category at all.
+     */
+    private final FlagArgument<Number> fallback;
+
+    /**
      * Constructor for the point condition.
      *
      * @param dataStorage the storage providing player data
      * @param category    the category of the points
      * @param count       the amount of points
      * @param equal       whether the points should be equal to the specified amount
+     * @param fallback    the default value when there is no value in the category at all
      */
-    public PointCondition(final PlayerDataStorage dataStorage, final Argument<String> category, final Argument<Number> count, final FlagArgument<Boolean> equal) {
+    public PointCondition(final PlayerDataStorage dataStorage, final Argument<String> category, final Argument<Number> count,
+                          final FlagArgument<Boolean> equal, final FlagArgument<Number> fallback) {
         this.dataStorage = dataStorage;
         this.category = category;
         this.count = count;
         this.equal = equal;
+        this.fallback = fallback;
     }
 
     @Override
     public boolean check(final Profile profile) throws QuestException {
         final Optional<Integer> amount = dataStorage.getOffline(profile).points().get(category.getValue(profile));
-        return amount.isPresent() && checkPoints(amount.get(), profile);
+        if (amount.isPresent() && checkPoints(amount.get(), profile)) {
+            return true;
+        }
+        final Optional<Number> fallback = this.fallback.getValue(profile);
+        return fallback.isPresent() && checkPoints(fallback.get().intValue(), profile);
     }
 
     private boolean checkPoints(final int points, final Profile profile) throws QuestException {

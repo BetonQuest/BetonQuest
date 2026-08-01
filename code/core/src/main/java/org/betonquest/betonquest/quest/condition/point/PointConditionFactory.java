@@ -32,6 +32,7 @@ public class PointConditionFactory implements PlayerConditionFactory {
         final Argument<String> category = instruction.packageIdentifier().get();
         final Argument<Number> count = instruction.number().get();
         final FlagArgument<Boolean> equal = instruction.bool().getFlag("equal", true);
-        return new PointCondition(dataStorage, category, count, equal);
+        final FlagArgument<Number> fallback = instruction.number().getFlag("fallback", 0);
+        return new PointCondition(dataStorage, category, count, equal, fallback);
     }
 }
