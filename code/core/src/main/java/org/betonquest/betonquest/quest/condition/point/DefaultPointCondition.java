@@ -14,7 +14,7 @@ import java.util.function.Function;
 /**
  * A condition that checks if a {@link PointHolder} has a certain amount of points.
  */
-public class PointCondition implements NullableCondition {
+public class DefaultPointCondition implements NullableCondition {
 
     /**
      * Function to get the point holder from a profile.
@@ -50,8 +50,8 @@ public class PointCondition implements NullableCondition {
      * @param equal          whether the points should be equal to the specified amount
      * @param fallback       the default value when there is no value in the category at all
      */
-    public PointCondition(final Function<Profile, PointHolder> holderFunction, final Argument<String> category, final Argument<Number> count,
-                          final FlagArgument<Boolean> equal, final FlagArgument<Number> fallback) {
+    public DefaultPointCondition(final Function<Profile, PointHolder> holderFunction, final Argument<String> category, final Argument<Number> count,
+                                 final FlagArgument<Boolean> equal, final FlagArgument<Number> fallback) {
         this.holderFunction = holderFunction;
         this.category = category;
         this.count = count;

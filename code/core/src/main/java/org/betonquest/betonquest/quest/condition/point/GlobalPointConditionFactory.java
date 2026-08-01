@@ -12,7 +12,7 @@ import org.betonquest.betonquest.database.GlobalData;
 /**
  * Factory to create global point conditions from {@link Instruction}s.
  */
-public class GlobalPointConditionFactory extends AbstractPointConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
+public class GlobalPointConditionFactory extends DefaultPointConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
 
     /**
      * Creates the global point factory.

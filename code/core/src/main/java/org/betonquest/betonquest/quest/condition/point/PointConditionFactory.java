@@ -9,7 +9,7 @@ import org.betonquest.betonquest.data.PlayerDataStorage;
 /**
  * Factory to create player point conditions from {@link Instruction}s.
  */
-public class PointConditionFactory extends AbstractPointConditionFactory implements PlayerConditionFactory {
+public class PointConditionFactory extends DefaultPointConditionFactory implements PlayerConditionFactory {
 
     /**
      * Creates the point condition factory for player.
@@ -22,7 +22,6 @@ public class PointConditionFactory extends AbstractPointConditionFactory impleme
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final PointCondition condition = parseInstruction(instruction);
-        return condition::check;
+        return parseInstruction(instruction)::check;
     }
 }

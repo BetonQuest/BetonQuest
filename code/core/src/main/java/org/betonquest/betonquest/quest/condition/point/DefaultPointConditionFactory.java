@@ -11,9 +11,9 @@ import org.betonquest.betonquest.api.quest.TypeFactory;
 import java.util.function.Function;
 
 /**
- * Factory to create {@link PointCondition}s for a given {@link PointHolder}.
+ * Factory to create {@link DefaultPointCondition}s for a given {@link PointHolder}.
  */
-public class AbstractPointConditionFactory implements TypeFactory<PointCondition> {
+public class DefaultPointConditionFactory implements TypeFactory<DefaultPointCondition> {
 
     /**
      * Function to get the point holder from a profile.
@@ -25,16 +25,16 @@ public class AbstractPointConditionFactory implements TypeFactory<PointCondition
      *
      * @param holderFunction the function to get the point holder from a profile
      */
-    public AbstractPointConditionFactory(final Function<Profile, PointHolder> holderFunction) {
+    public DefaultPointConditionFactory(final Function<Profile, PointHolder> holderFunction) {
         this.holderFunction = holderFunction;
     }
 
     @Override
-    public PointCondition parseInstruction(final Instruction instruction) throws QuestException {
+    public DefaultPointCondition parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<String> category = instruction.packageIdentifier().get();
         final Argument<Number> count = instruction.number().get();
         final FlagArgument<Boolean> equal = instruction.bool().getFlag("equal", true);
         final FlagArgument<Number> fallback = instruction.number().getFlag("fallback", 0);
-        return new PointCondition(holderFunction, category, count, equal, fallback);
+        return new DefaultPointCondition(holderFunction, category, count, equal, fallback);
     }
 }
