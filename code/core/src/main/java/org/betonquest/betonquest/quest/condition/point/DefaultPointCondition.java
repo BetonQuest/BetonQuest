@@ -61,16 +61,17 @@ public class DefaultPointCondition implements NullableCondition {
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
+        final int required = this.count.getValue(profile).intValue();
+        final boolean equal = this.equal.getValue(profile).orElse(false);
         final Optional<Integer> amount = holderFunction.apply(profile).get(category.getValue(profile));
-        if (amount.isPresent() && checkPoints(amount.get(), profile)) {
-            return true;
-        }
-        final Optional<Number> fallback = this.fallback.getValue(profile);
-        return fallback.isPresent() && checkPoints(fallback.get().intValue(), profile);
+        return checkPoints(required, equal, amount) || checkPoints(required, equal, fallback.getValue(profile));
     }
 
-    private boolean checkPoints(final int points, @Nullable final Profile profile) throws QuestException {
-        final int pCount = this.count.getValue(profile).intValue();
-        return equal.getValue(profile).orElse(false) ? points == pCount : points >= pCount;
+    private boolean checkPoints(final int required, final boolean equal, final Optional<? extends Number> amount) {
+        if (amount.isEmpty()) {
+            return false;
+        }
+        final int points = amount.get().intValue();
+        return equal ? points == required : points >= required;
     }
 }
