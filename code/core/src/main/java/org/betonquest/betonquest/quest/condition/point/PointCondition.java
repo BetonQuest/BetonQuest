@@ -1,23 +1,25 @@
 package org.betonquest.betonquest.quest.condition.point;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.data.PointHolder;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.data.PlayerDataStorage;
+import org.betonquest.betonquest.api.quest.condition.NullableCondition;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+import java.util.function.Function;
 
 /**
- * A condition that checks if a player has a certain amount of points.
+ * A condition that checks if a {@link PointHolder} has a certain amount of points.
  */
-public class PointCondition implements PlayerCondition {
+public class PointCondition implements NullableCondition {
 
     /**
-     * Storage for player data.
+     * Function to get the point holder from a profile.
      */
-    private final PlayerDataStorage dataStorage;
+    private final Function<Profile, PointHolder> holderFunction;
 
     /**
      * The category of the points.
@@ -40,17 +42,17 @@ public class PointCondition implements PlayerCondition {
     private final FlagArgument<Number> fallback;
 
     /**
-     * Constructor for the point condition.
+     * Constructor for the point condition which gets the {@link PointHolder} for a given {@link Profile}.
      *
-     * @param dataStorage the storage providing player data
-     * @param category    the category of the points
-     * @param count       the amount of points
-     * @param equal       whether the points should be equal to the specified amount
-     * @param fallback    the default value when there is no value in the category at all
+     * @param holderFunction the function to get the point holder from a profile
+     * @param category       the category of the points
+     * @param count          the amount of points
+     * @param equal          whether the points should be equal to the specified amount
+     * @param fallback       the default value when there is no value in the category at all
      */
-    public PointCondition(final PlayerDataStorage dataStorage, final Argument<String> category, final Argument<Number> count,
+    public PointCondition(final Function<Profile, PointHolder> holderFunction, final Argument<String> category, final Argument<Number> count,
                           final FlagArgument<Boolean> equal, final FlagArgument<Number> fallback) {
-        this.dataStorage = dataStorage;
+        this.holderFunction = holderFunction;
         this.category = category;
         this.count = count;
         this.equal = equal;
@@ -58,8 +60,8 @@ public class PointCondition implements PlayerCondition {
     }
 
     @Override
-    public boolean check(final Profile profile) throws QuestException {
-        final Optional<Integer> amount = dataStorage.getOffline(profile).points().get(category.getValue(profile));
+    public boolean check(@Nullable final Profile profile) throws QuestException {
+        final Optional<Integer> amount = holderFunction.apply(profile).get(category.getValue(profile));
         if (amount.isPresent() && checkPoints(amount.get(), profile)) {
             return true;
         }
@@ -67,7 +69,7 @@ public class PointCondition implements PlayerCondition {
         return fallback.isPresent() && checkPoints(fallback.get().intValue(), profile);
     }
 
-    private boolean checkPoints(final int points, final Profile profile) throws QuestException {
+    private boolean checkPoints(final int points, @Nullable final Profile profile) throws QuestException {
         final int pCount = this.count.getValue(profile).intValue();
         return equal.getValue(profile).orElse(false) ? points == pCount : points >= pCount;
     }
