@@ -157,7 +157,17 @@ In both cases, you can choose from the following conversation styles:
         ??? "Customizing the Dialog Style"
             This style can be configured with the [`dialog` config option](../Reference/Plugin-Config.md/#io-conversation-io-settings).
         
-        <video controls loop src="../../../_media/content/Documentation/Conversations/DialogIO_NPC_TITLE.mp4" width="49%"></video><video controls loop src="../../../_media/content/Documentation/Conversations/Dialog_FULL_BODY.mp4" width="49%"></video>
+        <video controls loop src="../../../_media/content/Documentation/Conversations/Dialog_FULL_BODY.mp4">
+          Sorry, your browser doesn't support embedded videos.
+        </video>
+        Below you can see the difference between the usage of only buttons or buttons with just a summary on different
+         screen sizes as well as the npc name's position:
+        <div class="grid">
+          ![DialogIO large with text boxes](../../_media/content/Documentation/Conversations/DialogIO_texts_large.png)
+          ![DialogIO large only buttons](../../_media/content/Documentation/Conversations/DialogIO_only-buttons_large.png)
+          ![DialogIO small with text boxes](../../_media/content/Documentation/Conversations/DialogIO_texts_small.png)
+          ![DialogIO small only buttons](../../_media/content/Documentation/Conversations/DialogIO_only-buttons_small.png)
+        </div>
     === "`chest`"
         A chest GUI with clickable buttons where the NPC's text and options will be shown as item lore.
         ??? "Customizing the Chest Style"
