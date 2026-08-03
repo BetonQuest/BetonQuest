@@ -53,11 +53,25 @@ public record Token(@Nullable Token parent, @Nullable String value, List<Token> 
     }
 
     /**
+     * Checks if the token is empty.
+     *
+     * @return true if the token is empty, false otherwise
+     */
+    public boolean isEmpty() {
+        return value == null && children.isEmpty();
+    }
+
+    /**
      * Adds a child to the token.
      *
      * @param child the child to add
      */
     public void addChild(final Token child) {
         children.add(child);
+    }
+
+    @Override
+    public String toString() {
+        return value == null ? "{children=" + children + "}" : "{value='" + value + "'}";
     }
 }

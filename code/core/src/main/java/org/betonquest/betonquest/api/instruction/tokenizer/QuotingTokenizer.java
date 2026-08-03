@@ -77,14 +77,25 @@ public class QuotingTokenizer implements Tokenizer {
 
         @Override
         public void endWord() {
-            boolean parentUpdated = false;
-            if (parent.children().isEmpty() && parent.parent() != null) {
-                parent = parent.parent();
-                parentUpdated = true;
+            boolean alreadyClosed = false;
+            if (parent.parent() != null && parent.children().isEmpty()) {
+                closeChild();
+                alreadyClosed = true;
             }
-            parent.addChild(new Token(parent, currentWord.toString()));
+            if (!currentWord.isEmpty() || !tokenizerSettings.ignoreEmptyQuotedWords()) {
+                parent.addChild(new Token(parent, currentWord.toString()));
+            }
             currentWord = new StringBuilder();
-            if (!parentUpdated && parent.parent() != null) {
+            if (!alreadyClosed) {
+                closeChild();
+            }
+        }
+
+        private void closeChild() {
+            if (parent.parent() != null) {
+                if (!parent.isEmpty()) {
+                    parent.parent().addChild(parent);
+                }
                 parent = parent.parent();
             }
         }

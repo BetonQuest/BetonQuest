@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * An objective that is completed when a player activates a MythicLib skill.
@@ -24,7 +25,7 @@ public class MythicLibSkillObjective extends DefaultObjective {
      * Whether the skill must be "cast" by the player.
      * This indicates that the skill was triggered by MMOCore's ability system.
      */
-    private final List<TriggerType> triggerTypes;
+    private final Optional<Argument<List<TriggerType>>> triggerTypes;
 
     /**
      * Parses the instruction and creates a new objective.
@@ -34,7 +35,7 @@ public class MythicLibSkillObjective extends DefaultObjective {
      * @param triggerTypes the trigger types that will activate the skill
      * @throws QuestException if the instruction is invalid
      */
-    public MythicLibSkillObjective(final ObjectiveService service, final Argument<String> skillId, final List<TriggerType> triggerTypes) throws QuestException {
+    public MythicLibSkillObjective(final ObjectiveService service, final Argument<String> skillId, final Optional<Argument<List<TriggerType>>> triggerTypes) throws QuestException {
         super(service);
         this.skillId = skillId;
         this.triggerTypes = triggerTypes;
@@ -53,7 +54,7 @@ public class MythicLibSkillObjective extends DefaultObjective {
             return;
         }
 
-        if (!triggerTypes.contains(event.getCast().getTrigger())) {
+        if (triggerTypes.isPresent() && !triggerTypes.get().getValue(onlineProfile).contains(event.getCast().getTrigger())) {
             return;
         }
         getService().complete(onlineProfile);
