@@ -22,6 +22,7 @@ import static org.betonquest.betonquest.api.identifier.Identifier.SEPARATOR_PATT
  *
  * @param <I> the type of identifier to create
  */
+@SuppressWarnings("PMD.GodClass")
 public abstract class DefaultIdentifierFactory<I extends Identifier> implements IdentifierFactory<I> {
 
     /**
@@ -82,6 +83,23 @@ public abstract class DefaultIdentifierFactory<I extends Identifier> implements 
         }
         if (!config.isString(path)) {
             throw new QuestException("%s '%s' does not define a string in section '%s'!".formatted(readableTypeName, resolvedIdentifier.getFull(), section));
+        }
+        return resolvedIdentifier;
+    }
+
+    /**
+     * Ensures the specified section has any value for the identifier.
+     *
+     * @param resolvedIdentifier the identifier to check
+     * @param section            the section to check for
+     * @return the given identifier
+     * @throws QuestException if the section does not have any value
+     */
+    protected I requireValue(final I resolvedIdentifier, final String section) throws QuestException {
+        final MultiConfiguration config = resolvedIdentifier.getPackage().getConfig();
+        final String path = section + config.options().pathSeparator() + resolvedIdentifier.get();
+        if (!config.contains(path)) {
+            throw new QuestException("%s '%s' is not defined in section '%s'!".formatted(readableTypeName, resolvedIdentifier.getFull(), section));
         }
         return resolvedIdentifier;
     }
