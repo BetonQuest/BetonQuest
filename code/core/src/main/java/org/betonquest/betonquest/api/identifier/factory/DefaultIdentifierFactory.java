@@ -22,7 +22,7 @@ import static org.betonquest.betonquest.api.identifier.Identifier.SEPARATOR_PATT
  *
  * @param <I> the type of identifier to create
  */
-@SuppressWarnings("PMD.GodClass")
+@SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods"})
 public abstract class DefaultIdentifierFactory<I extends Identifier> implements IdentifierFactory<I> {
 
     /**
@@ -47,6 +47,21 @@ public abstract class DefaultIdentifierFactory<I extends Identifier> implements 
         this.readableTypeName = readableTypeName;
     }
 
+    private I require(final I resolvedIdentifier, final String section, final boolean needsSection, final boolean needsString) throws QuestException {
+        final MultiConfiguration config = resolvedIdentifier.getPackage().getConfig();
+        final String path = section + config.options().pathSeparator() + resolvedIdentifier.get();
+        if (!config.contains(path)) {
+            throw new QuestException("%s '%s' is not defined in section '%s'!".formatted(readableTypeName, resolvedIdentifier.getFull(), section));
+        }
+        if (needsSection && !config.isConfigurationSection(path)) {
+            throw new QuestException("%s '%s' does not define a section under section '%s'".formatted(readableTypeName, resolvedIdentifier.getFull(), section));
+        }
+        if (needsString && !config.isString(path)) {
+            throw new QuestException("%s '%s' does not define a string in section '%s'!".formatted(readableTypeName, resolvedIdentifier.getFull(), section));
+        }
+        return resolvedIdentifier;
+    }
+
     /**
      * Ensures the specified section is defined for the identifier.
      *
@@ -56,15 +71,7 @@ public abstract class DefaultIdentifierFactory<I extends Identifier> implements 
      * @throws QuestException if the section is not defined
      */
     protected I requireSection(final I resolvedIdentifier, final String section) throws QuestException {
-        final MultiConfiguration config = resolvedIdentifier.getPackage().getConfig();
-        final String path = section + config.options().pathSeparator() + resolvedIdentifier.get();
-        if (!config.contains(path)) {
-            throw new QuestException("%s '%s' is not defined in section '%s'".formatted(readableTypeName, resolvedIdentifier.getFull(), section));
-        }
-        if (!config.isConfigurationSection(path)) {
-            throw new QuestException("%s '%s' does not define a section under section '%s'".formatted(readableTypeName, resolvedIdentifier.getFull(), section));
-        }
-        return resolvedIdentifier;
+        return require(resolvedIdentifier, section, true, false);
     }
 
     /**
@@ -76,15 +83,7 @@ public abstract class DefaultIdentifierFactory<I extends Identifier> implements 
      * @throws QuestException if the section does not contain a string instruction
      */
     protected I requireInstruction(final I resolvedIdentifier, final String section) throws QuestException {
-        final MultiConfiguration config = resolvedIdentifier.getPackage().getConfig();
-        final String path = section + config.options().pathSeparator() + resolvedIdentifier.get();
-        if (!config.contains(path)) {
-            throw new QuestException("%s '%s' is not defined in section '%s'!".formatted(readableTypeName, resolvedIdentifier.getFull(), section));
-        }
-        if (!config.isString(path)) {
-            throw new QuestException("%s '%s' does not define a string in section '%s'!".formatted(readableTypeName, resolvedIdentifier.getFull(), section));
-        }
-        return resolvedIdentifier;
+        return require(resolvedIdentifier, section, false, true);
     }
 
     /**
@@ -96,12 +95,7 @@ public abstract class DefaultIdentifierFactory<I extends Identifier> implements 
      * @throws QuestException if the section does not have any value
      */
     protected I requireValue(final I resolvedIdentifier, final String section) throws QuestException {
-        final MultiConfiguration config = resolvedIdentifier.getPackage().getConfig();
-        final String path = section + config.options().pathSeparator() + resolvedIdentifier.get();
-        if (!config.contains(path)) {
-            throw new QuestException("%s '%s' is not defined in section '%s'!".formatted(readableTypeName, resolvedIdentifier.getFull(), section));
-        }
-        return resolvedIdentifier;
+        return require(resolvedIdentifier, section, false, false);
     }
 
     /**
