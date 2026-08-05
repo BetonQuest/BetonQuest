@@ -5,8 +5,11 @@ import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.action.NullableActionAdapter;
 import org.betonquest.betonquest.api.service.action.ActionManager;
+import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
+import org.betonquest.betonquest.id.IdentifierUtil;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
 import org.betonquest.betonquest.kernel.processor.adapter.ActionAdapter;
 import org.betonquest.betonquest.kernel.registry.quest.ActionTypeRegistry;
@@ -38,6 +41,11 @@ public class ActionProcessor extends TypedQuestProcessor<ActionIdentifier, Actio
     private final Plugin plugin;
 
     /**
+     * Factory to create section actions for configuration sections.
+     */
+    private final SectionFactory<ActionIdentifier, ActionAdapter> sectionFactory;
+
+    /**
      * Create a new Action Processor to store actions and execute them.
      *
      * @param log                     the custom logger for this class
@@ -46,14 +54,26 @@ public class ActionProcessor extends TypedQuestProcessor<ActionIdentifier, Actio
      * @param scheduler               the bukkit scheduler to run sync tasks
      * @param instructionApi          the instruction api
      * @param plugin                  the plugin instance
+     * @param conditionManager        the condition manager instance
      */
     public ActionProcessor(final BetonQuestLogger log,
                            final IdentifierFactory<ActionIdentifier> actionIdentifierFactory,
                            final ActionTypeRegistry actionTypes, final BukkitScheduler scheduler,
-                           final Instructions instructionApi, final Plugin plugin) {
+                           final Instructions instructionApi, final Plugin plugin, final ConditionManager conditionManager) {
         super(log, actionTypes, actionIdentifierFactory, instructionApi, "Action", "actions");
         this.scheduler = scheduler;
         this.plugin = plugin;
+        this.sectionFactory = identifier -> {
+            final List<ActionIdentifier> identifiers = IdentifierUtil.subsectionIdentifiers(identifierFactory, identifier);
+            final NullableActionAdapter adapter = new NullableActionAdapter(profile -> this.run(profile, identifiers));
+            return new ActionAdapter(log, conditionManager, identifier, adapter, adapter, profile -> List.of());
+        };
+    }
+
+    @Override
+    @Nullable
+    protected SectionFactory<ActionIdentifier, ActionAdapter> getSectionFactory() {
+        return sectionFactory;
     }
 
     @Override

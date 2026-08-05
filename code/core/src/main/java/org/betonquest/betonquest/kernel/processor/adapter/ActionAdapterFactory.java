@@ -1,6 +1,8 @@
 package org.betonquest.betonquest.kernel.processor.adapter;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
@@ -9,6 +11,9 @@ import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Wrapper for factories creating actions.
@@ -47,6 +52,9 @@ public class ActionAdapterFactory extends QuestAdapterFactory<PlayerAction, Play
     protected ActionAdapter getAdapter(final Instruction instruction,
                                        @Nullable final PlayerAction playerType,
                                        @Nullable final PlayerlessAction playerlessType) throws QuestException {
-        return new ActionAdapter(loggerFactory.create(ActionAdapter.class), conditionManager, instruction, playerType, playerlessType);
+        final Argument<List<ConditionIdentifier>> conditions = instruction.identifier(ConditionIdentifier.class)
+                .list().get("conditions", Collections.emptyList());
+        return new ActionAdapter(loggerFactory.create(ActionAdapter.class), conditionManager, instruction.getID(),
+                playerType, playerlessType, conditions);
     }
 }

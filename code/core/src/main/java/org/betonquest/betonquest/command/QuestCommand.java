@@ -2032,7 +2032,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         /**
          * ActionID.
          */
-        ACTIONS(true),
+        ACTIONS(true, true),
         /**
          * ConditionID.
          */

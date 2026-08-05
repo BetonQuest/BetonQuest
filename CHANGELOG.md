@@ -10,6 +10,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - counting objective related translations in the lang files can now use all counting objective related placeholders
 - `fallback` argument to point conditions to use a default value when category has no value at all
 - `section` (and implicit `section`) condition to allow usage of subsections as list of (conjugated) conditions
+- implicit `section` action to allow usage of subsections as list of actions to execute
 - `damage` objective to track dealt and taken damage
 - `updateHologram` action to force updates to (specific) holograms for a player
 - `dialog` conversation IO
