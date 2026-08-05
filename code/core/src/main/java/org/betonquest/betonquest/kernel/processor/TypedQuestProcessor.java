@@ -15,6 +15,8 @@ import org.betonquest.betonquest.bstats.MetricsHolder;
 import org.betonquest.betonquest.kernel.registry.FactoryTypeRegistry;
 import org.betonquest.betonquest.util.MetricsUtils;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -76,15 +78,16 @@ public abstract class TypedQuestProcessor<I extends ReadableIdentifier, T> exten
             return;
         }
         for (final String key : section.getKeys(true)) {
-            if (section.isConfigurationSection(key)) {
-                continue;
-            }
             if (key.contains(" ")) {
                 log.warn(pack, readable + " name cannot contain spaces: '" + key + "' in pack '" + pack.getQuestPath() + "'");
                 continue;
             }
             try {
-                loadKey(key, pack);
+                if (section.isConfigurationSection(key)) {
+                    loadSectionKey(key, pack);
+                } else {
+                    loadKey(key, pack);
+                }
             } catch (final QuestException e) {
                 log.warn(pack, "Error while loading " + readable + " '" + key + "' in pack '" + pack.getQuestPath() + "': " + e.getMessage(), e);
             }
@@ -106,6 +109,36 @@ public abstract class TypedQuestProcessor<I extends ReadableIdentifier, T> exten
         }
     }
 
+    private void loadSectionKey(final String key, final QuestPackage pack) throws QuestException {
+        final SectionFactory<I, T> sectionFactory = getSectionFactory();
+        if (sectionFactory == null) {
+            return;
+        }
+        final I identifier = getIdentifier(pack, key);
+        try {
+            final T parsed = sectionFactory.fromSection(identifier);
+            values.put(identifier, parsed);
+            postCreation(identifier, parsed);
+            log.debug(pack, "  " + readable + " '" + identifier + "' loaded");
+        } catch (final QuestException e) {
+            throw new QuestException("Error in '%s' %s (implicit section): %s".formatted(identifier, readable, e.getMessage()), e);
+        }
+    }
+
+    /**
+     * Get the factory for creating {@link T} for sections.
+     * <p>
+     * Only implement that method if the {@link T} should have default implementations
+     * for {@link ConfigurationSection} nodes.
+     *
+     * @return the factory, if section nodes should get implementations
+     */
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
+    @Nullable
+    protected SectionFactory<I, T> getSectionFactory() {
+        return null;
+    }
+
     /**
      * Allows for using the {@link T} after successful creation.
      *
@@ -115,5 +148,25 @@ public abstract class TypedQuestProcessor<I extends ReadableIdentifier, T> exten
     @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
     protected void postCreation(final I identifier, final T value) {
         // Empty
+    }
+
+    /**
+     * Factory to create implementation that works on sections instead instruction strings.
+     *
+     * @param <I> the {@link ReadableIdentifier} identifying the type
+     * @param <T> the type
+     */
+    @FunctionalInterface
+    protected interface SectionFactory<I, T> {
+
+        /**
+         * Create a new {@link T} from an {@link Instruction}.
+         *
+         * @param sectionIdentifier the section to create for
+         * @return the newly created {@link T}
+         * @throws QuestException if the section cannot be parsed
+         */
+        @Contract(pure = true)
+        T fromSection(I sectionIdentifier) throws QuestException;
     }
 }
