@@ -18,7 +18,6 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.config.section.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.identifier.ActionIdentifier;
-import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.identifier.ItemIdentifier;
@@ -34,7 +33,6 @@ import org.betonquest.betonquest.api.quest.action.OnlineAction;
 import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.reload.Reloader;
 import org.betonquest.betonquest.api.service.action.ActionManager;
-import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.item.ItemManager;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
@@ -174,11 +172,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private final ActionManager actionManager;
 
     /**
-     * The condition manager.
-     */
-    private final ConditionManager conditionManager;
-
-    /**
      * The objective manager.
      */
     private final ObjectiveManager objectiveManager;
@@ -229,6 +222,16 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private final LogPublishingController debuggingController;
 
     /**
+     * Sub commands with their aliases.
+     */
+    private final Map<String, SubCommand> subCommands;
+
+    /**
+     * Primary names for suggestion.
+     */
+    private final List<String> subCommandSuggestions;
+
+    /**
      * Registers a new executor and a new tab completer of the /betonquest command.
      *
      * @param plugin            the plugin instance
@@ -256,10 +259,21 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         this.itemTypeRegistry = constructorParams.itemTypeRegistry();
         this.journalEntryProcessor = constructorParams.journalEntryProcessor();
         this.actionManager = constructorParams.actionManager();
-        this.conditionManager = constructorParams.conditionManager();
         this.objectiveManager = constructorParams.objectiveManager();
         this.itemManager = constructorParams.itemManager();
         this.identifiers = constructorParams.identifiers();
+
+        this.subCommands = new HashMap<>();
+        this.subCommandSuggestions = new ArrayList<>();
+        List.of(
+                new ConditionSubCommand(log, constructorParams)
+        ).forEach(command -> {
+            command.names().forEach(name -> subCommands.put(name, command));
+            subCommandSuggestions.add(command.names().get(0));
+        });
+        subCommandSuggestions.addAll(Arrays.asList("action", "item", "give", "objective", "globaltag",
+                "globalpoint", "tag", "point", "journal", "delete", "rename", "version", "purge",
+                "update", "reload", "backup", "debug", "download", "variable"));
     }
 
     @SuppressWarnings("PMD.NcssCount")
@@ -276,12 +290,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 }
                 // if there are arguments handle them
                 // toLowerCase makes switch case-insensitive
-                switch (args[0].toLowerCase(Locale.ROOT)) {
-                    case "conditions":
-                    case "condition":
-                    case "c":
-                        handleConditions(sender, args);
-                        break;
+                final String lowerCase = args[0].toLowerCase(Locale.ROOT);
+                final SubCommand subCommand = subCommands.get(lowerCase);
+                if (subCommand != null) {
+                    subCommand.handle(sender, args);
+                    log.debug("Command executing done");
+                    return true;
+                }
+                switch (lowerCase) {
                     case "actions":
                     case "action":
                     case "a":
@@ -391,14 +407,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     @Override
     public Optional<List<String>> simpleTabComplete(final CommandSender sender, final Command command, final String alias, final String... args) {
         if (args.length == 1) {
-            return Optional.of(Arrays.asList("condition", "action", "item", "give", "objective", "globaltag",
-                    "globalpoint", "tag", "point", "journal", "delete", "rename", "version", "purge",
-                    "update", "reload", "backup", "debug", "download", "variable"));
+            return Optional.of(subCommandSuggestions);
         }
-        return switch (args[0].toLowerCase(Locale.ROOT)) {
-            case "conditions",
-                 "condition",
-                 "c" -> completeConditions(args);
+        final String lowerCase = args[0].toLowerCase(Locale.ROOT);
+        final SubCommand subCommand = subCommands.get(lowerCase);
+        if (subCommand != null) {
+            return subCommand.complete(args);
+        }
+        return switch (lowerCase) {
             case "actions",
                  "action",
                  "a" -> completeActions(args);
@@ -954,52 +970,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         if (args.length == 3) {
             return completeId(args, AccessorType.ACTIONS);
-        }
-        return Optional.of(new ArrayList<>());
-    }
-
-    /**
-     * Checks if specified player meets condition described by ID.
-     */
-    private void handleConditions(final CommandSender sender, final String... args) throws QuestException {
-        // the player has to be specified every time
-        if (args.length < 2 || Bukkit.getPlayer(args[1]) == null && !"-".equals(args[1])) {
-            log.debug("Player's name is missing or he's offline");
-            sendMessage(sender, "specify_player");
-            return;
-        }
-        // the condition ID
-        if (args.length < 3) {
-            log.debug("Condition's ID is missing");
-            sendMessage(sender, "specify_condition");
-            return;
-        }
-        final ConditionIdentifier conditionID;
-        try {
-            conditionID = getIdentifier(ConditionIdentifier.class, args[2]);
-        } catch (final QuestException e) {
-            sendMessage(sender, "error",
-                    new VariableReplacement("error", Component.text(e.getMessage())));
-            log.warn("Could not find condition: " + e.getMessage(), e);
-            return;
-        }
-        // display message about condition
-        final Profile profile = "-".equals(args[1]) ? null : profileProvider.getProfile(Bukkit.getOfflinePlayer(args[1]));
-        sendMessage(sender, "player_condition",
-                new VariableReplacement("condition", Component.text((conditionID.isInverted() ? "! " : "") + conditionID.readRawInstruction())),
-                new VariableReplacement("result", Component.text(conditionManager.test(profile, conditionID))));
-    }
-
-    /**
-     * Returns a list including all possible options for tab complete of the
-     * /betonquest condition command.
-     */
-    private Optional<List<String>> completeConditions(final String... args) {
-        if (args.length == 2) {
-            return Optional.empty();
-        }
-        if (args.length == 3) {
-            return completeId(args, AccessorType.CONDITIONS);
         }
         return Optional.of(new ArrayList<>());
     }
