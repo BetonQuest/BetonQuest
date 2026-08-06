@@ -20,7 +20,8 @@ import org.betonquest.betonquest.command.CancelQuestCommand;
 import org.betonquest.betonquest.command.CompassCommand;
 import org.betonquest.betonquest.command.JournalCommand;
 import org.betonquest.betonquest.command.LangCommand;
-import org.betonquest.betonquest.command.QuestCommand;
+import org.betonquest.betonquest.command.quest.ConstructorParams;
+import org.betonquest.betonquest.command.quest.QuestCommand;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Connector;
@@ -94,7 +95,7 @@ public class CommandsComponent extends AbstractCoreComponent {
         final Reloader reloader = getDependency(Reloader.class);
 
         final PlayerLogWatcher playerLogWatcher = new PlayerLogWatcher(receiverSelector);
-        final QuestCommand.ConstructorParams questCommandParams = new QuestCommand.ConstructorParams(loggerFactory,
+        final ConstructorParams questCommandParams = new ConstructorParams(loggerFactory,
                 configAccessorFactory, playerDataStorage, profileProvider, localizations, updater,
                 compatibility, connector, saver, questPackageManager, config, debugHistoryHandler,
                 playerLogWatcher, identifiers, globalData, journalEntryProcessor,

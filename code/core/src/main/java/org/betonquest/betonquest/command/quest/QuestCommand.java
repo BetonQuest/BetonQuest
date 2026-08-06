@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.command;
+package org.betonquest.betonquest.command.quest;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
@@ -38,6 +38,7 @@ import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
 import org.betonquest.betonquest.api.service.item.ItemManager;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
+import org.betonquest.betonquest.command.SimpleTabCompleter;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.IntegrationData;
 import org.betonquest.betonquest.data.PlayerDataStorage;
@@ -2011,90 +2012,5 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private <I extends Identifier> I getIdentifier(final Class<I> identifierClass, final String identifier) throws QuestException {
         final IdentifierFactory<I> identifierFactory = identifiers.getFactory(identifierClass);
         return identifierFactory.parseIdentifier(null, identifier);
-    }
-
-    /**
-     * Accessor Type for ID completion.
-     * The enum in lower case is the used section.
-     */
-    private enum AccessorType {
-        /**
-         * ActionID.
-         */
-        ACTIONS(true, true),
-        /**
-         * ConditionID.
-         */
-        CONDITIONS(true, true),
-        /**
-         * ObjectiveID.
-         */
-        OBJECTIVES(true),
-        /**
-         * ItemID.
-         */
-        ITEMS(true),
-        /**
-         * JournalID.
-         */
-        JOURNAL(false);
-
-        /**
-         * If the accessor allows nested ids.
-         */
-        private final boolean allowNested;
-
-        /**
-         * If section nodes also are identifiers.
-         */
-        private final boolean allowSection;
-
-        AccessorType(final boolean allowNested) {
-            this(allowNested, false);
-        }
-
-        AccessorType(final boolean allowNested, final boolean allowSection) {
-            this.allowNested = allowNested;
-            this.allowSection = allowSection;
-        }
-    }
-
-    /**
-     * The quest command constructor parameters.
-     *
-     * @param loggerFactory           the logger factory
-     * @param configAccessorFactory   the config accessor factory
-     * @param playerDataStorage       the player data storage
-     * @param profileProvider         the profile provider
-     * @param localizations           the Localizations
-     * @param updater                 the updater
-     * @param compatibility           the compatibility
-     * @param connector               the connector
-     * @param saver                   the saver
-     * @param questPackageManager     the quest package manager
-     * @param configAccessor          the config accessor
-     * @param logPublishingController the log publishing controller
-     * @param playerLogWatcher        the player log watcher
-     * @param identifiers             the identifiers
-     * @param globalData              the global data
-     * @param journalEntryProcessor   the journal entry processor
-     * @param itemTypeRegistry        the item type registry
-     * @param actionManager           the action manager
-     * @param conditionManager        the condition manager
-     * @param objectiveManager        the objective manager
-     * @param itemManager             the item manager
-     * @param reloader                the plugin reloading runnable
-     */
-    public record ConstructorParams(BetonQuestLoggerFactory loggerFactory, ConfigAccessorFactory configAccessorFactory,
-                                    PlayerDataStorage playerDataStorage, ProfileProvider profileProvider,
-                                    Localizations localizations, Updater updater, Compatibility compatibility,
-                                    Connector connector, Saver saver, QuestPackageManager questPackageManager,
-                                    ConfigAccessor configAccessor, LogPublishingController logPublishingController,
-                                    PlayerLogWatcher playerLogWatcher, Identifiers identifiers, GlobalData globalData,
-                                    JournalEntryProcessor journalEntryProcessor,
-                                    ItemTypeRegistry itemTypeRegistry, ActionManager actionManager,
-                                    ConditionManager conditionManager,
-                                    ObjectiveManager objectiveManager, ItemManager itemManager, Reloader reloader) {
-
     }
 }
