@@ -1,44 +1,29 @@
 package org.betonquest.betonquest.command.quest;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.apache.commons.lang3.tuple.Triple;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.common.component.VariableComponent;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
-import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.config.section.multi.MultiConfiguration;
-import org.betonquest.betonquest.api.identifier.ActionIdentifier;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
-import org.betonquest.betonquest.api.identifier.ItemIdentifier;
 import org.betonquest.betonquest.api.identifier.JournalEntryIdentifier;
 import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
-import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.action.OnlineAction;
-import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.reload.Reloader;
-import org.betonquest.betonquest.api.service.action.ActionManager;
 import org.betonquest.betonquest.api.service.identifier.Identifiers;
-import org.betonquest.betonquest.api.service.item.ItemManager;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
 import org.betonquest.betonquest.command.SimpleTabCompleter;
-import org.betonquest.betonquest.compatibility.Compatibility;
-import org.betonquest.betonquest.compatibility.IntegrationData;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Backup;
 import org.betonquest.betonquest.database.Connector;
@@ -51,53 +36,28 @@ import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.feature.journal.Pointer;
 import org.betonquest.betonquest.kernel.processor.feature.JournalEntryProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.ObjectiveProcessor;
-import org.betonquest.betonquest.kernel.registry.feature.ItemTypeRegistry;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
-import org.betonquest.betonquest.logger.BetonQuestLogRecord;
 import org.betonquest.betonquest.logger.PlayerLogWatcher;
-import org.betonquest.betonquest.logger.format.ChatFormatter;
-import org.betonquest.betonquest.logger.handler.history.LogPublishingController;
-import org.betonquest.betonquest.quest.action.IngameNotificationSender;
-import org.betonquest.betonquest.quest.action.NoNotificationSender;
-import org.betonquest.betonquest.quest.action.NotificationLevel;
-import org.betonquest.betonquest.quest.action.give.GiveAction;
-import org.betonquest.betonquest.quest.objective.variable.VariableObjective;
-import org.betonquest.betonquest.web.downloader.DownloadFailedException;
-import org.betonquest.betonquest.web.downloader.Downloader;
 import org.betonquest.betonquest.web.updater.Updater;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.logging.Level;
-import java.util.stream.Stream;
 
 /**
  * Main admin command for quest editing.
@@ -137,16 +97,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private final Localizations localizations;
 
     /**
-     * The plugin configuration accessor.
-     */
-    private final ConfigAccessor config;
-
-    /**
-     * The compatibility instance to use for compatibility checks.
-     */
-    private final Compatibility compatibility;
-
-    /**
      * The betonquest updater.
      */
     private final Updater updater;
@@ -167,24 +117,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private final Identifiers identifiers;
 
     /**
-     * The action manager.
-     */
-    private final ActionManager actionManager;
-
-    /**
      * The objective manager.
      */
     private final ObjectiveManager objectiveManager;
-
-    /**
-     * The item manager.
-     */
-    private final ItemManager itemManager;
-
-    /**
-     * The item type registry.
-     */
-    private final ItemTypeRegistry itemTypeRegistry;
 
     /**
      * The journal entry processor.
@@ -217,11 +152,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private final PlayerLogWatcher logWatcher;
 
     /**
-     * The LogPublishingController to control the debug log.
-     */
-    private final LogPublishingController debuggingController;
-
-    /**
      * Sub commands with their aliases.
      */
     private final Map<String, SubCommand> subCommands;
@@ -230,6 +160,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Primary names for suggestion.
      */
     private final List<String> subCommandSuggestions;
+
+    /**
+     * Sub command to display version and hook info.
+     */
+    private final VersionSubCommand versionSubCommand;
 
     /**
      * Registers a new executor and a new tab completer of the /betonquest command.
@@ -244,36 +179,44 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         this.loggerFactory = constructorParams.loggerFactory();
         this.configAccessorFactory = constructorParams.configAccessorFactory();
         this.logWatcher = constructorParams.playerLogWatcher();
-        this.debuggingController = constructorParams.logPublishingController();
         this.playerDataStorage = constructorParams.playerDataStorage();
         this.profileProvider = constructorParams.profileProvider();
         this.localizations = constructorParams.localizations();
-        this.config = constructorParams.configAccessor();
-        this.compatibility = constructorParams.compatibility();
         this.updater = constructorParams.updater();
         this.reloader = constructorParams.reloader();
         this.saver = constructorParams.saver();
         this.connector = constructorParams.connector();
         this.globalData = constructorParams.globalData();
         this.questPackageManager = constructorParams.questPackageManager();
-        this.itemTypeRegistry = constructorParams.itemTypeRegistry();
         this.journalEntryProcessor = constructorParams.journalEntryProcessor();
-        this.actionManager = constructorParams.actionManager();
         this.objectiveManager = constructorParams.objectiveManager();
-        this.itemManager = constructorParams.itemManager();
         this.identifiers = constructorParams.identifiers();
 
         this.subCommands = new HashMap<>();
         this.subCommandSuggestions = new ArrayList<>();
         List.of(
-                new ConditionSubCommand(log, constructorParams)
+                new ConditionSubCommand(log, constructorParams),
+                new ActionSubCommand(log, constructorParams),
+                new ObjectiveSubCommand(log, constructorParams),
+                new VariableObjectiveSubCommand(log, constructorParams),
+                new TagSubCommand(log, constructorParams),
+                new GlobalTagSubCommand(log, constructorParams),
+                new PointSubCommand(log, constructorParams),
+                new GlobalPointSubCommand(log, constructorParams),
+                new JournalSubCommand(log, constructorParams),
+                new GiveSubCommand(log, constructorParams),
+                new ItemSubCommand(log, constructorParams),
+                new DebugSubCommand(log, constructorParams),
+                new DownloadSubCommand(plugin, log, constructorParams)
         ).forEach(command -> {
             command.names().forEach(name -> subCommands.put(name, command));
             subCommandSuggestions.add(command.names().get(0));
         });
-        subCommandSuggestions.addAll(Arrays.asList("action", "item", "give", "objective", "globaltag",
-                "globalpoint", "tag", "point", "journal", "delete", "rename", "version", "purge",
-                "update", "reload", "backup", "debug", "download", "variable"));
+        subCommandSuggestions.addAll(Arrays.asList(
+                "delete", "rename", "version", "purge",
+                "update", "reload", "backup"));
+
+        this.versionSubCommand = new VersionSubCommand(plugin, constructorParams);
     }
 
     @SuppressWarnings("PMD.NcssCount")
@@ -298,56 +241,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     return true;
                 }
                 switch (lowerCase) {
-                    case "actions":
-                    case "action":
-                    case "a":
-                        handleActions(sender, args);
-                        break;
-                    case "items":
-                    case "item":
-                    case "i":
-                        // and items, which only use configuration files (they
-                        // should be sync)
-                        handleItems(sender, args);
-                        break;
-                    case "give":
-                    case "g":
-                        giveItem(sender, args);
-                        break;
-                    case "objectives":
-                    case "objective":
-                    case "o":
-                        handleObjectives(sender, args);
-                        break;
-                    case "globaltags":
-                    case "globaltag":
-                    case "gtag":
-                    case "gtags":
-                    case "gt":
-                        handleGlobalTags(sender, args);
-                        break;
-                    case "globalpoints":
-                    case "globalpoint":
-                    case "gpoints":
-                    case "gpoint":
-                    case "gp":
-                        handleGlobalPoints(sender, args);
-                        break;
-                    case "tags":
-                    case "tag":
-                    case "t":
-                        handleTags(sender, args);
-                        break;
-                    case "points":
-                    case "point":
-                    case "p":
-                        handlePoints(sender, args);
-                        break;
-                    case "journals":
-                    case "journal":
-                    case "j":
-                        handleJournals(sender, args);
-                        break;
                     case "delete":
                     case "del":
                     case "d":
@@ -357,14 +250,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     case "r":
                         handleRenaming(sender, args);
                         break;
-                    case "variable":
-                    case "var":
-                        handleVariableObjective(sender, args);
-                        break;
                     case "version":
                     case "ver":
                     case "v":
-                        displayVersionInfo(sender, alias);
+                        versionSubCommand.displayVersionInfo(sender, alias);
                         break;
                     case "purge":
                         purgePlayer(sender, args);
@@ -383,12 +272,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         }
                         new Backup(loggerFactory, loggerFactory.create(Backup.class), configAccessorFactory, plugin.getDataFolder(),
                                 connector).backup(plugin.getDescription().getVersion());
-                        break;
-                    case "debug":
-                        handleDebug(sender, args);
-                        break;
-                    case "download":
-                        handleDownload(sender, args);
                         break;
                     default:
                         // there was an unknown argument, so handle this
@@ -415,46 +298,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return subCommand.complete(args);
         }
         return switch (lowerCase) {
-            case "actions",
-                 "action",
-                 "a" -> completeActions(args);
-            case "items",
-                 "item",
-                 "i" -> completeItems(true, args);
-            case "give",
-                 "g" -> completeItems(false, args);
-            case "objectives",
-                 "objective",
-                 "o" -> completeObjectives(args);
-            case "globaltags",
-                 "globaltag",
-                 "gtag",
-                 "gtags",
-                 "gt" -> completeGlobalTags(args);
-            case "globalpoints",
-                 "globalpoint",
-                 "gpoints",
-                 "gpoint",
-                 "gp" -> completeGlobalPoints(args);
-            case "tags",
-                 "tag",
-                 "t" -> completeTags(args);
-            case "points",
-                 "point",
-                 "p" -> completePoints(args);
-            case "journals",
-                 "journal",
-                 "j" -> completeJournals(args);
             case "delete",
                  "del",
                  "d" -> completeDeleting(args);
             case "rename",
                  "r" -> completeRenaming(args);
             case "purge" -> args.length == 2 ? Optional.empty() : Optional.of(new ArrayList<>());
-            case "debug" -> completeDebug(args);
-            case "download" -> completeDownload(args);
-            case "variable",
-                 "var" -> completeVariableObjective(args);
             case "version",
                  "ver",
                  "v",
@@ -505,47 +354,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             }
         }
         return Optional.of(completions);
-    }
-
-    /**
-     * Gives an item to the player.
-     */
-    private void giveItem(final CommandSender sender, final String... args) {
-        // sender must be a player
-        if (!(sender instanceof Player)) {
-            log.debug("Cannot continue, sender must be player");
-            return;
-        }
-        // and the item name must be specified
-        if (args.length < 2) {
-            log.debug("Cannot continue, item's name must be supplied");
-            sendMessage(sender, "specify_item");
-            return;
-        }
-        try {
-            final ItemIdentifier itemID;
-            try {
-                itemID = getIdentifier(ItemIdentifier.class, args[1]);
-            } catch (final QuestException e) {
-                sendMessage(sender, "error",
-                        new VariableReplacement("error", Component.text(e.getMessage())));
-                log.warn("Could not find Item: " + e.getMessage(), e);
-                return;
-            }
-            final OnlineAction give = new GiveAction(
-                    new DefaultArgument<>(List.of(new Item(itemManager, itemID, new DefaultArgument<>(1)))),
-                    new NoNotificationSender(),
-                    new IngameNotificationSender(log, localizations, itemID.getPackage(), itemID.getFull(), NotificationLevel.ERROR,
-                            "inventory_full_backpack", "inventory_full"),
-                    new IngameNotificationSender(log, localizations, itemID.getPackage(), itemID.getFull(), NotificationLevel.ERROR,
-                            "inventory_full_drop", "inventory_full"),
-                    profile -> Optional.empty(), playerDataStorage);
-            give.execute(profileProvider.getProfile((Player) sender));
-        } catch (final QuestException e) {
-            sendMessage(sender, "error",
-                    new VariableReplacement("error", Component.text(e.getMessage())));
-            log.warn("Error while creating an item: " + e.getMessage(), e);
-        }
     }
 
     /**
@@ -602,600 +410,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             log.debug("Profile is offline, loading his data");
         }
         return playerDataStorage.get(profile);
-    }
-
-    /**
-     * Lists, adds or removes journal entries of certain profile.
-     */
-    private void handleJournals(final CommandSender sender, final String... args) {
-        final PlayerData playerData = getTargetPlayerData(sender, args);
-        if (playerData == null) {
-            return;
-        }
-        final Journal journal = playerData.getJournal();
-        // if there are no arguments then list player's pointers
-        if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
-            log.debug("Listing journal pointers");
-            final Predicate<Pointer> shouldDisplay = createListFilter(args, 3, pointer -> pointer.pointer().getFull());
-            sendMessage(sender, "player_journal");
-            journal.getPointers().stream()
-                    .filter(shouldDisplay)
-                    .forEach(pointer -> {
-                        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(config.getString("date_format", ""), Locale.ROOT);
-                        final String date = Instant.ofEpochMilli(pointer.timestamp())
-                                .atZone(ZoneId.systemDefault())
-                                .format(formatter);
-                        sender.sendMessage("§b- " + pointer.pointer() + " §c(§2" + date + "§c)");
-                    });
-            return;
-        }
-        // if there is not enough arguments, display warning
-        if (args.length < 4) {
-            log.debug("Missing pointer");
-            sendMessage(sender, "specify_pointer");
-            return;
-        }
-        final String pointerName = args[3];
-        if (!pointerName.contains(Identifier.SEPARATOR)) {
-            sendMessage(sender, "specify_pointer");
-            return;
-        }
-        switch (args[2].toLowerCase(Locale.ROOT)) {
-            case "add", "a" -> {
-                final JournalEntryIdentifier entryID;
-                try {
-                    entryID = getIdentifier(JournalEntryIdentifier.class, pointerName);
-                } catch (final QuestException e) {
-                    sendMessage(sender, "error",
-                            new VariableReplacement("error", Component.text(e.getMessage())));
-                    log.warn("The journal entry'" + pointerName + "' does not exist!");
-                    log.debug("Tried to add non existing journal entry: " + e.getMessage(), e);
-                    return;
-                }
-                final Pointer pointer;
-                if (args.length < 5) {
-                    final long timestamp = System.currentTimeMillis();
-                    log.debug("Adding pointer with current date: " + timestamp);
-                    pointer = new Pointer(entryID, timestamp);
-                } else {
-                    log.debug("Adding pointer with date " + args[4].replaceAll("_", " "));
-                    try {
-                        pointer = new Pointer(entryID,
-                                new SimpleDateFormat(config.getString("date_format", ""), Locale.ROOT)
-                                        .parse(args[4].replaceAll("_", " ")).getTime());
-                    } catch (final ParseException e) {
-                        sendMessage(sender, "specify_date");
-                        log.warn("Could not parse date: " + e.getMessage(), e);
-                        return;
-                    }
-                }
-                journal.addPointer(pointer);
-                journal.update();
-                sendMessage(sender, "pointer_added");
-            }
-            case "remove", "delete", "del", "r", "d" -> {
-                log.debug("Removing pointer");
-                final JournalEntryIdentifier entryID;
-                try {
-                    entryID = getIdentifier(JournalEntryIdentifier.class, pointerName);
-                } catch (final QuestException e) {
-                    sendMessage(sender, "error",
-                            new VariableReplacement("error", Component.text(e.getMessage())));
-                    log.warn("The journal entry'" + pointerName + "' does not exist!");
-                    log.debug("Tried to remove non existing journal entry: " + e.getMessage(), e);
-                    return;
-                }
-                journal.removePointer(entryID);
-                journal.update();
-                sendMessage(sender, "pointer_removed");
-            }
-            default -> {
-                log.debug("The argument was unknown");
-                sendMessage(sender, "unknown_argument");
-            }
-        }
-    }
-
-    /**
-     * Returns a list including all possible options for tab complete of the
-     * /betonquest journal command.
-     */
-    private Optional<List<String>> completeJournals(final String... args) {
-        if (args.length == 2) {
-            return Optional.empty();
-        }
-        if (args.length == 3) {
-            return Optional.of(Arrays.asList("add", "list", "del"));
-        }
-        if (args.length == 4) {
-            return completeId(args, AccessorType.JOURNAL);
-        }
-        return Optional.of(new ArrayList<>());
-    }
-
-    /**
-     * Lists, adds or removes points of certain profile.
-     */
-    private void handlePoints(final CommandSender sender, final String... args) {
-        final PlayerData playerData = getTargetPlayerData(sender, args);
-        if (playerData == null) {
-            return;
-        }
-        // if there are no arguments then list player's points
-        if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
-            log.debug("Listing points");
-            final Predicate<Map.Entry<String, Integer>> shouldDisplay = createListFilter(args, 3, Map.Entry::getKey);
-            sendMessage(sender, "player_points");
-            playerData.points().get().entrySet().stream()
-                    .filter(shouldDisplay)
-                    .forEach(point -> sender.sendMessage("§b- " + point.getKey() + "§e: §a" + point.getValue()));
-            return;
-        }
-        // if there is not enough arguments, display warning
-        if (args.length < 4) {
-            log.debug("Missing category");
-            sendMessage(sender, "specify_category");
-            return;
-        }
-        final String category = args[3];
-        // if there are arguments, handle them
-        switch (args[2].toLowerCase(Locale.ROOT)) {
-            case "add", "a" -> {
-                if (args.length < 5 || !args[4].matches("-?\\d+")) {
-                    log.debug("Missing amount");
-                    sendMessage(sender, "specify_amount");
-                    return;
-                }
-                log.debug("Adding points");
-                playerData.points().add(category, Integer.parseInt(args[4]));
-                sendMessage(sender, "points_added");
-            }
-            case "remove", "delete", "del", "r", "d" -> {
-                log.debug("Removing points");
-                playerData.points().remove(category);
-                sendMessage(sender, "points_removed");
-            }
-            default -> {
-                log.debug("The argument was unknown");
-                sendMessage(sender, "unknown_argument");
-            }
-        }
-    }
-
-    /**
-     * Lists, adds, removes or purges all global points.
-     */
-    private void handleGlobalPoints(final CommandSender sender, final String... args) {
-        // if there are no arguments then list all global points
-        if (args.length < 2 || "list".equalsIgnoreCase(args[1]) || "l".equalsIgnoreCase(args[1])) {
-            log.debug("Listing global points");
-            final Predicate<Map.Entry<String, Integer>> shouldDisplay = createListFilter(args, 2, Map.Entry::getKey);
-            sendMessage(sender, "global_points");
-            globalData.points().get().entrySet().stream()
-                    .filter(shouldDisplay)
-                    .forEach(point -> sender.sendMessage("§b- " + point.getKey() + "§e: §a" + point.getValue()));
-            return;
-        }
-        // handle purge
-        if ("purge".equalsIgnoreCase(args[1])) {
-            log.debug("Purging all global points");
-            globalData.purgePoints();
-            sendMessage(sender, "global_points_purged");
-            return;
-        }
-        // if there is not enough arguments, display warning
-        if (args.length < 3) {
-            log.debug("Missing category");
-            sendMessage(sender, "specify_category");
-            return;
-        }
-        final String category = args[2];
-        // if there are arguments, handle them
-        switch (args[1].toLowerCase(Locale.ROOT)) {
-            case "add", "a" -> {
-                if (args.length < 4 || !args[3].matches("-?\\d+")) {
-                    log.debug("Missing amount");
-                    sendMessage(sender, "specify_amount");
-                    return;
-                }
-                log.debug("Adding global points");
-                globalData.points().add(category, Integer.parseInt(args[3]));
-                sendMessage(sender, "points_added");
-            }
-            case "remove", "delete", "del", "r", "d" -> {
-                log.debug("Removing global points");
-                globalData.points().remove(category);
-                sendMessage(sender, "points_removed");
-            }
-            default -> {
-                log.debug("The argument was unknown");
-                sendMessage(sender, "unknown_argument");
-            }
-        }
-    }
-
-    /**
-     * Returns a list including all possible options for tab complete of the
-     * /betonquest points command.
-     */
-    private Optional<List<String>> completePoints(final String... args) {
-        if (args.length == 2) {
-            return Optional.empty();
-        }
-        if (args.length == 3) {
-            return Optional.of(Arrays.asList("add", "list", "del"));
-        }
-        if (args.length == 4) {
-            return completeId(args, null);
-        }
-        return Optional.of(new ArrayList<>());
-    }
-
-    /**
-     * Returns a list including all possible options for tab complete of the
-     * /betonquest globalpoints command.
-     */
-    private Optional<List<String>> completeGlobalPoints(final String... args) {
-        if (args.length == 2) {
-            return Optional.of(Arrays.asList("add", "list", "del", "purge"));
-        }
-        if (args.length == 3) {
-            if ("purge".equalsIgnoreCase(args[1])) {
-                return Optional.of(new ArrayList<>());
-            }
-            return completeId(args, null);
-        }
-        return Optional.of(new ArrayList<>());
-    }
-
-    /**
-     * Adds item held in hand to items.yml file.
-     */
-    private void handleItems(final CommandSender sender, final String... args) {
-        // sender must be a player
-        if (!(sender instanceof final Player player)) {
-            log.debug("Cannot continue, sender must be player");
-            return;
-        }
-        // and the item name must be specified
-        if (args.length < 2) {
-            log.debug("Cannot continue, item's name must be supplied");
-            sendMessage(sender, "specify_item");
-            return;
-        }
-        if (args.length < 3) {
-            log.debug("Cannot continue, item's serializer must be supplied");
-            sendMessage(sender, "specify_key");
-            return;
-        }
-
-        final String itemID = args[1];
-        final String pack;
-        final String name;
-        if (itemID.contains(Identifier.SEPARATOR)) {
-            final String[] parts = itemID.split(Identifier.SEPARATOR);
-            pack = parts[0];
-            name = parts[1];
-        } else {
-            pack = null;
-            name = itemID;
-        }
-        // define parts of the final string
-        final QuestPackage configPack = questPackageManager.getPackages().get(pack);
-        if (configPack == null) {
-            log.debug("Cannot continue, package does not exist");
-            sendMessage(sender, "specify_package");
-            return;
-        }
-        final ItemStack item = player.getInventory().getItemInMainHand();
-        final String instructions;
-        try {
-            instructions = itemTypeRegistry.getSerializer(args[2]).serialize(item);
-        } catch (final QuestException e) {
-            sendMessage(sender, "error",
-                    new VariableReplacement("error", Component.text(e.getMessage())));
-            log.warn("Could not serialize item: " + e.getMessage(), e);
-            return;
-        }
-        // save it in items.yml
-        log.debug("Saving item to configuration as " + args[1] + " (" + args[2] + ")");
-        final String path = "items." + name;
-        final boolean exists = configPack.getConfig().isSet(path);
-        configPack.getConfig().set(path, args[2] + " " + instructions);
-        try {
-            if (!exists) {
-                final ConfigAccessor itemFile = configPack.getOrCreateConfigAccessor("items.yml");
-                configPack.getConfig().associateWith(path, itemFile.getConfig());
-            }
-            configPack.saveAll();
-        } catch (final IOException | InvalidConfigurationException e) {
-            log.warn(configPack, e.getMessage(), e);
-            return;
-        }
-        // done
-        sendMessage(sender, "item_created",
-                new VariableReplacement("item", Component.text(args[1])));
-    }
-
-    /**
-     * Returns a list including all possible options for tab complete of the
-     * /betonquest item and /betonquest give commands.
-     */
-    private Optional<List<String>> completeItems(final boolean suggestSerializers, final String... args) {
-        if (args.length == 2) {
-            return completeId(args, AccessorType.ITEMS);
-        }
-        if (suggestSerializers && args.length == 3) {
-            return Optional.of(List.copyOf(itemTypeRegistry.serializerKeySet()));
-        }
-        return Optional.of(new ArrayList<>());
-    }
-
-    /**
-     * Fires an action for an online player. It cannot work for offline players!
-     */
-    private void handleActions(final CommandSender sender, final String... args) throws QuestException {
-        if (args.length < 2 || Bukkit.getPlayer(args[1]) == null && !"-".equals(args[1])) {
-            log.debug("Player's name is missing or he's offline");
-            sendMessage(sender, "specify_player");
-            return;
-        }
-        if (args.length < 3) {
-            log.debug("Actions's ID is missing");
-            sendMessage(sender, "specify_action");
-            return;
-        }
-        final ActionIdentifier actionID;
-        try {
-            actionID = getIdentifier(ActionIdentifier.class, args[2]);
-        } catch (final QuestException e) {
-            sendMessage(sender, "error",
-                    new VariableReplacement("error", Component.text(e.getMessage())));
-            log.warn("Could not find action: " + e.getMessage(), e);
-            return;
-        }
-        final Profile profile = "-".equals(args[1]) ? null : profileProvider.getProfile(Bukkit.getOfflinePlayer(args[1]));
-        actionManager.run(profile, actionID);
-        sendMessage(sender, "player_action",
-                new VariableReplacement("action", Component.text(actionID.readRawInstruction())));
-    }
-
-    /**
-     * Returns a list including all possible options for tab complete of the
-     * /betonquest action command.
-     */
-    private Optional<List<String>> completeActions(final String... args) {
-        if (args.length == 2) {
-            return Optional.empty();
-        }
-        if (args.length == 3) {
-            return completeId(args, AccessorType.ACTIONS);
-        }
-        return Optional.of(new ArrayList<>());
-    }
-
-    /**
-     * Lists, adds or removes tags.
-     */
-    private void handleTags(final CommandSender sender, final String... args) {
-        final PlayerData playerData = getTargetPlayerData(sender, args);
-        if (playerData == null) {
-            return;
-        }
-        // if there are no arguments then list player's tags
-        if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
-            log.debug("Listing tags");
-            final Predicate<String> shouldDisplay = createListFilter(args, 3, Function.identity());
-            sendMessage(sender, "player_tags");
-            playerData.tags().get().stream()
-                    .filter(shouldDisplay)
-                    .sorted()
-                    .forEach(tag -> sender.sendMessage("§b- " + tag));
-            return;
-        }
-        // if there is not enough arguments, display warning
-        if (args.length < 4) {
-            log.debug("Missing tag name");
-            sendMessage(sender, "specify_tag");
-            return;
-        }
-        final String tag = args[3];
-        // if there are arguments, handle them
-        switch (args[2].toLowerCase(Locale.ROOT)) {
-            case "add", "a" -> {
-                log.debug("Adding tag");
-                playerData.tags().add(tag);
-                sendMessage(sender, "tag_added");
-            }
-            case "remove", "delete", "del", "r", "d" -> {
-                log.debug("Removing tag");
-                playerData.tags().remove(tag);
-                sendMessage(sender, "tag_removed");
-            }
-            default -> {
-                log.debug("The argument was unknown");
-                sendMessage(sender, "unknown_argument");
-            }
-        }
-    }
-
-    /**
-     * Lists, adds or removes global tags.
-     */
-    private void handleGlobalTags(final CommandSender sender, final String... args) {
-        // if there are no arguments then list all global tags
-        if (args.length < 2 || "list".equalsIgnoreCase(args[1]) || "l".equalsIgnoreCase(args[1])) {
-            log.debug("Listing global tags");
-            final Predicate<String> shouldDisplay = createListFilter(args, 2, Function.identity());
-            sendMessage(sender, "global_tags");
-            globalData.tags().get().stream()
-                    .filter(shouldDisplay)
-                    .sorted()
-                    .forEach(tag -> sender.sendMessage("§b- " + tag));
-            return;
-        }
-        // handle purge
-        if ("purge".equalsIgnoreCase(args[1])) {
-            log.debug("Purging all global tags");
-            globalData.purgeTags();
-            sendMessage(sender, "global_tags_purged");
-            return;
-        }
-        // if there is not enough arguments, display warning
-        if (args.length < 3) {
-            log.debug("Missing tag name");
-            sendMessage(sender, "specify_tag");
-            return;
-        }
-        final String tag = args[2];
-        // if there are arguments, handle them
-        switch (args[1].toLowerCase(Locale.ROOT)) {
-            case "add", "a" -> {
-                log.debug("Adding global tag " + tag);
-                globalData.tags().add(tag);
-                sendMessage(sender, "tag_added");
-            }
-            case "remove", "delete", "del", "r", "d" -> {
-                log.debug("Removing global tag " + tag);
-                globalData.tags().remove(tag);
-                sendMessage(sender, "tag_removed");
-            }
-            default -> {
-                log.debug("The argument was unknown");
-                sendMessage(sender, "unknown_argument");
-            }
-        }
-    }
-
-    /**
-     * Returns a list including all possible options for tab complete of the {@code /betonquest tags} command.
-     */
-    private Optional<List<String>> completeTags(final String... args) {
-        if (args.length == 2) {
-            return Optional.empty();
-        }
-        if (args.length == 3) {
-            return Optional.of(Arrays.asList("list", "add", "del"));
-        }
-        if (args.length == 4) {
-            return completeId(args, null);
-        }
-        return Optional.of(new ArrayList<>());
-    }
-
-    /**
-     * Returns a list including all possible options for tab complete of the {@code /betonquest globaltags} command.
-     */
-    private Optional<List<String>> completeGlobalTags(final String... args) {
-        if (args.length == 2) {
-            return Optional.of(Arrays.asList("list", "add", "del", "purge"));
-        }
-        if (args.length == 3) {
-            if ("purge".equalsIgnoreCase(args[1])) {
-                return Optional.of(new ArrayList<>());
-            }
-            return completeId(args, null);
-        }
-        return Optional.of(new ArrayList<>());
-    }
-
-    /**
-     * Lists, adds or removes objectives.
-     */
-    private void handleObjectives(final CommandSender sender, final String... args) {
-        final Profile profile = getTargetProfile(sender, args);
-        if (profile == null) {
-            return;
-        }
-        final boolean isOnline = profile.getOnlineProfile().isPresent();
-        if (!isOnline) {
-            log.debug("Profile is offline, loading his data");
-        }
-        final PlayerData playerData = playerDataStorage.get(profile);
-        // if there are no arguments then list player's objectives
-        if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
-            // display objectives
-            log.debug("Listing objectives");
-            final Predicate<String> shouldDisplay = createListFilter(args, 3, Function.identity());
-            final Stream<String> objectives;
-            if (isOnline) {
-                // if the player is online then just retrieve tags from his active objectives
-                objectives = objectiveManager.getForProfile(profile).stream()
-                        .map(defaultObjective -> defaultObjective.getObjectiveID().getFull());
-            } else {
-                // if player is offline then convert his raw objective strings to tags
-                objectives = playerData.getRawObjectives().keySet().stream();
-            }
-            sendMessage(sender, "player_objectives");
-            objectives.filter(shouldDisplay)
-                    .sorted()
-                    .forEach(objective -> sender.sendMessage("§b- " + objective));
-            return;
-        }
-        // if there is not enough arguments, display warning
-        if (args.length < 4) {
-            log.debug("Missing objective instruction string");
-            sendMessage(sender, "specify_objective");
-            return;
-        }
-        // get the objective
-        final ObjectiveIdentifier objectiveID;
-        final Objective objective;
-        try {
-            objectiveID = getIdentifier(ObjectiveIdentifier.class, args[3]);
-            objective = objectiveManager.getObjective(objectiveID);
-        } catch (final QuestException e) {
-            sendMessage(sender, "error",
-                    new VariableReplacement("error", Component.text(e.getMessage())));
-            log.warn("Could not find objective: " + e.getMessage(), e);
-            return;
-        }
-        switch (args[2].toLowerCase(Locale.ROOT)) {
-            case "start", "s", "add", "a" -> {
-                log.debug("Adding new objective " + objectiveID + " for " + profile);
-                if (isOnline) {
-                    objectiveManager.start(profile, objectiveID);
-                } else {
-                    playerData.addNewRawObjective(objectiveID);
-                }
-                sendMessage(sender, "objective_added");
-            }
-            case "remove", "delete", "del", "r", "d" -> {
-                log.debug("Deleting objective " + objectiveID + " for " + profile);
-                objectiveManager.cancel(profile, objectiveID);
-                playerData.removeRawObjective(objectiveID);
-                sendMessage(sender, "objective_removed");
-            }
-            case "complete", "c" -> {
-                log.debug("Completing objective " + objectiveID + " for " + profile);
-                if (isOnline) {
-                    objective.getService().complete(profile);
-                } else {
-                    playerData.removeRawObjective(objectiveID);
-                }
-                sendMessage(sender, "objective_completed");
-            }
-            default -> {
-                log.debug("The argument was unknown");
-                sendMessage(sender, "unknown_argument");
-            }
-        }
-    }
-
-    /**
-     * Returns a list including all possible options for tab complete of the {@code /betonquest objectives} command.
-     */
-    private Optional<List<String>> completeObjectives(final String... args) {
-        if (args.length == 2) {
-            return Optional.empty();
-        }
-        if (args.length == 3) {
-            return Optional.of(Arrays.asList("list", "add", "del", "complete"));
-        }
-        if (args.length == 4) {
-            return completeId(args, AccessorType.OBJECTIVES);
-        }
-        return Optional.of(new ArrayList<>());
     }
 
     /**
@@ -1536,428 +750,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         sender.sendMessage(builder.build());
     }
 
-    private void displayVersionInfo(final CommandSender sender, final String commandAlias) throws QuestException {
-        final String updateCommand = "/" + commandAlias + " update";
-
-        final Component hooked = displayVersionInfoHooked(compatibility.getBetonQuest());
-
-        final TextComponent.Builder externalHooked = Component.text();
-        for (final Map.Entry<String, List<IntegrationData>> entry : compatibility.getExternal().entrySet()) {
-            final VariableComponent external = new VariableComponent(localizations.getMessage(null, "command_version_output.external_hook",
-                    new VariableReplacement("plugin", Component.text(entry.getKey())),
-                    new VariableReplacement("hooked", displayVersionInfoHooked(entry.getValue()))));
-            externalHooked.append(external.resolve());
-        }
-
-        final Component update = displayVersionInfoUpdate(updater);
-        final Component copy = displayVersionInfoCopy(sender);
-
-        final VariableComponent baseContent = new VariableComponent(localizations.getMessage(null, "command_version_output.info",
-                new VariableReplacement("version", Component.text(plugin.getDescription().getVersion())),
-                new VariableReplacement("server", Component.text(Bukkit.getServer().getName() + " " + Bukkit.getServer().getVersion())),
-                new VariableReplacement("hooked", hooked),
-                new VariableReplacement("external_hooks", externalHooked.build())));
-        final Component copyContent = baseContent.resolve(
-                new VariableReplacement("update", Component.empty()),
-                new VariableReplacement("copy", Component.empty()));
-        final Component info = baseContent.resolve(
-                new VariableReplacement("update", update.clickEvent(ClickEvent.suggestCommand(updateCommand))),
-                new VariableReplacement("copy", copy.clickEvent(ClickEvent.copyToClipboard(PlainTextComponentSerializer.plainText().serialize(copyContent)))));
-        sender.sendMessage(info);
-    }
-
-    private Component displayVersionInfoHooked(final List<IntegrationData> dataList) throws QuestException {
-        final TextComponent.Builder hookedBuilder = Component.text();
-        for (final IntegrationData data : dataList) {
-            final List<Triple<String, String, String>> triples = data.getDisplayInfo();
-            if (triples.isEmpty()) {
-                continue;
-            }
-            if (!hookedBuilder.children().isEmpty()) {
-                hookedBuilder.append(Component.text(", "));
-            }
-            final List<Component> components = new ArrayList<>();
-            for (final Triple<String, String, String> triple : triples) {
-                final Component message = localizations.getMessage(null, "command_version_output.hook",
-                        new VariableReplacement("plugin", Component.text(triple.getLeft())),
-                        new VariableReplacement("version", Component.text(triple.getMiddle())));
-                components.add(message.hoverEvent(HoverEvent.showText(Component.text(triple.getRight()))));
-            }
-            if (components.size() == 1) {
-                hookedBuilder.append(components.get(0));
-            } else {
-                final JoinConfiguration joinConfiguration = JoinConfiguration.builder()
-                        .prefix(Component.text("["))
-                        .separator(Component.text(", "))
-                        .suffix(Component.text("]")).build();
-                hookedBuilder.append(Component.join(joinConfiguration, components));
-            }
-        }
-        return hookedBuilder.build();
-    }
-
-    private Component displayVersionInfoUpdate(final Updater updater) throws QuestException {
-        if (!updater.isUpdateAvailable()) {
-            return Component.empty();
-        }
-        return localizations.getMessage(null, "command_version_output.update",
-                new VariableReplacement("version", Component.text(updater.getUpdateVersion())));
-    }
-
-    private Component displayVersionInfoCopy(final CommandSender sender) throws QuestException {
-        if (sender instanceof ConsoleCommandSender) {
-            return Component.empty();
-        }
-        return localizations.getMessage(null, "command_version_output.copy");
-    }
-
-    @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
-    private void handleDebug(final CommandSender sender, final String... args) {
-        if (args.length == 1) {
-            sender.sendMessage(
-                    "§2Debugging mode is currently " + (debuggingController.isLogging() ? "enabled" : "disabled") + '!');
-            return;
-        }
-        if ("ingame".equalsIgnoreCase(args[1])) {
-            if (!(sender instanceof Player)) {
-                log.debug("Cannot continue, sender must be player");
-                return;
-            }
-            final UUID uuid = ((Player) sender).getUniqueId();
-            if (args.length < 3) {
-                sender.sendMessage("§2Active Filters: " + String.join(", ", logWatcher.getActivePatterns(uuid)));
-                return;
-            }
-            final String filter = args[2];
-            if (logWatcher.isActivePattern(uuid, filter)) {
-                if (args.length == 3) {
-                    logWatcher.removeFilter(uuid, filter);
-                    sender.sendMessage("§2Filter removed!");
-                } else {
-                    final Level level = getLogLevel(args[3]);
-                    logWatcher.addFilter(uuid, filter, level);
-                    sender.sendMessage("§2Filter replaced!");
-                }
-            } else {
-                final Level level = getLogLevel(args.length > 3 ? args[3] : null);
-                logWatcher.addFilter(uuid, filter, level);
-                sender.sendMessage("§2Filter added!");
-            }
-            return;
-        }
-        if ("dump".equalsIgnoreCase(args[1])) {
-            if (debuggingController.isLogging()) {
-                sender.sendMessage("§2Can not dump while debugging is enabled!");
-                return;
-            }
-            debuggingController.dumpLog();
-            sender.sendMessage("§2Dumped debug log to file!");
-            log.info("Dumped debug log to file!");
-            return;
-        }
-        final Boolean input = "true".equalsIgnoreCase(args[1]) ? Boolean.TRUE
-                : "false".equalsIgnoreCase(args[1]) ? Boolean.FALSE : null;
-        if (input != null && args.length == 2) {
-
-            if (debuggingController.isLogging() && input || !debuggingController.isLogging() && !input) {
-                sender.sendMessage(
-                        "§2Debugging mode is already " + (debuggingController.isLogging() ? "enabled" : "disabled") + '!');
-                return;
-            }
-            try {
-                if (input) {
-                    debuggingController.startLogging();
-                } else {
-                    debuggingController.stopLogging();
-                }
-            } catch (final IOException e) {
-                sender.sendMessage("Could not save new debugging state to configuration file!");
-                log.warn("Could not save new debugging state to configuration file! " + e.getMessage(), e);
-            }
-            sender.sendMessage("§2Debugging mode was " + (debuggingController.isLogging() ? "enabled" : "disabled") + '!');
-            log.info("Debugging mode was " + (debuggingController.isLogging() ? "enabled" : "disabled") + '!');
-            return;
-        }
-        sendMessage(sender, "unknown_argument");
-    }
-
-    @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    private void handleDownload(final CommandSender sender, final String... args) {
-        if (args.length < 5) {
-            sendMessage(sender, "arguments");
-            return;
-        }
-        final String sourcePath = args[4];
-        final String targetPath;
-        boolean recursive = false;
-        boolean overwrite = false;
-        if (args.length < 6 || Set.of("recursive", "overwrite").contains(args[5])) {
-            targetPath = sourcePath;
-        } else {
-            targetPath = args[5];
-        }
-        for (int i = 5; i < args.length; i++) {
-            switch (args[i].toLowerCase(Locale.ROOT)) {
-                case "recursive" -> recursive = true;
-                case "overwrite" -> overwrite = true;
-                default -> {
-                    if (i > 5) {
-                        sendMessage(sender, "unknown_argument");
-                        return;
-                    }
-                }
-            }
-        }
-        final String githubNamespace = args[1];
-        final String ref = args[2];
-        final String offsetPath = args[3];
-        final String errSummary = String.format("Download from %s ref %s of %s at %s to %s failed:",
-                githubNamespace, ref, offsetPath, sourcePath, targetPath);
-
-        //Check offset paths
-        if (!Downloader.ALLOWED_OFFSET_PATHS.contains(offsetPath)) {
-            sendMessage(sender, "download_failed_offset");
-            log.debug(errSummary, new IllegalArgumentException(offsetPath));
-            return;
-        }
-
-        //check if repo is allowed
-        final List<String> whitelist = config.getStringList("downloader.repo_whitelist");
-        if (whitelist.stream().map(String::trim).noneMatch(githubNamespace::equals)) {
-            sendMessage(sender, "download_failed_whitelist");
-            log.debug(errSummary, new IllegalArgumentException(githubNamespace));
-            return;
-        }
-
-        //check if ref is valid
-        if (ref.toLowerCase(Locale.ROOT).startsWith("refs/pull/") && !config.getBoolean("downloader.pull_request", false)) {
-            sendMessage(sender, "download_failed_pr");
-            log.debug(errSummary, new IllegalArgumentException(ref));
-            return;
-        }
-
-        //run download
-        final Downloader downloader = new Downloader(loggerFactory.create(Downloader.class, "Downloader"),
-                plugin.getDataFolder(), githubNamespace, ref, offsetPath, sourcePath, targetPath, recursive, overwrite);
-        sendMessage(sender, "download_scheduled");
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            try {
-                downloader.call();
-                sendMessageSync(sender, "download_success");
-            } catch (final DownloadFailedException | SecurityException | FileNotFoundException e) {
-                final String message = e.getMessage();
-                sendMessageSync(sender, "download_failed",
-                        new VariableReplacement("error", Component.text(message == null ? e.getClass().getSimpleName() : message)));
-                log.debug(errSummary, e);
-            } catch (final Exception e) {
-                sendMessageSync(sender, "download_failed",
-                        new VariableReplacement("error", Component.text(e.getClass().getSimpleName() + ": " + e.getMessage())));
-                if (sender instanceof final Player player) {
-                    final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.FINE, null, plugin);
-                    record.setThrown(e);
-                    player.sendMessage(new ChatFormatter().formatTextComponent(record));
-                    log.debug(errSummary, e);
-                } else {
-                    log.error(errSummary, e);
-                }
-            }
-        });
-    }
-
-    private Optional<List<String>> completeDownload(final String... args) {
-        return switch (args.length) {
-            case 2 -> Optional.of(config.getStringList("downloader.repo_whitelist"));
-            case 3 -> Optional.of(List.of("refs/heads/", "refs/tags/"));
-            case 4 -> Optional.of(Downloader.ALLOWED_OFFSET_PATHS);
-            case 5 -> Optional.of(List.of("/"));
-            case 6 -> Optional.of(List.of("/", "overwrite", "recursive"));
-            case 7, 8 ->
-                    Optional.of(Stream.of("overwrite", "recursive").filter(tag -> !Arrays.asList(args).contains(tag)).toList());
-            default -> Optional.of(List.of());
-        };
-    }
-
-    /**
-     * VariableObjective stuff.
-     */
-    @SuppressWarnings("PMD.NcssCount")
-    private void handleVariableObjective(final CommandSender sender, final String... args) {
-        final Profile profile = getTargetProfile(sender, args);
-        if (profile == null) {
-            return;
-        }
-
-        if (args.length == 2) {
-            log.debug("Missing objective instruction string");
-            sendMessage(sender, "specify_objective");
-            return;
-        }
-
-        // get the objective
-        final ObjectiveIdentifier objectiveID;
-        final Objective tmp;
-        try {
-            objectiveID = getIdentifier(ObjectiveIdentifier.class, args[2]);
-            tmp = objectiveManager.getObjective(objectiveID);
-        } catch (final QuestException e) {
-            sendMessage(sender, "error",
-                    new VariableReplacement("error", Component.text(e.getMessage())));
-            log.warn("Could not find objective: " + e.getMessage(), e);
-            return;
-        }
-        if (!(tmp instanceof final VariableObjective variableObjective)) {
-            log.debug(tmp.getObjectiveID().getFull() + " is not a variable objective");
-            sendMessage(sender, "specify_objective");
-            return;
-        }
-        log.debug("Using variable objective " + variableObjective.getObjectiveID().getFull());
-
-        final boolean isOnline = profile.getOnlineProfile().isPresent();
-        final VariableObjective.VariableData data;
-        if (isOnline) {
-            data = null;
-        } else {
-            final PlayerData offline = playerDataStorage.get(profile);
-            final String instruction = offline.getRawObjectives().get(variableObjective.getObjectiveID().getFull());
-            if (instruction == null) {
-                log.debug("There is no data for that objective for that player!");
-                sendMessage(sender, "error",
-                        new VariableReplacement("error", Component.text("There is no data for that objective!")));
-                return;
-            }
-            data = new VariableObjective.VariableData(instruction, profile, objectiveID);
-        }
-
-        final String subCommand = args.length == 3 ? "list" : args[3].toLowerCase(Locale.ROOT);
-        switch (subCommand) {
-            case "list", "l" -> {
-                if (data != null) {
-                    log.debug("Can't list variable data on offline player");
-                    sendMessage(sender, "offline_invalid");
-                    return;
-                }
-                // check for actual values
-                final Map<String, String> properties = variableObjective.getProperties(profile);
-                if (properties == null) {
-                    log.debug("No property for profile");
-                    sendMessage(sender, "player_no_property");
-                    return;
-                }
-                // display variable objective keys and values
-                log.debug("Listing keys and values");
-                final Predicate<String> shouldDisplay = createListFilter(args, 4, Function.identity());
-                sendMessage(sender, "player_variables",
-                        new VariableReplacement("objective", Component.text(variableObjective.getObjectiveID().getFull())));
-                properties.entrySet().stream()
-                        .filter(entry -> shouldDisplay.test(entry.getKey()))
-                        .sorted((o1, o2) -> o1.getKey().compareToIgnoreCase(o2.getKey()))
-                        .forEach(entry -> sender.sendMessage("§b- " + entry.getKey() + "§e: §a" + entry.getValue()));
-            }
-            case "set", "s" -> {
-                if (args.length < 6) {
-                    log.debug("Missing amount");
-                    sendMessage(sender, "arguments");
-                    return;
-                }
-                final String value = String.join(" ", Arrays.copyOfRange(args, 5, args.length));
-                log.debug("Setting value " + value + " for key " + args[4] + " for " + profile + " in " + variableObjective.getObjectiveID().getFull());
-                if (data == null) {
-                    variableObjective.store(profile, args[4], value);
-                } else {
-                    data.add(args[4], value);
-                }
-                sendMessage(sender, "value_set",
-                        new VariableReplacement("value", Component.text(value)),
-                        new VariableReplacement("key", Component.text(args[4])));
-            }
-            case "del", "d" -> {
-                if (args.length < 5) {
-                    log.debug("Missing amount");
-                    sendMessage(sender, "arguments");
-                    return;
-                }
-                log.debug("Removing key " + args[4] + " for " + profile + " in " + variableObjective.getObjectiveID().getFull());
-                if (data == null) {
-                    variableObjective.store(profile, args[4], null);
-                } else {
-                    data.add(args[4], null);
-                }
-                sendMessage(sender, "key_remove",
-                        new VariableReplacement("key", Component.text(args[4])));
-            }
-            default -> {
-                log.debug("The argument was unknown");
-                sendMessage(sender, "unknown_argument");
-            }
-        }
-    }
-
-    /**
-     * Returns a list including all possible options for tab complete of the {@code /betonquest variables} command.
-     */
-    @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
-    private Optional<List<String>> completeVariableObjective(final String... args) {
-        if (args.length == 2) {
-            return Optional.empty();
-        }
-        if (args.length == 3) {
-            final String last = args[args.length - 1];
-            if (last == null || !last.contains(Identifier.SEPARATOR)) {
-                return completePackage();
-            }
-            final String pack = last.substring(0, last.indexOf(Identifier.SEPARATOR));
-            final QuestPackage configPack = questPackageManager.getPackages().get(pack);
-            if (configPack == null) {
-                return Optional.of(Collections.emptyList());
-            }
-            final ConfigurationSection configuration = configPack.getConfig().getConfigurationSection("objectives");
-            final List<String> completions = new ArrayList<>();
-            if (configuration != null) {
-                for (final String key : configuration.getKeys(true)) {
-                    if (configuration.isConfigurationSection(key)) {
-                        continue;
-                    }
-                    final String rawObjectiveInstruction = configuration.getString(key);
-                    if (rawObjectiveInstruction != null && rawObjectiveInstruction.stripIndent().startsWith("variable")) {
-                        completions.add(pack + Identifier.SEPARATOR + key);
-                    }
-                }
-            }
-            return Optional.of(completions);
-        }
-        if (args.length == 4) {
-            return Optional.of(Arrays.asList("list", "set", "del"));
-        }
-        return Optional.of(Collections.emptyList());
-    }
-
-    private Level getLogLevel(@Nullable final String arg) {
-        if ("info".equalsIgnoreCase(arg)) {
-            return Level.INFO;
-        }
-        if ("debug".equalsIgnoreCase(arg)) {
-            return Level.ALL;
-        }
-        return Level.WARNING;
-    }
-
-    private Optional<List<String>> completeDebug(final String... args) {
-        if (args.length == 2) {
-            return Optional.of(Arrays.asList("true", "false", "ingame", "dump"));
-        }
-        if (args.length == 3) {
-            return completePackage();
-        }
-        if (args.length == 4) {
-            return Optional.of(Arrays.asList("error", "info", "debug"));
-        }
-        return Optional.of(new ArrayList<>());
-    }
-
-    private void sendMessageSync(final CommandSender sender, final String messageName, final VariableReplacement... replacements) {
-        Bukkit.getScheduler().runTask(plugin, () -> sendMessage(sender, messageName, replacements));
-    }
-
     private void sendMessage(final CommandSender sender, final String messageName, final VariableReplacement... replacements) {
         final OnlineProfile profile = sender instanceof final Player player ? profileProvider.getProfile(player) : null;
         try {
@@ -1966,17 +758,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             log.warn("Failed to send message '" + messageName + "': " + e.getMessage(), e);
             sender.sendMessage("Failed to send message '" + messageName + "': " + e.getMessage());
         }
-    }
-
-    private <T> Predicate<T> createListFilter(final String[] args, final int filterIndex, final Function<T, String> getId) {
-        if (args.length > filterIndex) {
-            return createCaseInsensitivePrefixPredicate(args[filterIndex], getId);
-        }
-        return pointer -> true;
-    }
-
-    private <T> Predicate<T> createCaseInsensitivePrefixPredicate(final String prefix, final Function<T, String> getId) {
-        return element -> getId.apply(element).regionMatches(true, 0, prefix, 0, prefix.length());
     }
 
     private <I extends Identifier> I getIdentifier(final Class<I> identifierClass, final String identifier) throws QuestException {
