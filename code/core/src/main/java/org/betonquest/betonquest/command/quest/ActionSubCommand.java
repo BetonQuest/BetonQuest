@@ -17,6 +17,7 @@ import java.util.Optional;
 /**
  * Fires an action for an online player. It cannot work for offline players!
  */
+@SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
 public class ActionSubCommand extends QuestCommandPart {
 
     /**

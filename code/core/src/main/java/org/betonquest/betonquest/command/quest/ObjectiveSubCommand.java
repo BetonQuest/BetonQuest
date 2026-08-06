@@ -24,6 +24,7 @@ import java.util.stream.Stream;
 /**
  * Lists, adds or removes objectives.
  */
+@SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
 public class ObjectiveSubCommand extends QuestCommandPart {
 
     /**
@@ -90,6 +91,12 @@ public class ObjectiveSubCommand extends QuestCommandPart {
             sendMessage(sender, "specify_objective");
             return;
         }
+        handle2(sender, args, profile, isOnline, playerData);
+    }
+
+    @SuppressWarnings("PMD.CyclomaticComplexity")
+    private void handle2(final CommandSender sender, final String[] args, final Profile profile, final boolean isOnline,
+                         final PlayerData playerData) {
         // get the objective
         final ObjectiveIdentifier objectiveID;
         final Objective objective;

@@ -26,6 +26,7 @@ import java.util.stream.Stream;
 /**
  * Downloads QuestPackages from GitHub.
  */
+@SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.AvoidDuplicateLiterals"})
 public class DownloadSubCommand extends QuestCommandPart {
 
     /**
@@ -69,7 +70,7 @@ public class DownloadSubCommand extends QuestCommandPart {
     }
 
     @Override
-    @SuppressWarnings("PMD.AvoidCatchingGenericException")
+    @SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
     public void handle(final CommandSender sender, final String... args) {
         if (args.length < 5) {
             sendMessage(sender, "arguments");

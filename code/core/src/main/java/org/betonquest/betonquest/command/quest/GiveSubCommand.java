@@ -24,6 +24,7 @@ import java.util.Optional;
 /**
  * Gives an item to the player.
  */
+@SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.AvoidDuplicateLiterals"})
 public class GiveSubCommand extends QuestCommandPart {
 
     /**

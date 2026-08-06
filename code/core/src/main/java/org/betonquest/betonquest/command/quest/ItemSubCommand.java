@@ -22,6 +22,7 @@ import java.util.Optional;
 /**
  * Adds item held in hand to items.yml file.
  */
+@SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
 public class ItemSubCommand extends QuestCommandPart {
 
     /**

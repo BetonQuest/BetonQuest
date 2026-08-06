@@ -17,6 +17,7 @@ import java.util.Optional;
 /**
  * Checks if specified player meets condition described by ID.
  */
+@SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
 public class ConditionSubCommand extends QuestCommandPart {
 
     /**

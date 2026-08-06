@@ -16,6 +16,7 @@ import java.util.function.Predicate;
 /**
  * Lists, adds, removes or purges all global points.
  */
+@SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
 public class GlobalPointSubCommand extends QuestCommandPart {
 
     /**
@@ -64,6 +65,11 @@ public class GlobalPointSubCommand extends QuestCommandPart {
             sendMessage(sender, "specify_category");
             return;
         }
+        handle2(sender, args);
+    }
+
+    @SuppressWarnings("PMD.CyclomaticComplexity")
+    private void handle2(final CommandSender sender, final String... args) {
         final String category = args[2];
         // if there are arguments, handle them
         switch (args[1].toLowerCase(Locale.ROOT)) {

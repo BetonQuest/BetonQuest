@@ -26,6 +26,7 @@ import java.util.Map;
 /**
  * Display version and hook info.
  */
+@SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
 public class VersionSubCommand {
 
     /**

@@ -16,6 +16,7 @@ import java.util.function.Predicate;
 /**
  * Lists, adds or removes tags.
  */
+@SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
 public class TagSubCommand extends QuestCommandPart {
 
     /**
@@ -56,6 +57,10 @@ public class TagSubCommand extends QuestCommandPart {
             sendMessage(sender, "specify_tag");
             return;
         }
+        handle2(sender, args, playerData);
+    }
+
+    private void handle2(final CommandSender sender, final String[] args, final PlayerData playerData) {
         final String tag = args[3];
         // if there are arguments, handle them
         switch (args[2].toLowerCase(Locale.ROOT)) {

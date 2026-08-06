@@ -16,6 +16,7 @@ import java.util.function.Predicate;
 /**
  * Lists, adds or removes points of certain profile.
  */
+@SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
 public class PointSubCommand extends QuestCommandPart {
 
     /**
@@ -55,6 +56,11 @@ public class PointSubCommand extends QuestCommandPart {
             sendMessage(sender, "specify_category");
             return;
         }
+        handle2(sender, args, playerData);
+    }
+
+    @SuppressWarnings("PMD.CyclomaticComplexity")
+    private void handle2(final CommandSender sender, final String[] args, final PlayerData playerData) {
         final String category = args[3];
         // if there are arguments, handle them
         switch (args[2].toLowerCase(Locale.ROOT)) {

@@ -27,6 +27,7 @@ import java.util.function.Predicate;
 /**
  * Lists, adds or removes journal entries of certain profile.
  */
+@SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.AvoidDuplicateLiterals"})
 public class JournalSubCommand extends QuestCommandPart {
 
     /**
@@ -50,6 +51,7 @@ public class JournalSubCommand extends QuestCommandPart {
         return List.of("journal", "journals", "j");
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override
     public void handle(final CommandSender sender, final String... args) {
         final PlayerData playerData = getTargetPlayerData(sender, args);
@@ -85,59 +87,63 @@ public class JournalSubCommand extends QuestCommandPart {
             return;
         }
         switch (args[2].toLowerCase(Locale.ROOT)) {
-            case "add", "a" -> {
-                final JournalEntryIdentifier entryID;
-                try {
-                    entryID = getIdentifier(JournalEntryIdentifier.class, pointerName);
-                } catch (final QuestException e) {
-                    sendMessage(sender, "error",
-                            new VariableReplacement("error", Component.text(e.getMessage())));
-                    log.warn("The journal entry'" + pointerName + "' does not exist!");
-                    log.debug("Tried to add non existing journal entry: " + e.getMessage(), e);
-                    return;
-                }
-                final Pointer pointer;
-                if (args.length < 5) {
-                    final long timestamp = System.currentTimeMillis();
-                    log.debug("Adding pointer with current date: " + timestamp);
-                    pointer = new Pointer(entryID, timestamp);
-                } else {
-                    log.debug("Adding pointer with date " + args[4].replaceAll("_", " "));
-                    try {
-                        pointer = new Pointer(entryID,
-                                new SimpleDateFormat(config.getString("date_format", ""), Locale.ROOT)
-                                        .parse(args[4].replaceAll("_", " ")).getTime());
-                    } catch (final ParseException e) {
-                        sendMessage(sender, "specify_date");
-                        log.warn("Could not parse date: " + e.getMessage(), e);
-                        return;
-                    }
-                }
-                journal.addPointer(pointer);
-                journal.update();
-                sendMessage(sender, "pointer_added");
-            }
-            case "remove", "delete", "del", "r", "d" -> {
-                log.debug("Removing pointer");
-                final JournalEntryIdentifier entryID;
-                try {
-                    entryID = getIdentifier(JournalEntryIdentifier.class, pointerName);
-                } catch (final QuestException e) {
-                    sendMessage(sender, "error",
-                            new VariableReplacement("error", Component.text(e.getMessage())));
-                    log.warn("The journal entry'" + pointerName + "' does not exist!");
-                    log.debug("Tried to remove non existing journal entry: " + e.getMessage(), e);
-                    return;
-                }
-                journal.removePointer(entryID);
-                journal.update();
-                sendMessage(sender, "pointer_removed");
-            }
+            case "add", "a" -> add(sender, args, pointerName, journal);
+            case "remove", "delete", "del", "r", "d" -> remove(sender, pointerName, journal);
             default -> {
                 log.debug("The argument was unknown");
                 sendMessage(sender, "unknown_argument");
             }
         }
+    }
+
+    private void add(final CommandSender sender, final String[] args, final String pointerName, final Journal journal) {
+        final JournalEntryIdentifier entryID;
+        try {
+            entryID = getIdentifier(JournalEntryIdentifier.class, pointerName);
+        } catch (final QuestException e) {
+            sendMessage(sender, "error",
+                    new VariableReplacement("error", Component.text(e.getMessage())));
+            log.warn("The journal entry'" + pointerName + "' does not exist!");
+            log.debug("Tried to add non existing journal entry: " + e.getMessage(), e);
+            return;
+        }
+        final Pointer pointer;
+        if (args.length < 5) {
+            final long timestamp = System.currentTimeMillis();
+            log.debug("Adding pointer with current date: " + timestamp);
+            pointer = new Pointer(entryID, timestamp);
+        } else {
+            log.debug("Adding pointer with date " + args[4].replaceAll("_", " "));
+            try {
+                pointer = new Pointer(entryID,
+                        new SimpleDateFormat(config.getString("date_format", ""), Locale.ROOT)
+                                .parse(args[4].replaceAll("_", " ")).getTime());
+            } catch (final ParseException e) {
+                sendMessage(sender, "specify_date");
+                log.warn("Could not parse date: " + e.getMessage(), e);
+                return;
+            }
+        }
+        journal.addPointer(pointer);
+        journal.update();
+        sendMessage(sender, "pointer_added");
+    }
+
+    private void remove(final CommandSender sender, final String pointerName, final Journal journal) {
+        log.debug("Removing pointer");
+        final JournalEntryIdentifier entryID;
+        try {
+            entryID = getIdentifier(JournalEntryIdentifier.class, pointerName);
+        } catch (final QuestException e) {
+            sendMessage(sender, "error",
+                    new VariableReplacement("error", Component.text(e.getMessage())));
+            log.warn("The journal entry'" + pointerName + "' does not exist!");
+            log.debug("Tried to remove non existing journal entry: " + e.getMessage(), e);
+            return;
+        }
+        journal.removePointer(entryID);
+        journal.update();
+        sendMessage(sender, "pointer_removed");
     }
 
     @Override

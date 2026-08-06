@@ -30,6 +30,7 @@ import java.util.function.Predicate;
 /**
  * VariableObjective stuff.
  */
+@SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.AvoidDuplicateLiterals", "PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
 public class VariableObjectiveSubCommand extends QuestCommandPart {
 
     /**

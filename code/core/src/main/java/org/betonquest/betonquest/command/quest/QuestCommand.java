@@ -219,7 +219,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         this.versionSubCommand = new VersionSubCommand(plugin, constructorParams);
     }
 
-    @SuppressWarnings("PMD.NcssCount")
     @Override
     public boolean onCommand(final CommandSender sender, final Command cmd, final String alias, final String... args) {
         try {

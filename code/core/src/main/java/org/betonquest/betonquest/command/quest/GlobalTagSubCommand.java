@@ -16,6 +16,7 @@ import java.util.function.Predicate;
 /**
  * Lists, adds or removes global tags.
  */
+@SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
 public class GlobalTagSubCommand extends QuestCommandPart {
 
     /**
@@ -65,6 +66,10 @@ public class GlobalTagSubCommand extends QuestCommandPart {
             sendMessage(sender, "specify_tag");
             return;
         }
+        handle2(sender, args);
+    }
+
+    private void handle2(final CommandSender sender, final String... args) {
         final String tag = args[2];
         // if there are arguments, handle them
         switch (args[1].toLowerCase(Locale.ROOT)) {
