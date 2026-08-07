@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.FlagState;
 
 import javax.annotation.Nullable;
+
 import java.util.Map;
 import java.util.function.Predicate;
 
@@ -30,7 +31,7 @@ public interface InstructionReaderStrategy<T> {
      * @throws QuestException if there are no more arguments
      */
     @Nullable
-    T getOptional(final String prefix) throws QuestException;
+    T getOptional(String prefix) throws QuestException;
 
     /**
      * Gets the flag state and value of a flag with the given prefix.
@@ -39,7 +40,7 @@ public interface InstructionReaderStrategy<T> {
      * @return the flag state and value, or an empty string if not found
      * @throws QuestException if there are no more flags
      */
-    Map.Entry<FlagState, T> getFlag(final String prefix) throws QuestException;
+    Map.Entry<FlagState, T> getFlag(String prefix) throws QuestException;
 
     /**
      * Gets the named elements by a key filter.
@@ -48,5 +49,5 @@ public interface InstructionReaderStrategy<T> {
      * @return the named elements
      * @throws QuestException if there are no more named elements
      */
-    Map<String, T> getNamed(final Predicate<String> keyFilter) throws QuestException;
+    Map<String, T> getNamed(Predicate<String> keyFilter) throws QuestException;
 }

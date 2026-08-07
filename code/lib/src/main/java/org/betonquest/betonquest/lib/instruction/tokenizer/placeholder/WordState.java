@@ -8,6 +8,12 @@ import org.betonquest.betonquest.lib.instruction.tokenizer.TokenizerState;
  */
 public class WordState implements TokenizerState<PlaceholderExtractorContext> {
 
+    /**
+     * Create the word state.
+     */
+    public WordState() {
+    }
+
     @Override
     public TokenizerState<PlaceholderExtractorContext> parseNext(final PlaceholderExtractorContext ctx, final int codePoint) throws TokenizerException {
         ctx.appendCodePoint(codePoint);

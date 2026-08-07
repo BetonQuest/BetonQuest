@@ -58,6 +58,8 @@ public class DefaultChainableInstruction implements ChainableInstruction {
      * @param nextOptionalFunction  the provider for the next element by key
      * @param nextFlagFunction      the provider for the next flag by key
      * @param namedElementsFunction the provider for the next named elements by a key filter
+     * @deprecated Use {@link #DefaultChainableInstruction(PlaceholderManager,
+     * QuestPackageManager, QuestPackage, InstructionReaderStrategy)} instead.
      */
     @Deprecated
     public DefaultChainableInstruction(final PlaceholderManager placeholders, final QuestPackageManager packManager,

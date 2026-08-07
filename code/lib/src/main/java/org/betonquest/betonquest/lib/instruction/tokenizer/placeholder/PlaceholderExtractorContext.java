@@ -19,7 +19,7 @@ public class PlaceholderExtractorContext implements TokenizerContext<Placeholder
     /**
      * The context settings.
      */
-    private final PlaceholderExtractorSettings settings;
+    private final PlaceholderExtractorSettings extractorSettings;
 
     /**
      * The word that is currently being collected.
@@ -30,10 +30,10 @@ public class PlaceholderExtractorContext implements TokenizerContext<Placeholder
     /**
      * Create a new context.
      *
-     * @param settings the context settings
+     * @param extractorSettings the context settings
      */
-    public PlaceholderExtractorContext(final PlaceholderExtractorSettings settings) {
-        this.settings = settings;
+    public PlaceholderExtractorContext(final PlaceholderExtractorSettings extractorSettings) {
+        this.extractorSettings = extractorSettings;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class PlaceholderExtractorContext implements TokenizerContext<Placeholder
 
     @Override
     public PlaceholderExtractorSettings settings() {
-        return settings;
+        return extractorSettings;
     }
 
     /**

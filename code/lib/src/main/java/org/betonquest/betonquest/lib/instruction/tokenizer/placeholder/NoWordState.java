@@ -8,6 +8,12 @@ import org.betonquest.betonquest.lib.instruction.tokenizer.TokenizerState;
  */
 public class NoWordState implements TokenizerState<PlaceholderExtractorContext> {
 
+    /**
+     * Create the no word state.
+     */
+    public NoWordState() {
+    }
+
     @Override
     public TokenizerState<PlaceholderExtractorContext> parseNext(final PlaceholderExtractorContext ctx, final int codePoint) throws TokenizerException {
         if (codePoint == ctx.settings().escapeCharacter()) {
