@@ -1,4 +1,4 @@
 /**
  * Contains default implementations related to instructions.
  */
-package org.betonquest.betonquest.lib.instruction;
+package org.betonquest.betonquest.lib.instruction.tokenizer;

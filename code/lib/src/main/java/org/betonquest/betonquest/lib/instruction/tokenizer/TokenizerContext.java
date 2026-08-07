@@ -1,9 +1,11 @@
-package org.betonquest.betonquest.api.instruction.tokenizer;
+package org.betonquest.betonquest.lib.instruction.tokenizer;
 
 /**
  * State machine context for the {@link TokenizerState}.
+ *
+ * @param <T> the type of the tokenizer settings
  */
-public interface TokenizerContext {
+public interface TokenizerContext<T> {
 
     /**
      * Append a code point to the word that is currently being collected.
@@ -27,5 +29,5 @@ public interface TokenizerContext {
      *
      * @return the tokenizer settings
      */
-    TokenizerSettings settings();
+    T settings();
 }

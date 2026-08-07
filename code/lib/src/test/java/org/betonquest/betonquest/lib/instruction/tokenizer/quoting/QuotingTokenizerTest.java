@@ -1,5 +1,8 @@
-package org.betonquest.betonquest.api.instruction.tokenizer;
+package org.betonquest.betonquest.lib.instruction.tokenizer.quoting;
 
+import org.betonquest.betonquest.lib.instruction.tokenizer.Token;
+import org.betonquest.betonquest.lib.instruction.tokenizer.Tokenizer;
+import org.betonquest.betonquest.lib.instruction.tokenizer.TokenizerException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -9,7 +12,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TokenizerTest {
+class QuotingTokenizerTest {
 
     private static Stream<Arguments> validInstructions() {
         return Stream.of(
@@ -58,7 +61,7 @@ class TokenizerTest {
     @ParameterizedTest
     @MethodSource("validInstructions")
     void strings_are_tokenized_correctly(final String instruction, final String... expected) throws TokenizerException {
-        final Tokenizer tokenizer = new QuotingTokenizer(TokenizerSettings.DEFAULT);
+        final Tokenizer tokenizer = new QuotingTokenizer(QuotingTokenizerSettings.DEFAULT);
         final Token[] parsed = tokenizer.tokens(instruction);
         final String[] mapped = Stream.of(parsed).map(Token::resolveValue).toArray(String[]::new);
         assertArrayEquals(expected, mapped, "The tokenized instruction should match the expected for instruction: '%s' != '%s'".formatted(instruction, Arrays.asList(mapped)));
@@ -67,7 +70,7 @@ class TokenizerTest {
     @ParameterizedTest
     @MethodSource("invalidInstructions")
     void invalid_strings_throw_tokenizer_exception(final String instruction) {
-        final Tokenizer tokenizer = new QuotingTokenizer(TokenizerSettings.DEFAULT);
+        final Tokenizer tokenizer = new QuotingTokenizer(QuotingTokenizerSettings.DEFAULT);
         assertThrows(TokenizerException.class, () -> tokenizer.tokens(instruction), "Expected tokenizing to fail for instruction: " + instruction);
     }
 }

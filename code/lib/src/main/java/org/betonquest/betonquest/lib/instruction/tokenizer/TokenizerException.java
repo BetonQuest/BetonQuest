@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api.instruction.tokenizer;
+package org.betonquest.betonquest.lib.instruction.tokenizer;
 
 import java.io.Serial;
 

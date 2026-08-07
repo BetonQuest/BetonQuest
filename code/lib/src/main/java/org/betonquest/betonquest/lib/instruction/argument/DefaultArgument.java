@@ -6,15 +6,19 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.ValueParser;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
+import org.betonquest.betonquest.lib.instruction.tokenizer.Token;
+import org.betonquest.betonquest.lib.instruction.tokenizer.TokenizerException;
+import org.betonquest.betonquest.lib.instruction.tokenizer.placeholder.PlaceholderExtractor;
+import org.betonquest.betonquest.lib.instruction.tokenizer.placeholder.PlaceholderExtractorSettings;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.MatchResult;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Represent an argument that can be resolved to the given type.
@@ -24,10 +28,18 @@ import java.util.stream.Collectors;
 public class DefaultArgument<T> implements Argument<T> {
 
     /**
-     * The pattern to match placeholders in a string marked with percent signs.<br>
-     * The percentage can be escaped with a backslash, and the backslash can be escaped with another backslash.
+     * The extractor of placeholders from a string.
+     * Any syntactically relevant character can be escaped with a backslash.
+     * Extracts placeholders and everything else.
      */
-    private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("(?<!\\\\)(?:\\\\\\\\)*(%((?:[^%\\\\]|\\\\.)*?)%)(?<!\\\\)(?:\\\\\\\\)*");
+    private static final PlaceholderExtractor DEFAULT_PH_EXTRACTOR = new PlaceholderExtractor(PlaceholderExtractorSettings.DEFAULT);
+
+    /**
+     * The extractor of placeholders from a string.
+     * Any syntactically relevant character can be escaped with a backslash.
+     * Only extracts placeholders, ignores everything else.
+     */
+    private static final PlaceholderExtractor ONLY_PH_EXTRACTOR = new PlaceholderExtractor(PlaceholderExtractorSettings.ONLY_PLACEHOLDERS);
 
     /**
      * Supplier of the argument value.
@@ -99,26 +111,38 @@ public class DefaultArgument<T> implements Argument<T> {
         return foundPlaceholders;
     }
 
-    private Set<String> resolvePlaceholders(final String input) {
-        return PLACEHOLDER_PATTERN.matcher(input).results()
-                .map(MatchResult::group)
-                .collect(Collectors.toSet());
+    private Set<String> resolvePlaceholders(final String input) throws QuestException {
+        try {
+            final Token[] tokens = ONLY_PH_EXTRACTOR.tokens(input);
+            return Arrays.stream(tokens)
+                    .map(Token::resolveValue)
+                    .collect(Collectors.toSet());
+        } catch (final TokenizerException e) {
+            throw new QuestException("Failed to parse placeholders in '%s'".formatted(input), e);
+        }
     }
 
     private String getString(final String input, final Map<String, Argument<String>> foundPlaceholders,
                              @Nullable final Profile profile) throws QuestException {
-        final Matcher matcher = PLACEHOLDER_PATTERN.matcher(input);
-        final StringBuilder resolvedString = new StringBuilder();
-        while (matcher.find()) {
-            final String placeholder = matcher.group();
-            final Argument<String> resolved = foundPlaceholders.get(placeholder);
-            if (resolved == null) {
-                throw new QuestException("Could not resolve placeholder '" + placeholder + "'");
+        try {
+            final Token[] tokens = DEFAULT_PH_EXTRACTOR.tokens(input);
+            final List<Argument<String>> list = Stream.of(tokens)
+                    .map(Token::resolveValue)
+                    .map(token -> foundPlaceholders.getOrDefault(token, new DefaultArgument<>(token)))
+                    .toList();
+            final StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < list.size(); i++) {
+                final Argument<String> argument = list.get(i);
+                final String resolved = argument.getValue(profile);
+                if (resolved == null) {
+                    throw new QuestException("Could not resolve placeholder '%s'".formatted(tokens[i].resolveValue()));
+                }
+                builder.append(resolved);
             }
-            matcher.appendReplacement(resolvedString, Matcher.quoteReplacement(resolved.getValue(profile)));
+            return builder.toString();
+        } catch (final TokenizerException e) {
+            throw new QuestException("Failed to parse placeholders in '%s'".formatted(input), e);
         }
-        matcher.appendTail(resolvedString);
-        return resolvedString.toString();
     }
 
     private String replaceEscapedPercent(final String input) {

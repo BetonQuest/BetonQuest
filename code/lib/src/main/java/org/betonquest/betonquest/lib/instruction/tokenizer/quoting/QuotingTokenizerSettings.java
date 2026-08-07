@@ -1,14 +1,14 @@
-package org.betonquest.betonquest.api.instruction.tokenizer;
+package org.betonquest.betonquest.lib.instruction.tokenizer.quoting;
 
 /**
  * Tokenizer settings to define symbols used in the instruction string.
  */
-public interface TokenizerSettings {
+public interface QuotingTokenizerSettings {
 
     /**
      * Default tokenizer settings with single quotes and spaces as separators. Does not support nested quotes.
      */
-    TokenizerSettings DEFAULT = new TokenizerSettings() {
+    QuotingTokenizerSettings DEFAULT = new QuotingTokenizerSettings() {
 
         @Override
         public boolean isEscape(final int codePoint) {
@@ -34,7 +34,7 @@ public interface TokenizerSettings {
     /**
      * Tokenizer settings for placeholders with curly brackets and dots as separators. Supports nested quotes.
      */
-    TokenizerSettings PLACEHOLDER = new TokenizerSettings() {
+    QuotingTokenizerSettings PLACEHOLDER = new QuotingTokenizerSettings() {
 
         @Override
         public boolean isEscape(final int codePoint) {

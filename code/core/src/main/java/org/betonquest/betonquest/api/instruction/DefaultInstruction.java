@@ -14,10 +14,6 @@ import org.betonquest.betonquest.api.instruction.chain.ChainableInstruction;
 import org.betonquest.betonquest.api.instruction.chain.DecoratableChainRetriever;
 import org.betonquest.betonquest.api.instruction.chain.InstructionChainParser;
 import org.betonquest.betonquest.api.instruction.chain.NumberChainRetriever;
-import org.betonquest.betonquest.api.instruction.tokenizer.QuotingTokenizer;
-import org.betonquest.betonquest.api.instruction.tokenizer.Tokenizer;
-import org.betonquest.betonquest.api.instruction.tokenizer.TokenizerException;
-import org.betonquest.betonquest.api.instruction.tokenizer.TokenizerSettings;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
@@ -25,6 +21,12 @@ import org.betonquest.betonquest.lib.instruction.argument.DefaultChainableInstru
 import org.betonquest.betonquest.lib.instruction.argument.DefaultInstructionChainParser;
 import org.betonquest.betonquest.lib.instruction.chain.DefaultDecoratableChainRetriever;
 import org.betonquest.betonquest.lib.instruction.chain.DefaultNumberChainRetriever;
+import org.betonquest.betonquest.lib.instruction.reader.DefaultInstructionReader;
+import org.betonquest.betonquest.lib.instruction.reader.SingleValueReader;
+import org.betonquest.betonquest.lib.instruction.tokenizer.Tokenizer;
+import org.betonquest.betonquest.lib.instruction.tokenizer.TokenizerException;
+import org.betonquest.betonquest.lib.instruction.tokenizer.quoting.QuotingTokenizer;
+import org.betonquest.betonquest.lib.instruction.tokenizer.quoting.QuotingTokenizerSettings;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
@@ -32,12 +34,10 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 /**
  * The Instruction. Primary object for input parsing.
@@ -99,7 +99,7 @@ public class DefaultInstruction implements Instruction {
      */
     public DefaultInstruction(final PlaceholderManager placeholders, final QuestPackageManager packManager, final QuestPackage pack,
                               @Nullable final Identifier identifier, final ArgumentParsers parsers, final String instruction) throws QuestException {
-        this(placeholders, packManager, new QuotingTokenizer(TokenizerSettings.DEFAULT), pack, useFallbackIdIfNecessary(pack, identifier), parsers, instruction);
+        this(placeholders, packManager, new QuotingTokenizer(QuotingTokenizerSettings.DEFAULT), pack, useFallbackIdIfNecessary(pack, identifier), parsers, instruction);
     }
 
     /**
@@ -127,8 +127,7 @@ public class DefaultInstruction implements Instruction {
         } catch (final TokenizerException e) {
             throw new QuestException("Could not tokenize instruction '" + instruction + "': " + e.getMessage(), e);
         }
-        this.chainableInstruction = new DefaultChainableInstruction(placeholders, packManager, pack,
-                this.instructionParts::nextElement, this::getValue, this::getFlag, this::getNamedValues);
+        this.chainableInstruction = new DefaultChainableInstruction(placeholders, packManager, pack, new DefaultInstructionReader(instructionParts));
     }
 
     /**
@@ -145,8 +144,7 @@ public class DefaultInstruction implements Instruction {
         this.instructionString = instruction.instructionString;
         this.instructionParts = new InstructionPartsArray(instruction.instructionParts);
         this.argumentParsers = instruction.argumentParsers;
-        this.chainableInstruction = new DefaultChainableInstruction(placeholders, packManager, pack,
-                this.instructionParts::nextElement, this::getValue, this::getFlag, this::getNamedValues);
+        this.chainableInstruction = new DefaultChainableInstruction(placeholders, packManager, pack, new DefaultInstructionReader(instructionParts));
     }
 
     private static Identifier useFallbackIdIfNecessary(final QuestPackage pack, @Nullable final Identifier identifier) {
@@ -211,38 +209,6 @@ public class DefaultInstruction implements Instruction {
         return instructionParts.getParts();
     }
 
-    @Nullable
-    private String getValue(final String prefix) {
-        return instructionParts.getParts().stream()
-                .filter(part -> part.toLowerCase(Locale.ROOT).startsWith(prefix.toLowerCase(Locale.ROOT) + ":"))
-                .findFirst()
-                .map(part -> part.substring(prefix.length() + 1)).orElse(null);
-    }
-
-    private Map.Entry<FlagState, String> getFlag(final String prefix) {
-        return instructionParts.getParts().stream()
-                .filter(part -> part.toLowerCase(Locale.ROOT).startsWith(prefix.toLowerCase(Locale.ROOT) + ":")
-                        || part.equalsIgnoreCase(prefix))
-                .findFirst()
-                .map(part -> part.substring(prefix.length()))
-                .map(part -> part.startsWith(":") ? Map.entry(FlagState.DEFINED, part.substring(1))
-                        : Map.entry(FlagState.UNDEFINED, part))
-                .orElse(Map.entry(FlagState.ABSENT, ""));
-    }
-
-    private Map<String, String> getNamedValues(final Predicate<String> keyFilter) {
-        return instructionParts.getParts().stream()
-                .filter(part -> part.startsWith("+"))
-                .map(part -> part.substring(1))
-                .filter(part -> part.indexOf(':') > 0)
-                .map(part -> {
-                    final int colonIndex = part.indexOf(':');
-                    return Map.entry(part.substring(0, colonIndex), part.substring(colonIndex + 1));
-                })
-                .filter(argument -> keyFilter.test(argument.getKey()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    }
-
     @Override
     public DefaultInstruction copy() {
         return copy(identifier);
@@ -255,9 +221,7 @@ public class DefaultInstruction implements Instruction {
 
     @Override
     public InstructionChainParser chainForArgument(final QuestSupplier<String> rawArgumentSupplier) {
-        final ChainableInstruction instruction = new DefaultChainableInstruction(placeholders, packManager, pack,
-                rawArgumentSupplier, key -> rawArgumentSupplier.get(), key -> Map.entry(FlagState.DEFINED, key),
-                this::getNamedValues);
+        final ChainableInstruction instruction = new DefaultChainableInstruction(placeholders, packManager, pack, new SingleValueReader(rawArgumentSupplier));
         return new DefaultInstructionChainParser(instruction, argumentParsers);
     }
 
