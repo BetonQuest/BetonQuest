@@ -488,7 +488,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final List<String> completions = new ArrayList<>();
         if (configuration != null) {
             for (final String key : configuration.getKeys(type.allowNested)) {
-                if (type.allowNested && configuration.isConfigurationSection(key)) {
+                if (type.allowNested && !type.allowSection && configuration.isConfigurationSection(key)) {
                     continue;
                 }
                 completions.add(pack + Identifier.SEPARATOR + key);
@@ -2036,7 +2036,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         /**
          * ConditionID.
          */
-        CONDITIONS(true),
+        CONDITIONS(true, true),
         /**
          * ObjectiveID.
          */
@@ -2055,8 +2055,18 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
          */
         private final boolean allowNested;
 
+        /**
+         * If section nodes also are identifiers.
+         */
+        private final boolean allowSection;
+
         AccessorType(final boolean allowNested) {
+            this(allowNested, false);
+        }
+
+        AccessorType(final boolean allowNested, final boolean allowSection) {
             this.allowNested = allowNested;
+            this.allowSection = allowSection;
         }
     }
 

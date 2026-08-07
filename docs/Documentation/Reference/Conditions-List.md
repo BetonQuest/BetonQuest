@@ -30,7 +30,9 @@ __Context__: @snippet:condition-meta:independent@
 __Syntax__: `and <conditions>`  
 __Description__: The conjunction of the specified conditions.
 
-This means that every condition has to be met in order for conjunction to be true. Used only in complex alternatives, because conditions generally work as conjunction. Instruction string is exactly the same as in `alternative`.
+This means that every condition has to be met in order for conjunction to be true.
+Used only in complex alternatives, because conditions generally work as conjunction.
+Instruction string is exactly the same as in `alternative`.
 
 ```YAML title="Example"
 conditions:
@@ -729,6 +731,33 @@ The kind of tags that are used by vanilla Minecraft and not the [betonquest tags
 conditions:
   hasVanillaTag: "scoretag vanilla_tag"
 ```
+
+## `Section`
+
+__Context__: @snippet:condition-meta:independent@  
+__Syntax__: `section <section>`  
+__Description__: The conjunction of the conditions inside the specified section.
+
+| Parameter                | Type     | Explanation                             |
+|--------------------------|----------|-----------------------------------------|
+| section <br>[Identifier] | Required | The target section with the conditions. |
+
+You can also use directly any node as condition, which works the same as [`and`](#and) of every condition in the subsections.
+
+```YAML title="Examples"
+conditions:
+  section: "section nested"
+  nested:
+    one: …
+    deep:
+      two: …
+      three: …
+  conjunction: "and nested.one,nested.deep.two,nested.deep.three" #(1)!
+  implicit: "and nested" #(2)!
+```
+
+1. Is equivalent to the "section" condition.
+2. Is equivalent to the "section" condition.
 
 ## `Sneak`
 
