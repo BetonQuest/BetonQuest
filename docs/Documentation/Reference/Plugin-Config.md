@@ -221,6 +221,15 @@ Every io has its own settings that can be configured in the `io` section.
         temporary modifier for that. However, in case of a server crash during a conversation, this change might persist.
   
 
+* `dialog`  
+  Settings for the dialog conversation IO.
+    * `layout` - Where the Npc name will be shown, either `NPC_TITLE` or `FULL_BODY`.
+    * `only-buttons` - Whether the text should be displayed only on the buttons or also in it own boxes.
+    * `button-width` - Minimum size of player answer buttons.
+    * `button-render-padding` - Pixel distance to button ends.
+    * `close-with-escape` - If using the escape (keyboard) button should quit the conversation.
+    * `close-button-enabled` - If the close button should be shown.
+
 * `chest`  
   Settings for the chest conversation IO.
     * `show_number` - If set to `true`, the player number will be shown in the chest conversation IO.

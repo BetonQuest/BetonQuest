@@ -1,0 +1,44 @@
+package org.betonquest.betonquest.mc_1_21_8.conversation.io;
+
+import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.argument.parser.EnumParser;
+import org.bukkit.configuration.ConfigurationSection;
+
+/**
+ * Holds configuration settings for the Dialog conversation io.
+ *
+ * @param layout              the layout type for the dialog
+ * @param onlyButtons         whether the text should be displayed only on the buttons or also in it own boxes
+ * @param buttonRenderPadding the padding used when rendering buttons
+ * @param buttonWidth         the minimum width for buttons
+ * @param closeWithEscape     whether the dialog can be closed using the Escape key
+ * @param closeButtonEnabled  whether the close button is enabled
+ */
+public record DialogSettings(
+        DialogLayout layout,
+        boolean onlyButtons,
+        int buttonRenderPadding,
+        int buttonWidth,
+        boolean closeWithEscape,
+        boolean closeButtonEnabled
+) {
+
+    /**
+     * Constructs a new DialogSettings from the specified configuration section.
+     *
+     * @param section the configuration section containing dialog settings
+     * @return the settings from the configuration setting
+     * @throws QuestException if the configuration contains invalid dialog settings
+     */
+    public static DialogSettings fromSection(final ConfigurationSection section) throws QuestException {
+        final DialogLayout layout = new EnumParser<>(DialogLayout.class).apply(section.getString("layout", "NPC_TITLE"));
+        final boolean onlyButtons = section.getBoolean("only-buttons", false);
+
+        final int buttonRenderPadding = section.getInt("button-render-padding", 13);
+        final int defaultButtonWidth = section.getInt("button-width", 250);
+
+        final boolean closeButtonEnabled = section.getBoolean("close-button-enabled", true);
+        final boolean closeWithEscape = section.getBoolean("close-with-escape", true);
+        return new DialogSettings(layout, onlyButtons, buttonRenderPadding, defaultButtonWidth, closeButtonEnabled, closeWithEscape);
+    }
+}
