@@ -19,9 +19,10 @@ public interface ConversationIO {
      * conversation cycle.
      *
      * @param npcName  the name of the NPC
-     * @param response the text the NPC chose
+     * @param response   the text the NPC chose
+     * @param properties the property configuration section for the text
      */
-    void setNpcResponse(Component npcName, Component response);
+    void setNpcResponse(Component npcName, Component response, ConfigurationSection properties);
 
     /**
      * Adds the text of the player option. Should be called for each option in a conversation cycle.
