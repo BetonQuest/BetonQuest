@@ -4,7 +4,7 @@
   <properties>
     <revision>2.0.0</revision>
     <plugin.version>2.0.0-DEV-495</plugin.version>
-    <minecraft.api.version>1.18</minecraft.api.version>
+    <minecraft.api.version>1.20.6</minecraft.api.version>
     <maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.target>17</maven.compiler.target>
