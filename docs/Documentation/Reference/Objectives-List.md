@@ -233,6 +233,45 @@ objectives:
   craftSaddle: "craft saddle 5 actions:reward"
 ```
 
+## `Damage`
+    
+__Context__: @snippet:action-meta:online@  
+__Syntax__: `damage <amount> [action] [type] [min] [interval] [unit]`  
+__Description__: The player has to deal or receive damage (or both) to progress the objective.
+
+The objective tracks the cumulative amount of damage dealt or taken, rather than the number of hits. Each
+damage event that meets the requirements adds its value directly to the objective's progress, maintaining decimal 
+precision to the hundredths place.
+
+| Parameter                      | Type                          | Explanation                                                                                                                                           |
+|--------------------------------|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| amount  <br>[Number]           | Required                      | Total accumulated damage                                                                                                                              |
+| action  <br>[DamageAction]     | Optional <br>[deal]           | Whether the player should deal (distribute), receive (take), or do both.                                                                              |
+| type    <br>List[DamageCause]  | Optional <br>[entity_attack]  | Allowed [`DamageCause`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDamageEvent.DamageCause.html) types (comma-separated). |
+| min     <br>[Double]           | Optional <br>[0.0]            | Minimum damage required in a single hit for the event to count                                                                                        |
+| interval<br>[Number]           | Optional <br>[0]              | Cooldown between each damage event recorded for the same player                                                                                       |
+| unit    <br>[TimeUnit]         | Optional <br>[seconds]        | The unit of time (seconds, minutes, hours...)                                                                                                         |
+
+```YAML title="Example"
+objectives:
+  basicDamage: "damage 5"
+  elementalDamage: "damage 10 action:both type:fire,lava"
+  combatDamage: "damage 20 action:deal type:entity_attack min:5.0"
+  poisonDamage: "damage 3 type:poison interval:40 unit:ticks"
+  projectileDamage: "damage 10 action:deal type:projectile min:2.5 interval:80 unit:ticks"
+```
+
+<h5> Placeholder Properties </h5> 
+
+| Name         | Example Output    | Explanation                                                                     |
+|--------------|-------------------|---------------------------------------------------------------------------------|
+| _amount_     | 14.5              | Displays the total amount of damage the player has already dealt or taken.      |
+| _left_       | 5.5               | Shows the amount of damage that still needs to be dealt to reach the goal.      |
+| _total_      | 20                | Displays the total initial amount of damage required to complete the objective. |
+
+*[DamageAction]: both, deal, take
+*[DamageCause]: Click the link below for more information.
+
 ## `Delay`
 
 __Context__: @snippet:objective-meta:online@  
