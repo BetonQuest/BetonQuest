@@ -9,11 +9,14 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveProperties;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.lib.argument.type.TimeUnit;
-import org.betonquest.betonquest.lib.profile.ProfileKeyMap;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.plugin.Plugin;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The player must deal or take a specific amount of damage.
@@ -41,44 +44,50 @@ public class DamageObjective extends DefaultObjective {
     private final Argument<Number> minAmount;
 
     /**
-     * The minimum time interval in milliseconds between valid damage events.
+     * The minimum time interval amount between valid damage events.
      */
     private final Argument<Number> interval;
 
     /**
-     * The unit of time used to convert the interval duration.
+     * The unit of time used to interpret the time interval between valid damage events.
      */
     private final Argument<TimeUnit> timeUnit;
 
     /**
-     * Stores the last damage event timestamp in milliseconds for each profile.
+     * Stores the players currently on selection cooldown to prevent spam.
      */
-    private final Map<Profile, Long> intervalTimes;
+    private final Set<Player> selectionCooldowns = ConcurrentHashMap.newKeySet();
+
+    /**
+     * Plugin instance to schedule tasks.
+     */
+    private final Plugin plugin;
 
     /**
      * Constructs a new {@code DamageObjective}.
      *
      * @param service      the objective service
+     * @param plugin       the plugin instance to run tasks
      * @param targetAmount the target amount of damage required
      * @param action       the action specifying whether the player deals or takes damage
      * @param type         the list of damage types or causes allowed
      * @param minAmount    the minimum amount of damage required per event
-     * @param interval     the time interval in milliseconds between valid damage events
+     * @param interval     the time interval amount between valid damage events
      * @param timeUnit     the unit of time used to convert the interval duration
      * @throws QuestException if the instruction is invalid
      */
-    public DamageObjective(final ObjectiveService service, final Argument<Number> targetAmount,
+    public DamageObjective(final ObjectiveService service, final Plugin plugin, final Argument<Number> targetAmount,
                            final Argument<DamageAction> action, final Argument<List<EntityDamageEvent.DamageCause>> type,
                            final Argument<Number> minAmount, final Argument<Number> interval,
                            final Argument<TimeUnit> timeUnit) throws QuestException {
         super(service);
+        this.plugin = plugin;
         this.targetAmount = targetAmount;
         this.action = action;
         this.type = type;
         this.minAmount = minAmount;
         this.interval = interval;
         this.timeUnit = timeUnit;
-        this.intervalTimes = new ProfileKeyMap<>(service.getProfileProvider());
 
         service.setDefaultData(this::getDefaultDataInstruction);
         final ObjectiveProperties properties = service.getProperties();
@@ -143,21 +152,17 @@ public class DamageObjective extends DefaultObjective {
     }
 
     private boolean checkIsOnCooldown(final OnlineProfile profile) throws QuestException {
-        final Long expirationTimeMillis = intervalTimes.get(profile);
-        if (expirationTimeMillis != null && System.currentTimeMillis() < expirationTimeMillis) {
+        final Player player = profile.getPlayer();
+
+        if (!selectionCooldowns.add(player)) {
             return true;
         }
 
         final long rawAmount = interval.getValue(profile).longValue();
         final TimeUnit unit = timeUnit.getValue(profile);
-        final long requiredIntervalMillis = unit.getTicks(rawAmount) * 50;
+        final long requiredInterval = unit.getTicks(rawAmount);
 
-        if (requiredIntervalMillis <= 0) {
-            return false;
-        }
-
-        final long currentTimeMillis = System.currentTimeMillis();
-        intervalTimes.put(profile, currentTimeMillis + requiredIntervalMillis);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> selectionCooldowns.remove(player), requiredInterval);
         return false;
     }
 
