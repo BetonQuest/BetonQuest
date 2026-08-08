@@ -13,6 +13,7 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.plugin.Plugin;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
@@ -23,9 +24,17 @@ import java.util.List;
 public class DamageObjectiveFactory implements ObjectiveFactory {
 
     /**
-     * Creates a new DamageObjectiveFactory instance.
+     * The plugin instance.
      */
-    public DamageObjectiveFactory() {
+    private final Plugin plugin;
+
+    /**
+     * Creates a new DamageObjectiveFactory instance.
+     *
+     * @param plugin the plugin instance
+     */
+    public DamageObjectiveFactory(final Plugin plugin) {
+        this.plugin = plugin;
     }
 
     @Override
@@ -37,7 +46,7 @@ public class DamageObjectiveFactory implements ObjectiveFactory {
         final Argument<Number> minAmount = instruction.number().get("min", 0.0);
         final Argument<Number> interval = instruction.number().get("interval", 0L);
         final Argument<TimeUnit> timeUnit = instruction.enumeration(TimeUnit.class).get("unit", TimeUnit.SECONDS);
-        final DamageObjective objective = new DamageObjective(service, targetAmount, action, type, minAmount, interval, timeUnit);
+        final DamageObjective objective = new DamageObjective(service, plugin, targetAmount, action, type, minAmount, interval, timeUnit);
         service.request(EntityDamageByEntityEvent.class)
                 .priority(EventPriority.HIGHEST).onlineHandler(objective::onDamageDealt)
                 .player(event -> resolveAttackingPlayer(event.getDamager()))
