@@ -127,9 +127,9 @@ public class DamageObjective extends DefaultObjective {
         }
 
         final double finalDmg = event.getFinalDamage();
-        if (checkIsInvalidType(profile, event.getCause())
-                || checkIsInvalidMin(profile, finalDmg)
-                || checkIsOnCooldown(profile)) {
+        if (isInvalidType(profile, event.getCause())
+                || isInvalidMin(profile, finalDmg)
+                || isOnCooldown(profile)) {
             return;
         }
 
@@ -140,18 +140,18 @@ public class DamageObjective extends DefaultObjective {
         }
     }
 
-    private boolean checkIsInvalidType(final OnlineProfile profile, final EntityDamageEvent.DamageCause currentCause)
+    private boolean isInvalidType(final OnlineProfile profile, final EntityDamageEvent.DamageCause currentCause)
             throws QuestException {
         final List<EntityDamageEvent.DamageCause> allowedTypes = type.getValue(profile);
         return !allowedTypes.contains(currentCause);
     }
 
-    private boolean checkIsInvalidMin(final OnlineProfile profile, final double damage) throws QuestException {
+    private boolean isInvalidMin(final OnlineProfile profile, final double damage) throws QuestException {
         final double min = minAmount.getValue(profile).doubleValue();
         return damage < min;
     }
 
-    private boolean checkIsOnCooldown(final OnlineProfile profile) throws QuestException {
+    private boolean isOnCooldown(final OnlineProfile profile) throws QuestException {
         final Player player = profile.getPlayer();
 
         if (!selectionCooldowns.add(player)) {
