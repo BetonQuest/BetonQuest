@@ -28,6 +28,6 @@ public class ConditionIdentifierFactory extends DefaultIdentifierFactory<Conditi
         final boolean isInverted = !input.isEmpty() && input.charAt(0) == '!';
         final Map.Entry<QuestPackage, String> entry = parse(source, isInverted ? input.substring(1) : input);
         final DefaultConditionIdentifier identifier = new DefaultConditionIdentifier(entry.getKey(), entry.getValue(), isInverted);
-        return requireInstruction(identifier, DefaultConditionIdentifier.CONDITION_SECTION);
+        return requireValue(identifier, DefaultConditionIdentifier.CONDITION_SECTION);
     }
 }

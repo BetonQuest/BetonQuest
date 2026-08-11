@@ -5,11 +5,14 @@ import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.condition.NullableConditionAdapter;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
+import org.betonquest.betonquest.id.IdentifierUtil;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
 import org.betonquest.betonquest.kernel.processor.adapter.ConditionAdapter;
 import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
+import org.betonquest.betonquest.quest.condition.logik.ConjunctionCondition;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -40,6 +43,11 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionIdentifier,
     private final Plugin plugin;
 
     /**
+     * Factory to create section conditions for configuration sections.
+     */
+    private final SectionFactory<ConditionIdentifier, ConditionAdapter> sectionFactory;
+
+    /**
      * Create a new Condition Processor to store Conditions and checks them.
      *
      * @param log                        the custom logger for this class
@@ -56,6 +64,17 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionIdentifier,
         super(log, conditionTypes, conditionIdentifierFactory, instructionApi, "Condition", "conditions");
         this.scheduler = scheduler;
         this.plugin = plugin;
+        this.sectionFactory = identifier -> {
+            final List<ConditionIdentifier> identifiers = IdentifierUtil.subsectionIdentifiers(identifierFactory, identifier);
+            final NullableConditionAdapter adapter = new NullableConditionAdapter(new ConjunctionCondition(profile -> identifiers, this));
+            return new ConditionAdapter(identifier.getPackage(), adapter, adapter);
+        };
+    }
+
+    @Override
+    @Nullable
+    protected SectionFactory<ConditionIdentifier, ConditionAdapter> getSectionFactory() {
+        return sectionFactory;
     }
 
     /**
