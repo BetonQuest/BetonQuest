@@ -23,6 +23,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `mmoskill` objective trigger are not parsed correctly
 - error handling for items when the amount is less than 1
 - `interact` objective handling broken loaded data wrongly
+- Quest Items handling when clicking outside of the inventory frame
 ### Security
 
 ## [3.1.0] - 2026-07-19
