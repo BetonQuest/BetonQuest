@@ -1179,6 +1179,31 @@ actions:
   increaseRandom: "time +%randomnumber.whole.100~2000% world:pvpworld ticks"
 ```
 
+## `UpdateHologram`
+
+__Context__: @snippet:action-meta:online@  
+__Syntax__: `updateHologram [mode] [holo] [npcHolo]`  
+__Description__: Force an immediate refresh instead of waiting for the next update interval.
+
+This is useful for performance optimizations if used when the update interval is set to high values.
+
+When no identifier is given at all, all holograms will be updated.
+
+| Parameter                                                                | Type                | Explanation                    |
+|--------------------------------------------------------------------------|---------------------|--------------------------------|
+| mode <br>[UpdateMode]                                                    | Optional <br>[ALL]  | The update action.             |
+| holo <br>List[[Identifier]](./Definition-Encyclopedia.md#identifiers)    | Optional <br>[None] | The `holograms` to update.     |
+| npcHolo <br>List[[Identifier]](./Definition-Encyclopedia.md#identifiers) | Optional <br>[None] | The `npc_holograms` to update. |
+
+```YAML title="Examples"
+actions:
+  updateAll: "updateHologram mode:all"
+  updateLocationHologram: "updateHologram loc:statusBoard"
+  updateBoth: "updateHologram loc:questBoard npc:announcerHolo"
+```
+
+*[UpdateMode] visibility, content, all
+
 ## `Variable`
 
 __Context__: @snippet:action-meta:online-offline@  
