@@ -5153,6 +5153,29 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#section">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>Section</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#sneak">
     <span class="md-ellipsis">
 
@@ -10756,6 +10779,29 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#section">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>Section</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#sneak">
     <span class="md-ellipsis">
 
@@ -11044,7 +11090,9 @@ The name must be in the format as configured on your server.<br />
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="<b>Independent</b><br> This condition can be checked without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"/></svg></span><br />
 <strong>Syntax</strong>: <code>and &lt;conditions&gt;</code><br />
 <strong>Description</strong>: The conjunction of the specified conditions.</p>
-<p>This means that every condition has to be met in order for conjunction to be true. Used only in complex alternatives, because conditions generally work as conjunction. Instruction string is exactly the same as in <code>alternative</code>.</p>
+<p>This means that every condition has to be met in order for conjunction to be true.
+Used only in complex alternatives, because conditions generally work as conjunction.
+Instruction string is exactly the same as in <code>alternative</code>.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">hasArmor</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;and</span><span class="nv"> </span><span class="s">has_helmet,has_chestplate,has_leggings,has_boots&quot;</span>
 </code></pre></div>
@@ -11700,6 +11748,41 @@ You don't have to specify all those arguments, you can use only one if you want.
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">hasVanillaTag</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;scoretag</span><span class="nv"> </span><span class="s">vanilla_tag&quot;</span>
 </code></pre></div>
+<h2 id="section"><code>Section</code><a class="headerlink" href="#section" title="Permanent link">🔗</a></h2>
+<p><strong>Context</strong>: <span class="twemoji account account-independent" title="<b>Independent</b><br> This condition can be checked without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"/></svg></span><br />
+<strong>Syntax</strong>: <code>section &lt;section&gt;</code><br />
+<strong>Description</strong>: The conjunction of the conditions inside the specified section.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>section <br><a href="../Definition-Encyclopedia/#identifiers">[Identifier]</a></td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The target section with the conditions.</td>
+</tr>
+</tbody>
+</table>
+<p>You can also use directly any node as condition, which works the same as <a href="#and"><code>and</code></a> of every condition in the subsections.</p>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">section</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;section</span><span class="nv"> </span><span class="s">nested&quot;</span>
+<span class="w">  </span><span class="nt">nested</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">one</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">…</span>
+<span class="w">    </span><span class="nt">deep</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">two</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">…</span>
+<span class="w">      </span><span class="nt">three</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">…</span>
+<span class="w">  </span><span class="nt">conjunction</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;and</span><span class="nv"> </span><span class="s">nested.one,nested.deep.two,nested.deep.three&quot;</span><span class="w"> </span><span class="c1">#(1)!</span>
+<span class="w">  </span><span class="nt">implicit</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;and</span><span class="nv"> </span><span class="s">nested&quot;</span><span class="w"> </span><span class="c1">#(2)!</span>
+</code></pre></div>
+<ol>
+<li>Is equivalent to the "section" condition.</li>
+<li>Is equivalent to the "section" condition.</li>
+</ol>
 <h2 id="sneak"><code>Sneak</code><a class="headerlink" href="#sneak" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>sneak</code><br />
