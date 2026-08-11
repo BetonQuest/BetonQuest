@@ -3,6 +3,7 @@ package org.betonquest.betonquest.notify.io;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.betonquest.betonquest.api.QuestException;
@@ -23,6 +24,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
  * Displays the message as advancement.
@@ -61,7 +64,7 @@ public class AdvancementNotifyIO extends NotifyIO {
         icon = data.getOrDefault("icon", "minecraft:map").toLowerCase(Locale.ROOT);
     }
 
-    private void notifyPlayerObject(final JsonElement message, final OnlineProfile onlineProfile) {
+    private void notifyPlayerObject(final JsonElement message, final OnlineProfile onlineProfile) throws QuestException {
         final UUID uuid = UUID.randomUUID();
         final NamespacedKey rootKey = new NamespacedKey("betonquest", "notify/" + uuid + "-root");
         final NamespacedKey key = new NamespacedKey("betonquest", "notify/" + uuid + "-message");
@@ -79,19 +82,31 @@ public class AdvancementNotifyIO extends NotifyIO {
     }
 
     @Override
-    protected void notifyPlayer(final Component message, final OnlineProfile onlineProfile) {
+    protected void notifyPlayer(final Component message, final OnlineProfile onlineProfile) throws QuestException {
         notifyPlayerObject(GsonComponentSerializer.gson().serializeToTree(message), onlineProfile);
     }
 
     @SuppressWarnings("deprecation")
-    private void loadAdvancement(final JsonElement message, final NamespacedKey rootKey, final NamespacedKey key) {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                Bukkit.getUnsafe().loadAdvancement(rootKey, generateJson(null, null));
-                Bukkit.getUnsafe().loadAdvancement(key, generateJson(message, rootKey));
+    private void loadAdvancement(final JsonElement message, final NamespacedKey rootKey, final NamespacedKey key) throws QuestException {
+        final String advancementRoot = generateJson(null, null);
+        final String advancement = generateJson(message, rootKey);
+        final Future<JsonParseException> exception = plugin.getServer().getScheduler().callSyncMethod(plugin, () -> {
+            try {
+                Bukkit.getUnsafe().loadAdvancement(rootKey, advancementRoot);
+                Bukkit.getUnsafe().loadAdvancement(key, advancement);
+                return null;
+            } catch (final JsonParseException e) {
+                return e;
             }
-        }.runTask(plugin);
+        });
+        try {
+            final JsonParseException jsonException = exception.get();
+            if (jsonException != null) {
+                throw new QuestException("Could not parse Advancement do to json parse error: %s".formatted(jsonException.getMessage()), jsonException);
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            throw new QuestException("Could not load Advancement: %s".formatted(e.getMessage()), e);
+        }
     }
 
     @SuppressWarnings("deprecation")
