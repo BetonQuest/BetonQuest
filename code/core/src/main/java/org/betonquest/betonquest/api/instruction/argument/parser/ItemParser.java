@@ -43,15 +43,15 @@ public class ItemParser implements InstructionArgumentParser<ItemWrapper> {
     @Override
     public ItemWrapper apply(final PlaceholderManager placeholders, final QuestPackageManager packManager, final QuestPackage pack, final String string) throws QuestException {
         final ItemIdentifier item;
-        final Argument<Number> number;
+        final Argument<Number> amount;
         if (string.contains(":")) {
             final String[] parts = string.split(":", 2);
             item = identifierFactory.parseIdentifier(pack, parts[0]);
-            number = new DefaultArgument<>(NumberParser.DEFAULT.apply(parts[1]));
+            amount = new DefaultArgument<>(new NumberParser(value -> value.intValue() > 0).apply(parts[1]));
         } else {
             item = identifierFactory.parseIdentifier(pack, string);
-            number = new DefaultArgument<>(1);
+            amount = new DefaultArgument<>(1);
         }
-        return new Item(itemManager, item, number);
+        return new Item(itemManager, item, amount);
     }
 }

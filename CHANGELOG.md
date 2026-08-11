@@ -20,6 +20,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `freeze` action and `packetevents` conversation io on MC 26.2+
 - NPE in PacketEvents Interceptor when resending messages to offline players
 - `mmoskill` objective trigger are not parsed correctly
+- error handling for items when the amount is less than 1
 ### Security
 
 ## [3.1.0] - 2026-07-19
