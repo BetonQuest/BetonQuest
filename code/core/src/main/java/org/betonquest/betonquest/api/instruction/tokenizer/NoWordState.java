@@ -13,12 +13,16 @@ public class NoWordState implements TokenizerState {
     }
 
     @Override
-    public TokenizerState parseNext(final TokenizerContext ctx, final int codePoint) {
+    public TokenizerState parseNext(final TokenizerContext ctx, final int codePoint) throws TokenizerException {
         if (ctx.settings().isSeparator(codePoint)) {
             return this;
         }
         if (ctx.settings().isBeginQuote(codePoint)) {
+            ctx.beginWord();
             return new QuotedWordState();
+        }
+        if (ctx.settings().isEndQuote(codePoint)) {
+            throw new TokenizerException("Unexpected closing quote.");
         }
         ctx.appendCodePoint(codePoint);
         return new PureWordState();

@@ -32,6 +32,37 @@ public interface TokenizerSettings {
     };
 
     /**
+     * Tokenizer settings for placeholders with curly brackets and dots as separators. Supports nested quotes.
+     */
+    TokenizerSettings PLACEHOLDER = new TokenizerSettings() {
+
+        @Override
+        public boolean isEscape(final int codePoint) {
+            return codePoint == '\\';
+        }
+
+        @Override
+        public boolean isBeginQuote(final int codePoint) {
+            return codePoint == '{';
+        }
+
+        @Override
+        public boolean isEndQuote(final int codePoint) {
+            return codePoint == '}';
+        }
+
+        @Override
+        public boolean isSeparator(final int codePoint) {
+            return codePoint == '.';
+        }
+
+        @Override
+        public boolean ignoreEmptyQuotedWords() {
+            return true;
+        }
+    };
+
+    /**
      * Check if the given code point is an escape character.
      *
      * @param codePoint the code point to check
@@ -62,4 +93,13 @@ public interface TokenizerSettings {
      * @return true if the code point is a separator character, false otherwise
      */
     boolean isSeparator(int codePoint);
+
+    /**
+     * If true, empty words will be ignored.
+     *
+     * @return true if empty words should be ignored, false otherwise
+     */
+    default boolean ignoreEmptyQuotedWords() {
+        return false;
+    }
 }
