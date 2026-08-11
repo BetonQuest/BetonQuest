@@ -48,12 +48,14 @@ public class DamageObjectiveFactory implements ObjectiveFactory {
         final Argument<TimeUnit> timeUnit = instruction.enumeration(TimeUnit.class).get("unit", TimeUnit.SECONDS);
         final DamageObjective objective = new DamageObjective(service, plugin, targetAmount, action, type, minAmount, interval, timeUnit);
         service.request(EntityDamageByEntityEvent.class)
-                .priority(EventPriority.HIGHEST).onlineHandler(objective::onDamageDealt)
+                .priority(EventPriority.HIGHEST)
+                .onlineHandler(objective::onDamageDealt)
                 .player(event -> resolveAttackingPlayer(event.getDamager()))
                 .subscribe(true);
         service.request(EntityDamageEvent.class)
-                .priority(EventPriority.HIGHEST).onlineHandler(objective::onDamageTaken)
-                .player(event -> event.getEntity() instanceof final Player player ? player : null)
+                .priority(EventPriority.HIGHEST)
+                .onlineHandler(objective::onDamageTaken)
+                .entity(EntityDamageEvent::getEntity)
                 .subscribe(true);
         return objective;
     }

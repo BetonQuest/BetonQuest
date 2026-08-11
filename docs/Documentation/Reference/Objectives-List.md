@@ -235,20 +235,20 @@ objectives:
 
 ## `Damage`
     
-__Context__: @snippet:action-meta:online@  
+__Context__: @snippet:objective-meta:online@  
 __Syntax__: `damage <amount> [action] [type] [min] [interval] [unit]`  
 __Description__: The player has to deal or receive damage (or both) to progress the objective.
 
 The objective tracks the cumulative amount of damage dealt or taken, rather than the number of hits. Each
-damage event that meets the requirements adds its value directly to the objective's progress, maintaining decimal 
-precision to the hundredths place.
+damage event that meets the requirements adds its value directly to the objective's progress, maintaining 
+full decimal precision.
 
 | Parameter                      | Type                          | Explanation                                                                                                                                           |
 |--------------------------------|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
 | amount  <br>[Number]           | Required                      | Total accumulated damage                                                                                                                              |
 | action  <br>[DamageAction]     | Optional <br>[deal]           | Whether the player should deal (distribute), receive (take), or do both.                                                                              |
 | type    <br>List[DamageCause]  | Optional <br>[entity_attack]  | Allowed [`DamageCause`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDamageEvent.DamageCause.html) types (comma-separated). |
-| min     <br>[Double]           | Optional <br>[0.0]            | Minimum damage required in a single hit for the event to count                                                                                        |
+| min     <br>[Number]           | Optional <br>[0.0]            | Minimum damage required in a single hit for the event to count                                                                                        |
 | interval<br>[Number]           | Optional <br>[0]              | Cooldown between each damage event recorded for the same player                                                                                       |
 | unit    <br>[TimeUnit]         | Optional <br>[seconds]        | The unit of time (seconds, minutes, hours...)                                                                                                         |
 
