@@ -22,6 +22,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -121,7 +122,7 @@ public class BrewObjective extends CountingObjective {
 
         int progress = 0;
         for (int index = 0; index < Math.min(results.size(), 3); index++) {
-            if (!results.get(index).equals(currentContents[index])
+            if (!Objects.equals(results.get(index), currentContents[index])
                     && potion.matches(currentContents[index])) {
                 progress++;
             }
