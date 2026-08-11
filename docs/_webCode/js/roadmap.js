@@ -439,10 +439,10 @@ async function loadImages(nesting) {
   await Promise.all(
     Object.entries(assetJson).map(async ([key, value]) => {
       let image = null;
-      if (value.hasOwnProperty("url")) {
-        image = await loadImage(value.url);
-      } else if (value.hasOwnProperty("path")) {
+      if (value.hasOwnProperty("path")) {
         image = await loadImage(nesting + value.path);
+      } else if (value.hasOwnProperty("url")) {
+        image = await loadImage(value.url);
       }
       if (image == null) {
         console.error("Failed to load image: " + key);
@@ -602,7 +602,6 @@ async function drawText(ctx, info, x, y, boxWidth, boxHeight, titleStyle, featur
 
   let lastIndex = text.lastIndexOf("");
   if (lastIndex > 0) {
-    console.log(text.length, maxLines, lastIndex);
     while (text.length < maxLines) {
       text.splice(lastIndex, 0, "");
     }

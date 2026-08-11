@@ -56,6 +56,7 @@
   },
   "full-amethyst": {
     "url": "https://de.minecraft.wiki/images/Amethysthaufen.png",
+    "path": "_media/content/Roadmap/deco/full_amethyst.png",
     "size": {
       "height": 300,
       "width": 300
