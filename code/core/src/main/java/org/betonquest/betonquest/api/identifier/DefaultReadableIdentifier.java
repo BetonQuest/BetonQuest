@@ -34,7 +34,11 @@ public abstract class DefaultReadableIdentifier extends DefaultIdentifier implem
     @Override
     public String readRawInstruction() throws QuestException {
         final MultiConfiguration config = getPackage().getConfig();
-        final String rawInstruction = config.getString(section + config.options().pathSeparator() + get());
+        final String path = section + config.options().pathSeparator() + get();
+        if (config.isConfigurationSection(path)) {
+            return "section %s (implicit)".formatted(getFull());
+        }
+        final String rawInstruction = config.getString(path);
         if (rawInstruction == null) {
             throw new QuestException("'%s' is not defined in section '%s'".formatted(getFull(), section));
         }
