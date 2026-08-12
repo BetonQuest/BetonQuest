@@ -4203,6 +4203,29 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#damage">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>Damage</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#delay">
     <span class="md-ellipsis">
 
@@ -9376,6 +9399,29 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#damage">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>Damage</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#delay">
     <span class="md-ellipsis">
 
@@ -10439,6 +10485,89 @@ objective, optionally with the notification interval after a colon.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">craftSaddle</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;craft</span><span class="nv"> </span><span class="s">saddle</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">actions:reward&quot;</span>
 </code></pre></div>
+<h2 id="damage"><code>Damage</code><a class="headerlink" href="#damage" title="Permanent link">🔗</a></h2>
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
+<strong>Syntax</strong>: <code>damage &lt;amount&gt; [action] [type] [min] [interval] [unit]</code><br />
+<strong>Description</strong>: The player has to deal or receive damage (or both) to progress the objective.</p>
+<p>The objective tracks the cumulative amount of damage dealt or taken, rather than the number of hits. Each
+damage event that meets the requirements adds its value directly to the objective's progress, maintaining 
+full decimal precision.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>amount  <br>[<abbr title="Any number representation that may also have decimal places.">Number</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>Total accumulated damage</td>
+</tr>
+<tr>
+<td>action  <br>[<abbr title="both, deal, take">DamageAction</abbr>]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr> <br>[deal]</td>
+<td>Whether the player should deal (distribute), receive (take), or do both.</td>
+</tr>
+<tr>
+<td>type    <br><abbr title="A list is a sequence of values separated by commas.">List</abbr>[<abbr title="Click the link below for more information.">DamageCause</abbr>]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr> <br>[entity_attack]</td>
+<td>Allowed <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDamageEvent.DamageCause.html"><code>DamageCause</code></a> types (comma-separated).</td>
+</tr>
+<tr>
+<td>min     <br>[<abbr title="Any number representation that may also have decimal places.">Number</abbr>]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr> <br>[0.0]</td>
+<td>Minimum damage required in a single hit for the event to count</td>
+</tr>
+<tr>
+<td>interval<br>[<abbr title="Any number representation that may also have decimal places.">Number</abbr>]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr> <br>[0]</td>
+<td>Cooldown between each damage event recorded for the same player</td>
+</tr>
+<tr>
+<td>unit    <br>[<abbr title="ticks, seconds, minutes, hours, days, weeks, months, years">TimeUnit</abbr>]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr> <br>[seconds]</td>
+<td>The unit of time (seconds, minutes, hours...)</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">basicDamage</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;damage</span><span class="nv"> </span><span class="s">5&quot;</span>
+<span class="w">  </span><span class="nt">elementalDamage</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;damage</span><span class="nv"> </span><span class="s">10</span><span class="nv"> </span><span class="s">action:both</span><span class="nv"> </span><span class="s">type:fire,lava&quot;</span>
+<span class="w">  </span><span class="nt">combatDamage</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;damage</span><span class="nv"> </span><span class="s">20</span><span class="nv"> </span><span class="s">action:deal</span><span class="nv"> </span><span class="s">type:entity_attack</span><span class="nv"> </span><span class="s">min:5.0&quot;</span>
+<span class="w">  </span><span class="nt">poisonDamage</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;damage</span><span class="nv"> </span><span class="s">3</span><span class="nv"> </span><span class="s">type:poison</span><span class="nv"> </span><span class="s">interval:40</span><span class="nv"> </span><span class="s">unit:ticks&quot;</span>
+<span class="w">  </span><span class="nt">projectileDamage</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;damage</span><span class="nv"> </span><span class="s">10</span><span class="nv"> </span><span class="s">action:deal</span><span class="nv"> </span><span class="s">type:projectile</span><span class="nv"> </span><span class="s">min:2.5</span><span class="nv"> </span><span class="s">interval:80</span><span class="nv"> </span><span class="s">unit:ticks&quot;</span>
+</code></pre></div>
+<h5> Placeholder Properties </h5>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Example Output</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>amount</em></td>
+<td>14.5</td>
+<td>Displays the total amount of damage the player has already dealt or taken.</td>
+</tr>
+<tr>
+<td><em>left</em></td>
+<td>5.5</td>
+<td>Shows the amount of damage that still needs to be dealt to reach the goal.</td>
+</tr>
+<tr>
+<td><em>total</em></td>
+<td>20</td>
+<td>Displays the total initial amount of damage required to complete the objective.</td>
+</tr>
+</tbody>
+</table>
 <h2 id="delay"><code>Delay</code><a class="headerlink" href="#delay" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="<b>Online</b><br> This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/></svg></span><br />
 <strong>Syntax</strong>: <code>delay &lt;time&gt; [unit] [precision]</code><br />
