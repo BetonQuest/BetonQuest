@@ -160,11 +160,9 @@ In both cases, you can choose from the following conversation styles:
         <video controls loop src="../../../_media/content/Documentation/Conversations/Dialog_FULL_BODY.mp4">
           Sorry, your browser doesn't support embedded videos.
         </video>
-        Below you can see the difference between the usage of only buttons or buttons with just a summary on different
-         screen sizes as well as the npc name's position:
+        Below you can see the usage of large player answers with text on only buttons or buttons with just a summary
+        on different screen sizes, as well as the npc name's position:
         <div class="grid">
-          ![DialogIO large with text boxes](../../_media/content/Documentation/Conversations/DialogIO_texts_large.png)
-          ![DialogIO large only buttons](../../_media/content/Documentation/Conversations/DialogIO_only-buttons_large.png)
           ![DialogIO small with text boxes](../../_media/content/Documentation/Conversations/DialogIO_texts_small.png)
           ![DialogIO small only buttons](../../_media/content/Documentation/Conversations/DialogIO_only-buttons_small.png)
         </div>
