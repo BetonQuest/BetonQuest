@@ -18,7 +18,7 @@ public enum UpdateMode implements BiConsumer<OnlineProfile, HologramWrapper>, Co
     /**
      * Updates the content of Holograms.
      */
-    CONTENT((profile, wrapper) -> wrapper.updateContent(), profile -> HologramRunner.updateAllContents()),
+    CONTENT((profile, wrapper) -> wrapper.updateContent(profile), profile -> HologramRunner.updateAllContents()),
     /**
      * All modes combined.
      */

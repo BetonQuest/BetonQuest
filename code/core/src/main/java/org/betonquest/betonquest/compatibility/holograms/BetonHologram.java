@@ -59,6 +59,13 @@ public interface BetonHologram {
     void removeLine(int index);
 
     /**
+     * Forcefully refreshes the hologram's content for a player.
+     *
+     * @param player the player to update content for
+     */
+    void update(Player player);
+
+    /**
      * Show this hologram to a player.
      *
      * @param player The player to show the hologram to.

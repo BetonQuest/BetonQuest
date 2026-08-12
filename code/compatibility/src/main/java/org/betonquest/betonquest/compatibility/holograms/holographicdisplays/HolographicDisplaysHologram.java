@@ -79,11 +79,17 @@ public class HolographicDisplaysHologram implements BetonHologram {
     }
 
     @Override
+    public void update(final Player player) {
+        // Empty
+    }
+
+    @Override
     public void show(final Player player) {
         if (disabled) {
             return;
         }
         hologram.getVisibilitySettings().setIndividualVisibility(player, VisibilitySettings.Visibility.VISIBLE);
+        update(player);
     }
 
     @Override

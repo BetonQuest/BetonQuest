@@ -141,6 +141,16 @@ public record HologramWrapper(QuestExceptionHandler handler, ConditionManager co
         }
     }
 
+    /**
+     * Updates the hologram contents for a specific player.
+     *
+     * @param profile The online profile of the player.
+     */
+    public void updateContent(final OnlineProfile profile) {
+        updateContent();
+        holograms.forEach(betonHologram -> betonHologram.update(profile.getPlayer()));
+    }
+
     private int getMaxRangeFromArgument(@Nullable final Profile profile) {
         return handler.handle(() -> this.maxRange.getValue(profile).intValue(), 0);
     }
