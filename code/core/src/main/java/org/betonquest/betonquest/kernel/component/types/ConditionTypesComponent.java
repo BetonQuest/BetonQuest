@@ -124,6 +124,7 @@ public class ConditionTypesComponent extends AbstractCoreComponent {
         conditionTypes.registerCombined("and", new ConjunctionConditionFactory(conditionManager));
         conditionTypes.register("armor", new ArmorConditionFactory());
         conditionTypes.register("biome", new BiomeConditionFactory());
+        conditionTypes.registerCombined("block", new BlockConditionFactory());
         conditionTypes.register("burning", new BurningConditionFactory());
         conditionTypes.registerCombined("check", new CheckConditionFactory(instructions, conditionTypes));
         conditionTypes.registerCombined("chestitem", new ChestItemConditionFactory());

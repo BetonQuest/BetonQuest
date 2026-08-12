@@ -63,6 +63,21 @@ conditions:
   inSavannaRock: "biome savanna_rock"
 ```
 
+## `Block`
+
+__Context__: @snippet:condition-meta:independent@  
+__Syntax__: `block <location> <selector>`  
+__Description__: Whether the block at the specified location matches the specified block selector.
+
+The first argument is a location in the [unified location format](Definition-Encyclopedia.md#unified-location-format), and the second is a [block selector](Definition-Encyclopedia.md#block-selectors). The block is checked even if its chunk isn't currently loaded.
+
+This is the same condition as [`TestForBlock`](#testforblock), just under a shorter name.
+
+```YAML title="Example"
+conditions:
+  stoneSet: "block 100;200;300;world STONE"
+```
+
 ## `Burning`
 
 __Context__: @snippet:condition-meta:online@  
@@ -812,7 +827,7 @@ __Context__: @snippet:condition-meta:independent@
 __Syntax__: `testforblock <location> <selector>`  
 __Description__: Whether the block at specified location matches the specified material.
 
-First argument is a location, and the second one is a `block selector`.
+First argument is a location, and the second one is a `block selector`. Also available under the shorter name [`Block`](#block).
 
 ```YAML title="Example"
 conditions:
