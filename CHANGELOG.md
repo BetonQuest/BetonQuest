@@ -17,6 +17,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - counting objective related translations in the lang files were moved in an own `objective` section and use `{absoluteleft}` instead of `{amount}`
 - `citizens` returns the stored `location` instead of nothing when not spawned
 - Skript Condition and Effect now handle if no player is present and check like they are independent
+- `deleffect` action no longer accepts an omitted first argument as `any`
 ### Deprecated
 ### Removed
 ### Fixed
