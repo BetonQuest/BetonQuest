@@ -5,7 +5,7 @@ import org.betonquest.betonquest.lib.config.quest.Quest;
 import org.bukkit.configuration.InvalidConfigurationException;
 
 /**
- * Add the new `dropExcess` flag to the chest-give action.
+ * Add the new {@code dropExcess} flag to the chest-give action.
  */
 public class ChestGiveDropFlag implements QuestMigration {
 
@@ -18,7 +18,7 @@ public class ChestGiveDropFlag implements QuestMigration {
     @Override
     public void migrate(final Quest quest) throws InvalidConfigurationException {
         replace(quest.getQuestConfig(), "actions",
-                value -> value.startsWith("chestgive"),
-                value -> value.trim() + " dropExcess");
+                value -> value.startsWith("chestgive "),
+                value -> value + " dropExcess");
     }
 }
