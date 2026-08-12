@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.action.chest;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.quest.action.NullableActionAdapter;
@@ -37,7 +38,8 @@ public class ChestGiveActionFactory implements PlayerActionFactory, PlayerlessAc
     private NullableActionAdapter createChestGiveAction(final Instruction instruction) throws QuestException {
         final Argument<Location> location = instruction.location().get();
         final Argument<List<ItemWrapper>> items = instruction.item().list().get();
-        return new NullableActionAdapter(new ChestGiveAction(location, items)
+        final FlagArgument<Boolean> dropExcess = instruction.bool().getFlag("dropExcess", true);
+        return new NullableActionAdapter(new ChestGiveAction(location, items, dropExcess)
         );
     }
 }

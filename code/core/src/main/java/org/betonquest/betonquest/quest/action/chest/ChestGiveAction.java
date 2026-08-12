@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.action.chest;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -22,7 +23,7 @@ import java.util.Map;
 public class ChestGiveAction implements NullableAction {
 
     /**
-     * The items to put in the blocks inventory.
+     * The items to put in the block's inventory.
      */
     private final Argument<List<ItemWrapper>> questItems;
 
@@ -32,14 +33,22 @@ public class ChestGiveAction implements NullableAction {
     private final Argument<Location> location;
 
     /**
+     * Whether to drop excess items.
+     */
+    private final FlagArgument<Boolean> dropExcess;
+
+    /**
      * Create the chest give action.
      *
-     * @param questItems the items to put in the blocks inventory
+     * @param questItems the items to put in the block's inventory
      * @param location   the location of the block
+     * @param dropExcess whether to drop excess items
      */
-    public ChestGiveAction(final Argument<Location> location, final Argument<List<ItemWrapper>> questItems) {
+    public ChestGiveAction(final Argument<Location> location, final Argument<List<ItemWrapper>> questItems,
+                           final FlagArgument<Boolean> dropExcess) {
         this.questItems = questItems;
         this.location = location;
+        this.dropExcess = dropExcess;
     }
 
     @Override
@@ -53,6 +62,9 @@ public class ChestGiveAction implements NullableAction {
                     + block.getX() + " Y" + block.getY() + " Z" + block.getZ(), e);
         }
         final Map<Integer, ItemStack> left = chest.getInventory().addItem(getItemStacks(profile));
+        if (!dropExcess.getValue(profile).orElse(false)) {
+            return;
+        }
         for (final ItemStack itemStack : left.values()) {
             block.getWorld().dropItem(block.getLocation(), itemStack);
         }
