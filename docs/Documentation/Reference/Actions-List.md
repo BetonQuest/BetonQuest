@@ -210,13 +210,11 @@ __Syntax__: `deleffect <effects>`
 __Description__: Remove the specified potion effects from the player.
 
 Use `any` instead of a list of types to remove all potion effects from the player.
-Alternatively to `any`, you just can leave it blank.
 
 ```YAML title="Example"
 actions:
   deleteEffects: "deleffect ABSORPTION,BLINDNESS"
   deleteAny: "deleffect any"
-  deleteAll: "deleffect"
 ```
 
 ## `DeleteGlobalPoint`

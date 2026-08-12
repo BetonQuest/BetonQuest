@@ -29,6 +29,7 @@ import org.betonquest.betonquest.config.migrator.from2to3.PickRandomPercentage;
 import org.betonquest.betonquest.config.migrator.from2to3.RemoveLegacyPointModification;
 import org.betonquest.betonquest.config.migrator.from2to3.RemoveStringList;
 import org.betonquest.betonquest.config.migrator.from2to3.VariablesRename;
+import org.betonquest.betonquest.config.migrator.from3to4.DeleteEffectAny;
 import org.betonquest.betonquest.lib.config.patcher.migration.BetonQuestMigratorVersion;
 import org.betonquest.betonquest.lib.config.patcher.migration.QuestMigration;
 import org.betonquest.betonquest.lib.config.patcher.migration.VersionMissmatchException;
@@ -130,6 +131,7 @@ public class QuestMigrator {
         migrations.put(questVersion("3.0.0", 16), new EventsToActionsRename());
         migrations.put(questVersion("3.0.0", 17), new AutoOnceObjective());
         migrations.put(questVersion("3.1.0", 1), new BurnDurationArgumentName());
+        migrations.put(questVersion("3.2.0", 1), new DeleteEffectAny());
         this.fallbackVersion = questVersion(pluginDescription.getVersion(), 0);
     }
 
