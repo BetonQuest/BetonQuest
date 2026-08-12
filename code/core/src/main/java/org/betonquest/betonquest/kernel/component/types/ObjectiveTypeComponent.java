@@ -19,6 +19,7 @@ import org.betonquest.betonquest.quest.objective.chestput.ChestPutObjectiveFacto
 import org.betonquest.betonquest.quest.objective.command.CommandObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.consume.ConsumeObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.crafting.CraftingObjectiveFactory;
+import org.betonquest.betonquest.quest.objective.damage.DamageObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.data.PointObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.data.TagObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.delay.DelayObjectiveFactory;
@@ -91,6 +92,7 @@ public class ObjectiveTypeComponent extends AbstractCoreComponent {
         objectiveTypes.register("command", new CommandObjectiveFactory(actionManager));
         objectiveTypes.register("consume", new ConsumeObjectiveFactory());
         objectiveTypes.register("craft", new CraftingObjectiveFactory());
+        objectiveTypes.register("damage", new DamageObjectiveFactory(plugin));
         objectiveTypes.register("delay", new DelayObjectiveFactory());
         objectiveTypes.register("die", new DieObjectiveFactory());
         objectiveTypes.register("enchant", new EnchantObjectiveFactory());
