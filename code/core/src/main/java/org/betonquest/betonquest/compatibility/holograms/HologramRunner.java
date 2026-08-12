@@ -87,6 +87,17 @@ public final class HologramRunner {
     }
 
     /**
+     * Updates all HologramRunners' holograms' contents.
+     */
+    public static void updateAllContents() {
+        for (final HologramRunner hologramRunner : RUNNERS.values()) {
+            for (final HologramWrapper wrapper : hologramRunner.holograms) {
+                wrapper.updateContent();
+            }
+        }
+    }
+
+    /**
      * Hides all holograms for the given player.
      *
      * @param player the player to hide all holograms  for
