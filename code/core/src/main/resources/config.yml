@@ -82,7 +82,7 @@ conversation:
     slowtellraw:
       message_delay: 10
     dialog:
-      layout: NPC_TITLE
+      quester-in-title: true
       only-buttons: false
       button-width: 250
       button-render-padding: 13

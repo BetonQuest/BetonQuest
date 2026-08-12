@@ -62,11 +62,6 @@ public class DialogConvIO implements ConversationIO {
     private final DialogSettings settings;
 
     /**
-     * Whether the layout is NPC title.
-     */
-    private final boolean isNpcTitleLayout;
-
-    /**
      * The list of player options.
      */
     private final List<Component> options = new ArrayList<>();
@@ -101,10 +96,7 @@ public class DialogConvIO implements ConversationIO {
         this.onlineProfile = onlineProfile;
         this.colors = colors;
         this.componentLineWrapper = componentLineWrapper;
-
         this.settings = settings;
-
-        this.isNpcTitleLayout = settings.layout() == DialogLayout.NPC_TITLE;
     }
 
     @Override
@@ -157,12 +149,12 @@ public class DialogConvIO implements ConversationIO {
         final Component text = npcText;
 
         final DialogBody body = DialogBody.plainMessage(
-                isNpcTitleLayout ? colors.getText().append(text)
+                settings.questerInTitle() ? colors.getText().append(text)
                         : colors.getText().append(colors.getNpc().append(name)).append(Component.text(": ")).append(text)
         );
         bodies.add(0, body);
 
-        final Component title = isNpcTitleLayout ? colors.getNpc().append(name) : EMPTY;
+        final Component title = settings.questerInTitle() ? colors.getNpc().append(name) : EMPTY;
 
         return DialogBase.builder(title)
                 .canCloseWithEscape(settings.closeButtonEnabled() && settings.closeWithEscape() && !conv.isMovementBlock())

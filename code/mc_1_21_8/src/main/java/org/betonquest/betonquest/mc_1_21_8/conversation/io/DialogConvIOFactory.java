@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.mc_1_21_8.conversation.io;
 
-import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -47,7 +46,7 @@ public class DialogConvIOFactory implements ConversationIOFactory {
     }
 
     @Override
-    public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) throws QuestException {
+    public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) {
         final DialogSettings settings = DialogSettings.fromSection(config.getConfigurationSection("conversation.io.dialog"));
         return new DialogConvIO(conversation, onlineProfile, settings, colors, componentLineWrapper);
     }
