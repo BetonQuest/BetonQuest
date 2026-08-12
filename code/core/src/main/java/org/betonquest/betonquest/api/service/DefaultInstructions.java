@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.identifier.PlaceholderIdentifier;
 import org.betonquest.betonquest.api.instruction.DefaultInstruction;
-import org.betonquest.betonquest.api.instruction.FlagState;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.PlaceholderInstruction;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
@@ -19,10 +18,10 @@ import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultChainableInstruction;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultInstructionChainParser;
+import org.betonquest.betonquest.lib.instruction.reader.SingleValueReader;
 import org.betonquest.betonquest.lib.instruction.section.DefaultSectionInstruction;
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.Map;
 import java.util.function.Supplier;
 
 /**
@@ -73,8 +72,7 @@ public class DefaultInstructions implements Instructions {
 
     @Override
     public InstructionChainParser createForArgument(final QuestPackage questPackage, final QuestSupplier<String> argument) {
-        final ChainableInstruction instruction = new DefaultChainableInstruction(placeholders.get(), packageManager, questPackage,
-                argument, key -> argument.get(), key -> Map.entry(FlagState.DEFINED, key), predicate -> Map.of("", argument.get()));
+        final ChainableInstruction instruction = new DefaultChainableInstruction(placeholders.get(), packageManager, questPackage, new SingleValueReader(argument));
         return new DefaultInstructionChainParser(instruction, argumentParsers.get());
     }
 
