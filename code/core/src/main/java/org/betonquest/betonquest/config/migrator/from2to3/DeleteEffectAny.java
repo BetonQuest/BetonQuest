@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.config.migrator.from3to4;
+package org.betonquest.betonquest.config.migrator.from2to3;
 
 import org.betonquest.betonquest.lib.config.patcher.migration.QuestMigration;
 import org.betonquest.betonquest.lib.config.quest.Quest;

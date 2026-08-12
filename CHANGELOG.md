@@ -12,12 +12,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `section` (and implicit `section`) condition to allow usage of subsections as list of (conjugated) conditions
 - `damage` objective to track dealt and taken damage
 ### Changed
-- `deleffect` action now requires either potion effect types or `any` as its first argument
 - `worldguard` integration version requirement to 7.0.0
 - `worldedit` integration version requirement to 7.3.0
 - counting objective related translations in the lang files were moved in an own `objective` section and use `{absoluteleft}` instead of `{amount}`
 - `citizens` returns the stored `location` instead of nothing when not spawned
 - Skript Condition and Effect now handle if no player is present and check like they are independent
+- `deleffect` action no longer accepts an omitted first argument as `any`
 ### Deprecated
 ### Removed
 ### Fixed
