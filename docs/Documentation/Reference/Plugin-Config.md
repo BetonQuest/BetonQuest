@@ -223,13 +223,13 @@ Every io has its own settings that can be configured in the `io` section.
 
 * `dialog`  
   Settings for the dialog conversation IO.
-    * `quester-in-title` - Whether the npc's name will be shown in dialog title or in the text.
-    * `only-buttons` - Whether the text should be displayed directly in buttons to click.
+    * `quester_in_title` - Whether the npc's name will be shown in dialog title or in the text.
+    * `only_buttons` - Whether the text should be displayed directly in buttons to click.
         Otherwise, the text will be printed above and only referenced in the buttons.
-    * `button-width` - The minimum size of buttons containing answers to choose from.
-    * `button-render-padding` - Button padding left and right in pixels; buttons are aligned to the center.
-    * `close-with-escape` - Whether the `esc` key will close the dialog.
-    * `close-button-enabled` - Whether a button to close the dialog should be shown.
+    * `button_width` - The minimum size of buttons containing answers to choose from.
+    * `button_render_padding` - Button padding left and right in pixels; buttons are aligned to the center.
+    * `close_with_escape` - Whether the `esc` key will close the dialog.
+    * `close_button_enabled` - Whether a button to close the dialog should be shown.
 
 * `chest`  
   Settings for the chest conversation IO.

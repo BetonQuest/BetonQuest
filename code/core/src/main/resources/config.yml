@@ -82,12 +82,12 @@ conversation:
     slowtellraw:
       message_delay: 10
     dialog:
-      quester-in-title: true
-      only-buttons: false
-      button-width: 250
-      button-render-padding: 13
-      close-with-escape: true
-      close-button-enabled: true
+      quester_in_title: true
+      only_buttons: false
+      button_width: 250
+      button_render_padding: 13
+      close_with_escape: true
+      close_button_enabled: true
 npc:
   accept_left_click: false
   interaction_limit: 500

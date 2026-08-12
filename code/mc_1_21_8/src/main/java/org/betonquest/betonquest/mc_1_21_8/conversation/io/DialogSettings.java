@@ -28,14 +28,14 @@ public record DialogSettings(
      * @return the settings from the configuration setting
      */
     public static DialogSettings fromSection(final ConfigurationSection section) {
-        final boolean questerInTitle = section.getBoolean("quester-in-title", true);
-        final boolean onlyButtons = section.getBoolean("only-buttons", false);
+        final boolean questerInTitle = section.getBoolean("quester_in_title", true);
+        final boolean onlyButtons = section.getBoolean("only_buttons", false);
 
-        final int buttonRenderPadding = section.getInt("button-render-padding", 13);
-        final int defaultButtonWidth = section.getInt("button-width", 250);
+        final int buttonRenderPadding = section.getInt("button_render_padding", 13);
+        final int defaultButtonWidth = section.getInt("button_width", 250);
 
-        final boolean closeButtonEnabled = section.getBoolean("close-button-enabled", true);
-        final boolean closeWithEscape = section.getBoolean("close-with-escape", true);
+        final boolean closeButtonEnabled = section.getBoolean("close_button_enabled", true);
+        final boolean closeWithEscape = section.getBoolean("close_with_escape", true);
         return new DialogSettings(questerInTitle, onlyButtons, buttonRenderPadding, defaultButtonWidth, closeButtonEnabled, closeWithEscape);
     }
 }
