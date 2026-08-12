@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Integration tests for {@link DeleteEffectActionFactory}.
  */
 @ExtendWith(BetonQuestLoggerExtension.class)
-class DeleteEffectActionFactoryIntegrationTest {
+class DeleteEffectActionFactoryIT {
 
     private QuestPackage setupQuestPackage(final BetonQuestLoggerFactory loggerFactory,
                                            final BetonQuestLogger logger,
