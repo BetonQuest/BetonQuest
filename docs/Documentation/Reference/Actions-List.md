@@ -285,7 +285,7 @@ actions:
 ## `Effect`
 
 __Context__: @snippet:action-meta:online@  
-__Syntax__: `effect <effect> <duration> <level> [ambient] [icon] [hidden]`  
+__Syntax__: `effect <effect> <duration> <level> [ambient] [noicon] [hidden]`  
 __Description__: Apply the specified potion effect to the player.
 
 First argument is potion type. You can find all available types [here](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html).
@@ -296,7 +296,7 @@ To hide particles add a parameter `hidden`. To hide the icon for the effect add 
 
 ```YAML title="Example"
 actions:
-  effectBlindness: "effect BLINDNESS 30 1 ambient icon"
+  effectBlindness: "effect BLINDNESS 30 1 ambient noicon"
 ```
 
 ## `Eval`
