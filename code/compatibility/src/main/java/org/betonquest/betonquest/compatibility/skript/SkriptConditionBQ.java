@@ -62,7 +62,8 @@ public class SkriptConditionBQ extends Condition {
     @Override
     @SuppressFBWarnings("NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE")
     public String toString(@Nullable final Event event, final boolean debug) {
-        return player.getSingle(event).getName() + " meets " + condition;
+        final Player single = player.getSingle(event);
+        return "%s meets %s".formatted(single == null ? "null" : single.getName(), condition);
     }
 
     @Override
@@ -72,7 +73,8 @@ public class SkriptConditionBQ extends Condition {
             final ProfileProvider profileProvider = betonQuestApi.profiles();
             final IdentifierFactory<ConditionIdentifier> conditionIdentifierFactory =
                     betonQuestApi.identifiers().getFactory(ConditionIdentifier.class);
-            return betonQuestApi.conditions().manager().test(profileProvider.getProfile(player.getSingle(event)),
+            final Player single = player.getSingle(event);
+            return betonQuestApi.conditions().manager().test(single == null ? null : profileProvider.getProfile(single),
                     conditionIdentifierFactory.parseIdentifier(null, conditionID));
         } catch (final QuestException e) {
             log.warn("Error while checking Skript condition - could not load condition with ID '" + conditionID + "': " + e.getMessage(), e);

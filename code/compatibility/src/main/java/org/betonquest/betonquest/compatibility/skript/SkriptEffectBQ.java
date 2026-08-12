@@ -63,7 +63,8 @@ public class SkriptEffectBQ extends Effect {
     @Override
     @SuppressFBWarnings("NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE")
     public String toString(@Nullable final Event event, final boolean debug) {
-        return "fire " + this.action + " for " + player.getSingle(event).getName();
+        final Player single = player.getSingle(event);
+        return "fire %s for %s".formatted(this.action, single == null ? "null" : single.getName());
     }
 
     @Override
@@ -76,7 +77,8 @@ public class SkriptEffectBQ extends Effect {
                     final ProfileProvider profileProvider = betonQuestApi.profiles();
                     final IdentifierFactory<ActionIdentifier> actionIdentifierFactory =
                             betonQuestApi.identifiers().getFactory(ActionIdentifier.class);
-                    betonQuestApi.actions().manager().run(profileProvider.getProfile(player.getSingle(event)),
+                    final Player single = player.getSingle(event);
+                    betonQuestApi.actions().manager().run(single == null ? null : profileProvider.getProfile(single),
                             actionIdentifierFactory.parseIdentifier(null, actionID));
                 } catch (final QuestException e) {
                     log.warn("Error when running Skript event - could not load '" + actionID + "' action: " + e.getMessage(), e);

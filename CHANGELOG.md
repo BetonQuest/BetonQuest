@@ -16,6 +16,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `worldedit` integration version requirement to 7.3.0
 - counting objective related translations in the lang files were moved in an own `objective` section and use `{absoluteleft}` instead of `{amount}`
 - `citizens` returns the stored `location` instead of nothing when not spawned
+- Skript Condition and Effect now handle if no player is present and check like they are independent
 ### Deprecated
 ### Removed
 ### Fixed
