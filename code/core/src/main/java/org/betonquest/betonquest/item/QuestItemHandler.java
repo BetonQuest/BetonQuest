@@ -133,6 +133,7 @@ public class QuestItemHandler implements Listener {
             return;
         }
         ItemStack item = null;
+        final Inventory clickedInventory = event.getClickedInventory();
         switch (event.getAction()) {
             case PICKUP_ALL:
             case PICKUP_HALF:
@@ -145,7 +146,7 @@ public class QuestItemHandler implements Listener {
                 break;
             case HOTBAR_MOVE_AND_READD:
             case HOTBAR_SWAP:
-                if (event.getClickedInventory().getType() == InventoryType.PLAYER) {
+                if (clickedInventory != null && clickedInventory.getType() == InventoryType.PLAYER) {
                     if (isJournalSlotLocked()) {
                         final ItemStack swapped;
                         if (event.getHotbarButton() == -1 && ClickType.SWAP_OFFHAND == event.getClick()) {
@@ -177,7 +178,7 @@ public class QuestItemHandler implements Listener {
                     event.setCancelled(true);
                     return;
                 }
-                if (event.getClickedInventory().getType() != InventoryType.PLAYER) {
+                if (clickedInventory == null || clickedInventory.getType() != InventoryType.PLAYER) {
                     item = event.getCursor();
                 }
                 break;

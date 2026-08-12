@@ -9,6 +9,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `haspoint` and `hasglobalpoint` conditions to check if a point is set
 - counting objective related translations in the lang files can now use all counting objective related placeholders
 - `fallback` argument to point conditions to use a default value when category has no value at all
+- `section` (and implicit `section`) condition to allow usage of subsections as list of (conjugated) conditions
 - `dialog` conversation IO
 ### Changed
 - `worldguard` integration version requirement to 7.0.0
@@ -21,6 +22,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `freeze` action and `packetevents` conversation io on MC 26.2+
 - NPE in PacketEvents Interceptor when resending messages to offline players
 - `mmoskill` objective trigger are not parsed correctly
+- error handling for items when the amount is less than 1
+- `interact` objective handling broken loaded data wrongly
+- NPE in `brew` objective when used null instead air item stack
+- Quest Items handling when clicking outside of the inventory frame
 ### Security
 
 ## [3.1.0] - 2026-07-19
