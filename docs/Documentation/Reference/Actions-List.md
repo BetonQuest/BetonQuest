@@ -93,18 +93,23 @@ actions:
 ## `ChestGive`
 
 __Context__: @snippet:action-meta:independent@  
-__Syntax__: `chestgive <location> <items>`  
+__Syntax__: `chestgive <location> <items> {dropExcess}`  
 __Description__: Put items into the chest at the specified location.
 
-This works the same as `give` action, but it puts the items in a chest at specified location.
-The first argument is a location, the second argument is a list of items, like in `give` action.
-If the chest is full, the items will be dropped on the ground.
-The chest can be any other block with inventory, i.e. a hopper or a dispenser.
-BetonQuest will log an error to the console when this action is fired but there is no chest at a specified location.
+This works the same as [`give` action](#give), but it puts the items in a block with an inventory at the specified location.  
+At the location may be any block with an inventory, i.e., a hopper or a dispenser.  
+If the chest is full, the items will be dropped on the ground if the `dropExcess` flag is present or set to `true`.
+
+| Parameter                                                                      | Type                  | Explanation                                                                                                                            |
+|--------------------------------------------------------------------------------|-----------------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| location<br>[[Location]](./Definition-Encyclopedia.md#unified-location-format) | Required              | The location of the block of which the inventory should be filled. In case there is no chest at the given location an error is thrown. |
+| items<br>List[Item]                                                            | Required              | The items with their optional amounts.                                                                                                 |
+| dropExcess<br>[Boolean]                                                        | Flag<br>[false, true] | If the excess amount of items that won't fit into the chest should be dropped on the ground.                                           |
 
 ```YAML title="Example"
 actions:
-  chestgive: "chestgive 100;200;300;world emerald:5,sword"
+  chestgive: "chestgive 100;200;300;world emerald:5,sword dropExcess"
+  nodrop: "chestgive 100;200;300;world emerald:5,sword"
 ```
 
 ## `ChestTake`

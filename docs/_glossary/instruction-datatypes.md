@@ -8,3 +8,4 @@
 *[Additionals]: Additional values are prefixed with a + symbol and allow for key-value pairs to be added to the element.
 *[Null]: A null value has no value.
 *[TimeUnit]: ticks, seconds, minutes, hours, days, weeks, months, years
+*[Item]: An item refers to elements defined in the items section of a quest package. It may be specified with an amount after a colon.
