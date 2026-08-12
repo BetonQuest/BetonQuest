@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @ExtendWith(BetonQuestLoggerExtension.class)
 @ExtendWith(MockitoExtension.class)
-class TagGlobalActionFactoryIntegrationTest {
+class TagGlobalActionFactoryIT {
 
     /**
      * Mocked BetonQuest plugin.
