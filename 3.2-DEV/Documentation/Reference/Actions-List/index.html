@@ -11364,15 +11364,40 @@ Additional messages can be defined by separating them with <code>|</code> charac
 </code></pre></div>
 <h2 id="chestgive"><code>ChestGive</code><a class="headerlink" href="#chestgive" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="<b>Independent</b><br> This action can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"/></svg></span><br />
-<strong>Syntax</strong>: <code>chestgive &lt;location&gt; &lt;items&gt;</code><br />
+<strong>Syntax</strong>: <code>chestgive &lt;location&gt; &lt;items&gt; {dropExcess}</code><br />
 <strong>Description</strong>: Put items into the chest at the specified location.</p>
-<p>This works the same as <code>give</code> action, but it puts the items in a chest at specified location.
-The first argument is a location, the second argument is a list of items, like in <code>give</code> action.
-If the chest is full, the items will be dropped on the ground.
-The chest can be any other block with inventory, i.e. a hopper or a dispenser.
-BetonQuest will log an error to the console when this action is fired but there is no chest at a specified location.</p>
+<p>This works the same as <a href="#give"><code>give</code> action</a>, but it puts the items in a block with an inventory at the specified location.<br />
+At the location may be any block with an inventory, i.e., a hopper or a dispenser.<br />
+If the chest is full, the items will be dropped on the ground if the <code>dropExcess</code> flag is present or set to <code>true</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>location<br><a href="../Definition-Encyclopedia/#unified-location-format">[Location]</a></td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The location of the block of which the inventory should be filled. In case there is no chest at the given location an error is thrown.</td>
+</tr>
+<tr>
+<td>items<br><abbr title="A list is a sequence of values separated by commas.">List</abbr>[<abbr title="An item refers to elements defined in the items section of a quest package. It may be specified with an amount after a colon.">Item</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The items with their optional amounts.</td>
+</tr>
+<tr>
+<td>dropExcess<br>[<abbr title="A boolean can be either true or false.">Boolean</abbr>]</td>
+<td><abbr title="A flag can be either absent or undefined with separate default values [absent, undefined] or explicitly defined with a value.">Flag</abbr><br>[false, true]</td>
+<td>If the excess amount of items that won't fit into the chest should be dropped on the ground.</td>
+</tr>
+</tbody>
+</table>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">chestgive</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;chestgive</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">emerald:5,sword&quot;</span>
+<span class="w">  </span><span class="nt">chestgive</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;chestgive</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">emerald:5,sword</span><span class="nv"> </span><span class="s">dropExcess&quot;</span>
+<span class="w">  </span><span class="nt">nodrop</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;chestgive</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">emerald:5,sword&quot;</span>
 </code></pre></div>
 <h2 id="chesttake"><code>ChestTake</code><a class="headerlink" href="#chesttake" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="<b>Independent</b><br> This action can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"/></svg></span><br />
