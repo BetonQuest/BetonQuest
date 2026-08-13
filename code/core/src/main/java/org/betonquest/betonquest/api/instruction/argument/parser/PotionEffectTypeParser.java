@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest.condition.effect;
+package org.betonquest.betonquest.api.instruction.argument.parser;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;

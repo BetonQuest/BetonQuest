@@ -93,18 +93,23 @@ actions:
 ## `ChestGive`
 
 __Context__: @snippet:action-meta:independent@  
-__Syntax__: `chestgive <location> <items>`  
+__Syntax__: `chestgive <location> <items> {dropExcess}`  
 __Description__: Put items into the chest at the specified location.
 
-This works the same as `give` action, but it puts the items in a chest at specified location.
-The first argument is a location, the second argument is a list of items, like in `give` action.
-If the chest is full, the items will be dropped on the ground.
-The chest can be any other block with inventory, i.e. a hopper or a dispenser.
-BetonQuest will log an error to the console when this action is fired but there is no chest at a specified location.
+This works the same as [`give` action](#give), but it puts the items in a block with an inventory at the specified location.  
+At the location may be any block with an inventory, i.e., a hopper or a dispenser.  
+If the chest is full, the items will be dropped on the ground if the `dropExcess` flag is present or set to `true`.
+
+| Parameter                                                                      | Type                  | Explanation                                                                                                                            |
+|--------------------------------------------------------------------------------|-----------------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| location<br>[[Location]](./Definition-Encyclopedia.md#unified-location-format) | Required              | The location of the block of which the inventory should be filled. In case there is no chest at the given location an error is thrown. |
+| items<br>List[Item]                                                            | Required              | The items with their optional amounts.                                                                                                 |
+| dropExcess<br>[Boolean]                                                        | Flag<br>[false, true] | If the excess amount of items that won't fit into the chest should be dropped on the ground.                                           |
 
 ```YAML title="Example"
 actions:
-  chestgive: "chestgive 100;200;300;world emerald:5,sword"
+  chestgive: "chestgive 100;200;300;world emerald:5,sword dropExcess"
+  nodrop: "chestgive 100;200;300;world emerald:5,sword"
 ```
 
 ## `ChestTake`
@@ -210,13 +215,11 @@ __Syntax__: `deleffect <effects>`
 __Description__: Remove the specified potion effects from the player.
 
 Use `any` instead of a list of types to remove all potion effects from the player.
-Alternatively to `any`, you just can leave it blank.
 
 ```YAML title="Example"
 actions:
   deleteEffects: "deleffect ABSORPTION,BLINDNESS"
   deleteAny: "deleffect any"
-  deleteAll: "deleffect"
 ```
 
 ## `DeleteGlobalPoint`
@@ -1180,6 +1183,31 @@ actions:
   decreaseRpgWorld: "time -12 world:rpgworld"
   increaseRandom: "time +%randomnumber.whole.100~2000% world:pvpworld ticks"
 ```
+
+## `UpdateHologram`
+
+__Context__: @snippet:action-meta:online@  
+__Syntax__: `updateHologram [mode] [holo] [npcHolo]`  
+__Description__: Force an immediate refresh instead of waiting for the next update interval.
+
+This is useful for performance optimizations if used when the update interval is set to high values.
+
+When no identifier is given at all, all holograms will be updated.
+
+| Parameter                                                                | Type                | Explanation                    |
+|--------------------------------------------------------------------------|---------------------|--------------------------------|
+| mode <br>[UpdateMode]                                                    | Optional <br>[ALL]  | The update action.             |
+| holo <br>List[[Identifier]](./Definition-Encyclopedia.md#identifiers)    | Optional <br>[None] | The `holograms` to update.     |
+| npcHolo <br>List[[Identifier]](./Definition-Encyclopedia.md#identifiers) | Optional <br>[None] | The `npc_holograms` to update. |
+
+```YAML title="Examples"
+actions:
+  updateAll: "updateHologram mode:all"
+  updateLocationHologram: "updateHologram loc:statusBoard"
+  updateBoth: "updateHologram loc:questBoard npc:announcerHolo"
+```
+
+*[UpdateMode] visibility, content, all
 
 ## `Variable`
 

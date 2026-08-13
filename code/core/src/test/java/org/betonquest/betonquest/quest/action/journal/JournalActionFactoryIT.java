@@ -41,7 +41,7 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(BetonQuestLoggerExtension.class)
 @ExtendWith(MockitoExtension.class)
-final class JournalActionFactoryIntegrationTest {
+final class JournalActionFactoryIT {
 
     /**
      * The current time used in the tests.

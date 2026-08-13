@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
  * This test tests all config transformers.
  */
 @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
-class TransformerIntegrationTest extends TransformersFixture {
+class TransformerIT extends TransformersFixture {
 
     private String patch;
 

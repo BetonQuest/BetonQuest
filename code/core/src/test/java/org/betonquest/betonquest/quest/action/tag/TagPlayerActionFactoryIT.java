@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @ExtendWith(BetonQuestLoggerExtension.class)
 @ExtendWith(MockitoExtension.class)
-class TagPlayerActionFactoryIntegrationTest {
+class TagPlayerActionFactoryIT {
 
     /**
      * Mocked PlayerDataStorage.

@@ -1,6 +1,5 @@
-package org.betonquest.betonquest.config.migrator.from3to4;
+package org.betonquest.betonquest.config.migrator.from2to3;
 
-import org.betonquest.betonquest.config.migrator.from2to3.BurnDurationArgumentName;
 import org.betonquest.betonquest.config.quest.QuestFixture;
 import org.betonquest.betonquest.lib.config.quest.Quest;
 import org.bukkit.configuration.InvalidConfigurationException;

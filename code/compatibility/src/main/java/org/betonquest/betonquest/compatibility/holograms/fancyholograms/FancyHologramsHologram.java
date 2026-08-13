@@ -175,6 +175,11 @@ public class FancyHologramsHologram implements BetonHologram {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
+    public void update(final Player player) {
+        forAllHolograms(hologram -> hologram.refreshHologram(player));
+    }
+
     private void forAllHolograms(final Consumer<Hologram> consumer) {
         consumer.accept(baseHologram);
         holograms.forEach(consumer);
@@ -183,6 +188,7 @@ public class FancyHologramsHologram implements BetonHologram {
     @Override
     public void show(final Player player) {
         if (baseHologram.isViewer(player)) {
+            update(player);
             return;
         }
         forAllHolograms(hologram -> hologram.forceShowHologram(player));

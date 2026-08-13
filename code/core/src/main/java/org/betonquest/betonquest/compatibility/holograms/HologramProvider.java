@@ -10,11 +10,14 @@ import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
+import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.reload.ReloadPhase;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.kernel.ProcessorDataLoader;
 import org.betonquest.betonquest.kernel.processor.QuestProcessor;
+import org.betonquest.betonquest.quest.action.hologram.UpdateHologramActionFactory;
 import org.bukkit.Location;
 import org.bukkit.event.HandlerList;
 
@@ -106,6 +109,9 @@ public final class HologramProvider {
         final BetonQuestLogger logger = betonQuestApi.loggerFactory().create(HologramProvider.class);
         processorDataLoader.addProcessor(new ThrowingQuestProcessor(logger, "Hologram", "holograms"));
         processorDataLoader.addProcessor(new ThrowingQuestProcessor(logger, "NPC Hologram", "npc_holograms"));
+        betonQuestApi.actions().registry().register("updateHologram", (PlayerQuestFactory<PlayerAction>) instruction -> profile -> {
+            throw new QuestException("Tried to update hologram, but there is no hologram integration loaded!");
+        });
     }
 
     /**
@@ -149,6 +155,8 @@ public final class HologramProvider {
         this.listener = new HologramListener(api.profiles(), npcHologramLoop);
         api.bukkit().registerEvents(listener);
         api.reloader().register(ReloadPhase.INTEGRATION, HologramRunner::cancel);
+
+        api.actions().registry().register("updateHologram", new UpdateHologramActionFactory(locationHologramLoop, npcHologramLoop));
     }
 
     /**

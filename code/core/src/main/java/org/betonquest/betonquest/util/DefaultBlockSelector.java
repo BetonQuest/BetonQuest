@@ -223,9 +223,14 @@ public class DefaultBlockSelector implements BlockSelector {
         if (keyString.contains(":")) {
             final String[] groupParts = keyString.split(":");
             final NamespacedKey namespacedKey = new NamespacedKey(namespaceString, groupParts[1]);
-            final Tag<Material> tag = Bukkit.getTag(groupParts[0], namespacedKey, Material.class);
-            if (tag != null) {
-                materials.addAll(tag.getValues());
+            final String registry = groupParts[0];
+            try {
+                final Tag<Material> tag = Bukkit.getTag(registry, namespacedKey, Material.class);
+                if (tag != null) {
+                    materials.addAll(tag.getValues());
+                }
+            } catch (final IllegalArgumentException e) {
+                throw new QuestException("Unknown registry '%s' for tag '%s'!".formatted(registry, namespacedKey), e);
             }
             return materials;
         }
