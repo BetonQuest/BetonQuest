@@ -62,28 +62,24 @@ public class EquipAction implements OnlineAction {
         final ItemStack equippedItem = equipment.getItem(resolvedSlot);
         final boolean shouldDrop = drop.getValue(profile).orElse(false);
         final boolean shouldForce = force.getValue(profile).orElse(false);
+        final ItemStack newItem = item.getValue(profile).generate(profile);
 
         if (InventoryUtils.isEmptySlot(equippedItem)) {
-            equipment.setItem(resolvedSlot, generateItem(profile));
+            equipment.setItem(resolvedSlot, newItem);
             return;
         }
 
         if (!shouldForce) {
             if (shouldDrop) {
-                dropItem(player, generateItem(profile));
+                dropItem(player, newItem);
             }
             return;
         }
 
-        final ItemStack newItem = generateItem(profile);
         if (shouldDrop) {
             dropItem(player, equippedItem);
         }
         equipment.setItem(resolvedSlot, newItem);
-    }
-
-    private ItemStack generateItem(final OnlineProfile profile) throws QuestException {
-        return item.getValue(profile).generate(profile);
     }
 
     private void dropItem(final Player player, final ItemStack item) {

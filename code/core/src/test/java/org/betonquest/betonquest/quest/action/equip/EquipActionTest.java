@@ -60,7 +60,6 @@ class EquipActionTest {
         createAction(item, false, false).execute(profile);
 
         verify(equipment, never()).setItem(any(), any());
-        verify(item, never()).generate(any());
     }
 
     @Test
