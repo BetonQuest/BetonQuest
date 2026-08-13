@@ -70,7 +70,10 @@ public class SimpleQuestItem implements QuestItem {
 
     @Override
     public boolean matches(@Nullable final ItemStack item) {
-        if (item == null || !selector.match(item.getType())) {
+        if (item == null) {
+            return selector.match(Material.AIR);
+        }
+        if (!selector.match(item.getType())) {
             return false;
         }
         final ItemMeta meta = item.getItemMeta();
