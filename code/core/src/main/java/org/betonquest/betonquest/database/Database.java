@@ -3,12 +3,10 @@ package org.betonquest.betonquest.database;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.Nullable;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Set;
 import java.util.SortedMap;
 
@@ -36,26 +34,29 @@ public abstract class Database {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private final BetonQuestLogger log;
+    protected final BetonQuestLogger log;
 
     /**
-     * The current database connection.
+     * The database manager instance.
      */
-    @Nullable
-    protected Connection con;
+    protected DatabaseManager databaseManager;
 
     /**
      * Creates a new Database instance.
      *
-     * @param log    the BetonQuestLogger to use for logging
-     * @param plugin the BetonQuest plugin instance
-     * @param config the plugin configuration file
+     * @param log             the BetonQuestLogger to use for logging
+     * @param plugin          the BetonQuest plugin instance
+     * @param config          the plugin configuration file
+     * @param databaseManager the database manager to handle connections
+     * @param prefix          the table prefix to use for database queries
      */
-    protected Database(final BetonQuestLogger log, final Plugin plugin, final ConfigAccessor config) {
+    protected Database(final BetonQuestLogger log, final Plugin plugin, final ConfigAccessor config,
+                       final DatabaseManager databaseManager, final String prefix) {
         this.log = log;
         this.plugin = plugin;
-        this.prefix = config.getString("mysql.prefix", "");
+        this.prefix = prefix;
         this.profileInitialName = config.getString("profile.initial_name", "default");
+        this.databaseManager = databaseManager;
     }
 
     /**
@@ -63,66 +64,62 @@ public abstract class Database {
      * If the connection is closed or broken, it will try to open a new connection.
      *
      * @return the current database connection
+     * @throws SQLException if a database access error occurs
      */
-    public Connection getConnection() {
-        try {
-            if (con == null || con.isClosed() || isConnectionBroken(con)) {
-                con = openConnection();
-            }
-        } catch (final SQLException e) {
-            log.error("Failed opening database connection!", e);
-        }
-        if (con == null) {
-            throw new IllegalStateException("Not able to create a database connection!");
-        }
-        return con;
-    }
-
-    private boolean isConnectionBroken(final Connection connection) {
-        try (PreparedStatement statement = connection.prepareStatement("SELECT 1");
-             ResultSet result = statement.executeQuery()) {
-            return !result.next();
-        } catch (final SQLException e) {
-            return true;
-        }
+    public Connection getConnection() throws SQLException {
+        return databaseManager.getConnection();
     }
 
     /**
-     * Opens a new database connection.
-     *
-     * @return the new database connection
-     * @throws SQLException if the connection could not be opened
+     * Check if the connection to HikariCP is working.
      */
-    protected abstract Connection openConnection() throws SQLException;
+    protected final void testConnection() {
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement()) {
+            stmt.execute("SELECT 1;");
+            log.debug("!");
+        } catch (final SQLException e) {
+            log.error("Error connecting to the database: " + e.getMessage());
+        }
+    }
 
     /**
      * Closes the database connection if it is open.
      */
     public void closeConnection() {
-        if (con != null) {
-            try {
-                con.close();
-            } catch (final SQLException e) {
-                log.error("Failed to close the database connection!", e);
-            }
-        }
-        con = null;
+        databaseManager.close();
     }
 
     /**
      * Creates the database tables by executing all migrations that have not been executed yet.
      */
     public final void createTables() {
-        try {
-            final SortedMap<MigrationKey, DatabaseUpdate> migrations = getMigrations();
-            final Set<MigrationKey> executedMigrations = queryExecutedMigrations(getConnection());
-            executedMigrations.forEach(migrations::remove);
+        try (Connection conn = getConnection()) {
+            conn.setAutoCommit(false);
+            boolean success = false;
 
-            while (!migrations.isEmpty()) {
-                final MigrationKey key = migrations.firstKey();
-                final DatabaseUpdate migration = migrations.remove(key);
-                migration.executeUpdate(getConnection());
-                markMigrationExecuted(getConnection(), key);
+            try {
+                final SortedMap<MigrationKey, DatabaseUpdate> migrations = getMigrations();
+                final Set<MigrationKey> executedMigrations = queryExecutedMigrations(conn);
+                executedMigrations.forEach(migrations::remove);
+
+                while (!migrations.isEmpty()) {
+                    final MigrationKey key = migrations.firstKey();
+                    final DatabaseUpdate migration = migrations.remove(key);
+                    migration.executeUpdate(conn);
+                    markMigrationExecuted(conn, key);
+                }
+                conn.commit();
+                success = true;
+            } finally {
+                if (!success) {
+                    try {
+                        conn.rollback();
+                    } catch (final SQLException e) {
+                        log.error("Error rolling back transaction: " + e.getMessage());
+                    }
+                }
+                conn.setAutoCommit(true);
             }
         } catch (final SQLException sqlException) {
             log.error("There was an exception with SQL while creating the database tables!", sqlException);

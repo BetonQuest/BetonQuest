@@ -31,6 +31,7 @@
     <log4j-api.version>3.0.0-beta2</log4j-api.version>
     <log4j-core.version>3.0.0-beta2</log4j-core.version>
     <cron-utils.version>9.2.1</cron-utils.version>
+    <hikari-cp.version>7.1.0</hikari-cp.version>
   </properties>
 
   <dependencies>
@@ -86,6 +87,11 @@
       <groupId>com.cronutils</groupId>
       <artifactId>cron-utils</artifactId>
       <version>${cron-utils.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.zaxxer</groupId>
+      <artifactId>HikariCP</artifactId>
+      <version>${hikari-cp.version}</version>
     </dependency>
   </dependencies>
 

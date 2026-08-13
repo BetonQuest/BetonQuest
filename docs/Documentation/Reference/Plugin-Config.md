@@ -57,6 +57,38 @@ The debug log contains a lot of additional information about the plugin's activi
   The downside is that depending on the number of scripts and players, this can be a lot of data occupying your memory.
   So if you have memory issues, you can reduce the time the history is stored in memory down to 0 minutes to disable it.
 
+## `database` - Database Settings
+The database section controls the storage and connection settings for BetonQuest.
+**This option needs a server restart to take effect when changed!**
+
+``` YAML linenums="1"
+database:
+  type: mysql                #(1)!
+  table_prefix: betonquest_  #(2)!
+  use_properties_file: true  #(3)!
+```
+
+1. The type of database to use (`mysql`/`sqlite`).
+2. The table prefix of BetonQuest's data in the database.
+3. Whether to load database credentials and settings from the external `database.properties` file.
+
+### Database Properties and HikariCP Configuration
+With the integration of HikariCP connection pooling, database credentials and advanced performance settings 
+can be managed via the external `database.properties` file. As long as use_properties_file is set to true, 
+the plugin will utilize this external file for handling database connections
+
+#### HikariCP Custom Configuration
+You can configure advanced HikariCP settings by using the `<property_name>` format. 
+If you want to explore all available configuration options and parameters, 
+please check the [HikariCP Configuration](https://github.com/brettwooldridge/HikariCP/blob/dev/README.md)
+documentation.
+
+If you want to see the recommended configuration for MySQL, [click here](https://github.com/brettwooldridge/HikariCP/wiki/MySQL-Configuration)
+
+### Migrating configuration to `database.properties`
+If you are upgrading from a previous version of BetonQuest that used the `mysql` section in `config.yml`,
+your settings will be migrated automatically.
+
 ## `mysql` - Setup MySQL Database
 You don't need to configure a mysql database, but it brings some advantages.  
 It mainly brings limited support for cross-server support.
@@ -66,24 +98,18 @@ To use a MySQL Database for saving all the data, you need to fill out the mysql 
 
 ``` YAML linenums="1"
 mysql:
-  enabled: true              #(1)!
-  host: ''                   #(2)!
-  port: ''                   #(3)!
-  user: ''                   #(4)!
-  pass: ''                   #(5)!
-  base: ''                   #(6)!
-  prefix: betonquest_        #(7)!
-  reconnect_interval: 1000   #(8)!
+  host: ''                          #(1)!
+  port: ''                          #(2)!
+  user: ''                          #(3)!
+  pass: ''                          #(4)!
+  base: ''                          #(5)!
 ```
 
-1. Set this to true.
-2. This is the IP of your MySQL server. If it runs on the same machine as your server, use localhost or 127.0.0.1
-3. This is the port your MySQL server runs on.
-4. The name of the database user that is used to connect to the database server.
-5. The password of that user.
-6. The database that BetonQuest will write to. You need to create it in your database server.
-7. The table prefix of BetonQuest's data in the database.
-8. The time interval the database tries to reconnect if the connection gets lost
+1. This is the IP of your MySQL server. If it runs on the same machine as your server, use localhost or 127.0.0.1
+2. This is the port your MySQL server runs on.
+3. The name of the database user that is used to connect to the database server.
+4. The password of that user.
+5. The database that BetonQuest will write to. You need to create it in your database server.
 
 ### Migrating a database from SQLite to MySQL or back
 Follow these few steps to migrate your database easily:

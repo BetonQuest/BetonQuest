@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.item.SimpleQuestItemFactory;
+import org.betonquest.betonquest.kernel.component.DatabaseComponent;
 import org.betonquest.betonquest.kernel.processor.quest.PlaceholderProcessor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
@@ -18,7 +19,6 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,6 +26,7 @@ import java.sql.Statement;
 import java.util.Base64;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -39,14 +40,15 @@ import static org.betonquest.betonquest.item.typehandler.QuestHandler.QUEST_ITEM
 public class SQLite extends Database {
 
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
+     * The maximum number of actual database connections allowed in the pool,
+     * including both active and idle connections.
      */
-    private final BetonQuestLogger log;
+    private static final String MAX_POOL_SIZE = "1";
 
     /**
-     * The database file location.
+     * The minimum number of idle connections that the pool attempts to maintain.
      */
-    private final String dbLocation;
+    private static final String MIN_IDLE = "1";
 
     /**
      * Creates a new SQLite instance.
@@ -54,16 +56,30 @@ public class SQLite extends Database {
      * @param log        the logger that will be used for logging
      * @param plugin     Plugin instance
      * @param config     the accessor for the config
-     * @param dbLocation Location of the Database (Must end in .db)
+     * @param dbLocation location of the database (must end in .db)
+     * @param dbConfig   database configuration record
      */
-    public SQLite(final BetonQuestLogger log, final Plugin plugin, final ConfigAccessor config, final String dbLocation) {
-        super(log, plugin, config);
-        this.log = log;
-        this.dbLocation = dbLocation;
+    public SQLite(final BetonQuestLogger log, final Plugin plugin, final ConfigAccessor config, final String dbLocation,
+                  final DatabaseComponent.DatabaseConfig dbConfig) {
+        super(log, plugin, config, init(log, plugin, dbLocation), dbConfig.prefix());
+        testConnection();
     }
 
-    @Override
-    public Connection openConnection() {
+    private static DatabaseManager init(final BetonQuestLogger log, final Plugin plugin, final String dbLocation) {
+        createDatabase(log, plugin, dbLocation);
+
+        final Properties hikariProps = new Properties();
+
+        hikariProps.setProperty("jdbcUrl", "jdbc:sqlite:" + plugin.getDataFolder() + dbLocation);
+        hikariProps.setProperty("maximumPoolSize", MAX_POOL_SIZE);
+        hikariProps.setProperty("minimumIdle", MIN_IDLE);
+
+        final DatabaseManager dbManager = new DatabaseManager();
+        dbManager.init(hikariProps, null);
+        return dbManager;
+    }
+
+    private static void createDatabase(final BetonQuestLogger log, final Plugin plugin, final String dbLocation) {
         if (!plugin.getDataFolder().exists() && !plugin.getDataFolder().mkdirs()) {
             log.error("Unable to create plugin data folder!");
         }
@@ -77,18 +93,6 @@ public class SQLite extends Database {
                 log.error("Unable to create database!", e);
             }
         }
-        Connection connection = null;
-        try {
-            Class.forName("org.sqlite.JDBC");
-            connection = DriverManager
-                    .getConnection("jdbc:sqlite:" + plugin.getDataFolder().toPath() + "/" + dbLocation);
-        } catch (ClassNotFoundException | SQLException e) {
-            log.error("There was an exception with SQL", e);
-        }
-        if (connection == null) {
-            throw new IllegalStateException("Not able to create a database connection!");
-        }
-        return connection;
     }
 
     @Override

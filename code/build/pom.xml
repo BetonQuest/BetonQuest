@@ -139,6 +139,7 @@
                   <include>commons-io</include>
                   <include>com.cronutils:cron-utils</include>
                   <include>de.themoep:minedown-adventure</include>
+                  <include>com.zaxxer:HikariCP</include>
                 </includes>
               </artifactSet>
               <filters>
@@ -173,6 +174,10 @@
                 <relocation>
                   <pattern>de.themoep</pattern>
                   <shadedPattern>${maven-shade-plugin.path}.dependencies.de.themoep</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.zaxxer</pattern>
+                  <shadedPattern>${maven-shade-plugin.path}.dependencies.com.zaxxer</shadedPattern>
                 </relocation>
               </relocations>
             </configuration>

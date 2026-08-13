@@ -14,15 +14,16 @@ downloader:
 debug:
   enabled: false
   history: 10
+database:
+  type: mysql
+  table_prefix: betonquest_
+  use_properties_file: true
 mysql:
-  enabled: false
   host: ''
   port: ''
   user: ''
   pass: ''
   base: ''
-  prefix: betonquest_
-  reconnect_interval: 1000
 profile:
   initial_name: 'default'
 language:

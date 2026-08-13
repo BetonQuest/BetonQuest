@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.database;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -42,7 +43,8 @@ public class Connector {
     public void querySQL(final QueryType type, final Arguments args, final ResultSetCallback resultCallback,
                          final String errorMessage) {
         final String sql = type.createSql(prefix);
-        try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
+        try (Connection conn = database.getConnection();
+             PreparedStatement statement = conn.prepareStatement(sql)) {
             args.resolve(statement);
             try {
                 resultCallback.accept(statement.executeQuery());
@@ -67,7 +69,8 @@ public class Connector {
      */
     public void updateSQL(final UpdateType type, final Arguments args) {
         final String sql = type.createSql(prefix);
-        try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
+        try (Connection conn = database.getConnection();
+             PreparedStatement statement = conn.prepareStatement(sql)) {
             args.resolve(statement);
             statement.executeUpdate();
         } catch (final SQLException e) {

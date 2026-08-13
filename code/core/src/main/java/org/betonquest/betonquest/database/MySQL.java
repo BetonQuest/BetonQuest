@@ -10,14 +10,15 @@ import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.item.SimpleQuestItemFactory;
+import org.betonquest.betonquest.kernel.component.DatabaseComponent;
 import org.betonquest.betonquest.kernel.processor.quest.PlaceholderProcessor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
+import java.nio.file.Path;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,6 +26,7 @@ import java.sql.Statement;
 import java.util.Base64;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -38,76 +40,76 @@ import static org.betonquest.betonquest.item.typehandler.QuestHandler.QUEST_ITEM
 public class MySQL extends Database {
 
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
+     * The maximum number of actual database connections allowed in the pool,
+     * including both active and idle connections.
      */
-    private final BetonQuestLogger log;
+    private static final String MAX_POOL_SIZE = "10";
 
     /**
-     * Username for the MySQL user.
+     * The minimum number of idle connections that the pool attempts to maintain.
      */
-    private final String user;
+    private static final String MIN_IDLE = "2";
 
     /**
-     * Prefix for the database tables.
+     * The maximum time (in milliseconds) a client will wait for a connection from the pool
+     * before throwing a SQLException.
      */
-    private final String database;
+    private static final String CONNECTION_TIMEOUT = "30000";
 
     /**
-     * Password for the MySQL user.
+     * The maximum amount of time (in milliseconds) a connection is allowed to sit idle in the pool.
      */
-    private final String password;
+    private static final String IDLE_TIMEOUT = "600000";
 
     /**
-     * Port number to connect to the MySQL server.
+     * The maximum lifetime (in milliseconds) of a connection in the pool before it is retired.
      */
-    private final String port;
+    private static final String MAX_LIFE_TIME = "1800000";
 
     /**
-     * Name of the host to connect to the MySQL server.
-     */
-    private final String hostname;
-
-    /**
-     * Creates a new MySQL instance.
+     * Creates a new MySQL database connection instance.
      *
-     * @param log      the logger that will be used for logging
-     * @param plugin   Plugin instance
-     * @param config   the configuration accessor
-     * @param hostname Name of the host
-     * @param port     Port number
-     * @param database Database name
-     * @param username Username
-     * @param password Password
+     * @param log        the logger used for recording database operations and errors
+     * @param plugin     the parent plugin instance managing this database
+     * @param config     the configuration accessor used to retrieve database settings
+     * @param dbConfig   database configuration record
+     * @param configPath path to the configuration file
      */
-    public MySQL(final BetonQuestLogger log, final Plugin plugin, final ConfigAccessor config, final String hostname,
-                 final String port, final String database, final String username, final String password) {
-        super(log, plugin, config);
-        this.log = log;
-        this.hostname = hostname;
-        this.port = port;
-        this.database = database;
-        this.user = username;
-        this.password = password;
+    public MySQL(final BetonQuestLogger log, final Plugin plugin, final ConfigAccessor config,
+                 final DatabaseComponent.DatabaseConfig dbConfig, final Path configPath) {
+        super(log, plugin, config, init(configPath, dbConfig), dbConfig.prefix());
+        testConnection();
     }
 
-    @Override
-    public Connection openConnection() {
-        Connection connection = null;
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(
-                    "jdbc:mysql://" + this.hostname + ":" + this.port + "/" + this.database + "?&useSSL=false", this.user, this.password);
-            final String connectionClassName = connection.getClass().getName();
-            if (!connectionClassName.startsWith("com.mysql.")) {
-                log.warn("External source modified or changed the MySQL connector! We can not guarantee that BetonQuest will work correctly with this connector: " + connectionClassName);
-            }
-        } catch (final ClassNotFoundException | SQLException e) {
-            log.warn("MySQL says: " + e.getMessage(), e);
+    private static DatabaseManager init(final Path configPath, final DatabaseComponent.DatabaseConfig dbConfig) {
+        final Properties hikariProps = new Properties();
+
+        if (dbConfig.host() != null && dbConfig.port() != null && dbConfig.base() != null) {
+            final String jdbcUrl = String.format(
+                    "jdbc:mysql://%s:%s/%s?useSSL=false",
+                    dbConfig.host(), dbConfig.port(), dbConfig.base()
+            );
+
+            hikariProps.setProperty("jdbcUrl", jdbcUrl);
         }
-        if (connection == null) {
-            throw new IllegalStateException("Not able to create a database connection!");
+
+        if (dbConfig.pass() != null) {
+            hikariProps.setProperty("password", dbConfig.pass());
         }
-        return connection;
+
+        if (dbConfig.user() != null) {
+            hikariProps.setProperty("username", dbConfig.user());
+        }
+
+        hikariProps.setProperty("maximumPoolSize", MAX_POOL_SIZE);
+        hikariProps.setProperty("minimumIdle", MIN_IDLE);
+        hikariProps.setProperty("connectionTimeout", CONNECTION_TIMEOUT);
+        hikariProps.setProperty("idleTimeout", IDLE_TIMEOUT);
+        hikariProps.setProperty("maxLifetime", MAX_LIFE_TIME);
+
+        final DatabaseManager dbManager = new DatabaseManager();
+        dbManager.init(hikariProps, configPath);
+        return dbManager;
     }
 
     @Override

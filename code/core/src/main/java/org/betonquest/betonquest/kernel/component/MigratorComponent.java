@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.config.migrator.Migrator;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
+import org.bukkit.plugin.Plugin;
 
 import java.io.IOException;
 import java.util.Set;
@@ -23,7 +24,7 @@ public class MigratorComponent extends AbstractCoreComponent {
 
     @Override
     public Set<Class<?>> requires() {
-        return Set.of(BetonQuestLoggerFactory.class);
+        return Set.of(Plugin.class, BetonQuestLoggerFactory.class);
     }
 
     @Override
@@ -34,11 +35,12 @@ public class MigratorComponent extends AbstractCoreComponent {
     @Override
     protected void load(final DependencyProvider dependencyProvider) {
         final BetonQuestLoggerFactory loggerFactory = getDependency(BetonQuestLoggerFactory.class);
+        final Plugin plugin = getDependency(Plugin.class);
 
         final BetonQuestLogger log = loggerFactory.create(MigratorComponent.class);
 
         try {
-            final Migrator migrator = new Migrator(loggerFactory);
+            final Migrator migrator = new Migrator(loggerFactory, plugin);
             migrator.migrate();
             dependencyProvider.take(Migrator.class, migrator);
         } catch (final IOException e) {

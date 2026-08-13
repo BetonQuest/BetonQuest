@@ -5,8 +5,10 @@ import org.betonquest.betonquest.config.migrator.from1to2.PackageStructure;
 import org.betonquest.betonquest.config.migrator.from1to2.RPGMenuMerge;
 import org.betonquest.betonquest.config.migrator.from2to3.DeleteMenuConfigYml;
 import org.betonquest.betonquest.config.migrator.from2to3.DeleteMessagesYml;
+import org.betonquest.betonquest.config.migrator.from2to3.ExtractDatabaseProperties;
 import org.betonquest.betonquest.config.migrator.from2to3.MenuConversationSettings;
 import org.betonquest.betonquest.lib.config.patcher.migration.Migration;
+import org.bukkit.plugin.Plugin;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -25,15 +27,17 @@ public class Migrator {
     /**
      * Creates a new generic migration process.
      *
-     * @param loggerFactory the logger factory.
+     * @param loggerFactory the logger factory
+     * @param plugin        the plugin instance
      */
-    public Migrator(final BetonQuestLoggerFactory loggerFactory) {
+    public Migrator(final BetonQuestLoggerFactory loggerFactory, final Plugin plugin) {
         this.migrations = new LinkedList<>();
         migrations.add(new RPGMenuMerge());
         migrations.add(new PackageStructure());
         migrations.add(new DeleteMessagesYml(loggerFactory.create(DeleteMessagesYml.class)));
         migrations.add(new DeleteMenuConfigYml(loggerFactory.create(DeleteMenuConfigYml.class)));
         migrations.add(new MenuConversationSettings(loggerFactory.create(MenuConversationSettings.class)));
+        migrations.add(new ExtractDatabaseProperties(plugin));
     }
 
     /**

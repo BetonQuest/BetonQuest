@@ -1,4 +1,21 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/Configuration-Files.md
+3.2.0.2:
+  - type: SET
+    key: database.type
+    value: mysql
+  - type: SET
+    key: database.table_prefix
+    value: betonquest_
+  - type: SET
+    key: database.use_properties_file
+    value: true
+  - type: KEY_RENAME
+    oldKey: mysql.prefix
+    newKey: database.table_prefix
+  - type: REMOVE
+    key: mysql.reconnect_interval
+  - type: REMOVE
+    key: mysql.enabled
 3.2.0.1:
   - type: SET
     key: conversation.io.dialog.quester_in_title

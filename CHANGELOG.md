@@ -7,10 +7,18 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
 - `drop` objective to track players dropping items
+- new `database` category
+- `database.type` configuration option to set the database to use
+- `database.use_properties_file` configuration option enables the use of `database.properties`
 ### Changed
+- replace JDBC database connection with HikariCP connection pooling
+- the `mysql.prefix` has been moved to `database.table_prefix`
 ### Deprecated
 ### Removed
+- `mysql.reconnect_interval` option deleted
+- `mysql.enabled` option deleted
 ### Fixed
+- `database` connection leaks and handle database unavailability during data reading
 ### Security
 
 ## [3.2.0] - 2026-08-17
