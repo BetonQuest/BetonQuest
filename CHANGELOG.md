@@ -6,13 +6,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
-- `patterns` argument for adding and matching pattern layers on `simple` banner items
 - `haspoint` and `hasglobalpoint` conditions to check if a point is set
 - counting objective related translations in the lang files can now use all counting objective related placeholders
 - `fallback` argument to point conditions to use a default value when category has no value at all
 - `section` (and implicit `section`) condition to allow usage of subsections as list of (conjugated) conditions
 - `damage` objective to track dealt and taken damage
 - `updateHologram` action to force updates to (specific) holograms for a player
+- `patterns` argument for adding and matching pattern layers on `simple` banner items
 ### Changed
 - `worldguard` integration version requirement to 7.0.0
 - `worldedit` integration version requirement to 7.3.0

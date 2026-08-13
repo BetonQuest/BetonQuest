@@ -56,7 +56,7 @@ public class BannerHandler implements ItemMetaHandler<BannerMeta> {
             return null;
         }
         return "patterns:" + bannerMeta.getPatterns().stream()
-                .map(pattern -> pattern.getColor() + ":" + patternTypeName(pattern.getPattern()))
+                .map(pattern -> pattern.getColor() + ":" + pattern.getPattern().name())
                 .collect(Collectors.joining(","));
     }
 
@@ -66,7 +66,6 @@ public class BannerHandler implements ItemMetaHandler<BannerMeta> {
             throw new QuestException("Invalid banner key: " + key);
         }
         if (Existence.NONE_KEY.equalsIgnoreCase(data)) {
-            patterns = List.of();
             patternsE = Existence.FORBIDDEN;
             return;
         }
@@ -75,7 +74,7 @@ public class BannerHandler implements ItemMetaHandler<BannerMeta> {
         for (final String pattern : patternData) {
             parsedPatterns.add(parsePattern(pattern));
         }
-        patterns = List.copyOf(parsedPatterns);
+        patterns = parsedPatterns;
         patternsE = Existence.REQUIRED;
     }
 
@@ -92,20 +91,11 @@ public class BannerHandler implements ItemMetaHandler<BannerMeta> {
         }
         final PatternType type;
         try {
-            type = (PatternType) PatternType.class.getMethod("valueOf", String.class)
-                    .invoke(null, parts[1].toUpperCase(Locale.ROOT));
-        } catch (final ReflectiveOperationException | IllegalArgumentException e) {
+            type = PatternType.valueOf(parts[1].toUpperCase(Locale.ROOT));
+        } catch (final IllegalArgumentException e) {
             throw new QuestException("Unknown banner pattern type: " + parts[1], e);
         }
         return new Pattern(color, type);
-    }
-
-    private String patternTypeName(final PatternType type) {
-        try {
-            return (String) PatternType.class.getMethod("name").invoke(type);
-        } catch (final ReflectiveOperationException e) {
-            throw new IllegalStateException("Could not serialize banner pattern type", e);
-        }
     }
 
     @Override
