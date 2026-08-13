@@ -132,6 +132,7 @@ plugins:
       enabled: !ENV CI
       plugins:
         - optimize
+  - glightbox
 
 extra:
   consent:
