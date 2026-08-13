@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.item.LoreConsumer;
 import org.betonquest.betonquest.item.SimpleQuestItem;
 import org.betonquest.betonquest.item.SimpleQuestItemFactory;
+import org.betonquest.betonquest.item.typehandler.BannerHandler;
 import org.betonquest.betonquest.item.typehandler.BookHandler;
 import org.betonquest.betonquest.item.typehandler.ColorHandler;
 import org.betonquest.betonquest.item.typehandler.CustomModelDataHandler;
@@ -70,6 +71,7 @@ public class UpdatedSimpleItemFactory extends SimpleQuestItemFactory {
                 questHandler,
                 new EnchantmentsHandler(),
                 new UpdatedPotionHandler(),
+                new BannerHandler(),
                 new BookHandler(textParser, bookPageWrapper),
                 new HeadHandler(),
                 new ColorHandler(),

@@ -13,6 +13,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.TypeFactory;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
 import org.betonquest.betonquest.api.text.TextParser;
+import org.betonquest.betonquest.item.typehandler.BannerHandler;
 import org.betonquest.betonquest.item.typehandler.BookHandler;
 import org.betonquest.betonquest.item.typehandler.ColorHandler;
 import org.betonquest.betonquest.item.typehandler.CustomModelDataHandler;
@@ -125,6 +126,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
                 questHandler,
                 new EnchantmentsHandler(),
                 new PotionHandler(),
+                new BannerHandler(),
                 new BookHandler(textParser, bookPageWrapper),
                 new HeadHandler(),
                 new ColorHandler(),

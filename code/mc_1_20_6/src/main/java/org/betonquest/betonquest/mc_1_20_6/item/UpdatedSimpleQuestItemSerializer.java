@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.item.LoreConsumer;
 import org.betonquest.betonquest.item.SimpleQuestItemFactory;
 import org.betonquest.betonquest.item.SimpleQuestItemSerializer;
+import org.betonquest.betonquest.item.typehandler.BannerHandler;
 import org.betonquest.betonquest.item.typehandler.BookHandler;
 import org.betonquest.betonquest.item.typehandler.ColorHandler;
 import org.betonquest.betonquest.item.typehandler.CustomModelDataHandler;
@@ -35,7 +36,7 @@ public class UpdatedSimpleQuestItemSerializer extends SimpleQuestItemSerializer 
     public UpdatedSimpleQuestItemSerializer(final TextParser textParser, final BookPageWrapper bookPageWrapper) {
         super(List.of(
                 new DurabilityHandler(), new UpdatedNameHandler(textParser), new LoreHandler(textParser, () -> false), new EnchantmentsHandler(),
-                new BookHandler(textParser, bookPageWrapper), new UpdatedPotionHandler(), new ColorHandler(), new HeadHandler(),
+                new BookHandler(textParser, bookPageWrapper), new UpdatedPotionHandler(), new BannerHandler(), new ColorHandler(), new HeadHandler(),
                 new FireworkHandler(), new UnbreakableHandler(), new CustomModelDataHandler(), new FlagHandler(),
                 new QuestHandler(LoreConsumer.EMPTY)
         ));
