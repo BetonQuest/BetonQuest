@@ -40,6 +40,7 @@ import org.betonquest.betonquest.quest.action.drop.DropActionFactory;
 import org.betonquest.betonquest.quest.action.effect.DeleteEffectActionFactory;
 import org.betonquest.betonquest.quest.action.effect.EffectActionFactory;
 import org.betonquest.betonquest.quest.action.entity.RemoveEntityActionFactory;
+import org.betonquest.betonquest.quest.action.equip.EquipActionFactory;
 import org.betonquest.betonquest.quest.action.eval.EvalActionFactory;
 import org.betonquest.betonquest.quest.action.experience.ExperienceActionFactory;
 import org.betonquest.betonquest.quest.action.explosion.ExplosionActionFactory;
@@ -160,6 +161,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         actionTypes.registerCombined("door", new DoorActionFactory());
         actionTypes.registerCombined("drop", new DropActionFactory(profileProvider));
         actionTypes.register("effect", new EffectActionFactory());
+        actionTypes.register("equip", new EquipActionFactory());
         actionTypes.registerCombined("eval", new EvalActionFactory(instructions, actionTypes, scheduler, plugin));
         actionTypes.register("experience", new ExperienceActionFactory());
         actionTypes.registerCombined("explosion", new ExplosionActionFactory());

@@ -302,6 +302,30 @@ actions:
   effectBlindness: "effect BLINDNESS 30 1 ambient noicon"
 ```
 
+## `Equip`
+
+__Context__: @snippet:action-meta:online@  
+__Syntax__: `equip <item> <slot> {drop} {force}`  
+__Description__: Put the specified item into the player's equipment slot.
+
+By default, the item is only equipped if the slot is empty. The `drop` flag drops the new item when the slot is occupied.
+The `force` flag replaces an existing item, and combining it with `drop` drops the replaced item.
+
+| Parameter               | Type                  | Explanation                                                                            |
+|-------------------------|-----------------------|----------------------------------------------------------------------------------------|
+| item<br>[Item]          | Required              | The item to equip.                                                                     |
+| slot<br>[EquipmentSlot] | Required              | The equipment slot in which the item should be placed.                                 |
+| drop<br>[Boolean]       | Flag<br>[false, true] | Whether an item that cannot remain in the equipment slot should be dropped.            |
+| force<br>[Boolean]      | Flag<br>[false, true] | Whether an item already in the equipment slot should be replaced by the specified one. |
+
+```YAML title="Example"
+actions:
+  equipHelmet: "equip diamond_helmet HEAD"
+  replaceHelmet: "equip quest_helmet HEAD drop force"
+```
+
+*[EquipmentSlot]: HAND, OFF_HAND, FEET, LEGS, CHEST, HEAD
+
 ## `Eval`
 
 __Context__: @snippet:action-meta:independent@  

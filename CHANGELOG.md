@@ -12,6 +12,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `section` (and implicit `section`) condition to allow usage of subsections as list of (conjugated) conditions
 - `damage` objective to track dealt and taken damage
 - `updateHologram` action to force updates to (specific) holograms for a player
+- `equip` action to put items into players' equipment slots
 ### Changed
 - `worldguard` integration version requirement to 7.0.0
 - `worldedit` integration version requirement to 7.3.0
