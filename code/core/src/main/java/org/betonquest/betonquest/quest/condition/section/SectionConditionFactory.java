@@ -19,6 +19,7 @@ import org.betonquest.betonquest.quest.condition.number.Operation;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Factory to create section grouped conditions from {@link Instruction}s.
@@ -87,7 +88,42 @@ public class SectionConditionFactory implements PlayerConditionFactory, Playerle
             final List<ConditionIdentifier> conditions = conditionIDs.getValue(profile);
             final Operation operation = this.operation.getValue(profile);
             final int amount = this.amount.getValue(profile).intValue();
-            return operation.check(conditionManager.testAmount(profile, conditions), amount);
+            return conditionManager.test(profile, conditions, fromOperation(operation, amount));
+        }
+
+        private ConditionManager.TestStrategy fromOperation(final Operation operation, final int amount) {
+            return switch (operation) {
+                case LESS, LESS_EQUAL -> less(operation, amount);
+                case EQUAL, NOT_EQUAL -> equal(operation, amount);
+                case GREATER, GREATER_EQUAL -> greater(operation, amount);
+            };
+        }
+
+        private ConditionManager.TestStrategy less(final Operation operation, final int amount) {
+            return (positive, negative, remaining) -> {
+                if (!operation.check(positive, amount)) {
+                    return Optional.of(false);
+                }
+                return Optional.empty();
+            };
+        }
+
+        private ConditionManager.TestStrategy equal(final Operation operation, final int amount) {
+            return (positive, negative, remaining) -> {
+                if (positive > amount) {
+                    return Optional.of(operation.check(positive, amount));
+                }
+                return Optional.empty();
+            };
+        }
+
+        private ConditionManager.TestStrategy greater(final Operation operation, final int amount) {
+            return (positive, negative, remaining) -> {
+                if (operation.check(positive, amount)) {
+                    return Optional.of(true);
+                }
+                return Optional.empty();
+            };
         }
     }
 }

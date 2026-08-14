@@ -13,7 +13,6 @@ import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
 import org.betonquest.betonquest.kernel.processor.adapter.ConditionAdapter;
 import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
 import org.betonquest.betonquest.quest.condition.logik.ConjunctionCondition;
-import org.betonquest.betonquest.quest.condition.number.Operation;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -24,6 +23,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -149,35 +149,6 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionIdentifier,
         return checkOutcome(profile, conditionID, condition);
     }
 
-    @Override
-    public int testAmount(@Nullable final Profile profile, final Collection<ConditionIdentifier> conditionIDs) {
-        final Function<Stream<ConditionIdentifier>, Integer> function =
-                stream -> Math.toIntExact(stream.filter(id -> test(profile, id)).count());
-
-        if (Bukkit.isPrimaryThread()) {
-            return function.apply(conditionIDs.stream());
-        }
-
-        final List<ConditionIdentifier> syncList = new ArrayList<>();
-        final List<ConditionIdentifier> asyncList = new ArrayList<>();
-        conditionIDs.forEach(id -> {
-            final ConditionAdapter adapter = values.get(id);
-            final boolean syncAsync = adapter != null && adapter.isPrimaryThreadEnforced();
-            (syncAsync ? syncList : asyncList).add(id);
-        });
-
-        final Future<Integer> syncFuture = syncList.isEmpty() ? CompletableFuture.completedFuture(0)
-                : scheduler.callSyncMethod(plugin, () -> function.apply(syncList.stream()));
-        final int asyncResult = function.apply(asyncList.stream());
-
-        try {
-            return asyncResult + syncFuture.get();
-        } catch (final InterruptedException | ExecutionException e) {
-            log.reportException(e);
-            return 0;
-        }
-    }
-
     private boolean checkOutcomeSync(@Nullable final Profile profile, final ConditionIdentifier conditionID, final ConditionAdapter condition) {
         try {
             return scheduler.callSyncMethod(plugin, () -> checkOutcome(profile, conditionID, condition)).get();
@@ -202,58 +173,45 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionIdentifier,
         return isMet;
     }
 
-    public boolean testAgainstAmount(@Nullable final Profile profile, final Operation operation,
-                                     final List<ConditionIdentifier> conditionIdentifiers, final int amount) throws QuestException {
+    @Override
+    public boolean test(@Nullable final Profile profile, final Collection<ConditionIdentifier> conditionIdentifiers,
+                        final TestStrategy testStrategy) throws QuestException {
         final Map<ConditionIdentifier, ConditionAdapter> conditions = new HashMap<>();
+        boolean requiresMainThread = false;
         for (final ConditionIdentifier identifier : conditionIdentifiers) {
-            conditions.put(identifier, get(identifier));
+            final ConditionAdapter adapter = get(identifier);
+            conditions.put(identifier, adapter);
+            requiresMainThread |= adapter.isPrimaryThreadEnforced();
         }
-        return switch (operation) {
-            case LESS, LESS_EQUAL -> less(profile, conditions, operation, amount);
-            case EQUAL, NOT_EQUAL -> equal(profile, conditions, operation, amount);
-            case GREATER, GREATER_EQUAL -> greater(profile, conditions, operation, amount);
-        };
+        if (!requiresMainThread || Bukkit.isPrimaryThread()) {
+            return testStrategy(profile, conditions, testStrategy);
+        }
+        try {
+            return scheduler.callSyncMethod(plugin, () -> testStrategy(profile, conditions, testStrategy)).get();
+        } catch (final InterruptedException | ExecutionException e) {
+            log.reportException(e);
+            return false;
+        }
     }
 
-    private boolean less(@Nullable final Profile profile, final Map<ConditionIdentifier, ConditionAdapter> conditions,
-                         final Operation operation, final int amount) {
-        int satisfied = 0;
-        for (final Map.Entry<ConditionIdentifier, ConditionAdapter> condition : conditions.entrySet()) {
-            if (test(profile, condition.getKey(), condition.getValue())) {
-                satisfied++;
-                if (!operation.check(satisfied, amount)) {
-                    return false;
-                }
+    private boolean testStrategy(final @Nullable Profile profile, final Map<ConditionIdentifier, ConditionAdapter> conditions,
+                                 final TestStrategy testStrategy) {
+        int positive = 0;
+        int negative = 0;
+        int remaining = conditions.size();
+        for (final Map.Entry<ConditionIdentifier, ConditionAdapter> entry : conditions.entrySet()) {
+            final ConditionAdapter adapter = entry.getValue();
+            if (checkOutcome(profile, entry.getKey(), adapter)) {
+                positive++;
+            } else {
+                negative++;
+            }
+            remaining--;
+            final Optional<Boolean> result = testStrategy.getResult(positive, negative, remaining);
+            if (result.isPresent()) {
+                return result.get();
             }
         }
-        return true;
-    }
-
-    private boolean equal(@Nullable final Profile profile, final Map<ConditionIdentifier, ConditionAdapter> conditions,
-                          final Operation operation, final int amount) {
-        int satisfied = 0;
-        for (final Map.Entry<ConditionIdentifier, ConditionAdapter> condition : conditions.entrySet()) {
-            if (test(profile, condition.getKey(), condition.getValue())) {
-                satisfied++;
-                if (satisfied > amount) {
-                    break;
-                }
-            }
-        }
-        return operation.check(satisfied, amount);
-    }
-
-    private boolean greater(@Nullable final Profile profile, final Map<ConditionIdentifier, ConditionAdapter> conditions,
-                            final Operation operation, final int amount) {
-        int satisfied = 0;
-        for (final Map.Entry<ConditionIdentifier, ConditionAdapter> condition : conditions.entrySet()) {
-            if (test(profile, condition.getKey(), condition.getValue())) {
-                satisfied++;
-                if (operation.check(satisfied, amount)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return testStrategy.getResult(positive, negative, remaining).orElse(false);
     }
 }

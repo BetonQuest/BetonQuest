@@ -1,11 +1,13 @@
 package org.betonquest.betonquest.api.service.condition;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * The ConditionManager is responsible for evaluating conditions that are loaded by BetonQuest.
@@ -84,5 +86,24 @@ public interface ConditionManager {
      */
     boolean testAny(@Nullable Profile profile, Collection<ConditionIdentifier> conditionIdentifiers);
 
-    int testAmount(@Nullable final Profile profile, final Collection<ConditionIdentifier> conditionIdentifiers);
+    /**
+     *
+     * @param profile
+     * @param conditionIdentifiers
+     * @param testStrategy
+     * @return
+     * @throws QuestException
+     * @since 3.2.0
+     */
+    boolean test(@Nullable Profile profile, Collection<ConditionIdentifier> conditionIdentifiers, TestStrategy testStrategy)
+            throws QuestException;
+
+    /**
+     * @since 3.2.0
+     */
+    @FunctionalInterface
+    interface TestStrategy {
+
+        Optional<Boolean> getResult(int positive, int negative, int remaining);
+    }
 }
