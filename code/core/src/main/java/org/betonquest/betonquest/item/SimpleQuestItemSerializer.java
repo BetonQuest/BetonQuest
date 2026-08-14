@@ -3,6 +3,7 @@ package org.betonquest.betonquest.item;
 import org.betonquest.betonquest.api.common.component.BookPageWrapper;
 import org.betonquest.betonquest.api.item.QuestItemSerializer;
 import org.betonquest.betonquest.api.text.TextParser;
+import org.betonquest.betonquest.item.typehandler.BannerHandler;
 import org.betonquest.betonquest.item.typehandler.BookHandler;
 import org.betonquest.betonquest.item.typehandler.ColorHandler;
 import org.betonquest.betonquest.item.typehandler.CustomModelDataHandler;
@@ -41,7 +42,7 @@ public class SimpleQuestItemSerializer implements QuestItemSerializer {
     public SimpleQuestItemSerializer(final TextParser textParser, final BookPageWrapper bookPageWrapper) {
         this(List.of(
                 new DurabilityHandler(), new NameHandler(textParser), new LoreHandler(textParser, () -> false), new EnchantmentsHandler(),
-                new BookHandler(textParser, bookPageWrapper), new PotionHandler(), new ColorHandler(), new HeadHandler(),
+                new BookHandler(textParser, bookPageWrapper), new PotionHandler(), new BannerHandler(), new ColorHandler(), new HeadHandler(),
                 new FireworkHandler(), new UnbreakableHandler(), new CustomModelDataHandler(), new FlagHandler(),
                 new QuestHandler(LoreConsumer.EMPTY)
         ));

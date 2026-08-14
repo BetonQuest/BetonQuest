@@ -2,8 +2,8 @@ package org.betonquest.betonquest.kernel.processor.adapter;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
+import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.PrimaryThreadEnforceable;
@@ -12,7 +12,6 @@ import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -33,7 +32,7 @@ public class ActionAdapter extends QuestAdapter<PlayerAction, PlayerlessAction> 
     /**
      * Instruction used to create the types.
      */
-    private final Instruction instruction;
+    private final Identifier identifier;
 
     /**
      * Conditions that must be met to execute.
@@ -41,23 +40,24 @@ public class ActionAdapter extends QuestAdapter<PlayerAction, PlayerlessAction> 
     private final Argument<List<ConditionIdentifier>> conditions;
 
     /**
-     * Create a new Wrapper for placeholders with instruction.
+     * Create a new Wrapper for actions.
      *
      * @param log              the custom logger for this class
      * @param conditionManager the condition manager
-     * @param instruction      the instruction used to create the types
+     * @param identifier       the action's identifier
      * @param player           the type requiring a profile for execution
      * @param playerless       the type working without a profile
+     * @param conditions       the conditions to check if the action should be executed
      * @throws IllegalArgumentException if there is no type provided
-     * @throws QuestException           when there was an error parsing conditions
      */
-    public ActionAdapter(final BetonQuestLogger log, final ConditionManager conditionManager, final Instruction instruction,
-                         @Nullable final PlayerAction player, @Nullable final PlayerlessAction playerless) throws QuestException {
-        super(instruction.getPackage(), player, playerless);
+    public ActionAdapter(final BetonQuestLogger log, final ConditionManager conditionManager, final Identifier identifier,
+                         @Nullable final PlayerAction player, @Nullable final PlayerlessAction playerless,
+                         final Argument<List<ConditionIdentifier>> conditions) {
+        super(identifier.getPackage(), player, playerless);
         this.log = log;
         this.conditionManager = conditionManager;
-        this.instruction = instruction;
-        conditions = instruction.identifier(ConditionIdentifier.class).list().get("conditions", Collections.emptyList());
+        this.identifier = identifier;
+        this.conditions = conditions;
     }
 
     /**
@@ -71,8 +71,8 @@ public class ActionAdapter extends QuestAdapter<PlayerAction, PlayerlessAction> 
         if (player == null || profile == null) {
             return handleNullProfile();
         }
-        log.debug(getPackage(), "Action will be fired for "
-                + (profile.getOnlineProfile().isPresent() ? "online" : "offline") + " profile.");
+        log.debug(getPackage(), "Action '%s'will be fired for %s profile.".formatted(identifier,
+                profile.getOnlineProfile().isPresent() ? "online" : "offline"));
 
         if (!conditionManager.testAll(profile, conditions.getValue(profile))) {
             log.debug(getPackage(), "Action conditions were not met for " + profile);
@@ -84,10 +84,10 @@ public class ActionAdapter extends QuestAdapter<PlayerAction, PlayerlessAction> 
 
     private boolean handleNullProfile() throws QuestException {
         if (playerless == null) {
-            log.warn(getPackage(), "Cannot execute player-dependent action '%s' without a player!".formatted(instruction.getID()));
+            log.warn(getPackage(), "Cannot execute player-dependent action '%s' without a player!".formatted(identifier));
             return false;
         }
-        log.debug(getPackage(), "Player-dependent action will be fired without a profile.");
+        log.debug(getPackage(), "Player-independent action will be fired without a profile.");
         if (!conditionManager.testAll(null, conditions.getValue(null))) {
             log.debug(getPackage(), "Action conditions were not met");
             return false;

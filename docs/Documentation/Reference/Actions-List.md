@@ -933,6 +933,18 @@ actions:
   eliminate: "run ^tag add beton ^journal add beton ^give emerald:5 ^kill"
 ```
 
+However, consider the usage of implicit actions instead of `run`.
+Here are the `eliminate` and `eliminateImplicit` actions equivalent with the important difference that the "sub actions"
+can be referenced independent and conditions work there as expected.
+
+```YAML title="As Implicit Action"
+actions:
+  eliminateImplicit:
+    addTag: "tag add beton"
+    giveEmerald: "give emerald:5"
+    kill: "kill"
+```
+
 ## `RunForAll`
 
 __Context__: @snippet:action-meta:independent@  

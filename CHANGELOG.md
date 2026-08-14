@@ -10,8 +10,11 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - counting objective related translations in the lang files can now use all counting objective related placeholders
 - `fallback` argument to point conditions to use a default value when category has no value at all
 - `section` (and implicit `section`) condition to allow usage of subsections as list of (conjugated) conditions
+- implicit `section` action to allow usage of subsections as list of actions to execute
 - `damage` objective to track dealt and taken damage
 - `updateHologram` action to force updates to (specific) holograms for a player
+- `dialog` conversation IO
+- `patterns` argument for adding and matching pattern layers on `simple` banner items
 - `equip` action to put items into players' equipment slots
 ### Changed
 - `worldguard` integration version requirement to 7.0.0
@@ -32,6 +35,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - NPE in `brew` objective when used null instead air item stack
 - Quest Items handling when clicking outside the inventory frame
 - `FancyHolograms` holograms not updating placeholders without hiding
+- `null` item in `simple` item is now treated as equal to air
 ### Security
 
 ## [3.1.0] - 2026-07-19
