@@ -1,4 +1,23 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/Configuration-Files.md
+3.2.0.1:
+  - type: SET
+    key: conversation.io.dialog.quester_in_title
+    value: true
+  - type: SET
+    key: conversation.io.dialog.only_buttons
+    value: false
+  - type: SET
+    key: conversation.io.dialog.button_width
+    value: 250
+  - type: SET
+    key: conversation.io.dialog.button_render_padding
+    value: 13
+  - type: SET
+    key: conversation.io.dialog.close_with_escape
+    value: true
+  - type: SET
+    key: conversation.io.dialog.close_button_enabled
+    value: true
 3.1.0.3:
   - type: SET
     key: conversation.io.menu.base_speed

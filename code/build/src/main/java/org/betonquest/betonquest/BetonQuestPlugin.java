@@ -7,6 +7,7 @@ import org.betonquest.betonquest.kernel.ProcessorDataLoader;
 import org.betonquest.betonquest.lib.integration.policy.Policies;
 import org.betonquest.betonquest.mc_1_20_6.BundledMC_1_20_6;
 import org.betonquest.betonquest.mc_1_21_4.BundledMC_1_21_4;
+import org.betonquest.betonquest.mc_1_21_8.BundledMC_1_21_8;
 
 import java.util.Objects;
 import java.util.Set;
@@ -55,6 +56,8 @@ public class BetonQuestPlugin extends BetonQuest {
                 () -> new BundledMC_1_20_6(this));
         integrationService.withPolicies(Policies.minimalVanillaVersion("1.21.4")).register(this,
                 () -> new BundledMC_1_21_4(this));
+        integrationService.withPolicies(Policies.minimalVanillaVersion("1.21.8")).register(this,
+                () -> new BundledMC_1_21_8(this));
         new BundledCompatibility(getBetonQuestApi().loggerFactory().create(BundledCompatibility.class), getPluginConfig(), this, integrationService)
                 .registerCompatiblePlugins(getServer().getServicesManager(), getComponentLoader().get(ProcessorDataLoader.class));
     }
