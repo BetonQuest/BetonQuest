@@ -16,6 +16,7 @@ import org.betonquest.betonquest.id.IdentifierUtil;
 import org.betonquest.betonquest.quest.condition.logik.ConjunctionCondition;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Factory to create section grouped conditions from {@link Instruction}s.
@@ -55,18 +56,12 @@ public class SectionConditionFactory implements PlayerConditionFactory, Playerle
 
     private NullableCondition parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<List<ConditionIdentifier>> identifiers = instruction.identifier(ConditionIdentifier.class).map(this::map).get();
-        final Argument<Number> min = instruction.number().atLeast(0).get("min").orElse(null);
-        final Argument<Number> max = instruction.number().atLeast(0).get("max").orElse(null);
-        if (min != null && max != null) {
-            return new SectionCondition(conditionManager, identifiers, min, max);
+        final Optional<Argument<Number>> min = instruction.number().atLeast(0).get("min");
+        final Optional<Argument<Number>> max = instruction.number().atLeast(0).get("max");
+        if (min.isEmpty() && max.isEmpty()) {
+            return new ConjunctionCondition(identifiers, conditionManager);
         }
-        if (min != null) {
-            return new SectionCondition(conditionManager, identifiers, min, profile -> Integer.MAX_VALUE);
-        }
-        if (max != null) {
-            return new SectionCondition(conditionManager, identifiers, profile -> 0, max);
-        }
-        return new ConjunctionCondition(identifiers, conditionManager);
+        return new SectionCondition(conditionManager, identifiers, min.orElse(profile -> 0), max.orElse(profile -> Integer.MAX_VALUE));
     }
 
     private List<ConditionIdentifier> map(final ConditionIdentifier identifier) throws QuestException {

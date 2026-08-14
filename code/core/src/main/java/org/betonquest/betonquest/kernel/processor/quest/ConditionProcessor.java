@@ -194,7 +194,7 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionIdentifier,
         }
     }
 
-    private boolean testStrategy(final @Nullable Profile profile, final Map<ConditionIdentifier, ConditionAdapter> conditions,
+    private boolean testStrategy(@Nullable final Profile profile, final Map<ConditionIdentifier, ConditionAdapter> conditions,
                                  final TestStrategy testStrategy) {
         int positive = 0;
         int negative = 0;
