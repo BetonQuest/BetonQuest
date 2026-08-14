@@ -13,6 +13,7 @@ import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
 import org.betonquest.betonquest.kernel.processor.adapter.ConditionAdapter;
 import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
 import org.betonquest.betonquest.quest.condition.logik.ConjunctionCondition;
+import org.betonquest.betonquest.quest.condition.number.Operation;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -20,7 +21,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -131,6 +134,10 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionIdentifier,
             log.warn(conditionID.getPackage(), "The condition " + conditionID + " is not defined!");
             return false;
         }
+        return test(profile, conditionID, condition);
+    }
+
+    private boolean test(@Nullable final Profile profile, final ConditionIdentifier conditionID, final ConditionAdapter condition) {
         if (profile == null && !condition.allowsPlayerless()) {
             log.warn(conditionID.getPackage(),
                     "Cannot check player-dependent condition '%s' without a player, returning false".formatted(conditionID));
@@ -193,5 +200,60 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionIdentifier,
                 (isMet ? "TRUE" : "FALSE") + ": " + (conditionID.isInverted() ? "inverted" : "") + " condition "
                         + conditionID + " for " + profile);
         return isMet;
+    }
+
+    public boolean testAgainstAmount(@Nullable final Profile profile, final Operation operation,
+                                     final List<ConditionIdentifier> conditionIdentifiers, final int amount) throws QuestException {
+        final Map<ConditionIdentifier, ConditionAdapter> conditions = new HashMap<>();
+        for (final ConditionIdentifier identifier : conditionIdentifiers) {
+            conditions.put(identifier, get(identifier));
+        }
+        return switch (operation) {
+            case LESS, LESS_EQUAL -> less(profile, conditions, operation, amount);
+            case EQUAL, NOT_EQUAL -> equal(profile, conditions, operation, amount);
+            case GREATER, GREATER_EQUAL -> greater(profile, conditions, operation, amount);
+        };
+    }
+
+    private boolean less(@Nullable final Profile profile, final Map<ConditionIdentifier, ConditionAdapter> conditions,
+                         final Operation operation, final int amount) {
+        int satisfied = 0;
+        for (final Map.Entry<ConditionIdentifier, ConditionAdapter> condition : conditions.entrySet()) {
+            if (test(profile, condition.getKey(), condition.getValue())) {
+                satisfied++;
+                if (!operation.check(satisfied, amount)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean equal(@Nullable final Profile profile, final Map<ConditionIdentifier, ConditionAdapter> conditions,
+                          final Operation operation, final int amount) {
+        int satisfied = 0;
+        for (final Map.Entry<ConditionIdentifier, ConditionAdapter> condition : conditions.entrySet()) {
+            if (test(profile, condition.getKey(), condition.getValue())) {
+                satisfied++;
+                if (satisfied > amount) {
+                    break;
+                }
+            }
+        }
+        return operation.check(satisfied, amount);
+    }
+
+    private boolean greater(@Nullable final Profile profile, final Map<ConditionIdentifier, ConditionAdapter> conditions,
+                            final Operation operation, final int amount) {
+        int satisfied = 0;
+        for (final Map.Entry<ConditionIdentifier, ConditionAdapter> condition : conditions.entrySet()) {
+            if (test(profile, condition.getKey(), condition.getValue())) {
+                satisfied++;
+                if (operation.check(satisfied, amount)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
