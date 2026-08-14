@@ -47,6 +47,7 @@
           "features": [
             "- Database rework",
             "- Quest Profiles",
+            "- Placeholder Escaping",
             "- Conversation Rework?"
           ]
         },
@@ -73,6 +74,13 @@
             "- Better database migration and maintenance",
             "- Required for multiple exciting features in the future"
           ]
+        },
+        "HIDDEN": {
+          "title": "Placeholder Escaping",
+          "features": [
+            "- Placeholders can be escaped to allow for currently disallowed characters",
+            "- A function placeholder can be used to get the value of a function"
+          ]
         }
       }
     },
@@ -84,7 +92,7 @@
           "title": "Version 3.2.0",
           "features": [
             "- Bulk execution of elements in subsections",
-            "- Placeholder escaping and function placeholder",
+            "- New action, objective and other features!",
             "- Improvements for point condition",
             "- Better objective property accessibility"
           ]
@@ -98,16 +106,20 @@
           ]
         },
         "west": {
-          "title": "Placeholder Escaping",
+          "title": "New Elements",
           "features": [
-            "- Placeholders can be escaped to allow for currently disallowed characters",
-            "- A function placeholder can be used to get the value of a function"
+            "- damage objective to track cumulative damage dealt or taken",
+            "- updateHologram action to manually update a hologram",
+            "- equip action to equip an item to a player",
+            "- dialog conversation IO for minecraft 1.21.8+",
+            "- patterns argument for simple item banners"
           ]
         },
         "south-west": {
           "title": "Point Condition",
           "features": [
-            "- New point condition that checks if a specific point category is set"
+            "- New haspoint and hasglobalpoint conditions that check if a specific point category is set",
+            "- Added fallback option for point conditions"
           ]
         }
       }
