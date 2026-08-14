@@ -8763,7 +8763,7 @@ Every <a href="../../Reference/Definition-Encyclopedia/#element-types">type of e
 <p>Any <em>single line instruction</em> can also be set in a subsection to better organize them by a common prefix.<br>
 To address them you simply use separators as in YAML itself:</p>
 <div class="highlight"><span class="filename">Instructions in subsections</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">startPart1</span><span class="p">:</span><span class="w"> </span><span class="s">"folder</span><span class="nv"> </span><span class="s">part1.addTag,part1.teleport"</span>
+<span class="w">  </span><span class="nt">startParts</span><span class="p">:</span><span class="w"> </span><span class="s">"folder</span><span class="nv"> </span><span class="s">part1,part2"</span>
 <span class="w">  </span><span class="nt">part1</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">addTag</span><span class="p">:</span><span class="w"> </span><span class="s">"tag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">part1_active"</span>
 <span class="w">    </span><span class="nt">teleport</span><span class="p">:</span><span class="w"> </span><span class="s">"teleport</span><span class="nv"> </span><span class="s">100;200;300;world"</span>
@@ -8771,12 +8771,17 @@ To address them you simply use separators as in YAML itself:</p>
 <span class="w">    </span><span class="nt">step1</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">notifyStart</span><span class="p">:</span><span class="w"> </span><span class="s">"notify</span><span class="nv"> </span><span class="s">Deeply</span><span class="nv"> </span><span class="s">nested</span><span class="nv"> </span><span class="s">action!"</span>
 <span class="w">      </span><span class="nt">startObjective</span><span class="p">:</span><span class="w"> </span><span class="s">"objective</span><span class="nv"> </span><span class="s">start</span><span class="nv"> </span><span class="s">part2.step1.objective"</span>
+<span class="w">  </span><span class="nt">startPartsVerbose</span><span class="p">:</span><span class="w"> </span><span class="s">"folder</span><span class="nv"> </span><span class="s">part1.addTag,part1.teleport,\</span>
+<span class="w">        </span><span class="s">part2.step1.notifyStart,part2.step1.startObjective"</span>
 <span class="nt">objectives</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">part2</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">step1</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">objective</span><span class="p">:</span><span class="w"> </span><span class="s">"jump</span><span class="nv"> </span><span class="s">1"</span>
 </code></pre></div>
 <p>More complex features utilizing sections can't be nested in such a manner.</p>
+<p>You can also directly use any <code>actions</code> and <code>conditions</code> subsection as their respective type itself.<br>
+In the example above, <code>startParts</code> is executing the sections part1 and part2, effectively executing all actions nested below.<br>
+The <code>startPartsVerbose</code> action achieves exactly the same, but is much more verbose and prone to changes in subsections.</p>
 <p><a class="md-button" href="../Scripting-Elements/">Scripting Elements</a></p>
 
 

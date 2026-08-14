@@ -12172,6 +12172,15 @@ Don't use conditions here, it behaves strangely.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">eliminate</span><span class="p">:</span><span class="w"> </span><span class="s">"run</span><span class="nv"> </span><span class="s">^tag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">beton</span><span class="nv"> </span><span class="s">^journal</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">beton</span><span class="nv"> </span><span class="s">^give</span><span class="nv"> </span><span class="s">emerald:5</span><span class="nv"> </span><span class="s">^kill"</span>
 </code></pre></div>
+<p>However, consider the usage of implicit actions instead of <code>run</code>.
+Here are the <code>eliminate</code> and <code>eliminateImplicit</code> actions equivalent with the important difference that the "sub actions"
+can be referenced independent and conditions work there as expected.</p>
+<div class="highlight"><span class="filename">As Implicit Action</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">eliminateImplicit</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">addTag</span><span class="p">:</span><span class="w"> </span><span class="s">"tag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">beton"</span>
+<span class="w">    </span><span class="nt">giveEmerald</span><span class="p">:</span><span class="w"> </span><span class="s">"give</span><span class="nv"> </span><span class="s">emerald:5"</span>
+<span class="w">    </span><span class="nt">kill</span><span class="p">:</span><span class="w"> </span><span class="s">"kill"</span>
+</code></pre></div>
 <h2 id="runforall"><code>RunForAll</code><a class="headerlink" href="#runforall" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="&lt;b&gt;Independent&lt;/b&gt;&lt;br&gt; This action can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"></path></svg></span><br>
 <strong>Syntax</strong>: <code>runforall &lt;actions&gt; &lt;where&gt;</code><br>
