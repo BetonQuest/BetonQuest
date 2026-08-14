@@ -42,13 +42,24 @@ conditions:
 ## `Armor`
 
 __Context__: @snippet:condition-meta:online@  
-__Syntax__: `armor <item>`  
+__Syntax__: `armor <item> [slots]`  
 __Description__: Whether the player is wearing the specified armor specified in the _items_ section.
 
-```YAML title="Example"
+If specific `slots` are given, only the specified [EquipmentSlots](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/inventory/EquipmentSlot.html)
+are checked instead of the whole equipment.
+
+| Parameter                           | Type               | Explanation                                      |
+|-------------------------------------|--------------------|--------------------------------------------------|
+| item <br>[Item]                     | Required           | The items with their optional amounts.           |
+| slots <br>List[PlayerEquipmentSlot] | Optional <br>[ALL] | The equipment slots in which the item should be. |
+
+```YAML title="Examples"
 conditions:
   armorHelmet: "armor helmet_of_concrete"
+  legsAreFree: "armor air slots:legs,feet" #(1)!
 ```
+
+1. `air: simple AIR`
 
 ## `Biome`
 

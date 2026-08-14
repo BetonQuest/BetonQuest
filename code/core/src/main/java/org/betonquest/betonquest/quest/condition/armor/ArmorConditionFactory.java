@@ -7,6 +7,9 @@ import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.quest.condition.OnlineConditionAdapter;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
+import org.bukkit.inventory.EquipmentSlot;
+
+import java.util.List;
 
 /**
  * Factory for {@link ArmorCondition}s from {@link Instruction}s.
@@ -22,6 +25,7 @@ public class ArmorConditionFactory implements PlayerConditionFactory {
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<ItemWrapper> armorItem = instruction.item().get();
-        return new OnlineConditionAdapter(new ArmorCondition(armorItem));
+        final Argument<List<EquipmentSlot>> slots = instruction.enumeration(EquipmentSlot.class).list().get("slots").orElse(null);
+        return new OnlineConditionAdapter(new ArmorCondition(armorItem, slots));
     }
 }
