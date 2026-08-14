@@ -36,6 +36,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Quest Items handling when clicking outside the inventory frame
 - `FancyHolograms` holograms not updating placeholders without hiding
 - `null` item in `simple` item is now treated as equal to air
+- MobKillNotifier that handles neutral mob kills for example with skills now work probably when called async
 ### Security
 
 ## [3.1.0] - 2026-07-19
