@@ -155,7 +155,7 @@ To address them you simply use separators as in YAML itself:
 
 ```YAML title="Instructions in subsections"
 actions:
-  startPart1: "folder part1.addTag,part1.teleport"
+  startParts: "folder part1,part2"
   part1:
     addTag: "tag add part1_active"
     teleport: "teleport 100;200;300;world"
@@ -163,6 +163,8 @@ actions:
     step1:
       notifyStart: "notify Deeply nested action!"
       startObjective: "objective start part2.step1.objective"
+  startPartsVerbose: "folder part1.addTag,part1.teleport,\
+        part2.step1.notifyStart,part2.step1.startObjective"
 objectives:
   part2:
     step1:
@@ -170,5 +172,9 @@ objectives:
 ```
 
 More complex features utilizing sections can't be nested in such a manner.
+
+You can also directly use any `actions` and `conditions` subsection as their respective type itself.  
+In the example above, `startParts` is executing the sections part1 and part2, effectively executing all actions nested below.  
+The `startPartsVerbose` action achieves exactly the same, but is much more verbose and prone to changes in subsections.
 
 [Scripting Elements](./Scripting-Elements.md){ .md-button }
