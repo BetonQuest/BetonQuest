@@ -1,10 +1,13 @@
-package org.betonquest.betonquest.api.instruction.tokenizer;
+package org.betonquest.betonquest.lib.instruction.tokenizer.quoting;
+
+import org.betonquest.betonquest.lib.instruction.tokenizer.TokenizerException;
+import org.betonquest.betonquest.lib.instruction.tokenizer.TokenizerState;
 
 /**
  * The state of a quoted word. Escaping with backslashes is possible.
  * A double quote at the end of the string is required.
  */
-public class QuotedWordState implements TokenizerState {
+public class QuotedWordState implements TokenizerState<QuotingTokenizerContext> {
 
     /**
      * The initial quoting level of a quoted word.
@@ -33,7 +36,7 @@ public class QuotedWordState implements TokenizerState {
     }
 
     @Override
-    public TokenizerState parseNext(final TokenizerContext ctx, final int codePoint) {
+    public TokenizerState<QuotingTokenizerContext> parseNext(final QuotingTokenizerContext ctx, final int codePoint) {
         if (ctx.settings().isEscape(codePoint)) {
             return new EscapeState(this);
         }
@@ -50,7 +53,7 @@ public class QuotedWordState implements TokenizerState {
     }
 
     @Override
-    public void parseEnd(final TokenizerContext ctx) throws TokenizerException {
+    public void parseEnd(final QuotingTokenizerContext ctx) throws TokenizerException {
         throw new TokenizerException("Expected quoted string to end but reached end of data.");
     }
 }

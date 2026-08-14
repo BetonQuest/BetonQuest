@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.api.instruction;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.tokenizer.Token;
-import org.betonquest.betonquest.api.instruction.tokenizer.Tokenizer;
-import org.betonquest.betonquest.api.instruction.tokenizer.TokenizerException;
+import org.betonquest.betonquest.lib.instruction.tokenizer.Token;
+import org.betonquest.betonquest.lib.instruction.tokenizer.Tokenizer;
+import org.betonquest.betonquest.lib.instruction.tokenizer.TokenizerException;
 
 import java.util.List;
 import java.util.stream.Stream;

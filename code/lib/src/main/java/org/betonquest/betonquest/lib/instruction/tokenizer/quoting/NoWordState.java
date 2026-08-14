@@ -1,10 +1,13 @@
-package org.betonquest.betonquest.api.instruction.tokenizer;
+package org.betonquest.betonquest.lib.instruction.tokenizer.quoting;
+
+import org.betonquest.betonquest.lib.instruction.tokenizer.TokenizerException;
+import org.betonquest.betonquest.lib.instruction.tokenizer.TokenizerState;
 
 /**
  * The state in between words. Whitespace is ignored,
  * double quotes start quoted strings and everything else starts unquoted strings,
  */
-public class NoWordState implements TokenizerState {
+public class NoWordState implements TokenizerState<QuotingTokenizerContext> {
 
     /**
      * Create the in between words state.
@@ -13,7 +16,7 @@ public class NoWordState implements TokenizerState {
     }
 
     @Override
-    public TokenizerState parseNext(final TokenizerContext ctx, final int codePoint) throws TokenizerException {
+    public TokenizerState<QuotingTokenizerContext> parseNext(final QuotingTokenizerContext ctx, final int codePoint) throws TokenizerException {
         if (ctx.settings().isSeparator(codePoint)) {
             return this;
         }
@@ -29,7 +32,7 @@ public class NoWordState implements TokenizerState {
     }
 
     @Override
-    public void parseEnd(final TokenizerContext ctx) {
+    public void parseEnd(final QuotingTokenizerContext ctx) {
         // no action required
     }
 }

@@ -1,5 +1,8 @@
-package org.betonquest.betonquest.api.instruction.tokenizer;
+package org.betonquest.betonquest.lib.instruction.tokenizer.quoting;
 
+import org.betonquest.betonquest.lib.instruction.tokenizer.Token;
+import org.betonquest.betonquest.lib.instruction.tokenizer.Tokenizer;
+import org.betonquest.betonquest.lib.instruction.tokenizer.TokenizerException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -28,7 +31,8 @@ class PlaceholderTokenizerTest {
                 Arguments.of("test.{with quoted \\{brackets\\} inside}.suffix",
                         tokens(t("test"), t("with quoted {brackets} inside"), t("suffix"))),
                 Arguments.of("test.{in nested {with quoted \\{brackets\\} inside}}.suffix",
-                        tokens(t("test"), children(t("in nested "), t("with quoted {brackets} inside")), t("suffix")))
+                        tokens(t("test"), children(t("in nested "), t("with quoted {brackets} inside")), t("suffix"))),
+                Arguments.of("ph.{{%constant.vault%}_eco_balance}", tokens(t("ph"), children(t("%constant.vault%"), t("_eco_balance"))))
         );
     }
 
@@ -64,7 +68,7 @@ class PlaceholderTokenizerTest {
     @ParameterizedTest
     @MethodSource("validInstructions")
     void strings_are_tokenized_correctly(final String instruction, final List<Token> expected) throws TokenizerException {
-        final Tokenizer tokenizer = new QuotingTokenizer(TokenizerSettings.PLACEHOLDER);
+        final Tokenizer tokenizer = new QuotingTokenizer(QuotingTokenizerSettings.PLACEHOLDER);
         final Token[] parsed = tokenizer.tokens(instruction);
 
         final String[] mappedParsed = Stream.of(parsed).map(Token::toString).toArray(String[]::new);
@@ -75,7 +79,7 @@ class PlaceholderTokenizerTest {
     @ParameterizedTest
     @MethodSource("invalidInstructions")
     void invalid_strings_throw_tokenizer_exception(final String instruction) {
-        final Tokenizer tokenizer = new QuotingTokenizer(TokenizerSettings.PLACEHOLDER);
+        final Tokenizer tokenizer = new QuotingTokenizer(QuotingTokenizerSettings.PLACEHOLDER);
         assertThrows(TokenizerException.class, () -> tokenizer.tokens(instruction), "Expected tokenizing to fail for instruction: " + instruction);
     }
 }

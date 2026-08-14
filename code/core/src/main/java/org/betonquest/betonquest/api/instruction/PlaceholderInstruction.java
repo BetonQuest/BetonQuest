@@ -5,9 +5,9 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
-import org.betonquest.betonquest.api.instruction.tokenizer.Token;
-import org.betonquest.betonquest.api.instruction.tokenizer.Tokenizer;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
+import org.betonquest.betonquest.lib.instruction.tokenizer.Token;
+import org.betonquest.betonquest.lib.instruction.tokenizer.Tokenizer;
 
 import java.util.stream.Stream;
 
