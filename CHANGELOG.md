@@ -15,6 +15,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `updateHologram` action to force updates to (specific) holograms for a player
 - `dialog` conversation IO
 - `patterns` argument for adding and matching pattern layers on `simple` banner items
+- `equip` action to put items into players' equipment slots
 ### Changed
 - `worldguard` integration version requirement to 7.0.0
 - `worldedit` integration version requirement to 7.3.0
