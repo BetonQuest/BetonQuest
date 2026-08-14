@@ -11105,11 +11105,38 @@ Instruction string is exactly the same as in <code>alternative</code>.</p>
 </code></pre></div>
 <h2 id="armor"><code>Armor</code><a class="headerlink" href="#armor" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span><br>
-<strong>Syntax</strong>: <code>armor &lt;item&gt;</code><br>
+<strong>Syntax</strong>: <code>armor &lt;item&gt; [slots]</code><br>
 <strong>Description</strong>: Whether the player is wearing the specified armor specified in the <em>items</em> section.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<p>If specific <code>slots</code> are given, only the specified <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/inventory/EquipmentSlot.html">EquipmentSlots</a>
+are checked instead of the whole equipment.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>item <br>[<abbr title="An item refers to elements defined in the items section of a quest package. It may be specified with an amount after a colon.">Item</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The items with their optional amounts.</td>
+</tr>
+<tr>
+<td>slots <br><abbr title="A list is a sequence of values separated by commas.">List</abbr>[<abbr title="hand, off_hand, feet, legs, chest, head">PlayerEquipmentSlot</abbr>]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr> <br>[ALL]</td>
+<td>The equipment slots in which the item should be.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">armorHelmet</span><span class="p">:</span><span class="w"> </span><span class="s">"armor</span><span class="nv"> </span><span class="s">helmet_of_concrete"</span>
+<span class="w">  </span><span class="nt">legsAreFree</span><span class="p">:</span><span class="w"> </span><span class="s">"armor</span><span class="nv"> </span><span class="s">air</span><span class="nv"> </span><span class="s">slots:legs,feet"</span><span class="w"> </span><span class="c1">#(1)!</span>
 </code></pre></div>
+<ol>
+<li><code>air: simple AIR</code></li>
+</ol>
 <h2 id="biome"><code>Biome</code><a class="headerlink" href="#biome" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span><br>
 <strong>Syntax</strong>: <code>biome &lt;biome&gt;</code><br>
