@@ -68,7 +68,7 @@ public class AdvancementNotifyIO extends NotifyIO {
         final UUID uuid = UUID.randomUUID();
         final NamespacedKey rootKey = new NamespacedKey("betonquest", "notify/" + uuid + "-root");
         final NamespacedKey key = new NamespacedKey("betonquest", "notify/" + uuid + "-message");
-        loadAdvancement(message, rootKey, key);
+        loadAdvancementSync(message, rootKey, key);
 
         Bukkit.getScheduler().runTask(plugin, run -> grant(key, onlineProfile.getPlayer()));
         new BukkitRunnable() {
@@ -90,19 +90,31 @@ public class AdvancementNotifyIO extends NotifyIO {
     private void loadAdvancement(final JsonElement message, final NamespacedKey rootKey, final NamespacedKey key) throws QuestException {
         final String advancementRoot = generateJson(null, null);
         final String advancement = generateJson(message, rootKey);
-        final Future<JsonParseException> exception = plugin.getServer().getScheduler().callSyncMethod(plugin, () -> {
+        try {
+            Bukkit.getUnsafe().loadAdvancement(rootKey, advancementRoot);
+            Bukkit.getUnsafe().loadAdvancement(key, advancement);
+        } catch (final JsonParseException e) {
+            throw new QuestException("Could not parse Advancement due to json parse error: %s".formatted(e.getMessage()), e);
+        }
+    }
+
+    private void loadAdvancementSync(final JsonElement message, final NamespacedKey rootKey, final NamespacedKey key) throws QuestException {
+        if (plugin.getServer().isPrimaryThread()) {
+            loadAdvancement(message, rootKey, key);
+            return;
+        }
+        final Future<QuestException> future = plugin.getServer().getScheduler().callSyncMethod(plugin, () -> {
             try {
-                Bukkit.getUnsafe().loadAdvancement(rootKey, advancementRoot);
-                Bukkit.getUnsafe().loadAdvancement(key, advancement);
+                loadAdvancement(message, rootKey, key);
                 return null;
-            } catch (final JsonParseException e) {
+            } catch (final QuestException e) {
                 return e;
             }
         });
         try {
-            final JsonParseException jsonException = exception.get();
-            if (jsonException != null) {
-                throw new QuestException("Could not parse Advancement do to json parse error: %s".formatted(jsonException.getMessage()), jsonException);
+            final QuestException exception = future.get();
+            if (exception != null) {
+                throw exception;
             }
         } catch (InterruptedException | ExecutionException e) {
             throw new QuestException("Could not load Advancement: %s".formatted(e.getMessage()), e);

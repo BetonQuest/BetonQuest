@@ -4,7 +4,6 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.FlagState;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.chain.InstructionChainParser;
@@ -17,11 +16,11 @@ import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultChainableInstruction;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultInstructionChainParser;
+import org.betonquest.betonquest.lib.instruction.reader.SingleValueReader;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -129,8 +128,7 @@ public class DefaultSectionInstruction implements SectionInstruction {
 
     @Override
     public InstructionChainParser chainForArgument(final String argument) {
-        final DefaultChainableInstruction instruction = new DefaultChainableInstruction(placeholders, packageManager, questPackage,
-                () -> argument, val -> argument, val -> Map.entry(FlagState.DEFINED, val), predicate -> Map.of("", argument));
+        final DefaultChainableInstruction instruction = new DefaultChainableInstruction(placeholders, packageManager, questPackage, new SingleValueReader(() -> argument));
         return new DefaultInstructionChainParser(instruction, parsers);
     }
 

@@ -81,6 +81,13 @@ conversation:
       show_npc_text: true
     slowtellraw:
       message_delay: 10
+    dialog:
+      quester_in_title: true
+      only_buttons: false
+      button_width: 250
+      button_render_padding: 13
+      close_with_escape: true
+      close_button_enabled: true
 npc:
   accept_left_click: false
   interaction_limit: 500
