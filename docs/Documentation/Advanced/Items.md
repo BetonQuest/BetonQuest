@@ -263,6 +263,23 @@ color:#ff00ff
 color:none
 ```
 
+### Banners
+
+_This applies to banners._
+
+The banner's base color is selected through its material, for example `RED_BANNER`.
+
+- `patterns` - an ordered, comma-separated list of pattern layers. Each layer consists of a
+  [color](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/DyeColor.html) and a
+  [pattern type](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/block/banner/PatternType.html), separated by a colon.
+  Layers are applied from left to right, starting at the bottom. Use `none` to require a banner without any patterns.
+
+```YAML title="Examples"
+items:
+  heraldicBanner: simple RED_BANNER patterns:yellow:cross,black:border
+  plainBanner: simple WHITE_BANNER patterns:none
+```
+
 ### Fireworks
 
 _This applies to fireworks._
