@@ -11419,7 +11419,7 @@ Additional messages can be defined by separating them with <code>|</code> charac
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="&lt;b&gt;Independent&lt;/b&gt;&lt;br&gt; This action can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"></path></svg></span><br>
 <strong>Syntax</strong>: <code>chestgive &lt;location&gt; &lt;items&gt; {dropExcess}</code><br>
 <strong>Description</strong>: Put items into the chest at the specified location.</p>
-<p>This works the same as <a href="#give"><code>give</code> action</a>, but it puts the items in a block with an inventory at the specified location.<br>
+<p>This works the same as the <a href="#give"><code>give</code> action</a>, but it puts the items in a block with an inventory at the specified location.<br>
 At the location may be any block with an inventory, i.e., a hopper or a dispenser.<br>
 If the chest is full, the items will be dropped on the ground if the <code>dropExcess</code> flag is present or set to <code>true</code>.</p>
 <table>
@@ -11454,11 +11454,41 @@ If the chest is full, the items will be dropped on the ground if the <code>dropE
 </code></pre></div>
 <h2 id="chesttake"><code>ChestTake</code><a class="headerlink" href="#chesttake" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="&lt;b&gt;Independent&lt;/b&gt;&lt;br&gt; This action can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"></path></svg></span><br>
-<strong>Syntax</strong>: <code>chesttake &lt;location&gt; &lt;items&gt; [abort] [fail]</code><br>
+<strong>Syntax</strong>: <code>chesttake &lt;location&gt; &lt;items&gt; {abort} [fail]</code><br>
 <strong>Description</strong>: Take items from the chest at the specified location.</p>
-<p>This action works the same as <code>take</code> action, but it takes items from a chest at specified location.
-The instruction string is defined in the same way as in <code>chestgive</code> action
-and accepts the <code>abort</code> and <code>fail</code> options from the <code>take</code> action.</p>
+<p>This action works the same as the <a href="#take"><code>take</code> action</a>, but it takes the items from a block with an inventory at the specified location.
+The instruction accepts the same <code>abort</code> and <code>fail</code> options.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>location<br><a href="../Definition-Encyclopedia/#unified-location-format">[Location]</a></td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The location of the block with inventory of which the items should be taken from. In case there is no chest at the given location an error is thrown.</td>
+</tr>
+<tr>
+<td>items<br><abbr title="A list is a sequence of values separated by commas.">List</abbr>[<abbr title="An item refers to elements defined in the items section of a quest package. It may be specified with an amount after a colon.">Item</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The items with their optional amounts.</td>
+</tr>
+<tr>
+<td>abort<br>[<abbr title="A boolean can be either true or false.">Boolean</abbr>]</td>
+<td><abbr title="A flag can be either absent or undefined with separate default values [absent, undefined] or explicitly defined with a value.">Flag</abbr><br>[false, true]</td>
+<td>No items will be taken if not all specified items are present.</td>
+</tr>
+<tr>
+<td>fail<br><abbr title="A list is a sequence of values separated by commas.">List</abbr>[Identifier]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr><br>[None]</td>
+<td>If the action fails to take all items, those actions will be executed.</td>
+</tr>
+</tbody>
+</table>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">chesttake</span><span class="p">:</span><span class="w"> </span><span class="s">"chesttake</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">emerald:5,sword"</span>
 <span class="w">  </span><span class="nt">finishRiddle</span><span class="p">:</span><span class="w"> </span><span class="s">"chesttake</span><span class="nv"> </span><span class="s">300;200;100;world</span><span class="nv"> </span><span class="s">stone:8,artifact:2,sand:3</span><span class="nv"> </span><span class="s">abort</span><span class="nv"> </span><span class="s">fail:thunder"</span>
