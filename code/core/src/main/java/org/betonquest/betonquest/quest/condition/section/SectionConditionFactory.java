@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.NullableCondition;
 import org.betonquest.betonquest.api.quest.condition.NullableConditionAdapter;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -15,11 +14,8 @@ import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.id.IdentifierUtil;
 import org.betonquest.betonquest.quest.condition.logik.ConjunctionCondition;
-import org.betonquest.betonquest.quest.condition.number.Operation;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Factory to create section grouped conditions from {@link Instruction}s.
@@ -49,81 +45,31 @@ public class SectionConditionFactory implements PlayerConditionFactory, Playerle
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        return parseInstruction(instruction);
+        return new NullableConditionAdapter(parseInstruction(instruction));
     }
 
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
-        return parseInstruction(instruction);
+        return new NullableConditionAdapter(parseInstruction(instruction));
     }
 
-    private NullableConditionAdapter parseInstruction(final Instruction instruction) throws QuestException {
-        final Argument<List<ConditionIdentifier>> conditionIDs = instruction.identifier(ConditionIdentifier.class).map(this::map).get();
-        final Argument<Operation> operation = instruction.parse(Operation::fromSymbol).get("operation", Operation.GREATER_EQUAL);
-        final Argument<Number> amount = instruction.number().atLeast(1).get("amount").orElse(null);
-        if (amount == null) {
-            return new NullableConditionAdapter(new ConjunctionCondition(conditionIDs, conditionManager));
+    private NullableCondition parseInstruction(final Instruction instruction) throws QuestException {
+        final Argument<List<ConditionIdentifier>> identifiers = instruction.identifier(ConditionIdentifier.class).map(this::map).get();
+        final Argument<Number> min = instruction.number().atLeast(0).get("min").orElse(null);
+        final Argument<Number> max = instruction.number().atLeast(0).get("max").orElse(null);
+        if (min != null && max != null) {
+            return new SectionCondition(conditionManager, identifiers, min, max);
         }
-        return new NullableConditionAdapter(new SectionCondition(conditionManager, conditionIDs, operation, amount));
+        if (min != null) {
+            return new SectionCondition(conditionManager, identifiers, min, profile -> Integer.MAX_VALUE);
+        }
+        if (max != null) {
+            return new SectionCondition(conditionManager, identifiers, profile -> 0, max);
+        }
+        return new ConjunctionCondition(identifiers, conditionManager);
     }
 
     private List<ConditionIdentifier> map(final ConditionIdentifier identifier) throws QuestException {
         return IdentifierUtil.subsectionIdentifiers(identifierFactory, identifier);
-    }
-
-    /**
-     * Checks specified conditions against a comparison operation.
-     *
-     * @param conditionManager the condition manager
-     * @param conditionIDs     the conditions to check
-     * @param operation        the check on the actual satisfied conditions and the amount
-     * @param amount           the amount which needs to be matched
-     */
-    private record SectionCondition(ConditionManager conditionManager, Argument<List<ConditionIdentifier>> conditionIDs,
-                                    Argument<Operation> operation, Argument<Number> amount)
-            implements NullableCondition {
-
-        @Override
-        public boolean check(@Nullable final Profile profile) throws QuestException {
-            final List<ConditionIdentifier> conditions = conditionIDs.getValue(profile);
-            final Operation operation = this.operation.getValue(profile);
-            final int amount = this.amount.getValue(profile).intValue();
-            return conditionManager.test(profile, conditions, fromOperation(operation, amount));
-        }
-
-        private ConditionManager.TestStrategy fromOperation(final Operation operation, final int amount) {
-            return switch (operation) {
-                case LESS, LESS_EQUAL -> less(operation, amount);
-                case EQUAL, NOT_EQUAL -> equal(operation, amount);
-                case GREATER, GREATER_EQUAL -> greater(operation, amount);
-            };
-        }
-
-        private ConditionManager.TestStrategy less(final Operation operation, final int amount) {
-            return (positive, negative, remaining) -> {
-                if (!operation.check(positive, amount)) {
-                    return Optional.of(false);
-                }
-                return Optional.empty();
-            };
-        }
-
-        private ConditionManager.TestStrategy equal(final Operation operation, final int amount) {
-            return (positive, negative, remaining) -> {
-                if (positive > amount) {
-                    return Optional.of(operation.check(positive, amount));
-                }
-                return Optional.empty();
-            };
-        }
-
-        private ConditionManager.TestStrategy greater(final Operation operation, final int amount) {
-            return (positive, negative, remaining) -> {
-                if (operation.check(positive, amount)) {
-                    return Optional.of(true);
-                }
-                return Optional.empty();
-            };
-        }
     }
 }

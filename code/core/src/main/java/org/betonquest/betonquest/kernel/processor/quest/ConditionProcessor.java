@@ -134,10 +134,6 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionIdentifier,
             log.warn(conditionID.getPackage(), "The condition " + conditionID + " is not defined!");
             return false;
         }
-        return test(profile, conditionID, condition);
-    }
-
-    private boolean test(@Nullable final Profile profile, final ConditionIdentifier conditionID, final ConditionAdapter condition) {
         if (profile == null && !condition.allowsPlayerless()) {
             log.warn(conditionID.getPackage(),
                     "Cannot check player-dependent condition '%s' without a player, returning false".formatted(conditionID));
@@ -175,11 +171,15 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionIdentifier,
 
     @Override
     public boolean test(@Nullable final Profile profile, final Collection<ConditionIdentifier> conditionIdentifiers,
-                        final TestStrategy testStrategy) throws QuestException {
+                        final TestStrategy testStrategy) {
         final Map<ConditionIdentifier, ConditionAdapter> conditions = new HashMap<>();
         boolean requiresMainThread = false;
         for (final ConditionIdentifier identifier : conditionIdentifiers) {
-            final ConditionAdapter adapter = get(identifier);
+            final ConditionAdapter adapter = values.get(identifier);
+            if (adapter == null) {
+                log.warn(identifier.getPackage(), "The condition " + identifier + " is not defined!");
+                return false;
+            }
             conditions.put(identifier, adapter);
             requiresMainThread |= adapter.isPrimaryThreadEnforced();
         }
