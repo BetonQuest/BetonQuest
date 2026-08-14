@@ -96,7 +96,7 @@ __Context__: @snippet:action-meta:independent@
 __Syntax__: `chestgive <location> <items> {dropExcess}`  
 __Description__: Put items into the chest at the specified location.
 
-This works the same as [`give` action](#give), but it puts the items in a block with an inventory at the specified location.  
+This works the same as the [`give` action](#give), but it puts the items in a block with an inventory at the specified location.  
 At the location may be any block with an inventory, i.e., a hopper or a dispenser.  
 If the chest is full, the items will be dropped on the ground if the `dropExcess` flag is present or set to `true`.
 
@@ -115,12 +115,18 @@ actions:
 ## `ChestTake`
 
 __Context__: @snippet:action-meta:independent@  
-__Syntax__: `chesttake <location> <items> [abort] [fail]`  
+__Syntax__: `chesttake <location> <items> {abort} [fail]`  
 __Description__: Take items from the chest at the specified location.
 
-This action works the same as `take` action, but it takes items from a chest at specified location.
-The instruction string is defined in the same way as in `chestgive` action
-and accepts the `abort` and `fail` options from the `take` action.
+This action works the same as the [`take` action](#take), but it takes the items from a block with an inventory at the specified location.
+The instruction accepts the same `abort` and `fail` options.
+
+| Parameter                                                                      | Type                  | Explanation                                                                                                                                           |
+|--------------------------------------------------------------------------------|-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| location<br>[[Location]](./Definition-Encyclopedia.md#unified-location-format) | Required              | The location of the block with inventory of which the items should be taken from. In case there is no chest at the given location an error is thrown. |
+| items<br>List[Item]                                                            | Required              | The items with their optional amounts.                                                                                                                |
+| abort<br>[Boolean]                                                             | Flag<br>[false, true] | No items will be taken if not all specified items are present.                                                                                        |
+| fail<br>List[Identifier]                                                       | Optional<br>[None]    | If the action fails to take all items, those actions will be executed.                                                                                |
 
 ```YAML title="Example"
 actions:
