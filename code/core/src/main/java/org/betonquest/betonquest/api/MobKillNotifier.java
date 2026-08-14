@@ -3,6 +3,7 @@ package org.betonquest.betonquest.api;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.ProfileEvent;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.HandlerList;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -63,7 +64,7 @@ public final class MobKillNotifier {
             }
             instance.entities.add(killed.getUniqueId());
         }
-        new MobKilledEvent(killer, killed).callEvent();
+        new MobKilledEvent(killer, !Bukkit.getServer().isPrimaryThread(), killed).callEvent();
     }
 
     /**
@@ -79,11 +80,12 @@ public final class MobKillNotifier {
         /**
          * Create a new Mob killed event.
          *
-         * @param killer the profile to progress
-         * @param killed the entity to count as progress
+         * @param killer  the profile to progress
+         * @param isAsync whether the event is async
+         * @param killed  the entity to count as progress
          */
-        public MobKilledEvent(final Profile killer, final Entity killed) {
-            super(killer);
+        public MobKilledEvent(final Profile killer, final boolean isAsync, final Entity killed) {
+            super(killer, isAsync);
             this.killed = killed;
         }
 
