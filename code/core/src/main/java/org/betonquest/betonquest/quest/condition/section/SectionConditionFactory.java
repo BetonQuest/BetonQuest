@@ -87,53 +87,7 @@ public class SectionConditionFactory implements PlayerConditionFactory, Playerle
             final List<ConditionIdentifier> conditions = conditionIDs.getValue(profile);
             final Operation operation = this.operation.getValue(profile);
             final int amount = this.amount.getValue(profile).intValue();
-            return switch (operation) {
-                case LESS, LESS_EQUAL -> less(profile, conditions, operation, amount);
-                case EQUAL, NOT_EQUAL -> equal(profile, conditions, operation, amount);
-                case GREATER, GREATER_EQUAL -> greater(profile, conditions, operation, amount);
-            };
-        }
-
-        private boolean less(@Nullable final Profile profile, final List<ConditionIdentifier> conditions,
-                             final Operation operation, final int amount) {
-            int satisfied = 0;
-            for (final ConditionIdentifier condition : conditions) {
-                if (conditionManager.test(profile, condition)) {
-                    satisfied++;
-                    if (!operation.check(satisfied, amount)) {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-
-        private boolean equal(@Nullable final Profile profile, final List<ConditionIdentifier> conditions,
-                              final Operation operation, final int amount) {
-            int satisfied = 0;
-            for (final ConditionIdentifier condition : conditions) {
-                if (conditionManager.test(profile, condition)) {
-                    satisfied++;
-                    if (satisfied > amount) {
-                        break;
-                    }
-                }
-            }
-            return operation.check(satisfied, amount);
-        }
-
-        private boolean greater(@Nullable final Profile profile, final List<ConditionIdentifier> conditions,
-                                final Operation operation, final int amount) {
-            int satisfied = 0;
-            for (final ConditionIdentifier condition : conditions) {
-                if (conditionManager.test(profile, condition)) {
-                    satisfied++;
-                    if (operation.check(satisfied, amount)) {
-                        return true;
-                    }
-                }
-            }
-            return false;
+            return operation.check(conditionManager.testAmount(profile, conditions), amount);
         }
     }
 }

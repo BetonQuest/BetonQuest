@@ -83,4 +83,6 @@ public interface ConditionManager {
      * @since 3.0.0
      */
     boolean testAny(@Nullable Profile profile, Collection<ConditionIdentifier> conditionIdentifiers);
+
+    int testAmount(@Nullable final Profile profile, final Collection<ConditionIdentifier> conditionIdentifiers);
 }

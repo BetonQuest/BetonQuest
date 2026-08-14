@@ -142,6 +142,35 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionIdentifier,
         return checkOutcome(profile, conditionID, condition);
     }
 
+    @Override
+    public int testAmount(@Nullable final Profile profile, final Collection<ConditionIdentifier> conditionIDs) {
+        final Function<Stream<ConditionIdentifier>, Integer> function =
+                stream -> Math.toIntExact(stream.filter(id -> test(profile, id)).count());
+
+        if (Bukkit.isPrimaryThread()) {
+            return function.apply(conditionIDs.stream());
+        }
+
+        final List<ConditionIdentifier> syncList = new ArrayList<>();
+        final List<ConditionIdentifier> asyncList = new ArrayList<>();
+        conditionIDs.forEach(id -> {
+            final ConditionAdapter adapter = values.get(id);
+            final boolean syncAsync = adapter != null && adapter.isPrimaryThreadEnforced();
+            (syncAsync ? syncList : asyncList).add(id);
+        });
+
+        final Future<Integer> syncFuture = syncList.isEmpty() ? CompletableFuture.completedFuture(0)
+                : scheduler.callSyncMethod(plugin, () -> function.apply(syncList.stream()));
+        final int asyncResult = function.apply(asyncList.stream());
+
+        try {
+            return asyncResult + syncFuture.get();
+        } catch (final InterruptedException | ExecutionException e) {
+            log.reportException(e);
+            return 0;
+        }
+    }
+
     private boolean checkOutcomeSync(@Nullable final Profile profile, final ConditionIdentifier conditionID, final ConditionAdapter condition) {
         try {
             return scheduler.callSyncMethod(plugin, () -> checkOutcome(profile, conditionID, condition)).get();
