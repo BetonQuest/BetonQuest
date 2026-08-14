@@ -3778,6 +3778,29 @@
       
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#banners">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Banners
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#fireworks">
     <span class="md-ellipsis">
 
@@ -8778,6 +8801,29 @@
       
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#banners">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Banners
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#fireworks">
     <span class="md-ellipsis">
 
@@ -9212,6 +9258,19 @@ Now if you want to make sure the potion doesn't contain a specific effect, prefi
 <div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">color:light_blue</span>
 <span class="l l-Scalar l-Scalar-Plain">color:#ff00ff</span>
 <span class="l l-Scalar l-Scalar-Plain">color:none</span>
+</code></pre></div>
+<h3 id="banners">Banners<a class="headerlink" href="#banners" title="Permanent link">🔗</a></h3>
+<p><em>This applies to banners.</em></p>
+<p>The banner's base color is selected through its material, for example <code>RED_BANNER</code>.</p>
+<ul>
+<li><code>patterns</code> - an ordered, comma-separated list of pattern layers. Each layer consists of a
+  <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/DyeColor.html">color</a> and a
+  <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/block/banner/PatternType.html">pattern type</a>, separated by a colon.
+  Layers are applied from left to right, starting at the bottom. Use <code>none</code> to require a banner without any patterns.</li>
+</ul>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">heraldicBanner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple RED_BANNER patterns:yellow:cross,black:border</span>
+<span class="w">  </span><span class="nt">plainBanner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple WHITE_BANNER patterns:none</span>
 </code></pre></div>
 <h3 id="fireworks">Fireworks<a class="headerlink" href="#fireworks" title="Permanent link">🔗</a></h3>
 <p><em>This applies to fireworks.</em></p>
