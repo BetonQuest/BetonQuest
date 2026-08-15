@@ -91,11 +91,12 @@ public interface ConditionManager {
      * The order of evaluation is not guaranteed, however evaluating a {@link Collection}
      * <i>usually</i> retains the order if one is present.
      * The most common reason for breaking the order is synchronization requiring to wait for the servers main thread.
-     * Since a {@link TestStrategy} can early evaluate to a result, not all conditions may be evaluated.
+     * Since a {@link TestStrategy} can evaluate to a result earlier, not all conditions may have been evaluated
+     * for determination.
      * <br> <br>
      * The specified profile will be used to resolve any placeholders in the condition's instructions as well as in any
      * placeholders contained in evaluations of the condition's side effects.
-     * <br> <br>
+     * <br>
      * If no profile is specified, the conditions will be evaluated without any profile and any related placeholders
      * will be resolved without a profile.
      * If there are placeholders requiring a profile, but none is given, the evaluation will fail.
@@ -103,7 +104,7 @@ public interface ConditionManager {
      * @param profile              the profile to evaluate the conditions for or null if no profile is involved
      * @param conditionIdentifiers the identifiers of the conditions to evaluate
      * @param testStrategy         the strategy to test against
-     * @return whether the conditions meet the test strategy
+     * @return whether the conditions match the test strategy
      * @since 3.2.0
      */
     boolean test(@Nullable Profile profile, Collection<ConditionIdentifier> conditionIdentifiers, TestStrategy testStrategy);
@@ -117,21 +118,19 @@ public interface ConditionManager {
     interface TestStrategy {
 
         /**
-         * Checks the given condition evaluations for a result.
+         * Checks the given condition evaluations to determine a combined result.
          * <br> <br>
-         * When the result is definit, an optional with the result is returned.
+         * If the result is definite, an optional with the result should be returned.
          * After that no more condition may be evaluated.
          * <br>
-         * Otherwise, an empty optional will be returned and the next condition, if one is remaining,
-         * it will be evaluated and the check repeated.
+         * If the result is unclear, an empty optional should be returned.
          * <br> <br>
-         * If the result is still empty even when no condition is remaining to evaluate,
-         * it will be interpreted as {@code false}.
+         * If {@code remaining} is {@code 0} and there is no definite result, it should return {@code false}.
          *
          * @param positive  the amount of conditions which evaluated to {@code true}
          * @param negative  the amount of conditions which evaluated to {@code false}
-         * @param remaining the amount of conditions which are not evaluated
-         * @return the result of the test, or an empty optional when it is indefinit
+         * @param remaining the amount of conditions which have not been evaluated yet
+         * @return the definite result of the test, or an empty optional if it is indefinite
          * @since 3.2.0
          */
         Optional<Boolean> getResult(int positive, int negative, int remaining);
