@@ -26,6 +26,7 @@ import org.betonquest.betonquest.quest.placeholder.objective.ObjectivePropertyPl
 import org.betonquest.betonquest.quest.placeholder.point.GlobalPointPlaceholderFactory;
 import org.betonquest.betonquest.quest.placeholder.point.PointPlaceholderFactory;
 import org.betonquest.betonquest.quest.placeholder.random.RandomNumberPlaceholderFactory;
+import org.betonquest.betonquest.quest.placeholder.section.SectionPlaceholderFactory;
 import org.betonquest.betonquest.quest.placeholder.sync.SyncPlaceholderFactory;
 import org.betonquest.betonquest.quest.placeholder.tag.GlobalTagPlaceholderFactory;
 import org.betonquest.betonquest.quest.placeholder.tag.TagPlaceholderFactory;
@@ -83,6 +84,7 @@ public class PlaceholderTypeComponent extends AbstractCoreComponent {
         placeholderTypes.register("player", new PlayerNamePlaceholderFactory());
         placeholderTypes.register("quester", new QuesterPlaceholderFactory(conversations));
         placeholderTypes.registerCombined("randomnumber", new RandomNumberPlaceholderFactory());
+        placeholderTypes.registerCombined("section", new SectionPlaceholderFactory());
         placeholderTypes.registerCombined("sync", new SyncPlaceholderFactory());
         placeholderTypes.register("tag", new TagPlaceholderFactory(dataStorage, localizations));
         placeholderTypes.registerCombined("translate", new TranslatePlaceholderFactory(instructions));
