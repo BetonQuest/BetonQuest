@@ -4408,6 +4408,29 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#section">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>Section</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#sync">
     <span class="md-ellipsis">
 
@@ -9107,6 +9130,29 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#section">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>Section</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#sync">
     <span class="md-ellipsis">
 
@@ -9507,6 +9553,66 @@ Note that the first value is returned when it is higher than the second.</p>
 <span class="err">%</span><span class="nt">randomnumber</span><span class="nc">.decimal</span><span class="o">~</span><span class="nt">3</span><span class="nc">.3.112</span><span class="o">~</span><span class="nt">100</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">randomnumber</span><span class="nc">.decimal</span><span class="o">~</span><span class="nt">1</span><span class="nc">.0</span><span class="o">~</span><span class="p">{</span><span class="nt">location</span><span class="nc">.y</span><span class="p">}</span><span class="err">%</span>
 </code></pre></div>
+<h2 id="section"><code>Section</code><a class="headerlink" href="#section" title="Permanent link">🔗</a></h2>
+<p><strong>Context</strong>: <span class="twemoji account account-independent" title="&lt;b&gt;Independent&lt;/b&gt;&lt;br&gt; This placeholder can be resolved without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"></path></svg></span><br>
+<strong>Syntax</strong>: <code>section.&lt;type&gt;.&lt;id&gt;.[select].[limit].{shuffle}</code><br>
+<strong>Description</strong>: Represents a section as a list of all its elements as identifiers.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type<br>[Section]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The parent section to target, e.g. <code>actions</code>, <code>conditions</code> etc.</td>
+</tr>
+<tr>
+<td>id<br>[<abbr title="Any concatenation of characters.">String</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The identifier key of the targeted section.</td>
+</tr>
+<tr>
+<td>select<br>[<abbr title="first, last, random">SectionMode</abbr>]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr><br>[first]</td>
+<td>Decides how subsections will be selected to list them. <code>last</code> starts with the last element and <code>random</code> selects them randomly.</td>
+</tr>
+<tr>
+<td>limit<br>[<abbr title="Any number representation that may also have decimal places.">Number</abbr>]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr><br>[<abbr title="Internally the maximum value for an integer is used, so there effectively is no limit.">NoLimit</abbr>]</td>
+<td>How many elements should be selected at max. Don't use it if you want to have all elements.</td>
+</tr>
+<tr>
+<td>shuffle<br>[<abbr title="A boolean can be either true or false.">Boolean</abbr>]</td>
+<td><abbr title="A flag can be either absent or undefined with separate default values [absent, undefined] or explicitly defined with a value.">Flag</abbr><br>[false, true]</td>
+<td>If the resulting list of elements should be shuffled. This won't be necessary if <code>select:random</code> is set.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">section</span><span class="nc">.actions.mySection</span><span class="err">%</span>
+<span class="err">%</span><span class="nt">section</span><span class="nc">.actions.mySection.shuffle</span><span class="err">%</span>
+<span class="err">%</span><span class="nt">section</span><span class="nc">.objectives.mySection.select</span><span class="nd">:random</span><span class="nc">.limit</span><span class="nd">:3</span><span class="err">%</span>
+</code></pre></div>
+<details class="example">
+<summary>Additional Explanation</summary>
+<p>The <code>section</code> placeholder is used to list all elements of a section by their identifier.
+This list might then be used in an action or condition that uses a list of identifiers.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">start2RandomObjectives</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">objective add %section.objectives.quest1.select:random.limit:2%</span>
+<span class="w">  </span><span class="nt">startAllObjectives</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">objective add %section.objectives.quest1%</span>
+<span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">quest1</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jump 20</span>
+<span class="w">    </span><span class="nt">b</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tame HORSE 1</span>
+<span class="w">    </span><span class="nt">c</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kill 2</span>
+</code></pre></div>
+<p>In this example, the action <code>start2RandomObjectives</code> will start two random objectives in <code>quest1</code>, while the action
+<code>startAllObjectives</code> will start all three objectives in <code>quest1</code>.</p>
+</details>
 <h2 id="sync"><code>Sync</code><a class="headerlink" href="#sync" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This placeholder can only be resolved on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span> <span class="twemoji account account-offline" title="&lt;b&gt;Offline&lt;/b&gt;&lt;br&gt; This placeholder can be resolved on a player that is offline."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 4a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m7.5 9C15 13 13 15 13 17.5s2 4.5 4.5 4.5 4.5-2 4.5-4.5-2-4.5-4.5-4.5M10 14c-4.42 0-8 1.79-8 4v2h9.5a6.5 6.5 0 0 1-.5-2.5 6.5 6.5 0 0 1 .95-3.36c-.63-.08-1.27-.14-1.95-.14m7.5.5c1.66 0 3 1.34 3 3 0 .56-.15 1.08-.42 1.5L16 14.92c.42-.27.94-.42 1.5-.42M14.92 16 19 20.08c-.42.27-.94.42-1.5.42-1.66 0-3-1.34-3-3 0-.56.15-1.08.42-1.5"></path></svg></span> <span class="twemoji account account-independent" title="&lt;b&gt;Independent&lt;/b&gt;&lt;br&gt; This placeholder can be resolved without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"></path></svg></span><br>
 <strong>Syntax</strong>: <code>sync.&lt;expression&gt;</code><br>
