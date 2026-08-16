@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.identifier.ConditionIdentifier;
 import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.quest.condition.NullableCondition;
 import org.betonquest.betonquest.api.quest.condition.NullableConditionAdapter;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
@@ -15,6 +16,7 @@ import org.betonquest.betonquest.id.IdentifierUtil;
 import org.betonquest.betonquest.quest.condition.logik.ConjunctionCondition;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Factory to create section grouped conditions from {@link Instruction}s.
@@ -44,17 +46,22 @@ public class SectionConditionFactory implements PlayerConditionFactory, Playerle
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        return parseInstruction(instruction);
+        return new NullableConditionAdapter(parseInstruction(instruction));
     }
 
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
-        return parseInstruction(instruction);
+        return new NullableConditionAdapter(parseInstruction(instruction));
     }
 
-    private NullableConditionAdapter parseInstruction(final Instruction instruction) throws QuestException {
-        final Argument<List<ConditionIdentifier>> conditionIDs = instruction.identifier(ConditionIdentifier.class).map(this::map).get();
-        return new NullableConditionAdapter(new ConjunctionCondition(conditionIDs, conditionManager));
+    private NullableCondition parseInstruction(final Instruction instruction) throws QuestException {
+        final Argument<List<ConditionIdentifier>> identifiers = instruction.identifier(ConditionIdentifier.class).map(this::map).get();
+        final Optional<Argument<Number>> min = instruction.number().atLeast(0).get("min");
+        final Optional<Argument<Number>> max = instruction.number().atLeast(0).get("max");
+        if (min.isEmpty() && max.isEmpty()) {
+            return new ConjunctionCondition(identifiers, conditionManager);
+        }
+        return new SectionCondition(conditionManager, identifiers, min.orElse(profile -> 0), max.orElse(profile -> Integer.MAX_VALUE));
     }
 
     private List<ConditionIdentifier> map(final ConditionIdentifier identifier) throws QuestException {

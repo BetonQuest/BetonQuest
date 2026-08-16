@@ -83,4 +83,28 @@ public interface ConditionManager {
      * @since 3.0.0
      */
     boolean testAny(@Nullable Profile profile, Collection<ConditionIdentifier> conditionIdentifiers);
+
+    /**
+     * Evaluates multiple conditions for the optionally specified {@link Profile} against a {@link TestStrategy}.
+     * <br> <br>
+     * The order of evaluation is not guaranteed, however evaluating a {@link Collection}
+     * <i>usually</i> retains the order if one is present.
+     * The most common reason for breaking the order is synchronization requiring to wait for the servers main thread.
+     * Since a {@link TestStrategy} can evaluate to a result earlier, not all conditions may have been evaluated
+     * for determination.
+     * <br> <br>
+     * The specified profile will be used to resolve any placeholders in the condition's instructions as well as in any
+     * placeholders contained in evaluations of the condition's side effects.
+     * <br>
+     * If no profile is specified, the conditions will be evaluated without any profile and any related placeholders
+     * will be resolved without a profile.
+     * If there are placeholders requiring a profile, but none is given, the evaluation will fail.
+     *
+     * @param profile              the profile to evaluate the conditions for or null if no profile is involved
+     * @param conditionIdentifiers the identifiers of the conditions to evaluate
+     * @param testStrategy         the strategy to test against
+     * @return whether the conditions match the test strategy
+     * @since 3.2.0
+     */
+    boolean test(@Nullable Profile profile, Collection<ConditionIdentifier> conditionIdentifiers, TestStrategy testStrategy);
 }

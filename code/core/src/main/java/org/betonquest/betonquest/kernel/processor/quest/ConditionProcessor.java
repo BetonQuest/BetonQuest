@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.NullableConditionAdapter;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
+import org.betonquest.betonquest.api.service.condition.TestStrategy;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.id.IdentifierUtil;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
@@ -20,7 +21,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -30,6 +34,7 @@ import java.util.stream.Stream;
 /**
  * Does the logic around Conditions.
  */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class ConditionProcessor extends TypedQuestProcessor<ConditionIdentifier, ConditionAdapter> implements ConditionManager {
 
     /**
@@ -164,5 +169,74 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionIdentifier,
                 (isMet ? "TRUE" : "FALSE") + ": " + (conditionID.isInverted() ? "inverted" : "") + " condition "
                         + conditionID + " for " + profile);
         return isMet;
+    }
+
+    @Override
+    public boolean test(@Nullable final Profile profile, final Collection<ConditionIdentifier> conditionIdentifiers,
+                        final TestStrategy testStrategy) {
+        final Map<ConditionIdentifier, ConditionAdapter> sync = new HashMap<>();
+        final Map<ConditionIdentifier, ConditionAdapter> async = new HashMap<>();
+        for (final ConditionIdentifier identifier : conditionIdentifiers) {
+            final ConditionAdapter adapter = values.get(identifier);
+            if (adapter == null) {
+                log.warn(identifier.getPackage(), "The condition " + identifier + " is not defined!");
+                return false;
+            }
+            (adapter.isPrimaryThreadEnforced() ? sync : async).put(identifier, adapter);
+        }
+        if (Bukkit.isPrimaryThread()) {
+            sync.putAll(async);
+            return testStrategy(profile, sync, testStrategy, 0).result().orElse(false);
+        }
+        final Future<Result> syncFuture = sync.isEmpty() ? CompletableFuture.completedFuture(new Result(Optional.empty()))
+                : scheduler.callSyncMethod(plugin, () -> testStrategy(profile, sync, testStrategy, async.size()));
+        final Result asyncResult = testStrategy(profile, async, testStrategy, sync.size());
+
+        if (asyncResult.result().isPresent()) {
+            return asyncResult.result().get();
+        }
+        try {
+            final Result futureResult = syncFuture.get();
+            return futureResult.result().orElseGet(() -> testStrategy.getResult(futureResult.positive() + asyncResult.positive(),
+                    futureResult.negative() + futureResult.negative(), 0).orElse(false));
+        } catch (final InterruptedException | ExecutionException e) {
+            log.reportException(e);
+            return false;
+        }
+    }
+
+    private Result testStrategy(@Nullable final Profile profile, final Map<ConditionIdentifier, ConditionAdapter> conditions,
+                                final TestStrategy testStrategy, final int additionalUnresolved) {
+        int positive = 0;
+        int negative = 0;
+        int remaining = conditions.size() + additionalUnresolved;
+        for (final Map.Entry<ConditionIdentifier, ConditionAdapter> entry : conditions.entrySet()) {
+            final ConditionAdapter adapter = entry.getValue();
+            if (checkOutcome(profile, entry.getKey(), adapter)) {
+                positive++;
+            } else {
+                negative++;
+            }
+            remaining--;
+            final Optional<Boolean> result = testStrategy.getResult(positive, negative, remaining);
+            if (result.isPresent()) {
+                return new Result(result);
+            }
+        }
+        return new Result(positive, negative, testStrategy.getResult(positive, negative, remaining));
+    }
+
+    /**
+     * Part result of a strategy test.
+     *
+     * @param positive the positive tested conditions
+     * @param negative the negative tested conditions
+     * @param result   the result of the test, if determined
+     */
+    private record Result(int positive, int negative, Optional<Boolean> result) {
+
+        private Result(final Optional<Boolean> result) {
+            this(0, 0, result);
+        }
     }
 }

@@ -745,18 +745,23 @@ conditions:
 ## `Section`
 
 __Context__: @snippet:condition-meta:independent@  
-__Syntax__: `section <section>`  
-__Description__: The conjunction of the conditions inside the specified section.
+__Syntax__: `section <section> [min] [max]`  
+__Description__: The evaluated conditions inside the specified section combined logically.
 
-| Parameter                                                            | Type     | Explanation                             |
-|----------------------------------------------------------------------|----------|-----------------------------------------|
-| section <br>[[Identifier]](./Definition-Encyclopedia.md#identifiers) | Required | The target section with the conditions. |
+If neither a minimum nor maximum is given all conditions will be evaluated conjunctively like in the [`and` condition](#and).
 
-You can also use directly any node as condition, which works the same as [`and`](#and) of every condition in the subsections.
+You can also use any node directly as condition, which works the same as using this condition without any additional argument.
+
+| Parameter                                                            | Type                | Explanation                                          |
+|----------------------------------------------------------------------|---------------------|------------------------------------------------------|
+| section <br>[[Identifier]](./Definition-Encyclopedia.md#identifiers) | Required            | The target section with the conditions.              |
+| min <br>[Number]                                                     | Optional <br>[None] | The minimum amount of conditions which must be true. |
+| max <br>[Number]                                                     | Optional <br>[None] | The maximum amount of conditions which may be true.  |
 
 ```YAML title="Examples"
 conditions:
-  section: "section nested"
+  section: "section nested min:1 max:2"
+  sectionAll: "section nested"
   nested:
     one: …
     deep:
@@ -766,8 +771,8 @@ conditions:
   implicit: "and nested" #(2)!
 ```
 
-1. Is equivalent to the "section" condition.
-2. Is equivalent to the "section" condition.
+1. Is equivalent to the "sectionAll" condition.
+2. Is equivalent to the "sectionAll" condition.
 
 ## `Sneak`
 
