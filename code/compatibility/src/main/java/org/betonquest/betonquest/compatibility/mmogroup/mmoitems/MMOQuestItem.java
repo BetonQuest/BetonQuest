@@ -67,7 +67,7 @@ public class MMOQuestItem implements QuestItem {
 
     @Override
     public ItemStack generate(final int stackSize, @Nullable final Profile profile) {
-        if (stackSize < 1) {
+        if (stackSize <= 0) {
             return new ItemStack(Material.AIR);
         }
         return resolvedItem.asQuantity(stackSize);
