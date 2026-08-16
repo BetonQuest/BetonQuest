@@ -13,10 +13,9 @@ __Context__: @snippet:condition-meta:online@
 __Syntax__: `advancement <name>`  
 __Description__: Whether the player has the specified advancement.
 
-The only argument is the name of the advancement.
-The namespace can be omitted for the `minecraft` default namespace.
-The name must be in the format as configured on your server.  
-[List of all vanilla advancements](https://minecraft.wiki/w/Advancement#List_of_advancements).
+| Parameter        | Type     | Explanation                                                                                                                                                                                                                                                           |
+|------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| name<br>[String] | Required | The advancement key to check against. The namespace can be omitted for the `minecraft` default namespace. The name must be in the format as configured on your server. [List of all vanilla advancements](https://minecraft.wiki/w/Advancement#List_of_advancements). |
 
 ```YAML title="Example"
 conditions:
