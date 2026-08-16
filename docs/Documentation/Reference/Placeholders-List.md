@@ -312,6 +312,48 @@ Note that the first value is returned when it is higher than the second.
 %randomnumber.decimal~1.0~{location.y}%
 ```
 
+## `Section`
+
+__Context__: @snippet:placeholder-meta:independent@  
+__Syntax__: `section.<type>.<id>.[select].[limit].{shuffle}`  
+__Description__: Represents a section as a list of all its elements as identifiers.
+
+| Parameter               | Type                  | Explanation                                                                                                                    |
+|-------------------------|-----------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| type<br>[Section]       | Required              | The parent section to target, e.g. `actions`, `conditions` etc.                                                                |
+| id<br>[String]          | Required              | The identifier key of the targeted section.                                                                                    |
+| select<br>[SectionMode] | Optional<br>[first]   | Decides how subsections will be selected to list them. `last` starts with the last element and `random` selects them randomly. |
+| limit<br>[Number]       | Optional<br>[NoLimit] | How many elements should be selected at max. Don't use it if you want to have all elements.                                    |
+| shuffle<br>[Boolean]    | Flag<br>[false, true] | If the resulting list of elements should be shuffled. This won't be necessary if `select:random` is set.                       |
+
+*[SectionMode]: first, last, random
+*[NoLimit]: Internally the maximum value for an integer is used, so there effectively is no limit.
+
+```scss title="Example"
+%section.actions.mySection%
+%section.actions.mySection.shuffle%
+%section.objectives.mySection.select:random.limit:3%
+```
+
+??? example "Additional Explanation"
+
+    The `section` placeholder is used to list all elements of a section by their identifier.
+    This list might then be used in an action or condition that uses a list of identifiers.
+    
+    ```yaml
+    actions:
+      start2RandomObjectives: objective add %section.objectives.quest1.select:random.limit:2%
+      startAllObjectives: objective add %section.objectives.quest1%
+    objectives:
+      quest1:
+        a: jump 20
+        b: tame HORSE 1
+        c: kill 2
+    ```
+    
+    In this example, the action `start2RandomObjectives` will start two random objectives in `quest1`, while the action
+    `startAllObjectives` will start all three objectives in `quest1`.
+
 ## `Sync`
 
 __Context__: @snippet:placeholder-meta:online-offline-independent@  
