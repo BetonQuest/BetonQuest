@@ -8,8 +8,7 @@ import java.util.Optional;
  * @since 3.2.0
  */
 @FunctionalInterface
-public
-interface TestStrategy {
+public interface TestStrategy {
 
     /**
      * Checks the given condition evaluations to determine a combined result.

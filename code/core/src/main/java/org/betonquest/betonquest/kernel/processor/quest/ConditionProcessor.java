@@ -186,19 +186,19 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionIdentifier,
         }
         if (Bukkit.isPrimaryThread()) {
             sync.putAll(async);
-            return testStrategy(profile, sync, testStrategy, 0).result.orElse(false);
+            return testStrategy(profile, sync, testStrategy, 0).result().orElse(false);
         }
         final Future<Result> syncFuture = sync.isEmpty() ? CompletableFuture.completedFuture(new Result(Optional.empty()))
                 : scheduler.callSyncMethod(plugin, () -> testStrategy(profile, sync, testStrategy, async.size()));
         final Result asyncResult = testStrategy(profile, async, testStrategy, sync.size());
 
-        if (asyncResult.result.isPresent()) {
-            return asyncResult.result.get();
+        if (asyncResult.result().isPresent()) {
+            return asyncResult.result().get();
         }
         try {
             final Result futureResult = syncFuture.get();
-            return futureResult.result.orElseGet(() -> testStrategy.getResult(futureResult.positive + asyncResult.positive,
-                    futureResult.negative + futureResult.negative, 0).orElse(false));
+            return futureResult.result().orElseGet(() -> testStrategy.getResult(futureResult.positive() + asyncResult.positive(),
+                    futureResult.negative() + futureResult.negative(), 0).orElse(false));
         } catch (final InterruptedException | ExecutionException e) {
             log.reportException(e);
             return false;

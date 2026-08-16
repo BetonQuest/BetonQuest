@@ -746,12 +746,11 @@ conditions:
 
 __Context__: @snippet:condition-meta:independent@  
 __Syntax__: `section <section> [min] [max]`  
-__Description__: The conditions inside the specified section evaluated.
+__Description__: The evaluated conditions inside the specified section combined logically.
 
-When neither a minimum nor maximum is given all conditions must evaluate,
-like in the [`and` condition](#and), to `true`.
+If neither a minimum nor maximum is given all conditions will be evaluated conjunctively like in the [`and` condition](#and).
 
-You can also use directly any node as condition, which works the same using this condition without any additional argument.
+You can also use any node directly as condition, which works the same as using this condition without any additional argument.
 
 | Parameter                                                            | Type                | Explanation                                          |
 |----------------------------------------------------------------------|---------------------|------------------------------------------------------|
