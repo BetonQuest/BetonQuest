@@ -47,7 +47,7 @@ public class ItemParser implements InstructionArgumentParser<ItemWrapper> {
         if (string.contains(":")) {
             final String[] parts = string.split(":", 2);
             item = identifierFactory.parseIdentifier(pack, parts[0]);
-            amount = new DefaultArgument<>(new NumberParser(value -> value.intValue() > 0).apply(parts[1]));
+            amount = new DefaultArgument<>(NumberParser.DEFAULT.apply(parts[1]));
         } else {
             item = identifierFactory.parseIdentifier(pack, string);
             amount = new DefaultArgument<>(1);
