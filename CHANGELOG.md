@@ -6,17 +6,20 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
-- `haspoint` and `hasglobalpoint` conditions to check if a point is set
 - counting objective related translations in the lang files can now use all counting objective related placeholders
 - `fallback` argument to point conditions to use a default value when category has no value at all
-- `section` (and implicit `section`) condition to allow usage of subsections as list of (conjugated) conditions
-- implicit `section` action to allow usage of subsections as list of actions to execute
-- `damage` objective to track dealt and taken damage
-- `updateHologram` action to force updates to (specific) holograms for a player
 - `dialog` conversation IO
 - `patterns` argument for adding and matching pattern layers on `simple` banner items
-- `equip` action to put items into players' equipment slots
 - `slots` to `armor` condition to only check specific slots
+- More functionality for subsections
+    - `section` (and implicit `section`) condition to allow usage of subsections as list of (conjugated) conditions
+    - implicit `section` action to allow usage of subsections as list of actions to execute
+    - `section` placeholder to list all subsections as identifiers
+- New elements
+    - `haspoint` and `hasglobalpoint` conditions to check if a point is set
+    - `damage` objective to track dealt and taken damage
+    - `updateHologram` action to force updates to (specific) holograms for a player
+    - `equip` action to put items into players' equipment slots
 ### Changed
 - `worldguard` integration version requirement to 7.0.0
 - `worldedit` integration version requirement to 7.3.0
