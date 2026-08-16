@@ -212,7 +212,7 @@ public class Journal {
         pointers.add(pointer);
         final String date = betonQuest.isMySQLUsed()
                 ? DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ROOT)
-                  .format(Instant.ofEpochMilli(pointer.timestamp()).atZone(ZoneId.systemDefault()))
+                .format(Instant.ofEpochMilli(pointer.timestamp()).atZone(ZoneId.systemDefault()))
                 : Long.toString(pointer.timestamp());
         betonQuest.getSaver().add(new Record(UpdateType.ADD_JOURNAL, profile.getProfileUUID().toString(),
                 pointer.pointer().getFull(), date));
@@ -230,7 +230,7 @@ public class Journal {
                 new PlayerJournalDeleteEvent(profile, !betonQuest.getServer().isPrimaryThread(), this, pointer).callEvent();
                 final String date = betonQuest.isMySQLUsed()
                         ? DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ROOT)
-                          .format(Instant.ofEpochMilli(pointer.timestamp()).atZone(ZoneId.systemDefault()))
+                        .format(Instant.ofEpochMilli(pointer.timestamp()).atZone(ZoneId.systemDefault()))
                         : Long.toString(pointer.timestamp());
                 betonQuest.getSaver().add(new Record(UpdateType.REMOVE_JOURNAL, profile.getProfileUUID().toString(),
                         pointer.pointer().getFull(), date));
@@ -442,9 +442,9 @@ public class Journal {
             finalList.addAll(bookWrapper.splitPages(stringBuilder.asComponent()));
         }
         if (finalList.isEmpty()) {
-            meta.pages(Component.empty());
+            meta.addPages(Component.empty());
         } else {
-            meta.pages(finalList);
+            meta.addPages(finalList.toArray(new Component[0]));
         }
         item.setItemMeta(meta);
         return item;

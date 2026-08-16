@@ -129,7 +129,7 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
 
     @Override
     public void populate(final BookMeta bookMeta) {
-        bookMeta.title(title).author(author).pages(text);
+        bookMeta.title(title).author(author).addPages(text.toArray(new Component[0]));
     }
 
     @Override
