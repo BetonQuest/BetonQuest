@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.item.QuestItemWrapper;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.TypeFactory;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -83,12 +84,15 @@ public class MagicItemFactory implements TypeFactory<QuestItemWrapper> {
 
         @Override
         public ItemStack generate(final int stackSize, @Nullable final Profile profile) throws QuestException {
+            if (stackSize < 1) {
+                return new ItemStack(Material.AIR);
+            }
             final ItemData value = itemData.getValue(profile);
             final ItemStack itemStack = value.getItemStack();
             if (itemStack == null) {
                 throw new QuestException("Magic item not found: '" + value.getKey() + "'");
             }
-            return itemStack;
+            return itemStack.asQuantity(stackSize);
         }
 
         @Override

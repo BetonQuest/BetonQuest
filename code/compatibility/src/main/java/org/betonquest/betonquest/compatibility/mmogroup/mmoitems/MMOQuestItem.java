@@ -4,6 +4,7 @@ import net.Indyuce.mmoitems.api.Type;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
@@ -66,7 +67,10 @@ public class MMOQuestItem implements QuestItem {
 
     @Override
     public ItemStack generate(final int stackSize, @Nullable final Profile profile) {
-        return resolvedItem.clone();
+        if (stackSize < 1) {
+            return new ItemStack(Material.AIR);
+        }
+        return resolvedItem.asQuantity(stackSize);
     }
 
     @Override
