@@ -1,0 +1,15 @@
+body .md-content__inner a.external-link:not(.md-button,.md-content__button,.noExternalLinkIcon) {
+  background-image: url("../../_media/content/linkExternalWhite.svg");
+  background-repeat: no-repeat;
+  background-position: top right;
+  padding-right: 0.7em;
+  background-size: 0.6em;
+
+  &[data-md-color-scheme="slate"] {
+    background-image: url("../../_media/content/linkExternalDark.svg");
+  }
+
+  &:hover {
+    background-image: url("../../_media/content/linkExternalHover.svg");
+  }
+}
