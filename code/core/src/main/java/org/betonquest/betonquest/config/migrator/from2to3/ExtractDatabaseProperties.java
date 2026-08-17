@@ -5,6 +5,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
@@ -25,18 +26,11 @@ public class ExtractDatabaseProperties implements Migration {
     private final Path betonquestDatabaseProperties;
 
     /**
-     * The plugin instance.
-     */
-    private final Plugin plugin;
-
-    /**
      * Creates a new instance of the ExtractDatabaseProperties migration.
      *
      * @param plugin the plugin instance
      */
     public ExtractDatabaseProperties(final Plugin plugin) {
-        this.plugin = plugin;
-
         final Path betonquest = plugin.getDataFolder().toPath();
         this.betonquestConfigYml = betonquest.resolve("config.yml");
         this.betonquestDatabaseProperties = betonquest.resolve("database.properties");
@@ -56,9 +50,9 @@ public class ExtractDatabaseProperties implements Migration {
     private Properties getDatabaseConfigProperties(final YamlConfiguration config) {
         final Properties props = new Properties();
 
-        final String host = config.getString("mysql.host", "localhost");
-        final String port = config.getString("mysql.port", "0000");
-        final String base = config.getString("mysql.base", "betonquest");
+        final String host = config.getString("mysql.host", "host");
+        final String port = config.getString("mysql.port", "port");
+        final String base = config.getString("mysql.base", "database");
 
         final String jdbcUrl = String.format(
                 "jdbc:mysql://%s:%s/%s?useSSL=false",
@@ -72,12 +66,8 @@ public class ExtractDatabaseProperties implements Migration {
     }
 
     private void saveDatabaseProperties(final Properties props) throws IOException {
-        plugin.saveResource("database.properties", false);
-
-        String content = Files.readString(betonquestDatabaseProperties);
-        content = content.replaceAll("(?m)^jdbcUrl=.*$", "jdbcUrl=" + props.getProperty("jdbcUrl"));
-        content = content.replaceAll("(?m)^username=.*$", "username=" + props.getProperty("username"));
-        content = content.replaceAll("(?m)^password=.*$", "password=" + props.getProperty("password"));
-        Files.writeString(betonquestDatabaseProperties, content);
+        try (OutputStream out = Files.newOutputStream(betonquestDatabaseProperties)) {
+            props.store(out, null);
+        }
     }
 }
