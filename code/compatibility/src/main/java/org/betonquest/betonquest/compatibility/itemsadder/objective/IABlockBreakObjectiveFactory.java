@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 import org.betonquest.betonquest.compatibility.itemsadder.ItemsAdderParser;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.player.PlayerEvent;
 
 /**
  * Factory to create break {@link IABlockObjective}s from {@link Instruction}s.
@@ -30,6 +31,7 @@ public class IABlockBreakObjectiveFactory implements ObjectiveFactory {
         service.request(CustomBlockBreakEvent.class)
                 .priority(EventPriority.MONITOR)
                 .onlineHandler((event, profile) -> objective.handle(event.getNamespacedID(), profile))
+                .player(PlayerEvent::getPlayer)
                 .subscribe(true);
         return objective;
     }

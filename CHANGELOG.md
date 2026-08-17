@@ -44,6 +44,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - MobKillNotifier that handles neutral mob kills for example with skills now work probably when called async
 - item implementations `magic` and `mmoitem` ignoring the given amount for item stacks
 - `itemdurability` action throws exception when the new durability is negative
+- ItemsAdder objective block break/place not working properly
 ### Security
 
 ## [3.1.0] - 2026-07-19
