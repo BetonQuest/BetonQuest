@@ -44,6 +44,28 @@
       "id": "4.0",
       "tiles": {
         "center": "grass",
+        "east": "grass",
+        "west": "path",
+        "north-east": "grass",
+        "north-west": "path",
+        "south-east": "grass",
+        "south-west": "path"
+      },
+      "decorations": {
+        "center": {
+          "asset": "anvil",
+          "offset": {
+            "x": 0,
+            "y": -165
+          },
+          "clip": false
+        }
+      }
+    },
+    {
+      "id": "3.3",
+      "tiles": {
+        "center": "grass",
         "east": "path",
         "west": "grass",
         "north-east": "path",
@@ -53,10 +75,18 @@
       },
       "decorations": {
         "center": {
-          "asset": "anvil",
+          "asset": "painting-plant",
           "offset": {
             "x": 0,
-            "y": -165
+            "y": -110
+          },
+          "clip": false
+        },
+        "west": {
+          "asset": "potted-bamboo",
+          "offset": {
+            "x": 155,
+            "y": -110
           },
           "clip": false
         }
@@ -75,7 +105,7 @@
       },
       "decorations": {
         "center": {
-          "asset": "cherry-sampling",
+          "asset": "cherry-sapling",
           "offset": {
             "x": 0,
             "y": -100

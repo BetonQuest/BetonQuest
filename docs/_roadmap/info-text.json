@@ -51,7 +51,7 @@
             "- Conversation Rework?"
           ]
         },
-        "north-east": {
+        "north-west": {
           "title": "Conversation Rework?",
           "features": [
             "- A new conversation system that allows for better structured conversations",
@@ -59,7 +59,7 @@
             "- (Mostly) automatic migration for existing conversations"
           ]
         },
-        "east": {
+        "west": {
           "title": "Quest Profiles",
           "features": [
             "- Multiple profiles for each player",
@@ -67,7 +67,7 @@
             "- Better access to different player profiles in the script"
           ]
         },
-        "south-east": {
+        "south-west": {
           "title": "Database rework",
           "features": [
             "- Better database system supporting multiple databases",
@@ -80,6 +80,42 @@
           "features": [
             "- Placeholders can be escaped to allow for currently disallowed characters",
             "- A function placeholder can be used to get the value of a function"
+          ]
+        }
+      }
+    },
+    {
+      "id": "3.3",
+      "style": "default",
+      "tiles": {
+        "center": {
+          "title": "Version 3.3.0",
+          "features": [
+            "- New objectives, placeholder and potentially more!",
+            "- Full support for placeholders in items",
+            "- Menu Pagination",
+            "- Further bug fixes and improvements"
+          ]
+        },
+        "north-east": {
+          "title": "Menu Pagination",
+          "features": [
+            "- Menus filling rectangle allows pagination"
+          ]
+        },
+        "east": {
+          "title": "New Elements",
+          "features": [
+            "- A drop objective catching players dropping items",
+            "- A trade objective tracking villager-type trades",
+            "- A statistic placeholder for player stats"
+          ]
+        },
+        "south-east": {
+          "title": "Placeholders In Items",
+          "features": [
+            "- Fully support for placeholders in items",
+            "- Allows for player-specific items"
           ]
         }
       }
