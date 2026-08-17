@@ -57,7 +57,7 @@ public record MythicItemWrapper(ItemManager itemManager, Argument<String> itemNa
 
         @Override
         public Component getName() {
-            return stack.displayName();
+            return Objects.requireNonNullElseGet(stack.getItemMeta().displayName(), () -> Component.translatable(stack));
         }
 
         @Override
