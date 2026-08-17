@@ -1230,7 +1230,7 @@ __Context__: @snippet:action-meta:online@
 __Syntax__: `updateHologram [mode] [holo] [npcHolo]`  
 __Description__: Force an immediate refresh instead of waiting for the next update interval.
 
-This is useful for performance optimizations if used when the update interval is set to high values.
+This is useful for performance optimizations if used when the update interval is set to high values or is deactivated at all.
 
 When no identifier is given at all, all holograms will be updated.
 
