@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 /**
  * Handles metadata about player Skulls.
  */
-@SuppressWarnings("PMD.TooManyMethods")
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.GodClass"})
 public class HeadHandler implements ItemMetaHandler<SkullMeta> {
 
     /**
@@ -171,7 +171,11 @@ public class HeadHandler implements ItemMetaHandler<SkullMeta> {
                 }
             }
             case META_PLAYER_ID -> {
-                this.playerId = UUID.fromString(data);
+                try {
+                    this.playerId = UUID.fromString(data);
+                } catch (final IllegalArgumentException e) {
+                    throw new QuestException("Invalid player UUID: " + data, e);
+                }
                 this.playerIdE = Existence.REQUIRED;
             }
             case META_TEXTURE -> {
