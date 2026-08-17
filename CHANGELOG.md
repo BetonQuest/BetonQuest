@@ -28,6 +28,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Skript Condition and Effect now handle if no player is present and check like they are independent
 - `deleffect` action no longer accepts an omitted first argument as `any`
 - `chestgive` action no longer drops excess items without newly added `dropExcess` flag
+- `mythic` item no longer shows square brackets
 ### Deprecated
 ### Removed
 ### Fixed
