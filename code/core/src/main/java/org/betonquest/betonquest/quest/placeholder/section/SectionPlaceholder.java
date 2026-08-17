@@ -50,24 +50,31 @@ public class SectionPlaceholder implements NullablePlaceholder {
     private final FlagArgument<Boolean> shuffle;
 
     /**
+     * Whether the number of elements in the section should be counted instead of listed.
+     */
+    private final FlagArgument<Boolean> count;
+
+    /**
      * Create a new section placeholder.
      *
      * @param questPackage  the quest package to be relative to
      * @param section       the parent section to select from, e.g., actions, conditions, etc
-     * @param identifier    the identifier in the section to select subsection from
+     * @param identifier    the identifier in the section to select subsections from
      * @param selectionMode how the elements in the section should be selected
      * @param limit         the limit for how many elements in the section should be selected at max
      * @param shuffle       whether the elements should be shuffled after selection
+     * @param count         whether the number of elements in the section should be counted instead of listed
      */
     public SectionPlaceholder(final QuestPackage questPackage, final Argument<String> section, final Argument<String> identifier,
                               final Argument<SectionSelectionMode> selectionMode, final Argument<Number> limit,
-                              final FlagArgument<Boolean> shuffle) {
+                              final FlagArgument<Boolean> shuffle, final FlagArgument<Boolean> count) {
         this.questPackage = questPackage;
         this.section = section;
         this.identifier = identifier;
         this.selectionMode = selectionMode;
         this.limit = limit;
         this.shuffle = shuffle;
+        this.count = count;
     }
 
     @Override
@@ -86,6 +93,10 @@ public class SectionPlaceholder implements NullablePlaceholder {
         }
         final List<String> keys = new ArrayList<>(configSection.getKeys(true));
         keys.removeIf(configSection::isConfigurationSection);
+
+        if (count.getValue(profile).orElse(false)) {
+            return String.valueOf(Math.min(keys.size(), limit));
+        }
 
         if (mode == SectionSelectionMode.LAST) {
             Collections.reverse(keys);

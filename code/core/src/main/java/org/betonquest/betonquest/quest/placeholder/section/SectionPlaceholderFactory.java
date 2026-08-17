@@ -38,6 +38,7 @@ public class SectionPlaceholderFactory implements PlayerPlaceholderFactory, Play
                 .get("select", SectionSelectionMode.FIRST);
         final Argument<Number> limit = instruction.number().get("limit", Integer.MAX_VALUE);
         final FlagArgument<Boolean> shuffle = instruction.bool().getFlag("shuffle", true);
-        return new NullablePlaceholderAdapter(new SectionPlaceholder(instruction.getPackage(), section, identifier, selectionMode, limit, shuffle));
+        final FlagArgument<Boolean> count = instruction.bool().getFlag("count", true);
+        return new NullablePlaceholderAdapter(new SectionPlaceholder(instruction.getPackage(), section, identifier, selectionMode, limit, shuffle, count));
     }
 }

@@ -325,6 +325,7 @@ __Description__: Represents a section as a list of all its elements as identifie
 | select<br>[SectionMode] | Optional<br>[first]   | Decides how subsections will be selected to list them. `last` starts with the last element and `random` selects them randomly. |
 | limit<br>[Number]       | Optional<br>[NoLimit] | How many elements should be selected at max. Don't use it if you want to have all elements.                                    |
 | shuffle<br>[Boolean]    | Flag<br>[false, true] | If the resulting list of elements should be shuffled. This won't be necessary if `select:random` is set.                       |
+| count<br>[Boolean]      | Flag<br>[false, true] | If the result should be counted and represented as number instead. Will ignore `shuffle` and `select` if set to `true`.        |
 
 *[SectionMode]: first, last, random
 *[NoLimit]: Internally the maximum value for an integer is used, so there effectively is no limit.
