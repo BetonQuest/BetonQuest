@@ -1248,6 +1248,21 @@ actions:
 ```
 
 *[UpdateMode] visibility, content, all
+ 
+## `UpdateVisibility`
+
+__Context__: @snippet:action-meta:online@  
+__Syntax__: `updatevisibility`  
+__Description__: Force an immediate refresh instead of waiting for the next update interval of hiders.
+
+This is useful for performance optimizations if used when the update interval is set to high values or deactivated at all.
+
+This applies only to hiders, not holograms. For them use the [`updateHologram` action](#updatehologram).
+
+```YAML title="Examples"
+actions:
+  update: "updatevisibility"
+```
 
 ## `Variable`
 
