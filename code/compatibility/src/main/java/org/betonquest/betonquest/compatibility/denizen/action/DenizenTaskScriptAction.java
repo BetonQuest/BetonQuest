@@ -41,7 +41,12 @@ public class DenizenTaskScriptAction implements PlayerAction {
     @Override
     public void execute(final Profile profile) throws QuestException {
         final String name = this.name.getValue(profile);
-        final TaskScriptContainer script = ScriptRegistry.getScriptContainerAs(name, TaskScriptContainer.class);
+        final TaskScriptContainer script;
+        try {
+            script = ScriptRegistry.getScriptContainerAs(name, TaskScriptContainer.class);
+        } catch (final ClassCastException e) {
+            throw new QuestException("'%s' is not a Denizen task script".formatted(name), e);
+        }
         if (script == null) {
             throw new QuestException("Could not find Denizen script: '%s'".formatted(name));
         }
