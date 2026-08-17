@@ -118,7 +118,7 @@ public class ItemDurabilityAction implements OnlineAction {
         }
 
         final int actualNewDamage = oldDamage + durabilityModifiedDamage;
-        damageable.setDamage(actualNewDamage);
+        damageable.setDamage(Math.max(0, actualNewDamage));
 
         if (maxDurability - actualNewDamage <= 0) {
             processBreak(profile, player, itemStack, damageable);
