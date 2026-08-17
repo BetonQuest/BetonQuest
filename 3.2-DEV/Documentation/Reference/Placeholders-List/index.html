@@ -9591,6 +9591,11 @@ Note that the first value is returned when it is higher than the second.</p>
 <td><abbr title="A flag can be either absent or undefined with separate default values [absent, undefined] or explicitly defined with a value.">Flag</abbr><br>[false, true]</td>
 <td>If the resulting list of elements should be shuffled. This won't be necessary if <code>select:random</code> is set.</td>
 </tr>
+<tr>
+<td>count<br>[<abbr title="A boolean can be either true or false.">Boolean</abbr>]</td>
+<td><abbr title="A flag can be either absent or undefined with separate default values [absent, undefined] or explicitly defined with a value.">Flag</abbr><br>[false, true]</td>
+<td>If the result should be counted and represented as number instead. Will ignore <code>shuffle</code> and <code>select</code> if set to <code>true</code>.</td>
+</tr>
 </tbody>
 </table>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">section</span><span class="nc">.actions.mySection</span><span class="err">%</span>
