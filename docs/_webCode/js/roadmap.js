@@ -195,8 +195,9 @@ async function clearInfoArea(ctx) {
 
 function scrollToCluster(cluster, canvasElement) {
   let canvasBounds = canvasElement.getBoundingClientRect();
-  let y = cluster.tiles[0].hex.y - canvasBounds.y - canvasBounds.height / 2;
-  return y * canvasBounds.height / canvasBounds.height;
+  const scaleY = canvasBounds.height / canvasElement.height;
+  const clusterYInPage = window.scrollY + canvasBounds.top + cluster.tiles[0].hex.y * scaleY;
+  return clusterYInPage - window.innerHeight / 2;
 }
 
 async function unfocusTile(ctx, tile) {
