@@ -106,6 +106,7 @@ public class Compatibility implements Listener, FastStatsMetricsProvider {
                 .filter(plugin -> !integratedPlugins.contains(plugin.getName()))
                 .filter(plugin -> !BETONQUEST.equals(plugin.getName()))
                 .map(this::getPluginNameAndVersion)
+                .distinct()
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
