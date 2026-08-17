@@ -18,6 +18,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -66,11 +67,12 @@ public class SQLite extends Database {
     }
 
     private static DatabaseManager init(final BetonQuestLogger log, final Plugin plugin, final String dbLocation) {
-        createDatabase(log, plugin, dbLocation);
+        final Path dbPath = plugin.getDataFolder().toPath().resolve(dbLocation);
+        createDatabase(log, dbPath);
 
         final Properties hikariProps = new Properties();
 
-        hikariProps.setProperty("jdbcUrl", "jdbc:sqlite:" + plugin.getDataFolder() + dbLocation);
+        hikariProps.setProperty("jdbcUrl", "jdbc:sqlite:" + dbPath);
         hikariProps.setProperty("maximumPoolSize", MAX_POOL_SIZE);
         hikariProps.setProperty("minimumIdle", MIN_IDLE);
 
@@ -79,11 +81,8 @@ public class SQLite extends Database {
         return dbManager;
     }
 
-    private static void createDatabase(final BetonQuestLogger log, final Plugin plugin, final String dbLocation) {
-        if (!plugin.getDataFolder().exists() && !plugin.getDataFolder().mkdirs()) {
-            log.error("Unable to create plugin data folder!");
-        }
-        final File file = new File(plugin.getDataFolder(), dbLocation);
+    private static void createDatabase(final BetonQuestLogger log, final Path dbPath) {
+        final File file = new File(dbPath.toUri());
         if (!file.exists()) {
             try {
                 if (!file.createNewFile()) {
