@@ -9406,11 +9406,13 @@ The <code>amount</code> argument displays the number of items in the players inv
 the <code>left:x</code> gives the difference to the <code>x</code> value (when the amount is higher than the value it will be negative).
 The <code>name</code> argument simply gives the defined name or an empty <abbr title="Any concatenation of characters.">String</abbr>, when not set
 and <code>lore:x</code> displays the lore row with index <code>x</code> (starting with 0).
+Just use <code>lore</code> to get the whole lore lines separated with newlines, to change them use <code>delimiter:&lt;yourSeparator&gt;</code>.
 Both <code>name</code> and <code>lore</code> supports the <code>raw</code> subargument to get the text without formatting.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">item</span><span class="nc">.stick.amount</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">item</span><span class="nc">.stick.left</span><span class="nd">:32</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">item</span><span class="nc">.epic_sword.name</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">item</span><span class="nc">.epic_sword.lore</span><span class="nd">:0</span><span class="nc">.raw</span><span class="err">%</span>
+<span class="err">%</span><span class="nt">item</span><span class="nc">.letter.lore.delimiter</span><span class="nd">:</span><span class="o">,</span><span class="err">%</span>
 </code></pre></div>
 <h2 id="itemdurability"><code>ItemDurability</code><a class="headerlink" href="#itemdurability" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This placeholder can only be resolved on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span><br>
