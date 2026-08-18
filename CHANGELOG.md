@@ -6,6 +6,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## [3.2.0] - 2026-08-18
+### Added
 - counting objective related translations in the lang files can now use all counting objective related placeholders
 - `fallback` argument to point conditions to use a default value when category has no value at all
 - `dialog` conversation IO

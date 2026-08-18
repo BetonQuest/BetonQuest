@@ -16,12 +16,12 @@
   <description>Provides the Minecraft 1.21.8 Compatibility of BetonQuest</description>
 
   <properties>
-    <revision>3.2.0</revision>
+    <revision>3.3.0</revision>
     <changelist>-SNAPSHOT</changelist>
     <pit.report.skip>true</pit.report.skip>
 
     <!-- module versions -->
-    <betonquest.core.version>3.2.0${changelist}</betonquest.core.version>
+    <betonquest.core.version>3.3.0${changelist}</betonquest.core.version>
 
     <!-- dependency versions -->
     <paper-api.version>1.21.8-R0.1-SNAPSHOT</paper-api.version>
