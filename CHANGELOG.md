@@ -9,6 +9,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `drop` objective to track players dropping items
 ### Changed
 - `lore` of `item` placeholder can now be used without number to get all lines
+- `chat` notify io now only sends messages during a conversation if `bypassInterceptor` is set to `true`
 ### Deprecated
 ### Removed
 ### Fixed
