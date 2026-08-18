@@ -12,7 +12,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Fixed
 ### Security
 
-## [3.2.0] - 2026-08-18
+## [3.2.0] - 2026-08-17
 ### Added
 - counting objective related translations in the lang files can now use all counting objective related placeholders
 - `fallback` argument to point conditions to use a default value when category has no value at all
