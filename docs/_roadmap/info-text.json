@@ -131,7 +131,8 @@
             "- New action, objective and other features!",
             "- Improvements for point condition",
             "- Better objective property accessibility"
-          ]
+          ],
+          "link": "Documentation/CHANGELOG/#320-2026-08-17"
         },
         "north-west": {
           "title": "Bulk Execution",
