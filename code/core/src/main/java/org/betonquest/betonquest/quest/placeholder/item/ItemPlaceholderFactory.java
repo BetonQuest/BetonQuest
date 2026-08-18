@@ -58,10 +58,11 @@ public class ItemPlaceholderFactory implements PlayerPlaceholderFactory, Playerl
         int amount = 0;
         if (argument.startsWith("left:")) {
             type = ItemDisplayType.LEFT;
+            final String substring = argument.substring(5);
             try {
-                amount = Integer.parseInt(argument.substring(5));
+                amount = Integer.parseInt(substring);
             } catch (final NumberFormatException e) {
-                throw new QuestException("Could not parse item amount", e);
+                throw new QuestException("Could not parse item amount: " + substring, e);
             }
         } else if ("amount".equals(argument)) {
             type = ItemDisplayType.AMOUNT;
@@ -71,10 +72,11 @@ public class ItemPlaceholderFactory implements PlayerPlaceholderFactory, Playerl
             type = ItemDisplayType.LORE;
         } else if (argument.startsWith("lore:")) {
             type = ItemDisplayType.LORE_LINE;
+            final String substring = argument.substring(5);
             try {
-                amount = Integer.parseInt(argument.substring(5));
+                amount = Integer.parseInt(substring);
             } catch (final NumberFormatException e) {
-                throw new QuestException("Could not parse line", e);
+                throw new QuestException("Could not parse line number: " + substring, e);
             }
         } else {
             throw new QuestException(String.format("Unknown argument type: '%s'",
