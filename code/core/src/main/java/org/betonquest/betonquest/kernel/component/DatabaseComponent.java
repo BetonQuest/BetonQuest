@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Set;
 
@@ -81,7 +82,13 @@ public class DatabaseComponent extends AbstractCoreComponent {
             log.debug("Connecting to MySQL database");
             try {
                 final Database mySQL = new MySQL(loggerFactory.create(MySQL.class, "Database"), plugin, config, dbConfig, propertiesPath);
-                mySQL.getConnection();
+
+                try (Connection conn = mySQL.getConnection()) {
+                    if (conn.isClosed()) {
+                        throw new SQLException("Cannot connect to MySQL database");
+                    }
+                }
+
                 this.mySql = true;
                 log.info("Successfully connected to MySQL database!");
                 return mySQL;
