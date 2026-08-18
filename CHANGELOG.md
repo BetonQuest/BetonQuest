@@ -6,6 +6,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
+- `drop` objective to track players dropping items
 ### Changed
 ### Deprecated
 ### Removed
