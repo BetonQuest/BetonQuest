@@ -1,7 +1,3 @@
-#!/bin/bash
-set -euo pipefail
-IFS=$'\n\t'
-
 deletePreviousLines() {
   for (( i=0; i<$1; ++i)); do
     echo -en '\033[1A\033[2K'
