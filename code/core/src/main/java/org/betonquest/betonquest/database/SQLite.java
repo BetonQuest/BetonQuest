@@ -73,8 +73,8 @@ public class SQLite extends Database {
         final Properties hikariProps = new Properties();
 
         hikariProps.setProperty("jdbcUrl", "jdbc:sqlite:" + dbPath);
-        hikariProps.setProperty("maximumPoolSize", MAX_POOL_SIZE);
-        hikariProps.setProperty("minimumIdle", MIN_IDLE);
+        hikariProps.setProperty("dataSource.maximumPoolSize", MAX_POOL_SIZE);
+        hikariProps.setProperty("dataSource.minimumIdle", MIN_IDLE);
 
         final DatabaseManager dbManager = new DatabaseManager();
         dbManager.init(hikariProps, null);

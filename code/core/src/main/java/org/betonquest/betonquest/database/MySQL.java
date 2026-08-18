@@ -78,7 +78,6 @@ public class MySQL extends Database {
     public MySQL(final BetonQuestLogger log, final Plugin plugin, final ConfigAccessor config,
                  final DatabaseComponent.DatabaseConfig dbConfig, final Path configPath) {
         super(log, plugin, config, init(configPath, dbConfig), dbConfig.prefix());
-        testConnection();
     }
 
     private static DatabaseManager init(final Path configPath, final DatabaseComponent.DatabaseConfig dbConfig) {
@@ -101,11 +100,11 @@ public class MySQL extends Database {
             hikariProps.setProperty("username", dbConfig.user());
         }
 
-        hikariProps.setProperty("maximumPoolSize", MAX_POOL_SIZE);
-        hikariProps.setProperty("minimumIdle", MIN_IDLE);
-        hikariProps.setProperty("connectionTimeout", CONNECTION_TIMEOUT);
-        hikariProps.setProperty("idleTimeout", IDLE_TIMEOUT);
-        hikariProps.setProperty("maxLifetime", MAX_LIFE_TIME);
+        hikariProps.setProperty("dataSource.maximumPoolSize", MAX_POOL_SIZE);
+        hikariProps.setProperty("dataSource.minimumIdle", MIN_IDLE);
+        hikariProps.setProperty("dataSource.connectionTimeout", CONNECTION_TIMEOUT);
+        hikariProps.setProperty("dataSource.idleTimeout", IDLE_TIMEOUT);
+        hikariProps.setProperty("dataSource.maxLifetime", MAX_LIFE_TIME);
 
         final DatabaseManager dbManager = new DatabaseManager();
         dbManager.init(hikariProps, configPath);
