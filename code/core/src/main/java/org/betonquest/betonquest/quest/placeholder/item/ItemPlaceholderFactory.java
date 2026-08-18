@@ -43,25 +43,17 @@ public class ItemPlaceholderFactory implements PlayerPlaceholderFactory, Playerl
         return new NullablePlaceholderAdapter(parseInstruction(instruction));
     }
 
-    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     private ItemPlaceholder parseInstruction(final Instruction instruction) throws QuestException {
-        final boolean raw;
-        int pos = instruction.size() - 1;
-        if ("raw".equalsIgnoreCase(instruction.getPart(pos))) {
-            raw = true;
-            pos--;
-        } else {
-            raw = false;
-        }
-        final String argument = instruction.getPart(pos).toLowerCase(Locale.ROOT);
-        final Pair<ItemDisplayType, Integer> typeAndAmount = getTypeAndAmount(argument);
         final Argument<ItemWrapper> questItem = instruction.item().get();
+        final Pair<ItemDisplayType, Integer> typeAndAmount = instruction.parse(this::getTypeAndAmount).get().getValue(null);
         final Argument<String> delimiter = instruction.string().get("delimiter", "\n");
+        final boolean raw = instruction.bool().getFlag("raw", true).getValue(null).orElse(false);
         return new ItemPlaceholder(playerDataStorage, questItem, typeAndAmount.getLeft(), raw, typeAndAmount.getRight(), delimiter);
     }
 
     @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.CyclomaticComplexity"})
-    private Pair<ItemDisplayType, Integer> getTypeAndAmount(final String argument) throws QuestException {
+    private Pair<ItemDisplayType, Integer> getTypeAndAmount(final String rawArgument) throws QuestException {
+        final String argument = rawArgument.toLowerCase(Locale.ROOT);
         final ItemDisplayType type;
         int amount = 0;
         if (argument.startsWith("left:")) {
