@@ -163,11 +163,12 @@ __Description__: Manage the compass destinations for the player.
 When you run this action, you can add or remove a compass destination for the player. You may also directly set the player's compass destination as well.
 When a destination is added the player will be able to select a specified location as a target of his compass.
 To select the target the player must open his backpack and click on the compass icon.
-The first argument is `add`,`del` or `set`, and second one is the name of the target, as defined in the _compass_ section.
 Note that if you set a target the player will not automatically have it added to their choices.
 
-The destination must be defined in `compass` section.
-You can specify a name for the target in each language or just give a general name, and optionally add a custom item (from _items_ section) to be displayed in the backpack.
+| Parameter                                                                                                  | Type      | Explanation                                                  |
+|------------------------------------------------------------------------------------------------------------|-----------|--------------------------------------------------------------|
+| operation <br>[Operation]                                                                                  | Required  | Manage the action type.                                      |
+| target    <br>[[Compass]](../../Tutorials/Quick-Guides/Player-UI-and-Feedback/Compass-Navigation-Hint.md)  | Required  | The name of the target, as defined in the _compass_ section. |
 
 ```YAML title="Example compass configuration"
 compass:
@@ -184,16 +185,18 @@ actions:
   compassBeton: "compass add beton"
 ```
 
+*[Operation]: add, del, set
+
 ## `Conversation`
 
 __Context__: @snippet:action-meta:online@  
-__Syntax__: `conversation <conversation> <option>`  
+__Syntax__: `conversation <conversation> [option]`  
 __Description__: Start a conversation.
 
-The first argument is ID of the conversation. This bypasses the conversation permission!
-
-The optional `option` argument is a NPC option where the conversation will start.
-When using this argument the conversation will start without its header.
+| Parameter                  | Type                | Explanation                                                                                                                      |
+|----------------------------|---------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| conversation <br>[String]  | Required            | ID of the conversation. This bypasses the conversation permission.                                                               |
+| option       <br>[String]  | Optional<br>[Null]  | Specifies where the NPC will start the conversation. When you use this argument, the conversation will begin without its header. |
 
 ```YAML title="Example"
 actions:
@@ -207,11 +210,14 @@ __Context__: @snippet:action-meta:online@
 __Syntax__: `damage <amount>`  
 __Description__: Apply the specified amount of damage to the player.
 
-The only argument is a number (can have a floating point).
+| Parameter            | Type      | Explanation                                                         |
+|----------------------|-----------|---------------------------------------------------------------------|
+| amount <br>[Number]  | Required  | The total amount of damage to be dealt (can have a floating point). |
 
 ```YAML title="Example"
 actions:
   dealDamage: "damage 20"
+  dealBigDamage: "damage 99.9"
 ```
 
 ## `DelEffect`
@@ -220,13 +226,18 @@ __Context__: @snippet:action-meta:online@
 __Syntax__: `deleffect <effects>`  
 __Description__: Remove the specified potion effects from the player.
 
-Use `any` instead of a list of types to remove all potion effects from the player.
+
+| Parameter                  | Type      | Explanation                                                                                                                        |
+|----------------------------|-----------|------------------------------------------------------------------------------------------------------------------------------------|
+| effects <br>[PotionEffect] | Required  | Allowed [`PotionEffect`](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html) or `any` to select all. |
 
 ```YAML title="Example"
 actions:
   deleteEffects: "deleffect ABSORPTION,BLINDNESS"
   deleteAny: "deleffect any"
 ```
+
+*[PotionEffect]: Click the link below for more information.
 
 ## `DeleteGlobalPoint`
 
