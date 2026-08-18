@@ -24,6 +24,7 @@ import org.betonquest.betonquest.quest.objective.data.PointObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.data.TagObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.delay.DelayObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.die.DieObjectiveFactory;
+import org.betonquest.betonquest.quest.objective.drop.DropObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.enchant.EnchantObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.equip.EquipItemObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.experience.ExperienceObjectiveFactory;
@@ -95,6 +96,7 @@ public class ObjectiveTypeComponent extends AbstractCoreComponent {
         objectiveTypes.register("damage", new DamageObjectiveFactory(plugin));
         objectiveTypes.register("delay", new DelayObjectiveFactory());
         objectiveTypes.register("die", new DieObjectiveFactory());
+        objectiveTypes.register("drop", new DropObjectiveFactory());
         objectiveTypes.register("enchant", new EnchantObjectiveFactory());
         objectiveTypes.register("experience", new ExperienceObjectiveFactory(loggerFactory, localizations));
         objectiveTypes.register("fish", new FishObjectiveFactory());
