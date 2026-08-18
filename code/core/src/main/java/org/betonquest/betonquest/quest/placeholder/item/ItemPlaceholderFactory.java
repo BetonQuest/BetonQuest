@@ -43,43 +43,40 @@ public class ItemPlaceholderFactory implements PlayerPlaceholderFactory, Playerl
         return new NullablePlaceholderAdapter(parseInstruction(instruction));
     }
 
-    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     private ItemPlaceholder parseInstruction(final Instruction instruction) throws QuestException {
-        final boolean raw;
-        int pos = instruction.size() - 1;
-        if ("raw".equalsIgnoreCase(instruction.getPart(pos))) {
-            raw = true;
-            pos--;
-        } else {
-            raw = false;
-        }
-        final String argument = instruction.getPart(pos).toLowerCase(Locale.ROOT);
-        final Pair<ItemDisplayType, Integer> typeAndAmount = getTypeAndAmount(argument);
         final Argument<ItemWrapper> questItem = instruction.item().get();
-        return new ItemPlaceholder(playerDataStorage, questItem, typeAndAmount.getLeft(), raw, typeAndAmount.getRight());
+        final Pair<ItemDisplayType, Integer> typeAndAmount = instruction.parse(this::getTypeAndAmount).get().getValue(null);
+        final Argument<String> delimiter = instruction.string().get("delimiter", "\n");
+        final boolean raw = instruction.bool().getFlag("raw", true).getValue(null).orElse(false);
+        return new ItemPlaceholder(playerDataStorage, questItem, typeAndAmount.getLeft(), raw, typeAndAmount.getRight(), delimiter);
     }
 
     @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.CyclomaticComplexity"})
-    private Pair<ItemDisplayType, Integer> getTypeAndAmount(final String argument) throws QuestException {
+    private Pair<ItemDisplayType, Integer> getTypeAndAmount(final String rawArgument) throws QuestException {
+        final String argument = rawArgument.toLowerCase(Locale.ROOT);
         final ItemDisplayType type;
         int amount = 0;
         if (argument.startsWith("left:")) {
             type = ItemDisplayType.LEFT;
+            final String substring = argument.substring(5);
             try {
-                amount = Integer.parseInt(argument.substring(5));
+                amount = Integer.parseInt(substring);
             } catch (final NumberFormatException e) {
-                throw new QuestException("Could not parse item amount", e);
+                throw new QuestException("Could not parse item amount: " + substring, e);
             }
         } else if ("amount".equals(argument)) {
             type = ItemDisplayType.AMOUNT;
         } else if ("name".equals(argument)) {
             type = ItemDisplayType.NAME;
-        } else if (argument.startsWith("lore:")) {
+        } else if ("lore".equals(argument)) {
             type = ItemDisplayType.LORE;
+        } else if (argument.startsWith("lore:")) {
+            type = ItemDisplayType.LORE_LINE;
+            final String substring = argument.substring(5);
             try {
-                amount = Integer.parseInt(argument.substring(5));
+                amount = Integer.parseInt(substring);
             } catch (final NumberFormatException e) {
-                throw new QuestException("Could not parse line", e);
+                throw new QuestException("Could not parse line number: " + substring, e);
             }
         } else {
             throw new QuestException(String.format("Unknown argument type: '%s'",
