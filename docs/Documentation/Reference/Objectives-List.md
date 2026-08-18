@@ -324,6 +324,20 @@ objectives:
   preventDying: "die cancel respawn:100;200;300;world;90;0 actions:respawned"
 ```
 
+
+## `Drop`
+
+__Context__: @snippet:objective-meta:online@  
+__Syntax__: `drop <item-options>`  
+__Description__: The player has to drop one of the specified items.
+
+The objective is completed when the player drops any of the specified items.
+
+| Parameter                  | Type     | Explanation      |
+|----------------------------|----------|------------------|
+| item-options<br>List[Item] | Required | A list of items. |
+
+
 ## `Enchant`
 
 __Context__: @snippet:objective-meta:online@  
