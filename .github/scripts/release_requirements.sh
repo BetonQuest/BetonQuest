@@ -1,7 +1,3 @@
-#!/bin/bash
-set -euo pipefail
-IFS=$'\n\t'
-
 checkRequirements() {
   echo 'Requirements'
   checkSsh
