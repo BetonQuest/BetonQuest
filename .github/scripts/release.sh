@@ -210,7 +210,7 @@ setupPrepareSelectTimeDefaultValue() {
   DEFAULT_RELEASE_TIME="$(date +%Y-%m-%d)"
   DEFAULT_RELEASE_TIME_MESSAGE=''
   set +e
-  GH_RELEASE_DATE="$(gh release view "v$CURRENT_VERSION" --json publishedAt >&1 2> /dev/null)"
+  GH_RELEASE_DATE="$(gh release view "v$CURRENT_VERSION" --repo "BetonQuest/BetonQuest" --json publishedAt >&1 2> /dev/null)"
   set -e
   GH_RELEASE_KEY="${GH_RELEASE_DATE:0:16}"
   if [ "$GH_RELEASE_KEY" == '{\"publishedAt\":\"' ]; then
