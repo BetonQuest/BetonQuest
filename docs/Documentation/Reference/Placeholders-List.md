@@ -114,6 +114,7 @@ The `amount` argument displays the number of items in the players inventory and 
 the `left:x` gives the difference to the `x` value (when the amount is higher than the value it will be negative).
 The `name` argument simply gives the defined name or an empty String, when not set
 and `lore:x` displays the lore row with index `x` (starting with 0).
+Just use `lore` to get the whole lore lines separated with newlines, to change them use `delimiter:<yourSeparator>`.
 Both `name` and `lore` supports the `raw` subargument to get the text without formatting.
 
 ```scss title="Example"
@@ -121,6 +122,7 @@ Both `name` and `lore` supports the `raw` subargument to get the text without fo
 %item.stick.left:32%
 %item.epic_sword.name%
 %item.epic_sword.lore:0.raw%
+%item.letter.lore.delimiter:,%
 ```
 
 ## `ItemDurability`

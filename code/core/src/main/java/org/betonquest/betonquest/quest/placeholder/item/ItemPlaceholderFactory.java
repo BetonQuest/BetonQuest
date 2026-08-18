@@ -56,7 +56,8 @@ public class ItemPlaceholderFactory implements PlayerPlaceholderFactory, Playerl
         final String argument = instruction.getPart(pos).toLowerCase(Locale.ROOT);
         final Pair<ItemDisplayType, Integer> typeAndAmount = getTypeAndAmount(argument);
         final Argument<ItemWrapper> questItem = instruction.item().get();
-        return new ItemPlaceholder(playerDataStorage, questItem, typeAndAmount.getLeft(), raw, typeAndAmount.getRight());
+        final Argument<String> delimiter = instruction.string().get("delimiter", "\n");
+        return new ItemPlaceholder(playerDataStorage, questItem, typeAndAmount.getLeft(), raw, typeAndAmount.getRight(), delimiter);
     }
 
     @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.CyclomaticComplexity"})
@@ -74,8 +75,10 @@ public class ItemPlaceholderFactory implements PlayerPlaceholderFactory, Playerl
             type = ItemDisplayType.AMOUNT;
         } else if ("name".equals(argument)) {
             type = ItemDisplayType.NAME;
-        } else if (argument.startsWith("lore:")) {
+        } else if ("lore".equals(argument)) {
             type = ItemDisplayType.LORE;
+        } else if (argument.startsWith("lore:")) {
+            type = ItemDisplayType.LORE_LINE;
             try {
                 amount = Integer.parseInt(argument.substring(5));
             } catch (final NumberFormatException e) {

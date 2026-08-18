@@ -16,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Allows you to display properties of QuestItems like the name
@@ -49,6 +50,11 @@ public class ItemPlaceholder implements NullablePlaceholder {
     private final int amount;
 
     /**
+     * Delimiter for the lore lines.
+     */
+    private final Argument<String> delimiter;
+
+    /**
      * Creates a new ItemPlaceholder.
      *
      * @param playerDataStorage the storage for player data
@@ -56,14 +62,16 @@ public class ItemPlaceholder implements NullablePlaceholder {
      * @param type              the type how the item should be displayed
      * @param raw               if the output should be raw
      * @param amount            the amount of the item
+     * @param delimiter         the delimiter for the lore lines
      */
     public ItemPlaceholder(final PlayerDataStorage playerDataStorage, final Argument<ItemWrapper> item, final ItemDisplayType type,
-                           final boolean raw, final int amount) {
+                           final boolean raw, final int amount, final Argument<String> delimiter) {
         this.playerDataStorage = playerDataStorage;
         this.item = item;
         this.type = type;
         this.raw = raw;
         this.amount = amount;
+        this.delimiter = delimiter;
     }
 
     @Override
@@ -74,6 +82,10 @@ public class ItemPlaceholder implements NullablePlaceholder {
             case LEFT -> Integer.toString(amount - itemAmount(questItem, profile));
             case NAME -> conditionalRaw(questItem.getName());
             case LORE -> {
+                final String delimiter = this.delimiter.getValue(profile);
+                yield questItem.getLore().stream().map(this::conditionalRaw).collect(Collectors.joining(delimiter));
+            }
+            case LORE_LINE -> {
                 try {
                     yield conditionalRaw(questItem.getLore().get(amount));
                 } catch (final IndexOutOfBoundsException e) {

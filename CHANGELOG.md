@@ -8,6 +8,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 - `drop` objective to track players dropping items
 ### Changed
+- `lore` of `item` placeholder can now be used without number to get all lines
 ### Deprecated
 ### Removed
 ### Fixed

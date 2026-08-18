@@ -19,5 +19,9 @@ public enum ItemDisplayType {
     /**
      * The lore of the item.
      */
-    LORE
+    LORE,
+    /**
+     * A single lore line of the item.
+     */
+    LORE_LINE
 }
