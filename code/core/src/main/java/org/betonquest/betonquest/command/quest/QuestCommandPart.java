@@ -51,17 +51,17 @@ public abstract class QuestCommandPart implements SubCommand {
     /**
      * Storage for player data.
      */
-    private final PlayerDataStorage playerDataStorage;
+    protected final PlayerDataStorage playerDataStorage;
+
+    /**
+     * The quest package manager.
+     */
+    protected final QuestPackageManager questPackageManager;
 
     /**
      * The identifier registry.
      */
     private final Identifiers identifiers;
-
-    /**
-     * The quest package manager.
-     */
-    private final QuestPackageManager questPackageManager;
 
     /**
      * Registers a new executor and a new tab completer of the /betonquest command.
