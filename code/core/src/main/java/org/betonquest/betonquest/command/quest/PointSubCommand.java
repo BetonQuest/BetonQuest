@@ -26,12 +26,7 @@ public class PointSubCommand extends QuestCommandPart {
      * @param constructorParams the constructor parameters
      */
     public PointSubCommand(final BetonQuestLogger log, final ConstructorParams constructorParams) {
-        super(log, constructorParams);
-    }
-
-    @Override
-    public List<String> names() {
-        return List.of("point", "points", "p");
+        super(log, constructorParams, List.of("point", "points", "p"), "<player> [list/add/del] [category] [amount]");
     }
 
     @Override

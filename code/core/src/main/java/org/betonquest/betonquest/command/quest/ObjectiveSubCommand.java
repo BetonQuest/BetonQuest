@@ -44,14 +44,9 @@ public class ObjectiveSubCommand extends QuestCommandPart {
      * @param constructorParams the constructor parameters
      */
     public ObjectiveSubCommand(final BetonQuestLogger log, final ConstructorParams constructorParams) {
-        super(log, constructorParams);
+        super(log, constructorParams, List.of("objective", "objectives", "o"), "<player> [list/add/del] [objective]");
         this.playerDataStorage = constructorParams.playerDataStorage();
         this.objectiveManager = constructorParams.objectiveManager();
-    }
-
-    @Override
-    public List<String> names() {
-        return List.of("objective", "objectives", "o");
     }
 
     @Override

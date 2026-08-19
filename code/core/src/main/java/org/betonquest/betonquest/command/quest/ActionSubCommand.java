@@ -32,13 +32,8 @@ public class ActionSubCommand extends QuestCommandPart {
      * @param constructorParams the constructor parameters
      */
     public ActionSubCommand(final BetonQuestLogger log, final ConstructorParams constructorParams) {
-        super(log, constructorParams);
+        super(log, constructorParams, List.of("action", "actions", "a"), "<player> <action>");
         this.actionManager = constructorParams.actionManager();
-    }
-
-    @Override
-    public List<String> names() {
-        return List.of("action", "actions", "a");
     }
 
     @Override

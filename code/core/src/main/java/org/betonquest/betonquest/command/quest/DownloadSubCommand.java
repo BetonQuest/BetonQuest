@@ -57,16 +57,11 @@ public class DownloadSubCommand extends QuestCommandPart {
      * @param constructorParams the constructor parameters
      */
     public DownloadSubCommand(final Plugin plugin, final BetonQuestLogger log, final ConstructorParams constructorParams) {
-        super(log, constructorParams);
+        super(log, constructorParams, List.of("download"), "<gitHubNamespace> <ref> <offsetPath> <sourcePath> [targetPath] [recursive] [overwrite]");
         this.plugin = plugin;
         this.log = log;
         this.loggerFactory = constructorParams.loggerFactory();
         this.config = constructorParams.configAccessor();
-    }
-
-    @Override
-    public List<String> names() {
-        return List.of("download");
     }
 
     @Override

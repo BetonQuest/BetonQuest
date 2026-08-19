@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Contract;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -20,6 +21,13 @@ public interface SubCommand {
      */
     @Contract(pure = true)
     List<String> names();
+
+    /**
+     * Primary command name with command syntax (help).
+     *
+     * @return command name to show with its syntax
+     */
+    Map.Entry<String, String> syntax();
 
     /**
      * Executes the command.

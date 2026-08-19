@@ -31,13 +31,8 @@ public class GlobalTagSubCommand extends QuestCommandPart {
      * @param constructorParams the constructor parameters
      */
     public GlobalTagSubCommand(final BetonQuestLogger log, final ConstructorParams constructorParams) {
-        super(log, constructorParams);
+        super(log, constructorParams, List.of("globaltag", "globaltags", "gtag", "gtags", "gt"), "[list/add/del/purge]");
         this.globalData = constructorParams.globalData();
-    }
-
-    @Override
-    public List<String> names() {
-        return List.of("globaltag", "globaltags", "gtag", "gtags", "gt");
     }
 
     @Override

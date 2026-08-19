@@ -26,12 +26,7 @@ public class TagSubCommand extends QuestCommandPart {
      * @param constructorParams the constructor parameters
      */
     public TagSubCommand(final BetonQuestLogger log, final ConstructorParams constructorParams) {
-        super(log, constructorParams);
-    }
-
-    @Override
-    public List<String> names() {
-        return List.of("tag", "tags", "t");
+        super(log, constructorParams, List.of("tag", "tags", "t"), "<player> [list/add/del] [tag]");
     }
 
     @Override

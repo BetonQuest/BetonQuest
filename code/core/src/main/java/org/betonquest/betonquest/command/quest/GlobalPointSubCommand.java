@@ -31,13 +31,8 @@ public class GlobalPointSubCommand extends QuestCommandPart {
      * @param constructorParams the constructor parameters
      */
     public GlobalPointSubCommand(final BetonQuestLogger log, final ConstructorParams constructorParams) {
-        super(log, constructorParams);
+        super(log, constructorParams, List.of("globalpoint", "globalpoints", "gpoint", "gpoints", "gp"), "[list/add/del/purge]");
         this.globalData = constructorParams.globalData();
-    }
-
-    @Override
-    public List<String> names() {
-        return List.of("globalpoint", "globalpoints", "gpoint", "gpoints", "gp");
     }
 
     @Override

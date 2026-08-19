@@ -23,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -64,18 +65,44 @@ public abstract class QuestCommandPart implements SubCommand {
     private final Identifiers identifiers;
 
     /**
+     * Primary name and aliases.
+     */
+    private final List<String> commandNames;
+
+    /**
+     * Primary name to suggest with syntax.
+     */
+    private final Map.Entry<String, String> commandSyntax;
+
+    /**
      * Registers a new executor and a new tab completer of the /betonquest command.
      *
      * @param log               the logger to use
      * @param constructorParams the constructor parameters
+     * @param names             the primary name and aliases
+     * @param syntax            the command syntax
      */
-    public QuestCommandPart(final BetonQuestLogger log, final ConstructorParams constructorParams) {
+    public QuestCommandPart(final BetonQuestLogger log, final ConstructorParams constructorParams,
+                            final List<String> names, final String syntax) {
         this.log = log;
         this.playerDataStorage = constructorParams.playerDataStorage();
         this.profileProvider = constructorParams.profileProvider();
         this.localizations = constructorParams.localizations();
         this.questPackageManager = constructorParams.questPackageManager();
         this.identifiers = constructorParams.identifiers();
+        this.commandNames = names;
+        final String primaryName = names.get(0);
+        this.commandSyntax = Map.entry(primaryName, primaryName + " " + syntax);
+    }
+
+    @Override
+    public List<String> names() {
+        return commandNames;
+    }
+
+    @Override
+    public Map.Entry<String, String> syntax() {
+        return commandSyntax;
     }
 
     /* default */

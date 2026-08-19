@@ -42,13 +42,8 @@ public class JournalSubCommand extends QuestCommandPart {
      * @param constructorParams the constructor parameters
      */
     public JournalSubCommand(final BetonQuestLogger log, final ConstructorParams constructorParams) {
-        super(log, constructorParams);
+        super(log, constructorParams, List.of("journal", "journals", "j"), "<player> [list/add/del] [entry] [date]");
         this.config = constructorParams.configAccessor();
-    }
-
-    @Override
-    public List<String> names() {
-        return List.of("journal", "journals", "j");
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")

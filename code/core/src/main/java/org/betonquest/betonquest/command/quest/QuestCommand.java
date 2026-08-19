@@ -112,6 +112,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private final List<String> subCommandSuggestions;
 
     /**
+     * Command names with their usage.
+     */
+    private final Map<String, String> subCommandSyntax;
+
+    /**
      * Sub command to display version and hook info.
      */
     private final VersionSubCommand versionSubCommand;
@@ -137,7 +142,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         this.connector = constructorParams.connector();
 
         this.subCommands = new HashMap<>();
-        this.subCommandSuggestions = new ArrayList<>();
+        this.subCommandSyntax = new HashMap<>();
         List.of(
                 new ConditionSubCommand(log, constructorParams),
                 new ActionSubCommand(log, constructorParams),
@@ -156,12 +161,15 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 new DownloadSubCommand(plugin, log, constructorParams)
         ).forEach(command -> {
             command.names().forEach(name -> subCommands.put(name, command));
-            subCommandSuggestions.add(command.names().get(0));
+            final Map.Entry<String, String> syntax = command.syntax();
+            subCommandSyntax.put(syntax.getKey(), syntax.getValue());
         });
-        subCommandSuggestions.addAll(Arrays.asList(
-                "version", "purge",
-                "update", "reload", "backup"));
-
+        subCommandSyntax.put("update", "update");
+        subCommandSyntax.put("reload", "reload");
+        subCommandSyntax.put("version", "version");
+        subCommandSyntax.put("purge", "purge <player>");
+        subCommandSyntax.put("backup", "backup");
+        this.subCommandSuggestions = List.copyOf(subCommandSyntax.keySet());
         this.versionSubCommand = new VersionSubCommand(plugin, constructorParams);
     }
 
@@ -303,46 +311,16 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     }
 
     /**
-     * Specify all commands.
-     */
-    private Map<String, String> getCommandHelpMap(final CommandSender sender) {
-        final Map<String, String> map = new HashMap<>();
-        map.put("reload", "reload");
-        map.put("objectives", "objective <player> [list/add/del] [objective]");
-        map.put("globaltags", "globaltags [list/add/del/purge]");
-        map.put("globalpoints", "globalpoints [list/add/del/purge]");
-        map.put("tags", "tag <player> [list/add/del] [tag]");
-        map.put("points", "point <player> [list/add/del] [category] [amount]");
-        map.put("journal", "journal <player> [list/add/del] [entry] [date]");
-        map.put("condition", "condition <player> <condition>");
-        map.put("action", "action <player> <action>");
-        map.put("item", "item <name>");
-        map.put("give", "give <name>");
-        map.put("variable", "variable <player> <variable> [list/set/del]");
-        map.put("rename", "rename <tag/point/globalpoint/objective/journal> <old> <new>");
-        map.put("delete", "delete <tag/point/objective/journal> <name>");
-        map.put("version", "version");
-        map.put("purge", "purge <player>");
-        map.put("debug", "debug [true/false/ingame/dump]");
-        map.put("download", "download <gitHubNamespace> <ref> <offsetPath> <sourcePath> [targetPath] [recursive] [overwrite]");
-        if (!(sender instanceof Player)) {
-            map.put("backup", "backup");
-        }
-        return map;
-    }
-
-    /**
      * Displays help to the user.
      */
     private void displayHelp(final CommandSender sender, final String alias) throws QuestException {
-        final Map<String, String> commandMap = getCommandHelpMap(sender);
         final TextComponent.Builder builder = Component.text();
         builder.append(Component.text("----- ").color(NamedTextColor.YELLOW))
                 .append(Component.text("BetonQuest").color(NamedTextColor.GREEN))
                 .append(Component.text(" -----").color(NamedTextColor.YELLOW));
         final OnlineProfile profile = sender instanceof final Player player ? profileProvider.getProfile(player) : null;
 
-        for (final Map.Entry<String, String> entry : commandMap.entrySet()) {
+        for (final Map.Entry<String, String> entry : subCommandSyntax.entrySet()) {
             final Component command = Component.text("/" + alias + " " + entry.getValue()).color(NamedTextColor.RED);
             final Component hint = localizations.getMessage(profile, "command_" + entry.getKey()).color(NamedTextColor.AQUA);
 

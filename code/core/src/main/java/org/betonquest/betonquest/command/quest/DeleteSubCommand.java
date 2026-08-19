@@ -43,14 +43,9 @@ public class DeleteSubCommand extends QuestCommandPart {
      * @param constructorParams the constructor parameters
      */
     public DeleteSubCommand(final BetonQuestLogger log, final ConstructorParams constructorParams) {
-        super(log, constructorParams);
+        super(log, constructorParams, List.of("delete", "del", "d"), "<tag/point/objective/journal> <name>");
         this.saver = constructorParams.saver();
         this.objectiveManager = constructorParams.objectiveManager();
-    }
-
-    @Override
-    public List<String> names() {
-        return List.of("delete", "del", "d");
     }
 
     @Override

@@ -42,14 +42,9 @@ public class ItemSubCommand extends QuestCommandPart {
      * @param constructorParams the constructor parameters
      */
     public ItemSubCommand(final BetonQuestLogger log, final ConstructorParams constructorParams) {
-        super(log, constructorParams);
+        super(log, constructorParams, List.of("item", "items", "i"), "<name>");
         this.questPackageManager = constructorParams.questPackageManager();
         this.itemTypeRegistry = constructorParams.itemTypeRegistry();
-    }
-
-    @Override
-    public List<String> names() {
-        return List.of("item", "items", "i");
     }
 
     @Override

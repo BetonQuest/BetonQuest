@@ -44,14 +44,9 @@ public class GiveSubCommand extends QuestCommandPart {
      * @param constructorParams the constructor parameters
      */
     public GiveSubCommand(final BetonQuestLogger log, final ConstructorParams constructorParams) {
-        super(log, constructorParams);
+        super(log, constructorParams, List.of("give", "g"), "<name>");
         this.playerDataStorage = constructorParams.playerDataStorage();
         this.itemManager = constructorParams.itemManager();
-    }
-
-    @Override
-    public List<String> names() {
-        return List.of("give", "g");
     }
 
     @Override

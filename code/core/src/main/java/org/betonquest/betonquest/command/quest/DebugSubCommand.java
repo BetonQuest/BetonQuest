@@ -39,14 +39,9 @@ public class DebugSubCommand extends QuestCommandPart {
      * @param constructorParams the constructor parameters
      */
     public DebugSubCommand(final BetonQuestLogger log, final ConstructorParams constructorParams) {
-        super(log, constructorParams);
+        super(log, constructorParams, List.of("debug"), "[true/false/ingame/dump]");
         this.logWatcher = constructorParams.playerLogWatcher();
         this.debuggingController = constructorParams.logPublishingController();
-    }
-
-    @Override
-    public List<String> names() {
-        return List.of("debug");
     }
 
     @Override

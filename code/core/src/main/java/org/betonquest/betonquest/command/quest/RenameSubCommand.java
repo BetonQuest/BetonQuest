@@ -63,16 +63,11 @@ public class RenameSubCommand extends QuestCommandPart {
      * @param constructorParams the constructor parameters
      */
     public RenameSubCommand(final BetonQuestLogger log, final ConstructorParams constructorParams) {
-        super(log, constructorParams);
+        super(log, constructorParams, List.of("rename", "r"), "<tag/point/globalpoint/objective/journal> <old> <new>");
         this.saver = constructorParams.saver();
         this.globalData = constructorParams.globalData();
         this.journalEntryProcessor = constructorParams.journalEntryProcessor();
         this.objectiveManager = constructorParams.objectiveManager();
-    }
-
-    @Override
-    public List<String> names() {
-        return List.of("rename", "r");
     }
 
     @Override

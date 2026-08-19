@@ -32,13 +32,8 @@ public class ConditionSubCommand extends QuestCommandPart {
      * @param constructorParams the constructor parameters
      */
     public ConditionSubCommand(final BetonQuestLogger log, final ConstructorParams constructorParams) {
-        super(log, constructorParams);
+        super(log, constructorParams, List.of("condition", "conditions", "c"), "<player> <condition>");
         this.conditionManager = constructorParams.conditionManager();
-    }
-
-    @Override
-    public List<String> names() {
-        return List.of("condition", "conditions", "c");
     }
 
     @Override

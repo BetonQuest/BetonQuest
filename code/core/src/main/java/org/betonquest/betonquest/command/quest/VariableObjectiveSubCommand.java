@@ -55,15 +55,10 @@ public class VariableObjectiveSubCommand extends QuestCommandPart {
      * @param constructorParams the constructor parameters
      */
     public VariableObjectiveSubCommand(final BetonQuestLogger log, final ConstructorParams constructorParams) {
-        super(log, constructorParams);
+        super(log, constructorParams, List.of("variable", "var"), "<player> <variable> [list/set/del]");
         this.playerDataStorage = constructorParams.playerDataStorage();
         this.objectiveManager = constructorParams.objectiveManager();
         this.questPackageManager = constructorParams.questPackageManager();
-    }
-
-    @Override
-    public List<String> names() {
-        return List.of("variable", "var");
     }
 
     @Override
