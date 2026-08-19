@@ -24,6 +24,7 @@ import java.util.Optional;
 /**
  * Deletes stuff.
  */
+@SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.GodClass"})
 public class DeleteSubCommand extends QuestCommandPart {
 
     /**
@@ -48,6 +49,7 @@ public class DeleteSubCommand extends QuestCommandPart {
         this.objectiveManager = constructorParams.objectiveManager();
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override
     public void handle(final CommandSender sender, final String... args) throws QuestException {
         if (args.length < 3) {
@@ -75,50 +77,11 @@ public class DeleteSubCommand extends QuestCommandPart {
             }
             case "objectives", "objective", "o" -> {
                 updateType = UpdateType.REMOVE_ALL_OBJECTIVES;
-                final ObjectiveIdentifier objectiveID;
-                try {
-                    objectiveID = getIdentifier(ObjectiveIdentifier.class, name);
-                } catch (final QuestException e) {
-                    final String message = "The objective '" + name + "' does not exist, it will still be removed from the database!";
-                    sendMessage(sender, "error",
-                            new VariableReplacement("error", Component.text(e.getMessage())));
-                    log.warn(message, e);
-                    log.debug("Removing non existent objective only from database: " + e.getMessage(), e);
-                    break;
-                }
-                for (final OnlineProfile onlineProfile : onlineProfiles) {
-                    objectiveManager.cancel(onlineProfile, objectiveID);
-                    playerDataStorage.get(onlineProfile).removeRawObjective(objectiveID);
-                }
+                handleObjectives(sender, name, onlineProfiles);
             }
             case "journals", "journal", "j", "entries", "entry", "e" -> {
                 updateType = UpdateType.REMOVE_ALL_ENTRIES;
-                final JournalEntryIdentifier entryID;
-                try {
-                    entryID = getIdentifier(JournalEntryIdentifier.class, name);
-                } catch (final QuestException e) {
-                    final String message = "The journal entry '" + name + "' does not exist, it will still be removed from the database!";
-                    log.warn(message, e);
-                    log.debug("Removing non existent journal entry only from database: " + e.getMessage(), e);
-                    sender.sendMessage("§2" + message);
-                    break;
-                }
-                for (final OnlineProfile onlineProfile : onlineProfiles) {
-                    final Journal journal = playerDataStorage.get(onlineProfile).getJournal();
-                    int count = 0;
-                    for (final Pointer pointer : journal.getPointers()) {
-                        if (pointer.pointer().equals(entryID)) {
-                            count++;
-                        }
-                    }
-                    if (count == 0) {
-                        continue;
-                    }
-                    for (int i = 0; i < count; i++) {
-                        journal.removePointer(entryID);
-                    }
-                    journal.update();
-                }
+                handleJournalEntries(sender, name, onlineProfiles);
             }
             default -> {
                 sendMessage(sender, "unknown_argument");
@@ -129,6 +92,54 @@ public class DeleteSubCommand extends QuestCommandPart {
         sendMessage(sender, "everything_removed");
     }
 
+    private void handleObjectives(final CommandSender sender, final String name, final List<OnlineProfile> onlineProfiles) {
+        final ObjectiveIdentifier objectiveID;
+        try {
+            objectiveID = getIdentifier(ObjectiveIdentifier.class, name);
+        } catch (final QuestException e) {
+            final String message = "The objective '" + name + "' does not exist, it will still be removed from the database!";
+            sendMessage(sender, "error",
+                    new VariableReplacement("error", Component.text(e.getMessage())));
+            log.warn(message, e);
+            log.debug("Removing non existent objective only from database: " + e.getMessage(), e);
+            return;
+        }
+        for (final OnlineProfile onlineProfile : onlineProfiles) {
+            objectiveManager.cancel(onlineProfile, objectiveID);
+            playerDataStorage.get(onlineProfile).removeRawObjective(objectiveID);
+        }
+    }
+
+    private void handleJournalEntries(final CommandSender sender, final String name, final List<OnlineProfile> onlineProfiles) {
+        final JournalEntryIdentifier entryID;
+        try {
+            entryID = getIdentifier(JournalEntryIdentifier.class, name);
+        } catch (final QuestException e) {
+            final String message = "The journal entry '" + name + "' does not exist, it will still be removed from the database!";
+            log.warn(message, e);
+            log.debug("Removing non existent journal entry only from database: " + e.getMessage(), e);
+            sender.sendMessage("§2" + message);
+            return;
+        }
+        for (final OnlineProfile onlineProfile : onlineProfiles) {
+            final Journal journal = playerDataStorage.get(onlineProfile).getJournal();
+            int count = 0;
+            for (final Pointer pointer : journal.getPointers()) {
+                if (pointer.pointer().equals(entryID)) {
+                    count++;
+                }
+            }
+            if (count == 0) {
+                continue;
+            }
+            for (int i = 0; i < count; i++) {
+                journal.removePointer(entryID);
+            }
+            journal.update();
+        }
+    }
+
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override
     public Optional<List<String>> complete(final String... args) {
         if (args.length == 2) {

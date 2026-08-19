@@ -38,8 +38,7 @@ import java.util.logging.Level;
 /**
  * Main admin command for quest editing.
  */
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals",
-        "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity", "PMD.CouplingBetweenObjects"})
+@SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.CouplingBetweenObjects"})
 public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     /**
@@ -163,61 +162,45 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         this.versionSubCommand = new VersionSubCommand(plugin, constructorParams);
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override
     public boolean onCommand(final CommandSender sender, final Command cmd, final String alias, final String... args) {
+        if (!"betonquest".equalsIgnoreCase(cmd.getName())) {
+            return false;
+        }
         try {
-            if ("betonquest".equalsIgnoreCase(cmd.getName())) {
-                log.debug("Executing /betonquest command for user " + sender.getName()
-                        + " with arguments: " + Arrays.toString(args));
-                // if the command is empty, display help message
-                if (args.length == 0) {
-                    displayHelp(sender, alias);
-                    return true;
-                }
-                // if there are arguments handle them
-                // toLowerCase makes switch case-insensitive
-                final String lowerCase = args[0].toLowerCase(Locale.ROOT);
-                final SubCommand subCommand = subCommands.get(lowerCase);
-                if (subCommand != null) {
-                    subCommand.handle(sender, args);
-                    log.debug("Command executing done");
-                    return true;
-                }
-                switch (lowerCase) {
-                    case "version":
-                    case "ver":
-                    case "v":
-                        versionSubCommand.displayVersionInfo(sender, alias);
-                        break;
-                    case "update":
-                        updater.update(sender);
-                        break;
-                    case "reload":
-                        handleReload(sender);
-                        break;
-                    case "backup":
-                        // do a full plugin backup
-                        if (sender instanceof Player || !Bukkit.getOnlinePlayers().isEmpty()) {
-                            sendMessage(sender, "offline");
-                            break;
-                        }
-                        new Backup(loggerFactory, loggerFactory.create(Backup.class), configAccessorFactory, plugin.getDataFolder(),
-                                connector).backup(plugin.getDescription().getVersion());
-                        break;
-                    default:
-                        // there was an unknown argument, so handle this
-                        sendMessage(sender, "unknown_argument");
-                        break;
-                }
+            log.debug("Executing /betonquest command for user " + sender.getName()
+                    + " with arguments: " + Arrays.toString(args));
+            // if the command is empty, display help message
+            if (args.length == 0) {
+                displayHelp(sender, alias);
+                return true;
+            }
+            // if there are arguments handle them
+            // toLowerCase makes switch case-insensitive
+            final String lowerCase = args[0].toLowerCase(Locale.ROOT);
+            final SubCommand subCommand = subCommands.get(lowerCase);
+            if (subCommand != null) {
+                subCommand.handle(sender, args);
                 log.debug("Command executing done");
                 return true;
             }
+            switch (lowerCase) {
+                case "version", "ver", "v" -> versionSubCommand.displayVersionInfo(sender, alias);
+                case "update" -> updater.update(sender);
+                case "reload" -> handleReload(sender);
+                case "backup" -> handleBackup(sender);
+                default -> sendMessage(sender, "unknown_argument");
+            }
+            log.debug("Command executing done");
+            return true;
         } catch (final QuestException e) {
             log.error("Error while executing command: " + e.getMessage(), e);
         }
         return false;
     }
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     @Override
     public Optional<List<String>> simpleTabComplete(final CommandSender sender, final Command command, final String alias, final String... args) {
         if (args.length == 1) {
@@ -234,10 +217,19 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                  "v",
                  "update",
                  "reload",
-                 "backup",
-                 "package" -> Optional.of(new ArrayList<>());
+                 "backup" -> Optional.of(new ArrayList<>());
             default -> Optional.of(new ArrayList<>());
         };
+    }
+
+    private void handleBackup(final CommandSender sender) {
+        // do a full plugin backup
+        if (sender instanceof Player || !Bukkit.getOnlinePlayers().isEmpty()) {
+            sendMessage(sender, "offline");
+            return;
+        }
+        new Backup(loggerFactory, loggerFactory.create(Backup.class), configAccessorFactory, plugin.getDataFolder(),
+                connector).backup(plugin.getDescription().getVersion());
     }
 
     /**
