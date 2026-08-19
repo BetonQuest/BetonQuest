@@ -45,7 +45,7 @@ public class LanguageCondition implements PlayerCondition {
 
     @Override
     public boolean check(final Profile profile) throws QuestException {
-        final String playerLanguage = dataStorage.getOffline(profile).getLanguage().orElseGet(languageProvider::getDefaultLanguage);
+        final String playerLanguage = dataStorage.get(profile).getLanguage().orElseGet(languageProvider::getDefaultLanguage);
         return expectedLanguages.getValue(profile).contains(playerLanguage);
     }
 }

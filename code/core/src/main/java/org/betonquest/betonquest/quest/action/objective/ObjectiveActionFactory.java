@@ -13,7 +13,6 @@ import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 import org.betonquest.betonquest.api.quest.action.PlayerlessActionFactory;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
 import org.betonquest.betonquest.data.PlayerDataStorage;
-import org.betonquest.betonquest.database.PlayerDataFactory;
 import org.betonquest.betonquest.database.Saver;
 import org.bukkit.plugin.Plugin;
 
@@ -34,11 +33,6 @@ public class ObjectiveActionFactory implements PlayerActionFactory, PlayerlessAc
      * Logger factory to create a logger for the actions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
-
-    /**
-     * Factory to create new Player Data.
-     */
-    private final PlayerDataFactory playerDataFactory;
 
     /**
      * The objective manager.
@@ -69,18 +63,16 @@ public class ObjectiveActionFactory implements PlayerActionFactory, PlayerlessAc
      * @param saver             the database saver
      * @param objectiveManager  the objective manager
      * @param playerDataStorage the player data storage
-     * @param playerDataFactory the factory to create player data
      */
     public ObjectiveActionFactory(final Plugin plugin, final BetonQuestLoggerFactory loggerFactory,
                                   final ProfileProvider profileProvider, final Saver saver, final ObjectiveManager objectiveManager,
-                                  final PlayerDataStorage playerDataStorage, final PlayerDataFactory playerDataFactory) {
+                                  final PlayerDataStorage playerDataStorage) {
         this.plugin = plugin;
         this.profileProvider = profileProvider;
         this.saver = saver;
         this.objectiveManager = objectiveManager;
         this.playerDataStorage = playerDataStorage;
         this.loggerFactory = loggerFactory;
-        this.playerDataFactory = playerDataFactory;
     }
 
     @Override
@@ -97,6 +89,6 @@ public class ObjectiveActionFactory implements PlayerActionFactory, PlayerlessAc
         final String action = instruction.string().map(s -> s.toLowerCase(Locale.ROOT)).get().getValue(null);
         final Argument<List<ObjectiveIdentifier>> objectives = instruction.identifier(ObjectiveIdentifier.class).list().get();
         return new NullableActionAdapter(new ObjectiveAction(plugin, loggerFactory.create(ObjectiveAction.class), profileProvider, saver,
-                objectiveManager, playerDataStorage, instruction.getPackage(), objectives, playerDataFactory, action));
+                objectiveManager, playerDataStorage, instruction.getPackage(), objectives, action));
     }
 }

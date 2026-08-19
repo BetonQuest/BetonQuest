@@ -45,7 +45,6 @@ import org.betonquest.betonquest.database.Backup;
 import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.database.PlayerData;
-import org.betonquest.betonquest.database.PlayerDataFactory;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
@@ -132,11 +131,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Provider for Player Profiles.
      */
     private final ProfileProvider profileProvider;
-
-    /**
-     * Factory to create new Player Data.
-     */
-    private final PlayerDataFactory playerDataFactory;
 
     /**
      * The {@link Localizations} instance.
@@ -247,7 +241,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         this.configAccessorFactory = constructorParams.configAccessorFactory();
         this.logWatcher = constructorParams.playerLogWatcher();
         this.debuggingController = constructorParams.logPublishingController();
-        this.playerDataFactory = constructorParams.playerDataFactory();
         this.playerDataStorage = constructorParams.playerDataStorage();
         this.profileProvider = constructorParams.profileProvider();
         this.localizations = constructorParams.localizations();
@@ -588,11 +581,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         if (profile == null) {
             return null;
         }
-        if (profile.getOnlineProfile().isPresent()) {
-            return playerDataStorage.get(profile);
+        if (profile.getOnlineProfile().isEmpty()) {
+            log.debug("Profile is offline, loading his data");
         }
-        log.debug("Profile is offline, loading his data");
-        return playerDataFactory.createPlayerData(profile);
+        return playerDataStorage.get(profile);
     }
 
     /**
@@ -1145,13 +1137,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         final boolean isOnline = profile.getOnlineProfile().isPresent();
-        final PlayerData playerData;
-        if (isOnline) {
-            playerData = playerDataStorage.get(profile);
-        } else {
+        if (!isOnline) {
             log.debug("Profile is offline, loading his data");
-            playerData = playerDataFactory.createPlayerData(profile);
         }
+        final PlayerData playerData = playerDataStorage.get(profile);
         // if there are no arguments then list player's objectives
         if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
             // display objectives
@@ -1857,7 +1846,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         if (isOnline) {
             data = null;
         } else {
-            final PlayerData offline = playerDataStorage.getOffline(profile);
+            final PlayerData offline = playerDataStorage.get(profile);
             final String instruction = offline.getRawObjectives().get(variableObjective.getObjectiveID().getFull());
             if (instruction == null) {
                 log.debug("There is no data for that objective for that player!");
@@ -2075,7 +2064,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      *
      * @param loggerFactory           the logger factory
      * @param configAccessorFactory   the config accessor factory
-     * @param playerDataFactory       the player data factory
      * @param playerDataStorage       the player data storage
      * @param profileProvider         the profile provider
      * @param localizations           the Localizations
@@ -2098,12 +2086,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param reloader                the plugin reloading runnable
      */
     public record ConstructorParams(BetonQuestLoggerFactory loggerFactory, ConfigAccessorFactory configAccessorFactory,
-                                    PlayerDataFactory playerDataFactory, PlayerDataStorage playerDataStorage,
-                                    ProfileProvider profileProvider, Localizations localizations, Updater updater,
-                                    Compatibility compatibility, Connector connector, Saver saver,
-                                    QuestPackageManager questPackageManager, ConfigAccessor configAccessor,
-                                    LogPublishingController logPublishingController, PlayerLogWatcher playerLogWatcher,
-                                    Identifiers identifiers, GlobalData globalData,
+                                    PlayerDataStorage playerDataStorage, ProfileProvider profileProvider,
+                                    Localizations localizations, Updater updater, Compatibility compatibility,
+                                    Connector connector, Saver saver, QuestPackageManager questPackageManager,
+                                    ConfigAccessor configAccessor, LogPublishingController logPublishingController,
+                                    PlayerLogWatcher playerLogWatcher, Identifiers identifiers, GlobalData globalData,
                                     JournalEntryProcessor journalEntryProcessor,
                                     ItemTypeRegistry itemTypeRegistry, ActionManager actionManager,
                                     ConditionManager conditionManager,

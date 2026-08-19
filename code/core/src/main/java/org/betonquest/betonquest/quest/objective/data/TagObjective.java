@@ -64,7 +64,7 @@ public class TagObjective extends DefaultObjective {
         if (event.getState() != ObjectiveState.ACTIVE) {
             return;
         }
-        if (playerDataStorage.getOffline(profile).tags().has(tag.getValue(profile))) {
+        if (playerDataStorage.get(profile).tags().has(tag.getValue(profile))) {
             getService().complete(profile);
         }
     }

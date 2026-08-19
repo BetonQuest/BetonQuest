@@ -35,6 +35,6 @@ public class LanguageAction implements PlayerAction {
     @Override
     public void execute(final Profile profile) throws QuestException {
         final String lang = language.getValue(profile);
-        dataStorage.getOffline(profile).setLanguage("default".equalsIgnoreCase(lang) ? null : lang);
+        dataStorage.get(profile).setLanguage("default".equalsIgnoreCase(lang) ? null : lang);
     }
 }

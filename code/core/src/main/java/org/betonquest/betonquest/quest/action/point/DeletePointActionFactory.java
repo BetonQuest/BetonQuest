@@ -46,7 +46,7 @@ public class DeletePointActionFactory implements PlayerActionFactory, Playerless
 
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
-        return new DeletePointAction(dataStorage::getOffline, instruction.packageIdentifier().get());
+        return new DeletePointAction(dataStorage::get, instruction.packageIdentifier().get());
     }
 
     @Override

@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.identifier.ObjectiveIdentifier;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.parser.PackageIdentifierParser;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
@@ -322,8 +323,9 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
      * @param profile     the {@link Profile} of the player
      * @param dataStorage the storage providing player data
      */
-    public void startAll(final Profile profile, final PlayerDataStorage dataStorage) {
+    public void startAll(final OnlineProfile profile, final PlayerDataStorage dataStorage) {
         final PlayerData data = dataStorage.get(profile);
+        data.startObjectives();
         final TagHolder tagHolder = data.tags();
         for (final ObjectiveIdentifier id : autoOnceObjectiveIds) {
             final Objective objective = values.get(id);

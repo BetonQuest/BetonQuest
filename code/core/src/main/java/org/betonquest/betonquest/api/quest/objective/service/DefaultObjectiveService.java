@@ -164,9 +164,8 @@ public class DefaultObjectiveService implements ObjectiveService {
         saver.add(new Saver.Record(UpdateType.ADD_OBJECTIVES, profile.getProfileUUID().toString(), objectiveID.getFull(), freshData));
         final QuestDataUpdateEvent event = new QuestDataUpdateEvent(profile, objectiveID, freshData);
         plugin.getServer().getScheduler().runTask(plugin, event::callEvent);
-        if (profile.getOnlineProfile().isPresent()) {
-            plugin.getPlayerDataStorage().get(profile).getJournal().update();
-        }
+        profile.getOnlineProfile()
+                .ifPresent(onlineProfile -> plugin.getPlayerDataStorage().get(onlineProfile).getJournal().update());
     }
 
     @Override

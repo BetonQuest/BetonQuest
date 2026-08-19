@@ -30,7 +30,7 @@ class JournalActionTest {
             @Mock final JournalChanger changer, @Mock final NotificationSender sender) throws QuestException {
         final ProfileProvider profileProvider = mock(ProfileProvider.class);
         final OnlineProfile onlineProfile = profileProvider.getProfile(mock(Player.class));
-        when(dataStorage.getOffline(onlineProfile)).thenReturn(data);
+        when(dataStorage.get(onlineProfile)).thenReturn(data);
         when(data.getJournal()).thenReturn(journal);
 
         final JournalAction action = new JournalAction(dataStorage, changer, sender);
