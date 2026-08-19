@@ -41,9 +41,10 @@ Writes the notification in the player's chat.
 ??? info "Preview"
     ![chat image](../../_media/content/Documentation/Notifications/chat.png)
 
-| Option          | Description                            |
-|-----------------|----------------------------------------|
-| [Sound](#sound) | Any option from the [SoundIO](#sound). |
+| Option            | Description                                                                                  |
+|-------------------|----------------------------------------------------------------------------------------------|
+| [Sound](#sound)   | Any option from the [SoundIO](#sound).                                                       |
+| bypassInterceptor | If the messages should ignore any set interceptor and be sent into the running conversation. |
 
 ### Advancement
 Shows the notification using an achievement popup.
