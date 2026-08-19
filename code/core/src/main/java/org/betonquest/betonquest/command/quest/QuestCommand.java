@@ -11,14 +11,11 @@ import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.reload.Reloader;
 import org.betonquest.betonquest.command.SimpleTabCompleter;
-import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Backup;
 import org.betonquest.betonquest.database.Connector;
-import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.logger.PlayerLogWatcher;
 import org.betonquest.betonquest.web.updater.Updater;
 import org.bukkit.Bukkit;
@@ -27,7 +24,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,11 +56,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * The plugin instance.
      */
     private final Plugin plugin;
-
-    /**
-     * Storage for player data.
-     */
-    private final PlayerDataStorage playerDataStorage;
 
     /**
      * Provider for Player Profiles.
@@ -134,7 +125,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         this.loggerFactory = constructorParams.loggerFactory();
         this.configAccessorFactory = constructorParams.configAccessorFactory();
         this.logWatcher = constructorParams.playerLogWatcher();
-        this.playerDataStorage = constructorParams.playerDataStorage();
         this.profileProvider = constructorParams.profileProvider();
         this.localizations = constructorParams.localizations();
         this.updater = constructorParams.updater();
@@ -153,6 +143,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 new PointSubCommand(log, constructorParams),
                 new GlobalPointSubCommand(log, constructorParams),
                 new JournalSubCommand(log, constructorParams),
+                new PurgeSubCommand(log, constructorParams),
                 new DeleteSubCommand(log, constructorParams),
                 new RenameSubCommand(log, constructorParams),
                 new GiveSubCommand(log, constructorParams),
@@ -167,7 +158,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         subCommandSyntax.put("update", "update");
         subCommandSyntax.put("reload", "reload");
         subCommandSyntax.put("version", "version");
-        subCommandSyntax.put("purge", "purge <player>");
         subCommandSyntax.put("backup", "backup");
         this.subCommandSuggestions = List.copyOf(subCommandSyntax.keySet());
         this.versionSubCommand = new VersionSubCommand(plugin, constructorParams);
@@ -198,9 +188,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     case "ver":
                     case "v":
                         versionSubCommand.displayVersionInfo(sender, alias);
-                        break;
-                    case "purge":
-                        purgePlayer(sender, args);
                         break;
                     case "update":
                         updater.update(sender);
@@ -242,7 +229,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return subCommand.complete(args);
         }
         return switch (lowerCase) {
-            case "purge" -> args.length == 2 ? Optional.empty() : Optional.of(new ArrayList<>());
             case "version",
                  "ver",
                  "v",
@@ -252,21 +238,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                  "package" -> Optional.of(new ArrayList<>());
             default -> Optional.of(new ArrayList<>());
         };
-    }
-
-    /**
-     * Purges profile's data.
-     */
-    private void purgePlayer(final CommandSender sender, final String... args) {
-        final PlayerData playerData = getTargetPlayerData(sender, args);
-        if (playerData == null) {
-            return;
-        }
-        log.debug("Purging player " + args[1]);
-        playerData.purgePlayer();
-        // done
-        sendMessage(sender, "purged",
-                new VariableReplacement("player", Component.text(args[1])));
     }
 
     /**
@@ -286,28 +257,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         if (noFilters) {
             logWatcher.removeFilter(uuid, "*");
         }
-    }
-
-    @Nullable
-    private Profile getTargetProfile(final CommandSender sender, final String... args) {
-        if (args.length < 2) {
-            log.debug("Player's name is missing");
-            sendMessage(sender, "specify_player");
-            return null;
-        }
-        return profileProvider.getProfile(Bukkit.getOfflinePlayer(args[1]));
-    }
-
-    @Nullable
-    private PlayerData getTargetPlayerData(final CommandSender sender, final String... args) {
-        final Profile profile = getTargetProfile(sender, args);
-        if (profile == null) {
-            return null;
-        }
-        if (profile.getOnlineProfile().isEmpty()) {
-            log.debug("Profile is offline, loading his data");
-        }
-        return playerDataStorage.get(profile);
     }
 
     /**
