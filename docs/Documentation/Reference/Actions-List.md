@@ -165,10 +165,10 @@ When a destination is added the player will be able to select a specified locati
 To select the target the player must open his backpack and click on the compass icon.
 Note that if you set a target the player will not automatically have it added to their choices.
 
-| Parameter                                                                                                  | Type      | Explanation                                                  |
-|------------------------------------------------------------------------------------------------------------|-----------|--------------------------------------------------------------|
-| operation <br>[Operation]                                                                                  | Required  | Manage the action type.                                      |
-| target    <br>[[Compass]](../../Tutorials/Quick-Guides/Player-UI-and-Feedback/Compass-Navigation-Hint.md)  | Required  | The name of the target, as defined in the _compass_ section. |
+| Parameter                                                                                                     | Type      | Explanation                                          |
+|---------------------------------------------------------------------------------------------------------------|-----------|------------------------------------------------------|
+| operation <br>[Operation]                                                                                     | Required  | Manage the action type.                              |
+| target    <br>[[Identifier]](../../Tutorials/Quick-Guides/Player-UI-and-Feedback/Compass-Navigation-Hint.md)  | Required  | The compass identifier for the player's destination. |
 
 ```YAML title="Example compass configuration"
 compass:
@@ -193,10 +193,10 @@ __Context__: @snippet:action-meta:online@
 __Syntax__: `conversation <conversation> [option]`  
 __Description__: Start a conversation.
 
-| Parameter                  | Type                | Explanation                                                                                                                      |
-|----------------------------|---------------------|----------------------------------------------------------------------------------------------------------------------------------|
-| conversation <br>[String]  | Required            | ID of the conversation. This bypasses the conversation permission.                                                               |
-| option       <br>[String]  | Optional<br>[Null]  | Specifies where the NPC will start the conversation. When you use this argument, the conversation will begin without its header. |
+| Parameter                     | Type                | Explanation                                                                                                                      |
+|-------------------------------|---------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| conversation <br>[Identifier] | Required            | The identifier for the conversation ID. This bypasses the conversation permission.                                               |
+| option       <br>[String]     | Optional<br>[Null]  | Specifies where the NPC will start the conversation. When you use this argument, the conversation will begin without its header. |
 
 ```YAML title="Example"
 actions:
@@ -210,9 +210,9 @@ __Context__: @snippet:action-meta:online@
 __Syntax__: `damage <amount>`  
 __Description__: Apply the specified amount of damage to the player.
 
-| Parameter            | Type      | Explanation                                                         |
-|----------------------|-----------|---------------------------------------------------------------------|
-| amount <br>[Number]  | Required  | The total amount of damage to be dealt (can have a floating point). |
+| Parameter            | Type      | Explanation                             |
+|----------------------|-----------|-----------------------------------------|
+| amount <br>[Number]  | Required  | The total amount of damage to be dealt. |
 
 ```YAML title="Example"
 actions:
@@ -227,17 +227,15 @@ __Syntax__: `deleffect <effects>`
 __Description__: Remove the specified potion effects from the player.
 
 
-| Parameter                  | Type      | Explanation                                                                                                                        |
-|----------------------------|-----------|------------------------------------------------------------------------------------------------------------------------------------|
-| effects <br>[PotionEffect] | Required  | Allowed [`PotionEffect`](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html) or `any` to select all. |
+| Parameter                                                                                                          | Type      | Explanation                                              |
+|--------------------------------------------------------------------------------------------------------------------|-----------|----------------------------------------------------------|
+| effects <br>List[[PotionEffect]](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html) | Required  | Possible effects on the player. Use `any` to select all. |
 
 ```YAML title="Example"
 actions:
   deleteEffects: "deleffect ABSORPTION,BLINDNESS"
   deleteAny: "deleffect any"
 ```
-
-*[PotionEffect]: Click the link below for more information.
 
 ## `DeleteGlobalPoint`
 
