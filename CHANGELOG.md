@@ -14,6 +14,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Deprecated
 ### Removed
 ### Fixed
+- JobsReborn integration missed some null checks resulting in not working actions and conditions
 ### Security
 
 ## [3.2.0] - 2026-08-17

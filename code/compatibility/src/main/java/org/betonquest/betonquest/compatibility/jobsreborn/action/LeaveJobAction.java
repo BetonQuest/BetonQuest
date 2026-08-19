@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.jobsreborn.action;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.Job;
+import com.gamingmesh.jobs.container.JobsPlayer;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -28,7 +29,10 @@ public class LeaveJobAction implements PlayerAction {
 
     @Override
     public void execute(final Profile profile) throws QuestException {
-        Jobs.getPlayerManager().getJobsPlayer(profile.getPlayerUUID()).leaveJob(job.getValue(profile));
+        final JobsPlayer jobsPlayer = Jobs.getPlayerManager().getJobsPlayer(profile.getPlayerUUID());
+        if (jobsPlayer != null) {
+            jobsPlayer.leaveJob(job.getValue(profile));
+        }
     }
 
     @Override
