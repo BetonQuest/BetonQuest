@@ -9710,18 +9710,18 @@ are offered as tab-completions and can be selected; any other language is treate
 <li><code>default</code> - The default hologram plugin that is used by BetonQuest.
   If the plugin is not installed, BetonQuest will use the next one in the list.</li>
 <li><code>update_interval</code>- The interval (in ticks) in which the holograms check the conditions and updates their visibility.
-  This is to prevent performance issues and cannot be disabled.
-  Set a very high value to make it semi-disabled.</li>
+  This is to prevent performance issues and can be disabled by using values of 0 or below.
+  Use the <a href="../Actions-List/#updatehologram"><code>hologramUpdate</code> action</a> then.</li>
 </ul>
 <h2 id="hider-entity-hider-settings"><code>hider</code> - Entity hider settings<a class="headerlink" href="#hider-entity-hider-settings" title="Permanent link">🔗</a></h2>
 <p>All settings related to the entity hider.</p>
 <ul>
 <li><code>player_update_interval</code> - The interval (in ticks) in which the PlayerHider checks the conditions and updates their visibility.
-  This is to prevent performance issues and cannot be disabled.
-  Set a very high value to make it semi-disabled.</li>
+  This is to prevent performance issues and can be disabled by using values of 0 or below.
+  Use the <a href="../Actions-List/#updatevisibility"><code>updatevisibility</code> action</a> then.</li>
 <li><code>npc_update_interval</code> - The interval (in ticks) in which the NPCHider checks the conditions and updates their visibility.
-  This is to prevent performance issues and cannot be disabled.
-  Set a very high value to make it semi-disabled.</li>
+  This is to prevent performance issues and can be disabled by using values of 0 or below.
+  Use the <a href="../Actions-List/#updatevisibility"><code>updatevisibility</code> action</a> then.</li>
 </ul>
 <h2 id="item-item-related-settings"><code>item</code> - Item related settings<a class="headerlink" href="#item-item-related-settings" title="Permanent link">🔗</a></h2>
 <p>Different item settings that are used in BetonQuest.</p>

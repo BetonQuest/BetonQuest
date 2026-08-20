@@ -8616,7 +8616,8 @@ minimize the use of player-dependent placeholders.</p>
 </details>
 <p>The hologram's conditions are checked every 10 seconds, meaning a hologram will respond to a condition being met or unmet
 every 10 seconds. If you want to make it faster, decrease <code>hologram.update_interval</code> option in "<em>config.yml</em>" file and set it to a
-number of ticks you want to pass between updates (one second is 20 ticks). Don't set it to 0 or negative numbers, it will result in an error.</p>
+number of ticks you want to pass between updates (one second is 20 ticks). Setting it to 0 or negative numbers will
+deactivate automatic updates at all, use the <a href="../../Actions-List/#updatehologram"><code>hologramUpdate</code> action</a> then.</p>
 <p>Keep in mind that each hologram plugin also updates its holograms on a timer individually,
 meaning that hologram placeholders will refresh at a much quicker rate than the above.</p>
 
