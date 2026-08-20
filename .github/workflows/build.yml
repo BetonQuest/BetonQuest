@@ -36,6 +36,20 @@ jobs:
             mkdocs.yml
           MAVEN_WRAPPER_DIR: '~/.m2/wrapper'
           SUB_MODULE: 'betonquest'
+      - name: Check module versions
+        shell: bash --noprofile --norc -euo pipefail {0}
+        run: |
+          read -ra modules <<< "$MODULES_TO_CHECK"
+          for module in "${modules[@]}"; do
+            version=$(./mvnw --raw-streams help:evaluate -Dexpression=revision -q -DforceStdout --projects ":$module")
+            tag="v${version}-${module}"
+            if [ -n "$(git rev-parse -q --verify "refs/tags/$tag")" >/dev/null ] && [ "$(git rev-list -n1 "$tag")" != "$(git rev-parse HEAD)" ]; then
+              if [ ! git diff --quiet "$tag" HEAD -- "code/$module" ]; then
+                echo "Module '"$module"' has code changes compared to tag '$tag', but the version was not bumped!"
+                exit 1
+              fi
+            fi
+          done
       - name: Determine modules to skip
         if: "steps.version.outputs.VERSION_TYPE == 'release'"
         id: modules
@@ -48,7 +62,7 @@ jobs:
             version=$(./mvnw --raw-streams help:evaluate -Dexpression=revision -q -DforceStdout --projects ":$module")
             tag="v${version}-${module}"
             if [ -n "$(git rev-parse -q --verify "refs/tags/$tag")" >/dev/null ] && [ "$(git rev-list -n1 "$tag")" != "$(git rev-parse HEAD)" ]; then
-              echo "Deployment of module '"$module"' for tag '$tag' will bee skipped (tag already exists)"
+              echo "Module '"$module"' for tag '$tag' will be skipped for deployment (tag already exists)."
               skip_modules+=("!:$module")
             else
               echo "Module '"$module"' for tag '$tag' will be deployed."
