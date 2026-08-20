@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.jobsreborn.condition;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.Job;
+import com.gamingmesh.jobs.container.JobsPlayer;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -28,7 +29,8 @@ public class HasJobCondition implements PlayerCondition {
 
     @Override
     public boolean check(final Profile profile) throws QuestException {
-        return Jobs.getPlayerManager().getJobsPlayer(profile.getPlayerUUID()).getJobProgression(job.getValue(profile)) != null;
+        final JobsPlayer jobsPlayer = Jobs.getPlayerManager().getJobsPlayer(profile.getPlayerUUID());
+        return jobsPlayer != null && jobsPlayer.getJobProgression(job.getValue(profile)) != null;
     }
 
     @Override
