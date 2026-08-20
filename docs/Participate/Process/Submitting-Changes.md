@@ -4,6 +4,10 @@ icon: fontawesome/solid/flag-checkered
 The last step of the contributing process is to submit your changes. This is done via a pull request on GitHub. 
 A pull request basically is asking us to pull your changes into our codebase. Let's create one!
 
+## AI Usage
+We _don't forbid_ the [use of AI tools](AI-Usage.md) to help with coding for your contributions.
+However, we encourage you to use them only for small tasks and as a supportive tool instead of a replacement for human thinking.
+
 ## Push your changes
 The first step is to push your changes to your fork on GitHub.
 You can do this using
