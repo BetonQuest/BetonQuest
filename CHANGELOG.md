@@ -15,6 +15,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Removed
 ### Fixed
 - JobsReborn integration missed some null checks resulting in not working actions and conditions
+- concurrency issue when loading player data on join causing multiple profiles to get created with a database exception
 ### Security
 
 ## [3.2.0] - 2026-08-17

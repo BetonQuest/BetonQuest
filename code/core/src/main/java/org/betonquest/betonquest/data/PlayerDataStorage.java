@@ -19,6 +19,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
 /**
  * Stores loaded {@link PlayerData}.
@@ -48,7 +50,7 @@ public class PlayerDataStorage implements FastStatsMetricsProvider {
     /**
      * Stored player data for online players.
      */
-    private final Map<Profile, PlayerData> playerDataMap;
+    private final Map<Profile, FutureTask<PlayerData>> playerDataMap;
 
     /**
      * Create a new Storage for Player Data.
@@ -77,7 +79,7 @@ public class PlayerDataStorage implements FastStatsMetricsProvider {
      */
     public void initProfiles(final Collection<OnlineProfile> onlineProfiles, final Conversations conversations) {
         for (final OnlineProfile onlineProfile : onlineProfiles) {
-            final PlayerData playerData = init(onlineProfile);
+            final PlayerData playerData = get(onlineProfile);
             playerData.startObjectives();
             playerData.getJournal().update();
             if (playerData.getActiveConversation() != null) {
@@ -87,16 +89,7 @@ public class PlayerDataStorage implements FastStatsMetricsProvider {
     }
 
     /**
-     * Start the objectives for all stored player data.
-     */
-    public void startObjectives() {
-        for (final PlayerData playerData : playerDataMap.values()) {
-            playerData.startObjectives();
-        }
-    }
-
-    /**
-     * Start auto-once objectives and update journals.
+     * Start objectives, auto-once objectives and update journals.
      *
      * @param onlineProfiles the profiles to update
      */
@@ -110,74 +103,48 @@ public class PlayerDataStorage implements FastStatsMetricsProvider {
     }
 
     /**
-     * Creates new PlayerData and {@link #put(Profile, PlayerData) puts} it into this storage.
+     * Creates new PlayerData and stores it.
      *
      * @param profile the {@link Profile} of the player
      * @return the created PlayerData
      */
     public PlayerData init(final Profile profile) {
-        log.debug("Creating new data for " + profile);
-        final PlayerData playerData = playerDataFactory.createPlayerData(profile);
-        put(profile, playerData);
-        return playerData;
+        final FutureTask<PlayerData> playerDataFutureTask = playerDataMap.compute(profile, (key, task) -> {
+            if (task == null || task.isDone()) {
+                final FutureTask<PlayerData> newTask = new FutureTask<>(() -> playerDataFactory.createPlayerData(key));
+                newTask.run();
+                return newTask;
+            }
+            return task;
+        });
+        return saveGet(playerDataFutureTask);
     }
 
     /**
-     * Stores the PlayerData in a map, so it can be retrieved using
-     * {@link #get(Profile profile)}.
-     *
-     * @param profile    the {@link Profile} of the player
-     * @param playerData PlayerData object to store
-     */
-    public void put(final Profile profile, final PlayerData playerData) {
-        log.debug("Inserting data for " + profile);
-        playerDataMap.put(profile, playerData);
-    }
-
-    /**
-     * Retrieves PlayerData object for specified profile. If the playerData does
-     * not exist it will create new playerData and store it.
-     *
-     * @param profile the {@link OnlineProfile} of the player
-     * @return PlayerData object for the player
-     */
-    public PlayerData get(final OnlineProfile profile) {
-        return get((Profile) profile);
-    }
-
-    /**
-     * Retrieves PlayerData object for specified profile. If the playerData does
-     * not exist but the profile is online, it will create new playerData and store it.
+     * Retrieves PlayerData object for the specified profile. If the playerData does
+     * not exist, it will create a new playerData.
+     * If the player is online, it will be stored as well.
      *
      * @param profile the {@link Profile} of the player
      * @return PlayerData object for the player
-     * @throws IllegalArgumentException when there is no data and the player is offline
      */
     public PlayerData get(final Profile profile) {
-        PlayerData playerData = playerDataMap.get(profile);
-        if (playerData == null) {
-            if (profile.getOnlineProfile().isPresent()) {
-                playerData = init(profile);
-            } else {
-                throw new IllegalArgumentException("The profile has no online player!");
-            }
+        final FutureTask<PlayerData> playerData = playerDataMap.get(profile);
+        if (playerData != null) {
+            return saveGet(playerData);
         }
-        return playerData;
-    }
-
-    /**
-     * Retrieves PlayerData object for specified profile. If the playerData does
-     * not exist it will create new playerData but won't store it.
-     *
-     * @param profile the {@link Profile} of the player
-     * @return PlayerData object for the player
-     * @throws IllegalArgumentException when there is no data and the player is offline
-     */
-    public PlayerData getOffline(final Profile profile) {
         if (profile.getOnlineProfile().isPresent()) {
-            return get(profile);
+            return init(profile);
         }
         return playerDataFactory.createPlayerData(profile);
+    }
+
+    private PlayerData saveGet(final FutureTask<PlayerData> playerData) {
+        try {
+            return playerData.get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new IllegalStateException("Failed to load profile data!", e);
+        }
     }
 
     /**
@@ -193,9 +160,25 @@ public class PlayerDataStorage implements FastStatsMetricsProvider {
     public Set<Metric<?>> getMetrics() {
         return Set.of(
                 Metric.number("profiles_personal_lang_count", () -> playerDataMap.values().stream()
+                        .map(future -> {
+                            try {
+                                return future.get();
+                            } catch (InterruptedException | ExecutionException e) {
+                                return null;
+                            }
+                        })
+                        .filter(Objects::nonNull)
                         .filter(data -> data.getLanguage().isPresent()
                                 && !"default".equalsIgnoreCase(data.getLanguage().get())).count()),
                 Metric.stringArray("profiles_personal_lang", () -> playerDataMap.values().stream()
+                        .map(future -> {
+                            try {
+                                return future.get();
+                            } catch (InterruptedException | ExecutionException e) {
+                                return null;
+                            }
+                        })
+                        .filter(Objects::nonNull)
                         .map(data -> data.getLanguage().orElse(null)).filter(Objects::nonNull)
                         .filter(lang -> !"default".equalsIgnoreCase(lang))
                         .toList().toArray(new String[0]))

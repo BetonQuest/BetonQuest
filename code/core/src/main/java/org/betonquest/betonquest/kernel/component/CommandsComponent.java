@@ -25,7 +25,6 @@ import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.GlobalData;
-import org.betonquest.betonquest.database.PlayerDataFactory;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.feature.BackpackFactory;
 import org.betonquest.betonquest.kernel.processor.feature.CancelerProcessor;
@@ -57,10 +56,9 @@ public class CommandsComponent extends AbstractCoreComponent {
     @Override
     public Set<Class<?>> requires() {
         return Set.of(JavaPlugin.class, BetonQuestLoggerFactory.class, ConfigAccessorFactory.class,
-                ProfileProvider.class, PlayerDataFactory.class, PlayerDataStorage.class,
-                GlobalData.class, ConfigAccessor.class, Localizations.class, Updater.class,
-                Compatibility.class, QuestPackageManager.class, Connector.class, Saver.class,
-                ItemTypeRegistry.class, JournalEntryProcessor.class, CompassManager.class,
+                ProfileProvider.class, PlayerDataStorage.class, GlobalData.class, ConfigAccessor.class,
+                Localizations.class, Updater.class, Compatibility.class, QuestPackageManager.class, Connector.class,
+                Saver.class, ItemTypeRegistry.class, JournalEntryProcessor.class, CompassManager.class,
                 CancelerProcessor.class, Identifiers.class, ItemManager.class, ActionManager.class,
                 ConditionManager.class, ObjectiveManager.class, LanguageProvider.class,
                 AccumulatingReceiverSelector.class, HistoryHandler.class, Reloader.class);
@@ -72,7 +70,6 @@ public class CommandsComponent extends AbstractCoreComponent {
         final BetonQuestLoggerFactory loggerFactory = getDependency(BetonQuestLoggerFactory.class);
         final ConfigAccessorFactory configAccessorFactory = getDependency(ConfigAccessorFactory.class);
         final ProfileProvider profileProvider = getDependency(ProfileProvider.class);
-        final PlayerDataFactory playerDataFactory = getDependency(PlayerDataFactory.class);
         final GlobalData globalData = getDependency(GlobalData.class);
         final ConfigAccessor config = getDependency(ConfigAccessor.class);
         final PlayerDataStorage playerDataStorage = getDependency(PlayerDataStorage.class);
@@ -98,7 +95,7 @@ public class CommandsComponent extends AbstractCoreComponent {
 
         final PlayerLogWatcher playerLogWatcher = new PlayerLogWatcher(receiverSelector);
         final QuestCommand.ConstructorParams questCommandParams = new QuestCommand.ConstructorParams(loggerFactory,
-                configAccessorFactory, playerDataFactory, playerDataStorage, profileProvider, localizations, updater,
+                configAccessorFactory, playerDataStorage, profileProvider, localizations, updater,
                 compatibility, connector, saver, questPackageManager, config, debugHistoryHandler,
                 playerLogWatcher, identifiers, globalData, journalEntryProcessor,
                 itemRegistry, actionManager, conditionManager, objectiveManager, itemManager, reloader);

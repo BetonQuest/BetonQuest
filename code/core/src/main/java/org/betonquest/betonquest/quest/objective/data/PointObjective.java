@@ -77,7 +77,7 @@ public class PointObjective extends DefaultObjective {
         if (value == CountingMode.TOTAL) {
             return String.valueOf(targetValue);
         }
-        final Optional<Integer> points = playerDataStorage.getOffline(profile).points().get(category.getValue(profile));
+        final Optional<Integer> points = playerDataStorage.get(profile).points().get(category.getValue(profile));
         return String.valueOf(targetValue + points.orElse(0));
     }
 
@@ -105,7 +105,7 @@ public class PointObjective extends DefaultObjective {
         if (event.getState() != ObjectiveState.ACTIVE) {
             return;
         }
-        final PlayerData playerData = playerDataStorage.getOffline(profile);
+        final PlayerData playerData = playerDataStorage.get(profile);
         final Optional<Integer> points = playerData.points().get(category.getValue(profile));
         if (points.isPresent()) {
             checkProgress(profile, points.get());
@@ -119,7 +119,7 @@ public class PointObjective extends DefaultObjective {
     }
 
     private int getRemainingPoints(final Profile profile) throws QuestException {
-        return getPoints(profile) - playerDataStorage.getOffline(profile)
+        return getPoints(profile) - playerDataStorage.get(profile)
                 .points()
                 .get(category.getValue(profile))
                 .orElse(0);

@@ -43,7 +43,7 @@ public class JournalAction implements PlayerAction {
 
     @Override
     public void execute(final Profile profile) throws QuestException {
-        final PlayerData playerData = dataStorage.getOffline(profile);
+        final PlayerData playerData = dataStorage.get(profile);
         final Journal journal = playerData.getJournal();
         journalChanger.changeJournal(journal, profile);
         journal.update();

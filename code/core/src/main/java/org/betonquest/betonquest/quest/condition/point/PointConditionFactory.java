@@ -17,7 +17,7 @@ public class PointConditionFactory extends DefaultPointConditionFactory implemen
      * @param dataStorage the storage providing player data
      */
     public PointConditionFactory(final PlayerDataStorage dataStorage) {
-        super(profile -> dataStorage.getOffline(profile).points());
+        super(profile -> dataStorage.get(profile).points());
     }
 
     @Override

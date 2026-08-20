@@ -60,7 +60,6 @@ public class PostEnableComponent extends AbstractCoreComponent {
             integrationManager.postEnable(betonQuestApiService);
             compatibility.logAndInitHologramProvider();
             processorDataLoader.loadData(packageManager.getPackages().values());
-            dataStorage.startObjectives();
             menu.syncCommands();
             dataStorage.initProfiles(profileProvider.getOnlineProfiles(), conversations);
             playerHider.load(packageManager, instructions);

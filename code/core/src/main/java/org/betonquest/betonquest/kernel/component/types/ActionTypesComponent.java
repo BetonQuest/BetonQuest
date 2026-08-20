@@ -17,7 +17,6 @@ import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.GlobalData;
-import org.betonquest.betonquest.database.PlayerDataFactory;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.kernel.processor.feature.CancelerProcessor;
 import org.betonquest.betonquest.kernel.registry.quest.ActionTypeRegistry;
@@ -110,19 +109,17 @@ public class ActionTypesComponent extends AbstractCoreComponent {
     @Override
     public Set<Class<?>> requires() {
         return Set.of(Plugin.class, PluginManager.class, Server.class, BukkitScheduler.class,
-                BetonQuestLoggerFactory.class, ProfileProvider.class, PlayerDataFactory.class,
-                PlayerDataStorage.class, GlobalData.class, Localizations.class, LanguageProvider.class,
-                Saver.class, TextParser.class, Instructions.class, Persistence.class,
-                ActionTypeRegistry.class, Conversations.class, ActionManager.class, ConditionManager.class,
-                ObjectiveManager.class, NpcManager.class, CompassManager.class, CancelerProcessor.class,
-                DefaultNpcHider.class, PlayerHider.class);
+                BetonQuestLoggerFactory.class, ProfileProvider.class, PlayerDataStorage.class, GlobalData.class,
+                Localizations.class, LanguageProvider.class, Saver.class, TextParser.class, Instructions.class,
+                Persistence.class, ActionTypeRegistry.class, Conversations.class, ActionManager.class,
+                ConditionManager.class, ObjectiveManager.class, NpcManager.class, CompassManager.class,
+                CancelerProcessor.class, DefaultNpcHider.class, PlayerHider.class);
     }
 
     @Override
     protected void load(final DependencyProvider dependencyProvider) {
         final BetonQuestLoggerFactory loggerFactory = getDependency(BetonQuestLoggerFactory.class);
         final ProfileProvider profileProvider = getDependency(ProfileProvider.class);
-        final PlayerDataFactory playerDataFactory = getDependency(PlayerDataFactory.class);
         final GlobalData globalData = getDependency(GlobalData.class);
         final PlayerDataStorage playerDataStorage = getDependency(PlayerDataStorage.class);
         final Persistence persistence = getDependency(Persistence.class);
@@ -189,7 +186,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         actionTypes.registerCombined("notifyall", new NotifyAllActionFactory(textParser, playerDataStorage, profileProvider, languageProvider));
         actionTypes.registerCombined("npcteleport", new NpcTeleportActionFactory(npcManager));
         actionTypes.registerCombined("objective", new ObjectiveActionFactory(plugin, loggerFactory, profileProvider, saver,
-                objectiveManager, playerDataStorage, playerDataFactory));
+                objectiveManager, playerDataStorage));
         actionTypes.register("opsudo", new OpSudoActionFactory(server));
         actionTypes.register("party", new PartyActionFactory(profileProvider, actionManager, conditionManager));
         actionTypes.registerCombined("pickrandom", new PickRandomActionFactory(actionManager));

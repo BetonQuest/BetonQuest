@@ -57,7 +57,7 @@ public class DeleteJournalPlayerlessAction implements PlayerlessAction {
     public void execute() throws QuestException {
         final JournalEntryIdentifier resolved = this.entryID.getValue(null);
         for (final OnlineProfile profile : profileProvider.getOnlineProfiles()) {
-            final PlayerData playerData = dataStorage.getOffline(profile);
+            final PlayerData playerData = dataStorage.get(profile);
             final Journal journal = playerData.getJournal();
             journal.removePointer(resolved);
             journal.update();

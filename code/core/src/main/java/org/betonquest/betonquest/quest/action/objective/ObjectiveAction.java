@@ -12,7 +12,6 @@ import org.betonquest.betonquest.api.quest.objective.Objective;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
-import org.betonquest.betonquest.database.PlayerDataFactory;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
 import org.bukkit.Bukkit;
@@ -69,11 +68,6 @@ public class ObjectiveAction implements NullableAction {
     private final Argument<List<ObjectiveIdentifier>> objectives;
 
     /**
-     * Factory to create new Player Data.
-     */
-    private final PlayerDataFactory playerDataFactory;
-
-    /**
      * The action to do with the objectives.
      */
     private final String action;
@@ -89,15 +83,13 @@ public class ObjectiveAction implements NullableAction {
      * @param playerDataStorage the player data storage
      * @param questPackage      the quest package of the instruction
      * @param objectives        the objectives to affect
-     * @param playerDataFactory the factory to create player data
      * @param action            the action to do with the objectives
      * @throws QuestException if the action is invalid
      */
-    @SuppressWarnings("PMD.ExcessiveParameterList")
     public ObjectiveAction(final Plugin plugin, final BetonQuestLogger log, final ProfileProvider profileProvider, final Saver saver,
                            final ObjectiveManager objectiveManager, final PlayerDataStorage playerDataStorage,
                            final QuestPackage questPackage, final Argument<List<ObjectiveIdentifier>> objectives,
-                           final PlayerDataFactory playerDataFactory, final String action) throws QuestException {
+                           final String action) throws QuestException {
         this.plugin = plugin;
         this.profileProvider = profileProvider;
         this.saver = saver;
@@ -106,7 +98,6 @@ public class ObjectiveAction implements NullableAction {
         this.playerDataStorage = playerDataStorage;
         this.questPackage = questPackage;
         this.objectives = objectives;
-        this.playerDataFactory = playerDataFactory;
         if (!Arrays.asList("start", "add", "delete", "remove", "complete", "finish").contains(action)) {
             throw new QuestException("Invalid action: " + action);
         }
@@ -147,7 +138,7 @@ public class ObjectiveAction implements NullableAction {
 
     private void handleForOfflinePlayer(final Profile profile, final ObjectiveIdentifier objectiveID) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            final PlayerData playerData = playerDataFactory.createPlayerData(profile);
+            final PlayerData playerData = playerDataStorage.get(profile);
             switch (action.toLowerCase(Locale.ROOT)) {
                 case "start", "add" -> playerData.addNewRawObjective(objectiveID);
                 case "complete", "finish" ->

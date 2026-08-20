@@ -60,7 +60,7 @@ public class PointAction implements PlayerAction {
 
     @Override
     public void execute(final Profile profile) throws QuestException {
-        final PlayerData playerData = dataStorage.getOffline(profile);
+        final PlayerData playerData = dataStorage.get(profile);
         final double countDouble = count.getValue(profile).doubleValue();
         final String category = this.category.getValue(profile);
         playerData.points().set(category, pointType.modify(playerData.points().get(category).orElse(0), countDouble));

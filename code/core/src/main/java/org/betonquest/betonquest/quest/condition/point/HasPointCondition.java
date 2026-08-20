@@ -34,6 +34,6 @@ public class HasPointCondition implements PlayerCondition {
 
     @Override
     public boolean check(final Profile profile) throws QuestException {
-        return dataStorage.getOffline(profile).points().get(category.getValue(profile)).isPresent();
+        return dataStorage.get(profile).points().get(category.getValue(profile)).isPresent();
     }
 }

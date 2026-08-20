@@ -104,7 +104,6 @@ public class JoinQuitListener implements Listener {
         final Player player = event.getPlayer();
         final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         final PlayerData playerData = playerDataStorage.get(onlineProfile);
-        playerData.startObjectives();
         questTypeApi.startAll(onlineProfile, playerDataStorage);
         checkResourcepack(player, onlineProfile);
 
