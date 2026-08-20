@@ -2,10 +2,14 @@ package org.betonquest.betonquest.mc_1_21_4.item;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.util.Strings;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.parser.BooleanParser;
 import org.betonquest.betonquest.item.typehandler.Existence;
+import org.betonquest.betonquest.item.typehandler.ExistenceArgument;
 import org.betonquest.betonquest.item.typehandler.ItemMetaHandler;
 import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
@@ -60,8 +64,7 @@ public class UpdatedCustomModelDataHandler implements ItemMetaHandler<ItemMeta> 
     /**
      * The 'item_model' set.
      */
-    @Nullable
-    private NamespacedKey model;
+    private Argument<Pair<Existence, @Nullable NamespacedKey>> model = ExistenceArgument.whateverNullValue();
 
     /**
      * The empty default Constructor.
@@ -103,7 +106,8 @@ public class UpdatedCustomModelDataHandler implements ItemMetaHandler<ItemMeta> 
 
     @Override
     @SuppressWarnings("PMD.CyclomaticComplexity")
-    public void set(final String key, final String data) throws QuestException {
+    public void set(Instruction instruction) throws QuestException {
+        this.model = ExistenceArgument.apply("item-model", instruction.namespacedKey())
         switch (key) {
             case "custom-model-data" -> {
                 this.existence = Existence.REQUIRED;

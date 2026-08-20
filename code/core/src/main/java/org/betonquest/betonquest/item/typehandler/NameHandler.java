@@ -3,7 +3,6 @@ package org.betonquest.betonquest.item.typehandler;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -19,7 +18,7 @@ public class NameHandler implements ItemMetaHandler<ItemMeta> {
     /**
      * Item Display Name's required existence and value.
      */
-    private Argument<Pair<Existence, @Nullable Component>> name = Existence.whateverNullValue();
+    private ExistenceArgument<@Nullable Component> name = ExistenceArgument.whateverNullValue();
 
     /**
      * Creates an empty NameHandler.
@@ -49,7 +48,7 @@ public class NameHandler implements ItemMetaHandler<ItemMeta> {
     @Override
     public void set(final Instruction instruction) throws QuestException {
         // TODO is empty check?
-        this.name = Existence.apply("name", instruction.component().map(Component::compact));
+        this.name = ExistenceArgument.apply("name", instruction.component().map(Component::compact));
     }
 
     @Override

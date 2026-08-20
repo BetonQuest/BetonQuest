@@ -95,7 +95,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
     protected QuestItem parseInstructionInternal(final Instruction instruction) throws QuestException {
         final Argument<BlockSelector> selector = instruction.blockSelector().get();
 
-        final NameHandler name = new NameHandler(textParser);
+        final NameHandler name = new NameHandler();
 
         final Localizations localizations = questItemLoreSupplier.get();
         final QuestHandler questHandler = new QuestHandler(localizations == null

@@ -68,7 +68,7 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
 
     @Override
     public void set(final Instruction instruction) throws QuestException {
-        this.lore = Existence.apply("lore", instruction.component().list()); // problem when there is more than one "lore"
+        this.lore = ExistenceArgument.apply("lore", instruction.component().list()); // problem when there is more than one "lore"
         this.exact = instruction.bool().map(bool -> !bool).get("lore-containing", false);
     }
 
