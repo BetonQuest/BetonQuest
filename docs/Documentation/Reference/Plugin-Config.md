@@ -252,18 +252,18 @@ All settings related to holograms.
 * `default` - The default hologram plugin that is used by BetonQuest.
   If the plugin is not installed, BetonQuest will use the next one in the list.
 * `update_interval`- The interval (in ticks) in which the holograms check the conditions and updates their visibility.
-  This is to prevent performance issues and cannot be disabled.
-  Set a very high value to make it semi-disabled.
+  This is to prevent performance issues and can be disabled by using values of 0 or below.
+  Use the [`hologramUpdate` action](Actions-List.md#updatehologram) then.
 
 ## `hider` - Entity hider settings
 All settings related to the entity hider.
 
 * `player_update_interval` - The interval (in ticks) in which the PlayerHider checks the conditions and updates their visibility.
-  This is to prevent performance issues and cannot be disabled.
-  Set a very high value to make it semi-disabled.
+  This is to prevent performance issues and can be disabled by using values of 0 or below.
+  Use the [`updatevisibility` action](Actions-List.md#updatevisibility) then.
 * `npc_update_interval` - The interval (in ticks) in which the NPCHider checks the conditions and updates their visibility.
-  This is to prevent performance issues and cannot be disabled.
-  Set a very high value to make it semi-disabled.
+  This is to prevent performance issues and can be disabled by using values of 0 or below.
+  Use the [`updatevisibility` action](Actions-List.md#updatevisibility) then.
 
 ## `item` - Item related settings
 Different item settings that are used in BetonQuest.

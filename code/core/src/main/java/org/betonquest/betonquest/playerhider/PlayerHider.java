@@ -109,9 +109,13 @@ public class PlayerHider {
      * @param scheduler the scheduler to use
      * @param config    the config accessor
      */
+    @SuppressWarnings("PMD.LambdaCanBeMethodReference")
     public void start(final BukkitScheduler scheduler, final ConfigAccessor config) {
-        final long period = config.getLong("hider.player_update_interval", 20);
-        bukkitTask = scheduler.runTaskTimer(plugin, this::updateVisibility, 1, period);
+        final long updateInterval = config.getLong("hider.player_update_interval", 20);
+        if (updateInterval <= 0) {
+            return;
+        }
+        bukkitTask = scheduler.runTaskTimer(plugin, () -> updateVisibility(), 1, updateInterval);
     }
 
     /**
@@ -143,10 +147,21 @@ public class PlayerHider {
      */
     public void updateVisibility() {
         final Collection<? extends OnlineProfile> onlineProfiles = profileProvider.getOnlineProfiles();
-        final Map<OnlineProfile, List<OnlineProfile>> profilesToHide = getProfilesToHide(onlineProfiles);
+        final Map<OnlineProfile, List<OnlineProfile>> profilesToHide = getProfilesToHide(onlineProfiles, onlineProfiles);
         for (final OnlineProfile source : onlineProfiles) {
             updateVisibilityForProfiles(onlineProfiles, source, profilesToHide.get(source));
         }
+    }
+
+    /**
+     * Trigger an update for the visibility.
+     *
+     * @param profile the profile to update the visibility for
+     */
+    public void updateVisibility(final OnlineProfile profile) {
+        final Collection<? extends OnlineProfile> onlineProfiles = profileProvider.getOnlineProfiles();
+        final Map<OnlineProfile, List<OnlineProfile>> profilesToHide = getProfilesToHide(onlineProfiles, List.of(profile));
+        updateVisibilityForProfiles(onlineProfiles, profile, profilesToHide.get(profile));
     }
 
     private void updateVisibilityForProfiles(final Collection<? extends OnlineProfile> onlineProfiles, final OnlineProfile source,
@@ -166,16 +181,17 @@ public class PlayerHider {
         }
     }
 
-    private Map<OnlineProfile, List<OnlineProfile>> getProfilesToHide(final Collection<? extends OnlineProfile> onlineProfiles) {
+    private Map<OnlineProfile, List<OnlineProfile>> getProfilesToHide(final Collection<? extends OnlineProfile> targets,
+                                                                      final Collection<? extends OnlineProfile> sources) {
         final Map<OnlineProfile, List<OnlineProfile>> profilesToHide = new HashMap<>();
         for (final Map.Entry<Collection<ConditionIdentifier>, Collection<ConditionIdentifier>> hider : hiders.entrySet()) {
             final List<OnlineProfile> targetProfiles = new ArrayList<>();
-            for (final OnlineProfile target : onlineProfiles) {
+            for (final OnlineProfile target : targets) {
                 if (conditionManager.testAll(target, hider.getValue())) {
                     targetProfiles.add(target);
                 }
             }
-            for (final OnlineProfile source : onlineProfiles) {
+            for (final OnlineProfile source : sources) {
                 if (!conditionManager.testAll(source, hider.getKey())) {
                     continue;
                 }

@@ -140,7 +140,7 @@ public class DefaultNpcHider {
      * Reloads the Npc Hider, restarting runnable etc.
      * Individual packs need to be loaded with the {@link #load(QuestPackage)}
      *
-     * @param updateInterval the interval in ticks to check refresh hiding
+     * @param updateInterval the interval in ticks to check refresh hiding, non-positive values will deactivate updates
      * @param plugin         the plugin instance to schedule update
      */
     public void reload(final int updateInterval, final Plugin plugin) {
@@ -148,6 +148,9 @@ public class DefaultNpcHider {
             task.cancel();
         }
         npcs.clear();
+        if (updateInterval <= 0) {
+            return;
+        }
         task = new BukkitRunnable() {
             @Override
             public void run() {

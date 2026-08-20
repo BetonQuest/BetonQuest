@@ -65,6 +65,9 @@ public final class MythicHider implements Listener {
      */
     public void reload(final int updateInterval) {
         stop();
+        if (updateInterval <= 0) {
+            return;
+        }
         loop = plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
             for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
                 for (final Entity mob : mythicmobs.keySet()) {

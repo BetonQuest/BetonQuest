@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.quest.action.OnlineActionAdapter;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerActionFactory;
 import org.betonquest.betonquest.api.quest.npc.DefaultNpcHider;
+import org.betonquest.betonquest.playerhider.PlayerHider;
 
 /**
  * Factory to create {@link UpdateVisibilityNowAction}s from {@link Instruction}s.
@@ -12,21 +13,28 @@ import org.betonquest.betonquest.api.quest.npc.DefaultNpcHider;
 public class UpdateVisibilityNowActionFactory implements PlayerActionFactory {
 
     /**
-     * Hider to update visibility.
+     * Npc Hider to update visibility.
      */
     private final DefaultNpcHider npcHider;
 
     /**
+     * Player Hider to update visibility.
+     */
+    private final PlayerHider playerHider;
+
+    /**
      * Create the Npc visibility update action factory.
      *
-     * @param npcHider the hider where to update the visibility
+     * @param npcHider    the hider where to update the visibility for npc
+     * @param playerHider the hider where to update the visibility for player
      */
-    public UpdateVisibilityNowActionFactory(final DefaultNpcHider npcHider) {
+    public UpdateVisibilityNowActionFactory(final DefaultNpcHider npcHider, final PlayerHider playerHider) {
         this.npcHider = npcHider;
+        this.playerHider = playerHider;
     }
 
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) {
-        return new OnlineActionAdapter(new UpdateVisibilityNowAction(npcHider));
+        return new OnlineActionAdapter(new UpdateVisibilityNowAction(npcHider, playerHider));
     }
 }

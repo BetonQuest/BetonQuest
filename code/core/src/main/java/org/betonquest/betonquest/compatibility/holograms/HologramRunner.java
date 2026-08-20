@@ -58,15 +58,18 @@ public final class HologramRunner {
     static /* default */ void start(final Plugin plugin) {
         for (final Map.Entry<Integer, HologramRunner> entry : RUNNERS.entrySet()) {
             final HologramRunner runner = entry.getValue();
-            runner.task = new BukkitRunnable() {
-                @Override
-                public void run() {
-                    for (final HologramWrapper hologramWrapper : runner.holograms) {
-                        hologramWrapper.updateContent();
-                        hologramWrapper.updateVisibility();
+            final int updateInterval = entry.getKey();
+            if (updateInterval > 0) {
+                runner.task = new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        for (final HologramWrapper hologramWrapper : runner.holograms) {
+                            hologramWrapper.updateContent();
+                            hologramWrapper.updateVisibility();
+                        }
                     }
-                }
-            }.runTaskTimer(plugin, 0, entry.getKey());
+                }.runTaskTimer(plugin, 0, updateInterval);
+            }
             for (final HologramWrapper hologram : runner.holograms) {
                 hologram.initialiseContent();
                 hologram.holograms().forEach(BetonHologram::showAll);

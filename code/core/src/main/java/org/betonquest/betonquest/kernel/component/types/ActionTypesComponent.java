@@ -22,6 +22,7 @@ import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.kernel.processor.feature.CancelerProcessor;
 import org.betonquest.betonquest.kernel.registry.quest.ActionTypeRegistry;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
+import org.betonquest.betonquest.playerhider.PlayerHider;
 import org.betonquest.betonquest.quest.action.burn.BurnActionFactory;
 import org.betonquest.betonquest.quest.action.cancel.CancelActionFactory;
 import org.betonquest.betonquest.quest.action.chat.ChatActionFactory;
@@ -114,7 +115,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
                 Saver.class, TextParser.class, Instructions.class, Persistence.class,
                 ActionTypeRegistry.class, Conversations.class, ActionManager.class, ConditionManager.class,
                 ObjectiveManager.class, NpcManager.class, CompassManager.class, CancelerProcessor.class,
-                DefaultNpcHider.class);
+                DefaultNpcHider.class, PlayerHider.class);
     }
 
     @Override
@@ -143,6 +144,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         final CompassManager compassManager = getDependency(CompassManager.class);
         final CancelerProcessor cancelerProcessor = getDependency(CancelerProcessor.class);
         final DefaultNpcHider npcHider = getDependency(DefaultNpcHider.class);
+        final PlayerHider playerHider = getDependency(PlayerHider.class);
 
         actionTypes.register("burn", new BurnActionFactory());
         actionTypes.register("cancel", new CancelActionFactory(cancelerProcessor));
@@ -207,7 +209,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         actionTypes.register("take", new TakeActionFactory(loggerFactory, playerDataStorage, localizations, actionManager));
         actionTypes.register("teleport", new TeleportActionFactory(conversations));
         actionTypes.registerCombined("time", new TimeActionFactory());
-        actionTypes.register("updatevisibility", new UpdateVisibilityNowActionFactory(npcHider));
+        actionTypes.register("updatevisibility", new UpdateVisibilityNowActionFactory(npcHider, playerHider));
         actionTypes.register("variable", new VariableActionFactory(objectiveManager));
         actionTypes.register("velocity", new VelocityActionFactory());
         actionTypes.registerCombined("weather", new WeatherActionFactory());
