@@ -246,6 +246,7 @@ nav:
               - 'Writing JUnit Tests': Participate/Process/Code/Writing-JUnit-Tests.md
           - 'Maintaining the Changelog': Participate/Process/Maintaining-the-Changelog.md
           - 'Submitting Changes': Participate/Process/Submitting-Changes.md
+          - 'AI Usage': Participate/Process/AI-Usage.md
       - Misc:
           - 'Versioning & Releasing': Participate/Misc/Versioning-and-Releasing.md
   - 'Downloads': Downloads/index.md
