@@ -8,6 +8,9 @@ copyright: >
   <p id="bqCopyright">© 2014-{CurrentYear} BetonQuest Organisation. GPLv3</p>
   <a href="#__consent">Change cookie settings</a>
 
+hooks:
+  - 'docs/_hooks/element_scraper.py'
+
 extra:
   version:
     provider: mike
@@ -187,6 +190,7 @@ nav:
               - 'Miscellaneous':
                   - 'Documentation/Reference/Integrations-List/Miscellaneous/index.md'
                   - 'TrainCarts': Documentation/Reference/Integrations-List/Miscellaneous/TrainCarts.md
+          - 'Instruction Elements': Documentation/Reference/Instruction-Elements.md
           - 'Font Config': Documentation/Reference/Font-Config.md
           - 'Definition Encyclopedia': Documentation/Reference/Definition-Encyclopedia.md
 
