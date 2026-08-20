@@ -60,6 +60,19 @@ public interface QuestItem {
      * @param item ItemStack to compare
      * @return true if the item matches
      * @since 3.0.0
+     * @deprecated for removal in {@code 4.0.0}, items can contain profile specific data which needs to be respected
      */
+    @Deprecated(forRemoval = true, since = "3.3.0")
     boolean matches(@Nullable ItemStack item);
+
+    /**
+     * Compares ItemStack to the quest item.
+     *
+     * @param item    ItemStack to compare
+     * @param profile profile parameter
+     * @return true if the item matches
+     * @throws QuestException when there is an exception while resolving profile specific data
+     * @since 3.3.0
+     */
+    boolean matches(@Nullable ItemStack item, @Nullable Profile profile) throws QuestException;
 }

@@ -2,6 +2,7 @@ package org.betonquest.betonquest.item;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -25,7 +26,7 @@ public class SimpleQuestItem implements QuestItem {
     /**
      * The base Material Selector for the ItemStack generation.
      */
-    private final BlockSelector selector;
+    private final Argument<BlockSelector> selector;
 
     /**
      * Providing display name for placeholders.
@@ -50,7 +51,7 @@ public class SimpleQuestItem implements QuestItem {
      * @param name     providing display name for placeholders
      * @param lore     providing lore lines for placeholders
      */
-    public SimpleQuestItem(final BlockSelector selector, final List<ItemMetaHandler<?>> handlers,
+    public SimpleQuestItem(final Argument<BlockSelector> selector, final List<ItemMetaHandler<?>> handlers,
                            final NameHandler name, final LoreHandler lore) {
         this.selector = selector;
         this.handlers = handlers;
@@ -69,7 +70,8 @@ public class SimpleQuestItem implements QuestItem {
     }
 
     @Override
-    public boolean matches(@Nullable final ItemStack item) {
+    public boolean matches(@Nullable final ItemStack item, @Nullable final Profile profile) throws QuestException {
+        final BlockSelector selector = this.selector.getValue(profile);
         if (item == null) {
             return selector.match(Material.AIR);
         }
@@ -82,7 +84,7 @@ public class SimpleQuestItem implements QuestItem {
         }
 
         for (final ItemMetaHandler<? extends ItemMeta> handler : handlers) {
-            if (!handler.rawCheck(meta)) {
+            if (!handler.rawCheck(meta, profile)) {
                 return false;
             }
         }

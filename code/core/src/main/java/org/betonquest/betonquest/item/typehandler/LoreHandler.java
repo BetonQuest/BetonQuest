@@ -1,12 +1,15 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import net.kyori.adventure.text.Component;
+import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.text.TextParser;
+import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -17,11 +20,6 @@ import java.util.function.Supplier;
 public class LoreHandler implements ItemMetaHandler<ItemMeta> {
 
     /**
-     * The text parser used to parse text.
-     */
-    private final TextParser textParser;
-
-    /**
      * If the last lore line should be interpreted as 'quest-item' line and ignored in checks.
      */
     private final Supplier<Boolean> ignoreLastLine;
@@ -29,26 +27,19 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
     /**
      * The lore.
      */
-    private final List<Component> lore = new LinkedList<>();
-
-    /**
-     * The required existence.
-     */
-    private Existence existence = Existence.WHATEVER;
+    private Argument<Pair<Existence, List<Component>>> lore = new DefaultArgument<>(Pair.of(Existence.WHATEVER, List.of()));
 
     /**
      * If the lore need to be exact the same or just contain all specified lines.
      */
-    private boolean exact = true;
+    private Argument<Boolean> exact = new DefaultArgument<>(true);
 
     /**
      * Creates an empty LoreHandler.
      *
-     * @param textParser     the text parser used to parse text
      * @param ignoreLastLine if the last lore line should be interpreted as 'quest-item' line and ignored in checks
      */
-    public LoreHandler(final TextParser textParser, final Supplier<Boolean> ignoreLastLine) {
-        this.textParser = textParser;
+    public LoreHandler(final Supplier<Boolean> ignoreLastLine) {
         this.ignoreLastLine = ignoreLastLine;
     }
 
@@ -76,36 +67,25 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws QuestException {
-        switch (key) {
-            case "lore" -> {
-                if (Existence.NONE_KEY.equalsIgnoreCase(data)) {
-                    existence = Existence.FORBIDDEN;
-                } else {
-                    existence = Existence.REQUIRED;
-                    for (final String line : data.split(";")) {
-                        this.lore.add(textParser.parse(line).compact());
-                    }
-                }
-            }
-            case "lore-containing" -> exact = false;
-            default -> throw new QuestException("Unknown lore key: " + key);
-        }
+    public void set(final Instruction instruction) throws QuestException {
+        this.lore = Existence.apply("lore", instruction.component().list()); // problem when there is more than one "lore"
+        this.exact = instruction.bool().map(bool -> !bool).get("lore-containing", false);
     }
 
     @Override
-    public void populate(final ItemMeta meta) {
-        meta.lore(get());
+    public void populate(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
+        meta.lore(get(profile));
     }
 
     @Override
-    public boolean check(final ItemMeta meta) {
+    public boolean check(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
         final List<Component> original = meta.lore();
         final List<Component> lore = original == null ? null
                 : original.subList(0, Math.max(0, original.size() - (ignoreLastLine.get() ? 1 : 0)));
-        return switch (existence) {
+        final Pair<Existence, List<Component>> pair = this.lore.getValue(profile);
+        return switch (pair.getLeft()) {
             case WHATEVER -> true;
-            case REQUIRED -> checkRequired(lore);
+            case REQUIRED -> checkRequired(lore, profile, pair.getRight());
             case FORBIDDEN -> lore == null || lore.isEmpty();
         };
     }
@@ -115,30 +95,31 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
      *
      * @return the list of lore lines, can be empty
      */
-    public List<Component> get() {
-        return lore;
+    public List<Component> get(@Nullable final Profile profile) throws QuestException {
+        return lore.getValue(profile).getRight();
     }
 
-    private boolean checkRequired(@Nullable final List<Component> lore) {
+    private boolean checkRequired(@Nullable final List<Component> lore, @Nullable final Profile profile,
+                                  final List<Component> storedLore) throws QuestException {
         if (lore == null) {
             return false;
         }
-        if (!exact) {
-            return !checkNonExact(lore);
+        if (!exact.getValue(profile)) {
+            return !checkNonExact(lore, storedLore);
         }
-        if (this.lore.size() != lore.size()) {
+        if (storedLore.size() != lore.size()) {
             return false;
         }
         for (int i = 0; i < lore.size(); i++) {
-            if (!this.lore.get(i).equals(lore.get(i).compact())) {
+            if (!storedLore.get(i).equals(lore.get(i).compact())) {
                 return false;
             }
         }
         return true;
     }
 
-    private boolean checkNonExact(final List<Component> lore) {
-        for (final Component line : this.lore) {
+    private boolean checkNonExact(final List<Component> lore, final List<Component> storedLore) {
+        for (final Component line : storedLore) {
             boolean has = false;
             for (final Component itemLine : lore) {
                 if (itemLine.compact().equals(line)) {

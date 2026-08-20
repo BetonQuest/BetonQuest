@@ -3,11 +3,10 @@ package org.betonquest.betonquest.mc_1_21_4.item;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.BookPageWrapper;
 import org.betonquest.betonquest.api.config.Localizations;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.item.QuestItem;
-import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.item.LoreConsumer;
 import org.betonquest.betonquest.item.SimpleQuestItem;
@@ -27,7 +26,6 @@ import org.betonquest.betonquest.item.typehandler.QuestHandler;
 import org.betonquest.betonquest.item.typehandler.UnbreakableHandler;
 import org.betonquest.betonquest.mc_1_20_6.item.UpdatedNameHandler;
 import org.betonquest.betonquest.mc_1_20_6.item.UpdatedPotionHandler;
-import org.betonquest.betonquest.util.DefaultBlockSelector;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -40,27 +38,25 @@ public class UpdatedSimpleItemFactory extends SimpleQuestItemFactory {
     /**
      * Creates a new simple Quest Item Factory.
      *
-     * @param placeholders          the {@link PlaceholderManager} to create and resolve placeholders
-     * @param packManager           the quest package manager to get quest packages from
      * @param textParser            the text parser used to parse text
      * @param bookPageWrapper       the book page wrapper used to split pages
      * @param questItemLoreSupplier supplies the Localizations instance if the "quest item" lore line should be added
      */
-    public UpdatedSimpleItemFactory(final PlaceholderManager placeholders, final QuestPackageManager packManager, final TextParser textParser,
+    public UpdatedSimpleItemFactory(final TextParser textParser,
                                     final BookPageWrapper bookPageWrapper, final Supplier<Localizations> questItemLoreSupplier) {
-        super(placeholders, packManager, textParser, bookPageWrapper, questItemLoreSupplier);
+        super(textParser, bookPageWrapper, questItemLoreSupplier);
     }
 
     @Override
-    protected QuestItem parseInstruction(final String material, final List<String> arguments) throws QuestException {
-        final BlockSelector selector = new DefaultBlockSelector(material);
+    protected QuestItem parseInstructionInternal(final Instruction instruction) throws QuestException {
+        final Argument<BlockSelector> selector = instruction.blockSelector().get();
 
-        final NameHandler name = new UpdatedNameHandler(textParser);
+        final NameHandler name = new UpdatedNameHandler();
 
         final Localizations localizations = questItemLoreSupplier.get();
         final QuestHandler questHandler = new QuestHandler(localizations == null
                 ? LoreConsumer.EMPTY : new LoreConsumer.Lore(localizations));
-        final LoreHandler lore = new LoreHandler(textParser, questHandler::isLoreSet);
+        final LoreHandler lore = new LoreHandler(questHandler::isLoreSet);
 
         final List<ItemMetaHandler<?>> handlers = List.of(
                 new DurabilityHandler(),
@@ -79,8 +75,8 @@ public class UpdatedSimpleItemFactory extends SimpleQuestItemFactory {
                 new FireworkHandler()
         );
 
-        if (!arguments.isEmpty()) {
-            fillHandler(handlers, arguments);
+        if (instruction.hasNext()) {
+            fillHandler(handlers, instruction);
         }
         return new SimpleQuestItem(selector, handlers, name, lore);
     }

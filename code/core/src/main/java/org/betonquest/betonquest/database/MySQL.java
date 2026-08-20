@@ -8,9 +8,11 @@ import org.betonquest.betonquest.api.common.component.BookPageWrapper;
 import org.betonquest.betonquest.api.common.component.font.DefaultFontRegistry;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.item.SimpleQuestItemFactory;
-import org.betonquest.betonquest.kernel.processor.quest.PlaceholderProcessor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
@@ -23,7 +25,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Base64;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -271,9 +272,17 @@ public class MySQL extends Database {
                 final Key defaultkey = Key.key("default");
                 final FontRegistry fontRegistry = new DefaultFontRegistry(defaultkey);
                 final BookPageWrapper bookPageWrapper = new BookPageWrapper(fontRegistry, 114, 14);
-                final SimpleQuestItemFactory itemFactory = new SimpleQuestItemFactory(PlaceholderProcessor.EMPTY_PLACEHOLDER, Map::of,
-                        (message) -> LegacyComponentSerializer.legacySection().deserialize(message.replace("_", " ")),
-                        bookPageWrapper, () -> null);
+
+                final TextParser textParser = (message) ->
+                        LegacyComponentSerializer.legacySection().deserialize(message.replace("_", " "));
+
+                @SuppressWarnings({"DataFlowIssue", "NullAway"}) final ArgumentParsers argumentParsers = new DefaultArgumentParsers(
+                        (profile, itemIdentifier) -> null,
+                        (source, input) -> null,
+                        textParser, null, null, null
+                );
+
+                final SimpleQuestItemFactory itemFactory = new SimpleQuestItemFactory(textParser, bookPageWrapper, () -> null);
 
                 while (resultSet.next()) {
                     final int rowId = resultSet.getInt("id");
@@ -282,7 +291,7 @@ public class MySQL extends Database {
                     final int amount = resultSet.getInt("amount");
                     final byte[] bytes;
                     try {
-                        bytes = itemFactory.parseInstruction(instruction).generate(1).serializeAsBytes();
+                        bytes = itemFactory.parseInstruction(argumentParsers, instruction).generate(1).serializeAsBytes();
                     } catch (final QuestException e) {
                         log.warn("Could not generate QuestItem from Instruction: " + e.getMessage(), e);
                         continue;

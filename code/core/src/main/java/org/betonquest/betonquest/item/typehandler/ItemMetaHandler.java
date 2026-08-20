@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
@@ -22,7 +23,7 @@ public interface ItemMetaHandler<M extends ItemMeta> {
     Class<M> metaClass();
 
     /**
-     * The keys this handler allows in {@link #set(String, String)} which are used for data identification.
+     * The keys this handler allows in {@link #set(Instruction)} which are used for data identification.
      *
      * @return keys in lower case
      */
@@ -58,31 +59,19 @@ public interface ItemMetaHandler<M extends ItemMeta> {
      * <p>
      * The data may be the same as the key if it is just a keyword.
      *
-     * @param key  the lower case key
-     * @param data the associated data
+     * @param instruction the instruction to read from associated data
      * @throws QuestException if the data is malformed or key not valid for handler
      */
-    void set(String key, String data) throws QuestException;
+    void set(Instruction instruction) throws QuestException;
 
     /**
      * Reconstitute this Handler data into the specified meta.
-     *
-     * @param meta the meta to populate
-     */
-    void populate(M meta);
-
-    /**
-     * Reconstitute this Handler data into the specified meta.
-     * <p>
-     * Defaults to {@link #populate(ItemMeta)}.
      *
      * @param meta    the meta to populate
      * @param profile the optional profile for customized population
      * @throws QuestException when there is an exception while resolving profile specific data
      */
-    default void populate(final M meta, @Nullable final Profile profile) throws QuestException {
-        populate(meta);
-    }
+    void populate(final M meta, @Nullable final Profile profile) throws QuestException;
 
     /**
      * Reconstitute this Handler data into the specified meta if it is applicable to {@link #metaClass()}.
@@ -90,7 +79,7 @@ public interface ItemMetaHandler<M extends ItemMeta> {
      * When the meta is not applicable nothing changes.
      *
      * @param meta    the meta to populate
-     * @param profile the profile for customized population
+     * @param profile the optional profile for resolving arguments
      * @throws QuestException when there is an exception while resolving profile specific data
      */
     @SuppressWarnings("unchecked")
@@ -103,21 +92,25 @@ public interface ItemMetaHandler<M extends ItemMeta> {
     /**
      * Check to see if the specified ItemMeta matches the Handler.
      *
-     * @param meta the ItemMeta to check
-     * @return if the meta satisfies the requirement defined via {@link #set(String, String)}
+     * @param meta    the ItemMeta to check
+     * @param profile the optional profile for resolving arguments
+     * @return if the meta satisfies the requirement defined via {@link #set(Instruction)}
+     * @throws QuestException when there is an exception while resolving profile specific data
      */
-    boolean check(M meta);
+    boolean check(M meta, @Nullable Profile profile) throws QuestException;
 
     /**
      * Check to see if the specified ItemMeta matches the Handler if it is applicable to {@link #metaClass()}.
      * <p>
      * When the meta is not applicable it will return {@code true}.
      *
-     * @param meta the ItemMeta to check
-     * @return if the meta satisfies the requirement defined via {@link #set(String, String)}
+     * @param meta    the ItemMeta to check
+     * @param profile the optional profile for resolving arguments
+     * @return if the meta satisfies the requirement defined via {@link #set(Instruction)}
+     * @throws QuestException when there is an exception while resolving profile specific data
      */
     @SuppressWarnings("unchecked")
-    default boolean rawCheck(final ItemMeta meta) {
-        return !metaClass().isInstance(meta) || check((M) meta);
+    default boolean rawCheck(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
+        return !metaClass().isInstance(meta) || check((M) meta, profile);
     }
 }

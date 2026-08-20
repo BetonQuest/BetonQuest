@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
@@ -131,7 +132,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws QuestException {
+    public void set(final Instruction instruction) throws QuestException {
         switch (key) {
             case "firework" -> setEffects(data);
             case "power" -> {
@@ -145,7 +146,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
     }
 
     @Override
-    public void populate(final FireworkMeta fireworkMeta) {
+    public void populate(final FireworkMeta fireworkMeta, @Nullable final Profile profile) throws QuestException {
         fireworkMeta.addEffects(getEffects());
         fireworkMeta.setPower(power);
     }
@@ -155,23 +156,23 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
      *
      * @param fireworkMeta the meta to populate
      */
-    public void populate(final FireworkEffectMeta fireworkMeta) {
+    public void populate(final FireworkEffectMeta fireworkMeta, @Nullable final Profile profile) throws QuestException {
         final List<FireworkEffect> list = getEffects();
         fireworkMeta.setEffect(list.isEmpty() ? null : list.get(0));
     }
 
     @Override
-    public boolean check(final FireworkMeta fireworkMeta) {
+    public boolean check(final FireworkMeta fireworkMeta, @Nullable final Profile profile) throws QuestException {
         return checkEffects(fireworkMeta.getEffects()) && powerN.isValid(fireworkMeta.getPower(), power);
     }
 
     @Override
-    public boolean rawCheck(final ItemMeta meta) {
-        if (meta instanceof final FireworkMeta fireworkMeta && !check(fireworkMeta)) {
+    public boolean rawCheck(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
+        if (meta instanceof final FireworkMeta fireworkMeta && !check(fireworkMeta, profile)) {
             return false;
         }
         if (meta instanceof final FireworkEffectMeta fireworkMeta) {
-            return check(fireworkMeta);
+            return check(fireworkMeta, profile);
         }
         return true;
     }
@@ -179,10 +180,10 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
     @Override
     public void rawPopulate(final ItemMeta meta, @Nullable final Profile profile) {
         if (meta instanceof final FireworkMeta fireworkMeta) {
-            populate(fireworkMeta);
+            populate(fireworkMeta, profile);
         }
         if (meta instanceof final FireworkEffectMeta fireworkMeta) {
-            populate(fireworkMeta);
+            populate(fireworkMeta, profile);
         }
     }
 
@@ -190,9 +191,9 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
      * Check to see if the specified ItemMeta matches the Handler.
      *
      * @param fireworkMeta the ItemMeta to check
-     * @return if the meta satisfies the requirement defined via {@link #set(String, String)}
+     * @return if the meta satisfies the requirement defined via {@link #set(Instruction)}
      */
-    public boolean check(final FireworkEffectMeta fireworkMeta) {
+    public boolean check(final FireworkEffectMeta fireworkMeta, @Nullable final Profile profile) throws QuestException {
         final FireworkEffect single = fireworkMeta.getEffect();
         return switch (effectsE) {
             case WHATEVER -> true;

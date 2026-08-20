@@ -1,8 +1,11 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import net.kyori.adventure.text.Component;
+import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.text.TextParser;
+import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,28 +17,14 @@ import java.util.Set;
 public class NameHandler implements ItemMetaHandler<ItemMeta> {
 
     /**
-     * The text parser used to parse text.
+     * Item Display Name's required existence and value.
      */
-    protected final TextParser textParser;
-
-    /**
-     * The Item Display Name.
-     */
-    @Nullable
-    private Component name;
-
-    /**
-     * The required existence.
-     */
-    private Existence existence = Existence.WHATEVER;
+    private Argument<Pair<Existence, @Nullable Component>> name = Existence.whateverNullValue();
 
     /**
      * Creates an empty NameHandler.
-     *
-     * @param textParser the text parser used to parse text
      */
-    public NameHandler(final TextParser textParser) {
-        this.textParser = textParser;
+    public NameHandler() {
     }
 
     @Override
@@ -58,32 +47,23 @@ public class NameHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws QuestException {
-        if (!"name".equals(key)) {
-            throw new QuestException("Invalid name: " + key);
-        }
-        if (data.isEmpty()) {
-            throw new QuestException("Name cannot be empty");
-        }
-        if (Existence.NONE_KEY.equalsIgnoreCase(data)) {
-            existence = Existence.FORBIDDEN;
-        } else {
-            this.name = textParser.parse(data).compact();
-            existence = Existence.REQUIRED;
-        }
+    public void set(final Instruction instruction) throws QuestException {
+        // TODO is empty check?
+        this.name = Existence.apply("name", instruction.component().map(Component::compact));
     }
 
     @Override
-    public void populate(final ItemMeta meta) {
-        meta.displayName(get());
+    public void populate(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
+        meta.displayName(get(profile));
     }
 
     @Override
-    public boolean check(final ItemMeta meta) {
+    public boolean check(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
+        final Pair<Existence, @Nullable Component> pair = name.getValue(profile);
         final Component displayName = meta.hasDisplayName() ? meta.displayName() : null;
-        return switch (existence) {
+        return switch (pair.getLeft()) {
             case WHATEVER -> true;
-            case REQUIRED -> displayName != null && displayName.compact().equals(this.name);
+            case REQUIRED -> displayName != null && displayName.compact().equals(pair.getRight());
             case FORBIDDEN -> displayName == null;
         };
     }
@@ -94,7 +74,7 @@ public class NameHandler implements ItemMetaHandler<ItemMeta> {
      * @return the name
      */
     @Nullable
-    public Component get() {
-        return name;
+    public Component get(@Nullable final Profile profile) throws QuestException {
+        return name.getValue(profile).getRight();
     }
 }
