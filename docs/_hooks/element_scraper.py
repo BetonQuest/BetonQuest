@@ -1,10 +1,10 @@
-import posixpath
 import re
 from mkdocs.config import config_options
 from mkdocs.plugins import BasePlugin
 from mkdocs.plugins import get_plugin_logger
 from pathlib import Path
-from pathlib import PurePosixPath
+
+from betonquest.path_utils import relative_link
 
 log = get_plugin_logger("element-scraper")
 SCRAPER_PATTERN = re.compile(r"(\%\%scraper:([^%]+)\%\%)")
@@ -68,13 +68,6 @@ def generate_reference(element, relative_to):
     name = element[0]
     path = relative_link(relative_to, element[2]) + "#" + re.split(r"[\s\.]", name, maxsplit=1)[0]
     return f"[`{name}`]({path})"
-
-
-def relative_link(source_file, target_file):
-    source = PurePosixPath(source_file.src_uri)
-    target = PurePosixPath(target_file.src_uri)
-    source_dir = source.parent
-    return posixpath.relpath(target, start=source_dir)
 
 
 def create_markdown(reference_dict):
