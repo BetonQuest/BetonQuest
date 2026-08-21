@@ -16,6 +16,4 @@ containing all single-line instruction elements of BetonQuest itself and all its
 - Objectives
 - Placeholders
 
-%%scraper:
-Actions-List.md,Conditions-List.md,Objectives-List.md,Placeholders-List.md,Integrations-List
-%%
+<!-- bq:scraper Actions-List.md Conditions-List.md Objectives-List.md Placeholders-List.md Integrations-List -->

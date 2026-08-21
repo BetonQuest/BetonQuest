@@ -9,7 +9,7 @@ copyright: >
   <a href="#__consent">Change cookie settings</a>
 
 hooks:
-  - 'docs/_hooks/element_scraper.py'
+  - 'docs/_hooks/commands.py'
 
 extra:
   version:
@@ -36,6 +36,7 @@ extra:
 
 extra_css:
   - '_webCode/css/coloredIcons.css'
+  - '_webCode/css/badges.css'
 
 #Notice that here are a few strange looking hairspaces in here.
 #They make the space between the emojis and the text look equal
