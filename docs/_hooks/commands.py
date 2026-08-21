@@ -3,27 +3,22 @@ from mkdocs.plugins import get_plugin_logger
 
 from betonquest.doc_instruction import DocInstruction
 from betonquest.doc_instruction import parse as parse_doc_instruction
+from bq_cmd.element_scraper import ElementScraperCmd
 from bq_cmd.version import VersionCmd
 
 COMMAND_PATTERN = re.compile(r"<!--\s*(bq:.*)\s*-->")
 
 log = get_plugin_logger("betonQuest-cmd")
 
-COMMANDS = [VersionCmd(log)]
-
-
-def on_files(files, **kwargs):
-    for cmd in COMMANDS:
-        cmd.populate_files(files)
-    return files
+COMMANDS = [VersionCmd(log), ElementScraperCmd(log)]
 
 
 def on_page_markdown(markdown, **kwargs):
-    return re.sub(COMMAND_PATTERN, lambda match: _replace(kwargs["page"], match), markdown)
+    return re.sub(COMMAND_PATTERN, lambda match: _replace(kwargs["files"], kwargs["page"], match), markdown)
 
 
-def _replace(page, match):
-    instruction = parse_doc_instruction(page, match.group(1).strip())
+def _replace(files, page, match):
+    instruction = parse_doc_instruction(files, page, match.group(1).strip())
     if instruction is None:
         return match.group(0)
     return _replace_command(instruction)

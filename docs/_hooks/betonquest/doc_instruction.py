@@ -1,6 +1,8 @@
 import re
 from enum import Enum
 
+ARGUMENT_PATTERN = re.compile(r"(([^:])+:)?(.*)")
+
 
 class ArgumentType(Enum):
     RAW = 1
@@ -24,16 +26,20 @@ class InstructionArgument:
 
 
 class DocInstruction:
-    def __init__(self, page, id: str, arguments: list[InstructionArgument] = []):
+    def __init__(self, files, page, id: str, arguments: list[InstructionArgument] = []):
         self.id = id
         self.page = page
         self.arguments = arguments
+        self.files = files
 
     def get_id(self) -> str:
         return self.id
 
     def get_page(self):
         return self.page
+
+    def get_files(self):
+        return self.files
 
     def get_arguments(self) -> list[InstructionArgument]:
         return self.arguments
@@ -48,10 +54,7 @@ class DocInstruction:
         return any(arg.name == name for arg in self.arguments)
 
 
-ARGUMENT_PATTERN = re.compile(r"(([^:])+:)?(.*)")
-
-
-def parse(page, instruction: str) -> DocInstruction | None:
+def parse(files, page, instruction: str) -> DocInstruction | None:
     parts = instruction.strip().split(" ")
     cmd = parts[0]
     if not cmd.startswith("bq:"):
@@ -59,7 +62,7 @@ def parse(page, instruction: str) -> DocInstruction | None:
     id = cmd[3:]
     str_args = parts[1:]
     arguments = _parse_arguments(str_args)
-    return DocInstruction(page, id, arguments)
+    return DocInstruction(files, page, id, arguments)
 
 
 def _parse_arguments(str_args: list[str]) -> list[InstructionArgument]:

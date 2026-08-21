@@ -9,8 +9,5 @@ class BqCmd:
     def match(self, id: str) -> bool:
         return self.id == id
 
-    def populate_files(self, files):
-        pass
-
     def run(self, instruction: DocInstruction):
         self.log.error("Not implemented")

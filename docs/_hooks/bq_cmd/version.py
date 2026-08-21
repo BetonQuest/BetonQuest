@@ -40,8 +40,9 @@ class VersionCmd(BqCmd):
     def run(self, instruction: DocInstruction):
         version = instruction.get_argument(0)
         is_api = instruction.argument_count() == 2 and instruction.get_argument(1).value == "api"
-        self.log.debug(f"Resolved version command: {version.value} / api: {is_api}")
         self.src_file = instruction.get_page().file
+        self.populate_files(instruction.get_files())
+        self.log.debug(f"Resolved version command: {version.value} / api: {is_api}")
         return _version_command(version, is_api, self)
 
 
