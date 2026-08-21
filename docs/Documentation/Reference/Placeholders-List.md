@@ -357,6 +357,29 @@ __Description__: Represents a section as a list of all its elements as identifie
     In this example, the action `start2RandomObjectives` will start two random objectives in `quest1`, while the action
     `startAllObjectives` will start all three objectives in `quest1`.
 
+## `Statistic`
+
+__Context__: @snippet:placeholder-meta:online-offline@  
+__Syntax__: `statistic.<statistic>.[material].[entity]`    
+__Description__: Represents the specified statistic of a player.
+
+There are a couple of statistics that require _either_ a material or an entity as a second argument.
+Providing both will result in an error.
+For more information about statistics, you can either visit the [Minecraft Wiki](https://minecraft.wiki/w/Statistics)
+or the page of [all statistic values](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Statistic.html).
+
+| Parameter                                                                                            | Type               | Explanation                                              |
+|------------------------------------------------------------------------------------------------------|--------------------|----------------------------------------------------------|
+| statistic<br>[[Statistic](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Statistic.html)]       | Required           | The statistic you want to read.                          |
+| material<br>[[Material](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html)]          | Optional<br>[None] | The optional material for material-specific statistics.  |
+| entity<br>[[EntityType](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html)] | Optional<br>[None] | The optional entity type for entity-specific statistics. |
+
+```scss title="Example"
+%statistic.jump%
+%statistic.mine_block.material:diamond_block%
+%statistic.kill_entity.entity:ZOMBIE%
+```
+
 ## `Sync`
 
 __Context__: @snippet:placeholder-meta:online-offline-independent@  

@@ -2,6 +2,7 @@ package org.betonquest.betonquest.kernel.component.types;
 
 import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.service.conversation.Conversations;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
@@ -27,6 +28,7 @@ import org.betonquest.betonquest.quest.placeholder.point.GlobalPointPlaceholderF
 import org.betonquest.betonquest.quest.placeholder.point.PointPlaceholderFactory;
 import org.betonquest.betonquest.quest.placeholder.random.RandomNumberPlaceholderFactory;
 import org.betonquest.betonquest.quest.placeholder.section.SectionPlaceholderFactory;
+import org.betonquest.betonquest.quest.placeholder.statistic.StatisticPlaceholderFactory;
 import org.betonquest.betonquest.quest.placeholder.sync.SyncPlaceholderFactory;
 import org.betonquest.betonquest.quest.placeholder.tag.GlobalTagPlaceholderFactory;
 import org.betonquest.betonquest.quest.placeholder.tag.TagPlaceholderFactory;
@@ -52,7 +54,8 @@ public class PlaceholderTypeComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(Plugin.class, Localizations.class, GlobalData.class, PlayerDataStorage.class,
                 PlaceholderTypeRegistry.class, Conversations.class, ConditionManager.class,
-                ObjectiveManager.class, PlaceholderManager.class, NpcManager.class, Instructions.class);
+                ObjectiveManager.class, PlaceholderManager.class, NpcManager.class, Instructions.class,
+                BetonQuestLoggerFactory.class);
     }
 
     @Override
@@ -68,6 +71,7 @@ public class PlaceholderTypeComponent extends AbstractCoreComponent {
         final PlaceholderManager placeholderManager = getDependency(PlaceholderManager.class);
         final NpcManager npcManager = getDependency(NpcManager.class);
         final Instructions instructions = getDependency(Instructions.class);
+        final BetonQuestLoggerFactory loggerFactory = getDependency(BetonQuestLoggerFactory.class);
 
         placeholderTypes.register("condition", new ConditionPlaceholderFactory(conditionManager, localizations));
         placeholderTypes.registerCombined("constant", new ConstantPlaceholderFactory());
@@ -85,6 +89,7 @@ public class PlaceholderTypeComponent extends AbstractCoreComponent {
         placeholderTypes.register("quester", new QuesterPlaceholderFactory(conversations));
         placeholderTypes.registerCombined("randomnumber", new RandomNumberPlaceholderFactory());
         placeholderTypes.registerCombined("section", new SectionPlaceholderFactory());
+        placeholderTypes.register("statistic", new StatisticPlaceholderFactory(loggerFactory));
         placeholderTypes.registerCombined("sync", new SyncPlaceholderFactory());
         placeholderTypes.register("tag", new TagPlaceholderFactory(dataStorage, localizations));
         placeholderTypes.registerCombined("translate", new TranslatePlaceholderFactory(instructions));
