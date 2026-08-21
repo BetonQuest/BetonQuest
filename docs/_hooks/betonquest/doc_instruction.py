@@ -1,25 +1,6 @@
-import re
-from enum import Enum
-
-ARGUMENT_PATTERN = re.compile(r"(([^:])+:)?(.*)")
-
-
-class ArgumentType(Enum):
-    RAW = 1
-    NAMED = 2
-
-
 class InstructionArgument:
-    def __init__(self, type: ArgumentType = ArgumentType.RAW, value: str = "", name: str = ""):
-        self.type = type
-        self.name = name
+    def __init__(self, value: str):
         self.value = value
-
-    def get_type(self) -> ArgumentType:
-        return self.type
-
-    def get_name(self) -> str:
-        return self.name
 
     def get_value(self) -> str:
         return self.value
@@ -50,9 +31,6 @@ class DocInstruction:
     def get_argument(self, index: int = 0) -> InstructionArgument:
         return self.arguments[index]
 
-    def has_argument(self, name: str) -> bool:
-        return any(arg.name == name for arg in self.arguments)
-
 
 def parse(files, page, instruction: str) -> DocInstruction | None:
     parts = instruction.strip().split(" ")
@@ -70,9 +48,4 @@ def _parse_arguments(str_args: list[str]) -> list[InstructionArgument]:
 
 
 def _parse_argument(str_arg: str) -> InstructionArgument:
-    match = ARGUMENT_PATTERN.match(str_arg)
-    if match:
-        name = match.group(2)
-        value = match.group(3)
-        return InstructionArgument(name=name, value=value)
-    return InstructionArgument(value=str_arg)
+    return InstructionArgument(str_arg)
